@@ -167,9 +167,17 @@ def _record_sway_material(
         material["terminal_cause_observed"] = terminal_observation[
             "terminal_cause_observed"]
         material["terminal_cause"] = terminal_observation["terminal_cause"]
-    _write(state_dir, {**ledger, "resolved": {
-        **resolved, "material_intervention": material,
-    }})
+    updated = {**resolved, "material_intervention": material}
+    if gain and "first_named_gain_intervention" not in resolved:
+        # Keep one immutable gain measurement per original Start. Later reads
+        # correctly clear the *current* incremental flag when values stop rising;
+        # that must not erase the independently observed earlier transition.
+        updated["first_named_gain_intervention"] = {
+            **material,
+            "baseline_source_native_revision": previous["source_native_revision"],
+            "baseline_source_date_raw": previous["source_date_raw"],
+        }
+    _write(state_dir, {**ledger, "resolved": updated})
     return material
 
 

@@ -57,6 +57,7 @@ def test_original_sway_material_consumption_compound(tmp_path: Path):
                       "snapshot_revision": 6, "target_opinion_of_actor": 27})
     assert total_only["dedicated_benefit_observed"] is False
     assert total_only["incremental_named_gain_observed"] is False
+    assert "first_named_gain_intervention" not in read_sway_ledger(tmp_path)["resolved"]
     # Same known instance and pair; a dedicated absent->25 measurement is
     # material, while a continuing instance still supplies no terminal.
     positive = {**opinion, "date_raw": 53288328, "snapshot_revision": 7,
@@ -68,14 +69,37 @@ def test_original_sway_material_consumption_compound(tmp_path: Path):
     assert material["incremental_named_gain_observed"] is True
     assert material["decision"] == "retain_existing_sway"
     assert material["instance_terminal_outcome_observed"] is False
+    first_gain = read_sway_ledger(tmp_path)["resolved"]["first_named_gain_intervention"]
+    assert first_gain["baseline_source_native_revision"] == 6
+    assert first_gain["baseline_source_date_raw"] == 53288304
+    assert first_gain["next_turn_consumed"] is False
+    # A later unchanged measurement must remain honest about the current gain
+    # without losing the original positive transition or pretending consumption.
+    refreshed = record_sway_material_intervention(
+        tmp_path, sway_read={**read, "date_raw": 53288340},
+        opinion_read={**positive, "date_raw": 53288340})
+    assert refreshed["incremental_named_gain_observed"] is False
+    assert read_sway_ledger(tmp_path)["resolved"]["first_named_gain_intervention"] == first_gain
     after = {"paused": True, "map_ready": True, "revision": 9,
              "native_revision": 8, "date_raw": 53288352,
              "played_character": {"character_id": 29829, "alive": True}}
+    assert consume_sway_following_turn(tmp_path, {
+        **after, "native_revision": 7, "date_raw": 53288328}) is None
+    before_following = (tmp_path / LEDGER_FILE).read_text(encoding="utf-8")
+    foreign = json.loads(before_following)
+    foreign["resolved"]["first_named_gain_intervention"]["action_id"] = "another-start"
+    (tmp_path / LEDGER_FILE).write_text(json.dumps(foreign), encoding="utf-8")
+    foreign_consumed = consume_sway_following_turn(tmp_path, after)
+    assert foreign_consumed["first_named_gain_intervention"]["next_turn_consumed"] is False
+    (tmp_path / LEDGER_FILE).write_text(before_following, encoding="utf-8")
     consumed = consume_sway_following_turn(tmp_path, after)
     assert consumed["next_turn_consumed"] is True
     assert consumed["following_date_raw"] == original["following_date_raw"]
     assert consumed["material_intervention"]["next_turn_consumed"] is True
     assert consumed["material_intervention"]["following_date_raw"] == after["date_raw"]
+    assert consumed["first_named_gain_intervention"]["next_turn_consumed"] is True
+    assert consumed["first_named_gain_intervention"]["source_date_raw"] == 53288328
+    assert consumed["first_named_gain_intervention"]["following_date_raw"] == after["date_raw"]
     assert consume_sway_following_turn(tmp_path, after) is None
     assert read_sway_ledger(tmp_path)["pending"] is None
     # Another target's actual4 eligibility cannot be attached to this action.
@@ -89,3 +113,4 @@ def test_original_sway_material_consumption_compound(tmp_path: Path):
     assert gone["dedicated_benefit_observed"] is True
     assert gone["instance_terminal_outcome_observed"] is False
     assert gone["decision"] == "observe_tracked_instance_end"
+    assert read_sway_ledger(tmp_path)["resolved"]["first_named_gain_intervention"] == consumed["first_named_gain_intervention"]

@@ -16,9 +16,11 @@ from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge import ordinary_sway_quiet_observation_v1 as quiet
 from xar_autoplayer.bridge.ordinary_sway_service_v1 import INPUT, STATE_FILE, project_ordinary_sway_input_v1
+from xar_autoplayer.bridge.player_mercenary_context import STEP as MARKET_QUERY
 from xar_autoplayer.bridge.version_identity import CK3_12004
 from xar_autoplayer.bridge.war_contract import QUERY_ARMY_STRENGTHS_STEP as QUERY
 from xar_autoplayer.ordinary_sway_schedule_v1 import plan_ordinary_sway_schedule_v1
+from xar_autoplayer.m5_observed_opportunity_selector import observed_frame
 from xar_autoplayer.sway_formal_consumer import LEDGER_FILE, SCHEMA, read_sway_ledger
 
 ACTOR, TARGET, INSTANCE, DATE = 7, 9, 134217986, 53288448
@@ -136,7 +138,116 @@ def service(driver):
     return value
 
 
+def market_plan(driver):
+    value = planned(driver)
+    value["planning_source_frame"] = GameplayBridgeService._observed_planning_source_frame(driver.frame)
+    value["plan"] = {"selected_step": MARKET_QUERY, "phase": "native_war_mercenary_query"}
+    return value
+
+
+def market_result(driver):
+    frame = driver.frame
+    return {
+        "step": MARKET_QUERY, "status": "completed", "accepted": True, "read_only": True,
+        "query_sequence": 1, "snapshot_revision": frame["native_revision"], "date_raw": frame["date_raw"],
+        "mercenary_query_source_frame_v1": observed_frame(frame),
+        "player_mercenary_context": {
+            "schema": "ck3_12004_player_mercenary_context_v1",
+            "game_version": CK3_12004.game_version, "executable_sha256": CK3_12004.executable_sha256,
+            "actor_character_id": ACTOR, "date_raw": frame["date_raw"], "capture_epoch": 1,
+            "read_only": True, "native_hire_mode": 1, "available": True,
+            "unavailable_reason": None, "rows": [],
+        },
+    }
+
+
+class MarketDriver(SourceDriver):
+    """Synthetic paused endpoint; no Native, Game or network connection."""
+    def __init__(self, path):
+        super().__init__(path)
+        self.frame["diagnostics"]["hello"] = {
+            "expected_ck3_version": CK3_12004.game_version,
+            "expected_ck3_sha256": CK3_12004.executable_sha256,
+        }
+
+    def execute_step(self, step, *, expected_revision=None):
+        if step != MARKET_QUERY or expected_revision != self.frame["revision"]:
+            raise AssertionError("only the original same-frame market read is executable")
+        self.calls.append("original-market-query")
+        return market_result(self)
+
+
 class QuietObservationTests(unittest.TestCase):
+    def test_market_full_auto_original_execution_then_named_gain_terminal_and_later_consumption(self):
+        with tempfile.TemporaryDirectory(prefix="sway-market-") as temp:
+            path = Path(temp)
+            seed(path)
+            driver = MarketDriver(path)
+            cues = []
+            # Only the planner input and Native endpoint are synthetic. The
+            # original Service executor, before_submit and following consumers run.
+            with patch.object(GameplayBridgeService, "_plan_turn_internal", lambda _: market_plan(driver)):
+                first = service(driver).auto_turn(before_submit=lambda cue: cues.append(cue))
+                self.assertEqual(cues[0]["plan"]["selected_step"], MARKET_QUERY)
+                self.assertLess(driver.calls.index("original-market-query"), driver.calls.index("completion"))
+                self.assertEqual(first["result"], market_result(driver))
+                optional = first["ordinary_sway_optional"]
+                self.assertEqual(optional["schedule_window"], "after_completed_ordinary_mercenary_query")
+                self.assertFalse(optional["submit_attempted"])
+                self.assertEqual(optional["new_game_days"], 0)
+                self.assertFalse(read_sway_ledger(path)["resolved"]["material_intervention"]["next_turn_consumed"])
+                for days, opinion, terminal in ((0, 0, False), (30, 25, False), (30, 25, True), (0, 25, True)):
+                    driver.frame["date_raw"] += days * 24
+                    driver.frame["revision"] += 1
+                    driver.frame["native_revision"] += 1
+                    driver.frame["snapshot_id"] = "market:" + str(driver.frame["native_revision"])
+                    driver.value, driver.terminal = opinion, terminal
+                    returned = service(driver).auto_turn()
+                    self.assertEqual(returned["selected_step"], MARKET_QUERY)
+                    if days == 30 and not terminal:
+                        material = read_sway_ledger(path)["resolved"]["material_intervention"]
+                        self.assertTrue(material["incremental_named_gain_observed"])
+                        self.assertFalse(material["next_turn_consumed"])
+                end = read_sway_ledger(path)["resolved"]["terminal_intervention"]
+                self.assertTrue(end["instance_terminal_outcome_observed"])
+                self.assertFalse(end["terminal_cause_observed"])
+                self.assertTrue(end["next_turn_consumed"])
+                gain_witness = read_sway_ledger(path)["resolved"]["first_named_gain_intervention"]
+                self.assertTrue(gain_witness["incremental_named_gain_observed"])
+                self.assertTrue(gain_witness["next_turn_consumed"])
+                self.assertEqual(gain_witness["source_date_raw"], DATE + 30 * 24)
+                self.assertEqual(gain_witness["baseline_source_date_raw"], DATE)
+                self.assertEqual(driver.calls.count("original-market-query"), 5)
+                self.assertEqual(driver.calls.count("completion"), 3)
+                self.assertEqual(driver.frame["date_raw"], DATE + 60 * 24)
+
+    def test_market_incomplete_envelope_foreign_frame_and_bad_native_context_preserve_original(self):
+        with tempfile.TemporaryDirectory(prefix="sway-market-") as temp:
+            path = Path(temp)
+            seed(path)
+            changes = (
+                ("ack_only", lambda plan, result, frame: result.update(status="pending")),
+                ("world_action", lambda plan, result, frame: result.update(read_only=False)),
+                ("sequence_bool", lambda plan, result, frame: result.update(query_sequence=True)),
+                ("other_phase", lambda plan, result, frame: plan["plan"].update(phase="native_war_mercenary_finance_query")),
+                ("old_capture", lambda plan, result, frame: result["mercenary_query_source_frame_v1"].update(native_revision=6)),
+                ("old_connection", lambda plan, result, frame: frame["diagnostics"].update(connection_generation=3)),
+                ("wrong_actor", lambda plan, result, frame: result["player_mercenary_context"].update(actor_character_id=99)),
+                ("wrong_build", lambda plan, result, frame: result["player_mercenary_context"].update(executable_sha256="0" * 64)),
+                ("missing_native_rows", lambda plan, result, frame: result["player_mercenary_context"].pop("rows")),
+                ("new_battle", lambda plan, result, frame: frame["player_armies"][0].update(in_combat=True)),
+            )
+            for name, change in changes:
+                with self.subTest(name=name):
+                    driver = MarketDriver(path)
+                    plan, result = market_plan(driver), market_result(driver)
+                    change(plan, result, driver.frame)
+                    outcome = {"status": "executed", "selected_step": MARKET_QUERY, "result": result}
+                    returned = quiet.observe_sway_after_quiet_query_v1(service(driver), plan, outcome)
+                    self.assertIs(returned, outcome)
+                    self.assertNotIn("completion", driver.calls)
+                    self.assertFalse((path / STATE_FILE).exists())
+
     def test_full_auto_original_query_first_monthly_durable_gain_terminal_and_later_consume(self):
         with tempfile.TemporaryDirectory(prefix="sway-quiet-") as temp:
             path = Path(temp)

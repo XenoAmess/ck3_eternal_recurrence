@@ -131,6 +131,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test retained named Sway gain and independent consumption without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_sway_material_consumer.py
       - name: Test synthetic HolySite recognition and aggregate SDK observations without CK3
         run: |
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_relic_recognition_matrix.py

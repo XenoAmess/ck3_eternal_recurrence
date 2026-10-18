@@ -1,4 +1,4 @@
-"""Observe one retained Sway after an ordinary, completed army read.
+"""Observe one retained Sway after an ordinary, completed military read.
 
 The original war query and its following-turn consumers finish first. No new
 Sway, pending reconciliation, world action, clock or replacement plan is possible
@@ -10,7 +10,10 @@ from collections.abc import Mapping
 
 from ..ordinary_sway_lifecycle_observation_v1 import READERS, observe_resolved_sway_lifecycle_v1
 from ..ordinary_sway_schedule_v1 import plan_ordinary_sway_schedule_v1
+from ..m5_observed_opportunity_selector import observed_frame
+from .driver import BridgeUnavailableError
 from .ordinary_sway_service_v1 import INPUT, _finish, _inputs, project_ordinary_sway_input_v1
+from .player_mercenary_context import STEP as MARKET_QUERY, normalize_player_mercenary_context_v1
 from .war_contract import QUERY_ARMY_STRENGTHS_STEP
 
 SCHEMA = "ordinary-sway-quiet-observation-v1"
@@ -19,16 +22,42 @@ SCHEMA = "ordinary-sway-quiet-observation-v1"
 def _completed_query(planned, outcome):
     plan, source = planned.get("plan"), planned.get("planning_source_frame")
     result = outcome.get("result")
-    return bool(
-        isinstance(plan, Mapping) and plan.get("phase") == "native_war_army_strength_query"
-        and plan.get("selected_step") == QUERY_ARMY_STRENGTHS_STEP
-        and outcome.get("status") == "executed"
-        and outcome.get("selected_step") == QUERY_ARMY_STRENGTHS_STEP
+    if not (
+        isinstance(plan, Mapping) and outcome.get("status") == "executed"
+        and plan.get("selected_step") == outcome.get("selected_step")
         and "ordinary_sway_optional" not in outcome
-        and isinstance(result, Mapping) and isinstance(result.get("army_strengths"), list)
-        and result.get("status") in {"available", "partial"}
+        and isinstance(result, Mapping)
         and isinstance(source, Mapping) and source.get("status") == "complete"
-    )
+    ):
+        return None
+    if (plan.get("phase") == "native_war_army_strength_query"
+            and outcome.get("selected_step") == QUERY_ARMY_STRENGTHS_STEP
+            and isinstance(result.get("army_strengths"), list)
+            and result.get("status") in {"available", "partial"}):
+        return "after_completed_ordinary_army_query"
+    if (plan.get("phase") == "native_war_mercenary_query"
+            and outcome.get("selected_step") == MARKET_QUERY
+            and result.get("step") == MARKET_QUERY
+            and result.get("accepted") is True and result.get("read_only") is True
+            and result.get("status") == "completed"
+            and type(result.get("query_sequence")) is int and result["query_sequence"] > 0
+            and isinstance(result.get("mercenary_query_source_frame_v1"), Mapping)):
+        return "after_completed_ordinary_mercenary_query"
+    return None
+
+
+def _market_query_matches(snapshot, result):
+    """Use the same complete market frame/DTO checks as its ordinary consumer."""
+    try:
+        frame = observed_frame(snapshot)
+        if (result["mercenary_query_source_frame_v1"] != frame
+                or result.get("snapshot_revision") != frame["native_revision"]
+                or result.get("date_raw") != frame["date_raw"]):
+            return False
+        normalize_player_mercenary_context_v1(result.get("player_mercenary_context"), snapshot=snapshot)
+    except (ValueError, BridgeUnavailableError):
+        return False
+    return True
 
 
 def _quiet_same_actor(snapshot, source):
@@ -63,7 +92,8 @@ def _quiet_same_actor(snapshot, source):
 
 def observe_sway_after_quiet_query_v1(service, planned, outcome):
     """Best-effort post-query observation; retain the original action result on failure."""
-    if not _completed_query(planned, outcome):
+    window = _completed_query(planned, outcome)
+    if window is None:
         return outcome
     if not any(getattr(service.driver, permission, False) is True for _, permission, _ in READERS):
         return outcome
@@ -91,6 +121,8 @@ def observe_sway_after_quiet_query_v1(service, planned, outcome):
         snapshot = service.snapshot(include_native_command_history=False)
         if not _quiet_same_actor(snapshot, planned["planning_source_frame"]):
             return outcome
+        if outcome["selected_step"] == MARKET_QUERY and not _market_query_matches(snapshot, outcome["result"]):
+            return outcome
         frame = project_ordinary_sway_input_v1(snapshot, None)["snapshot"]
         job = plan_ordinary_sway_schedule_v1(
             frame, selected_step=outcome["selected_step"], ledger=ledger, state=state,
@@ -104,7 +136,7 @@ def observe_sway_after_quiet_query_v1(service, planned, outcome):
                           "observed" if result.get("status") == "observed" else "unavailable", result)
         return {**outcome, "ordinary_sway_optional": {
             "schema": SCHEMA, **receipt, "after_completed_query": outcome["selected_step"],
-            "schedule_window": "after_completed_ordinary_army_query",
+            "schedule_window": window,
             "original_selected_step_preserved": True, "submit_attempted": False,
             "request_retried": False, "new_game_days": 0,
             "following_consumption_deferred_to_later_ordinary_turn": True,
@@ -114,7 +146,7 @@ def observe_sway_after_quiet_query_v1(service, planned, outcome):
         # must never hide that result and cause a caller to replay the turn.
         return {**outcome, "ordinary_sway_optional": {
             "schema": SCHEMA, "status": "unavailable",
-            "schedule_window": "after_completed_ordinary_army_query",
+            "schedule_window": window,
             "reason": f"{type(error).__name__}: {error}",
             "original_selected_step_preserved": True, "submit_attempted": False,
             "request_retried": False, "new_game_days": 0,

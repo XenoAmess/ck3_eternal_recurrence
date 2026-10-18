@@ -1,0 +1,90 @@
+{
+  "schema": "xar.ck3.sway-quiet-market-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-18T11:02:49Z",
+  "status": "software_qualified_not_runtime_adopted",
+  "source_commit_before_change": "646972a219f74f91129dea7a1d9af91e67778003",
+  "working_source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_quiet_observation_v1.py": "cbda2a14b7c4b6b888e34346cc9c19d1c75cf14afac7ad6d6914fd03c246f48c",
+    "ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py": "f6ca426fc437901104b90a9fc5d968a990e220688f285b6df64a553377697bab",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/player_mercenary_context.py": "54acb5c62c90d10c600acd92d957dc86e738ddaa6520f3d2803694570179fe81",
+    "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py": "7962d271184b2ff35a614ca784b6070f708b3de78a65aec6a9494fa1fa38004e"
+  },
+  "source_contract": {
+    "phase": "native_war_mercenary_query",
+    "step": "query-player-mercenary-context-v1",
+    "window": "after_completed_ordinary_mercenary_query",
+    "normalizer": "xar_autoplayer.bridge.player_mercenary_context.normalize_player_mercenary_context_v1",
+    "same_frame": ["played_character_id", "native_revision", "date_raw", "snapshot_id", "revision", "episode_run_id"],
+    "additional_current_snapshot_binding": ["bridge_pid", "connection_generation", "paused", "map_ready", "living_player", "no_event_or_interaction", "no_battle_retreat_or_gathering"],
+    "existing_applied_instance_only": true,
+    "new_start_allowed": false,
+    "pending_reconciliation_allowed": false,
+    "original_plan_and_result_retained": true,
+    "new_game_days": 0,
+    "same_turn_material_consumption_allowed": false
+  },
+  "qualification": {
+    "command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 ck3_autonomous_player\\tests\\unit\\test_ordinary_sway_quiet_observation_v1.py",
+    "shell": "cmd.exe",
+    "login": false,
+    "exit_code": 0,
+    "tests": 8,
+    "initial_eight_test_source_sha256": "407ff1b484eff218f41becce94aff15bab8ee6a016f7c5a570b263668f5de6ea",
+    "unittest_elapsed_seconds": 1.064,
+    "tool_elapsed_seconds": 7.5648655,
+    "new_positive_case": "real Service.auto_turn, original executor/execute_step and before_submit callback; market normalization; early baseline, named increment, neutral terminal and later executed ordinary consumption",
+    "new_rejection_subcases": 10,
+    "synthetic_boundary": "Planner input, paused frames, game endpoint, observations and simulated dates are synthetic. Production Service executor, normalizers, scheduler, lifecycle ledger and following consumers execute.",
+    "git_diff_check_exit_code": 0
+  },
+  "business_credit": {
+    "game_calls": 0,
+    "native_calls": 0,
+    "desktop_calls": 0,
+    "game_days": 0,
+    "m6_complete": false,
+    "m7_complete": false,
+    "g2_completed_items": 6,
+    "g2_total_items": 8
+  },
+  "named_gain_retention": {
+    "recorded_at_utc": "2026-10-18T11:06:57Z",
+    "status": "software_qualified_not_runtime_adopted",
+    "field": "first_named_gain_intervention",
+    "maximum_records_per_original_start": 1,
+    "historical_backfill_or_m6_completion_claim": false,
+    "guard": "Exact original action, actor, target, full scheme ID and generation before the existing following-turn consumer may consume the preserved gain. Same-frame reads cannot consume it.",
+    "working_source_pins": {
+      "ck3_autonomous_player/src/xar_autoplayer/sway_material_consumer.py": "be8106b70cda7368e6646c65b3429526fe6fa97f03f3230c4624520a639d7b5d",
+      "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py": "0158df0800bf63b3f90ed48c8c831d688c5ffa7edd7a2fc85f44efd88aa16c3d",
+      "ck3_autonomous_player/tests/unit/test_sway_material_consumer.py": "d4c7b7d145a2dd2f554af3cb7b173f207c0a15a83b1e76a610e688285bfc95d2",
+      "ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py": "f6ca426fc437901104b90a9fc5d968a990e220688f285b6df64a553377697bab"
+    },
+    "qualification": {
+      "initial_collection_attempt": {
+        "exit_code": 2,
+        "tests_executed": 0,
+        "reason": "ModuleNotFoundError xar_autoplayer: src search path was absent from the pytest invocation"
+      },
+      "corrected_command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_sway_material_consumer.py']))",
+      "exit_code": 0,
+      "tests_passed": 1,
+      "pytest_elapsed_seconds": 3.57,
+      "post_change_real_service_market_case": {
+        "command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 ck3_autonomous_player\\tests\\unit\\test_ordinary_sway_quiet_observation_v1.py QuietObservationTests.test_market_full_auto_original_execution_then_named_gain_terminal_and_later_consumption",
+        "exit_code": 0,
+        "tests_passed": 1,
+        "unittest_elapsed_seconds": 0.107
+      },
+      "git_diff_check_exit_code": 0
+    },
+    "pin_scope": "Raw working source bytes observed by certutil SHA256, not a claim that Git-normalized blobs have identical bytes. Future immutable adoption must pin its actual bytes."
+  },
+  "remaining_limits": [
+    "This adds a market read window; hold/route-only wars can still lack an observation opportunity.",
+    "No current frozen SDK/Host06 adoption or owner qualification is claimed.",
+    "Real ordinary Start, early named baseline, named gain, natural terminal and following ordinary consumption remain required for M6.",
+    "M7 multi-seed/government and paired checkpoint new-Game cold restoration remain outside this change."
+  ]
+}

@@ -447,6 +447,19 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
         resolved.get("material_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
     )
+    gain_record = resolved.get("first_named_gain_intervention")
+    instance = _resolved_instance_identity(resolved)
+    gain_identity = {key: resolved.get(key) for key in (
+        "action_id", "actor_character_id", "target_character_id")}
+    if isinstance(instance, Mapping):
+        gain_identity.update({key: instance.get(key) for key in (
+            "scheme_instance_id", "scheme_instance_generation")})
+    gain = (consume_sway_material_following_turn(
+        gain_record, actor_character_id=actor_id,
+        native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
+    ) if isinstance(gain_record, Mapping) and isinstance(instance, Mapping)
+         and gain_record.get("incremental_named_gain_observed") is True
+         and all(gain_record.get(key) == value for key, value in gain_identity.items()) else None)
     terminal = consume_sway_material_following_turn(
         resolved.get("terminal_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
@@ -460,7 +473,7 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
     start_consumed = (resolved.get("next_turn_consumed") is not True
                       and (snapshot["native_revision"] > resolved["post_native_revision"]
                            or snapshot["date_raw"] > resolved["post_date_raw"]))
-    if (not start_consumed and phase is None and material is None
+    if (not start_consumed and phase is None and material is None and gain is None
             and terminal is None and stop is None):
         return None
     if start_consumed:
@@ -469,6 +482,8 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
                     "following_date_raw": snapshot["date_raw"]}
     if material is not None:
         resolved = {**resolved, "material_intervention": material}
+    if gain is not None:
+        resolved = {**resolved, "first_named_gain_intervention": gain}
     if phase is not None:
         resolved = {**resolved, "phase_intervention": phase}
     if terminal is not None:
