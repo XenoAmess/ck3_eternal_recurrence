@@ -1,0 +1,70 @@
+{
+  "schema": "xar.forecast-command-history-factory.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:41:59.904076+00:00",
+  "machine_identity_source": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "tool_chunk": "410a1f",
+    "observed_at_utc": "2026-10-18T10:56:09Z"
+  },
+  "source_baseline_commit": "8aa5458facca8995d5a373b39b58c35176110f19",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031628,
+      "sha256": "26aba1bfba9b2adcddbebec82e59e180a875d09a061ec8a9951846efa1620123"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_forecast_history_factory_v1.py",
+      "bytes": 7407,
+      "sha256": "047e119d0fd2cd9607baf36f81406c7fd64b29beb3939c6c6b4950c5610bffd5"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 52997,
+      "sha256": "e0691101b004a3b4a57f5e9111cf41514556e9bcd709f7c953ca2d84000474ea"
+    },
+    {
+      "path": "docs/ck3-native-ai/forecast-history-expansion-on-demand-2026-10-18.md",
+      "bytes": 1781,
+      "sha256": "d2e39052c0e56d8e5bb5c593932c716be095ace7b3e00abc1b248001448a33ad"
+    }
+  ],
+  "scope": "Two ordinary forecast ingress calls only; delay their complete expansion until first history read. Existing list callers unchanged.",
+  "preserved": [
+    "separate complete lists",
+    "AUTO rows and restore rows",
+    "native query frame checks",
+    "missing or stale query retry",
+    "model risk rejection",
+    "active combat refusal",
+    "strategy priorities",
+    "query frequency",
+    "model operands and precision",
+    "Native guards"
+  ],
+  "structural_credit": {
+    "new_cases": 19,
+    "early_guard_factory_calls": 0,
+    "applicable_factory_calls": 1,
+    "ordinary_nonmove_remaining_other_review_expansions": 2
+  },
+  "tests": {
+    "runner": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\perf-sdk06-ownerresponse01\\qualify_forecast_history_factory_low_priority.py",
+    "priority_readback": "BELOW_NORMAL(0x4000)",
+    "stdout": "54 passed, 14 subtests passed in 17.55s",
+    "exit_code": 0,
+    "tool_chunk": "7605e6",
+    "observed_at_utc": "2026-10-18T11:36:59Z",
+    "synthetic_only": true
+  },
+  "performance_credit": "Unused Python materialization eliminated; actual wall and CPU savings unknown.",
+  "runtime_operations": 0,
+  "frozen_runtime_or_encoder_sources_modified": false,
+  "forbidden_input_reads_or_stats": {
+    "Driver": 0,
+    "SAVE": 0,
+    "media": 0,
+    "indexes": 0
+  }
+}

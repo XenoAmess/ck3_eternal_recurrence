@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 import json
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 from .ordinary_prewar_force_admission_v2 import (
     PREWAR_FORCE_COALITION_V2_CAPABILITY,
@@ -7926,10 +7926,11 @@ def choose_one_life_turn(
     ordinary_siege_baseline = plan
     plan = _primary_defender_siege_forecast_ingress(
         plan,
-        commands=_expanded_command_rows(commands),
+        commands=commands,
         snapshot=snapshot,
         action_steps=set(steps),
         bridge_capabilities=set(capabilities),
+        command_rows_factory=lambda: _expanded_command_rows(commands),
     )
     if plan.get("phase") in {
         "native_war_siege_forecast_inputs_query",
@@ -7955,10 +7956,11 @@ def choose_one_life_turn(
         )
     plan = _general_battle_forecast_ingress(
         plan,
-        commands=_expanded_command_rows(commands),
+        commands=commands,
         snapshot=snapshot,
         action_steps=set(steps),
         bridge_capabilities=set(capabilities),
+        command_rows_factory=lambda: _expanded_command_rows(commands),
     )
     from .war_route_origin_exposure_v1 import review_war_route_origin_exposure_v1
 
@@ -17434,6 +17436,7 @@ def _general_battle_forecast_ingress(
     snapshot: dict[str, object] | None,
     action_steps: set[str],
     bridge_capabilities: set[str],
+    command_rows_factory: Callable[[], list[dict[str, object]]] | None = None,
 ) -> dict[str, object]:
     """Review any proposed army move into an observed hostile-held province.
 
@@ -17584,6 +17587,8 @@ def _general_battle_forecast_ingress(
             **details,
         }
 
+    if command_rows_factory is not None:
+        commands = command_rows_factory()
     preview_step = preview_move_army_step(army_id, target)
     preview = _fresh_move_route_preview(
         commands, army_id=army_id, origin_province_id=origin,
@@ -18055,6 +18060,7 @@ def _primary_defender_siege_forecast_ingress(
     snapshot: dict[str, object] | None,
     action_steps: set[str],
     bridge_capabilities: set[str],
+    command_rows_factory: Callable[[], list[dict[str, object]]] | None = None,
 ) -> dict[str, object]:
     """Read a siege encounter and admit a bounded provisional defense trial."""
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
@@ -18081,6 +18087,8 @@ def _primary_defender_siege_forecast_ingress(
     )
     if len(controlled) != 1:
         return baseline
+    if command_rows_factory is not None:
+        commands = command_rows_factory()
     candidate = _primary_defender_siege_relief_assessment(
         snapshot,
         commands=commands,
