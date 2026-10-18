@@ -6,13 +6,15 @@
 
 Faith 窗口原 GUI 第 1320/1364/1379 行均为 `OpenGameViewData('rite_creation', FaithWindow.GetSelectedRite)`。来源文件 SHA 为 `67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521`。`AEB0F0` 复制 FaithWindow+258 的完整 Rite ID；反射 `14C7F10` 以 storage `5D1E2F8` 检查 generation，返回实际 Rite 对象。
 
-打开仍有真实 UI gate：祖先 actions 第1307行要求 GetPlayer.IsValid 且 Rite.IsVisibleInGui；edit_rite 第1315行要求 FaithWindow.CanEditRite；create_rite 第1358行要求 CanCreateRite 且不满足 puppet_create_rite/faith 两 trigger；create_rite_puppet 第1373行取同 CanCreateRite 且满足 puppet trigger。三个按钮还必须实际 effective visible/enabled。原 opening bool(this) 分别为 `14C5B40`（selected Rite founder==当前 actor）、`14C5B90`（当前 Rite Faith==FaithWindow+E8，且 founder!=当前 actor）；这些不能用窗口内提交 fullCan 替代。typed open 的 expectmode 只能读回断言，不能强制切模式或绕过按钮 gate。
+打开仍有真实 UI gate：祖先 actions 第1307行要求 GetPlayer.IsValid 且 Rite.IsVisibleInGui；edit_rite 第1315行要求 FaithWindow.CanEditRite；create_rite 第1358行要求 CanCreateRite 且不满足 puppet_create_rite/faith 两 trigger；create_rite_puppet 第1373行取同 CanCreateRite 且满足 puppet trigger。三个按钮还必须实际 effective visible/enabled。原 opening bool(this) 分别为 `14C5B40`（selected Rite head==当前 actor）、`14C5B90`（当前 Rite Faith==FaithWindow+E8，且 head!=当前 actor）；这些不能用窗口内提交 fullCan 替代。typed open 的 expectmode 只能读回断言，不能强制切模式或绕过按钮 gate。
 
 可由封闭 enum 包装既有 `AF39E0(handler, 0x3C, &Any)`。Any 为 40B：首 QWORD 是 `B19A70()` 返回的 metadata singleton `54D70E0`，其 firstQ 必须是 `base+44B9360`；其后 32B 清零并在首 DWORD 写入完整 Rite ID。COL `4A58588`、TD `5691FA0` 证明它是 `SCopyableAnyTypeInPlace<TPdxRef<CRite>,32>`，不是原始指针 Any。metadata+18 析构 `8522C0` 无操作，copy `8771F0` 只拷 DWORD，data getter `876E00` 返回内联 payload，原路径不会持有 caller 栈对象。
 
 window primary VT `4565C40` 的 +90 是 `14F3400` SetData。该函数构造 `SRefVisitor<CRite>`；其 RTTI TD `57A5898` 包含 `CPdxAnyTypedVisitor<TPdxRef<CRite>>` 基类（TD `5513290`，偏移 8），该基类 VT `4565B70` 的 +8 是 `8747E0`：读取 payload DWORD 写入 visitor+18。metadata+50 `B1AAE0` 正是向该基类进行原版 dynamic_cast 并调用 +8。SetData 随后核 storage row/fullID+8/magic+C=`52697465`，写 window+C8 为完整来源 Rite ID、window+CC 为实际 current actor `[54DBC00]`，初始化原草稿并显示窗口。窗口 secondary VT 为 `4565C18`，handler 槽 +278，primary+90/+98 对应 SetData/MatchesData。实现继续沿既有 window owner/backlink/UI root/visible/revision 守卫，不开放 caller 指针、任意 view 字符串或 RVA。
 
-`14F43E0` 的编辑模式判断还要求当前人物实际 Rite 等于 window+C8 且 Rite+4C0 founder 等于该人物。不能仅按请求文字认定这是编辑模式。应读回实际 actor/source/mode/visible，再暴露草稿编辑能力。
+`14F43E0` 的编辑模式判断还要求当前人物实际 Rite 等于 window+C8 且 Rite+4C0 head 等于该人物。不能仅按请求文字认定这是编辑模式。应读回实际 actor/source/mode/visible，再暴露草稿编辑能力。
+
+2026-10-18 勘误：上述 opening predicate 与编辑模式说明曾将 +4C0 误称为 founder，现更正为 head（礼仪领袖）；founder 在 +4BC。字段依据 religion_reform12002_rite.hpp:13–14，原 14F43E0 完整体读取 +4C0。此处只纠正文档身份，不改变原版许可，也不将 edit_rite 解释为创建新 Faith；后继 R20 正式记录待冷场补链。
 
 ## 合法性、准备与确认
 

@@ -21880,6 +21880,26 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": starting.get("native_revision"),
         }
 
+    def surrender_war_explicit_v1(
+        self, war_id: int, *, expected_revision: int | None = None,
+    ) -> dict[str, object]:
+        """Normal explicit MCP request, separate from automatic action_steps."""
+        step = surrender_war_step(war_id)
+        starting = self.take_snapshot()
+        hello = starting.get("diagnostics", {}).get("hello", {})
+        build = require_exact_native_build(
+            hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+        if build.game_version != "1.20.0.4":
+            return self.execute_step(step, expected_revision=expected_revision)
+        revision = starting["revision"] if expected_revision is None else expected_revision
+        # Native campaign snapshots omit policy caches; project the actual
+        # same-frame native query through the existing strict cache binder.
+        starting["war_termination_options"] = self._war_termination_cache_for_snapshot(
+            starting, episode_run_id=starting.get("episode_run_id"))
+        return self._execute_war_termination_step(step, starting=starting,
+            selected_revision=revision, query_war_id=None, surrender_war_id=war_id,
+            white_peace_war_id=None, explicit_surrender=True)
+
     def _execute_war_termination_step(
         self,
         step: str,
@@ -21889,6 +21909,7 @@ class NativeHeadlessGameplayDriver:
         query_war_id: int | None,
         surrender_war_id: int | None,
         white_peace_war_id: int | None,
+        explicit_surrender: bool = False,
     ) -> dict[str, object]:
         """Execute one query or query-proven termination submission."""
         if starting.get("paused") is not True:
@@ -22096,12 +22117,19 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     "native emergency surrender lacks exact raw capabilities"
                 )
-            ready, reason, evidence = _emergency_surrender_readiness(
-                starting, war_id
+            from .explicit_war_surrender_v1 import (
+                explicit_surrender_evidence, reject_existing_explicit_surrender,
+                reserve_explicit_surrender,
             )
+            reject_existing_explicit_surrender(self, starting, war_id)
+            if explicit_surrender:
+                evidence = explicit_surrender_evidence(starting, war_id, selected_revision)
+                ready, reason = True, "explicit_native_option_available"
+            else:
+                ready, reason, evidence = _emergency_surrender_readiness(starting, war_id)
             war31_one_shot = False
             if (
-                not ready
+                not explicit_surrender and not ready
                 and step == WAR31_ONE_SHOT_SURRENDER_STEP
                 and self._war31_one_shot_surrender_gate is not None
             ):
@@ -22139,12 +22167,18 @@ class NativeHeadlessGameplayDriver:
                     raise BridgeUnavailableError(
                         f"WAR31 one-shot surrender reservation failed: {error}"
                     ) from error
+            explicit_once = (reserve_explicit_surrender(self, starting, evidence)
+                if explicit_surrender else None)
             result = self._execute_primitive_step(
                 step,
                 expected_revision=selected_revision,
                 required_capability=(
-                    SURRENDER_WAR_CAPABILITY if war31_one_shot else None
+                    SURRENDER_WAR_CAPABILITY if war31_one_shot or explicit_surrender else None
                 ),
+                **({"protocol_request_id": explicit_once["request_id"],
+                    "protocol_packet_evidence_path": Path(explicit_once["packet_path"]),
+                    "protocol_result_evidence_path": Path(explicit_once["native_result_path"])}
+                    if explicit_once is not None else {}),
             )
             if (
                 set(result) != {"step", "accepted", "status", "backend_id"}
@@ -22201,10 +22235,11 @@ class NativeHeadlessGameplayDriver:
                         else "submitted_pending"
                     ),
                     "war_id": war_id,
-                    "outcome": (
-                        "attacker_victory"
-                        if war31_one_shot else "attacker_defeat"
-                    ),
+                    "outcome": (surrender["outcome"] if explicit_surrender else (
+                        "attacker_victory" if war31_one_shot else "attacker_defeat")),
+                    **({"explicit_player_request": True, "once_authorization": explicit_once,
+                        "native_option": copy.deepcopy(surrender), "automatic_retry": False}
+                        if explicit_surrender else {}),
                     **(
                         {"one_shot_authorization": reservation}
                         if reservation is not None else {}
@@ -34596,7 +34631,7 @@ def _emergency_surrender_submission(
         if (
             isinstance(action, dict)
             and action.get("war_id") == war_id
-            and action.get("outcome") == "attacker_defeat"
+            and action.get("outcome") in {"attacker_defeat", "attacker_victory"}
             and action.get("episode_run_id") == episode_run_id
             and action.get("status") in {"submitted_pending", "applied"}
         ):

@@ -17714,14 +17714,13 @@ class GameplayBridgeService:
         *,
         expected_revision: int | None = None,
     ) -> dict[str, object]:
-        """Submit a query-proven surrender; never infer it from war score."""
+        """Explicit player request; automatic planner still uses execute_step."""
         step = surrender_war_step(war_id)
-        return {
-            **self._execute_typed_war_step(
-                step, expected_revision=expected_revision
-            ),
-            "war_id": war_id,
-        }
+        explicit = getattr(self.driver, "surrender_war_explicit_v1", None)
+        result = (explicit(war_id, expected_revision=expected_revision)
+            if callable(explicit) else self._execute_typed_war_step(
+                step, expected_revision=expected_revision))
+        return {**result, "war_id": war_id}
 
     def offer_white_peace(
         self,
