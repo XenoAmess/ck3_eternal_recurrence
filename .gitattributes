@@ -835,3 +835,14 @@ docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-de
 /docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/route-24AAD80.actual.bin -text whitespace=cr-at-eol
 /docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/source-contract.json -text whitespace=cr-at-eol
 /docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/verify_source.py -text whitespace=cr-at-eol
+
+# R05 corrected initialize/observe exact original evidence
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/COPYPLAN.corrected-a03.original.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/FINAL-CLOSURE.corrected-a03.original.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/ROOT-DELIVERY.corrected-a03.original.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/candidate-source.corrected-a03.zip -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.actual.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stderr.log -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stdout.log -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/source-index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/verify_bundle_or_single_smoke_a03.py -text whitespace=cr-at-eol

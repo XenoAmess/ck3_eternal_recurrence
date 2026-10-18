@@ -1,0 +1,30 @@
+{
+  "schema": "xar.r05-observe-corrected-final-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:46:17.961281+00:00",
+  "final_delivery": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\ROOT-DELIVERY.actual-a03.json",
+    "bytes": 4818,
+    "sha256": "949617ab74b5b4a6fdfc454487f6d140d528fa9f600e0a4152e54f1c49b5cbb2"
+  },
+  "portable_verifier": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\verify_bundle_or_single_smoke_a03.py",
+    "bytes": 4723,
+    "sha256": "4e641253915d4db931b89b978c65993454930bf4f45f8063a0b41ab6c9d6d461"
+  },
+  "verifier_exit_code": 0,
+  "verifier_actual_stdout": "{\"schema\": \"xar.r05-observe-portable-verifier.v1\", \"status\": \"PASSED\", \"file_count\": 11, \"bundle_machine_id\": \"desktop-3fevhd2-1c74096080\", \"target_machine_runtime_qualified\": false, \"SDK_calls\": 0, \"target_state_verified\": null, \"single_smoke_run\": false}\r\n",
+  "verifier_actual_stderr": "",
+  "a02_preserved_superseded_delivery": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\ROOT-DELIVERY.actual-a02.json",
+    "bytes": 4692,
+    "sha256": "1dfbf942dc8f7e650a213c331ff18433e3c11e69415737e3a61a3efda17fe872"
+  },
+  "correction": "fresh actual OFF/clear query mandatory even before enable; foreign enabled family remains untouched; unknown disable only readback",
+  "final_focused_tests": 13,
+  "R05_live_pass": false,
+  "original_D8MiB_total_current_bytes": 1350168,
+  "original_D8MiB_cap": 8388608,
+  "C_new_written_bytes": 0,
+  "main_mutation": false
+}

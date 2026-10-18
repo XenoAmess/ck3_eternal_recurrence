@@ -221,7 +221,8 @@ def require_capabilities(payload):
     missing = sorted(REQUIRED_CAPABILITIES - set(capabilities))
     require(not missing, "actual native capabilities missing: " + ",".join(missing))
 
-def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province_id):
+def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province_id,
+                   minimum_physical_current=20):
     """Consume current production DTOs, with independent public/native revisions."""
     from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
     from .army_fixed_chunk0_preparation_contract import normalize_fixed_chunk0_preparation_inputs_v1
@@ -282,7 +283,9 @@ def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province
             require(key not in physical or physical[key] == value, "conflicting physical DATA aliases")
             physical[key] = value;persistent_ids.add(key[0])
             aliases.append([regiment["army_regiment_id"],data["record_index"],*key])
-    require(physical and sum(v[0] for v in physical.values()) >= 20, "too few physical soldiers")
+    integer(minimum_physical_current, "minimum_physical_current")
+    require(physical and sum(v[0] for v in physical.values()) >= minimum_physical_current,
+            "too few physical soldiers for this stage")
     fixed = normalize_fixed_chunk0_preparation_inputs_v1(army.get("fixed_chunk0_preparation_inputs_v1"),
         expected_army_id=army_id, expected_carmy_id=carmy_id)
     require(fixed is not None and fixed["ready"] and fixed["referenced_persistent_ids_complete"], "current persistent classification unavailable")

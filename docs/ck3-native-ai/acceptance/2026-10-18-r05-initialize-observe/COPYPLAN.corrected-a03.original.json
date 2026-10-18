@@ -1,0 +1,101 @@
+{
+  "schema": "xar.relative-exact-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:45:47.739624+00:00",
+  "canonical_a01_required": "0fbc2909b1a48aded8804790bd73c2a22547361d",
+  "frozen_local_source_base": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "files": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_low_supply_fixture.py",
+      "bytes": 20245,
+      "sha256": "545418cfee8b8ebaaabd8dee58bd24744ae92005f42471f71ad43186a05e3df6",
+      "expected_original": {
+        "status": "present",
+        "bytes": 20082,
+        "sha256": "4f13958893a56eacd2faee3a0227fd6a090cb8c6c816c5f95455ce5087003686"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_supply_observation_case.py",
+      "bytes": 37286,
+      "sha256": "b8cc55f0befc3ace7fb12e2d776f85d37f5a1a2e3bdaaa9917fffcf29ed9161e",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.actual.json",
+      "bytes": 1551,
+      "sha256": "178090f993bf3c8a7d75fec08b1c8cfba6fdd218f26b17d16c25cc892e275efc",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stderr.log",
+      "bytes": 1989,
+      "sha256": "ea73ecaadac623e88769c7ee2cb16ce915cdc9b4c44a729cfedd909c5341397e",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/source-index.json",
+      "bytes": 43872,
+      "sha256": "bc28e3fc5d9f2d44f965d388188895a1942d16fe6250d6897fb6252018907093",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/episode04-r05-initialize-and-observe-12004.md",
+      "bytes": 9523,
+      "sha256": "be2e9cf92ebd3f79a2f2f3c8b90fb969a7de06fb0144cd197e23dac6ed65e14b",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r05_initialize_observe.json",
+      "bytes": 462,
+      "sha256": "975b232070ad852c2df4bd7b055bddaa37fa38d3fe6070153ba29e121d5a9bf0",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r05_initialize_observe_adapter.py",
+      "bytes": 6312,
+      "sha256": "0e2cbe4678e55c22f7117c26984d75730ecbb28cd10d76b9203a13ce67f5fd6e",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_r05_observe_products.json",
+      "bytes": 1803,
+      "sha256": "263dc4cbf97a97d362494d205922cf2a5b5281129d9db8cddcb9590f98333ebe",
+      "expected_original": {
+        "status": "absent"
+      }
+    },
+    {
+      "relative_path": "tools/test_r05_supply_observation_case.py",
+      "bytes": 26351,
+      "sha256": "3f06b655377aba572a4e30138cf3163db3f8ce11e62a27984d6f77ce9225a2ae",
+      "expected_original": {
+        "status": "absent"
+      }
+    }
+  ],
+  "no_source_or_native_runtime_rebinding": true,
+  "a01_original_22_reverified": true
+}

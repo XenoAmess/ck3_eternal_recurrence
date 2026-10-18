@@ -1,0 +1,282 @@
+{
+  "schema": "xar.r05-initialize-observe-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:45:47.739624+00:00",
+  "source_base": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "requires_a01_canonical_commit": "0fbc2909b1a48aded8804790bd73c2a22547361d",
+  "a01_exact22_unchanged": true,
+  "a01_delivery": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\ROOT-DELIVERY.actual-a01.json",
+    "bytes": 7465,
+    "sha256": "43d4cba8732a2a9217126a23f4e721a836ffbd92ec026182da7666e3349d33bc"
+  },
+  "a35_cache": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a35\\CMakeCache.txt",
+    "bytes": 43791,
+    "sha256": "85c71cc98f2eb4924d185bb0ef6b9209f1b941c577d8ee7a6e8c230376e7a941"
+  },
+  "actual_a35_source_flags": {
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "OFF",
+    "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": "ON",
+    "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": "ON",
+    "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": "ON"
+  },
+  "runtime_capabilities_not_reobserved": true,
+  "a36_built_or_qualified": false,
+  "live_R05_qualified": false,
+  "source_spans": [
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "ca463923dc3ef5d4d2ec7828f0ea411cd901d7d2",
+      "whole_source_sha256": "718ee71ab48641c1d689b017b832e1983f37fd1d555c5918a0bedf6c7232103a",
+      "start_line": 635,
+      "end_line": 650,
+      "meaning": "public verify joins actual normal close",
+      "excerpt_sha256": "2fdaa7a421d1d1977184410493b4bf9c0a22dd6e7756a0c82180704970720d6c",
+      "text": "    def verify(self):\n        if not self.context:raise ValueError('Verify requires one actual allocated run context')\n        from ck3_mod_acceptance_client import resolve_operator_reviewer\n        context=self.adapter_context()\n        context['operator_reviewer']=resolve_operator_reviewer(self)\n        result=self.load_adapter().verify_case(context)\n        closed_path=Path(context['output'])/'normal-close-result.json'\n        close=read_json(closed_path) if closed_path.is_file() else None\n        result.update(normal_close=close)\n        result['case_acceptance_pass']=bool(result.get('case_contract_qualified') is True and\n            result.get('gui_contract_qualified') is True and close and close.get('normal_close_qualified') is True)\n        # A case boundary or one core cell cannot certify the whole product.\n        # Preserve the adapter's explicit business applicability and credit.\n        result['qualified_boundary_pass']=result['case_acceptance_pass']\n        result['business_pass']=bool(result.get('business_pass') is True and\n                                    result.get('business_contract_applicable',True) is True and result['case_acceptance_pass'])\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "ca463923dc3ef5d4d2ec7828f0ea411cd901d7d2",
+      "whole_source_sha256": "718ee71ab48641c1d689b017b832e1983f37fd1d555c5918a0bedf6c7232103a",
+      "start_line": 681,
+      "end_line": 704,
+      "meaning": "one common client and normal close finally",
+      "excerpt_sha256": "b2912ca8ab1dd0cdb6e8047fda0e9a204f240272118e765f385a4b8a25084e82",
+      "text": "            from ck3_mod_acceptance_client import CaseClient,write_once\n            client=CaseClient(self)\n            adapter=self.load_adapter()\n            context=self.adapter_context(client.output)\n            failure=None\n            try:\n                client.wait_hold()\n                result['case_result']=adapter.run_case(context,client)\n            except BaseException as error:\n                failure=type(error).__name__+': '+str(error)\n                write_once(client.output/'case-error-preserved.json',{'error':failure,'run_id':self.context['run_id'],\n                    'business_pass':False,'submitted_steps_never_replayed':True})\n                result['case_error']=failure\n            finally:\n                try:\n                    if client._handle is not None or client.retain_held_process(wait=True):\n                        result['normal_close']=client.normal_close('business_failure_preserved' if failure else 'actual_case_evidence_recorded')\n                except BaseException as error:\n                    result['normal_close_error']=type(error).__name__+': '+str(error)\n                    write_once(client.output/'normal-close-error-preserved.json',{'error':result['normal_close_error'],'business_pass':False})\n                client.close_handle()\n            result['business_acceptance']='RED_OR_INCOMPLETE' if failure else 'ACTUAL_EVIDENCE_REQUIRES_VERIFICATION'\n            write_once(client.output/'entry-run-result.json',result)\n        return result\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "f1944903ec20a7332ad7bf77c2ac069fc2614ed8",
+      "whole_source_sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e",
+      "start_line": 373,
+      "end_line": 394,
+      "meaning": "original once-only public control queue",
+      "excerpt_sha256": "55472d57c4302fd9b77d7098b75eaac6a87d75da46012342281c0563f2fd0798",
+      "text": "    def execute_plan(self, steps, name, timeout=None, reserve=90):\n        require(reserve == 90 or reserve == 0 and len(steps) == 1 and steps[0].get('kind') == 'finish_hold',\n                'Only proved native0 lifecycle completion can use the original Quit reserve')\n        failure_shutdown = len(steps) == 1 and steps[0].get('failure_shutdown') is True\n        require(not failure_shutdown or reserve == 0, 'Failure shutdown uses only the original lifecycle reserve')\n        if reserve == 0:\n            report = self.read_report(allow_error=failure_shutdown)\n            proof = self.native_failure_shutdown_proof(report) if failure_shutdown else self.native_zero_proof(report)\n            require(proof is not None, 'Original complete native0 lifecycle predicate did not admit finish_hold')\n        report = self.guard(reserve, failure_shutdown=failure_shutdown)\n        require(all(row.get('finished_at') for row in report.get('steps', [])), 'Existing controls still in flight')\n        require(isinstance(steps, list) and steps, 'Nonempty original plan required')\n        require(Path(name).name == name, 'Control name must be a basename')\n        ids = [step['id'] for step in steps]\n        require(len(ids) == len(set(ids)) and not set(ids) & {row.get('id') for row in report.get('steps', [])},\n                'Original control IDs already consumed; never replay')\n        path = self.output / 'plans' / (name + '.json')\n        write_once(path, {'steps': steps})\n        queue_ref = self.selection.runtime['control_queue']\n        from ck3_mod_acceptance import path_at, check_pin\n        queue = path_at(queue_ref['path'], self.selection.runtime_path.parent)\n        check_pin(queue, queue_ref)\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "f1944903ec20a7332ad7bf77c2ac069fc2614ed8",
+      "whole_source_sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e",
+      "start_line": 439,
+      "end_line": 470,
+      "meaning": "actual full row and production frame validation",
+      "excerpt_sha256": "980323ce3dab498c9be9099f420028dcaadd51bd2cfe761876ad77d91cb3c4b8",
+      "text": "        write_once(self.output / (name + '.queue-result.json'), {'argv': argv, 'exit_code': returncode,\n                   'execution_mode': execution_mode, 'argv_executed': bool(legacy_reasons),\n                   'legacy_reasons': legacy_reasons})\n        require(returncode == 0, 'Original once-only queue failed; inspect without replay')\n        rows = self.await_steps(steps, timeout, reserve)\n        write_once(self.output / (name + '.actual-results.json'), {'rows': rows, 'business_PASS_inferred': False})\n        return rows\n\n    def validate_frame(self, frame, allow_actor_change=False, require_event_free=True, require_paused=True):\n        require(isinstance(frame, dict), 'Actual full native snapshot required')\n        for key, expected in {'source':'injected-dll-named-pipe', 'backend_id':'native-headless',\n                              'map_ready':True,\n                              'episode_projection':'native_campaign'}.items():\n            require(frame.get(key) == expected and (expected is not True or frame.get(key) is True),\n                    'Actual full snapshot guard failed: ' + key)\n        require(not require_paused or frame.get('paused') is True, 'Actual full paused snapshot required')\n        require(not require_event_free or frame.get('active_event') is None, 'Actual event boundary requires the original case branch')\n        actor = frame['played_character']; diagnostics = frame['diagnostics']; hello = diagnostics['hello']\n        require(actor.get('alive') is True and actor.get('source') == 'native', 'Actual native actor must be alive')\n        binding = (diagnostics['bridge_pid'], diagnostics['connection_generation'], actor['character_id'])\n        require(all(type(value) is int and value > 0 for value in binding), 'Actual native identity missing')\n        game = self.manifest['game']\n        require(hello.get('expected_ck3_version') == game['version'] and\n                str(hello.get('expected_ck3_sha256', '')).lower() == game['exe_sha256'].lower() and\n                hello.get('ck3_build_match') is True, 'Actual native snapshot differs from shared exact build')\n        require(hello.get('pid') == binding[0] and hello.get('connection_generation') == binding[1], 'Actual hello owner differs')\n        if self._binding is not None:\n            require(binding[:2] == self._binding[:2] and (allow_actor_change or binding[2] == self._binding[2]),\n                    'Actual native owner/actor changed')\n        self._binding = binding\n        return frame\n\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "87caaa74ffea40094c35718d8ad0a3e52364ad6b",
+      "whole_source_sha256": "927fdbb94ae5c07a14f4039595c865af3b28eac0ecdb0fb629ead9b38016b5ae",
+      "start_line": 41,
+      "end_line": 91,
+      "meaning": "strict enable/query/disable state receipt",
+      "excerpt_sha256": "c12f620b1982c1d338bd603da08e5833d2a2109d12fd23bd34dc74a1df39d954",
+      "text": "def normalize_result(payload: object, *, expected_step: str,\n                      observer_family: str, allow_scoped_enable_refusal: bool = False) -> dict[str, object]:\n    \"\"\"Check the actual native control receipt without manufacturing a sample.\"\"\"\n    selected = selected_families(observer_family)\n    require(type(expected_step) is str and expected_step in _STEPS, \"unknown Army observer sampling step\")\n    require(type(payload) is dict and set(payload) == {\n        \"step\", \"accepted\", \"status\", STATE_KEY, \"backend_id\",\n    }, \"malformed Army observer sampling envelope\")\n    require(payload[\"step\"] == expected_step and payload[\"backend_id\"] == \"native-headless\" and\n            type(payload[\"accepted\"]) is bool and type(payload[\"status\"]) is str and\n            payload[\"status\"] in {\"completed\", \"incomplete\"},\n            \"malformed Army observer sampling status\")\n    rows = payload[STATE_KEY]\n    require(type(rows) is dict and set(rows) == set(selected), \"selected Army observer families differ\")\n    output = {}\n    all_satisfied = True\n    for family in selected:\n        row = rows[family]\n        require(type(row) is dict and set(row) == _ROW_KEYS, \"malformed Army observer family row\")\n        for key in (\"installed\", \"available\", \"capture_enabled\", \"busy\", \"clear_completed\"):\n            require(type(row[key]) is bool, \"Army observer \" + key + \" must be boolean\")\n        for key in (\"epoch\", \"active_captures\", \"retained_records\", \"qualified_records\"):\n            require(type(row[key]) is int and 0 <= row[key] <= 2**64 - 1,\n                    \"Army observer \" + key + \" must be uint64\")\n        require(row[\"qualified_records\"] <= row[\"retained_records\"], \"qualified Army observations exceed retained\")\n        require(row[\"busy\"] is (row[\"active_captures\"] > 0), \"Army observer busy contradicts active captures\")\n        require(not row[\"clear_completed\"] or (\n            not row[\"capture_enabled\"] and not row[\"busy\"] and row[\"retained_records\"] == 0\n        ), \"Army observer clear_completed contradicts retained state\")\n        available = row[\"installed\"] and row[\"available\"]\n        status = (\"unavailable\" if not available else \"enabled\" if row[\"capture_enabled\"] else\n                  \"busy\" if row[\"busy\"] else \"disabled\" if row[\"clear_completed\"] else \"clear_pending\")\n        readiness = (\"unavailable\" if not available else \"off\" if not row[\"capture_enabled\"] else\n                     \"inflight\" if row[\"busy\"] else \"awaiting_sample\" if row[\"qualified_records\"] == 0 else\n                     \"retained_observation\")\n        require(type(row[\"status\"]) is str and row[\"status\"] == status, \"Army observer row status contradicts state\")\n        require(type(row[\"readiness\"]) is str and row[\"readiness\"] == readiness,\n                \"Army observer readiness contradicts actual retained state\")\n        if expected_step == ENABLE_STEP:\n            all_satisfied = all_satisfied and available and row[\"capture_enabled\"]\n        elif expected_step == DISABLE_STEP:\n            all_satisfied = all_satisfied and available and not row[\"capture_enabled\"] and not row[\"busy\"] and row[\"clear_completed\"]\n        # A legal query is accepted even if a selected observer is unavailable.\n        output[family] = dict(row)\n    refused_scope = (allow_scoped_enable_refusal is True and expected_step == ENABLE_STEP and\n                     observer_family == \"regular_core\" and payload[\"accepted\"] is False)\n    require(payload[\"accepted\"] is bool(all_satisfied) or refused_scope,\n            \"aggregate Army observer accepted contradicts actual states\")\n    require(payload[\"status\"] == (\"completed\" if payload[\"accepted\"] else \"incomplete\"),\n            \"aggregate Army observer status contradicts accepted\")\n    return {**payload, STATE_KEY: output}\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "87caaa74ffea40094c35718d8ad0a3e52364ad6b",
+      "whole_source_sha256": "927fdbb94ae5c07a14f4039595c865af3b28eac0ecdb0fb629ead9b38016b5ae",
+      "start_line": 147,
+      "end_line": 185,
+      "meaning": "same paused frame and set invalidation",
+      "excerpt_sha256": "e9d0ce33b81d6fc8ee14606067ddacff99267aa485fa38b9900e65c4f6f74ec9",
+      "text": "            step, expected_revision=expected_revision,\n            required_capability=ARMY_CAPABILITY,\n            request_fields=request_fields,\n            include_native_command_history=False, internal_semantic_snapshot=True,\n        )\n        try:\n            result = normalize_result(raw, expected_step=step, observer_family=observer_family,\n                                      allow_scoped_enable_refusal=scope is not None)\n        except ValueError as error:\n            raise BridgeUnavailableError(\"Malformed Army observer sampling receipt: \" + str(error)) from error\n        current = driver.take_internal_semantic_snapshot()\n        current_diagnostics = current.get(\"diagnostics\") or {}\n        current_actor = current.get(\"played_character\") or {}\n        if (not _same_paused_native_frame(starting, current) or\n                current.get(\"revision\") != starting.get(\"revision\") or\n                current.get(\"date_raw\") != starting.get(\"date_raw\") or\n                current_actor.get(\"character_id\") != actor[\"character_id\"] or\n                current_actor.get(\"alive\") is not True or current.get(\"map_ready\") is not True or\n                current_diagnostics.get(\"bridge_pid\") != diagnostics.get(\"bridge_pid\")):\n            raise BridgeUnavailableError(\"Army observer sampling crossed its paused player frame\")\n        result = {\n            **result, \"observer_family\": observer_family,\n            \"queried_snapshot_id\": starting.get(\"snapshot_id\"),\n            \"queried_revision\": starting.get(\"revision\"),\n            \"queried_native_revision\": starting.get(\"native_revision\"),\n            \"queried_date_raw\": starting.get(\"date_raw\"),\n            \"queried_connection_generation\": diagnostics.get(\"connection_generation\"),\n            \"queried_episode_run_id\": starting.get(\"episode_run_id\"),\n            \"queried_player_character_id\": actor[\"character_id\"],\n        }\n    except Exception as error:\n        driver._record_command(step, ok=False, result=None, error=f\"{type(error).__name__}: {error}\")\n        raise\n    finally:\n        if step != QUERY_STEP:\n            # A set may already have altered a gate/epoch even if its result is\n            # incomplete or lost. Do not reuse the old Army cache afterward.\n            with driver._driver_state_lock:\n                driver._army_strength_query = None\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_parent_join_summary.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "4a92a513def177c49d0e0ab57bf4ce7281033ac7",
+      "whole_source_sha256": "3e6917e6e2a1fa06d56b9184e5237d6e1c628a407fa269f30f138ea1bdd1ceb4",
+      "start_line": 42,
+      "end_line": 100,
+      "meaning": "keyed invocation and actual stock operand",
+      "excerpt_sha256": "81cdd4b1845be30512ad9d727ff4b661cbb4d8a180ae592b2b2d45c5df7a29a2",
+      "text": "    events=callbacks.get(\"events\",[])\n    index={};duplicates=set()\n    for callback in events:\n        if callback[\"sequence\"]<=callback_after_sequence:continue\n        meta=callback.get(\"supply_parent_invocation_v1\")\n        if not isinstance(meta,Mapping):continue\n        token=meta[\"invocation_token\"]\n        if token in index:duplicates.add(token)\n        index[token]=callback\n    if duplicates:why.append(\"duplicate_callback_invocation_token\")\n    debit_total=0;positive=False\n    for writer in writers.get(\"events\",[]):\n        if writer[\"sequence\"]<=loss_after_sequence:continue\n        row=dict(writer_sequence=writer[\"sequence\"],status=\"unknown\",reason=None,\n            invocation_token=None,callback_sequence=None,stock_at_writer_entry_raw=None,\n            physical_debit_soldiers=_physical_debit(writer),source_supply_preferred=False,\n            source_siege_or_raid_preferred=False,strict_below_ten=False,exact_ten=False)\n        result[\"events\"].append(row)\n        context=writer.get(\"supply_parent_context_v1\")\n        if not isinstance(context,Mapping):row[\"reason\"]=\"parent_context_absent\";continue\n        invocation=context[\"invocation\"];token=invocation[\"invocation_token\"]\n        row[\"invocation_token\"]=token\n        callback=index.get(token)\n        if callback is None or token in duplicates:row[\"reason\"]=\"unique_retained_callback_token_missing\";continue\n        row[\"callback_sequence\"]=callback[\"sequence\"]\n        if invocation!=callback[\"supply_parent_invocation_v1\"]:\n            row[\"reason\"]=\"invocation_thread_depth_route_mismatch\";continue\n        if (context[\"capture_failure_flags\"]!=0 or context[\"receiver_identity_matches\"] is not True\n                or not callback[\"same_instance_after\"] or callback[\"capture_failure_flags\"]!=0\n                or context[\"army_id\"]!=callback[\"army_id\"]\n                or context[\"native_carmy_id\"]!=callback[\"native_carmy_id\"]\n                or context[\"passed_date_raw64\"]!=callback[\"passed_date_raw64\"]\n                or context[\"army_id\"]!=army.get(\"army_id\")\n                or context[\"native_carmy_id\"]!=army.get(\"native_carmy_id\")):\n            row[\"reason\"]=\"parent_receiver_identity_or_capture_incomplete\";continue\n        stock=context[\"stock_at_writer_entry_raw\"]\n        if stock is None:row[\"reason\"]=\"stock_at_writer_entry_unavailable\";continue\n        if context[\"stock_scale\"]!=100000:\n            row[\"reason\"]=\"stock_at_writer_scale_mismatch\";continue\n        date=context[\"passed_date_raw64\"]\n        if date is None or (date & 0xFFFFFFFF)!=(writer[\"observed_date_raw\"] & 0xFFFFFFFF if type(writer[\"observed_date_raw\"]) is int else None):\n            row[\"reason\"]=\"writer_clock_and_actual_callback_date_differ\";continue\n        row.update(status=\"joined\",stock_at_writer_entry_raw=stock,\n            source_supply_preferred=(writer[\"caller_kind\"]==\"supply_preferred\" and writer[\"caller_return_rva\"]==0x24E35FF),\n            source_siege_or_raid_preferred=(writer[\"caller_kind\"]==\"siege_or_raid_preferred\" and writer[\"caller_return_rva\"]==0x24E377C),\n            strict_below_ten=0<=stock<1000000,exact_ten=stock==1000000)\n        result[\"joined_writer_count\"]+=1\n        if row[\"source_supply_preferred\"] and row[\"exact_ten\"]:\n            result[\"source_supply_writer_at_exact_ten_count\"]+=1\n        if (row[\"source_supply_preferred\"] and row[\"strict_below_ten\"]\n                and row[\"physical_debit_soldiers\"] is not None\n                and row[\"physical_debit_soldiers\"]>0):\n            positive=True;debit_total+=row[\"physical_debit_soldiers\"]\n    if positive and not why:\n        result[\"strict_below_ten_supply_physical_debit_soldiers\"]=debit_total\n    result[\"complete_selected_writer_history_joined\"]=(\n        not why and bool(result[\"events\"]) and all(e[\"status\"]==\"joined\" for e in result[\"events\"]))\n    result[\"status\"]=\"available\" if not why and result[\"events\"] and all(e[\"status\"]==\"joined\" for e in result[\"events\"]) else \"partial\"\n    return result\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_periodic_loss_component_12004.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "481dfef2d2fd43ba5f9c0ed2aa400e76564c6066",
+      "whole_source_sha256": "84edc2574a782187a4916884f0f22cdb6b9be15145282f20207f731f49e81a58",
+      "start_line": 10,
+      "end_line": 66,
+      "meaning": "periodic preferred/residual vs county classification",
+      "excerpt_sha256": "551432394f54a9b3374088d84d6fab3947c102537e6a793dac7512f389a32acc",
+      "text": "def classify_actual_loss_component_12004(writer: Mapping[str, object]) -> dict:\n    result = dict(source=\"exact_actual4_callback_and_allocator_callsites\",\n        component=\"unknown\", phase=\"unknown\", source_ready=False,\n        reason=\"unrecognized_writer_caller\", physical_loss_inferred=False)\n    pc, kind = writer.get(\"caller_return_rva\"), writer.get(\"caller_kind\")\n    direct = {\n        (0x24E35FF,\"supply_preferred\"): (\"supply\",\"preferred\"),\n        (0x24E377C,\"siege_or_raid_preferred\"): (\"siege_or_raid\",\"preferred\"),\n    }\n    if type(pc) is int and isinstance(kind,str) and (pc,kind) in direct:\n        component,phase=direct[(pc,kind)]\n        return {**result,\"component\":component,\"phase\":phase,\"source_ready\":True,\"reason\":None}\n    if pc!=0x2A958E8 or kind!=\"residual_allocator\":\n        return result\n    context=writer.get(\"residual_parent_context_v1\")\n    if not isinstance(context,Mapping):\n        return {**result,\"reason\":\"residual_parent_context_absent\"}\n    if (context.get(\"source_complete\") is not True\n            or type(context.get(\"capture_failure_flags\")) is not int\n            or context[\"capture_failure_flags\"]!=0\n            or context.get(\"parent_kind\")!=4\n            or context.get(\"allocator_entry_rva\")!=0x2A957E0\n            or context.get(\"observed_continuation_rva\")!=0x2A957E8\n            or any(context.get(key) is not True for key in (\n                \"receiver_identity_matches\",\"array_header_matches\",\"writer_full_id_in_actual_array\"))):\n        return {**result,\"reason\":\"residual_source_capture_incomplete\"}\n    outer,flags=context.get(\"allocator_caller_return_rva\"),context.get(\"flags_raw\")\n    if type(outer) is not int or type(flags) is not int:\n        return {**result,\"reason\":\"residual_callsite_or_flags_unavailable\"}\n    source=context.get(\"request_source\")\n    if source==\"county_entry\":\n        if outer==0x24E2630 and flags==0:\n            return {**result,\"component\":\"county_entry\",\"phase\":\"residual\",\n                \"source_ready\":True,\"reason\":None}\n        return {**result,\"reason\":\"county_callsite_flags_conflict\"}\n    if source!=\"periodic_callback\" or context.get(\"enclosing_parent_kind\")!=1:\n        return {**result,\"reason\":\"periodic_callback_parent_unproven\"}\n    supply=writer.get(\"supply_parent_context_v1\")\n    invocation=supply.get(\"invocation\") if isinstance(supply,Mapping) else None\n    if (not isinstance(invocation,Mapping)\n            or context.get(\"parent_invocation_token\")!=invocation.get(\"invocation_token\")\n            or context.get(\"native_thread_id\")!=invocation.get(\"native_thread_id\")\n            or context.get(\"army_id\")!=supply.get(\"army_id\")\n            or context.get(\"native_carmy_id\")!=supply.get(\"native_carmy_id\")\n            or supply.get(\"receiver_identity_matches\") is not True\n            or supply.get(\"capture_failure_flags\")!=0):\n        return {**result,\"reason\":\"residual_and_periodic_copied_identity_mismatch\"}\n    if (outer,flags)==(0x24E3638,2):\n        return {**result,\"component\":\"supply\",\"phase\":\"residual\",\"source_ready\":True,\"reason\":None}\n    if (outer,flags)==(0x24E37B3,0):\n        return {**result,\"component\":\"siege_or_raid\",\"phase\":\"residual\",\"source_ready\":True,\"reason\":None}\n    return {**result,\"reason\":\"periodic_callsite_flags_conflict\"}\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_starvation_loss_12004.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2358be2f30bc9188aef31eb2f3fe4488b24541fe",
+      "whole_source_sha256": "d7dfd110c3022ad0325f0316a61fb3f3943c1c4dcf39946bae62f0d3fbd24a0f",
+      "start_line": 49,
+      "end_line": 88,
+      "meaning": "unique physical DATA debit",
+      "excerpt_sha256": "df650955e8d77f09e8380ec43f8f9ff350942cdd686342457bd691c814b6f241",
+      "text": "def _physical_debit(event: Mapping) -> int | None:\n    \"\"\"Recompute unique owned slots; never use request or cached raised deltas.\"\"\"\n    if (event.get(\"same_instance_after\") is not True\n            or event.get(\"physical_capture_complete\") is not True\n            or event.get(\"physical_debit_observed\") is not True\n            or event.get(\"capture_failure_flags\") != 0):\n        return None\n    slots = event.get(\"physical_slots\")\n    aliases = event.get(\"data_aliases\")\n    count = event.get(\"native_data_record_count\")\n    if (not isinstance(slots, list) or not isinstance(aliases, list)\n            or type(count) is not int or count < 0\n            or event.get(\"captured_data_record_count\") != count\n            or len(aliases) != count or event.get(\"physical_slot_count\") != len(slots)):\n        return None\n    covered = set()\n    for ordinal, alias in enumerate(aliases):\n        if not isinstance(alias, Mapping) or alias.get(\"data_record_index\") != ordinal:\n            return None\n        index = alias.get(\"physical_slot_index\")\n        if (type(index) is not int or not 0 <= index < len(slots)\n                or not _integer(alias.get(\"persistent_regiment_id\"), 32)\n                or not _integer(alias.get(\"data_chunk_ordinal\"), 32)):\n            return None\n        covered.add(index)\n    if covered != set(range(len(slots))):\n        return None\n    total = 0\n    for index, slot in enumerate(slots):\n        if (not isinstance(slot, Mapping) or slot.get(\"physical_slot_index\") != index\n                or slot.get(\"same_instance_after\") is not True):\n            return None\n        before, after = slot.get(\"before\"), slot.get(\"after\")\n        if not isinstance(before, Mapping) or not isinstance(after, Mapping):\n            return None\n        for key in (\"current_soldiers\", \"maximum_soldiers\", \"state_raw\"):\n            if not _integer(before.get(key), 32) or not _integer(after.get(key), 32):\n                return None\n        total += before[\"current_soldiers\"] - after[\"current_soldiers\"]\n    return total if event.get(\"actual_physical_soldier_debit\") == total else None\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2a8e4864d67357a35306219cd3983c9a1544508d",
+      "whole_source_sha256": "d7f189f29a206c0b562ac10c05d2e46a17aaf2c67f146a5c69b99fc667526908",
+      "start_line": 30057,
+      "end_line": 30065,
+      "meaning": "natural-phase install flag",
+      "excerpt_sha256": "1d33736f1a40605215a580d55eb5cb1b52cb962a4500689266a04fd6404309b8",
+      "text": "#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)\n    xar::ck3_12004::ArmyNaturalPhaseObserverEnvironment12004 natural_33_environment{};\n    natural_33_environment.module_base = base;\n    natural_33_environment.actual_exe_sha256 = sha;\n    natural_33_environment.read = &ReadMarriageCurrentProcessMemory;\n    natural_33_environment.primary_thread_suspended_proven = true;\n    if (!xar::ck3_12004::InstallArmyNaturalPhaseObserver12004(natural_33_environment, g_army_natural_phase_observer_12004))\n      return FALSE;\n#endif\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2a8e4864d67357a35306219cd3983c9a1544508d",
+      "whole_source_sha256": "d7f189f29a206c0b562ac10c05d2e46a17aaf2c67f146a5c69b99fc667526908",
+      "start_line": 30166,
+      "end_line": 30184,
+      "meaning": "independently installed callback/writer and residual parent",
+      "excerpt_sha256": "a937f5cb7cea986e77841176b16552b7a4645ba61883207d83f9adc31e98f5f1",
+      "text": "    xar::ck3_12004::ActualLossWriterJournalInstallEnvironmentV1 loss_environment{};\n    loss_environment.bindings =\n        xar::ck3_12004::BindActualLossWriterJournalImage12004(base, sha);\n    loss_environment.bindings.game_state_slot = bindings.game_state_slot;\n    loss_environment.primary_thread_suspended_proven = true;\n    if (!xar::ck3_12004::InstallActualLossWriterJournal12004(\n            g_actual_loss_writer_journal_12004_v1, loss_environment, sha))\n      return FALSE;\n    xar::ck3_12004::ActualSupplyCallbackJournalInstallEnvironmentV1 supply_environment{};\n    supply_environment.bindings =\n        xar::ck3_12004::BindActualSupplyCallbackJournalImage12004(base, sha);\n    supply_environment.primary_thread_suspended_proven = true;\n    if (!xar::ck3_12004::InstallActualSupplyCallbackJournal12004(\n            g_actual_supply_callback_journal_12004_v1, supply_environment, sha))\n      return FALSE;\n#if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)\n    if (!xar::ck3_12004::InstallActualResidualParentHook12004(base, sha, true))\n      return FALSE;\n#endif\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "e6691ab134d42ce696484155f79e16dd992c0475",
+      "whole_source_sha256": "2e3e1e78bc46837903957700aec5555e31dac2564c144d33ec794fc94004f692",
+      "start_line": 28863,
+      "end_line": 28917,
+      "meaning": "actual arm validator",
+      "excerpt_sha256": "42e0a6908d2ecc01f8ed54131496db65156be0a53c9b650db2e53ea93254413d",
+      "text": "def _validate_tactical_daily_sentinel_arm(\n    result: dict[str, object],\n    status: dict[str, object],\n    *,\n    arm_step: str,\n    starting_date_raw: int,\n    target_date_raw: int,\n    speed: int,\n    mode: str,\n    watch_army_ids: tuple[int, ...],\n    sentinel_scope: str,\n) -> None:\n    combat_count = status.get(\"combat_count\")\n    combat_scope_valid = bool(\n        isinstance(combat_count, int)\n        and not isinstance(combat_count, bool)\n        and (\n            (sentinel_scope == \"active_battle\" and combat_count > 0)\n            or sentinel_scope == \"route_contact_window\"\n            or (\n                sentinel_scope\n                in {\"committed_route\", \"stationary_objective_hold\", \"exact_one_day\"}\n                and combat_count == 0\n            )\n        )\n    )\n    if not (\n        result.get(\"step\") == arm_step\n        and result.get(\"accepted\") is True\n        and result.get(\"status\") == \"available\"\n        and status.get(\"state\") == \"armed\"\n        and isinstance(status.get(\"generation\"), int)\n        and int(status[\"generation\"]) > 0\n        and status.get(\"starting_date_raw\") == starting_date_raw\n        and status.get(\"target_date_raw\") == target_date_raw\n        and status.get(\"last_observed_date_raw\") == starting_date_raw\n        and status.get(\"trigger_date_raw\") == 0\n        and status.get(\"speed\") == speed\n        and status.get(\"mode\") == mode\n        and status.get(\"army_count\") == len(watch_army_ids)\n        and combat_scope_valid\n        and status.get(\"completed_daily_ticks\") == 0\n        and status.get(\"intermediate_pause_count\") == 0\n        and status.get(\"trigger_flags\") == 0\n        and status.get(\"trigger_reasons\") == []\n        and status.get(\"signed_date_delta_from_target_raw\") == 0\n        and status.get(\"overshoot_days\") == -1\n        and status.get(\"pause_wrapper_called\") is False\n        and status.get(\"pause_observed\") is False\n        and status.get(\"terminal_observed\") is False\n        and status.get(\"abnormal\") is False\n    ):\n        raise BridgeUnavailableError(\n            \"native tactical sentinel arm acknowledgement is inconsistent\"\n        )\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "e6691ab134d42ce696484155f79e16dd992c0475",
+      "whole_source_sha256": "2e3e1e78bc46837903957700aec5555e31dac2564c144d33ec794fc94004f692",
+      "start_line": 28920,
+      "end_line": 29004,
+      "meaning": "actual stop validator",
+      "excerpt_sha256": "ca0d229e54148030618e3f9503a641aaaaa3b755b92db5ca7fc0ed7b53dab027",
+      "text": "def _validate_tactical_daily_sentinel_stop(\n    status: dict[str, object],\n    *,\n    arm_status: dict[str, object],\n    starting_date_raw: int,\n    target_date_raw: int,\n    ending_date_raw: int,\n    elapsed_days: int,\n    speed: int,\n    mode: str,\n    watch_army_ids: tuple[int, ...],\n) -> None:\n    trigger_reasons = status.get(\"trigger_reasons\")\n    raw_delta = ending_date_raw - starting_date_raw\n    expected_signed_delta = ending_date_raw - target_date_raw\n    if not (\n        status.get(\"state\") == \"triggered\"\n        and status.get(\"abnormal\") is False\n        and status.get(\"generation\") == arm_status.get(\"generation\")\n        and status.get(\"starting_date_raw\") == starting_date_raw\n        and status.get(\"target_date_raw\") == target_date_raw\n        and status.get(\"last_observed_date_raw\") == ending_date_raw\n        and status.get(\"trigger_date_raw\") == ending_date_raw\n        and status.get(\"speed\") == speed\n        and status.get(\"mode\") == mode\n        and status.get(\"army_count\") == len(watch_army_ids)\n        and status.get(\"combat_count\") == arm_status.get(\"combat_count\")\n        and isinstance(trigger_reasons, list)\n        and bool(trigger_reasons)\n        and status.get(\"trigger_flags\") != 0\n        and status.get(\"pause_observed\") is True\n        and status.get(\"signed_date_delta_from_target_raw\")\n        == expected_signed_delta\n        and status.get(\"overshoot_days\") == 0\n        and raw_delta > 0\n        and raw_delta % 24 == 0\n        and elapsed_days == raw_delta // 24\n        and status.get(\"completed_daily_ticks\") == elapsed_days\n    ):\n        raise BridgeUnavailableError(\n            \"native tactical sentinel stop failed its generation/date/tick \"\n            \"postcondition\"\n        )\n    deadline_reason = \"date_deadline\" in trigger_reasons\n    if deadline_reason is not (ending_date_raw == target_date_raw):\n        raise BridgeUnavailableError(\n            \"native tactical sentinel deadline reason disagrees with dates\"\n        )\n    native_pause = \"native_pause\" in trigger_reasons\n    expected_intermediate_pause_count = 1 if native_pause else 0\n    expected_pause_wrapper_called = not native_pause\n    if not (\n        status.get(\"intermediate_pause_count\")\n        == expected_intermediate_pause_count\n        and status.get(\"pause_wrapper_called\")\n        is expected_pause_wrapper_called\n    ):\n        raise BridgeUnavailableError(\n            \"native tactical sentinel pause ownership disagrees with its \"\n            \"trigger reasons\"\n        )\n\n\ndef _validate_tactical_daily_sentinel_decision_boundary(\n    status: dict[str, object],\n    *,\n    arm_status: dict[str, object],\n    starting_date_raw: int,\n    target_date_raw: int,\n    ending_date_raw: int,\n    elapsed_days: int,\n    speed: int,\n    mode: str,\n    watch_army_ids: tuple[int, ...],\n    player_decision_boundary: dict[str, object],\n    player_decision_boundary_cancel: dict[str, object] | None,\n) -> None:\n    \"\"\"Validate a real replan boundary during a daily-sentinel arm.\n\n    CK3 can materialize a blocking event before the sentinel's final daily\n    callback.  The game date then stops while the public paused bit remains\n    false.  That path requires an exact generation-bound cancel proven by an\n    idle status.  When the event and the native deadline land on the same\n    daily callback, the ordinary native stop is already complete and must be\n    retained without attempting to cancel it.  A fresh paused active-war-set\n"
+    }
+  ],
+  "source_dependencies": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_callback_observations_contract.py",
+      "bytes": 5637,
+      "sha256": "ce5d436e91683852af266188bfd0404b62458ade5ee6b886a2bacde17db01a0c"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_loss_writer_observations_contract.py",
+      "bytes": 9585,
+      "sha256": "65efbdc368a48933a2b0e983790fa2b62d0f13f233457f9660ab1db113e32f1c"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_callback_observation_summary.py",
+      "bytes": 4163,
+      "sha256": "86bf6cde6a79856b5dcef0ab6c35912294fb5aa9ff75944a1b15263a56feb9ae"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_parent_join_summary.py",
+      "bytes": 6464,
+      "sha256": "3e6917e6e2a1fa06d56b9184e5237d6e1c628a407fa269f30f138ea1bdd1ceb4"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_periodic_loss_component_12004.py",
+      "bytes": 3595,
+      "sha256": "84edc2574a782187a4916884f0f22cdb6b9be15145282f20207f731f49e81a58"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_starvation_loss_12004.py",
+      "bytes": 12265,
+      "sha256": "d7dfd110c3022ad0325f0316a61fb3f3943c1c4dcf39946bae62f0d3fbd24a0f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "bytes": 13969,
+      "sha256": "927fdbb94ae5c07a14f4039595c865af3b28eac0ecdb0fb629ead9b38016b5ae"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/event_window_context_contract.py",
+      "bytes": 25034,
+      "sha256": "c98985f1afe9196331e30c0f9b0cc2a7fadc9507ef6d3c2b77292bc82e619ef4"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
+      "bytes": 47873,
+      "sha256": "a0cec914987b8e430fc5660d0ec248fed9179b8c23676b4a185c177a94a58177"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1584212,
+      "sha256": "2e3e1e78bc46837903957700aec5555e31dac2564c144d33ec794fc94004f692"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1027061,
+      "sha256": "1868ea5559c8224df579b13b4c766162187074018cb09aeaa150c83f7c021c6f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/pending_interaction_fallback.py",
+      "bytes": 16036,
+      "sha256": "85b55916895942c63f478289e51cc83afe029d6e104fac6ccd8a20ce289415e7"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/policy.py",
+      "bytes": 70489,
+      "sha256": "54428b71a975440b12c51af6eac9ee57dccdeff0b228c006363a7ac80433855a"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/unhandled_fallback.py",
+      "bytes": 10037,
+      "sha256": "1d4ab851c02f9d67f0ab4abcd14955d4913168944daa0a306509199a1fa70c9a"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "bytes": 48735,
+      "sha256": "718ee71ab48641c1d689b017b832e1983f37fd1d555c5918a0bedf6c7232103a"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "bytes": 64343,
+      "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e"
+    }
+  ],
+  "frozen_PAM_replay_source": {
+    "relative_path": "docs/ck3-native-ai/evidence/episode04-pam-bull0004-r186-12004/actual-packet.json.gz",
+    "bytes": 3006,
+    "sha256": "00dfccc52f0d459bd377dad3c5e3eafa1af1e836f3728e0d68d2e56afe9a654e",
+    "source_machine_id": "desktop-3fevhd2-1c74096080",
+    "new_live_event": false
+  },
+  "existing_fixture_preflight": {
+    "decision_bytes": 836,
+    "decision_sha256": "e2454dfd4511602c75b51a30e1696ebbdd279b93e0b62177a27c80fdd28ea706",
+    "parser": "GREEN for identical decision bytes",
+    "validator": "RED15 UNKNOWN_OPCODE old1.19 profile; exact4 unsupported",
+    "localization_confirm_additions_parsed": false,
+    "new_DSL_added_by_a02": false,
+    "old_validator_repeated": false
+  },
+  "new_Python_deterministic_subset": "focused contracts with real normalizers/consumers; OpenKaiShek has no Python orchestration semantic surface",
+  "not_run": [
+    "SDK",
+    "desktop",
+    "CK3 launch",
+    "native build",
+    "EXE read/hash/execute",
+    "live initializer/supply/debit",
+    "main write"
+  ]
+}

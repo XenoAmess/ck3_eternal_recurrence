@@ -1,0 +1,8 @@
+{
+  "schema": "xar.r05-initialize-observe-common-case.v1",
+  "scope": "controlled supply initialization then same-process natural observation",
+  "maximum_actual_days": 30,
+  "positive_requires": ["complete actual periodic parent", "stock_at_writer_entry_below_10", "complete unique physical debit above 0", "original exact-day clock", "sampling OFF and clear", "normal Save", "public normal close"],
+  "updater_AL_inferred": false,
+  "new_native_hook": false
+}

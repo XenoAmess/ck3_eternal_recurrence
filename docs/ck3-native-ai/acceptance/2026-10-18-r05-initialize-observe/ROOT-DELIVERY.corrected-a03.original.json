@@ -1,0 +1,95 @@
+{
+  "schema": "xar.r05-initialize-observe-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:45:56.551585+00:00",
+  "status": "SOURCE_CONTRACT_READY_LIVE_NOT_RUN",
+  "requires_canonical_a01": "0fbc2909b1a48aded8804790bd73c2a22547361d",
+  "local_main_frozen": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "main_clean": true,
+  "copyplan": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\COPYPLAN.actual-a03.json",
+    "bytes": 3586,
+    "sha256": "c62a664c433372bd0113de49150f6cc129d96207cf3b703c28f5d169612bd0d9"
+  },
+  "patch": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\relative.patch",
+    "bytes": 133188,
+    "sha256": "1c2c4cb6b83bb0f518d8d2706ce3c76b87053a711abdf8c8c947257a4fbb7041"
+  },
+  "zip": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\R05-INITIALIZE-OBSERVE-CANDIDATE.actual-a03.zip",
+    "bytes": 49214,
+    "sha256": "f0732009dd4882b2229d3ceaf86727c1fd1936c29f9ae4066eb335d37b0d648a"
+  },
+  "focused_test_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\patch-root\\docs\\ck3-native-ai\\acceptance\\2026-10-18-r05-initialize-observe\\focused-tests.actual.json",
+    "bytes": 1551,
+    "sha256": "178090f993bf3c8a7d75fec08b1c8cfba6fdd218f26b17d16c25cc892e275efc"
+  },
+  "source_index": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\patch-root\\docs\\ck3-native-ai\\acceptance\\2026-10-18-r05-initialize-observe\\source-index.json",
+    "bytes": 43872,
+    "sha256": "bc28e3fc5d9f2d44f965d388188895a1942d16fe6250d6897fb6252018907093"
+  },
+  "apply_check": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-observe-candidate-a02\\corrected-final-a03\\APPLY-CHECK.actual-a03.json",
+    "bytes": 208,
+    "sha256": "43eb8280e490c5d583be8ff4444b6bdaa3bacfd6c01ab627ec5b48da245976cc"
+  },
+  "file_count": 11,
+  "modified_paths": [
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_low_supply_fixture.py"
+  ],
+  "added_paths": [
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_supply_observation_case.py",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.actual.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stderr.log",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stdout.log",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/source-index.json",
+    "docs/ck3-native-ai/episode04-r05-initialize-and-observe-12004.md",
+    "tools/ck3_mod_acceptance_cases/r05_initialize_observe.json",
+    "tools/ck3_mod_acceptance_cases/r05_initialize_observe_adapter.py",
+    "tools/ck3_mod_acceptance_r05_observe_products.json",
+    "tools/test_r05_supply_observation_case.py"
+  ],
+  "canonical_single_smoke": "tools/test_r05_supply_observation_case.py Contracts.test_public_adapter_continuation_and_verify_need_cleanup_and_close",
+  "focused_tests_passed": 13,
+  "old_13_matrix_repeated": false,
+  "a01_exact22_unchanged": true,
+  "actual_safety_contracts": [
+    "same public owned process",
+    "original exact-day generation validators",
+    "unknown Arm/Resume never replayed",
+    "current modal context/registry/once plus independent disappearance",
+    "actual sampler OFF clear and normal Save",
+    "public normal-close remains separately required"
+  ],
+  "live_qualification": false,
+  "R05_live_pass": false,
+  "a35_decision_flags": "OFF",
+  "a36_status": "NOT_BUILT_BY_THIS_TASK",
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "observed_at_utc": "2026-10-18T02:45:56.916533+00:00",
+    "current_volume_observation": {
+      "C:/": {
+        "total_bytes": 511133945856,
+        "free_bytes": 25259458560
+      },
+      "D:/": {
+        "total_bytes": 500090007552,
+        "free_bytes": 44783386624
+      }
+    },
+    "a02_existing_bytes_before_delivery": 416379,
+    "immutable_a01_bytes": 545439,
+    "D_original_delegated_aggregate_cap": 8388608,
+    "C_new_written_bytes": 0,
+    "aggregate_pool_and_remaining_reservations_owner": "Root; this lane does not assert full-machine capacity GREEN",
+    "retain_until_utc": "2026-10-20T05:30:00Z",
+    "retention_reason": "active candidate awaiting source integration and first controlled live attempt; review derived external copies after integration",
+    "pool_deadline_utc": "2026-10-18T05:30:00Z"
+  },
+  "no_main_mutation": true
+}

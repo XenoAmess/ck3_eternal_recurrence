@@ -1,0 +1,18 @@
+test_current_modal_capabilities_known_and_unknown_first_option (__main__.Contracts.test_current_modal_capabilities_known_and_unknown_first_option) ... ok
+test_initializer_commands_preserve_cleanup_room (__main__.Contracts.test_initializer_commands_preserve_cleanup_room) ... ok
+test_interaction_left_reject_false_argument_and_disabled_left (__main__.Contracts.test_interaction_left_reject_false_argument_and_disabled_left) ... ok
+test_known_modal_nonpaused_at_target_keeps_original_clock (__main__.Contracts.test_known_modal_nonpaused_at_target_keeps_original_clock) ... ok
+test_observation_minimum_does_not_reapply_initializer_floor (__main__.Contracts.test_observation_minimum_does_not_reapply_initializer_floor) ... ok
+test_partial_physical_and_unknown_day_never_credit (__main__.Contracts.test_partial_physical_and_unknown_day_never_credit) ... ok
+test_positive_aliases_periodic_parent_and_stock_operand (__main__.Contracts.test_positive_aliases_periodic_parent_and_stock_operand) ... ok
+test_pre_enable_failure_does_not_claim_or_disable_foreign_sampling (__main__.Contracts.test_pre_enable_failure_does_not_claim_or_disable_foreign_sampling) ... ok
+test_public_adapter_continuation_and_verify_need_cleanup_and_close (__main__.Contracts.test_public_adapter_continuation_and_verify_need_cleanup_and_close) ... ok
+test_public_control_exact_day_positive_off_clear_normal_save (__main__.Contracts.test_public_control_exact_day_positive_off_clear_normal_save) ... ok
+test_residual_periodic_supply_and_county_are_separate (__main__.Contracts.test_residual_periodic_supply_and_county_are_separate) ... ok
+test_unknown_resume_readonly_convergence_never_replays (__main__.Contracts.test_unknown_resume_readonly_convergence_never_replays) ... ok
+test_zero_stock_zero_debit_and_day_cap_are_distinct (__main__.Contracts.test_zero_stock_zero_debit_and_day_cap_are_distinct) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 4.604s
+
+OK
