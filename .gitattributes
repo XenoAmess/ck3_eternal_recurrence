@@ -858,3 +858,4 @@ docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/origin
 docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/source-index.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/summary.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/verify_portable.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-first-managed-common-runtime/INDEX.actual.json -text whitespace=cr-at-eol

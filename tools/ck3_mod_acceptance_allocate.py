@@ -1071,6 +1071,9 @@ def current_screen_absent(lease_repo,bus_dir,bus_sha,audit_dir):
 
 def validate_legacy_bootstrap(bundle,selection,binding,bus_events,bus_packet,previous_release):
     """Admit a closed legacy profile-MCP scene without calling it a shared run."""
+    if bundle.get('schema')=='ck3-mod-acceptance-first-managed-bootstrap-v2':
+        from ck3_mod_acceptance_legacy_managed_bootstrap import validate_bootstrap
+        return validate_bootstrap(bundle,selection,binding,bus_events,bus_packet,previous_release)
     require(bundle.get('schema')=='ck3-mod-acceptance-first-machine-bootstrap-v1',
             'Explicit first-machine bootstrap bundle schema required')
     require(bundle.get('machine')==binding,'Bootstrap machine/canonical ID state differs from actual OS configuration')
@@ -1169,7 +1172,7 @@ def claim_machine_admission(binding,selection,args,closure):
         if identity.exists():require(read_json(identity)==binding,'Existing machine admission identity changed')
         else:write_new(identity,binding)
         records=sorted(path for path in root.glob('[0-9]*') if path.is_dir())
-        bootstrap=closure['mode']=='first-machine-legacy-profile-mcp-closure'
+        bootstrap=closure['mode'] in ('first-machine-legacy-profile-mcp-closure','first-machine-legacy-managed-session-closure')
         if bootstrap:
             require(not records,'First-machine bootstrap is already consumed, including failed/RED attempts')
         elif records:

@@ -4,17 +4,63 @@
   "products": {
     "r05-mechanism-research": {
       "name": "R05 controlled supply and natural starvation research; no Workshop product",
-      "cases": [{
-        "id": "initialize-and-observe-supply",
-        "status": "ready",
-        "case_scope": "controlled_initialization_then_natural_periodic_physical_predicate",
-        "adapter": {"module": "tools.ck3_mod_acceptance_cases.r05_initialize_observe_adapter", "config": "tools/ck3_mod_acceptance_cases/r05_initialize_observe.json"},
-        "startup": {"mode": "saved_campaign", "state_dir": "{run_dir}/state", "saved_campaign": {"save": null,"bytes":null,"sha256":null,"player_id":null,"date_raw":null,"product_inventory":null}},
-        "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/r05_low_supply_initial.plan.json",
-        "required_mcp_tools": ["ck3_get_capabilities","ck3_take_snapshot","ck3_query_army_strengths","ck3_open_ingame_decisions_v1","ck3_select_ingame_decision_item_v1","ck3_confirm_ingame_decision_outcome_v1","ck3_execute_step","ck3_set_army_observer_research_sampling_v1","ck3_query_army_observer_research_sampling_v1","ck3_query_current_event_window_context_v1","ck3_select_event_option","ck3_query_pending_character_interaction_context_v1","ck3_reply_pending_character_interaction","ck3_acknowledge_pending_character_interaction","ck3_save_checkpoint"],
-        "budgets": {"command_timeout":null,"readiness_timeout":null,"timeout":null,"poll_interval":null,"hold_seconds":null},
-        "normal_close": {"route":"shared_managed_normal_gui_quit","requirements":["sampling OFF/clear actual readback","normal Save actual receipt","same process normal exit and keeper closure"]}
-      }]
+      "cases": [
+        {
+          "id": "initialize-and-observe-supply",
+          "status": "ready",
+          "case_scope": "controlled_initialization_then_natural_periodic_physical_predicate",
+          "adapter": {
+            "module": "tools.ck3_mod_acceptance_cases.r05_initialize_observe_adapter",
+            "config": "tools/ck3_mod_acceptance_cases/r05_initialize_observe.json"
+          },
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/r05_low_supply_initial.plan.json",
+          "required_mcp_tools": [
+            "ck3_get_capabilities",
+            "ck3_take_snapshot",
+            "ck3_query_army_strengths",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_execute_step",
+            "ck3_set_army_observer_research_sampling_v1",
+            "ck3_query_army_observer_research_sampling_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_pending_character_interaction_context_v1",
+            "ck3_reply_pending_character_interaction",
+            "ck3_acknowledge_pending_character_interaction",
+            "ck3_save_checkpoint"
+          ],
+          "budgets": {
+            "command_timeout": null,
+            "readiness_timeout": null,
+            "timeout": null,
+            "poll_interval": null,
+            "hold_seconds": null
+          },
+          "normal_close": {
+            "route": "shared_managed_normal_gui_quit",
+            "requirements": [
+              "sampling OFF/clear actual readback",
+              "normal Save actual receipt",
+              "same process normal exit and keeper closure"
+            ]
+          }
+        }
+      ],
+      "external_mod": true
     }
   }
 }

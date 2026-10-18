@@ -1,0 +1,32 @@
+{
+  "schema": "xar.legacy-managed-original-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:10:43.391881+00:00",
+  "source_scene": "actual R205 at probe time; later R206 identity invalidates this predecessor",
+  "evidence_entries": [
+    {
+      "role": "allocation_context",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\allocated-context.actual-a01.json",
+        "bytes": 4144,
+        "sha256": "1019a1b886149d661d9bafc89929bf3e8f3868016bc219504bda4ecf05521e9e"
+      }
+    },
+    {
+      "role": "bootstrap_result",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\desktop-3fevhd2-1c74096080--vanilla--R0205\\bootstrap-result.json",
+        "bytes": 14520,
+        "sha256": "35120de3751be868f02ae2ab13ee439a7eeb66dd3f280bddd58d02e2d1b7d021"
+      }
+    },
+    {
+      "role": "screen_release",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\r205-r04-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4817,
+        "sha256": "4191692a60507b52dcca1bd46678a70dcbc8bb2b25b74252a845c82669eb13b6"
+      }
+    }
+  ]
+}
