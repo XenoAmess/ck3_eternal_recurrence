@@ -4,8 +4,9 @@ import copy
 import json
 import os
 import threading
+from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 HERE = Path(__file__).resolve().parent
 from xar_autoplayer.bridge import native_driver as native
@@ -212,6 +213,42 @@ class BattleSpeedTests(unittest.TestCase):
             self.assertEqual(result['timeline_speed'], 1)
             self.assertEqual(result['timeline_policy'], 'exact_one_day_unavoidable_contact')
             self.assertEqual(result['elapsed_days'], 1)
+
+    def test_life_preparation_reuses_one_capability_view_and_keeps_native_postcondition(self):
+        for modal in (False, True):
+            with self.subTest(modal=modal):
+                driver = FakeDriver(modal=modal)
+                native_view = driver.capabilities()
+                original_view = copy.deepcopy(native_view)
+                reads = Mock(return_value=native_view)
+                driver.state = SimpleNamespace(
+                    capabilities=reads, snapshot_supported=driver.snapshot_supported,
+                    wait_for_public_change=driver.wait_for_public_change,
+                )
+                recover_lifecycles = native._native_open_assault_lifecycles
+
+                def recover(history):
+                    self.assertTrue(driver._history_lock._is_owned())
+                    return recover_lifecycles(history)
+
+                with patch.object(native, '_native_open_assault_lifecycles', side_effect=recover) as scans:
+                    result = driver._execute_life_advance(
+                        expected_revision=driver.current['revision'], exact_one_day=True,
+                        result_step='life-advance-one-day', starting_snapshot=driver.current)
+                self.assertEqual(scans.call_count, 1)
+                # One earlier result-window lease check plus one joint view;
+                # the final driver capability guard still executes separately.
+                self.assertEqual(reads.call_count, 2)
+                self.assertEqual(result['timeline_speed'], 5)
+                self.assertEqual(result['elapsed_days'], 0 if modal else 1)
+                self.assertEqual(driver.native_commands.count('resume-map'), 1)
+                self.assertEqual(native_view, original_view)
+                if modal:
+                    self.assertEqual(result['progress_status'], 'modal_interrupted')
+                    self.assertTrue(any(s.startswith(native._TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX)
+                                        for s in driver.native_commands))
+                else:
+                    self.assertEqual(result['exact_day_native_clock']['stopped']['overshoot_days'], 0)
 
     def test_real_chain_preserves_early_modal_interrupt_and_cancels_native_deadline(self):
         driver = FakeDriver(modal=True)

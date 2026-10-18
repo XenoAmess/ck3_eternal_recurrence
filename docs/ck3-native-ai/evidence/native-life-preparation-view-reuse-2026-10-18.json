@@ -1,0 +1,92 @@
+{
+  "schema": "xar.native-life-preparation-view-reuse.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:06:38.350654+00:00",
+  "machine_identity_source": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "tool_chunk": "410a1f",
+    "observed_at_utc": "2026-10-18T10:56:09Z"
+  },
+  "source_baseline_commit": "646972a219f74f91129dea7a1d9af91e67778003",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1590042,
+      "sha256": "a3cdb61d4fe2177ec7655de44fdf1e3777aa8396fd72396efc651917a645276c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_battle_reader_exact_speed.py",
+      "bytes": 16034,
+      "sha256": "601ac17499063e5a6316e151e42fee9d342e6e4325d5de816d3cd18425a48993"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_assault_lifecycle_scan_reuse_v1.py",
+      "bytes": 2885,
+      "sha256": "314fc1828421ce9ab29d657816751609d7372711b0bcd781127fcfb9a697f3ca"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 52221,
+      "sha256": "30c0e2762403c7d561e79e6d364ff81dedb19aef87bf74fbe2fbbc0c40740a6d"
+    },
+    {
+      "path": "docs/ck3-native-ai/native-life-preparation-view-reuse-2026-10-18.md",
+      "bytes": 2029,
+      "sha256": "c16ac0fecb7bcffbdb8df768ab2d69830b2f6ea31caa67128a114c9371e07e96"
+    }
+  ],
+  "structural_changes": [
+    "Adjacent action_steps/raw bridge fields share one state.capabilities result. Earlier horizon lookup and final driver guard stay separate.",
+    "Open assault lifecycles are recovered once and supplied to unknown-state checks inside the same history lock. Default independent calls recover normally."
+  ],
+  "actual_synthetic_observations": {
+    "state_capabilities_calls_per_life_preparation": 2,
+    "source_baseline_calls_same_chain": 3,
+    "open_assault_recovery_calls_per_paused_preparation": 1,
+    "source_baseline_open_recovery_calls": 2,
+    "lock_owned_at_recovery": true,
+    "default_helper_recovery_calls": 1,
+    "supplied_helper_recovery_calls": 0,
+    "input_objects_unchanged": true,
+    "resume_submissions_per_synthetic_chain": 1
+  },
+  "tests": {
+    "modules": [
+      "ck3_autonomous_player/tests/unit/test_battle_reader_exact_speed.py",
+      "ck3_autonomous_player/tests/unit/test_native_assault_lifecycle_scan_reuse_v1.py"
+    ],
+    "priority_readback": "BELOW_NORMAL(0x4000)",
+    "runner": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\perf-sdk06-ownerresponse01\\qualify_life_capability_view_low_priority.py",
+    "stdout": "16 passed, 6 subtests passed in 2.32s",
+    "exit_code": 0,
+    "tool_chunk": "efb4fa",
+    "MCP_Native_Game_started": false,
+    "coverage": [
+      "+1 day same sentinel posterior",
+      "0-day modal cancellation",
+      "existing overshoot/no-replay refusal",
+      "Start/Stop/failed Stop",
+      "successful/failed restore",
+      "decorated AUTO",
+      "failed assault slice",
+      "empty list"
+    ]
+  },
+  "source_findings_not_implemented": [
+    "one-life nonterminal bridge_capabilities is also consumed by supported-feature output fields; it is not unused"
+  ],
+  "performance_credit": "Python construction/recovery count only; runtime wall/CPU effect unknown. No live A/B.",
+  "unchanged": [
+    "strategy",
+    "query cadence",
+    "Native guards",
+    "frozen runtime",
+    "encoder sources"
+  ],
+  "forbidden_inputs_read_or_statted": {
+    "media": 0,
+    "indexes": 0,
+    "SAVE": 0,
+    "Driver": 0
+  }
+}

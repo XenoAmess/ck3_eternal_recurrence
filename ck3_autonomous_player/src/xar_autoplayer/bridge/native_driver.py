@@ -24711,7 +24711,7 @@ class NativeHeadlessGameplayDriver:
             )
             unresolved_assaults = (
                 _native_unobservable_started_assaults(
-                    starting, self._command_history
+                    starting, self._command_history, open_lifecycles=open_assaults,
                 )
                 if starting.get("paused") is True
                 else []
@@ -24740,11 +24740,10 @@ class NativeHeadlessGameplayDriver:
         horizon_days = crown_authority_retry_horizon_days_v1(
             self, starting, horizon_days,
         )
-        primitive_steps = set(
-            _string_list(self.state.capabilities().get("action_steps"))
-        )
+        native_capabilities = self.state.capabilities()
+        primitive_steps = set(_string_list(native_capabilities.get("action_steps")))
         bridge_capabilities = set(
-            _string_list(self.state.capabilities().get("bridge_capabilities"))
+            _string_list(native_capabilities.get("bridge_capabilities"))
         )
         timeline_speed, timeline_policy = _life_advance_timeline_policy(
             starting,
@@ -29679,6 +29678,8 @@ def _native_latest_assault_life_advance_failed(
 def _native_unobservable_started_assaults(
     snapshot: dict[str, object],
     history: list[dict[str, object]],
+    *,
+    open_lifecycles: list[dict[str, int]] | None = None,
 ) -> list[dict[str, object]]:
     """Find proven Starts whose current paused rich state is unknown."""
     wars = snapshot.get("active_wars")
@@ -29688,7 +29689,11 @@ def _native_unobservable_started_assaults(
         if isinstance(war, dict) and _positive_native_id(war.get("war_id"))
     }
     pending: list[dict[str, object]] = []
-    for lifecycle in _native_open_assault_lifecycles(history):
+    lifecycles = (
+        _native_open_assault_lifecycles(history)
+        if open_lifecycles is None else open_lifecycles
+    )
+    for lifecycle in lifecycles:
         war = wars_by_id.get(lifecycle["war_id"])
         if not isinstance(war, dict):
             continue
