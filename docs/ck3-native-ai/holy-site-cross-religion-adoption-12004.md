@@ -21,7 +21,7 @@ N01 4180–4220及4100–4141：各核心禁止在它所综摄的同一个宗教
 
 这个版本的原GUI是`RiteCreationWindow`：G01 593–628分别调用EditRite/CreateRite，L03标题和确认文案按`DivergenceResultsInFaithCreation`区分新Rite和新Faith。G02 831的默认分歧阈值为100。**选了一个核心，不等于必定新建Faith，也不等于旧Faith主流已经改变。** 若能合法修改实际主流Rite，可检验修改后Faith参数；若创建的是新Faith，要检验它的mainline身份；若只是旧Faith内非主流Rite，不能直接认定Faith分支成立。费用、可选性、CanCreateRite/CanEditRite及原生blockers仍按当场检查。本包不猜创建引擎ABI，也没有验证一套具体教义组合恰好跨过100或已经创建成功。
 
-必要读回是：角色Faith、当前Rite、Faith主流Rite、各自核心与参数、两Faith实际敌对度，以及最终采用详情。这里没有独立重映射Faith.has_doctrine_parameter在C++内部如何委托Rite；不把主流模型说明与另一个Rite读口偷换成对该原生别名的实验验证。
+必要读回是：角色Faith、当前Rite、Faith主流Rite、各自核心与参数、两Faith实际敌对度，以及最终采用详情。2026-10-19的[exact4作用域后继](faith-rite-parameter-scopes12004-v6.md)已用当前RTTI和完整原生leaf独立闭合：Faith.has_doctrine_parameter从该Faith的+98取主流Rite，再读其+7B8参数；Rite.rite_has_parameter则直接读传入Rite。故定向综摄查拟采用Faith的主流Rite，顺应分支查操作人当前Rite，个人信条参数另属Character个人集合。这是同机已封1.20.0.4缓存的静态证明，不授新的当前Can、实机查询或业务结果；本篇其余V5时点和未执行状态仍是原历史范围。
 
 ## 其他允许路径与选择代价
 

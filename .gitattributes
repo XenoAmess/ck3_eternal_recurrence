@@ -1082,3 +1082,7 @@ docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/prep-term
 docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-findings.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-gate.actual.json.gz -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/** -text whitespace=cr-at-eol
+
+# Preserve exact V6 source evidence bytes referenced by planning knowledge.
+docs/ck3-native-ai/evidence/faith-rite-parameter-scopes12004-v6/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/native-faith-power-presentation-v6.json -text whitespace=cr-at-eol

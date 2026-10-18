@@ -1,0 +1,818 @@
+{
+  "schema": "xar.faith-power.final-rite-word-audit.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T19:11:34.700000+00:00",
+  "source_narration": {
+    "relative_to_p5": "authoring/final-ready-a01/narration-final.zh.md",
+    "sha256": "ee3d239d71bf9c1d5ed14eb84b41a6ad769496690b05c271e69efb48feee9b8b"
+  },
+  "coverage": {
+    "all_cues": 144,
+    "rite_cues": 21,
+    "rite_occurrences": 31,
+    "mechanical_faith_replacements_required": 0,
+    "scope_review_not_every_claim_business_acceptance": true
+  },
+  "scope_verdicts": [
+    {
+      "cue": "V5-C02-13",
+      "line": 23,
+      "original_text": "对自己的宫廷司祭，有傀儡领地司祭这项互动；面对同信仰、有统治身份的神职人物，则查看傀儡神职统治者。后者先要求《By God Alone》；此外，发起人的当前礼仪，要么在圣职专权传统中采用神权制，要么接纳或鼓励隐修。若对教宗走牵制这条路，国王级或以上的目标要求强牵制。按报价支付、对方接受并建立关系后，才有这项身份；握着强牵制不会自动获得权限。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 78,
+          "object_scope": "interaction_sender.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：互动的sender当前礼仪条件，不是recipient或政府自动许可；交互细节由Faith逐词owner源复核。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C03-01",
+      "line": 41,
+      "original_text": "土地、身份和名额都合适以后，才轮到宗教关系。如果目标没有其他更容易通过的关联方，基督教采用伊斯兰教圣地，可以考虑把伊斯兰综摄主义选为信仰主流礼仪的核心信条。方向要选对：想接受伊斯兰教一侧，就选对应的伊斯兰综摄。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 70,
+          "object_scope": "adopting_faith.main_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：定向采用确实查Faith，其有效参数由该Faith主流礼仪提供。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C03-02",
+      "line": 43,
+      "original_text": "这条路线不是让基督教人物先变成穆斯林。它是在准备采用圣地的那个信仰里，改变主流礼仪的核心，使这个信仰取得相应的综摄参数。你仍需要确认改完以后，角色究竟属于哪个信仰，哪个礼仪才是这个信仰的主流。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 39,
+          "object_scope": "adopting_faith.main_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 84,
+          "object_scope": "post_reform.faith.main_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "clarify_context",
+      "rationale": "澄清：须兼容修改既有主流礼仪和创建新Faith两种结果，不能暗示所有操作都修改旧Faith。",
+      "suggested_complete_text": "这条路线不要求基督教人物先变成穆斯林。关键是准备采用圣地的信仰，其主流礼仪具有相应的综摄信条。你可以合法修改现有主流礼仪，也可以在创建界面配置新礼仪，建立以新礼仪为主流的新信仰。改完要认清角色所属的信仰，以及这个信仰实际采用的主流礼仪。",
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C03-06",
+      "line": 51,
+      "original_text": "创建窗口还有第二个岔路：改完以后，得到的究竟是新信仰，还是原信仰下面的一支新礼仪？如果只建了一支非主流礼仪，原信仰的主流核心没有改变，就不能把这次个人选择当成本信仰已经完成改革。看清创建结果，再回到圣地采用。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 38,
+          "object_scope": "created_nonmain_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 51,
+          "object_scope": "created_nonmain_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "clarify_context",
+      "rationale": "澄清：非主流礼仪仍是Rite；把“个人选择”改为“只创立这支非主流礼仪”，避免混入个人信条。",
+      "suggested_complete_text": "创建窗口还有第二个岔路：改完以后，得到的究竟是新信仰，还是原信仰下面的一支新礼仪？如果只创立一支非主流礼仪，原信仰的主流核心没有改变，就不能认定本信仰已经取得定向综摄的采用资格。看清创建结果，再回到圣地采用。",
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C03-14",
+      "line": 61,
+      "original_text": "顺应这条特别检查的是操作人当前礼仪的核心参数，定向综摄检查的却是信仰参数。因此，别把所有路线都压成同一个身份要求。先分清自己走哪一条，再看改出的信仰或礼仪，是否真正提供了那条路线所用的许可。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 15,
+          "object_scope": "actor.current_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 75,
+          "object_scope": "post_reform.rite_identity",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "clarify_context",
+      "rationale": "补关键委托：Faith参数来自该Faith主流礼仪，人物当前礼仪可能不同。",
+      "suggested_complete_text": "这里要分清两个读法。顺应检查操作人当前礼仪的参数；定向综摄检查信仰参数，而这份参数来自该信仰的主流礼仪。当前礼仪与主流礼仪可能不同，所以要按所选路线核对，不能拿一边的同名信条代替另一边。",
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C03-11",
+      "line": 63,
+      "original_text": "基督教还可以用嗣子论一类的核心走另一条路线，需要拥有《By God Alone》，且不能同时选合性论或一性论。它随礼仪语言显示为继承说、义子论或嗣子论；真正提供放宽采用许可的是当前礼仪的核心版本，个人版本没有同一许可。选它同样会放弃原有核心的位置。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 57,
+          "object_scope": "contextual_rite_naming_rules",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 90,
+          "object_scope": "actor.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "clarify_context",
+      "rationale": "修正命名依据并去掉“核心版本/个人版本”歧义：原版按Faith、指定Rite及head_of_rite文化等条件命名，不是只读独立语言字段。",
+      "suggested_complete_text": "基督教还可以用嗣子论一类的核心走另一条路线，需要拥有《By God Alone》，且不能同时选合性论或一性论。依照原版的礼仪命名条件，它可能显示为继承说、义子论或嗣子论。放宽采用许可，需要把它选在当前礼仪的“信条”栏；选为个人信条没有同一许可。它也会占用一个核心位置。",
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-XA-01",
+      "line": 67,
+      "original_text": "先看基督教采用伊斯兰圣地这条路。我们把第一项核心换成伊斯兰综摄主义，另外两项不动。但只改这一项，窗口仍然准备创建一支礼仪，还不是新信仰。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 58,
+          "object_scope": "native_draft.outcome_create_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-XA-03",
+      "line": 71,
+      "original_text": "确认后，我们创建了和合基督派，仍然属于基督教。它的主流礼仪已经采用伊斯兰综摄主义，虔诚也从两万降到了一万四千八百，实际花掉五千二百。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 27,
+          "object_scope": "new_faith.main_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-XB-02",
+      "line": 81,
+      "original_text": "我们打开逊尼派主流礼仪哈乃斐派的修改窗口。只把第一项核心换成基督教综摄主义，另外两项不动。这次直接改现有礼仪，没有另建一个信仰。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 9,
+          "object_scope": "existing_sunni_faith.main_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 52,
+          "object_scope": "edited_existing_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-XB-03",
+      "line": 83,
+      "original_text": "确认修改，实际花了三百虔诚。人物仍属逊尼派，哈乃斐派这支主流礼仪已经采用基督教综摄主义。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 30,
+          "object_scope": "existing_sunni_faith.main_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-XB-05",
+      "line": 87,
+      "original_text": "这次采用要另付一千虔诚。确认以后，余额降到一万八千三百五十五。礼仪修改三百、采用一千，和前一个新信仰的免费采用，要分开算。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 31,
+          "object_scope": "edit_rite_action_cost",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C07-06",
+      "line": 163,
+      "original_text": "第二类，允许两条路择一。阿亚索菲亚清真寺启用时，地产持有者可以属于伊斯兰教，或者当前礼仪的核心具有伊斯兰综摄参数；也可以让这里成为持有者信仰的圣地。已经通过前一条的人，不必为了同一个启用条件再买一次圣地关联。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 42,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C07-07",
+      "line": 165,
+      "original_text": "这里看的是地产持有者当前礼仪的核心，不是人物选的个人综摄信条。前面用定向综摄采用圣地，看的是整个信仰的参数；核心顺应又是另一条当前礼仪路线。相同名字出现在不同位置，不能只选了个人版本，就把建筑和采用两边都算作已经解锁。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 12,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 65,
+          "object_scope": "actor.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "clarify_context",
+      "rationale": "补主流委托和真实栏目指认；建筑查地产持有者当前Rite，不是个人信条。",
+      "suggested_complete_text": "建筑这里读地产持有者当前礼仪的综摄参数。“个人信念”里的同名个人信条，不能替代它。前面定向采用读的是信仰主流礼仪提供的参数，顺应采用读的则是操作人当前礼仪。先认准对象和选择位置，再判断条件是否成立。",
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C07-08",
+      "line": 167,
+      "original_text": "第三类会把条件叠上去。圆顶清真寺启用，先要求这里是地产持有者信仰的圣地；同时，持有者不能属于犹太教，当前礼仪核心也不能具有犹太综摄参数。只满足圣地关联，没有越过后面的排除条件。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 52,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C07-09",
+      "line": 169,
+      "original_text": "第三圣殿建造要同时过两关。第一，这里是地产持有者信仰的圣地；第二，持有者属于犹太教，或者他当前礼仪的核心具有犹太综摄参数。建好以后，启用却只需这两关中的任意一关，不能拿启用规则倒推自己现在一定能新建。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 47,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C07-10",
+      "line": 171,
+      "original_text": "还有不靠圣地关联的宗教路线。苾利诃地湿伐罗神庙启用，看地产持有者是否属于东方宗教家族，或其当前礼仪核心是否具有东方综摄参数；不要求先采用这个地点，也不只限印度教。建造还另有持有者文化的庄园创新要求。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 47,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C07-12",
+      "line": 175,
+      "original_text": "还有些建筑列出了具体信仰，也不等于只准一个信仰。泰西封大王宫的建造条件，可以走琐罗亚斯德教宗教，或当前礼仪核心的东方综摄；也列有摩尼教、聂斯脱里派、希腊多神教这几种具体信仰的替代分支。宗教、信仰与礼仪，是不同层次的身份。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 51,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 98,
+          "object_scope": "rite_identity_level",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C07-13",
+      "line": 177,
+      "original_text": "瓦加尔沙帕特主教座堂又检查持有者当前是否采用指定的亚美尼亚礼仪。这是具体礼仪的限制，不是把整种宗教或某一个信仰名称直接搬过来。想在改宗、改礼仪以后继续用建筑，得认准它到底检查哪一层身份。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 29,
+          "object_scope": "barony_holder.current_rite_exact_armenian",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 36,
+          "object_scope": "exact_rite_identity",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 3,
+          "start_character_0_based": 69,
+          "object_scope": "rite_change",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C08-07",
+      "line": 195,
+      "original_text": "下面看一条实际分支。它来自八六七年阿拔斯的机制实验：人物准备为马立克派礼仪，累计额外准备五千虔诚，也改变了奉献与奉献等级。这是实验起点，不是自然游玩成绩；两条新跨宗教案例也不能沿用这笔准备当作自己的余额。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 35,
+          "object_scope": "historical_actor.current_rite_maliki",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    },
+    {
+      "cue": "V5-C14-01",
+      "line": 309,
+      "original_text": "现在再看最初的跨宗教目标。要的只是某座建筑能用，先看它有没有不靠采用的宗教路线，或当前礼仪核心提供的综摄替代；要的是地方建设与学识，先看普通圣地能不能做好；要的是全信仰那组效果，再比较主要名额该留给谁。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 43,
+          "object_scope": "barony_holder.current_rite",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "building_script_scopes",
+        "adoption_and_parameters"
+      ]
+    },
+    {
+      "cue": "V5-C14-02",
+      "line": 311,
+      "original_text": "如果确实需要采用别家的，先解决代表信仰办事的身份、目标控制和持有者信仰，再按所选路线改核心：定向综摄要核信仰参数，顺应要核当前礼仪的核心参数。改完认清自己属于哪个信仰、哪个礼仪，以及所需许可是否真的成立，然后看正常采用条件与整段预算。",
+      "occurrences": [
+        {
+          "ordinal_in_cue": 1,
+          "start_character_0_based": 63,
+          "object_scope": "actor.current_rite",
+          "replace_with_faith": false
+        },
+        {
+          "ordinal_in_cue": 2,
+          "start_character_0_based": 86,
+          "object_scope": "post_reform.rite_identity",
+          "replace_with_faith": false
+        }
+      ],
+      "verdict": "retain_object_scope",
+      "rationale": "保留：具体Rite、当前Rite或编辑Rite的指称与原来源作用域相符；不将Faith圣地关联或等级改写为Rite。",
+      "suggested_complete_text": null,
+      "source_groups": [
+        "adoption_and_parameters",
+        "personal_ui_and_definition"
+      ]
+    }
+  ],
+  "related_cue_replacements": {
+    "V5-C03-02": "这条路线不要求基督教人物先变成穆斯林。关键是准备采用圣地的信仰，其主流礼仪具有相应的综摄信条。你可以合法修改现有主流礼仪，也可以在创建界面配置新礼仪，建立以新礼仪为主流的新信仰。改完要认清角色所属的信仰，以及这个信仰实际采用的主流礼仪。",
+    "V5-C03-05": "先看清自己在哪个窗口选择。“个人信念”里的“你的个人信条”，是人物的个人选择；创建或修改礼仪窗口里的“信条”栏，才配置礼仪的核心。个人综摄带来的物品使用等能力，不能代替采用判断所需的信仰参数。",
+    "V5-C03-06": "创建窗口还有第二个岔路：改完以后，得到的究竟是新信仰，还是原信仰下面的一支新礼仪？如果只创立一支非主流礼仪，原信仰的主流核心没有改变，就不能认定本信仰已经取得定向综摄的采用资格。看清创建结果，再回到圣地采用。",
+    "V5-C03-14": "这里要分清两个读法。顺应检查操作人当前礼仪的参数；定向综摄检查信仰参数，而这份参数来自该信仰的主流礼仪。当前礼仪与主流礼仪可能不同，所以要按所选路线核对，不能拿一边的同名信条代替另一边。",
+    "V5-C03-11": "基督教还可以用嗣子论一类的核心走另一条路线，需要拥有《By God Alone》，且不能同时选合性论或一性论。依照原版的礼仪命名条件，它可能显示为继承说、义子论或嗣子论。放宽采用许可，需要把它选在当前礼仪的“信条”栏；选为个人信条没有同一许可。它也会占用一个核心位置。",
+    "V5-C07-07": "建筑这里读地产持有者当前礼仪的综摄参数。“个人信念”里的同名个人信条，不能替代它。前面定向采用读的是信仰主流礼仪提供的参数，顺应采用读的则是操作人当前礼仪。先认准对象和选择位置，再判断条件是否成立。"
+  },
+  "source_groups": {
+    "adoption_and_parameters": [
+      "native-scope-probe-a02.json",
+      "stock-and-personal-sources-a02.json"
+    ],
+    "personal_ui_and_definition": [
+      "stock-and-personal-sources-a02.json"
+    ],
+    "building_script_scopes": [
+      "docs/ck3-native-ai/special-building-religion-holy-site-gates12004.md",
+      "docs/ck3-native-ai/evidence/special-building-religion-holy-site-gates12004/catalogue.json"
+    ],
+    "historical_results": [
+      "docs/ck3-native-ai/holy-site-cross-religion-adoption-12004.md"
+    ]
+  },
+  "actual_source_spec_strings": [
+    {
+      "relative_to_p5": "authoring/final-ready-a01/semantic-spec.final.json",
+      "sha256": "9bc65fe57b93835c600b22d16626cf177bb1b086756a5c1a75593f63f9f2454f",
+      "rendered_rite_strings": [
+        {
+          "cue": "V5-C02-13",
+          "pointer": "/cues/9/steps/1/semantic_change",
+          "text": "当前礼仪择一"
+        },
+        {
+          "cue": "V5-C02-13",
+          "pointer": "/cues/9/steps/1/panel/title",
+          "text": "发起人当前礼仪择一"
+        },
+        {
+          "cue": "V5-C02-13",
+          "pointer": "/cues/9/steps/1/caption",
+          "text": "神职统治者互动：发起人礼仪"
+        },
+        {
+          "cue": "V5-C03-01",
+          "pointer": "/cues/17/steps/1/panel/rows/0/label",
+          "text": "本信仰主流礼仪"
+        },
+        {
+          "cue": "V5-C03-02",
+          "pointer": "/cues/18/steps/0/panel/rows/0/label",
+          "text": "信仰主流礼仪"
+        },
+        {
+          "cue": "V5-C03-02",
+          "pointer": "/cues/18/steps/0/spoken_anchor/0",
+          "text": "主流礼仪"
+        },
+        {
+          "cue": "V5-C03-02",
+          "pointer": "/cues/18/steps/2/panel/rows/1/label",
+          "text": "哪支礼仪为主流"
+        },
+        {
+          "cue": "V5-C03-03",
+          "pointer": "/cues/19/steps/1/panel/rows/0/label",
+          "text": "主流礼仪核心"
+        },
+        {
+          "cue": "V5-C03-06",
+          "pointer": "/cues/22/title",
+          "text": "创建信仰还是创建礼仪"
+        },
+        {
+          "cue": "V5-C03-06",
+          "pointer": "/cues/22/steps/1/panel/rows/0/label",
+          "text": "原信仰的新礼仪"
+        },
+        {
+          "cue": "V5-C03-06",
+          "pointer": "/cues/22/steps/2/panel/rows/1/label",
+          "text": "只创建非主流礼仪"
+        },
+        {
+          "cue": "V5-C03-14",
+          "pointer": "/cues/27/steps/0/panel/rows/0/value",
+          "text": "当前礼仪核心参数"
+        },
+        {
+          "cue": "V5-C03-14",
+          "pointer": "/cues/27/steps/0/spoken_anchor/0",
+          "text": "当前礼仪"
+        },
+        {
+          "cue": "V5-C03-14",
+          "pointer": "/cues/27/steps/2/panel/rows/0/label",
+          "text": "改出的信仰或礼仪"
+        },
+        {
+          "cue": "V5-C03-14",
+          "pointer": "/cues/27/steps/2/spoken_anchor/0",
+          "text": "改出的信仰或礼仪"
+        },
+        {
+          "cue": "V5-C03-11",
+          "pointer": "/cues/28/steps/1/panel/rows/0/label",
+          "text": "随礼仪语言"
+        },
+        {
+          "cue": "V5-C03-11",
+          "pointer": "/cues/28/steps/1/spoken_anchor/0",
+          "text": "随礼仪语言"
+        },
+        {
+          "cue": "V5-C03-11",
+          "pointer": "/cues/28/steps/2/panel/rows/0/label",
+          "text": "当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-06",
+          "pointer": "/cues/62/steps/1/semantic_change",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-06",
+          "pointer": "/cues/62/steps/1/panel/title",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-06",
+          "pointer": "/cues/62/steps/1/caption",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-07",
+          "pointer": "/cues/63/steps/0/panel/rows/0/value",
+          "text": "当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-08",
+          "pointer": "/cues/64/steps/2/panel/rows/0/label",
+          "text": "当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-09",
+          "pointer": "/cues/65/steps/1/panel/rows/1/label",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-09",
+          "pointer": "/cues/65/steps/1/spoken_anchor/0",
+          "text": "当前礼仪"
+        },
+        {
+          "cue": "V5-C07-10",
+          "pointer": "/cues/66/steps/1/semantic_change",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-10",
+          "pointer": "/cues/66/steps/1/panel/title",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-10",
+          "pointer": "/cues/66/steps/1/caption",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-10",
+          "pointer": "/cues/66/steps/1/spoken_anchor/0",
+          "text": "当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-12",
+          "pointer": "/cues/68/steps/1/semantic_change",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-12",
+          "pointer": "/cues/68/steps/1/panel/title",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-12",
+          "pointer": "/cues/68/steps/1/caption",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-12",
+          "pointer": "/cues/68/steps/1/spoken_anchor/0",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C07-13",
+          "pointer": "/cues/69/title",
+          "text": "主教座堂检查具体礼仪"
+        },
+        {
+          "cue": "V5-C07-13",
+          "pointer": "/cues/69/steps/0/panel/rows/0/value",
+          "text": "当前采用亚美尼亚礼仪"
+        },
+        {
+          "cue": "V5-C07-13",
+          "pointer": "/cues/69/steps/1/panel/rows/0/label",
+          "text": "具体礼仪"
+        },
+        {
+          "cue": "V5-C08-07",
+          "pointer": "/cues/77/steps/0/panel/rows/1/label",
+          "text": "人物礼仪"
+        },
+        {
+          "cue": "V5-C14-01",
+          "pointer": "/cues/128/steps/0/panel/rows/0/label",
+          "text": "宗教或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C14-01",
+          "pointer": "/cues/128/steps/0/spoken_anchor/0",
+          "text": "或当前礼仪核心"
+        },
+        {
+          "cue": "V5-C14-02",
+          "pointer": "/cues/129/steps/1/panel/rows/1/value",
+          "text": "当前礼仪核心参数"
+        },
+        {
+          "cue": "V5-C14-02",
+          "pointer": "/cues/129/steps/2/panel/rows/0/label",
+          "text": "改后信仰与礼仪"
+        }
+      ]
+    },
+    {
+      "relative_to_p5": "authoring/d1-result-a01/native-card-specs.a03.json",
+      "sha256": "4e27323e5a2c864719d91a5447607b09f9c4dc052b3bf88701e636451a90a709",
+      "rendered_rite_strings": [
+        {
+          "card": "D1-CORE",
+          "pointer": "/cards/0/display/steps/2/panel/rows/0/value",
+          "text": "礼仪"
+        },
+        {
+          "card": "D1-CREATED",
+          "pointer": "/cards/2/display/subtitle",
+          "text": "仍属于基督教；当前礼仪就是这个新信仰的主流礼仪"
+        },
+        {
+          "card": "D1-CREATED",
+          "pointer": "/cards/2/display/steps/1/panel/title",
+          "text": "主流礼仪"
+        },
+        {
+          "card": "D1-CREATED",
+          "pointer": "/cards/2/display/steps/1/panel/rows/0/label",
+          "text": "当前礼仪与主流礼仪"
+        }
+      ]
+    },
+    {
+      "relative_to_p5": "authoring/d2-result-a01/native-card-specs.a03.json",
+      "sha256": "5503815f877326965e118ddd19515adb81014a7600c9e51e3585006cdc1c95cf",
+      "rendered_rite_strings": [
+        {
+          "card": "D2-PREP",
+          "pointer": "/cards/0/display/subtitle",
+          "text": "本场编辑现有逊尼派的主流礼仪"
+        },
+        {
+          "card": "D2-CORE",
+          "pointer": "/cards/2/display/title",
+          "text": "只换一个核心，修改现有礼仪"
+        },
+        {
+          "card": "D2-CORE",
+          "pointer": "/cards/2/display/subtitle",
+          "text": "哈乃斐派仍是逊尼派的主流礼仪"
+        },
+        {
+          "card": "D2-CORE",
+          "pointer": "/cards/2/display/steps/1/panel/rows/1/value",
+          "text": "本教现有主流礼仪"
+        },
+        {
+          "card": "D2-ADOPTION",
+          "pointer": "/cards/3/display/steps/1/panel/rows/0/label",
+          "text": "修改礼仪"
+        }
+      ]
+    }
+  ],
+  "spec_rewrite_instructions": [
+    {
+      "cue": "V5-C03-11",
+      "old": "随礼仪语言",
+      "new": "按原版礼仪命名条件",
+      "reason": "Update displayed label and spoken_anchor together; no independent language-only rule."
+    },
+    {
+      "cue": "V5-C03-14",
+      "change": "show actor current Rite -> allow-any and actor Faith -> its main Rite -> directional parameter as distinct source relations"
+    },
+    {
+      "cue": "V5-C03-05",
+      "change": "pair official personal_beliefs_window title/column with RiteCreationWindow core_tenets column; image still required, no new screen observation"
+    },
+    {
+      "cue": "V5-C07-07",
+      "change": "building holder current Rite is distinct from acting ruler current Rite and Faith main Rite"
+    }
+  ],
+  "boundaries": {
+    "game_access": false,
+    "new_screenshots": false,
+    "media_inspected": false,
+    "replaced_final_narration_or_spec": false
+  }
+}

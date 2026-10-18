@@ -1,0 +1,40 @@
+// Current model-producer and exact receiver source. No getter is called.
+struct PresentationReceiverPin12004{std::uintptr_t rva;const char*hex;};
+static constexpr PresentationReceiverPin12004 kPresentationReceiverPins12004[]{
+{0x3ac3918U,"418bb78c0000004103770c"},
+{0x3ac3b23U,"4863c2488d0c8048c1e1044903ca498bd1e8c7e0"},
+{0x3ac401cU,"80794c000f8597000000"},
+{0x3ac1d85U,"488b01488902c6420c00b0014881c4900000005bc3"},
+{0x3ac1d9aU,"488b01488902c6420c01b0014881c4900000005bc3"},
+{0x3e4c1ecU,"488b46384c8d4424384584f6498bd5480f44eb488bcdffd0"},
+{0x12b6170U,"40534883ec50488bda4885c97442e80dcdabff4889442420"},
+{0xd72e90U,"488d81e8000000c3"},
+{0x12d7085U,"498b064c8d45f7488d553f488b0cf8e867d47e02"},
+{0x12a8789U,"488bda4c8bf14889114c89410844894910"},
+{0x12b5e70U,"40534883ec50488bda4885c97442e8ed9d94ff4889442420"},
+{0xbffc70U,"488d8100010000c3"},
+{0x12d7475U,"488d0cbf498b06488d0cc84c8d45f7488d553fe873d07e02"},
+{0xd932f0U,"488d8118010000c3"},
+{0x12abbffU,"48894128488949188951308b80e8ff060089413466895138c6"},
+{0x12b89f4U,"8b056adea9048945674c8bc3488d15d1782803488d4d67e8b033b602"},
+{0x12b7834U,"8b055e93a6048945674c8bc3488d15e1882803488d4d67e87045b602"},
+{0x12b0941U,"8b85300100008983f80e00008b85180100008983f40e00004489a3f00e000048"},
+{0x12b04efU,"488b052adea604488981580400004c89b9600400008178384f6244474c0f44f8"},
+{0x12b050fU,"4c89b9680400004489a170040000e82e8fffff"},
+{0x3ac4e40U,"488b4108498bd04883c11048ffe0"},
+{0x12ab122U,"488d8ec8010000488bd6e86fdeffff"},
+{0x12a8fb5U,"488bda488be9"},
+{0x12a8fceU,"48899d50040000"},
+{0x12b3a60U,"488b8168040000c3"},
+{0x3ac452bU,"488b158e641a02"},
+{0x3ac454cU,"488bb9e80000004c8bb1f00000004885ff0f84a00100004d85f60f8497010000"},
+{0x3ac4703U,"41807840017505498918eb0f488bcee8b954fcff48891ec6464001"},
+{0x3e1c4e1U,"0f10060f1183d80000000f104e100f118be8000000"},
+};
+bool PresentationReceiverSourcePins12004(const ZhongguoScoreboardNativeEnvironmentV1&env) {
+std::array<unsigned char,32>raw{};
+const auto digit=[](char c)->unsigned{return c<='9'?unsigned(c-'0'):unsigned(c-'a'+10);};
+for(const auto&p:kPresentationReceiverPins12004){const auto n=std::strlen(p.hex)/2;if(n>raw.size()||!Read(reinterpret_cast<const void*>(env.module_base+p.rva),raw.data(),n))return false;
+for(std::size_t i=0;i<n;++i)if(raw[i]!=((digit(p.hex[2*i])<<4)|digit(p.hex[2*i+1])))return false;}
+return true;
+}

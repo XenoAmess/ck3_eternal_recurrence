@@ -95,7 +95,10 @@ bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(const ZhongguoScoreboar
   context=row.context;owner=row.owner;return fixture_gui_available;
 }
 }
+#include "faith_power_presentation_contract12004.inc"
 int main(int argc,char **argv) {
+  FaithPowerPresentationContractFixture12004();
+  FaithPowerBuildingReceiverFixture12004();
   using namespace xar::ck3_11906;
   IngameUiRequestV1 r{};
   for(auto revision:{GuiAbiRevisionV1::legacy11906,GuiAbiRevisionV1::crozier12003}) {

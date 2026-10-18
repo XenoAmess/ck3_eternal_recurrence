@@ -221,6 +221,11 @@ bool InspectFixedGuiWidgetDispatchAdmissionV1(
     const ZhongguoScoreboardActionDispatchEnvironmentV1 &environment,
     void *target, void *expected_vtable) noexcept;
 
+// Same fixed original dispatch, with attempt marked only at the native call.
+bool DispatchFixedGuiWidgetNativeWithAttemptV1(
+    void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
+    void *target, void *expected_vtable, bool &native_handled,
+    bool &native_dispatch_attempted) noexcept;
 bool DispatchFixedGuiWidgetNativeV1(
     void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
     void *target, void *expected_vtable, bool &native_handled) noexcept;

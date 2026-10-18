@@ -83,7 +83,7 @@ class V5ClarificationsMcpTests(unittest.IsolatedAsyncioTestCase):
             self.assertIn("F must satisfy relation and hostility together; G may differ from F",
                 adopt["cross_religion_adoption"]["formula"]["witness_rule"])
             self.assertFalse(adopt["cross_religion_adoption"]["action_ready"])
-            self.assertFalse(adopt["reform_mcp_scope"]["both_directions_new_live_examples"])
+            self.assertTrue(adopt["reform_mcp_scope"]["both_directions_new_live_examples"])
             self.assertIn("not current running", adopt["reform_mcp_scope"]["retained_build_configuration"]["observation_kind"])
 
             buildings = outputs["create"]["knowledge"]["v5_clarifications"]["special_buildings"]

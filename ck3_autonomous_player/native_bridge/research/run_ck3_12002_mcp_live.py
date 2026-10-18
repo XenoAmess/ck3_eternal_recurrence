@@ -4509,6 +4509,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--private-holy-site-relic-actions", action="store_true",
         help="explicit opt-in for four finite relic actions; default off, never a read-only tool declaration")
     result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(
+        "ck3_query_faith_power_ui_v1", "ck3_query_faith_power_tooltip_v1",
         "ck3_query_player_holy_site_creation_context_v1",
         "ck3_query_player_holy_site_relic_action_context_v1",
         "ck3_query_player_holy_site_relic_permissions_v1",

@@ -456,6 +456,15 @@ bool InspectFixedGuiWidgetDispatchAdmissionV1(
 bool DispatchFixedGuiWidgetNativeV1(
     void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
     void *target, void *expected_vtable, bool &native_handled) noexcept {
+  bool attempted=false;
+  return DispatchFixedGuiWidgetNativeWithAttemptV1(opaque_environment,action,target,
+      expected_vtable,native_handled,attempted);
+}
+bool DispatchFixedGuiWidgetNativeWithAttemptV1(
+    void *opaque_environment, game::ZhongguoScoreboardActionV1 action,
+    void *target, void *expected_vtable, bool &native_handled,
+    bool &native_dispatch_attempted) noexcept {
+  native_dispatch_attempted = false;
   native_handled = false;
   try {
     auto *environment = static_cast<
@@ -496,6 +505,7 @@ bool DispatchFixedGuiWidgetNativeV1(
     // product callback ran.  Successful invocation therefore yields an ACK
     // with verification pending regardless of native_handled; only a later
     // independent provider observation may prove the postcondition.
+    native_dispatch_attempted = true;
     return CallShortcutActivate(environment->activate_shortcut, manager, target,
                                 native_handled);
   } catch (...) {

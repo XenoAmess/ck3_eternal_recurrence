@@ -1,0 +1,4710 @@
+{
+  "schema": "xar.faith-rite-scopes.sources.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T19:07:18.332236+00:00",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_exe_hashes": 0,
+  "game_process_access": false,
+  "new_screenshots_observed": false,
+  "source_cache_metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+  "stock_sources": [
+    {
+      "relative_to_game": "common/religion/tenet_types/_tenet_types.info",
+      "sha256": "aae8f7a94b0b5ae7a12d29ea6080941fd2e94842ea195905b9a1d8a14f2a9c25",
+      "bytes": 4799,
+      "excerpts": [
+        {
+          "line_start": 51,
+          "line_end": 55,
+          "lines": [
+            {
+              "line": 51,
+              "text": "\t### Brief: parameters ( parameter list )"
+            },
+            {
+              "line": 52,
+              "text": "\t# Arbitrary parameters where bool types can be checked with the trigger: 'has_doctrine_parameter'"
+            },
+            {
+              "line": 53,
+              "text": "\t# "
+            },
+            {
+              "line": 54,
+              "text": "\tparameters = {"
+            },
+            {
+              "line": 55,
+              "text": "\t\tparam_name"
+            }
+          ]
+        },
+        {
+          "line_start": 123,
+          "line_end": 145,
+          "lines": [
+            {
+              "line": 123,
+              "text": "\t### Brief: special_parameters"
+            },
+            {
+              "line": 124,
+              "text": "\t# special structure for value overrides. See _doctrine_types.info for in-depth description."
+            },
+            {
+              "line": 125,
+              "text": "\t#"
+            },
+            {
+              "line": 126,
+              "text": "\tspecial_parameters = {"
+            },
+            {
+              "line": 127,
+              "text": "\t\t..."
+            },
+            {
+              "line": 128,
+              "text": "\t}"
+            },
+            {
+              "line": 129,
+              "text": ""
+            },
+            {
+              "line": 130,
+              "text": "\t### Brief: personal_tenet_modifier ( modifiers )"
+            },
+            {
+              "line": 131,
+              "text": "\t# Playable characters that choose this tenet as personal get this modifier."
+            },
+            {
+              "line": 132,
+              "text": "\t#"
+            },
+            {
+              "line": 133,
+              "text": "\tpersonal_tenet_modifier = {"
+            },
+            {
+              "line": 134,
+              "text": "\t\t<modifier>"
+            },
+            {
+              "line": 135,
+              "text": "\t}"
+            },
+            {
+              "line": 136,
+              "text": "\t"
+            },
+            {
+              "line": 137,
+              "text": "\t### Brief: personal_tenet_parameters ( flags )"
+            },
+            {
+              "line": 138,
+              "text": "\t# Playable characters that choose this tenet as personal have these flags. "
+            },
+            {
+              "line": 139,
+              "text": "\t# Check them with the has_personal_tenet_flag trigger, localize with doctrine_parameter_ prefix."
+            },
+            {
+              "line": 140,
+              "text": "\t#"
+            },
+            {
+              "line": 141,
+              "text": "\tpersonal_tenet_parameters = {"
+            },
+            {
+              "line": 142,
+              "text": "\t\tflag_1"
+            },
+            {
+              "line": 143,
+              "text": "\t\tflag_2"
+            },
+            {
+              "line": 144,
+              "text": "\t}"
+            },
+            {
+              "line": 145,
+              "text": "}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/religion/rite_types/_rite_types.info",
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+      "bytes": 2995,
+      "excerpts": [
+        {
+          "line_start": 58,
+          "line_end": 75,
+          "lines": [
+            {
+              "line": 58,
+              "text": "\t### brief: tenets ( database keys )"
+            },
+            {
+              "line": 59,
+              "text": "\t# List of tenets associated with this Rite. If this is a faith's scripted main Rite, these are the faith's"
+            },
+            {
+              "line": 60,
+              "text": "\t# effective core tenets; do not duplicate them in the faith type."
+            },
+            {
+              "line": 61,
+              "text": "\t#"
+            },
+            {
+              "line": 62,
+              "text": "\ttenets = {"
+            },
+            {
+              "line": 63,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 64,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 65,
+              "text": "\t}"
+            },
+            {
+              "line": 66,
+              "text": ""
+            },
+            {
+              "line": 67,
+              "text": "\t### brief: doctrines ( database keys )"
+            },
+            {
+              "line": 68,
+              "text": "\t# List of doctrines associated with this Rite. Rite doctrines override parent-religion and faith doctrines from the"
+            },
+            {
+              "line": 69,
+              "text": "\t# same doctrine group. Faith doctrines from otherwise unfilled groups are added to the instantiated main Rite."
+            },
+            {
+              "line": 70,
+              "text": "\t# Put doctrine choices intrinsic to the whole faith on the faith type and Rite-specific choices here."
+            },
+            {
+              "line": 71,
+              "text": "\t#"
+            },
+            {
+              "line": 72,
+              "text": "\tdoctrines = {"
+            },
+            {
+              "line": 73,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 74,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 75,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/religion/faith_types/_faith_types.info",
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+      "bytes": 4481,
+      "excerpts": [
+        {
+          "line_start": 29,
+          "line_end": 43,
+          "lines": [
+            {
+              "line": 29,
+              "text": "\t# If the faith has no scripted main Rite, tenets and tenet_selection_pair seed its dynamically created main Rite."
+            },
+            {
+              "line": 30,
+              "text": "\t# If the faith has a scripted main Rite, define its core tenets on that Rite instead; the Rite's tenets override these."
+            },
+            {
+              "line": 31,
+              "text": "\ttenets = {"
+            },
+            {
+              "line": 32,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 33,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 34,
+              "text": "\t}"
+            },
+            {
+              "line": 35,
+              "text": ""
+            },
+            {
+              "line": 36,
+              "text": "\t# Faith doctrines are additive to a scripted main Rite. The faith doctrine is added when the Rite and parent religion"
+            },
+            {
+              "line": 37,
+              "text": "\t# have not already filled its doctrine group; a doctrine on the Rite in the same group takes precedence."
+            },
+            {
+              "line": 38,
+              "text": "\t# Keep doctrines intrinsic to every Rite of the faith here. Put Rite-specific doctrine choices on the individual Rite."
+            },
+            {
+              "line": 39,
+              "text": "\t# For a faith with no scripted main Rite, these doctrines seed the dynamically created main Rite."
+            },
+            {
+              "line": 40,
+              "text": "\tdoctrines = {"
+            },
+            {
+              "line": 41,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 42,
+              "text": "\t\tkey"
+            },
+            {
+              "line": 43,
+              "text": "\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 60,
+          "line_end": 64,
+          "lines": [
+            {
+              "line": 60,
+              "text": "\t# If the faith is supposed to have a specific Rite as its main Rite, specify its key here."
+            },
+            {
+              "line": 61,
+              "text": "\t# If it changes between start dates, use faith history to set the dated main Rites and document those mappings"
+            },
+            {
+              "line": 62,
+              "text": "\t# in a comment in the faith definition. The scripted main Rite owns core tenets and Rite-specific doctrines, while"
+            },
+            {
+              "line": 63,
+              "text": "\t# faith-intrinsic doctrines may remain additive in the faith definition."
+            },
+            {
+              "line": 64,
+              "text": "\tmain_rite = rite_key"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/religion/tenet_types/00_tenet_types.txt",
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+      "bytes": 130228,
+      "excerpts": [
+        {
+          "line_start": 1743,
+          "line_end": 1780,
+          "lines": [
+            {
+              "line": 1743,
+              "text": "\tcan_pick = {"
+            },
+            {
+              "line": 1744,
+              "text": "\t\tcustom_description = {"
+            },
+            {
+              "line": 1745,
+              "text": "\t\t\ttext = doctrine_inverted_pluralism_pluralistic_trigger"
+            },
+            {
+              "line": 1746,
+              "text": "\t\t\tNOR = {"
+            },
+            {
+              "line": 1747,
+              "text": "\t\t\t\tdoctrine:doctrine_pluralism_fundamentalist = { is_in_list = selected_doctrines }"
+            },
+            {
+              "line": 1748,
+              "text": "\t\t\t\tdoctrine:doctrine_pluralism_righteous = { is_in_list = selected_doctrines }"
+            },
+            {
+              "line": 1749,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1750,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1751,
+              "text": "\t}"
+            },
+            {
+              "line": 1752,
+              "text": ""
+            },
+            {
+              "line": 1753,
+              "text": "\tparameters = {"
+            },
+            {
+              "line": 1754,
+              "text": "\t\ttenet_adaptive_conversion_resistance"
+            },
+            {
+              "line": 1755,
+              "text": "\t\treduced_vassal_religion_discontent"
+            },
+            {
+              "line": 1756,
+              "text": "\t\tallow_adopt_any_holy_site"
+            },
+            {
+              "line": 1757,
+              "text": "\t\ttenet_adaptive_study_rite_bonus"
+            },
+            {
+              "line": 1758,
+              "text": "\t}"
+            },
+            {
+              "line": 1759,
+              "text": ""
+            },
+            {
+              "line": 1760,
+              "text": "\tcharacter_modifier = {"
+            },
+            {
+              "line": 1761,
+              "text": "\t\tdifferent_faith_county_opinion_mult = -0.25"
+            },
+            {
+              "line": 1762,
+              "text": "\t\tdifferent_faith_liege_opinion = 15"
+            },
+            {
+              "line": 1763,
+              "text": "\t\tdifferent_faith_suzerain_opinion = 15"
+            },
+            {
+              "line": 1764,
+              "text": "\t\topinion_of_different_faith_liege = 15"
+            },
+            {
+              "line": 1765,
+              "text": "\t\topinion_of_different_faith_suzerain = 15"
+            },
+            {
+              "line": 1766,
+              "text": "\t}"
+            },
+            {
+              "line": 1767,
+              "text": ""
+            },
+            {
+              "line": 1768,
+              "text": "\tpersonal_tenet_modifier = {"
+            },
+            {
+              "line": 1769,
+              "text": "\t\tminority_opinion = 10"
+            },
+            {
+              "line": 1770,
+              "text": "\t\tminority_tax_contribution_mult = 0.1"
+            },
+            {
+              "line": 1771,
+              "text": "\t\tmonthly_diplomacy_lifestyle_xp_gain_mult = 0.2"
+            },
+            {
+              "line": 1772,
+              "text": "\t\tstudy_faith_scheme_phase_duration_add = medium_scheme_phase_duration_bonus_value"
+            },
+            {
+              "line": 1773,
+              "text": "\t\tlearn_language_scheme_phase_duration_add = medium_scheme_phase_duration_bonus_value"
+            },
+            {
+              "line": 1774,
+              "text": "\t\tmax_learn_language_schemes_add = 1"
+            },
+            {
+              "line": 1775,
+              "text": "\t}"
+            },
+            {
+              "line": 1776,
+              "text": ""
+            },
+            {
+              "line": 1777,
+              "text": "\tpersonal_tenet_parameters = {"
+            },
+            {
+              "line": 1778,
+              "text": "\t\tadaptive_study_rite_cultural_acceptance"
+            },
+            {
+              "line": 1779,
+              "text": "\t\ttenet_adaptive_study_rite_bonus"
+            },
+            {
+              "line": 1780,
+              "text": "\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 4119,
+          "line_end": 4142,
+          "lines": [
+            {
+              "line": 4119,
+              "text": "\tpersonal_tenet_parameters = {"
+            },
+            {
+              "line": 4120,
+              "text": "\t\ttenet_syncretism_invite_religious_exiles"
+            },
+            {
+              "line": 4121,
+              "text": "\t\ttenet_syncretism_county_bonus"
+            },
+            {
+              "line": 4122,
+              "text": "\t\tcan_use_christian_artifacts"
+            },
+            {
+              "line": 4123,
+              "text": "\t\ttenet_christian_syncretism_study_rite_bonus"
+            },
+            {
+              "line": 4124,
+              "text": "\t}"
+            },
+            {
+              "line": 4125,
+              "text": ""
+            },
+            {
+              "line": 4126,
+              "text": "\tparameters = {"
+            },
+            {
+              "line": 4127,
+              "text": "\t\tcan_use_christian_artifacts"
+            },
+            {
+              "line": 4128,
+              "text": "\t\t# Actor opinion is delivered by special_parameters; the syncretic trigger checks the doctrine."
+            },
+            {
+              "line": 4129,
+              "text": "\t\tchristian_syncretic_actor"
+            },
+            {
+              "line": 4130,
+              "text": "\t\ttenet_christian_syncretism_study_rite_bonus"
+            },
+            {
+              "line": 4131,
+              "text": "\t\tunreformed_syncretic_conversion_malus_active"
+            },
+            {
+              "line": 4132,
+              "text": "\t}"
+            },
+            {
+              "line": 4133,
+              "text": ""
+            },
+            {
+              "line": 4134,
+              "text": "\tspecial_parameters = {"
+            },
+            {
+              "line": 4135,
+              "text": "\t\thostility_level_override = {"
+            },
+            {
+              "line": 4136,
+              "text": "\t\t\tspecial_doctrine_is_christian_faith = astray"
+            },
+            {
+              "line": 4137,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4138,
+              "text": "\t\tparameter_opinion_override = {"
+            },
+            {
+              "line": 4139,
+              "text": "\t\t\t#Sync this to syncretic_mutual_opinion_bonus_value"
+            },
+            {
+              "line": 4140,
+              "text": "\t\t\tchristian_syncretic_recipient = 30"
+            },
+            {
+              "line": 4141,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4142,
+              "text": "\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 4199,
+          "line_end": 4221,
+          "lines": [
+            {
+              "line": 4199,
+              "text": "\tpersonal_tenet_parameters = {"
+            },
+            {
+              "line": 4200,
+              "text": "\t\ttenet_syncretism_invite_religious_exiles"
+            },
+            {
+              "line": 4201,
+              "text": "\t\ttenet_syncretism_county_bonus"
+            },
+            {
+              "line": 4202,
+              "text": "\t\tcan_use_islamic_artifacts"
+            },
+            {
+              "line": 4203,
+              "text": "\t\ttenet_islamic_syncretism_study_rite_bonus"
+            },
+            {
+              "line": 4204,
+              "text": "\t}"
+            },
+            {
+              "line": 4205,
+              "text": ""
+            },
+            {
+              "line": 4206,
+              "text": "\tparameters = {"
+            },
+            {
+              "line": 4207,
+              "text": "\t\tcan_use_islamic_artifacts"
+            },
+            {
+              "line": 4208,
+              "text": "\t\tislamic_syncretic_actor"
+            },
+            {
+              "line": 4209,
+              "text": "\t\ttenet_islamic_syncretism_study_rite_bonus"
+            },
+            {
+              "line": 4210,
+              "text": "\t\tunreformed_syncretic_conversion_malus_active"
+            },
+            {
+              "line": 4211,
+              "text": "\t}"
+            },
+            {
+              "line": 4212,
+              "text": "\t"
+            },
+            {
+              "line": 4213,
+              "text": "\tspecial_parameters = {"
+            },
+            {
+              "line": 4214,
+              "text": "\t\thostility_level_override = {"
+            },
+            {
+              "line": 4215,
+              "text": "\t\t\tspecial_doctrine_is_islamic_faith = astray"
+            },
+            {
+              "line": 4216,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4217,
+              "text": "\t\tparameter_opinion_override = {"
+            },
+            {
+              "line": 4218,
+              "text": "\t\t\t#Sync this to syncretic_mutual_opinion_bonus_value"
+            },
+            {
+              "line": 4219,
+              "text": "\t\t\tislamic_syncretic_recipient = 30"
+            },
+            {
+              "line": 4220,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4221,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/religion/tenet_types/00_pam_tenets.txt",
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a",
+      "bytes": 52920,
+      "excerpts": [
+        {
+          "line_start": 1575,
+          "line_end": 1597,
+          "lines": [
+            {
+              "line": 1575,
+              "text": "tenet_adoptionism = {"
+            },
+            {
+              "line": 1576,
+              "text": "\ticon = tenet_adoptionism"
+            },
+            {
+              "line": 1577,
+              "text": ""
+            },
+            {
+              "line": 1578,
+              "text": "\trequires_dlc_flag = by_god_alone"
+            },
+            {
+              "line": 1579,
+              "text": ""
+            },
+            {
+              "line": 1580,
+              "text": "\tname = {"
+            },
+            {
+              "line": 1581,
+              "text": "\t\tfirst_valid = {"
+            },
+            {
+              "line": 1582,
+              "text": "\t\t\ttriggered_desc = {"
+            },
+            {
+              "line": 1583,
+              "text": "\t\t\t\ttrigger = {"
+            },
+            {
+              "line": 1584,
+              "text": "\t\t\t\t\tpam_latin_as_liturgical_language_trigger = yes"
+            },
+            {
+              "line": 1585,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1586,
+              "text": "\t\t\t\tdesc = tenet_adoptionism_latin_name"
+            },
+            {
+              "line": 1587,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1588,
+              "text": "\t\t\ttriggered_desc = {"
+            },
+            {
+              "line": 1589,
+              "text": "\t\t\t\ttrigger = {"
+            },
+            {
+              "line": 1590,
+              "text": "\t\t\t\t\tpam_greek_as_liturgical_language_trigger = yes"
+            },
+            {
+              "line": 1591,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1592,
+              "text": "\t\t\t\tdesc = tenet_adoptionism_greek_name"
+            },
+            {
+              "line": 1593,
+              "text": "\t\t\t}\t\t"
+            },
+            {
+              "line": 1594,
+              "text": "\t\t\tdesc = tenet_adoptionism_default_name"
+            },
+            {
+              "line": 1595,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1596,
+              "text": "\t}"
+            },
+            {
+              "line": 1597,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line_start": 1614,
+          "line_end": 1649,
+          "lines": [
+            {
+              "line": 1614,
+              "text": "\t}"
+            },
+            {
+              "line": 1615,
+              "text": ""
+            },
+            {
+              "line": 1616,
+              "text": "\tis_shown = {"
+            },
+            {
+              "line": 1617,
+              "text": "\t\thas_pam_dlc_trigger = yes"
+            },
+            {
+              "line": 1618,
+              "text": "\t}"
+            },
+            {
+              "line": 1619,
+              "text": ""
+            },
+            {
+              "line": 1620,
+              "text": "\tcan_pick = {"
+            },
+            {
+              "line": 1621,
+              "text": "\t\treligion = religion:christianity_religion"
+            },
+            {
+              "line": 1622,
+              "text": "\t\tunique_christology_trigger = yes"
+            },
+            {
+              "line": 1623,
+              "text": "\t}"
+            },
+            {
+              "line": 1624,
+              "text": "\tcan_pick_as_personal_tenet = {"
+            },
+            {
+              "line": 1625,
+              "text": "\t\tunique_christology_personal_trigger = yes"
+            },
+            {
+              "line": 1626,
+              "text": "\t}"
+            },
+            {
+              "line": 1627,
+              "text": ""
+            },
+            {
+              "line": 1628,
+              "text": "\tpiety_cost = {"
+            },
+            {
+              "line": 1629,
+              "text": "\t\tvalue = faith_tenet_cost_low"
+            },
+            {
+              "line": 1630,
+              "text": ""
+            },
+            {
+              "line": 1631,
+              "text": "\t\t# Multiplier for keeping same tenet"
+            },
+            {
+              "line": 1632,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 1633,
+              "text": "\t\t\tlimit = { rite_has_tenet = tenet_adoptionism }"
+            },
+            {
+              "line": 1634,
+              "text": "\t\t\tmultiply = faith_unchanged_doctrine_cost_mult"
+            },
+            {
+              "line": 1635,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1636,
+              "text": "\t}"
+            },
+            {
+              "line": 1637,
+              "text": ""
+            },
+            {
+              "line": 1638,
+              "text": "\tparameters = {"
+            },
+            {
+              "line": 1639,
+              "text": "\t\ttenet_adoptionism_adoption_always_possible"
+            },
+            {
+              "line": 1640,
+              "text": "\t\ttenet_adoptionism_adoption_accepted"
+            },
+            {
+              "line": 1641,
+              "text": "\t\tallow_adopt_any_holy_site"
+            },
+            {
+              "line": 1642,
+              "text": "\t\ttenet_adoptionism_legitimize_bastards"
+            },
+            {
+              "line": 1643,
+              "text": "\t\ttenet_adoptionism_legitimize_own_children"
+            },
+            {
+              "line": 1644,
+              "text": "\t}"
+            },
+            {
+              "line": 1645,
+              "text": ""
+            },
+            {
+              "line": 1646,
+              "text": "\tpersonal_tenet_parameters = {"
+            },
+            {
+              "line": 1647,
+              "text": "\t\ttenet_adoptionism_adoption_personal_active"
+            },
+            {
+              "line": 1648,
+              "text": "\t\ttenet_adoptionism_sp_on_adopt"
+            },
+            {
+              "line": 1649,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "bytes": 186187,
+      "excerpts": [
+        {
+          "line_start": 78,
+          "line_end": 112,
+          "lines": [
+            {
+              "line": 78,
+              "text": "pam_latin_as_liturgical_language_trigger = {"
+            },
+            {
+              "line": 79,
+              "text": "\tOR = {"
+            },
+            {
+              "line": 80,
+              "text": "\t\tfaith = faith:catholic"
+            },
+            {
+              "line": 81,
+              "text": "\t\tthis = rite:roman_rite"
+            },
+            {
+              "line": 82,
+              "text": "\t\tthis = rite:ambrosian_rite"
+            },
+            {
+              "line": 83,
+              "text": "\t\tthis = rite:beneventan_rite"
+            },
+            {
+              "line": 84,
+              "text": "\t\tthis = rite:mozarabic_church"
+            },
+            {
+              "line": 85,
+              "text": "\t\tthis = rite:carolingian_christianity"
+            },
+            {
+              "line": 86,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 87,
+              "text": "\t\t\trite_has_pre_scripted_liturgical_language_trigger = no"
+            },
+            {
+              "line": 88,
+              "text": "\t\t\thead_of_rite.culture ?= {"
+            },
+            {
+              "line": 89,
+              "text": "\t\t\t\tOR = {"
+            },
+            {
+              "line": 90,
+              "text": "\t\t\t\t\tthis = culture:italian"
+            },
+            {
+              "line": 91,
+              "text": "\t\t\t\t\thas_same_culture_language = culture:italian"
+            },
+            {
+              "line": 92,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 93,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 94,
+              "text": "\t\t}"
+            },
+            {
+              "line": 95,
+              "text": "\t}"
+            },
+            {
+              "line": 96,
+              "text": "}"
+            },
+            {
+              "line": 97,
+              "text": ""
+            },
+            {
+              "line": 98,
+              "text": "pam_greek_as_liturgical_language_trigger = {"
+            },
+            {
+              "line": 99,
+              "text": "\tOR = {"
+            },
+            {
+              "line": 100,
+              "text": "\t\tfaith = faith:orthodox"
+            },
+            {
+              "line": 101,
+              "text": "\t\tthis = rite:byzantine_rite"
+            },
+            {
+              "line": 102,
+              "text": "\t\tAND = {"
+            },
+            {
+              "line": 103,
+              "text": "\t\t\trite_has_pre_scripted_liturgical_language_trigger = no"
+            },
+            {
+              "line": 104,
+              "text": "\t\t\thead_of_rite.culture ?= {"
+            },
+            {
+              "line": 105,
+              "text": "\t\t\t\tOR = {"
+            },
+            {
+              "line": 106,
+              "text": "\t\t\t\t\tthis = culture:greek"
+            },
+            {
+              "line": 107,
+              "text": "\t\t\t\t\thas_same_culture_language = culture:greek"
+            },
+            {
+              "line": 108,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 109,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 110,
+              "text": "\t\t}"
+            },
+            {
+              "line": 111,
+              "text": "\t}"
+            },
+            {
+              "line": 112,
+              "text": "}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "bytes": 88549,
+      "excerpts": [
+        {
+          "line_start": 1964,
+          "line_end": 1987,
+          "lines": [
+            {
+              "line": 1964,
+              "text": "holy_site_adoptable_by_character_trigger = {"
+            },
+            {
+              "line": 1965,
+              "text": "\tany_holy_site_faith = {"
+            },
+            {
+              "line": 1966,
+              "text": "\t\tsave_temporary_scope_as = compare_faith"
+            },
+            {
+              "line": 1967,
+              "text": "\t\tOR = {"
+            },
+            {
+              "line": 1968,
+              "text": "\t\t\t$CHARACTER$.rite = { rite_has_parameter = allow_adopt_any_holy_site }"
+            },
+            {
+              "line": 1969,
+              "text": "\t\t\tAND = {"
+            },
+            {
+              "line": 1970,
+              "text": "\t\t\t\tOR = {"
+            },
+            {
+              "line": 1971,
+              "text": "\t\t\t\t\treligion = $CHARACTER$.faith.religion"
+            },
+            {
+              "line": 1972,
+              "text": "\t\t\t\t\t$CHARACTER$.faith = {"
+            },
+            {
+              "line": 1973,
+              "text": "\t\t\t\t\t\tfaith_is_syncretic_with = {"
+            },
+            {
+              "line": 1974,
+              "text": "\t\t\t\t\t\t\tFAITH = scope:compare_faith"
+            },
+            {
+              "line": 1975,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 1976,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 1977,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1978,
+              "text": "\t\t\t\t$CHARACTER$.faith = {"
+            },
+            {
+              "line": 1979,
+              "text": "\t\t\t\t\tfaith_hostility_level = {"
+            },
+            {
+              "line": 1980,
+              "text": "\t\t\t\t\t\ttarget = prev"
+            },
+            {
+              "line": 1981,
+              "text": "\t\t\t\t\t\tvalue <= faith_astray_level"
+            },
+            {
+              "line": 1982,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 1983,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1984,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1985,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1986,
+              "text": "\t}"
+            },
+            {
+              "line": 1987,
+              "text": "}"
+            }
+          ]
+        },
+        {
+          "line_start": 3537,
+          "line_end": 3567,
+          "lines": [
+            {
+              "line": 3537,
+              "text": "faith_is_syncretic_with = {"
+            },
+            {
+              "line": 3538,
+              "text": "\t$FAITH$ = {"
+            },
+            {
+              "line": 3539,
+              "text": "\t\ttrigger_if = {"
+            },
+            {
+              "line": 3540,
+              "text": "\t\t\tlimit = { has_doctrine_parameter = unreformed }"
+            },
+            {
+              "line": 3541,
+              "text": "\t\t\tprev = { has_doctrine_parameter = unreformed_syncretic_actor }"
+            },
+            {
+              "line": 3542,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3543,
+              "text": "\t\ttrigger_else_if = {"
+            },
+            {
+              "line": 3544,
+              "text": "\t\t\tlimit = { religion_tag = christianity_religion }"
+            },
+            {
+              "line": 3545,
+              "text": "\t\t\tprev = { has_doctrine_parameter = christian_syncretic_actor }"
+            },
+            {
+              "line": 3546,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3547,
+              "text": "\t\ttrigger_else_if = {"
+            },
+            {
+              "line": 3548,
+              "text": "\t\t\tlimit = { religion_tag = islam_religion }"
+            },
+            {
+              "line": 3549,
+              "text": "\t\t\tprev = { has_doctrine_parameter = islamic_syncretic_actor }"
+            },
+            {
+              "line": 3550,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3551,
+              "text": "\t\ttrigger_else_if = {"
+            },
+            {
+              "line": 3552,
+              "text": "\t\t\tlimit = { religion_tag = judaism_religion }"
+            },
+            {
+              "line": 3553,
+              "text": "\t\t\tprev = { has_doctrine_parameter = jewish_syncretic_actor }"
+            },
+            {
+              "line": 3554,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3555,
+              "text": "\t\ttrigger_else_if = {"
+            },
+            {
+              "line": 3556,
+              "text": "\t\t\tlimit = { is_in_family = rf_eastern }"
+            },
+            {
+              "line": 3557,
+              "text": "\t\t\tprev = { has_doctrine_parameter = eastern_syncretic_actor }"
+            },
+            {
+              "line": 3558,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3559,
+              "text": "\t\ttrigger_else_if = {"
+            },
+            {
+              "line": 3560,
+              "text": "\t\t\tlimit = { is_in_family = rf_sinitic }"
+            },
+            {
+              "line": 3561,
+              "text": "\t\t\tprev = { has_doctrine_parameter = sinitic_syncretic_actor }"
+            },
+            {
+              "line": 3562,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3563,
+              "text": "\t\ttrigger_else = {"
+            },
+            {
+              "line": 3564,
+              "text": "\t\t\talways = no"
+            },
+            {
+              "line": 3565,
+              "text": "\t\t}"
+            },
+            {
+              "line": 3566,
+              "text": "\t}"
+            },
+            {
+              "line": 3567,
+              "text": "}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "common/decisions/50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "bytes": 19759,
+      "excerpts": [
+        {
+          "line_start": 521,
+          "line_end": 534,
+          "lines": [
+            {
+              "line": 521,
+              "text": "\t\t\tOR = {"
+            },
+            {
+              "line": 522,
+              "text": "\t\t\t\troot.rite = { rite_has_parameter = allow_adopt_any_holy_site }"
+            },
+            {
+              "line": 523,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 524,
+              "text": "\t\t\t\t\ttext = adopt_holy_site_decision_shared_or_syncretic_faith"
+            },
+            {
+              "line": 525,
+              "text": "\t\t\t\t\tholy_site_adoptable_by_character_trigger = { CHARACTER = root }"
+            },
+            {
+              "line": 526,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 527,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 528,
+              "text": "\t\t\t# This is just to make the player requirements a bit clearer"
+            },
+            {
+              "line": 529,
+              "text": "\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 530,
+              "text": "\t\t\t\ttext = adopt_holy_site_decision_active_site"
+            },
+            {
+              "line": 531,
+              "text": "\t\t\t\tany_holy_site_faith = {"
+            },
+            {
+              "line": 532,
+              "text": "\t\t\t\t\tnum_county_followers > 0"
+            },
+            {
+              "line": 533,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 534,
+              "text": "\t\t\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "gui/window_personal_beliefs.gui",
+      "sha256": "2c9b85a11381119d0d91ec68731d5c376aed10fe48387b73701184a3d39513e2",
+      "bytes": 28472,
+      "excerpts": [
+        {
+          "line_start": 44,
+          "line_end": 54,
+          "lines": [
+            {
+              "line": 44,
+              "text": ""
+            },
+            {
+              "line": 45,
+              "text": "\t\t\t\theader_pattern = {"
+            },
+            {
+              "line": 46,
+              "text": "\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 47,
+              "text": ""
+            },
+            {
+              "line": 48,
+              "text": "\t\t\t\t\tblockoverride \"header_text\""
+            },
+            {
+              "line": 49,
+              "text": "\t\t\t\t\t{"
+            },
+            {
+              "line": 50,
+              "text": "\t\t\t\t\t\ttext = \"PERSONAL_BELIEFS_VIEW_TITLE\""
+            },
+            {
+              "line": 51,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 52,
+              "text": ""
+            },
+            {
+              "line": 53,
+              "text": "\t\t\t\t\tblockoverride \"button_close\""
+            },
+            {
+              "line": 54,
+              "text": "\t\t\t\t\t{"
+            }
+          ]
+        },
+        {
+          "line_start": 143,
+          "line_end": 194,
+          "lines": [
+            {
+              "line": 143,
+              "text": "\t\t\t\t\t\t\t\t\t\tmirror = horizontal"
+            },
+            {
+              "line": 144,
+              "text": "\t\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 145,
+              "text": "\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 146,
+              "text": ""
+            },
+            {
+              "line": 147,
+              "text": "\t\t\t\t\t\t\t\ttext_single = {"
+            },
+            {
+              "line": 148,
+              "text": "\t\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 149,
+              "text": "\t\t\t\t\t\t\t\t\tautoresize = no"
+            },
+            {
+              "line": 150,
+              "text": ""
+            },
+            {
+              "line": 151,
+              "text": "\t\t\t\t\t\t\t\t\ttext = \"PERSONAL_BELIEFS_PERSONAL_TENETS_HEADING\""
+            },
+            {
+              "line": 152,
+              "text": "\t\t\t\t\t\t\t\t\tusing = tooltip_ne"
+            },
+            {
+              "line": 153,
+              "text": "\t\t\t\t\t\t\t\t\tusing = Font_Size_Medium"
+            },
+            {
+              "line": 154,
+              "text": "\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 155,
+              "text": ""
+            },
+            {
+              "line": 156,
+              "text": "\t\t\t\t\t\t\t\texpand = {}"
+            },
+            {
+              "line": 157,
+              "text": ""
+            },
+            {
+              "line": 158,
+              "text": "\t\t\t\t\t\t\t\ttext_single = {"
+            },
+            {
+              "line": 159,
+              "text": "\t\t\t\t\t\t\t\t\tmargin_bottom = 2"
+            },
+            {
+              "line": 160,
+              "text": ""
+            },
+            {
+              "line": 161,
+              "text": "\t\t\t\t\t\t\t\t\ttext = \"[PersonalBeliefsWindow.GetPersonalTenetsTitle]\""
+            },
+            {
+              "line": 162,
+              "text": "\t\t\t\t\t\t\t\t\ttooltip = \"[PersonalBeliefsWindow.GetCharacter.GetPersonalTenetSlotsBreakdown]\""
+            },
+            {
+              "line": 163,
+              "text": "\t\t\t\t\t\t\t\t\tusing = tooltip_ne"
+            },
+            {
+              "line": 164,
+              "text": "\t\t\t\t\t\t\t\t\tusing = Font_Size_Medium"
+            },
+            {
+              "line": 165,
+              "text": "\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 166,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 167,
+              "text": ""
+            },
+            {
+              "line": 168,
+              "text": "\t\t\t\t\t\t\t"
+            },
+            {
+              "line": 169,
+              "text": "\t\t\t\t\t\t\t### PERSONAL TENETS"
+            },
+            {
+              "line": 170,
+              "text": "\t\t\t\t\t\t\tvbox = {"
+            },
+            {
+              "line": 171,
+              "text": "\t\t\t\t\t\t\t\tname = \"personal_tenets_tutorial_uses_this\""
+            },
+            {
+              "line": 172,
+              "text": "\t\t\t\t\t\t\t\tmargin = { 5 5 }"
+            },
+            {
+              "line": 173,
+              "text": "\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 174,
+              "text": "\t\t\t\t\t\t\t\tlayoutpolicy_vertical = expanding"
+            },
+            {
+              "line": 175,
+              "text": ""
+            },
+            {
+              "line": 176,
+              "text": "\t\t\t\t\t\t\t\tbackground = {"
+            },
+            {
+              "line": 177,
+              "text": "\t\t\t\t\t\t\t\t\tusing = Background_Area"
+            },
+            {
+              "line": 178,
+              "text": "\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 179,
+              "text": ""
+            },
+            {
+              "line": 180,
+              "text": "\t\t\t\t\t\t\t\tscrollbox = {"
+            },
+            {
+              "line": 181,
+              "text": "\t\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 182,
+              "text": "\t\t\t\t\t\t\t\t\tlayoutpolicy_vertical = expanding"
+            },
+            {
+              "line": 183,
+              "text": ""
+            },
+            {
+              "line": 184,
+              "text": "\t\t\t\t\t\t\t\t\tblockoverride \"scrollbox_content\""
+            },
+            {
+              "line": 185,
+              "text": "\t\t\t\t\t\t\t\t\t{"
+            },
+            {
+              "line": 186,
+              "text": "\t\t\t\t\t\t\t\t\t\tvbox = {"
+            },
+            {
+              "line": 187,
+              "text": "\t\t\t\t\t\t\t\t\t\t\tdatacontext = \"[PersonalBeliefsWindow.GetCharacter]\""
+            },
+            {
+              "line": 188,
+              "text": "\t\t\t\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 189,
+              "text": "\t\t\t\t\t\t\t\t\t\t\tspacing = 3"
+            },
+            {
+              "line": 190,
+              "text": ""
+            },
+            {
+              "line": 191,
+              "text": "\t\t\t\t\t\t\t\t\t\t\tdatamodel = \"[PersonalBeliefsWindow.GetPersonalTenets]\""
+            },
+            {
+              "line": 192,
+              "text": "\t\t\t\t\t\t\t\t\t\t\titem = {"
+            },
+            {
+              "line": 193,
+              "text": "\t\t\t\t\t\t\t\t\t\t\t\thbox_personal_tenet_slot = {}"
+            },
+            {
+              "line": 194,
+              "text": "\t\t\t\t\t\t\t\t\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 298,
+          "line_end": 310,
+          "lines": [
+            {
+              "line": 298,
+              "text": "\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 299,
+              "text": ""
+            },
+            {
+              "line": 300,
+              "text": "\t\t\t\t\t\t\t\tbutton_tab = {"
+            },
+            {
+              "line": 301,
+              "text": "\t\t\t\t\t\t\t\t\tshortcut = \"tab_1\""
+            },
+            {
+              "line": 302,
+              "text": "\t\t\t\t\t\t\t\t\tonclick = \"[PersonalBeliefsWindow.SetActiveTab( 'tab_tenets' )]\""
+            },
+            {
+              "line": 303,
+              "text": "\t\t\t\t\t\t\t\t\tdown = \"[PersonalBeliefsWindow.IsActiveTab( 'tab_tenets' )]\""
+            },
+            {
+              "line": 304,
+              "text": ""
+            },
+            {
+              "line": 305,
+              "text": "\t\t\t\t\t\t\t\t\talwaystransparent = \"[PersonalBeliefsWindow.IsActiveTab( 'tab_tenets' )]\""
+            },
+            {
+              "line": 306,
+              "text": ""
+            },
+            {
+              "line": 307,
+              "text": "\t\t\t\t\t\t\t\t\tblockoverride \"tab_label\""
+            },
+            {
+              "line": 308,
+              "text": "\t\t\t\t\t\t\t\t\t{"
+            },
+            {
+              "line": 309,
+              "text": "\t\t\t\t\t\t\t\t\t\ttext = \"PERSONAL_BELIEFS_VIEW_TAB_TENETS\""
+            },
+            {
+              "line": 310,
+              "text": "\t\t\t\t\t\t\t\t\t\tmax_width = 220"
+            }
+          ]
+        },
+        {
+          "line_start": 524,
+          "line_end": 534,
+          "lines": [
+            {
+              "line": 524,
+              "text": "\t\tname = \"personal_beliefs_button\""
+            },
+            {
+              "line": 525,
+              "text": "\t\tdatacontext = \"[Character.GetSpiritualFulfillmentType]\""
+            },
+            {
+              "line": 526,
+              "text": "\t\tdatacontext = \"[Character.GetSpiritualFulfillmentLevel]\""
+            },
+            {
+              "line": 527,
+              "text": "\t\tsize = { 54 54 }"
+            },
+            {
+              "line": 528,
+              "text": ""
+            },
+            {
+              "line": 529,
+              "text": "\t\tonclick = \"[ToggleGameViewData( 'personal_beliefs_window', GetPlayer.Self )]\""
+            },
+            {
+              "line": 530,
+              "text": "\t\ttooltipwidget = {"
+            },
+            {
+              "line": 531,
+              "text": "\t\t\thud_personal_beliefs_tooltip_container = {"
+            },
+            {
+              "line": 532,
+              "text": "\t\t\t\tblockoverride \"fulfillment_bar_datacontext\" {}"
+            },
+            {
+              "line": 533,
+              "text": "\t\t\t\tblockoverride \"fulfillment_meter\" {}"
+            },
+            {
+              "line": 534,
+              "text": "\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 744,
+          "line_end": 754,
+          "lines": [
+            {
+              "line": 744,
+              "text": "\t\t\tvisible = \"[Not( TenetItem.IsEmpty )]\""
+            },
+            {
+              "line": 745,
+              "text": "\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 746,
+              "text": "\t\t\tusing = tooltip_ws"
+            },
+            {
+              "line": 747,
+              "text": ""
+            },
+            {
+              "line": 748,
+              "text": "\t\t\ttooltipwidget = {"
+            },
+            {
+              "line": 749,
+              "text": "\t\t\t\tpersonal_tenet_tooltip = {"
+            },
+            {
+              "line": 750,
+              "text": "\t\t\t\t\tdatacontext = \"[TenetItem.GetRite]\""
+            },
+            {
+              "line": 751,
+              "text": "\t\t\t\t\tdatacontext = \"[TenetItem.GetTenet]\""
+            },
+            {
+              "line": 752,
+              "text": "\t\t\t\t\tdatacontext = \"[TenetItem.GetFaith]\""
+            },
+            {
+              "line": 753,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 754,
+              "text": "\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 808,
+          "line_end": 816,
+          "lines": [
+            {
+              "line": 808,
+              "text": ""
+            },
+            {
+              "line": 809,
+              "text": "\t\t\t\tbutton_change = {"
+            },
+            {
+              "line": 810,
+              "text": "\t\t\t\t\tvisible = \"[Not( ObjectsEqual( PersonalBeliefsWindow.GetTenetBeingSwapped.Self, TenetType.Self ) )]\""
+            },
+            {
+              "line": 811,
+              "text": "\t\t\t\t\tenabled = \"[Not( Character.IsPersonalTenetChangeOnCooldown )]\""
+            },
+            {
+              "line": 812,
+              "text": "\t\t\t\t\tonclick = \"[PersonalBeliefsWindow.StartSwapPersonalTenet( TenetType.Self )]\""
+            },
+            {
+              "line": 813,
+              "text": "\t\t\t\t\ttooltip = \"PERSONAL_BELIEFS_VIEW_TENETS_SWAP_TT\""
+            },
+            {
+              "line": 814,
+              "text": "\t\t\t\t\tusing = tooltip_nw"
+            },
+            {
+              "line": 815,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 816,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line_start": 831,
+          "line_end": 840,
+          "lines": [
+            {
+              "line": 831,
+              "text": "\t\t\tvisible = \"[TenetItem.IsEmpty]\""
+            },
+            {
+              "line": 832,
+              "text": "\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 833,
+              "text": "\t\t\ttooltip = \"PERSONAL_BELIEFS_VIEW_TENETS_ADD_TT\""
+            },
+            {
+              "line": 834,
+              "text": "\t\t\tusing = tooltip_ws"
+            },
+            {
+              "line": 835,
+              "text": "\t\t\tonclick = \"[PersonalBeliefsWindow.StartAddPersonalTenet]\""
+            },
+            {
+              "line": 836,
+              "text": "\t\t\ttext = \"PERSONAL_BELIEFS_VIEW_TENETS_ADD_LABEL\""
+            },
+            {
+              "line": 837,
+              "text": ""
+            },
+            {
+              "line": 838,
+              "text": "\t\t\tsize = { 0 80 }"
+            },
+            {
+              "line": 839,
+              "text": "\t\t}"
+            },
+            {
+              "line": 840,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line_start": 870,
+          "line_end": 880,
+          "lines": [
+            {
+              "line": 870,
+              "text": "\t\t\t\t\tdatacontext = \"[TenetItem.GetTenet]\""
+            },
+            {
+              "line": 871,
+              "text": "\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 872,
+              "text": "\t\t\t\t\tusing = tooltip_es"
+            },
+            {
+              "line": 873,
+              "text": ""
+            },
+            {
+              "line": 874,
+              "text": "\t\t\t\t\ttooltipwidget = {"
+            },
+            {
+              "line": 875,
+              "text": "\t\t\t\t\t\tpersonal_tenet_tooltip = {"
+            },
+            {
+              "line": 876,
+              "text": "\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetRite]\""
+            },
+            {
+              "line": 877,
+              "text": "\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetTenet]\""
+            },
+            {
+              "line": 878,
+              "text": "\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetFaith]\""
+            },
+            {
+              "line": 879,
+              "text": ""
+            },
+            {
+              "line": 880,
+              "text": "\t\t\t\t\t\t\tblockoverride \"tenet_tooltip_footer\""
+            }
+          ]
+        },
+        {
+          "line_start": 909,
+          "line_end": 925,
+          "lines": [
+            {
+              "line": 909,
+              "text": ""
+            },
+            {
+              "line": 910,
+              "text": "\t\t\t\t\tbutton_standard = {"
+            },
+            {
+              "line": 911,
+              "text": "\t\t\t\t\t\tvisible = \"[And( Not( TenetItem.IsEmpty ), PersonalBeliefsWindow.IsAddingPersonalTenet )]\""
+            },
+            {
+              "line": 912,
+              "text": "\t\t\t\t\t\tsize = { 100% 100% }"
+            },
+            {
+              "line": 913,
+              "text": ""
+            },
+            {
+              "line": 914,
+              "text": "\t\t\t\t\t\tenabled = \"[And( Not( TenetItem.IsPersonalTenet ), Character.CanPickAsPersonalTenet( TenetType.Self ) )]\""
+            },
+            {
+              "line": 915,
+              "text": "\t\t\t\t\t\tonclick = \"[PersonalBeliefsWindow.SelectNewPersonalTenet( TenetItem.GetTenet.Self )]\""
+            },
+            {
+              "line": 916,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 917,
+              "text": ""
+            },
+            {
+              "line": 918,
+              "text": "\t\t\t\t\tbutton_standard = {"
+            },
+            {
+              "line": 919,
+              "text": "\t\t\t\t\t\tvisible = \"[And( Not( TenetItem.IsEmpty ), PersonalBeliefsWindow.IsSwappingPersonalTenet )]\""
+            },
+            {
+              "line": 920,
+              "text": "\t\t\t\t\t\tsize = { 100% 100% }"
+            },
+            {
+              "line": 921,
+              "text": ""
+            },
+            {
+              "line": 922,
+              "text": "\t\t\t\t\t\tenabled = \"[And( Not( TenetItem.IsPersonalTenet ), Character.CanPickAsPersonalTenet( TenetType.Self ) )]\""
+            },
+            {
+              "line": 923,
+              "text": "\t\t\t\t\t\tonclick = \"[PersonalBeliefsWindow.SelectNewPersonalTenet( TenetItem.GetTenet.Self )]\""
+            },
+            {
+              "line": 924,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 925,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line_start": 1006,
+          "line_end": 1016,
+          "lines": [
+            {
+              "line": 1006,
+              "text": "\t\t\t\thbox = {"
+            },
+            {
+              "line": 1007,
+              "text": "\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 1008,
+              "text": "\t\t\t\t\ttext_single = {"
+            },
+            {
+              "line": 1009,
+              "text": "\t\t\t\t\t\ttext = \"PERSONAL_TENET_COOLTIP_RITE_TENET_EFFECTS\""
+            },
+            {
+              "line": 1010,
+              "text": "\t\t\t\t\t\talign = nobaseline"
+            },
+            {
+              "line": 1011,
+              "text": "\t\t\t\t\t\tautoresize = yes"
+            },
+            {
+              "line": 1012,
+              "text": ""
+            },
+            {
+              "line": 1013,
+              "text": "\t\t\t\t\t\ttooltipwidget = {"
+            },
+            {
+              "line": 1014,
+              "text": "\t\t\t\t\t\t\tusing = tenet_type_tooltip"
+            },
+            {
+              "line": 1015,
+              "text": ""
+            },
+            {
+              "line": 1016,
+              "text": "\t\t\t\t\t\t\tblockoverride \"divergent_tenet\" {"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "gui/window_rite_creation.gui",
+      "sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "bytes": 45219,
+      "excerpts": [
+        {
+          "line_start": 177,
+          "line_end": 200,
+          "lines": [
+            {
+              "line": 177,
+              "text": "\t\t\t\t\tvbox = {"
+            },
+            {
+              "line": 178,
+              "text": "\t\t\t\t\t\tname = \"tenets\""
+            },
+            {
+              "line": 179,
+              "text": "\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+            },
+            {
+              "line": 180,
+              "text": "\t\t\t\t\t\tspacing = 15"
+            },
+            {
+              "line": 181,
+              "text": ""
+            },
+            {
+              "line": 182,
+              "text": "\t\t\t\t\t\ttext_label_center = {"
+            },
+            {
+              "line": 183,
+              "text": "\t\t\t\t\t\t\ttext = \"[core_tenets|E]\""
+            },
+            {
+              "line": 184,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 185,
+              "text": ""
+            },
+            {
+              "line": 186,
+              "text": "\t\t\t\t\t\thbox = {"
+            },
+            {
+              "line": 187,
+              "text": "\t\t\t\t\t\t\tname = \"tenets_grid\""
+            },
+            {
+              "line": 188,
+              "text": "\t\t\t\t\t\t\tspacing = 45"
+            },
+            {
+              "line": 189,
+              "text": ""
+            },
+            {
+              "line": 190,
+              "text": "\t\t\t\t\t\t\tdatamodel = \"[RiteCreationWindow.GetTenets]\""
+            },
+            {
+              "line": 191,
+              "text": "\t\t\t\t\t\t\titem = {"
+            },
+            {
+              "line": 192,
+              "text": "\t\t\t\t\t\t\t\tbutton_group = {"
+            },
+            {
+              "line": 193,
+              "text": "\t\t\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetTenet]\""
+            },
+            {
+              "line": 194,
+              "text": "\t\t\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetFaith]\""
+            },
+            {
+              "line": 195,
+              "text": "\t\t\t\t\t\t\t\t\tallow_outside = yes"
+            },
+            {
+              "line": 196,
+              "text": ""
+            },
+            {
+              "line": 197,
+              "text": "\t\t\t\t\t\t\t\t\tonclick = \"[RiteCreationWindow.GetDoctrineCategoryWindow.ShowWindowSortList( TenetItem.GetSlotIndex )]\""
+            },
+            {
+              "line": 198,
+              "text": "\t\t\t\t\t\t\t\t\tonclick = \"[GetVariableSystem.Set( 'faith_creation_right_view', 'tenet_selection' )]\""
+            },
+            {
+              "line": 199,
+              "text": ""
+            },
+            {
+              "line": 200,
+              "text": "\t\t\t\t\t\t\t\t\ticon = {"
+            }
+          ]
+        },
+        {
+          "line_start": 208,
+          "line_end": 214,
+          "lines": [
+            {
+              "line": 208,
+              "text": ""
+            },
+            {
+              "line": 209,
+              "text": "\t\t\t\t\t\t\t\t\twidget_tenet_item = {"
+            },
+            {
+              "line": 210,
+              "text": "\t\t\t\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetTenet]\""
+            },
+            {
+              "line": 211,
+              "text": "\t\t\t\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetFaith]\""
+            },
+            {
+              "line": 212,
+              "text": "\t\t\t\t\t\t\t\t\t\tdatacontext = \"[TenetItem.GetRite]\""
+            },
+            {
+              "line": 213,
+              "text": ""
+            },
+            {
+              "line": 214,
+              "text": "\t\t\t\t\t\t\t\t\t\tblockoverride \"tenet_enabled\" {"
+            }
+          ]
+        },
+        {
+          "line_start": 242,
+          "line_end": 248,
+          "lines": [
+            {
+              "line": 242,
+              "text": "\t\t\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 243,
+              "text": ""
+            },
+            {
+              "line": 244,
+              "text": "\t\t\t\t\t\t\t\t\t\tblockoverride \"input_info_text_bottom\""
+            },
+            {
+              "line": 245,
+              "text": "\t\t\t\t\t\t\t\t\t\t{"
+            },
+            {
+              "line": 246,
+              "text": "\t\t\t\t\t\t\t\t\t\t\ttext = \"RITE_CREATION_VIEW_TENET_CLICK_TO_SELECT\""
+            },
+            {
+              "line": 247,
+              "text": "\t\t\t\t\t\t\t\t\t\t\ttooltip = \"[RiteCreationWindow.GetTenetCostTooltip( TenetType.Self )]\""
+            },
+            {
+              "line": 248,
+              "text": "\t\t\t\t\t\t\t\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line_start": 1470,
+          "line_end": 1480,
+          "lines": [
+            {
+              "line": 1470,
+              "text": "\t\t\t\t\t\tdatacontext = \"[TenetItem.GetFaith]\""
+            },
+            {
+              "line": 1471,
+              "text": "\t\t\t\t\t\tdatacontext = \"[TenetItem.GetRite]\""
+            },
+            {
+              "line": 1472,
+              "text": ""
+            },
+            {
+              "line": 1473,
+              "text": "\t\t\t\t\t\tallow_outside = yes"
+            },
+            {
+              "line": 1474,
+              "text": ""
+            },
+            {
+              "line": 1475,
+              "text": "\t\t\t\t\t\tenabled = \"[TenetItem.CanPick( RiteCreationWindow.GetFounder.Self, TopScope.Self )]\""
+            },
+            {
+              "line": 1476,
+              "text": "\t\t\t\t\t\tonclick = \"[RiteCreationWindow.SelectTenet( TenetItem.Self )]\""
+            },
+            {
+              "line": 1477,
+              "text": "\t\t\t\t\t\tonclick = \"[VariableSystem.Clear( 'faith_creation_right_view' )]\""
+            },
+            {
+              "line": 1478,
+              "text": "\t\t\t\t\t\tdown = \"[RiteCreationWindow.HasTenetSelected( TenetType.Self )]\""
+            },
+            {
+              "line": 1479,
+              "text": ""
+            },
+            {
+              "line": 1480,
+              "text": "\t\t\t\t\t\ticon = {"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/simp_chinese/gui/personal_beliefs_window_l_simp_chinese.yml",
+      "sha256": "caa20cbe7058422e329d40b55ff2bb10acb920b3569ec0bce43974869f82bb9c",
+      "bytes": 8290,
+      "excerpts": [
+        {
+          "line_start": 8,
+          "line_end": 11,
+          "lines": [
+            {
+              "line": 8,
+              "text": " PERSONAL_TENET_COOLTIP_EFFECTS: \"#S 个人信条效果：#!\""
+            },
+            {
+              "line": 9,
+              "text": " PERSONAL_TENET_BANNER_FULFILLMENT: \"@spiritual_fulfillment_icon![TenetItem.GetSpiritualFulfillmentCurrent]\""
+            },
+            {
+              "line": 10,
+              "text": " PERSONAL_TENET_COOLTIP_RITE_TENET_EFFECTS: \"#L [TenetType.GetNameNoTooltip( Rite.Self )]作为礼仪信条的效果#!\""
+            },
+            {
+              "line": 11,
+              "text": " confirm_remove_personal_tenet_title: \"移除个人信条\""
+            }
+          ]
+        },
+        {
+          "line_start": 34,
+          "line_end": 44,
+          "lines": [
+            {
+              "line": 34,
+              "text": " PERSONAL_BELIEFS_VIEW_TITLE: \"个人信念\""
+            },
+            {
+              "line": 35,
+              "text": " PERSONAL_BELIEFS_VIEW_BUTTON_TT: \"#T $PERSONAL_BELIEFS_VIEW_TITLE$#!\\n\\n#I 点击查看或更改你的[personal_tenets|E]#!\""
+            },
+            {
+              "line": 36,
+              "text": " PERSONAL_BELIEFS_VIEW_FOLLOWING: \"你信奉[Rite.GetName]\""
+            },
+            {
+              "line": 37,
+              "text": " PERSONAL_BELIEFS_VIEW_PARENT_FAITH: \"#weak 属于#![Rite.GetFaith.GetAdjective][faith|E]\""
+            },
+            {
+              "line": 38,
+              "text": " PERSONAL_BELIEFS_VIEW_PERSONAL_TENETS: \"#low （#L $VALUE$/$MAX$#!）#!\""
+            },
+            {
+              "line": 39,
+              "text": " PERSONAL_BELIEFS_PERSONAL_TENETS_HEADING: \"你的[personal_tenets|e]\""
+            },
+            {
+              "line": 40,
+              "text": " PERSONAL_BELIEFS_VIEW_TAB_TENETS: \"信条\""
+            },
+            {
+              "line": 41,
+              "text": " PERSONAL_BELIEFS_VIEW_TAB_DOCTRINES: \"教义\""
+            },
+            {
+              "line": 42,
+              "text": " PERSONAL_BELIEFS_DOCTRINES_HEADER: \"你已知的[doctrines|E]\""
+            },
+            {
+              "line": 43,
+              "text": " PERSONAL_BELIEFS_VIEW_PICKING_HEADER_ADD: \"#I 选择要采纳的[personal_tenet|E]#!\""
+            },
+            {
+              "line": 44,
+              "text": " PERSONAL_BELIEFS_VIEW_PICKING_HEADER_SWAP: \"#I 选择一项[personal_tenet|E]替换[PersonalBeliefsWindow.GetTenetBeingSwapped.GetNameNoTooltip( GetPlayer.GetRite )]#!\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b",
+      "bytes": 43748,
+      "excerpts": [
+        {
+          "line_start": 156,
+          "line_end": 159,
+          "lines": [
+            {
+              "line": 156,
+              "text": " game_concept_personal_tenet: \"个人信条\""
+            },
+            {
+              "line": 157,
+              "text": " game_concept_personal_tenet_desc: \"$game_concept_personal_tenet$是[ruler|E]作为其属灵核心所采纳的[core_tenet|E]。\\n\\n采纳在[faith|E]内属于[core_tenet_status|E]或[permitted_tenet_status|E]的$game_concept_personal_tenet$，会带来[spiritual_fulfillment|E]；而采纳被[prohibited_tenet_status|E]的个人信条，则会生成一个[secret|E]。$game_concept_personal_tenets$还会提供额外效果，并解锁特殊机制。\\n\\n一个角色可以采纳的$game_concept_personal_tenets$数量，受其[piety_level|E]以及[GetTrait('theologian').GetName( GetNullCharacter )][trait|E]影响。\""
+            },
+            {
+              "line": 158,
+              "text": " game_concept_personal_tenets: \"个人信条\""
+            },
+            {
+              "line": 159,
+              "text": " game_concept_personal_tenets_desc: \"$game_concept_personal_tenet_desc$\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "bytes": 350826,
+      "excerpts": [
+        {
+          "line_start": 1343,
+          "line_end": 1347,
+          "lines": [
+            {
+              "line": 1343,
+              "text": " game_concept_tenet_desc: \"[doctrines|E]代表着一种[rite|E]必须采取的立场，而$game_concept_tenets$代表着独特的行为习惯和实践。\""
+            },
+            {
+              "line": 1344,
+              "text": " game_concept_tenets: \"信条\""
+            },
+            {
+              "line": 1345,
+              "text": " game_concept_core_tenet: \"$game_concept_tenet$\""
+            },
+            {
+              "line": 1346,
+              "text": " game_concept_core_tenets: \"$game_concept_tenets$\""
+            },
+            {
+              "line": 1347,
+              "text": " game_concept_core: \"核心\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/simp_chinese/dlc/pam/pam_tenets_l_simp_chinese.yml",
+      "sha256": "e41c0222296f8abc8be5ece0d0a6758d012e1924cb87bc0b946e2c2b8702e757",
+      "bytes": 297189,
+      "excerpts": [
+        {
+          "line_start": 1462,
+          "line_end": 1464,
+          "lines": [
+            {
+              "line": 1462,
+              "text": " tenet_adoptionism_latin_name: \"继承说\" # DO NOT TRANSLATE"
+            },
+            {
+              "line": 1463,
+              "text": " tenet_adoptionism_greek_name: \"义子论\" # DO NOT TRANSLATE"
+            },
+            {
+              "line": 1464,
+              "text": " tenet_adoptionism_default_name: \"嗣子论\""
+            }
+          ]
+        },
+        {
+          "line_start": 1699,
+          "line_end": 1699,
+          "lines": [
+            {
+              "line": 1699,
+              "text": " doctrine_parameter_allow_adopt_any_holy_site: \"允许采用与[mainline_rite|E]有相同[core_tenet|E]的任何[faith|E]的[holy_sites|E]\""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "personal_native_spans": [
+    {
+      "role": "personal_collection_getter",
+      "start_rva": "0x28bd070",
+      "end_exclusive_rva": "0x28bd10a",
+      "read_bytes": 154,
+      "bytes": "4883ec28488b81c80100004885c0740b4805880000004883c428c365488b042558000000ba10000000488b088b040a390593ad4a037f0c488d0592ad4a034883c428c3488d0d7ead4a03e8c5699601833d72ad4a03ff75df33c0488d0dafefaa0148890568ad4a0348890569ad4a03488d05621bc20248890563ad4a03e8326e9601488d0d3fad4a03e826699601488d053bad4a034883c428c3",
+      "sha256": "b597ac3e3267cee30c5f0cd384613aea12147d3b90d5f5781c5c5c49861b56f7",
+      "instructions": [
+        {
+          "rva": "0x28bd070",
+          "bytes": "4883ec28",
+          "mnemonic": "sub",
+          "operands": "rsp, 0x28"
+        },
+        {
+          "rva": "0x28bd074",
+          "bytes": "488b81c8010000",
+          "mnemonic": "mov",
+          "operands": "rax, qword ptr [rcx + 0x1c8]"
+        },
+        {
+          "rva": "0x28bd07b",
+          "bytes": "4885c0",
+          "mnemonic": "test",
+          "operands": "rax, rax"
+        },
+        {
+          "rva": "0x28bd07e",
+          "bytes": "740b",
+          "mnemonic": "je",
+          "operands": "0x28bd08b"
+        },
+        {
+          "rva": "0x28bd080",
+          "bytes": "480588000000",
+          "mnemonic": "add",
+          "operands": "rax, 0x88"
+        },
+        {
+          "rva": "0x28bd086",
+          "bytes": "4883c428",
+          "mnemonic": "add",
+          "operands": "rsp, 0x28"
+        },
+        {
+          "rva": "0x28bd08a",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "rva": "0x28bd08b",
+          "bytes": "65488b042558000000",
+          "mnemonic": "mov",
+          "operands": "rax, qword ptr gs:[0x58]"
+        },
+        {
+          "rva": "0x28bd094",
+          "bytes": "ba10000000",
+          "mnemonic": "mov",
+          "operands": "edx, 0x10"
+        },
+        {
+          "rva": "0x28bd099",
+          "bytes": "488b08",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rax]"
+        },
+        {
+          "rva": "0x28bd09c",
+          "bytes": "8b040a",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rdx + rcx]"
+        },
+        {
+          "rva": "0x28bd09f",
+          "bytes": "390593ad4a03",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [rip + 0x34aad93], eax"
+        },
+        {
+          "rva": "0x28bd0a5",
+          "bytes": "7f0c",
+          "mnemonic": "jg",
+          "operands": "0x28bd0b3"
+        },
+        {
+          "rva": "0x28bd0a7",
+          "bytes": "488d0592ad4a03",
+          "mnemonic": "lea",
+          "operands": "rax, [rip + 0x34aad92]"
+        },
+        {
+          "rva": "0x28bd0ae",
+          "bytes": "4883c428",
+          "mnemonic": "add",
+          "operands": "rsp, 0x28"
+        },
+        {
+          "rva": "0x28bd0b2",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "rva": "0x28bd0b3",
+          "bytes": "488d0d7ead4a03",
+          "mnemonic": "lea",
+          "operands": "rcx, [rip + 0x34aad7e]"
+        },
+        {
+          "rva": "0x28bd0ba",
+          "bytes": "e8c5699601",
+          "mnemonic": "call",
+          "operands": "0x4223a84"
+        },
+        {
+          "rva": "0x28bd0bf",
+          "bytes": "833d72ad4a03ff",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [rip + 0x34aad72], -1"
+        },
+        {
+          "rva": "0x28bd0c6",
+          "bytes": "75df",
+          "mnemonic": "jne",
+          "operands": "0x28bd0a7"
+        },
+        {
+          "rva": "0x28bd0c8",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "rva": "0x28bd0ca",
+          "bytes": "488d0dafefaa01",
+          "mnemonic": "lea",
+          "operands": "rcx, [rip + 0x1aaefaf]"
+        },
+        {
+          "rva": "0x28bd0d1",
+          "bytes": "48890568ad4a03",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rip + 0x34aad68], rax"
+        },
+        {
+          "rva": "0x28bd0d8",
+          "bytes": "48890569ad4a03",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rip + 0x34aad69], rax"
+        },
+        {
+          "rva": "0x28bd0df",
+          "bytes": "488d05621bc202",
+          "mnemonic": "lea",
+          "operands": "rax, [rip + 0x2c21b62]"
+        },
+        {
+          "rva": "0x28bd0e6",
+          "bytes": "48890563ad4a03",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rip + 0x34aad63], rax"
+        },
+        {
+          "rva": "0x28bd0ed",
+          "bytes": "e8326e9601",
+          "mnemonic": "call",
+          "operands": "0x4223f24"
+        },
+        {
+          "rva": "0x28bd0f2",
+          "bytes": "488d0d3fad4a03",
+          "mnemonic": "lea",
+          "operands": "rcx, [rip + 0x34aad3f]"
+        },
+        {
+          "rva": "0x28bd0f9",
+          "bytes": "e826699601",
+          "mnemonic": "call",
+          "operands": "0x4223a24"
+        },
+        {
+          "rva": "0x28bd0fe",
+          "bytes": "488d053bad4a03",
+          "mnemonic": "lea",
+          "operands": "rax, [rip + 0x34aad3b]"
+        },
+        {
+          "rva": "0x28bd105",
+          "bytes": "4883c428",
+          "mnemonic": "add",
+          "operands": "rsp, 0x28"
+        },
+        {
+          "rva": "0x28bd109",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "0x28bd07e",
+          "to": "0x28bd08b",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x28bd0a5",
+          "to": "0x28bd0b3",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x28bd0c6",
+          "to": "0x28bd0a7",
+          "within_bounded_body": true
+        }
+      ],
+      "entry_provenance": "existing exact4 production binder and operand migration; actual bytes independently read from identity-bound .4 cache"
+    },
+    {
+      "role": "personal_parameter_evaluator",
+      "start_rva": "0x2b2bcf0",
+      "end_exclusive_rva": "0x2b2bdbf",
+      "read_bytes": 207,
+      "bytes": "40564883ec20488b02488bf16683380475058b5008eb05baffffffff4c8b0555b813034d85c074258bc225ffffff00413b402c73188bc8498b40204803c9488b4cc8084885c974053951187407488b0d2cb813034883b9c801000000750832c04883c4205ec348895c243048897c2438e80b13d9ff488b184863400c488d3cc3483bdf742b6666660f1f840000000000488b0b488d56404881c140070000e8ed2007fe84c075094883c308483bdf75e033c0483bdf488b7c2438480f44d84885db488b5c24300f95c04883c4205ec3",
+      "sha256": "6a17e9103b84538bbfbc7b58e61a8f4ec10acf3a7d6e95fadc26efb0f74cbc9d",
+      "instructions": [
+        {
+          "rva": "0x2b2bcf0",
+          "bytes": "4056",
+          "mnemonic": "push",
+          "operands": "rsi"
+        },
+        {
+          "rva": "0x2b2bcf2",
+          "bytes": "4883ec20",
+          "mnemonic": "sub",
+          "operands": "rsp, 0x20"
+        },
+        {
+          "rva": "0x2b2bcf6",
+          "bytes": "488b02",
+          "mnemonic": "mov",
+          "operands": "rax, qword ptr [rdx]"
+        },
+        {
+          "rva": "0x2b2bcf9",
+          "bytes": "488bf1",
+          "mnemonic": "mov",
+          "operands": "rsi, rcx"
+        },
+        {
+          "rva": "0x2b2bcfc",
+          "bytes": "66833804",
+          "mnemonic": "cmp",
+          "operands": "word ptr [rax], 4"
+        },
+        {
+          "rva": "0x2b2bd00",
+          "bytes": "7505",
+          "mnemonic": "jne",
+          "operands": "0x2b2bd07"
+        },
+        {
+          "rva": "0x2b2bd02",
+          "bytes": "8b5008",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [rax + 8]"
+        },
+        {
+          "rva": "0x2b2bd05",
+          "bytes": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x2b2bd0c"
+        },
+        {
+          "rva": "0x2b2bd07",
+          "bytes": "baffffffff",
+          "mnemonic": "mov",
+          "operands": "edx, 0xffffffff"
+        },
+        {
+          "rva": "0x2b2bd0c",
+          "bytes": "4c8b0555b81303",
+          "mnemonic": "mov",
+          "operands": "r8, qword ptr [rip + 0x313b855]"
+        },
+        {
+          "rva": "0x2b2bd13",
+          "bytes": "4d85c0",
+          "mnemonic": "test",
+          "operands": "r8, r8"
+        },
+        {
+          "rva": "0x2b2bd16",
+          "bytes": "7425",
+          "mnemonic": "je",
+          "operands": "0x2b2bd3d"
+        },
+        {
+          "rva": "0x2b2bd18",
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "rva": "0x2b2bd1a",
+          "bytes": "25ffffff00",
+          "mnemonic": "and",
+          "operands": "eax, 0xffffff"
+        },
+        {
+          "rva": "0x2b2bd1f",
+          "bytes": "413b402c",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [r8 + 0x2c]"
+        },
+        {
+          "rva": "0x2b2bd23",
+          "bytes": "7318",
+          "mnemonic": "jae",
+          "operands": "0x2b2bd3d"
+        },
+        {
+          "rva": "0x2b2bd25",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "rva": "0x2b2bd27",
+          "bytes": "498b4020",
+          "mnemonic": "mov",
+          "operands": "rax, qword ptr [r8 + 0x20]"
+        },
+        {
+          "rva": "0x2b2bd2b",
+          "bytes": "4803c9",
+          "mnemonic": "add",
+          "operands": "rcx, rcx"
+        },
+        {
+          "rva": "0x2b2bd2e",
+          "bytes": "488b4cc808",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rax + rcx*8 + 8]"
+        },
+        {
+          "rva": "0x2b2bd33",
+          "bytes": "4885c9",
+          "mnemonic": "test",
+          "operands": "rcx, rcx"
+        },
+        {
+          "rva": "0x2b2bd36",
+          "bytes": "7405",
+          "mnemonic": "je",
+          "operands": "0x2b2bd3d"
+        },
+        {
+          "rva": "0x2b2bd38",
+          "bytes": "395118",
+          "mnemonic": "cmp",
+          "operands": "dword ptr [rcx + 0x18], edx"
+        },
+        {
+          "rva": "0x2b2bd3b",
+          "bytes": "7407",
+          "mnemonic": "je",
+          "operands": "0x2b2bd44"
+        },
+        {
+          "rva": "0x2b2bd3d",
+          "bytes": "488b0d2cb81303",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rip + 0x313b82c]"
+        },
+        {
+          "rva": "0x2b2bd44",
+          "bytes": "4883b9c801000000",
+          "mnemonic": "cmp",
+          "operands": "qword ptr [rcx + 0x1c8], 0"
+        },
+        {
+          "rva": "0x2b2bd4c",
+          "bytes": "7508",
+          "mnemonic": "jne",
+          "operands": "0x2b2bd56"
+        },
+        {
+          "rva": "0x2b2bd4e",
+          "bytes": "32c0",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "rva": "0x2b2bd50",
+          "bytes": "4883c420",
+          "mnemonic": "add",
+          "operands": "rsp, 0x20"
+        },
+        {
+          "rva": "0x2b2bd54",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "rsi"
+        },
+        {
+          "rva": "0x2b2bd55",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "rva": "0x2b2bd56",
+          "bytes": "48895c2430",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsp + 0x30], rbx"
+        },
+        {
+          "rva": "0x2b2bd5b",
+          "bytes": "48897c2438",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsp + 0x38], rdi"
+        },
+        {
+          "rva": "0x2b2bd60",
+          "bytes": "e80b13d9ff",
+          "mnemonic": "call",
+          "operands": "0x28bd070"
+        },
+        {
+          "rva": "0x2b2bd65",
+          "bytes": "488b18",
+          "mnemonic": "mov",
+          "operands": "rbx, qword ptr [rax]"
+        },
+        {
+          "rva": "0x2b2bd68",
+          "bytes": "4863400c",
+          "mnemonic": "movsxd",
+          "operands": "rax, dword ptr [rax + 0xc]"
+        },
+        {
+          "rva": "0x2b2bd6c",
+          "bytes": "488d3cc3",
+          "mnemonic": "lea",
+          "operands": "rdi, [rbx + rax*8]"
+        },
+        {
+          "rva": "0x2b2bd70",
+          "bytes": "483bdf",
+          "mnemonic": "cmp",
+          "operands": "rbx, rdi"
+        },
+        {
+          "rva": "0x2b2bd73",
+          "bytes": "742b",
+          "mnemonic": "je",
+          "operands": "0x2b2bda0"
+        },
+        {
+          "rva": "0x2b2bd75",
+          "bytes": "6666660f1f840000000000",
+          "mnemonic": "nop",
+          "operands": "word ptr [rax + rax]"
+        },
+        {
+          "rva": "0x2b2bd80",
+          "bytes": "488b0b",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rbx]"
+        },
+        {
+          "rva": "0x2b2bd83",
+          "bytes": "488d5640",
+          "mnemonic": "lea",
+          "operands": "rdx, [rsi + 0x40]"
+        },
+        {
+          "rva": "0x2b2bd87",
+          "bytes": "4881c140070000",
+          "mnemonic": "add",
+          "operands": "rcx, 0x740"
+        },
+        {
+          "rva": "0x2b2bd8e",
+          "bytes": "e8ed2007fe",
+          "mnemonic": "call",
+          "operands": "0xb9de80"
+        },
+        {
+          "rva": "0x2b2bd93",
+          "bytes": "84c0",
+          "mnemonic": "test",
+          "operands": "al, al"
+        },
+        {
+          "rva": "0x2b2bd95",
+          "bytes": "7509",
+          "mnemonic": "jne",
+          "operands": "0x2b2bda0"
+        },
+        {
+          "rva": "0x2b2bd97",
+          "bytes": "4883c308",
+          "mnemonic": "add",
+          "operands": "rbx, 8"
+        },
+        {
+          "rva": "0x2b2bd9b",
+          "bytes": "483bdf",
+          "mnemonic": "cmp",
+          "operands": "rbx, rdi"
+        },
+        {
+          "rva": "0x2b2bd9e",
+          "bytes": "75e0",
+          "mnemonic": "jne",
+          "operands": "0x2b2bd80"
+        },
+        {
+          "rva": "0x2b2bda0",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "rva": "0x2b2bda2",
+          "bytes": "483bdf",
+          "mnemonic": "cmp",
+          "operands": "rbx, rdi"
+        },
+        {
+          "rva": "0x2b2bda5",
+          "bytes": "488b7c2438",
+          "mnemonic": "mov",
+          "operands": "rdi, qword ptr [rsp + 0x38]"
+        },
+        {
+          "rva": "0x2b2bdaa",
+          "bytes": "480f44d8",
+          "mnemonic": "cmove",
+          "operands": "rbx, rax"
+        },
+        {
+          "rva": "0x2b2bdae",
+          "bytes": "4885db",
+          "mnemonic": "test",
+          "operands": "rbx, rbx"
+        },
+        {
+          "rva": "0x2b2bdb1",
+          "bytes": "488b5c2430",
+          "mnemonic": "mov",
+          "operands": "rbx, qword ptr [rsp + 0x30]"
+        },
+        {
+          "rva": "0x2b2bdb6",
+          "bytes": "0f95c0",
+          "mnemonic": "setne",
+          "operands": "al"
+        },
+        {
+          "rva": "0x2b2bdb9",
+          "bytes": "4883c420",
+          "mnemonic": "add",
+          "operands": "rsp, 0x20"
+        },
+        {
+          "rva": "0x2b2bdbd",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "rsi"
+        },
+        {
+          "rva": "0x2b2bdbe",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "0x2b2bd00",
+          "to": "0x2b2bd07",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd05",
+          "to": "0x2b2bd0c",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd16",
+          "to": "0x2b2bd3d",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd23",
+          "to": "0x2b2bd3d",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd36",
+          "to": "0x2b2bd3d",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd3b",
+          "to": "0x2b2bd44",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd4c",
+          "to": "0x2b2bd56",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd73",
+          "to": "0x2b2bda0",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd95",
+          "to": "0x2b2bda0",
+          "within_bounded_body": true
+        },
+        {
+          "from": "0x2b2bd9e",
+          "to": "0x2b2bd80",
+          "within_bounded_body": true
+        }
+      ],
+      "entry_provenance": "existing exact4 production binder and operand migration; actual bytes independently read from identity-bound .4 cache"
+    }
+  ],
+  "recognition_reused_evidence": [
+    {
+      "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\finite-source-a01\\function-02531320.json",
+      "bytes": 13316,
+      "sha256": "f1ef30956c01f199358f073eff418e025c91975be4d17d87e75ff9811cdf9564",
+      "content": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-18T02:18:17.581536+00:00",
+        "build": "1.20.0.4",
+        "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+        "fresh_EXE_identity_source": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/ROOT-TASK-START-PREFLIGHT.json",
+          "bytes": 21681,
+          "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+        },
+        "begin_rva": "0x2531320",
+        "end_exclusive": "0x2531468",
+        "bytes_hex": "48895c24084c89442418574883ec204c8bd2488bf94c8b0dbcc77e034c8b059dc77e034d85c9742b8b92b00000008bc225ffffff00413b412c73188bc84803c9498b4120488b44c8084885c074053950107403498bc08b80080100004d85c9742a8bc881e1ffffff00413b492c731c8bd14803d2498b49204c8b4cd1084d85c974094139411075034d8bc1418b80280100004c8b05af6173034d85c074268bc881e1ffffff00413b482c73188bd14803d2498b4820488b4cd1084885c974053941187407488b0d85617303488b0506cf7e034885c074298b91b40000008bca81e1ffffff003b482c73164803c9488b4020488b44c8084885c074053950087407488b05496273038b98b8040000895c2440498d8a98000000488d542440e8ce1f4bfe84c0750b488b5c24304883c4205fc34533c08bd3488bcf488b5c24304883c4205fe988faffff",
+        "bytes_sha256": "c59d62a476a219d7d71c5864b4be77d34f78ddec86d923d99aadf7311caea4a9",
+        "instructions": [
+          {
+            "rva": "0x2531320",
+            "bytes_hex": "48895c2408",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 8], rbx"
+          },
+          {
+            "rva": "0x2531325",
+            "bytes_hex": "4c89442418",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x18], r8"
+          },
+          {
+            "rva": "0x253132a",
+            "bytes_hex": "57",
+            "mnemonic": "push",
+            "operands": "rdi"
+          },
+          {
+            "rva": "0x253132b",
+            "bytes_hex": "4883ec20",
+            "mnemonic": "sub",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "rva": "0x253132f",
+            "bytes_hex": "4c8bd2",
+            "mnemonic": "mov",
+            "operands": "r10, rdx"
+          },
+          {
+            "rva": "0x2531332",
+            "bytes_hex": "488bf9",
+            "mnemonic": "mov",
+            "operands": "rdi, rcx"
+          },
+          {
+            "rva": "0x2531335",
+            "bytes_hex": "4c8b0dbcc77e03",
+            "mnemonic": "mov",
+            "operands": "r9, qword ptr [rip + 0x37ec7bc]"
+          },
+          {
+            "rva": "0x253133c",
+            "bytes_hex": "4c8b059dc77e03",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rip + 0x37ec79d]"
+          },
+          {
+            "rva": "0x2531343",
+            "bytes_hex": "4d85c9",
+            "mnemonic": "test",
+            "operands": "r9, r9"
+          },
+          {
+            "rva": "0x2531346",
+            "bytes_hex": "742b",
+            "mnemonic": "je",
+            "operands": "0x2531373"
+          },
+          {
+            "rva": "0x2531348",
+            "bytes_hex": "8b92b0000000",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [rdx + 0xb0]"
+          },
+          {
+            "rva": "0x253134e",
+            "bytes_hex": "8bc2",
+            "mnemonic": "mov",
+            "operands": "eax, edx"
+          },
+          {
+            "rva": "0x2531350",
+            "bytes_hex": "25ffffff00",
+            "mnemonic": "and",
+            "operands": "eax, 0xffffff"
+          },
+          {
+            "rva": "0x2531355",
+            "bytes_hex": "413b412c",
+            "mnemonic": "cmp",
+            "operands": "eax, dword ptr [r9 + 0x2c]"
+          },
+          {
+            "rva": "0x2531359",
+            "bytes_hex": "7318",
+            "mnemonic": "jae",
+            "operands": "0x2531373"
+          },
+          {
+            "rva": "0x253135b",
+            "bytes_hex": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "rva": "0x253135d",
+            "bytes_hex": "4803c9",
+            "mnemonic": "add",
+            "operands": "rcx, rcx"
+          },
+          {
+            "rva": "0x2531360",
+            "bytes_hex": "498b4120",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [r9 + 0x20]"
+          },
+          {
+            "rva": "0x2531364",
+            "bytes_hex": "488b44c808",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rax + rcx*8 + 8]"
+          },
+          {
+            "rva": "0x2531369",
+            "bytes_hex": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "rva": "0x253136c",
+            "bytes_hex": "7405",
+            "mnemonic": "je",
+            "operands": "0x2531373"
+          },
+          {
+            "rva": "0x253136e",
+            "bytes_hex": "395010",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rax + 0x10], edx"
+          },
+          {
+            "rva": "0x2531371",
+            "bytes_hex": "7403",
+            "mnemonic": "je",
+            "operands": "0x2531376"
+          },
+          {
+            "rva": "0x2531373",
+            "bytes_hex": "498bc0",
+            "mnemonic": "mov",
+            "operands": "rax, r8"
+          },
+          {
+            "rva": "0x2531376",
+            "bytes_hex": "8b8008010000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [rax + 0x108]"
+          },
+          {
+            "rva": "0x253137c",
+            "bytes_hex": "4d85c9",
+            "mnemonic": "test",
+            "operands": "r9, r9"
+          },
+          {
+            "rva": "0x253137f",
+            "bytes_hex": "742a",
+            "mnemonic": "je",
+            "operands": "0x25313ab"
+          },
+          {
+            "rva": "0x2531381",
+            "bytes_hex": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "rva": "0x2531383",
+            "bytes_hex": "81e1ffffff00",
+            "mnemonic": "and",
+            "operands": "ecx, 0xffffff"
+          },
+          {
+            "rva": "0x2531389",
+            "bytes_hex": "413b492c",
+            "mnemonic": "cmp",
+            "operands": "ecx, dword ptr [r9 + 0x2c]"
+          },
+          {
+            "rva": "0x253138d",
+            "bytes_hex": "731c",
+            "mnemonic": "jae",
+            "operands": "0x25313ab"
+          },
+          {
+            "rva": "0x253138f",
+            "bytes_hex": "8bd1",
+            "mnemonic": "mov",
+            "operands": "edx, ecx"
+          },
+          {
+            "rva": "0x2531391",
+            "bytes_hex": "4803d2",
+            "mnemonic": "add",
+            "operands": "rdx, rdx"
+          },
+          {
+            "rva": "0x2531394",
+            "bytes_hex": "498b4920",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [r9 + 0x20]"
+          },
+          {
+            "rva": "0x2531398",
+            "bytes_hex": "4c8b4cd108",
+            "mnemonic": "mov",
+            "operands": "r9, qword ptr [rcx + rdx*8 + 8]"
+          },
+          {
+            "rva": "0x253139d",
+            "bytes_hex": "4d85c9",
+            "mnemonic": "test",
+            "operands": "r9, r9"
+          },
+          {
+            "rva": "0x25313a0",
+            "bytes_hex": "7409",
+            "mnemonic": "je",
+            "operands": "0x25313ab"
+          },
+          {
+            "rva": "0x25313a2",
+            "bytes_hex": "41394110",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [r9 + 0x10], eax"
+          },
+          {
+            "rva": "0x25313a6",
+            "bytes_hex": "7503",
+            "mnemonic": "jne",
+            "operands": "0x25313ab"
+          },
+          {
+            "rva": "0x25313a8",
+            "bytes_hex": "4d8bc1",
+            "mnemonic": "mov",
+            "operands": "r8, r9"
+          },
+          {
+            "rva": "0x25313ab",
+            "bytes_hex": "418b8028010000",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [r8 + 0x128]"
+          },
+          {
+            "rva": "0x25313b2",
+            "bytes_hex": "4c8b05af617303",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rip + 0x37361af]"
+          },
+          {
+            "rva": "0x25313b9",
+            "bytes_hex": "4d85c0",
+            "mnemonic": "test",
+            "operands": "r8, r8"
+          },
+          {
+            "rva": "0x25313bc",
+            "bytes_hex": "7426",
+            "mnemonic": "je",
+            "operands": "0x25313e4"
+          },
+          {
+            "rva": "0x25313be",
+            "bytes_hex": "8bc8",
+            "mnemonic": "mov",
+            "operands": "ecx, eax"
+          },
+          {
+            "rva": "0x25313c0",
+            "bytes_hex": "81e1ffffff00",
+            "mnemonic": "and",
+            "operands": "ecx, 0xffffff"
+          },
+          {
+            "rva": "0x25313c6",
+            "bytes_hex": "413b482c",
+            "mnemonic": "cmp",
+            "operands": "ecx, dword ptr [r8 + 0x2c]"
+          },
+          {
+            "rva": "0x25313ca",
+            "bytes_hex": "7318",
+            "mnemonic": "jae",
+            "operands": "0x25313e4"
+          },
+          {
+            "rva": "0x25313cc",
+            "bytes_hex": "8bd1",
+            "mnemonic": "mov",
+            "operands": "edx, ecx"
+          },
+          {
+            "rva": "0x25313ce",
+            "bytes_hex": "4803d2",
+            "mnemonic": "add",
+            "operands": "rdx, rdx"
+          },
+          {
+            "rva": "0x25313d1",
+            "bytes_hex": "498b4820",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [r8 + 0x20]"
+          },
+          {
+            "rva": "0x25313d5",
+            "bytes_hex": "488b4cd108",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rcx + rdx*8 + 8]"
+          },
+          {
+            "rva": "0x25313da",
+            "bytes_hex": "4885c9",
+            "mnemonic": "test",
+            "operands": "rcx, rcx"
+          },
+          {
+            "rva": "0x25313dd",
+            "bytes_hex": "7405",
+            "mnemonic": "je",
+            "operands": "0x25313e4"
+          },
+          {
+            "rva": "0x25313df",
+            "bytes_hex": "394118",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0x18], eax"
+          },
+          {
+            "rva": "0x25313e2",
+            "bytes_hex": "7407",
+            "mnemonic": "je",
+            "operands": "0x25313eb"
+          },
+          {
+            "rva": "0x25313e4",
+            "bytes_hex": "488b0d85617303",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x3736185]"
+          },
+          {
+            "rva": "0x25313eb",
+            "bytes_hex": "488b0506cf7e03",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rip + 0x37ecf06]"
+          },
+          {
+            "rva": "0x25313f2",
+            "bytes_hex": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "rva": "0x25313f5",
+            "bytes_hex": "7429",
+            "mnemonic": "je",
+            "operands": "0x2531420"
+          },
+          {
+            "rva": "0x25313f7",
+            "bytes_hex": "8b91b4000000",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [rcx + 0xb4]"
+          },
+          {
+            "rva": "0x25313fd",
+            "bytes_hex": "8bca",
+            "mnemonic": "mov",
+            "operands": "ecx, edx"
+          },
+          {
+            "rva": "0x25313ff",
+            "bytes_hex": "81e1ffffff00",
+            "mnemonic": "and",
+            "operands": "ecx, 0xffffff"
+          },
+          {
+            "rva": "0x2531405",
+            "bytes_hex": "3b482c",
+            "mnemonic": "cmp",
+            "operands": "ecx, dword ptr [rax + 0x2c]"
+          },
+          {
+            "rva": "0x2531408",
+            "bytes_hex": "7316",
+            "mnemonic": "jae",
+            "operands": "0x2531420"
+          },
+          {
+            "rva": "0x253140a",
+            "bytes_hex": "4803c9",
+            "mnemonic": "add",
+            "operands": "rcx, rcx"
+          },
+          {
+            "rva": "0x253140d",
+            "bytes_hex": "488b4020",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rax + 0x20]"
+          },
+          {
+            "rva": "0x2531411",
+            "bytes_hex": "488b44c808",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rax + rcx*8 + 8]"
+          },
+          {
+            "rva": "0x2531416",
+            "bytes_hex": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "rva": "0x2531419",
+            "bytes_hex": "7405",
+            "mnemonic": "je",
+            "operands": "0x2531420"
+          },
+          {
+            "rva": "0x253141b",
+            "bytes_hex": "395008",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rax + 8], edx"
+          },
+          {
+            "rva": "0x253141e",
+            "bytes_hex": "7407",
+            "mnemonic": "je",
+            "operands": "0x2531427"
+          },
+          {
+            "rva": "0x2531420",
+            "bytes_hex": "488b0549627303",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rip + 0x3736249]"
+          },
+          {
+            "rva": "0x2531427",
+            "bytes_hex": "8b98b8040000",
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [rax + 0x4b8]"
+          },
+          {
+            "rva": "0x253142d",
+            "bytes_hex": "895c2440",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 0x40], ebx"
+          },
+          {
+            "rva": "0x2531431",
+            "bytes_hex": "498d8a98000000",
+            "mnemonic": "lea",
+            "operands": "rcx, [r10 + 0x98]"
+          },
+          {
+            "rva": "0x2531438",
+            "bytes_hex": "488d542440",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x40]"
+          },
+          {
+            "rva": "0x253143d",
+            "bytes_hex": "e8ce1f4bfe",
+            "mnemonic": "call",
+            "operands": "0x9e3410"
+          },
+          {
+            "rva": "0x2531442",
+            "bytes_hex": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "rva": "0x2531444",
+            "bytes_hex": "750b",
+            "mnemonic": "jne",
+            "operands": "0x2531451"
+          },
+          {
+            "rva": "0x2531446",
+            "bytes_hex": "488b5c2430",
+            "mnemonic": "mov",
+            "operands": "rbx, qword ptr [rsp + 0x30]"
+          },
+          {
+            "rva": "0x253144b",
+            "bytes_hex": "4883c420",
+            "mnemonic": "add",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "rva": "0x253144f",
+            "bytes_hex": "5f",
+            "mnemonic": "pop",
+            "operands": "rdi"
+          },
+          {
+            "rva": "0x2531450",
+            "bytes_hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          },
+          {
+            "rva": "0x2531451",
+            "bytes_hex": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "rva": "0x2531454",
+            "bytes_hex": "8bd3",
+            "mnemonic": "mov",
+            "operands": "edx, ebx"
+          },
+          {
+            "rva": "0x2531456",
+            "bytes_hex": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "rva": "0x2531459",
+            "bytes_hex": "488b5c2430",
+            "mnemonic": "mov",
+            "operands": "rbx, qword ptr [rsp + 0x30]"
+          },
+          {
+            "rva": "0x253145e",
+            "bytes_hex": "4883c420",
+            "mnemonic": "add",
+            "operands": "rsp, 0x20"
+          },
+          {
+            "rva": "0x2531462",
+            "bytes_hex": "5f",
+            "mnemonic": "pop",
+            "operands": "rdi"
+          },
+          {
+            "rva": "0x2531463",
+            "bytes_hex": "e988faffff",
+            "mnemonic": "jmp",
+            "operands": "0x2530ef0"
+          }
+        ],
+        "scope": "fresh bounded actual EXE comparison to retained exact body; manual semantics separate",
+        "matches_prior_frozen_body": true
+      }
+    },
+    {
+      "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\finite-source-a01\\function-02530ef0.json",
+      "bytes": 23765,
+      "sha256": "3e492d2b5618eee2c9c8c991205caf5c4d54cbbb5dabba67b724179462ea6615",
+      "content": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-18T02:18:17.577987+00:00",
+        "build": "1.20.0.4",
+        "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+        "fresh_EXE_identity_source": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/ROOT-TASK-START-PREFLIGHT.json",
+          "bytes": 21681,
+          "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+        },
+        "begin_rva": "0x2530ef0",
+        "end_exclusive": "0x25311cf",
+        "bytes_hex": "48895c2418895424105556574154415541564157488dac2420ffffff4881ece0010000498bf08bda488bf94532f641bd1f00000083b9a4040000000f84050100008995200100004881c198040000488d9520010000e8c6244bfe84c0747541b6014885f60f84560200004889bd20010000488d05e89120024889442440c74424481b000000c644244c00488d85280100004889442430488d85200100004889442420488d542440488d4c2450e8af7d000090488d54245048837c246810480f435424504c8b442460488bcee8105035fe90eb694885f6746e4889bd20010000488d052a922002488944244044896c2448448874244c488d85280100004889442430488d85200100004889442420488d542440488d4c2450e8447d000090488d54245048837c246810480f435424504c8b442460488bcee8a54f35fe90488d4c2450e81a5032fe488b87900400008178384f6244470f85660100004c8bf84885f60f849800000048837e10000f848d00000083b8cc030000000f8480000000488bcee84a024afe4889bd20010000488d054c9120024889442440c74424482d000000c644244c00488d85280100004889442430488d85200100004889442420488d542440488d4c2450e8937c000090488d54245048837c246810480f435424504c8b442460488bcee8f44e35fe90488d4c2450e8694f32fe4c8bbf900400008b7f10899d200100004183bfcc03000000750732dbe9a5000000488d9520010000488d4c2470e8d74a9bfe904533e4c74424401f00000048897c24484c8d4424408b15e3ae8103488d4d88e8b28f2001498d8f800300004c8bc6488d542470e81e8626010fb6d8488d8d88000000e89f8535fe4c3965707428488d4d70e8108635fe488b8d800000004c8b09458d442408488b557041ff51104c89657044896578488b55884885d2741544896594488b4d984c8b0941b80800000041ff5110440af3410fb6c6488b9c24300200004881c4e0010000415f415e415d415c5f5e5dc3",
+        "bytes_sha256": "f4c88f9285220a2deaea89f88696e327f6a19657704fa3d261f4b29cd90995d4",
+        "instructions": [
+          {
+            "rva": "0x2530ef0",
+            "bytes_hex": "48895c2418",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x18], rbx"
+          },
+          {
+            "rva": "0x2530ef5",
+            "bytes_hex": "89542410",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 0x10], edx"
+          },
+          {
+            "rva": "0x2530ef9",
+            "bytes_hex": "55",
+            "mnemonic": "push",
+            "operands": "rbp"
+          },
+          {
+            "rva": "0x2530efa",
+            "bytes_hex": "56",
+            "mnemonic": "push",
+            "operands": "rsi"
+          },
+          {
+            "rva": "0x2530efb",
+            "bytes_hex": "57",
+            "mnemonic": "push",
+            "operands": "rdi"
+          },
+          {
+            "rva": "0x2530efc",
+            "bytes_hex": "4154",
+            "mnemonic": "push",
+            "operands": "r12"
+          },
+          {
+            "rva": "0x2530efe",
+            "bytes_hex": "4155",
+            "mnemonic": "push",
+            "operands": "r13"
+          },
+          {
+            "rva": "0x2530f00",
+            "bytes_hex": "4156",
+            "mnemonic": "push",
+            "operands": "r14"
+          },
+          {
+            "rva": "0x2530f02",
+            "bytes_hex": "4157",
+            "mnemonic": "push",
+            "operands": "r15"
+          },
+          {
+            "rva": "0x2530f04",
+            "bytes_hex": "488dac2420ffffff",
+            "mnemonic": "lea",
+            "operands": "rbp, [rsp - 0xe0]"
+          },
+          {
+            "rva": "0x2530f0c",
+            "bytes_hex": "4881ece0010000",
+            "mnemonic": "sub",
+            "operands": "rsp, 0x1e0"
+          },
+          {
+            "rva": "0x2530f13",
+            "bytes_hex": "498bf0",
+            "mnemonic": "mov",
+            "operands": "rsi, r8"
+          },
+          {
+            "rva": "0x2530f16",
+            "bytes_hex": "8bda",
+            "mnemonic": "mov",
+            "operands": "ebx, edx"
+          },
+          {
+            "rva": "0x2530f18",
+            "bytes_hex": "488bf9",
+            "mnemonic": "mov",
+            "operands": "rdi, rcx"
+          },
+          {
+            "rva": "0x2530f1b",
+            "bytes_hex": "4532f6",
+            "mnemonic": "xor",
+            "operands": "r14b, r14b"
+          },
+          {
+            "rva": "0x2530f1e",
+            "bytes_hex": "41bd1f000000",
+            "mnemonic": "mov",
+            "operands": "r13d, 0x1f"
+          },
+          {
+            "rva": "0x2530f24",
+            "bytes_hex": "83b9a404000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0x4a4], 0"
+          },
+          {
+            "rva": "0x2530f2b",
+            "bytes_hex": "0f8405010000",
+            "mnemonic": "je",
+            "operands": "0x2531036"
+          },
+          {
+            "rva": "0x2530f31",
+            "bytes_hex": "899520010000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rbp + 0x120], edx"
+          },
+          {
+            "rva": "0x2530f37",
+            "bytes_hex": "4881c198040000",
+            "mnemonic": "add",
+            "operands": "rcx, 0x498"
+          },
+          {
+            "rva": "0x2530f3e",
+            "bytes_hex": "488d9520010000",
+            "mnemonic": "lea",
+            "operands": "rdx, [rbp + 0x120]"
+          },
+          {
+            "rva": "0x2530f45",
+            "bytes_hex": "e8c6244bfe",
+            "mnemonic": "call",
+            "operands": "0x9e3410"
+          },
+          {
+            "rva": "0x2530f4a",
+            "bytes_hex": "84c0",
+            "mnemonic": "test",
+            "operands": "al, al"
+          },
+          {
+            "rva": "0x2530f4c",
+            "bytes_hex": "7475",
+            "mnemonic": "je",
+            "operands": "0x2530fc3"
+          },
+          {
+            "rva": "0x2530f4e",
+            "bytes_hex": "41b601",
+            "mnemonic": "mov",
+            "operands": "r14b, 1"
+          },
+          {
+            "rva": "0x2530f51",
+            "bytes_hex": "4885f6",
+            "mnemonic": "test",
+            "operands": "rsi, rsi"
+          },
+          {
+            "rva": "0x2530f54",
+            "bytes_hex": "0f8456020000",
+            "mnemonic": "je",
+            "operands": "0x25311b0"
+          },
+          {
+            "rva": "0x2530f5a",
+            "bytes_hex": "4889bd20010000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rbp + 0x120], rdi"
+          },
+          {
+            "rva": "0x2530f61",
+            "bytes_hex": "488d05e8912002",
+            "mnemonic": "lea",
+            "operands": "rax, [rip + 0x22091e8]"
+          },
+          {
+            "rva": "0x2530f68",
+            "bytes_hex": "4889442440",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x40], rax"
+          },
+          {
+            "rva": "0x2530f6d",
+            "bytes_hex": "c74424481b000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 0x48], 0x1b"
+          },
+          {
+            "rva": "0x2530f75",
+            "bytes_hex": "c644244c00",
+            "mnemonic": "mov",
+            "operands": "byte ptr [rsp + 0x4c], 0"
+          },
+          {
+            "rva": "0x2530f7a",
+            "bytes_hex": "488d8528010000",
+            "mnemonic": "lea",
+            "operands": "rax, [rbp + 0x128]"
+          },
+          {
+            "rva": "0x2530f81",
+            "bytes_hex": "4889442430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rax"
+          },
+          {
+            "rva": "0x2530f86",
+            "bytes_hex": "488d8520010000",
+            "mnemonic": "lea",
+            "operands": "rax, [rbp + 0x120]"
+          },
+          {
+            "rva": "0x2530f8d",
+            "bytes_hex": "4889442420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], rax"
+          },
+          {
+            "rva": "0x2530f92",
+            "bytes_hex": "488d542440",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x40]"
+          },
+          {
+            "rva": "0x2530f97",
+            "bytes_hex": "488d4c2450",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2530f9c",
+            "bytes_hex": "e8af7d0000",
+            "mnemonic": "call",
+            "operands": "0x2538d50"
+          },
+          {
+            "rva": "0x2530fa1",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x2530fa2",
+            "bytes_hex": "488d542450",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2530fa7",
+            "bytes_hex": "48837c246810",
+            "mnemonic": "cmp",
+            "operands": "qword ptr [rsp + 0x68], 0x10"
+          },
+          {
+            "rva": "0x2530fad",
+            "bytes_hex": "480f43542450",
+            "mnemonic": "cmovae",
+            "operands": "rdx, qword ptr [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2530fb3",
+            "bytes_hex": "4c8b442460",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rsp + 0x60]"
+          },
+          {
+            "rva": "0x2530fb8",
+            "bytes_hex": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "rva": "0x2530fbb",
+            "bytes_hex": "e8105035fe",
+            "mnemonic": "call",
+            "operands": "0x885fd0"
+          },
+          {
+            "rva": "0x2530fc0",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x2530fc1",
+            "bytes_hex": "eb69",
+            "mnemonic": "jmp",
+            "operands": "0x253102c"
+          },
+          {
+            "rva": "0x2530fc3",
+            "bytes_hex": "4885f6",
+            "mnemonic": "test",
+            "operands": "rsi, rsi"
+          },
+          {
+            "rva": "0x2530fc6",
+            "bytes_hex": "746e",
+            "mnemonic": "je",
+            "operands": "0x2531036"
+          },
+          {
+            "rva": "0x2530fc8",
+            "bytes_hex": "4889bd20010000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rbp + 0x120], rdi"
+          },
+          {
+            "rva": "0x2530fcf",
+            "bytes_hex": "488d052a922002",
+            "mnemonic": "lea",
+            "operands": "rax, [rip + 0x220922a]"
+          },
+          {
+            "rva": "0x2530fd6",
+            "bytes_hex": "4889442440",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x40], rax"
+          },
+          {
+            "rva": "0x2530fdb",
+            "bytes_hex": "44896c2448",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 0x48], r13d"
+          },
+          {
+            "rva": "0x2530fe0",
+            "bytes_hex": "448874244c",
+            "mnemonic": "mov",
+            "operands": "byte ptr [rsp + 0x4c], r14b"
+          },
+          {
+            "rva": "0x2530fe5",
+            "bytes_hex": "488d8528010000",
+            "mnemonic": "lea",
+            "operands": "rax, [rbp + 0x128]"
+          },
+          {
+            "rva": "0x2530fec",
+            "bytes_hex": "4889442430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rax"
+          },
+          {
+            "rva": "0x2530ff1",
+            "bytes_hex": "488d8520010000",
+            "mnemonic": "lea",
+            "operands": "rax, [rbp + 0x120]"
+          },
+          {
+            "rva": "0x2530ff8",
+            "bytes_hex": "4889442420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], rax"
+          },
+          {
+            "rva": "0x2530ffd",
+            "bytes_hex": "488d542440",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x40]"
+          },
+          {
+            "rva": "0x2531002",
+            "bytes_hex": "488d4c2450",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2531007",
+            "bytes_hex": "e8447d0000",
+            "mnemonic": "call",
+            "operands": "0x2538d50"
+          },
+          {
+            "rva": "0x253100c",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x253100d",
+            "bytes_hex": "488d542450",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2531012",
+            "bytes_hex": "48837c246810",
+            "mnemonic": "cmp",
+            "operands": "qword ptr [rsp + 0x68], 0x10"
+          },
+          {
+            "rva": "0x2531018",
+            "bytes_hex": "480f43542450",
+            "mnemonic": "cmovae",
+            "operands": "rdx, qword ptr [rsp + 0x50]"
+          },
+          {
+            "rva": "0x253101e",
+            "bytes_hex": "4c8b442460",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rsp + 0x60]"
+          },
+          {
+            "rva": "0x2531023",
+            "bytes_hex": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "rva": "0x2531026",
+            "bytes_hex": "e8a54f35fe",
+            "mnemonic": "call",
+            "operands": "0x885fd0"
+          },
+          {
+            "rva": "0x253102b",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x253102c",
+            "bytes_hex": "488d4c2450",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2531031",
+            "bytes_hex": "e81a5032fe",
+            "mnemonic": "call",
+            "operands": "0x856050"
+          },
+          {
+            "rva": "0x2531036",
+            "bytes_hex": "488b8790040000",
+            "mnemonic": "mov",
+            "operands": "rax, qword ptr [rdi + 0x490]"
+          },
+          {
+            "rva": "0x253103d",
+            "bytes_hex": "8178384f624447",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rax + 0x38], 0x4744624f"
+          },
+          {
+            "rva": "0x2531044",
+            "bytes_hex": "0f8566010000",
+            "mnemonic": "jne",
+            "operands": "0x25311b0"
+          },
+          {
+            "rva": "0x253104a",
+            "bytes_hex": "4c8bf8",
+            "mnemonic": "mov",
+            "operands": "r15, rax"
+          },
+          {
+            "rva": "0x253104d",
+            "bytes_hex": "4885f6",
+            "mnemonic": "test",
+            "operands": "rsi, rsi"
+          },
+          {
+            "rva": "0x2531050",
+            "bytes_hex": "0f8498000000",
+            "mnemonic": "je",
+            "operands": "0x25310ee"
+          },
+          {
+            "rva": "0x2531056",
+            "bytes_hex": "48837e1000",
+            "mnemonic": "cmp",
+            "operands": "qword ptr [rsi + 0x10], 0"
+          },
+          {
+            "rva": "0x253105b",
+            "bytes_hex": "0f848d000000",
+            "mnemonic": "je",
+            "operands": "0x25310ee"
+          },
+          {
+            "rva": "0x2531061",
+            "bytes_hex": "83b8cc03000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rax + 0x3cc], 0"
+          },
+          {
+            "rva": "0x2531068",
+            "bytes_hex": "0f8480000000",
+            "mnemonic": "je",
+            "operands": "0x25310ee"
+          },
+          {
+            "rva": "0x253106e",
+            "bytes_hex": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "rva": "0x2531071",
+            "bytes_hex": "e84a024afe",
+            "mnemonic": "call",
+            "operands": "0x9d12c0"
+          },
+          {
+            "rva": "0x2531076",
+            "bytes_hex": "4889bd20010000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rbp + 0x120], rdi"
+          },
+          {
+            "rva": "0x253107d",
+            "bytes_hex": "488d054c912002",
+            "mnemonic": "lea",
+            "operands": "rax, [rip + 0x220914c]"
+          },
+          {
+            "rva": "0x2531084",
+            "bytes_hex": "4889442440",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x40], rax"
+          },
+          {
+            "rva": "0x2531089",
+            "bytes_hex": "c74424482d000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 0x48], 0x2d"
+          },
+          {
+            "rva": "0x2531091",
+            "bytes_hex": "c644244c00",
+            "mnemonic": "mov",
+            "operands": "byte ptr [rsp + 0x4c], 0"
+          },
+          {
+            "rva": "0x2531096",
+            "bytes_hex": "488d8528010000",
+            "mnemonic": "lea",
+            "operands": "rax, [rbp + 0x128]"
+          },
+          {
+            "rva": "0x253109d",
+            "bytes_hex": "4889442430",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x30], rax"
+          },
+          {
+            "rva": "0x25310a2",
+            "bytes_hex": "488d8520010000",
+            "mnemonic": "lea",
+            "operands": "rax, [rbp + 0x120]"
+          },
+          {
+            "rva": "0x25310a9",
+            "bytes_hex": "4889442420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], rax"
+          },
+          {
+            "rva": "0x25310ae",
+            "bytes_hex": "488d542440",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x40]"
+          },
+          {
+            "rva": "0x25310b3",
+            "bytes_hex": "488d4c2450",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x25310b8",
+            "bytes_hex": "e8937c0000",
+            "mnemonic": "call",
+            "operands": "0x2538d50"
+          },
+          {
+            "rva": "0x25310bd",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x25310be",
+            "bytes_hex": "488d542450",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x25310c3",
+            "bytes_hex": "48837c246810",
+            "mnemonic": "cmp",
+            "operands": "qword ptr [rsp + 0x68], 0x10"
+          },
+          {
+            "rva": "0x25310c9",
+            "bytes_hex": "480f43542450",
+            "mnemonic": "cmovae",
+            "operands": "rdx, qword ptr [rsp + 0x50]"
+          },
+          {
+            "rva": "0x25310cf",
+            "bytes_hex": "4c8b442460",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rsp + 0x60]"
+          },
+          {
+            "rva": "0x25310d4",
+            "bytes_hex": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "rva": "0x25310d7",
+            "bytes_hex": "e8f44e35fe",
+            "mnemonic": "call",
+            "operands": "0x885fd0"
+          },
+          {
+            "rva": "0x25310dc",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x25310dd",
+            "bytes_hex": "488d4c2450",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x50]"
+          },
+          {
+            "rva": "0x25310e2",
+            "bytes_hex": "e8694f32fe",
+            "mnemonic": "call",
+            "operands": "0x856050"
+          },
+          {
+            "rva": "0x25310e7",
+            "bytes_hex": "4c8bbf90040000",
+            "mnemonic": "mov",
+            "operands": "r15, qword ptr [rdi + 0x490]"
+          },
+          {
+            "rva": "0x25310ee",
+            "bytes_hex": "8b7f10",
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [rdi + 0x10]"
+          },
+          {
+            "rva": "0x25310f1",
+            "bytes_hex": "899d20010000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rbp + 0x120], ebx"
+          },
+          {
+            "rva": "0x25310f7",
+            "bytes_hex": "4183bfcc03000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [r15 + 0x3cc], 0"
+          },
+          {
+            "rva": "0x25310ff",
+            "bytes_hex": "7507",
+            "mnemonic": "jne",
+            "operands": "0x2531108"
+          },
+          {
+            "rva": "0x2531101",
+            "bytes_hex": "32db",
+            "mnemonic": "xor",
+            "operands": "bl, bl"
+          },
+          {
+            "rva": "0x2531103",
+            "bytes_hex": "e9a5000000",
+            "mnemonic": "jmp",
+            "operands": "0x25311ad"
+          },
+          {
+            "rva": "0x2531108",
+            "bytes_hex": "488d9520010000",
+            "mnemonic": "lea",
+            "operands": "rdx, [rbp + 0x120]"
+          },
+          {
+            "rva": "0x253110f",
+            "bytes_hex": "488d4c2470",
+            "mnemonic": "lea",
+            "operands": "rcx, [rsp + 0x70]"
+          },
+          {
+            "rva": "0x2531114",
+            "bytes_hex": "e8d74a9bfe",
+            "mnemonic": "call",
+            "operands": "0xee5bf0"
+          },
+          {
+            "rva": "0x2531119",
+            "bytes_hex": "90",
+            "mnemonic": "nop",
+            "operands": ""
+          },
+          {
+            "rva": "0x253111a",
+            "bytes_hex": "4533e4",
+            "mnemonic": "xor",
+            "operands": "r12d, r12d"
+          },
+          {
+            "rva": "0x253111d",
+            "bytes_hex": "c74424401f000000",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 0x40], 0x1f"
+          },
+          {
+            "rva": "0x2531125",
+            "bytes_hex": "48897c2448",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x48], rdi"
+          },
+          {
+            "rva": "0x253112a",
+            "bytes_hex": "4c8d442440",
+            "mnemonic": "lea",
+            "operands": "r8, [rsp + 0x40]"
+          },
+          {
+            "rva": "0x253112f",
+            "bytes_hex": "8b15e3ae8103",
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [rip + 0x381aee3]"
+          },
+          {
+            "rva": "0x2531135",
+            "bytes_hex": "488d4d88",
+            "mnemonic": "lea",
+            "operands": "rcx, [rbp - 0x78]"
+          },
+          {
+            "rva": "0x2531139",
+            "bytes_hex": "e8b28f2001",
+            "mnemonic": "call",
+            "operands": "0x373a0f0"
+          },
+          {
+            "rva": "0x253113e",
+            "bytes_hex": "498d8f80030000",
+            "mnemonic": "lea",
+            "operands": "rcx, [r15 + 0x380]"
+          },
+          {
+            "rva": "0x2531145",
+            "bytes_hex": "4c8bc6",
+            "mnemonic": "mov",
+            "operands": "r8, rsi"
+          },
+          {
+            "rva": "0x2531148",
+            "bytes_hex": "488d542470",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x70]"
+          },
+          {
+            "rva": "0x253114d",
+            "bytes_hex": "e81e862601",
+            "mnemonic": "call",
+            "operands": "0x3799770"
+          },
+          {
+            "rva": "0x2531152",
+            "bytes_hex": "0fb6d8",
+            "mnemonic": "movzx",
+            "operands": "ebx, al"
+          },
+          {
+            "rva": "0x2531155",
+            "bytes_hex": "488d8d88000000",
+            "mnemonic": "lea",
+            "operands": "rcx, [rbp + 0x88]"
+          },
+          {
+            "rva": "0x253115c",
+            "bytes_hex": "e89f8535fe",
+            "mnemonic": "call",
+            "operands": "0x889700"
+          },
+          {
+            "rva": "0x2531161",
+            "bytes_hex": "4c396570",
+            "mnemonic": "cmp",
+            "operands": "qword ptr [rbp + 0x70], r12"
+          },
+          {
+            "rva": "0x2531165",
+            "bytes_hex": "7428",
+            "mnemonic": "je",
+            "operands": "0x253118f"
+          },
+          {
+            "rva": "0x2531167",
+            "bytes_hex": "488d4d70",
+            "mnemonic": "lea",
+            "operands": "rcx, [rbp + 0x70]"
+          },
+          {
+            "rva": "0x253116b",
+            "bytes_hex": "e8108635fe",
+            "mnemonic": "call",
+            "operands": "0x889780"
+          },
+          {
+            "rva": "0x2531170",
+            "bytes_hex": "488b8d80000000",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbp + 0x80]"
+          },
+          {
+            "rva": "0x2531177",
+            "bytes_hex": "4c8b09",
+            "mnemonic": "mov",
+            "operands": "r9, qword ptr [rcx]"
+          },
+          {
+            "rva": "0x253117a",
+            "bytes_hex": "458d442408",
+            "mnemonic": "lea",
+            "operands": "r8d, [r12 + 8]"
+          },
+          {
+            "rva": "0x253117f",
+            "bytes_hex": "488b5570",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbp + 0x70]"
+          },
+          {
+            "rva": "0x2531183",
+            "bytes_hex": "41ff5110",
+            "mnemonic": "call",
+            "operands": "qword ptr [r9 + 0x10]"
+          },
+          {
+            "rva": "0x2531187",
+            "bytes_hex": "4c896570",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rbp + 0x70], r12"
+          },
+          {
+            "rva": "0x253118b",
+            "bytes_hex": "44896578",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rbp + 0x78], r12d"
+          },
+          {
+            "rva": "0x253118f",
+            "bytes_hex": "488b5588",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbp - 0x78]"
+          },
+          {
+            "rva": "0x2531193",
+            "bytes_hex": "4885d2",
+            "mnemonic": "test",
+            "operands": "rdx, rdx"
+          },
+          {
+            "rva": "0x2531196",
+            "bytes_hex": "7415",
+            "mnemonic": "je",
+            "operands": "0x25311ad"
+          },
+          {
+            "rva": "0x2531198",
+            "bytes_hex": "44896594",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rbp - 0x6c], r12d"
+          },
+          {
+            "rva": "0x253119c",
+            "bytes_hex": "488b4d98",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rbp - 0x68]"
+          },
+          {
+            "rva": "0x25311a0",
+            "bytes_hex": "4c8b09",
+            "mnemonic": "mov",
+            "operands": "r9, qword ptr [rcx]"
+          },
+          {
+            "rva": "0x25311a3",
+            "bytes_hex": "41b808000000",
+            "mnemonic": "mov",
+            "operands": "r8d, 8"
+          },
+          {
+            "rva": "0x25311a9",
+            "bytes_hex": "41ff5110",
+            "mnemonic": "call",
+            "operands": "qword ptr [r9 + 0x10]"
+          },
+          {
+            "rva": "0x25311ad",
+            "bytes_hex": "440af3",
+            "mnemonic": "or",
+            "operands": "r14b, bl"
+          },
+          {
+            "rva": "0x25311b0",
+            "bytes_hex": "410fb6c6",
+            "mnemonic": "movzx",
+            "operands": "eax, r14b"
+          },
+          {
+            "rva": "0x25311b4",
+            "bytes_hex": "488b9c2430020000",
+            "mnemonic": "mov",
+            "operands": "rbx, qword ptr [rsp + 0x230]"
+          },
+          {
+            "rva": "0x25311bc",
+            "bytes_hex": "4881c4e0010000",
+            "mnemonic": "add",
+            "operands": "rsp, 0x1e0"
+          },
+          {
+            "rva": "0x25311c3",
+            "bytes_hex": "415f",
+            "mnemonic": "pop",
+            "operands": "r15"
+          },
+          {
+            "rva": "0x25311c5",
+            "bytes_hex": "415e",
+            "mnemonic": "pop",
+            "operands": "r14"
+          },
+          {
+            "rva": "0x25311c7",
+            "bytes_hex": "415d",
+            "mnemonic": "pop",
+            "operands": "r13"
+          },
+          {
+            "rva": "0x25311c9",
+            "bytes_hex": "415c",
+            "mnemonic": "pop",
+            "operands": "r12"
+          },
+          {
+            "rva": "0x25311cb",
+            "bytes_hex": "5f",
+            "mnemonic": "pop",
+            "operands": "rdi"
+          },
+          {
+            "rva": "0x25311cc",
+            "bytes_hex": "5e",
+            "mnemonic": "pop",
+            "operands": "rsi"
+          },
+          {
+            "rva": "0x25311cd",
+            "bytes_hex": "5d",
+            "mnemonic": "pop",
+            "operands": "rbp"
+          },
+          {
+            "rva": "0x25311ce",
+            "bytes_hex": "c3",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "scope": "fresh bounded actual EXE comparison to retained exact body; manual semantics separate",
+        "matches_prior_frozen_body": true
+      }
+    }
+  ]
+}

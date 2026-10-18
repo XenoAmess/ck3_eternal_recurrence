@@ -31,7 +31,7 @@ from PIL import Image, ImageFont
 
 from .production import fresh_runtime, pin, read, write, project, cue_duration, package_bytes
 from .context_composer import font_render_planner
-from . import semantic_graphics
+from . import semantic_graphics, gui_composition
 
 SCHEMA = 'ck3-faith-power-full-edit-v1'
 MAX_SECONDS = 1860
@@ -255,7 +255,7 @@ class Inputs:
                 raise ValueError('Full episode needs all frozen cues or explicit reasoned exclusions')
         elif not selected_ids.issubset(baseline):
             raise ValueError('Short review references an unknown existing cue')
-        rows=[]; intervals={}; focus_checks=[]
+        rows=[]; intervals={}; focus_checks=[]; composition_checks=[]
         for row in doc['cues']:
             old=baseline[row['id']]
             if any(row[key]!=old[key] for key in ('zh','en','claim_ids','shot_ids')):
@@ -326,7 +326,12 @@ class Inputs:
                 if not part.get('disclosure'):
                     raise ValueError('Each visual part needs an explicit source/experiment disclosure')
                 kind=part['kind']
-                if kind in {'diagram','native-readback'}:
+                if kind==gui_composition.KIND:
+                    check=gui_composition.inspect(part,self.bound,doc['machine_id'])
+                    part['composition_source_check']=check
+                    composition_checks.append({'cue_id':row['id'],**check})
+                    self.errors.extend(check['gaps'])
+                elif kind in {'diagram','native-readback'}:
                     if duration>6.4:raise ValueError('One source diagram focus exceeds 6.4 seconds')
                     self.bound(part['image'])
                     if kind=='diagram' and part.get('live_result_depicted') is not False:
@@ -377,6 +382,7 @@ class Inputs:
         budget=peak_budget(total,len(ordered),profile=profile)
         return {'rows':ordered,'seconds':total,'gaps':self.errors,
             'ready_to_build':not self.errors,'budget':budget,'background_music':music,
+            'composition_source_checks':composition_checks,'composition_coverage':gui_composition.coverage(ordered),
             'focus_geometry_checks':focus_checks,'existing_measured_audio_inventory_count':158,'existing_audio_selected_count':len(doc['cues']),
             'scope':scope,'new_TTS_requested':False,
             'result_slots':slots,'native_business_verified':False,'human_1x_signoff':False}
@@ -459,6 +465,8 @@ def subtitle(row,font_path,font_name):
             (part['kind'] in {'diagram','native-readback'} and part.get('burned_in_disclosure') and 'focus_rect' not in part)):
             # Explicit graphic receipt validation happens before build; raw gameplay keeps its label.
             cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],part['disclosure']))
+        if part['kind']==gui_composition.KIND:
+            gui_composition.ass(part,cursor,font_path,font_name,tracks,cues,prefix=row['id']+'.composition'+str(number))
         cursor+=part['duration_seconds']
     return render_ass_document(AssDocumentConfig('Faith and Power: review',2560,1440,row['duration_seconds']),
         tracks,cues,available_font_names=[font_name])
@@ -466,9 +474,13 @@ def subtitle(row,font_path,font_name):
 
 def visual_command(ffmpeg,row,target,bound):
     argv=[str(ffmpeg),'-nostdin','-n','-hide_banner','-loglevel','error','-threads','2','-filter_complex_threads','2']
-    filters=[]
+    filters=[]; next_input=0
     for i,part in enumerate(row['visual_parts']):
         d=part['duration_seconds']
+        if part['kind']==gui_composition.KIND:
+            inputs,graph,next_input=gui_composition.filters(part,bound,next_input,f'v{i}')
+            argv+=inputs;filters.extend(graph)
+            continue
         if part['kind'] in {'diagram','native-readback'}:
             argv+=['-loop','1','-framerate','30','-t',f'{d:.9f}','-i',str(bound(part['image']))]
             scale=focus_filter(part,bound)
@@ -478,7 +490,8 @@ def visual_command(ffmpeg,row,target,bound):
         else:
             argv+=['-ss',f"{part['raw_start_seconds']:.9f}",'-t',f'{d:.9f}','-i',str(bound(part['raw']))]
             scale='scale=2560:1120:force_original_aspect_ratio=decrease:flags=lanczos,pad=2560:1440:(ow-iw)/2:0:color=0x211813'
-        filters.append(f'[{i}:v]setpts=PTS-STARTPTS,{scale},setsar=1,fps=30:round=near,trim=duration={d:.9f},setpts=PTS-STARTPTS[v{i}]')
+        filters.append(f'[{next_input}:v]setpts=PTS-STARTPTS,{scale},setsar=1,fps=30:round=near,trim=duration={d:.9f},setpts=PTS-STARTPTS[v{i}]')
+        next_input+=1
     filters.append(''.join(f'[v{i}]' for i in range(len(row['visual_parts'])))+f"concat=n={len(row['visual_parts'])}:v=1:a=0[out]")
     argv+=['-filter_complex',';'.join(filters),'-map','[out]','-an','-c:v','libx264','-preset','veryfast','-crf','21',
         '-maxrate',str(VIDEO_RATE),'-bufsize',str(BUFFER_BITS),'-threads','2','-pix_fmt','yuv420p',
@@ -785,11 +798,14 @@ def build(args,doc,inspection,inputs,admission):
                 part['actual_final_first_pts']=pts[part_cursor]
                 part['actual_final_last_pts']=pts[stop-1]
                 part['actual_final_end_pts_exclusive']=pts[stop-1]+1/30
+                if part['kind']==gui_composition.KIND:
+                    part['outer_source_class']='derived-composition'
+                    part['embedded_layers_actual_map']=gui_composition.actual_map_layers(part,pts[part_cursor],part_cursor)
                 part_cursor=stop
             if part_cursor!=high:raise ValueError('Part mapping does not cover actual final cue frames')
         map_path=write(out/'raw-to-final-map.json',{'machine_id':doc['machine_id'],'observed_at_utc':now(),
             'evidence_source':'actual final decode/probe/every frame PTS plus immutable input catalog',
-            'final':pin(final),'entries':mapping,'human_full_1x_review_performed':False,
+            'final':pin(final),'entries':mapping,'composition_coverage':gui_composition.coverage(inspection['rows']),'human_full_1x_review_performed':False,
             'human_listening_performed':False,'clean_span_certified':False,'native_business_verified':False})
         text_paths=companion_text(inspection['rows'],mapping,media/'text')
         for path in text_paths:records.append(('text.'+path.stem,'subtitle-or-script',path,'text/plain'))

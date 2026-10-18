@@ -418,32 +418,117 @@ CROSS_RELIGION_ADOPTION = {'schema': 'xar.holy-site.cross-religion-adoption-plan
                                                 'definition; this lane does not claim an independently '
                                                 'isolated live test of each relation subpredicate, nor a '
                                                 'live Faith/mainline engine alias experiment.'},
- 'unresolved_native_observations': [{'id': 'faith_native_alias',
-                                     'boundary': 'The adopted helper explicitly queries '
-                                                 'Faith.has_doctrine_parameter, while .info describes '
-                                                 'mainline-owned effective core. This package does not '
-                                                 'newly reverse-engineer the exact native alias/delegation '
-                                                 'to a Rite, nor treat actor-Rite booleans as proof of the '
-                                                 'Faith query.',
-                                     'next_observation': 'Read actor Faith ID, actor Rite ID, Faith '
-                                                         'mainline Rite ID, both core sets, Faith-level '
-                                                         'compatibility/hostility and final adoption '
-                                                         'CanConfirm in each fresh scene.'},
-                                    {'id': 'reform_write_capability',
-                                     'boundary': 'GUI exposes EditRite/CreateRite and '
-                                                 'DivergenceResultsInFaithCreation. This does not '
-                                                 'establish a public MCP writer or a completed new Faith.',
-                                     'next_observation': 'Runtime owner audits actual create/edit draft '
-                                                         'entry, selection and final getters; no invented '
-                                                         'tool or engine ABI is specified here.'},
-                                    {'id': 'new_cross_religion_business',
-                                     'boundary': 'No new Christian-to-Islam or Islam-to-Christian adoption '
-                                                 'has been performed by this lane or established by the R5 '
-                                                 'historical case.',
-                                     'next_observation': 'Two separately authorized fresh scenes, each '
-                                                         'with valid normal terms, one confirmation and '
-                                                         'independent membership/wallet/target after '
-                                                         'state.'}],
+   'parameter_scopes_v6': {'source_kind': 'exact_12004_cached_native_static_plus_stock_sources',
+ 'current_state_observed': False,
+ 'new_live_query_or_business_result': False,
+ 'faith_query': {'trigger': 'Faith.has_doctrine_parameter',
+                 'lookup': 'queried_faith.main_rite.boolean_parameters',
+                 'actual_12004_evaluator_rva': '0x2B29150',
+                 'direct_actor_current_rite_substitution_allowed': False},
+ 'current_rite_query': {'trigger': 'Rite.rite_has_parameter',
+                        'lookup': 'supplied_rite.boolean_parameters',
+                        'actual_12004_evaluator_rva': '0x2AE9F50'},
+ 'personal_query': {'trigger': 'Character.has_personal_tenet_flag',
+                    'lookup': 'queried_character.owned_personal_tenet_definitions.personal_parameters',
+                    'actual_12004_evaluator_rva': '0x2B2BCF0'},
+ 'consumers': {'directional_adoption': 'actor.faith.main_rite',
+               'allow_any_adoption': 'actor.current_rite',
+               'building_current_rite_branches': 'barony_holder.current_rite'},
+ 'current_and_main_rite_can_differ': True,
+ 'personal_syncretism_has_directional_actor_parameter': False,
+ 'personal_adaptive_has_allow_any_adoption_parameter': False,
+ 'holy_site_association_and_grade_owner': 'Faith, not each Rite independently',
+ 'artifact_recognition': 'Artifact explicit Faith-sanctification list OR artifact-type trigger '
+                         'evaluated with queried Faith root; not universally only main-Rite tenets',
+ 'planning_rule': 'Read actor Faith, current Rite and that Faith main Rite independently. Resolve '
+                  'the actual consumer scope before using same-named tenets; retain current '
+                  'complete native Can and every other adoption condition.',
+ 'selection_ui': {'personal_window': {'localization_key': 'PERSONAL_BELIEFS_VIEW_TITLE',
+                                      'displayed_title_zh': '个人信念'},
+                  'personal_column': {'localization_key': 'PERSONAL_BELIEFS_PERSONAL_TENETS_HEADING',
+                                      'displayed_heading_zh': '你的个人信条'},
+                  'rite_core_column': {'gui_concept_key': 'core_tenets',
+                                       'displayed_heading_zh': '信条',
+                                       'note': 'Chinese core_tenets aliases tenets; core is an '
+                                               'explanatory distinction, not the literal column '
+                                               'caption.'},
+                  'new_screenshot_observed': False},
+ 'sources': [{'repository_path': 'docs/ck3-native-ai/evidence/faith-rite-parameter-scopes12004-v6/native-scope-probe-a02.json',
+              'sha256': '2c7149706b205776f932dbfa220a457d8af59f296537acbe9fe9496e252d1516'},
+             {'repository_path': 'docs/ck3-native-ai/evidence/faith-rite-parameter-scopes12004-v6/stock-and-personal-sources-a02.json',
+              'sha256': '75bc24338d164e77acd68cb8ab18b956b2a42babc7ea20eeada9f45595167b5f'}],
+ 'repository_document': 'docs/ck3-native-ai/faith-rite-parameter-scopes12004-v6.md'},
+  'historical_unresolved_native_observations': {'source_head': 'fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36',
+ 'status': 'historical_unknowns_at_V5_source_baseline_resolved_by_source_bound_later_milestones',
+ 'items_at_that_time': [{'id': 'reform_write_capability',
+                         'boundary': 'GUI exposes EditRite/CreateRite and '
+                                     'DivergenceResultsInFaithCreation. This does not establish a '
+                                     'public MCP writer or a completed new Faith.',
+                         'next_observation': 'Runtime owner audits actual create/edit draft entry, '
+                                             'selection and final getters; no invented tool or '
+                                             'engine ABI is specified here.'},
+                        {'id': 'new_cross_religion_business',
+                         'boundary': 'No new Christian-to-Islam or Islam-to-Christian adoption has '
+                                     'been performed by this lane or established by the R5 '
+                                     'historical case.',
+                         'next_observation': 'Two separately authorized fresh scenes, each with '
+                                             'valid normal terms, one confirmation and independent '
+                                             'membership/wallet/target after state.'}],
+ 'resolved_by_milestone_ids': ['R0019', 'R0022']},
+ 'completed_cross_religion_milestones': [{'id': 'R0019',
+  'machine_id': '4-8e1c2f1861',
+  'run_id': '4-8e1c2f1861--faith-and-power--R0019',
+  'observed_at_utc': '2026-10-18T13:24:32Z/2026-10-18T13:44:49Z',
+  'kind': 'historical_completed_independent_mechanism_experiment',
+  'direction': 'Christianity -> Islam-associated holy site',
+  'reform_outcome': 'create_faith',
+  'actor_id': 31254,
+  'after': {'faith_id': 103,
+            'religion_id': 8,
+            'current_rite_id': 150,
+            'faith_main_rite_id': 150,
+            'main_rite_parameter': 'islamic_syncretic_actor=true',
+            'adopted_holy_site_id': 32,
+            'new_faith_association': 'ordinary'},
+  'actual_piety_costs': {'reform': 5200, 'adopt': 0},
+  'boundaries': ['explicit role/resource/territory preparation; not a natural campaign achievement',
+                 'not a minimal or optimal doctrine recipe',
+                 'not natural AI execution',
+                 'historical result does not grant current session Can or loaded-DLL credit'],
+  'sources': [{'repository_path': 'docs/ck3-native-ai/faith-and-power-r0019-agent-experience-12004.md',
+               'sha256': '994984fab56328f0690cbb708558e1629f7f181c7aa3b50f8d8e90fcc0b96b06',
+               'line_start': 25,
+               'line_end': 69},
+              {'repository_path': 'docs/ck3-native-ai/faith-and-power-r0019-agent-experience-12004.sources.json',
+               'sha256': '3aeeb891e1e4773a593ed8ec942f5956ebd8a02443cc8afa49d4d72b8aed73a5'}]},
+ {'id': 'R0022',
+  'machine_id': '4-8e1c2f1861',
+  'run_id': '4-8e1c2f1861--faith-and-power--R0022',
+  'observed_at_utc': '2026-10-18T16:14Z/2026-10-18T16:18Z',
+  'kind': 'historical_completed_independent_mechanism_experiment',
+  'direction': 'Islam -> Christianity-associated holy site',
+  'reform_outcome': 'edit_rite',
+  'actor_id': 15893,
+  'after': {'faith_id': 50,
+            'religion_id': 19,
+            'current_rite_id': 13,
+            'faith_main_rite_id': 13,
+            'main_rite_parameter': 'christian_syncretic_actor=true',
+            'adopted_holy_site_id': 4,
+            'new_faith_association': 'ordinary'},
+  'actual_piety_costs': {'edit': 300, 'adopt': 1000},
+  'boundaries': ['explicit preparation preserved actor Faith head; not ordinary campaign planning',
+                 'peace was separately obtained at observed cost; edit did not waive war blockers',
+                 'no new Faith was created',
+                 'not natural AI execution',
+                 'historical result does not grant current session Can or loaded-DLL credit'],
+  'sources': [{'repository_path': 'docs/ck3-native-ai/faith-and-power-r0022-agent-experience-12004.md',
+               'sha256': '826afbd618fec2dad74ad71113acc2b20a542c3185f3288689423bbb880dcadd',
+               'line_start': 3,
+               'line_end': 29},
+              {'repository_path': 'docs/ck3-native-ai/faith-and-power-r0022-agent-experience-12004.sources.json',
+               'sha256': '4ec2fb9898db14aa85728cc9f0ba5c1efb37bcd1b91eec8ac3a53f7ff3fab934'}]}],
+ 'unresolved_native_observations': [],
  'source_refs': [{'id': 'D01',
                   'relative_to_game': 'common/decisions/50_holy_site_decisions.txt',
                   'sha256': '80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4'},

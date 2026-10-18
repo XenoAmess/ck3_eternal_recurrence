@@ -22,30 +22,76 @@ V5_SOURCE_PAYLOADS = {'adoption': {'artifact_relative_name': 'adoption/cross-rel
              'sha256': '809fdc27b5b60f5c1e4d140dd19189e2a2cd79279dd203231ac884d7bbfd641a',
              'repository_document': 'docs/ck3-native-ai/holy-site-relic-opinion-conditions12004-v5.md'}}
 
-REFORM_MCP_SCOPE = {
-    "source_inventory_build":"1.20.0.4",
-    "existing_readers":["player_religion_context","player_religion_doctrines and boolean_parameters",
-        "player_religion_tenets current/main/personal/effective", "player_religion_hostility four directions",
-        "already-open reform draft, complete choices, price and final native Can"],
-    "current_published_write_gap":"At source baseline fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36, public MCP has no reform draft open/select/name/create-write route. A dedicated exact4 candidate is being prepared; not built or live-qualified by this knowledge.",
-    "paid_conversion_write":"Existing paid conversion action frame accepts CK3_12003 only; it is not an exact4 creation substitute.",
-    "adoption_after_reform":"Existing exact4 typed adoption open/detail/confirm and independent site/Faith/owner/resource reads are reusable only after actual normal Can and fresh identity are observed.",
-    "both_directions_new_live_examples":False,
-    "source_and_runtime_distinct":True,
-    "retained_build_configuration": {
-        "observation_kind":"retained CMake cache metadata, not current running capability observation",
-        "machine_id":"4-8e1c2f1861",
-        "observed_at_utc":"2026-10-18T06:20:55.850653+00:00",
-        "source_artifact_relative_name":"root/runtime-plan/ACTUAL-READINESS-a01.json",
-        "cache_sha256":"5d938a51e735bc9db879d113054fa4f6d3869abc22e1899858425321175e78d2",
-        "readiness_receipt_sha256":"3f7190116c9a92b9e0e301921464e278a5c1fc378266599f89f63239cd85d36d",
-        "off":["REFORM_CONTEXT_PRIVATE_QUERY_V1", "DRAFT_GROUPS_PRIVATE_QUERY_V1",
-            "DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1", "DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1",
-            "DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1", "AI_REFORM_INPUTS", "DOCTRINE_CATALOGUE",
-            "DOCTRINE_KNOWLEDGE", "HOSTILITY", "RELIGION_CONVERSION"],
-        "qualification":"old a07 binary qualification is source-bound to e23; no current fa0d/new-writer build or live credit",
-    },
-}
+REFORM_MCP_SCOPE = {'source_inventory_build': '1.20.0.4',
+ 'existing_readers': ['player_religion_context',
+                      'player_religion_doctrines and boolean_parameters',
+                      'player_religion_tenets current/main/personal/effective',
+                      'player_religion_hostility four directions',
+                      'already-open reform draft, complete choices, price and final native Can'],
+ 'adoption_after_reform': 'Existing exact4 typed adoption open/detail/confirm and independent '
+                          'site/Faith/owner/resource reads are reusable only after actual normal '
+                          'Can and fresh identity are observed.',
+ 'both_directions_new_live_examples': True,
+ 'source_and_runtime_distinct': True,
+ 'retained_build_configuration': {'observation_kind': 'retained CMake cache metadata, not current '
+                                                      'running capability observation',
+                                  'machine_id': '4-8e1c2f1861',
+                                  'observed_at_utc': '2026-10-18T06:20:55.850653+00:00',
+                                  'source_artifact_relative_name': 'root/runtime-plan/ACTUAL-READINESS-a01.json',
+                                  'cache_sha256': '5d938a51e735bc9db879d113054fa4f6d3869abc22e1899858425321175e78d2',
+                                  'readiness_receipt_sha256': '3f7190116c9a92b9e0e301921464e278a5c1fc378266599f89f63239cd85d36d',
+                                  'off': ['REFORM_CONTEXT_PRIVATE_QUERY_V1',
+                                          'DRAFT_GROUPS_PRIVATE_QUERY_V1',
+                                          'DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1',
+                                          'DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1',
+                                          'DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1',
+                                          'AI_REFORM_INPUTS',
+                                          'DOCTRINE_CATALOGUE',
+                                          'DOCTRINE_KNOWLEDGE',
+                                          'HOSTILITY',
+                                          'RELIGION_CONVERSION'],
+                                  'qualification': 'old a07 binary qualification is source-bound '
+                                                   'to e23; no current fa0d/new-writer build or '
+                                                   'live credit',
+                                  'historical_only': True},
+ 'historical_source_baseline': {'source_head': 'fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36',
+                                'current_published_write_gap_at_that_time': 'At source baseline '
+                                                                            'fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36, '
+                                                                            'public MCP has no '
+                                                                            'reform draft '
+                                                                            'open/select/name/create-write '
+                                                                            'route. A dedicated '
+                                                                            'exact4 candidate is '
+                                                                            'being prepared; not '
+                                                                            'built or '
+                                                                            'live-qualified by '
+                                                                            'this knowledge.',
+                                'paid_conversion_write_at_that_time': 'Existing paid conversion '
+                                                                      'action frame accepts '
+                                                                      'CK3_12003 only; it is not '
+                                                                      'an exact4 creation '
+                                                                      'substitute.',
+                                'both_directions_new_live_examples_at_that_time': False},
+ 'published_tools': ['ck3_query_player_rite_creation_action_context_v1',
+                     'ck3_execute_player_rite_creation_action_v1',
+                     'ck3_collect_player_rite_creation_action_result_v1'],
+ 'published_tool_contract_sources': [{'repository_path': 'docs/ck3-native-ai/rite-creation-actions12004-v5-mcp.md',
+                                      'sha256': '792f17796a97e7384601175033a17a916ab463a641dce5bad19c74bc0875b75a',
+                                      'line_start': 10,
+                                      'line_end': 21},
+                                     {'repository_path': 'ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_mcp_v1.py',
+                                      'sha256': '329e01018fb93179f970764ff5789f06a811da15e1d76b106630a22e30170fbd',
+                                      'line_start': 33,
+                                      'line_end': 68}],
+ 'published_route_boundary': 'Source-published, default-off exact-build tools; require explicit '
+                             'opt-in, actual current DLL capability and fresh native observations. '
+                             'This static response does not observe the current connection.',
+ 'live_examples_meaning': 'Historical R0019 and R0022 completed experiments with source-bound '
+                          'poststates; not this session, not natural AI, not generic Can.',
+ 'current_state_observed': False,
+ 'native_legality': None,
+ 'action_ready': False}
+REFORM_MCP_SCOPE['completed_milestones'] = deepcopy(CROSS_RELIGION_ADOPTION['completed_cross_religion_milestones'])
 
 
 def holy_site_v5_clarifications(action: str) -> dict[str, object]:

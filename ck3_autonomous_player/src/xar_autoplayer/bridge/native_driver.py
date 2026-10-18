@@ -6317,7 +6317,9 @@ class NativeHeadlessGameplayDriver:
             army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None,
             holy_site_action: HolySiteDecisionActionV1 | None = None,
             holy_site_creation_type_key: str | None = None,
-            holy_site_creation_selected: bool | None = None) -> dict[str, object]:
+            holy_site_creation_selected: bool | None = None,
+            presentation_target: str | None = None, presentation_index: int | None = None,
+            presentation_tab: str | None = None, presentation_receipt: str | None = None) -> dict[str, object]:
         from .ingame_ui_contract import (NAVIGATE_STEP, QUERY_STEP, NAVIGATE_CAPABILITY,
             QUERY_CAPABILITY, validate_ui_request, normalize_ui_result,
             ingame_ui_build_binding, validate_ui_build_scope)
@@ -6325,7 +6327,12 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError("creation UI selectors are independently disabled")
         validate_ui_request(operation, kind, subject_id, expected_revision,
             army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action,
-            holy_site_creation_type_key=holy_site_creation_type_key, holy_site_creation_selected=holy_site_creation_selected)
+            holy_site_creation_type_key=holy_site_creation_type_key, holy_site_creation_selected=holy_site_creation_selected,
+            presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+        from .religion_presentation_ui_contract import request_fields as presentation_fields, requested as is_presentation
+        presentation_options = dict(presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
         starting = self.take_snapshot()
         binding = _title_camera_navigation_binding_from_snapshot(starting)
         if starting.get("paused") is not True or starting.get("map_ready") is not True:
@@ -6339,12 +6346,15 @@ class NativeHeadlessGameplayDriver:
         source_binding = ingame_ui_build_binding(starting)
         validate_ui_build_scope(source_binding[0], operation, kind, army_tooltip_kind=army_tooltip_kind)
         step = QUERY_STEP if operation == "query" else NAVIGATE_STEP
-        if army_tooltip_kind is not None:
+        if army_tooltip_kind is not None or is_presentation(operation, kind, **presentation_options):
             capabilities = self.capabilities()
             capability = QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY
             if capabilities.get("backend_id") != "native-headless" or capability not in capabilities.get("bridge_capabilities", []):
                 raise UnsupportedStepError("capability_not_available: Army tooltip requires the exact native backend")
-        fields = {"window_kind": kind, "subject_id": subject_id}
+        if kind == "personal_beliefs" and subject_id not in (0, actor):
+            raise BridgeUnavailableError("personal beliefs presentation is restricted to the actual player")
+        fields = {"window_kind": kind, "subject_id": subject_id,
+            **presentation_fields(operation, kind, subject_id, **presentation_options)}
         if holy_site_creation_type_key is not None:
             fields["type_key"] = holy_site_creation_type_key
         if holy_site_creation_selected is not None:
@@ -6398,7 +6408,8 @@ class NativeHeadlessGameplayDriver:
                 expected_build=source_binding[0], army_tooltip_kind=army_tooltip_kind,
                 army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action,
                 holy_site_creation_type_key=holy_site_creation_type_key, holy_site_creation_selected=holy_site_creation_selected,
-                creation_context_snapshot=starting if kind == "holy_site_creation" else None)
+                creation_context_snapshot=starting if kind == "holy_site_creation" else None,
+                **presentation_options)
         except Exception as error:
             self._record_command(step, ok=False,
                 result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
@@ -6409,6 +6420,16 @@ class NativeHeadlessGameplayDriver:
             "queried_connection_generation": binding.get("connection_generation")})
         self._record_command(step, ok=True, result=result)
         return result
+
+    def present_faith_power_ui_v1(self, operation: str, window_kind: str, subject_id: int, *,
+            expected_revision: int,
+            presentation_target: str | None = None, presentation_index: int | None = None,
+            presentation_tab: str | None = None, presentation_receipt: str | None = None) -> dict[str, object]:
+        from .religion_presentation_ui_contract import validated_call_fields
+        fields = validated_call_fields(operation, window_kind, subject_id, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+        return self._ingame_ui_v1(operation, window_kind, subject_id, expected_revision=expected_revision,
+            **fields)
 
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_character", "character", character_id, expected_revision=expected_revision)

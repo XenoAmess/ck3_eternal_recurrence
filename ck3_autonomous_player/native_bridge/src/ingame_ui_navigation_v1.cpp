@@ -6,6 +6,9 @@
 #include "xar_bridge/holy_site_relic_navigation12004.hpp"
 #include "xar_bridge/holy_site_relic_request12004.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
+#include "xar_bridge/religion_ui12004.hpp"
+#include "xar_bridge/ck3_12004_religion_bindings.hpp"
 #include "xar_bridge/war_declared_overview_v1.hpp"
 #include "xar_bridge/war_declared_owner_tree_v1.hpp"
 #include "xar_bridge/war_declared_owner_memory_v1.hpp"
@@ -692,6 +695,13 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
   return true;
 }
 #include "army_tooltip_v1.inc"
+#include "faith_power_presentation_request12004.inc"
+#include "faith_power_presentation_opening_pins12004.inc"
+#include "faith_power_presentation_opening12004.inc"
+#include "faith_power_presentation_tooltip12004.inc"
+#include "faith_power_presentation_detail_pins12004.inc"
+#include "faith_power_presentation_receiver_pins12004.inc"
+#include "faith_power_presentation_ui12004.inc"
 } // namespace
 
 CurrentFirstHeirTypedWindowsReadV1 ReadCurrentFirstHeirTypedWindowRows12004V1(
@@ -789,6 +799,7 @@ bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &co
   return std::isfinite(delta.x) && std::isfinite(delta.y);
 }
 bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
+  if(PresentationRequested12004(r))return ValidatePresentationRequest12004(r);
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
   const bool relic=ck3_12004::religion::relic_actions::IsOperation(o);
   if(k>8 || (o>18&&!relic) || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
@@ -832,6 +843,7 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
 }
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
   if(!ValidateIngameUiRequestV1(r))return false;
+  if(PresentationRequested12004(r))return PresentationUiEnabled12004()&&revision==GuiAbiRevisionV1::crozier12004;
   if(r.window_kind==IngameUiWindowKindV1::holy_site_creation)return revision==GuiAbiRevisionV1::crozier12004 && HolySiteCreationUiEnabled12004() &&
       (r.operation!=IngameUiOperationV1::create_holy_site_once||HolySiteCreationCreateOnceEnabled12004());
   if(r.window_kind==IngameUiWindowKindV1::holy_site_adoption)return revision==GuiAbiRevisionV1::crozier12004 &&
@@ -863,6 +875,9 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
   else if(kind=="holy_site_adoption")r.window_kind=IngameUiWindowKindV1::holy_site_adoption;
   else if(kind=="faith")r.window_kind=IngameUiWindowKindV1::faith;
   else if(kind=="holy_site_creation")r.window_kind=IngameUiWindowKindV1::holy_site_creation;
+  else if(kind=="holding")r.window_kind=IngameUiWindowKindV1::holding;
+  else if(kind=="personal_beliefs")r.window_kind=IngameUiWindowKindV1::personal_beliefs;
+  else if(kind=="rite_creation")r.window_kind=IngameUiWindowKindV1::rite_creation;
   else return false;
   if(!bridge::JsonUnsignedField(json,"subject_id",id) || id>(std::numeric_limits<std::uint32_t>::max)())return false;
   r.subject_id=static_cast<std::uint32_t>(id);
@@ -891,6 +906,14 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
     else if(operation=="set_relic_slot")r.operation=IngameUiOperationV1::set_relic_slot;
     else if(operation=="enshrine_relic")r.operation=IngameUiOperationV1::enshrine_relic;
     else if(operation=="remove_relic")r.operation=IngameUiOperationV1::remove_relic;
+    else if(operation=="open_holding")r.operation=IngameUiOperationV1::open_holding;
+    else if(operation=="open_personal_beliefs")r.operation=IngameUiOperationV1::open_personal_beliefs;
+    else if(operation=="select_presentation_tab")r.operation=IngameUiOperationV1::select_presentation_tab;
+    else if(operation=="open_rite_core_picker")r.operation=IngameUiOperationV1::open_rite_core_picker;
+    else if(operation=="hover_presentation_tooltip")r.operation=IngameUiOperationV1::hover_presentation_tooltip;
+    else if(operation=="leave_presentation_tooltip")r.operation=IngameUiOperationV1::leave_presentation_tooltip;
+    else if(operation=="show_building_details")r.operation=IngameUiOperationV1::show_building_details;
+    else if(operation=="open_building_track")r.operation=IngameUiOperationV1::open_building_track;
     else return false;
   }
   if(ck3_12004::religion::relic_actions::IsOperation(static_cast<std::uint32_t>(r.operation))){
@@ -925,11 +948,12 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
       std::uint64_t value=0;if(!bridge::JsonUnsignedField(json,name,value)||value>0xFFFFFFFF)return false;*target=std::uint32_t(value);
     }
   }
+  if(!ParsePresentationRequest12004(json,r))return false;
   return ValidateIngameUiRequestV1(r);
 }
 std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
   switch(k){case IngameUiWindowKindV1::character:return "character_window";case IngameUiWindowKindV1::army:return "army_window";
-    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";case IngameUiWindowKindV1::faith:return "faith_window";case IngameUiWindowKindV1::holy_site_creation:return "holy_site_creation_window";default:return "unavailable";}
+    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";case IngameUiWindowKindV1::faith:return "faith_window";case IngameUiWindowKindV1::holy_site_creation:return "holy_site_creation_window";case IngameUiWindowKindV1::holding:return "holding_view";case IngameUiWindowKindV1::personal_beliefs:return "window_personal_beliefs";case IngameUiWindowKindV1::rite_creation:return "rite_creation_window";default:return "unavailable";}
 }
 bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
                                 IngameUiGuiOwnerBindingV1 &out) noexcept {
@@ -1000,6 +1024,7 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   out={};out.gui_abi_revision=env.gui_abi_revision;out.date_raw=snapshot.date_raw;out.paused=snapshot.paused;out.played_character_id=snapshot.played_character_id;
   out.pump_epoch=stamp.pump_epoch;out.thread_id=stamp.thread_id;
   if(!request.army_tooltip_kind.empty()) {out.army_tooltip.requested=true;out.army_tooltip.semantic_kind=request.army_tooltip_kind;}
+  if(PresentationRequested12004(request))out.presentation_ui.requested=true;
   if(!env.exact_build_admitted || env.offline_fixture_function_overrides || !env.module_base || !Actual4UiBoundV1(env) ||
       !ValidateIngameUiRequestV1(request) || !snapshot.paused || !snapshot.map_ready || !snapshot.has_played_character ||
       !stamp.paused || stamp.date_raw!=snapshot.date_raw || stamp.thread_id!=GetCurrentThreadId() || !stamp.pump_epoch) {
@@ -1014,6 +1039,10 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   }
   void *handler=nullptr;
   if(!ResolveHandler(env,handler)){out.unavailable_reason="ingame_handler_unverified";return true;}
+  if(PresentationRequested12004(request)){
+    out.presentation_ui.requested=true;
+    return ExecutePresentationUi12004(env,request,snapshot,stamp,gui_binding,handler,out);
+  }
   if(request.window_kind==IngameUiWindowKindV1::holy_site_creation){
     // Preserve the same owner/context and effective-visible modal policy as all
     // original actions. Queries remain inside the existing paused owner route.
@@ -1685,7 +1714,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   std::ostringstream o;o<<std::boolalpha<<std::setprecision(std::numeric_limits<float>::max_digits10);
   o<<"{\"schema\":\"ck3-ingame-ui-window-v1\",\"accepted\":"<<v.available<<",\"available\":"<<v.available
    <<",\"status\":\""<<v.status<<"\",\"window_kind\":\"";
-  constexpr std::array<std::string_view,9> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption","faith","holy_site_creation"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
+  constexpr std::array<std::string_view,12> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption","faith","holy_site_creation","holding","personal_beliefs","rite_creation"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
    <<"\",\"window_name\":\""<<IngameUiWindowNameV1(r.window_kind)<<"\",\"requested_subject_id\":"<<r.subject_id
    <<",\"window_exists\":"<<v.window_exists<<",\"effective_visible\":"<<v.effective_visible<<",\"enabled\":"<<v.enabled
    <<",\"subject_id_available\":"<<v.subject_id_available<<",\"current_subject_id\":"<<v.current_subject_id
@@ -1789,6 +1818,15 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
      <<"\",\"depth\":"<<w.depth<<",\"child_count\":"<<w.child_count<<",\"vtable_rva\":"<<w.vtable_rva
      <<",\"effective_visible\":"<<w.effective_visible<<",\"enabled\":"<<w.enabled<<'}';
     }o<<"]}";SerializeArmyTooltip(o,v.army_tooltip,v.unavailable_reason);
+   if(PresentationRequested12004(r)){
+     auto leaf=v.presentation_ui;leaf.requested=true;leaf.available=v.available;leaf.status=v.status;leaf.unavailable_reason=v.unavailable_reason;
+     // Frontend performs an additional actual snapshot/GUI-owner check after
+     // this provider returns. A final failure revokes all positive UI grants.
+     if(!v.available){leaf.source_bound=false;leaf.post_window_visible.reset();leaf.active_tab.reset();leaf.tab_observed=false;leaf.picker_observed=false;leaf.preview_observed=false;
+       leaf.hover_source_matches=false;leaf.tooltip_stack_observed=false;leaf.tooltip_root_visible=false;leaf.tooltip_active_count.reset();leaf.tooltip_top_locked.reset();
+       leaf.leave_observed=false;leaf.cache_complete=false;leaf.cache_texts.clear();leaf.targets.clear();leaf.holding_tracks.reset();}
+     SerializePresentationUi12004(o,leaf);
+   }
    if(r.window_kind==IngameUiWindowKindV1::title_appointment)o<<",\"title_appointment\":"<<SerializeAppointmentWindowSnapshotV1(v.title_appointment);
    o<<'}';return o.str();
 }

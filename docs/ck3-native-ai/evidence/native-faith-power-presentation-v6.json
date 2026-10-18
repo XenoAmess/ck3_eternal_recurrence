@@ -1,0 +1,785 @@
+{
+  "schema": "faith-power-presentation-native-v6-source-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T19:31:29.854610+00:00",
+  "source_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "opening_original_a01": {
+    "schema": "faith-power-presentation-opening-source12004-v1",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-18T19:24:30.047394+00:00",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_mode": "Existing immutable exact section cache and currently read stock GUI only",
+    "new_exe_reads": 0,
+    "new_exe_hashes": 0,
+    "shared_cache_writes": 0,
+    "game_or_screen_accessed": false,
+    "built": false,
+    "native_getter_or_callback_invoked": false,
+    "live_qualified": false,
+    "metadata": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "bytes": 1719,
+      "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+    },
+    "unique_combined_locator": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-visible-ui-a01\\presentation-opening-source\\combined-opening-xrefs-a01.json",
+      "bytes": 2703,
+      "sha256": "256c8fdd7767354a0c11864acc8d5e47c725dc20480f0dc6bcad1fa42fbdd7c5"
+    },
+    "functions": [
+      {
+        "name": "original_open",
+        "begin_rva": "0xaf39e0",
+        "end_exclusive_rva": "0xaf3b72",
+        "bytes": 402,
+        "complete_body_reviewed": true,
+        "cached_pdata": [
+          [
+            "0xaf39e0",
+            "0xaf3b72",
+            "0x51284f0"
+          ]
+        ],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c2408488974241048897c241841564883ec504d8bf08bfa488bd9e84effffff33f681ffac000000770f8bd7488bcbe8cab70100488bc8eb03488bce488b01ff90b000000084c00f842d01000081ffac000000770d8bd7488bcbe89fb70100488bf0488b06498bd6488bceff909800000084c00f8401010000897c2420e83c95d8ff48894424280f57c00f114424300f11442440498b3e488b07498d5608488bcfff5028488bf0488b4c2428483bcf7514488b114c8b4a604c8d442430488bd041ffd1eb43e8f494d8ff488b4c2428483bc8741d488b01488d542430ff5018e8da94d8ff0f57c00f114424300f1144244048897c2428488b074c8d442430488bd6488bcfff505890486383240600004881c31806000085c07432488d144048c1e2044803138b4424203942d0751e488b4ad8483b4c24287513488b014883c2e04c8d442430ff503884c0750e488d542420488bcbe8c5cf010090e85f94d8ff488b4c2428483bc87411488b01488d542430ff5018e84594d8ff90488b5c2460488b742468488b7c24704883c450415ec3",
+        "sha256": "1878cf81f49da824a72b203509d7d80c95ced350b67a3cbddea48c0ce81366ff"
+      },
+      {
+        "name": "original_prepare_setdata",
+        "begin_rva": "0xaf3950",
+        "end_exclusive_rva": "0xaf39d4",
+        "bytes": 132,
+        "complete_body_reviewed": true,
+        "cached_pdata": [
+          [
+            "0xaf3950",
+            "0xaf39d4",
+            "0x5109e4c"
+          ]
+        ],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c24084889742410574883ec20498bf08bda4533c0488bf9e831fbffff81fbac000000770f8bd3488bcfe85fb80100488bd8eb0233db488b03488bd6488bcbff9090000000488b03488bd6488bcbff9098000000488b13488bcb0fb6f8ff523884c0750e4084ff7409488b03488bcbff5018488b5c2430488b7424384883c4205fc3",
+        "sha256": "da51f9d5badabe7af3f06b9e7e004c92212332d1fc039ac3a5339fb6a4c64704"
+      },
+      {
+        "name": "handler_fixed_view_index",
+        "begin_rva": "0xb0f1e0",
+        "end_exclusive_rva": "0xb0f28b",
+        "bytes": 171,
+        "complete_body_reviewed": true,
+        "cached_pdata": [
+          [
+            "0xb0f1e0",
+            "0xb0f28b",
+            "0x510a2e0"
+          ]
+        ],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c24084889742410574883ec304863f2488bd94881fead000000722033d2488d05c12699034c8d0ddef91405488944242033c9448d4201e852b94603488b9cf3980000004885db754d81fead0000007507b9fc040000eb0a488d055fd29a038b0cb0e89706440348837818107203488b0048894424284c8d0da5ea200533d2488d053021990333c94889442420448d4201e8f8b84603488b742448488bc3488b5c24404883c4305fc3",
+        "sha256": "c1cfb6a1856c2272763bbca0b2db4158aabd846a27e29c90dd3663849f5b0613"
+      },
+      {
+        "name": "holding_any_decode",
+        "begin_rva": "0xce0b80",
+        "end_exclusive_rva": "0xce0c65",
+        "bytes": 229,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c2410564883ec20488bd9e88effd0ff488b0b488d7308483bc8751c488b01488bd6ff50284885c0740e488b00488b5c24384883c4205ec348897c2430488b3be87961b9ff483bf8754d488b07488bd6488bcfff50284885c0743c488b0d6c80f804486300488b91a000000083f8017c5b3b824c0100007d53488b7c2430488bc8488b8240010000488b04c8488b5c24384883c4205ec3488b1be84fe8dfff483bd87528488b03488bd6488bcbff50284885c07417488bc8488b7c2430488b5c24384883c4205ee9222d5701488b053bd70305488b7c2430488b5c24384883c4205ec3",
+        "sha256": "879bd84614e46dbff81e02e3de093273de5b327e7b6acdc24b68649760fcbdd5"
+      },
+      {
+        "name": "holding_SetData",
+        "begin_rva": "0x12aca30",
+        "end_exclusive_rva": "0x12aca6d",
+        "bytes": 61,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "40534883ec20488bd9488bcae83f41a3ff81b85c080000766f7250751a488bd0488bcbe838010000488b03488bcb4883c4205b48ff60184883c4205bc3",
+        "sha256": "b91ebc03eb70f2113734799ffa04f55689cbaf1be21bf3624097703e06260936"
+      },
+      {
+        "name": "holding_MatchesData",
+        "begin_rva": "0x12aca70",
+        "end_exclusive_rva": "0x12aca94",
+        "bytes": 36,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "40534883ec20488b99d8000000488bcae8fb40a3ff8b40103943100f94c04883c4205bc3",
+        "sha256": "bfb24b14ce1ee937d12f46b7d33fdddcbe2974c47375c4be848ea04a27c65ca2"
+      },
+      {
+        "name": "personal_SetData",
+        "begin_rva": "0x17e0f60",
+        "end_exclusive_rva": "0x17e1026",
+        "bytes": 198,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "40534883ec50488bd9c7442440ffffffff488d053869d1024889442420488d051469d1024889442428488d05f068d1024889442430488d05cc68d1024889442438488d051869d1024889442448488b0a488b014883c2084c8d442420ff505090488d05b1b7ca0248894424204c8b05956548044d85c0742a8b4424408bc881e1ffffff00413b482c73188bd14803d2498b4820488b54d1084885d274053942187407488b1567654804817a1c72616843750e837a18ff7408488bcbe8300100004883c4505bc3",
+        "sha256": "77b0325b1a5274aa75aa41feade2e903b80b8439b620ad3a23422900ff5d17bd"
+      },
+      {
+        "name": "personal_MatchesData",
+        "begin_rva": "0x17e1030",
+        "end_exclusive_rva": "0x17e10a3",
+        "bytes": 115,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "40534883ec50488bd9c7442440ffffffff488d056868d1024889442420488d054468d1024889442428488d052068d1024889442430488d05fc67d1024889442438488d054868d1024889442448488b0a488b014883c2084c8d442420ff5050908b4424403983e80000000f94c04883c4505bc3",
+        "sha256": "14b3d6d19459b72124997ee316be9e38d92a6c57278a34ade4216bb6552dfd32"
+      },
+      {
+        "name": "province_const_pointer_any_factory",
+        "begin_rva": "0x9f0b20",
+        "end_exclusive_rva": "0x9f0b7b",
+        "bytes": 91,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "4883ec2865488b042558000000ba10000000488b088b040a3905eacf32057f0c488d05c1f2a3044883c428c3488d0dd5cf3205e82c2f8303833dc9cf3205ff75df488d0de8679303e8b7338303488d0db4cf3205e8ab2e8303ebc5",
+        "sha256": "2a6a94438916db00cf13208183416c25861554e7dffaff49f7ecdb2043ed9f5d"
+      },
+      {
+        "name": "uint32_any_factory",
+        "begin_rva": "0xa05de0",
+        "end_exclusive_rva": "0xa05e3b",
+        "bytes": 91,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "4883ec2865488b042558000000ba10000000488b088b040a39051a7f31057f0c488d0559a0a2044883c428c3488d0d057f3105e86cdc8103833df97e3105ff75df488d0d48189203e8f7e08103488d0de47e3105e8ebdb8103ebc5",
+        "sha256": "be487739c92a3cc2ae225faa6821e5a6806d93184c795b597678b1133e460655"
+      },
+      {
+        "name": "uint32_metadata_visitor",
+        "begin_rva": "0xa06180",
+        "end_exclusive_rva": "0xa061c8",
+        "bytes": 72,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "40534883ec30498bc8c744242000000000488bda4c8d053d39af0433d24c8d0dfc95c304e8cbac8503488bc84885c075064883c4305bc3488b00488bd3ff5008b0014883c4305bc3",
+        "sha256": "713b78aee703da88ab51cc233a0016455cdcd06dbbeb28ad222a04b1c6a3ac92"
+      },
+      {
+        "name": "personal_uint32_visitor_copy",
+        "begin_rva": "0xe25620",
+        "end_exclusive_rva": "0xe25626",
+        "bytes": 6,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "8b02894108c3",
+        "sha256": "962ddc041bfc6037b7fe68159aa0657de6f76dae959e303f9a19bfc0c9463244"
+      },
+      {
+        "name": "pointer_any_copy",
+        "begin_rva": "0x878290",
+        "end_exclusive_rva": "0x878297",
+        "bytes": 7,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "488b02498900c3",
+        "sha256": "6c20813df936380055f9b7bfe73e064e3a6dd1ccd9c17887204301775a58794b"
+      },
+      {
+        "name": "uint32_any_copy",
+        "begin_rva": "0x8771f0",
+        "end_exclusive_rva": "0x8771f6",
+        "bytes": 6,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "8b02418900c3",
+        "sha256": "e16b475e8578ff73315378479178bec9347fe05c003c177ec4180b1b9efcccc2"
+      },
+      {
+        "name": "any_inline_payload",
+        "begin_rva": "0x876e00",
+        "end_exclusive_rva": "0x876e04",
+        "bytes": 4,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "488bc2c3",
+        "sha256": "f75638fe0016cf82faddfa60bf6db21d3445dcb56700c1f3c0aae5c3aa912f53"
+      },
+      {
+        "name": "any_trivial_destructor",
+        "begin_rva": "0x8522c0",
+        "end_exclusive_rva": "0x8522c3",
+        "bytes": 3,
+        "complete_body_reviewed": true,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "c20000",
+        "sha256": "b6cbececf1b07e74f37d57710c68c31f0b92cb08d51093252b321b07542e177b"
+      },
+      {
+        "name": "personal_factory_publication",
+        "begin_rva": "0xb0eaf0",
+        "end_exclusive_rva": "0xb0eb7c",
+        "bytes": 140,
+        "complete_body_reviewed": true,
+        "cached_pdata": [
+          [
+            "0xb0eaf0",
+            "0xb0eb7c",
+            "0x512b44c"
+          ]
+        ],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c2410574883ec20488bf9488b5940b900020000e88950710348894424304c8bc7488bd3488bc8e8d21ecd00488bd8488b8fe0050000488987e00500004885c97411488b01ba01000000ff10488b9fe0050000488b03488bcbff503884c07409488b03488bcbff502048895c2430488d8f00060000488d542430e8cf17d7ff488b5c24384883c4205fc3",
+        "sha256": "6229ed6fb540067f280c7e51eb8f769ee0c828a4196904c269671d8fdb540352"
+      },
+      {
+        "name": "holding_factory_publication_slice",
+        "begin_rva": "0xaeed2a",
+        "end_exclusive_rva": "0xaeed9e",
+        "bytes": 116,
+        "complete_body_reviewed": false,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "498b5e40b918140000e85c4e7303488985b00500004d8bc6488bd3488bc8e883c17b0090498b8ed0000000498986d00000004885c9740a488b01ba01000000ff10498b9ed0000000488b03488bcbff503884c07409488b03488bcbff502048899db0050000488d95b0050000498bcfe8a215d9ff",
+        "sha256": "134b9d1a036f24fa2bccba00802a5f5b4ebc007f0f3e683cfdf5703ddfae2655"
+      },
+      {
+        "name": "holding_constructor_name_and_type_prefix",
+        "begin_rva": "0x12aaed0",
+        "end_exclusive_rva": "0x12aaf88",
+        "bytes": 184,
+        "complete_body_reviewed": false,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c24204c8944241848894c24085556574154415541564157488bec4881ec800000004d8bf04c8bea488bf1488d05644f2903488945a0c745a80c000000c645ac004c8d3d2e4f29034c897db0c745b81a000000c645bc00488b4218488b88b80100004c8d4da04c8d45b0488b5158488bcee8c86881024c89ae980000004c89b6a00000000f57c033c90f1186a800000048898eb80000004533e44489a6c0000000488d0d7685290348890e488d0d4485290348894e10",
+        "sha256": "60d00be559acccc8df34ef3bb51576bdfa3b8eb0f9e5adef9c5b13352653a470"
+      },
+      {
+        "name": "personal_constructor_name_and_type_prefix",
+        "begin_rva": "0x17e09f0",
+        "end_exclusive_rva": "0x17e0aa0",
+        "bytes": 176,
+        "complete_body_reviewed": false,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "48895c2418488974242048894c240855574156488bec4883ec50498bf8488bda488bf1488d05e619db02488945d0c745d817000000c645dc00488d05e819db02488945e0c745e81f000000c645ec00488b42184c8b80b8010000498b50584c8d4dd04c8d45e0e8b50d2e0248899e980000004889bea00000000f57c033c00f1186a8000000488986b800000033d28996c0000000488d057d21db02488906488d054322db0248894610488996c8000000",
+        "sha256": "9e5951cb31ac3d452d6455184ae2385006b1b9a8f0d986a686f5c2eb00370588"
+      },
+      {
+        "name": "holding_selected_province_write_prefix",
+        "begin_rva": "0x12acb90",
+        "end_exclusive_rva": "0x12acc18",
+        "bytes": 136,
+        "complete_body_reviewed": false,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "405356574883ec60c781f00e0000ffffffff488bf933f6488bda4889b1f40e0000488b89c8000000488b01ff5020488b8fd0000000488b01ff502048899fc0010000488bcf48899fd800000089b70c0100004088b7e80a00004088b7b901000081bb5c080000766f72507411baffffffff4883c4605f5e5be9631c00008b9338070000e8581c0000",
+        "sha256": "b10bda0a3257fc0f0877b09c2537ca6fbe7c25405eaa2b39a93bae06390f5a4f"
+      },
+      {
+        "name": "personal_selected_character_write_prefix",
+        "begin_rva": "0x17e1150",
+        "end_exclusive_rva": "0x17e11de",
+        "bytes": 142,
+        "complete_body_reviewed": false,
+        "cached_pdata": [],
+        "boundary_basis": "existing cached pdata, or aligned referenced entry and reviewed finite reachable blocks; slices explicitly incomplete",
+        "hex": "405641564883ec488b42184c8bf28981e8000000488bf1817a1c726168430f857b020000837a18ff0f84710200004c8b0573d153048b92b400000048896c24708991ec0000004d85c074258bc225ffffff00413b402c73188bc8498b40204803c9488b6cc8084885ed74053955087407488b2da9644804817d0c657469520f8516020000837d08ff0f840c020000",
+        "sha256": "91e314afd3452165a04dda3c04df98f20de294bf06145385e5c3f12c4e065d69"
+      }
+    ],
+    "rtti_and_any": [
+      {
+        "name": "holding_window",
+        "vtable_rva": "0x45434f0",
+        "COL_rva": "0x4b348d0",
+        "COL_hex": "01000000000000000000000090937605a033b304d048b304",
+        "COL_fields": [
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x5769390",
+          "0x4b333a0",
+          "0x4b348d0"
+        ],
+        "TD_rva": "0x5769390",
+        "type_name": ".?AVCHoldingView@@",
+        "vtable_prefix_hex": "40b32a410100000010b82a4101000000d0ee024101000000b0c92a4101000000e0b0104101000000400316420100000060031642010000008003164201000000100416420100000020041642010000006014274101000000a0f0b1400100000080b82a410100000080cb2a4101000000c022854001000000c02285400100000040cb2a410100000060bb2a410100000030ca2a410100000070ca2a4101000000a0ca2a4101000000a05a854001000000a05a854001000000b05a854001000000c023854001000000a848b34401000000"
+      },
+      {
+        "name": "personal_window",
+        "vtable_rva": "0x4592c08",
+        "COL_rva": "0x4bc1450",
+        "COL_hex": "01000000000000000000000078b87e053012bc045014bc04",
+        "COL_fields": [
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x57eb878",
+          "0x4bc1230",
+          "0x4bc1450"
+        ],
+        "TD_rva": "0x57eb878",
+        "type_name": ".?AVCPersonalBeliefsWindow@@",
+        "vtable_prefix_hex": "c00d7e4101000000b0107e4101000000d0ee02410100000010117e4101000000e0b01041010000004003164201000000600316420100000080031642010000001004164201000000200416420100000060d3ae4001000000a0f0b14001000000c022854001000000c022854001000000c022854001000000c022854001000000c02285400100000030117e4101000000600f7e410100000030107e4101000000b071da4001000000a05a85400100000080f0b14001000000b05a854001000000c0238540010000007814bc4401000000"
+      },
+      {
+        "name": "province_const_pointer_any",
+        "vtable_rva": "0x44a0490",
+        "COL_rva": "0x4a2c6f0",
+        "COL_hex": "01000000000000000000000030ba660580bfa204f0c6a204",
+        "COL_fields": [
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x566ba30",
+          "0x4a2bf80",
+          "0x4a2c6f0"
+        ],
+        "TD_rva": "0x566ba30",
+        "type_name": ".?AU?$SCopyableAnyTypeInPlace@PEBVCProvince@@$0CA@@PdxAnyImpl@@",
+        "vtable_prefix_hex": "2024854001000000800b9f40010000009082874001000000c0228540010000009082874001000000006e874001000000006e874001000000b028884001000000b028884001000000e082874001000000700c9f400100000090828740010000009082874001000000"
+      },
+      {
+        "name": "uint32_any",
+        "vtable_rva": "0x44a1938",
+        "COL_rva": "0x4a2e8b0",
+        "COL_hex": "010000000000000000000000b0d06605c0e4a204b0e8a204",
+        "COL_fields": [
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x566d0b0",
+          "0x4a2e4c0",
+          "0x4a2e8b0"
+        ],
+        "TD_rva": "0x566d0b0",
+        "type_name": ".?AU?$SCopyableAnyTypeInPlace@I$0CA@@PdxAnyImpl@@",
+        "vtable_prefix_hex": "2024854001000000405ea04001000000f071874001000000c022854001000000f071874001000000006e874001000000006e8740010000000072874001000000007287400100000010728740010000008061a04001000000f071874001000000f071874001000000"
+      },
+      {
+        "name": "personal_uint32_visitor_base",
+        "vtable_rva": "0x44f7868",
+        "COL_rva": "0x4ab9dc8",
+        "COL_hex": "01000000180000000000000058de6e05a09aab04c89dab04",
+        "COL_fields": [
+          "0x1",
+          "0x18",
+          "0x0",
+          "0x56ede58",
+          "0x4ab9aa0",
+          "0x4ab9dc8"
+        ],
+        "TD_rva": "0x56ede58",
+        "type_name": ".?AU?$SRefVisitor@VCCharacter@@@CInGameView@@",
+        "vtable_prefix_hex": "64b3e240010000002056e24001000000"
+      }
+    ],
+    "stock_GUI": [
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\hud.gui",
+        "bytes": 227658,
+        "sha256": "77d0beedefe23eee22b24c1c0b160ae5ee8ec938868d3f4b7ae76296347a6ac6",
+        "excerpts": [
+          {
+            "first_line": 3809,
+            "last_line": 3815,
+            "text": "3809: \t\t\t\t\t\t}\n3810: \t\t\t\t\t}\n3811: \n3812: \t\t\t\t\tvisible = \"[Or3( IsGameViewOpen( 'personal_beliefs_window' ), GetVariableSystem.Exists( 'spiritual_fulfillment_hover' ), GetVariableSystem.Exists( 'spiritual_fulfillment_changed' ) )]\"\n3813: \n3814: \t\t\t\t\tonclick = \"[ToggleGameViewData( 'personal_beliefs_window', GetPlayer.Self )]\"\n3815: "
+          }
+        ]
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_epidemics.gui",
+        "bytes": 22531,
+        "sha256": "52fadffc2def18e7ec45493f528472f38c5c673c0d028510459b1a864e0933ff",
+        "excerpts": [
+          {
+            "first_line": 460,
+            "last_line": 466,
+            "text": "460: \t\t\t\tusing = tooltip_ws\n461: \n462: \t\t\t\tblockoverride \"coa_onclick\"\n463: \t\t\t\t{\n464: \t\t\t\t\tonclick = \"[OpenGameViewData( 'holding_view', Province.Self )]\"\n465: \t\t\t\t\tonclick = \"[Province.ZoomCameraTo]\"\n466: \t\t\t\t}"
+          }
+        ]
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_county_view.gui",
+        "bytes": 105929,
+        "sha256": "4e932366e397b06347d4296c05f3c4c5850e995b010eecda7d5a3b5a7c48675c",
+        "excerpts": [
+          {
+            "first_line": 3,
+            "last_line": 8,
+            "text": "3: ######################################################\n4: \n5: window = {\n6: \tname = \"holding_view\"\n7: \twidgetid = \"holding_view\"\n8: \tparentanchor = bottom|left"
+          },
+          {
+            "first_line": 48,
+            "last_line": 53,
+            "text": "48: \t\t\talwaystransparent = no\n49: \n50: \t\t\tdatacontext = \"[HoldingView.GetHolding]\"\n51: \t\t\tdatacontext = \"[HoldingView.GetProvince]\"\n52: \t\t\tdatacontext = \"[HoldingView.GetHolder]\"\n53: \t\t\tdatacontext = \"[Province.GetCounty]\""
+          }
+        ]
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_personal_beliefs.gui",
+        "bytes": 28472,
+        "sha256": "2c9b85a11381119d0d91ec68731d5c376aed10fe48387b73701184a3d39513e2",
+        "excerpts": [
+          {
+            "first_line": 1,
+            "last_line": 7,
+            "text": "1: window = {\n2: \tname = \"window_personal_beliefs\"\n3: \twidgetid = \"window_personal_beliefs\"\n4: \tdatacontext = \"[PersonalBeliefsWindow.GetRite]\"\n5: \tdatacontext = \"[Rite.GetFaith]\"\n6: \tsize = { 1110 910 }\n7: \tposition = { 610 70 }"
+          },
+          {
+            "first_line": 184,
+            "last_line": 192,
+            "text": "184: \t\t\t\t\t\t\t\t\tblockoverride \"scrollbox_content\"\n185: \t\t\t\t\t\t\t\t\t{\n186: \t\t\t\t\t\t\t\t\t\tvbox = {\n187: \t\t\t\t\t\t\t\t\t\t\tdatacontext = \"[PersonalBeliefsWindow.GetCharacter]\"\n188: \t\t\t\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding\n189: \t\t\t\t\t\t\t\t\t\t\tspacing = 3\n190: \n191: \t\t\t\t\t\t\t\t\t\t\tdatamodel = \"[PersonalBeliefsWindow.GetPersonalTenets]\"\n192: \t\t\t\t\t\t\t\t\t\t\titem = {"
+          },
+          {
+            "first_line": 525,
+            "last_line": 531,
+            "text": "525: \t\tdatacontext = \"[Character.GetSpiritualFulfillmentType]\"\n526: \t\tdatacontext = \"[Character.GetSpiritualFulfillmentLevel]\"\n527: \t\tsize = { 54 54 }\n528: \n529: \t\tonclick = \"[ToggleGameViewData( 'personal_beliefs_window', GetPlayer.Self )]\"\n530: \t\ttooltipwidget = {\n531: \t\t\thud_personal_beliefs_tooltip_container = {"
+          }
+        ]
+      }
+    ],
+    "contract": {
+      "holding": {
+        "kind": 9,
+        "logical_native_view_index": 7,
+        "handler_slot": "0xD0",
+        "factory_call": "0xAEED48",
+        "factory_publication": "0xAEED4E..0xAEED5C",
+        "constructor": "0x12AAED0",
+        "primary_VT": "0x45434F0",
+        "secondary_VT": "0x45434C8",
+        "TD": "0x5769390",
+        "SetData": "0x12ACA30",
+        "MatchesData": "0x12ACA70",
+        "selected_province_pointer_offset": "0xD8",
+        "selected_province_map_id_offset": "0x10",
+        "province_magic_offset": "0x85C",
+        "province_magic": "0x50726F76",
+        "id_namespace": "positive signed32 map index, not a generation encoded TPdxRef",
+        "original_stock_any": "CProvince const* inline QWORD",
+        "any_factory": "0x9F0B20",
+        "any_singleton": "0x542FE08",
+        "any_VT": "0x44A0490",
+        "any_TD": "0x566BA30",
+        "any_copy": "0x878290",
+        "alternate_native_decoder": "CE0B80 also accepts signed int32 Any from876D40; candidate uses exact stock Province.Self pointer Any, resolved from validated map row",
+        "namespace_resolver": "[base+5C68C50]→+A0 province manager→+140 QWORD rows,+14C signed count; require1<=id<count and selected+10==id/+85C magic",
+        "open": "AF39E0(handler,7,Any40 const*)"
+      },
+      "personal": {
+        "kind": 10,
+        "logical_native_view_index": "0xA9",
+        "handler_slot": "0x5E0",
+        "factory": "0xB0EAF0",
+        "factory_call": "0xB0EB19",
+        "factory_publication": "0xB0EB21..0xB0EB2F",
+        "constructor": "0x17E09F0",
+        "primary_VT": "0x4592C08",
+        "secondary_VT": "0x4592CD8",
+        "TD": "0x57EB878",
+        "SetData": "0x17E0F60",
+        "MatchesData": "0x17E1030",
+        "selected_character_fullID_offset": "0xE8",
+        "selected_rite_fullID_offset": "0xEC",
+        "subject_setter": "0x17E1150",
+        "original_accepted_any": "unsigned int inline DWORD containing full CharacterID, then SRefVisitor resolves full generation",
+        "any_factory": "0xA05DE0",
+        "any_singleton": "0x542FE60",
+        "any_VT": "0x44A1938",
+        "any_TD": "0x566D0B0",
+        "uint32_visit": "metadata+A50→A06180 dynamic_cast CPdxAnyTypedVisitor<unsigned int>; SRefVisitor base offset18 VT44F7868+8=E25620 writes base+8 (=visitor+20)",
+        "character_storage": "0x5C67568",
+        "current_player_fullID_slot": "0x54DBC00",
+        "id_namespace": "full uint32 with low24 storage index and exact object+18 equality; magic+1C=43686172",
+        "open": "AF39E0(handler,0xA9,Any40 const*)",
+        "type_label_correction": "Existing presentation documentation calls A05DE0 Any a Character Ref Any; exact RTTI here is unsigned int (@I), not TPdxRef<CCharacter>. Payload contains complete CharacterID and native visitor provides generation resolution."
+      },
+      "common": {
+        "window_owner_offset": "0x98 = original factory handler+40 outer owner, not its Gfx child",
+        "window_handler_backlink_offset": "0xA0",
+        "window_root_offset": "0x60",
+        "any_bytes": 40,
+        "inline_bytes": 32,
+        "metadata_destructor": "0x8522C0 trivial ret0",
+        "native_history_lifetime": "AF39E0/B10B00/87C910 copy payload into owned history; pointer Any copies native Province*, not caller stack address",
+        "retained_original_lifetime_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\gui-source\\open-any-lifetime-source.json",
+          "bytes": 29842,
+          "sha256": "7f64dae4202c82ca75aa370744ffe6b85b00324585956f4c98a085354829f274"
+        },
+        "query_absence": "Readable null handler slot returns success with present=false and subject_available=false; unreadable/type mismatch stays unavailable",
+        "opening_semantics": "Fixed OpenGameViewData rather than Toggle; no effect on gameplay. attempted is consumed before original call; exception is unknown/do_not_retry. Caller must independently query visibility and selected subject."
+      }
+    },
+    "limitations": [
+      "No independent reflection wrapper RVA for HoldingView.GetProvince or PersonalBeliefsWindow.GetCharacter claimed; selected field read is directly bound by original setter and MatchesData.",
+      "Parent retains owner/TLS/paused/frame/modal gates, independent visibility and double-read checks; helpers do not grant action readiness or rendered-pixel proof.",
+      "Core C++ candidate is source-only; no compiler/test/live credit. Initial probe used one incorrect EP parent index and was fixed before any packet was written."
+    ]
+  },
+  "opening_root_correction_a02": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-18T19:26:00.719350+00:00",
+    "status": "A02_ROOT_NAME_CORRECTION_REQUIRED_A01_NOT_FINAL",
+    "new_exe_reads": 0,
+    "built": false,
+    "live_qualified": false,
+    "base_helper": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-visible-ui-a01\\presentation-opening-source\\opening_helpers12004.inc",
+      "sha256": "b12ade319170c642b925fc38c378db1cea8625fc3f2ef104b7022b86f86601e4"
+    },
+    "replacement": {
+      "old": "const std::string_view name=holding?\"holding_view\":\"personal_beliefs_window\";",
+      "new": "const std::string_view name=holding?\"holding_view\":\"window_personal_beliefs\";",
+      "count": 1
+    },
+    "result_sha256": "930021589a6a31fbb21e46d07e92ed4d3052dd95257308572566ee858f91d2d1",
+    "patch": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-visible-ui-a01\\presentation-opening-source\\opening_helpers-root-correction-a02.patch",
+      "sha256": "571d34e0e69c2f3d28f37fb716eb489c5fe3e73ea9915b0404a7d05e42c7e740"
+    },
+    "constructor_runtime_name": {
+      "rva": "0x4592400",
+      "hex": "77696e646f775f706572736f6e616c5f62656c6965667300",
+      "text": "window_personal_beliefs"
+    },
+    "constructor_definition_name": {
+      "rva": "0x4592418",
+      "hex": "6775692f77696e646f775f706572736f6e616c5f62656c696566732e67756900",
+      "text": "gui/window_personal_beliefs.gui"
+    },
+    "OnInit_bounded_prefix": {
+      "rva": "0x17E1110",
+      "hex": "c6817001000000488b05a2e55304488981780100",
+      "complete_function": false,
+      "instructions": [
+        "17E1110 mov byte ptr [rcx + 0x170], 0",
+        "17E1117 mov rax, qword ptr [rip + 0x453e5a2]"
+      ]
+    },
+    "documentation_correction": "Core a01 README incorrectly called personal_beliefs_window the named GUI root. It is the stock gameview key; actual constructor and stock GUI root are window_personal_beliefs. Apply this delta when collecting a01 helper, and keep logical native viewA9/handler5E0 unchanged.",
+    "absence_boundary": "Null registered slot is observable absence. Open conservatively refuses absent slot; this helper does not create an unregistered native window."
+  },
+  "hover_original_complete": {
+    "machine_id": "4-8e1c2f1861",
+    "at_utc": "2026-10-18T19:03:40.292195+00:00",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "cache": "EP/native-candidate/shared-source/text.bin",
+    "rva": "0x3aa6020",
+    "bytes": 902,
+    "sha256": "d90611a741bebc3024b11f5d881490a68e5fe418b2bbca8243ff61c0ecee47ae",
+    "extent_source": "docs/ck3-native-ai/generic-gui-default-path-migration-12004.md L32, reused original902B closure; no new pdata/EXE read",
+    "body_hex": "48895c2408488974241048897c24184c896424205541564157488dac2440fcffff4881ecc00400004c8bf2488bf94533ff4885d2743a488b89a8020000486387b4020000488d14c14d8bc6e8f08208fd488b97a802000048638fb40200004c8d04ca493bc0490f44c74885c04d0f45f74c39b7f00000000f84e80200004c89bd900100004c89bd98010000488d85a8010000488985a0010000488d1d0054e60048899da8010000488d355a83a3014889b5b0030000488b05f453e60033d2448d4208488d8da8010000ffd04c89bd900100004c89bd98010000488b85a80100004c8d8598010000488d9590010000488d8da8010000ff502090488b97f00000004885d274474c8d8590010000488bcfe87cfdffff44897c2428c744243012000000c644243401488d05bb05ec0048894424204c897424384c8d442420488b97f0000000488bcfe895f8ffff904c897c24604c897c2468488d442478488944247048895c24784889b580010000488b053d53e60033d2448d4208488d4c2478ffd04c897c24604c897c2468488b4424784c8d442468488d542460488d4c2478ff5020904d85f674104c8d442460498bd6488bcfe8d9fcffff488b95900100004c8b5424608bb59c01000085f674518b4c246c85c97449498b02483902754141b9010000003bf10f4cce4863d9493bd97e28458bc1488d4a084d8bda4c2bda0f1f00498b040b483901750f41ffc149ffc04883c1084c3bc37ce8418d49ffeb05b9ffffffff8d46ff4863d84863f14c8d25cdefa000483bde7e450f1f84000000000044897c24284c89642420c744243014000000c6442434014c8d442420488b14da488bcfe878f7ffff9048ffcb488b9590010000483bde7fc84c8b542460488b87f00000004c89b7f00000004d85f60f848300000044897c2448c744245011000000c644245401488d0d2b04ec0048894c244048894424584c8d442440498bd6488bcfe819f7ffff8b44246cffc84863d8483bde7e3644897c24284c89642420c744243013000000c6442434014c8d442420488b542460488b14da488bcfe8def6ffff9048ffcb483bde7fca488b95900100004c8b5424604d85d2742a44897c246c488b4c2470488b0141b808000000498bd2ff50104c897c246044897c2468488b95900100004885d2741a4489bd9c010000488b8da0010000488b0141b808000000ff50104c8d9c24c0040000498b5b20498b7328498b7b304d8b6338498be3415f415e5dc3"
+  },
+  "new_native_or_game_calls": 0,
+  "built": false,
+  "live_qualified": false,
+  "interpretation": "Opening source a01 is preserved byte-for-byte as data; apply explicit a02 correction. Original gameview key differs from named GUI root. No source/fixture creates pixels proof.",
+  "show_details_source_a01": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-18T19:35:01.778506+00:00",
+    "machine_evidence": "tools/ck3_live_run_id.py machine actual stdout 4-8e1c2f1861",
+    "status": "SOURCE_CLOSED_NOT_BUILT_NOT_LIVE",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source": "Existing shared-source section caches; finite neighborhood reads only. No fresh EXE access, engine getter, callback, build, or live action.",
+    "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+    "ranges": [
+      {
+        "label": "ShowDetails exact registrar",
+        "rva": "0x1a2340",
+        "size": 208,
+        "sha256": "4fffff841ffeb85c5fab6ed4d39d5e9bab1be0f9dfeba3eaece03d2546136a37",
+        "hex": "4c8bdc4881ec88000000498d43b84989430833c0498943c0498943b8498943c849c743d00f000000498943d8498943e0488d05a1be3305498943e849c743b00f00000049c743a80b000000f20f100565df3904f20f114424200fb70560df390466894424280fb60556df39048844242ac644242b004d8d4bb84c8d05a00e1101498d5398e8d70e110190488b5424384883fa10722e48ffc2488b4c2420488bc14881fa0010000072154883c227488b49f8482bc14883c0f84883f81f770de8411b08044881c488000000c3e860060904"
+      },
+      {
+        "label": "callback and typed registrar forwarding",
+        "rva": "0x12b3260",
+        "size": 295,
+        "sha256": "0b7cf5deed020f20ef5fe15bcd5d220a68edbcad15911dd793f48b2c3a56937f",
+        "hex": "4883ec384885c97428488b4108448b41104c8bc8488b09c7442420010000008b90e8ff0600e866d1ffffb0014883c438c332c04883c438c3cccccccccccccccc4c8bdc4d894b2049894b085355565741564881ec80000000498be9498bd8488bfa498d439849894308498bd1498d4b98e82b2c5aff90488d44246048898424c00000000f57c00f114424604533f64c897424604c89742468488d0519af220448894424704c8b45204c634d2c49c1e1054d03c833d2488d4c2460e8f10f5cff90488d44244048894424304c897424204533c94c8bc333d2488bcfe8a1b20000904c3975207423488d4d20e841335aff488b4d30488b01458d4608488b5520ff50104c89752044897528488bcde8df2c5aff0fb68424c80000004881c480000000415e5f5e5d5bc3"
+      },
+      {
+        "label": "typed method descriptor receiver datatype",
+        "rva": "0x12be718",
+        "size": 33,
+        "sha256": "2d7217724f1c14d8ffad972c0acb7e2846f167c93efed44ea63d18dc9c7e5c4d",
+        "hex": "8b041f39053f81a9040f8f040300008b1d3781a904899da8000000803d3c1aa804"
+      },
+      {
+        "label": "GUIPotentialBuildingItem type name registration",
+        "rva": "0x12b89d1",
+        "size": 63,
+        "sha256": "42a87d1259dec5b6ad68d53d468b79159ac0072df57b1c5dd3a14ca8dfbe17e7",
+        "hex": "488bdaba1000000065488b042558000000488b088b040a390572dea9040f8f920100008b056adea9048945674c8bc3488d15d1782803488d4d67e8b033b602"
+      },
+      {
+        "label": "tracks owned construction and back pointer",
+        "rva": "0x12aafa4",
+        "size": 148,
+        "sha256": "f8d2dcf590a58450fb3aef8fbe9262626a97856378b5fdacadfc8bd5b6358cba",
+        "hex": "488d05cd4e2903488945b0c745b813000000448865bc4c897da0c745a81a000000448865ac498b4d18488b91b80100004c8d4db04c8d45a0488b5258488bcbe828688102488d4b104c89ab980000004c89b3a00000000f57c033c00f1183a8000000488983b80000004489a3c0000000488d05a5852903488903488d056b8629034889014889b3c8000000e8bcffe5ff9048891f"
+      },
+      {
+        "label": "preview Province guard",
+        "rva": "0x12b0423",
+        "size": 26,
+        "sha256": "95f98db7483098e77779c8ec9bbf801d30358e92644e8bd0a5e913053a3946d0",
+        "hex": "488bd9488b81d800000081b85c080000766f72500f8530050000"
+      },
+      {
+        "label": "preview requested definition cached binding",
+        "rva": "0x12b04cf",
+        "size": 83,
+        "sha256": "2c6d89edbb74287072aab74d51befd378addaccdabbe3b22d50c23e1d34336ff",
+        "hex": "8b853001000083f8010f851c01000041817f384f624447753a488d8bc8010000488b052adea604488981580400004c89b9600400008178384f6244474c0f44f84c89b9680400004489a170040000e82e8fffff"
+      },
+      {
+        "label": "preview selection then tracks open",
+        "rva": "0x12b0941",
+        "size": 44,
+        "sha256": "d35c0a6058ab0c7d1949b9e8792fb0e44d059dcd9c8413bfde1d71514cab74e4",
+        "hex": "8b85300100008983f80e00008b85180100008983f40e00004489a3f00e0000488b8bc8000000488b01ff5018"
+      },
+      {
+        "label": "Construct forbidden callback",
+        "rva": "0x12b3390",
+        "size": 78,
+        "sha256": "23e089f6d95563de8cb561efb341e920cc7812e3e87ab503357e4ce285c3643f",
+        "hex": "40534883ec30488bd94885c974384c8b41088b5110488b09e893d8ffff488b4308448b43104c8bc8488b0bc7442420010000008b90e8ff0600e822d0ffffb0014883c4305bc332c04883c4305bc3"
+      },
+      {
+        "label": "Construct queues command negative proof",
+        "rva": "0x12b0c40",
+        "size": 102,
+        "sha256": "3991c94cad551e8c92509c2c80df11bc10d0a1efd95e773ef18475cf095ea9a8",
+        "hex": "4883ec58488b81d80000008b4810c64424280033c0488944242c89442434488d05ebb84b034889442420488d0577b94b0348894424388b0584af220489442440894c244489542448418b40108944244cba0e000000488d4c2420e8110a73ff904883c458c3cc"
+      },
+      {
+        "label": "ShowDetails literal",
+        "rva": "0x45402f8",
+        "size": 12,
+        "sha256": "113e4a1fac27235bc528648b9a7fcec7fb7019d483c756c2684d190676b6bb46",
+        "hex": "53686f7744657461696c7300"
+      },
+      {
+        "label": "specific receiver literal",
+        "rva": "0x45402d8",
+        "size": 24,
+        "sha256": "eedc6e4bee4e5d7844beccdd948b996a62f3bec9c4b99aa0fcbd590f4ed45247",
+        "hex": "475549506f74656e7469616c4275696c64696e674974656d"
+      },
+      {
+        "label": "tracks root literal",
+        "rva": "0x453fe78",
+        "size": 20,
+        "sha256": "8f0dd1f59e6aa6453336997ccd6913bbadc42a4194ce492a4f4a49d7bb3a3148",
+        "hex": "686f6c64696e675f747261636b735f7669657700"
+      },
+      {
+        "label": "tracks RTTI COL",
+        "rva": "0x4b348a8",
+        "size": 24,
+        "sha256": "1ceaa291d3fb8643a4e7b63d627d08ec630594829d4f0c8c461f7895e5c6aec2",
+        "hex": "01000000000000000000000098927605b831b304a848b304"
+      },
+      {
+        "label": "tracks RTTI type",
+        "rva": "0x5769298",
+        "size": 48,
+        "sha256": "3b8085ea052ed4feff8d15d12dcef799974a062a952c5c346cbc8a59f051a1bd",
+        "hex": "a01042440100000000000000000000002e3f4156434275696c64696e67547261636b7356696577404000000000000000"
+      }
+    ],
+    "stock": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_county_view.gui",
+      "sha256": "4e932366e397b06347d4296c05f3c4c5850e995b010eecda7d5a3b5a7c48675c",
+      "lines": {
+        "2214": "window = {",
+        "2215": "\tname = \"holding_tracks_view\"",
+        "2312": "\t\t\t\t\t\t\t\t\tdatamodel = \"[HoldingView.GetPotentialBuildings]\"",
+        "2348": "\t\t\t\t\t\t\t\t\t\t\t\t\t\tname = \"building_icon\"",
+        "2350": "\t\t\t\t\t\t\t\t\t\t\t\t\t\ttexture = \"[GUIPotentialBuildingItem.GetBuilding.GetTypeIcon]\"",
+        "2366": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tbutton_tertiary = {",
+        "2367": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttext = \"CONSTRUCT_BUILDINGS_DETAILS\"",
+        "2369": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tonclick = \"[GUIPotentialBuildingItem.ShowDetails]\"",
+        "2370": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttooltip = \"CONSTRUCT_BUILDINGS_DETAILS_TT\"",
+        "2463": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tenabled = \"[GUIPotentialBuildingItem.CanConstruct]\"",
+        "2465": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tonclick = \"[GUIPotentialBuildingItem.Construct]\"",
+        "2466": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tonclick = \"[HoldingView.CloseSubwindows]\"",
+        "2511": "\t\t\t\t\t\t\t\t\t\t\t\t\t\ttext = \"[GUIPotentialBuildingItem.GetBuilding.GetEffectDescriptionAtProvince( Character.Self, Province.Self )]\""
+      }
+    },
+    "binding": {
+      "expression": "GUIPotentialBuildingItem.ShowDetails",
+      "final_target_rva": "0x12B3260",
+      "typed_registrar_chain": [
+        "0x1A2340",
+        "0x12B32A0",
+        "0x12BE5E0"
+      ],
+      "receiver_datatype_id_global": "0x5D56864",
+      "receiver_datatype_name": "GUIPotentialBuildingItem",
+      "name_registration_rva": "0x12B89B0",
+      "receiver_layout": {
+        "holding_view_pointer": 0,
+        "building_definition_pointer": 8,
+        "mode_u32": 16
+      },
+      "call": "12B03F0(view, def[+6FFE8], mode, def, 1)",
+      "return": "bool callback ACK; does not establish visible preview"
+    },
+    "postcondition_source": {
+      "holding_province_pointer_offset": "0xD8",
+      "province_magic": {
+        "offset": "0x85C",
+        "value": "0x50726F76"
+      },
+      "province_id_offset": "0x10",
+      "tracks_pointer_offset": "0xC8",
+      "tracks_primary_vtable_rva": "0x45435C0",
+      "tracks_secondary_vtable_rva": "0x4543690",
+      "tracks_type": "CBuildingTracksView",
+      "tracks_name": "holding_tracks_view",
+      "tracks_outer_owner_offset": "0x98",
+      "tracks_handler_offset": "0xA0",
+      "tracks_holding_back_pointer_offset": "0xC8",
+      "tracks_named_root_offset": "0x60",
+      "holding_selection_mode_offset": "0xEF0",
+      "holding_selection_category_offset": "0xEF4",
+      "holding_selection_action_offset": "0xEF8",
+      "action_value": 1,
+      "show_dispatch": "holding+C8 object vtable+0x18",
+      "requested_definition_cached_pointer_offset": "0x628",
+      "definition_magic_offset": "0x38",
+      "definition_magic": "0x4744624F",
+      "note": "Selection fields and root visibility must be independently read after click; callback return alone is insufficient. A matching mode/category alone does not identify a unique building definition."
+    },
+    "admission": "Require owned live visible/enabled standard_click_binding expression final_target exact pin, typed receiver context, row.view == current validated HoldingView, row.definition identity, same Province and independent tracks owner/root/back-pointer. Never choose by text alone.",
+    "forbidden": {
+      "expression": "GUIPotentialBuildingItem.Construct",
+      "rva": "0x12B3390",
+      "write_helper": "0x12B0C40",
+      "write_dispatch": "0x9E16B0 command 0xE"
+    },
+    "limitations": [
+      "Original detail refresh 12B03F0 full path was inspected but only critical finite raw ranges are retained here.",
+      "No new generic callback/path/RVA endpoint is authorized.",
+      "GUIBuildingItem.OnClick is not qualified by this packet."
+    ],
+    "storage": {
+      "child_cap_bytes": 98304,
+      "reclaimed_bytes": 16688,
+      "reclaimed": "Only reproducible __pycache__/probe.cpython-314.pyc; immutable raw source and failed receipts retained."
+    }
+  },
+  "show_details_action_boundary": "Original wrapper source closed; actual current GUI row receiver to HoldingView/definition join is unverified, so206 fails before dispatch. Tracks ownership and callback census are read only."
+}

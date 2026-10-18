@@ -3706,6 +3706,49 @@ def create_server(
             expected_target_vtable_pointer,
         )
 
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_present_faith_power_ui_v1(
+        operation: Literal["open_holding", "open_personal_beliefs", "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip", "show_building_details", "open_building_track"],
+        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
+        subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
+        expected_revision: IngameUiRevisionV1,
+        presentation_target: Literal["", "faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview"] | None = None,
+        presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)] | None = None,
+        presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] | None = None,
+        presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")] | None = None,
+    ) -> dict[str, object]:
+        """Finite exact4 original GUI presentation; ACK is pending. ShowDetails accepts preview rows only; no building or Faith mutation."""
+        return service.present_faith_power_ui_v1(operation, window_kind, subject_id,
+            expected_revision=expected_revision, presentation_target=presentation_target,
+            presentation_index=presentation_index, presentation_tab=presentation_tab,
+            presentation_receipt=presentation_receipt)
+    _forbid_unknown_tool_arguments_v1(server, "ck3_present_faith_power_ui_v1")
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_faith_power_ui_v1(
+        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
+        expected_revision: IngameUiRevisionV1, subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] = 0,
+        presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] = "",
+    ) -> dict[str, object]:
+        """Independently observe the original selected window/tab and finite rows; subject0 observes current, not pixel proof."""
+        return service.present_faith_power_ui_v1("query", window_kind, subject_id,
+            expected_revision=expected_revision, presentation_tab=presentation_tab)
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_faith_power_ui_v1")
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_faith_power_tooltip_v1(
+        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
+        subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], expected_revision: IngameUiRevisionV1,
+        presentation_target: Literal["faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview"],
+        presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)],
+        presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")],
+    ) -> dict[str, object]:
+        """Read only a later owner observation of the exact hover receipt/source/tooltip stack; cache differs from rendered pixels."""
+        return service.present_faith_power_ui_v1("query", window_kind, subject_id,
+            expected_revision=expected_revision, presentation_target=presentation_target,
+            presentation_index=presentation_index, presentation_receipt=presentation_receipt)
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_faith_power_tooltip_v1")
+
     @server.tool()
     def ck3_open_character_window_v1(character_id: IngameUiHandleV1, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Open an exact CharacterID; ACK requires independent window readback."""
@@ -3849,7 +3892,7 @@ def create_server(
         _forbid_unknown_tool_arguments_v1(server, "ck3_set_holy_site_creation_artifact_selection_v1")
 
     @server.tool()
-    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Fresh owner-thread full-ID window readback plus bounded target subtree."""
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 

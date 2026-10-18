@@ -12,7 +12,12 @@ NAVIGATE_STEP = "navigate-ingame-ui-v1"
 QUERY_STEP = "query-ingame-ui-window-v1"
 NAVIGATE_CAPABILITY = "game.command.navigate-ingame-ui-v1"
 QUERY_CAPABILITY = "game.command.query-ingame-ui-window-v1"
-KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation"}
+from .religion_presentation_ui_contract import (
+    NEW_OPERATIONS as PRESENTATION_OPERATIONS, WINDOW_ROOTS as PRESENTATION_ROOTS,
+    requested as presentation_requested, request_fields as presentation_request_fields,
+    tooltip_query as presentation_tooltip_query, normalize_presentation_result,
+)
+KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army", "open_holy_site":"holy_site",
@@ -30,7 +35,9 @@ def validate_ui_request(operation: str, kind: str, subject_id: int, revision: in
                         army_tooltip_receipt: str | None = None,
                         holy_site_action: HolySiteDecisionActionV1 | None = None,
                         holy_site_creation_type_key: str | None = None,
-                        holy_site_creation_selected: bool | None = None) -> None:
+                        holy_site_creation_selected: bool | None = None,
+            presentation_target: str | None = None, presentation_index: int | None = None,
+            presentation_tab: str | None = None, presentation_receipt: str | None = None) -> None:
     from .holy_site_creation_ui_contract import validate_creation_ui_fields
     validate_creation_ui_fields(operation, kind, subject_id,
         type_key=holy_site_creation_type_key, selected=holy_site_creation_selected)
@@ -38,12 +45,22 @@ def validate_ui_request(operation: str, kind: str, subject_id: int, revision: in
         normalize_holy_site_decision_action_v1(holy_site_action)
         if operation not in {"open_holy_site_adoption", "confirm_site_adoption"} or army_tooltip_kind is not None or army_tooltip_receipt is not None:
             raise ValueError("finite HolySite action is valid only for its original detail routes")
-    if kind not in KINDS or (operation != "query" and OPERATIONS.get(operation) != kind):
+    is_presentation = presentation_requested(operation, kind, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+    if is_presentation:
+        presentation_request_fields(operation, kind, subject_id, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+        if any(x is not None for x in (army_tooltip_kind, army_tooltip_receipt,
+                holy_site_action, holy_site_creation_type_key, holy_site_creation_selected)):
+            raise ValueError("presentation selectors cannot mix unrelated domain actions")
+    if kind not in KINDS or (not is_presentation and operation != "query" and OPERATIONS.get(operation) != kind):
         raise ValueError("unsupported typed UI operation/window")
     if isinstance(revision, bool) or not isinstance(revision, int) or not 0 <= revision < 2**64:
         raise ValueError("expected_revision must be uint64")
     if isinstance(subject_id, bool) or not isinstance(subject_id, int):
         raise ValueError("subject ID must be a full uint32 handle")
+    if is_presentation:
+        return
     if army_tooltip_kind is not None:
         if (not isinstance(army_tooltip_kind, str) or army_tooltip_kind not in ARMY_TOOLTIP_KINDS
                 or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}):
@@ -99,6 +116,10 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
                             army_tooltip_kind: str | None = None) -> None:
     if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):
         raise ValueError("native UI exact build has no migrated presentation route")
+    if kind in {"holding", "personal_beliefs", "rite_creation"} or operation in PRESENTATION_OPERATIONS:
+        if build != CK3_12004 or kind not in PRESENTATION_ROOTS or army_tooltip_kind is not None:
+            raise ValueError("finite presentation requires exact 1.20.0.4")
+        return
     if kind == "holy_site_creation":
         from .holy_site_creation_ui_contract import OPERATIONS
         if build != CK3_12004 or operation not in OPERATIONS | {"query"} or army_tooltip_kind is not None:
@@ -134,7 +155,16 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                          holy_site_action: HolySiteDecisionActionV1 | None = None,
                          holy_site_creation_type_key: str | None = None,
                          holy_site_creation_selected: bool | None = None,
-                         creation_context_snapshot: Mapping[str, object] | None = None) -> dict[str, object]:
+                         creation_context_snapshot: Mapping[str, object] | None = None,
+            presentation_target: str | None = None, presentation_index: int | None = None,
+            presentation_tab: str | None = None, presentation_receipt: str | None = None) -> dict[str, object]:
+    is_presentation = presentation_requested(operation, kind, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+    if is_presentation:
+        presentation_request_fields(operation, kind, subject_id, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+    absent_presentation_query = (is_presentation and operation == "query" and isinstance(value, dict) and
+        value.get("available") is True and value.get("window_exists") is False)
     validate_ui_build_scope(expected_build, operation, kind, army_tooltip_kind=army_tooltip_kind)
     if holy_site_action is not None:
         normalize_holy_site_decision_action_v1(holy_site_action)
@@ -193,7 +223,8 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     unopened_current_select_ack = (
         ((expected_build in _CURRENT_ARMY_BUILDS and operation == "select_army" and kind == "army")
          or (expected_build == CK3_12004 and operation == "open_holy_site" and kind == "holy_site")
-         or (expected_build == CK3_12004 and (operation, kind) in {("open_character", "character"), ("open_faith", "faith")}))
+         or (expected_build == CK3_12004 and (operation, kind) in {("open_character", "character"), ("open_faith", "faith"),
+             ("open_holding", "holding"), ("open_personal_beliefs", "personal_beliefs")}))
         and value["available"] and not value["window_exists"]
         and value.get("status") == "acknowledged_verification_pending"
         and value["dispatch_invoked"] and value["verification_pending"]
@@ -203,10 +234,11 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         if (not value["application_owner_thread_verified"] or not value["gui_owner_binding_verified"] or
                 not value["gui_context_address"] or not value["gui_owner_address"]):
             raise ValueError("native UI original application/GUI binding unverified")
-        if not value["thread_id"] or not value["pump_epoch"] or (not value["window_exists"] and not unopened_current_select_ack):
+        if not value["thread_id"] or not value["pump_epoch"] or (not value["window_exists"] and not unopened_current_select_ack and not absent_presentation_query):
             raise ValueError("native UI lacks owner/target-window observation")
         if operation == "query":
-            expected_pending = army_tooltip_kind is not None
+            expected_pending = army_tooltip_kind is not None or presentation_tooltip_query(operation, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
             if value.get("status") != "observed" or value["dispatch_invoked"] or value["verification_pending"] != expected_pending:
                 raise ValueError("query result must be independent and read only")
         elif kind == "holy_site_creation":
@@ -236,10 +268,10 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     current4_faith = expected_build == CK3_12004 and kind == "faith"
     current4_creation = expected_build == CK3_12004 and kind == "holy_site_creation"
     current4_holy_site = expected_build == CK3_12004 and kind in {"holy_site", "holy_site_adoption"}
-    expected_window = "holy_site_creation_window" if current4_creation else "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "army_window"
+    expected_window = PRESENTATION_ROOTS[kind] if is_presentation else "holy_site_creation_window" if current4_creation else "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "army_window"
     if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != expected_window:
         raise ValueError("current native UI window name differs from the admitted kind")
-    if current4_character_query or current4_faith or current4_creation:
+    if current4_character_query or current4_faith or current4_creation or is_presentation:
         if type(value.get("native_dispatch_attempted")) is not bool:
             raise ValueError("typed presentation dispatch attempt is missing")
         if operation == "query" and value["native_dispatch_attempted"]:
@@ -309,7 +341,7 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                         or confirm.get("native_can_confirm")is not True
                         or confirm.get("parameter_holy_site_id")!=subject_id or confirm.get("selected_holy_site_id")!=subject_id):
                     raise ValueError("original Confirm attempt lacked actual key/parameter/entry and regular native legality")
-    if unopened_current_select_ack:
+    if unopened_current_select_ack or absent_presentation_query:
         if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") != expected_window:
             raise ValueError("unopened army ACK must keep an empty target-window census")
     elif value["available"] and (not tree["root_available"] or count < 1 or tree.get("scope_root_name") != value.get("window_name")):
@@ -322,7 +354,7 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             n=widget.get(key)
             if isinstance(n,bool) or not isinstance(n,int) or n<0:
                 raise ValueError("native census widget integer malformed")
-    if value["available"] and not unopened_current_select_ack and (widgets[0]["runtime_name"]!=value["window_name"] or widgets[0]["depth"]!=0 or
+    if value["available"] and not unopened_current_select_ack and not absent_presentation_query and (widgets[0]["runtime_name"]!=value["window_name"] or widgets[0]["depth"]!=0 or
                                widgets[0]["effective_visible"]!=value["effective_visible"]):
         raise ValueError("native census root differs from target-window observation")
     if value.get("knights_list_scope") != "military_eligible_not_active_combat_roster":
@@ -365,6 +397,9 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         validate_creation_ui_result(value, operation=operation, subject_id=subject_id,
             type_key=holy_site_creation_type_key, selected=holy_site_creation_selected,
             snapshot=creation_context_snapshot)
+    normalize_presentation_result(value, operation=operation, kind=kind, subject_id=subject_id,
+        actor_id=actor_id, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
     return dict(value)
 
 

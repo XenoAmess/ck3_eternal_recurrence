@@ -230,7 +230,7 @@ class FormalInputs:
                 if cue['id'] not in by_id or abs(cue['duration_seconds']-by_id[cue['id']]['duration_seconds'])>1e-6:
                     raise ValueError('Semantic cue differs from the measured selected voice clock')
         gaps, intervals, raw_seconds, graphic_seconds = [], {}, 0.0, 0.0
-        focus_checks=[]
+        focus_checks=[]; composition_checks=[]
         max_graphic_run = graphic_run = 0.0
         motion_seconds = explanation_run = max_explanation_run = 0.0
         motion_intervals = {}
@@ -289,7 +289,17 @@ class FormalInputs:
                 if duration <= 0 or abs(duration * 30 - round(duration * 30)) > 1e-4 or not part.get('disclosure'):
                     raise ValueError('Visual needs positive frame-aligned duration and source disclosure')
                 kind = part['kind']
-                if kind in {'diagram', 'native-readback'}:
+                if kind == common.gui_composition.KIND:
+                    check=common.gui_composition.inspect(part,self.bound,doc['machine_id'],metadata_only=self.metadata_only)
+                    for note in part.get('annotations',[]):
+                        if not set(note['claim_ids'])<=set(row['claim_ids']):raise ValueError('Composition annotation claim is absent from its measured cue')
+                    part['composition_source_check']=check
+                    composition_checks.append({'cue_id':row['id'],**check})
+                    gaps.extend(check['gaps'])
+                    graphic_run=0
+                    explanation_run+=duration
+                    max_explanation_run=max(max_explanation_run,explanation_run)
+                elif kind in {'diagram', 'native-readback'}:
                     if duration > 6.4:
                         raise ValueError('One source graphic focus exceeds existing renderer limit')
                     self.bound(part['image'])
@@ -411,6 +421,7 @@ class FormalInputs:
         return {'rows': rows, 'seconds': total, 'gaps': gaps, 'ready_to_build': not gaps and not self.metadata_only,
             'content_ready':not gaps,'metadata_only':self.metadata_only,'fullrender_admitted':False,
             'media_bytes_revalidated':not self.metadata_only,'media_stat_observations':media_stats,
+            'composition_source_checks':composition_checks,'composition_coverage':common.gui_composition.coverage(rows),
             'focus_geometry_checks':focus_checks,'semantic_reveal_checks':semantic_checks,
             'metadata_SHA_checked_inputs':metadata_checked,
             'evidence_unknowns':getattr(self,'evidence_unknowns',[]),

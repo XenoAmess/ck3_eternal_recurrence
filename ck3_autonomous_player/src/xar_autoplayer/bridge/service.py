@@ -13072,8 +13072,9 @@ class GameplayBridgeService:
             if capabilities.get("backend_id") != "native-headless":
                 raise UnsupportedStepError("creation UI requires the exact native backend")
             validate_ui_build_scope(ingame_ui_build_binding(snapshot)[0], operation, kind)
-        if kind == "faith" and capabilities.get("backend_id") != "native-headless":
-            raise UnsupportedStepError("Faith presentation requires the exact native backend")
+        if kind in {"faith", "holding", "personal_beliefs", "rite_creation"} and capabilities.get("backend_id") != "native-headless":
+            raise UnsupportedStepError("Faith presentation requires the exact native backend" if kind == "faith"
+                else "finite presentation requires the exact native backend")
         method_name = {"query": "query_ingame_ui_window_v1", "open_character": "open_character_window_v1",
             "open_holy_site": "open_holy_site_window_v1", "open_faith": "open_faith_window_v1",
             "open_holy_site_creation": "open_holy_site_creation_window_v1",
@@ -13101,6 +13102,30 @@ class GameplayBridgeService:
         if operation in {"hover_left_knights", "hover_right_knights"}:
             return method(subject_id, ui_side=operation.split("_")[1], expected_revision=expected_revision)
         return method(kind if operation == "query" else subject_id, expected_revision=expected_revision)
+
+    def present_faith_power_ui_v1(self, operation: str, window_kind: str, subject_id: int, *,
+            expected_revision: int,
+            presentation_target: str | None = None, presentation_index: int | None = None,
+            presentation_tab: str | None = None, presentation_receipt: str | None = None) -> dict[str, object]:
+        from .religion_presentation_ui_contract import validated_call_fields
+        from .ingame_ui_contract import validate_ui_request, ingame_ui_build_binding, validate_ui_build_scope, QUERY_CAPABILITY, NAVIGATE_CAPABILITY
+        fields = validated_call_fields(operation, window_kind, subject_id, presentation_target=presentation_target, presentation_index=presentation_index,
+            presentation_tab=presentation_tab, presentation_receipt=presentation_receipt)
+        validate_ui_request(operation, window_kind, subject_id, expected_revision, **fields)
+        snapshot = self.snapshot()
+        if snapshot.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("presentation public revision differs")
+        if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
+            raise BridgeUnavailableError("presentation requires a paused map-ready snapshot")
+        validate_ui_build_scope(ingame_ui_build_binding(snapshot)[0], operation, window_kind)
+        caps = self.capabilities()
+        cap = QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY
+        if caps.get("backend_id") != "native-headless" or cap not in caps.get("bridge_capabilities", []):
+            raise UnsupportedStepError("presentation requires the actual native backend capability")
+        method = getattr(self.driver, "present_faith_power_ui_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks finite presentation transport")
+        return method(operation, window_kind, subject_id, expected_revision=expected_revision, **fields)
 
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_character", "character", character_id, expected_revision)
