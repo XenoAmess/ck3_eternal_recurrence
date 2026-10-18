@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T22:46:59.199390+00:00",
+  "source_record_machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_R213_projection_replayed": true,
+  "source_only_tests": 1,
+  "actual_counterexample": "PASS",
+  "equal_numbers_still_do_not_grant_paid": "PASS",
+  "missing_is_not_zero": "PASS",
+  "SDK_calls": 0,
+  "new_game_credit": false
+}

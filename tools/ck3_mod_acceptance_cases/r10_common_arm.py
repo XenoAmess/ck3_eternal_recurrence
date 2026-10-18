@@ -350,8 +350,12 @@ class CommonArmIO:
                     actual = path.resolve()
                     if actual not in seen:
                         seen.add(actual); used += path.stat().st_size
-        need(used + 2 * self.packet_limit + 16 * 1024 * 1024 <= self.runtime_total_budget_bytes,
-             'Actual runtime cannot reserve next full result and normal-close metadata')
+        # The original wire range and all three full-body copies persist:
+        # normalized-full, public envelope, and the relay response envelope.
+        from ck3_mod_acceptance_army_wire import MAX_RANGE
+        next_full_bytes = MAX_RANGE + 3 * self.packet_limit
+        need(used + next_full_bytes + 16 * 1024 * 1024 <= self.runtime_total_budget_bytes,
+              'Actual runtime cannot reserve original wire, three full results and normal-close metadata')
 
     def request(self, name, tool, arguments):
         self.guard()

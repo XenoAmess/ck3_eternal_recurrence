@@ -1,0 +1,174 @@
+{
+  "schema": "xar.e04.r08-readonly-sufficiency-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T22:49:12.974687+00:00",
+  "source_head": "bc4604bed4eb8558b3f4e0e554a642aa69a4ba2f",
+  "actual_small_sources_in_projection": true,
+  "new_exe_bytes_read": 0,
+  "new_sdk_game_desktop_build": 0,
+  "current_code": [
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_reader.cpp",
+      "git_blob": "b2c55de8c889a135edab583fe5b1e51d4deb2519",
+      "selected_spans": [
+        {
+          "start_line": 51,
+          "end_line": 68,
+          "sha256": "2c779206bfc7a691a58fb3d079075148ddee3298bf33a6859afeef659d3a27ff",
+          "text": "bool Gold(const void *actor, std::int64_t &raw) noexcept {\n#if defined(_MSC_VER)\n  __try {\n#endif\n    void *living = nullptr;\n    std::memcpy(&living,\n                static_cast<const std::byte *>(actor) +\n                    ck3_12002::kWarCashCharacterLivingExtensionOffset,\n                sizeof(living));\n    // This is stock GetGold's legitimate zero for a missing extension.\n    raw = 0;\n    if (living != nullptr) {\n      std::memcpy(&raw,\n                  static_cast<const std::byte *>(living) +\n                      ck3_12002::kWarCashCharacterGoldOffset,\n                  sizeof(raw));\n    }\n    return true;\n"
+        },
+        {
+          "start_line": 76,
+          "end_line": 110,
+          "sha256": "e1eebdbe01403d9772ad71d0bb1e131a274b34bcebee08f7d218025c086e3d80",
+          "text": "bool MonthlyFlow(const Bindings &bindings, void *actor,\n                 std::int32_t actor_id, ActorResources &output) noexcept {\n  output.gross_income_unavailable_reason = \"war_cash_monthly_income_unavailable\";\n  output.total_expenses_unavailable_reason = \"war_cash_monthly_total_expenses_unavailable\";\n  output.income_unavailable_reason = \"war_cash_monthly_net_income_unavailable\";\n  if (bindings.monthly_income == nullptr ||\n      bindings.expense_context_character == nullptr ||\n      bindings.monthly_total_expenses == nullptr) return false;\n#if defined(_MSC_VER)\n  __try {\n#endif\n    // DF1C70's gold HUD writer uses this exact .3 native argument chain.\n    void *context = bindings.expense_context_character(actor);\n    if (context == nullptr || !ActorMatches(actor, actor_id)) return false;\n    std::int64_t gross = 0;\n    std::int64_t secondary_income = 0;\n    if (bindings.monthly_income(&gross, actor, &secondary_income, nullptr) != &gross ||\n        !ActorMatches(actor, actor_id)) return false;\n    output.monthly_gross_income_raw = gross;\n    output.gross_income_unavailable_reason.clear();\n    std::int64_t expenses = 0;\n    if (bindings.monthly_total_expenses(&expenses, actor, context,\n                                      secondary_income, false, nullptr) != &expenses ||\n        !ActorMatches(actor, actor_id)) return false;\n    output.monthly_total_expenses_raw = expenses;\n    output.total_expenses_unavailable_reason.clear();\n    constexpr auto minimum = std::numeric_limits<std::int64_t>::min();\n    constexpr auto maximum = std::numeric_limits<std::int64_t>::max();\n    if ((expenses > 0 && gross < minimum + expenses) ||\n        (expenses < 0 && gross > maximum + expenses)) {\n      output.income_unavailable_reason = \"war_cash_monthly_net_income_overflow\";\n      return false;\n    }\n    output.monthly_net_income_raw = gross - expenses;\n    output.income_unavailable_reason.clear();\n"
+        },
+        {
+          "start_line": 236,
+          "end_line": 249,
+          "sha256": "39d44371d275adceb4d57b05385e62760f3fb57444d95b48ce4f037e8bd3f61f",
+          "text": "    // Read after the existing getters, on this same owning paused mailbox.\n    // The raw helper does not invoke a native getter or create a callback record.\n#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)\n    if(bindings.current_raw_context_enabled) {\n      CurrentRawContext raw{};\n      raw.character=reinterpret_cast<std::uintptr_t>(actor);\n      raw.character_full_id=static_cast<std::uint32_t>(actor_id);\n      raw.values=ck3_12004::ReadWarPaymentGenericValues12004(\n        bindings.current_raw_context_read?bindings.current_raw_context_read:&CurrentRawMemory,\n        bindings.current_raw_context_read_context,raw.character);\n      if(!ActorMatches(actor,actor_id))\n        return FailActor(output,\"war_cash_current_actor_changed_during_raw_context_read\");\n      raw.actor_identity_stable=true;\n      output.current_raw_context=raw;\n"
+        }
+      ],
+      "source_type": "current_repository_code; not game binary"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/src/war_payment_passive_12004.cpp",
+      "git_blob": "404cff5a5fd55d1fd5555157e556bf7f9371272f",
+      "selected_spans": [
+        {
+          "start_line": 73,
+          "end_line": 99,
+          "sha256": "1c4c342e2999ffd1d8b4d17fa6986c27d707c0184d3384fbad92f329f282befd",
+          "text": "WarPaymentFrame12004 Capture(const WarPaymentBindings12004 &b, const WarPaymentRecord12004 &r) noexcept {\n  WarPaymentFrame12004 f{};\n  if (r.kind == WarPaymentKind12004::transition) {\n    f.army_id = Read<std::uint32_t>(b,f,r.receiver,0x10);\n    f.army_magic = Read<std::uint32_t>(b,f,r.receiver,0x14);\n    f.requested_unit_id = Read<std::uint32_t>(b,f,r.receiver,0x124);\n    f.army_1d4 = Read<std::uint8_t>(b,f,r.receiver,0x1D4);\n    f.province_magic = Read<std::uint32_t>(b,f,r.second_pointer,0x85C);\n    f.province_id = Read<std::uint32_t>(b,f,r.second_pointer,0x10);\n  } else {\n    f.character = r.kind == WarPaymentKind12004::gateway ? r.receiver : r.second_pointer;\n    f.character_id = Read<std::uint32_t>(b,f,f.character,0x18);\n    f.character_magic = Read<std::uint32_t>(b,f,f.character,0x1C);\n    f.character_extension = Read<std::uintptr_t>(b,f,f.character,0x1B0);\n    if (f.character_extension && *f.character_extension)\n      f.personal_gold_bits = Read<std::uint64_t>(b,f,*f.character_extension,0x100);\n    if (r.kind != WarPaymentKind12004::gateway) {\n      f.wrapper = r.receiver;\n      f.wrapper_balance_bits = Read<std::uint64_t>(b,f,f.wrapper,8);\n      if (r.kind == WarPaymentKind12004::land_sub && f.wrapper >= 0x310) {\n        f.land_id = Read<std::uint32_t>(b,f,f.wrapper-0x310,0x10);\n        f.land_magic = Read<std::uint32_t>(b,f,f.wrapper-0x310,0x14);\n      }\n    }\n  }\n  f.capture_complete = f.failed_reads == 0;\n  return f;\n"
+        },
+        {
+          "start_line": 148,
+          "end_line": 190,
+          "sha256": "05f81ff7c7f9495bbfb6f1ae728d2bdbf0053af4d54ac34f899e41aff1e2955d",
+          "text": "template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,\n    WarPaymentRecord12004 &r, Call call) noexcept {\n  if (!Ready(b)) return call();\n  if (b.retain_actor && !b.retain_actor(b.retain_actor_context,r.kind,r.receiver,r.second_pointer))\n    return call();\n  army_observer_research_detail_12004::Permit permit(b.journal->mutex,b.journal->policy);\n  if (!permit.admitted()) return call();\n  Parent(r);\n  r.entry_event = b.next_event(b.event_context);\n  r.session_entry = b.session(b.session_context);\n  r.natural_parent_metadata = Natural(b);\n  r.before = Capture(b,r);\n  if(r.kind==WarPaymentKind12004::gateway&&r.resource_kind_raw==4)\n    r.resource4_wallet_context.emplace().before=Raw4Frame(b,r.before.character);\n  if(b.generic_context_capture_enabled&&r.kind==WarPaymentKind12004::personal_add&&\n      r.caller_return_rva==kWarPaymentGenericReturn12004) {\n    auto &g=r.generic_wallet_context.emplace();\n    g.before=ReadWarPaymentGenericValues12004(b.read,b.read_context,r.before.character);g.parent_trace=GenericParent(b);\n    if(g.before.capture_complete) {\n      const auto bits=static_cast<std::uint64_t>(*g.before.value_2c0)-\n        static_cast<std::uint64_t>(*g.before.value_2c8)-\n        (static_cast<std::uint64_t>(*g.before.value_28)+static_cast<std::uint64_t>(*g.before.value_30));\n      g.before_computed_add_raw=std::bit_cast<std::int64_t>(bits);\n      g.before_formula_matches_amount=*g.before_computed_add_raw==r.amount_raw;\n    }\n  }\n  {\n    Scope scope(r);\n    r.original_called = true;\n    r.raw_return_bits = call(); // exactly one original; no getter or replay\n    r.original_returned = true;\n  }\n  r.after = Capture(b,r);\n  if(r.resource4_wallet_context)\n    r.resource4_wallet_context->after=Raw4Frame(b,r.after.character);\n  if(r.generic_wallet_context) {\n    auto &g=*r.generic_wallet_context;\n    g.after=ReadWarPaymentGenericValues12004(b.read,b.read_context,r.after.character);\n    g.context_values_stable=SameGenericValues(g.before,g.after);\n  }\n  r.session_return = b.session(b.session_context);\n  r.natural_return_metadata = Natural(b);\n  r.returned_event = b.next_event(b.event_context);\n"
+        }
+      ],
+      "source_type": "current_repository_code; not game binary"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/war_payment_passive_12004.hpp",
+      "git_blob": "ba2dac3188be9af7779be15ad62a5b83cf319c75",
+      "selected_spans": [
+        {
+          "start_line": 56,
+          "end_line": 84,
+          "sha256": "3c2270901ecbac457c07d8c7486cf71dc452611bc493e2d17dc8bdff301c678d",
+          "text": "struct WarPaymentRecord12004 {\n  // Retention ordinal only. Every cross-family join uses the shared event clock.\n  std::uint64_t journal_sequence = 0;\n  WarPaymentKind12004 kind = WarPaymentKind12004::transition;\n  std::uintptr_t receiver = 0, second_pointer = 0, caller_return_rva = 0;\n  std::int64_t amount_raw = 0;\n  std::int32_t resource_kind_raw = -1, component_raw = -1;\n  ArmyNaturalPhaseEvent12004 entry_event, returned_event;\n  ArmyNaturalPhaseEvent12004 parent_transition_entry, parent_gateway_entry;\n  std::uintptr_t parent_transition_army = 0, parent_gateway_character = 0;\n  std::uintptr_t parent_transition_caller = 0, parent_gateway_caller = 0;\n  std::int32_t parent_gateway_resource = -1, parent_gateway_component = -1;\n  std::int64_t parent_gateway_amount = 0;\n  WarPaymentNaturalParent12004 natural_parent_metadata;\n  WarPaymentNaturalParent12004 natural_return_metadata;\n  WarPaymentSession12004 session_entry, session_return;\n  WarPaymentFrame12004 before, after;\n  bool original_called = false, original_returned = false;\n  std::uintptr_t raw_return_bits = 0;\n  bool clock_thread_order_matches = false, session_matches = false;\n  bool natural_parent_matches = false;\n  bool same_character_after = false, same_wrapper_after = false;\n  bool personal_wrapper_matches_character = false;\n  bool source_boarding_call_chain_matches = false;\n  bool tls_depth_exceeded = false;\n  // Optional exact-caller raw inputs/parent frames; never military attribution.\n  std::optional<WarPaymentGenericContext12004> generic_wallet_context;\n  // Present only inside the existing gateway resource4 callback.\n  std::optional<WarPaymentResource4WalletContext12004> resource4_wallet_context;\n"
+        }
+      ],
+      "source_type": "current_repository_code; not game binary"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp",
+      "git_blob": "418e62019dc6001df0e20625fb76a3a7f776ebf6",
+      "selected_spans": [
+        {
+          "start_line": 17,
+          "end_line": 36,
+          "sha256": "f56f5e8d41eeb544de9c391a59b7e89ae7673ef290dff0c1c3027ef2a5417f84",
+          "text": "bool State(WarPaymentWindow12004 &w,std::uintptr_t &identity,std::uint64_t &date,std::uint32_t &day) noexcept {\n  constexpr auto max=(std::numeric_limits<std::uintptr_t>::max)();\n  return w.read&&w.module_base&&w.module_base<=max-0x5C68C50&&\n    w.read(w.read_context,w.module_base+0x5C68C50,&identity,sizeof identity)&&identity&&identity<=max-0xA0&&\n    w.read(w.read_context,identity+8,&date,sizeof date)&&w.read(w.read_context,identity+0x9C,&day,sizeof day);\n}\nvoid StopLocked(WarPaymentWindow12004 &w,std::string_view reason) {\n  w.admitted=false;w.session.same_owned_process_no_load_window=false;\n  w.session.controlled_window_id=0;w.reason=reason;\n  if(w.journal)(void)w.journal->SetEnabled(false);\n}\nbool CheckLocked(WarPaymentWindow12004 &w) {\n  if(!w.admitted)return false;\n  if(!ReadArmyNaturalPhaseResearchSampling12004().enabled) {StopLocked(w,\"natural_phase_sampling_disabled\");return false;}\n  std::uintptr_t state=0;std::uint64_t date=0;std::uint32_t day=0;\n  if(!State(w,state,date,day)) {StopLocked(w,\"game_state_read_failed\");return false;}\n  if(state!=w.session.game_state_identity_witness) {StopLocked(w,\"game_state_identity_changed\");return false;}\n  if(w.session.native_date_raw&&static_cast<std::uint32_t>(date)<static_cast<std::uint32_t>(*w.session.native_date_raw)) {StopLocked(w,\"native_date_rollback\");return false;}\n  if(w.session.absolute_day_raw&&day<*w.session.absolute_day_raw) {StopLocked(w,\"absolute_day_rollback\");return false;}\n  w.session.native_date_raw=date;w.session.absolute_day_raw=day;return true;\n"
+        },
+        {
+          "start_line": 111,
+          "end_line": 128,
+          "sha256": "49e985f97e3bb0a72b46bf968b6f1d99737718e5b458349648cb80f52b52512e",
+          "text": "WarPaymentSession12004 ReadWarPaymentWindowSession12004(void *context) noexcept {\n  if(!context)return {};\n  auto &w=*static_cast<WarPaymentWindow12004 *>(context);\n  try {const std::lock_guard lock(w.mutex);(void)CheckLocked(w);return w.session;}catch(...) {return {};}\n}\nbool RetainWarPaymentWindowActor12004(void *context,WarPaymentKind12004 kind,std::uintptr_t receiver,std::uintptr_t second) noexcept {\n  if(!context)return true;\n  auto &w=*static_cast<WarPaymentWindow12004 *>(context);\n  try {\n    const std::lock_guard lock(w.mutex);if(!w.admitted)return false;\n    // The transition's Army is retained without resolving native registries.\n    // Gateway/leaf retain only the dynamically bound full-generation Character.\n    if(kind==WarPaymentKind12004::transition)return true;\n    const auto character=kind==WarPaymentKind12004::gateway?receiver:second;\n    if(!character||character>(std::numeric_limits<std::uintptr_t>::max)()-0x20||!w.read)return true;\n    std::uint32_t id=0,magic=0;\n    if(!w.read(w.read_context,character+0x18,&id,sizeof id)||!w.read(w.read_context,character+0x1C,&magic,sizeof magic))return true;\n    return magic!=0x43686172U||id==0xFFFFFFFFU||!w.session.player_character_full_id||id==*w.session.player_character_full_id;\n"
+        }
+      ],
+      "source_type": "current_repository_code; not game binary"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_serializer.cpp",
+      "git_blob": "49603d799455fc7ec2086f17b2b48c397f7fe689",
+      "selected_spans": [
+        {
+          "start_line": 104,
+          "end_line": 120,
+          "sha256": "7a94cc15ce992ec98da1b179f009ae81d63c601ff35a041b117f271bc1b87c9c",
+          "text": "  const std::string gold = resources.available\n      ? std::to_string(resources.resources_raw[kGoldResourceSlot]) : \"null\";\n  const std::string treasury = resources.available\n      ? std::to_string(resources.resources_raw[kTreasuryResourceSlot]) : \"null\";\n  return \"{\\\"status\\\":\" + Quote(resources.available ? \"available\" : \"unavailable\") +\n      \",\\\"resource_kind\\\":\" + Quote(all_raised\n          ? \"actor_military_all_raised_maintenance\" : \"actor_military_current_maintenance\") +\n      \",\\\"resource_id\\\":\" + Quote(std::to_string(actor)) +\n      \",\\\"owner_character_id\\\":\" + std::to_string(actor) +\n      \",\\\"war_ids\\\":\" + war_ids +\n      \",\\\"time_basis\\\":\\\"month\\\",\\\"raw_scale\\\":100000,\"\n      \"\\\"source_scope\\\":\\\"actor_owned_military_once_across_all_wars\\\",\\\"source\\\":\" +\n      Quote(all_raised ? \"native_character_all_raised_military_expenses\"\n                       : \"native_character_current_military_expenses\") +\n      \",\\\"resource_raw_native\\\":\" + vector + \",\\\"gold_raw\\\":\" + gold +\n      \",\\\"treasury_raw\\\":\" + treasury +\n      \",\\\"future_war_cost_upper_ready\\\":false,\\\"unavailable_reason\\\":\" +\n"
+        }
+      ],
+      "source_type": "current_repository_code; not game binary"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "git_blob": "dd3d12a20d2c5ffa26c2ac488cdedc8fdef91e3b",
+      "selected_spans": [
+        {
+          "start_line": 2025,
+          "end_line": 2041,
+          "sha256": "0bc9882e4012eb88dbc50e565533d17e1a081b85adfd8b5e0885d5d77b07a2d4",
+          "text": "    if getattr(driver, \"allow_private_war_cash_query\", False) is True:\n        @server.tool()\n        def ck3_query_war_cash_current_resources_private_v1(\n            expected_revision: int,\n            payment_sampling: Literal[\"enable\", \"disable\", \"query\"] | None = None,\n            payment_window_contract: Literal[\"same_owned_process_no_load_v1\"] | None = None,\n        ) -> dict[str, object]:\n            \"\"\"Read cash and raw payment evidence; optional explicit observer gate control.\n\n            Enable requires a paused same-process window without save/load, and\n            natural-phase sampling already enabled. No gameplay payment is sent.\n            \"\"\"\n            if payment_sampling is None and payment_window_contract is None:\n                return driver.query_war_cash_current_resources_private_v1(expected_revision=expected_revision)\n            return driver.query_war_cash_current_resources_private_v1(\n                expected_revision=expected_revision, payment_sampling=payment_sampling,\n                payment_window_contract=payment_window_contract)\n"
+        }
+      ],
+      "source_type": "current_repository_code; not game binary"
+    }
+  ],
+  "reused_exact4_source": [
+    {
+      "repository_path": "docs/ck3-native-ai/war-payment-r0174-actual-parent-source-12004.md",
+      "git_blob": "3ad457018aa3ec9284e709248390c3662ef9fc43"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/scheduler.complete.asm",
+      "git_blob": "ea3718b100e8c81130f8a8bb7729fc72b49e584f"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+      "git_blob": "e202b0e55af4360213c5f6f8d4245e740fcdfc04"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/upstream-job.complete.asm",
+      "git_blob": "0c895187da935da8e222caf329f8e7d5ffceb9a3"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/SOURCE-SPANS.actual.json",
+      "git_blob": "67afb2c29c634985c731b8b017292f3339b9cf6c"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.md",
+      "git_blob": "df2078adb0e688fb9616d26292712609e317ae31"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/episode04-r195-r196-r08-personal-wallet-12004.md",
+      "git_blob": "f676ed9ec65d613b284274c4c558726fa51d875c"
+    },
+    {
+      "repository_path": "docs/ck3-native-ai/episode04-maintenance-writer-ordinary-null-owner-12004.md",
+      "git_blob": "f32337dd8477d794245321a9af83a48f88ff0bf6"
+    }
+  ],
+  "source_read_correction": {
+    "stack3978BF8_initially_proposed_as_new": true,
+    "canonical79Bbody_already_held": true,
+    "Root_notified_before_new_read": true,
+    "new_EXE_read_authorization_not_consumed": true,
+    "no_new_lane_or_source_credit": true
+  },
+  "cadence_gap": {
+    "known_dispatch": "290DC00 task+14 count,+1C chunk,+68 descriptor,+70 inline context;290FD20 index ->Character;28F7840 normal paths call28A6D10",
+    "unproved_input": "producer/selection/enqueue calendar rule for the actual Character array/task",
+    "source_PC": "NOTHELD",
+    "present_in_current_cash_payment_DTO": false,
+    "not_next": [
+      "3978BB0/3978C00 already-held wrappers",
+      "28C43A0/2C142B0 already-held rate callees",
+      "guessed next scheduler address"
+    ]
+  },
+  "build_status_reference": "build-status.json",
+  "actual_projection_reference": "actual-projection.json",
+  "source_compound_reference": "source-compound.json",
+  "storage_source_pool": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-r216-postclose-a01/SHARED-SOURCE-POOL-LIVE-PROOF.actual-a01.json",
+    "bytes": 3733,
+    "sha256": "e3ba88882c93655f9fb68518532d334f3962846a43d1d6b610b7a5134a3e273d"
+  },
+  "scope": "Local code/static knowledge and historical source-machine samples only; no paid/payer/cadence qualification"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "xar.e04.B.next-actual-stock-growth-proof.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "INDEPENDENT_ACTUAL_PROOF_CONTRACT_NOT_A_NEW_CAPTURE_REQUEST",
+  "purpose": "Consume an already authorized normal one-day opportunity's existing before/after complete rows; independent of troop refill ADD",
+  "existing_tool": "ck3_query_army_strengths",
+  "paths_relative_to_complete_Driver_result": ["army_strengths[*].army_id", "army_strengths[*].native_carmy_id", "army_strengths[*].actual_supply_callback_observations_v1.oldest_available_sequence", "army_strengths[*].actual_supply_callback_observations_v1.latest_sequence", "army_strengths[*].actual_supply_callback_observations_v1.overwritten_events", "army_strengths[*].actual_supply_callback_observations_v1.unattributed_capture_failures", "army_strengths[*].actual_supply_callback_observations_v1.events[*].sequence", "army_strengths[*].actual_supply_callback_observations_v1.events[*].passed_date_raw64", "army_strengths[*].actual_supply_callback_observations_v1.events[*].same_instance_after", "army_strengths[*].actual_supply_callback_observations_v1.events[*].capture_failure_flags", "army_strengths[*].actual_supply_callback_observations_v1.events[*].before.province_id", "army_strengths[*].actual_supply_callback_observations_v1.events[*].after.province_id", "army_strengths[*].actual_supply_callback_observations_v1.events[*].before.supply_raw", "army_strengths[*].actual_supply_callback_observations_v1.events[*].after.supply_raw"],
+  "existing_semantic_consumer": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_site_growth.py",
+  "required_actual_proof": ["Normal-day complete/claim/original exact-day clock chain, paired independent paused endpoint snapshots and exact runtime/source proof", "Same subject FullID, original physical cohort/DATA/max/commander identities, stationary same Province", "New callback sequence after before fence, no unaccounted gap/failure, full CDate64 agrees with the actual day", "Every used event before.province_id==after.province_id==declared site; missing/null is unknown", "same_instance_after true for all events; positive endpoint stock delta and at least one actual event after.supply_raw>before.supply_raw; every callback stock link reconciles to both endpoint stocks", "Two independent distinct Province site-inputs must pass; never reuse the same callback across sites"],
+  "R06_current_sampling_scope": "regular_core scoped ON only; keep existing supply journal OFF. Missing/null leaf stays unknown; no new observer toggle, SDK, day, Arm or scene for B.",
+  "if_R06_next_day_misses_subject_bucket": "Record no covered natural stock opportunity; keep B0/2 and finish the original R06 day without additional advance",
+  "explicit_non_evidence": ["troop net +10", "Regi positive q or actual ADD", "calendar month flag0->2", "positive current rate or loaded gain without actual callback", "stock getter same value", "controlled zero-stock initialization", "callback old event relocated by current snapshot"],
+  "runtime": null,
+  "actual_callback_event_pin": null,
+  "B_qualified_sites": 0,
+  "formal_ABC_qualified": 0
+}
