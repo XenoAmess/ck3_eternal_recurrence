@@ -1,0 +1,151 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0205",
+  "source_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "identity": {
+    "actor_name": "Robert",
+    "actor_full_id": 31254,
+    "date_raw": 53148192,
+    "army_full_id": 18,
+    "origin": 2635,
+    "pid": 23676,
+    "generation": 1,
+    "episode": "native-31254-7a037a02690d",
+    "creation_ft": 134367624036178149
+  },
+  "r04": {
+    "status": "NO_NATIVE_TRUE_CANDIDATE_IN_BOUNDED_SCOUT",
+    "war": 4,
+    "holding_rows": 27,
+    "side_counts": {
+      "defender": 3,
+      "attacker": 24
+    },
+    "previews": [
+      {
+        "target": 2636,
+        "firsthop": 2636,
+        "route": [
+          2636
+        ],
+        "condition": false,
+        "county_objects_differ": false,
+        "same_county_identity": "native:2212927206480",
+        "P_trace_returned": true
+      },
+      {
+        "target": 2644,
+        "firsthop": 2645,
+        "route": [
+          2645,
+          2644
+        ],
+        "condition": false,
+        "county_objects_differ": false,
+        "same_county_identity": "native:2212927206480",
+        "P_trace_returned": true
+      }
+    ],
+    "initial_public_revision": 4,
+    "ending_public_revision": 4,
+    "same_frame_fence": true,
+    "move_executed": false
+  },
+  "r06": {
+    "modes": [
+      {
+        "mode": "fixed_chunk0_prepare",
+        "input_basis": "same_capture_fixed_chunk0_conditional_preparation_ordered_occurrences",
+        "physical_slots": 147,
+        "q_zero": 147,
+        "position": {
+          "true": 0,
+          "false": 21,
+          "unknown": 126
+        },
+        "conditional_positive_targets": 0
+      },
+      {
+        "mode": "observed_prepared",
+        "input_basis": "same_capture_prepared148_ordered_occurrences",
+        "physical_slots": 147,
+        "q_zero": 147,
+        "position": {
+          "true": 0,
+          "false": 21,
+          "unknown": 126
+        },
+        "conditional_positive_targets": 0
+      }
+    ],
+    "actual_ADD_observed": false,
+    "conditional_only": true,
+    "probe_install": "not run: Root reports no eligible target; no probe business qualification"
+  },
+  "off": {
+    "natural_phase": {
+      "public_revision": 5,
+      "native_revision": 4,
+      "date_raw": 53148192,
+      "state": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "at_utc": "2026-10-18T02:52:14.467845+00:00"
+    },
+    "regular_core": {
+      "public_revision": 5,
+      "native_revision": 4,
+      "date_raw": 53148192,
+      "state": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "at_utc": "2026-10-18T02:53:04.271592+00:00"
+    }
+  },
+  "schema_RED_preserved": true,
+  "normalclose": {
+    "date_raw": 53148192,
+    "save_metadata_at": "2026-10-18T02:46:19.285534+00:00",
+    "manual_OFF_after_Save_before_Exit": true,
+    "observer_cleanup": "NOT_CONFIGURED",
+    "manual_OFF_confirmed_separately": true,
+    "recording": "NOT_STARTED",
+    "process_exit_code": 0,
+    "CAS_done_resources_empty": true,
+    "CAS_sequence": 6394,
+    "checkpoint_pin": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73689226,
+      "sha256": "a26b5eb55ec42b870533fe24714a2690bc1ae843e9bc5e1de09957100920b71c"
+    }
+  },
+  "new_claims": {
+    "days": 0,
+    "Move": 0,
+    "recording": 0,
+    "R04_physical_county_positive": false,
+    "R06_ADD": false,
+    "formal_cue": false
+  },
+  "unchanged_progress": "research9/14 business6/11 dynamic0/11 ABC0/3; no added qualification"
+}

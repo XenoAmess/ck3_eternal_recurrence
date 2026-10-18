@@ -1,0 +1,192 @@
+{
+  "schema": "xar.e04.r205-robert-scout-portable.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:11:02.869347+00:00",
+  "source_scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01",
+  "runtime_source_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "archive_candidate_base": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "archive_members": [
+    {
+      "member": "close/BOOTSTRAP-OBSERVED.actual.json",
+      "source_relative_path": "r205-r04-a01-ready-close-a01/BOOTSTRAP-OBSERVED.actual.json",
+      "bytes": 917,
+      "sha256": "922d1e5c3204ab374447fd0d579c3765bd6c33da507d8283e882f1a2b6b11929"
+    },
+    {
+      "member": "close/NORMAL-SAVE.actual.json",
+      "source_relative_path": "r205-r04-a01-ready-close-a01/NORMAL-SAVE.actual.json",
+      "bytes": 3274,
+      "sha256": "8ff12db862de5eb717773c4967f2f9571facbc2709e2dd6dd16d3872d2a65c09"
+    },
+    {
+      "member": "close/SCREEN-RELEASE.actual.json",
+      "source_relative_path": "r205-r04-a01-ready-close-a01/SCREEN-RELEASE.actual.json",
+      "bytes": 4817,
+      "sha256": "4191692a60507b52dcca1bd46678a70dcbc8bb2b25b74252a845c82669eb13b6"
+    },
+    {
+      "member": "close/after-save-snapshot.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-a01-ready-close-a01-03-after-snapshot.json",
+      "bytes": 126714,
+      "sha256": "1965cef75a578defb8fb73afd66b24b2c0ff57997ff10a67f4f4e2591ba7765c"
+    },
+    {
+      "member": "close/bootstrap-result.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/bootstrap-result.json",
+      "bytes": 14520,
+      "sha256": "35120de3751be868f02ae2ab13ee439a7eeb66dd3f280bddd58d02e2d1b7d021"
+    },
+    {
+      "member": "close/native-save-response.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-a01-ready-close-a01-02-save-once.json",
+      "bytes": 20892,
+      "sha256": "dbeefb028c122ebce09a6aefe7af4073f67e4c51b34bdbb6b0f8cb02b1faeca1"
+    },
+    {
+      "member": "identity/IDENTITY-SCOPE.actual-a01.json",
+      "source_relative_path": "R205-IDENTITY-SCOPE.actual-a01.json",
+      "bytes": 8691,
+      "sha256": "4bd43279b7598380c63437cefb62dcdfc17d5e8a7b1a5fc42b685397c86be85e"
+    },
+    {
+      "member": "identity/allocated-context.actual-a01.json",
+      "source_relative_path": "allocated-context.actual-a01.json",
+      "bytes": 4144,
+      "sha256": "1019a1b886149d661d9bafc89929bf3e8f3868016bc219504bda4ecf05521e9e"
+    },
+    {
+      "member": "identity/runtime-actor-identity.actual-a01.json",
+      "source_relative_path": "runtime-actor-identity.actual-a01.json",
+      "bytes": 7845,
+      "sha256": "0701e13a46006d0176246ccd6a59bcd27eede801a19967a37d3143c71622cd3a"
+    },
+    {
+      "member": "off/natural-a01-schema-RED.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-off-natural-query-a01.json",
+      "bytes": 1820,
+      "sha256": "513b681239aa27e1af7b5f9a33ce95c2aedd626b17d516ce8bc49d70021962df"
+    },
+    {
+      "member": "off/natural-a02.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-off-natural-query-a02.json",
+      "bytes": 4717,
+      "sha256": "9e78e4dc6c553cfe44da424cb1bb1196018514606bc1015045b4d5e7a938d1f8"
+    },
+    {
+      "member": "off/regular-a02.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-off-regular-query-a02.json",
+      "bytes": 4708,
+      "sha256": "c20672042007a1046956b0ce6f857fc85149ab951a4ae0d9d0964f808a09f543"
+    },
+    {
+      "member": "q/R205-Q-SCOUT.actual-a02.json",
+      "source_relative_path": "R205-Q-SCOUT.actual-a02.json",
+      "bytes": 832816,
+      "sha256": "a2f58324ed76ef0625d0915b54113f236ea6c2cf83f4a4a8e48075c9d8910d3f"
+    },
+    {
+      "member": "q/fence.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-q-fence-a01.json",
+      "bytes": 126689,
+      "sha256": "4f28ac5f07691ece03c6a4d51d7b9ae66daf91ac5521486531c20f027934fe3f"
+    },
+    {
+      "member": "q/fixed-packet.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-q-fixed-a01.json",
+      "bytes": 5207,
+      "sha256": "a70197c9630c52031f3c1557b20ebac9f2f7a7c880c24f03df5a9632c0a128db"
+    },
+    {
+      "member": "q/observed-packet.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-q-observed-a01.json",
+      "bytes": 5213,
+      "sha256": "dde3227d125a37259b30e0569fca2465c6de346240938017877e8f468caae0a0"
+    },
+    {
+      "member": "r04/RESULT.actual.json",
+      "source_relative_path": "r205-r04-scout-a01/RESULT.actual.json",
+      "bytes": 17052,
+      "sha256": "9e180225e8f68f8a7e168e69c62b3f1897492b018392dfa33b79fabde8ad6e7f"
+    },
+    {
+      "member": "r04/after-fence.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-scout-a01-06-after-fence.json",
+      "bytes": 125895,
+      "sha256": "ca61609ac3615d40b343fdc03543439ef9a9fd5ce128d1594ada6ca7e153979a"
+    },
+    {
+      "member": "r04/before.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-scout-a01-01-before.json",
+      "bytes": 125885,
+      "sha256": "36df7ccbf798db8a82efd3e738e88bc284c14b73f8cc81c770d8f44dbc8f7c3f"
+    },
+    {
+      "member": "r04/holdings.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-scout-a01-02-holdings.json",
+      "bytes": 100205,
+      "sha256": "c09edba50e5e7357a3a39e966592bd44fb6d39250ceeccdc33ec773ea0c73b70"
+    },
+    {
+      "member": "r04/preview2636.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-scout-a01-03-preview-2636.json",
+      "bytes": 22945,
+      "sha256": "d1a153b34fd9e167bc1f243ad0392e9eff830a067077f7691919b2a2f58cdb96"
+    },
+    {
+      "member": "r04/preview2644.json",
+      "source_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0205/responses/r205-r04-scout-a01-04-preview-2644.json",
+      "bytes": 23001,
+      "sha256": "584ad351b70724f2fee11afd059f7feb5401c22688b245eedfaafb59e4cb7bc1"
+    },
+    {
+      "member": "identity/production-qualification-a35.json",
+      "source_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a35\\ROOT-LATEST-MAIN-PRODUCTION-BYTES-A03.json",
+      "bytes": 16198,
+      "sha256": "a80af8f9df7ca2a2ba56e474cb4092654e8f0782908b63f8278672534e6e2f67"
+    }
+  ],
+  "external_references": [
+    {
+      "kind": "full_Driver_JSON",
+      "mode": "fixed_chunk0_prepare",
+      "pin": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\state-a01\\native-session\\army-query-history-results\\army-query-80c7cd02e3964d77984970336b3f07da.json",
+        "bytes": 11162743,
+        "sha256": "1bee2acdb1a148e271ac3159d546341e9160559fccd58afdbe9d179fef1c3e3c",
+        "kind": "complete-driver-army-query-result-json-v1",
+        "wire_bytes_preserved": false
+      },
+      "body_opened_here": false,
+      "hash_recomputed_here": false,
+      "portable": false
+    },
+    {
+      "kind": "full_Driver_JSON",
+      "mode": "observed_prepared",
+      "pin": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\state-a01\\native-session\\army-query-history-results\\army-query-159368d48d204b0c9f063df1ae660e82.json",
+        "bytes": 11162740,
+        "sha256": "04d4c9f154ad59f2a3f65969def032d116ddc1203f9a56fe514298e69219bbfd",
+        "kind": "complete-driver-army-query-result-json-v1",
+        "wire_bytes_preserved": false
+      },
+      "body_opened_here": false,
+      "hash_recomputed_here": false,
+      "portable": false
+    },
+    {
+      "kind": "checkpoint",
+      "pin": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 73689226,
+        "sha256": "a26b5eb55ec42b870533fe24714a2690bc1ae843e9bc5e1de09957100920b71c"
+      },
+      "body_opened_here": false,
+      "hash_recomputed_here": false,
+      "portable": false
+    }
+  ],
+  "read_scope": "named JSON <=1MiB; no Driver full bodies/save/media/EXE opened or hashed",
+  "media": "original close receipts may reference screenshot pins; no media body is included or rehashed",
+  "owner_report": "Root: Robert31254, no eligible probe target, probe not installed; 0Move/0day/0recording; counts unchanged"
+}

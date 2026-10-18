@@ -854,3 +854,7 @@ docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-de
 /docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/focused-tests.stdout.log -text whitespace=cr-at-eol
 /docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/source-index.json -text whitespace=cr-at-eol
 /docs/ck3-native-ai/acceptance/2026-10-18-r05-initialize-observe/verify_bundle_or_single_smoke_a03.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/originals.zip -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/source-index.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/summary.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r205-robert-scout-normalclose-12004/verify_portable.py -text whitespace=cr-at-eol
