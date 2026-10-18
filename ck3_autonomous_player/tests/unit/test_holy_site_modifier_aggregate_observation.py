@@ -249,7 +249,12 @@ class ExistingContextSyntheticTests(unittest.TestCase):
         value = legacy_context()
         value.update(recognition_matrix=matrix(), modifier_aggregate_observation=aggregate())
         before = deepcopy(value)
-        self.assertEqual(normalize_context(value, snapshot=frame(), holy_site_id=SITE), before)
+        actual = normalize_context(value, snapshot=frame(), holy_site_id=SITE)
+        decomposition = actual.pop("rarity_decomposition")
+        self.assertEqual(decomposition["method"], "independent_matrix_projection")
+        self.assertFalse(decomposition["same_native_evaluation_as_total"])
+        self.assertEqual(actual, before)
+        self.assertEqual(value, before)
         self.assertFalse(value["modifier_aggregate_observation"]["site_attribution_observed"])
         self.assertFalse(value["recognition_matrix"]["benefits_observed"])
 
