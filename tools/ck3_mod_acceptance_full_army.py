@@ -114,6 +114,16 @@ class FullArmyResultClient:
                     # The original compact control receipt remains unchanged.
                     self.client.checkpoint(plan_name+'-derived-normalized-full',normalized)
                     row={**row,'result':normalized,'wire_full_result_proof':proof}
+        elif full:
+            from xar_autoplayer.bridge.r05_supply_observation_case import classify_strength_pre_snapshot_not_started
+            diagnostic=classify_strength_pre_snapshot_not_started(row)
+            if diagnostic is not None:
+                proof={'diagnostic':diagnostic,'source':'completed_native_pre_snapshot_rejected_before_submit',
+                    'public_step_id':step['id'],'public_control_name':plan_name,
+                    'public_original':str(self.client.output/(plan_name+'.actual-results.json')),
+                    'query_reissued':False,'native_query_started':False}
+                self.client.checkpoint(plan_name+'-not-started-proof',proof)
+                row={**row,'full_query_not_started_v1':proof}
         # Consumers retain their original stepID semantics; physical public row
         # and control-plan IDs are separately pinned in the original receipt.
         return [{**row,'id':old_id,'continuation_public_step_id':step['id']}]

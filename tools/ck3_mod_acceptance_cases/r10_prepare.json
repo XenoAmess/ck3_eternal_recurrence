@@ -1,0 +1,15 @@
+{
+  "schema": "xar.e04.r10-common-preparation.v1",
+  "scope": "normal source readiness pilot through the original common CaseClient",
+  "formal_ABC_executor_implemented": false,
+  "formal_ABC_arm": false,
+  "normal_Save_performed_by_case": false,
+  "maximum_actual_days": 0,
+  "pending": [
+    "Root common S0 selection and normal Save after actual route/site pilot",
+    "two distinct sites with actual positive same-province stock deltas and qualified callback chain",
+    "frozen plan and three independent normal cold loads",
+    "shared A/B/C execution seam and full actual 90-day common horizon",
+    "R08 qualified application/payer/cadence before formal compare_fees"
+  ]
+}

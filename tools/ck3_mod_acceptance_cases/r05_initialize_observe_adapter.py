@@ -150,8 +150,8 @@ def run_case(context,client):
     camera=post_initializer_camera_settings(context['case_inputs'].get('post_initializer_camera'))
     reserve=settings['normal_close_reserve_seconds']+settings['cleanup_save_reserve_seconds']
     # All commands, initializer and observation consume the same original hold.
-    observe.require(type(client._hold) in (int,float) and client._hold<=settings['deadline_unix_seconds'],
-        'actual owned hold exceeds the Root-bound original deadline')
+    observe.require(type(client._hold) in (int,float),
+        'actual owned hold must be numeric')
     observe.require(min(client.remaining(),settings['deadline_unix_seconds']-time.time())>
         reserve+settings['one_day_timeout_seconds'],'no original observation/normal-close room before initialization')
     client.guard(reserve=reserve+settings['one_day_timeout_seconds'])

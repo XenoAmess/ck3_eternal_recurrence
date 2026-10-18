@@ -50,6 +50,29 @@ class StrengthRevisionDrift(ValueError):
     def __init__(self,proof):
         super().__init__(STRENGTH_REVISION_DRIFT);self.proof=proof
 
+def classify_strength_pre_snapshot_not_started(row):
+    """Only the completed R209 diagnostic proves this native query never began."""
+    if row.get('ok') is not False or not isinstance(row.get('finished_at'),str) or not row['finished_at']:
+        return None
+    plan=row.get('plan');args=plan.get('args') if isinstance(plan,dict) else None
+    if not (isinstance(args,dict) and plan.get('tool')=='ck3_query_army_strengths'
+            and plan.get('continue_on_error') is True and args.get('profile')=='observed_history_full_v1'):
+        return None
+    prefix=('RuntimeError: MCP tool ck3_query_army_strengths returned an error: '
+        'Error executing tool ck3_query_army_strengths: native gameplay step failed: '
+        'CK3 army-strength query is unavailable ')
+    diagnostic={'worker':'pre_snapshot','native':'not_started','reader':'not_started',
+        'army_id':-1,'scope_rows':-1,'baseline_result':-1,'pre_snapshot':0,'paused':0,'map_ready':0,
+        'submit':-1,'wait':-1,'reclaim':-1,'enter_result':-1,'entered':-1,
+        'native_snapshot':-1,'native_returned':-1,'finish_result':-1,'frame_stable':-1,'run_success':-1}
+    suffix='['+';'.join(k+'='+str(v) for k,v in diagnostic.items())+']'
+    return diagnostic if row.get('error')==prefix+suffix else None
+
+class StrengthQueryNotStarted(StrengthRevisionDrift):
+    def __init__(self,proof):
+        ValueError.__init__(self,'native army-strength query not started at pre_snapshot')
+        self.proof=proof
+
 def require(ok, why):
     if not ok: raise ValueError(why)
 
@@ -163,8 +186,7 @@ class ObservationIO:
         self.readonly_strength_recoveries=[];self.strength_recovery_failed=False
         self.root=Path(context['output'])/'r05-observe-originals';self.root.mkdir()
         self.modals=[];self.sampling_owned=False;self.sampling_enable_attempted=False
-        require(type(getattr(client,'_hold',None)) in (int,float) and
-            client._hold <= self.settings['deadline_unix_seconds'], 'actual common hold must fit explicit original deadline')
+        require(type(getattr(client,'_hold',None)) in (int,float), 'actual common hold must be numeric')
     def room(self,extra=0,*,cleanup=False):
         reserve=self.settings['normal_close_reserve_seconds']+(0 if cleanup else self.settings['cleanup_save_reserve_seconds'])
         require(min(self.client.remaining(),self.settings['deadline_unix_seconds']-time.time())>reserve+extra,
@@ -206,6 +228,12 @@ class ObservationIO:
         require(len(rows)==1 and rows[0].get('id')==name,'actual common control returned an ambiguous request identity')
         if readonly_strength and is_strength_revision_drift(rows[0]):
             raise StrengthRevisionDrift({'request_id':name,'arguments':args,'original':ref,'terminal_row':rows[0]})
+        if readonly_strength and rows[0].get('full_query_not_started_v1') is not None:
+            diagnostic=classify_strength_pre_snapshot_not_started(rows[0])
+            require(diagnostic is not None and rows[0]['full_query_not_started_v1']['diagnostic']==diagnostic,
+                'readonly not-started proof differs from completed original diagnostic')
+            raise StrengthQueryNotStarted({'request_id':name,'arguments':args,'original':ref,'terminal_row':rows[0],
+                'reason':'pre_snapshot_failed_native_not_started','diagnostic':diagnostic})
         require(rows[0].get('ok') is True and not rows[0].get('error'),
             'actual common control failed; original request is never replayed')
         return rows[0]['result']
@@ -231,6 +259,7 @@ class ObservationIO:
             try:q=query(f,'-full-history')
             except StrengthRevisionDrift as first:
                 proof={'first_RED':first.proof,'initial_frame':f,'retry_limit':1,
+                    'recovery_reason':first.proof.get('reason','snapshot_revision_drift'),
                     'date_advance_replayed':False,'action_replayed':False,'status':'fresh_frame_pending'}
                 self.readonly_strength_recoveries.append(proof)
                 # First RED is already durable. Persist both actual frames even

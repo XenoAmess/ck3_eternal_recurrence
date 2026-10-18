@@ -25,6 +25,25 @@ def input_bytes(path):
     return path.read_bytes()
 
 
+def admit_cold(plan, arm, evidence):
+    """Admit a real cold-start input without fabricating terminal ARM fields."""
+    need(arm.get('schema') == 'xar.e04.r10.cold-arm-input.v1'
+         and set(arm) == {'schema', 'label', 'runtime', 'loaded_save_sha256', 'cold_start'}
+         and arm['label'] == 'B', 'explicit actual B cold-arm input required')
+    base = c.check_plan(plan, evidence)
+    rt = arm['runtime']; c.schema_check(rt, 'runtime'); evidence.all_pins(rt)
+    need(arm['loaded_save_sha256'] == plan['normal_save']['sha256'], 'cold normal save SHA differs')
+    need(rt['source_head'] == plan['build']['source_head']
+         and rt['native_dll_sha256'] == plan['build']['native_dll_sha256'], 'cold runtime source/DLL differs')
+    frozen = datetime.fromisoformat(plan['frozen_at_utc'].replace('Z', '+00:00'))
+    started = datetime.fromisoformat(rt['started_at_utc'].replace('Z', '+00:00'))
+    need(started.tzinfo is not None and frozen < started, 'plan must precede independent cold session')
+    cold = observe(arm['cold_start'], plan, evidence, rt)
+    need(arm['cold_start']['day'] == 0 and cold['endpoint'] == base and len(cold['rows']) == 1,
+         'actual complete cold T0 observable baseline differs')
+    return cold
+
+
 def recipe(plan, evidence):
     """Return a concrete, non-executing B recipe from the frozen R10 plan."""
     base = c.check_plan(plan, evidence)

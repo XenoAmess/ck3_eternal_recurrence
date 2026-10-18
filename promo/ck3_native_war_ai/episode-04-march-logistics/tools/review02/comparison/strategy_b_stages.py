@@ -172,10 +172,13 @@ class BStages:
         need(self.state['phase'] == 'uninitialized', 'B baseline cannot reset a continuation')
         need(self.s0_arm is not None, 'same-S0 admission needs existing actual R10 B arm: runtime, loaded_save_sha256 and cold_start evidence; do not infer it from date alone')
         c = self.next.b.c
-        self.next.b.audit(self.plan, self.s0_arm, {'schema': 'xar.e04.r10.strategy-b-events.v1',
-            'plan_sha256': self.plan_pin['sha256'], 'events': []}, self.evidence,
-            plan_sha256=self.plan_pin['sha256'])
-        c.schema_check(self.s0_arm, 'arm')
+        if self.s0_arm.get('schema') == 'xar.e04.r10.cold-arm-input.v1':
+            self.next.b.admit_cold(self.plan, self.s0_arm, self.evidence)
+        else:
+            self.next.b.audit(self.plan, self.s0_arm, {'schema': 'xar.e04.r10.strategy-b-events.v1',
+                'plan_sha256': self.plan_pin['sha256'], 'events': []}, self.evidence,
+                plan_sha256=self.plan_pin['sha256'])
+            c.schema_check(self.s0_arm, 'arm')
         need(self.s0_arm['label'] == 'B' and self.s0_arm['loaded_save_sha256'] == self.plan['normal_save']['sha256'], 'actual B normal cold-load SHA differs from common S0')
         runtime = self.s0_arm['runtime']
         for field, key in (('pid', 'pid'), ('process_create_time_100ns', 'process_create_time_100ns'),

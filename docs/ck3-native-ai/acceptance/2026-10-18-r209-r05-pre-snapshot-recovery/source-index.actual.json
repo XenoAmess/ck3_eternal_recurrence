@@ -1,0 +1,20 @@
+{
+  "schema": "xar.e04.r209-pre-snapshot-not-started-portable-source.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "source_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003",
+  "original_path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003/case-output-observe-only-a01/r05-observe-originals/r05obs-0029-day-03-before-full-history.json.gz",
+  "portable_relative_path": "actual-R209-pre-snapshot-red.json.gz",
+  "bytes": 544,
+  "sha256": "b51bc525a249619fceec77a2beb4d6cdc7b35a9bd5fa4440daf8af4a4c109a61",
+  "decompressed_bytes": 1142,
+  "decompressed_sha256": "6aca29df2851285eafead293f6211baf30359ae0dde2a3d59e9ab1c1958c6f79",
+  "source_json_pointer": "/rows/0",
+  "actual_tool": "ck3_query_army_strengths",
+  "arguments": {"army_ids": [0], "expected_revision": 11, "profile": "observed_history_full_v1"},
+  "original_RED_preserved": true,
+  "actual_live_recovery_executed": false,
+  "new_R05_positive": false
+}

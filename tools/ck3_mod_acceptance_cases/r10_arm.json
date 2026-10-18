@@ -1,0 +1,21 @@
+{
+  "schema": "xar.e04.r10-common-arm-case.v1",
+  "formal_stage_executor_connected": true,
+  "actual_arms_completed": 0,
+  "business_pass": false,
+  "joint_ABC_completed": false,
+  "requires": [
+    "actual normal common source/profile",
+    "frozen plan before independent cold runtime",
+    "same S0/source/DLL and cold native loaded features",
+    "two real positive-stock sites for B",
+    "R07/R08 actual fee prerequisites when compare_fees=true",
+    "exact-day actual horizon and independent postconditions",
+    "normal Save/GUI Quit/retained OS0/native0/keeper closure"
+  ],
+  "does_not_qualify": [
+    "physical or payment ledger",
+    "actual ABC result",
+    "video human review or signoff"
+  ]
+}

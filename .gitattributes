@@ -910,3 +910,8 @@ docs/ck3-native-ai/evidence/episode04-shared-cash-query-opt-in-12004/SOURCE-DELI
 /docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/public-compact-query.actual.json.gz -text whitespace=cr-at-eol
 /docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/script-preflight-amount116.51751.actual.json -text whitespace=cr-at-eol
 /docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/source-index.actual.json -text whitespace=cr-at-eol
+
+# Exact R209 original regression evidence.
+docs/ck3-native-ai/acceptance/2026-10-18-r209-r05-pre-snapshot-recovery/actual-R209-pre-snapshot-red.json.gz -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r209-r05-pre-snapshot-recovery/source-index.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r209-r05-pre-snapshot-recovery/TIMING.actual.json -text whitespace=cr-at-eol,-blank-at-eof

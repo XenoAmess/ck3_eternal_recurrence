@@ -1,0 +1,69 @@
+{
+  "schema": "ck3-mod-acceptance-products-v1",
+  "product_inventory": "{repo_root}/workshop/products.json",
+  "shared_runtime_selection": "one Root-selected common runtime; no product host/native/source selection",
+  "products": {
+    "war-episode04-r10": {
+      "directory": "promo/ck3_native_war_ai/episode-04-march-logistics",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "runtime_mod_key": "war-episode04-r10",
+      "external_mod": false,
+      "integration_status": "staged common adapter implemented offline; live formal arms NOT_RUN",
+      "cases": [
+        {
+          "id": "r10-common-arm",
+          "status": "ready",
+          "adapter": {
+            "module": "tools.ck3_mod_acceptance_cases.r10_arm_adapter",
+            "config": "tools/ck3_mod_acceptance_cases/r10_arm.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": null,
+            "readiness_timeout": null,
+            "timeout": null,
+            "hold_seconds": null,
+            "poll_interval": null
+          },
+          "budget_provenance": "explicit future Root capacity and original hold required",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_army_strengths",
+            "ck3_query_army_commander_candidates_v1",
+            "ck3_query_war_cash_current_resources_private_v1",
+            "ck3_execute_step",
+            "ck3_get_capabilities",
+            "ck3_query_loaded_feature_manifest_v1",
+            "ck3_move_army",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_pending_character_interaction_context_v1",
+            "ck3_reply_pending_character_interaction",
+            "ck3_acknowledge_pending_character_interaction"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "whole_product_acceptance_credit": false,
+          "case_scope": "same-public-client normal cold arm stages; no automatic joint or causal ledger qualification"
+        }
+      ]
+    }
+  }
+}

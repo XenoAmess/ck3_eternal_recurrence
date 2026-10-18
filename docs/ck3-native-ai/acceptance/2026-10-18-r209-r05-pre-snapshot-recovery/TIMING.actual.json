@@ -1,0 +1,76 @@
+{
+  "schema": "xar.e04.r209-small-control-timing-observation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "source_output": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003/case-output-observe-only-a01",
+  "source_control_basename_rule": "r209-observe-only-a01-<label>.actual-results.json",
+  "source_result": "r05-initialize-and-observe-result.json",
+  "source_result_bytes": 33927,
+  "source_fields": [
+    "/rows/0/started_at",
+    "/rows/0/finished_at",
+    "/rows/0/plan/tool"
+  ],
+  "source_control_whole_pins_captured": false,
+  "observation_provenance": "Readonly tool execution retained in session; small metadata timings, not a portable whole-original verification claim",
+  "compact_control_bytes_read": 2824271,
+  "control_count": 36,
+  "first_started": "2026-10-18T07:49:26.655986+00:00",
+  "last_finished": "2026-10-18T07:52:30.135052+00:00",
+  "full_success": [
+    {
+      "label": "r05obs-0009-day-01-before-full-history",
+      "seconds": 3.999012,
+      "started_at": "2026-10-18T07:49:59.265517+00:00",
+      "finished_at": "2026-10-18T07:50:03.264529+00:00",
+      "tool": "ck3_query_army_strengths",
+      "step": null,
+      "ok": true
+    },
+    {
+      "label": "r05obs-0016-day-01-after-full-history",
+      "seconds": 4.542421,
+      "started_at": "2026-10-18T07:50:34.926701+00:00",
+      "finished_at": "2026-10-18T07:50:39.469122+00:00",
+      "tool": "ck3_query_army_strengths",
+      "step": null,
+      "ok": true
+    },
+    {
+      "label": "r05obs-0020-day-02-before-full-history",
+      "seconds": 4.088608,
+      "started_at": "2026-10-18T07:51:00.995420+00:00",
+      "finished_at": "2026-10-18T07:51:05.084028+00:00",
+      "tool": "ck3_query_army_strengths",
+      "step": null,
+      "ok": true
+    },
+    {
+      "label": "r05obs-0025-day-02-after-full-history",
+      "seconds": 4.246533,
+      "started_at": "2026-10-18T07:51:32.623259+00:00",
+      "finished_at": "2026-10-18T07:51:36.869792+00:00",
+      "tool": "ck3_query_army_strengths",
+      "step": null,
+      "ok": true
+    }
+  ],
+  "wall_span_seconds": 183.479066,
+  "control_wall_seconds_by_tool": {
+    "ck3_get_capabilities": 0.418496,
+    "ck3_take_snapshot": 7.773108,
+    "ck3_query_army_observer_research_sampling_v1": 2.405045,
+    "ck3_set_army_observer_research_sampling_v1": 1.041271,
+    "ck3_query_army_strengths": 17.408295999999996,
+    "ck3_execute_step": 2.8553439999999997,
+    "ck3_save_checkpoint": 4.800114
+  },
+  "full_success_tool_seconds": 16.876574,
+  "intercontrol_gap_cause_proven": false,
+  "full_payload_read_count": 0,
+  "repeated_pretty_normalized_json_bytes_observed_by_stat": 61545339,
+  "cache_reuse_implemented": false,
+  "checkpoint_elision_implemented": false,
+  "new_performance_or_live_credit": false
+}
+
