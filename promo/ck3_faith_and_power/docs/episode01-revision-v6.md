@@ -77,3 +77,4 @@ V6是外置 `revision-v6-20261019`；新voice在 `production-candidate/value-v6-
 逐135段的新来源映射纳入14张R23图、两段新录像及已有历史操作，44段尚无相应原版候选；其余候选也按实际局部使用，不认定已经覆盖整句。九建筑已有精确定位，原版候选、建造与启用条件仍须当场解析拍摄。外置`visual/R23-AND-LEGACY-SOURCE-DELTA-a05.json`159,443B，SHA-256 `ac921a9eb58bfa277316a71f33938db2c86891590735677c99702390e9d591d2`；`visual/NINE-BUILDING-CAPTURE-LOCATORS-a06.json`12,417B，SHA-256 `503c6cbafeb81cb0ab170b7187b307841f269c3de880129665bc89a8793fbf89`。旧原生数据卡仍不作原版像素。[135段英文字幕](episode01-subtitles-v6.en.json)已完成连续审读和ID核对，仍需正式分组与字体布局；同镜短图注并行整理，中文声轨保持冻结。
 
 本轮a13实际构建退出0：`runtime/religion-candidate-a13-presentation/build-original-exit.json`在2026-10-18T20:53:10.410509Z记录原PID5108的wait结果，编译耗时93.515秒。该结果不授予实际游戏加载或新界面通过；后继仍完成精确EXE登记、对应导航检查与新会话后读。
+首次真实导航fixture随后因合法空tab的解析合同差异退出3221226505，尚未授予a13资格，也未启动后继游戏。后继只修对应路由并保留原断言和RED；修复、增量构建与新检查分别记录，不能用先前Python检查或编译成功替代。细节与源码界限见[展示接口专题](../../../docs/ck3-native-ai/faith-power-presentation-ui12004-v6.md)。

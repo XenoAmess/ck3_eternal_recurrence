@@ -4,6 +4,18 @@ void FaithPowerPresentationContractFixture12004() {
   IngameUiRequestV1 r{};
   assert(ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"presentation_tab":""})",true,r));
   assert(r.presentation_requested&&r.subject_id==0);
+  // Preserve the original legal empty marker above; reject non-string, duplicate,
+  // nested and escaped selectors rather than changing shared string semantics.
+  IngameUiRequestV1 rejected{};
+  for(const auto malformed:std::array<std::string_view,6>{{
+      R"({"window_kind":"faith","subject_id":0,"presentation_tab":null})",
+      R"({"window_kind":"faith","subject_id":0,"presentation_tab":0})",
+      R"({"window_kind":"faith","subject_id":0,"presentation_tab":"","presentation_tab":"beliefs"})",
+      R"({"window_kind":"faith","subject_id":0,"presentation_tab":"beliefs","presentation_tab":""})",
+      R"({"window_kind":"faith","subject_id":0,"nested":{"presentation_tab":""}})",
+      R"({"window_kind":"faith","subject_id":0,"presentation_tab":"holy\u005fsites"})"}})
+    assert(!ParseIngameUiRequestV1(malformed,true,rejected));
+
   assert(IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12004,r)==PresentationUiEnabled12004());
   assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,r));
   IngameUiResultV1 failed{};failed.unavailable_reason="fixture_owner_not_admitted";

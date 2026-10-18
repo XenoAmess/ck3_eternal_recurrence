@@ -39,11 +39,38 @@ bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
   if(o==207)return k==9&&t=="holding_building"&&tab.empty()&&r.presentation_receipt.empty();
   return false;
 }
+// This route's explicit empty tab is a presence marker. The shared
+// JsonStringField deliberately rejects empty strings and remains unchanged.
+// Accept only this finite top-level compact/unescaped selector, once.
+bool ParsePresentationTabSelector12004(std::string_view json,std::string&out) noexcept {
+  constexpr std::string_view field="\"presentation_tab\":";
+  if(json.empty()||json.front()!='{'||json.back()!='}')return false;
+  const auto at=json.find(field);
+  if(at==std::string_view::npos||json.find(field,at+field.size())!=std::string_view::npos||
+      at==0||(json[at-1]!='{'&&json[at-1]!=','))return false;
+  bool quoted=false,escaped=false;std::size_t objects=0,arrays=0;
+  for(std::size_t i=0;i<at;++i){const char c=json[i];
+    if(quoted){if(escaped)escaped=false;else if(c=='\\')escaped=true;else if(c=='"')quoted=false;}
+    else if(c=='"')quoted=true;
+    else if(c=='{')++objects;
+    else if(c=='}'){if(!objects)return false;--objects;}
+    else if(c=='[')++arrays;
+    else if(c==']'){if(!arrays)return false;--arrays;}
+  }
+  if(quoted||objects!=1||arrays!=0)return false;
+  const auto value=at+field.size();
+  for(const auto tab:std::array<std::string_view,5>{{"","beliefs","holy_sites","tenets","doctrines"}}){
+    const auto end=value+tab.size()+2;
+    if(end<json.size()&&json[value]=='"'&&json.substr(value+1,tab.size())==tab&&json[end-1]=='"'&&
+        (json[end]==','||json[end]=='}')){out.assign(tab);return true;}
+  }
+  return false;
+}
 bool ParsePresentationRequest12004(std::string_view json,IngameUiRequestV1&r) noexcept {
   const auto has=[&](std::string_view name){return json.find(std::string("\"")+std::string(name)+"\"")!=std::string_view::npos;};
   r.presentation_requested=has("presentation_target")||has("presentation_index")||has("presentation_tab")||has("presentation_receipt");
   if(has("presentation_target")&&!bridge::JsonStringField(json,"presentation_target",r.presentation_target,32))return false;
-  if(has("presentation_tab")&&!bridge::JsonStringField(json,"presentation_tab",r.presentation_tab,16))return false;
+  if(has("presentation_tab")&&!ParsePresentationTabSelector12004(json,r.presentation_tab))return false;
   if(has("presentation_receipt")&&!bridge::JsonStringField(json,"presentation_receipt",r.presentation_receipt,32))return false;
   if(has("presentation_index")){
     std::uint64_t i=0;if(!bridge::JsonUnsignedField(json,"presentation_index",i)||i>=128)return false;r.presentation_index=static_cast<std::uint32_t>(i);

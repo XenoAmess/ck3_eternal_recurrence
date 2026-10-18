@@ -76,3 +76,6 @@ Faith和Rite保留完整uint32，0有效；Character不可为0，Province是正i
 HolySite到地产的路线：读站点`barony_title_id`，经既有`ck3_query_title_holder_v1`取得稳定title key，再用`ck3_center_map_on_landed_title_v1`返回的`capital_province_id`打开holding。不能把TitleID、HolySiteID或type_key当ProvinceID。信仰页仍用既有`ck3_open_faith_window_v1`。
 
 ACK后独立query窗口／页签；hover后用receipt读实际source、stack、root和文本，leave用返回的新receipt后读。缓存文字与渲染像素分别取得，`rendered_pixels_observed`始终false。结果未知时先查询，不重发有toggle效果的动作。建筑207的当前行身份、非幂等行为及独立tracks条件见[建筑轨道专题](faith-power-building-track207-v6.md)。
+## 实际原生检查的空tab修订
+
+`machine_id: 4-8e1c2f1861`。a13在2026-10-18T20:53:10Z编译退出0；第一次真实导航fixture随后因合法`presentation_tab:""`断言失败（OS3221226505），原退出与stderr保存在一期外置`runtime/religion-candidate-a13-presentation/navigation-fixture-*`，没有发布资格或启动游戏。共享`JsonStringField`按原合同拒空；本路由却用空tab作为显式展示查询标记。后继仅在此路由解析空tab与四个既定tab值，保持共享helper、合法首条断言和其余selector语义；修复补丁SHA-256 `1045addfc8ecbb062df00fe7757c2a91d272e409fa5ce720dd3b98a39de975d9`。源码修复须由受影响target增量重建及新fixture结果确认，旧RED不覆盖，也不外推成实机通过。
