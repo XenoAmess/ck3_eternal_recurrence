@@ -1,0 +1,189 @@
+{
+  "schema": "xar.p83-exact12004-loan-reader-source-map.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:18:52.386296+00:00",
+  "mode": "repo source-only reader delta and unregistered DTO proposal; no executable reader or route",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_holy_order_loan_context.cpp",
+      "bytes": 11283,
+      "sha256": "c7935b0c6a4cd56f5f844b3fb7bbcdc9f0c614d9cf67e36b4520fd37f20f0f19"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_holy_order_loan_mailbox.cpp",
+      "bytes": 6306,
+      "sha256": "ec8995dca7a3d0337430420dc8bd51ce13572698f1904d30f028e7c64929c9bb"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_holy_order_loan_context.hpp",
+      "bytes": 3789,
+      "sha256": "e62e70b449da0a1ea2e63e143a06b770113c213c2225cce49cebb5d40acbf401"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_holy_order_loan_amount.hpp",
+      "bytes": 4143,
+      "sha256": "518b785cd9e7dfea85c522b37abd0889b071dbc821939b0203690354c11e9ea2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_religion_context_addons.cpp",
+      "bytes": 24496,
+      "sha256": "e0ba99a34214b07efb832136af60f75cd80c3f9a9f24a2856a5735ca99bb6dc4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_decision_cooldown.cpp",
+      "bytes": 6194,
+      "sha256": "e502cc469de98d25c29c1f5c25314192d1af485a0f24299b5dcf5af14c818573"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_strategic_reserve_v1.py",
+      "bytes": 33268,
+      "sha256": "9c86a5f0fc82e292fc3baa553d128978b8b53f74ac7dae067bf86d8344b7a703"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_emergency_budget_v1.py",
+      "bytes": 17356,
+      "sha256": "e85888d3167c8069c78812a1fad644b9d9f7400e349b191453f3cc16714b8614"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_holy_order_loan_context_private_transport.py",
+      "bytes": 5753,
+      "sha256": "c3bb4b5aa257477c055e0254edcaf426cf2f16fe46452930be2cd89d8c508d82"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_outcome_contract.py",
+      "bytes": 9452,
+      "sha256": "a082ceb1d04047df9e9140f45861cc0f30f698fd181e622fbcab964b7cfac77d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p87-loan-actual-install-source-2026-10-18.json",
+      "bytes": 9049,
+      "sha256": "1a19aaadc0f643c156f1b6281decf66a812c02a89118543b8161a4761fda99af"
+    }
+  ],
+  "existing_guards_reconfirmed_without_rerunning_tests": [
+    "war_strategic_reserve_v1.observe_procurement_package_budget_v1:36-120 keeps original anchor, overlapping-war connectivity and cumulative committed quotes",
+    "war_emergency_budget_v1.emergency_quote_budget_v1:203-219 reuses locked same/lower-level budget despite later current cash",
+    "unknown mercenary pending stays unavailable before another hire",
+    "no loan/refund funding-receipt consumer exists in these production finance leaves"
+  ],
+  "minimum_reader_work": [
+    {
+      "entry": "exact .4 loan context factory and mailbox admission",
+      "current": "native .3 factory requires its .3 SHA; mailbox requires1.20.0.3; Python normalizer also rejects other build",
+      "boundary": "do not relabel build or forward old factory with fake old SHA"
+    },
+    {
+      "entry": "final decision shown/CanTake/CanAfford and full resource vector",
+      "reusable_source": "ck3_12004_religion_context_addons.cpp:26-41 DecisionBindings",
+      "current_cost_loss": "old ReadDecision evaluates10 slots, then ResourceCost/JSON retains only gold[0],treasury[6],prestige[1],piety[2]",
+      "minimum": "preserve all10 evaluated slots plus scale; gate missing values as unavailable",
+      "boundary": ".4 source entry addresses differ from .3 for some functions; no blanket RVA shift or new ABI qualification claimed"
+    },
+    {
+      "entry": "holy_order_gold_value principal",
+      "current": ".3 amount recipe compiles an owner-only registry lookup/evaluation and scratch cleanup",
+      "minimum": "independently close exact .4 fixed-point registry/type/evaluator/scratch lifecycle; evaluate under actual borrower scope",
+      "boundary": ".4 decision-registry pins in holy_site_decision_cooldown.cpp concern decision definitions, not proof of the fixed-point script-value registry ABI"
+    },
+    {
+      "entry": "typed existing/new debt",
+      "current": ".3 reads owed scalar, holder typed character and resolution, borrower/lender years",
+      "minimum": "exact .4 typed variable/holder reader plus actual recipient and original IDs/lender debtor-list membership needed for attributable loan receipt",
+      "boundary": "Confirm ACK, expected event, event disappearance or wallet delta alone never proves loan payment"
+    },
+    {
+      "entry": "same original procurement epoch funding revision",
+      "current": "no received-funds consumer; cash growth alone never resets current package",
+      "minimum": "only after attributable receipt closure, add unique receipt identity once and retain cumulative paid/unknown commitments before fresh market quote",
+      "boundary": "no standalone validator or cash credit added before Native receipt source exists"
+    }
+  ],
+  "no_additional_proven_bug_or_patch_selected": true,
+  "new_tests_or_builds": 0,
+  "Native_Game_MCP_Steam_desktop_operations": 0,
+  "media_index_SAVE_Driver_runtime_reads_or_stat": 0,
+  "public_or_frozen_runtime_changes": 0,
+  "storage": {
+    "same_N42_reservation": true,
+    "new_reservation_bytes": 0,
+    "original_admission_review_at_utc": "2026-10-18T11:49:00.265518+00:00",
+    "expiry_extended": false
+  },
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-16T11:16:32.639609+00:00",
+    "basis": "policy1.0.0 record review horizon; no original asset protection extended"
+  },
+  "protocol_proposal": {
+    "implemented_or_registered": false,
+    "reuse_query_step": "query-player-holy-order-loan-context-v1",
+    "future_exact_build_schema": "ck3_12004_holy_order_loan_context_v1",
+    "admission": "derive exact .4 game_version/executable_sha256/backend_id from existing version identity; never alias .3 admission",
+    "owner_and_frame": [
+      "application-main owner",
+      "actor fullID",
+      "date_raw",
+      "capture_epoch",
+      "snapshot/native revisions",
+      "episode_run_id",
+      "connection_generation"
+    ],
+    "unavailable_example_only": {
+      "available": false,
+      "unavailable_reason": "exact12004_principal_and_typed_debt_source_unqualified",
+      "loan_principal": {
+        "status": "unavailable",
+        "raw": null,
+        "scale": 100000,
+        "native_expression_key": "holy_order_gold_value",
+        "evaluated_borrower_id": null
+      },
+      "borrow_decision": {
+        "status": "unavailable",
+        "decision_id": "borrow_from_holy_order_decision",
+        "is_shown": null,
+        "can_take": null,
+        "affordable": null,
+        "resource_costs_raw": null,
+        "resource_slot_count_required_when_available": 10,
+        "resource_scale": 100000
+      },
+      "owed": {
+        "status": "unavailable",
+        "presence": "unknown",
+        "raw": null,
+        "scale": 100000
+      },
+      "holder": {
+        "status": "unavailable",
+        "presence": "unknown",
+        "kind": "character",
+        "character_id": null,
+        "full_id_resolved": null
+      },
+      "original_party_identities": {
+        "status": "unavailable",
+        "typed_source_scopes": null
+      },
+      "lender_debtor_relation": {
+        "status": "unavailable",
+        "lender_id": null,
+        "borrower_id": null,
+        "lender_list_contains_borrower": null
+      },
+      "received_funds_verified": false,
+      "action_authorized": false
+    },
+    "no_zero_fill_or_unknown_as_absent": true,
+    "no_credit_from_confirm_event_or_wallet_delta_alone": true,
+    "future_focused_software_cases_only_after_real_reader_source": [
+      "complete ten-slot serialization and normalization",
+      "typed absent differs from unavailable",
+      "wrong actor/frame/build",
+      "holder/fullID or actual lender relation mismatch"
+    ]
+  },
+  "new_cpp_or_python_production_code": false,
+  "native_ABI_new_proof": false,
+  "existing_DTO_four_to_ten_slots_is_not_a_complete_loan_reader": true
+}
