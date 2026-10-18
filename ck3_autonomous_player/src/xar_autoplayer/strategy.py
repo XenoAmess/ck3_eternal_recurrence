@@ -497,7 +497,8 @@ def _latest_index(
     *,
     successful_only: bool = True,
 ) -> int:
-    for fallback_index, row in reversed(tuple(enumerate(commands, start=1))):
+    for fallback_index in range(len(commands), 0, -1):
+        row = commands[fallback_index - 1]
         if _effective_command(row) != command:
             continue
         if successful_only and row.get("ok") is not True:
@@ -510,7 +511,8 @@ def _latest_index(
 def _latest_life_advance_index(
     commands: list[dict[str, object]], *, successful_only: bool = True
 ) -> int:
-    for fallback_index, row in reversed(tuple(enumerate(commands, start=1))):
+    for fallback_index in range(len(commands), 0, -1):
+        row = commands[fallback_index - 1]
         if not is_life_advance_step(_effective_command(row)):
             continue
         if successful_only and row.get("ok") is not True:

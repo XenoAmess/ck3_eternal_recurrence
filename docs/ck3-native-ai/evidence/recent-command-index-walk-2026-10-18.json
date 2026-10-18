@@ -1,0 +1,70 @@
+{
+  "schema": "xar.recent-command-index-owned-walk.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:16:27.657034+00:00",
+  "machine_identity_source": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "tool_chunk": "410a1f",
+    "observed_at_utc": "2026-10-18T10:56:09Z"
+  },
+  "source_baseline_commit": "8a911f5d1b202e7a2ccfb852f3592f0402c1b33e",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031153,
+      "sha256": "596cb00803cb954aa20193a6324ec137a58dc79ac32ce02da1f37f6180e1d266"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_recent_command_index_no_materialization_v1.py",
+      "bytes": 2690,
+      "sha256": "9e257b4298e211c36e46c45735934f742558de34017de9f42d68a90cd12ff37f"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 52675,
+      "sha256": "5c5dc3a0c5fbb412ac840d994d8345213284734c1d19dd12a6061297a72f064a"
+    },
+    {
+      "path": "docs/ck3-native-ai/recent-command-index-walk-2026-10-18.md",
+      "bytes": 1735,
+      "sha256": "388da7c5ed6a1565a6241cc8fc8e420457951320685950fbebcd27d1092537b8"
+    }
+  ],
+  "change": "Two reversed(tuple(enumerate(...))) loops become descending index loops on owned list inputs.",
+  "preserved": [
+    "last-to-first order",
+    "successful_only",
+    "effective wrapped AUTO command",
+    "explicit index value and type",
+    "one-based fallback index",
+    "zero for absent match"
+  ],
+  "structural_credit": {
+    "temporary_space_before": "O(N) enumeration tuples",
+    "temporary_space_after": "O(1)",
+    "actual_tail_hit_rows_read": 1,
+    "synthetic_tail_hit_history_rows": 13,
+    "no_forward_enumeration": true
+  },
+  "tests": {
+    "module": "ck3_autonomous_player/tests/unit/test_recent_command_index_no_materialization_v1.py",
+    "priority_readback": "BELOW_NORMAL(0x4000)",
+    "runner": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\perf-sdk06-ownerresponse01\\qualify_recent_command_lookup_low_priority.py",
+    "stdout": "23 passed in 6.68s",
+    "exit_code": 0,
+    "tool_chunk": "9ef3b0",
+    "synthetic_only": true,
+    "input_content_unchanged": true
+  },
+  "performance_credit": "Structural and synthetic access counts only; actual game wall and CPU savings unknown.",
+  "scope": "Stable owned command list within one planning call; no cross-turn cache or history truncation.",
+  "runtime_operations": 0,
+  "MCP_Native_Game_started": false,
+  "forbidden_input_reads_or_stats": {
+    "Driver": 0,
+    "SAVE": 0,
+    "media": 0,
+    "indexes": 0
+  },
+  "frozen_runtime_and_encoder_sources_modified": false
+}
