@@ -14475,9 +14475,12 @@ class NativeHeadlessGameplayDriver:
         start_siege_id = parse_start_assault_step(step)
         stop_siege_id = parse_stop_assault_step(step)
         if start_siege_id is not None or stop_siege_id is not None:
-            starting = _with_fresh_holding_siege_states(
-                starting, self._history_tail_snapshot(128)
-            )
+            with self._history_lock:
+                # Isolate the selected holding observations, not unrelated bodies.
+                holding_states = copy.deepcopy(_with_fresh_holding_siege_states(
+                    starting, self._command_history[-128:]
+                )["_queried_holding_siege_states"])
+            starting = {**starting, "_queried_holding_siege_states": holding_states}
             starting_siege_id = (
                 start_siege_id
                 if start_siege_id is not None
