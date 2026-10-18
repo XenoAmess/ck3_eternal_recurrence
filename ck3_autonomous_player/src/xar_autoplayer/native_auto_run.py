@@ -870,6 +870,7 @@ def native_auto_run(
     terminal_proof: dict[str, object] | None = None
     next_episode_transition: dict[str, object] | None = None
     natural_succession_transitions: list[dict[str, object]] = []
+    pending_successor_ui: dict[str, object] | None = None
     post_transition_visible_gameplay_turns = 0
     post_transition_last_gameplay_turn_index: int | None = None
     post_transition_checkpoint: dict[str, object] | None = None
@@ -1546,6 +1547,29 @@ def native_auto_run(
                 allow_terminal=True,
             )
             current_attempt["before"] = _public_binding(before)
+            # Recheck once when the event disappears, before another ordinary
+            # action; an event reply is not proof that the death modal cleared.
+            if (pending_successor_ui is not None
+                    and before.get("active_context", {}).get("active_event") is None
+                    and before.get("active_context", {}).get("pending_character_interaction") is None):
+                from .successor_ui_owner_continuation_v1 import continue_verified_successor_ui_v1
+                recheck_snapshot = _runner_semantic_snapshot(driver)
+                rechecked, modal_decision_pending, ui_advanced, ui_pending = continue_verified_successor_ui_v1(
+                    service, transition=pending_successor_ui, snapshot=recheck_snapshot,
+                    attempt=current_attempt, classify_timeline=_ordinary_succession_timeline_state,
+                    close_issue=_ordinary_succession_close_issue, capture_failure=capture_first_failure,
+                    previous_observation=pending_successor_ui["successor_ui_observation"])
+                current_attempt["successor_ui_recheck"] = copy.deepcopy(
+                    pending_successor_ui["timeline_blocker_continuation"])
+                if not ui_pending:
+                    pending_successor_ui = None
+                before = _compact_binding(driver.capabilities(), rechecked)
+                current_attempt["before"] = _public_binding(before)
+                if current_episode is not None:
+                    current_episode["date_raw"] = rechecked["date_raw"]
+                if ui_advanced:
+                    date_advanced = True
+                    dirty_gameplay_since_checkpoint = True
             if allow_private_activity_feast_stage5_start_formal_trial is True:
                 feast_ledger = read_feast_start_ledger(driver.state_dir)
                 if feast_ledger["pending"] is not None or feast_ledger["resolved"] is not None:
@@ -2389,7 +2413,8 @@ def native_auto_run(
                     after_snapshot.get("one_life_terminal_reason"), str
                 )
             )
-            modal_decision_pending = _player_decision_pending(after_snapshot)
+            modal_decision_pending = (_player_decision_pending(after_snapshot)
+                                      or pending_successor_ui is not None)
             after = _compact_binding(driver.capabilities(), after_snapshot)
             current_attempt["after"] = _public_binding(after)
             if exact_move_contract is not None and step == exact_war_move_step(exact_move_contract):
@@ -3090,151 +3115,22 @@ def native_auto_run(
                         raise AgentError(
                             "ordinary successor lacks a stable paused timeline binding"
                         )
-                    try:
-                        timeline_query = (
-                            service.query_current_timeline_blocker_context_v1(
-                                expected_revision=successor_revision
-                            )
-                        )
-                    except (
-                        BridgeUnavailableError,
-                        UnsupportedStepError,
-                        ValueError,
-                    ) as error:
-                        capture_first_failure(
-                            stage="ordinary_successor_timeline_query",
-                            kind="natural_succession_timeline_query_failed",
-                            message=str(error),
-                            error=error,
-                        )
-                        raise AgentError(
-                            "ordinary natural successor timeline query failed: "
-                            + str(error)
-                        ) from error
-                    timeline_state = _ordinary_succession_timeline_state(
-                        timeline_query
-                    )
-                    if timeline_state is None:
-                        capture_first_failure(
-                            stage="ordinary_successor_timeline_query",
-                            kind="natural_succession_timeline_state_ambiguous",
-                            message=(
-                                "ordinary successor timeline state is neither "
-                                "a bound death modal nor independently clear"
-                            ),
-                        )
-                        raise AgentError(
-                            "ordinary successor timeline state is ambiguous"
-                        )
-                    timeline_continuation: dict[str, object] = {
-                        "status": timeline_state,
-                        "initial_query": copy.deepcopy(timeline_query),
-                        "close_result": None,
-                    }
-                    natural_transition["timeline_blocker_continuation"] = (
-                        timeline_continuation
-                    )
-                    if timeline_state == "close_required":
-                        current_attempt["stage"] = (
-                            "ordinary_successor_timeline_close"
-                        )
-                        try:
-                            close_result = (
-                                service.continue_death_succession_modal_private_v1(
-                                    expected_revision=successor_revision,
-                                    expected_played_character_id=(
-                                        successor_character_id
-                                    ),
-                                    expected_episode_run_id=(
-                                        successor_episode_run_id
-                                    ),
-                                )
-                            )
-                        except (
-                            BridgeUnavailableError,
-                            UnsupportedStepError,
-                            ValueError,
-                        ) as error:
-                            capture_first_failure(
-                                stage="ordinary_successor_timeline_close",
-                                kind="natural_succession_timeline_close_failed",
-                                message=str(error),
-                                error=error,
-                            )
-                            raise AgentError(
-                                "ordinary natural successor typed Close failed: "
-                                + str(error)
-                            ) from error
-                        timeline_continuation["close_result"] = copy.deepcopy(
-                            close_result
-                        )
-                        close_issue = _ordinary_succession_close_issue(
-                            close_result,
-                            starting_date_raw=successor_date_raw,
-                            successor_character_id=successor_character_id,
-                        )
-                        if close_issue is not None:
-                            capture_first_failure(
-                                stage="ordinary_successor_timeline_close",
-                                kind=(
-                                    "natural_succession_timeline_close_"
-                                    + close_issue
-                                ),
-                                message=(
-                                    "ordinary successor typed Close lacks its "
-                                    "material postcondition: " + close_issue
-                                ),
-                            )
-                            raise AgentError(
-                                "ordinary successor typed Close lacks its material "
-                                "postcondition: " + close_issue
-                            )
-                        timeline_continuation["status"] = "materially_cleared"
-                        refreshed_snapshot = service.snapshot()
-                        refreshed_played = refreshed_snapshot.get(
-                            "played_character"
-                        )
-                        if not (
-                            isinstance(refreshed_played, dict)
-                            and refreshed_played.get("alive") is True
-                            and refreshed_played.get("character_id")
-                            == successor_character_id
-                            and refreshed_snapshot.get("episode_character_id")
-                            == successor_character_id
-                            and refreshed_snapshot.get("episode_run_id")
-                            == successor_episode_run_id
-                            and refreshed_snapshot.get("date_raw")
-                            == close_result.get("ending_date_raw")
-                            and refreshed_snapshot.get("revision")
-                            == close_result.get("ending_revision")
-                            and refreshed_snapshot.get("native_revision")
-                            == close_result.get("ending_native_revision")
-                        ):
-                            raise AgentError(
-                                "ordinary successor changed identity after typed Close"
-                            )
-                        after_snapshot = refreshed_snapshot
-                        after = _compact_binding(
-                            driver.capabilities(), after_snapshot
-                        )
-                        current_attempt["after"] = _public_binding(after)
-                        current_episode["date_raw"] = after_snapshot[
-                            "date_raw"
-                        ]
-                        modal_decision_pending = _player_decision_pending(
-                            after_snapshot
-                        )
+                    from .successor_ui_owner_continuation_v1 import continue_verified_successor_ui_v1
+                    after_snapshot, modal_decision_pending, ui_advanced, ui_pending = continue_verified_successor_ui_v1(
+                        service, transition=natural_transition, snapshot=after_snapshot,
+                        attempt=current_attempt, classify_timeline=_ordinary_succession_timeline_state,
+                        close_issue=_ordinary_succession_close_issue, capture_failure=capture_first_failure)
+                    pending_successor_ui = natural_transition if ui_pending else None
+                    after = _compact_binding(driver.capabilities(), after_snapshot)
+                    current_attempt["after"] = _public_binding(after)
+                    current_episode["date_raw"] = after_snapshot["date_raw"]
+                    if ui_advanced:
                         date_advanced = True
-                        evidence.extend(
-                            [
-                                "natural_successor_timeline_blocker_cleared",
-                                "date_advanced",
-                            ]
-                        )
+                        evidence.extend(["natural_successor_timeline_blocker_cleared", "date_advanced"])
+                    elif ui_pending:
+                        evidence.append("natural_successor_ui_unresolved_event_deferred")
                     else:
-                        evidence.append(
-                            "natural_successor_timeline_already_clear"
-                        )
+                        evidence.append("natural_successor_timeline_already_clear")
                 if modal_decision_pending:
                     natural_transition["successor_checkpoint"] = {
                         "status": "deferred_player_decision",
@@ -4692,6 +4588,7 @@ def native_auto_run(
         "candidate_interception": candidate_interception,
         "candidate_resolution": candidate_resolution,
         "natural_succession_transitions": natural_succession_transitions,
+        "pending_successor_ui": copy.deepcopy(pending_successor_ui),
         "next_episode": (
             {
                 "transition": next_episode_transition,

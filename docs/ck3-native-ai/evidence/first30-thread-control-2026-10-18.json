@@ -1,0 +1,80 @@
+{
+  "schema": "xar.first30.thread-control-public-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T13:44:15.706649+00:00",
+  "status": "BOTH_ARMS_BOUNDED_TIMEOUT_NO_SPEEDUP_QUALIFICATION",
+  "original_retained_encoder_session": 81740,
+  "original_retained_encoder_control_calls": 0,
+  "control_retained_session": 78051,
+  "control_actual_outer_exit_code": 1,
+  "control_actual_exit_chunk": "238dc2",
+  "plan": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\P0-THREAD-CONTROL-BENCHMARK-PLAN02.json",
+    "bytes": 82399,
+    "sha256": "ad7bd37e70b6c27ef72fb7a81576edc87cf598a42fca4eb1344497692003b143"
+  },
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-P0-THREAD-CONTROL-BENCHMARK-ADMISSION02.json",
+    "bytes": 3978,
+    "sha256": "a1b02e3a8ecf4c0fdb88ea66a5e0eba0834a350131bec212dd26228ceb0d7a9b"
+  },
+  "failure": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\p0-thread-control-benchmark02\\FAILED.json",
+    "bytes": 3417,
+    "sha256": "172fb1fb09672de781b01559ccb1109362bc979314880444bdf58df3e201f8d9"
+  },
+  "arms": [
+    {
+      "stage": "Tauto",
+      "receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\p0-thread-control-benchmark02\\Tauto.command.json",
+        "bytes": 2495,
+        "sha256": "dee753845014affe2297456da9bc2a3d4f9959bd1d25bdb98ccce09b44af030a"
+      },
+      "wall_seconds": 116.28593449993059,
+      "actual_exit_code": 0,
+      "q_requested": true,
+      "forced_own_benchmark_child_calls": 0,
+      "failure": "bounded command/batch timeout",
+      "actual_child_kernel": {
+        "pid": 243808,
+        "creation_filetime_decimal": "134368042007271928",
+        "creation_filetime_hex": "0x1dd5f05b50219f8",
+        "exit_filetime_decimal": "134368043168737374",
+        "kernel_cpu_seconds": 0.515625,
+        "user_cpu_seconds": 2.5625,
+        "wait_result": 0,
+        "exit_code": 0,
+        "original_Popen_HANDLE_retained": true
+      }
+    },
+    {
+      "stage": "T2",
+      "receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\p0-thread-control-benchmark02\\T2.command.json",
+        "bytes": 2525,
+        "sha256": "89e9b318d287337a2b2c4677d7ace77fa573d2947ddfd2cb5a97249eb96071c8"
+      },
+      "wall_seconds": 116.28603739989921,
+      "actual_exit_code": 0,
+      "q_requested": true,
+      "forced_own_benchmark_child_calls": 0,
+      "failure": "bounded command/batch timeout",
+      "actual_child_kernel": {
+        "pid": 246904,
+        "creation_filetime_decimal": "134368043170224328",
+        "creation_filetime_hex": "0x1dd5f05fa5358c8",
+        "exit_filetime_decimal": "134368044332948024",
+        "kernel_cpu_seconds": 0.421875,
+        "user_cpu_seconds": 2.609375,
+        "wait_result": 0,
+        "exit_code": 0,
+        "original_Popen_HANDLE_retained": true
+      }
+    }
+  ],
+  "interpretation": "315 original source6 AV branches/order retained; only filter_complex_threads automatic versus 2 differs. Both arms requested q under the admitted limit; actual kernel exit0 therefore does not imply a complete sample. No T2 full-film replacement is qualified. The earlier small graph throughput cannot be extrapolated to the complete graph.",
+  "full_film_accepted": false,
+  "next_game_started": false,
+  "desktop_or_Game_or_SAVE_operations": 0
+}

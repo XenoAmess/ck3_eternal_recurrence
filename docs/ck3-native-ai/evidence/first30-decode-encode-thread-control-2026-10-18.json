@@ -1,0 +1,48 @@
+{
+  "schema": "xar.first30.decode-encode-thread-control-public-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T14:00:20.859192+00:00",
+  "status": "SINGLE_D2E2_ARM_BOUNDED_TIMEOUT_NO_REPLACEMENT_QUALIFICATION",
+  "control_retained_session": 71530,
+  "actual_outer_exit_code": 1,
+  "actual_exit_chunk": "731a46",
+  "plan": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\P0-DECODE-ENCODE-THREAD-CONTROL-PLAN03.json",
+    "bytes": 81164,
+    "sha256": "09a4710ac93c09ff8b8d033621a34e407202cecf4a8b7d2f6bcdf3b3c6b84b58"
+  },
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-P0-DECODE-ENCODE-THREAD-CONTROL-ADMISSION03.json",
+    "bytes": 4020,
+    "sha256": "26dd7c85656669c24ecbc6d5065a42e221caf448a691156a55d8e7af58f56b5b"
+  },
+  "command_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\p0-decode-encode-thread-control03\\D2E2.command.json",
+    "bytes": 2600,
+    "sha256": "19e08087a90f9018eaf559da89d3c159b045ab0913e3e62ae94dc7360ce224ca"
+  },
+  "failure": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\p0-decode-encode-thread-control03\\FAILED.json",
+    "bytes": 606,
+    "sha256": "c842d35ad47fdf5b5036b749da77aa891b3eed1aeb1034640be0cf4a929e00c7"
+  },
+  "wall_seconds": 118.02074819989502,
+  "q_requested": true,
+  "forced_own_benchmark_child_calls": 0,
+  "actual_child_kernel": {
+    "pid": 79544,
+    "creation_filetime_decimal": "134368052473341083",
+    "creation_filetime_hex": "0x1dd5f0824d5a49b",
+    "exit_filetime_decimal": "134368053647638194",
+    "kernel_cpu_seconds": 0.703125,
+    "user_cpu_seconds": 3.328125,
+    "wait_result": 0,
+    "exit_code": 0,
+    "original_Popen_HANDLE_retained": true
+  },
+  "interpretation": "The original full315 AV graph/window/profile is retained. Compared with previous T2, decoder2 and encoder2 change together. The admitted timeout requested q; actual kernel exit0 does not imply complete sample. No speedup/replacement qualification. Stop this thread-parameter experiment series.",
+  "original_encoder_control_calls": 0,
+  "source_SHA_or_index_rescans": 0,
+  "full_film_accepted": false,
+  "next_game_started": false
+}

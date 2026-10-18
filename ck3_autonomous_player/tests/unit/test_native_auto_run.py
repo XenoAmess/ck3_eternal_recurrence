@@ -2448,6 +2448,7 @@ class _FakeGameplayService:
     ) -> None:
         self.harness = harness
         self.driver = driver
+        self.last_camera_follow = None  # Canonical Service's default presentation result.
 
     def center_map_on_landed_title_v1(
         self, title_key: str, *, expected_revision: int

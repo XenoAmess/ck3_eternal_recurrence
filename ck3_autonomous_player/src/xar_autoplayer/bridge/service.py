@@ -15500,6 +15500,17 @@ class GameplayBridgeService:
             "current_event_window_context": normalized,
         }
 
+    def observe_verified_successor_ui_v1(
+        self, *, transition, snapshot, timeline_query,
+        previous_observation=None, event_context=None,
+    ) -> dict[str, object]:
+        """Consume existing guarded reads after the owner's full handoff gates."""
+        from .verified_successor_ui_service_v1 import observe_verified_successor_ui_v1
+
+        return observe_verified_successor_ui_v1(
+            transition=transition, snapshot=snapshot, timeline_query=timeline_query,
+            previous_observation=previous_observation, event_context=event_context)
+
     def query_current_timeline_blocker_context_v1(
         self,
         *,

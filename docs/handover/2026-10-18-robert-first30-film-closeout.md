@@ -38,3 +38,15 @@ machine_id: xenoamess-full-tower-eb9d2c1186；实际追加2026-10-18T13:24:25.28
 [有限样本实证](../ck3-native-ai/evidence/first30-film-throughput-sample-2026-10-18.json)：603.7秒原片的小图实际67.85秒完成，12个自有子进程均kernel0、0强制；分组输出比单小图多1帧/0.032667秒。Root审阅4张样本PNG，但采样按名义接缝，不能冒充实际组间时钟或音频连续性通过。下一步先控制source6全315分支，只比较complex线程auto/2，保持原codec默认线程；尚未执行、更未授完整替代。此法若有效可保原400全局图和一次AAC，避免先引入分组新时钟。原片、SAVE及旧证据不修改。
 
 进度文档提交b04b4e5a6434641aa4d065b5e10b45dce7ad2628的[Official](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39127701743)与[Linear](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39127701737)已于12:51:38Z由只读线程核实success；不授视频完成或新的G2信用。
+
+### 2026-10-18 13:43Z 线程对照未获替换资格
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。Root 实际执行保留全部315个 source6 音画分支的线程对照；自动线程和两线程两臂均约116.286秒后触及预留关停边界，实际发出q、无强制kill、原Popen HANDLE均读回kernel exit0。该0只证明超时后闭场，不证明样本完整；外层真实退出1（session78051/chunk238dc2），保留FAILED和两个partial。不授整片线程替换资格，不将此前小图约8.9倍原片速度外推为整片ETA。原session81740未被本次对照控制，仍是活动编码。
+
+来源：[公开小摘要](../ck3-native-ai/evidence/first30-thread-control-2026-10-18.json)；包括实际plan/card/FAILED/两原始命令回执的完整path、bytes、SHA。尚未运行后续替代编码，未开启下一局，未操作桌面、Game或SAVE。
+
+### 2026-10-18 13:58Z 最后一个线程组合对照仍失败
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。保留315分支、相同窗口/profile，仅组合decoder2+x2642的D2E2短试也在118.021秒内触发q关停，forced0、原HANDLE kernel0；真实外层退出1（session71530/chunk731a46）。[实际小摘要](../ck3-native-ai/evidence/first30-decode-encode-thread-control-2026-10-18.json)绑定计划、卡、命令及FAILED。停止本轮线程参数试验，不授整片线程候选资格；原81740继续，尚未控制它。下一步仅审查分组方案的真实音画时钟、全部400段/197等待不漏与峰值；未获具体可审方案前不取消原K、不新增整片编码。
+
+当前已推送commit `00d0ca9ad4bf61d01fdf596fa10cead66f7dd244` 的[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39131693825)和[Linear CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39131693819)均实际success，观测13:50:28Z；这只覆盖该公开commit，不替尚未提交的M7后继窗口补丁背书。
