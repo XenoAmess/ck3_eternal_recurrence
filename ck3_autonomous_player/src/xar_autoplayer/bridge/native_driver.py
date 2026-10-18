@@ -9143,6 +9143,23 @@ class NativeHeadlessGameplayDriver:
         army = _army_by_id(starting, army_id)
         diagnostics = starting.get("diagnostics")
         generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
+        bridge_pid = diagnostics.get("bridge_pid") if isinstance(diagnostics, dict) else None
+        episode_run_id = starting.get("episode_run_id")
+        native_campaign = self.episode_projection == "native_campaign"
+        local_player_id = starting.get("local_player_id")
+        # Ordinary campaigns use the engine's current player, not a synthetic
+        # one-life episode. Fence that player to this process and connection.
+        episode_bound = (
+            native_campaign
+            and starting.get("episode_projection") == "native_campaign"
+            and (episode_run_id is None or (
+                isinstance(episode_run_id, str) and bool(episode_run_id)
+            ))
+            and type(local_player_id) is int and local_player_id > 0
+        ) or (
+            not native_campaign
+            and isinstance(episode_run_id, str) and bool(episode_run_id)
+        )
         if not (
             starting.get("map_ready") is True and starting.get("paused") is True
             and isinstance(played, dict) and played.get("alive") is True
@@ -9153,8 +9170,8 @@ class NativeHeadlessGameplayDriver:
             and not _army_in_combat_or_retreat(army)
             and not _army_in_active_combat(army)
             and type(generation) is int and generation >= 0
-            and isinstance(starting.get("episode_run_id"), str)
-            and bool(starting["episode_run_id"])
+            and type(bridge_pid) is int and bridge_pid > 0
+            and episode_bound
         ):
             raise BridgeUnavailableError(
                 "typed native move requires a paused ready map and owned noncombat army"
@@ -9168,8 +9185,16 @@ class NativeHeadlessGameplayDriver:
             return bool(
                 snapshot.get("map_ready") is True and snapshot.get("paused") is True
                 and snapshot.get("date_raw") == submitted_date_raw
-                and snapshot.get("episode_run_id") == starting["episode_run_id"]
+                and snapshot.get("episode_run_id") == episode_run_id
+                and snapshot.get("episode_projection") == starting.get("episode_projection")
+                and (not native_campaign or (
+                    type(snapshot.get("local_player_id")) is int
+                    and snapshot.get("local_player_id") == local_player_id
+                ))
                 and isinstance(current_diagnostics, dict)
+                and type(current_diagnostics.get("bridge_pid")) is int
+                and current_diagnostics.get("bridge_pid") == bridge_pid
+                and type(current_diagnostics.get("connection_generation")) is int
                 and current_diagnostics.get("connection_generation") == generation
                 and isinstance(current_played, dict)
                 and current_played.get("character_id") == actor_id
@@ -9235,7 +9260,7 @@ class NativeHeadlessGameplayDriver:
             "submitted_revision": selected_revision,
             "submitted_native_revision": starting["native_revision"],
             "submitted_connection_generation": generation,
-            "submitted_episode_run_id": starting["episode_run_id"],
+            "submitted_episode_run_id": episode_run_id,
             "player_armies": changed.get("player_armies", []),
             "snapshot_id": changed["snapshot_id"], "revision": changed["revision"],
         }

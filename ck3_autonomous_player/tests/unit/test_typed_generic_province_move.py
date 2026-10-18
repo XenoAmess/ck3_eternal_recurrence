@@ -24,10 +24,11 @@ STEP = f'move-army-{ARMY}-to-{TARGET}'
 
 def fixture(*, omit_capability=None, paused=True, map_ready=True,
             owner=33388, controllable=True, army_state='regular',
-            retreating=False, in_combat=False):
+            retreating=False, in_combat=False, episode_projection="one_life", army_id=ARMY):
     endpoint = FakeEndpoint()
     driver = NativeHeadlessGameplayDriver(
         endpoint.pipe_name, endpoint=endpoint, command_timeout_seconds=0.1,
+        episode_projection=episode_projection,
     )
     caps = ['game.state.snapshot', 'game.state.war-objectives',
             'game.state.army-routes', 'game.command.move-army-N-to-N']
@@ -37,7 +38,7 @@ def fixture(*, omit_capability=None, paused=True, map_ready=True,
     hello.update(expected_ck3_version=CK3_12003.game_version,
                  expected_ck3_sha256=CK3_12003.executable_sha256)
     endpoint.publish(hello)
-    army = _army(ARMY, province_id=1506, owner_character_id=owner,
+    army = _army(army_id, province_id=1506, owner_character_id=owner,
                  controllable=controllable, army_state=army_state,
                  route_province_ids=[], combat_id=None, retreating=retreating,
                  in_combat=in_combat)
@@ -48,6 +49,8 @@ def fixture(*, omit_capability=None, paused=True, map_ready=True,
             allied_armies=[army], war_objective_province_ids=[1527],
         )],
     )
+    if episode_projection == "native_campaign":
+        before["state"]["local_player_id"] = 1
     endpoint.publish(before)
     after = copy.deepcopy(before)
     after['snapshot_id'] = 'native:41'
@@ -92,6 +95,67 @@ class TypedGenericProvinceMoveTests(unittest.TestCase):
         self.assertEqual(calls[0]['step'], STEP)
         self.assertEqual(calls[0]['expected_revision'], 40)
         self.assertEqual(driver.take_snapshot()['date_raw'], before['date_raw'])
+
+    def test_native_campaign_null_episode_keeps_typed_session_and_once_fences(self):
+        # Production service/driver/primitive/route projection with only the
+        # transport replaced. No episode is manufactured for ordinary games.
+        driver, endpoint, _, _, _ = self.setup_fixture(episode_projection="native_campaign", army_id=0)
+        self.assertIsNone(driver.take_snapshot().get("episode_run_id"))
+        self.assertNotIn(f"move-army-0-to-{TARGET}", driver.capabilities()["action_steps"])
+        result = GameplayBridgeService(driver).move_army(0, TARGET)
+        self.assertIsNone(result["submitted_episode_run_id"])
+        self.assertTrue(result["war_action"]["postcondition_verified"])
+        self.assertEqual(result["war_action"]["status"], "moving")
+        self.assertEqual(len([f for f in endpoint.frames if f.get("type") == "execute_step"]), 1)
+
+        # Preserve an original nonempty ordinary-campaign episode as well.
+        driver, endpoint, _, _, _ = self.setup_fixture(episode_projection="native_campaign", army_id=0)
+        take = driver.take_snapshot
+        driver.take_snapshot = lambda: {**take(), "episode_run_id": "native-existing-33388"}
+        result = GameplayBridgeService(driver).move_army(0, TARGET)
+        self.assertEqual(result["submitted_episode_run_id"], "native-existing-33388")
+        self.assertEqual(len([f for f in endpoint.frames if f.get("type") == "execute_step"]), 1)
+
+        # An absent one-life episode still rejects before native submission.
+        driver, endpoint, _, _, _ = self.setup_fixture(army_id=0)
+        take = driver.take_snapshot
+        driver.take_snapshot = lambda: {**take(), "episode_run_id": None}
+        with self.assertRaises(BridgeUnavailableError):
+            GameplayBridgeService(driver).move_army(0, TARGET)
+        self.assertFalse(any(f.get("type") == "execute_step" for f in endpoint.frames))
+
+        # A route ACK cannot cross process, generation, player, actor or date.
+        # Mutate only ending readback; the actual native primitive is sent once.
+        for field in ("bridge_pid", "connection_generation", "local_player_id",
+                      "actor", "owner", "date_raw", "episode_run_id"):
+            with self.subTest(ending_drift=field):
+                driver, endpoint, _, _, _ = self.setup_fixture(episode_projection="native_campaign", army_id=0)
+                take = driver.take_snapshot
+                def ending_readback(field=field, take=take, endpoint=endpoint):
+                    snapshot = copy.deepcopy(take())
+                    if any(f.get("type") == "execute_step" for f in endpoint.frames):
+                        if field in {"bridge_pid", "connection_generation"}:
+                            snapshot["diagnostics"][field] += 1
+                        elif field == "actor":
+                            snapshot["played_character"]["character_id"] += 1
+                        elif field == "owner":
+                            snapshot["player_armies"][0]["owner_character_id"] += 1
+                        elif field == "episode_run_id":
+                            snapshot[field] = "not-the-original-null"
+                        else:
+                            snapshot[field] += 1
+                    return snapshot
+                driver.take_snapshot = ending_readback
+                with self.assertRaises(BridgeUnavailableError):
+                    GameplayBridgeService(driver).move_army(0, TARGET)
+                self.assertEqual(len([f for f in endpoint.frames if f.get("type") == "execute_step"]), 1)
+
+        # Native destination legality and observed route remain authoritative.
+        driver, endpoint, _, after, _ = self.setup_fixture(episode_projection="native_campaign", army_id=0)
+        after["state"]["player_armies"][0]["route_province_ids"] = [1527]
+        with self.assertRaisesRegex(BridgeUnavailableError, "did not observe"):
+            GameplayBridgeService(driver).move_army(0, TARGET)
+        self.assertEqual(len([f for f in endpoint.frames if f.get("type") == "execute_step"]), 1)
 
     def test_optional_revision_keeps_existing_fresh_source_behavior(self):
         driver, endpoint, _, _, _ = self.setup_fixture()
