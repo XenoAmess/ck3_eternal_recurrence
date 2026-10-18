@@ -18,6 +18,7 @@ docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/** -text whites
 docs/ck3-native-ai/evidence/holy-site-grade-effects-limits12004/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 docs/ck3-native-ai/evidence/holy-site-piety-experience-consumer12004/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/holy-site-v4-integration12004/** -text whitespace=cr-at-eol
+promo/ck3_faith_and_power/episode01/*v4* -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/holy-site-relic-management-ai-opinion12004/** -text whitespace=-blank-at-eof,cr-at-eol
 docs/ck3-native-ai/faith-and-power-episode01-v4-official-terminology-12004.evidence.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/faith-and-power-episode01-v4-terminology.knowledge.json -text whitespace=cr-at-eol

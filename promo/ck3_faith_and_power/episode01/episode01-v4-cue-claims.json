@@ -1,0 +1,5376 @@
+{
+  "schema": "faith-power-v4-voice-claims-v1",
+  "cue_order": [
+    "V4-C01-01",
+    "V4-C01-02",
+    "V4-C01-03",
+    "V4-C01-04",
+    "V4-C01-05",
+    "V4-C01-06",
+    "V4-C01-07",
+    "V4-C01-08",
+    "V4-C02-01",
+    "V4-C02-02",
+    "V4-C02-03",
+    "V4-C02-04",
+    "V4-C02-05",
+    "V4-C02-06",
+    "V4-C02-07",
+    "V4-C02-08",
+    "V4-C03-01",
+    "V4-C03-02",
+    "V4-C03-03",
+    "V4-C03-04",
+    "V4-C03-05",
+    "V4-C03-06",
+    "V4-C03-07",
+    "V4-C03-08",
+    "V4-C04-01",
+    "V4-C04-02",
+    "V4-C04-03",
+    "V4-C04-04",
+    "V4-C04-05",
+    "V4-C04-06",
+    "V4-C04-07",
+    "V4-C04-08",
+    "V4-C04-09",
+    "V4-C05-01",
+    "V4-C05-02",
+    "V4-C05-03",
+    "V4-C05-04",
+    "V4-C05-04A",
+    "V4-C05-05",
+    "V4-C05-06",
+    "V4-C05-07",
+    "V4-C05-08",
+    "V4-C05-09",
+    "V4-C06-01",
+    "V4-C06-02",
+    "V4-C06-03",
+    "V4-C06-04",
+    "V4-C06-05",
+    "V4-C06-06",
+    "V4-C06-07",
+    "V4-C06-08",
+    "V4-C07-01",
+    "V4-C07-02",
+    "V4-C07-03",
+    "V4-C07-04",
+    "V4-C07-05",
+    "V4-C07-06",
+    "V4-C07-07",
+    "V4-C07-08",
+    "V4-C07-09",
+    "V4-C08-01",
+    "V4-C08-02",
+    "V4-C08-03",
+    "V4-C08-04",
+    "V4-C08-06",
+    "V4-C09-01",
+    "V4-C09-02",
+    "V4-C09-03",
+    "V4-C09-04",
+    "V4-C09-05",
+    "V4-C09-06",
+    "V4-C09-07",
+    "V4-C09-08",
+    "V4-C09-09",
+    "V4-C10-01",
+    "V4-C10-02",
+    "V4-C10-03",
+    "V4-C10-04",
+    "V4-C10-05",
+    "V4-C10-06",
+    "V4-C10-07",
+    "V4-C10-08",
+    "V4-C10-09",
+    "V4-C10-10",
+    "V4-C11-01",
+    "V4-C11-02",
+    "V4-C11-03",
+    "V4-C11-04",
+    "V4-C11-05",
+    "V4-C11-06",
+    "V4-C11-07",
+    "V4-C11-08",
+    "V4-C11-09",
+    "V4-C11-10",
+    "V4-C11-11",
+    "V4-C12-01",
+    "V4-C12-02",
+    "V4-C12-03",
+    "V4-C12-04",
+    "V4-C12-05",
+    "V4-C12-06",
+    "V4-C12-07",
+    "V4-C12-08",
+    "V4-C12-09",
+    "V4-C13-01",
+    "V4-C13-02",
+    "V4-C13-03",
+    "V4-C13-04",
+    "V4-C13-05",
+    "V4-C13-06",
+    "V4-C13-07",
+    "V4-C13-08",
+    "V4-C13-09",
+    "V4-C13-10",
+    "V4-C13-11"
+  ],
+  "source_navigation_relative_to_repo": {
+    "TERM": [
+      "docs/ck3-native-ai/faith-and-power-episode01-v4-terminology.knowledge.json"
+    ],
+    "MAJOR": [
+      "docs/ck3-native-ai/holy-site-grade-effects-and-limits-12004.md",
+      "docs/ck3-native-ai/holy-site-major-grade-value12004.md"
+    ],
+    "LIMITS": [
+      "docs/ck3-native-ai/holy-site-grade-effects-and-limits-12004.md"
+    ],
+    "RARITY": [
+      "docs/ck3-native-ai/holy-site-rarity-calculation12004-v4.md"
+    ],
+    "RIGHTS": [
+      "docs/ck3-native-ai/holy-site-relic-management-ai-opinion-12004.md"
+    ],
+    "AI": [
+      "docs/ck3-native-ai/holy-site-relic-management-ai-opinion-12004.md"
+    ],
+    "OPINION": [
+      "docs/ck3-native-ai/holy-site-relic-management-ai-opinion-12004.md",
+      "docs/ck3-native-ai/holy-site-piety-experience-consumer12004.md"
+    ],
+    "SHARED": [
+      "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/v4-existing-footage-item5.json"
+    ],
+    "ADOPT": [
+      "docs/ck3-native-ai/faith-and-power-adoption-value-12004.md"
+    ],
+    "FREE": [
+      "docs/ck3-native-ai/holy-site-planning-v4-clarifications12004.md"
+    ],
+    "LIVE10": [
+      "docs/ck3-native-ai/faith-and-power-episode01-r9-r0010-observations.md"
+    ],
+    "LIVE11": [
+      "docs/ck3-native-ai/faith-and-power-episode01-r0011-last-faith-exit.md"
+    ],
+    "LEGACY": [
+      "promo/ck3_faith_and_power/integration/legacy-decision-panel-retirement.md"
+    ]
+  },
+  "cues": [
+    {
+      "cue_id": "V4-C01-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        1,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-01-S01",
+          "zh": "看到别人的圣地，你会不会也想把它列进自己的名单？",
+          "source_ids": [
+            "TERM",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-01-S02",
+          "zh": "花一笔虔诚，名字添上去了，接着却发现圣物槽还是空的，也没有自动变成主要圣地。",
+          "source_ids": [
+            "TERM",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-01-S03",
+          "zh": "这笔钱到底买到了什么？",
+          "source_ids": [
+            "TERM",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        1,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-02-S01",
+          "zh": "采用圣地，改变的是自己的信仰与这处地点的关联。",
+          "source_ids": [
+            "TERM",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-02-S02",
+          "zh": "它不转让土地，不替你建好特殊建筑，不复制别人供奉的圣物，也不把对方的主要圣地等级原样送给你。",
+          "source_ids": [
+            "TERM",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-03",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "TERM",
+        "MAJOR",
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        1,
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-03-S01",
+          "zh": "值不值得采用，要从你缺的东西开始想。",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-03-S02",
+          "zh": "是想改善自己的学识，发展直辖领地，稳住神职人员的支持，还是给本信仰争取一组长期加成？",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-03-S03",
+          "zh": "这些目标需要的条件，并不相同。",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-04",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "TERM",
+        "MAJOR",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        1,
+        4,
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-04-S01",
+          "zh": "今天就把这几个问题串起来：普通与主要，各多出什么；同一份圣物，为什么换个持有者就可能算出不同结果；我放进去的东西，别人能不能拿走；最后退出时，又会退给谁。",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-05",
+      "claim_kind": "observed_context",
+      "source_ids": [
+        "LIVE10",
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        5,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-05-S01",
+          "zh": "演示使用的是八六七年阿拔斯的机制实验存档。",
+          "source_ids": [
+            "LIVE10",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-05-S02",
+          "zh": "人物已经准备成马立克派礼仪，累计额外准备五千虔诚；这也提高了奉献和奉献等级。",
+          "source_ids": [
+            "LIVE10",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-05-S03",
+          "zh": "这些资源不是正常游玩攒出来的。",
+          "source_ids": [
+            "LIVE10",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-06",
+      "claim_kind": "observed_context",
+      "source_ids": [
+        "LIVE10",
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        5,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-06-S01",
+          "zh": "后面的纳杰夫、巴格达是一条分支；新建智慧之地与最后退出，是重新载入的另一条分支。",
+          "source_ids": [
+            "LIVE10",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-06-S02",
+          "zh": "我们只在同一分支里接着算余额，不把不同实验的钱包拼成一笔账。",
+          "source_ids": [
+            "LIVE10",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-07",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-07-S01",
+          "zh": "伯爵领持有者，就是实际持有圣地所在伯爵领的角色。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-07-S02",
+          "zh": "他可能是皇帝，也可能是封臣。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-07-S03",
+          "zh": "要判断圣地的条件和收益，先找这个人，不能只看谁是最高领主。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C01-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C01-08-S01",
+          "zh": "信仰与宗教也要分清。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-08-S02",
+          "zh": "共享一处圣地的，可以是不同信仰。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C01-08-S03",
+          "zh": "判断是否主要、认不认可一件圣物时，不能只说他们属于同一宗教，就把双方当作完全相同。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-01-S01",
+          "zh": "我们容易把普通和主要理解成低级与高级，于是觉得只要升级，所有好处都会一起增加。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-01-S02",
+          "zh": "真正比较时，先把地方修正与全信仰修正分开，才不会为本来就有的效果重复付钱。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-02-S01",
+          "zh": "先看圣地类型直接提供的属性修正。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-02-S02",
+          "zh": "其中，需要主要圣地资格的是该信仰的全体角色修正，包括固定项和按圣物稀有度缩放的项。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-02-S03",
+          "zh": "地方修正、特殊建筑和特殊能力，要分别看自己的条件。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-03-S01",
+          "zh": "要拿这组全信仰修正，这个信仰必须把地点列为主要圣地，伯爵领持有者当前还得信奉这个信仰。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-03-S02",
+          "zh": "看的是持有者本人，不是最高领主，不是地图颜色，也不是当地民众信什么。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-04",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "MAJOR",
+        "SHARED"
+      ],
+      "user_item_ids": [
+        4,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-04-S01",
+          "zh": "假设甲乙都把这里列为主要圣地，伯爵领持有者却信甲。",
+          "source_ids": [
+            "MAJOR",
+            "SHARED"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-04-S02",
+          "zh": "乙即使也认可槽里的圣物，也不能跳过这道条件，自动给乙的所有信徒发一整份加成。",
+          "source_ids": [
+            "MAJOR",
+            "SHARED"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-04-S03",
+          "zh": "将来持有者改宗，条件还可能改变。",
+          "source_ids": [
+            "MAJOR",
+            "SHARED"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-05-S01",
+          "zh": "地方角色修正与伯爵领修正走的是另外的条件。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-05-S02",
+          "zh": "普通圣地也可能提供地方好处；地方角色修正还有接收者的持有关系与信仰条件，不能扩大成附近所有人，或所有同教人物各拿一份。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-06",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR",
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-06-S01",
+          "zh": "游戏显示圣地未生效，不等于每一项固定加成都必定为零。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-06-S02",
+          "zh": "全信仰的固定修正，仍看主要关系和伯爵领持有者的信仰，却没有统一再加这个生效开关。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-06-S03",
+          "zh": "地方修正另有生效条件，缩放部分还要看它读到的总和。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-07",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR",
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-07-S01",
+          "zh": "反过来，界面亮起来，也不代表所有关联信仰、所有角色都已经拿到全部好处。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-07-S02",
+          "zh": "尤其暂停时，当前条件、旧的缓存和人物已经汇总的修正，可能还没有一起更新。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C02-08",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C02-08-S01",
+          "zh": "实际选方案时，先认准你要的那一项。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-08-S02",
+          "zh": "它是地方收益，还是全信仰收益？",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-08-S03",
+          "zh": "谁来领取？",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-08-S04",
+          "zh": "是不是需要主要等级？",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C02-08-S05",
+          "zh": "这些先答清楚，才能算下一笔投入，而不是只看按钮升了一级。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR",
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        1,
+        3,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-01-S01",
+          "zh": "以萨迈拉的智慧之地为例。",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "LIVE11"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-01-S02",
+          "zh": "它是可以新建的一种圣地类型，不是人物的智慧属性。",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "LIVE11"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-01-S03",
+          "zh": "我们建出来的地点仍是普通圣地，主要等级并没有包含在这次新建里。",
+          "source_ids": [
+            "TERM",
+            "MAJOR",
+            "LIVE11"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        3,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-02-S01",
+          "zh": "智慧之地的地方角色固定项有学识加二。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-02-S02",
+          "zh": "伯爵领里还有金币、威望、虔诚三类建造费，以及发展度成长值的修正。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-02-S03",
+          "zh": "假如目标只是这组地方好处，升主要不是购买它们的必要步骤。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-03",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-03-S01",
+          "zh": "按类型规则计算，参与计算的圣物稀有度总和每多一点，三类建造费各降低百分之一，发展度成长值直接加零点零一。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-03-S02",
+          "zh": "总和为四，对应各减百分之四，以及加零点零四。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-04",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        3,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-04-S01",
+          "zh": "这里加零点零四，是直接相加的一项，不是发展度成长值的倍率增加百分之四。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-04-S02",
+          "zh": "两个修正的界面名称可能很相近，算长期收益时却不能混用。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-04-S03",
+          "zh": "建设计划越长，这个差别越值得看清。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        3,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-05-S01",
+          "zh": "升为主要后，智慧之地才增加另一组全信仰修正：每奉献等级一点外交，以及随圣物稀有度总和变化的学识、外交生活方式经验倍率。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-05-S02",
+          "zh": "地方学识加二，不会因为升主要再送一份。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-06",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        3,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-06-S01",
+          "zh": "同样按总和为四来算，两类生活方式经验倍率各加百分之四。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-06-S02",
+          "zh": "每级奉献一点外交，则要用各受益角色自己的奉献等级。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-06-S03",
+          "zh": "皇帝是四级，不代表所有信徒都按皇帝的四级计算。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-07",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        3,
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-07-S01",
+          "zh": "所以，年轻统治者准备长期走学识或外交生活方式，主要智慧之地可能有吸引力。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-07-S02",
+          "zh": "只想改善直辖建设，就先比较普通等级的地方收益；统治者已到晚年，还要考虑经验倍率剩下多久能发挥作用。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C03-08",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR",
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        3,
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C03-08-S01",
+          "zh": "这也是为什么新建地点很重要。",
+          "source_ids": [
+            "MAJOR",
+            "LIVE11"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-08-S02",
+          "zh": "把合适类型放在自己经营的伯爵领，与把地方收益留在封臣持有的地点，是两种计划。",
+          "source_ids": [
+            "MAJOR",
+            "LIVE11"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C03-08-S03",
+          "zh": "它们都可能有价值，但不能把封臣那份收益直接照抄进皇帝的钱包。",
+          "source_ids": [
+            "MAJOR",
+            "LIVE11"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-01-S01",
+          "zh": "纳杰夫的主要层，有每奉献等级一点外交、神职人员好感加五，以及按圣物稀有度总和缩放的每月虔诚倍率。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-01-S02",
+          "zh": "地方层另有神职人员好感加三，以及伯爵领的发展与民众好感度项。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-02",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        2,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-02-S01",
+          "zh": "参与计算的稀有度总和为四时，纳杰夫那项每月虔诚倍率是百分之四。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-02-S02",
+          "zh": "它与外交、神职人员好感是不同的项；不要只拿其中一个数字，就宣布已经算完整座圣地的价值。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-03",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        3,
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-03-S01",
+          "zh": "假设主要名额只能留一个，把纳杰夫降级，再把智慧之地升格。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-03-S02",
+          "zh": "两边都有每奉献等级一点外交；如果其他接收条件相同，这个系数一换一，外交这一项不会凭空多出一份。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-04",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        3,
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-04-S01",
+          "zh": "真正交换的，是纳杰夫的神职人员好感与每月虔诚，换成智慧之地的两类生活方式经验。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-04-S02",
+          "zh": "两处圣物稀有度总和也可能不同，要分别算。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-04-S03",
+          "zh": "比较新站点时，别忘了旧站点会失去什么。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-05",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-05-S01",
+          "zh": "正缺虔诚、又需要神职人员支持时，纳杰夫的组合可能更合适。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-05-S02",
+          "zh": "准备长期培养学识与外交时，可以考虑智慧之地。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-05-S03",
+          "zh": "没有脱离人物处境的统一答案，更不是看到新类型就一定值得换。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-06",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-06-S01",
+          "zh": "麦加也不是方便演示就能随便牺牲的位置。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-06-S02",
+          "zh": "它的主要层包括每名骑士带来的每月虔诚倍率；另有随圣物稀有度总和变化的骑士战斗力与奉献等级影响。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-07",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-07-S01",
+          "zh": "按每名骑士百分之二计算，十名骑士对应的每月虔诚倍率项是百分之二十。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-07-S02",
+          "zh": "这项倍率还会与其他收入修正一起结算，最终每月多多少，要放回人物整笔收入里算。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-08-S01",
+          "zh": "奉献等级影响，是放大当前奉献等级已经提供的修正。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-08-S02",
+          "zh": "它不直接增加虔诚，不增加通向下一等级的奉献，也不是直接提高奉献等级。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-08-S03",
+          "zh": "准备围绕骑士作战时，要把这组损失算进去。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C04-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C04-09-S01",
+          "zh": "比较主要名额，先看旧站点正在替谁做什么，再看新站点能替谁做什么。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C04-09-S02",
+          "zh": "已经花掉的采用费是过去的投入，不能因为舍不得，就继续为一个不适合当前计划的方案追加两笔钱。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-01-S01",
+          "zh": "主要等级也不是所有特殊能力的前提。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-01-S02",
+          "zh": "本期比较的麦加、纳杰夫和智慧之地，类型里没有额外的特殊能力参数；不能从这三个例子，推成普通圣地都没有特殊作用。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-02-S01",
+          "zh": "耶路撒冷就是一个反例。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-02-S02",
+          "zh": "原版的传教相关规则会检查指定圣地参数，以及关联、控制和地点等条件；相关分支并没有要求把它列为主要圣地。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-02-S03",
+          "zh": "参数是否存在，与主要层的属性修正是两回事。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-03-S01",
+          "zh": "不过，普通等级也不等于无条件拿到这项能力。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-03-S02",
+          "zh": "相关检查仍会看圣地缓存的生效状态，有的还检查伯爵领持有者信仰、固定地点和宫廷司祭任务的上下文。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-03-S03",
+          "zh": "不能只看到参数名字就算收益到账。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-04",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "TERM",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        1,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-04-S01",
+          "zh": "因此，类型没有写的特殊能力，不会因为升主要就自动长出来；类型确实写了参数，也要按它实际用途来判断。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-04-S02",
+          "zh": "先找自己要做的事，再找需要的条件，比追着等级名称花钱可靠。",
+          "source_ids": [
+            "TERM",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-04A",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-04A-S01",
+          "zh": "主要等级在其他系统里也可能有用。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-04A-S02",
+          "zh": "例如朝圣奖励、旅行到访，以及建立属灵信仰领袖的部分费用，原版都有区分普通与主要的具体规则。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-04A-S03",
+          "zh": "选择主要地点时，还要按你准备做的活动与决议查看，不能只盯属性表。",
+          "source_ids": [
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "LIMITS"
+      ],
+      "user_item_ids": [
+        9,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-05-S01",
+          "zh": "再看数量。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-05-S02",
+          "zh": "这一版原版和已安装扩展内容，正常规则是圣地总数最多九处，其中主要圣地最多三处。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-05-S03",
+          "zh": "主要圣地也占总数名额，不是九个普通再加三个主要。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-05-S04",
+          "zh": "初始有几处，与最多能有几处，是两件事。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-06",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "LIMITS"
+      ],
+      "user_item_ids": [
+        9
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-06-S01",
+          "zh": "我们也专门检查了原版的决议、事件和效果，没有找到通过正常游玩提高这两个最大值的途径。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-06-S02",
+          "zh": "采用、创建与升格的正常路径，都有数量检查。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-06-S03",
+          "zh": "免费行动只是免去相应花费，不会替你增加圣地总额或主要名额。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-07",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "LIMITS"
+      ],
+      "user_item_ids": [
+        9
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-07-S01",
+          "zh": "直接改名单、修改存档或模组造成超额，与正常规则把上限提高，是两件事。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-07-S02",
+          "zh": "不能看到旧档里已有更多，就认定还能继续正常新增。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-07-S03",
+          "zh": "这个结论限定当前原版内容；更换版本或模组后，要重新核对。",
+          "source_ids": [
+            "LIMITS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "LIMITS",
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        9,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-08-S01",
+          "zh": "采用和新建，要看圣地总数有没有余量；把普通升为主要，还要看主要名额。",
+          "source_ids": [
+            "LIMITS",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-08-S02",
+          "zh": "降级只让出主要名额，不减少圣地总数；放弃才移除本信仰与该地点的关联，还要满足最低数量等条件。",
+          "source_ids": [
+            "LIMITS",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C05-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "LIMITS",
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        9,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C05-09-S01",
+          "zh": "地点是第三道独立问题。",
+          "source_ids": [
+            "LIMITS",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-09-S02",
+          "zh": "总数没满，不代表这个地点可采用，也不代表能在这里新建任意类型。",
+          "source_ids": [
+            "LIMITS",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-09-S03",
+          "zh": "权限、类型、材料、已有地点和当场条件，都要另外满足。",
+          "source_ids": [
+            "LIMITS",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C05-09-S04",
+          "zh": "数量够，只是计划能成立的一部分。",
+          "source_ids": [
+            "LIMITS",
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-01",
+      "claim_kind": "observed_context",
+      "source_ids": [
+        "TERM",
+        "SHARED",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        1,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-01-S01",
+          "zh": "现在看真实的纳杰夫。",
+          "source_ids": [
+            "TERM",
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-01-S02",
+          "zh": "几种信仰承认的是同一处地点，不是各自在地下藏了一座副本。",
+          "source_ids": [
+            "TERM",
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-01-S03",
+          "zh": "地点、槽位和圣物库存是共用的；其中一个信仰放进一件圣物，不会给其他信仰复制一件。",
+          "source_ids": [
+            "TERM",
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_context",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "SHARED",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-02-S01",
+          "zh": "分别保存的是各信仰与它有没有关联，以及把它列为普通还是主要。",
+          "source_ids": [
+            "SHARED",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-02-S02",
+          "zh": "一方主要、另一方普通，可以同时成立。",
+          "source_ids": [
+            "SHARED",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-02-S03",
+          "zh": "至于每件圣物被哪种信仰认可，又是另一张逐物判断的表。",
+          "source_ids": [
+            "SHARED",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "SHARED",
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-03-S01",
+          "zh": "所以，不能把共享理解成每个信仰各有一套独立库存，也不能把它理解成大家必须认可同样的物品。",
+          "source_ids": [
+            "SHARED",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-03-S02",
+          "zh": "共享的是对象与资产，关联、等级和认可仍要分别查看。",
+          "source_ids": [
+            "SHARED",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-04",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "SHARED",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-04-S01",
+          "zh": "巴格达这处圣地在本局由五个信仰共同关联。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-04-S02",
+          "zh": "逊尼派和另一方认可同一件已经供奉的圣物，另外三方不认可。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-04-S03",
+          "zh": "物品没有换，槽位没有换，只是判断它的信仰不同，答案就不同。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-05",
+      "claim_kind": "observed_boundary",
+      "source_ids": [
+        "SHARED",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-05-S01",
+          "zh": "纳杰夫这两件四级圣物，当时比较的双方信仰都认可。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-05-S02",
+          "zh": "换它们没有改变这两方的认可结果。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-05-S03",
+          "zh": "如果目标是改善认可，先找真正有差异的候选，不能只换一个名字，就把它当成新的利益取舍。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-06",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "SHARED",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-06-S01",
+          "zh": "再把收益条件放回来。",
+          "source_ids": [
+            "SHARED",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-06-S02",
+          "zh": "某个信仰认可圣物，只回答认可这一件事；它还要不要主要等级、伯爵领持有者是不是这个信仰、效果给哪个角色，都不会因为认可为真就自动跳过。",
+          "source_ids": [
+            "SHARED",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-07",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "SHARED",
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-07-S01",
+          "zh": "规划共享圣地时，先看谁持有伯爵领、持有者信什么，再看各信仰的关系和每件物品的认可。",
+          "source_ids": [
+            "SHARED",
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-07-S02",
+          "zh": "若只问大家都承认这里吗，很容易忽略真正决定当前圣物计算和收益资格的那个人。",
+          "source_ids": [
+            "SHARED",
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C06-08",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "SHARED"
+      ],
+      "user_item_ids": [
+        5,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C06-08-S01",
+          "zh": "共享也意味着将来的变化。",
+          "source_ids": [
+            "SHARED"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-08-S02",
+          "zh": "封臣改宗、继承换人、圣地被另一方经营，都可能改变适合的物品与受益条件。",
+          "source_ids": [
+            "SHARED"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C06-08-S03",
+          "zh": "愿意长期供奉一件贵重圣物前，要把你能控制多久也算进计划。",
+          "source_ids": [
+            "SHARED"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "TERM",
+        "RARITY"
+      ],
+      "user_item_ids": [
+        1,
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-01-S01",
+          "zh": "界面里的正式字段叫总宝物稀有度等级。",
+          "source_ids": [
+            "TERM",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-01-S02",
+          "zh": "下面把它拆成每个槽位的贡献来算。",
+          "source_ids": [
+            "TERM",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-01-S03",
+          "zh": "它不是圣物件数，也不是把所有库存物品的稀有度直接相加；只有符合当前条件的槽中圣物，才计入总和。",
+          "source_ids": [
+            "TERM",
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-02-S01",
+          "zh": "先找伯爵领持有者当前的信仰。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-02-S02",
+          "zh": "这个信仰必须还把这里列为圣地，才继续看槽里的圣物。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-02-S03",
+          "zh": "持有者的信仰已经退出，即使物品仍在，也不能照搬退出前的总和。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-03-S01",
+          "zh": "然后按槽位逐个看。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-03-S02",
+          "zh": "空槽没有贡献；装着的物品，要通过这个信仰的认可判断，才把它本身的稀有度等级加进去。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-03-S03",
+          "zh": "只属于圣地库存、却没有装进槽里的物品，也不能顺手算上。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-04",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "RARITY",
+        "TERM"
+      ],
+      "user_item_ids": [
+        1,
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-04-S01",
+          "zh": "我们用一个规则算例。",
+          "source_ids": [
+            "RARITY",
+            "TERM"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-04-S02",
+          "zh": "第一槽四级，甲认可；第二槽三级，甲不认可；第三槽二级，甲认可。",
+          "source_ids": [
+            "RARITY",
+            "TERM"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-04-S03",
+          "zh": "伯爵领持有者信甲，而且甲仍关联这里，那么这三槽贡献就是四、零、二，总和六。",
+          "source_ids": [
+            "RARITY",
+            "TERM"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-05",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-05-S01",
+          "zh": "假设换了一个信乙的持有者，乙也关联这里，却只认可第二和第三件。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-05-S02",
+          "zh": "库存原封不动，按当前条件算出的总和就成为零、三、二，也就是五。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-05-S03",
+          "zh": "这是条件比较，不是本期实际发生的改宗。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-06",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-06-S01",
+          "zh": "再看两件物品怎么选。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-06-S02",
+          "zh": "四级旧物不被当前持有者信仰认可，三级新物却被认可；其他条件都成立时，换上新物可能把这一槽的贡献从零变成三。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-06-S03",
+          "zh": "不是物品降档，就必定让当前贡献下降。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-07",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-07-S01",
+          "zh": "反过来，两件本来都被认可，四级换三级，这一槽就可能从四降到三。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-07-S02",
+          "zh": "被更多信仰认可，可能更适应未来变化，却不等于眼下数值一定更高。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-07-S03",
+          "zh": "先确认自己想保什么，再比较候选。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-08-S01",
+          "zh": "这些算例假定物品、槽位、持有者和认可都已经查清。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-08-S02",
+          "zh": "不知道某个信仰认不认可，就不能把问号当成不认可；看不到物品，也不能直接填零。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-08-S03",
+          "zh": "未知条件会让选择失去依据。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C07-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "RARITY",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        2,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C07-09-S01",
+          "zh": "算出总和之后，还没算完收益。",
+          "source_ids": [
+            "RARITY",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-09-S02",
+          "zh": "每个类型用它缩放什么，倍率读的是什么时候的值，谁满足接收条件，都要接着看。",
+          "source_ids": [
+            "RARITY",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C07-09-S03",
+          "zh": "总和六，不等于人物所有相关属性一起加六。",
+          "source_ids": [
+            "RARITY",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C08-01",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "RARITY",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        2,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C08-01-S01",
+          "zh": "这次巴格达恰好把差别展示出来。",
+          "source_ids": [
+            "RARITY",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-01-S02",
+          "zh": "我们花一千虔诚退出本信仰的圣地名单，余额从两千二百五十变成一千二百五十。",
+          "source_ids": [
+            "RARITY",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-01-S03",
+          "zh": "其他信仰还关联这里，圣物也仍留在原槽。",
+          "source_ids": [
+            "RARITY",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C08-02",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "RARITY",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        2,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C08-02-S01",
+          "zh": "伯爵领持有者仍信我们这一派，我们这一派却已经退出。",
+          "source_ids": [
+            "RARITY",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-02-S02",
+          "zh": "因此按当前条件重新计算，总和是零，圣地不满足生效条件；但当时读到的旧缓存还保留着总和二和生效状态。",
+          "source_ids": [
+            "RARITY",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C08-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C08-03-S01",
+          "zh": "这里有两个不同问题：现在这些条件算出来是多少，游戏先前记住的结果是多少。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-03-S02",
+          "zh": "暂停后再查一次，并不会自动替你把所有缓存更新；旧画面也不能代替当前条件。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C08-04",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RARITY",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        2,
+        4
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C08-04-S01",
+          "zh": "还要再分一层：有些按稀有度缩放的脚本，读取的是游戏缓存的总和；人物面板里已经汇总的修正，也有它自己的更新过程。",
+          "source_ids": [
+            "RARITY",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-04-S02",
+          "zh": "不能把当前重算的零，直接当作所有人物属性已经清零。",
+          "source_ids": [
+            "RARITY",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C08-06",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C08-06-S01",
+          "zh": "遇到这种情况，先别因为旧图标还亮着就继续投入。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-06-S02",
+          "zh": "看清当前持有者与信仰关联，再确认你关心的那项修正是否已经更新。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C08-06-S03",
+          "zh": "尤其要避免用一个旧总和，替刚改过的条件做长期预算。",
+          "source_ids": [
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-01",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "RIGHTS",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        5,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-01-S01",
+          "zh": "回到纳杰夫。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-01-S02",
+          "zh": "它已经是主要圣地，三个槽位仍然空着；随后供奉穆罕默德的斗篷，物品从皇帝手中进入圣地，参与计算的稀有度总和由零成为四，虔诚没有在这一步再扣。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-02",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        4,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-02-S01",
+          "zh": "这能确认供奉成功，但不能把当时所有属性变化都算成斗篷的功劳。",
+          "source_ids": [
+            "MAJOR",
+            "LIVE10"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-02-S02",
+          "zh": "升等级和放圣物，解决的是不同问题；空槽不等于绝对没有固定收益，圣地生效也不等于每个人都领到了加成。",
+          "source_ids": [
+            "MAJOR",
+            "LIVE10"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-03",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "RIGHTS",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        5,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-03-S01",
+          "zh": "接着，我们用另一件四级圣物直接替换斗篷。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-03-S02",
+          "zh": "新物进入纳杰夫，旧斗篷回到执行操作的皇帝手里，没有交给伯爵领持有者。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-03-S03",
+          "zh": "这次两个人并不是同一个角色。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-04",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "RIGHTS",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        5,
+        7,
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-04-S01",
+          "zh": "替换后，参与计算的稀有度总和仍是四，虔诚也没变。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-04-S02",
+          "zh": "但预览还列着关系后果。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-04-S03",
+          "zh": "所以这笔账不只有虔诚，还得看可能影响哪些人，不能把不扣钱当成没人吃亏。",
+          "source_ids": [
+            "RIGHTS",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-05-S01",
+          "zh": "直接替换，是一次供奉操作内部处理新物进入和旧物移出。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-05-S02",
+          "zh": "它与先手动取出、再供奉，是不同的操作路径，费用与条件也可能不同。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-05-S03",
+          "zh": "新旧物品各自的要求仍要满足。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-06",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-06-S01",
+          "zh": "正常单独取出，物品交给当前执行者；直接替换，旧物同样交给这次执行者。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-06-S02",
+          "zh": "规则不会先查最初是谁捐的，再给那个人寄回去。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-06-S03",
+          "zh": "供奉之后，就不能继续把它当作自己的安全寄存箱。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-07",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-07-S01",
+          "zh": "因此，替换有两边的机会成本。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-07-S02",
+          "zh": "换回来的旧物可以另作安排，新物却失去了原来的个人用途。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-07-S03",
+          "zh": "就算当前总和和虔诚不变，也要比较装备、赠送、供奉别处，以及各信仰认可的差别。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-08-S01",
+          "zh": "槽位也要认准。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-08-S02",
+          "zh": "原版自动选择会优先找兼容空槽；没有空槽，再看兼容的旧物，选择对象稀有度较低的，平手保留原顺序。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-08-S03",
+          "zh": "它没有替你算认可、政治代价或个人装备价值。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C09-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C09-09-S01",
+          "zh": "需要保住某件旧物时，不要只看选中的新物漂亮不漂亮。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-09-S02",
+          "zh": "确认目标槽，以及究竟会换出哪一件，再看完整预览。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C09-09-S03",
+          "zh": "自动选槽是在解决放哪里，不是在替你决定怎样最划算。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS",
+        "TERM"
+      ],
+      "user_item_ids": [
+        1,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-01-S01",
+          "zh": "地域管理资格有三个身份：圣地所在伯爵领的持有者，这位持有者的最高领主，以及这个地方所属圣职区的头衔持有者。",
+          "source_ids": [
+            "RIGHTS",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-01-S02",
+          "zh": "只做中间一层领主，不能凭这一点就管理全领国的每座圣地。",
+          "source_ids": [
+            "RIGHTS",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS",
+        "TERM"
+      ],
+      "user_item_ids": [
+        1,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-02-S01",
+          "zh": "信仰领袖也不是独立的第四张通行证。",
+          "source_ids": [
+            "RIGHTS",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-02-S02",
+          "zh": "他如果同时符合那三个地方身份，按那个身份判断；不能因为头衔是信仰领袖，就假定能随意搬动所有相关圣物。",
+          "source_ids": [
+            "RIGHTS",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-03-S01",
+          "zh": "供奉还要求这里属于操作人的信仰，新物来自正常的自有物品选择，并且被伯爵领持有者当前的信仰认可，槽位也合法。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-03-S02",
+          "zh": "操作人的信仰与持有者的信仰，在这里承担的是不同条件。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-04",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-04-S01",
+          "zh": "单独取走，仍看那三个地域身份，却没有再统一要求这里属于操作人的信仰，或操作人的信仰认可旧物。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-04-S02",
+          "zh": "能够拿走异教圣物，不代表没有虔诚、奉献、关系或战争风险。",
+          "source_ids": [
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "AI"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-05-S01",
+          "zh": "那电脑角色会不会动它们？",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-05-S02",
+          "zh": "原版确实有给他们用的供奉决议与取走决议。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-05-S03",
+          "zh": "不是只有玩家按钮才会移动圣物；不过存在一条规则，与本局已经有人实际执行过，是两件事。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-06",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "AI"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-06-S01",
+          "zh": "单独清理库存那条决议，有具体的人类保护：它要求最高领主也是电脑角色，相关信仰领袖也不能是人类；它还必须与最高领主同信仰，并满足可用成年人、狂热和直辖领地等条件。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-06-S02",
+          "zh": "不是任意成年封臣都能随便拿。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-07",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "AI"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-07-S01",
+          "zh": "它考虑的，包括本教圣地里自己不认可的物品，以及被敌对信仰认可的物品；后一种情况还要求至少有一个伯爵领信奉那个敌对信仰。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-07-S02",
+          "zh": "共享圣地里，若这里也是本教圣地、本教也认可旧物，实际清理效果还有保护条件。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "AI"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-08-S01",
+          "zh": "但人类最高领主的保护，只属于那条单独清理决议。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-08-S02",
+          "zh": "另一条供奉决议，没有同一组人类保护。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-08-S03",
+          "zh": "它会从自有物品和本教圣地中寻找机会；实际选槽时若落到非空槽，就存在换出旧物的路径。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "AI",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-09-S01",
+          "zh": "新物放进去，旧物交给执行的电脑角色；这里不会因为旧物曾由人类捐赠就自动拒绝。",
+          "source_ids": [
+            "AI",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-09-S02",
+          "zh": "不要把特定清理保护，理解成我的捐赠永远安全。",
+          "source_ids": [
+            "AI",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-09-S03",
+          "zh": "长期供奉，要考虑谁有权限以及地点将来由谁控制。",
+          "source_ids": [
+            "AI",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C10-10",
+      "claim_kind": "observed_boundary",
+      "source_ids": [
+        "AI"
+      ],
+      "user_item_ids": [
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C10-10-S01",
+          "zh": "本期没有拍到电脑角色自然执行这套行为。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-10-S02",
+          "zh": "不能说某个封臣已经偷过，也不能把配置中的执行倾向读成每年保证取走一次。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C10-10-S03",
+          "zh": "这里讲的是已存在的风险路径，值得在规划里防范。",
+          "source_ids": [
+            "AI"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-01",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "OPINION",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7,
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-01-S01",
+          "zh": "现在把关系账打开。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-01-S02",
+          "zh": "先问方向：谁对谁的好感变化？",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-01-S03",
+          "zh": "供奉与取走里讨论的这些修正，是符合条件的人对执行者的好感，不是执行者更喜欢他们，也不是整个信仰对另一个信仰统一加减。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION"
+      ],
+      "user_item_ids": [
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-02-S01",
+          "zh": "供奉的特定奖励分支，会筛选认可新物的宗教狂热立场直属封臣，符合狂热条件且认可新物的各级上级领主，以及符合条件的本教信仰领袖。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-02-S02",
+          "zh": "他们对执行者的正面好感修正是十五点。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-03",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION"
+      ],
+      "user_item_ids": [
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-03-S01",
+          "zh": "不能把这句话缩成捐东西让所有同教人都加十五。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-03-S02",
+          "zh": "首先要进入对应分支，再逐人看关系、立场与认可；其中的封臣筛选，也不是统一只收同信仰。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-03-S03",
+          "zh": "宗教狂热立场，与人物的狂热条件或特质，也不能当作同一个标签。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-04",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION"
+      ],
+      "user_item_ids": [
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-04-S01",
+          "zh": "取走本教认可的旧物，而且没有用同档或更高稀有度的新物替代，会进入本教损失分支。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-04-S02",
+          "zh": "相关同教的宗教狂热或少数族群立场直属封臣，以及符合条件的同僚、上级和信仰领袖，可能对执行者产生负面好感。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION"
+      ],
+      "user_item_ids": [
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-05-S01",
+          "zh": "这里的负面修正是二十点，但每组人有自己的筛选。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-05-S02",
+          "zh": "信仰领袖那一段，还看关联信仰是否仍有伯爵领信奉、领袖是否存在，以及他是否认可旧物。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-05-S03",
+          "zh": "不是所有关联信仰的领袖都必定生气。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-06",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7,
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-06-S01",
+          "zh": "同档或更好替换，可以避开刚才那段本教取走费用，却不等于别人都没意见。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-06-S02",
+          "zh": "另一分支还会检查认可旧物的异信仰封臣、同僚和上级；这一组并没有相同的宗教狂热或少数族群立场限制。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-07",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION"
+      ],
+      "user_item_ids": [
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-07-S01",
+          "zh": "正负两种好感修正都设置了十年，并逐渐衰减，不是最后一天才突然清零。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-07-S02",
+          "zh": "同一个人可能符合不止一种关系角色，也可能同时受到正负两项影响，不能机械地按角色名称重复乘好几遍。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-08",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "OPINION",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7,
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-08-S01",
+          "zh": "费用也有分支。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-08-S02",
+          "zh": "假设四级旧物与三级新物都被执行者信仰认可，相关条件持续成立，按这套基础值计算，供奉段扣二百五十，移除段再扣五百，虔诚合计减少七百五十。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-08-S03",
+          "zh": "它不是所有四换三的统一价格。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-09",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION",
+        "TERM"
+      ],
+      "user_item_ids": [
+        1,
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-09-S01",
+          "zh": "这套基础值里，奉献减少五百，不是七百五十。",
+          "source_ids": [
+            "OPINION",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-09-S02",
+          "zh": "负的供奉差额只扣虔诚，移除段才同时扣虔诚和奉献。",
+          "source_ids": [
+            "OPINION",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-09-S03",
+          "zh": "但原版还会先按资源修正调整数值，所以实际钱包、奉献和奉献等级，仍要分别看，不能拿基础值冒充这局的净损失。",
+          "source_ids": [
+            "OPINION",
+            "TERM"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-10",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "OPINION"
+      ],
+      "user_item_ids": [
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-10-S01",
+          "zh": "看到夺回圣物的战争理由警告，也不等于已经给所有异教统治者发了宣战许可。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-10-S02",
+          "zh": "真正能不能用，还看双方信仰、各自认可、物品能否转移和通常宣战条件；电脑角色另有狂热与头衔门槛。",
+          "source_ids": [
+            "OPINION"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C11-11",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "OPINION",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7,
+        8
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C11-11-S01",
+          "zh": "换物前，比较的是三张账：自己的资源与奉献，物品失去与获得的用途，还有哪些具体人物可能因此改变态度。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C11-11-S02",
+          "zh": "预览提示风险后，先看对方是谁，再决定眼下省的虔诚值不值得。",
+          "source_ids": [
+            "OPINION",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-01",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "SHARED",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        5,
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-01-S01",
+          "zh": "先把降级与放弃分开。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-01-S02",
+          "zh": "降级让出主要名额，地点仍是本信仰的圣地。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-01-S03",
+          "zh": "放弃移除本信仰的关联，正常决议还要求它是普通圣地，并满足最低数量、冷却和当场资格。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-02",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "SHARED",
+        "LIVE10"
+      ],
+      "user_item_ids": [
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-02-S01",
+          "zh": "巴格达那次退出后，其他信仰仍然关联，原来的圣物也留在槽里。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-02-S02",
+          "zh": "没有把它打包送回皇帝。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-02-S03",
+          "zh": "共享圣地里，退出一方的名单，不等于收回这一方曾经投入的所有东西。",
+          "source_ids": [
+            "SHARED",
+            "LIVE10"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-03",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "SHARED",
+        "RARITY"
+      ],
+      "user_item_ids": [
+        2,
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-03-S01",
+          "zh": "而且，退出自己的关联，也可能让持有者信仰不再关联这处地点，从而改变当前圣物计算。",
+          "source_ids": [
+            "SHARED",
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-03-S02",
+          "zh": "不能只看还有几种信仰承认，就假定原来那组收益继续照常发放。",
+          "source_ids": [
+            "SHARED",
+            "RARITY"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-04",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "SHARED",
+        "RIGHTS",
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        5,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-04-S01",
+          "zh": "再看另一条独立分支。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-04-S02",
+          "zh": "我们在萨迈拉新建普通的智慧之地，只有本信仰关联它，槽里放着四级斗篷。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-04-S03",
+          "zh": "最后一个信仰退出后，我们看到关联与圣物库存都已清空，斗篷回到皇帝个人清单，仍未装备。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-04-S04",
+          "zh": "地点本身还在，并没有从地图上被抹掉。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-05",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "SHARED",
+        "RIGHTS",
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        5,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-05-S01",
+          "zh": "这里的返还规则，是交给圣地所在伯爵领的持有者。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-05-S02",
+          "zh": "这次皇帝恰好也是持有者，所以拿到了斗篷。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-05-S03",
+          "zh": "不能因为两种身份碰巧相同，就推成最后退出永远退给操作人。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS",
+            "LIVE11"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-06",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "SHARED",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        5,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-06-S01",
+          "zh": "如果同样的伯爵领由封臣持有，最后退出的这条规则就可能把圣物交给封臣，而不是皇帝，也不是最初捐赠的人。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-06-S02",
+          "zh": "哪怕对方信仰不同，或不认可物品，也不能自行改写这条收件规则。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-07",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "SHARED",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        5,
+        7
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-07-S01",
+          "zh": "所以要记住三种去向：正常取出，给执行者；直接替换，旧物给执行者；最后一个信仰放弃，按该规则给伯爵领持有者。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-07-S02",
+          "zh": "还有其他信仰关联时，则不走这条最后退出的退物过程。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-08",
+      "claim_kind": "observed_boundary",
+      "source_ids": [
+        "LIVE11"
+      ],
+      "user_item_ids": [
+        5
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-08-S01",
+          "zh": "斗篷回来以后，也别急着把它记成已经恢复了装备收益。",
+          "source_ids": [
+            "LIVE11"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-08-S02",
+          "zh": "物品归你、躺在个人清单、实际装备，是三种不同状态；要重新决定怎样使用它。",
+          "source_ids": [
+            "LIVE11"
+          ],
+          "claim_kind": "observed_boundary",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C12-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "SHARED",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        5,
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C12-09-S01",
+          "zh": "想收回圣物时，先确认自己有正常取出的资格与费用，再比较是否真的需要放弃整座圣地。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C12-09-S02",
+          "zh": "放弃还要失去关联与后续收益，可能花更多资源，收件人也可能不是自己。",
+          "source_ids": [
+            "SHARED",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-01",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "ADOPT",
+        "MAJOR",
+        "LIMITS"
+      ],
+      "user_item_ids": [
+        4,
+        9,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-01-S01",
+          "zh": "回到最初的选择。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR",
+            "LIMITS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-01-S02",
+          "zh": "采用已有圣地，适合补上某个具体地点的关联需求；新建，则给你选择合适类型与地点的机会。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR",
+            "LIMITS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-01-S03",
+          "zh": "它们占用圣地总数，也都还有各自条件，不能只比较按钮上的虔诚数字。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR",
+            "LIMITS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-02",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "ADOPT",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-02-S01",
+          "zh": "特殊建筑就是一个例子。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-02-S02",
+          "zh": "某些建筑要求这里是持有者信仰的圣地，同时还满足别的宗教条件；另一些允许几条条件择一满足。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-02-S03",
+          "zh": "已经满足另一条的人，不该把新增圣地关联当成必付的解锁费。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-03",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-03-S01",
+          "zh": "朝圣也要另算。",
+          "source_ids": [
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-03-S02",
+          "zh": "新增关联可能增加值得考虑的目的地，却还要看活动、近期访问、距离、旅费与安全。",
+          "source_ids": [
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-03-S03",
+          "zh": "麦加朝觐仍然去麦加，不能因为新建了智慧之地，就拿它替代麦加。",
+          "source_ids": [
+            "ADOPT"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-04",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "ADOPT",
+        "MAJOR"
+      ],
+      "user_item_ids": [
+        4,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-04-S01",
+          "zh": "若目标是自己的学识与建设，先看已有的巴格达和自己持有的伯爵领；若目标是神职人员支持与虔诚，再比较纳杰夫的主要层。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-04-S02",
+          "zh": "已有地点没经营好，不一定要先花钱添一个新名字。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-05",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "LIVE11",
+        "TERM"
+      ],
+      "user_item_ids": [
+        1,
+        3,
+        5,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-05-S01",
+          "zh": "这次新建智慧之地的分支，从四千二百五十虔诚开始，没有先放弃纳杰夫；新建实际花两千，剩两千二百五十。",
+          "source_ids": [
+            "LIVE11",
+            "TERM"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-05-S02",
+          "zh": "之后最后退出又花一千，剩一千二百五十。",
+          "source_ids": [
+            "LIVE11",
+            "TERM"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-05-S03",
+          "zh": "这是一条独立、连续的账。",
+          "source_ids": [
+            "LIVE11",
+            "TERM"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-06",
+      "claim_kind": "observed_fact",
+      "source_ids": [
+        "LIVE11",
+        "MAJOR",
+        "LIMITS"
+      ],
+      "user_item_ids": [
+        3,
+        4,
+        9,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-06-S01",
+          "zh": "新地点是普通等级，斗篷在槽内，伯爵领持有者是玩家。",
+          "source_ids": [
+            "LIVE11",
+            "MAJOR",
+            "LIMITS"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-06-S02",
+          "zh": "它没有附送主要资格。",
+          "source_ids": [
+            "LIVE11",
+            "MAJOR",
+            "LIMITS"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-06-S03",
+          "zh": "你若还想要智慧之地那组外交与生活方式经验，就得另看主要名额、费用和资格，不能提前记进新建收益。",
+          "source_ids": [
+            "LIVE11",
+            "MAJOR",
+            "LIMITS"
+          ],
+          "claim_kind": "observed_fact",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-07",
+      "claim_kind": "conditional_example",
+      "source_ids": [
+        "ADOPT",
+        "LIMITS"
+      ],
+      "user_item_ids": [
+        9,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-07-S01",
+          "zh": "假如从尚未采用的地点开始，还要先降一个旧主要、再升新主要，而三步当场报价都是一千，也没有免费次数，就应准备三千。",
+          "source_ids": [
+            "ADOPT",
+            "LIMITS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-07-S02",
+          "zh": "这是带前提的预算，不是把不同实验拼成已经发生的三千账单。",
+          "source_ids": [
+            "ADOPT",
+            "LIMITS"
+          ],
+          "claim_kind": "conditional_example",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": true,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-08",
+      "claim_kind": "rule_explanation",
+      "source_ids": [
+        "FREE",
+        "ADOPT"
+      ],
+      "user_item_ids": [
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-08-S01",
+          "zh": "新信仰创建时的三次免费行动，是该信仰共用的有限次数。",
+          "source_ids": [
+            "FREE",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-08-S02",
+          "zh": "它不是每位统治者各领三次，换人不会再发。",
+          "source_ids": [
+            "FREE",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-08-S03",
+          "zh": "用一次少一次，眼下省的费用，也可能是放弃留给下一步的机会。",
+          "source_ids": [
+            "FREE",
+            "ADOPT"
+          ],
+          "claim_kind": "rule_explanation",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-09",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "ADOPT",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-09-S01",
+          "zh": "冷却也要逐个看。",
+          "source_ids": [
+            "ADOPT",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-09-S02",
+          "zh": "采用、升格、降级、放弃与新建，不要因为写了相近的时间，就当成一把共同的锁。",
+          "source_ids": [
+            "ADOPT",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-09-S03",
+          "zh": "做第一步以前，把下一步的数量、资源、权限和冷却一起列出来。",
+          "source_ids": [
+            "ADOPT",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-10",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "ADOPT",
+        "MAJOR",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        4,
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-10-S01",
+          "zh": "最后把方案放在一起：经营已有地点，采用已有圣地，新建合适类型，或暂时保留资源。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-10-S02",
+          "zh": "比较新增收益，也比较失去的旧主要效果、圣物个人用途、关系成本，以及地点是否由你长期掌握。",
+          "source_ids": [
+            "ADOPT",
+            "MAJOR",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    },
+    {
+      "cue_id": "V4-C13-11",
+      "claim_kind": "planning_advice",
+      "source_ids": [
+        "MAJOR",
+        "RARITY",
+        "RIGHTS"
+      ],
+      "user_item_ids": [
+        2,
+        4,
+        7,
+        10
+      ],
+      "sentences": [
+        {
+          "sentence_id": "V4-C13-11-S01",
+          "zh": "圣地不是名单越长、等级越高就越好。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-11-S02",
+          "zh": "先找到要受益的人和要做的事，再核对关系、持有者信仰、逐槽认可与收件人。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        },
+        {
+          "sentence_id": "V4-C13-11-S03",
+          "zh": "确认投入能到你真正需要的地方，那个按钮才值得点。",
+          "source_ids": [
+            "MAJOR",
+            "RARITY",
+            "RIGHTS"
+          ],
+          "claim_kind": "planning_advice",
+          "en": null
+        }
+      ],
+      "audio": null,
+      "actual_speech_seconds": null,
+      "actual_final_interval": null,
+      "visual_asset_selection": null,
+      "source_example_requires_label": false,
+      "old_audio_exact_text_match": false
+    }
+  ],
+  "production_only_cues": [
+    {
+      "cue_id": "V4-PRODUCTION-06",
+      "kind": "non_spoken_global_visual_instruction",
+      "user_item_ids": [
+        6
+      ],
+      "zh": null,
+      "en": null,
+      "source_ids": [
+        "LEGACY"
+      ],
+      "instruction": "Every future new gameplay capture must exclude the retired upper-left blue agent panel. Existing recordings and the already delivered v3 may retain it. No new capture/render in this authoring package.",
+      "scope": "Exact retired XARG2DecisionOverlay class and old dedicated CLI, not new decision UI or general decision observation feeds."
+    }
+  ],
+  "excluded_cues": [
+    {
+      "cue_id": "V4-C08-05",
+      "original_zh": "这次退出改变了当前条件，但旧状态还没跟上。至于哪位人物到底少了什么，要看那一项实际修正，不能靠一盏亮灯下结论，也不能说其他信仰的好处已经全部归零。",
+      "reason": "Root editorial review: duplicates adjacent current/cache explanation; retain old ID in exclusion record, do not renumber remaining cues."
+    },
+    {
+      "cue_id": "V4-C08-07",
+      "original_zh": "如果只是解释规则，可以按已知条件列出算例；如果要说这局人物真正多了多少，就要看那个人的实际修正。前一种帮助你预判，后一种才回答投入有没有按预期落到目标身上。",
+      "reason": "Root editorial review: duplicates adjacent current/cache explanation; retain old ID in exclusion record, do not renumber remaining cues."
+    }
+  ],
+  "no_new_game_results": true,
+  "current_media_ready": false
+}

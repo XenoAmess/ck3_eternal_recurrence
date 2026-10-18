@@ -1,0 +1,1330 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-and-power-episode01-v4",
+    "title": "信仰与权力：圣地投入与玩家决策"
+  },
+  "pipeline": {
+    "adapter": "faith-power-opening",
+    "preset": "faith-power-opening-1440p30"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2100
+  },
+  "chapters": [
+    {
+      "id": "v4-c01",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "先问这笔投入要替你解决什么",
+        "en": "What do you want the investment to do?"
+      },
+      "cues": [
+        {
+          "id": "V4-C01-01",
+          "narration": {
+            "zh-CN": "看到别人的圣地，你会不会也想把它列进自己的名单？花一笔虔诚，名字添上去了，接着却发现圣物槽还是空的，也没有自动变成主要圣地。这笔钱到底买到了什么？"
+          },
+          "subtitles": {
+            "zh-CN": "看到别人的圣地，你会不会也想把它列进自己的名单？花一笔虔诚，名字添上去了，接着却发现圣物槽还是空的，也没有自动变成主要圣地。这笔钱到底买到了什么？",
+            "en": "Have you ever wanted to add someone else's holy site to your own faith's list? You spend the Piety, add the name, then discover that the relic slots are still empty and the site has not become Eminent. What did that investment actually buy?"
+          }
+        },
+        {
+          "id": "V4-C01-02",
+          "narration": {
+            "zh-CN": "采用圣地，改变的是自己的信仰与这处地点的关联。它不转让土地，不替你建好特殊建筑，不复制别人供奉的圣物，也不把对方的主要圣地等级原样送给你。"
+          },
+          "subtitles": {
+            "zh-CN": "采用圣地，改变的是自己的信仰与这处地点的关联。它不转让土地，不替你建好特殊建筑，不复制别人供奉的圣物，也不把对方的主要圣地等级原样送给你。",
+            "en": "Adopting a holy site changes your faith's connection to that place. It does not transfer the land, build a special building, copy someone else's relics, or give your faith the site's Eminent status in another faith."
+          }
+        },
+        {
+          "id": "V4-C01-03",
+          "narration": {
+            "zh-CN": "值不值得采用，要从你缺的东西开始想。是想改善自己的学识，发展直辖领地，稳住神职人员的支持，还是给本信仰争取一组长期加成？这些目标需要的条件，并不相同。"
+          },
+          "subtitles": {
+            "zh-CN": "值不值得采用，要从你缺的东西开始想。是想改善自己的学识，发展直辖领地，稳住神职人员的支持，还是给本信仰争取一组长期加成？这些目标需要的条件，并不相同。",
+            "en": "Start with what you need. More Learning for your ruler? Development in your domain? Support from the clergy? Long-term bonuses for your faith's adherents? Each goal depends on different conditions."
+          }
+        },
+        {
+          "id": "V4-C01-04",
+          "narration": {
+            "zh-CN": "今天就把这几个问题串起来：普通与主要，各多出什么；同一份圣物，为什么换个持有者就可能算出不同结果；我放进去的东西，别人能不能拿走；最后退出时，又会退给谁。"
+          },
+          "subtitles": {
+            "zh-CN": "今天就把这几个问题串起来：普通与主要，各多出什么；同一份圣物，为什么换个持有者就可能算出不同结果；我放进去的东西，别人能不能拿走；最后退出时，又会退给谁。",
+            "en": "Today we will connect those questions. What do ordinary and Eminent status each provide? Why can the same relics produce a different result under another holder? Can someone else take what I enshrine? And who gets it when my faith abandons the site?"
+          }
+        },
+        {
+          "id": "V4-C01-05",
+          "narration": {
+            "zh-CN": "演示使用的是八六七年阿拔斯的机制实验存档。人物已经准备成马立克派礼仪，累计额外准备五千虔诚；这也提高了奉献和奉献等级。这些资源不是正常游玩攒出来的。"
+          },
+          "subtitles": {
+            "zh-CN": "演示使用的是八六七年阿拔斯的机制实验存档。人物已经准备成马立克派礼仪，累计额外准备五千虔诚；这也提高了奉献和奉献等级。这些资源不是正常游玩攒出来的。",
+            "en": "The demonstrations use a separate mechanics experiment based on the Abbasids in 867. The character was prepared with the Maliki rite and a total of 5,000 extra Piety. This also raised Devotion and the Level of Devotion. These resources were not earned through normal play."
+          }
+        },
+        {
+          "id": "V4-C01-06",
+          "narration": {
+            "zh-CN": "后面的纳杰夫、巴格达是一条分支；新建智慧之地与最后退出，是重新载入的另一条分支。我们只在同一分支里接着算余额，不把不同实验的钱包拼成一笔账。"
+          },
+          "subtitles": {
+            "zh-CN": "后面的纳杰夫、巴格达是一条分支；新建智慧之地与最后退出，是重新载入的另一条分支。我们只在同一分支里接着算余额，不把不同实验的钱包拼成一笔账。",
+            "en": "The Nadjaf and Baghdad demonstrations follow one branch. Creating the Site of Wisdom and finally abandoning it follow another, reloaded branch. We track balances within each branch, rather than combining different experiments into one account."
+          }
+        },
+        {
+          "id": "V4-C01-07",
+          "narration": {
+            "zh-CN": "伯爵领持有者，就是实际持有圣地所在伯爵领的角色。他可能是皇帝，也可能是封臣。要判断圣地的条件和收益，先找这个人，不能只看谁是最高领主。"
+          },
+          "subtitles": {
+            "zh-CN": "伯爵领持有者，就是实际持有圣地所在伯爵领的角色。他可能是皇帝，也可能是封臣。要判断圣地的条件和收益，先找这个人，不能只看谁是最高领主。",
+            "en": "The County holder is the character who actually holds the County containing the holy site. That may be the emperor or a vassal. Start with this person when checking conditions and benefits, rather than looking only at the top liege."
+          }
+        },
+        {
+          "id": "V4-C01-08",
+          "narration": {
+            "zh-CN": "信仰与宗教也要分清。共享一处圣地的，可以是不同信仰。判断是否主要、认不认可一件圣物时，不能只说他们属于同一宗教，就把双方当作完全相同。"
+          },
+          "subtitles": {
+            "zh-CN": "信仰与宗教也要分清。共享一处圣地的，可以是不同信仰。判断是否主要、认不认可一件圣物时，不能只说他们属于同一宗教，就把双方当作完全相同。",
+            "en": "Faith and Religion are distinct. Several faiths can share one holy site. When checking Eminent status or whether a relic is recognized, belonging to the same religion does not make those faiths interchangeable."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c02",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "先看好处给谁，再决定要不要升主要",
+        "en": "Who receives the benefit?"
+      },
+      "cues": [
+        {
+          "id": "V4-C02-01",
+          "narration": {
+            "zh-CN": "我们容易把普通和主要理解成低级与高级，于是觉得只要升级，所有好处都会一起增加。真正比较时，先把地方修正与全信仰修正分开，才不会为本来就有的效果重复付钱。"
+          },
+          "subtitles": {
+            "zh-CN": "我们容易把普通和主要理解成低级与高级，于是觉得只要升级，所有好处都会一起增加。真正比较时，先把地方修正与全信仰修正分开，才不会为本来就有的效果重复付钱。",
+            "en": "It is tempting to treat ordinary and Eminent as lower and higher levels, and assume every benefit improves with an upgrade. Separate local modifiers from modifiers for the entire faith first. Otherwise, you may pay again for an effect that was already available."
+          }
+        },
+        {
+          "id": "V4-C02-02",
+          "narration": {
+            "zh-CN": "先看圣地类型直接提供的属性修正。其中，需要主要圣地资格的是该信仰的全体角色修正，包括固定项和按圣物稀有度缩放的项。地方修正、特殊建筑和特殊能力，要分别看自己的条件。"
+          },
+          "subtitles": {
+            "zh-CN": "先看圣地类型直接提供的属性修正。其中，需要主要圣地资格的是该信仰的全体角色修正，包括固定项和按圣物稀有度缩放的项。地方修正、特殊建筑和特殊能力，要分别看自己的条件。",
+            "en": "First, consider the attribute modifiers supplied directly by a holy site type. Among these, the modifiers for all characters of the faith require Eminent status, both fixed and scaled by relic rarity. Local modifiers, special buildings, and special abilities each have their own conditions."
+          }
+        },
+        {
+          "id": "V4-C02-03",
+          "narration": {
+            "zh-CN": "要拿这组全信仰修正，这个信仰必须把地点列为主要圣地，伯爵领持有者当前还得信奉这个信仰。看的是持有者本人，不是最高领主，不是地图颜色，也不是当地民众信什么。"
+          },
+          "subtitles": {
+            "zh-CN": "要拿这组全信仰修正，这个信仰必须把地点列为主要圣地，伯爵领持有者当前还得信奉这个信仰。看的是持有者本人，不是最高领主，不是地图颜色，也不是当地民众信什么。",
+            "en": "For those modifiers to be produced, the faith must designate the site as Eminent, and the County holder must currently follow that faith. The holder matters: not their top liege, the color of the realm, or the faith of the local population."
+          }
+        },
+        {
+          "id": "V4-C02-04",
+          "narration": {
+            "zh-CN": "假设甲乙都把这里列为主要圣地，伯爵领持有者却信甲。乙即使也认可槽里的圣物，也不能跳过这道条件，自动给乙的所有信徒发一整份加成。将来持有者改宗，条件还可能改变。"
+          },
+          "subtitles": {
+            "zh-CN": "假设甲乙都把这里列为主要圣地，伯爵领持有者却信甲。乙即使也认可槽里的圣物，也不能跳过这道条件，自动给乙的所有信徒发一整份加成。将来持有者改宗，条件还可能改变。",
+            "en": "Suppose Faiths A and B both designate the site as Eminent, but its County holder follows A. Even if B recognizes the relics in its slots, that does not bypass the holder condition and grant every follower of B the full set of bonuses. A later conversion could change the conditions."
+          }
+        },
+        {
+          "id": "V4-C02-05",
+          "narration": {
+            "zh-CN": "地方角色修正与伯爵领修正走的是另外的条件。普通圣地也可能提供地方好处；地方角色修正还有接收者的持有关系与信仰条件，不能扩大成附近所有人，或所有同教人物各拿一份。"
+          },
+          "subtitles": {
+            "zh-CN": "地方角色修正与伯爵领修正走的是另外的条件。普通圣地也可能提供地方好处；地方角色修正还有接收者的持有关系与信仰条件，不能扩大成附近所有人，或所有同教人物各拿一份。",
+            "en": "Local character modifiers and County modifiers have their own conditions. Ordinary holy sites can offer local benefits. Local character effects also depend on the recipient's title ownership and faith; they do not automatically go to everyone nearby, or everyone of that faith."
+          }
+        },
+        {
+          "id": "V4-C02-06",
+          "narration": {
+            "zh-CN": "游戏显示圣地未生效，不等于每一项固定加成都必定为零。全信仰的固定修正，仍看主要关系和伯爵领持有者的信仰，却没有统一再加这个生效开关。地方修正另有生效条件，缩放部分还要看它读到的总和。"
+          },
+          "subtitles": {
+            "zh-CN": "游戏显示圣地未生效，不等于每一项固定加成都必定为零。全信仰的固定修正，仍看主要关系和伯爵领持有者的信仰，却没有统一再加这个生效开关。地方修正另有生效条件，缩放部分还要看它读到的总和。",
+            "en": "An inactive holy site does not necessarily provide no fixed bonuses at all. Fixed modifiers for the entire faith still require Eminent status and the County holder's faith to match, but do not impose that active flag as another universal check. Local modifiers have separate activation conditions; scaled effects also depend on the total they read."
+          }
+        },
+        {
+          "id": "V4-C02-07",
+          "narration": {
+            "zh-CN": "反过来，界面亮起来，也不代表所有关联信仰、所有角色都已经拿到全部好处。尤其暂停时，当前条件、旧的缓存和人物已经汇总的修正，可能还没有一起更新。"
+          },
+          "subtitles": {
+            "zh-CN": "反过来，界面亮起来，也不代表所有关联信仰、所有角色都已经拿到全部好处。尤其暂停时，当前条件、旧的缓存和人物已经汇总的修正，可能还没有一起更新。",
+            "en": "The reverse is also true. An active icon does not prove that every character of every associated faith has received every benefit. Especially while paused, current conditions, cached results, and the modifiers already aggregated for a character may not have updated together."
+          }
+        },
+        {
+          "id": "V4-C02-08",
+          "narration": {
+            "zh-CN": "实际选方案时，先认准你要的那一项。它是地方收益，还是全信仰收益？谁来领取？是不是需要主要等级？这些先答清楚，才能算下一笔投入，而不是只看按钮升了一级。"
+          },
+          "subtitles": {
+            "zh-CN": "实际选方案时，先认准你要的那一项。它是地方收益，还是全信仰收益？谁来领取？是不是需要主要等级？这些先答清楚，才能算下一笔投入，而不是只看按钮升了一级。",
+            "en": "When comparing options, identify the effect you actually want. Is it local, or for the entire faith? Who receives it? Does it require Eminent status? Answer those questions before committing more resources, rather than judging only by an upgraded label."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c03",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "智慧之地的学识，要不要额外花钱升级",
+        "en": "What does a Site of Wisdom actually add?"
+      },
+      "cues": [
+        {
+          "id": "V4-C03-01",
+          "narration": {
+            "zh-CN": "以萨迈拉的智慧之地为例。它是可以新建的一种圣地类型，不是人物的智慧属性。我们建出来的地点仍是普通圣地，主要等级并没有包含在这次新建里。"
+          },
+          "subtitles": {
+            "zh-CN": "以萨迈拉的智慧之地为例。它是可以新建的一种圣地类型，不是人物的智慧属性。我们建出来的地点仍是普通圣地，主要等级并没有包含在这次新建里。",
+            "en": "Take the Site of Wisdom we created in Samarra. This is a type of holy site, not a separate character attribute. The new site is still ordinary. Creating it did not include Eminent status."
+          }
+        },
+        {
+          "id": "V4-C03-02",
+          "narration": {
+            "zh-CN": "智慧之地的地方角色固定项有学识加二。伯爵领里还有金币、威望、虔诚三类建造费，以及发展度成长值的修正。假如目标只是这组地方好处，升主要不是购买它们的必要步骤。"
+          },
+          "subtitles": {
+            "zh-CN": "智慧之地的地方角色固定项有学识加二。伯爵领里还有金币、威望、虔诚三类建造费，以及发展度成长值的修正。假如目标只是这组地方好处，升主要不是购买它们的必要步骤。",
+            "en": "Its fixed local character modifier includes +2 Learning. Its County modifiers affect construction costs paid in Gold, Prestige, or Piety, as well as Development Growth. If those local benefits are your goal, elevation is not a necessary purchase."
+          }
+        },
+        {
+          "id": "V4-C03-03",
+          "narration": {
+            "zh-CN": "按类型规则计算，参与计算的圣物稀有度总和每多一点，三类建造费各降低百分之一，发展度成长值直接加零点零一。总和为四，对应各减百分之四，以及加零点零四。"
+          },
+          "subtitles": {
+            "zh-CN": "按类型规则计算，参与计算的圣物稀有度总和每多一点，三类建造费各降低百分之一，发展度成长值直接加零点零一。总和为四，对应各减百分之四，以及加零点零四。",
+            "en": "Under the type's rules, each point of qualifying relic rarity reduces each of the three construction costs by 1%, and adds 0.01 to Development Growth. A total of four therefore corresponds to -4% for each cost and +0.04 Development Growth."
+          }
+        },
+        {
+          "id": "V4-C03-04",
+          "narration": {
+            "zh-CN": "这里加零点零四，是直接相加的一项，不是发展度成长值的倍率增加百分之四。两个修正的界面名称可能很相近，算长期收益时却不能混用。建设计划越长，这个差别越值得看清。"
+          },
+          "subtitles": {
+            "zh-CN": "这里加零点零四，是直接相加的一项，不是发展度成长值的倍率增加百分之四。两个修正的界面名称可能很相近，算长期收益时却不能混用。建设计划越长，这个差别越值得看清。",
+            "en": "That +0.04 is an additive modifier, not a 4% increase to the Development Growth multiplier. The interface labels can look similar, but the calculations are different. The longer your construction plan, the more that distinction matters."
+          }
+        },
+        {
+          "id": "V4-C03-05",
+          "narration": {
+            "zh-CN": "升为主要后，智慧之地才增加另一组全信仰修正：每奉献等级一点外交，以及随圣物稀有度总和变化的学识、外交生活方式经验倍率。地方学识加二，不会因为升主要再送一份。"
+          },
+          "subtitles": {
+            "zh-CN": "升为主要后，智慧之地才增加另一组全信仰修正：每奉献等级一点外交，以及随圣物稀有度总和变化的学识、外交生活方式经验倍率。地方学识加二，不会因为升主要再送一份。",
+            "en": "Making the Site of Wisdom Eminent adds a separate set of modifiers for the entire faith: one Diplomacy per Level of Devotion, plus Learning and Diplomacy Lifestyle Experience multipliers scaled by the relic rarity total. It does not grant the local +2 Learning a second time."
+          }
+        },
+        {
+          "id": "V4-C03-06",
+          "narration": {
+            "zh-CN": "同样按总和为四来算，两类生活方式经验倍率各加百分之四。每级奉献一点外交，则要用各受益角色自己的奉献等级。皇帝是四级，不代表所有信徒都按皇帝的四级计算。"
+          },
+          "subtitles": {
+            "zh-CN": "同样按总和为四来算，两类生活方式经验倍率各加百分之四。每级奉献一点外交，则要用各受益角色自己的奉献等级。皇帝是四级，不代表所有信徒都按皇帝的四级计算。",
+            "en": "With a rarity total of four, each Lifestyle Experience multiplier contributes +4%. The Diplomacy bonus uses each recipient's own Level of Devotion. An emperor at level four does not make every other follower count as level four."
+          }
+        },
+        {
+          "id": "V4-C03-07",
+          "narration": {
+            "zh-CN": "所以，年轻统治者准备长期走学识或外交生活方式，主要智慧之地可能有吸引力。只想改善直辖建设，就先比较普通等级的地方收益；统治者已到晚年，还要考虑经验倍率剩下多久能发挥作用。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，年轻统治者准备长期走学识或外交生活方式，主要智慧之地可能有吸引力。只想改善直辖建设，就先比较普通等级的地方收益；统治者已到晚年，还要考虑经验倍率剩下多久能发挥作用。",
+            "en": "An Eminent Site of Wisdom may appeal to a young ruler planning a long Learning or Diplomacy lifestyle. If you only want better construction in your domain, compare the ordinary site's local benefits first. For an elderly ruler, consider how much time remains to use the experience bonus."
+          }
+        },
+        {
+          "id": "V4-C03-08",
+          "narration": {
+            "zh-CN": "这也是为什么新建地点很重要。把合适类型放在自己经营的伯爵领，与把地方收益留在封臣持有的地点，是两种计划。它们都可能有价值，但不能把封臣那份收益直接照抄进皇帝的钱包。"
+          },
+          "subtitles": {
+            "zh-CN": "这也是为什么新建地点很重要。把合适类型放在自己经营的伯爵领，与把地方收益留在封臣持有的地点，是两种计划。它们都可能有价值，但不能把封臣那份收益直接照抄进皇帝的钱包。",
+            "en": "Location is part of the decision. Putting a useful type in a County you manage yourself is a different plan from leaving its local benefits in a vassal's hands. Both can be valuable, but a vassal's benefits cannot simply be copied into the emperor's own income."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c04",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把主要名额给纳杰夫，还是给麦加",
+        "en": "What are you giving up by changing the major sites?"
+      },
+      "cues": [
+        {
+          "id": "V4-C04-01",
+          "narration": {
+            "zh-CN": "纳杰夫的主要层，有每奉献等级一点外交、神职人员好感加五，以及按圣物稀有度总和缩放的每月虔诚倍率。地方层另有神职人员好感加三，以及伯爵领的发展与民众好感度项。"
+          },
+          "subtitles": {
+            "zh-CN": "纳杰夫的主要层，有每奉献等级一点外交、神职人员好感加五，以及按圣物稀有度总和缩放的每月虔诚倍率。地方层另有神职人员好感加三，以及伯爵领的发展与民众好感度项。",
+            "en": "Nadjaf's Eminent modifiers include one Diplomacy per Level of Devotion, +5 Clergy Opinion, and a Monthly Piety multiplier scaled by the relic rarity total. Its local effects separately include +3 Clergy Opinion, along with Development and Popular Opinion modifiers for the County."
+          }
+        },
+        {
+          "id": "V4-C04-02",
+          "narration": {
+            "zh-CN": "参与计算的稀有度总和为四时，纳杰夫那项每月虔诚倍率是百分之四。它与外交、神职人员好感是不同的项；不要只拿其中一个数字，就宣布已经算完整座圣地的价值。"
+          },
+          "subtitles": {
+            "zh-CN": "参与计算的稀有度总和为四时，纳杰夫那项每月虔诚倍率是百分之四。它与外交、神职人员好感是不同的项；不要只拿其中一个数字，就宣布已经算完整座圣地的价值。",
+            "en": "At a qualifying rarity total of four, Nadjaf's Monthly Piety multiplier contributes +4%. That is separate from its Diplomacy and Clergy Opinion modifiers. One number alone does not measure the value of the whole site."
+          }
+        },
+        {
+          "id": "V4-C04-03",
+          "narration": {
+            "zh-CN": "假设主要名额只能留一个，把纳杰夫降级，再把智慧之地升格。两边都有每奉献等级一点外交；如果其他接收条件相同，这个系数一换一，外交这一项不会凭空多出一份。"
+          },
+          "subtitles": {
+            "zh-CN": "假设主要名额只能留一个，把纳杰夫降级，再把智慧之地升格。两边都有每奉献等级一点外交；如果其他接收条件相同，这个系数一换一，外交这一项不会凭空多出一份。",
+            "en": "Suppose you can keep only one of these sites Eminent. You demote Nadjaf and elevate the Site of Wisdom. Both offer one Diplomacy per Level of Devotion. If the recipient conditions are otherwise the same, swapping those identical coefficients does not add another copy of the bonus."
+          }
+        },
+        {
+          "id": "V4-C04-04",
+          "narration": {
+            "zh-CN": "真正交换的，是纳杰夫的神职人员好感与每月虔诚，换成智慧之地的两类生活方式经验。两处圣物稀有度总和也可能不同，要分别算。比较新站点时，别忘了旧站点会失去什么。"
+          },
+          "subtitles": {
+            "zh-CN": "真正交换的，是纳杰夫的神职人员好感与每月虔诚，换成智慧之地的两类生活方式经验。两处圣物稀有度总和也可能不同，要分别算。比较新站点时，别忘了旧站点会失去什么。",
+            "en": "The real exchange is Nadjaf's Clergy Opinion and Monthly Piety for the Site of Wisdom's two Lifestyle Experience multipliers. The two sites may also have different rarity totals, so calculate them separately. Assess what the old site loses as well as what the new one gains."
+          }
+        },
+        {
+          "id": "V4-C04-05",
+          "narration": {
+            "zh-CN": "正缺虔诚、又需要神职人员支持时，纳杰夫的组合可能更合适。准备长期培养学识与外交时，可以考虑智慧之地。没有脱离人物处境的统一答案，更不是看到新类型就一定值得换。"
+          },
+          "subtitles": {
+            "zh-CN": "正缺虔诚、又需要神职人员支持时，纳杰夫的组合可能更合适。准备长期培养学识与外交时，可以考虑智慧之地。没有脱离人物处境的统一答案，更不是看到新类型就一定值得换。",
+            "en": "If Piety is scarce and you need support from the clergy, Nadjaf's combination may fit better. If you are developing Learning and Diplomacy over a long reign, consider the Site of Wisdom. There is no best choice independent of the character's situation, and a new type is not automatically worth switching to."
+          }
+        },
+        {
+          "id": "V4-C04-06",
+          "narration": {
+            "zh-CN": "麦加也不是方便演示就能随便牺牲的位置。它的主要层包括每名骑士带来的每月虔诚倍率；另有随圣物稀有度总和变化的骑士战斗力与奉献等级影响。"
+          },
+          "subtitles": {
+            "zh-CN": "麦加也不是方便演示就能随便牺牲的位置。它的主要层包括每名骑士带来的每月虔诚倍率；另有随圣物稀有度总和变化的骑士战斗力与奉献等级影响。",
+            "en": "Mecca should not become the default sacrifice just because it is convenient for a demonstration. Its Eminent modifiers include Monthly Piety per Knight, plus Knight Effectiveness and Level of Devotion Impact scaled by the relic rarity total."
+          }
+        },
+        {
+          "id": "V4-C04-07",
+          "narration": {
+            "zh-CN": "按每名骑士百分之二计算，十名骑士对应的每月虔诚倍率项是百分之二十。这项倍率还会与其他收入修正一起结算，最终每月多多少，要放回人物整笔收入里算。"
+          },
+          "subtitles": {
+            "zh-CN": "按每名骑士百分之二计算，十名骑士对应的每月虔诚倍率项是百分之二十。这项倍率还会与其他收入修正一起结算，最终每月多多少，要放回人物整笔收入里算。",
+            "en": "At 2% per Knight, ten Knights contribute a +20% Monthly Piety modifier. It is calculated alongside other income modifiers. To determine the final monthly gain, include it in the character's overall income calculation."
+          }
+        },
+        {
+          "id": "V4-C04-08",
+          "narration": {
+            "zh-CN": "奉献等级影响，是放大当前奉献等级已经提供的修正。它不直接增加虔诚，不增加通向下一等级的奉献，也不是直接提高奉献等级。准备围绕骑士作战时，要把这组损失算进去。"
+          },
+          "subtitles": {
+            "zh-CN": "奉献等级影响，是放大当前奉献等级已经提供的修正。它不直接增加虔诚，不增加通向下一等级的奉献，也不是直接提高奉献等级。准备围绕骑士作战时，要把这组损失算进去。",
+            "en": "Level of Devotion Impact amplifies modifiers already provided by the character's current Level of Devotion. It does not directly add Piety, add progress toward the next level, or raise the level itself. If Knights are central to your military plans, include these potential losses in the comparison."
+          }
+        },
+        {
+          "id": "V4-C04-09",
+          "narration": {
+            "zh-CN": "比较主要名额，先看旧站点正在替谁做什么，再看新站点能替谁做什么。已经花掉的采用费是过去的投入，不能因为舍不得，就继续为一个不适合当前计划的方案追加两笔钱。"
+          },
+          "subtitles": {
+            "zh-CN": "比较主要名额，先看旧站点正在替谁做什么，再看新站点能替谁做什么。已经花掉的采用费是过去的投入，不能因为舍不得，就继续为一个不适合当前计划的方案追加两笔钱。",
+            "en": "Before reallocating an Eminent slot, ask what the old site does, and for whom; then ask the same of the new one. An adoption fee already paid is a sunk cost. It is no reason to keep paying for a plan that no longer suits your situation."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c05",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "普通圣地有没有特殊能力，最多能有几处",
+        "en": "Special effects and the two separate limits"
+      },
+      "cues": [
+        {
+          "id": "V4-C05-01",
+          "narration": {
+            "zh-CN": "主要等级也不是所有特殊能力的前提。本期比较的麦加、纳杰夫和智慧之地，类型里没有额外的特殊能力参数；不能从这三个例子，推成普通圣地都没有特殊作用。"
+          },
+          "subtitles": {
+            "zh-CN": "主要等级也不是所有特殊能力的前提。本期比较的麦加、纳杰夫和智慧之地，类型里没有额外的特殊能力参数；不能从这三个例子，推成普通圣地都没有特殊作用。",
+            "en": "Eminent status is not required for every special ability. Mecca, Nadjaf, and the Site of Wisdom have no extra ability parameters in the types compared here. Those three examples do not establish that ordinary holy sites can never have special functions."
+          }
+        },
+        {
+          "id": "V4-C05-02",
+          "narration": {
+            "zh-CN": "耶路撒冷就是一个反例。原版的传教相关规则会检查指定圣地参数，以及关联、控制和地点等条件；相关分支并没有要求把它列为主要圣地。参数是否存在，与主要层的属性修正是两回事。"
+          },
+          "subtitles": {
+            "zh-CN": "耶路撒冷就是一个反例。原版的传教相关规则会检查指定圣地参数，以及关联、控制和地点等条件；相关分支并没有要求把它列为主要圣地。参数是否存在，与主要层的属性修正是两回事。",
+            "en": "Jerusalem is a counterexample. The relevant conversion rules check a particular holy site parameter, along with association, control, location, and other conditions. Those branches do not require Eminent status. A type parameter and an Eminent attribute modifier are separate things."
+          }
+        },
+        {
+          "id": "V4-C05-03",
+          "narration": {
+            "zh-CN": "不过，普通等级也不等于无条件拿到这项能力。相关检查仍会看圣地缓存的生效状态，有的还检查伯爵领持有者信仰、固定地点和宫廷司祭任务的上下文。不能只看到参数名字就算收益到账。"
+          },
+          "subtitles": {
+            "zh-CN": "不过，普通等级也不等于无条件拿到这项能力。相关检查仍会看圣地缓存的生效状态，有的还检查伯爵领持有者信仰、固定地点和宫廷司祭任务的上下文。不能只看到参数名字就算收益到账。",
+            "en": "Ordinary status does not make the ability unconditional, either. The relevant checks still consult the site's cached active state. Some also check the County holder's faith, a fixed location, and the context of a Court Chaplain task. Finding a parameter does not prove that its benefit has been applied."
+          }
+        },
+        {
+          "id": "V4-C05-04",
+          "narration": {
+            "zh-CN": "因此，类型没有写的特殊能力，不会因为升主要就自动长出来；类型确实写了参数，也要按它实际用途来判断。先找自己要做的事，再找需要的条件，比追着等级名称花钱可靠。"
+          },
+          "subtitles": {
+            "zh-CN": "因此，类型没有写的特殊能力，不会因为升主要就自动长出来；类型确实写了参数，也要按它实际用途来判断。先找自己要做的事，再找需要的条件，比追着等级名称花钱可靠。",
+            "en": "Elevation cannot invent a special ability absent from the type. If a type does define a parameter, examine what actually uses it. Start with the task you want to accomplish and work back to its conditions, rather than spending for the grade's name alone."
+          }
+        },
+        {
+          "id": "V4-C05-04A",
+          "narration": {
+            "zh-CN": "主要等级在其他系统里也可能有用。例如朝圣奖励、旅行到访，以及建立属灵信仰领袖的部分费用，原版都有区分普通与主要的具体规则。选择主要地点时，还要按你准备做的活动与决议查看，不能只盯属性表。"
+          },
+          "subtitles": {
+            "zh-CN": "主要等级在其他系统里也可能有用。例如朝圣奖励、旅行到访，以及建立属灵信仰领袖的部分费用，原版都有区分普通与主要的具体规则。选择主要地点时，还要按你准备做的活动与决议查看，不能只盯属性表。",
+            "en": "Eminent status also matters in other systems. Specific rules distinguish ordinary and Eminent sites for pilgrimage rewards, travel visits, and part of the cost of establishing a Spiritual Head of Faith. Check the activities and decisions you plan to use, rather than comparing attribute tables alone."
+          }
+        },
+        {
+          "id": "V4-C05-05",
+          "narration": {
+            "zh-CN": "再看数量。这一版原版和已安装扩展内容，正常规则是圣地总数最多九处，其中主要圣地最多三处。主要圣地也占总数名额，不是九个普通再加三个主要。初始有几处，与最多能有几处，是两件事。"
+          },
+          "subtitles": {
+            "zh-CN": "再看数量。这一版原版和已安装扩展内容，正常规则是圣地总数最多九处，其中主要圣地最多三处。主要圣地也占总数名额，不是九个普通再加三个主要。初始有几处，与最多能有几处，是两件事。",
+            "en": "Now consider the limits. Under the normal rules of this base-game version and its installed expansions, a faith can have at most nine holy sites, of which at most three can be Eminent. Eminent sites count toward the total; they are not three extra sites on top of nine ordinary ones. Starting counts and maximum counts are different things."
+          }
+        },
+        {
+          "id": "V4-C05-06",
+          "narration": {
+            "zh-CN": "我们也专门检查了原版的决议、事件和效果，没有找到通过正常游玩提高这两个最大值的途径。采用、创建与升格的正常路径，都有数量检查。免费行动只是免去相应花费，不会替你增加圣地总额或主要名额。"
+          },
+          "subtitles": {
+            "zh-CN": "我们也专门检查了原版的决议、事件和效果，没有找到通过正常游玩提高这两个最大值的途径。采用、创建与升格的正常路径，都有数量检查。免费行动只是免去相应花费，不会替你增加圣地总额或主要名额。",
+            "en": "We also checked the stock decisions, events, and effects, and found no route in normal play that raises either maximum. Normal adoption, creation, and elevation all check the relevant count. Free actions waive the corresponding cost; they do not add total capacity or Eminent slots."
+          }
+        },
+        {
+          "id": "V4-C05-07",
+          "narration": {
+            "zh-CN": "直接改名单、修改存档或模组造成超额，与正常规则把上限提高，是两件事。不能看到旧档里已有更多，就认定还能继续正常新增。这个结论限定当前原版内容；更换版本或模组后，要重新核对。"
+          },
+          "subtitles": {
+            "zh-CN": "直接改名单、修改存档或模组造成超额，与正常规则把上限提高，是两件事。不能看到旧档里已有更多，就认定还能继续正常新增。这个结论限定当前原版内容；更换版本或模组后，要重新核对。",
+            "en": "Editing a list or save, or using a mod to exceed a limit, is different from the normal rules raising that limit. More sites in an old save do not prove that another normal addition is allowed. This finding is limited to the current stock content; recheck it after changing versions or mods."
+          }
+        },
+        {
+          "id": "V4-C05-08",
+          "narration": {
+            "zh-CN": "采用和新建，要看圣地总数有没有余量；把普通升为主要，还要看主要名额。降级只让出主要名额，不减少圣地总数；放弃才移除本信仰与该地点的关联，还要满足最低数量等条件。"
+          },
+          "subtitles": {
+            "zh-CN": "采用和新建，要看圣地总数有没有余量；把普通升为主要，还要看主要名额。降级只让出主要名额，不减少圣地总数；放弃才移除本信仰与该地点的关联，还要满足最低数量等条件。",
+            "en": "Adoption and creation need room under the total holy site limit. Elevating an ordinary site also needs an Eminent slot. Demotion frees an Eminent slot without reducing the total. Abandonment removes your faith's association with the site, subject to minimum counts and other requirements."
+          }
+        },
+        {
+          "id": "V4-C05-09",
+          "narration": {
+            "zh-CN": "地点是第三道独立问题。总数没满，不代表这个地点可采用，也不代表能在这里新建任意类型。权限、类型、材料、已有地点和当场条件，都要另外满足。数量够，只是计划能成立的一部分。"
+          },
+          "subtitles": {
+            "zh-CN": "地点是第三道独立问题。总数没满，不代表这个地点可采用，也不代表能在这里新建任意类型。权限、类型、材料、已有地点和当场条件，都要另外满足。数量够，只是计划能成立的一部分。",
+            "en": "Location is a third, separate constraint. Having room does not mean this site can be adopted, or any type can be created here. Authority, type, materials, existing sites, and current requirements still apply. Available capacity is only one part of a workable plan."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c06",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "同一座圣地，被几种信仰承认会怎样",
+        "en": "One site, several faiths"
+      },
+      "cues": [
+        {
+          "id": "V4-C06-01",
+          "narration": {
+            "zh-CN": "现在看真实的纳杰夫。几种信仰承认的是同一处地点，不是各自在地下藏了一座副本。地点、槽位和圣物库存是共用的；其中一个信仰放进一件圣物，不会给其他信仰复制一件。"
+          },
+          "subtitles": {
+            "zh-CN": "现在看真实的纳杰夫。几种信仰承认的是同一处地点，不是各自在地下藏了一座副本。地点、槽位和圣物库存是共用的；其中一个信仰放进一件圣物，不会给其他信仰复制一件。",
+            "en": "Now look at the actual Nadjaf. Several faiths recognize the same place; they do not each have a hidden copy beneath it. The location, slots, and relic inventory are shared. A relic enshrined by one faith is not duplicated for the others."
+          }
+        },
+        {
+          "id": "V4-C06-02",
+          "narration": {
+            "zh-CN": "分别保存的是各信仰与它有没有关联，以及把它列为普通还是主要。一方主要、另一方普通，可以同时成立。至于每件圣物被哪种信仰认可，又是另一张逐物判断的表。"
+          },
+          "subtitles": {
+            "zh-CN": "分别保存的是各信仰与它有没有关联，以及把它列为普通还是主要。一方主要、另一方普通，可以同时成立。至于每件圣物被哪种信仰认可，又是另一张逐物判断的表。",
+            "en": "What is stored separately is each faith's association with the site and whether it regards the site as ordinary or Eminent. It can be Eminent for one faith and ordinary for another. Each relic's recognition by each faith is another, separate check."
+          }
+        },
+        {
+          "id": "V4-C06-03",
+          "narration": {
+            "zh-CN": "所以，不能把共享理解成每个信仰各有一套独立库存，也不能把它理解成大家必须认可同样的物品。共享的是对象与资产，关联、等级和认可仍要分别查看。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，不能把共享理解成每个信仰各有一套独立库存，也不能把它理解成大家必须认可同样的物品。共享的是对象与资产，关联、等级和认可仍要分别查看。",
+            "en": "Sharing therefore means neither a separate inventory for every faith nor identical recognition by every faith. The site and its assets are shared; association, status, and recognition must still be checked separately."
+          }
+        },
+        {
+          "id": "V4-C06-04",
+          "narration": {
+            "zh-CN": "巴格达这处圣地在本局由五个信仰共同关联。逊尼派和另一方认可同一件已经供奉的圣物，另外三方不认可。物品没有换，槽位没有换，只是判断它的信仰不同，答案就不同。"
+          },
+          "subtitles": {
+            "zh-CN": "巴格达这处圣地在本局由五个信仰共同关联。逊尼派和另一方认可同一件已经供奉的圣物，另外三方不认可。物品没有换，槽位没有换，只是判断它的信仰不同，答案就不同。",
+            "en": "In this campaign, five faiths were associated with Baghdad. Sunni and one other faith recognized the same enshrined relic; the other three did not. The item and slot were unchanged. Only the faith evaluating it changed, and so did the answer."
+          }
+        },
+        {
+          "id": "V4-C06-05",
+          "narration": {
+            "zh-CN": "纳杰夫这两件四级圣物，当时比较的双方信仰都认可。换它们没有改变这两方的认可结果。如果目标是改善认可，先找真正有差异的候选，不能只换一个名字，就把它当成新的利益取舍。"
+          },
+          "subtitles": {
+            "zh-CN": "纳杰夫这两件四级圣物，当时比较的双方信仰都认可。换它们没有改变这两方的认可结果。如果目标是改善认可，先找真正有差异的候选，不能只换一个名字，就把它当成新的利益取舍。",
+            "en": "Both faiths in the Nadjaf comparison recognized both of these rarity 4 relics. Swapping them did not change recognition for either faith. If improved recognition is your goal, find candidates that actually differ; a new item name alone is not a new trade-off."
+          }
+        },
+        {
+          "id": "V4-C06-06",
+          "narration": {
+            "zh-CN": "再把收益条件放回来。某个信仰认可圣物，只回答认可这一件事；它还要不要主要等级、伯爵领持有者是不是这个信仰、效果给哪个角色，都不会因为认可为真就自动跳过。"
+          },
+          "subtitles": {
+            "zh-CN": "再把收益条件放回来。某个信仰认可圣物，只回答认可这一件事；它还要不要主要等级、伯爵领持有者是不是这个信仰、效果给哪个角色，都不会因为认可为真就自动跳过。",
+            "en": "Now add the benefit conditions back in. Recognition answers whether that faith recognizes that relic. It does not bypass an Eminent requirement, the County holder's faith, or the rules determining which character receives an effect."
+          }
+        },
+        {
+          "id": "V4-C06-07",
+          "narration": {
+            "zh-CN": "规划共享圣地时，先看谁持有伯爵领、持有者信什么，再看各信仰的关系和每件物品的认可。若只问大家都承认这里吗，很容易忽略真正决定当前圣物计算和收益资格的那个人。"
+          },
+          "subtitles": {
+            "zh-CN": "规划共享圣地时，先看谁持有伯爵领、持有者信什么，再看各信仰的关系和每件物品的认可。若只问大家都承认这里吗，很容易忽略真正决定当前圣物计算和收益资格的那个人。",
+            "en": "For a shared site, first identify the County holder and their faith. Then check each faith's association and its recognition of each item. Asking only whether everyone recognizes the site can miss the person whose faith determines the current relic calculation and eligibility for benefits."
+          }
+        },
+        {
+          "id": "V4-C06-08",
+          "narration": {
+            "zh-CN": "共享也意味着将来的变化。封臣改宗、继承换人、圣地被另一方经营，都可能改变适合的物品与受益条件。愿意长期供奉一件贵重圣物前，要把你能控制多久也算进计划。"
+          },
+          "subtitles": {
+            "zh-CN": "共享也意味着将来的变化。封臣改宗、继承换人、圣地被另一方经营，都可能改变适合的物品与受益条件。愿意长期供奉一件贵重圣物前，要把你能控制多久也算进计划。",
+            "en": "Sharing also creates future exposure. A vassal's conversion, a new holder after succession, or another party managing the site may change which items fit and who can benefit. Before enshrining something valuable for the long term, consider how long you expect to retain control."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c07",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "总宝物稀有度等级，怎样逐槽算出来",
+        "en": "How the rarity total is calculated"
+      },
+      "cues": [
+        {
+          "id": "V4-C07-01",
+          "narration": {
+            "zh-CN": "界面里的正式字段叫总宝物稀有度等级。下面把它拆成每个槽位的贡献来算。它不是圣物件数，也不是把所有库存物品的稀有度直接相加；只有符合当前条件的槽中圣物，才计入总和。"
+          },
+          "subtitles": {
+            "zh-CN": "界面里的正式字段叫总宝物稀有度等级。下面把它拆成每个槽位的贡献来算。它不是圣物件数，也不是把所有库存物品的稀有度直接相加；只有符合当前条件的槽中圣物，才计入总和。",
+            "en": "The official interface field is Total Artifact Rarity Levels. We will calculate it slot by slot. It is not a relic count, nor the sum of every item in the inventory. Only slotted relics that meet the current conditions contribute to the total."
+          }
+        },
+        {
+          "id": "V4-C07-02",
+          "narration": {
+            "zh-CN": "先找伯爵领持有者当前的信仰。这个信仰必须还把这里列为圣地，才继续看槽里的圣物。持有者的信仰已经退出，即使物品仍在，也不能照搬退出前的总和。"
+          },
+          "subtitles": {
+            "zh-CN": "先找伯爵领持有者当前的信仰。这个信仰必须还把这里列为圣地，才继续看槽里的圣物。持有者的信仰已经退出，即使物品仍在，也不能照搬退出前的总和。",
+            "en": "Start with the County holder's current faith. It must still regard this place as a holy site before the calculation proceeds to the slotted relics. If the holder's faith has abandoned the site, items remaining there do not preserve the previous total."
+          }
+        },
+        {
+          "id": "V4-C07-03",
+          "narration": {
+            "zh-CN": "然后按槽位逐个看。空槽没有贡献；装着的物品，要通过这个信仰的认可判断，才把它本身的稀有度等级加进去。只属于圣地库存、却没有装进槽里的物品，也不能顺手算上。"
+          },
+          "subtitles": {
+            "zh-CN": "然后按槽位逐个看。空槽没有贡献；装着的物品，要通过这个信仰的认可判断，才把它本身的稀有度等级加进去。只属于圣地库存、却没有装进槽里的物品，也不能顺手算上。",
+            "en": "Then check each slot. Empty slots contribute nothing. For an occupied slot, the holder's faith must recognize the item before its own rarity level is added. Merely belonging to the site's inventory without occupying a slot does not make an item contribute."
+          }
+        },
+        {
+          "id": "V4-C07-04",
+          "narration": {
+            "zh-CN": "我们用一个规则算例。第一槽四级，甲认可；第二槽三级，甲不认可；第三槽二级，甲认可。伯爵领持有者信甲，而且甲仍关联这里，那么这三槽贡献就是四、零、二，总和六。"
+          },
+          "subtitles": {
+            "zh-CN": "我们用一个规则算例。第一槽四级，甲认可；第二槽三级，甲不认可；第三槽二级，甲认可。伯爵领持有者信甲，而且甲仍关联这里，那么这三槽贡献就是四、零、二，总和六。",
+            "en": "Here is a rule-based example. Slot one holds a rarity 4 item recognized by Faith A. Slot two holds a rarity 3 item A does not recognize. Slot three holds a recognized rarity 2 item. If the holder follows A and A still regards this as a holy site, the contributions are four, zero, and two: a total of six."
+          }
+        },
+        {
+          "id": "V4-C07-05",
+          "narration": {
+            "zh-CN": "假设换了一个信乙的持有者，乙也关联这里，却只认可第二和第三件。库存原封不动，按当前条件算出的总和就成为零、三、二，也就是五。这是条件比较，不是本期实际发生的改宗。"
+          },
+          "subtitles": {
+            "zh-CN": "假设换了一个信乙的持有者，乙也关联这里，却只认可第二和第三件。库存原封不动，按当前条件算出的总和就成为零、三、二，也就是五。这是条件比较，不是本期实际发生的改宗。",
+            "en": "Now suppose a new holder follows Faith B. B is also associated with the site, but recognizes only the second and third items. Without changing the inventory, the current calculation becomes zero, three, and two: a total of five. This is a conditional comparison, not a conversion observed in this episode."
+          }
+        },
+        {
+          "id": "V4-C07-06",
+          "narration": {
+            "zh-CN": "再看两件物品怎么选。四级旧物不被当前持有者信仰认可，三级新物却被认可；其他条件都成立时，换上新物可能把这一槽的贡献从零变成三。不是物品降档，就必定让当前贡献下降。"
+          },
+          "subtitles": {
+            "zh-CN": "再看两件物品怎么选。四级旧物不被当前持有者信仰认可，三级新物却被认可；其他条件都成立时，换上新物可能把这一槽的贡献从零变成三。不是物品降档，就必定让当前贡献下降。",
+            "en": "Now compare two candidates. The current holder's faith does not recognize the old rarity 4 item, but does recognize the new rarity 3 item. If all other requirements are met, replacing it can raise that slot's contribution from zero to three. Lower item rarity does not necessarily mean a lower current contribution."
+          }
+        },
+        {
+          "id": "V4-C07-07",
+          "narration": {
+            "zh-CN": "反过来，两件本来都被认可，四级换三级，这一槽就可能从四降到三。被更多信仰认可，可能更适应未来变化，却不等于眼下数值一定更高。先确认自己想保什么，再比较候选。"
+          },
+          "subtitles": {
+            "zh-CN": "反过来，两件本来都被认可，四级换三级，这一槽就可能从四降到三。被更多信仰认可，可能更适应未来变化，却不等于眼下数值一定更高。先确认自己想保什么，再比较候选。",
+            "en": "Conversely, if both items are recognized, replacing rarity four with rarity three can reduce the slot's contribution from four to three. Recognition by more faiths may offer resilience to future changes, but does not guarantee a stronger result now. Decide what you want to preserve before choosing a candidate."
+          }
+        },
+        {
+          "id": "V4-C07-08",
+          "narration": {
+            "zh-CN": "这些算例假定物品、槽位、持有者和认可都已经查清。不知道某个信仰认不认可，就不能把问号当成不认可；看不到物品，也不能直接填零。未知条件会让选择失去依据。"
+          },
+          "subtitles": {
+            "zh-CN": "这些算例假定物品、槽位、持有者和认可都已经查清。不知道某个信仰认不认可，就不能把问号当成不认可；看不到物品，也不能直接填零。未知条件会让选择失去依据。",
+            "en": "These examples assume the items, slots, holder, and recognition are known. Unknown recognition is not rejection; an item you cannot observe is not automatically zero. Missing information can undermine the whole comparison."
+          }
+        },
+        {
+          "id": "V4-C07-09",
+          "narration": {
+            "zh-CN": "算出总和之后，还没算完收益。每个类型用它缩放什么，倍率读的是什么时候的值，谁满足接收条件，都要接着看。总和六，不等于人物所有相关属性一起加六。"
+          },
+          "subtitles": {
+            "zh-CN": "算出总和之后，还没算完收益。每个类型用它缩放什么，倍率读的是什么时候的值，谁满足接收条件，都要接着看。总和六，不等于人物所有相关属性一起加六。",
+            "en": "The total is only the beginning of the benefit calculation. You must still check what the type scales with it, which version of the value is read, and who meets the recipient conditions. A total of six does not add six to every relevant character attribute."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c08",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "为什么刚退出，还会读到旧总和",
+        "en": "Why an old total can persist after abandoning a site"
+      },
+      "cues": [
+        {
+          "id": "V4-C08-01",
+          "narration": {
+            "zh-CN": "这次巴格达恰好把差别展示出来。我们花一千虔诚退出本信仰的圣地名单，余额从两千二百五十变成一千二百五十。其他信仰还关联这里，圣物也仍留在原槽。"
+          },
+          "subtitles": {
+            "zh-CN": "这次巴格达恰好把差别展示出来。我们花一千虔诚退出本信仰的圣地名单，余额从两千二百五十变成一千二百五十。其他信仰还关联这里，圣物也仍留在原槽。",
+            "en": "The Baghdad experiment exposed this distinction. We spent 1,000 Piety to remove the site from our faith's list, reducing the balance from 2,250 to 1,250. Other faiths remained associated with it, and the relic stayed in its slot."
+          }
+        },
+        {
+          "id": "V4-C08-02",
+          "narration": {
+            "zh-CN": "伯爵领持有者仍信我们这一派，我们这一派却已经退出。因此按当前条件重新计算，总和是零，圣地不满足生效条件；但当时读到的旧缓存还保留着总和二和生效状态。"
+          },
+          "subtitles": {
+            "zh-CN": "伯爵领持有者仍信我们这一派，我们这一派却已经退出。因此按当前条件重新计算，总和是零，圣地不满足生效条件；但当时读到的旧缓存还保留着总和二和生效状态。",
+            "en": "The County holder still followed our faith, but our faith had abandoned the site. Recalculating from current conditions therefore gave a total of zero and an inactive result. The cached state read at that moment still held a total of two and an active result."
+          }
+        },
+        {
+          "id": "V4-C08-03",
+          "narration": {
+            "zh-CN": "这里有两个不同问题：现在这些条件算出来是多少，游戏先前记住的结果是多少。暂停后再查一次，并不会自动替你把所有缓存更新；旧画面也不能代替当前条件。"
+          },
+          "subtitles": {
+            "zh-CN": "这里有两个不同问题：现在这些条件算出来是多少，游戏先前记住的结果是多少。暂停后再查一次，并不会自动替你把所有缓存更新；旧画面也不能代替当前条件。",
+            "en": "Those are two different questions: what do the conditions produce now, and what result did the game store earlier? Querying again while paused does not itself refresh every cache. An old display cannot substitute for checking current conditions."
+          }
+        },
+        {
+          "id": "V4-C08-04",
+          "narration": {
+            "zh-CN": "还要再分一层：有些按稀有度缩放的脚本，读取的是游戏缓存的总和；人物面板里已经汇总的修正，也有它自己的更新过程。不能把当前重算的零，直接当作所有人物属性已经清零。"
+          },
+          "subtitles": {
+            "zh-CN": "还要再分一层：有些按稀有度缩放的脚本，读取的是游戏缓存的总和；人物面板里已经汇总的修正，也有它自己的更新过程。不能把当前重算的零，直接当作所有人物属性已经清零。",
+            "en": "There is another layer. Some scripts that scale effects by rarity read the game's cached total. Character modifiers already aggregated for the panel also have their own update process. A fresh calculation of zero does not prove that every character's attributes have already been cleared."
+          }
+        },
+        {
+          "id": "V4-C08-06",
+          "narration": {
+            "zh-CN": "遇到这种情况，先别因为旧图标还亮着就继续投入。看清当前持有者与信仰关联，再确认你关心的那项修正是否已经更新。尤其要避免用一个旧总和，替刚改过的条件做长期预算。"
+          },
+          "subtitles": {
+            "zh-CN": "遇到这种情况，先别因为旧图标还亮着就继续投入。看清当前持有者与信仰关联，再确认你关心的那项修正是否已经更新。尤其要避免用一个旧总和，替刚改过的条件做长期预算。",
+            "en": "If you encounter this, do not keep investing just because an old icon remains active. Check the current holder and faith association, then verify the particular modifier you need. Avoid budgeting long-term gains from an old total after its underlying conditions have changed."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c09",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "供奉与直接替换，先看东西最后归谁",
+        "en": "Enshrining and replacing a relic"
+      },
+      "cues": [
+        {
+          "id": "V4-C09-01",
+          "narration": {
+            "zh-CN": "回到纳杰夫。它已经是主要圣地，三个槽位仍然空着；随后供奉穆罕默德的斗篷，物品从皇帝手中进入圣地，参与计算的稀有度总和由零成为四，虔诚没有在这一步再扣。"
+          },
+          "subtitles": {
+            "zh-CN": "回到纳杰夫。它已经是主要圣地，三个槽位仍然空着；随后供奉穆罕默德的斗篷，物品从皇帝手中进入圣地，参与计算的稀有度总和由零成为四，虔诚没有在这一步再扣。",
+            "en": "Back at Nadjaf, it was already Eminent, but all three slots were empty. We then enshrined the Cloak of Muhammad. It moved from the emperor's ownership into the site, the qualifying rarity total rose from zero to four, and this step took no additional Piety."
+          }
+        },
+        {
+          "id": "V4-C09-02",
+          "narration": {
+            "zh-CN": "这能确认供奉成功，但不能把当时所有属性变化都算成斗篷的功劳。升等级和放圣物，解决的是不同问题；空槽不等于绝对没有固定收益，圣地生效也不等于每个人都领到了加成。"
+          },
+          "subtitles": {
+            "zh-CN": "这能确认供奉成功，但不能把当时所有属性变化都算成斗篷的功劳。升等级和放圣物，解决的是不同问题；空槽不等于绝对没有固定收益，圣地生效也不等于每个人都领到了加成。",
+            "en": "That confirms the enshrinement, but does not attribute every attribute change at that moment to the cloak. Elevation and enshrinement solve different problems. Empty slots do not rule out every fixed benefit; an active site does not prove that everyone received a bonus."
+          }
+        },
+        {
+          "id": "V4-C09-03",
+          "narration": {
+            "zh-CN": "接着，我们用另一件四级圣物直接替换斗篷。新物进入纳杰夫，旧斗篷回到执行操作的皇帝手里，没有交给伯爵领持有者。这次两个人并不是同一个角色。"
+          },
+          "subtitles": {
+            "zh-CN": "接着，我们用另一件四级圣物直接替换斗篷。新物进入纳杰夫，旧斗篷回到执行操作的皇帝手里，没有交给伯爵领持有者。这次两个人并不是同一个角色。",
+            "en": "Next, we directly swapped another rarity 4 relic for the cloak. The new item entered Nadjaf, and the old cloak went to the emperor performing the action, not to the County holder. In this case, those were two different characters."
+          }
+        },
+        {
+          "id": "V4-C09-04",
+          "narration": {
+            "zh-CN": "替换后，参与计算的稀有度总和仍是四，虔诚也没变。但预览还列着关系后果。所以这笔账不只有虔诚，还得看可能影响哪些人，不能把不扣钱当成没人吃亏。"
+          },
+          "subtitles": {
+            "zh-CN": "替换后，参与计算的稀有度总和仍是四，虔诚也没变。但预览还列着关系后果。所以这笔账不只有虔诚，还得看可能影响哪些人，不能把不扣钱当成没人吃亏。",
+            "en": "The qualifying rarity total stayed at four, and Piety did not change. The preview still listed opinion consequences, however. The cost is not only Piety: consider who may be affected, rather than assuming that no charge means no one loses."
+          }
+        },
+        {
+          "id": "V4-C09-05",
+          "narration": {
+            "zh-CN": "直接替换，是一次供奉操作内部处理新物进入和旧物移出。它与先手动取出、再供奉，是不同的操作路径，费用与条件也可能不同。新旧物品各自的要求仍要满足。"
+          },
+          "subtitles": {
+            "zh-CN": "直接替换，是一次供奉操作内部处理新物进入和旧物移出。它与先手动取出、再供奉，是不同的操作路径，费用与条件也可能不同。新旧物品各自的要求仍要满足。",
+            "en": "A direct swap handles the incoming and outgoing items within one enshrinement action. Removing an item manually and then enshrining another is a different route, with potentially different costs and conditions. The requirements for both items must still be satisfied."
+          }
+        },
+        {
+          "id": "V4-C09-06",
+          "narration": {
+            "zh-CN": "正常单独取出，物品交给当前执行者；直接替换，旧物同样交给这次执行者。规则不会先查最初是谁捐的，再给那个人寄回去。供奉之后，就不能继续把它当作自己的安全寄存箱。"
+          },
+          "subtitles": {
+            "zh-CN": "正常单独取出，物品交给当前执行者；直接替换，旧物同样交给这次执行者。规则不会先查最初是谁捐的，再给那个人寄回去。供奉之后，就不能继续把它当作自己的安全寄存箱。",
+            "en": "A normal removal gives the item to the current actor. In a direct swap, the outgoing item also goes to that actor. The rule does not look up the original donor and send it back. Once enshrined, a relic is not a secure personal deposit."
+          }
+        },
+        {
+          "id": "V4-C09-07",
+          "narration": {
+            "zh-CN": "因此，替换有两边的机会成本。换回来的旧物可以另作安排，新物却失去了原来的个人用途。就算当前总和和虔诚不变，也要比较装备、赠送、供奉别处，以及各信仰认可的差别。"
+          },
+          "subtitles": {
+            "zh-CN": "因此，替换有两边的机会成本。换回来的旧物可以另作安排，新物却失去了原来的个人用途。就算当前总和和虔诚不变，也要比较装备、赠送、供奉别处，以及各信仰认可的差别。",
+            "en": "A swap therefore has opportunity costs on both sides. You can find a new use for the returned item, but give up the incoming item's personal use. Even with the same rarity total and no Piety change, compare equipping, gifting, enshrining elsewhere, and recognition by different faiths."
+          }
+        },
+        {
+          "id": "V4-C09-08",
+          "narration": {
+            "zh-CN": "槽位也要认准。原版自动选择会优先找兼容空槽；没有空槽，再看兼容的旧物，选择对象稀有度较低的，平手保留原顺序。它没有替你算认可、政治代价或个人装备价值。"
+          },
+          "subtitles": {
+            "zh-CN": "槽位也要认准。原版自动选择会优先找兼容空槽；没有空槽，再看兼容的旧物，选择对象稀有度较低的，平手保留原顺序。它没有替你算认可、政治代价或个人装备价值。",
+            "en": "Check the slot as well. Automatic selection first looks for a compatible empty slot. If none exists, it considers compatible occupied slots, preferring the item with lower rarity and retaining the original order for ties. It does not compare recognition, political costs, or personal equipment value."
+          }
+        },
+        {
+          "id": "V4-C09-09",
+          "narration": {
+            "zh-CN": "需要保住某件旧物时，不要只看选中的新物漂亮不漂亮。确认目标槽，以及究竟会换出哪一件，再看完整预览。自动选槽是在解决放哪里，不是在替你决定怎样最划算。"
+          },
+          "subtitles": {
+            "zh-CN": "需要保住某件旧物时，不要只看选中的新物漂亮不漂亮。确认目标槽，以及究竟会换出哪一件，再看完整预览。自动选槽是在解决放哪里，不是在替你决定怎样最划算。",
+            "en": "If an existing item must be preserved, do not judge only the new item. Confirm the destination slot and exactly which relic will leave, then read the full preview. Automatic slot selection decides where an item fits, not which choice offers the best value."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c10",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "谁有权拿，AI会不会动我的圣物",
+        "en": "Who can manage it, including the AI?"
+      },
+      "cues": [
+        {
+          "id": "V4-C10-01",
+          "narration": {
+            "zh-CN": "地域管理资格有三个身份：圣地所在伯爵领的持有者，这位持有者的最高领主，以及这个地方所属圣职区的头衔持有者。只做中间一层领主，不能凭这一点就管理全领国的每座圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "地域管理资格有三个身份：圣地所在伯爵领的持有者，这位持有者的最高领主，以及这个地方所属圣职区的头衔持有者。只做中间一层领主，不能凭这一点就管理全领国的每座圣地。",
+            "en": "The territorial management check recognizes three roles: the County holder, that holder's top liege, and the holder of the site's Clerical Region. Being an intermediate liege alone does not authorize you to manage every holy site in the realm."
+          }
+        },
+        {
+          "id": "V4-C10-02",
+          "narration": {
+            "zh-CN": "信仰领袖也不是独立的第四张通行证。他如果同时符合那三个地方身份，按那个身份判断；不能因为头衔是信仰领袖，就假定能随意搬动所有相关圣物。"
+          },
+          "subtitles": {
+            "zh-CN": "信仰领袖也不是独立的第四张通行证。他如果同时符合那三个地方身份，按那个身份判断；不能因为头衔是信仰领袖，就假定能随意搬动所有相关圣物。",
+            "en": "Head of Faith is not a fourth, independent permission. A Head of Faith who also holds one of those three roles qualifies through that role. Their religious title alone does not authorize them to move every associated relic."
+          }
+        },
+        {
+          "id": "V4-C10-03",
+          "narration": {
+            "zh-CN": "供奉还要求这里属于操作人的信仰，新物来自正常的自有物品选择，并且被伯爵领持有者当前的信仰认可，槽位也合法。操作人的信仰与持有者的信仰，在这里承担的是不同条件。"
+          },
+          "subtitles": {
+            "zh-CN": "供奉还要求这里属于操作人的信仰，新物来自正常的自有物品选择，并且被伯爵领持有者当前的信仰认可，槽位也合法。操作人的信仰与持有者的信仰，在这里承担的是不同条件。",
+            "en": "Enshrinement also requires the site to belong to the actor's faith, the new item to come from the normal selection of personally owned items, recognition by the County holder's current faith, and a valid slot. The actor's faith and the holder's faith serve different checks here."
+          }
+        },
+        {
+          "id": "V4-C10-04",
+          "narration": {
+            "zh-CN": "单独取走，仍看那三个地域身份，却没有再统一要求这里属于操作人的信仰，或操作人的信仰认可旧物。能够拿走异教圣物，不代表没有虔诚、奉献、关系或战争风险。"
+          },
+          "subtitles": {
+            "zh-CN": "单独取走，仍看那三个地域身份，却没有再统一要求这里属于操作人的信仰，或操作人的信仰认可旧物。能够拿走异教圣物，不代表没有虔诚、奉献、关系或战争风险。",
+            "en": "A separate removal uses the same three territorial roles. It does not impose a universal extra requirement that the site belong to the actor's faith, or that their faith recognize the old item. Permission to take another faith's relic does not remove costs in Piety, Devotion, opinion, or possible war."
+          }
+        },
+        {
+          "id": "V4-C10-05",
+          "narration": {
+            "zh-CN": "那电脑角色会不会动它们？原版确实有给他们用的供奉决议与取走决议。不是只有玩家按钮才会移动圣物；不过存在一条规则，与本局已经有人实际执行过，是两件事。"
+          },
+          "subtitles": {
+            "zh-CN": "那电脑角色会不会动它们？原版确实有给他们用的供奉决议与取走决议。不是只有玩家按钮才会移动圣物；不过存在一条规则，与本局已经有人实际执行过，是两件事。",
+            "en": "Can AI characters move the relics? The base game has enshrinement and removal decisions for them. Relics are not moved only through player buttons. But a rule existing is different from observing someone actually use it in this campaign."
+          }
+        },
+        {
+          "id": "V4-C10-06",
+          "narration": {
+            "zh-CN": "单独清理库存那条决议，有具体的人类保护：它要求最高领主也是电脑角色，相关信仰领袖也不能是人类；它还必须与最高领主同信仰，并满足可用成年人、狂热和直辖领地等条件。不是任意成年封臣都能随便拿。"
+          },
+          "subtitles": {
+            "zh-CN": "单独清理库存那条决议，有具体的人类保护：它要求最高领主也是电脑角色，相关信仰领袖也不能是人类；它还必须与最高领主同信仰，并满足可用成年人、狂热和直辖领地等条件。不是任意成年封臣都能随便拿。",
+            "en": "The separate inventory-clearing decision has specific human-player protections: the top liege must be AI-controlled, and the relevant Heads of Faith must not be human players. The actor must also share their top liege's faith, be an adult who is available to act, and meet the zeal and domain requirements. This is not permission for any adult vassal to take anything."
+          }
+        },
+        {
+          "id": "V4-C10-07",
+          "narration": {
+            "zh-CN": "它考虑的，包括本教圣地里自己不认可的物品，以及被敌对信仰认可的物品；后一种情况还要求至少有一个伯爵领信奉那个敌对信仰。共享圣地里，若这里也是本教圣地、本教也认可旧物，实际清理效果还有保护条件。"
+          },
+          "subtitles": {
+            "zh-CN": "它考虑的，包括本教圣地里自己不认可的物品，以及被敌对信仰认可的物品；后一种情况还要求至少有一个伯爵领信奉那个敌对信仰。共享圣地里，若这里也是本教圣地、本教也认可旧物，实际清理效果还有保护条件。",
+            "en": "Its candidates include items its own faith does not recognize in that faith's holy sites, and items recognized by a hostile faith. The latter case also requires at least one County following that hostile faith. In a shared site, the actual clearing effect also protects the old item when this is the actor's holy site and their faith recognizes it."
+          }
+        },
+        {
+          "id": "V4-C10-08",
+          "narration": {
+            "zh-CN": "但人类最高领主的保护，只属于那条单独清理决议。另一条供奉决议，没有同一组人类保护。它会从自有物品和本教圣地中寻找机会；实际选槽时若落到非空槽，就存在换出旧物的路径。"
+          },
+          "subtitles": {
+            "zh-CN": "但人类最高领主的保护，只属于那条单独清理决议。另一条供奉决议，没有同一组人类保护。它会从自有物品和本教圣地中寻找机会；实际选槽时若落到非空槽，就存在换出旧物的路径。",
+            "en": "The human top-liege protection belongs specifically to that separate clearing decision. The enshrinement decision does not use the same set of human-player protections. It searches the actor's own items and faith's holy sites; if slot selection chooses an occupied slot, there is a route to replacing the old relic."
+          }
+        },
+        {
+          "id": "V4-C10-09",
+          "narration": {
+            "zh-CN": "新物放进去，旧物交给执行的电脑角色；这里不会因为旧物曾由人类捐赠就自动拒绝。不要把特定清理保护，理解成我的捐赠永远安全。长期供奉，要考虑谁有权限以及地点将来由谁控制。"
+          },
+          "subtitles": {
+            "zh-CN": "新物放进去，旧物交给执行的电脑角色；这里不会因为旧物曾由人类捐赠就自动拒绝。不要把特定清理保护，理解成我的捐赠永远安全。长期供奉，要考虑谁有权限以及地点将来由谁控制。",
+            "en": "The new item enters, and the old one goes to the AI actor. A previous human donation does not automatically block that route. A protection in one clearing decision does not make every donation permanently safe. Consider who can manage the site, and who may control it later."
+          }
+        },
+        {
+          "id": "V4-C10-10",
+          "narration": {
+            "zh-CN": "本期没有拍到电脑角色自然执行这套行为。不能说某个封臣已经偷过，也不能把配置中的执行倾向读成每年保证取走一次。这里讲的是已存在的风险路径，值得在规划里防范。"
+          },
+          "subtitles": {
+            "zh-CN": "本期没有拍到电脑角色自然执行这套行为。不能说某个封臣已经偷过，也不能把配置中的执行倾向读成每年保证取走一次。这里讲的是已存在的风险路径，值得在规划里防范。",
+            "en": "We have not filmed an AI character naturally performing these actions. We cannot claim that a particular vassal has already stolen a relic, or turn a configured tendency into a guaranteed yearly removal. This is an existing risk path to consider in your plans."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c11",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "谁对谁不满，便宜替换有什么隐账",
+        "en": "Whose opinion changes, and why?"
+      },
+      "cues": [
+        {
+          "id": "V4-C11-01",
+          "narration": {
+            "zh-CN": "现在把关系账打开。先问方向：谁对谁的好感变化？供奉与取走里讨论的这些修正，是符合条件的人对执行者的好感，不是执行者更喜欢他们，也不是整个信仰对另一个信仰统一加减。"
+          },
+          "subtitles": {
+            "zh-CN": "现在把关系账打开。先问方向：谁对谁的好感变化？供奉与取走里讨论的这些修正，是符合条件的人对执行者的好感，不是执行者更喜欢他们，也不是整个信仰对另一个信仰统一加减。",
+            "en": "Now consider opinion, starting with its direction: who thinks differently of whom? The modifiers discussed here change eligible characters' opinion of the actor. They do not change the actor's opinion of those characters, or apply one uniform score from one entire faith to another."
+          }
+        },
+        {
+          "id": "V4-C11-02",
+          "narration": {
+            "zh-CN": "供奉的特定奖励分支，会筛选认可新物的宗教狂热立场直属封臣，符合狂热条件且认可新物的各级上级领主，以及符合条件的本教信仰领袖。他们对执行者的正面好感修正是十五点。"
+          },
+          "subtitles": {
+            "zh-CN": "供奉的特定奖励分支，会筛选认可新物的宗教狂热立场直属封臣，符合狂热条件且认可新物的各级上级领主，以及符合条件的本教信仰领袖。他们对执行者的正面好感修正是十五点。",
+            "en": "A particular enshrinement reward branch selects direct vassals with the Zealot stance who recognize the new relic, lieges up the hierarchy who meet the zeal and recognition requirements, and the actor's eligible Head of Faith. The positive modifier to their opinion of the actor is 15."
+          }
+        },
+        {
+          "id": "V4-C11-03",
+          "narration": {
+            "zh-CN": "不能把这句话缩成捐东西让所有同教人都加十五。首先要进入对应分支，再逐人看关系、立场与认可；其中的封臣筛选，也不是统一只收同信仰。宗教狂热立场，与人物的狂热条件或特质，也不能当作同一个标签。"
+          },
+          "subtitles": {
+            "zh-CN": "不能把这句话缩成捐东西让所有同教人都加十五。首先要进入对应分支，再逐人看关系、立场与认可；其中的封臣筛选，也不是统一只收同信仰。宗教狂热立场，与人物的狂热条件或特质，也不能当作同一个标签。",
+            "en": "That does not mean donating a relic gives +15 with everyone of your faith. The relevant branch must apply, and each character must pass its relationship, stance, and recognition checks. The vassal selection is not uniformly restricted to the same faith. The Zealot stance, a zeal requirement, and a character trait are distinct checks."
+          }
+        },
+        {
+          "id": "V4-C11-04",
+          "narration": {
+            "zh-CN": "取走本教认可的旧物，而且没有用同档或更高稀有度的新物替代，会进入本教损失分支。相关同教的宗教狂热或少数族群立场直属封臣，以及符合条件的同僚、上级和信仰领袖，可能对执行者产生负面好感。"
+          },
+          "subtitles": {
+            "zh-CN": "取走本教认可的旧物，而且没有用同档或更高稀有度的新物替代，会进入本教损失分支。相关同教的宗教狂热或少数族群立场直属封臣，以及符合条件的同僚、上级和信仰领袖，可能对执行者产生负面好感。",
+            "en": "Removing an old item recognized by the actor's faith, without replacing it with an item of equal or greater rarity, enters the branch for that faith's loss. Eligible direct vassals of the same faith with Zealot or Minority stances, along with qualifying fellow vassals, lieges, and Heads of Faith, may lose opinion of the actor."
+          }
+        },
+        {
+          "id": "V4-C11-05",
+          "narration": {
+            "zh-CN": "这里的负面修正是二十点，但每组人有自己的筛选。信仰领袖那一段，还看关联信仰是否仍有伯爵领信奉、领袖是否存在，以及他是否认可旧物。不是所有关联信仰的领袖都必定生气。"
+          },
+          "subtitles": {
+            "zh-CN": "这里的负面修正是二十点，但每组人有自己的筛选。信仰领袖那一段，还看关联信仰是否仍有伯爵领信奉、领袖是否存在，以及他是否认可旧物。不是所有关联信仰的领袖都必定生气。",
+            "en": "The opinion penalty is 20, but each group has its own selection rules. The Head of Faith branch also checks that at least one County still follows the associated faith, that its Head exists, and that the Head recognizes the old item. Not every Head of an associated faith must object."
+          }
+        },
+        {
+          "id": "V4-C11-06",
+          "narration": {
+            "zh-CN": "同档或更好替换，可以避开刚才那段本教取走费用，却不等于别人都没意见。另一分支还会检查认可旧物的异信仰封臣、同僚和上级；这一组并没有相同的宗教狂热或少数族群立场限制。"
+          },
+          "subtitles": {
+            "zh-CN": "同档或更好替换，可以避开刚才那段本教取走费用，却不等于别人都没意见。另一分支还会检查认可旧物的异信仰封臣、同僚和上级；这一组并没有相同的宗教狂热或少数族群立场限制。",
+            "en": "An equal-or-better replacement can avoid that particular removal cost for the actor's faith. It does not ensure that everyone else is content. Another branch checks vassals, fellow vassals, and lieges of other faiths who recognize the old relic. That group does not use the same Zealot and Minority stance restrictions."
+          }
+        },
+        {
+          "id": "V4-C11-07",
+          "narration": {
+            "zh-CN": "正负两种好感修正都设置了十年，并逐渐衰减，不是最后一天才突然清零。同一个人可能符合不止一种关系角色，也可能同时受到正负两项影响，不能机械地按角色名称重复乘好几遍。"
+          },
+          "subtitles": {
+            "zh-CN": "正负两种好感修正都设置了十年，并逐渐衰减，不是最后一天才突然清零。同一个人可能符合不止一种关系角色，也可能同时受到正负两项影响，不能机械地按角色名称重复乘好几遍。",
+            "en": "Both positive and negative opinion modifiers last ten years and decay over time, rather than vanishing only on the final day. One character may fit several relationship roles or receive both modifiers. Do not multiply a modifier simply by counting the role names they match."
+          }
+        },
+        {
+          "id": "V4-C11-08",
+          "narration": {
+            "zh-CN": "费用也有分支。假设四级旧物与三级新物都被执行者信仰认可，相关条件持续成立，按这套基础值计算，供奉段扣二百五十，移除段再扣五百，虔诚合计减少七百五十。它不是所有四换三的统一价格。"
+          },
+          "subtitles": {
+            "zh-CN": "费用也有分支。假设四级旧物与三级新物都被执行者信仰认可，相关条件持续成立，按这套基础值计算，供奉段扣二百五十，移除段再扣五百，虔诚合计减少七百五十。它不是所有四换三的统一价格。",
+            "en": "Costs also depend on the branch. Suppose the actor's faith recognizes both the old rarity 4 item and the new rarity 3 item, and the relevant conditions continue to hold. Using these base values, enshrinement subtracts 250 Piety, followed by another 500 for removal: 750 in total. This is not a universal price for replacing rarity four with three."
+          }
+        },
+        {
+          "id": "V4-C11-09",
+          "narration": {
+            "zh-CN": "这套基础值里，奉献减少五百，不是七百五十。负的供奉差额只扣虔诚，移除段才同时扣虔诚和奉献。但原版还会先按资源修正调整数值，所以实际钱包、奉献和奉献等级，仍要分别看，不能拿基础值冒充这局的净损失。"
+          },
+          "subtitles": {
+            "zh-CN": "这套基础值里，奉献减少五百，不是七百五十。负的供奉差额只扣虔诚，移除段才同时扣虔诚和奉献。但原版还会先按资源修正调整数值，所以实际钱包、奉献和奉献等级，仍要分别看，不能拿基础值冒充这局的净损失。",
+            "en": "Under those base values, the Devotion loss is 500, not 750. A negative enshrinement difference subtracts only Piety; the removal branch subtracts both Piety and Devotion. But the game adjusts the amounts with resource modifiers first. Check the actual Piety balance, Devotion, and Level of Devotion separately, rather than presenting base values as this campaign's net loss."
+          }
+        },
+        {
+          "id": "V4-C11-10",
+          "narration": {
+            "zh-CN": "看到夺回圣物的战争理由警告，也不等于已经给所有异教统治者发了宣战许可。真正能不能用，还看双方信仰、各自认可、物品能否转移和通常宣战条件；电脑角色另有狂热与头衔门槛。"
+          },
+          "subtitles": {
+            "zh-CN": "看到夺回圣物的战争理由警告，也不等于已经给所有异教统治者发了宣战许可。真正能不能用，还看双方信仰、各自认可、物品能否转移和通常宣战条件；电脑角色另有狂热与头衔门槛。",
+            "en": "A warning about a war to reclaim a relic does not grant every ruler of another faith permission to declare one. Actual availability still depends on the two faiths, each side's recognition, whether the item can be transferred, and normal war requirements. AI rulers face additional zeal and title requirements."
+          }
+        },
+        {
+          "id": "V4-C11-11",
+          "narration": {
+            "zh-CN": "换物前，比较的是三张账：自己的资源与奉献，物品失去与获得的用途，还有哪些具体人物可能因此改变态度。预览提示风险后，先看对方是谁，再决定眼下省的虔诚值不值得。"
+          },
+          "subtitles": {
+            "zh-CN": "换物前，比较的是三张账：自己的资源与奉献，物品失去与获得的用途，还有哪些具体人物可能因此改变态度。预览提示风险后，先看对方是谁，再决定眼下省的虔诚值不值得。",
+            "en": "Before a swap, compare three accounts: your resources and Devotion, the uses lost and gained for the items, and the specific characters whose attitudes may change. If the preview warns of a risk, identify the people involved before deciding whether the Piety saved is worth it."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c12",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "退出以后，是留在原地还是退给我",
+        "en": "What happens when a faith leaves?"
+      },
+      "cues": [
+        {
+          "id": "V4-C12-01",
+          "narration": {
+            "zh-CN": "先把降级与放弃分开。降级让出主要名额，地点仍是本信仰的圣地。放弃移除本信仰的关联，正常决议还要求它是普通圣地，并满足最低数量、冷却和当场资格。"
+          },
+          "subtitles": {
+            "zh-CN": "先把降级与放弃分开。降级让出主要名额，地点仍是本信仰的圣地。放弃移除本信仰的关联，正常决议还要求它是普通圣地，并满足最低数量、冷却和当场资格。",
+            "en": "Demotion and abandonment do different things. Demotion frees an Eminent slot while keeping the place as your faith's holy site. Abandonment removes your faith's association. The normal decision also requires an ordinary site, sufficient remaining sites, and the relevant cooldown and eligibility checks."
+          }
+        },
+        {
+          "id": "V4-C12-02",
+          "narration": {
+            "zh-CN": "巴格达那次退出后，其他信仰仍然关联，原来的圣物也留在槽里。没有把它打包送回皇帝。共享圣地里，退出一方的名单，不等于收回这一方曾经投入的所有东西。"
+          },
+          "subtitles": {
+            "zh-CN": "巴格达那次退出后，其他信仰仍然关联，原来的圣物也留在槽里。没有把它打包送回皇帝。共享圣地里，退出一方的名单，不等于收回这一方曾经投入的所有东西。",
+            "en": "After we abandoned Baghdad, other faiths remained associated and the relic stayed in its slot. It was not packed up and returned to the emperor. Removing a shared site from one faith's list does not recover everything that faith's members once contributed."
+          }
+        },
+        {
+          "id": "V4-C12-03",
+          "narration": {
+            "zh-CN": "而且，退出自己的关联，也可能让持有者信仰不再关联这处地点，从而改变当前圣物计算。不能只看还有几种信仰承认，就假定原来那组收益继续照常发放。"
+          },
+          "subtitles": {
+            "zh-CN": "而且，退出自己的关联，也可能让持有者信仰不再关联这处地点，从而改变当前圣物计算。不能只看还有几种信仰承认，就假定原来那组收益继续照常发放。",
+            "en": "Removing your association may also leave the County holder following a faith that is no longer associated with the site. That changes the current relic calculation. The number of other faiths still recognizing the place does not guarantee that the old benefits continue unchanged."
+          }
+        },
+        {
+          "id": "V4-C12-04",
+          "narration": {
+            "zh-CN": "再看另一条独立分支。我们在萨迈拉新建普通的智慧之地，只有本信仰关联它，槽里放着四级斗篷。最后一个信仰退出后，我们看到关联与圣物库存都已清空，斗篷回到皇帝个人清单，仍未装备。地点本身还在，并没有从地图上被抹掉。"
+          },
+          "subtitles": {
+            "zh-CN": "再看另一条独立分支。我们在萨迈拉新建普通的智慧之地，只有本信仰关联它，槽里放着四级斗篷。最后一个信仰退出后，我们看到关联与圣物库存都已清空，斗篷回到皇帝个人清单，仍未装备。地点本身还在，并没有从地图上被抹掉。",
+            "en": "In another, independent branch, we created an ordinary Site of Wisdom in Samarra. Only our faith was associated, and the rarity 4 cloak occupied a slot. After the last faith abandoned it, we observed both its associations and relic inventory empty. The cloak was in the emperor's personal inventory, still unequipped. The site itself remained; it had not been erased from the map."
+          }
+        },
+        {
+          "id": "V4-C12-05",
+          "narration": {
+            "zh-CN": "这里的返还规则，是交给圣地所在伯爵领的持有者。这次皇帝恰好也是持有者，所以拿到了斗篷。不能因为两种身份碰巧相同，就推成最后退出永远退给操作人。"
+          },
+          "subtitles": {
+            "zh-CN": "这里的返还规则，是交给圣地所在伯爵领的持有者。这次皇帝恰好也是持有者，所以拿到了斗篷。不能因为两种身份碰巧相同，就推成最后退出永远退给操作人。",
+            "en": "The return rule here gives the relic to the County holder. The emperor received the cloak because he also held that County. Two roles happening to belong to one person does not prove that abandoning the last association always returns items to the actor."
+          }
+        },
+        {
+          "id": "V4-C12-06",
+          "narration": {
+            "zh-CN": "如果同样的伯爵领由封臣持有，最后退出的这条规则就可能把圣物交给封臣，而不是皇帝，也不是最初捐赠的人。哪怕对方信仰不同，或不认可物品，也不能自行改写这条收件规则。"
+          },
+          "subtitles": {
+            "zh-CN": "如果同样的伯爵领由封臣持有，最后退出的这条规则就可能把圣物交给封臣，而不是皇帝，也不是最初捐赠的人。哪怕对方信仰不同，或不认可物品，也不能自行改写这条收件规则。",
+            "en": "If a vassal held the County instead, this last-faith rule could give the relic to the vassal, not the emperor or the original donor. A different faith, or lack of recognition, is no reason to substitute a different recipient for the one specified by that rule."
+          }
+        },
+        {
+          "id": "V4-C12-07",
+          "narration": {
+            "zh-CN": "所以要记住三种去向：正常取出，给执行者；直接替换，旧物给执行者；最后一个信仰放弃，按该规则给伯爵领持有者。还有其他信仰关联时，则不走这条最后退出的退物过程。"
+          },
+          "subtitles": {
+            "zh-CN": "所以要记住三种去向：正常取出，给执行者；直接替换，旧物给执行者；最后一个信仰放弃，按该规则给伯爵领持有者。还有其他信仰关联时，则不走这条最后退出的退物过程。",
+            "en": "Remember the three destinations. Normal removal gives the item to the actor. A direct swap gives the outgoing item to the actor. When the last faith abandons the site, that rule gives the relic to the County holder. If another faith remains associated, the last-faith return procedure does not run."
+          }
+        },
+        {
+          "id": "V4-C12-08",
+          "narration": {
+            "zh-CN": "斗篷回来以后，也别急着把它记成已经恢复了装备收益。物品归你、躺在个人清单、实际装备，是三种不同状态；要重新决定怎样使用它。"
+          },
+          "subtitles": {
+            "zh-CN": "斗篷回来以后，也别急着把它记成已经恢复了装备收益。物品归你、躺在个人清单、实际装备，是三种不同状态；要重新决定怎样使用它。",
+            "en": "A returned cloak has not necessarily restored your equipment bonuses. Ownership, presence in your personal inventory, and being equipped are three different states. You still need to decide how to use it."
+          }
+        },
+        {
+          "id": "V4-C12-09",
+          "narration": {
+            "zh-CN": "想收回圣物时，先确认自己有正常取出的资格与费用，再比较是否真的需要放弃整座圣地。放弃还要失去关联与后续收益，可能花更多资源，收件人也可能不是自己。"
+          },
+          "subtitles": {
+            "zh-CN": "想收回圣物时，先确认自己有正常取出的资格与费用，再比较是否真的需要放弃整座圣地。放弃还要失去关联与后续收益，可能花更多资源，收件人也可能不是自己。",
+            "en": "If recovering a relic is your goal, first check your eligibility and cost for normal removal. Then ask whether abandoning the entire site is necessary. Abandonment also gives up association and future benefits, may cost more, and may deliver the item to someone else."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v4-c13",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "采用别家的，还是自己新建",
+        "en": "Adopt an existing site or create a new one?"
+      },
+      "cues": [
+        {
+          "id": "V4-C13-01",
+          "narration": {
+            "zh-CN": "回到最初的选择。采用已有圣地，适合补上某个具体地点的关联需求；新建，则给你选择合适类型与地点的机会。它们占用圣地总数，也都还有各自条件，不能只比较按钮上的虔诚数字。"
+          },
+          "subtitles": {
+            "zh-CN": "回到最初的选择。采用已有圣地，适合补上某个具体地点的关联需求；新建，则给你选择合适类型与地点的机会。它们占用圣地总数，也都还有各自条件，不能只比较按钮上的虔诚数字。",
+            "en": "Return to the original choice. Adopting an existing site can meet a need for a specific location. Creation lets you choose a suitable type and place. Both use capacity under the total holy site limit and have further requirements. The Piety shown on the button is not the whole comparison."
+          }
+        },
+        {
+          "id": "V4-C13-02",
+          "narration": {
+            "zh-CN": "特殊建筑就是一个例子。某些建筑要求这里是持有者信仰的圣地，同时还满足别的宗教条件；另一些允许几条条件择一满足。已经满足另一条的人，不该把新增圣地关联当成必付的解锁费。"
+          },
+          "subtitles": {
+            "zh-CN": "特殊建筑就是一个例子。某些建筑要求这里是持有者信仰的圣地，同时还满足别的宗教条件；另一些允许几条条件择一满足。已经满足另一条的人，不该把新增圣地关联当成必付的解锁费。",
+            "en": "Special buildings are one example. Some require the site to belong to the holder's faith and satisfy other religious conditions. Others allow alternatives. If another route already qualifies, an extra holy site association should not be treated as a mandatory unlock fee."
+          }
+        },
+        {
+          "id": "V4-C13-03",
+          "narration": {
+            "zh-CN": "朝圣也要另算。新增关联可能增加值得考虑的目的地，却还要看活动、近期访问、距离、旅费与安全。麦加朝觐仍然去麦加，不能因为新建了智慧之地，就拿它替代麦加。"
+          },
+          "subtitles": {
+            "zh-CN": "朝圣也要另算。新增关联可能增加值得考虑的目的地，却还要看活动、近期访问、距离、旅费与安全。麦加朝觐仍然去麦加，不能因为新建了智慧之地，就拿它替代麦加。",
+            "en": "Pilgrimage needs a separate calculation. A new association may add a destination worth considering, but the activity, recent visits, distance, travel costs, and safety still matter. The Hajj still goes to Mecca; creating a Site of Wisdom does not replace it."
+          }
+        },
+        {
+          "id": "V4-C13-04",
+          "narration": {
+            "zh-CN": "若目标是自己的学识与建设，先看已有的巴格达和自己持有的伯爵领；若目标是神职人员支持与虔诚，再比较纳杰夫的主要层。已有地点没经营好，不一定要先花钱添一个新名字。"
+          },
+          "subtitles": {
+            "zh-CN": "若目标是自己的学识与建设，先看已有的巴格达和自己持有的伯爵领；若目标是神职人员支持与虔诚，再比较纳杰夫的主要层。已有地点没经营好，不一定要先花钱添一个新名字。",
+            "en": "For your own Learning and construction, first examine existing Baghdad and the Counties you hold. For clergy support and Piety, compare Nadjaf's Eminent modifiers. If existing sites are underused, adding a new name may not be the best first expense."
+          }
+        },
+        {
+          "id": "V4-C13-05",
+          "narration": {
+            "zh-CN": "这次新建智慧之地的分支，从四千二百五十虔诚开始，没有先放弃纳杰夫；新建实际花两千，剩两千二百五十。之后最后退出又花一千，剩一千二百五十。这是一条独立、连续的账。"
+          },
+          "subtitles": {
+            "zh-CN": "这次新建智慧之地的分支，从四千二百五十虔诚开始，没有先放弃纳杰夫；新建实际花两千，剩两千二百五十。之后最后退出又花一千，剩一千二百五十。这是一条独立、连续的账。",
+            "en": "The Site of Wisdom branch began at 4,250 Piety, without first abandoning Nadjaf. Creation cost 2,000, leaving 2,250. Later, abandoning the last association cost another 1,000, leaving 1,250. This is one separate, continuous account."
+          }
+        },
+        {
+          "id": "V4-C13-06",
+          "narration": {
+            "zh-CN": "新地点是普通等级，斗篷在槽内，伯爵领持有者是玩家。它没有附送主要资格。你若还想要智慧之地那组外交与生活方式经验，就得另看主要名额、费用和资格，不能提前记进新建收益。"
+          },
+          "subtitles": {
+            "zh-CN": "新地点是普通等级，斗篷在槽内，伯爵领持有者是玩家。它没有附送主要资格。你若还想要智慧之地那组外交与生活方式经验，就得另看主要名额、费用和资格，不能提前记进新建收益。",
+            "en": "The new site is ordinary, the cloak is slotted, and the player holds the County. Eminent status is not included. If you also want the Site of Wisdom's Diplomacy and Lifestyle Experience bonuses, check Eminent capacity, cost, and eligibility separately. Do not count those gains as part of ordinary creation."
+          }
+        },
+        {
+          "id": "V4-C13-07",
+          "narration": {
+            "zh-CN": "假如从尚未采用的地点开始，还要先降一个旧主要、再升新主要，而三步当场报价都是一千，也没有免费次数，就应准备三千。这是带前提的预算，不是把不同实验拼成已经发生的三千账单。"
+          },
+          "subtitles": {
+            "zh-CN": "假如从尚未采用的地点开始，还要先降一个旧主要、再升新主要，而三步当场报价都是一千，也没有免费次数，就应准备三千。这是带前提的预算，不是把不同实验拼成已经发生的三千账单。",
+            "en": "Suppose the site has not yet been adopted, an old Eminent site must first be demoted, and the new one elevated. If each of the three current quotes is 1,000 and no free actions remain, budget 3,000. This is a conditional plan, not a 3,000-Piety bill assembled from separate experiments."
+          }
+        },
+        {
+          "id": "V4-C13-08",
+          "narration": {
+            "zh-CN": "新信仰创建时的三次免费行动，是该信仰共用的有限次数。它不是每位统治者各领三次，换人不会再发。用一次少一次，眼下省的费用，也可能是放弃留给下一步的机会。"
+          },
+          "subtitles": {
+            "zh-CN": "新信仰创建时的三次免费行动，是该信仰共用的有限次数。它不是每位统治者各领三次，换人不会再发。用一次少一次，眼下省的费用，也可能是放弃留给下一步的机会。",
+            "en": "The three free actions granted when a faith is created are a finite pool shared by that faith. Each ruler does not get a fresh set of three, and succession does not replenish them. Using one now also gives up the chance to save it for a later step."
+          }
+        },
+        {
+          "id": "V4-C13-09",
+          "narration": {
+            "zh-CN": "冷却也要逐个看。采用、升格、降级、放弃与新建，不要因为写了相近的时间，就当成一把共同的锁。做第一步以前，把下一步的数量、资源、权限和冷却一起列出来。"
+          },
+          "subtitles": {
+            "zh-CN": "冷却也要逐个看。采用、升格、降级、放弃与新建，不要因为写了相近的时间，就当成一把共同的锁。做第一步以前，把下一步的数量、资源、权限和冷却一起列出来。",
+            "en": "Check each cooldown separately. Do not assume adoption, elevation, demotion, abandonment, and creation share one lock just because their durations look similar. Before taking the first step, list the capacity, resources, authority, and cooldown required for the next."
+          }
+        },
+        {
+          "id": "V4-C13-10",
+          "narration": {
+            "zh-CN": "最后把方案放在一起：经营已有地点，采用已有圣地，新建合适类型，或暂时保留资源。比较新增收益，也比较失去的旧主要效果、圣物个人用途、关系成本，以及地点是否由你长期掌握。"
+          },
+          "subtitles": {
+            "zh-CN": "最后把方案放在一起：经营已有地点，采用已有圣地，新建合适类型，或暂时保留资源。比较新增收益，也比较失去的旧主要效果、圣物个人用途、关系成本，以及地点是否由你长期掌握。",
+            "en": "Compare the whole set of options: improve an existing site, adopt another, create a suitable type, or keep your resources. Weigh the new benefits against the old Eminent effects lost, the relic's personal uses, opinion costs, and how long you can retain control of the location."
+          }
+        },
+        {
+          "id": "V4-C13-11",
+          "narration": {
+            "zh-CN": "圣地不是名单越长、等级越高就越好。先找到要受益的人和要做的事，再核对关系、持有者信仰、逐槽认可与收件人。确认投入能到你真正需要的地方，那个按钮才值得点。"
+          },
+          "subtitles": {
+            "zh-CN": "圣地不是名单越长、等级越高就越好。先找到要受益的人和要做的事，再核对关系、持有者信仰、逐槽认可与收件人。确认投入能到你真正需要的地方，那个按钮才值得点。",
+            "en": "A longer list and a higher grade do not automatically make a better holy site plan. Identify the intended recipient and goal, then check association, the holder's faith, recognition in each slot, and who receives outgoing items. The button is worth pressing when the investment serves the purpose you actually need."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

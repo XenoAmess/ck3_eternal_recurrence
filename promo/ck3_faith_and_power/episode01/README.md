@@ -2,6 +2,8 @@
 
 2026-10-18后继：用户十项意见及动态数量上限追问已汇入[v4机制更正](../../../docs/ck3-native-ai/faith-and-power-episode01-v4-mechanics-corrections-12004.md)。正在据此制作新稿、新中文旁白与英文副字幕；背景音乐按用户明确指定使用战争系列的[quiet-courtly-tension.wav](../../ck3_native_war_ai/assets/music/quiet-courtly-tension.wav)。下述v3为已交历史版本，不因新研究自动更新其声轨或术语；新v4成片完成前不标已交。旧蓝面板禁止出现在新录制，现有素材允许保留。
 
+v4已冻结为[115段中文讲解](narration-v4-final.zh.md)、[英文副字幕](narration-v4-final.en.md)与[原生项目配置](episode01-v4-final-project.json)。[逐句来源](episode01-v4-cue-claims.json)和[输入身份](episode01-v4-authoring-trace.json)保存a05及双语原件SHA，不覆写v3。中文配音于机器 `4-8e1c2f1861` 的 `2026-10-18T03:05:42.541102Z` 实际开始；原生freeze回执外置 `value-v4-production-a01/voice/FREEZE-RECEIPT.json`，SHA-256 `a0c1459477d8b88bd938dd6ec729e67549133506eb88e981fb4840e663ffd6e2`。本条只记录起步，实际音长、配乐混入及成片另以后继结果为准。
+
 2026-10-18文案修订：当前输入是[最终中文讲解稿](narration-v3-final.zh.md)、[英文副字幕稿](narration-v3-final.en.md)及[105句原生项目配置](episode01-v3-final-project.json)。按玩家的收益、代价和使用场景组织；105句已实际配音，新版[30:12.288讲解审阅片](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v3-delivery.md)已本地生成，机器音画／字幕检查和关键画面抽检完成；完整1倍速观看与全片听审仍待实际审阅。原[v2](narration-v2.zh.md)、[v3语音来源稿](narration-v3.zh.md)及下文历史媒体记录保留，不把旧片自动改称新版。
 
 收益补充已落入[主要等级](../../../docs/ck3-native-ai/holy-site-major-grade-value12004.md)、[采用／新建](../../../docs/ck3-native-ai/faith-and-power-adoption-value-12004.md)、[共享圣物与返还](../../../docs/ck3-native-ai/holy-site-shared-relic-value12004.md)三份研究，并接入现有[规划MCP知识](../../../docs/ck3-native-ai/faith-and-power-episode01-value-analysis-mcp-12004.md)。a07原生观察已编译并经实际MCP验证；[直接替换与共享退出](../../../docs/ck3-native-ai/faith-and-power-episode01-r9-r0010-observations.md)、[最后信仰退出与返还](../../../docs/ck3-native-ai/faith-and-power-episode01-r0011-last-faith-exit.md)有独立实机后验。最后退出动作未录制，采用真实原生回读与退出后静帧说明；实机与图解分别标注。

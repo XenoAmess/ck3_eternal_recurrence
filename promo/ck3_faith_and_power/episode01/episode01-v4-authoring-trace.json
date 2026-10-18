@@ -1,0 +1,606 @@
+{
+  "schema": "faith-power-v4-authoring-projection-trace-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T03:01:52.209431+00:00",
+  "analysis_checkout_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "exact_original_inputs": {
+    "Chinese": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\narrative\\narration-v4.cues.a05.json",
+      "bytes": 265856,
+      "sha256": "dfd676f5a025a02e6659d89d4890bdc680c98eadfcae178333c58ba7ed1a488a"
+    },
+    "English": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\terminology\\v4-english\\narration-v4.cues.en.a01.json",
+      "bytes": 275545,
+      "sha256": "fb7fb5451109b0fe1e57bd79d7ea389a664345de31cb24c628905eaa4dc267c2"
+    },
+    "Root_Chinese_content_approval": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\narrative\\ROOT-VOICE-APPROVAL-a01.json",
+      "bytes": 1920,
+      "sha256": "fb83ce76d36a8a2b2868497e368172ce470f2ea0f7dfa07bfbfaf3b8a7d97291"
+    },
+    "English_delivery": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\terminology\\v4-english\\DELIVERY-a01.json",
+      "bytes": 4127,
+      "sha256": "14505af6203cd32a8fc86fd7acf3360a12a3e0dde21b84572fdd0399b8467deb"
+    }
+  },
+  "original_source_evidence": {
+    "TERM": {
+      "source_id": "TERM",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\terminology\\official-terminology-knowledge.json",
+          "bytes": 34501,
+          "sha256": "ee6609cbb06ea97228fe9a81cc5e4777bb9ee9e056275aa419ac39c24ab1f61f"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\terminology\\narration-v4-terminology-candidate.zh.md",
+          "bytes": 28435,
+          "sha256": "c5bfcd0f1d6d074976912404d3eaa14274d067cf8655fabe84125aa7035f289c"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\terminology\\county-faith-child\\official-clerical-region-stances-bilingual-a01.json",
+          "bytes": 12500,
+          "sha256": "c234a769f35e487d72abbbd3aefebf852bc36cec8089372ce3bb859329d6350b"
+        }
+      ],
+      "locator": "term groups and official source entries; old 105-cue terminology baseline",
+      "evidence_kind": "official_localization_and_editorial_baseline",
+      "authoring_only": true
+    },
+    "MAJOR": {
+      "source_id": "MAJOR",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\holy-site-grade-effects-and-limits-12004.md",
+          "bytes": 17524,
+          "sha256": "eea66c6e5fb45c4003b4dfb1802e1e5051520b2f87bfc150285d14ab5b8c3215"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\holy-site-major-grade-value12004.md",
+          "bytes": 16847,
+          "sha256": "4623caf9380de03f1dac2d63cc4dde36683a1e2a8a18594a597cfe2d44f3b592"
+        }
+      ],
+      "locator": "four modifier blocks; actual effect condition table; parameter consumers; three-type value table; no historical live claim borrowed",
+      "evidence_kind": "static_rules_and_consumers",
+      "authoring_only": true
+    },
+    "LIMITS": {
+      "source_id": "LIMITS",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\holy-site-grade-effects-and-limits-12004.md",
+          "bytes": 17524,
+          "sha256": "eea66c6e5fb45c4003b4dfb1802e1e5051520b2f87bfc150285d14ab5b8c3215"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\SOURCE-CONTRACT-DYNAMIC-a01.json",
+          "bytes": 21089,
+          "sha256": "b8f1243bb45ded54420e0d614fbab584a4345f22c146a1c00829c7967f4440f3"
+        }
+      ],
+      "locator": "current installed authored religion/faith census and ordinary action consumers; runtime max setter/event followup: no ordinary stock max-increase route found; membership overflow is distinct",
+      "evidence_kind": "static_and_dynamic_interface_research_no_ordinary_stock_increase_route_found",
+      "authoring_only": true
+    },
+    "RARITY": {
+      "source_id": "RARITY",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\docs-candidate\\docs\\ck3-native-ai\\holy-site-rarity-calculation12004-v4.md",
+          "bytes": 10731,
+          "sha256": "aa552e6e8ae4fa7d59a4e3453edc01f1ed5cab6499be5ce01706c0b64df8d6aa"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\rarity-source-contract-v4.json",
+          "bytes": 45767,
+          "sha256": "bf20ada972a837e855b4ebb225850696d3068aa4eef6ae94de749cda8344e146"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\examples-analysis\\static-examples.json",
+          "bytes": 15392,
+          "sha256": "179deeec9cd62c42151fcf406057464a19bb258f2f679f53f3104d14e54c7bed"
+        }
+      ],
+      "locator": "current slot sum; current vs cache; R0010 2->0; source examples explicitly hypothetical",
+      "evidence_kind": "static_consumer_plus_retained_observation",
+      "authoring_only": true
+    },
+    "RIGHTS": {
+      "source_id": "RIGHTS",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4-final.md",
+          "bytes": 22123,
+          "sha256": "f02ec54ff1fb01220fde9c7034bb234684a92b754960c78d8e30939c869916e7"
+        }
+      ],
+      "locator": "player explanation; complete human permission table; receiver destination; picker and on-actions",
+      "evidence_kind": "static_rules_and_native_consumers",
+      "authoring_only": true
+    },
+    "AI": {
+      "source_id": "AI",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4-final.md",
+          "bytes": 22123,
+          "sha256": "f02ec54ff1fb01220fde9c7034bb234684a92b754960c78d8e30939c869916e7"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-callgraph-review.md",
+          "bytes": 12806,
+          "sha256": "5fa36b1bc1ba265f1168bce06c94ca3dbf1912018090e6844571923d93965f5a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\wording-clarification-a02.md",
+          "bytes": 1023,
+          "sha256": "bc4a9dd2ec21535967ab874cd5eb4daaca397412612a33bf455a7802294a2640"
+        }
+      ],
+      "locator": "AI candidate/scheduler/effect/actual-natural-result distinction; human protections only in removal decision",
+      "evidence_kind": "static_ai_rules_no_natural_ai_sample",
+      "authoring_only": true
+    },
+    "OPINION": {
+      "source_id": "OPINION",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4-final.md",
+          "bytes": 22123,
+          "sha256": "f02ec54ff1fb01220fde9c7034bb234684a92b754960c78d8e30939c869916e7"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\piety-consumer-a01\\holy-site-piety-experience-consumer12004.md",
+          "bytes": 4846,
+          "sha256": "6ca22677d8ad4022bd443da6158c0781d22e232c5619df2245f9f31be3b3896a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\rarity\\piety-consumer-a01\\SOURCE-CONTRACT.piety-consumer-a01.json",
+          "bytes": 170653,
+          "sha256": "609ba43f90a374bd66652c1289ad17d06a8c7b63edf3bcb7dfbb21a40cc23f54"
+        }
+      ],
+      "locator": "new enshrine/old remove callback branch table; add_opinion target=actor; devotion unknown; CB warning vs legality",
+      "evidence_kind": "static_callbacks_and_conditional_arithmetic",
+      "authoring_only": true
+    },
+    "SHARED": {
+      "source_id": "SHARED",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\shared-live-plan\\existing-footage-coverage.item5.json",
+          "bytes": 7286,
+          "sha256": "36ed32da09d041ab1789db27de53d634f577275cd458c2b74eff5383be1bb954"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\shared-live-plan\\SHARED-LIVE-PLAN.md",
+          "bytes": 13185,
+          "sha256": "27121e9bc1b24613836b49682c7998adf6f0e9206cf723350f84de766e851a39"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\shared-live-plan\\selected-official-name-bindings.item5.json",
+          "bytes": 6251,
+          "sha256": "ba909f1affa406d404164b1d21e44fa1a452e3bd577a6426cb40dd5817dec4c4"
+        }
+      ],
+      "locator": "existing evidence coverage only; future Sinai candidate is not a delivered live example",
+      "evidence_kind": "retained_observation_coverage_with_explicit_gaps",
+      "authoring_only": true
+    },
+    "ADOPT": {
+      "source_id": "ADOPT",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-adoption-value-12004.md",
+          "bytes": 10812,
+          "sha256": "093af2abb32e7a3049cc2b254075e7d91b84170cd23d40373f28aba7652efea6"
+        }
+      ],
+      "locator": "static beneficiary/building/pilgrimage/conditional-budget sections only; historical R4/R7/R8 examples not used as new v4 live material",
+      "evidence_kind": "static_planning_rules",
+      "authoring_only": true
+    },
+    "FREE": {
+      "source_id": "FREE",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\free-holy-site-actions-init-a01\\source-pin.json",
+          "bytes": 3780,
+          "sha256": "a5f444c2079eae02f2e30ce0b3d0ad9319c1fc30e0f9d2ab5d86eb0891fc29a7"
+        }
+      ],
+      "locator": "INIT:3-11,228-234; CONSUME:1285-1294; no current campaign pool observation",
+      "evidence_kind": "actual_installed_script_source_pin",
+      "authoring_only": true
+    },
+    "LIVE10": {
+      "source_id": "LIVE10",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r9-r0010-observations.md",
+          "bytes": 3598,
+          "sha256": "23ab61b8c6d5ae97190f2ba407536ba233403472101a82a99fea6c3e05167000"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r9-r0010-observations.evidence.json",
+          "bytes": 27032,
+          "sha256": "216d7788252fd4953cdd56ceaab4d10112584ad7dabc2a2fa8c2e5ffce4a741d"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\shared-live-plan\\existing-footage-coverage.item5.json",
+          "bytes": 7286,
+          "sha256": "36ed32da09d041ab1789db27de53d634f577275cd458c2b74eff5383be1bb954"
+        }
+      ],
+      "locator": "R0010 retained only; source e23f9de0; enshrine/swap/shared-abandon scopes must stay separate",
+      "evidence_kind": "retained_real_R0010_results",
+      "authoring_only": true
+    },
+    "LIVE11": {
+      "source_id": "LIVE11",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r0011-last-faith-exit.md",
+          "bytes": 4165,
+          "sha256": "bc95d725a64011e05164b27cc9467cea9930e56ba4030c017650385bcf63949d"
+        },
+        {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r0011-last-faith-exit.evidence.json",
+          "bytes": 15600,
+          "sha256": "271f23b3bcdb811ec8673def15499ada7aceb456077e6641d25f963f92afb811"
+        }
+      ],
+      "locator": "R0011 fresh independent C2:4250->2250 create->1250 lastFaith exit; actor==holder; successful exit not recorded",
+      "evidence_kind": "retained_real_R0011_results",
+      "authoring_only": true
+    },
+    "LEGACY": {
+      "source_id": "LEGACY",
+      "documents": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\legacy-panel\\DELIVERY-a05.json",
+          "bytes": 5885,
+          "sha256": "419b489782708085cde116c006662bb10d3afe00e3822662a03d306eb03a21de"
+        }
+      ],
+      "locator": "user item6 future recordings reject exact retired blue overlay; no old media modified; Root applied candidate independently",
+      "evidence_kind": "production_constraint_not_spoken_claim",
+      "authoring_only": true
+    }
+  },
+  "original_user_ten_items": [
+    {
+      "original_user_item": 1,
+      "requirement": "官方中文词汇：伯爵领、伯爵领持有者、总宝物稀有度等级等",
+      "status": "authored_with_official_term_baseline",
+      "cue_ids": [
+        "V4-C01-01",
+        "V4-C01-02",
+        "V4-C01-03",
+        "V4-C01-04",
+        "V4-C01-07",
+        "V4-C01-08",
+        "V4-C02-01",
+        "V4-C02-03",
+        "V4-C03-01",
+        "V4-C03-02",
+        "V4-C03-03",
+        "V4-C03-04",
+        "V4-C03-05",
+        "V4-C03-06",
+        "V4-C04-01",
+        "V4-C04-02",
+        "V4-C04-06",
+        "V4-C04-07",
+        "V4-C04-08",
+        "V4-C05-04",
+        "V4-C06-01",
+        "V4-C07-01",
+        "V4-C07-04",
+        "V4-C10-01",
+        "V4-C10-02",
+        "V4-C11-09",
+        "V4-C13-05"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 2,
+      "requirement": "圣物稀有度如何逐槽求和，并区分当前重评、缓存和实际收益",
+      "status": "authored_source_examples_and_R0010",
+      "cue_ids": [
+        "V4-C02-06",
+        "V4-C02-07",
+        "V4-C03-03",
+        "V4-C04-02",
+        "V4-C06-03",
+        "V4-C06-07",
+        "V4-C07-01",
+        "V4-C07-02",
+        "V4-C07-03",
+        "V4-C07-04",
+        "V4-C07-05",
+        "V4-C07-06",
+        "V4-C07-07",
+        "V4-C07-08",
+        "V4-C07-09",
+        "V4-C08-01",
+        "V4-C08-02",
+        "V4-C08-03",
+        "V4-C08-04",
+        "V4-C08-06",
+        "V4-C12-03",
+        "V4-C13-11"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 3,
+      "requirement": "智慧之地始终使用完整官方名称",
+      "status": "authored_full_name_only",
+      "cue_ids": [
+        "V4-C03-01",
+        "V4-C03-02",
+        "V4-C03-03",
+        "V4-C03-04",
+        "V4-C03-05",
+        "V4-C03-06",
+        "V4-C03-07",
+        "V4-C03-08",
+        "V4-C04-03",
+        "V4-C04-04",
+        "V4-C13-05",
+        "V4-C13-06"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 4,
+      "requirement": "哪些效果要求该信仰列为主要；普通地方项和参数反例",
+      "status": "authored_actual_consumer_scope",
+      "cue_ids": [
+        "V4-C01-03",
+        "V4-C01-04",
+        "V4-C01-07",
+        "V4-C01-08",
+        "V4-C02-01",
+        "V4-C02-02",
+        "V4-C02-03",
+        "V4-C02-04",
+        "V4-C02-05",
+        "V4-C02-06",
+        "V4-C02-07",
+        "V4-C02-08",
+        "V4-C03-01",
+        "V4-C03-02",
+        "V4-C03-03",
+        "V4-C03-04",
+        "V4-C03-05",
+        "V4-C03-06",
+        "V4-C03-07",
+        "V4-C03-08",
+        "V4-C04-01",
+        "V4-C04-02",
+        "V4-C04-03",
+        "V4-C04-04",
+        "V4-C04-05",
+        "V4-C04-06",
+        "V4-C04-07",
+        "V4-C04-08",
+        "V4-C04-09",
+        "V4-C05-01",
+        "V4-C05-02",
+        "V4-C05-03",
+        "V4-C05-04",
+        "V4-C05-04A",
+        "V4-C06-02",
+        "V4-C06-06",
+        "V4-C07-09",
+        "V4-C08-04",
+        "V4-C09-02",
+        "V4-C13-01",
+        "V4-C13-02",
+        "V4-C13-04",
+        "V4-C13-06",
+        "V4-C13-10",
+        "V4-C13-11"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 5,
+      "requirement": "多信仰共享同一对象，关联、等级、认可与受益条件分开；真实例",
+      "status": "authored_R0010_R0011_only",
+      "cue_ids": [
+        "V4-C01-05",
+        "V4-C01-06",
+        "V4-C01-08",
+        "V4-C02-04",
+        "V4-C06-01",
+        "V4-C06-02",
+        "V4-C06-03",
+        "V4-C06-04",
+        "V4-C06-05",
+        "V4-C06-06",
+        "V4-C06-07",
+        "V4-C06-08",
+        "V4-C07-05",
+        "V4-C08-01",
+        "V4-C08-02",
+        "V4-C09-01",
+        "V4-C09-02",
+        "V4-C09-03",
+        "V4-C09-04",
+        "V4-C12-01",
+        "V4-C12-02",
+        "V4-C12-03",
+        "V4-C12-04",
+        "V4-C12-05",
+        "V4-C12-06",
+        "V4-C12-07",
+        "V4-C12-08",
+        "V4-C12-09",
+        "V4-C13-05"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 6,
+      "requirement": "旧左上蓝色决策面板退役，后续新录永不出镜，旧素材不重录",
+      "status": "production_constraint_applied_by_Root_not_spoken_filler",
+      "cue_ids": [
+        "V4-PRODUCTION-06"
+      ],
+      "spoken_required": false,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 7,
+      "requirement": "谁可供奉取走、AI候选与特定保护、直接替换风险",
+      "status": "authored_static_rule_no_natural_AI_sample",
+      "cue_ids": [
+        "V4-C01-04",
+        "V4-C09-01",
+        "V4-C09-03",
+        "V4-C09-04",
+        "V4-C09-05",
+        "V4-C09-06",
+        "V4-C09-07",
+        "V4-C09-08",
+        "V4-C09-09",
+        "V4-C10-01",
+        "V4-C10-02",
+        "V4-C10-03",
+        "V4-C10-04",
+        "V4-C10-05",
+        "V4-C10-06",
+        "V4-C10-07",
+        "V4-C10-08",
+        "V4-C10-09",
+        "V4-C10-10",
+        "V4-C11-01",
+        "V4-C11-06",
+        "V4-C11-08",
+        "V4-C11-11",
+        "V4-C12-01",
+        "V4-C12-04",
+        "V4-C12-05",
+        "V4-C12-06",
+        "V4-C12-07",
+        "V4-C12-09",
+        "V4-C13-09",
+        "V4-C13-10",
+        "V4-C13-11"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 8,
+      "requirement": "好感方向：具体哪些人对执行者变化；预览不冒充后果实测",
+      "status": "authored_conditional_subjects_and_direction",
+      "cue_ids": [
+        "V4-C09-04",
+        "V4-C11-01",
+        "V4-C11-02",
+        "V4-C11-03",
+        "V4-C11-04",
+        "V4-C11-05",
+        "V4-C11-06",
+        "V4-C11-07",
+        "V4-C11-08",
+        "V4-C11-09",
+        "V4-C11-10",
+        "V4-C11-11"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 9,
+      "requirement": "当前9总额/3主要与普通动作规则；决议事件effect能否增加max",
+      "status": "authored_dynamic_followup_source_bound",
+      "cue_ids": [
+        "V4-C05-05",
+        "V4-C05-06",
+        "V4-C05-07",
+        "V4-C05-08",
+        "V4-C05-09",
+        "V4-C13-01",
+        "V4-C13-06",
+        "V4-C13-07"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    },
+    {
+      "original_user_item": 10,
+      "requirement": "去掉占用网络；分别解释圣地总额、主要名额、地点与机会成本",
+      "status": "authored_concrete_limits_and_planning",
+      "cue_ids": [
+        "V4-C01-01",
+        "V4-C01-02",
+        "V4-C01-03",
+        "V4-C01-04",
+        "V4-C01-05",
+        "V4-C01-06",
+        "V4-C03-07",
+        "V4-C03-08",
+        "V4-C04-03",
+        "V4-C04-04",
+        "V4-C04-05",
+        "V4-C04-09",
+        "V4-C05-05",
+        "V4-C05-08",
+        "V4-C05-09",
+        "V4-C06-08",
+        "V4-C09-07",
+        "V4-C12-01",
+        "V4-C12-09",
+        "V4-C13-01",
+        "V4-C13-02",
+        "V4-C13-03",
+        "V4-C13-04",
+        "V4-C13-05",
+        "V4-C13-06",
+        "V4-C13-07",
+        "V4-C13-08",
+        "V4-C13-09",
+        "V4-C13-10",
+        "V4-C13-11"
+      ],
+      "spoken_required": true,
+      "new_live_scene_required_by_this_candidate": false
+    }
+  ],
+  "actual_audio_seconds": null,
+  "actual_film_seconds": null,
+  "native_run": null,
+  "media_artifacts_bound": [],
+  "project_config_is_native_valid": true,
+  "ProjectConfig_does_not_depend_on_machine_specific_external_paths": true,
+  "voice_Chinese_exact_original": true,
+  "subtitle_English_exact_original": true,
+  "English_full_human_review_claimed": false,
+  "projection_does_not_alter_original_candidates": true,
+  "old_v3_files_modified": false,
+  "source_class_requirements": [
+    "Hypothetical arithmetic must be labelled source explanation.",
+    "Only retained R0010/R0011 real examples.",
+    "R0011 successful lastFaith exit has no action raw; use labelled post-exit still/readback.",
+    "New captures never show retired legacy blue panel; existing media may retain it."
+  ],
+  "producer": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\narrative\\project_v4_repo_authoring_a01.py",
+    "bytes": 8705,
+    "sha256": "a5b56425c14826366539cb77036f2a1791ed0e47af0626283a398fbf109761cd"
+  }
+}
