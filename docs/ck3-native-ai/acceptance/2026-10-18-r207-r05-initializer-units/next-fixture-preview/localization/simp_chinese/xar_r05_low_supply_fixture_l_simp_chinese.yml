@@ -1,0 +1,5 @@
+﻿l_simp_chinese:
+ xar_r05_initialize_low_supply:0 "研究夹具：一次性降低初始补给"
+ xar_r05_initialize_low_supply_desc:0 "受控初始条件。仅降低补给，随后必须独立核对逐槽兵数。"
+ xar_r05_initialize_low_supply_tooltip:0 "这是夹具初始化，不是自然饥饿伤亡。"
+ xar_r05_initialize_low_supply_confirm:0 "仅初始化一次"

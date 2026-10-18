@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T05:54:26.561810+00:00",
+  "focused_actual": {
+    "bytes": 348,
+    "sha256": "6fa6c5b18bb017283f4dc0b565e083e01e6afe1e0482ce3a5ad12be27f7c835c"
+  },
+  "focused_scope": "one case; actual portable R207 native payload and negative, legacy bytes, amount boundary, shared frame projection and derived readonly drift",
+  "focused_last_run_seconds": 4.277,
+  "focused_last_exit_code": 0,
+  "initial_same_case_before_new_drift_assertions": {
+    "exit_code": 0,
+    "seconds": 4.477
+  },
+  "new_decision_parser": {
+    "bytes": 92,
+    "sha256": "6f97baa940580b120aed6c2351b194e2103f46badeab4f5f77428e9158a0a3e6"
+  },
+  "parser_exit_code": 0,
+  "old_validator_rerun": false,
+  "native_build_or_SDK": false,
+  "new_amount_live_qualified": false
+}

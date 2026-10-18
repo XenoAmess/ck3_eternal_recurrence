@@ -1,0 +1,5 @@
+﻿l_english:
+ xar_r05_initialize_low_supply:0 "RESEARCH: initialize low supplies once"
+ xar_r05_initialize_low_supply_desc:0 "Controlled fixture initialization. Only supplies are reduced. Troop counts must be checked independently."
+ xar_r05_initialize_low_supply_tooltip:0 "One controlled initial supply change; this is not natural starvation."
+ xar_r05_initialize_low_supply_confirm:0 "Initialize once"

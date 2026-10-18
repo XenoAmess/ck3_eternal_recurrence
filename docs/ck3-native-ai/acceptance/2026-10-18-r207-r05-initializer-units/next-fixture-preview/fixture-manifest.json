@@ -1,0 +1,44 @@
+{
+  "schema": "xar.ck3.r05-low-supply-fixture.v1",
+  "mode": "research_fixture_controlled_initial_supply",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "config": {
+    "province_id": 1506,
+    "supply_loss_amount": "116.51751",
+    "decision_key": "xar_r05_initialize_low_supply"
+  },
+  "source_sha256": {
+    "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt": "235656afe6b7ea7419ee2c0f35437896ceaf7788e663ad3250729db122dae0cd",
+    "common/script_values/tgp_natural_disaster_values.txt": "290406efd9a69e61981355f03f31c2bd48dcbd487936d4c814e668e901f114cd",
+    "localization/english/effects_l_english.yml": "09cdc1360dab17dae3d6cb60e7b5b1bcef9e446bc1235fc733ef5c5fb8483c9c"
+  },
+  "once_flag": "xar_r05_supply_initializer_consumed",
+  "files": [
+    {
+      "relative_path": "descriptor.mod",
+      "bytes": 93,
+      "sha256": "821698310b34bf898926f943b1f95a92871b9e053052a3c448519b7390496019"
+    },
+    {
+      "relative_path": "common/decisions/xar_r05_low_supply_fixture.txt",
+      "bytes": 840,
+      "sha256": "4921618690d05d694434bef0f00763401e5b408feed0d5b1a0d218e3caabb396"
+    },
+    {
+      "relative_path": "localization/english/xar_r05_low_supply_fixture_l_english.yml",
+      "bytes": 406,
+      "sha256": "5df7450189170800f804cb3b74fd82a6cf939c5c3fe18871e29dee8e3424a40a"
+    },
+    {
+      "relative_path": "localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml",
+      "bytes": 373,
+      "sha256": "d47aa1eec356288c1d7b4b4e7743e89fdc35e7b03f504e9dbd2ccc25870d802f"
+    }
+  ],
+  "parameter_status": "absolute Q100000 amount; R2070.999->99900 observed; other values/clamp NOT qualified",
+  "live_execution_performed": false,
+  "natural_low_stock_proven": false,
+  "starvation_casualty_proven": false
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "xar.r05-covered-script-preflight.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T05:49:52.512891+00:00",
+  "status": "PARSER_SYNTAX_ONLY_EXACT_CORPUS",
+  "open_kaishek_commit": "721bc276c94ee46d1c54668564b88ce0e2e4d5e5",
+  "open_kaishek_jar_sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82",
+  "profile_version": "parse-only no semantic profile; CK3 1.20.0.4 semantic validator unavailable",
+  "ck3_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "corpus_sha256": {
+    "descriptor.mod": "821698310b34bf898926f943b1f95a92871b9e053052a3c448519b7390496019",
+    "common/decisions/xar_r05_low_supply_fixture.txt": "4921618690d05d694434bef0f00763401e5b408feed0d5b1a0d218e3caabb396",
+    "localization/english/xar_r05_low_supply_fixture_l_english.yml": "5df7450189170800f804cb3b74fd82a6cf939c5c3fe18871e29dee8e3424a40a",
+    "localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml": "d47aa1eec356288c1d7b4b4e7743e89fdc35e7b03f504e9dbd2ccc25870d802f"
+  },
+  "actual_command": [
+    "D:/graalvm-community-25.3.4.1+1.1/bin/java.exe",
+    "-jar",
+    "D:\\workspace\\open_kaishek\\kaishek-cli\\target\\kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "parse",
+    "--file",
+    "C:\\ck3-e04-resume-20261015-a01\\r207-r05-live-prep-a01\\canonical-repair-a18\\patch-root\\docs\\ck3-native-ai\\acceptance\\2026-10-18-r207-r05-initializer-units\\next-fixture-preview\\common\\decisions\\xar_r05_low_supply_fixture.txt"
+  ],
+  "actual_exit_code": 0,
+  "actual_parse_report": {
+    "path": "PARSE-amount116.51751.raw.json",
+    "bytes": 92,
+    "sha256": "6f97baa940580b120aed6c2351b194e2103f46badeab4f5f77428e9158a0a3e6"
+  },
+  "parsed_relative_path": "common/decisions/xar_r05_low_supply_fixture.txt",
+  "source_decision_sha256": "4921618690d05d694434bef0f00763401e5b408feed0d5b1a0d218e3caabb396",
+  "prior_unsupported_validation": {
+    "path": "../2026-10-18-r05-controlled-low-supply/VALIDATE.raw.json",
+    "bytes": 3712,
+    "sha256": "660a3b46b03457d9696bf02cb110c14481af1c079b29433c06cfc0dba85d5c7b"
+  },
+  "semantic_validation_current_corpus": "NOT_RUN_UNSUPPORTED_PROFILE_12004",
+  "unsupported_semantics": [
+    "Original province2644 validator15 UNKNOWN_OPCODE RED retained; not rerun or reassigned to this decimal.",
+    "This new116.51751 decision syntax alone parsed. Descriptor/localization hash-bound, not parsed.",
+    "Actual R2070.999 reduced stock by99900. New116.51751 amount, final zero/clamp and starvation remain NOT_RUN."
+  ],
+  "native_script_effect_qualified": false,
+  "R05_pass": false,
+  "SDK_calls": 0
+}

@@ -51,6 +51,8 @@ def prepare_case(context):
     return result
 
 def run_case(context,client):
+    from ck3_mod_acceptance_full_army import ensure_common_full_army_client
+    client=ensure_common_full_army_client(client)
     from ck3_live_run_id import current_machine_id
     from xar_autoplayer.bridge import r05_supply_observation_case as observe
     settings=observe.observation_settings(context['case_inputs']['observation'])

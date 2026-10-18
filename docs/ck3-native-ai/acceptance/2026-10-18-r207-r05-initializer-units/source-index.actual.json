@@ -1,0 +1,155 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T05:47:41.954526+00:00",
+  "source_head": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001",
+  "exact_game_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "ACTUAL_R207_NEGATIVE_PRESERVED_NEW_AMOUNT_FIXTURE_NOT_RUN",
+  "actual_config": {
+    "province_id": 1506,
+    "supply_loss_fraction": "0.999",
+    "decision_key": "xar_r05_initialize_low_supply"
+  },
+  "actual_stock_before_raw": 11651751,
+  "actual_stock_after_raw": 11551851,
+  "actual_delta_raw": -99900,
+  "supply_scale": 100000,
+  "physical_soldiers_unchanged": true,
+  "actual_natural_days": 0,
+  "actual_observer_enable_calls": 0,
+  "same_initializer_retry_allowed": false,
+  "common_full_wire_actual_R207": "seq1 offline production normalization/preaction PASS; subsequent same-held a17 full queries succeeded",
+  "source_replay_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-r05-live-prep-a01\\ACTUAL-R207-FULL-PREACTION-REPLAY.actual-a16.json",
+    "bytes": 14975,
+    "sha256": "f67b426fdb06a1de26ff37f617fd7ba2be7f5b0bc6ce66e81ebdc271c93bfdf7"
+  },
+  "portable_sources": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001\\case-output\\r05init-budget-snapshot-001.actual-results.json",
+        "bytes": 107652,
+        "sha256": "cba63d53d647ac8f9ceb4cca99017c7488b785c7ca148d025f3611c5bb8b7e02"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/public-before-snapshot.actual.json.gz",
+        "bytes": 11482,
+        "sha256": "bd54e1ded80cf87808f927cc3a1f37fbd9e3aa68e3a1e614d4d52a3933847469"
+      },
+      "compression": "gzip"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001\\case-output\\r05-locate-strengths.actual-results.json",
+        "bytes": 55606,
+        "sha256": "82f130f03c73dbc9050c10b63a6115fec54441d6dca4d3b440da131aab844d12"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/public-compact-query.actual.json.gz",
+        "bytes": 6460,
+        "sha256": "49dac6393751d40a78582a7d8491a838b99c9312f67490f47e30f59780e9f4b1"
+      },
+      "compression": "gzip"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001\\case-output-continuation-a04\\r05-controlled-initializer-outcome.json",
+        "bytes": 95537,
+        "sha256": "d3dc2a8a07dcb17fb78c6b94f235fda79207a637bcdf25425b811a5cee45da4b"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/initializer-outcome.actual.json.gz",
+        "bytes": 9899,
+        "sha256": "de6ea41cbf17a4f21441d2386b9cfc1c2cadfbfe4ece1663c8d2a12821938f87"
+      },
+      "compression": "gzip"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001\\case-output-continuation-a04\\continuation-result.json",
+        "bytes": 525,
+        "sha256": "3ca087ad6b7e3a12ce7949a2000cc4d862b2a1c32b79955c45eacddd5bbebfc7"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/continuation-result.actual.json",
+        "bytes": 525,
+        "sha256": "3ca087ad6b7e3a12ce7949a2000cc4d862b2a1c32b79955c45eacddd5bbebfc7"
+      },
+      "compression": null
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001\\native-report.native-wire.jsonl",
+        "begin": 570232,
+        "end": 570533,
+        "bytes": 301,
+        "sha256": "59079a742c43d5624cd83e277623e2d10f6505cbb25930946cec6b0615b9e6ee"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/native-wire-query-seq1-request.actual.jsonl",
+        "bytes": 301,
+        "sha256": "59079a742c43d5624cd83e277623e2d10f6505cbb25930946cec6b0615b9e6ee"
+      },
+      "compression": null
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0001\\native-report.native-wire.jsonl",
+        "begin": 570533,
+        "end": 10010365,
+        "bytes": 9439832,
+        "sha256": "99738f46687f27617d8350ed4b9c5bdcdf5c110122570ecb902a045c699f2627"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/native-wire-query-seq1-response.actual.jsonl.gz",
+        "bytes": 285346,
+        "sha256": "3cb6bda4c993882a4422686b88d62517e5b3088742d70e4a90b95fe3c929eb91"
+      },
+      "compression": "gzip"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r207-r05-low-supply-a01\\state-a01\\profile\\mod-content\\product\\common\\decisions\\xar_r05_low_supply_fixture.txt",
+        "bytes": 836,
+        "sha256": "ebcf865592247e7b84248d14d01e33714c4dfb61d3aefccba186cc96ec2f8faa"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/original-decision.actual.txt",
+        "bytes": 836,
+        "sha256": "ebcf865592247e7b84248d14d01e33714c4dfb61d3aefccba186cc96ec2f8faa"
+      },
+      "compression": null
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r207-r05-low-supply-a01\\state-a01\\r05-initializer-claims\\78f59beb0979ef299ea1e51e72978b0e0b77d7ae09a06b76a6b9bac3bc1ba399.claim.json",
+        "bytes": 12753,
+        "sha256": "cbcfbfb67dea6305752d9c115230b442ac740426e006cc6685b28d32361f9f0b"
+      },
+      "portable": {
+        "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/initializer-once-claim.actual.json.gz",
+        "bytes": 1480,
+        "sha256": "ee12c58a775b8f839b7098859eac0177e5eb4e1744de9eafe48d05a14bb62b72"
+      },
+      "compression": "gzip"
+    }
+  ],
+  "native_packet_representation": "original native command_result JSONL line; not a complete Driver packet",
+  "episode_binding_representation": "derived from actual managed_campaign_run_binding.run_id, original snapshot retained",
+  "next_fixture": {
+    "province_id": 1506,
+    "supply_loss_amount": "116.51751",
+    "source_stock_raw": 11651751,
+    "planned_target_raw": 0,
+    "arithmetic_only": true,
+    "actual_new_amount_or_clamp_qualified": false,
+    "fresh_cold_loaded_same_S0_stock_and_unique_target_required": true
+  },
+  "parser_scope": "New840B116.51751 decision parse-only actually exit0/PARSED/zero diagnostics/roundTriptrue; descriptor/localization hash-bound only. Historical15 UNKNOWN_OPCODE RED retained, .4 semantic profile unsupported.",
+  "new_preview_parser": {
+    "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r207-r05-initializer-units/script-preflight-amount116.51751.actual.json",
+    "bytes": 2639,
+    "sha256": "99f560a55d981f203ef5a0b158de60c5187abe6ea8dcf92bc7c0fe53798a2b08"
+  }
+}

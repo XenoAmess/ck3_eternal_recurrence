@@ -1,7 +1,8 @@
 """Controlled initial supply only. No tick, casualty, or campaign credit.
 
-The real Army effect is subtract_supply. Its percentage basis/clamp remains
-unqualified, so actual typed before/after decides whether preparation succeeded.
+The real Army effect is subtract_supply. R207 input0.999 reduced raw supply
+by99900 (Q100000). Larger amounts/clamping still need typed before/after proof.
+Legacy supply_loss_fraction is retained as an absolute-amount compatibility key.
 """
 from __future__ import annotations
 
@@ -62,18 +63,34 @@ def write_new(path, data):
     with path.open("xb") as stream:
         stream.write(data)
 
-def config(province_id, fraction="0.999", decision_key="xar_r05_initialize_low_supply"):
+def config(province_id, fraction=None, decision_key="xar_r05_initialize_low_supply", *, supply_loss_amount=None):
     integer(province_id, "province_id", 1)
-    require(type(fraction) is str and re.fullmatch(r"0\.\d{1,5}", fraction) is not None,
-            "fraction must be an explicit decimal between0 and1, at most5 places")
-    require(Decimal(0) < Decimal(fraction) < Decimal(1), "fraction must be strictly between0 and1")
+    require(not (fraction is not None and supply_loss_amount is not None),
+            "use explicit supply_loss_amount or legacy supply_loss_fraction, never both")
+    if supply_loss_amount is None:
+        # Historical config bytes and their generated decision are unchanged.
+        # This legacy key is an absolute supply amount, not a percentage.
+        fraction = "0.999" if fraction is None else fraction
+        require(type(fraction) is str and re.fullmatch(r"0\.\d{1,5}", fraction) is not None,
+                "legacy absolute amount must retain its original0..1 decimal form")
+        require(Decimal(0) < Decimal(fraction) < Decimal(1), "legacy amount must be strictly between0 and1")
+        amount_key, amount = "supply_loss_fraction", fraction
+    else:
+        amount = supply_loss_amount
+        require(type(amount) is str and re.fullmatch(r"(?:0|[1-9]\d{0,13})(?:\.\d{1,5})?", amount) is not None,
+                "supply_loss_amount must be an explicit positive decimal with at most5 places")
+        require(0 < Decimal(amount) * 100000 < 2**63, "supply_loss_amount Q100000 outside positive int64")
+        amount_key = "supply_loss_amount"
     require(type(decision_key) is str and re.fullmatch(r"xar_r05_[a-z0-9_]{1,100}", decision_key) is not None,
             "fixture decision key invalid")
-    return {"province_id": province_id, "supply_loss_fraction": fraction, "decision_key": decision_key}
+    return {"province_id": province_id, amount_key: amount, "decision_key": decision_key}
+
 
 def render_files(value):
-    value = config(value["province_id"], value["supply_loss_fraction"], value["decision_key"])
-    key, province, fraction = value["decision_key"], value["province_id"], value["supply_loss_fraction"]
+    value = config(value["province_id"], value.get("supply_loss_fraction"), value["decision_key"],
+                   supply_loss_amount=value.get("supply_loss_amount"))
+    key, province = value["decision_key"], value["province_id"]
+    amount = value.get("supply_loss_amount", value.get("supply_loss_fraction"))
     # Human-only decision, the same fixed character flag for every generated key.
     # The province iterator and army_owner scope are stock script constructs.
     # Only the unique current owner's Army is admitted by the typed runner.
@@ -91,7 +108,7 @@ def render_files(value):
         province:{province} = {{
             every_army_in_location = {{
                 limit = {{ army_owner = {{ this = root }} }}
-                subtract_supply = {fraction}
+                subtract_supply = {amount}
             }}
         }}
     }}
@@ -109,12 +126,12 @@ def render_files(value):
         "localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml": b"\xef\xbb\xbf" + zh.encode(),
     }
 
-def generate_fixture(output, *, province_id, machine_id, fraction="0.999",
-                     decision_key="xar_r05_initialize_low_supply"):
+def generate_fixture(output, *, province_id, machine_id, fraction=None,
+                     decision_key="xar_r05_initialize_low_supply", supply_loss_amount=None):
     output = Path(output).resolve()
     require(not output.exists(), "new fixture output required")
     require(type(machine_id) is str and machine_id, "machine_id required")
-    value = config(province_id, fraction, decision_key)
+    value = config(province_id, fraction, decision_key, supply_loss_amount=supply_loss_amount)
     files = render_files(value)
     output.mkdir(parents=True)
     for relative, raw in files.items():
@@ -123,7 +140,7 @@ def generate_fixture(output, *, province_id, machine_id, fraction="0.999",
         "game_version": "1.20.0.4", "executable_sha256": EXE_SHA, "config": value,
         "source_sha256": SOURCE_PINS, "once_flag": ONCE_FLAG,
         "files": [{"relative_path": name, "bytes": len(raw), "sha256": digest(raw)} for name, raw in files.items()],
-        "parameter_status": "percentage display source confirmed; native base/clamp NOT qualified",
+        "parameter_status": "absolute Q100000 amount; R2070.999->99900 observed; other values/clamp NOT qualified",
         "live_execution_performed": False, "natural_low_stock_proven": False,
         "starvation_casualty_proven": False}
     write_new(output / "fixture-manifest.json", (json.dumps(manifest, ensure_ascii=False, indent=2)+"\n").encode())

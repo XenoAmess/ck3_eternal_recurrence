@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "research_continuation_failed_preserved_no_replay",
+  "original_public_case_pass": false,
+  "business_pass": false,
+  "new_launcher_or_game_process": false,
+  "new_SDK_server_or_connection": false,
+  "normal_close_delegated_to_original_runner": true,
+  "error": {
+    "type": "ValueError",
+    "message": "strictly qualified initializer required before natural observation"
+  },
+  "root_readonly_inspection_and_normal_Save_if_not_already_verified_required": true
+}

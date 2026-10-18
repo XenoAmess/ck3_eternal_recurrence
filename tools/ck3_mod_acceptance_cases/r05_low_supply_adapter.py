@@ -85,7 +85,8 @@ def prepare_case(context):
     current_machine=current_machine_id()
     fixture=output/'generated-r05-fixture'
     package=m.generate_fixture(fixture,province_id=inputs['province_id'],machine_id=current_machine,
-        fraction=inputs.get('supply_loss_fraction','0.999'),decision_key=inputs.get('decision_key','xar_r05_initialize_low_supply'))
+        fraction=inputs.get('supply_loss_fraction'),supply_loss_amount=inputs.get('supply_loss_amount'),
+        decision_key=inputs.get('decision_key','xar_r05_initialize_low_supply'))
     preflight=json.loads(Path(inputs['open_kaishek_preflight']['path']).read_bytes())
     for field in ('actual_preflight_report','actual_validate_report','actual_parse_report','prior_unsupported_validation'):
         if field in preflight:
@@ -128,6 +129,8 @@ class CommonRelay:
         return {'body':rows[0]['result']}
 
 def run_case(context,client):
+    from ck3_mod_acceptance_full_army import ensure_common_full_army_client
+    client=ensure_common_full_army_client(client)
     from ck3_live_run_id import current_machine_id
     from xar_autoplayer.bridge import r05_low_supply_fixture as m
     machine=current_machine_id();inputs=context['case_inputs'];client.retain_process()

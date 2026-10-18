@@ -1,0 +1,10 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "PASS",
+  "tests": 1,
+  "scope": "one portable actual R207 negative replay plus exact old config and new amount/common wire source boundaries",
+  "source_evidence_machine_id": "desktop-3fevhd2-1c74096080",
+  "SDK_calls": 0,
+  "new_amount_live_qualified": false,
+  "R05_positive": false
+}

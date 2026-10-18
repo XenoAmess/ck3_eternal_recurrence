@@ -1,5 +1,7 @@
 # R05：一次性降低初始补给的公共研究夹具
 
+2026-10-18 R207补正：实际0.999只减99900（Q100000），未形成低库存。新代码以`supply_loss_amount`表达绝对减量，旧fraction配置保留字节且仅作绝对减量历史别名；新公共full-wire/managed run绑定已接线。当前结论、原件与下一116.51751目标0的未实机边界见[实际单位与公共查询修复](episode04-r05-initializer-amount-common-wire-12004.md)。以下保留原候选及当时未验收事实。
+
 本候选实现可复用的 `subtract_supply` 初始化，解决从 stock300 等待大量成功 updater 的场景准备成本。它只产生**受控初始库存**，不推进游戏日，不调用 updater，不改兵数；自然补给更新和实际饥饿扣兵仍各自待实证。R05、ordinary starvation 正例、影片及 ABC 信用均不增加。
 
 编制机器 `machine_id: desktop-3fevhd2-1c74096080`，2026-10-18 UTC；代码依赖基线 `19024b4d79d818a88709c9932ca4eb364d81ef33`。目标 exact1.20.0.4 / Steam25734779 / EXE `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518` 是既持来源 pin，本次没有读/哈希 EXE、SDK、桌面、游戏启动或 native 构建。机器状态与实机资格不得外推到另一机器。
