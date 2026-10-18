@@ -1,0 +1,14 @@
+{
+  "format_version": 1,
+  "cues": [
+    {
+      "id": "R215-R06-MONTH-NET10-INSERT",
+      "chapter_id": "E4-R215",
+      "shot_id": "S-R215-MONTH",
+      "zh": "跨过月界，军队从6679增加到6689，净增10人。但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。",
+      "claim_ids": [
+        "R215-R06-MONTH-NET10-INSERT"
+      ]
+    }
+  ]
+}

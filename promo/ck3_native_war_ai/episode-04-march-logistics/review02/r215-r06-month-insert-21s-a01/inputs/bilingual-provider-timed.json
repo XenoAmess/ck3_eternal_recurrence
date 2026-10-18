@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.r215-bilingual-provider-timing.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T20:31:10.985589+00:00",
+  "cue_id": "R215-R06-MONTH-NET10-INSERT",
+  "timebase": "local_audio_seconds",
+  "provider": "Edge TTS SentenceBoundary (100ns)",
+  "speech_duration_seconds": 13.896,
+  "captions": [
+    {
+      "index": 1,
+      "start_seconds": 0.1,
+      "original_end_seconds": 7.3526316,
+      "display_end_seconds": 7.3026316,
+      "zh": "跨过月界，军队从6679增加到6689，净增10人。",
+      "en": "Across the month boundary, the army increased from 6,679 to 6,689, a net gain of ten."
+    },
+    {
+      "index": 2,
+      "start_seconds": 7.3026316,
+      "original_end_seconds": 13.8289474,
+      "display_end_seconds": 13.8289474,
+      "zh": "但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。",
+      "en": "But the same-run physical-record closure is still incomplete; itemized reinforcement writes require further verification."
+    }
+  ],
+  "source_boundaries": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/R215-R06-MONTH-NET10-INSERT.boundaries.json",
+    "bytes": 362,
+    "sha256": "86b0eaa46b7388aa29f08d4453c5c70f18070a2b4aa3890b4b15e2bf9c14e0cd"
+  }
+}

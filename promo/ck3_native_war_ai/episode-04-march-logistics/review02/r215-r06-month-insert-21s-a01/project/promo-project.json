@@ -1,0 +1,44 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-war-ai-episode04-r215-insert",
+    "title": "R215 月界净增10人 21秒方法审阅插入片"
+  },
+  "pipeline": {
+    "adapter": "ck3-native-war-ai-v1",
+    "preset": "ck3-native-war-ai-longform-zh-v2"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 2400
+  },
+  "chapters": [
+    {
+      "id": "E4-R215",
+      "type": "documentary",
+      "state": "planned",
+      "title": {
+        "zh-CN": "月界兵数净增长与未闭合的物理记录"
+      },
+      "cues": [
+        {
+          "id": "R215-R06-MONTH-NET10-INSERT",
+          "narration": {
+            "zh-CN": "跨过月界，军队从6679增加到6689，净增10人。但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。"
+          },
+          "subtitles": {
+            "zh-CN": "跨过月界，军队从6679增加到6689，净增10人。但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。",
+            "en": "Across the month boundary, the army increased from 6,679 to 6,689, a net gain of ten. But the same-run physical-record closure is still incomplete; itemized reinforcement writes require further verification."
+          }
+        }
+      ]
+    }
+  ]
+}

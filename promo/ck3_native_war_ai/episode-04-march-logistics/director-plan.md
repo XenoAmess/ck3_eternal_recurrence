@@ -378,3 +378,11 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ### R215 月界真实增兵的镜头和研究边界（2026-10-18 20:11 UTC；machine_id: desktop-3fevhd2-1c74096080）
 
 [R215 专题候选](../../../docs/ck3-native-ai/episode04-r215-one-day-core-partial-12004.md)保留 R0210/a574 实际 Mar31→Apr1 **1 日**、native DATA 端点 **6674→6684 / +10**、片内军队标签 **6679→6689** 的分层证据。录制 191.9 秒、完整解码成功，标签转场约 121.913–122.284 秒；可作“月界画面与净兵数变化”的粗剪候选。Core retained/qualified 1/1，但两侧 `subject_character_override_has_no_physical_DATA_closure`，生产 consumer 仅 `natural_core_return_only`；不配“同次 Core 实施 ADD”或“AI 补员已证”的口播。R10 B 仍缺两处实际省份库存正增长，不能拿士兵 +10 抵扣。正式动态 0/11、ABC 0/3、研究 10/14、业务 7/11；连续 clean、人工 1×及签核待做。原片留外置，证据小件由集成者按精确 COPYPLAN 入库。
+
+### 2026-10-18 R216 本机县边拍摄与研究边界（`machine_id: desktop-3fevhd2-1c74096080`）
+
+[R216 专题](../../../docs/ck3-native-ai/episode04-r216-county-entry-12004.md)和[小证据](../../../docs/ck3-native-ai/evidence/episode04-r216-county-entry-12004/index.json)记录 William Army0 从1506沿当帧 P=true 的单跳到1513：真实相机先于唯一 Move，7准确自然日到站、OFF/Save与正常退出/资源释放均各有原件。县 writer 保留23条逐调用（17正/6零、总236），物理端点6741→6505；全局窗口覆盖871条且 native DTO 无调用时 Army 归属连接，故不关闭R04、不将236归作该军完整县损耗。Take01 为179秒技术可解码，画面有人数下降，但原生到站确认晚于录像结束约45.48秒，连续clean/人工1×/正式镜头均未签核。总进度仍研究10/14、业务7/11、动态0/11、ABC0/3；a03修复的是运行中预检误读闭场文件的启动前错误，不新增业务资格。
+
+### R215 21s insert package (2026-10-18 21:38:42 UTC; machine_id: desktop-3fevhd2-1c74096080)
+
+[The portable 21s review insert](review02/r215-r06-month-insert-21s-a01/README.md) now retains its exact 83,376-byte Chinese speech, bilingual timing, source composer/configuration and small QA records. The MP4/raw/PNG remain machine-bound references. It shows the March-to-April label increase of ten and states that Core physical closure is incomplete; it does not establish instruction ADD or formal dynamic credit. Existing 69-cue output, human 1x review and signoff remain unchanged.

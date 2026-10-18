@@ -1086,3 +1086,5 @@ docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/** -text whi
 # Preserve exact V6 source evidence bytes referenced by planning knowledge.
 docs/ck3-native-ai/evidence/faith-rite-parameter-scopes12004-v6/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/native-faith-power-presentation-v6.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r216-county-entry-12004/** -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/r215-r06-month-insert-21s-a01/** -text whitespace=cr-at-eol

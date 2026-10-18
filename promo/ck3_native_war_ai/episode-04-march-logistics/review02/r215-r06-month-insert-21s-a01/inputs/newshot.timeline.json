@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "shots": [
+    {
+      "id": "S-R215-MONTH",
+      "title": "R215 Mar31→Apr1 6679→6689 visible; physical closure incomplete",
+      "claim_ids": [
+        "R215-R06-MONTH-NET10-INSERT"
+      ]
+    }
+  ]
+}

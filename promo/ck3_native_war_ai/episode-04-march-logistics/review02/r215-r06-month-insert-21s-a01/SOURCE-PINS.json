@@ -1,0 +1,137 @@
+{
+  "schema": "xar.e04.r215-21s-portable-small-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T21:36:10.366865+00:00",
+  "actual_producer_source_head": "38d874c7264e827cf2125f57fa0b7b9bfe8c464e",
+  "canonical_package_root": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r215-r06-month-insert-21s-a01",
+  "purpose": "One 21-second R215 net+10 research insert; later machines must rebind inputs and rerun.",
+  "copied_small_members": [
+    {
+      "target_relative_path": "r215_insert_composer.py",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/r215_insert_composer.py",
+      "bytes": 10057,
+      "sha256": "58ccb53ae4e4bb6748970340607d692181459371308931567d06b30c1535f731"
+    },
+    {
+      "target_relative_path": "inputs/newcue.zh-CN.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/newcue.zh-CN.json",
+      "bytes": 393,
+      "sha256": "35d7b6d18fad3ee51e1e98955dc8e286a505c9144b41f71d94a7b563c7a6922c"
+    },
+    {
+      "target_relative_path": "inputs/newshot.timeline.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/newshot.timeline.json",
+      "bytes": 236,
+      "sha256": "59f864ed375c51ef557166835e488b8b3ad8f1956ac1b8df3dda07983ef052fe"
+    },
+    {
+      "target_relative_path": "inputs/bilingual-provider-timed.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/bilingual-provider-timed.json",
+      "bytes": 1313,
+      "sha256": "3ac8dc79021229033a04ac11c82e1f05d3aa4b0104d7e14d1660f6ef447e949c"
+    },
+    {
+      "target_relative_path": "inputs/render-inputs.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/render-inputs.json",
+      "bytes": 4499,
+      "sha256": "0862be85a6333118c45841a3f3076a54975134cacbbc99512b5bbdedb55f40fc"
+    },
+    {
+      "target_relative_path": "project/promo-project.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/project/promo-project.json",
+      "bytes": 1404,
+      "sha256": "6ba81cf348d33b3e192bc024ebedf5dfc5de5fda1d0f3b1b79a68854d01055a3"
+    },
+    {
+      "target_relative_path": "tts/R215-R06-MONTH-NET10-INSERT.mp3",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/R215-R06-MONTH-NET10-INSERT.mp3",
+      "bytes": 83376,
+      "sha256": "16cd31cd6a560eff418281f26e52c405a8ed68a156d49f057a33dc3dd0fa4354"
+    },
+    {
+      "target_relative_path": "tts/R215-R06-MONTH-NET10-INSERT.request.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/R215-R06-MONTH-NET10-INSERT.request.json",
+      "bytes": 286,
+      "sha256": "7a5c0bf361b46f0d9049f2ab3cd36fc9a68027a7422ad9f019bcd7949456e4d9"
+    },
+    {
+      "target_relative_path": "tts/R215-R06-MONTH-NET10-INSERT.boundaries.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/R215-R06-MONTH-NET10-INSERT.boundaries.json",
+      "bytes": 362,
+      "sha256": "86b0eaa46b7388aa29f08d4453c5c70f18070a2b4aa3890b4b15e2bf9c14e0cd"
+    },
+    {
+      "target_relative_path": "TTS-RESULT.actual.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/TTS-RESULT.actual.json",
+      "bytes": 3324,
+      "sha256": "b54e22d3c7ed32f3a22448e21fa1bea690768269c663c18e099484729d6f1fad"
+    },
+    {
+      "target_relative_path": "TOOLCHAIN.actual.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/TOOLCHAIN.actual.json",
+      "bytes": 1594,
+      "sha256": "a292cfd579f31e90735371c0f2af6eb882118f896663a0faa3f8d4c64a5a5722"
+    },
+    {
+      "target_relative_path": "audit/media-qa-a01/AUTO-MEDIA-CHECK.actual.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/media-qa-a01/AUTO-MEDIA-CHECK.actual.json",
+      "bytes": 4836,
+      "sha256": "892b33f5a43d5047d7ef9265da8e068c8b45128ef0c8072337cfb25b490c6577"
+    },
+    {
+      "target_relative_path": "audit/caption-continuity-a08/RESULT.actual.json",
+      "source_machine_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/caption-continuity-a08/RESULT.actual.json",
+      "bytes": 1633,
+      "sha256": "c4d2edf47a40ec234d0dd85f5f8bdf022be4d25650a59d196f545a2e80ba7467"
+    }
+  ],
+  "actual_large_media_machine_bound_refs": {
+    "review_movie": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/work-build-a01/R215-R06-MONTH-INSERT-21s-REVIEW-NO-SIGNOFF.mp4",
+      "bytes": 1404907,
+      "sha256": "fb6701ca2dd932fef9496432e441b9dbac735d287388b96992a257158a44ea9c"
+    },
+    "original_raw": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-refill-month-core-a01/raw-r215/take01/raw.mkv",
+      "bytes": 114440559,
+      "sha256": "f627cbee92c88ad20819fbafd08b8ab967c123901321694a7d005944c12da2d7"
+    },
+    "historical_delivery": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/ROOT-DELIVERY.actual.json",
+      "bytes": 7737,
+      "sha256": "64859a9cfda8995149b03eec0e01453c296bbc4b04920d8c3471c23b70b6d8c2"
+    }
+  },
+  "source_facts": {
+    "observed_ui_army": [
+      6679,
+      6689
+    ],
+    "net_change": 10,
+    "same_run_ui_supply": [
+      "103/300",
+      "103/300"
+    ],
+    "physical_record_closure": "incomplete",
+    "itemized_reinforcement_ADD": "unverified"
+  },
+  "source_docs": [
+    "docs/ck3-native-ai/episode04-r215-one-day-core-partial-12004.md"
+  ],
+  "exact_chinese_sentences": [
+    "跨过月界，军队从6679增加到6689，净增10人。",
+    "但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。"
+  ],
+  "narration_seconds": 13.896,
+  "preview_seconds": 18,
+  "tail_card_seconds": 3,
+  "movie_nominal_seconds": 21,
+  "movie_frames": 630,
+  "automated_media_check": "PASS",
+  "continuous_human_1x": false,
+  "human_signoff": false,
+  "formal_dynamic_credit": false,
+  "export_or_upload": false,
+  "old69_modified": false,
+  "absolute_machine_paths_are_historical_provenance_not_cross_machine_protocol": true
+}

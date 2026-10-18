@@ -1,0 +1,14 @@
+[
+  {
+    "type": "SentenceBoundary",
+    "offset": 1000000,
+    "duration": 72526316,
+    "text": "跨过月界，军队从6679增加到6689，净增10人。"
+  },
+  {
+    "type": "SentenceBoundary",
+    "offset": 73026316,
+    "duration": 65263158,
+    "text": "但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。"
+  }
+]

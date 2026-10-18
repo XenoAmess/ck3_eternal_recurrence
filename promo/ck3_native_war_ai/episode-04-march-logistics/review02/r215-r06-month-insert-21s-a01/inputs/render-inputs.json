@@ -1,0 +1,99 @@
+{
+  "schema": "xar.e04.r215-insert-render-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-18T20:33:22.369146+00:00",
+  "cue_id": "R215-R06-MONTH-NET10-INSERT",
+  "partial_review": true,
+  "human_signoff": false,
+  "preview": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/preview/r215-month-113-131.mp4",
+    "bytes": 620048,
+    "sha256": "9d9fb542e8971e0a24a714da5fd1519848af3458ef662655821d8b52e0c4edc3"
+  },
+  "audio": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/R215-R06-MONTH-NET10-INSERT.mp3",
+    "bytes": 83376,
+    "sha256": "16cd31cd6a560eff418281f26e52c405a8ed68a156d49f057a33dc3dd0fa4354"
+  },
+  "card": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/assets/evidence-tail-card.png",
+    "bytes": 112473,
+    "sha256": "0a139702f4812f9c8a550758e0d1096b0b78ec82e09802e09fff52ad131be224"
+  },
+  "music": {
+    "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+    "bytes": 30726160,
+    "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+  },
+  "music_git_entry": "100644 f5bf616ef2897521ec92a0445fa5ec68a4e76607 0\tpromo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+  "music_gain_db": -17.0,
+  "narration_zh": "跨过月界，军队从6679增加到6689，净增10人。但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。",
+  "subtitle_en": "Across the month boundary, the army increased from 6,679 to 6,689, a net gain of ten. But the same-run physical-record closure is still incomplete; itemized reinforcement writes require further verification.",
+  "captions": [
+    {
+      "start_seconds": 0.1,
+      "end_seconds": 7.3026316,
+      "zh": "跨过月界，军队从6679增加到6689，净增10人。",
+      "en": "Across the month boundary, the army increased from 6,679 to 6,689, a net gain of ten."
+    },
+    {
+      "start_seconds": 7.3026316,
+      "end_seconds": 13.8289474,
+      "zh": "但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。",
+      "en": "But the same-run physical-record closure is still incomplete; itemized reinforcement writes require further verification."
+    }
+  ],
+  "render": {
+    "geometry": [
+      1920,
+      1080
+    ],
+    "fps": 30,
+    "frames": 630,
+    "game_seconds": 18.0,
+    "tail_card_seconds": 3.0,
+    "total_seconds": 21.0,
+    "music_gain_db": -17.0,
+    "voice_gain_db": 0.0,
+    "music_ducking": false
+  },
+  "source_story": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r215-editorial-insert-plan-a01/R215-INSERT.candidate-a02.json",
+    "bytes": 6631,
+    "sha256": "e60be8a955fec89ac53f7a0ae3d1083b98587aff487d17fb75b241dcb8ce7c80"
+  },
+  "strict_source": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r215-editorial-insert-plan-a01/STRICT-SOURCE-BINDING.actual.json",
+    "bytes": 1214,
+    "sha256": "180784a1f50178792f9ea4e5113cdf97faddff80c8b6b5a3aa75e6b89044c5eb"
+  },
+  "source_media_review": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-refill-month-core-a01/media-probe-take01-a01/MEDIA-REVIEW.actual.json",
+    "bytes": 2645,
+    "sha256": "081ceaeb7eebe4499373bca2cc1a1c1cd2f167a08f774895a9601ea1782ccace"
+  },
+  "preview_result": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/PREVIEW-RESULT.actual.json",
+    "bytes": 3198,
+    "sha256": "d85b4ad3eda81cdc07a14985dce45eb184a41244a55dff1c84c17473b64bb94d"
+  },
+  "preview_two_frame_ai_review": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/PREVIEW-VISUAL.actual.json",
+    "bytes": 1293,
+    "sha256": "e04e21328da8eb06eec8a88b2705eb40efdc7f3808d604f0b787492b98f536fd"
+  },
+  "tts_result": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/TTS-RESULT.actual.json",
+    "bytes": 3324,
+    "sha256": "b54e22d3c7ed32f3a22448e21fa1bea690768269c663c18e099484729d6f1fad"
+  },
+  "provider_bilingual_timing": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/bilingual-provider-timed.json",
+    "bytes": 1313,
+    "sha256": "3ac8dc79021229033a04ac11c82e1f05d3aa4b0104d7e14d1660f6ef447e949c"
+  },
+  "raw_copied_or_rehashed": false,
+  "formal_dynamic_credit": false,
+  "continuous_human_1x": false,
+  "old69_changed": false
+}

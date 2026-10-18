@@ -1,0 +1,88 @@
+{
+  "schema": "xar.e04.r215-insert-tts-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T20:31:11.004571+00:00",
+  "state": "ACTUAL_AUDIO_AND_BILINGUAL_TIMING_NO_VIDEO",
+  "candidate": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r215-editorial-insert-plan-a01/R215-INSERT.candidate-a02.json",
+    "bytes": 6631,
+    "sha256": "e60be8a955fec89ac53f7a0ae3d1083b98587aff487d17fb75b241dcb8ce7c80"
+  },
+  "strict_source": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r215-editorial-insert-plan-a01/STRICT-SOURCE-BINDING.actual.json",
+    "bytes": 1214,
+    "sha256": "180784a1f50178792f9ea4e5113cdf97faddff80c8b6b5a3aa75e6b89044c5eb"
+  },
+  "toolchain": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/TOOLCHAIN.actual.json",
+    "bytes": 1594,
+    "sha256": "a292cfd579f31e90735371c0f2af6eb882118f896663a0faa3f8d4c64a5a5722"
+  },
+  "script": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/newcue.zh-CN.json",
+    "bytes": 393,
+    "sha256": "35d7b6d18fad3ee51e1e98955dc8e286a505c9144b41f71d94a7b563c7a6922c"
+  },
+  "timeline": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/newshot.timeline.json",
+    "bytes": 236,
+    "sha256": "59f864ed375c51ef557166835e488b8b3ad8f1956ac1b8df3dda07983ef052fe"
+  },
+  "provider_inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/production-inputs.json",
+    "bytes": 1629,
+    "sha256": "198ca9689bb4267dea020038bde702944b8e7a99166a6157157d1975f0096f2f"
+  },
+  "provider_command": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/commands/tts_provider.actual.json",
+    "bytes": 1529,
+    "sha256": "3d1345e779785d93f1cfcbdb3f755ebc0a1a8e057e3026ff73fe6b6a99e947de"
+  },
+  "audio": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/tts/R215-R06-MONTH-NET10-INSERT.mp3",
+    "bytes": 83376,
+    "sha256": "16cd31cd6a560eff418281f26e52c405a8ed68a156d49f057a33dc3dd0fa4354"
+  },
+  "bilingual_timing": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/inputs/bilingual-provider-timed.json",
+    "bytes": 1313,
+    "sha256": "3ac8dc79021229033a04ac11c82e1f05d3aa4b0104d7e14d1660f6ef447e949c"
+  },
+  "speech_duration_seconds": 13.896,
+  "before": {
+    "phase": "tts_start",
+    "at_utc": "2026-10-18T20:31:05.727653+00:00",
+    "root_bytes": 23167,
+    "root_limit_bytes": 33554432,
+    "soft_stop_bytes": 31457280,
+    "stop_at_utc": "2026-10-18T23:28:00+00:00",
+    "fresh_free_bytes": {
+      "C:/": 35467489280,
+      "D:/": 27386318848
+    },
+    "required_free_bytes": {
+      "C:/": 25946154182,
+      "D:/": 25467813888
+    }
+  },
+  "close": {
+    "phase": "tts_close",
+    "at_utc": "2026-10-18T20:31:10.991067+00:00",
+    "root_bytes": 200575,
+    "root_limit_bytes": 33554432,
+    "soft_stop_bytes": 31457280,
+    "stop_at_utc": "2026-10-18T23:28:00+00:00",
+    "fresh_free_bytes": {
+      "C:/": 35467485184,
+      "D:/": 27386126336
+    },
+    "required_free_bytes": {
+      "C:/": 25946154182,
+      "D:/": 25467813888
+    }
+  },
+  "audio_written_here": true,
+  "video_written_here": false,
+  "human_1x": false,
+  "signoff": false
+}

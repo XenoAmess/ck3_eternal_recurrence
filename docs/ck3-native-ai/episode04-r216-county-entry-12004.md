@@ -1,0 +1,13 @@
+# R216：William 1506→1513 县边移动与县损耗调用
+
+`machine_id: desktop-3fevhd2-1c74096080`。本条是该机器在 2026-10-18 UTC 的 CK3 1.20.0.4 实机记录，运行来源为仓库 `38d874c7264e827cf2125f57fa0b7b9bfe8c464e` 和 R206 William 正常 S0（SHA-256 `aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da`，角色 33388，Army/native CArmy 0，日期 raw `53147376`）。跨机器只能复用判读方法、源码和证据结构；安装、运行、录屏或能力资格须在目标机器重验。[小型原件索引](evidence/episode04-r216-county-entry-12004/index.json)与 ZIP 只保留本次必要的小证据，不包含存档、完整 native wire 或原片。
+
+本场用一次真正的当帧 native preview 核出 1506→1513 的唯一剩余首跳和 `county_entry_condition_v1.native_condition_passes=true`。执行器在采样 `natural_phase` 开启并读回后重新取预览源帧，避免用旧 `native_revision`；Root 取得真实客户端录像 Start 回执后才提交一次 typed Move。Move 的独立后验显示 route `[1513]`、无提交错误、无重投。随后只用 snapshot 和准确一日原语前进，到第 **7 个准确自然日**停在 1513，route `[]`、暂停、非战斗。到站前没有每天重取 full；到站后且采样尚未 OFF 时才取一次 full，执行器后续 OFF/clear 与原生 Save 均成功。Root 的正常 GUI Quit、OS/host/keeper 与任务总线释放另由各自原件证明；执行器 Save 不能单独替代正常闭场。
+
+独立小证据审查确认：本场保留了同一实际日期 `53147544` 的 **23 条** `county_entry_primary` 调用，其中 **17 条正数物理扣减、6 条合法零扣减**，保留的扣减总和 `236`。原生返回地址是 `0x24E25EE`。独立的唯一物理 DATA 端点为 `6741→6505`、净 `−236`；Army UI/cache 是另一层 `6746→6510`。数值相等只说明这些可见端点相容，不能把全部县损耗因果归到所选 Army 0。实际全局 writer 游标从 baseline `0` 到 latest `1383`，oldest `872`、overwrite `871`、unattributed failure `0`；生产 verdict 为 `requested_window_overwritten`，完整窗口缺失。原生 writer DTO 没有调用时的 Army parent、线程或 invocation token，无法将这些逐调用记录与 Army 0 的自然阶段记录做同一事件的归属连接。未匹配的 489 条不能称作其他军队的损耗。完整 Army 县扣减仍为 `null`，R04 原研究卡保持开放；当前研究 **10/14**、业务 **7/11**、正式动态 **0/11**、ABC **0/3**。
+
+启动前的外置执行器 a02 曾在只读 plan 误读 `case-output/entry-run-result.json`，而该文件要到 public runner 闭场后才写，故 **在 SDK/Move 前**失败。a03 改以已经存在的 `native-report.saved_campaign_input`、实际 `saved_campaign_launch`、`frozen-argv.json` 与 prepared startup 四方核对 SHA、字节、角色、日期、source、PID、state 和 `-loadsave=`；在当前 held R0211、闭场文件尚不存在时的实际无 `--execute` plan 返回 exit 0、`SDK_calls=0`。本场的独立 late admission 允许 20:45 UTC 前启动，不应把旧 20:30 计划时点伪写成实际按时启动；硬截止仍为 22:30 UTC，闭场预留 900+120 秒。
+
+录像 Take01 为 **179.000 秒**、H.264 1280×720/30 fps，109,381,445 字节；单线程全解码 exit 0，三张原尺寸抽帧经审阅：早段暂停 1067-01-20 显示 6746、补给 116/300；中段 1067-01-23 仍 6746；晚段 1067-01-27 显示 6510、补给仍 116/300。画面可证明日期/地图运动和人数标签下降，但原生确认抵达发生在录像 Finish **45.48 秒后**，故不能把到站确认或县 writer 因果塞入这条录像。连续 clean、人工全速 1×、正式镜头签核均未取得；动态分子不增加。
+
+复核入口：先运行同目录 [便携验收脚本](evidence/episode04-r216-county-entry-12004/verify_portable.py)核 ZIP 中每个小原件的 SHA，再读 `independent/ORIGINAL-SMALL.exact.json`、`independent/ARRIVAL-MISSING-WRITER-LEAF.actual.json`、`independent/SMALL-INPUTS.actual.json` 与 `independent/ARRIVAL-FIXED-COUNTERS.actual.json` 的逐调用及覆盖证据。`run/` 提供 actor a03、到站/Save、正常闭场与释放小回执，`media/` 提供技术与有限视觉审查；它们各自只证明本机当时的事实。

@@ -1,0 +1,68 @@
+{
+  "schema": "xar.e04.r215-encoded-caption-continuity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T20:40:02.177751+00:00",
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/work-build-a01/R215-R06-MONTH-INSERT-21s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1404907,
+    "sha256": "fb6701ca2dd932fef9496432e441b9dbac735d287388b96992a257158a44ea9c"
+  },
+  "decoder_argv": [
+    "ffmpeg",
+    "-nostdin",
+    "-v",
+    "error",
+    "-xerror",
+    "-threads",
+    "1",
+    "-i",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-month-refill-insert-a01\\work-build-a01\\R215-R06-MONTH-INSERT-21s-REVIEW-NO-SIGNOFF.mp4",
+    "-vf",
+    "crop=1600:140:160:900,format=gray",
+    "-f",
+    "rawvideo",
+    "-pix_fmt",
+    "gray",
+    "-fps_mode",
+    "passthrough",
+    "-"
+  ],
+  "decoded_frames": 630,
+  "ffmpeg_exit_code": 0,
+  "crop": [
+    160,
+    900,
+    1600,
+    140
+  ],
+  "chinese_bright_pixel_threshold": 180,
+  "english_bright_pixel_threshold": 150,
+  "interior_windows": [
+    {
+      "frame_range_inclusive": [
+        4,
+        217
+      ],
+      "cn_min": 6133,
+      "cn_max": 6136,
+      "en_min": 2274,
+      "en_max": 2281,
+      "cn_zero_frames": [],
+      "en_zero_frames": []
+    },
+    {
+      "frame_range_inclusive": [
+        221,
+        412
+      ],
+      "cn_min": 9429,
+      "cn_max": 9476,
+      "en_min": 3094,
+      "en_max": 3191,
+      "cn_zero_frames": [],
+      "en_zero_frames": []
+    }
+  ],
+  "statement": "Machine-visible caption-strip evidence only; no human 1x or signoff.",
+  "human_1x_or_signoff": false
+}

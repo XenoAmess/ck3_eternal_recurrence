@@ -1,0 +1,7 @@
+{
+  "provider": "edge-tts",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "text": "跨过月界，军队从6679增加到6689，净增10人。但同次记录的物理闭包仍不完整，逐条补员写入还需要进一步验证。",
+  "cue_id": "R215-R06-MONTH-NET10-INSERT"
+}

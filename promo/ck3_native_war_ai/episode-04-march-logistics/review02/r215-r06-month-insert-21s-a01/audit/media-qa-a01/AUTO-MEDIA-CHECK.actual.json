@@ -1,0 +1,138 @@
+{
+  "schema": "xar.e04.r215-21s-automated-media-check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T20:34:48.667450+00:00",
+  "status": "AUTO_MEDIA_PASS_PENDING_HUMAN_1X",
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/work-build-a01/R215-R06-MONTH-INSERT-21s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1404907,
+    "sha256": "fb6701ca2dd932fef9496432e441b9dbac735d287388b96992a257158a44ea9c"
+  },
+  "native_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/run/run-manifest.json",
+    "bytes": 8811,
+    "sha256": "963f444dc77cd3b1bacc7b672265a21f5b41dacbcd88fcd09ccf75be88c6a5eb"
+  },
+  "native_build": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/BUILD-RESULT.actual.json",
+    "bytes": 2163,
+    "sha256": "c825edfbf16eee3662f05de66f99c956bc5c633f8fe5d33023baa7dc8b154aa5"
+  },
+  "bound_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/media-qa-a01/movie.bound-probe.json",
+    "bytes": 4097,
+    "sha256": "25f2a3e742eacb6eead1c8f8d9c17d3972cdfb02c7ce9242b8278ded5ad0f0db"
+  },
+  "ffprobe_count": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/commands/r215_movie_streams.actual.json",
+    "bytes": 1288,
+    "sha256": "673a60112df56f5c908aad4841eca0a16f9e9b71b6f97b6d346e41a92749e551"
+  },
+  "strict_decode": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/commands/r215_movie_strict_decode.actual.json",
+    "bytes": 1208,
+    "sha256": "134d56178b6867da69bea074bdd4dfb8ad420c66e5dc90fe6fb8f4386c981da4"
+  },
+  "all_pts": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/commands/r215_movie_all_pts.actual.json",
+    "bytes": 1191,
+    "sha256": "8d11d6bf1a1b216f14ab9c189b879f8226c69d2366a0867cd0787a896ba0e863"
+  },
+  "duration_seconds": 21.021354,
+  "frames": 630,
+  "fps": "30/1",
+  "pts_first_seconds": 0.021354,
+  "pts_last_seconds": 20.988021,
+  "max_pts_grid_delta_seconds": 6.666666684182476e-07,
+  "video": {
+    "codec_name": "h264",
+    "codec_type": "video",
+    "width": 1920,
+    "height": 1080,
+    "r_frame_rate": "30/1",
+    "nb_read_frames": "630"
+  },
+  "audio": {
+    "codec_name": "aac",
+    "codec_type": "audio",
+    "sample_rate": "48000",
+    "channels": 2,
+    "r_frame_rate": "0/0",
+    "nb_read_frames": "986"
+  },
+  "encoded_frame_ai_review_pending": [
+    {
+      "label": "intro",
+      "seconds": 0.5,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/media-qa-a01/frames/intro.jpg",
+        "bytes": 212621,
+        "sha256": "fba610d9e1ea5fe8fac8b3e9c41c7818190957938522919dc77662ad4a732382"
+      }
+    },
+    {
+      "label": "before",
+      "seconds": 8.5,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/media-qa-a01/frames/before.jpg",
+        "bytes": 238337,
+        "sha256": "62e581cf0d10c0dc3d44dbd5c5b0fb664fa5fd06285b83ab9f736ae6c5207f84"
+      }
+    },
+    {
+      "label": "after",
+      "seconds": 10.0,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/media-qa-a01/frames/after.jpg",
+        "bytes": 234196,
+        "sha256": "a579cc6f9eba5df048621da8e8de7d88f8b941b76c721fb993340ee0dcd06bd1"
+      }
+    },
+    {
+      "label": "card",
+      "seconds": 19.5,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-month-refill-insert-a01/audit/media-qa-a01/frames/card.jpg",
+        "bytes": 131640,
+        "sha256": "67371689efb12a3086efa02121fa9824223324d53fbe4bda2023e3e5f101dc22"
+      }
+    }
+  ],
+  "capacity_start": {
+    "phase": "qa_start",
+    "at_utc": "2026-10-18T20:34:35.461694+00:00",
+    "root_bytes": 8597413,
+    "root_limit_bytes": 33554432,
+    "soft_stop_bytes": 31457280,
+    "stop_at_utc": "2026-10-18T23:28:00+00:00",
+    "fresh_free_bytes": {
+      "C:/": 35474513920,
+      "D:/": 27373072384
+    },
+    "required_free_bytes": {
+      "C:/": 25946154182,
+      "D:/": 25467813888
+    }
+  },
+  "capacity_close": {
+    "phase": "qa_close",
+    "at_utc": "2026-10-18T20:34:48.607216+00:00",
+    "root_bytes": 9439692,
+    "root_limit_bytes": 33554432,
+    "soft_stop_bytes": 31457280,
+    "stop_at_utc": "2026-10-18T23:28:00+00:00",
+    "fresh_free_bytes": {
+      "C:/": 35474251776,
+      "D:/": 27372187648
+    },
+    "required_free_bytes": {
+      "C:/": 25946154182,
+      "D:/": 25467813888
+    }
+  },
+  "root_bytes_before_receipt": 9439692,
+  "formal_dynamic_credit": false,
+  "continuous_human_1x": false,
+  "human_signoff": false,
+  "export_or_upload": false
+}

@@ -1,0 +1,154 @@
+{
+  "schema": "xar.e04.r216-county-entry-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-18T21:27:15.146431+00:00",
+  "source_commit_at_runtime": "38d874c7264e827cf2125f57fa0b7b9bfe8c464e",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0211",
+  "source_normal_S0_sha256": "aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da",
+  "evidence_zip": {
+    "path": "evidence.zip",
+    "bytes": 35034,
+    "sha256": "510a6908f5151b466e76785abb2188173938410284a176cf998e3793ca5770d1"
+  },
+  "members": {
+    "independent/ROOT-DELIVERY.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 3790,
+      "sha256": "41dd2aaea79f7ad3f8974963483054729b62d6f2d4e7da02770236611d438013"
+    },
+    "independent/ORIGINAL-SMALL.exact.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\ORIGINAL-SMALL.exact.json",
+      "bytes": 13483,
+      "sha256": "060ea65f28505177cf81a119a33ac752e7cbb7dc7f75e345f1b68e5f5dd822d9"
+    },
+    "independent/SOURCE-PIN.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\SOURCE-PIN.actual.json",
+      "bytes": 336,
+      "sha256": "1f760cf2f05c1502fb103a228326de0f737181944ed16f4de1bc749fd3fbdc0d"
+    },
+    "independent/SMALL-INPUTS.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\SMALL-INPUTS.actual.json",
+      "bytes": 18937,
+      "sha256": "2ef2e53b97491ca3a730cec184977fa11f8ef5d744cb1e34aeab37e4aa949c57"
+    },
+    "independent/ARRIVAL-FIXED-COUNTERS.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\ARRIVAL-FIXED-COUNTERS.actual.json",
+      "bytes": 1270,
+      "sha256": "4db9b3fc452651fb034a8e1c110e0b08f6bf1f2601e2ede8b31a7a2e43544ee9"
+    },
+    "independent/ARRIVAL-MISSING-WRITER-LEAF.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\ARRIVAL-MISSING-WRITER-LEAF.actual.json",
+      "bytes": 13150,
+      "sha256": "2df353a8dba3c59f16681d9b90b78a57cfef7b05e59c0e43ab811c556397e97b"
+    },
+    "independent/SMALL-AUDIT.final.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\SMALL-AUDIT.final.json",
+      "bytes": 966,
+      "sha256": "223307ef7297c80beaa29f0242f14ebb91f64c7e1f88350a07fed2280961892b"
+    },
+    "independent/SOURCE-INDEX.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\SOURCE-INDEX.actual.json",
+      "bytes": 8058,
+      "sha256": "7478c45a550663f93f37eeb710cc4a2c5f33621b3b165e1f2ce5801a72d7ee8b"
+    },
+    "independent/REVIEW.md": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\REVIEW.md",
+      "bytes": 5821,
+      "sha256": "212cb753b8cff59517358046aa6fd10a32d862b40126de4bd4835d05149c3e16"
+    },
+    "independent/verify_small.py": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-loss-independent-a01\\verify_small.py",
+      "bytes": 4584,
+      "sha256": "12a3a0366fb5a2db51d86b96adc4057a59fb713f6e4b51c52773550fb0e9a6f2"
+    },
+    "run/ROOT-DELIVERY.actual-a03.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-county-adapter-a03\\ROOT-DELIVERY.actual-a03.json",
+      "bytes": 3832,
+      "sha256": "b25645b9e37c52127bf1036f0066a2746024f5d842a5d6637876fdd72eaecafd"
+    },
+    "run/R04-BAYEUX-TERMINAL.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0211\\county-actor-a01\\R04-BAYEUX-TERMINAL.json",
+      "bytes": 441,
+      "sha256": "663d5f537fced397cd2cf6cb59880f1d7766397644d22a62ffdaf248070af6ce"
+    },
+    "run/R04-R216-STATUS-DAY-07.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0211\\county-actor-a01\\R04-R216-STATUS-DAY-07.json",
+      "bytes": 1747,
+      "sha256": "240d3327f0745cd169565e5d5a8acd42d3e4e9cefe75c651f85e7ab21b8732d4"
+    },
+    "run/FINAL-LIGHT-MONITOR.actual-a01.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-live-monitor-continuous-a01\\FINAL-LIGHT-MONITOR.actual-a01.json",
+      "bytes": 2421,
+      "sha256": "d9dc315d609f646286ad63f7ef02940fd1cedc4f465c3d7e29050fa8d2246934"
+    },
+    "run/normal-close-result.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0211\\case-output\\normal-close-result.json",
+      "bytes": 10140,
+      "sha256": "bd60f7c6a553ccb9a0e78ecde3c56c2cdd102648f9f9b384a50bc3d9b589f6ea"
+    },
+    "run/actual-retained-handle-os-exit.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0211\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "ea2d2f3b7a02345ff0cb2d2b47466c70b0d7097617d2f471537d1c90adcfdbf2"
+    },
+    "run/keeper-report.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r216-county-entry-positive-a01\\keeper-a01\\report.json",
+      "bytes": 468,
+      "sha256": "fbbfb2b61ee2197d8c5180460eff8f998b93abecab66cd8f101b0904c7790e38"
+    },
+    "run/TASKBUS-EVENT-6774.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-cas6774-reconstruction-a01\\TASKBUS-EVENT-6774.actual.json",
+      "bytes": 510,
+      "sha256": "70296194ada5ffbdc0ad311247b3414f50cb15a06a90775962773e60d273353b"
+    },
+    "run/R216-CAS6774.canonical-reconstruction.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-cas6774-reconstruction-a01\\R216-CAS6774.canonical-reconstruction.actual.json",
+      "bytes": 2392,
+      "sha256": "4361294c057b794ee06bb449d103a1fd7bada553792b88d072643c81266491e2"
+    },
+    "run/CAS-ROOT-DELIVERY.actual.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r216-cas6774-reconstruction-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 1451,
+      "sha256": "ffb8496c966f3461f28d343cea95fa807ffabb6273f4b51b6ca621cb4ba14fa3"
+    },
+    "admission/R216-R0211-LATE-LAUNCH-ADMISSION.actual-root-a01.json": {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r216-public-a01\\R216-R0211-LATE-LAUNCH-ADMISSION.actual-root-a01.json",
+      "bytes": 6850,
+      "sha256": "9339f4979c61f62c79617709232c539e2c8af89bd0d0c8348d83fbbc2dc2cd0e"
+    },
+    "media/MEDIA-REVIEW.actual.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r216-county-entry-positive-a01\\media-probe-take01-a01\\MEDIA-REVIEW.actual.json",
+      "bytes": 2552,
+      "sha256": "711791ebabd000a30b827ffac8277a191da4f8589786ac062a8d9ea6ab5f421b"
+    },
+    "media/PROBE.actual.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r216-county-entry-positive-a01\\media-probe-take01-a01\\PROBE.actual.json",
+      "bytes": 5318,
+      "sha256": "f4d2590b9de912caafdf2ea18cd232c57d7845eeda90195f2940c0bfe00cb651"
+    },
+    "media/R216-WINDOW-TAKE01-film-result.actual.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r216-county-entry-positive-a01\\R216-WINDOW-TAKE01-film-result.actual.json",
+      "bytes": 1527,
+      "sha256": "a552734cb2fc31c113ca9aad626598b067f67f2c176a51bcdc047d0fc97bfbf9"
+    }
+  },
+  "credit": {
+    "research_closed": 10,
+    "research_total": 14,
+    "business_closed": 7,
+    "business_total": 11,
+    "dynamic_closed": 0,
+    "dynamic_total": 11,
+    "ABC_closed": 0,
+    "ABC_total": 3
+  },
+  "limits": {
+    "R04_entire_card_closed": false,
+    "same_army_at_invocation_observed": false,
+    "complete_army_county_debit": null,
+    "continuous_clean": false,
+    "human_1x": false,
+    "formal_dynamic_shot_qualified": false,
+    "raw_and_large_wire_copied": false
+  }
+}
