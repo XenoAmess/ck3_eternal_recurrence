@@ -1,0 +1,173 @@
+{
+  "schema": "xar.combat-query-MCP-serialization.research.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-18T00:51:03.827250+00:00",
+  "status": "REGISTERED_SYNTHETIC_ROUNDTRIP_PASS_NOT_GAME_DEPLOYED",
+  "public_base_commit": "eb34215c3c391417c90dfb5ecb86c727cadb78eb",
+  "qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p77-combat-query-serialization-research01\\REGISTERED-ROUNDTRIP-PASS01.json",
+    "bytes": 2324,
+    "sha256": "dbaeb77172d41a8bdbd1128ac0a61fdfa5508f7038fbfd2ebcb9bc69d5ce7d55"
+  },
+  "measurements": [
+    {
+      "version": 2,
+      "legacy_complete_result_bytes": 21419,
+      "new_complete_result_bytes": 5548,
+      "legacy_full_pretty_text_bytes": 15229,
+      "new_summary_text_bytes": 383,
+      "legacy_full_unstructured_conversions": 1,
+      "new_full_unstructured_conversions": 0,
+      "legacy_output_model_json_dumps": 1,
+      "new_output_model_json_dumps": 0,
+      "legacy_and_new_output_model_validations": 1,
+      "full_structured_equal": true,
+      "elapsed_speedup_claimed": false
+    },
+    {
+      "version": 3,
+      "legacy_complete_result_bytes": 22354,
+      "new_complete_result_bytes": 5564,
+      "legacy_full_pretty_text_bytes": 16144,
+      "new_summary_text_bytes": 383,
+      "legacy_full_unstructured_conversions": 1,
+      "new_full_unstructured_conversions": 0,
+      "legacy_output_model_json_dumps": 1,
+      "new_output_model_json_dumps": 0,
+      "legacy_and_new_output_model_validations": 1,
+      "full_structured_equal": true,
+      "elapsed_speedup_claimed": false
+    }
+  ],
+  "public_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_combat_query_mcp_result.py",
+      "bytes": 8461,
+      "sha256": "0947638144218fe6f55cad7f4a3aab82920cb518063a1d91fa9cd1b907d3b7fc"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\combat_query_mcp_result.py",
+      "bytes": 2388,
+      "sha256": "3369dea2d49838e012e28f2837162eefc12d8dc654681ec036df973b2dd63ad8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 255799,
+      "sha256": "96e4b50b97f6a0bb0eaa9ca4faa5953a56818cd83bd3b9fb06ee9d2fc507359a"
+    }
+  ],
+  "source_audit": [
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1574836,
+        "sha256": "1173808083bfef752ec1efd43b2555153b3fc9b5c1243e3985c7e1ee3dee48d8"
+      },
+      "locations": [
+        "NativeNamedPipeServer._read_connection:1604-1635 (one decode)",
+        "_execute_primitive_step:12066-12103 (combat not in current timing enable list)",
+        "_execute_combat_simulation_inputs_query:15432-15574 (typed normalize/frame/cache)"
+      ]
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\combat_contract.py",
+        "bytes": 174496,
+        "sha256": "f2dde2b35d47037b60cf3079d639aed8af106f8ab08e463137aa598a39726468"
+      },
+      "locations": [
+        "normalize_combat_simulation_inputs:663-669 (detached full copy retained)"
+      ]
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 233028,
+        "sha256": "be09564cfca715123cd1efd1f0fc0740597566a5c3ed8af5d761a23aad7b0d9d"
+      },
+      "locations": [
+        "build_private_semantic_snapshot_mcp_result:1641-1668 (existing full structured/small text precedent)"
+      ]
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+        "bytes": 1600530,
+        "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+      },
+      "locations": [
+        "AppendCombatSimulationInputs:4418-4421",
+        "CombatSimulationInputsResultFrame:9572-9593"
+      ]
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_knight_stat_consumption_serializer.cpp",
+        "bytes": 14870,
+        "sha256": "624d1507fedc669323a0a981424d0d1915860e3a71c346186227c617a936f600"
+      },
+      "locations": [
+        "SerializeKnightStatConsumptionQuery12004:270-288; current public source, not claimed as frozen Native25 exact leaf"
+      ]
+    },
+    {
+      "source": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Lib\\site-packages\\mcp\\server\\mcpserver\\utilities\\func_metadata.py",
+        "bytes": 25118,
+        "sha256": "07dd28576e983b854b83d4728d182ed6f9064ce26781cc6d70e7e3479c4c06ea"
+      },
+      "locations": [
+        "convert_result:110-144; _convert_to_content:543-574"
+      ]
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\root_p50r7_sdk_queue.py",
+        "bytes": 247130,
+        "sha256": "cacf6e9f9a3f9246d512fcb953830e3172564dd102a815524fe8c03babdb93e8"
+      },
+      "locations": [
+        "unwrap:334-345; call_tool/model_dump/timestamp:3609-3635"
+      ]
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p65-sdk-only-rotation01\\staged\\root_p50r7_mcp_entry.py",
+        "bytes": 12751,
+        "sha256": "2b6e34dc041d20b386b3e63d1f4fe3cc26a7a6e64b37df66a656cd0a71b75df3"
+      },
+      "locations": [
+        "explicit admitted dependency root and mcp==2.0.0 check:12-24"
+      ]
+    }
+  ],
+  "historical_small_evidence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p67-r7-query-wait-audit01\\DELIVERY.json",
+    "bytes": 4296,
+    "sha256": "9ae3bb012d1d52cbf38bd9cbc7c8afba42cf4160d5f0442b23f2fd7b26f1819e"
+  },
+  "full_payload_preserved_in_structured": true,
+  "output_schema_and_validation_preserved": true,
+  "eliminated_in_converter": [
+    "one full pretty-text JSON encode",
+    "one output-model JSON dump"
+  ],
+  "not_eliminated": [
+    "full structured serialization",
+    "client decode/validation",
+    "Native capture/serialization/pipe",
+    "normalizer detached copies",
+    "current cache/API inputs",
+    "archive and queue persistence"
+  ],
+  "text_only_AUTO_consumers": "summary only; use structuredContent for complete DTO; not losslessly reconstructible from text",
+  "direct_tools_and_nonquery_error_paths": "unchanged",
+  "Native_wire_interning": "would need a new explicit protocol and consumer closure; not implemented",
+  "actual87s_wall_savings": "unknown; no stage timings or same-frame A/B",
+  "old_AUTO77_Driver_archive_body_reads": 0,
+  "actual_Game_or_Native_calls": 0,
+  "synthetic_registered_MCP_roundtrip_performed": true,
+  "Native_build_or_deploy": false,
+  "R9_armed_sources_modified": false,
+  "first30_completed": false
+}

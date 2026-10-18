@@ -178,7 +178,7 @@ jobs:
       - name: Test combat history projection with production query and restore paths
         env:
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_combat_history_superseded_v1.py ck3_autonomous_player/tests/unit/test_combat_simulation_inputs_bridge.py ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_bridge.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_combat_history_superseded_v1.py ck3_autonomous_player/tests/unit/test_combat_simulation_inputs_bridge.py ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_bridge.py ck3_autonomous_player/tests/unit/test_combat_query_mcp_result.py
       - name: Verify generated lifestyle catalogue and SDK resource agree
         run: python -B -X utf8 ck3_autonomous_player/native_bridge/tools/gen_lifestyle_all_catalogue_v3.py --check --python-output ck3_autonomous_player/src/xar_autoplayer/data/vanilla_lifestyle_catalog_12004.json
       - name: Test OBS delayed startup and owned close without processes or sockets

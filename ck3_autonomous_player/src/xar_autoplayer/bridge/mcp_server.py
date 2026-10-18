@@ -2937,7 +2937,9 @@ def create_server(
                 return build_army_auto_turn_mcp_result(payload)
             finally:
                 finish_army_timing(army_result_timing)
-        return payload
+        from .combat_query_mcp_result import build_combat_query_auto_turn_mcp_result
+
+        return build_combat_query_auto_turn_mcp_result(payload)
 
     @server.tool()
     def ck3_execute_step(
