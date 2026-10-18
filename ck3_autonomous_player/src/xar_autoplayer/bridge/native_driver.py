@@ -6362,16 +6362,37 @@ class NativeHeadlessGameplayDriver:
             raw = self._execute_primitive_step(step, expected_revision=expected_revision,
                 required_capability=QUERY_CAPABILITY if operation == "query" else NAVIGATE_CAPABILITY,
                 request_fields=fields)
-            ending = self.take_snapshot()
-            if (not _same_paused_native_frame(starting, ending) or
-                    _title_camera_navigation_binding_from_snapshot(ending) != binding or
-                    ending.get("map_ready") is not True or ending.get("played_character") != played or
-                    ingame_ui_build_binding(ending) != source_binding
-                    or (starting.get("episode_projection") == "native_campaign" and (
-                        ending.get("managed_campaign_run_binding") != starting.get("managed_campaign_run_binding")
-                        or ending["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]
-                        != starting["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]))):
-                raise BridgeUnavailableError("native UI crossed its paused session binding")
+            for postcheck_attempt in range(2):
+                ending = self.take_snapshot()
+                try:
+                    if (not _same_paused_native_frame(starting, ending) or
+                            _title_camera_navigation_binding_from_snapshot(ending) != binding or
+                            ending.get("map_ready") is not True or ending.get("played_character") != played or
+                            ingame_ui_build_binding(ending) != source_binding
+                            or (starting.get("episode_projection") == "native_campaign" and (
+                                ending.get("managed_campaign_run_binding") != starting.get("managed_campaign_run_binding")
+                                or ending["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]
+                                != starting["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]))):
+                        raise BridgeUnavailableError("native UI crossed its paused session binding")
+                except ValueError as error:
+                    # A completed read-only primitive is never submitted again.
+                    # Re-read only its transient ending-owner observation, not a changed frame.
+                    diagnostics = ending.get("diagnostics", {})
+                    heartbeat = diagnostics.get("last_heartbeat")
+                    mailbox = heartbeat.get("main_thread_query_mailbox_v1") if isinstance(heartbeat, dict) else None
+                    if (operation == "query" and postcheck_attempt == 0
+                            and str(error) == "title-map native campaign lacks its current verified application owner"
+                            and starting.get("episode_projection") == "native_campaign"
+                            and _same_paused_native_frame(starting, ending)
+                            and all(ending.get(key) == starting.get(key) for key in (
+                                "revision", "date_raw", "local_player_id", "played_character", "managed_campaign_run_binding"))
+                            and diagnostics.get("bridge_pid") == starting["diagnostics"].get("bridge_pid")
+                            and isinstance(mailbox, dict)
+                            and mailbox.get("owner_tid") == starting["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["owner_tid"]
+                            and ingame_ui_build_binding(ending) == source_binding):
+                        continue
+                    raise
+                break
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
                 native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor,
                 expected_build=source_binding[0], army_tooltip_kind=army_tooltip_kind,
