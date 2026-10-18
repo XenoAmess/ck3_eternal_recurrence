@@ -28,6 +28,20 @@ def script_preflight_scope(preflight,package,m,current_machine):
         preflight.get('profile_version') and preflight.get('actual_command') and
         type(preflight.get('unsupported_semantics')) is list and preflight['unsupported_semantics'],
         'AGENTS deterministic preflight is not bound to the actual fixture corpus/build')
+    if preflight.get('status')=='PARSER_SYNTAX_ONLY_EXACT_CORPUS':
+        ref=preflight['actual_parse_report'];m.require(m.pin(ref['path'])==ref,'actual parse-only report bytes changed')
+        parsed=json.loads(Path(ref['path']).read_bytes())
+        decision=next(r for r in package['files'] if r['relative_path'].startswith('common/decisions/'))
+        m.require(preflight.get('actual_exit_code')==0 and parsed.get('status')=='PARSED' and
+            parsed.get('bytes')==decision['bytes'] and parsed.get('diagnostics')==[] and parsed.get('roundTrip') is True and
+            preflight.get('parsed_relative_path')==decision['relative_path'] and
+            preflight.get('source_decision_sha256')==decision['sha256'], 'actual exact decision parse-only result differs')
+        prior=preflight['prior_unsupported_validation'];m.require(m.pin(prior['path'])==prior,'historical unsupported validator evidence changed')
+        prior_result=json.loads(Path(prior['path']).read_bytes());codes=prior_result.get('semanticCodes',[])
+        m.require(prior_result.get('status')=='INVALID' and codes and all(c=='UNKNOWN_OPCODE' for c in codes) and
+            preflight.get('semantic_validation_current_corpus')=='NOT_RUN_UNSUPPORTED_PROFILE_12004',
+            'parse-only receipt must retain unsupported semantics and actual prior RED without reassigning its corpus')
+        return 'exact_decision_parser_syntax_only_current_semantics_UNSUPPORTED_native_NOT_QUALIFIED'
     report_ref=preflight['actual_preflight_report'];m.require(m.pin(report_ref['path'])==report_ref,'actual parser report bytes changed')
     report=json.loads(Path(report_ref['path']).read_bytes())
     parser=report.get('root_scan',{}).get('parser',{});validator=report.get('root_scan',{}).get('validator',{})
@@ -73,7 +87,7 @@ def prepare_case(context):
     package=m.generate_fixture(fixture,province_id=inputs['province_id'],machine_id=current_machine,
         fraction=inputs.get('supply_loss_fraction','0.999'),decision_key=inputs.get('decision_key','xar_r05_initialize_low_supply'))
     preflight=json.loads(Path(inputs['open_kaishek_preflight']['path']).read_bytes())
-    for field in ('actual_preflight_report','actual_validate_report'):
+    for field in ('actual_preflight_report','actual_validate_report','actual_parse_report','prior_unsupported_validation'):
         if field in preflight:
             ref=preflight[field];path=Path(ref['path'])
             if not path.is_absolute():path=Path(inputs['open_kaishek_preflight']['path']).parent/path

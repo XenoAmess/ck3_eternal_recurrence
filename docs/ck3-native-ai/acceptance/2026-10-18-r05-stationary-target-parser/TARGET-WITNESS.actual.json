@@ -1,0 +1,735 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_snapshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-01-before-snapshot.json",
+    "bytes": 219274,
+    "sha256": "3b9d9013a580d55ada8156b177fac30f56d7d0c3d7d8067915ab6f899c5b13aa",
+    "body_pointer": [
+      "body"
+    ]
+  },
+  "source_strength": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\state-a01\\native-session\\army-query-history-results\\army-query-3962a6f83f294296b8d6d821fba44469.json",
+    "bytes": 8797474,
+    "sha256": "e9c745572de54ca71eb9709b10fb93429948306fa56ff3b0727d7e30fd503f23",
+    "kind": "complete-driver-army-query-result-json-v1",
+    "wire_bytes_preserved": false,
+    "body_pointer": []
+  },
+  "source_request": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-full-before-a02.json",
+    "bytes": 5961,
+    "sha256": "ef01046ea25160c95b854b0215792d2a55c4bf5a615d715722b837ce5509e8aa"
+  },
+  "witness": {
+    "machine_independent_frame": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53147376,
+      "episode_run_id": "native-33388-66548d542aa4"
+    },
+    "actor_id": 33388,
+    "army_id": 0,
+    "carmy_id": 0,
+    "province_id": 1506,
+    "pid": 26352,
+    "generation": 1,
+    "army_state": "sieging",
+    "army_state_code": 3,
+    "gathering_days_status": "not_gathering",
+    "current_supply_raw": 11651751,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_change_monthly_raw": -877192,
+    "ordered_regiment_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      82
+    ],
+    "data_aliases": [
+      [
+        0,
+        0,
+        15158,
+        0
+      ],
+      [
+        1,
+        0,
+        15159,
+        0
+      ],
+      [
+        2,
+        0,
+        15160,
+        0
+      ],
+      [
+        3,
+        0,
+        15161,
+        0
+      ],
+      [
+        4,
+        0,
+        15162,
+        0
+      ],
+      [
+        5,
+        0,
+        15163,
+        0
+      ],
+      [
+        6,
+        0,
+        15164,
+        0
+      ],
+      [
+        7,
+        0,
+        15165,
+        0
+      ],
+      [
+        8,
+        0,
+        15166,
+        0
+      ],
+      [
+        9,
+        0,
+        15167,
+        0
+      ],
+      [
+        10,
+        0,
+        15168,
+        0
+      ],
+      [
+        11,
+        0,
+        15169,
+        0
+      ],
+      [
+        12,
+        0,
+        15170,
+        0
+      ],
+      [
+        50,
+        0,
+        2624,
+        1
+      ],
+      [
+        50,
+        1,
+        2606,
+        1
+      ],
+      [
+        50,
+        2,
+        2626,
+        2
+      ],
+      [
+        50,
+        3,
+        2608,
+        2
+      ],
+      [
+        50,
+        4,
+        2630,
+        1
+      ],
+      [
+        50,
+        5,
+        2628,
+        1
+      ],
+      [
+        50,
+        6,
+        2632,
+        2
+      ],
+      [
+        51,
+        0,
+        2638,
+        1
+      ],
+      [
+        51,
+        1,
+        2634,
+        1
+      ],
+      [
+        51,
+        2,
+        2636,
+        2
+      ],
+      [
+        52,
+        0,
+        17948,
+        0
+      ],
+      [
+        53,
+        0,
+        16793680,
+        0
+      ],
+      [
+        54,
+        0,
+        2610,
+        0
+      ],
+      [
+        54,
+        1,
+        2612,
+        0
+      ],
+      [
+        55,
+        0,
+        2614,
+        1
+      ],
+      [
+        61,
+        0,
+        10178,
+        1
+      ],
+      [
+        61,
+        1,
+        2616,
+        1
+      ],
+      [
+        61,
+        2,
+        2618,
+        2
+      ],
+      [
+        62,
+        0,
+        2620,
+        1
+      ],
+      [
+        62,
+        1,
+        2622,
+        2
+      ],
+      [
+        82,
+        0,
+        2604,
+        1
+      ],
+      [
+        82,
+        1,
+        2602,
+        1
+      ],
+      [
+        82,
+        2,
+        9884,
+        2
+      ],
+      [
+        82,
+        3,
+        9886,
+        2
+      ]
+    ],
+    "physical_slots": [
+      {
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "current_soldiers": 69,
+        "maximum_soldiers": 69,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2604,
+        "chunk_index": 1,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2606,
+        "chunk_index": 1,
+        "current_soldiers": 75,
+        "maximum_soldiers": 75,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2608,
+        "chunk_index": 2,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2610,
+        "chunk_index": 0,
+        "current_soldiers": 302,
+        "maximum_soldiers": 302,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2612,
+        "chunk_index": 0,
+        "current_soldiers": 19,
+        "maximum_soldiers": 19,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2614,
+        "chunk_index": 1,
+        "current_soldiers": 6,
+        "maximum_soldiers": 6,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2616,
+        "chunk_index": 1,
+        "current_soldiers": 69,
+        "maximum_soldiers": 69,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2618,
+        "chunk_index": 2,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2620,
+        "chunk_index": 1,
+        "current_soldiers": 69,
+        "maximum_soldiers": 69,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2622,
+        "chunk_index": 2,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2624,
+        "chunk_index": 1,
+        "current_soldiers": 75,
+        "maximum_soldiers": 75,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2626,
+        "chunk_index": 2,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2628,
+        "chunk_index": 1,
+        "current_soldiers": 123,
+        "maximum_soldiers": 123,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2630,
+        "chunk_index": 1,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2632,
+        "chunk_index": 2,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2634,
+        "chunk_index": 1,
+        "current_soldiers": 17,
+        "maximum_soldiers": 17,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2636,
+        "chunk_index": 2,
+        "current_soldiers": 4,
+        "maximum_soldiers": 4,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 2638,
+        "chunk_index": 1,
+        "current_soldiers": 17,
+        "maximum_soldiers": 17,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 9884,
+        "chunk_index": 2,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 9886,
+        "chunk_index": 2,
+        "current_soldiers": 18,
+        "maximum_soldiers": 18,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 10178,
+        "chunk_index": 1,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 15158,
+        "chunk_index": 0,
+        "current_soldiers": 1000,
+        "maximum_soldiers": 1000,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15159,
+        "chunk_index": 0,
+        "current_soldiers": 800,
+        "maximum_soldiers": 800,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15160,
+        "chunk_index": 0,
+        "current_soldiers": 100,
+        "maximum_soldiers": 100,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15161,
+        "chunk_index": 0,
+        "current_soldiers": 20,
+        "maximum_soldiers": 20,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15162,
+        "chunk_index": 0,
+        "current_soldiers": 800,
+        "maximum_soldiers": 800,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15163,
+        "chunk_index": 0,
+        "current_soldiers": 400,
+        "maximum_soldiers": 400,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15164,
+        "chunk_index": 0,
+        "current_soldiers": 20,
+        "maximum_soldiers": 20,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15165,
+        "chunk_index": 0,
+        "current_soldiers": 800,
+        "maximum_soldiers": 800,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15166,
+        "chunk_index": 0,
+        "current_soldiers": 100,
+        "maximum_soldiers": 100,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15167,
+        "chunk_index": 0,
+        "current_soldiers": 20,
+        "maximum_soldiers": 20,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15168,
+        "chunk_index": 0,
+        "current_soldiers": 800,
+        "maximum_soldiers": 800,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15169,
+        "chunk_index": 0,
+        "current_soldiers": 400,
+        "maximum_soldiers": 400,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 15170,
+        "chunk_index": 0,
+        "current_soldiers": 400,
+        "maximum_soldiers": 400,
+        "state_raw": 1
+      },
+      {
+        "persistent_regiment_id": 17948,
+        "chunk_index": 0,
+        "current_soldiers": 200,
+        "maximum_soldiers": 200,
+        "state_raw": 0
+      },
+      {
+        "persistent_regiment_id": 16793680,
+        "chunk_index": 0,
+        "current_soldiers": 9,
+        "maximum_soldiers": 10,
+        "state_raw": 0
+      }
+    ],
+    "raw138_by_persistent": [
+      [
+        2602,
+        0
+      ],
+      [
+        2604,
+        0
+      ],
+      [
+        2606,
+        0
+      ],
+      [
+        2608,
+        0
+      ],
+      [
+        2610,
+        0
+      ],
+      [
+        2612,
+        0
+      ],
+      [
+        2614,
+        0
+      ],
+      [
+        2616,
+        0
+      ],
+      [
+        2618,
+        0
+      ],
+      [
+        2620,
+        0
+      ],
+      [
+        2622,
+        0
+      ],
+      [
+        2624,
+        0
+      ],
+      [
+        2626,
+        0
+      ],
+      [
+        2628,
+        0
+      ],
+      [
+        2630,
+        0
+      ],
+      [
+        2632,
+        0
+      ],
+      [
+        2634,
+        0
+      ],
+      [
+        2636,
+        0
+      ],
+      [
+        2638,
+        0
+      ],
+      [
+        9884,
+        0
+      ],
+      [
+        9886,
+        0
+      ],
+      [
+        10178,
+        0
+      ],
+      [
+        15158,
+        1
+      ],
+      [
+        15159,
+        1
+      ],
+      [
+        15160,
+        1
+      ],
+      [
+        15161,
+        1
+      ],
+      [
+        15162,
+        1
+      ],
+      [
+        15163,
+        1
+      ],
+      [
+        15164,
+        1
+      ],
+      [
+        15165,
+        1
+      ],
+      [
+        15166,
+        1
+      ],
+      [
+        15167,
+        1
+      ],
+      [
+        15168,
+        1
+      ],
+      [
+        15169,
+        1
+      ],
+      [
+        15170,
+        1
+      ],
+      [
+        17948,
+        0
+      ],
+      [
+        16793680,
+        0
+      ]
+    ],
+    "mixed_raw138_classes": true,
+    "native_cached_current": 6746,
+    "native_cached_maximum": 6747
+  },
+  "native_save_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-02-save-once.json",
+    "bytes": 20858,
+    "sha256": "ab71834e88d71f3b4d059bc71a745d8ddb5b82377d835d955e11925c41d5926f"
+  },
+  "normal_save_report": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+    "bytes": 3296,
+    "sha256": "6e6aaca03610f0f3a8d6d02c46cac2b6a5afc75537f0d8fd4fb149262502ebaf"
+  },
+  "preservation": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\INITIAL-SAVE-PRESERVED.actual-a01.json",
+    "bytes": 731,
+    "sha256": "e7562e1d2fb1e990d807fde6a8f809b6bdc20806c0694a0c370e1ccf6f6e0dca"
+  },
+  "terminal_closure": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-terminal-a02-close-a01\\SCREEN-RELEASE.actual.json",
+    "bytes": 4827,
+    "sha256": "73c0f87ddf14550b061a8fcaa27a3a8ae7caeb6c29a57ef83c806de526aeb581"
+  },
+  "earlier_normal_save_not_terminal_current_checkpoint": true,
+  "r207_must_freshly_bind_current_target": true,
+  "R05_pass": false
+}

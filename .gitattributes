@@ -884,3 +884,8 @@ docs/ck3-native-ai/acceptance/2026-10-18-r05-readonly-strength-rebound/focused-s
 docs/ck3-native-ai/acceptance/2026-10-18-r05-readonly-strength-rebound/source-query-RED.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r206-william-exactday-12004/INDEX.actual-a01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r206-william-exactday-12004/README.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/ACTUAL-TARGET-PARSER-SMOKE.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/FOCUSED-SMOKE.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/PARSE.raw.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/script-preflight-province1506.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/TARGET-WITNESS.actual.json -text whitespace=cr-at-eol

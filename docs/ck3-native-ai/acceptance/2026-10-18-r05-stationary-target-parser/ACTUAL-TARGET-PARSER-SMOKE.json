@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "PASS",
+  "actual_witness": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-r05-live-prep-a01\\target-parse-candidate-a05\\TARGET-WITNESS.actual.json",
+    "bytes": 14418,
+    "sha256": "49dff7882e3efcc692433346c7b79d28224416ec052fd56514476e525ad59ae1"
+  },
+  "parse_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-r05-live-prep-a01\\target-parse-candidate-a05\\script-preflight-province1506.actual.json",
+    "bytes": 2882,
+    "sha256": "cccd7a42277b910ca007300b9797ed9caa3b624dc8a38f629f9c06dc32bfd931"
+  },
+  "scope": "exact_decision_parser_syntax_only_current_semantics_UNSUPPORTED_native_NOT_QUALIFIED",
+  "actual_sdk_calls": 0,
+  "R05_pass": false
+}

@@ -250,8 +250,9 @@ def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province
     require(len(candidates) == 1 and candidates[0].get("army_id") == army_id, "location/owner does not resolve unique selected Army")
     row = candidates[0]
     require(row.get("controllable") is True and row.get("source") == "native", "Army owner/control unavailable")
-    require(row.get("in_combat") is False and row.get("retreating") is False and row.get("army_state") == "regular"
-            and row.get("army_state_code") == 1, "Army not observed ordinary regular/noncombat/nonretreat")
+    require(row.get("in_combat") is False and row.get("retreating") is False and
+            (row.get("army_state"),row.get("army_state_code")) in (("regular",1),("sieging",3)),
+            "Army not observed stationary regular/sieging noncombat/nonretreat")
     require(row.get("route_read_status") == "complete_empty" and row.get("route_source_count") == 0
             and row.get("route_province_ids") == [], "Army route is not complete empty")
     require(strengths.get("queried_revision") == snapshot["revision"] and
@@ -264,7 +265,22 @@ def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province
     army = selected[0]
     require(army.get("status") == "available" and army.get("scope_role") == "player" and army.get("native_carmy_id") == carmy_id,
             "actual CArmy identity/readiness differs")
-    require(army.get("gathering_days_ready") is True and army.get("gathering_days_left") == 0, "gathering state unavailable/nonzero")
+    # The production query publishes not_gathering with a null day count.
+    # Retain that representation; do not rewrite unknown/null into numeric0.
+    days_zero=army.get("gathering_days_left")==0
+    inputs=army.get("monthly_loss_budget_inputs_v1") or {}
+    not_gathering=(army.get("gathering_days_status")=="not_gathering" and
+        army.get("gathering_days_left") is None and inputs.get("ready") is True and
+        inputs.get("native_unit_gathering") is False and inputs.get("army_gathering_count_raw")==0)
+    require(army.get("gathering_days_ready") is True and (days_zero or not_gathering),
+        "gathering state unavailable/nonzero")
+    if row.get("army_state_code")==3:
+        # Public siege state3 is not the Unit170 raw field used by the supply
+        # updater. Actual source rejects raw170==3, combat or gathering.
+        require(inputs.get("ready") is True and type(inputs.get("unit_native_170_raw")) is int and
+            inputs["unit_native_170_raw"]!=3 and inputs.get("native_unit_in_combat") is False and
+            inputs.get("native_unit_gathering") is False and inputs.get("army_gathering_count_raw")==0,
+            "stationary siege lacks actual ordinary supply admission operands")
     values = {}
     for key in ("current_supply", "current_supply_capacity", "current_supply_change_monthly"):
         raw = army.get(key + "_raw")
@@ -297,6 +313,8 @@ def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province
     # This is inventory provenance, not an enum name or a supply-loss predicate.
     return {"machine_independent_frame": {k:snapshot[k] for k in ("snapshot_id","revision","native_revision","date_raw","episode_run_id")},
         "actor_id": actor_id,"army_id":army_id,"carmy_id":carmy_id,"province_id":province_id,"pid":pid,"generation":generation,
+        "army_state":row.get("army_state"),"army_state_code":row.get("army_state_code"),
+        "gathering_days_status":army.get("gathering_days_status"),
         **values,"ordered_regiment_ids":[r["army_regiment_id"] for r in records],"data_aliases":aliases,
         "physical_slots":[{"persistent_regiment_id":k[0],"chunk_index":k[1],"current_soldiers":v[0],"maximum_soldiers":v[1],"state_raw":v[2]} for k,v in sorted(physical.items())],
         "raw138_by_persistent":[[k,guards[k]] for k in sorted(guards)],
@@ -305,7 +323,8 @@ def target_witness(snapshot, strengths, *, actor_id, army_id, carmy_id, province
 
 def assess_initialization(before, after):
     invariants = ("actor_id","army_id","carmy_id","province_id","pid","generation","ordered_regiment_ids",
-                  "data_aliases","physical_slots","raw138_by_persistent","native_cached_current","native_cached_maximum")
+                  "data_aliases","physical_slots","raw138_by_persistent","native_cached_current","native_cached_maximum",
+                  "army_state","army_state_code","gathering_days_status")
     require(all(before[k] == after[k] for k in invariants), "initializer changed target identity/physical soldiers/roster")
     for key in ("date_raw","episode_run_id"):
         require(before["machine_independent_frame"][key] == after["machine_independent_frame"][key], "initializer crossed date/episode")
