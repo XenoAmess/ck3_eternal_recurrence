@@ -106,7 +106,8 @@ def _plan_war_mercenary_turn_v1(
 
     construction = read_construction_ledger(directory)
     financing = observe_war_financing_capability_gap_v1(snapshot, priority=priority,
-        construction_ledger=construction, root=_same_frame_campaign_root_context(history, dict(snapshot)))
+        construction_ledger=construction, root=_same_frame_campaign_root_context(history, dict(snapshot)),
+        bridge_capabilities=bridge_capabilities)
     if financing is not None:
         plan = {**plan, "war_financing_capability_gap_v1": financing}
     if construction.get("pending") is not None:
@@ -270,7 +271,7 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
     else:
         text += "具体战争行动优先；雇佣报价与抵达未核实。"
     if isinstance(plan.get("war_financing_capability_gap_v1"), Mapping):
-        text += "已评估取消工程与合法借款筹军费；当前缺少可核退款或借款执行通道，未计入未到账资金。"
+        text += "取消工程与合法借款仍待当帧条款及独立到账核验，未计入预期资金。"
     text += "头数不代表胜率。"
     return {**plan,
             "war_decision_presentation_v1": {

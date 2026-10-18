@@ -13,10 +13,19 @@ AMPLE_FIXED_BUFFER_RAW = 40_000_000
 AMPLE_MAXIMUM_MAINTENANCE_MONTHS = 24
 
 
-def observe_war_financing_capability_gap_v1(snapshot, *, priority, construction_ledger, root=None):
+def observe_war_financing_capability_gap_v1(snapshot, *, priority, construction_ledger, root=None,
+        bridge_capabilities=None):
     """Expose an actual capability gap, without queuing a cancel or loan."""
+    from .bridge.ingame_decision_outcome_contract import CAPABILITY as confirm_capability
+    from .war_reinforcement_tradeoff_v1 import _current_root
+
     wars = priority.get('wars') if isinstance(priority, Mapping) else None
-    if not isinstance(wars, list) or not wars:
+    active = snapshot.get('active_wars')
+    active_ids = {row['war_id'] for row in active if isinstance(row, Mapping)
+        and type(row.get('war_id')) is int} if isinstance(active, list) else set()
+    wars = [row for row in wars if isinstance(row, Mapping)
+        and type(row.get('war_id')) is int and row['war_id'] in active_ids] if isinstance(wars, list) else []
+    if not wars:
         return None
     crisis = [row['war_id'] for row in wars if isinstance(row, Mapping)
         and row.get('primary_player_war') is True
@@ -27,8 +36,9 @@ def observe_war_financing_capability_gap_v1(snapshot, *, priority, construction_
             or row.get('observed_hostile_siege_in_player_subrealm_army_ids')
             or row.get('all_observed_own_raised_armies_currently_retreating') is True)]
     money = snapshot.get('played_character_gold')
-    cash = money.get('raw') if isinstance(money, Mapping) and money.get('scale') == 100000 else None
-    maximum = root.get('player_max_monthly_gold_maintenance_v1') if isinstance(root, Mapping) else None
+    cash = money.get('raw') if (isinstance(money, Mapping) and money.get('scale') == 100000
+        and type(money.get('raw')) is int) else None
+    maximum = _current_root(snapshot, root).get('player_max_monthly_gold_maintenance_v1')
     value = maximum.get('value') if isinstance(maximum, Mapping) and maximum.get('status') == 'available' else None
     rate = value.get('raw') if isinstance(value, Mapping) and value.get('scale') == 100000 else None
     normal = max(20000000, rate * 18) if type(rate) is int and rate >= 0 else None
@@ -39,13 +49,27 @@ def observe_war_financing_capability_gap_v1(snapshot, *, priority, construction_
     return {'schema': 'xar.war-financing-capability-gap.v1', 'source_frame': observed_frame(snapshot),
         'trigger': 'cash_shortfall_or_observed_war_crisis', 'crisis_war_ids': crisis,
         'observed_treasury_raw': cash, 'ordinary_military_buffer_raw': normal,
+        'maximum_military_maintenance_status': 'same_frame_observed' if normal is not None else 'unobserved',
         'construction_intent_present': isinstance(pending, Mapping),
         'current_active_project_independently_observed': False,
         'cancel_construction': {'status': 'native_interface_missing',
             'reason': 'stock GUI supports cancellation; current .4 adapter has no final CanCancel/refund quote/native receiver',
             'refund_quote_raw': None, 'submit_planned': False},
-        'legal_debt': {'status': 'native_interface_missing',
-            'reason': 'existing holy-order loan reader is .3 readonly; current .4 loan final terms/submit/readback not implemented',
+        'legal_debt': {'status': 'current_build_terms_and_received_funds_unqualified',
+            'reason': 'generic selected-decision Confirm exists in source; current .4 full loan terms, typed debt and attributable receipt remain unqualified',
+            'source_reviewed_confirm_route': {
+                'public_tool': 'ck3_confirm_ingame_decision_outcome_v1',
+                'capability': confirm_capability,
+                'advertised_in_supplied_bridge_capabilities': (confirm_capability in bridge_capabilities
+                    if isinstance(bridge_capabilities, (set, frozenset)) else None),
+                'decision_key': 'borrow_from_holy_order_decision',
+                'expected_outcome': 'event_window',
+                'expected_event_definition_key': 'holy_order.0200',
+                'current_selected_legal_decision_verified': False,
+                'dispatch_or_expected_event_proves_received_funds': False},
+            'current_build_full_terms_verified': False, 'typed_debt_readback_verified': False,
+            'independently_attributed_received_funds_verified': False,
+            'source_reviewed_debt_commit_option': 'holy_order.0200.a',
             'principal_quote_raw': None, 'submit_planned': False},
         'unreceived_funding_credited_raw': 0, 'selected_action': None,
         'future_funding_receipts_must_keep_same_procurement_epoch': True,

@@ -1,0 +1,125 @@
+{
+  "schema": "xar.p83-financing-capability-stages-source-patch.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:11:10.639469+00:00",
+  "mode": "source-only; no deployment or native business qualification",
+  "base_head_observed": "f24dc997f67b9757b2e80867ec2ce16613ee3c80",
+  "problem": "production financing diagnostic incorrectly called all .4 loan submit paths missing after generic Confirm reuse was source-reviewed",
+  "source_review_before_patch": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p87-loan-actual-install-source-2026-10-18.json",
+    "bytes": 9049,
+    "sha256": "1a19aaadc0f643c156f1b6281decf66a812c02a89118543b8161a4761fda99af"
+  },
+  "source_review_original_observed_at_utc": "2026-10-18T06:41:00Z",
+  "original_stock_source_pins_reused": [
+    {
+      "path": "common/decisions/00_holy_order_decisions.txt",
+      "bytes": 27897,
+      "sha256": "137cc1b2daa7a7f615e597cd1623cc0c9d29052e63ca73ccbf94e5db38c34e4f",
+      "bounded_definition": "borrow_from_holy_order_decision from line275",
+      "tool_chunk": "aa57b5"
+    },
+    {
+      "path": "events/religion_events/holy_order_events.txt",
+      "bytes": 104485,
+      "sha256": "f4820ff47c6edd0e4d3723ae14f56cd3374846f7f3f5b4843c3810e2450b4622",
+      "bounded_definitions": [
+        "0200:457",
+        "0206:532",
+        "0202:564",
+        "0203:746",
+        "0204:837"
+      ],
+      "tool_chunk": "00e92f"
+    }
+  ],
+  "stock_or_runtime_reread": false,
+  "source_readback_after_qualification": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\wartime_construction_cash_v1.py",
+      "bytes": 16639,
+      "sha256": "9eb2f93a573e2c6f467e6ff478c50d9856350cb4c436b5403fd0dd70351b772e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 21416,
+      "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_financing_capability_gap_v1.py",
+      "bytes": 6373,
+      "sha256": "3811ba781ab70f30d3d2d5466fa6619d686565b921dd481b16fef449139f4bca"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_outcome_contract.py",
+      "bytes": 9452,
+      "sha256": "a082ceb1d04047df9e9140f45861cc0f30f698fd181e622fbcab964b7cfac77d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_order_loan_context_private_transport.py",
+      "bytes": 5753,
+      "sha256": "c3bb4b5aa257477c055e0254edcaf426cf2f16fe46452930be2cd89d8c508d82"
+    }
+  ],
+  "behavior": {
+    "generic_confirm_source_route_identified": true,
+    "runtime_advertisement_from_supplied_capability_set_only": true,
+    "advertisement_implies_current_loan_eligibility": false,
+    "current_build_full_terms_verified": false,
+    "typed_debt_verified": false,
+    "received_funds_verified": false,
+    "new_loan_or_cancel_action": false,
+    "loan_or_refund_credited_raw": 0,
+    "same_procurement_epoch_required": true,
+    "unknown_submission_no_replay": true,
+    "stale_root_not_used_for_current_maximum_maintenance": true,
+    "historical_war_priority_requires_current_active_war_id": true,
+    "construction_or_mercenary_spending_policy_changed": false
+  },
+  "native_minimum_remaining": [
+    "exact .4 complete evaluated loan terms and ten-resource cost quote",
+    "current selected legal decision and actual available holy_order.0200.a",
+    "typed debtor/lender/principal plus attributable wallet receipt",
+    "cancel final gate/refund-cost quote and independent project/wallet result"
+  ],
+  "qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\FINANCING-GAP-QUALIFICATION-22bd5bfa9f\\QUALIFICATION.json",
+    "bytes": 1467,
+    "sha256": "01012755d5808915a1c5090d43e9be5da22abecf0208ca973111ada40704d4da",
+    "started_at_utc": "2026-10-18T11:09:04.635309+00:00",
+    "completed_at_utc": "2026-10-18T11:09:12.570071+00:00",
+    "summary": "............                                                             [100%]\r\n12 passed in 7.03s",
+    "pytest_exit_code": 0,
+    "parent_priority_class_readback": 16384,
+    "pytest_priority_class_readback": 16384,
+    "one_pytest_child": true,
+    "native_game_inputs": "synthetic",
+    "log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\FINANCING-GAP-QUALIFICATION-22bd5bfa9f\\pytest.log",
+      "bytes": 101,
+      "sha256": "f55ee115bb4c274851113780c60ebb04e04156a96b68eb4e20722575c7732d1b"
+    }
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-P50-CONTINUATION-ADMISSION.json",
+      "bytes": 6142,
+      "sha256": "43a2697c546b4cf0c8726cc3be1736ca0eaf19cb8600279f4f3dbabf152f88b1"
+    },
+    "same_reservation_bytes": 171798691840,
+    "new_reservation_bytes": 0,
+    "review_at_utc": "2026-10-18T11:49:00.265518+00:00",
+    "review_extended": false,
+    "thin_metadata_and_test_scratch_estimated_peak_bytes": 98304
+  },
+  "boundary": {
+    "CK3_Steam_MCP_Native_desktop_operations": 0,
+    "media_index_SAVE_Driver_active_runtime_reads_or_stat": 0,
+    "native_or_heavy_builds": 0,
+    "full_matrix_or_old_test_reruns": 0,
+    "current_frozen_SDK_or_encoder_source_changes": 0,
+    "runtime_or_next_game_adoption": false,
+    "loan_cancel_hire_refund_land_result_credit": false
+  }
+}
