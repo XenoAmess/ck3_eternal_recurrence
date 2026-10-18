@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from functools import lru_cache
 import hashlib
@@ -26,6 +26,7 @@ from xar_promo.project import load_document
 from xar_promo.render import RenderOptions, execute_render_plan, plan_concat, plan_render
 from xar_promo.subtitles import AssCue, AssDocumentConfig, AssStyleConfig, SubtitleTrackConfig, render_ass_document
 from xar_promo.layout import FontSpec, WrapPolicy, wrap_text
+from xar_promo.audio import AudioMixSpec, AudioStem, plan_audio_mix
 from PIL import ImageFont
 
 from .production import fresh_runtime, pin, read, write, project, cue_duration, package_bytes
@@ -38,6 +39,72 @@ VIDEO_RATE = 3_000_000
 BUFFER_BITS = 3_000_000
 AUDIO_RATE = 192_000
 SIDE_BYTES = (64 + 32 + 16 + 32 + 16) * 1024**2
+MUSIC_REPO_PATH = 'promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav'
+MUSIC_BYTES = 30_726_160
+MUSIC_SHA256 = 'fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f'
+
+
+@dataclass(frozen=True)
+class RenderProfile:
+    id: str
+    max_seconds: int
+    max_segments: int = MAX_SEGMENTS
+
+    def to_mapping(self):
+        return {'schema':'ck3-faith-power-immutable-render-profile-v1','id':self.id,
+            'max_seconds':self.max_seconds,'max_segments':self.max_segments,
+            'video_maxrate_bps':VIDEO_RATE,'video_bufsize_bits':BUFFER_BITS,'audio_bitrate_bps':AUDIO_RATE,
+            'geometry':[2560,1440,30],'crf':21,'preset':'veryfast'}
+
+
+DEFAULT_PROFILE = RenderProfile('episode01-31m-1440p30-v1', MAX_SECONDS)
+EXTENDED_PROFILE = RenderProfile('episode01-35m-1440p30-v1', 2100)
+PADDING_PROFILE = RenderProfile('episode01-2101s-1440p30-v1', 2101)
+
+
+def render_profile(document, bound):
+    reference=document.get('render_profile')
+    if reference is None:return DEFAULT_PROFILE
+    if Path(reference['path']).suffix.lower()!='.json':raise ValueError('Render profile must be pinned JSON')
+    actual=read(bound(reference))
+    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE):
+        if actual==profile.to_mapping():return profile
+    raise ValueError('Unknown immutable render profile or changed quality settings')
+
+
+def background_music(document, bound, *, repo=None):
+    reference=document.get('background_music')
+    if reference is None:return None
+    if (not isinstance(reference,dict) or set(reference)!={'path','bytes','sha256'}
+        or reference['bytes']!=MUSIC_BYTES or reference['sha256'].lower()!=MUSIC_SHA256):
+        raise ValueError('Use the exact existing Quiet Courtly Tension WAV')
+    path=Path(reference['path']).resolve()
+    if repo is not None and path!=(Path(repo)/MUSIC_REPO_PATH).resolve():
+        raise ValueError('Use the repository music asset directly; do not copy it')
+    if tuple(part.lower() for part in path.parts[-len(Path(MUSIC_REPO_PATH).parts):])!=tuple(part.lower() for part in Path(MUSIC_REPO_PATH).parts):
+        raise ValueError('Music path is not the canonical repository asset')
+    bound(reference)  # Formal metadata-only binding stats this binary; normal build verifies bytes.
+    return {'file':reference,'narration_gain_db':0,'music_gain_db':-17,'loop_same_original':True,
+        'fade_in_seconds':2,'fade_out_seconds':8,'ducking':False,'normalize':False,
+        'sample_rate':48000,'channels':2,'audio_bitrate_bps':AUDIO_RATE,'extra_audio_file_bytes':0}
+
+
+def validate_burned_in_disclosure(part, bound):
+    declared=part.get('burned_in_disclosure')
+    if declared is None:return False
+    if (part['kind'] not in {'diagram','native-readback'} or not isinstance(declared,dict)
+        or set(declared)!={'source_class','text','render_receipt'}
+        or declared['source_class']!=part['kind'] or declared['text']!=part['disclosure']):
+        raise ValueError('Burned disclosure must bind this exact graphic class and text; raw gameplay cannot hide its label')
+    reference=declared['render_receipt']
+    if Path(reference['path']).suffix.lower()!='.json':raise ValueError('Disclosure needs a small render receipt')
+    receipt=read(bound(reference))
+    schemas={'native-readback':{'ck3-faith-power-native-readback-card-v1'},
+        'diagram':{'ck3-faith-power-result-source-diagram-v1','ck3-faith-power-micro-source-diagram-v1'}}
+    if (receipt.get('schema') not in schemas[part['kind']] or receipt.get('image')!=part['image']
+        or receipt.get('permanent_disclosure')!=declared['text']):
+        raise ValueError('Burned disclosure differs from the exact image render receipt')
+    return True
 
 
 def now(): return datetime.now(timezone.utc).isoformat()
@@ -47,15 +114,17 @@ def media_limit(seconds, *, audio):
     return math.ceil(((VIDEO_RATE + (AUDIO_RATE if audio else 0)) * seconds + BUFFER_BITS) / 8 * 1.05)
 
 
-def peak_budget(seconds=MAX_SECONDS, segments=MAX_SEGMENTS):
+def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE):
     """New future bytes, not an existing-package cap or measured output size."""
-    if not 0 < seconds <= MAX_SECONDS or not 0 < segments <= MAX_SEGMENTS:
-        raise ValueError('31-minute / 168-segment limit exceeded')
+    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE):raise ValueError('Unknown render profile')
+    seconds=profile.max_seconds if seconds is None else seconds
+    if not 0 < seconds <= profile.max_seconds or not 0 < segments <= profile.max_segments:
+        raise ValueError(f'{profile.max_seconds}-second / {profile.max_segments}-segment limit exceeded')
     visual = math.ceil((VIDEO_RATE * seconds + BUFFER_BITS * segments) / 8 * 1.05)
     narrated = math.ceil(((VIDEO_RATE + AUDIO_RATE) * seconds + BUFFER_BITS * segments) / 8 * 1.05)
     overshoot = math.ceil(BUFFER_BITS / 8) * (2 * segments + 1)
     total = visual + narrated * 2 + SIDE_BYTES + overshoot
-    return {'max_seconds':seconds,'segments':segments,'prepared_visual_bytes':visual,
+    return {'max_seconds':seconds,'segments':segments,'render_profile':profile.to_mapping(),'prepared_visual_bytes':visual,
         'narrated_segment_bytes':narrated,'concat_deliverable_bytes':narrated,
         'graphics_metadata_audio_audit_scratch_bytes':SIDE_BYTES,
         'conservative_packet_overshoot_bytes':overshoot,'peak_new_bytes':total,
@@ -204,6 +273,7 @@ class Inputs:
             if not parts or abs(sum(p['duration_seconds'] for p in parts)-row['duration_seconds'])>1e-6:
                 raise ValueError('Visual parts must exactly cover their measured cue')
             for part in parts:
+                validate_burned_in_disclosure(part,self.bound)
                 duration=part['duration_seconds']
                 if duration<=0 or abs(duration*30-round(duration*30))>1e-4:
                     raise ValueError('Each authored visual duration must align to 30fps')
@@ -255,9 +325,12 @@ class Inputs:
             self.errors.append('Full episode must contain at least 20 authored minutes')
         if scope=='episode01-adoption-review-segment' and not 180<=total<=300:
             self.errors.append('Adoption review segment must measure 180–300 authored seconds')
-        budget=peak_budget(total,len(ordered))
+        profile=render_profile(doc,self.bound)
+        music=background_music(doc,self.bound)
+        if profile!=DEFAULT_PROFILE and music is None:self.errors.append('background_music: exact repository theme unbound')
+        budget=peak_budget(total,len(ordered),profile=profile)
         return {'rows':ordered,'seconds':total,'gaps':self.errors,
-            'ready_to_build':not self.errors,'budget':budget,
+            'ready_to_build':not self.errors,'budget':budget,'background_music':music,
             'existing_measured_audio_inventory_count':158,'existing_audio_selected_count':len(doc['cues']),
             'scope':scope,'new_TTS_requested':False,
             'result_slots':slots,'native_business_verified':False,'human_1x_signoff':False}
@@ -299,10 +372,15 @@ def subtitle_groups(row):
     return groups
 
 
-def explicit_project_config(config, rows):
+def explicit_project_config(config, rows, *, profile=DEFAULT_PROFILE):
     """Validate real native project cues without result-independent authoring flags."""
     from xar_promo.model import ProjectConfig
     ProjectConfig.from_mapping(config)
+    if profile!=DEFAULT_PROFILE:
+        limit=config.get('constraints',{}).get('duration_limit_seconds')
+        if (not isinstance(limit,(int,float)) or isinstance(limit,bool)
+            or not sum(row['duration_seconds'] for row in rows)<=limit<=profile.max_seconds):
+            raise ValueError('Explicit extended profile needs an actual native project limit covering the selected clock')
     cues=[cue for chapter in config['chapters'] for cue in chapter['cues']]
     if [cue['id'] for cue in cues]!=[row['id'] for row in rows]:
         raise ValueError('ProjectConfig must contain the exact selected cue sequence')
@@ -331,7 +409,9 @@ def subtitle(row,font_path,font_name):
         margin_left=100,margin_right=100,margin_vertical=30)
     tracks.append(SubtitleTrackConfig('source','zh-CN',3,style)); cursor=0
     for number,part in enumerate(row['visual_parts']):
-        if part['kind']!='mechanism-motion':  # Motion already burns its permanent source-only label at y29.
+        if (part['kind']!='mechanism-motion' and not
+            (part['kind'] in {'diagram','native-readback'} and part.get('burned_in_disclosure'))):
+            # Explicit graphic receipt validation happens before build; raw gameplay keeps its label.
             cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],part['disclosure']))
         cursor+=part['duration_seconds']
     return render_ass_document(AssDocumentConfig('Faith and Power: review',2560,1440,row['duration_seconds']),
@@ -432,8 +512,121 @@ def companion_text(rows,mapping,directory):
     return paths
 
 
+def theme_concat(plan, music, duration, final_cap):
+    """One concat/mix: copy video, encode the final AAC once, no dry full-film copy."""
+    if len(plan.commands)!=1 or len(plan.generated_files)!=1:raise ValueError('Expected the existing single concat command')
+    spec=AudioMixSpec(stems=(AudioStem('narration',plan.generated_files[0].path,gain_db=0),
+        AudioStem('series-theme',Path(music['file']['path']),gain_db=-17,fade_in_seconds=2,fade_out_seconds=8)),
+        duration_seconds=duration,sample_rate=48000,channels=2,normalize=False,
+        metadata={'ducking':False,'continuous_same_theme_loop':True,'narration_gain_db':0,'music_gain_db':-17})
+    mix=plan_audio_mix(spec,output_label='faith_theme_mix')
+    item=plan.commands[0]
+    argv=(item.spec.argv[0],'-nostdin','-hide_banner','-loglevel','error','-n','-threads','2','-filter_complex_threads','2',
+        '-f','concat','-safe','0','-i',str(plan.generated_files[0].path),'-stream_loop','-1','-i',music['file']['path'],
+        '-filter_complex',mix.filtergraph,'-map','0:v:0','-map','[faith_theme_mix]',
+        '-c:v','copy','-c:a','aac','-b:a','192k','-ar','48000','-ac','2',
+        '-movflags','+faststart','-t',f'{duration:.9f}','-fs',str(final_cap),str(plan.partial_output))
+    return replace(plan,commands=(replace(item,spec=replace(item.spec,argv=argv)),)),mix
+
+
+def seekable_dry_manifest(content, durations):
+    """Actual probed segment durations permit input seeking for short audio proof windows."""
+    lines=[];index=0
+    for line in content.splitlines():
+        lines.append(line)
+        if line.startswith('file '):
+            duration=durations[index]
+            if not math.isfinite(duration) or duration<=0:raise ValueError('Invalid actual segment duration')
+            lines.append(f'duration {duration:.9f}');index+=1
+    if index!=len(durations):raise ValueError('Dry proof manifest duration count differs')
+    return '\n'.join(lines)+'\n'
+
+
+def music_window_metrics(actual, dry, expected):
+    import numpy as np
+    residual=np.asarray(actual,dtype=np.float64)-dry
+    target=np.asarray(expected,dtype=np.float64)
+    music_rms=float(np.sqrt(np.mean(target*target)))
+    error=float(np.sqrt(np.mean((residual-target)**2)))
+    gain=float(np.dot(residual,target)/max(float(np.dot(target,target)),1e-30))
+    a=residual-float(np.mean(residual));b=target-float(np.mean(target))
+    correlation=float(np.dot(a,b)/max(float(np.sqrt(np.dot(a,a)*np.dot(b,b))),1e-30))
+    passed=music_rms>1e-6 and correlation>.90 and .85<gain<1.15 and error/music_rms<.5
+    return {'music_rms':music_rms,'residual_music_correlation':correlation,'expected_music_gain':gain,
+        'residual_error_ratio':error/max(music_rms,1e-30),'passed':passed}
+
+
+def fixed_music_lag(actual, expected, pad, *, max_lag=240):
+    import numpy as np
+    errors=[float(np.mean((actual[pad+lag:pad+lag+len(expected)]-expected)**2)) for lag in range(-max_lag,max_lag+1)]
+    lag=int(np.argmin(errors))-max_lag
+    if abs(lag)==max_lag:raise ValueError('Music proof calibration reaches fixed lag boundary; do not widen or refit')
+    return lag
+
+
+def music_presence(ffmpeg, final_ref, dry_manifest, music, source_duration, duration, directory, machine):
+    """At most five 4s windows; final AAC minus independently decoded dry narration.
+
+    Only 8k mono float PCM pipes in RAM. One calibration lag is fixed for every
+    window. No whole-film extra audio decode, WAV, AAC scratch, or per-window fit.
+    """
+    import numpy as np
+    if duration<12:raise ValueError('Music proof needs a timeline of at least12 seconds')
+    audit=Path(directory)/'audit/music-windows';audit.mkdir(parents=True,exist_ok=False)
+    rate=8000;length=4.;padding=.04;pad=round(padding*rate)
+    points=sorted({round(min(max(.5,t),duration-length-.1),6) for t in (.5,min(30,duration/4),duration/2,duration*.75,duration-6)})
+    calibration=points[1]
+    def decode(label,path,start,seconds,*,concat=False,loop=False):
+        argv=[str(ffmpeg),'-nostdin','-hide_banner','-v','error','-threads','2']
+        if loop:argv+=['-stream_loop','-1']
+        argv+=['-ss',f'{start:.9f}']
+        if concat:argv+=['-f','concat','-safe','0']
+        argv+=['-i',str(path),'-map','0:a:0','-vn','-t',f'{seconds:.9f}',
+            '-ar',str(rate),'-ac','1','-c:a','pcm_f32le','-f','f32le','pipe:1']
+        result=subprocess.run(argv,capture_output=True,timeout=30)
+        cap=(math.ceil(seconds*rate)+1024)*4
+        info={'machine_id':machine,'observed_at_utc':now(),'argv':argv,'returncode':result.returncode,
+            'PCM_bytes_in_RAM':len(result.stdout),'PCM_sha256':hashlib.sha256(result.stdout).hexdigest(),
+            'PCM_persisted':False,'stderr':result.stderr[:16384].decode('utf-8','replace')}
+        write(audit/(label+'.json'),info)
+        if result.returncode or len(result.stdout)>cap or len(result.stderr)>16384 or len(result.stdout)%4:
+            raise ValueError('Bounded audio proof decode failed; diagnostics retained')
+        return np.frombuffer(result.stdout,dtype='<f4').astype(np.float64)
+    def window(index,start):
+        final=decode(f'{index}-final',final_ref['path'],start-padding,length+2*padding)
+        dry=decode(f'{index}-dry',dry_manifest,start,length,concat=True)
+        original=decode(f'{index}-theme',music['file']['path'],start%source_duration,length,loop=True)
+        n=round(length*rate)
+        if len(final)<n+2*pad or len(dry)<n or len(original)<n:raise ValueError('Short decoded music-proof window')
+        times=start+np.arange(n)/rate
+        fade=np.minimum(np.clip(times/2,0,1),np.clip((duration-times)/8,0,1))
+        expected=original[:n]*(10**(-17/20))*fade
+        return final,dry[:n],expected
+    calibration_index=points.index(calibration)
+    calibrated=window(calibration_index,calibration)
+    lag=fixed_music_lag(calibrated[0],calibrated[1]+calibrated[2],pad)
+    rows=[]
+    for i,start in enumerate(points):
+        actual,dry,expected=calibrated if i==calibration_index else window(i,start)
+        metrics=music_window_metrics(actual[pad+lag:pad+lag+len(dry)],dry,expected)
+        rows.append({'start_seconds':start,'duration_seconds':length,**metrics})
+    report={'machine_id':machine,'observed_at_utc':now(),'evidence_source':'Actual final AAC minus independent seeked dry segment-concat decode, compared with exact theme loop/gain/fades; bounded PCM in RAM only',
+        'final':final_ref,'music':music,'dry_manifest':pin(dry_manifest),'global_lag_samples_at_8000Hz':lag,
+        'lag_calibrated_once_at_seconds':calibration,'lag_search_limit_samples':240,'per_window_refitting':False,
+        'thresholds':{'correlation_above':.90,'gain_open_interval':[.85,1.15],'error_RMS_over_music_RMS_below':.5,'music_RMS_above':1e-6},
+        'windows':rows,'passed':all(r['passed'] for r in rows),'whole_film_extra_audio_decode':False,
+        'PCM_WAV_AAC_scratch_files':0,'estimated_peak_RAM_bytes':8*1024**2,'human_listening_performed':False}
+    path=write(Path(directory)/'music-presence.json',report)
+    if not report['passed']:raise ValueError('Actual final AAC music presence failed; no automatic retry or relaxed thresholds')
+    return path
+
+
 def build(args,doc,inspection,inputs,admission):
     if not inspection['ready_to_build']:raise ValueError('Full build refused: '+ '; '.join(inspection['gaps']))
+    profile=render_profile(doc,inputs.bound)
+    music=background_music(doc,inputs.bound,repo=args.repo)
+    if profile!=DEFAULT_PROFILE and (music is None or doc.get('project_config') is None):
+        raise ValueError('Explicit extended profile requires exact music and actual selected ProjectConfig')
     out=Path(args.output).resolve(); out.mkdir(parents=True,exist_ok=False)
     write(out/'storage-admission.json',admission)
     runtime=read(args.runtime)
@@ -442,7 +635,7 @@ def build(args,doc,inspection,inputs,admission):
     font=inputs.bound(runtime['subtitle_font']['file']); family=runtime['subtitle_font']['family']
     if ImageFont.truetype(str(font),49).getname()[0]!=family:raise ValueError('Actual subtitle font family differs')
     if doc.get('project_config') is not None:
-        config=explicit_project_config(read(inputs.bound(doc['project_config'])),inspection['rows'])
+        config=explicit_project_config(read(inputs.bound(doc['project_config'])),inspection['rows'],profile=profile)
     else:
         assembly=read(inputs.bound(doc['assembly_plan']))
         config=project(read(inputs.bound(assembly['inputs']['script'])))
@@ -475,7 +668,7 @@ def build(args,doc,inspection,inputs,admission):
             probe=media_duration(ffprobe,target,out/'audit/segment-probe'/key)
             if abs(float(probe['format']['duration'])-d)>.04:raise ValueError('Narrated segment truncated or exceeded its clock')
             return row,target,[(key+'.visual','prepared-visual',visual,'video/mp4'),(key+'.subtitle','subtitle',ass,'text/x-ass'),
-                (key+'.segment','rendered-segment',target,'video/mp4')]
+                (key+'.segment','rendered-segment',target,'video/mp4')],float(probe['format']['duration'])
         workers=args.workers
         if workers==2 and (os.cpu_count() or 1)<4:raise ValueError('Two encoders require at least four logical CPUs')
         memory=available_memory()
@@ -486,9 +679,11 @@ def build(args,doc,inspection,inputs,admission):
             'shared_total_peak_bytes':inspection['budget']['peak_new_bytes'],'automatic_retry':False})
         with ThreadPoolExecutor(max_workers=workers) as pool:
             rendered=list(pool.map(render_one,inspection['rows']))
-        for row,target,files in rendered:
+        segment_durations=[]
+        for row,target,files,actual_segment_duration in rendered:
             key=row['id'];d=row['duration_seconds'];records.extend(files)
             segment_paths.append(target)
+            segment_durations.append(actual_segment_duration)
             mapping.append({'id':key,'claim_ids':row['claim_ids'],'shot_ids':row['shot_ids'],
                 'audio':row['audio'],'raw_or_diagram_parts':row['visual_parts'],
                 'subtitle_groups':subtitle_groups(row),'editor_annotations':row.get('editor_annotations'),
@@ -498,12 +693,24 @@ def build(args,doc,inspection,inputs,admission):
         final=media/'episode01-review.mp4'
         plan=plan_concat(ffmpeg=ffmpeg,segment_paths=segment_paths,concat_path=media/'episode01.ffconcat',
             partial_output=media/'episode01-review.partial.mp4',final_output=final,audit_directory=out/'audit/concat')
-        # Stream-copy has no video encoder: only the final total-size cap is added.
-        commands=[]
-        for item in plan.commands:
-            argv=list(item.spec.argv);argv[-1:-1]=['-fs',str(inspection['budget']['concat_deliverable_bytes'])]
-            commands.append(replace(item,spec=replace(item.spec,argv=tuple(argv))))
-        execute_render_plan(replace(plan,commands=tuple(commands)))
+        if music is not None:
+            source_probe=media_duration(ffprobe,inputs.bound(music['file']),out/'audit/music-source-probe')
+            source_audio=[s for s in source_probe['streams'] if s['codec_type']=='audio']
+            if (len(source_audio)!=1 or source_audio[0]['sample_rate']!='48000' or source_audio[0]['channels']!=2
+                or any(s['codec_type']=='video' for s in source_probe['streams'])):raise ValueError('Actual theme must be48kHz stereo audio only')
+            dry_manifest=write_text(media/'music-proof-dry.ffconcat',seekable_dry_manifest(plan.generated_files[0].content,segment_durations))
+            plan,mix=theme_concat(plan,music,cursor,inspection['budget']['concat_deliverable_bytes'])
+            write(out/'theme-mix-plan.json',{'machine_id':doc['machine_id'],'observed_at_utc':now(),'music':music,
+                'mix':mix.to_mapping(),'argv':list(plan.commands[0].spec.argv),'source_asset_copied':False,
+                'video_stream_copy':True,'final_AAC_encoded_once':True,'additional_full_film_or_AAC_scratch_bytes':0})
+        else:
+            # Legacy concat remains a pure stream-copy with the original final-size cap.
+            commands=[]
+            for item in plan.commands:
+                argv=list(item.spec.argv);argv[-1:-1]=['-fs',str(inspection['budget']['concat_deliverable_bytes'])]
+                commands.append(replace(item,spec=replace(item.spec,argv=tuple(argv))))
+            plan=replace(plan,commands=tuple(commands))
+        execute_render_plan(plan)
         decoded=run_process([str(ffmpeg),'-nostdin','-v','error','-xerror','-err_detect','explode','-threads','2','-i',str(final),
             '-map','0:v:0','-map','0:a:0','-f','null','-'],out/'audit/full-decode','full review video/audio decode')
         if decoded.stderr.strip():raise ValueError('Final strict decoder emitted diagnostics')
@@ -513,6 +720,8 @@ def build(args,doc,inspection,inputs,admission):
         audio=next(s for s in probe['streams'] if s['codec_type']=='audio')
         if (video['width'],video['height'],audio['sample_rate'],audio['channels'])!=(2560,1440,'48000',2):
             raise ValueError('Final actual AV geometry differs')
+        if music is not None and (video['codec_name']!='h264' or audio['codec_name']!='aac'):
+            raise ValueError('Mixed final must retain H264 video and actual AAC audio')
         pts_result=run_process([str(ffprobe),'-v','error','-select_streams','v:0','-show_entries',
             'frame=best_effort_timestamp_time','-of','json',str(final)],out/'audit/final-pts','all actual final frame PTS')
         pts=[float(f['best_effort_timestamp_time']) for f in json.loads(pts_result.stdout)['frames']]
@@ -542,6 +751,10 @@ def build(args,doc,inspection,inputs,admission):
         mean=re.search(r'mean_volume: ([\-0-9.]+) dB',volume.stderr)
         maximum=re.search(r'max_volume: ([\-0-9.]+) dB',volume.stderr)
         if not mean or not maximum or float(maximum[1])<-60:raise ValueError('Final narration signal missing or effectively silent')
+        music_proof=None
+        if music is not None:
+            music_proof=music_presence(ffmpeg,read(map_path)['final'],dry_manifest,music,
+                float(source_probe['format']['duration']),cursor,out,doc['machine_id'])
         records.extend([('episode01.review','deliverable',final,'video/mp4')])
         direct_register(run,records)
         from xar_promo.runlog import append_phase_record
@@ -552,6 +765,7 @@ def build(args,doc,inspection,inputs,admission):
             'actual_new_bytes':package_bytes(out),'budget':inspection['budget'],
             'text':[pin(path) for path in text_paths],
             'audio_signal':{'mean_volume_db':float(mean[1]),'max_volume_db':float(maximum[1]),'human_listening_performed':False},
+            'background_music':music,'actual_music_presence':pin(music_proof) if music_proof else None,'strict_AV_full_decode_exit_code':0,
             'media_CAS_copies':0,'human_signoff_recorded':False})
         return {'final':pin(final),'map':pin(map_path),'run':pin(run),'signoff':'pending'}
     except Exception as error:

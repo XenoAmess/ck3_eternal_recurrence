@@ -264,6 +264,7 @@ class FormalInputs:
             if not parts or abs(sum(part['duration_seconds'] for part in parts) - row['duration_seconds']) > 1e-6:
                 raise ValueError('Visual parts must cover the exact measured cue')
             for part in parts:
+                common.validate_burned_in_disclosure(part,self.bound)
                 duration = part['duration_seconds']
                 if duration <= 0 or abs(duration * 30 - round(duration * 30)) > 1e-4 or not part.get('disclosure'):
                     raise ValueError('Visual needs positive frame-aligned duration and source disclosure')
@@ -352,6 +353,12 @@ class FormalInputs:
             if any(right[0] < left[1] - 1e-7 for left, right in zip(spans, spans[1:])):
                 raise ValueError('Actual raw intervals repeat or overlap')
         total = sum(row['duration_seconds'] for row in rows)
+        profile=common.render_profile(doc,self.bound)
+        music=common.background_music(doc,self.bound)
+        if profile!=common.DEFAULT_PROFILE and music is None:
+            gaps.append('background_music: exact repository theme unbound')
+        if profile!=common.DEFAULT_PROFILE and doc.get('project_config') is None:
+            gaps.append('project_config: explicit extended profile needs the actual native project')
         states = doc['pending_result_slots']
         warnings = []
         for key, value in states.items():
@@ -372,7 +379,7 @@ class FormalInputs:
         if doc['scope'] == 'episode01-formal-review' and not 1200 <= total <= 2400:
             warnings.append('Outside director 20–40 minute preference; an honest shorter review may build. No padding or raw loops.')
         if doc.get('project_config') is not None:
-            common.explicit_project_config(self.load(doc['project_config']),rows)
+            common.explicit_project_config(self.load(doc['project_config']),rows,profile=profile)
         elif value_v3:
             gaps.append('project_config: actual selected value-v3 native project unbound')
         else:
@@ -387,7 +394,8 @@ class FormalInputs:
             'metadata_SHA_checked_inputs':metadata_checked,
             'evidence_unknowns':getattr(self,'evidence_unknowns',[]),
             'source_claim_limits':getattr(self,'source_claim_limits',[]),
-            'budget': common.peak_budget(total, len(rows)), 'scope': doc['scope'], 'editorial_warnings': warnings,
+            'budget': common.peak_budget(total, len(rows),profile=profile),'background_music':music,
+            'scope': doc['scope'], 'editorial_warnings': warnings,
             'selected_existing_voice_count': sum(row['id'] in old for row in rows),
             'selected_new_voice_count': sum(row['id'] in new for row in rows),
             'bound_raw_seconds': raw_seconds, 'bound_graphic_seconds': graphic_seconds,
