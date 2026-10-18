@@ -1,0 +1,322 @@
+{
+  "schema": "xar.first30.scored-film-local-delivery/v1",
+  "status": "LOCAL_FILM_SCORE_VISUALS_PERMANENT_SAVE_AND_SIX_VIDEO_ONLY_MATERIALS_DELIVERED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewer": "/root",
+  "at_utc": "2026-10-18T22:18:39.090194+00:00",
+  "film": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\render-output\\robert-first30-scored-complete09.mp4",
+    "bytes": 13485902026,
+    "sha256": "153d8b55bc90557dc92ccc5e4d6db677498ef4dd63506415e23e86a5e98896e2",
+    "actual_stat": {
+      "bytes": 13485902026,
+      "mtime_ns": 1792357467896338100,
+      "device": 6505083400996699863,
+      "inode": 281474988837043
+    },
+    "duration_seconds": 28033,
+    "frames": 840990,
+    "intro_score_seconds": 60,
+    "outro_score_seconds": 60,
+    "only_audio_source": "promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav"
+  },
+  "score_image": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\campaign-score-visual01\\campaign-score.png",
+    "bytes": 253852,
+    "sha256": "48df267827725107d694a0142400b35bf0c4cf8dbf3375f7354a6582cbc7c434"
+  },
+  "score_video": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\campaign-score-visual01\\score-explanation.mp4",
+    "bytes": 4581281,
+    "sha256": "ebd6905130d237c87106452581d29bb376ecf78596330dcfb4e5a068234e326e",
+    "duration_seconds": 60
+  },
+  "permanent_save": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\Robert-first30-raw53407320.ck3",
+    "bytes": 143852966,
+    "sha256": "331dc531a33ec74990edd3385574d055a7b946427aa20de10c231a6da73bce71",
+    "actual_stat": {
+      "bytes": 143852966,
+      "mtime_ns": 1792313402006790400,
+      "device": 6505083400996699863,
+      "inode": 281474988832795
+    },
+    "permanent_user_exception": true,
+    "no_autoexpiry": true
+  },
+  "references": {
+    "composition_outer": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-SCORED-COMPOSITION-COMPLETE09.json",
+      "bytes": 1934,
+      "sha256": "b511f74ce0ccf6505d8ebdd639f1c99788c6e10811e179b5e59657e4b1efe1c6"
+    },
+    "composition_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\render-work-SCORED-FINAL09\\RESULT.json",
+      "bytes": 13862,
+      "sha256": "0417120ae75fce1758ad2adbc0d049d114cd2fcfa569b3469d527b6f728c9f1d"
+    },
+    "score_visual_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\campaign-score-visual01\\RESULT.json",
+      "bytes": 7014,
+      "sha256": "8b73f6dd10cad9555b54dff9da7dba9eef63b7a8487dd33f75ffee691e571e9f"
+    },
+    "score_numeric_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\scoring-draft01\\score-result-03.json",
+      "bytes": 65583,
+      "sha256": "be53bcc423a0a02d167f9d79329fe2ac1435234db204483687b50ed63be01ea0"
+    },
+    "score_presentation_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\scoring-draft01\\score-result-03-presentation.json",
+      "bytes": 66301,
+      "sha256": "1610ab387067492756fd61b8025d4b4890323f22af514417490db5be7b9ffe0c"
+    },
+    "score_war_scope_cache_replay": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\scoring-draft01\\player-war-scope-cache-replay-07.json",
+      "bytes": 4061,
+      "sha256": "c9b20536977237d55e27312175c5e182877f283c1832bae1efad37af2329ff94"
+    },
+    "final_pixel_seal": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\final-scored-output-QA09\\ROOT-FINAL-SCORED-OUTPUT-QA-SEAL.json",
+      "bytes": 4194,
+      "sha256": "6584989251d003de236ceaf959afcf64ed910e2385dfb394f451bc49c2f372f0"
+    },
+    "video_only_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\VIDEO-ONLY-COMPLETE.json",
+      "bytes": 26948,
+      "sha256": "6ba58877a99adbe088f19fd82901000dd5ec3b86362295c035f211943525dcae"
+    },
+    "deletion_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\ORIGINAL-DELETION-MANIFEST.json",
+      "bytes": 6397,
+      "sha256": "69201fcc0e064f871a7af9754a20a04665abde0ae24aa6c11310b15067012a64"
+    },
+    "replacement_credit_epoch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-VIDEO-ONLY-REPLACEMENT-EPOCH04.json",
+      "bytes": 8387,
+      "sha256": "2b0b2ce46d69f6ceba92fe6cf41e4e6a911e308448789f8973acbd5cb5168555"
+    },
+    "deletion_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-VIDEO-ONLY-DELETION-ADMISSION04.json",
+      "bytes": 4973,
+      "sha256": "488b604dd40e97a28210379ea82e1a23f9b6f6ecbcde5341b536dff496d7f22c"
+    },
+    "deletion_authorization": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-EXACT-SIX-DELETE-AUTHORIZATION04.json",
+      "bytes": 4489,
+      "sha256": "6fdec14b188130c354e4f4113177d5a98e96198efe6d2f1f86001ead303da7a9"
+    },
+    "permanent_save_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\PERMANENT-FIRST30-SAVE.json",
+      "bytes": 8547,
+      "sha256": "e826423ff40bc91db0f29d050a7a2b0cca828a1ac6584f54282226f33ca0e042"
+    },
+    "permanent_registry": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\maintenance\\user-permanent-assets.json",
+      "bytes": 3051,
+      "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+    },
+    "storage_policy": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  },
+  "actual_execution_observations": {
+    "composition": {
+      "retained_session": 5944,
+      "outer_exit_code": 0,
+      "chunk": "41b66a"
+    },
+    "raw_video_only": {
+      "retained_session": 85152,
+      "outer_exit_code": 0,
+      "chunk": "b61fa1"
+    },
+    "Root_six_pair_review": {
+      "chunk": "3d470c",
+      "normal_commands": 18
+    },
+    "delete_exact_six": {
+      "outer_exit_code": 0,
+      "chunk": "f3401c",
+      "retained_session": null
+    }
+  },
+  "six_video_only_materials": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\90e81184-8475-4053-9b83-d01c0f314e0e-video-only.mkv",
+      "bytes": 2930534966,
+      "sha256": "fbc41dd2ef4e37cd31e148261dc9fe71172c8c3143eaba28e4b029714dda1556",
+      "audio_stream_count": 0,
+      "video_packets": {
+        "packet_count": 146456,
+        "min_pts": 0,
+        "max_pts_plus_duration": 4881933,
+        "time_base": "1/1000",
+        "packet_count_not_decoded_frame_count": true,
+        "DTS_monotonic": true
+      },
+      "historical_original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\90e81184-8475-4053-9b83-d01c0f314e0e.mkv",
+      "old_original_readable": false,
+      "source_age_anchor_mtime_ns": 1792224389131817700
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\30f4c0c4-1cfb-401b-ac07-fdfb7584c8a2-video-only.mkv",
+      "bytes": 2237704362,
+      "sha256": "aa620eed46544b22195d3a82de776113b07f37faeaf1c2c0a5b831bc95fc3f26",
+      "audio_stream_count": 0,
+      "video_packets": {
+        "packet_count": 111838,
+        "min_pts": 0,
+        "max_pts_plus_duration": 3727933,
+        "time_base": "1/1000",
+        "packet_count_not_decoded_frame_count": true,
+        "DTS_monotonic": true
+      },
+      "historical_original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\recordings\\30f4c0c4-1cfb-401b-ac07-fdfb7584c8a2.mkv",
+      "old_original_readable": false,
+      "source_age_anchor_mtime_ns": 1792229507504069800
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\7c2df029-2374-4eff-b0db-a331d6adcbb4-video-only.mkv",
+      "bytes": 6123995701,
+      "sha256": "6eae4165f69d7ab34b6b7778a9f14f3e0ee373e73cda79a26d24d1fa588b1290",
+      "audio_stream_count": 0,
+      "video_packets": {
+        "packet_count": 306074,
+        "min_pts": 0,
+        "max_pts_plus_duration": 10202533,
+        "time_base": "1/1000",
+        "packet_count_not_decoded_frame_count": true,
+        "DTS_monotonic": true
+      },
+      "historical_original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\7c2df029-2374-4eff-b0db-a331d6adcbb4.mkv",
+      "old_original_readable": false,
+      "source_age_anchor_mtime_ns": 1792240052523132900
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\5ebe8c91-d388-4a66-91c4-60d9692c33e0-video-only.mkv",
+      "bytes": 11125325660,
+      "sha256": "5d08ebeba34ce4677426feb9f629ac90e8f6153284a1c17596ffc5fc006c4e10",
+      "audio_stream_count": 0,
+      "video_packets": {
+        "packet_count": 556048,
+        "min_pts": 0,
+        "max_pts_plus_duration": 18534966,
+        "time_base": "1/1000",
+        "packet_count_not_decoded_frame_count": true,
+        "DTS_monotonic": true
+      },
+      "historical_original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0.mkv",
+      "old_original_readable": false,
+      "source_age_anchor_mtime_ns": 1792258617956587000
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\cf67e76e-9493-45d7-a72e-794b3d7b9661-video-only.mkv",
+      "bytes": 281394762,
+      "sha256": "83b198ccb30587377e1e380d32d2d636b472d5364f9656053bd8ef6dec768209",
+      "audio_stream_count": 0,
+      "video_packets": {
+        "packet_count": 14061,
+        "min_pts": 0,
+        "max_pts_plus_duration": 468700,
+        "time_base": "1/1000",
+        "packet_count_not_decoded_frame_count": true,
+        "DTS_monotonic": true
+      },
+      "historical_original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\cf67e76e-9493-45d7-a72e-794b3d7b9661.mkv",
+      "old_original_readable": false,
+      "source_age_anchor_mtime_ns": 1792262162539227700
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\da74988f-a20d-428e-9877-f2bc9d39b133-video-only.mkv",
+      "bytes": 28912262022,
+      "sha256": "621e379506728fecd9ec75de218dfdc360ba6a5c8bc12c1b4972aea9671d388e",
+      "audio_stream_count": 0,
+      "video_packets": {
+        "packet_count": 1445057,
+        "min_pts": 0,
+        "max_pts_plus_duration": 48168600,
+        "time_base": "1/1000",
+        "packet_count_not_decoded_frame_count": true,
+        "DTS_monotonic": true
+      },
+      "historical_original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\da74988f-a20d-428e-9877-f2bc9d39b133.mkv",
+      "old_original_readable": false,
+      "source_age_anchor_mtime_ns": 1792311838256731300
+    }
+  ],
+  "video_only_total_bytes": 51611217473,
+  "original_recordings_deleted": 6,
+  "directories_deleted": 0,
+  "original_audio_checks": 0,
+  "repeat_large_media_or_SAVE_SHA_passes": 0,
+  "scoring": {
+    "known_domains": [
+      "L",
+      "U",
+      "D"
+    ],
+    "known_total_weight_percent": 50,
+    "known_weighted_contribution_baseline": "28.50",
+    "known_weighted_contribution_current": "18.2656964659096729904937812104306863146038",
+    "state_interval": [
+      "18.2656964659096729904937812104306863146038",
+      "68.2656964659096729904937812104306863146038"
+    ],
+    "state_completeness": "BOUNDED_INCOMPLETE",
+    "S30_available": false,
+    "reason": "360-month history missing; snapshot 8 game days after true anniversary; E/M/H adapters incomplete"
+  },
+  "close_capacity": {
+    "actual_D": {
+      "total": 14000483987456,
+      "used": 13108172705792,
+      "free": 892311281664
+    },
+    "physical_required_free_bytes": 810785945572,
+    "whole_D_usage_project_upper_bound_bytes": 13108172705792,
+    "project_usage_measured": false,
+    "quota_reserved_upper_bound_bytes": 13876008978404,
+    "signed_project_quota_bytes": 13950000000000,
+    "capacity_review_at_utc": "2026-10-19T10:47:56.081740+00:00",
+    "outstanding_future_reservation_bytes": 146027527160,
+    "replacement_credit_bytes": 25120079872,
+    "credit_shortfall_bytes": 0,
+    "new_credit_or_global_retirement_bytes": 0,
+    "old_account03_immutable_not_all_8014_present_claim": true,
+    "replacement_epoch_is_historical_completed_deletion_evidence_not_new_work_authority": true
+  },
+  "cloud": {
+    "status": "NOT_UPLOADED_C_VOLUME_SAFETY_FLOOR",
+    "actual_C": {
+      "total": 998748684288,
+      "used": 980909752320,
+      "free": 17838931968
+    },
+    "target": "C:/Users/xenoa/OneDrive/CK3-War-AI-20260923",
+    "target_exists": true,
+    "required_C_free_with_20GiB_floor": 34960738506,
+    "upload_started": false
+  },
+  "retention": {
+    "review_at_utc": "2026-10-25T22:18:39.090194+00:00",
+    "review_reason": "User review and reproducible scoring/film lineage; no automatic renewal",
+    "delivered_media_ttl_hours": 720,
+    "delivered_media_expires_at_utc": "2026-11-17T22:18:39.090194+00:00",
+    "raw_replacement_ttl_hours": 720,
+    "raw_copy_resets_source_age": false,
+    "derived_QA_and_failed_partial_default_ttl_hours": 48,
+    "small_receipt_ttl_hours": 4320,
+    "permanent_SAVE_ttl": null,
+    "automatic_reclaimer_claimed": false
+  },
+  "scope": {
+    "new_game_started": false,
+    "this_media_closeout_desktop_Game_Steam_actions": 0,
+    "Game_normal_exit_claimed": false,
+    "G2": "6/8",
+    "every_frame_human_review_claimed": false,
+    "cloud_delivery_complete": false
+  }
+}
