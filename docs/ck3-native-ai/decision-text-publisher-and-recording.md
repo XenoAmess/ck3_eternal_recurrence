@@ -37,6 +37,8 @@ ack = decision_text_publisher.wait_text_published(
 
 `ROOT-DECISION-TEXT-PUBLISHER-BINDING.json` 使用 `xar.ck3.decision-text-publisher-binding/v1`，包含 `machine_id`、`publisher_started` 完整 pin、`publisher_sources` 中 publisher/view 两个完整 pin，以及 `OBS_draw_ack=false`。由 `PublisherOwner.seal_binding` 在实际 STARTED 后 create-only 生成。
 
+正式采用时，OBS provider、SDK callback、gate 和 publisher worker 必须指向同一份固定来源树。先调用实际 provider 的 `decision_publisher_api()`：它从 provider 所在 `tools/g2_saved_campaign/decision_text_publisher.py` 精确加载，不使用任意 `sys.path` 上的同名模块；已有 foreign 缓存则拒绝，不能静默替换。callback 与 gate 随后都应核对此 exact prefix 的路径和来源 pin。旧 flat COW 只保留接口研究证据，不能因此宣称完整 provider 已采用。
+
 ## OBS 与首帧门禁
 
 `tools/ck3_obs_capture.py` 的新 provider schema 为 `xar.ck3.obs-window-capture.v3`，新组合模式为 `game_decision_text`。`launch_recording` 接收实际 `placement_receipt` 与 `decision_publisher_receipt`；后者指真实 publisher 的 `STARTED.json`。旧 `overlay_receipt` 被拒绝。新 take/job 及 OBS 启动前均检查精确旧蓝窗类，包括隐藏窗口；发现旧窗时留给原 owner 正常关闭，不启动新录制。
@@ -47,6 +49,8 @@ ack = decision_text_publisher.wait_text_published(
 
 自动续段使用独立 `automatic_text_continuity` 分支，核真实新 source、非黑冻结图像和 game/scene 差异；它不声称人工审图或精确文字 draw ACK。`recording_recovery_adapter.py --decision-text-publisher` 只恢复已验证 AUTO 后的 `RecordingPaused`：正常清理旧 OBS、真实 publisher、实际新首帧、零 RPC attach/resume，再结算原 AUTO 一次。未知启动 intent 不重试。混合业务故障的 `--attach-only` 新分支尚未准入，当前明确拒绝。
 
+`ck3_recording_stall_hook.py` 也有独立 `game_decision_text` 分支，校验实际 publisher STARTED pin、同 Game 与实际 OBS text 设置后，继续请求原 metadata EDL collector。EDL 的历史 `source_decision_overlay_retained` 字段在这里明确表示录入 OBS 的灰色文本层，同时增加 `decision_source_kind=independent_text` 与 `source_decision_text_retained=true`；它不代表旧蓝窗存在或有旧窗 HWND。collector 的 launch request 仍不等于它已实际健康运行。
+
 ## 验证边界
 
 静态 CI 运行 `test_decision_text*.py` 与旧窗退役测试，并设置 `XAR_DECISION_TEXT_PORTABLE_ONLY=1`，只使用替代 OS/OBS 边界，不调用实际 EnumWindows，也不要求真实子进程。独立 Windows 子进程测试留作本机证据，CI 明确跳过。便携测试覆盖当前请求与文本 ACK 的守卫、源错配拒绝、合成 PNG 连续性，以及门禁与恢复顺序。`qualification_only=true` 的软件夹具不能通过正式录制门禁。
@@ -56,3 +60,5 @@ ack = decision_text_publisher.wait_text_published(
 早期 `47aa9bcce8811a2b248417a5b7848ffff7662b1bc04df0520340d95394ac62f6` 在 base Python 下真实通过，但 Host05 使用 venv 时发现启动器与 worker 的 PID 不同，门禁正确拒绝。失败 child 已正常 STOP；因原 owner 异常退出后原 Popen 句柄丢失，闭场证据诚实记录为随后取得的 exact-FT 句柄观察，未追认原句柄退出。新源码 `e969030afa11d3f59109bb075f82b1b69ac295bc5d8ae7ca4f994a1301a492f7` 才补齐实际 engine 启动资格。旧失败、COW01 与交付01均保留。
 
 此前共 87 项相关本地测试通过；修正后以正确 venv 解释器复验了 15 项新测试与 8 项退役测试。扩跑旧 OBS 测试的第一次尝试曾因夹具漏 mock 新增门禁而发生一次只读 EnumWindows，发现当前旧蓝窗；没有桌面输入或状态变更。该失败记录保留，夹具修正后的 56 项 OBS 测试才是无实际桌面访问的通过结果。不能将全部历史测试表述为“零 desktop”。具体回执与来源见 [源码资格记录](decision-text-publisher-source-evidence-2026-10-18.json)。
+
+同 prefix 后续补充另通过两个精确 loader 正/负例，以及一个新文本 EDL hook 单例；没有重跑全部历史测试。EDL 单例首次受 venv 默认包缺少 `xar_promo.stall_edl` 阻挡，随后显式绑定本机已资格的正式 0.3.0 提取目录通过，未安装依赖或修改 venv。正式运行仍应固定实际依赖树，不能把该源码单例视为 OBS 或 collector 实机资格。

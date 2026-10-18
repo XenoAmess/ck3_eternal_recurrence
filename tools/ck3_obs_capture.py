@@ -39,10 +39,22 @@ def require_no_retired_decision_window():
     return module.require_no_legacy_blue_overlay()
 
 def decision_publisher_api():
-    path = Path(__file__).parent / 'g2_saved_campaign'
-    if str(path) not in sys.path: sys.path.insert(0, str(path))
-    import decision_text_publisher
-    return decision_text_publisher
+    path = (Path(__file__).resolve().parent / 'g2_saved_campaign/decision_text_publisher.py').resolve(strict=True)
+    name = 'decision_text_publisher'
+    existing = sys.modules.get(name)
+    if existing is not None:
+        if Path(getattr(existing, '__file__', '')).resolve() != path:
+            raise RuntimeError('Foreign cached decision text publisher; exact provider sibling source required')
+        return existing
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    try:
+        spec.loader.exec_module(module)
+    except BaseException:
+        if sys.modules.get(name) is module: sys.modules.pop(name)
+        raise
+    return module
 
 
 def _write_new(path, value):

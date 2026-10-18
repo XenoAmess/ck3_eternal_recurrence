@@ -331,5 +331,61 @@
     "global_additional_bytes": 0,
     "expiry_not_extended": "2026-10-18T11:49:00.265518Z",
     "review_at_utc": "2026-10-19T23:30:00Z"
+  },
+  "publication_appendix": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "publication_fact_acknowledged_at_utc": "2026-10-18T03:14:15.957854+00:00",
+    "published_commit": "64b241e4e1f83628bfaa4ad4d965099951c504b1",
+    "published_by": "Root",
+    "git_committed_at_utc": "2026-10-18T11:11:51+08:00",
+    "actual_push_time_utc": null,
+    "publication_source": "Root explicit actual publication report; commit metadata read back locally",
+    "prior_candidate_facts_and_source_sha256_preserved": true,
+    "previous_document_git_blob": "4c1f6859c429da76cdf198d317f6a3db7d84491d",
+    "previous_evidence_git_blob": "314fb87e7ebf426ead6c9dbe73ffddb43d34cb33",
+    "current_R9_or_frozen_SDK05_changed_by_this_appendix": false,
+    "new_game_or_business_credit": false,
+    "agent_commit_push": false,
+    "actual_push_receipt": "Root exec chunk fc251a",
+    "preserved_remote_commit": "6000cbde8beedae53048a4ce1ffbecf576e3cb6d",
+    "remote_new_commits_preserved_as_reported_by_Root": 6,
+    "pre_rebase_candidate_archive": {
+      "ref": "archive/p83-pre-rebase-20261018T0311",
+      "commit": "556253c25b2a73dff37fade4456459732efd8829"
+    },
+    "remote_CI": {
+      "status": "pending sole watcher terminal receipt",
+      "watcher": "/root/populist_loss_fix",
+      "workflows": [
+        {
+          "name": "Official Runner CI",
+          "run_id": 39092773492
+        },
+        {
+          "name": "Linear history",
+          "run_id": 39092773483
+        }
+      ],
+      "result_not_borrowed_from_old_candidate": "556253c25b2a73dff37fade4456459732efd8829"
+    },
+    "root_tool_result_correction": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-18T03:17:18.230812+00:00",
+      "source": "Root original exec tool result: chunk_id fc251a; prior Root message added one erroneous trailing digit",
+      "actual_chunk_id": "fc251a",
+      "git_commit_dates_changed": false,
+      "original_candidate_and_source_sha256_changed": false
+    },
+    "later_current_war_state_as_reported_by_Root": {
+      "source": "Root small SEM1540 actual03:11:09 report",
+      "semantic_sequence": 1540,
+      "reported_actual_time": "03:11:09",
+      "active_wars": [],
+      "independently_live_read_by_this_agent": false,
+      "earlier_minus87_source_guard_conclusion_is_historical_only": true,
+      "war_outcome_verified": false,
+      "territorial_losses_verified": false,
+      "victory_credit": false
+    }
   }
 }

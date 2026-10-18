@@ -59,3 +59,15 @@ Root 另要求核本场 −87、防御战争 `100663323`、目标 `2230`、约 2
 早期回归 **80 passed**；市场策略 review 后，新 gate 与真实普通 MCP / GameplayBridgeService 的富裕战时建造 → 单次提交 → 独立材料 → 冷恢复组合 **19 passed**。新负例覆盖弱廉价公司、空市场与未知市场、三个建设分类、过期输入、原生拒绝、未决雇佣、实际全款边界，以及提交前缺输入时零 intent / 零 Native send。两次 Service 夹具 RED 是新资金读取所需 `readiness` 缺失，已保留并修正夹具，未放宽生产守卫。最后补齐当前合格采购优先、过期采购失效断言后，改变后的完整 losing-war CI 分组为 **112 passed in 12.90s**；实际 UTC、完整命令和日志见 source proof。尚未取得实际发布 commit 的远端 CI 结果。
 
 外置工作包独占 `N/p83-wartime-cash01`，全部源码 / 摘要 / 测试 / scratch / 日志严格不超过 512 KiB；每次测试前按 retained + 256 KiB scratch + 32 KiB 日志预检，TMP / TEMP 在同一根，`-B`，闭场回收本次临时夹具。旧 P71 冻结，不增加它的内容或期限；未动游戏、Driver 大体、媒体、存档、Native 构建和当前冻结部署。
+
+## 追加：实际公共发布（2026-10-18）
+
+截至本次回执观察 **2026-10-18T03:14:15.957854+00:00**，Root 已实际发布 `64b241e4e1f83628bfaa4ad4d965099951c504b1`（actual push 回执 `exec chunk fc251a`）。正常 rebase 保留远端 `6000cbde8beedae53048a4ce1ffbecf576e3cb6d` 及其新增 6 个提交；原未发布候选 `556253c25b2a73dff37fade4456459732efd8829` 保存在 `archive/p83-pre-rebase-20261018T0311`。本地读回该 published commit 的 Git commit 时间为 `2026-10-18T11:11:51+08:00`；未把它冒充推送时刻。
+
+初次 candidate、原源码 SHA、112 项本地 CI 分组与 19 项 Service 资格均保留为历史事实。对应远端 CI 由既有 watcher 独占监看：Official `39092773492`、Linear `39092773483`，**最终结果待该 exact commit 的终态回执**；不沿用原未发布候选的 CI。当前 R9 和冻结 SDK05 未因本公共发布切换，主线恢复与录制继续独立推进。
+
+## 追加勘误：push 回执与后续时间线（2026-10-18）
+
+本次勘误观察于 `2026-10-18T03:17:18.230812+00:00`，`machine_id: xenoamess-full-tower-eb9d2c1186`。此前 publication 追加将 push 工具回执的末尾多抄一位；**依据 Root 原始工具结果，准确的 `chunk_id` 为 `fc251a`**，上节有效引用已纠正。Git CommitDate、原 candidate、源码 SHA 和资格历史没有因此修改。
+
+Root 随后补充小型 SEM1540（报告 actual `03:11:09`）的 `active_wars=[]`：截至该帧已经没有活跃战争。较早 −87 本场保护只是当时 Root 所报字段的历史源码适用判断；本 agent 未独立读取新的现场帧。**终战方式、胜败与领土损失尚未核实，不能据战争消失宣称获胜。**

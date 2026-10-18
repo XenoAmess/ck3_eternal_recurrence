@@ -47,3 +47,9 @@ Root 审阅回执记录于 **2026-10-18T02:22:09.942871+00:00**；这是收到�
 `.github/workflows/static-ci.yml` 的既有 losing-war 分组只追加 `test_war_emergency_budget_v1.py`。按改变后的完整分组做一次定向资格：**93 passed in 12.14s**，UTC 2026-10-18T02:22:20.570820+00:00 → 2026-10-18T02:22:33.851686+00:00，`machine_id: xenoamess-full-tower-eb9d2c1186`。这是离线普通测试，包含合成 Driver 回复与已有夹具，不授实机业务信用；公开 GitHub CI 尚待实际提交后触发。
 
 执行前 P71 为 751934 B，预留 262,144 B scratch；本次闭场回收前观察为 929534 B，低于严格 1 MiB，scratch 已回收，原到期时间不延长。初次封包的原文与原 JSON 已另存小型只读快照，路径及 SHA、完整命令和日志见资格回执追加段。
+
+## 追加勘误：P80 已实际发布且双 CI 通过（2026-10-18）
+
+上文“待 Root commit / push”和“公开 CI 尚待触发”是初封与审阅时的历史状态。实际公开提交为 **`9032c0dca9c7e237d4f1cce3ae910f3bf5d75017`**；Git commit 时间读回为 `2026-10-18T10:24:53+08:00`。复用既有 watcher 回执，终态观察 UTC **2026-10-18T02:49:14.601159+00:00**、`machine_id: xenoamess-full-tower-eb9d2c1186`：[Official Runner CI 39090000768](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39090000768) 与 [Linear history 39090000766](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39090000766) 均 success，且两者 `headSha` 均为该 exact commit。原本地候选 `aed36f60` 不单独获得这份 CI 信用。
+
+本追加只纠正公共发布 / CI 的后续事实；原 candidate 文本、source SHA、63 / 93 项本地资格及 7 个旧建设基线失败均保留。没有借此宣称当前 R9 或冻结 SDK05 已加载，也没有新增实机雇佣、付款、到达或获胜信用。追加观察时间为 `2026-10-18T03:14:15.957854+00:00`；当前 agent 未执行 commit / push。

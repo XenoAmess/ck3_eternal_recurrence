@@ -5,14 +5,16 @@ reported as requested, not healthy. Failed collector setup is preserved as a
 separate metadata failure and must not stop an already active recording.
 """
 import json
+import hashlib
 from pathlib import Path
 import subprocess
 import sys
 
 
 def start_collector(job, started, *, python=None, popen=None):
-    if job.get('capture_mode') != 'game_decision':
-        return {'status': 'not_applicable', 'reason': 'decision overlay is required', 'child_launched': False}
+    mode = job.get('capture_mode')
+    if mode not in ('game_decision', 'game_decision_text'):
+        return {'status': 'not_applicable', 'reason': 'recorded decision scene is required', 'child_launched': False}
     if __package__:
         from . import ck3_stall_edl as engine
         from .collect_stall_edl import launch_spec
@@ -20,17 +22,37 @@ def start_collector(job, started, *, python=None, popen=None):
         import ck3_stall_edl as engine
         from collect_stall_edl import launch_spec
     root = Path(job['receipt_root']).resolve(strict=True)
-    overlay = job.get('overlay') or {}
-    session = Path(overlay['session']).resolve(strict=True)
+    if mode == 'game_decision_text':
+        publisher = job.get('decision_text_publisher') or {}
+        reference = job.get('decision_text_publisher_receipt') or {}
+        path = Path(reference['path']).resolve(strict=True)
+        with path.open('rb') as stream: raw = stream.read(32769)
+        if (len(raw)>32768 or len(raw)!=reference.get('bytes') or hashlib.sha256(raw).hexdigest()!=reference.get('sha256')
+                or json.loads(raw)!=publisher or publisher.get('schema')!='xar.ck3.decision-text-publisher/v1'
+                or publisher.get('status')!='DECISION_TEXT_PUBLISHER_STARTED'
+                or publisher.get('qualified_for_game_recording') is not True
+                or job.get('overlay') is not None or started.get('decision_text_publisher')!=publisher
+                or publisher.get('game',{}).get('pid')!=job['pid']
+                or publisher.get('game',{}).get('creation_filetime')!=job.get('game_creation_filetime')
+                or job.get('decision_text_file')!=publisher.get('decision_text_file')
+                or started.get('decision_settings',{}).get('read_from_file') is not True
+                or started.get('decision_settings',{}).get('file')!=publisher.get('decision_text_file')):
+            raise ValueError('Actual independent publisher/OBS text binding differs')
+        session = Path(publisher['session']).resolve(strict=True)
+        if not root.is_relative_to(session/'recordings') or not path.is_relative_to(session):
+            raise ValueError('Actual new text recording/publisher escaped session')
+    else:
+        overlay = job.get('overlay') or {}
+        session = Path(overlay['session']).resolve(strict=True)
+        if overlay.get('game_pid')!=job['pid'] or overlay.get('game_creation_filetime')!=started['game_creation_filetime']:
+            raise ValueError('Actual historical overlay binding differs')
     if (root.name != job['session_id'] or started.get('state') != 'recording'
             or started.get('game_pid') != job['pid']
             or started.get('game_creation_filetime') != job.get('game_creation_filetime')
             or type(started.get('game_creation_filetime')) is not int
             or started['game_creation_filetime'] <= 0
             or started.get('decision_source') is not True
-            or started.get('capture_mode') != 'game_decision'
-            or overlay.get('game_pid') != job['pid']
-            or overlay.get('game_creation_filetime') != started['game_creation_filetime']):
+            or started.get('capture_mode') != mode):
         raise ValueError('Actual started Game/decision overlay generation differs')
     engine.stamp(started['at_utc'])
     seed = engine.build({'segments': [{
@@ -39,6 +61,9 @@ def start_collector(job, started, *, python=None, popen=None):
         'game_pid': job['pid'], 'game_creation_filetime': started['game_creation_filetime'],
         'video_path': str(Path(job['recording_root']).resolve() / (job['session_id'] + '.mkv')),
         'source_decision_overlay_retained': True,
+        'decision_source_kind': 'independent_text' if mode=='game_decision_text' else 'historical_overlay',
+        'decision_overlay_field_meaning': 'Recorded OBS decision layer; does not imply a legacy native window',
+        'source_decision_text_retained': mode=='game_decision_text',
         'job_pin': engine.pin(root / 'job.json'), 'started_pin': engine.pin(root / 'started.json'),
     }], 'intervals': [], 'wait_end_basis': 'first_verified_CK3_calendar_progress_receipt'})
     store = root / 'stall-edits'

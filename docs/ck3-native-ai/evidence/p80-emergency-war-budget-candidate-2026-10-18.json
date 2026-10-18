@@ -305,5 +305,49 @@
       "active_emergency_scratch_count": 0,
       "expiry_not_extended": "2026-10-18T11:49:00.265518Z"
     }
+  },
+  "publication_appendix": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "publication_fact_acknowledged_at_utc": "2026-10-18T03:14:15.957854+00:00",
+    "published_commit": "9032c0dca9c7e237d4f1cce3ae910f3bf5d75017",
+    "published_by": "Root",
+    "git_committed_at_utc": "2026-10-18T10:24:53+08:00",
+    "actual_push_time_utc": null,
+    "publication_source": "Root explicit actual publication report; commit metadata read back locally",
+    "prior_candidate_facts_and_source_sha256_preserved": true,
+    "previous_document_git_blob": "05b1aab0c8a8ddd415355b7b2ce86226e0485187",
+    "previous_evidence_git_blob": "d3f61bbd6812be88b1b6d9dadb9a6999e0f2be53",
+    "current_R9_or_frozen_SDK05_changed_by_this_appendix": false,
+    "new_game_or_business_credit": false,
+    "agent_commit_push": false,
+    "remote_CI": {
+      "status": "TERMINAL",
+      "all_success": true,
+      "observed_at_utc": "2026-10-18T02:49:14.601159+00:00",
+      "source_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\CI-FINAL-9032c0dc.json",
+        "bytes": 17493,
+        "sha256": "deca28013dc8a40e48808099f6dc5bf00ff73acbc882f603a43d110b9cf95b35"
+      },
+      "workflows": [
+        {
+          "databaseId": 39090000768,
+          "workflowName": "Official Runner CI",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "9032c0dca9c7e237d4f1cce3ae910f3bf5d75017",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39090000768"
+        },
+        {
+          "databaseId": 39090000766,
+          "workflowName": "Linear history",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "9032c0dca9c7e237d4f1cce3ae910f3bf5d75017",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39090000766"
+        }
+      ]
+    },
+    "unpublished_original_candidate_aed36f60_receives_no_separate_CI_credit": true
   }
 }

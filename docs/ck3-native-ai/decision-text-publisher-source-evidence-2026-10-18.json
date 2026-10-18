@@ -116,6 +116,39 @@
     "synthetic_NativeStart_only": true,
     "actual_Game_OBS_or_recording_qualification": false
   },
+  "same_prefix_loader_and_EDL_followup": {
+    "source_manifest": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/next1066-recording-retirement01/COMMON-PROVIDER-SOURCE-MANIFEST03.json",
+      "bytes": 9056,
+      "sha256": "f84dd8fdaab65824a54ba95a802fcf0ec0c5a5c4503056af872fe9b7d3aec0d4"
+    },
+    "capture_source_sha256": "90a424feb0e642337e1d4327def0137448d65c1c196f65ae9fadd880c55f89ca",
+    "EDL_hook_source_sha256": "9a2f5ed9d557db5c9389c148dd82dd602534f529eea5aa9954387a677db7d178",
+    "exact_cold_loader_and_foreign_cached_module_refusal": {
+      "tool_chunk_id": "94ca05",
+      "tests_passed": 2,
+      "exit_code": 0,
+      "actual_Game_OBS_or_desktop_calls": 0
+    },
+    "EDL_hook_initial_dependency_import_failure": {
+      "tool_chunk_id": "ef78d1",
+      "exit_code": 1,
+      "reason": "venv default xar_promo package lacked stall_edl; test body and collector launch were not entered",
+      "dependency_install_or_environment_mutation": false
+    },
+    "EDL_hook_explicit_existing_formal_dependency_test": {
+      "tool_chunk_id": "bc4566",
+      "tests_passed": 1,
+      "exit_code": 0,
+      "actual_collector_Game_OBS_or_desktop_calls": 0,
+      "receipt": {
+        "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/next1066-recording-retirement01/NEW-TEXT-EDL-HOOK-SOURCE-QUALIFIED01.json",
+        "bytes": 937,
+        "sha256": "015fcc06e1c50a2fe4311fae242f12536cc4c25748aec9bc9e3eff2419741b6c"
+      }
+    },
+    "all_87_historical_tests_rerun_for_this_followup": false
+  },
   "current_frozen_Game_capture_HUD_or_SDK_modified": false,
   "new_live_OBS_source_first_pixel_and_frontend_action_admission": "PENDING",
   "old_failures_and_delivery01_overwritten": false,

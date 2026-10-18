@@ -1,4 +1,5 @@
 from copy import deepcopy
+import hashlib
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -12,6 +13,34 @@ from tools import ck3_recording_stall_hook as hook
 
 
 class StallMetadataIntegration(unittest.TestCase):
+    def test_new_text_recording_keeps_metadata_collector_without_legacy_window_identity(self):
+        with tempfile.TemporaryDirectory() as folder:
+            session=Path(folder)/'session';root=session/'recordings/new';root.mkdir(parents=True)
+            source=session/'STARTED.json'
+            publisher={'schema':'xar.ck3.decision-text-publisher/v1','status':'DECISION_TEXT_PUBLISHER_STARTED',
+                'qualified_for_game_recording':True,'session':str(session),'game':{'pid':10,'creation_filetime':100},
+                'decision_text_file':str(session/'decision.txt')}
+            raw=json.dumps(publisher).encode();source.write_bytes(raw)
+            reference={'path':str(source),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+            job={'session_id':'new','receipt_root':str(root),'recording_root':str(session/'recordings'),'capture_mode':'game_decision_text',
+                'pid':10,'game_creation_filetime':100,'overlay':None,'decision_text_publisher':publisher,
+                'decision_text_publisher_receipt':reference,'decision_text_file':publisher['decision_text_file']}
+            started={'state':'recording','at_utc':'2026-10-17T00:00:00Z','game_pid':10,'game_creation_filetime':100,
+                'capture_mode':'game_decision_text','decision_source':True,'decision_text_publisher':publisher,
+                'decision_settings':{'read_from_file':True,'file':publisher['decision_text_file']}}
+            e.create(root/'job.json',job);e.create(root/'started.json',started)
+            calls=[]
+            def launch(*args,**kwargs):calls.append(args);return type('SyntheticChild',(),{'pid':99})()
+            result=hook.start_collector(job,started,python='synthetic-no-execution.exe',popen=launch)
+            self.assertEqual(len(calls),1)
+            self.assertFalse(result['runtime_qualified'])
+            segment=e.read(root/'stall-edits/seed.json')['segments'][0]
+            self.assertTrue(segment['source_decision_text_retained'])
+            self.assertEqual(segment['decision_source_kind'],'independent_text')
+            self.assertNotIn('overlay_pid',segment)
+            with self.assertRaisesRegex(ValueError,'publisher/OBS'):
+                hook.start_collector(job,{**started,'decision_text_publisher':{}},popen=lambda *a,**k:self.fail('Foreign source launched a child'))
+
     def setup_recording(self, root):
         receipt = root / 'capture-a'
         receipt.mkdir()

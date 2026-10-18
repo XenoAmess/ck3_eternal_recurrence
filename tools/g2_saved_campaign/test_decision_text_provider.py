@@ -22,6 +22,23 @@ spec=importlib.util.spec_from_file_location('new_obs_text_provider_source_test',
 obs=importlib.util.module_from_spec(spec);sys.modules[spec.name]=obs;spec.loader.exec_module(obs)
 
 class ProviderTests(unittest.TestCase):
+    def test_cold_loader_uses_exact_sibling_even_with_foreign_search_path(self):
+        with TemporaryDirectory() as temp:
+            foreign=Path(temp)/'decision_text_publisher.py'
+            foreign.write_text("raise AssertionError('Foreign publisher executed')",encoding='utf-8')
+            with patch.dict(sys.modules,{'decision_text_publisher':None}), patch.object(sys,'path',[temp]+list(sys.path)):
+                actual=obs.decision_publisher_api()
+                self.assertEqual(Path(actual.__file__).resolve(),Path(publisher.__file__).resolve())
+                self.assertEqual(actual.source_pins(),publisher.source_pins())
+                self.assertIs(obs.decision_publisher_api(),actual)
+
+    def test_foreign_cached_publisher_refused_without_loading_or_replacing_it(self):
+        foreign=SimpleNamespace(__file__=str(TOOLS/'foreign/decision_text_publisher.py'))
+        with patch.dict(sys.modules,{'decision_text_publisher':foreign}):
+            with patch.object(obs.importlib.util,'spec_from_file_location',side_effect=AssertionError('No replacement load')):
+                with self.assertRaisesRegex(RuntimeError,'Foreign cached'):obs.decision_publisher_api()
+            self.assertIs(sys.modules['decision_text_publisher'],foreign)
+
     def test_retired_window_refusal_precedes_profile_read_and_take_creation(self):
         with TemporaryDirectory() as temp:
             root=Path(temp);take=root/'must-not-exist'
