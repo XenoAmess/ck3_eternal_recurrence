@@ -1,0 +1,84 @@
+{
+  "schema": "xar.first30.real-join-qualification-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-18T15:38:15.504417+00:00",
+  "qualification06": {
+    "outer_exit_code": 1,
+    "Root_original_retained_session": 45207,
+    "Root_actual_outer_exit_chunk": "5e8359",
+    "failed": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/first30-final-film01/p0-real-group-join-qualification06/FAILED.json",
+      "bytes": 1366,
+      "sha256": "22d9ad60048410b0957c447d64f563914e6315e34d81f6b3c1807e2d6011e3a0"
+    },
+    "actual_failure": "probe-A report 567952 bytes exceeded 512KiB per-report guard after actual probe normal exit0; no media quality acceptance claimed",
+    "A_B1_B2_actual_normal_exit0": true,
+    "A_B1_B2_wall_seconds": [
+      59.72507270006463,
+      52.61231809994206,
+      8.119581900071353
+    ]
+  },
+  "continuation07": {
+    "Root_actual_execute_exit0_chunk": "a0a273",
+    "wall_seconds": 4.9421257,
+    "result": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/first30-final-film01/p0-real-group-join-continuation07/RESULT.json",
+      "bytes": 19641,
+      "sha256": "f19260f11d4cf8cd6099141553f829ec7252f9ef9c98b44a4fc6f0c5604a2ad7"
+    },
+    "Root_four_image_review": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/ROOT-REAL-GROUP-JOIN-PIXEL-REVIEW07.json",
+      "bytes": 3512,
+      "sha256": "7001d853ed730106e15fd7d5999fa4d4a755ab232924b8701f9c64f9e507c8ed"
+    },
+    "reused_closed_06_media": true,
+    "raw_source_decode_repeated": false,
+    "probeA_repeated": false,
+    "one_report_cap_bytes": 1048576,
+    "total_new_logical_cap_bytes": 100663296,
+    "source_read_locks_deny_write_delete_held": true,
+    "PCM_samples": {
+      "A": 891657,
+      "B1": 507657,
+      "B2": 384000
+    },
+    "PCM_reference_equals_split_and_demux_bytes": true,
+    "reference_and_joined_video_frames": [
+      558,
+      558
+    ],
+    "actual_join_seconds": "5288091/500000",
+    "actual_join_gap_seconds": "14273/1500000",
+    "final_video_copy": true,
+    "final_AAC_encode_count": 1,
+    "Root_actually_viewed_original_size_join_PNGs": 4,
+    "Root_observation": "Same 1088-11-29 death/succession scene and right gray 智能体实时决策 HUD across the actual join; no black/corrupt sample. Historical events retained."
+  },
+  "candidate": {
+    "producer": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/render_first30_grouped_v1.py",
+      "bytes": 32152,
+      "sha256": "fdf43b18e747b8876520f689a0a78c0ff3a5e0f08df4e3da941f399052b179ef"
+    },
+    "actual_prepared_plan": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/FIRST30-GROUPED-RENDER-PLAN02.json",
+      "bytes": 365624,
+      "sha256": "ba7723029547b6c5127a65a5ceb2ad975aeb90cccdfb560c741d583843b7ce0e"
+    },
+    "piece_count": 400,
+    "wait_count": 197,
+    "group_count": 28,
+    "maximum_workers": 4,
+    "estimated_incremental_peak_bytes": 110612185088,
+    "full_replacement_admitted_or_executed": false
+  },
+  "limits": {
+    "original_encoder_control_calls": 0,
+    "full_film_complete": false,
+    "full_output_pixels_verified": false,
+    "current_Game_or_desktop_calls": 0,
+    "SAVE_or_Driver_body_reads": 0,
+    "G2_credit": 0
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "xar.first30.group-clock-software-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-18T14:57:30.959494+00:00",
+  "scope": "generated software media only; no real source or whole film qualification",
+  "qualification04": {
+    "completed_at_utc": "2026-10-18T14:23:29.647840Z",
+    "Root_actual_exec_exit0_chunk": "0bfd81",
+    "result": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/first30-final-film01/p0-group-clock-qualification04/RESULT.json",
+      "bytes": 6405,
+      "sha256": "4d14cde1a0da429a74e470f765fe8a0be920015190503267010446641bfdace2"
+    },
+    "zero_frame_zero_sample_sentinel": true,
+    "reference_pcm_samples": 52803,
+    "split_pcm_exact_bytes_equal": true,
+    "per_group_video_clock": "30Hz",
+    "source": "320x180 generated video and 48k stereo impulse audio"
+  },
+  "qualification05": {
+    "completed_at_utc": "2026-10-18T14:42:36.542219Z",
+    "Root_actual_exec_exit0_chunk": "9c8b26",
+    "result": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/first30-final-film01/p0-fast-group-clock-qualification05/RESULT.json",
+      "bytes": 1905,
+      "sha256": "96222f21ad415f60a9860b9bfbe7250d557306943fd463733b3342339c9f7b3e"
+    },
+    "cases": [
+      {
+        "middle_speed": 1.25,
+        "actual_join_seconds": 0.739281,
+        "join_gap_seconds": 0.0059476667,
+        "reference_pcm_samples": 48289,
+        "split_pcm_exact_bytes_equal": true
+      },
+      {
+        "middle_speed": 1.3,
+        "actual_join_seconds": 0.725281,
+        "join_gap_seconds": 0.025281,
+        "reference_pcm_samples": 47617,
+        "split_pcm_exact_bytes_equal": true
+      }
+    ],
+    "per_group_video_clock": "30Hz; bounded VFR joins, not frame-exact to reference",
+    "video_dts_monotonic_without_repair": true,
+    "final_video_copy": true,
+    "final_audio": "one continuous AAC encode from exact PCM join; no per-group AAC splice",
+    "zero_sentinel_preserves_original_concat_av_padding": true
+  },
+  "limits": {
+    "real_source_join_qualification": false,
+    "whole_film_replacement_admitted": false,
+    "old_encoder_stopped": false,
+    "source_raw_rehash_or_packet_index_rescan": false,
+    "Game_or_desktop_operations": false,
+    "G2_credit": 0
+  },
+  "next": "real narrow source qualification06 before full grouped producer, capacity admission or old encoder stop"
+}

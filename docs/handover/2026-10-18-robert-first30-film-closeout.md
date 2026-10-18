@@ -50,3 +50,19 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。Root 实际执行保留全部315
 machine_id: `xenoamess-full-tower-eb9d2c1186`。保留315分支、相同窗口/profile，仅组合decoder2+x2642的D2E2短试也在118.021秒内触发q关停，forced0、原HANDLE kernel0；真实外层退出1（session71530/chunk731a46）。[实际小摘要](../ck3-native-ai/evidence/first30-decode-encode-thread-control-2026-10-18.json)绑定计划、卡、命令及FAILED。停止本轮线程参数试验，不授整片线程候选资格；原81740继续，尚未控制它。下一步仅审查分组方案的真实音画时钟、全部400段/197等待不漏与峰值；未获具体可审方案前不取消原K、不新增整片编码。
 
 当前已推送commit `00d0ca9ad4bf61d01fdf596fa10cead66f7dd244` 的[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39131693825)和[Linear CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39131693819)均实际success，观测13:50:28Z；这只覆盖该公开commit，不替尚未提交的M7后继窗口补丁背书。
+
+
+### 2026-10-18 14:57Z 分组音画软件验证
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`；实际追加 2026-10-18T14:57:30.959494+00:00。两轮[生成媒体软件验证](../ck3-native-ai/evidence/first30-group-clock-software-2026-10-18.json)均实际退出0：零帧/零样本sentinel保留原concat在非终段的音画补齐；1.25及1.3倍中段、相反半帧相位下，分组PCM与单图reference逐字节相同，复制视频后实际DTS合法、无时钟修复警告，最后仅一次AAC编码。组内30Hz、组间为有界VFR，不能称与原reference逐帧一致。
+
+这些仅为生成软件媒体，不授真实源、整片或速度资格。真实窄窗06仍待完整source、fresh容量准入及实际音画/接缝PNG后验；原session81740继续，未被停止、调参或替换。下一局、桌面、Game与永久SAVE均未操作。
+
+公开源码`197a640d055bdd0186d24c5c5a109504b682b21f`的[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39136611204)与[Linear CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39136611249)已实际success，观测2026-10-18T14:58:31Z，machine_id同上。M7前序`0e073fad`也已双绿；这些是软件交付，不授M6/M7实机或视频完成信用。
+
+
+### 2026-10-18T15:38:15.504417+00:00 真实小段通过，整片替代尚待容量确认
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。06三编码及probeA实际正常退出0，但probeA的567952B报告超512KiB守卫，外层真实1保留FAILED。07独立后处理复用三已闭派生片与probeA，不重复解原片；每probe上界明确1MiB、总逻辑96MiB保持，实际4.942秒退出0。音频reference、B1+B2及最终demux逐字节相同，558视频帧、合法实际包时钟；Root已实际审阅4张原尺寸接缝图并独立封定。完整[机器绑定摘要](../ck3-native-ai/evidence/first30-real-join-qualification-2026-10-18.json)保留06失败，不以07成功重写它。
+
+新的整片source已Root完整审查并实际prepare：400原始音画literal、197等待、28组最多4并发，组内30Hz/组间有界VFR，最终一次AAC。70GiB派生MOV合计、32GiB最终硬cap及1GiB+16MiB余量的峰值110612185088B；触cap/EOF不全均真实失败。1.5秒检查围绕实际400段CLOCK/PCM预期EOF，同时报告与旧27912.698秒名义值差，不更改旧K/H的guard。本记录截止仍未实际停止原K或准入/执行替代；新的capacity conditional preflight与精确owned stop工具准备中。永久SAVE与原片继续保护，不开下一局，0切屏/游戏操作。
