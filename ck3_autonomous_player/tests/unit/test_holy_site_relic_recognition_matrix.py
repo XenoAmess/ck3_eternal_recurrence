@@ -375,6 +375,10 @@ class ExistingNormalizerSyntheticTests(unittest.TestCase):
                 value["recognition_matrix"] = extra
                 before = deepcopy(value)
                 actual = normalizer(value, snapshot=frame(), holy_site_id=SITE, **args)
+                if normalizer is normalize_context:
+                    projection = actual.pop("rarity_decomposition")
+                    self.assertEqual(projection["method"], "independent_matrix_projection")
+                    self.assertFalse(projection["same_native_evaluation_as_total"])
                 self.assertEqual(actual, before)
                 self.assertEqual(value, before)
                 value["recognition_matrix"]["capture_epoch"] += 1

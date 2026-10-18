@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Preserve the owned native serializer packet used by the rarity projection replay.
+ck3_autonomous_player/tests/fixtures/holy_site_relic_rarity/context-integration.json -text whitespace=cr-at-eol
+
 # Keep the small SDK38/Native24 handoff inputs bound to their original bytes.
 docs/ck3-native-ai/research/sdk38-publication-and-gift/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 docs/ck3-native-ai/research/clean-campaign-readonly-status/** -text whitespace=cr-at-eol

@@ -135,6 +135,8 @@ jobs:
         run: |
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_relic_recognition_matrix.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_relic_rarity_decomposition.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_modifier_aggregate_observation.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test new holy-site value knowledge through MCP without CK3

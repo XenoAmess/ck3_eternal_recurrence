@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
+from .holy_site_relic_rarity_decomposition import project_holy_site_relic_rarity_v1
 from .holy_site_relic_recognition_matrix import normalize_holy_site_relic_recognition_matrix_v1
 from .holy_site_modifier_aggregate_observation import normalize_holy_site_modifier_aggregate_v1
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
@@ -182,6 +183,7 @@ def normalize_player_holy_site_relic_context_v1(
     if "recognition_matrix" in result:
         result["recognition_matrix"] = normalize_holy_site_relic_recognition_matrix_v1(
             result["recognition_matrix"], parent=result, holy_site_id=holy_site_id)
+        result["rarity_decomposition"] = project_holy_site_relic_rarity_v1(result)
     if "modifier_aggregate_observation" in result:
         result["modifier_aggregate_observation"] = normalize_holy_site_modifier_aggregate_v1(
             result["modifier_aggregate_observation"], parent=result, holy_site_id=holy_site_id)
