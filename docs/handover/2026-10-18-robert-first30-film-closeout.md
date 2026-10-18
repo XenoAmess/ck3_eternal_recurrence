@@ -84,3 +84,9 @@ Root实际派生MOV窄探针（不读原片或检查原音频）确认group5/8/1
 用户指定音乐已于 `2026-10-18T17:37:37.907643Z` 从精确Git blob `f5bf616ef2897521ec92a0445fa5ec68a4e76607` 物化到D的 `P/music-input01/quiet-courtly-tension.wav`，30726160B／SHA `fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f`；工作树该路径为skip-worktree而未物理存在，未向Z写文件。实际音乐准入4531B／SHA `206382054d3814583ff1ae8488d1cfc55149c3f9aa748ecae23e5b75175b4a3a`，物化Root回执1516B／SHA `5ff334be1f86b8985764e839377e0e81fbaf78f0a85898931544bb0ba9acbbcc`（`8323dd`／`04a477`），无播放或主观声音检查。
 
 后继改为纯video恢复：10完整组只copy视频、18组去掉全部原音频图重编码，统一fragmented MOV；先以group12小remux核容器，再4个IDLE worker、decoder/filter/x264各2线程，维持原video literal、组末30Hz及medium/CRF20。最后直接video concat/copy加指定WAV循环，一次AAC，不生成旧03完整原声成片再04重mux。此前04BGM/QA4/strip旧门源只是已审源码，实际plan/bridge/card/媒体均未执行，不能再等不存在的26390外层0或ENCODED。新render源/容量/QA5仍准备中，尚未重新启动；永久SAVE未动、零桌面/新游戏。
+
+2026-10-19 02:34 CST 纯视频恢复07实际启动（machine_id: xenoamess-full-tower-eb9d2c1186）：前述fragmented中间件方案已撤回。05仅小remux后因退出时QueryFullProcessImageNameW失败，外层实际1／1fdaf6，没有正常子回执，不从stderr补造内核成功；17输入ExitStack已退但未取得最终逐项身份。06修为原HANDLE PID/创建/退出时间读取后，三子均内核0、17身份未变并实际释放，但fragmented MOV首PTS被移到1024／15360，packet consumer拒绝，外层实际1／428f35。独立64MiB短试加avoid_negative_ts disabled仍失败，四子内核0而consumer最后一项失败，外层1／fed6e8；全部旧输出和失败如实保留。三次均未开始长片新编码，未触原声分析或永久SAVE。
+
+实际07恢复普通非fragmented MOV，显式avoid_negative_ts disabled，原视频质量、400段／197等待、10组视频copy及18组纯视频编码保持。Root实际prepare 12e365、fresh准入1d4218后，950fae启动保留会话31480。group12小预检已实际通过：2291视频帧、首PTS0、末229/3秒、TB1/15360，随后group5/8/11/13四路新编码派生文件增长；记录时无FAILED。最终直接合视频并只映射用户指定循环WAV，不生成原声成片或额外04重mux。完整[恢复07机器绑定证据](../ck3-native-ai/evidence/first30-video-only-recovery-2026-10-19.json)含真实失败、源、plan、consumer/issuer、bridge/card、group12全部完整pins。
+
+此为实际启动和短预检成功，不是整片完成；仍需87个真实正常子、父外层0、17输入释放、唯一最终SHA及847位置／53页／15原尺寸的Root离线像素审阅。新QA与六素材去音轨门正在并行薄适配；不得使用旧26390外层0或将05/06/短试改写为成功。容量仍只序贯重分原110612185088B分量，原OUT、旧carves及信用不变，未准入post阶段。永久存档持续永久保护，六旧原片尚未删除，无下一局或桌面操作。

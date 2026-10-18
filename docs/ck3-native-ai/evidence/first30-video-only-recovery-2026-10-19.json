@@ -1,0 +1,109 @@
+{
+  "schema": "xar.first30.video-only-recovery-progress/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T18:34:02.867982+00:00",
+  "status": "RECOVERY07_ACTIVE_FINAL_VIDEO_NOT_DELIVERED",
+  "actual_started_execution": {
+    "retained_session_id": 31480,
+    "chunk_id": "950fae",
+    "actual_exit_code": null
+  },
+  "source_audio_quality_checks_waived_by_user": true,
+  "sole_requested_looping_music": "promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+  "source_audio_mapped_in_recovery": false,
+  "reused_video_groups": 10,
+  "new_video_encoding_groups": 18,
+  "actual_preflight": {
+    "group": 12,
+    "frames": 2291,
+    "first_PTS": "0",
+    "last_PTS": "229/3",
+    "video_time_base": "1/15360",
+    "all_video_DTS_strict": true
+  },
+  "observed_groups": [
+    {
+      "group": "group-05",
+      "complete": false,
+      "derived_MOV_bytes": 6029348
+    },
+    {
+      "group": "group-08",
+      "complete": false,
+      "derived_MOV_bytes": 31719460
+    },
+    {
+      "group": "group-11",
+      "complete": false,
+      "derived_MOV_bytes": 49020964
+    },
+    {
+      "group": "group-12",
+      "complete": true,
+      "derived_MOV_bytes": 39521025
+    },
+    {
+      "group": "group-13",
+      "complete": false,
+      "derived_MOV_bytes": 34865188
+    }
+  ],
+  "pins": {
+    "failed05_Root": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-VIDEO-RECOVERY-FAILED05.json",
+      "bytes": 2641,
+      "sha256": "f84b215ba4e96cbb10ed742adf09ec20fee55fc9ce9c1263f4d875f66f2e7942"
+    },
+    "failed06_Root": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-VIDEO-RECOVERY-FAILED06.json",
+      "bytes": 4556,
+      "sha256": "26978da1e50332e257ba001918e117510630d9eac0657aca3658da5f8f606f6c"
+    },
+    "failed_timestamp_trial_Root": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-PTS-EXPERIMENT-FAILED01.json",
+      "bytes": 4365,
+      "sha256": "8fe1d8626e00175d5dd427476f1adcbd5c5ac5265a869310c8005e0edfe81645"
+    },
+    "producer07": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\render_first30_video_only_v5.py",
+      "bytes": 40335,
+      "sha256": "3fb3d33aa1b211999e30e1a4f6a0a253dd9829b86d25bfcb5019536a976e57b4"
+    },
+    "plan07": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\FIRST30-VIDEO-ONLY-RECOVERY-PLAN07.json",
+      "bytes": 249706,
+      "sha256": "35ba8c130fd6ad738a6d33b14f13432f9a581b37e0bdd99171e2d57dc7992fc2"
+    },
+    "consumer07": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-capacity-review01\\first30_video_recovery_capacity_v3.py",
+      "bytes": 11634,
+      "sha256": "365d0bc06ae3029914ead52305cf85efa36c705f99c27d3455b3b74e90b70461"
+    },
+    "issuer07": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-capacity-review01\\review_first30_video_recovery_capacity_v3.py",
+      "bytes": 3843,
+      "sha256": "32cf45615d1d4435777d2a50b8551837f73668bff0f9ba1df63aa380be68621e"
+    },
+    "bridge07": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-VIDEO-RECOVERY-BRIDGE07.json",
+      "bytes": 7837,
+      "sha256": "6b75f0b4f5eeb98c7aa6c3c7835d82d4f0a29cbe5065769431b1ff1f539b64ee"
+    },
+    "admission07": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-VIDEO-RECOVERY-ADMISSION07.json",
+      "bytes": 5766,
+      "sha256": "c859aeeba50149a82f4b400d454a4ed22faa387351f927072071ff0fed542d1d"
+    },
+    "preflight_group12": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\render-work-VIDEO-ONLY-FINAL07\\group-12\\GROUP-COMPLETE.json",
+      "bytes": 3426,
+      "sha256": "bf875c75c9ceced613a83a178ecaee675d0701f3f4d37948214d6f8527aa3aba"
+    }
+  },
+  "all_previous_failures_preserved": true,
+  "source_hash_or_index_repasses": 0,
+  "permanent_SAVE_touched": false,
+  "next_game_started": false,
+  "desktop_controls": 0,
+  "complete_or_final_QA_claimed": false
+}
