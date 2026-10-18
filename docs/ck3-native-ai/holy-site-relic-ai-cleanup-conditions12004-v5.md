@@ -6,7 +6,7 @@
 
 下段按技术条件分组，供作者编排；研究过程措辞与技术表不直接充当冻结旁白。最终表达按[系列方法](../../promo/ck3_faith_and_power/docs/production-lessons.md)与[本期重排](../../promo/ck3_faith_and_power/docs/episode01-revision-v5.md)处理。
 
-原版有一条只供 AI 使用的清理决议。先看操作人：它要带有“狂热”特质，或者 AI 狂热数值至少为 25；还必须是活着、成年且当前可用的 AI。原版的成年参数男女都是 16 岁。这里的可用，要求本人不在旅行、不在军队中、没有被监禁、没有失能，也没有带“致命传染病”标记的疾病。它还不能正在参加或筹划活动，不能处于臣服礼、冥想、当地神社仪式、向领主请愿、向信仰领袖请愿、主持宫廷会议、外出冒险这七类忙碌状态，也不能是原版严格巡游检查下正在被到访的对象。
+原版有一条只供 AI 使用的清理决议。先看操作人：它要带有“狂热”特质，或者 AI 狂热数值至少为 25；还必须是活着、成年且当前可用的 AI。原版的成年参数男女都是 16 岁。这里的可用，要求本人不在旅行、不在军队中、没有被监禁、没有失能，也没有带“致命传染病”标记的疾病。它还要没有参加或筹划活动，也没有命中原版七项忙碌标记检查。这些内部标记用于觐见领主、避世冥想、举行祭祀仪式、向领主请愿、信仰领袖等候请愿者、举办朝会，以及探险灵感角色外出探险的相关流程；它们不是界面上七个正式状态名称。它也不能是原版严格巡游检查下正在被到访的对象。
 
 接着看政治关系：这个 AI 必须和自己的最高领主同信仰，最高领主也必须是 AI。它本教的信仰领袖，要么不存在，要么同样是 AI。因此，人类最高领主，或者这个 AI 所属信仰的人类信仰领袖，都能挡住这一条清理决议。独立 AI 的最高领主就是自己，可以满足这一项。原捐献者是人类、中间某一级领主是人类、其他关联信仰的领袖是人类，都不是这里写出的保护条件。
 
@@ -112,3 +112,28 @@ AND 最终原生移除许可
 以上是该 CB 的脚本局部准入，完整宣战许可、距离实现及当前费用仍应由原生接口判定。脚本的 `ai_score=relic_artifact_war_ai_score_value` 是另一个评分入口，不从 `ai_zeal>=100` 推算 AI 会不会宣战。本轮无自然 AI 执行信用。
 
 来源全文 SHA、精确行见[原版脚本摘录](evidence/holy-site-relic-ai-cleanup12004-v5/stock-source-excerpts-a01.json)；原生注册、完整布尔分支和小型字节证据见[逻辑源码合同](evidence/holy-site-relic-ai-cleanup12004-v5/SOURCE-CONTRACT.logic-not-a01.json)。[结构化规划补注](evidence/holy-site-relic-ai-cleanup12004-v5/planning-clarification.relic-ai-v5.json)可供既有 MCP 知识工具引用，不能充当当前 AI 的权限后读。V5 本批截止 2026-10-18T10:05:38Z；小型机制结论复核期限为 2026-10-25T06:20:00Z。
+
+
+## 2026-10-18 术语与标记保存对象勘误
+
+本次只读补查的 `machine_id` 为 `4-8e1c2f1861`，观察时间与各文件完整 SHA-256 见[追加来源](evidence/holy-site-relic-ai-cleanup12004-v5/busy-terms-source-a01.json)。复用 exact 1.20.0.4 EXE 绑定；没有游戏执行或新原生采样。原有逻辑证据与七个 raw `name` 不变，本节更正中文解释。
+
+`petition_head_of_faith_petitioner` 保存在接待方 AI 信仰领袖身上，值才是请愿者。`petition_head_of_faith_block_recipient_effect` 的 `scope:recipient` 内检查 `is_ai = yes` 后设置该变量（`11_petition_head_of_faith_effects.txt:28–38`）；`clear_pending` 与 `cleanup` 分别沿接待方变量清除它（17–20、49–51）。因此旧版“向信仰领袖请愿”把标记保存对象说反，应为“AI 信仰领袖正在等候请愿者”。官方 `unavailable_petition_head_of_faith` 也写作“等待正式请愿”，并非请愿者自身的动作名。
+
+下表中的名称是动作或忙碌说明的官方简中文本，流程说明是本次根据 caller 写的普通解释，不能冒充新增 UI 状态。
+
+| 内部标记 | 官方文本与普通说明 | 设置／清除的原版 caller |
+|---|---|---|
+| `homage_liege_scope` | `pay_homage_decision`：“觐见”；`unavailable_pay_homage`：“觐见你的领主”。本人进行觐见，变量值保存领主 | `30_court_decisions.txt:258–262` 的决议 effect 设置；`pay_homage_clear_variable_effect` 清除（`pay_homage_events.txt:218、235–239`） |
+| `meditation_character_flag` | `meditate_in_seclusion_decision`：“避世冥想”；忙碌文案“冥想”。本人进行冥想流程，也有在家选项 | `meditate_at_location_effect` 设置（`religious_decision_events.txt:1238、1256`），在家选项也设置（1371–1378）；取消事件 `.0200` 与结束事件 `.0291` 清除（1193–1195、2111–2112） |
+| `local_shrine_rite` | `visit_local_shrine_decision`：“举行一场祭祀仪式”；`unavailable_local_shrine`：“拜访地方神祠”。普通说明用“祭祀仪式相关流程”，不自译“当地神社仪式” | 决议触发 `local_rites.1`（`tgp_east_asia_decisions.txt:633–636`）；`local_shrine_at_location_effect` 设置 flag（`local_shrine_events.txt:20、38–40`）；取消或完成路径清除（57、748、788） |
+| `petition_liege_character_flag` | `unavailable_petition_liege`：“向你的领主请愿”。本人是请愿方；决议名称使用动态领主称号 | `30_activity_decisions.txt:914–930` 在本人已在领主首府时启动，或到首府的旅行开始时调用 `petition_liege_start`；该 on_action 设置 flag（`ep1_petition_liege_on_actions.txt:2–8`）；`petition_liege_variable_cleanup_effect` 清除（`00_ep1_hold_court_effects.txt:1627、1636–1639`） |
+| `petition_head_of_faith_petitioner` | `unavailable_petition_head_of_faith`：“等待正式请愿”。普通说明为“接待方 AI 信仰领袖等候请愿者” | 保存对象及设置／清除见本节上一段；不能用变量名中的 petitioner 推断保存对象就是请愿者 |
+| `holding_court_character_flag` | `hold_court_decision`：“举办朝会”；`unavailable_hold_court`：“主持朝会”。本人为朝会主持方 | 决议触发 `.0011`（`30_activity_decisions.txt:71–77`）；该朝会开场事件设置 flag（`hold_court_events_general.txt:125、178–192`）；退出选项或结束事件 `.0021` 清除（226–230、244、270–273） |
+| `gone_adventuring` | `adventure_inspiration`：“探险灵感”。普通说明为“探险灵感角色正在外出探险”，不泛指所有旅行或无地冒险者政体 | `start_adventure_effect` 在 `$ADVENTURER$` 上设置变量（`00_adventure_effects.txt:5–23`）；灵感事件也在 `scope:inspiration_owner` 设置（`ep1_fund_inspiration_events.txt:4693–4699`），清除后送回默认位置（7853–7860） |
+
+本地化关系还可直接核 `00_activity_loc.txt:381–427`：这些条目分别选择官方 `unavailable_*` 文案。官方决议名与忙碌文案可能不同，表中已分开；`gone_adventuring` 引用的是官方灵感类别名，表中没有捏造其独立忙碌状态名。
+
+`contagious_deadly_disease` 是 `has_contagious_deadly_disease_trigger` 通过 `has_trait_with_flag` 检查的内部特质分类标记（`00_available_for_events_triggers.txt:17–19`）。普通说明“没有带致命传染病标记的疾病”对应这条检查，不代表“没有任何疾病”，也不把英文标记当作 UI 新属性。
+
+追加来源包含上述 caller 的有限行片段、完整原文件 SHA-256 及官方本地化 key/行号；它不改动旧 SOURCE-CONTRACT 或 portable JSON，也不把流程解释升级为新的 MCP 逻辑资格。

@@ -2429,6 +2429,9 @@ def create_server(
                 expected_revision=expected_revision, target_rite_id=target_rite_id,
             )
 
+    from .rite_creation_action_mcp_v1 import register_tools as register_rite_creation_tools_v1
+    register_rite_creation_tools_v1(server, driver, _forbid_unknown_tool_arguments_v1)
+
     if getattr(driver, "allow_private_player_religion_reform_context_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_religion_reform_context_v1(
@@ -5316,6 +5319,8 @@ def parser() -> argparse.ArgumentParser:
         "--private-player-religion-conversion-reasons-query", action="store_true",
         help="enable the native conversion reason observation for a selected Rite",
     )
+    result.add_argument("--private-player-rite-creation-actions", action="store_true",
+        help="explicit exact4 original Rite draft/confirmation actions; default off")
     result.add_argument(
         "--private-player-religion-reform-context-query", action="store_true",
         help="enable the native current-player reform context observation",
@@ -5487,6 +5492,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_epidemic_treatment_presence_query
             or args.private_player_religion_conversion_reasons_query
             or args.private_player_religion_reform_context_query
+            or args.private_player_rite_creation_actions
             or args.private_active_scheme_sway_completion_execution_query
             or args.private_player_epidemic_recovery_query
             or args.private_player_religion_doctrine_catalogue_query
@@ -5639,6 +5645,7 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_epidemic_treatment_presence_query = True
     if args.private_player_religion_conversion_reasons_query:
         driver.allow_private_player_religion_conversion_reasons_query = True
+    driver.allow_private_player_rite_creation_actions = args.private_player_rite_creation_actions
     if args.private_player_religion_reform_context_query:
         driver.allow_private_player_religion_reform_context_query = True
     if args.private_active_scheme_sway_completion_execution_query:

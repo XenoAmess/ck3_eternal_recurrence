@@ -1080,6 +1080,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
     driver.allow_private_war_cash_query = bool(getattr(args, "private_war_cash_queries", False))
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
+    driver.allow_private_player_rite_creation_actions = args.private_player_rite_creation_actions
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_creation_context_query = "ck3_query_player_holy_site_creation_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_action_context_query = "ck3_query_player_holy_site_relic_action_context_v1" in driver.case_declared_read_only_mcp_tools
@@ -4181,6 +4182,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     if getattr(args, "normal_exit_managed_profile", None) is not None:
         child_args += ["--normal-exit-managed-profile", str(args.normal_exit_managed_profile),
                        "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
+    if getattr(args, "private_player_rite_creation_actions", False):
+        child_args.append("--private-player-rite-creation-actions")
     if getattr(args, "private_holy_site_relic_actions", False):
         child_args.append("--private-holy-site-relic-actions")
     if getattr(args, "private_player_holy_site_creation_create_once", False):
@@ -4499,6 +4502,8 @@ def parser() -> argparse.ArgumentParser:
         help="explicit once-only creation callback; requires independent creation UI opt-in")
     result.add_argument("--private-player-holy-site-creation-ui", action="store_true",
         help="enable four exact4 creation UI selectors, independently of read-only tools")
+    result.add_argument("--private-player-rite-creation-actions", action="store_true",
+        help="explicit exact4 original Rite draft and final confirmation; default off")
     result.add_argument("--private-holy-site-relic-actions", action="store_true",
         help="explicit opt-in for four finite relic actions; default off, never a read-only tool declaration")
     result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(

@@ -60,6 +60,7 @@ class RenderProfile:
 DEFAULT_PROFILE = RenderProfile('episode01-31m-1440p30-v1', MAX_SECONDS)
 EXTENDED_PROFILE = RenderProfile('episode01-35m-1440p30-v1', 2100)
 PADDING_PROFILE = RenderProfile('episode01-2101s-1440p30-v1', 2101)
+V5_REORDER_PROFILE = RenderProfile('episode01-v5-54m-1440p30-v1', 3240)
 
 
 def render_profile(document, bound):
@@ -67,7 +68,7 @@ def render_profile(document, bound):
     if reference is None:return DEFAULT_PROFILE
     if Path(reference['path']).suffix.lower()!='.json':raise ValueError('Render profile must be pinned JSON')
     actual=read(bound(reference))
-    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE):
+    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE):
         if actual==profile.to_mapping():return profile
     raise ValueError('Unknown immutable render profile or changed quality settings')
 
@@ -150,7 +151,7 @@ def media_limit(seconds, *, audio):
 
 def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE):
     """New future bytes, not an existing-package cap or measured output size."""
-    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE):raise ValueError('Unknown render profile')
+    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE):raise ValueError('Unknown render profile')
     seconds=profile.max_seconds if seconds is None else seconds
     if not 0 < seconds <= profile.max_seconds or not 0 < segments <= profile.max_segments:
         raise ValueError(f'{profile.max_seconds}-second / {profile.max_segments}-segment limit exceeded')

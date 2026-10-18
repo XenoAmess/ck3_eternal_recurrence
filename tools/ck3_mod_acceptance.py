@@ -34,6 +34,10 @@ SAVED_FLAGS = {
     "date_raw": "--saved-campaign-date-raw", "product_inventory": "--saved-campaign-product-inventory",
 }
 CASE_HOLY_SITE_RELIC_ACTION_MCP_TOOLS = frozenset({'ck3_set_holy_site_relic_slot_selection_v1', 'ck3_select_holy_site_relic_artifact_v1', 'ck3_remove_holy_site_relic_v1', 'ck3_enshrine_holy_site_relic_v1'})
+CASE_RITE_CREATION_ACTION_MCP_TOOLS = frozenset({
+    "ck3_query_player_rite_creation_action_context_v1", "ck3_execute_player_rite_creation_action_v1",
+    "ck3_collect_player_rite_creation_action_result_v1",
+})
 CASE_HOLY_SITE_CREATION_UI_MCP_TOOLS = frozenset({
     "ck3_open_holy_site_creation_window_v1", "ck3_select_holy_site_creation_type_v1",
     "ck3_select_holy_site_creation_barony_v1", "ck3_set_holy_site_creation_artifact_selection_v1",
@@ -156,6 +160,13 @@ class Selection:
             raise ValueError("opt_in_holy_site_relic_actions must be an explicit Boolean")
         if self.opt_in_holy_site_relic_actions and not CASE_HOLY_SITE_RELIC_ACTION_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
             raise ValueError("Relic action opt-in must declare all four finite action tools as required")
+        self.opt_in_player_rite_creation_actions = self.case.get("opt_in_player_rite_creation_actions", False)
+        if type(self.opt_in_player_rite_creation_actions) is not bool:
+            raise ValueError("opt_in_player_rite_creation_actions must be an explicit Boolean")
+        if self.opt_in_player_rite_creation_actions and not CASE_RITE_CREATION_ACTION_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Rite action opt-in must declare query, finite action and retained collect tools as required")
+        if not self.opt_in_player_rite_creation_actions and CASE_RITE_CREATION_ACTION_MCP_TOOLS & set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Rite action tools require their explicit case opt-in")
         self.opt_in_holy_site_creation_ui = self.case.get("opt_in_holy_site_creation_ui", False)
         if type(self.opt_in_holy_site_creation_ui) is not bool:
             raise ValueError("opt_in_holy_site_creation_ui must be an explicit Boolean")
@@ -381,6 +392,8 @@ class Selection:
             self.saved = saved
         else:
             raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
+        if self.opt_in_player_rite_creation_actions:
+            argv.append("--private-player-rite-creation-actions")
         if self.opt_in_holy_site_relic_actions:
             argv.append("--private-holy-site-relic-actions")
         if self.opt_in_holy_site_creation_create_once:
@@ -398,6 +411,9 @@ class Selection:
                 "host_argv": self.argv, "required_mcp_tools": self.case.get("required_mcp_tools", []),
                 "opt_in_read_only_mcp_tools": self.opt_in_read_only_mcp_tools,
                 "opt_in_holy_site_relic_actions": self.opt_in_holy_site_relic_actions,
+                "opt_in_player_rite_creation_actions": self.opt_in_player_rite_creation_actions,
+                "rite_confirmation_expected_state_writes": ["native-session/rite-creation-actions/*.claim.json",
+                    "native-session/rite-creation-actions/*.native-result.json"] if self.opt_in_player_rite_creation_actions else [],
                 "opt_in_holy_site_creation_ui": self.opt_in_holy_site_creation_ui,
                 "opt_in_holy_site_creation_create_once": self.opt_in_holy_site_creation_create_once,
                 "creation_create_once_expected_state_writes": [

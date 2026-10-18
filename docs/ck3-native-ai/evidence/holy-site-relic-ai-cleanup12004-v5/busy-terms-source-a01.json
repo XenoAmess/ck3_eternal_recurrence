@@ -1,0 +1,437 @@
+{
+  "schema": "ck3_busy_terms_source/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T06:49:29.198580+00:00",
+  "source_head_at_read": "2c741ad29b6091087c3a2197145f5c17029af8ab",
+  "ck3_version": "1.20.0.4",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "qualification": "bounded installed-source and Simplified Chinese localization read; no game or native execution",
+  "scripts": [
+    {
+      "path": "common/scripted_effects/11_petition_head_of_faith_effects.txt",
+      "sha256": "99c262a551fe782edc115ffd20edaa103b66fd09b660b7c975e8b9208a4b321d",
+      "excerpts": [
+        {
+          "first_line": 17,
+          "last_line": 20,
+          "text": "17: petition_head_of_faith_clear_pending_effect = {\n18: \tvar:pending_petition_head_of_faith_recipient ?= {\n19: \t\tremove_variable = petition_head_of_faith_petitioner\n20: \t}"
+        },
+        {
+          "first_line": 28,
+          "last_line": 38,
+          "text": "28: # Blocks an AI Head of Faith from travel and new activities while awaiting the petitioner.\n29: petition_head_of_faith_block_recipient_effect = {\n30: \tscope:recipient = {\n31: \t\tif = {\n32: \t\t\tlimit = { is_ai = yes }\n33: \t\t\tset_variable = {\n34: \t\t\t\tname = petition_head_of_faith_petitioner\n35: \t\t\t\tvalue = scope:actor\n36: \t\t\t}\n37: \t\t}\n38: \t}"
+        },
+        {
+          "first_line": 49,
+          "last_line": 51,
+          "text": "49: \tvar:petition_head_of_faith_recipient ?= {\n50: \t\tremove_variable = petition_head_of_faith_petitioner\n51: \t}"
+        },
+        {
+          "first_line": 211,
+          "last_line": 212,
+          "text": "211: \t\tpetition_head_of_faith_block_recipient_effect = yes\n212: \t\tpetition_head_of_faith_begin_travel_effect = yes"
+        }
+      ]
+    },
+    {
+      "path": "common/customizable_localization/00_activity_loc.txt",
+      "sha256": "c69fe0d6ee3f50ba4bf5e6a796ee36dc8251223c985b6377254064f5d67b1f8e",
+      "excerpts": [
+        {
+          "first_line": 381,
+          "last_line": 385,
+          "text": "381: \ttext = {\n382: \t\ttrigger = {\n383: \t\t\thas_variable = homage_liege_scope\n384: \t\t}\n385: \t\tlocalization_key = unavailable_pay_homage"
+        },
+        {
+          "first_line": 395,
+          "last_line": 399,
+          "text": "395: \ttext = {\n396: \t\ttrigger = {\n397: \t\t\thas_character_flag = meditation_character_flag\n398: \t\t}\n399: \t\tlocalization_key = unavailable_meditation"
+        },
+        {
+          "first_line": 402,
+          "last_line": 406,
+          "text": "402: \ttext = {\n403: \t\ttrigger = {\n404: \t\t\thas_character_flag = local_shrine_rite\n405: \t\t}\n406: \t\tlocalization_key = unavailable_local_shrine"
+        },
+        {
+          "first_line": 409,
+          "last_line": 413,
+          "text": "409: \ttext = {\n410: \t\ttrigger = {\n411: \t\t\thas_character_flag = petition_liege_character_flag\n412: \t\t}\n413: \t\tlocalization_key = unavailable_petition_liege"
+        },
+        {
+          "first_line": 416,
+          "last_line": 420,
+          "text": "416: \ttext = {\n417: \t\ttrigger = {\n418: \t\t\thas_variable = petition_head_of_faith_petitioner\n419: \t\t}\n420: \t\tlocalization_key = unavailable_petition_head_of_faith"
+        },
+        {
+          "first_line": 423,
+          "last_line": 427,
+          "text": "423: \ttext = {\n424: \t\ttrigger = {\n425: \t\t\thas_character_flag = holding_court_character_flag\n426: \t\t}\n427: \t\tlocalization_key = unavailable_hold_court"
+        }
+      ]
+    },
+    {
+      "path": "common/decisions/dlc_decisions/tgp/tgp_east_asia_decisions.txt",
+      "sha256": "9cf657f5ec6fc65dbded04e1a82e100ec2619ad2a999cd6090de978a2755993d",
+      "excerpts": [
+        {
+          "first_line": 589,
+          "last_line": 589,
+          "text": "589: visit_local_shrine_decision = {"
+        },
+        {
+          "first_line": 633,
+          "last_line": 636,
+          "text": "633: \teffect = {\n634: \t\tcustom_tooltip = sacrifice_to_heaven\n635: \t\ttrigger_event = local_rites.1\n636: \t}"
+        }
+      ]
+    },
+    {
+      "path": "events/religion_events/local_shrine_events.txt",
+      "sha256": "2173ffaf8a7469d3a5ac768e4f02682150fbae355fe6b02348e93f2759a31906",
+      "excerpts": [
+        {
+          "first_line": 20,
+          "last_line": 21,
+          "text": "20: scripted_effect local_shrine_at_location_effect = {\n21: \tset_variable = {"
+        },
+        {
+          "first_line": 28,
+          "last_line": 40,
+          "text": "28: \tstart_travel_plan = {\n29: \t\tdestination = var:shrine_location\n30: \t\ton_travel_planner_cancel_event = local_rites.10\n31: \t\ton_arrival_event = local_rites.2\n32: \t\ton_arrival_destinations = all_but_last\n33: \t}\n34: \tadd_character_modifier = {\n35: \t\tmodifier = visit_local_shrine_modifier\n36: \t\tdays = local_shrine_duration\n37: \t}\n38: \tadd_character_flag = {\n39: \t\tflag = local_shrine_rite\n40: \t\tyears = 1 #This is a fallback, it is also cleared at location"
+        },
+        {
+          "first_line": 53,
+          "last_line": 57,
+          "text": "53: \timmediate = {\n54: \t\tcurrent_travel_plan ?= { cancel_travel_plan = yes }\n55: \t\tremove_decision_cooldown = visit_local_shrine_decision\n56: \t\tremove_variable = shrine_location\n57: \t\tremove_character_flag = local_shrine_rite"
+        },
+        {
+          "first_line": 740,
+          "last_line": 748,
+          "text": "740: \toption = {\n741: \t\tname = local_rites.3.pay_at_home #So be it\n742: \t\ttrigger = {\n743: \t\t\tscope:at_home = yes\n744: \t\t}\n745: \t\t#Pay A little Gold - Get Piety\n746: \t\tremove_short_term_gold = miniscule_gold_value\n747: \t\tadd_piety = minor_piety_gain\n748: \t\tremove_character_flag = local_shrine_rite"
+        },
+        {
+          "first_line": 787,
+          "last_line": 788,
+          "text": "787: \t\tremove_variable = shrine_location\n788: \t\tremove_character_flag = local_shrine_rite"
+        }
+      ]
+    },
+    {
+      "path": "common/decisions/30_court_decisions.txt",
+      "sha256": "8d06b4eddfecb245f54ff4a26bef25afa6acf15e93f927565374ba89a15ea148",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 3,
+          "text": "1: ### Pay Homage ###\n2: pay_homage_decision = {\n3: \tai_check_interval_by_tier = {"
+        },
+        {
+          "first_line": 258,
+          "last_line": 263,
+          "text": "258: \teffect = {\n259: \t\tset_variable = {\n260: \t\t\tname = homage_liege_scope\n261: \t\t\tvalue = liege\n262: \t\t}\n263: \t\tcustom_tooltip = pay_homage_decision_effects"
+        }
+      ]
+    },
+    {
+      "path": "events/decisions_events/pay_homage_events.txt",
+      "sha256": "bdde5501c8b88acd5e9c182f5e461b877616fa40dd0ec4fdcea52ec08a5c457e",
+      "excerpts": [
+        {
+          "first_line": 218,
+          "last_line": 218,
+          "text": "218: scripted_effect pay_homage_clear_variable_effect = {"
+        },
+        {
+          "first_line": 235,
+          "last_line": 239,
+          "text": "235: \t# Liege\n236: \tif = {\n237: \t\tlimit = { has_variable = homage_liege_scope }\n238: \t\tremove_variable = homage_liege_scope\n239: \t}"
+        }
+      ]
+    },
+    {
+      "path": "common/decisions/10_religious_decisions.txt",
+      "sha256": "6ef6123e5f0ae31789f8f854043ba4d11278af0470871ba77d3df0cffc2da30c",
+      "excerpts": [
+        {
+          "first_line": 655,
+          "last_line": 655,
+          "text": "655: meditate_in_seclusion_decision = {"
+        },
+        {
+          "first_line": 696,
+          "last_line": 699,
+          "text": "696: \teffect = {\n697: \t\tcustom_tooltip = meditate_in_seclusion_tooltip\n698: \t\ttrigger_event = religious_decision.0201\n699: \t}"
+        }
+      ]
+    },
+    {
+      "path": "events/religion_events/religious_decision_events.txt",
+      "sha256": "ee85eda34c80675ce36b358b93fb07ed85d8e817c3549a97d6754909af981bb1",
+      "excerpts": [
+        {
+          "first_line": 1178,
+          "last_line": 1178,
+          "text": "1178: religious_decision.0200 = {"
+        },
+        {
+          "first_line": 1193,
+          "last_line": 1195,
+          "text": "1193: \t\tremove_decision_cooldown = meditate_in_seclusion_decision\n1194: \t\tremove_variable = meditation_location\n1195: \t\tremove_character_flag = meditation_character_flag"
+        },
+        {
+          "first_line": 1238,
+          "last_line": 1238,
+          "text": "1238: scripted_effect meditate_at_location_effect = {"
+        },
+        {
+          "first_line": 1252,
+          "last_line": 1257,
+          "text": "1252: \tadd_character_modifier = {\n1253: \t\tmodifier = meditating_in_seclusion_modifier\n1254: \t\tdays = meditation_duration\n1255: \t}\n1256: \tadd_character_flag = meditation_character_flag\n1257: }"
+        },
+        {
+          "first_line": 1371,
+          "last_line": 1379,
+          "text": "1371: \t# Option 1: Meditate at home. Lowest risk, lowest reward.\n1372: \toption = {\n1373: \t\tname = religious_decision.0201.home\n1374: \t\tset_variable = {\n1375: \t\t\tname = meditation_location\n1376: \t\t\tvalue = scope:capital_location\n1377: \t\t}\n1378: \t\tadd_character_flag = meditation_character_flag\n1379: \t\tadd_character_modifier = {"
+        },
+        {
+          "first_line": 2098,
+          "last_line": 2098,
+          "text": "2098: religious_decision.0291 = {"
+        },
+        {
+          "first_line": 2111,
+          "last_line": 2112,
+          "text": "2111: \t\tremove_variable = meditation_location\n2112: \t\tremove_character_flag = meditation_character_flag"
+        }
+      ]
+    },
+    {
+      "path": "common/on_action/dlc/ep1/ep1_petition_liege_on_actions.txt",
+      "sha256": "1b6463f16ef3508e32c275bd4ae0d6f4300cf392133d647b466c1e0cab21ea79",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 8,
+          "text": "1: # Petition Liege On Action from Activity Rework\n2: petition_liege_start = {\n3: \teffect = {\n4: \t\tadd_character_flag = petition_liege_character_flag\n5: \t\tset_variable = {\n6: \t\t\tname = petition_liege_scope\n7: \t\t\tvalue = liege\n8: \t\t}"
+        }
+      ]
+    },
+    {
+      "path": "common/decisions/30_activity_decisions.txt",
+      "sha256": "3d8a7cf4172a2887c53f133a22eac48316216cd82a76fe9a023ac3a02aeef85b",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 2,
+          "text": "1: ### Hold Court ###\n2: hold_court_decision = {"
+        },
+        {
+          "first_line": 71,
+          "last_line": 77,
+          "text": "71: \teffect = {\n72: \t\tcustom_tooltip = hold_court_gain_grandeur_tooltip # Granted in conclusion event - hold_court.0021\n73: \t\tcustom_tooltip = hold_court_gain_legitimacy_tooltip # Granted in conclusion event - hold_court.0021\n74: \t\tcustom_tooltip = hold_court_decision_effects\n75: \t\thidden_effect = {\n76: \t\t\ttrigger_event = hold_court.0011\n77: \t\t}"
+        },
+        {
+          "first_line": 914,
+          "last_line": 930,
+          "text": "914: \t\tif = {\n915: \t\t\tlimit = {\n916: \t\t\t\tlocation = liege.capital_province\n917: \t\t\t}\n918: \t\t\ttrigger_event = {\n919: \t\t\t\ton_action = petition_liege_start\n920: \t\t\t}\n921: \t\t\t\n922: \t\t\ttrigger_event = petition_liege.9000\n923: \t\t}\n924: \t\telse = {\n925: \t\t\tstart_travel_plan = {\n926: \t\t\t\tdestination = liege.capital_province\n927: \t\t\t\ton_start_on_action = petition_liege_start\n928: \t\t\t\ton_travel_planner_cancel_on_action = petition_liege_travel_planner_exit \n929: \t\t\t\ton_arrival_event = petition_liege.9000\n930: \t\t\t\ton_arrival_destinations = all_but_last"
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_ep1_hold_court_effects.txt",
+      "sha256": "4e3d6c5b1be6f54bc82abda5938ff6e4f99d8d538d3304d774617be13721a6ad",
+      "excerpts": [
+        {
+          "first_line": 1626,
+          "last_line": 1627,
+          "text": "1626: # Petition Liege Variable Cleanup\n1627: petition_liege_variable_cleanup_effect = {"
+        },
+        {
+          "first_line": 1636,
+          "last_line": 1639,
+          "text": "1636: \tif = {\n1637: \t\tlimit = { has_character_flag = petition_liege_character_flag }\n1638: \t\tremove_character_flag = petition_liege_character_flag\n1639: \t}"
+        }
+      ]
+    },
+    {
+      "path": "events/activities/hold_court_activity/hold_court_events_general.txt",
+      "sha256": "eb03041cf3b2d0ea40f4476572d44c6b0f5af0fb909ae0d5b7fcf7e790feeef5",
+      "excerpts": [
+        {
+          "first_line": 125,
+          "last_line": 128,
+          "text": "125: hold_court.0011 = {\n126: \ttype = court_event\n127: \ttitle = hold_court.0001.t\n128: \tdesc = hold_court.0001.desc"
+        },
+        {
+          "first_line": 178,
+          "last_line": 192,
+          "text": "178: \t\t# Set variable so we know if a player is holding court \n179: \t\tif = {\n180: \t\t\tlimit = {\n181: \t\t\t\thas_multiple_players = no\n182: \t\t\t}\n183: \t\t\tadd_character_flag = {\n184: \t\t\t\tflag = holding_court_character_flag\n185: \t\t\t\tdays = 5\n186: \t\t\t}\n187: \t\t}\n188: \t\telse = {\n189: \t\t\tadd_character_flag = {\n190: \t\t\t\tflag = holding_court_character_flag\n191: \t\t\t\tyears = 1\n192: \t\t\t}"
+        },
+        {
+          "first_line": 226,
+          "last_line": 230,
+          "text": "226: \toption = {\n227: \t\tname = hold_court.0001.b\n228: \t\tremove_variable = num_petitioners\n229: \t\tremove_variable = petitioner_current_progress\n230: \t\tremove_character_flag = holding_court_character_flag"
+        },
+        {
+          "first_line": 244,
+          "last_line": 246,
+          "text": "244: hold_court.0021 = {\n245: \ttype = court_event\n246: \ttitle =\thold_court.0021.t"
+        },
+        {
+          "first_line": 270,
+          "last_line": 273,
+          "text": "270: \timmediate = {\n271: \t\t# Clean up the ol' variable.\n272: \t\tremove_variable = petitioner_current_progress\n273: \t\tremove_character_flag = holding_court_character_flag"
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_adventure_effects.txt",
+      "sha256": "f39caa29d1f56d43f27a1e1aaaf923198e06972108039d77faa236867d8dbbaf",
+      "excerpts": [
+        {
+          "first_line": 5,
+          "last_line": 7,
+          "text": "5: # Effects used in the Adventure Inspiration\n6: \n7: start_adventure_effect = {"
+        },
+        {
+          "first_line": 15,
+          "last_line": 23,
+          "text": "15: \t$ADVENTURER$ = {\n16: \t\t# Set a variable to check for availability \n17: \t\tset_variable = gone_adventuring\n18: \n19: \t\t# Set up the event cycle\n20: \t\t# To trigger the event that progresses the inspiration\n21: \t\ttrigger_event = {\n22: \t\t\tid = fund_inspiration.0053\n23: \t\t\tdays = 1"
+        }
+      ]
+    },
+    {
+      "path": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
+      "sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+      "excerpts": [
+        {
+          "first_line": 265,
+          "last_line": 268,
+          "text": "265: \tif = {\n266: \t\tlimit = { has_variable = gone_adventuring }\n267: \t\tremove_variable = gone_adventuring\n268: \t}"
+        },
+        {
+          "first_line": 4163,
+          "last_line": 4166,
+          "text": "4163: \t\t\tstart_adventure_effect = {\n4164: \t\t\t\tADVENTURER = $ADVENTURER$\n4165: \t\t\t\tLOCATION = scope:location\n4166: \t\t\t}"
+        },
+        {
+          "first_line": 4693,
+          "last_line": 4699,
+          "text": "4693: \timmediate = {\n4694: \t\t#Saving some scopes for the tooltips\n4695: \t\tsave_scope_as = actor\n4696: \t\tscope:inspiration_owner = {\n4697: \t\t\tsave_scope_as = recipient\n4698: \t\t\tset_variable = gone_adventuring\n4699: \t\t}"
+        },
+        {
+          "first_line": 7853,
+          "last_line": 7860,
+          "text": "7853: \t\t# Remove the adventuring variable if the inspired character is an adventurer\n7854: \t\tscope:inspiration_owner = {\n7855: \t\t\tif = {\n7856: \t\t\t\tlimit = { has_variable = gone_adventuring }\n7857: \t\t\t\tremove_variable = gone_adventuring\n7858: \t\t\t}\n7859: \t\t\t# Send them back home\n7860: \t\t\tset_location_to_default = yes"
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/00_available_for_events_triggers.txt",
+      "sha256": "fb94b3c340b0374ace5a90017e0e986941771510853bd6afa6fcb0a28d185f05",
+      "excerpts": [
+        {
+          "first_line": 17,
+          "last_line": 19,
+          "text": "17: has_contagious_deadly_disease_trigger = {\n18: \thas_trait_with_flag = contagious_deadly_disease\n19: }"
+        }
+      ]
+    }
+  ],
+  "localizations": [
+    {
+      "path": "localization/simp_chinese/decisions_l_simp_chinese.yml",
+      "sha256": "6eaabcd6458c8fdc239b4e59b9528f2e51f9593edd50b57c77bf844ee394ccb3",
+      "matches": [
+        {
+          "line": 9,
+          "text": " unavailable_pay_homage: \"觐见你的领主\""
+        },
+        {
+          "line": 11,
+          "text": " unavailable_meditation: \"冥想\""
+        },
+        {
+          "line": 12,
+          "text": " unavailable_local_shrine: \"拜访地方神祠\""
+        },
+        {
+          "line": 13,
+          "text": " unavailable_petition_liege: \"向你的领主请愿\""
+        },
+        {
+          "line": 14,
+          "text": " unavailable_hold_court: \"主持朝会\""
+        },
+        {
+          "line": 188,
+          "text": " meditate_in_seclusion_decision: \"避世冥想\""
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/dlc/tgp/tgp_east_asia_decisions_l_simp_chinese.yml",
+      "sha256": "d3c376f64327a3b2558a6a3ff372f26bb9005f105da53baf7220f903aaf9a822",
+      "matches": [
+        {
+          "line": 50,
+          "text": " visit_local_shrine_decision: \"举行一场祭祀仪式\""
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/event_localization/decisions/decision_pay_homage_l_simp_chinese.yml",
+      "sha256": "62720a279239403d62e9f7d1ca116cc00da323cc2b73a644a93f6e6c2b414eea",
+      "matches": [
+        {
+          "line": 3,
+          "text": " pay_homage_decision: \"觐见\""
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/event_localization/decisions/decision_hold_court_l_simp_chinese.yml",
+      "sha256": "08f4066e423a821ae90a17e7a0d43d7cc184eb78d8b44f2ea55a2bc51ded4162",
+      "matches": [
+        {
+          "line": 2,
+          "text": " hold_court_decision: \"举办朝会\""
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/event_localization/decisions/decision_petition_liege_l_simp_chinese.yml",
+      "sha256": "9c7e2d1ae73f4bb54b33f25e3bc3fcdab2dfc5884806f4bd6db20056d95a567d",
+      "matches": [
+        {
+          "line": 3,
+          "text": " petition_liege_decision: \"向[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip]请愿\""
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/petition_head_of_faith_l_simp_chinese.yml",
+      "sha256": "dda022a59e46d65c061e7013365474f6330efcbb1e4bff33cf3e6cce836250ec",
+      "matches": [
+        {
+          "line": 2,
+          "text": " petition_head_of_faith_decision: \"向[ROOT.Char.GetFaith.ReligiousHeadTitleName]请愿\""
+        },
+        {
+          "line": 36,
+          "text": " unavailable_petition_head_of_faith: \"等待正式请愿\""
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/dlc/ep1/dlc_ep1_inspirations_l_simp_chinese.yml",
+      "sha256": "86b87564b6dccbc1dd09a57556f101e40cf993bb2b37cf01d60b2d173da0d010",
+      "matches": [
+        {
+          "line": 49,
+          "text": " adventure_inspiration: \"探险灵感\""
+        }
+      ]
+    }
+  ]
+}

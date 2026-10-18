@@ -1,0 +1,16 @@
+{
+  "schema": "ck3-faith-power-immutable-render-profile-v1",
+  "id": "episode01-v5-54m-1440p30-v1",
+  "max_seconds": 3240,
+  "max_segments": 168,
+  "video_maxrate_bps": 3000000,
+  "video_bufsize_bits": 3000000,
+  "audio_bitrate_bps": 192000,
+  "geometry": [
+    2560,
+    1440,
+    30
+  ],
+  "crf": 21,
+  "preset": "veryfast"
+}

@@ -3887,6 +3887,17 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def player_rite_creation_action_private_v1(self, *, operation: str, expected_revision: int,
+            expected_source_rite_id: int, **selectors: object) -> dict[str, object]:
+        from .rite_creation_action_private_v1 import execute_private_v1
+        return execute_private_v1(self, operation=operation, expected_revision=expected_revision,
+            expected_source_rite_id=expected_source_rite_id, **selectors)
+
+    def collect_player_rite_creation_action_result_private_v1(self, *, action_request_id: str,
+            timeout_seconds: float = 0.0) -> dict[str, object]:
+        from .rite_creation_action_private_v1 import collect_private_result_v1
+        return collect_private_result_v1(self, action_request_id=action_request_id, timeout_seconds=timeout_seconds)
+
     def query_player_religion_reform_context_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:
