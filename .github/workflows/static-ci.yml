@@ -676,4 +676,9 @@ jobs:
         if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/remove-mandala-v') || startsWith(github.ref, 'refs/tags/tributary-expansion-directives-v') || startsWith(github.ref, 'refs/tags/celestial-commerce-corruption-v') || startsWith(github.ref, 'refs/tags/auto-upgrade-buildings-v') || startsWith(github.ref, 'refs/tags/reclaim-motherland-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
         uses: actions/upload-artifact@v6
         with:
-          name: release-candidate-
+          name: release-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            dist/*.zip
+            dist/*.manifest.json
+          if-no-files-found: error
+          retention-days: 30
