@@ -1,5 +1,7 @@
 # 第一期 v5：取得、共享和经营圣地
 
+> 2026-10-19用户审阅后，本版进入[第六轮整改](../../promo/ck3_faith_and_power/docs/episode01-revision-v6.md)：逐次核对“信仰／礼仪”、全文重审表达，并逐句补充所需原版截图与录像。下列技术通过和原文件身份保留；它们不代表用户认可本版讲解或画面安排。
+
 [播放修正版本地视频（52:33）](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v5-production-a01/full-focus-repair-a01/native-run/derived/direct/episode01-review.mp4) · [字幕、讲稿与章节](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v5-production-a01/full-focus-repair-a01/local-delivery-a01/README.md)。本次重排把基督教采用伊斯兰教圣地、伊斯兰教采用基督教圣地纳入一期主线：144句中文旁白、490组中英字幕，视频帧时间线52:33.067，已实际混入指定配乐。
 
 修正版8044实际退出0，完成于 `2026-10-18T18:39:27.743647Z`；全片解码、全部帧时间、音轨与配乐检查通过，字幕按实际PTS逐项核对通过。Root直接查看两处修正版原始抽帧，确认字底完整、与金边分离且未带入下一行；其余六处观察来自上一版中未变的片段。完整听审和1倍速人工观看尚未完成。
