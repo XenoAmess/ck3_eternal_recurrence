@@ -1,0 +1,80 @@
+{
+  "schema": "xar.raiktor-command-history-factory.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:32:19.036185+00:00",
+  "machine_identity_source": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "tool_chunk": "410a1f",
+    "observed_at_utc": "2026-10-18T10:56:09Z"
+  },
+  "source_baseline_commit": "6433880ab63bf2c49574eec19e781741b81d2960",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031200,
+      "sha256": "6f5c4262f914b2a6bff9dc552523f9d4040357fc10e81f2ecbef606c414b3fa6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/raiktor_formal_exit.py",
+      "bytes": 16262,
+      "sha256": "e83e8373c3fafd4b857ab4c1a6828af7197868474f859eadfb9f6f46cf2cadd8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1591699,
+      "sha256": "512bc240671a64a48deb93fa124f6c273357bc8d9a3e72051cba299f8e5d77d7"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_raiktor_history_factory_v1.py",
+      "bytes": 5473,
+      "sha256": "d05e33611f14d4499171e42e1e2288b7d2158b3813addbd67bb285af09bb203e"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 52928,
+      "sha256": "7019c9e7e1ef8cd62bfd1246acf4271d6c920dd5256cd7b1d40ddf54013ab6d4"
+    },
+    {
+      "path": "docs/ck3-native-ai/raiktor-history-expansion-on-demand-2026-10-18.md",
+      "bytes": 1809,
+      "sha256": "149ca11d8b17d5a62c19249ac904b7f5320fe81731af37260a4771ce28c54bce"
+    }
+  ],
+  "change": "Delay the unchanged complete history expansion until the formal consumer reaches its original first history read.",
+  "preserved": [
+    "existing Iterable API",
+    "full relevant AUTO expansion",
+    "restore boundary",
+    "same-frame query binding",
+    "unknown terminal submission no-repeat",
+    "input contents",
+    "planner priorities",
+    "query frequency",
+    "existing driver history lock"
+  ],
+  "structural_credit": {
+    "irrelevant_frame_factory_calls": 0,
+    "relevant_frame_factory_calls": 1,
+    "new_factory_cases": 17,
+    "old_formal_cases": 7,
+    "post_merge_previous_cases": 39
+  },
+  "tests": {
+    "runner": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\perf-sdk06-ownerresponse01\\qualify_raiktor_history_factory_low_priority.py",
+    "priority_readback": "BELOW_NORMAL(0x4000)",
+    "stdout": "63 passed, 6 subtests passed in 17.02s",
+    "exit_code": 0,
+    "tool_chunk": "cf06c4",
+    "observed_at_utc": "2026-10-18T11:31:06Z",
+    "synthetic_only": true
+  },
+  "performance_credit": "Only eliminated unused history materialization and actual synthetic call counts; runtime wall and CPU savings unknown.",
+  "runtime_operations": 0,
+  "frozen_runtime_or_encoder_sources_modified": false,
+  "forbidden_input_reads_or_stats": {
+    "Driver": 0,
+    "SAVE": 0,
+    "media": 0,
+    "indexes": 0
+  }
+}

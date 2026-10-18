@@ -7859,9 +7859,10 @@ def choose_one_life_turn(
         return window_priority
     formal = plan_raiktor_formal_exit(
         snapshot,
-        _expanded_command_rows(commands),
+        commands,
         action_steps=steps,
         bridge_capabilities=capabilities,
+        command_rows_factory=lambda: _expanded_command_rows(commands),
     )
     if isinstance(formal, dict) and formal.get("status") != "continue_ready":
         return _h3937_hold_selected_control(formal, snapshot)

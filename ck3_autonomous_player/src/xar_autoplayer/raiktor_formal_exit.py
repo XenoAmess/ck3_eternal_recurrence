@@ -6,7 +6,7 @@ not execute direct resume-map, which failed to yield a successor in R661.
 
 from __future__ import annotations
 
-from typing import Iterable
+from typing import Callable, Iterable
 
 from .bridge.war_contract import (
     normalize_war_termination_options,
@@ -37,6 +37,7 @@ def plan_raiktor_formal_exit(
     *,
     action_steps: Iterable[str],
     bridge_capabilities: Iterable[str],
+    command_rows_factory: Callable[[], Iterable[dict[str, object]]] | None = None,
 ) -> dict[str, object] | None:
     if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
         return None
@@ -77,7 +78,11 @@ def plan_raiktor_formal_exit(
         return None  # existing native enforce-demands branch has priority
     steps = set(action_steps)
     capabilities = set(bridge_capabilities)
-    history = _history_since_latest_restore(commands)
+    # Unrelated frames need no history expansion. Relevant wars still consume
+    # the caller's complete history under the existing planning ownership.
+    history = _history_since_latest_restore(
+        command_rows_factory() if command_rows_factory is not None else commands
+    )
     if any(
         row.get("ok") is not False
         and row.get("command") in {offer_white_peace_step(war_id), surrender_war_step(war_id)}
