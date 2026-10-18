@@ -94,6 +94,99 @@ class PrelaunchHostFailureTests(unittest.TestCase):
             return allocation.previous_prelaunch_host_failure_closure(
                 self.run, self.freeze, self.close, self.keeper, self.release, self.bus)
 
+    def test_saved_registrar_failure_accepts_actual_split_popen_shape(self):
+        # Synthetic paths/lease, actual R0014 intent/process/wait field layout.
+        state = Path(self.freeze['state_dir'])
+        self.freeze['identity_allocation'] = {'machine_id': 'machine-test'}
+        frozen = self.write(self.run / 'frozen-argv.json', self.freeze)
+        prepared = self.write(self.root / 'common/prepared-d1-a01/prepared-case.json', {
+            'startup': {'mode': 'saved_campaign', 'state_dir': str(state)}})
+        self.bundle['prepared_case'] = prepared
+        ready = {'run_id': self.run.name, 'run_dir': str(self.run),
+                 'keeper_root': str(self.keeper), 'frozen_argv': frozen,
+                 'prepared_case': prepared}
+        self.bundle['ready_context'] = self.write(self.run / 'ready-context.json', ready)
+        context = self.root / 'reviewed-context.json'
+        self.write(context, ready)
+        registrar = state / 'profile/mod-content/product/common/on_action/prepare.txt'
+        stderr = self.run / 'host-stderr.log'
+        trace = ('  File "shared-host.py", line 4148, in run\n'
+            '    saved_campaign = prepare_saved_campaign(args, spec)\n'
+            '  File "shared-host.py", line 591, in prepare_saved_campaign\n'
+            '    raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))\n'
+            'ValueError: saved campaign product-only profile contains a cold-start registrar: ' + str(registrar) + '\n')
+        stderr.write_text(trace, encoding='utf-8')
+        self.bundle['host_stderr'] = allocation.pin(stderr)
+        intent = {'at_utc': '2026-10-18T09:37:27.610345+00:00', 'ticket': 'a' * 64,
+                  'run_id': self.run.name, 'frozen_argv': frozen,
+                  'admitted_lease': {'task_id': self.freeze['screen_task']},
+                  'proof': self.write(self.run / 'proof.json', {'reviewed': True}),
+                  'challenge': self.write(self.run / 'challenge.json', {'nonce': 'actual'})}
+        self.bundle['launch_intent'] = self.write(self.run / 'launch-intent.json', intent)
+        host = json.loads((self.run / 'host-started.json').read_bytes())
+        host.update({'at_utc': '2026-10-18T09:37:30.219670+00:00', 'supervisor_pid': 22016,
+                     'admitted_lease': intent['admitted_lease'],
+                     'direct_review': {key: intent[key] for key in ('proof', 'challenge')}})
+        self.bundle['host_started'] = self.write(self.run / 'host-started.json', host)
+        self.exited['at_utc'] = '2026-10-18T09:37:35.614307+00:00'
+        self.bundle['host_exit'] = self.write(self.run / 'host-original-process-exit.json', self.exited)
+        self.bundle['host_supervisor'] = self.write(self.run / 'host-supervisor-started.json', {
+            'at_utc': '2026-10-18T09:37:27.625332+00:00', 'pid': 13664,
+            'argv': ['python', 'launcher.py', '--run-root', str(self.run),
+                     '--keeper-root', str(self.keeper), '--launch-ticket', intent['ticket'],
+                     '--proof', intent['proof']['path'], '--challenge', intent['challenge']['path'], '--supervise']})
+        for mode, code, pid in [('run', 2, 20320), ('allocate', 0, 21000)]:
+            operation = self.root / 'common/operations' / (mode + '-a01')
+            argv = ['python', 'entry.py', '--runtime', str(self.root / 'runtime.json'),
+                    '--prepared-case', prepared['path']]
+            argv += ['--run-context', str(context)] if mode == 'run' else ['--keeper-output', str(self.keeper)]
+            argv.append(mode)
+            self.bundle['public_' + mode] = self.write(operation / 'intent.json', {
+                'machine_id': 'machine-test', 'at_utc': 'actual-start', 'stage': mode, 'argv': argv})
+            self.bundle['public_' + mode + '_process'] = self.write(operation / 'original-process.json', {
+                'machine_id': 'machine-test', 'pid': pid, 'create_time': 1792316243.6579444, 'argv': argv})
+            self.bundle['public_' + mode + '_exit'] = self.write(operation / 'original-exit.json', {
+                'machine_id': 'machine-test', 'pid': pid, 'completed_at_utc': 'actual-end',
+                'actual_original_popen_wait': True, 'returncode': code})
+        self.early_exit_result()
+        result = self.check()['failure_cleanup']
+        self.assertEqual(result['original_host_exit_code'], 1)
+        self.assertFalse(result['normal_close_qualified'])
+        self.assertFalse(result['business_pass'])
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertIn('public_run_exit', result['original_evidence'])
+        self.assertIn('public_allocate_process', result['original_evidence'])
+        self.assertEqual(result['supervisor_binding']['launcher_popen_pid'], 13664)
+        self.assertEqual(result['supervisor_binding']['actual_supervise_pid'], 22016)
+        self.assertFalse(result['supervisor_binding']['parent_child_relationship_observed'])
+        intent['ticket'] = 'b' * 64
+        self.bundle['launch_intent'] = self.write(self.run / 'launch-intent.json', intent)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'launch ticket/lease chain'):
+            self.check()
+        intent['ticket'] = 'a' * 64
+        self.bundle['launch_intent'] = self.write(self.run / 'launch-intent.json', intent)
+        self.save()
+        exit_path = Path(self.bundle['public_run_exit']['path'])
+        ended = json.loads(exit_path.read_bytes())
+        ended['actual_original_popen_wait'] = False
+        self.bundle['public_run_exit'] = self.write(exit_path, ended)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'retained wait'):
+            self.check()
+        ended['actual_original_popen_wait'] = True
+        self.bundle['public_run_exit'] = self.write(exit_path, ended)
+        self.save()
+        (self.run / 'native-report.json').write_text('{}')
+        with self.assertRaisesRegex(ValueError, 'native/game/control'):
+            self.check()
+        (self.run / 'native-report.json').unlink()
+        stderr.write_text('ValueError: arbitrary saved campaign failure\n')
+        self.bundle['host_stderr'] = allocation.pin(stderr)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'host exit/cause'):
+            self.check()
+
     def test_exact_failed_host_resources_only(self):
         value = self.check()
         self.assertEqual(value['mode'], 'previous-shared-prelaunch-host-failure')

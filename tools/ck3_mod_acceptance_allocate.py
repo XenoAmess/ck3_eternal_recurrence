@@ -319,15 +319,53 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
         'ck3_mod_acceptance_normal_exit_profile.py' in stderr and
         'in project_profile' in stderr and 'in create_profile' in stderr and
         'host_entry.py' in stderr and 'profile = helper.create_profile(' in stderr)
+    registrar_prefix='ValueError: saved campaign product-only profile contains a cold-start registrar: '
+    terminal=stderr.splitlines()[-1:]
+    saved_registrar_rejected=(len(terminal)==1 and terminal[0].startswith(registrar_prefix) and
+        len(terminal[0])>len(registrar_prefix) and 'in prepare_saved_campaign' in stderr and
+        'saved_campaign = prepare_saved_campaign(args, spec)' in stderr and
+        'raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))' in stderr)
+    supervisor_bound=supervisor.get('pid')==host.get('supervisor_pid')
+    supervisor_binding=None
+    if saved_registrar_rejected:
+        intent=original('launch_intent',previous/'launch-intent.json')
+        sargv=supervisor.get('argv',[])
+        def supervisor_argument(name):
+            require(isinstance(sargv,list) and sargv.count(name)==1 and sargv.index(name)+1<len(sargv),
+                    'Saved registrar original supervisor argument missing: '+name)
+            return sargv[sargv.index(name)+1]
+        require(type(supervisor.get('pid')) is int and supervisor['pid']>0 and
+                type(host.get('supervisor_pid')) is int and host['supervisor_pid']>0 and
+                intent.get('run_id')==freeze['run_id'] and intent.get('frozen_argv')==ready['frozen_argv'] and
+                isinstance(intent.get('ticket'),str) and re.fullmatch(r'[0-9a-f]{64}',intent['ticket']) is not None and
+                supervisor_argument('--launch-ticket')==intent['ticket'] and sargv.count('--supervise')==1 and
+                Path(supervisor_argument('--run-root')).resolve()==previous.resolve() and
+                Path(supervisor_argument('--keeper-root')).resolve()==keeper_root.resolve() and
+                bool(intent.get('admitted_lease')) and host.get('admitted_lease')==intent['admitted_lease'] and
+                intent['admitted_lease'].get('task_id')==freeze['screen_task'] and
+                all(host.get('direct_review',{}).get(key)==intent.get(key) for key in ('proof','challenge')),
+                'Saved registrar original supervisor launch ticket/lease chain differs')
+        for key in ('proof','challenge'):
+            ref=intent[key];path=Path(supervisor_argument('--'+key)).resolve()
+            require(path==Path(ref['path']).resolve(),'Saved registrar original supervisor review path differs')
+            check_pin(path,ref)
+        stamps=[datetime.fromisoformat(row['at_utc']) for row in (intent,supervisor,host,exited)]
+        require(all(stamp.tzinfo is not None and stamp.utcoffset() is not None for stamp in stamps) and
+                all(a<=b for a,b in zip(stamps,stamps[1:])),
+                'Saved registrar original launcher/host timestamps differ')
+        supervisor_bound=True
+        supervisor_binding={'mode':'original_launch_ticket_lease_proof_chain',
+            'launcher_popen_pid':supervisor['pid'],'actual_supervise_pid':host['supervisor_pid'],
+            'parent_child_relationship_observed':False,'original_at_utc':[row['at_utc'] for row in (intent,supervisor,host,exited)]}
     require(host.get('run_id')==freeze['run_id'] and host.get('argv')==freeze['argv'] and
             host.get('actual_popen_retained') is True and
-            supervisor.get('pid')==host.get('supervisor_pid') and
+            supervisor_bound and
             exited.get('run_id')==freeze['run_id'] and exited.get('pid')==host.get('pid') and
             exited.get('actual_original_popen_wait') is True and
             type(exited.get('returncode')) is int and exited['returncode']!=0 and
             exited.get('normal_ck3_exit_inferred') is False and
-            (not cache_identity_rejected or exited['returncode']==1) and
-            (cache_identity_rejected or any(cause in stderr for cause in (
+            (not (cache_identity_rejected or saved_registrar_rejected) or exited['returncode']==1) and
+            (cache_identity_rejected or saved_registrar_rejected or any(cause in stderr for cause in (
                 'ValueError: normal exit requires the actual public prepared profile',
                 'ValueError: effective host differs from reviewed projection',
                 'ValueError: normal-exit private V1 does not support enabled mod GUI files'))),
@@ -365,6 +403,16 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
                 profile.get('fixture_mounted') is False and profile.get('campaign_started') is False and
                 profile.get('cache_content_copied') is False,
                 'Cache identity rejection requires its exact pre-identity menu preparation')
+    if saved_registrar_rejected:
+        prepared_path=Path(ready.get('prepared_case',{}).get('path','')).resolve()
+        prepared=original('prepared_case',prepared_path)
+        registrar=Path(terminal[0][len(registrar_prefix):]).resolve()
+        require(ready.get('prepared_case')==evidence['prepared_case'] and
+                prepared.get('startup',{}).get('mode')=='saved_campaign' and
+                Path(prepared.get('startup',{}).get('state_dir','')).resolve()==Path(freeze['state_dir']).resolve() and
+                registrar.is_relative_to(Path(freeze['state_dir']).resolve()/'profile') and
+                registrar.suffix.casefold()=='.txt',
+                'Saved registrar rejection crossed original prepared saved campaign/profile')
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
@@ -387,19 +435,44 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
                         type(value.get('pid')) is int and value.get('returncode')==code and
                         started.get('at_utc')==value.get('at_utc') and value.get('completed_at_utc'),
                         'Cache original allocation parent completion differs')
+        elif saved_registrar_rejected:
+            require(path.name=='intent.json', 'Saved registrar original public intent path differs')
+            started=original(key+'_process',path.parent/'original-process.json')
+            ended=original(key+'_exit',path.parent/'original-exit.json')
+            machine=freeze.get('identity_allocation',{}).get('machine_id')
+            require(bool(machine) and all(row.get('machine_id')==machine for row in (value,started,ended)) and
+                    value.get('stage')==mode and bool(value.get('at_utc')) and
+                    started.get('argv')==argv and type(started.get('pid')) is int and started['pid']>0 and
+                    type(started.get('create_time')) in (int,float) and started['create_time']>0 and
+                    ended.get('pid')==started['pid'] and ended.get('actual_original_popen_wait') is True and
+                    type(ended.get('returncode')) is int and ended['returncode']==code and
+                    bool(ended.get('completed_at_utc')),
+                    'Saved registrar original public '+mode+' retained wait differs')
         else:
             require(value.get('schema')=='ck3-recorded-actual-command-v1' and
                     value.get('exit_code')==code and value.get('finished_at_utc'),
                     'Prelaunch original public '+mode+' completion differs')
         require(isinstance(argv,list) and argv.count('--runtime')==1 and
-                argv[argv.index('--runtime')-1]==mode and argv.count('--prepared-case')==1 and
+                ((argv[-1:]==[mode] and argv.count(mode)==1) if saved_registrar_rejected else
+                    argv[argv.index('--runtime')-1]==mode) and argv.count('--prepared-case')==1 and
                 Path(argv[argv.index('--prepared-case')+1]).resolve()==
-                    (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve(),
+                    (prepared_path if saved_registrar_rejected else
+                     (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve()),
                 'Prelaunch original public '+mode+' completion differs')
         if mode=='run':
             require(argv.count('--run-context')==1 and
                     Path(argv[argv.index('--run-context')+1]).is_file(),
                     'Prelaunch reviewed run context missing')
+            if saved_registrar_rejected:
+                context_path=Path(argv[argv.index('--run-context')+1]).resolve()
+                context=read_json(context_path)
+                require(context.get('run_id')==freeze['run_id'] and
+                        Path(context.get('run_dir','')).resolve()==previous.resolve() and
+                        Path(context.get('keeper_root','')).resolve()==keeper_root.resolve() and
+                        context.get('frozen_argv')==ready['frozen_argv'] and
+                        context.get('prepared_case')==ready['prepared_case'],
+                        'Saved registrar original public run context differs')
+                evidence['public_run_context']=pin(context_path)
         else:
             require(argv.count('--keeper-output')==1 and
                     Path(argv[argv.index('--keeper-output')+1]).resolve()==keeper_root.resolve(),
@@ -446,7 +519,8 @@ def previous_prelaunch_host_failure_closure(previous,freeze,close_path,keeper_ro
             'original_host_exit_code':exited['returncode'],'original_host_wait_proven':True,
             'native_session_started':False,'original_ck3_exit_code':None,
             'normal_close_qualified':False,'typed_normal_exit_proven':False,
-            'business_pass':False,'release_pass':False,'absent_game_controls':absent}}
+            'business_pass':False,'release_pass':False,'absent_game_controls':absent,
+            **({'supervisor_binding':supervisor_binding} if saved_registrar_rejected else {})}}
 
 def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Keep historical unknown waits; retain the observed argparse original wait2."""
