@@ -1,0 +1,126 @@
+{
+  "schema": "xar.first30.grouped-render-recovery-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T16:24:39.976776+00:00",
+  "written_at_utc": "2026-10-18T16:26:42.814155+00:00",
+  "permanent_checkpoint_status": "MANUAL_MCP_SAVE_AND_INDEPENDENT_PERMANENT_COPY_REGISTERED",
+  "full_film_complete": false,
+  "next_game_started": false,
+  "desktop_calls": 0,
+  "old_wholegraph_replacement_closure": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-OLD-K-REPLACEMENT-CLOSURE01.json",
+    "bytes": 4660,
+    "sha256": "fbcdf2e642dccd9253d25932a55b61f5b38e3413fa7edf3d8a3774106e5c62df"
+  },
+  "failed_grouped_owner": {
+    "retained_session_id": 4430,
+    "actual_outer_exit_code": 1,
+    "actual_exit_chunk_id": "aa359c",
+    "Root_relay": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-GROUPED-ENCODER-FAILED02.json",
+      "bytes": 1797,
+      "sha256": "42a9c2c931a292c9ca3d6df7d4dd33b2450b931ca2a1e3cea49dd5f8b3ab5dca"
+    },
+    "normal_children": 7,
+    "cancelled_children": 3,
+    "failure_retained": true
+  },
+  "tail_source_facts": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-BOUNDED-SOURCE-TAIL-FACTS01.json",
+    "bytes": 5787,
+    "sha256": "1f4eba35bd6f38e1bb92e339cf949bd43649b3ef0472396e17e5d8964fe4dcce"
+  },
+  "tail_software_mechanism": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\concat-tail-synthetic01\\SOURCE-REVIEW.json",
+    "bytes": 6215,
+    "sha256": "d1935a83e1fe735aace752540dd1e9a3a03ecbd4d1f2fdae2de4a80326dbea30"
+  },
+  "zero_clock_scope": {
+    "piece_ids": [
+      20,
+      29,
+      54
+    ],
+    "single_source_video_frame_exists": true,
+    "empty_video_claimed": false,
+    "source_frame_preservation_claimed": false,
+    "independent_duration_or_frame_credit": false,
+    "frame_exact": false,
+    "piece83_exception_allowed": false
+  },
+  "resume03": {
+    "producer": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\render_first30_grouped_v2.py",
+      "bytes": 40640,
+      "sha256": "5aca97e15b5c3defd25e91b2212cc1d4f817031f9c684766fd4647d716b4b54a"
+    },
+    "plan": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\FIRST30-GROUPED-RENDER-PLAN03.json",
+      "bytes": 376899,
+      "sha256": "549f321d9cde595b2138969fb7fd7ac26a782571ee7d03d2a44ff627d01e0852"
+    },
+    "bridge": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-GROUPED-RENDER-BRIDGE03.json",
+      "bytes": 7518,
+      "sha256": "5eff4dc5e0c7dcc16552fa328d543aa94050da80da378a803690a348c5f62e2f"
+    },
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-FIRST30-GROUPED-RENDER-ADMISSION03.json",
+      "bytes": 6010,
+      "sha256": "2f5614bd49c92405b5248407bfd64f5ea559ee20429b4dda3a0b2fd0dab816f7"
+    },
+    "Root_started": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\ROOT-ACTUAL-GROUPED-ENCODER-STARTED03.json",
+      "bytes": 3311,
+      "sha256": "2a7b37dbcffbc04c98b0282c3599c2b212394dfde9081ceeb3f921735547a6e6"
+    },
+    "retained_session_id": 26390,
+    "actual_start_chunk_id": "22864f",
+    "actual_outer_exit0_claimed": false,
+    "reused_group_ids": [
+      0,
+      1,
+      3
+    ],
+    "new_groups_to_encode": 25,
+    "initial_complete_group_ids": [
+      0,
+      1,
+      3
+    ],
+    "initial_new_MOV_group_ids": [
+      2,
+      4,
+      5,
+      6
+    ],
+    "required_normal_children": {
+      "inherited": 7,
+      "new": 80,
+      "total": 87
+    },
+    "all400_AV_literals_preserved": true,
+    "waiting_pieces": 197,
+    "maximum_workers": 4
+  },
+  "storage": {
+    "same_OUT_component_reassigned_bytes": 110612185088,
+    "global_future_bytes_retired": 0,
+    "new_consumption_credit_bytes": 0,
+    "old_partial_preserved": true,
+    "postrender_QA_admitted": false
+  },
+  "planned_output_QA": {
+    "producer": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\final_grouped_output_QA_v3.py",
+      "bytes": 28609,
+      "sha256": "f606a6612bb78a24fb9839a167228ca5db9f07351b6bd77702a5203bb2f1a983"
+    },
+    "positions": 847,
+    "contact_pages": 53,
+    "native_images": 15,
+    "executed": false,
+    "full_MP4_SHA_or_probe_repeated": false
+  },
+  "scope": "Machine-bound observations and software/source qualification only. Encoding, final pixel QA, and delivery remain unfinished at this snapshot."
+}

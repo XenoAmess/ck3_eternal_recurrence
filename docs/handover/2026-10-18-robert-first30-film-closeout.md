@@ -66,3 +66,7 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`；实际追加 2026-10-18T14:57:30
 machine_id: `xenoamess-full-tower-eb9d2c1186`。06三编码及probeA实际正常退出0，但probeA的567952B报告超512KiB守卫，外层真实1保留FAILED。07独立后处理复用三已闭派生片与probeA，不重复解原片；每probe上界明确1MiB、总逻辑96MiB保持，实际4.942秒退出0。音频reference、B1+B2及最终demux逐字节相同，558视频帧、合法实际包时钟；Root已实际审阅4张原尺寸接缝图并独立封定。完整[机器绑定摘要](../ck3-native-ai/evidence/first30-real-join-qualification-2026-10-18.json)保留06失败，不以07成功重写它。
 
 新的整片source已Root完整审查并实际prepare：400原始音画literal、197等待、28组最多4并发，组内30Hz/组间有界VFR，最终一次AAC。70GiB派生MOV合计、32GiB最终硬cap及1GiB+16MiB余量的峰值110612185088B；触cap/EOF不全均真实失败。1.5秒检查围绕实际400段CLOCK/PCM预期EOF，同时报告与旧27912.698秒名义值差，不更改旧K/H的guard。本记录截止仍未实际停止原K或准入/执行替代；新的capacity conditional preflight与精确owned stop工具准备中。永久SAVE与原片继续保护，不开下一局，0切屏/游戏操作。
+
+2026-10-19 00:24 CST追加（实观2026-10-18T16:24:39.976776Z，machine_id: `xenoamess-full-tower-eb9d2c1186`）：原wholegraph已按精确出生身份停止，81740外层真实1／内核91，原partial保留；不是正常完成。随后grouped02的4430外层真实1，10个自有子进程均闭场（7正常0、3因失败取消1）。失败来自33毫秒尾段的正CLOCK守卫，不能写成encoder失败或全源为空。既有索引末1024条的有界查询及5个实际正常0的纯合成实验确认：单源视频帧可使concat CLOCK不前进，30Hz量化可能归前段或丢帧；仍不能声称逐帧无损。
+
+独立resume03已实际准入、启动session26390，复用组0/1/3；初始三组均COMPLETE，组1新派生probe核13211帧，另外2/4/5/6新MOV已增长。保留全部400原AV literal及197等待，仅20/29/54按来源绑定单帧零CLOCK例外，83不豁免；9个只读custody句柄保持6原片+3复用MOV，87正常子回执须由7旧+80新组成，原3取消不得计入。新source/plan/card、实际失败与启动的小型完整pins见[恢复摘要](../ck3-native-ai/evidence/first30-grouped-render-recovery-2026-10-19.json)。同一OUT内仅重新分配原110612185088B分量，不删旧partial、不减全球OUT、不新增信用；QA后置6GiB尚未准入。847位置／53页／15张原尺寸的QA源已备，仍须实际外层0、成片包时钟、首唯一SHA及Root像素审阅，完整影片尚未完成。永久SAVE保留，不开下一局，0桌面操作。

@@ -22167,11 +22167,14 @@ class NativeHeadlessGameplayDriver:
                     "native surrender fresh validation failed: "
                     + reason
                 )
-            if _emergency_surrender_submission(
-                self._history_snapshot(),
-                war_id=war_id,
-                episode_run_id=starting.get("episode_run_id"),
-            ) is not None:
+            # This guard only tests presence; do not clone unrelated query bodies.
+            with self._history_lock:
+                already_submitted = _emergency_surrender_submission(
+                    self._command_history,
+                    war_id=war_id,
+                    episode_run_id=starting.get("episode_run_id"),
+                ) is not None
+            if already_submitted:
                 raise BridgeUnavailableError(
                     "native emergency surrender was already submitted for "
                     "this active WarID"
@@ -22344,24 +22347,26 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native white_peace fresh validation failed: " + reason
             )
-        submission_fence = _white_peace_submission_fence(
-            self._history_snapshot(),
-            war_id=war_id,
-            episode_run_id=starting.get("episode_run_id"),
-            variant=evidence.get("variant"),
-        )
-        if submission_fence is not None:
+        with self._history_lock:
+            submission_fenced = _white_peace_submission_fence(
+                self._command_history,
+                war_id=war_id,
+                episode_run_id=starting.get("episode_run_id"),
+                variant=evidence.get("variant"),
+            ) is not None
+        if submission_fenced:
             raise BridgeUnavailableError(
                 "native de-jure white_peace submission is suppressed by "
                 "its same-episode one-shot WarID fence"
             )
-        cooldown = _white_peace_proposal_cooldown(
-            self._history_snapshot(),
-            war_id=war_id,
-            current_date_raw=starting.get("date_raw"),
-            episode_run_id=starting.get("episode_run_id"),
-        )
-        if cooldown is not None:
+        with self._history_lock:
+            on_cooldown = _white_peace_proposal_cooldown(
+                self._command_history,
+                war_id=war_id,
+                current_date_raw=starting.get("date_raw"),
+                episode_run_id=starting.get("episode_run_id"),
+            ) is not None
+        if on_cooldown:
             raise BridgeUnavailableError(
                 "native white_peace proposal is suppressed by its 30-day "
                 "same-WarID cooldown"

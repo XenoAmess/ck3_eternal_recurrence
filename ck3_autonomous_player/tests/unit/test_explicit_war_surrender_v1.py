@@ -38,7 +38,8 @@ def driver_at(folder, before=None, *, unknown=False, remove_war=True, omit_proje
     value = NativeHeadlessGameplayDriver.__new__(NativeHeadlessGameplayDriver)
     value.state_dir = Path(folder)
     value._war31_one_shot_surrender_gate = None
-    value._history_snapshot = lambda: []
+    value._history_lock = RLock()
+    value._command_history = []
     caps = ["game.command.query-war-termination-options-N", "game.command.surrender-war-N"]
     value.state = SimpleNamespace(capabilities=lambda: {"bridge_capabilities": caps})
     value.capabilities = lambda: {"action_steps": [], "bridge_capabilities": caps}

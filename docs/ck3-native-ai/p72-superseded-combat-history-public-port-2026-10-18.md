@@ -11,3 +11,7 @@
 每次最多摘要8行，单正文哈希上限64MiB，批次128MiB。哈希在原 history lock 外计算，提交前核对象身份，再显式失效增量 JSON 缓存。超预算或编码错误保留完整历史并返回原成功查询，不重发 Native；因此这不是无条件的尺寸上限。V2/V3 内部帧读取和 primitive 校验沿已有不携带 history 的路径，直接 snapshot 默认仍包含历史。
 
 一次必要验证通过：21 tests、30 subtests，包含公共 Native 原 execute/primitive/normalizer/cache/record、Service typed API、合成持久化和恢复，以及 partial/unavailable、跨帧、digest 失败、缺缓存与重复摘要。端点是内存夹具，没有启动 SDK daemon、Native 或 Game；有限消费者源码审核沿已封 P72 记录，第三方历史正文消费者不在本次资格范围。未来 SDK 冻结和实机采用仍须独立绑定来源。
+
+2026-10-18 16:18 UTC追加（`machine_id: xenoamess-full-tower-eb9d2c1186`）：公共 `NativeHeadlessGameplayDriver._execute_war_termination_step` 的投降一次性守卫及白和一次性／30日冷却守卫仍先调用 `_history_snapshot()`。该API在锁内深拷贝全部历史；三个原守卫仅逆序读取命令和终战元数据，调用方只判断是否存在。现改为在同一历史锁内执行原纯读取函数，仅带出布尔值；不改变匹配、拒绝消息、读取顺序、Native提交或后验，也不摘要或删除历史。纯函数没有Native、I/O、等待或外部回调，未把这些工作带进历史锁。对N行、正文总量B的历史，取消白和分支最多两次O(B)复制及其分配，原有最坏O(N)元数据搜索保留。
+
+软件来源为 `fc091e9a724e5b7c048ac5a834ec5174a8992083` 上的窄修改；修改后 `native_driver.py` 为1,595,864 B／SHA256 `d4cf1cda71e3f042803cddba98d3b2e931e9742f4c09b7bb141f3a33f3590d99`（读回工具 `3de299`）。新增 `test_war_termination_history_read_guard.py` 加原显式投降和白和原生协议夹具，共16项测试通过（`6f35cd`，测试体0.205s，单进程BELOW_NORMAL、禁字节码）；合成无关正文经原历史API复制2次，经新实际守卫复制0次。测试保留pending／applied、错WarID／episode、冷却精确边界、畸形日期和先行readiness拒绝，并验证扫描持锁、到primitive前已经释放锁。首次新夹具因其列表子类附带RLock而不能深拷贝，已仅将旧路径计数夹具改回真实普通列表。冻结运行源未改；这些是调用与分配次数证据，没有游戏实测墙钟收益。
