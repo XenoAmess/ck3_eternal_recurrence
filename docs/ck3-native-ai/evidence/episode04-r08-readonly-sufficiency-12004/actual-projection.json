@@ -1,0 +1,356 @@
+{
+  "schema": "xar.e04.r08-existing-readonly-sufficiency-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T22:42:31.611233+00:00",
+  "R213": {
+    "summary": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r213-bayeux-arrival-12004\\R213-CASH-READONLY.actual.json",
+      "bytes": 7249,
+      "sha256": "072e3ddb788d003534a9dd893f0ac1efaf613835dd916baf56c6301cab3b3ddb"
+    },
+    "actual_small_cash": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r213-cash-readonly-a02\\views\\r213-cash-a02-cash.common-view.json",
+      "bytes": 5159,
+      "sha256": "31713c46e4a98cfb5addd38cdf6d8c778e45a18ab6b8b0d7ae91b6a03add76b3"
+    },
+    "identity": {
+      "pid": 27056,
+      "generation": 1,
+      "actor": 33388,
+      "date_raw": 53148408,
+      "episode_run_id": null,
+      "local_player_id": 1
+    },
+    "rates": {
+      "schema": "xar.ck3.war-cash-current-resources.v1",
+      "status": "available",
+      "date_raw": 53148408,
+      "played_character_id": 33388,
+      "snapshot_revision": 136,
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "current_treasury": {
+        "raw": 63728159,
+        "scale": 100000
+      },
+      "player_monthly_net_income": {
+        "raw": 32540,
+        "scale": 100000
+      },
+      "military_expenses": {
+        "current": {
+          "status": "available",
+          "resource_kind": "actor_military_current_maintenance",
+          "resource_id": "33388",
+          "owner_character_id": 33388,
+          "war_ids": [
+            1
+          ],
+          "time_basis": "month",
+          "raw_scale": 100000,
+          "source_scope": "actor_owned_military_once_across_all_wars",
+          "source": "native_character_current_military_expenses",
+          "resource_raw_native": [
+            386622,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "gold_raw": 386622,
+          "treasury_raw": 0,
+          "future_war_cost_upper_ready": false,
+          "unavailable_reason": null
+        },
+        "all_raised": {
+          "status": "available",
+          "resource_kind": "actor_military_all_raised_maintenance",
+          "resource_id": "33388",
+          "owner_character_id": 33388,
+          "war_ids": [
+            1
+          ],
+          "time_basis": "month",
+          "raw_scale": 100000,
+          "source_scope": "actor_owned_military_once_across_all_wars",
+          "source": "native_character_all_raised_military_expenses",
+          "resource_raw_native": [
+            493650,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "gold_raw": 493650,
+          "treasury_raw": 0,
+          "future_war_cost_upper_ready": false,
+          "unavailable_reason": null
+        }
+      },
+      "player_monthly_gross_income": {
+        "raw": 469940,
+        "scale": 100000
+      },
+      "player_monthly_total_expenses": {
+        "raw": 437400,
+        "scale": 100000
+      },
+      "monthly_income_semantics": {
+        "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+        "time_basis": "month",
+        "source_scope": "played_character_personal_gold",
+        "income_source": "native_character_monthly_gold_income",
+        "expense_source": "native_character_monthly_total_gold_expenses",
+        "military_expenses_included": true
+      },
+      "readiness": {
+        "current_treasury_ready": true,
+        "monthly_gross_income_ready": true,
+        "monthly_total_expenses_ready": true,
+        "monthly_net_income_ready": true,
+        "current_military_expenses_ready": true,
+        "all_raised_military_expenses_ready": true,
+        "same_frame_ready": true
+      }
+    },
+    "current_raw_context_v1": {
+      "schema_version": 1,
+      "observation_kind": "paused_current_raw_context",
+      "attribution_scope": "current_raw_context_only",
+      "maintenance_attribution": "unclosed",
+      "character": 2174546532144,
+      "character_full_id": 33388,
+      "snapshot_revision": 136,
+      "date_raw": 53148408,
+      "actor_identity_stable": true,
+      "same_frame_ready": true,
+      "values": {
+        "context_identity_before": 2175812421584,
+        "context_identity_after": 2175812421584,
+        "value_2c0": 359440,
+        "value_2c8": 38623,
+        "value_28": 310999,
+        "value_30": 0,
+        "capture_complete": true,
+        "context_stable": true,
+        "failed_reads": 0
+      },
+      "admission_ready": true,
+      "unavailable_reason": null
+    },
+    "payment_journal_present": false,
+    "sampling_controls": 0,
+    "natural_days": 0
+  },
+  "R195_R196": {
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r195-r196-r08-personal-wallet-12004\\PAIR-CALLBACKS.actual-a03.json",
+      "bytes": 14880,
+      "sha256": "982c8bdcd7a2c1cf84ba9cdae9d75bec930d93708dd70af1ee7fc168cc73a20a"
+    },
+    "summary": {
+      "personal_callbacks": 3,
+      "personal_ADD": 2,
+      "personal_SUB": 1,
+      "excluded_known_boarding_SUB": 1,
+      "remaining_nonboarding_personal_SUB": 0,
+      "retained_c_share_SUB_caller_28A6E05": 0,
+      "retained_d_share_SUB_caller_28A6EC2": 0,
+      "cross_arm_same_date_credit_groups": [
+        {
+          "native_date_low32": 53148336,
+          "absolute_day_raw": 389514,
+          "caller_return_rva_hex": "0x28a6d7c",
+          "subject_full_id": 31254,
+          "amount_raw": 205712,
+          "runs": [
+            "desktop-3fevhd2-1c74096080--vanilla--R0195",
+            "desktop-3fevhd2-1c74096080--vanilla--R0196"
+          ]
+        }
+      ],
+      "temporal_repeated_settlement_established": false,
+      "paid_military_amount_raw": null,
+      "payer": null,
+      "cadence": null,
+      "c_d_producer_store_rva": null,
+      "maintenance_attribution": "unclosed"
+    },
+    "records": [
+      {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+        "segment_id": "R0195-control-segment-01",
+        "journal_sequence": 3,
+        "observer_kind": 2,
+        "operation": "personal_ADD",
+        "native_date_low32": 53148336,
+        "absolute_day_raw": 389514,
+        "subject_character_full_id": 31254,
+        "own_player_personal_account_qualified": true,
+        "caller_return_rva_hex": "0x28a6d7c",
+        "amount_raw": 205712,
+        "before_balance_bits": 25804687,
+        "after_balance_bits": 26010399,
+        "whole_callback_balance_matches": true,
+        "excluded_previously_qualified_boarding_300000": false,
+        "fourraw_before": {
+          "context_identity_before": 2566692855024,
+          "context_identity_after": 2566692855024,
+          "value_2c0": 423188,
+          "value_2c8": 0,
+          "value_28": 217476,
+          "value_30": 0,
+          "capture_complete": true,
+          "context_stable": true,
+          "failed_reads": 0
+        },
+        "formula_matches_amount": true,
+        "parent_trace": {
+          "module_base": 140699899199488,
+          "module_image_size": 102518784,
+          "reported_frame_count": 18,
+          "capture_succeeded": true,
+          "truncated": false,
+          "caller_match_count": 1,
+          "frames_absolute": [
+            140714893469431,
+            140714893462232,
+            140714893453720,
+            140714893466371,
+            140714893472548,
+            140699941825916,
+            140699942156601,
+            140699959462904,
+            140699959462988,
+            140699942247750,
+            140699965852274,
+            140699965858255,
+            140699965852490,
+            140699966033665,
+            140699966034138,
+            140699968688016,
+            140718715925380,
+            140718722763921
+          ],
+          "parent_return_absolute": 140699942156601,
+          "parent_return_rva": 42957113,
+          "parent_in_same_image": true
+        },
+        "unwind_candidate_RVAs": [
+          "0x28a6d7c",
+          "0x28f7939",
+          "0x3978bf8",
+          "0x3978c4c",
+          "0x290dd46",
+          "0x3f90a72",
+          "0x3f921cf",
+          "0x3f90b4a",
+          "0x3fbcf01",
+          "0x3fbd0da",
+          "0x4244f90"
+        ]
+      },
+      {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+        "segment_id": "R0196-treatment-segment-01",
+        "journal_sequence": 3,
+        "observer_kind": 2,
+        "operation": "personal_ADD",
+        "native_date_low32": 53148336,
+        "absolute_day_raw": 389514,
+        "subject_character_full_id": 31254,
+        "own_player_personal_account_qualified": true,
+        "caller_return_rva_hex": "0x28a6d7c",
+        "amount_raw": 205712,
+        "before_balance_bits": 25804687,
+        "after_balance_bits": 26010399,
+        "whole_callback_balance_matches": true,
+        "excluded_previously_qualified_boarding_300000": false,
+        "fourraw_before": {
+          "context_identity_before": 2704056069360,
+          "context_identity_after": 2704056069360,
+          "value_2c0": 423188,
+          "value_2c8": 0,
+          "value_28": 217476,
+          "value_30": 0,
+          "capture_complete": true,
+          "context_stable": true,
+          "failed_reads": 0
+        },
+        "formula_matches_amount": true,
+        "parent_trace": {
+          "module_base": 140699899199488,
+          "module_image_size": 102518784,
+          "reported_frame_count": 18,
+          "capture_succeeded": true,
+          "truncated": false,
+          "caller_match_count": 1,
+          "frames_absolute": [
+            140714893469431,
+            140714893462232,
+            140714893453720,
+            140714893466371,
+            140714893472548,
+            140699941825916,
+            140699942156601,
+            140699959462904,
+            140699959462988,
+            140699942247750,
+            140699965852274,
+            140699965858255,
+            140699965852490,
+            140699966033665,
+            140699966034138,
+            140699968688016,
+            140718715925380,
+            140718722763921
+          ],
+          "parent_return_absolute": 140699942156601,
+          "parent_return_rva": 42957113,
+          "parent_in_same_image": true
+        },
+        "unwind_candidate_RVAs": [
+          "0x28a6d7c",
+          "0x28f7939",
+          "0x3978bf8",
+          "0x3978c4c",
+          "0x290dd46",
+          "0x3f90a72",
+          "0x3f921cf",
+          "0x3f90b4a",
+          "0x3fbcf01",
+          "0x3fbd0da",
+          "0x4244f90"
+        ]
+      },
+      {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+        "segment_id": "R0196-treatment-segment-02",
+        "journal_sequence": 3,
+        "observer_kind": 3,
+        "operation": "personal_SUB",
+        "native_date_low32": 53148936,
+        "absolute_day_raw": 389539,
+        "subject_character_full_id": 31254,
+        "own_player_personal_account_qualified": true,
+        "caller_return_rva_hex": "0x28b99b2",
+        "amount_raw": 300000,
+        "before_balance_bits": 26010399,
+        "after_balance_bits": 25710399,
+        "whole_callback_balance_matches": true,
+        "excluded_previously_qualified_boarding_300000": true
+      }
+    ]
+  },
+  "actual_new_query_or_game_or_paid_qualification": false
+}

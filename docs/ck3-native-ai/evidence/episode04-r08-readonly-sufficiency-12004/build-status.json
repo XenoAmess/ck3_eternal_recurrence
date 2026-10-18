@@ -1,0 +1,72 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "current_source_head": "bc4604bed4eb8558b3f4e0e554a642aa69a4ba2f",
+  "a36_metadata": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\ROOT-A36-PRODUCTION-BYTES.json",
+    "bytes": 18411,
+    "sha256": "62375edbf38e8449ecb264dabf4dc0f3d3d42deaab87b4156fdf0f4cc37088f9"
+  },
+  "a36_payment_cash_flags": [
+    {
+      "pointer": "/all_feature_flags/XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1",
+      "value": "ON"
+    },
+    {
+      "pointer": "/all_feature_flags/XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004",
+      "value": "ON"
+    },
+    {
+      "pointer": "/all_feature_flags/XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004",
+      "value": "ON"
+    },
+    {
+      "pointer": "/all_feature_flags/XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004",
+      "value": "ON"
+    }
+  ],
+  "a36_qualified_build_source": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "exact_payment_cash_paths_checked": [
+    "src/war_payment_passive_12004.cpp",
+    "src/war_payment_runtime_12004.cpp",
+    "src/war_payment_json_12004.cpp",
+    "src/war_payment_window_12004.cpp",
+    "src/ck3_12003_war_cash_current_reader.cpp",
+    "src/ck3_12003_war_cash_current_serializer.cpp",
+    "src/ck3_12004_war_cash_claim_terms.cpp",
+    "include/xar_bridge/war_payment_passive_12004.hpp"
+  ],
+  "actual_git_changed_names": [],
+  "source_equality_does_not_requalify_current_build": true,
+  "a37_status": "No successful qualification held at review; nativeprep owner reports original main-build failed. Candidate flags preserve a36 values, no payment/cash feature extension.",
+  "a37_failed_metadata_owner_supplied": {
+    "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a37/ROOT-A37-PHASES/main-build/result.actual.json",
+    "bytes": 16477,
+    "sha256": "daa8ca0a1a6040a4114f0daa09f3f22c7deadb96d83e711b259bcbd4557acdf9"
+  },
+  "standalone_ordinary_null_writer_v2_production": "NOTHELD; current a37 bridge producer does not build cold_observer.cpp",
+  "R213_raw": {
+    "schema_version": 1,
+    "observation_kind": "paused_current_raw_context",
+    "attribution_scope": "current_raw_context_only",
+    "maintenance_attribution": "unclosed",
+    "character": 2174546532144,
+    "character_full_id": 33388,
+    "snapshot_revision": 136,
+    "date_raw": 53148408,
+    "actor_identity_stable": true,
+    "same_frame_ready": true,
+    "values": {
+      "context_identity_before": 2175812421584,
+      "context_identity_after": 2175812421584,
+      "value_2c0": 359440,
+      "value_2c8": 38623,
+      "value_28": 310999,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    },
+    "admission_ready": true,
+    "unavailable_reason": null
+  }
+}

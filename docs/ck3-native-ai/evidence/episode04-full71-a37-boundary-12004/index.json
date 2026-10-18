@@ -1,0 +1,83 @@
+{
+  "schema": "xar.e04.full71-a37-portable-boundary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": {
+    "media_close": "2026-10-18T22:36:54.461520+00:00",
+    "a37_failed_preservation": "2026-10-18T22:34:09.212783+00:00",
+    "a37_recovery_prepared": "2026-10-18T22:34:56.381570+00:00"
+  },
+  "status": {
+    "media": "PURPOSE_CLOSED_MEDIA_BYTES_IMMUTABLE",
+    "old_a37": "EXACT_FAILED_MUTABLE_LOG_AND_CACHE_PRESERVED",
+    "new_a37": "SOURCE_BOUND_RECOVERY_PLAN_PREPARED_NO_BUILD"
+  },
+  "originals": {
+    "full71-purpose-close.json": {
+      "bytes": 3260,
+      "sha256": "2486c3ab9a9df7e0c91248af3b992a5a6b16d0b8b1579b76862cc9a9d9e0db5b",
+      "original_path": "C:/ck3-e04-resume-20261015-a01/full71-visual-repair-prep-a01/PURPOSE-CLOSED.actual-a03.json"
+    },
+    "full71-delivery.json": {
+      "bytes": 2009,
+      "sha256": "44b912a1bb7fbb2bd0de87a7e59f28714aa842f00c64e6ed3daef816209ce0fe",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full71-typography-a03/ROOT-DELIVERY.actual.json"
+    },
+    "full71-pts.json": {
+      "bytes": 1339,
+      "sha256": "8ed5313c2aee185cd8d32cf582b2ddd14ad8d798c625e9f9715b3eba4d96bbc5",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full71-typography-a03/audit/FULL71-PTS.actual.json"
+    },
+    "full71-strict-decode.json": {
+      "bytes": 1017,
+      "sha256": "0d3af1b53d674b6a86d567f701ae49ec8537bfde17f825f7ca6ff84207858206",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full71-typography-a03/audit/31-full71-strict-decode.actual.json"
+    },
+    "full71-three-cards.json": {
+      "bytes": 1514,
+      "sha256": "85aaa6bd86db2489f47a3d383ef90e72c4ed8e031ee8fbae48d1eae279b54a12",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full71-typography-a03/THREE-CARDS-BUILT.actual.json"
+    },
+    "full71-final-sparse.json": {
+      "bytes": 3813,
+      "sha256": "88436a4c12a1d54da2bdb8cb054a1cbb25853306daf268962ad8f1167a8be9dd",
+      "original_path": "C:/ck3-e04-resume-20261015-a01/full71-visual-repair-prep-a01/FINAL-SPARSE.actual-a03.json"
+    },
+    "a37-old-failure-preservation.json": {
+      "bytes": 2393,
+      "sha256": "b9a1732d855d9beb0de51c3296fb2fed885d47771f7317f6bc8b8305853c2ead",
+      "original_path": "C:/ck3-e04-resume-20261015-a01/r216-a37-native-prep-a01/FAILED-A01-SNAPSHOT/PRESERVATION.actual.json"
+    },
+    "a37-sourcebound-recovery-prepared.json": {
+      "bytes": 2076,
+      "sha256": "e664eecf18c6ed12cfb9adf5d3bbea1d511f68070140eb8a535a19518abd17c0",
+      "original_path": "C:/ck3-e04-resume-20261015-a01/r216-a37-native-prep-a01/ROOT-DELIVERY.prepared-a02.json"
+    }
+  },
+  "zip": {
+    "bytes": 8122,
+    "sha256": "4f0ffd2e44189eabd8d0d2fc043cf05bd39b16fa4e30513a966d32c2d592802b"
+  },
+  "large_originals_not_copied": {
+    "movie": {
+      "bytes": 92819459,
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full71-typography-a03/REVIEW02-FULL71-C06-LABEL-REPAIRED-PARTIAL-NO-SIGNOFF.mp4",
+      "sha256": "5223112f16749bc2fe07fb9a8dc91fe6d9eb79ae1c00dc33282439990ed1b140"
+    },
+    "failed_msvc_log": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r216-a37-native-prep-a01\\FAILED-A01-SNAPSHOT\\msvc-build.log",
+      "bytes": 62335,
+      "sha256": "a9e7e1d553df25810da02208a2f3bfce9e3afc7638c85d3fb2b9c118faad66bb"
+    },
+    "failed_cmake_cache": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r216-a37-native-prep-a01\\FAILED-A01-SNAPSHOT\\CMakeCache.txt",
+      "bytes": 46632,
+      "sha256": "5041b2179d2d4042a6eed45251cb19b1c732e1b421d35b57527197e7d41b3d6a"
+    }
+  },
+  "credit": {
+    "full_movie_human_1x": false,
+    "signoff": false,
+    "formal_dynamic": false,
+    "a37_production_qualified_by_these_receipts": false
+  }
+}

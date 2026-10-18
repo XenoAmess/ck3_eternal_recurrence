@@ -1,0 +1,71 @@
+{
+  "schema": "xar.e04.a37-production-cold-portable.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": {
+    "completion": "2026-10-18T22:48:16.765663+00:00",
+    "qualification": "2026-10-18T22:49:46.853762+00:00"
+  },
+  "source_head": "bc4604bed4eb8558b3f4e0e554a642aa69a4ba2f",
+  "status": "PRODUCTION_BYTES_SYSTEM_AND_MINIMAL_COLD_VERIFIED",
+  "originals": {
+    "build-completion.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-BUILD-COMPLETION.actual-a02.json",
+      "bytes": 32134,
+      "sha256": "8ffdb69608f20475d2b066251f8ed06b165e018f3086c82a7f0065475a3f57e1"
+    },
+    "production-qualification.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-PRODUCTION-QUALIFICATION.actual-a02.json",
+      "bytes": 48180,
+      "sha256": "a4cff19f8b7f102dab3fbed4f47b70fd3e5b0be82194dc47f64a9dcd982feda9"
+    },
+    "county-cold-step.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-PHASES\\county-primary-owner-cold-a02\\result.actual.json",
+      "bytes": 994,
+      "sha256": "b1b9df76b1e7dae42a6ca866df4dcb70b39575674724dea5ebf39c785b966617"
+    },
+    "county-wire-step.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-PHASES\\county-primary-owner-production-wire-a02\\result.actual.json",
+      "bytes": 1471,
+      "sha256": "1679b8ddc864d76d523bace1c476740fed81c626eb1ece3ee89ccd1ec316b1ce"
+    },
+    "county-strict-wire.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-COUNTY-STRICT-WIRE.actual-a02.json",
+      "bytes": 302,
+      "sha256": "45f9064ed269db168f26a2c5eaf54e7de771af407a2d9cb267d620bdd2961210"
+    },
+    "worker-binding.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-WORKER-COLD-BINDING.actual-a02.json",
+      "bytes": 1012,
+      "sha256": "7ba87af109fcce6b9e600a3562d5507d0a7df1d6fc66e1f7c5c160bd355f6d77"
+    },
+    "worker-cold-step.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-PHASES\\refill-owned-worker-cold-a02\\result.actual.json",
+      "bytes": 1842,
+      "sha256": "ccd928e62d7389d6d34b5d0e483f3443c06b2a4fa21b8869e0dbb73c6cec2391"
+    },
+    "worker-focused-result.json": {
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\ROOT-A37-WORKER-COLD-RESULTS-a02\\FOCUSED-WORKER-COLD.actual.json",
+      "bytes": 13110,
+      "sha256": "36a5c8a19d33ba39221299bada49a953e1ebd032c506416ba77621b13551e3e1"
+    }
+  },
+  "child_bindings": {
+    "county_native_fixture": "county-cold-step.json",
+    "county_wire_step": "county-wire-step.json",
+    "county_wire_result": "county-strict-wire.json",
+    "refill_build_binding": "worker-binding.json",
+    "refill_cold_step": "worker-cold-step.json",
+    "refill_cold_result": "worker-focused-result.json"
+  },
+  "zip": {
+    "bytes": 19529,
+    "sha256": "b03ae808c36ba23df9e090e401ff644dd968b7dbede4794746326b22ebf28142"
+  },
+  "boundary": {
+    "production_bytes": true,
+    "focused_cold": true,
+    "live_CK3": false,
+    "actual_ADD": false,
+    "gameplay": false
+  }
+}

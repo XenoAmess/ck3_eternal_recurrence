@@ -1,0 +1,28 @@
+{
+  "schema": "xar.e04.B.next-current-stock-opportunity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "UNBOUND_FUTURE_READOUT_NOT_GROWTH_QUALIFICATION",
+  "purpose": "Consume next R06's existing Mar31 pre-full at actual Province2170; no additional tool call, SDK or scene",
+  "existing_tool": "ck3_query_army_strengths",
+  "arguments_from_existing_R06_request": ["army_ids", "expected_revision", "profile", "ordered_refill_entry_mode", "ordered_besieging_entry_mode"],
+  "profile_policy": "Keep R06 observed_history_full_v1 and its exact ordered preparation modes; do not replace them with B defaults",
+  "row_selection": "Select the fresh actually loaded William subject by exact army_id and resolved native_carmy_id. Historical Army0 is provenance, not an action binding.",
+  "paths_relative_to_complete_Driver_result": {
+    "stock": ["army_strengths[*].current_supply_raw", "army_strengths[*].current_supply_scale", "army_strengths[*].current_supply_capacity_raw", "army_strengths[*].current_supply_capacity_scale"],
+    "actual_rate": ["army_strengths[*].current_supply_change_monthly_raw", "army_strengths[*].current_supply_change_monthly_scale"],
+    "resupply": ["army_strengths[*].current_land_resupply_v1.status", "army_strengths[*].current_land_resupply_v1.current_observation_ready", "army_strengths[*].current_land_resupply_v1.province_id", "army_strengths[*].current_land_resupply_v1.owner_character_id", "army_strengths[*].current_land_resupply_v1.native_resupply_eligible", "army_strengths[*].current_land_resupply_v1.loaded_gain_raw"],
+    "province_context": ["army_strengths[*].current_land_supply_rate_inputs_v1", "army_strengths[*].current_province_supply_contributors_v1"],
+    "admission": ["army_strengths[*].monthly_loss_budget_inputs_v1.unit_native_170_raw", "army_strengths[*].monthly_loss_budget_inputs_v1.native_unit_in_combat", "army_strengths[*].monthly_loss_budget_inputs_v1.native_unit_gathering", "army_strengths[*].monthly_loss_budget_inputs_v1.army_gathering_count_raw", "army_strengths[*].army_update_clock_v1"],
+    "bucket": ["army_strengths[*].current_daily_supply_dispatch_inputs_v1", "army_strengths[*].future_daily_supply_schedule_inputs_v1.phases"],
+    "next_frame": ["army_strengths[*].source_derived_next_daily_supply_frame_inputs_v1.source_derived_next_date_raw_i32", "army_strengths[*].source_derived_next_daily_supply_frame_inputs_v1.source_derived_next_native_day_index_raw_i32", "army_strengths[*].source_derived_next_daily_supply_frame_inputs_v1.source_derived_full_cdate64_ready"],
+    "journal_fence": ["army_strengths[*].actual_supply_callback_observations_v1.latest_sequence", "army_strengths[*].actual_supply_callback_observations_v1.events"]
+  },
+  "pure_existing_consumers": ["xar_autoplayer.bridge.army_current_callback_supply_risk_projection.project_current_callback_supply_risk_v1", "xar_autoplayer.bridge.army_future_daily_supply_schedule_projection.project_future_daily_supply_schedule_v1"],
+  "opportunity_gate": ["Actual stock/cap/rate are signed native integers at scale100000 and stock<cap", "Current actual total monthly rate>0; positive loaded_gain alone is insufficient", "Source updater admission fields are complete and pass; strict elapsed/grace uses correct supplied date", "Source-derived next native date/D pair is ready before predicting the next exact day", "Join uint32(nextD)%30 to this row's complete observed all30 phases; preserve original subject occurrences and unchanged-bucket premise"],
+  "result_labels": ["CURRENT_POSITIVE_RATE_OPPORTUNITY_ONLY", "NO_POSITIVE_OPPORTUNITY_IN_CAPTURED_CONTEXT", "UNKNOWN_MISSING_READINESS_OR_NEXT_FRAME"],
+  "forbidden_promotion": "No actual callback/stock delta/site qualification from current getters or prospective bucket membership",
+  "runtime": null,
+  "future_query_pin": null,
+  "additional_sdk_calls_required": 0,
+  "B_qualified_sites": 0
+}
