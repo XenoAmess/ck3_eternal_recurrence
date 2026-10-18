@@ -47,7 +47,8 @@ def assess_origin_exposure_v1(horizon, *, subject_army_id, origin_province_id,
 
 
 def select_safe_reposition_v1(observed, *, original_general, strategy,
-        baseline, commands, snapshot, action_steps, bridge_capabilities):
+        baseline, commands, snapshot, action_steps, bridge_capabilities,
+        command_rows_factory=None):
     if not isinstance(observed, dict) or not isinstance(snapshot, dict):
         return observed
     admission = observed.get('contact_admission')
@@ -105,7 +106,7 @@ def select_safe_reposition_v1(observed, *, original_general, strategy,
              or origin in (e.get('route_province_ids') if isinstance(e.get('route_province_ids'), list) else []))]
     if not incoming:
         return observed
-    rows = list(commands)
+    rows = list(command_rows_factory() if command_rows_factory is not None else commands)
     advertised = set(_action_steps(sorted(bridge_capabilities), snapshot['active_event'],
         snapshot['pending_character_interaction'], wars, armies, paused=True))
     root = strategy._same_frame_campaign_root_context(rows, snapshot)
@@ -244,7 +245,7 @@ def _qualified_origin_contact(plan, exposure, snapshot):
 
 
 def review_war_route_origin_exposure_v1(observed, *, commands, snapshot,
-        action_steps, bridge_capabilities):
+        action_steps, bridge_capabilities, command_rows_factory=None):
     """Review the selected order after the ordinary general ingress."""
     from . import strategy
     original = strategy._general_battle_forecast_ingress
@@ -260,6 +261,9 @@ def review_war_route_origin_exposure_v1(observed, *, commands, snapshot,
         # submitted move cannot be undone or called halted by this policy.
         if (isinstance(army,dict) and army.get('route_province_ids')==[]
                 and 'move_target_province_id' in army and army['move_target_province_id'] is None):
+            if command_rows_factory is not None:
+                commands = command_rows_factory()
+                command_rows_factory = None
             origin = army.get('current_province_id');hostiles = _route_contact_hostile_ids(snapshot)
             preview = strategy._fresh_move_route_preview(list(commands),army_id=army_id,
                 origin_province_id=origin,target_province_id=target,
@@ -281,4 +285,4 @@ def review_war_route_origin_exposure_v1(observed, *, commands, snapshot,
                     'original_move_plan_v1':observed}
     return select_safe_reposition_v1(observed,original_general=original,strategy=strategy,
         baseline=baseline,commands=commands,snapshot=snapshot,action_steps=action_steps,
-        bridge_capabilities=bridge_capabilities)
+        bridge_capabilities=bridge_capabilities,command_rows_factory=command_rows_factory)

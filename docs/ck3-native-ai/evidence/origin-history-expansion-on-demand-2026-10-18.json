@@ -1,0 +1,82 @@
+{
+  "schema": "xar.origin-history-factory.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:54:07.981397+00:00",
+  "machine_identity_source": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "tool_chunk": "410a1f",
+    "utc": "2026-10-18T10:56:09Z"
+  },
+  "source_baseline_commit": "1229c7f43f605d884120a17c2bcda71154d7d55d",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031722,
+      "sha256": "38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_route_origin_exposure_v1.py",
+      "bytes": 19945,
+      "sha256": "119bba068a45cd81819f9264de9f641e20fbca2be3011c77d75ae6e34a248d60"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_origin_history_factory_v1.py",
+      "bytes": 3269,
+      "sha256": "81a1a6452fce1e14dc801634680beff91675a4f4cc30da4621e3d4c873087027"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_forecast_history_factory_v1.py",
+      "bytes": 7407,
+      "sha256": "8629b46fab6d00642d83dd9ab762d2b557d477876331f408b9446c2b85a54404"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 53135,
+      "sha256": "ba0288fafc3d68ee1ac9b812528c13e8ec21967fbbe5ed5504f5b40043114bf8"
+    },
+    {
+      "path": "docs/ck3-native-ai/origin-history-expansion-on-demand-2026-10-18.md",
+      "bytes": 1549,
+      "sha256": "696c4b0afcfd3225561325cf0352a51529903a06c1a238e863de26e5a76a5b20"
+    }
+  ],
+  "structural_credit": {
+    "unrelated_factory_calls": 0,
+    "relevant_factory_calls": 1,
+    "ordinary_postreview_extra_expansions": 0,
+    "core_expansion_preserved": true
+  },
+  "tests": {
+    "runner": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\perf-sdk06-ownerresponse01\\qualify_rendezvous_history_factory_low_priority.py",
+    "modules": [
+      "test_origin_history_factory_v1.py",
+      "test_war_route_origin_exposure_v1.py",
+      "test_forecast_history_factory_v1.py"
+    ],
+    "new_cases": 10,
+    "stdout": "33 passed, 9 subtests passed in 10.41s",
+    "exit_code": 0,
+    "tool_chunk": "62f6f7",
+    "utc": "2026-10-18T11:52:41Z",
+    "priority": "BELOW_NORMAL(0x4000)",
+    "synthetic_only": true
+  },
+  "preserved": [
+    "direct list API",
+    "complete separate history",
+    "model-rejected escape consumer",
+    "origin veto then escape",
+    "safe original move",
+    "route and native-frame guards",
+    "core history expansion"
+  ],
+  "performance_credit": "Eliminated unused materialization only; actual wall and CPU benefit unknown.",
+  "runtime_operations": 0,
+  "forbidden_input_reads_or_stats": {
+    "Driver": 0,
+    "SAVE": 0,
+    "media": 0,
+    "indexes": 0
+  },
+  "frozen_sources_modified": false
+}
