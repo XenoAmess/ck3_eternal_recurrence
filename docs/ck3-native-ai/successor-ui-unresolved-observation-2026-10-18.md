@@ -27,3 +27,18 @@ M7 仍缺多 ruler/seed/government 的实际普通游玩及继承和精确配对
 binding摘要不能自签授权：真实Service必须使用实际driver登记、由ledger.load签发的同值binding，重核磁盘SHA、原Game/源码epoch与完整证明。伪造birth/epoch后重算摘要仍拒。原typed Close前按proof SHA建立create-only UNKNOWN意图，fsync/读回失败零提交；ACK、异常、结果写失败均保防重锁。原Close validator和独立post通过才resolved；原_materialize_checkpoint先拒未解决义务。原full/Close/timeline验证器AST未改，无pending且无opt-in沿旧路径；已有pending缺binding在session前拒。
 
 Root最终独立跑新旧两模块12测试通过（chunk521b2c，body0.953秒／实际外层0），包含真实Service伪造拒绝、冷owner先Close后普通AUTO、0Continue重放及失败守卫；早期失败在摘要保留。全为合成端点和临时小JSON，零真实Native/SDK/Host/游戏/桌面/媒体操作。仅支持原Game仍存活的owner/SDK重建；新Game／载SAVE后出生改变按设计拒，冻结Host06/SDK未采用，旧report缺出生证据不补造。没有directory-fsync或掉电完整性保证。M6命名收益终态、M7跨Game/多格实局仍缺，G2继续6/8；不授影片或业务完成信用。
+
+2026-10-19追加：采用接缝只读审计。`machine_id: xenoamess-full-tower-eb9d2c1186`；实际源码观察始于 `2026-10-18T17:12:07Z`，HEAD `91c570484452a915dcc24024de5ce166e48e1c85`。以下是待实现的采用合同，**Host06 当前未采用**。
+
+实际 SDK 入口是 `bridge/mcp_server.py:460 load_driver` → `:503` 创建 driver → `:1644 create_server` / `:1660` 闭包 Service → `:2867 ck3_auto_turn`；这条链不进入 `native_auto_run`。queue owner 与 App 分进程，不能用 queue 的 ledger 对象或自签 JSON 代替 App 登记。安装应在全部原 policy 后、原 `create_server` 前；用 canonical `xar_autoplayer.successor_ui_pending_ledger_v1` 在真实 driver 上初始化。仅复用首次真实 SEM 与 OS identity，核旧 ledger/epoch/birth 后 load 签发内部 binding；此前 pending 挡 AUTO/Close/SAVE，保原只读入口。源码 SHA 仅初始化计算。
+
+四处消费接缝按序补齐：
+
+1. 原 `before_auto_turn_submit` 显示/ACK及所有拦截通过、返回 None 后才写 preintent；不能替换 publisher 回调。
+2. App 增 after-result 留存：保原 AUTO 全文及 `mcp_server.py:2899` 原 persistence-failed 分支，经原 full/title/goal/persist 验证才 retain；此处不提前 Close。
+3. `tools/g2_saved_campaign/m7_ordinary_successor_queue.py:291 finish_transition` 仍旧 raw timeline 分支，`:327 checkpoint_if_clear` 只看事件。薄 adapter 需消费 deferred 义务，保 none+open 矛盾和旧 root，事件交完整普通 planner；事件消失后仍取 fresh timeline，不能提前 SAVE。
+4. App 原 guarded timeline/typed Close/SAVE 需持有同一登记对象：Close 前唯一意图，原完整 Close 与独立 post 后 resolve，再允许原 SAVE。当前公共 SAVE 不经过 `native_auto_run._materialize_checkpoint` 新门。UNKNOWN/ACK后不得再建意图或重发；所有原继承/六帧/title/goal/persist 门保持。
+
+无游戏最小资格应穿新生成 App 全 bootstrap、registered MCP 软件端点及真实 queue coldloader：原 Continue→旧 root 事件→同 birth 新 conn 冷 load→普通事件→fresh timeline→唯一 Close/SAVE；拒绝未登记/别名 class、伪 epoch/birth 重签、既有 UNKNOWN、持久失败和 none+open 提前 SAVE。复用原 validators，不将纯 ledger 测试当整 owner 资格。
+
+真正运行缺口仍是新 COW 实际入口/source tuple、首个真实 Game birth/preintent、自然继承全后验、同 Game 冷恢复门禁/Close/独立 post/SAVE及随后普通执行。fresh1066 必须建立新 state/真实 birth，只迁来源知识，不迁旧 UI ledger；载 SAVE 或新 Game 的 birth 变更必须拒此 sameGame 授权，另需 checkpoint/lineage 合同，不能回填旧出生证明。仓库未见 private Host06/freeze producer，旧回执不能冒新采用。此轮未写代码、测试或运行树，M6/M7实机缺口未补，G2仍 **6/8**。
