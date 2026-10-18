@@ -71,3 +71,9 @@ Root 另要求核本场 −87、防御战争 `100663323`、目标 `2230`、约 2
 本次勘误观察于 `2026-10-18T03:17:18.230812+00:00`，`machine_id: xenoamess-full-tower-eb9d2c1186`。此前 publication 追加将 push 工具回执的末尾多抄一位；**依据 Root 原始工具结果，准确的 `chunk_id` 为 `fc251a`**，上节有效引用已纠正。Git CommitDate、原 candidate、源码 SHA 和资格历史没有因此修改。
 
 Root 随后补充小型 SEM1540（报告 actual `03:11:09`）的 `active_wars=[]`：截至该帧已经没有活跃战争。较早 −87 本场保护只是当时 Root 所报字段的历史源码适用判断；本 agent 未独立读取新的现场帧。**终战方式、胜败与领土损失尚未核实，不能据战争消失宣称获胜。**
+
+## 追加：P83 exact commit 的远端双 CI 终态（2026-10-18）
+
+复用既有 sole watcher 的实际终态回执，观察 UTC **2026-10-18T03:33:25.894990+00:00**、`machine_id: xenoamess-full-tower-eb9d2c1186`：已发表 **`64b241e4e1f83628bfaa4ad4d965099951c504b1`** 的 [Official Runner CI 39092773492](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39092773492) 与 [Linear history 39092773483](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39092773483) 均 completed / success；Official 的 static job `117572827195` 于 `03:32:39Z` 完成。两份工作流的 `headSha` 都精确等于该已发布提交。
+
+此前 pending、未发布 `556`、原 candidate、源码 SHA 和本地资格仍保留为历史；本终态只授上述 exact `64b` CI 信用。上次 publication 勘误四文档已由 Root 发布为 `65c5861b9e650d8def33ef789600612bf29ad2f3`（push `e39e95`，exit 0），该后续文档提交不另借本 CI 的资格。当前追加观察时间为 `2026-10-18T03:35:50.441082+00:00`；未再查询远端、重跑测试或提交 / 推送。本事实不证明 R9 / 冻结 SDK 已加载 P83，也不授实机结果或 G2 信用；P80 未修改。

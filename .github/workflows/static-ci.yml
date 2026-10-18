@@ -227,7 +227,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py ck3_autonomous_player/tests/unit/test_enemy_already_combat_one_day_watch.py tests/test_shared_harness_reads.py tools/g2_saved_campaign/test_readonly_precondition_portable_v1.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py ck3_autonomous_player/tests/unit/test_enemy_already_combat_one_day_watch.py tests/test_shared_harness_reads.py tools/g2_saved_campaign/test_readonly_precondition_portable_v1.py tools/g2_saved_campaign/test_owner_response_json_once_v1.py
       - name: Test experimental Driver WAL pairing without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py
       - name: Test exact-day hostile scope and local runner recovery without CK3

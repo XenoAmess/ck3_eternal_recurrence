@@ -387,5 +387,69 @@
       "territorial_losses_verified": false,
       "victory_credit": false
     }
+  },
+  "final_remote_CI_appendix": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "appended_at_utc": "2026-10-18T03:35:50.441082+00:00",
+    "CI_observed_at_utc": "2026-10-18T03:33:25.894990+00:00",
+    "exact_published_commit": "64b241e4e1f83628bfaa4ad4d965099951c504b1",
+    "status": "TERMINAL",
+    "all_success": true,
+    "source_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\CI-FINAL-64b241e4.json",
+      "bytes": 15735,
+      "sha256": "86e11689d35ec347cd3f957e9052e7613c9efc913a1aa3cec199435de28ba961"
+    },
+    "sole_watcher": "/root/populist_loss_fix",
+    "workflows": [
+      {
+        "databaseId": 39092773492,
+        "workflowName": "Official Runner CI",
+        "status": "completed",
+        "conclusion": "success",
+        "headSha": "64b241e4e1f83628bfaa4ad4d965099951c504b1",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39092773492",
+        "jobs": [
+          {
+            "databaseId": 117572827195,
+            "name": "static",
+            "status": "completed",
+            "conclusion": "success",
+            "completedAt": "2026-10-18T03:32:39Z"
+          }
+        ]
+      },
+      {
+        "databaseId": 39092773483,
+        "workflowName": "Linear history",
+        "status": "completed",
+        "conclusion": "success",
+        "headSha": "64b241e4e1f83628bfaa4ad4d965099951c504b1",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39092773483",
+        "jobs": [
+          {
+            "databaseId": 117572827028,
+            "name": "No new merge commits",
+            "status": "completed",
+            "conclusion": "success",
+            "completedAt": "2026-10-18T03:12:49Z"
+          }
+        ]
+      }
+    ],
+    "previous_pending_and_unpublished_556_history_preserved": true,
+    "only_exact_64b_receives_this_CI_credit": true,
+    "prior_publication_corrections_published_as_reported_by_Root": {
+      "commit": "65c5861b9e650d8def33ef789600612bf29ad2f3",
+      "push_chunk_id": "e39e95",
+      "exit_code": 0,
+      "publication_provenance": "Root actual publication report; not a separate CI claim"
+    },
+    "new_remote_queries": 0,
+    "tests_repeated": 0,
+    "agent_commit_push": false,
+    "source_or_runtime_changed": false,
+    "P80_changed": false,
+    "deployment_or_live_or_G2_credit": false
   }
 }
