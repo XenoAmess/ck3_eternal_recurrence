@@ -24,10 +24,12 @@ bool ReadPresentationTracks12004(const ZhongguoScoreboardNativeEnvironmentV1&env
   const auto capture=[&](State&s)->bool{
     if(!Value(p.window,0xC8,s.window))return false;
     if(!s.window)return true;
-    if(!Value(s.window,0,s.primary)||s.primary!=env.module_base+0x45435C0||
+    void*outer_owner=nullptr;
+    if(!ReadPresentationOuterOwner12004(env,handler,p.window,outer_owner)||
+        !Value(s.window,0,s.primary)||s.primary!=env.module_base+0x45435C0||
         !Value(s.window,0x10,s.secondary)||s.secondary!=env.module_base+0x4543690||
         !TypedObject(env.module_base,s.window,0x5769298,UiExactImageSizeV1(env.gui_abi_revision))||
-        !Value(s.window,0x98,s.owner)||s.owner!=gui.owner||!Value(s.window,0xA0,s.handler)||s.handler!=handler||
+        !Value(s.window,0x98,s.owner)||s.owner!=outer_owner||!Value(s.window,0xA0,s.handler)||s.handler!=handler||
         !Value(s.window,0xC8,s.back)||s.back!=p.window||!Value(s.window,0x60,s.root))return false;
     ZhongguoScoreboardAccessV1 access{};void*root=nullptr,*widget=nullptr;
     if(!ResolveNamedGuiWidgetV1(env,access,"holding_tracks_view","holding_tracks_view",root,widget))return false;
@@ -174,7 +176,9 @@ bool PresentationCensus12004(const IngameUiRequestV1&r,const PresentationPanel12
       add("faith_core_tenet",PresentationParentPath12004(x.child_path));
     if(r.window_kind==IngameUiWindowKindV1::faith&&x.runtime_name=="doctrine_name"&&PresentationUnderName12004(p.tree,x.child_path,"doctrines_compact_grid_core_tenets"))
       add("faith_core_tenet",PresentationParentPath12004(x.child_path,2));
-    if(r.window_kind==IngameUiWindowKindV1::faith&&PresentationUnderName12004(p.tree,x.child_path,"tab_beliefs")){
+    if(r.window_kind==IngameUiWindowKindV1::faith&&PresentationUnderName12004(p.tree,x.child_path,"tab_beliefs")&&
+        !PresentationUnderName12004(p.tree,x.child_path,"doctrines_grid_core_tenets")&&
+        !PresentationUnderName12004(p.tree,x.child_path,"doctrines_compact_grid_core_tenets")){
       if(x.runtime_name=="doctrine_group_icon")add("faith_doctrine",PresentationParentPath12004(x.child_path,3));
       if(x.runtime_name=="doctrine_icon_main"||x.runtime_name=="doctrine_icon_other"||x.runtime_name=="doctrine_icon_special")
         add("faith_doctrine",PresentationParentPath12004(x.child_path,2));
@@ -278,6 +282,7 @@ bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
     out.available=false;out.status=v.status;out.unavailable_reason=why;return true;};
   try{
     const auto operation=static_cast<std::uint32_t>(r.operation);
+    if(operation>=200&&operation!=204&&operation!=205)CancelPresentationTooltipPosition12004();
     if(operation==204||operation==205||(operation==0&&!r.presentation_receipt.empty())){
       PresentationPanel12004 tooltip_panel{};std::string why;
       if(!ReadPresentationPanel12004(env,r,snapshot,stamp.pump_epoch,gui,handler,tooltip_panel,why))return fail(why);

@@ -131,7 +131,7 @@ struct ArmyTooltipStackV1 {
   friend bool operator==(const ArmyTooltipStackV1 &,const ArmyTooltipStackV1 &)=default;
 };
 bool ArmyTooltipReadStack(void *context,ArmyTooltipStackV1 &out,
-    std::string *failure=nullptr,void *expected_source=nullptr) {
+    std::string *failure=nullptr,void *expected_source=nullptr,bool allow_non_target_null_source=false) {
   out={};
   // Keep nullable failures distinct. Values below are reported only after the
   // corresponding real read succeeded; they are never presumed zero.
@@ -156,7 +156,10 @@ bool ArmyTooltipReadStack(void *context,ArmyTooltipStackV1 &out,
     if(!Value(out.data,offset,entry.root)||!Value(out.data,offset+8,entry.source)||!Value(out.data,offset+0x10,entry.locked)||
         !Value(out.data,offset+0x14,entry.anchor))return fail("tooltip_stack_entry_unreadable",index);
     if(!entry.root)return fail("tooltip_stack_entry_root_null",index);
-    if(!entry.source)return fail("tooltip_stack_entry_source_null",index);
+    // Original3BFF080 provider fallback can register a null source. The old
+    // Army contract stays strict by default; typed presentation opts in only
+    // to observe non-target entries. A target join still requires its full pointer.
+    if(!entry.source&&!allow_non_target_null_source)return fail("tooltip_stack_entry_source_null",index);
     out.entries.push_back(entry);
   }return true;
 }

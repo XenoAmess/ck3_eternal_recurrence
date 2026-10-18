@@ -338,6 +338,7 @@
 #endif
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/faith_power_tooltip_presentation12004.hpp"
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
 #include "xar_bridge/war_declared_overview_v1.hpp"
 #endif
@@ -15029,6 +15030,12 @@ void RunConnectedSession(
     return;
   }
   ++state.connection_generation;
+  // Worker publishes only atomic connection state. Owner callback alone
+  // retires the non-atomic GUI receipt on mismatch or disconnect.
+  xar::ck3_11906::PublishFaithPowerTooltipPresentationConnection12004(state.connection_generation);
+  struct PresentationConnectionLifetime12004 {
+    ~PresentationConnectionLifetime12004(){xar::ck3_11906::PublishFaithPowerTooltipPresentationConnection12004(0);}
+  } presentation_connection_lifetime12004;
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
   state.mandatory_choice_session.Reset(state.connection_generation);
   g_previous_modal_choice_hint.reset();
@@ -29984,6 +29991,8 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
   if (xar::game::IsCk3_12004Descriptor(game->descriptor())) {
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     const auto sha = game->descriptor().executable_sha256;
+    // Existing presentation opt-in, exact4, primary thread still suspended.
+    if(!xar::ck3_11906::InstallFaithPowerTooltipPresentation12004(base,sha,true))return FALSE;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
     xar::ck3_12004::RiteNamedFixedQ64Observer12004Environment rite_environment{};
     rite_environment.exact_12004_build_admitted = true;

@@ -6,6 +6,7 @@
 #include "xar_bridge/holy_site_relic_navigation12004.hpp"
 #include "xar_bridge/holy_site_relic_request12004.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
+#include "xar_bridge/faith_power_tooltip_presentation12004.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
 #include "xar_bridge/religion_ui12004.hpp"
 #include "xar_bridge/ck3_12004_religion_bindings.hpp"
@@ -29,6 +30,7 @@
 #include <bcrypt.h>
 #pragma comment(lib,"bcrypt.lib")
 #include <array>
+#include <initializer_list>
 #include <bit>
 #include <algorithm>
 #include <charconv>
@@ -698,11 +700,29 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
 #include "faith_power_presentation_request12004.inc"
 #include "faith_power_presentation_opening_pins12004.inc"
 #include "faith_power_presentation_opening12004.inc"
+#include "faith_power_tooltip_position_relay12004.inc"
 #include "faith_power_presentation_tooltip12004.inc"
 #include "faith_power_presentation_detail_pins12004.inc"
 #include "faith_power_presentation_receiver_pins12004.inc"
 #include "faith_power_presentation_ui12004.inc"
+#include "faith_power_tooltip_position_lease12004.inc"
 } // namespace
+
+bool InstallFaithPowerTooltipPresentation12004(std::uintptr_t base,std::string_view sha,bool suspended) noexcept {
+  return !PresentationUiEnabled12004()||InstallPresentationTooltipPositionHooks12004(base,sha,suspended);
+}
+bool BindFaithPowerTooltipPresentationOwner12004(MainThreadQueryMailboxV1*m,std::uint64_t generation) noexcept {
+  if(!PresentationUiEnabled12004())return true;
+  if(!m||!generation||presentation_position_connection12004.load(std::memory_order_acquire)!=generation||m->stop_requested.load(std::memory_order_acquire)||
+      m->owner_thread_id.load(std::memory_order_acquire)!=GetCurrentThreadId())return false;
+  if(presentation_position_mailbox12004!=m||presentation_position_lease12004.generation!=generation)
+    CancelPresentationTooltipPosition12004();
+  presentation_position_mailbox12004=m;return true;
+}
+void PublishFaithPowerTooltipPresentationConnection12004(std::uint64_t generation) noexcept {
+  if(PresentationUiEnabled12004())presentation_position_connection12004.store(generation,std::memory_order_release);
+}
+void CancelFaithPowerTooltipPresentation12004() noexcept {CancelPresentationTooltipPosition12004();}
 
 CurrentFirstHeirTypedWindowsReadV1 ReadCurrentFirstHeirTypedWindowRows12004V1(
     std::uintptr_t base, std::uintptr_t image_size,

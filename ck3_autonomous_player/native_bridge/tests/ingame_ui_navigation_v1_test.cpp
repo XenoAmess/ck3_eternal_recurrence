@@ -9,6 +9,7 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <intrin.h>
 
 namespace xar::ck3_11906 {
 // Explicit offline GUI projection stubs. No CK3 function executes.
@@ -99,6 +100,7 @@ bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(const ZhongguoScoreboar
 int main(int argc,char **argv) {
   FaithPowerPresentationContractFixture12004();
   FaithPowerBuildingReceiverFixture12004();
+  if(!PreparedPtpProductionBuilderChecks12004()||!PreparedPtpExecutedStubAbiChecks12004())return 1;
   using namespace xar::ck3_11906;
   IngameUiRequestV1 r{};
   for(auto revision:{GuiAbiRevisionV1::legacy11906,GuiAbiRevisionV1::crozier12003}) {
@@ -402,6 +404,9 @@ int main(int argc,char **argv) {
   put(active_entries.data(),0,tooltip_pointer);void *absent_source=nullptr;put(active_entries.data(),8,absent_source);
   assert(!ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies));
   assert(diagnostic_reason=="tooltip_stack_entry_source_null;capacity=2;count=1;hover=null;index=0");
+  assert(ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies,true)&&
+      diagnostic_stack.count==1&&diagnostic_stack.entries[0].source==nullptr);
+  // Default Army rejection above remains; null never matches a target source.
   put(active_entries.data(),8,fixture_supplies);put(modal_context.data(),0xF0,fixture_attrition_parent);
   assert(ArmyTooltipReadStack(modal_context.data(),diagnostic_stack,&diagnostic_reason,fixture_supplies));
   put(modal_context.data(),0x198,large_capacity);

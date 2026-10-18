@@ -3717,7 +3717,14 @@ def create_server(
         presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] | None = None,
         presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")] | None = None,
     ) -> dict[str, object]:
-        """Finite exact4 original GUI presentation; ACK is pending. ShowDetails accepts preview rows only; no building or Faith mutation."""
+        """Present finite exact4 original GUI; action ACK remains pending.
+
+        subject_id: faith=Faith fullID, rite_creation=draft sourceRite fullID,
+        holding=Province map ID, personal_beliefs=current player CharacterID.
+        A displayed Rite does not change the Faith container ID domain.
+        Actions bind the actual subject; ShowDetails accepts preview rows only.
+        No building or Faith mutation.
+        """
         return service.present_faith_power_ui_v1(operation, window_kind, subject_id,
             expected_revision=expected_revision, presentation_target=presentation_target,
             presentation_index=presentation_index, presentation_tab=presentation_tab,
@@ -3730,7 +3737,14 @@ def create_server(
         expected_revision: IngameUiRevisionV1, subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] = 0,
         presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] = "",
     ) -> dict[str, object]:
-        """Independently observe the original selected window/tab and finite rows; subject0 observes current, not pixel proof."""
+        """Independently observe the selected window/tab and finite rows.
+
+        subject_id domains: faith=Faith fullID; rite_creation=draft sourceRite
+        fullID; holding=Province map ID; personal_beliefs=current player CharacterID.
+        Ordinary subject_id=0 observes current; it does not assert Faith0 or
+        Rite0. A displayed Rite does not change the Faith container identity.
+        Native window observations are separate from rendered pixel proof.
+        """
         return service.present_faith_power_ui_v1("query", window_kind, subject_id,
             expected_revision=expected_revision, presentation_tab=presentation_tab)
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_faith_power_ui_v1")
@@ -3743,7 +3757,14 @@ def create_server(
         presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)],
         presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")],
     ) -> dict[str, object]:
-        """Read only a later owner observation of the exact hover receipt/source/tooltip stack; cache differs from rendered pixels."""
+        """Read a later owner observation of the exact tooltip receipt/source.
+
+        Bind actual subject_id: faith=Faith fullID, never its displayed Rite;
+        rite_creation=draft sourceRite fullID; holding=Province map ID;
+        personal_beliefs=current player CharacterID. With a tooltip target,
+        zero is an actual valid Faith/Rite reference, not a current-window
+        wildcard. Native cached text is separate from rendered pixel proof.
+        """
         return service.present_faith_power_ui_v1("query", window_kind, subject_id,
             expected_revision=expected_revision, presentation_target=presentation_target,
             presentation_index=presentation_index, presentation_receipt=presentation_receipt)

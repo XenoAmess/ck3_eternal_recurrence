@@ -1,0 +1,322 @@
+{
+  "schema": "episode01-r0024-original-gui-boundaries/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T21:41:52Z/22:03:22Z",
+  "authored_at_utc": "2026-10-18T22:13:12.989026+00:00",
+  "source_commit_at_run": "90e1f983d6ad13349ad014757fc140a2c34bb85d",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0024",
+  "source_pins": {
+    "events/xar_cross_v5_prepare_events.txt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\input-snapshots\\profile\\mod-content\\product\\events\\xar_cross_v5_prepare_events.txt",
+      "bytes": 6270,
+      "sha256": "0cad023e2752dbca125113003f29d23f90200e4cb5836dc3df14d7e31fb61c81"
+    },
+    "common/scripted_effects/xar_cross_v5_prepare_effects.txt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\input-snapshots\\profile\\mod-content\\product\\common\\scripted_effects\\xar_cross_v5_prepare_effects.txt",
+      "bytes": 1300,
+      "sha256": "109eadea9e5c066bf2ccf353417d2e444e1aa10cbb6c33785296e05f431ab05b"
+    },
+    "common/on_action/xar_cross_v5_prepare_on_actions.txt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\input-snapshots\\profile\\mod-content\\product\\common\\on_action\\xar_cross_v5_prepare_on_actions.txt",
+      "bytes": 874,
+      "sha256": "37a3f9f98f5094636abf8507a3a069238e13968bf4c4cc2b7d7f9ca7092c9e6a"
+    }
+  },
+  "actual_after_A": {
+    "actor": 15893,
+    "faith_id": 50,
+    "religion_id": 19,
+    "rite_id": 13,
+    "faith_main_rite_id": 13,
+    "date_raw": 51394920,
+    "piety_before": 2250,
+    "piety_after": 20000,
+    "paused": true,
+    "active_event_after": null,
+    "selected_option": 1,
+    "dispatch_count": 1
+  },
+  "A_source_operations": [
+    "Save temporary player scope; create granted title/vassal transaction with add_claim_on_loss=no; change c_kent holder to player; resolve transaction.",
+    "Add piety17750; add piety_experience100000; add_known_tenet_if_not tenet_christian_syncretism.",
+    "Call manager_prepare: existing FaithHoF other than actor -> clear old external puppet if needed and set actual HoF as external_theological_agent_puppet; absent HoF with court chaplain -> clear old internal puppet if needed and set actual cp as theological_agent_puppet. If FaithHoF is actor, neither relation branch writes.",
+    "Add xar_cross_v5_prepared_once, xar_cross_v5_post_core_roles_armed, xar_cross_v5_retained_head_title; write debug marker. Existing knowledge/relation/flags can be unchanged but these setup operations still exist.",
+    "A contains no explicit d_sunni transfer, force_refresh_head_of_rite, Faith/Rite/core/doctrine/HolySite/relic/save/day/law write. Generic title transfer may have indirect game effects; this source list does not prove their absence.",
+    "on_faith_created may queue explicit post-role event only after actual new Faith with armed flags. This run made no Faith and did not select that later event."
+  ],
+  "A_effects_independently_verified": [
+    "Option1 advanced event1 to absent",
+    "Piety2250 to20000",
+    "Actor15893/Faith50/Religion19/currentRite13/mainRite13/date unchanged",
+    "Christian candidate was normally selectable after A and draft slot0 was independently observed after one selection; no pre-A candidate query was taken, so this is not a measured before/after knowledge transition."
+  ],
+  "A_not_independently_verified": [
+    "Exact c_kent holder transition",
+    "Devotion XP delta",
+    "Individual prepared flags",
+    "Actual puppet relation branch/relationship writes",
+    "All indirect title/vassal consequences"
+  ],
+  "law_notice": {
+    "visible_text": "法律被取代；你的无条件保护法律不再有效，并被有条件加入取代",
+    "first_preserved_visible_frame": "operator-frame-20261018T214708Z.png",
+    "origin": "unknown",
+    "attributed_to_A": false,
+    "attributed_to_saved_restore": false,
+    "reason": "Before-A event overlay and baseline snapshot do not independently bind notification creation time. Frozen A has no explicit law setter; title-transfer indirect consumer was not diagnosed in this run."
+  },
+  "original_pixels": [
+    {
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T214306Z.png",
+        "bytes": 5100187,
+        "sha256": "031c668c7bf2c42de0390e3c355846d4cea52e6522d0b7a143c8d6484a6c6559"
+      },
+      "observed_at_utc": "2026-10-18T21:43:06.288932+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "window_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\operator-window-20261018T214306Z.json",
+        "bytes": 903,
+        "sha256": "7d4758e9258b540a29b5b27e447239fae5c303bf847652dd247f5cc2e76c2f36"
+      },
+      "content": "Explicit experimental preparation event, two options; A retains current head title. Process evidence, not a stock teaching card.",
+      "excluded_from_teaching": true,
+      "direct_original_pixel_review": true,
+      "draft_committed": false
+    },
+    {
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T214708Z.png",
+        "bytes": 5966876,
+        "sha256": "0a952ef9bdb30f995ef131a6ccc549aae9e296cdf3b5559748152b329bcbf3f4"
+      },
+      "observed_at_utc": "2026-10-18T21:47:08.029450+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "window_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\operator-window-20261018T214708Z.json",
+        "bytes": 903,
+        "sha256": "7b4e59d3c391fd356f1472d86517bef182003f44eacf2c34ba37cdc12d4cdefb"
+      },
+      "content": "Original Faith page: Hanafi, mainstream/your Rite, Sunni Faith, original three core tenet cards and doctrines; piety20000 is explicit preparation.",
+      "excluded_from_teaching": false,
+      "direct_original_pixel_review": true,
+      "draft_committed": false
+    },
+    {
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T214730Z.png",
+        "bytes": 5967030,
+        "sha256": "e66b8f0530a1bb5f1b77f07368decc021d1ce93526cbf311e5881f8515c0dd48"
+      },
+      "observed_at_utc": "2026-10-18T21:47:30.328664+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "window_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\operator-window-20261018T214730Z.json",
+        "bytes": 903,
+        "sha256": "c6b23564a18036b970f748b60d3506ef1882cededc7733e48b31fccd740aa659"
+      },
+      "content": "Diagnostic only: requested core hover did not produce a core tooltip; original Faith page remains, lower map tooltip is unrelated.",
+      "excluded_from_teaching": true,
+      "direct_original_pixel_review": true,
+      "draft_committed": false
+    },
+    {
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T215155Z.png",
+        "bytes": 4615513,
+        "sha256": "fe31647b4b3db47c4d2d9e670905985648ae513e80737d38af9e5c68fe0a9f41"
+      },
+      "observed_at_utc": "2026-10-18T21:51:55.225882+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "window_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\operator-window-20261018T215155Z.json",
+        "bytes": 903,
+        "sha256": "db2bf08be6c9ee6ce5425e42ae23a4d179883619688417f5757d6a89e66f17db"
+      },
+      "content": "Original unconfirmed edit draft: Hanafi original core cards, war rejection, edit price0 before changes.",
+      "excluded_from_teaching": false,
+      "direct_original_pixel_review": true,
+      "draft_committed": false
+    },
+    {
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T215239Z.png",
+        "bytes": 4774715,
+        "sha256": "d2d1a374273426ee47adcd300dd863c6f1a71f956ccce3d302782af08c7d6be5"
+      },
+      "observed_at_utc": "2026-10-18T21:52:39.935033+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "window_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\operator-window-20261018T215239Z.json",
+        "bytes": 903,
+        "sha256": "dc0fa5892c4f228a79cf609c6f64fb0362b668bab7dc17221b95ae4f871fc744"
+      },
+      "content": "Original core picker: known Christian Syncretism candidate and other original candidate cards; not a full mechanic tooltip.",
+      "excluded_from_teaching": false,
+      "direct_original_pixel_review": true,
+      "draft_committed": false
+    },
+    {
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T215323Z.png",
+        "bytes": 4793722,
+        "sha256": "e86132683a1b46382ec4217906cd86f1757fbca26556bb663ee42a18155e355d"
+      },
+      "observed_at_utc": "2026-10-18T21:53:23.225542+00:00",
+      "image_size": [
+        2560,
+        1440
+      ],
+      "window_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\operator-window-20261018T215323Z.json",
+        "bytes": 903,
+        "sha256": "7f5867cfdf64a7316de61bf79c44ecec18a2416835a706cbcc0b5a161be7634c"
+      },
+      "content": "Unconfirmed edit draft: Christian Syncretism selected in slot0; no full mechanic tooltip and no confirmation.",
+      "excluded_from_teaching": false,
+      "direct_original_pixel_review": true,
+      "draft_committed": false
+    }
+  ],
+  "three_live_RED": [
+    {
+      "operation": "Faith core0 tooltip after hover",
+      "reason": "tooltip_stack_entry_source_null;capacity=1;count=1;hover=bound;index=0",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-native-receipts\\v6-d2-Faith-core0-tooltip-after-a01.json",
+        "bytes": 483736,
+        "sha256": "0af7e5d0fe8c0cd22d0f17605b7a729a53c2b43e2f7a1c30583ed5edb3aeaa6a"
+      },
+      "pixel_proof": false
+    },
+    {
+      "operation": "Open personal beliefs Character15893",
+      "reason": "presentation_current_gui_owner_unavailable",
+      "dispatch_invoked": false,
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-native-receipts\\v6-d2-open-personal-beliefs-a01.json",
+        "bytes": 39193,
+        "sha256": "d85c54f1ffea7517950a873ac92213b30304b2447f3d2647aee2080243cbd18c"
+      }
+    },
+    {
+      "operation": "Open Mecca holding Province6223",
+      "reason": "presentation_current_gui_owner_unavailable",
+      "dispatch_invoked": false,
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-native-receipts\\v6-d2-open-Mecca-holding-a01.json",
+        "bytes": 39148,
+        "sha256": "feb41a19ce142ab8a135af33a426ba13104241f2182d8852f4b41670535c1a62"
+      }
+    }
+  ],
+  "adaptive": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-native-receipts\\v6-d2-tenet-choices-a01.json",
+      "bytes": 88490,
+      "sha256": "41247a230d8ed89c63272533332ce0901f7d99bdb142e7a187ea4eabe39f9ebb"
+    },
+    "source_index": 41,
+    "passed_selectable_trigger": false,
+    "final_selectable": false,
+    "selection_attempted": false
+  },
+  "unexecuted": [
+    "Rite confirmation",
+    "World doctrine/core change",
+    "Adoption",
+    "Surrender/day advance",
+    "Relic supply/swap/remove",
+    "Building construct/upgrade/enable",
+    "New checkpoint",
+    "Any recorder or QA start"
+  ],
+  "closure": {
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\case-output\\normal-close-result.json",
+      "bytes": 16062,
+      "sha256": "37d0b521f32abf05ee1db7c67c7350ed20cb897c00eb57b957f97b86b3fc4272"
+    },
+    "public_original_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\v6-d2-original-gui-a01\\operations\\v6-d2-run-a01\\original-exit.json",
+      "bytes": 166,
+      "sha256": "fc08ee87dd3879cfc0690548876663c991e874db3443d96d6db608a815ce589e"
+    },
+    "host_original_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\host-original-process-exit.json",
+      "bytes": 239,
+      "sha256": "d13f80933feb73d9d4cdd22832a2c472ba11b9ecbdae7645546d796a20d1dc27"
+    },
+    "keeper_original_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\keeper-actual-parent-exit.json",
+      "bytes": 1209,
+      "sha256": "c92c79afcc001e25170c4f8afeee11baa167ba6944e0e41891d90557b9a1a844"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-screen-release-a01.json",
+      "bytes": 1417,
+      "sha256": "e1a2aefe8e8ac7d54c2aa6e8108e34a2bd4d79d55213da45382b58fc0c6f3261"
+    },
+    "CAS": 11953,
+    "original_HANDLE_OS_exit": 0,
+    "public_exit": 0,
+    "host_exit": 0,
+    "keeper_exit": 0,
+    "business_pass": false
+  },
+  "capacity": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\COMPLETED-CAPACITY-a01.json",
+      "bytes": 6438,
+      "sha256": "2d8ccddba5e2b5a1cc192c0579545923a449404be18e8c8ed65da6c2cfd641bc"
+    },
+    "case_retained_upper_bytes": 368140288,
+    "shared_retained_upper_bytes": 450560,
+    "total_retained_upper_bytes": 368590848,
+    "future_peak_bytes": 0,
+    "no_deletion": true
+  },
+  "capture_index": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\ORIGINAL-GUI-CAPTURE-INDEX-a01.json",
+    "bytes": 10414,
+    "sha256": "2cb9f1733db84658cbd7c32bc3ea4133982a028bf11317625233110dda2e6e35"
+  },
+  "native_qualification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a13-presentation\\qualification-a01.json",
+    "bytes": 13153,
+    "sha256": "67ed11e54ff6e7b84da0ff80d6c759aa857cbf5d84ee032a8bcc2c81c598c334"
+  },
+  "review_utc": "2026-10-25T22:03:22Z",
+  "cross_machine_validity": false,
+  "integration_review": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-18T22:21:02.480340+00:00",
+    "reviewer": "/root",
+    "original_candidate": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\runtime\\r24-close-notes-a01\\source\\docs\\ck3-native-ai\\evidence\\faith-and-power-r0024-original-gui-boundaries-12004.json",
+      "bytes": 15028,
+      "sha256": "50b71c069bee6add6b425bccd74aec165b05e5dd49bd9c2b6e406546c59507cc"
+    },
+    "review_notes": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\runtime\\r24-close-notes-a01\\REVIEW-NOTES-a02.json",
+      "bytes": 2326,
+      "sha256": "d54c3468452498f8187609c97eb079990c2c6c6e4be727129ccbb31eb823b93f"
+    },
+    "scope_clarification": "Inherited readonly_GUI_capture_only label describes capture/normal-exit phase; the whole run also performed preparation A once. The original receipts and candidate remain unchanged."
+  }
+}

@@ -1,4 +1,5 @@
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/faith_power_tooltip_presentation12004.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 
@@ -977,6 +978,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
       query->ingame_result.unavailable_reason = "current_gui_owner_binding_unverified";
       return true;
     }
+    const bool presentation=query->ingame_request.presentation_requested||static_cast<std::uint32_t>(query->ingame_request.window_kind)>=9;
+    if(presentation&&!BindFaithPowerTooltipPresentationOwner12004(query->mailbox,query->ingame_request.connection_generation)){
+      query->ingame_result.unavailable_reason="presentation_owner_mailbox_binding_unavailable";return true;
+    }
     const bool ran = ExecuteIngameUiNavigationV1(query->environment,
         query->ingame_request, before, stamp, gui_before, query->ingame_result);
     query->ingame_result.application_owner_thread_verified = true;
@@ -991,10 +996,12 @@ bool ExecuteFrontendGuiRouteMailboxV1(
       query->ingame_result.available = false;
       query->ingame_result.status = "unavailable";
       query->ingame_result.unavailable_reason = "owner_post_navigation_snapshot_changed";
+      if(presentation&&static_cast<std::uint32_t>(query->ingame_request.operation)!=0)CancelFaithPowerTooltipPresentation12004();
     } else if (!same_gui) {
       query->ingame_result.available = false;
       query->ingame_result.status = "unavailable";
       query->ingame_result.unavailable_reason = "current_gui_owner_binding_changed_after_navigation";
+      if(presentation&&static_cast<std::uint32_t>(query->ingame_request.operation)!=0)CancelFaithPowerTooltipPresentation12004();
     }
     if(!query->ingame_result.available && query->ingame_result.army_tooltip.requested) {
       const auto kind=query->ingame_request.army_tooltip_kind;

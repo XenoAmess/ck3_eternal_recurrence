@@ -75,9 +75,44 @@ Faith和Rite保留完整uint32，0有效；Character不可为0，Province是正i
 
 HolySite到地产的路线：读站点`barony_title_id`，经既有`ck3_query_title_holder_v1`取得稳定title key，再用`ck3_center_map_on_landed_title_v1`返回的`capital_province_id`打开holding。不能把TitleID、HolySiteID或type_key当ProvinceID。信仰页仍用既有`ck3_open_faith_window_v1`。
 
+## 窗口身份与展示礼仪分别确认
+
+`window_kind='faith'` 的 `subject_id` 是 **Faith 完整ID**。窗口中央可以展示该信仰的某个Rite，不能因此把输入换成RiteID。D1中的Faith13与RomanRite0、D2中的Faith50与HanafiRite13分别属于两个ID域；开窗、切tab与tooltip均按容器的实际Faith绑定。既有开窗入口与两字段说明见[Faith／人物展示专题](religion-ui12004-presentation.md)。
+
+其他消费者分别为：`rite_creation` 接当前草稿的来源RiteID，`holding` 接Province地图索引，`personal_beliefs` 接当前玩家完整CharacterID。普通窗口query的`subject_id=0`只表示观察当前选择；即使误传Rite0也可能读到当前Faith，查询返回成功不能证明输入域正确。动作与带target的tooltip后读必须匹配实际对象；其中0仍可作为真实Faith/Rite引用，不能一概当缺失。先从独立读回确认域与对象，再使用返回的当前容器行。
+
+`machine_id: 4-8e1c2f1861`，只读核对时间`2026-10-18T21:17:19Z`，源码`90e1f983d6ad13349ad014757fc140a2c34bb85d`。新provider `faith_power_presentation_ui12004.inc:103–107`取`ReadSelection12004.subject_id`；`religion_ui12004.cpp:74–82,127`分别读窗口`+E8`的Faith与`+258`的Rite；`:64–65,93–107`从Faith存储解析输入并用原Faith Ref Any开窗。原setter的已保留指令`14C5D3D`将`Rite+8`写入`+258`、`Rite+4B8`写入`+E8`，来源为`religion_ui12004_source_pins.hpp`与既有展示专题。这次只澄清已有消费者和工具说明，没有新游戏调用、构建或实机资格。
+
 ACK后独立query窗口／页签；hover后用receipt读实际source、stack、root和文本，leave用返回的新receipt后读。缓存文字与渲染像素分别取得，`rendered_pixels_observed`始终false。结果未知时先查询，不重发有toggle效果的动作。建筑207的当前行身份、非幂等行为及独立tracks条件见[建筑轨道专题](faith-power-building-track207-v6.md)。
 ## 实际原生检查的空tab修订
 
 `machine_id: 4-8e1c2f1861`。a13在2026-10-18T20:53:10Z编译退出0；第一次真实导航fixture随后因合法`presentation_tab:""`断言失败（OS3221226505），原退出与stderr保存在一期外置`runtime/religion-candidate-a13-presentation/navigation-fixture-*`，没有发布资格或启动游戏。共享`JsonStringField`按原合同拒空；本路由却用空tab作为显式展示查询标记。后继仅在此路由解析空tab与四个既定tab值，保持共享helper、合法首条断言和其余selector语义；修复补丁SHA-256 `1045addfc8ecbb062df00fe7757c2a91d272e409fa5ce720dd3b98a39de975d9`。源码修复须由受影响target增量重建及新fixture结果确认，旧RED不覆盖，也不外推成实机通过。
 
 2026-10-18T21:09:11.678630Z，实际00e9修订增量2TU／2link退出0；精确新EXE的SYSTEM排除读回verified，新fixture原PID23792的wait为0，stderr为空。新DLL14,609,920B，SHA-256 `ea408a8d09600eef308c729532b97f2dc2dde744228c7c972248c7c66a1931b6`，构建目录与新publish双SHA相同，a12未改。`qualification-a01.json`13,153B，SHA-256 `67ed11e54ff6e7b84da0ff80d6c759aa857cbf5d84ee032a8bcc2c81c598c334`；其中明确`live_presentation_qualified:false`和`business_pass:false`。旧RED与当时二进制保留；下一场仅沿公共入口取得真实窗口与独立后读，不以fixture的模拟对象取得实机或像素信用。
+
+## R24实际展示范围与冷修边界
+
+同机`4-8e1c2f1861`于2026-10-18T21:41–22:03Z实际加载上述a13，来源`90e1f983`。Faith50开窗及独立query、原编辑草稿和picker取得真实读回与原图；基督教综摄主义仅在草稿中正常选择，没有提交。准备A包含领地、资源、知识及条件性管理关系，详见[R24原始范围与证据](faith-and-power-r0024-original-gui-boundaries-12004.md)，不能把整场写成无世界准备的只读操作。
+
+| 路径 | 本场实际结果 | 尚未取得的资格 |
+|---|---|---|
+| Faith容器查询、既有编辑／picker | 原窗口、身份与卡片可见 | 卡片名不等于完整信条说明 |
+| typed核心悬停与独立tooltip查询 | ACK后source-null；原图仍为地图旧提示 | 目标完整提示未生成，不授渲染成功 |
+| 个人信念、holding打开 | owner核验在派发前拒绝；独立query仍无窗口 | 未进入个人页或地产页 |
+| 建筑ShowDetails／207与条件提示 | 因前置holding未打开，没有按九例重复提交 | 仅保留源码／离线fixture范围，无本场原卡或条件像素 |
+
+冷修已将原窗口Jomini归属与独立GUI查找归属分开：当前Jomini→gfx→handler、handler+40、window+98/A0按原factory／ctor关系核验，root仍由实际GUI查找返回值绑定。这个源码修复尚未获新构建或实机结果。悬停状态写入与原每帧tooltip查询／工厂／呈现又是不同消费者；后继沿真正生成路径实现有限语义悬停，不以接受null、改文字或一次缓存填充代替原版画面。原Army合同与typed路由的目标匹配分别保留。
+
+R24的原游戏、public、host和keeper均实际正常退出，CAS11953已释放。后继必须使用新source seal、实际DLL资格和unused输入，在新会话独立后读；以上结果不授当前Can、自然AI或整产品业务通过。
+
+## R24 提示实测失败与原版生产链补注
+
+`machine_id: 4-8e1c2f1861`；静态复核为 2026-10-18 UTC，原版 EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。R24 的 Faith50 核心卡 0 悬停返回 ACK，但其独立查询报告 `tooltip_stack_entry_source_null;capacity=1;count=1;hover=bound;index=0`。原图 `operator-frame-20261018T214730Z.png` 仍是地图提示，没有目标信条提示。因此 ACK 和 `context+F0` 匹配都不证明原版提示已出现。小型来源索引见 [生产链证据](evidence/faith-power-tooltip-producer12004-v6.json)。
+
+原 `3AA6020` 维护 hover 和进入、离开事件；真正每帧生产者 `3AB26B0` 从输入服务取得位置，并按原模式、门槛和真实时间差调用四个固定原策略。`3BFF080` 再按该位置遍历原控件树、派发 tooltip 查询，由原模板和工厂建立提示，经过 `3AA81D0`、`3AA8D90` 登记、更新实际栈。它不会因为仅写入 `+F0` 就改用该对象生成内容。原 fallback provider 还允许登记 `source=null` 的地图提示，先前的严格读口因此读到了真实的非目标条目。
+
+最小后继仍复用原展示 opt-in、step、3 个 MCP 工具和既有枚举。冷启动只在 exact4 的四处已核 E8 安装有限 near relay；每个原调用的策略、GUI context、时间差和原工厂保持不变。只有同一实际主线程、暂停日期与角色、窗口及 owner、当前 source/path、hover 和 receipt 都有效时，才以该控件的原生尺寸及原 `3A75EA0` 几何变换计算位置。它不移动桌面鼠标，不使用截图坐标，不注入描述文字或提示栈。离开、窗口/主体/日期/角色变化、owner 停止或源读回失败即停止覆盖；没有有效目标时传递原参数。原生延迟和策略继续生效，查询必须等待实际更新及完整源、栈、文本读回，随后还要独立取图。
+
+默认 Army 合同仍拒绝 null source。仅本有限展示路由可观察原版合法的非目标 null 条目；目标成功仍须唯一完整 source、栈顶、未锁定 root、可见性和文本缓存双读一致。离开后的独立查询须证明目标关联已消失，且旧 root 已隐藏，或被同一稳定栈明确改作另一 source 的提示；后一种情况不能授予原目标的文本或像素信用。此前从未观察到目标 root 时，保留未知诊断，同时停止位置覆盖。信条网格中的图标也不再重复列为普通教义载体。
+
+候选增加现有 navigation fixture 内的生产 frame 读口检查、默认 Army/null 对照及同生产 emitter 的宿主 RX ABI 检查，不增加新测试目标。宿主检查只证明参数、真实时间差、寄存器、栈和返回路径的有限合同，不代表 CK3 原工厂、截图或所有异常路径已经验证。此补注封包时尚未编译、执行新 fixture 或通过新实机；原 R24 RED 保留。个人信念匿名 tooltip 载体的 definition join 等原有精确缺口也不由本次修复外推为完成。

@@ -1,0 +1,94 @@
+{
+  "schema": "faith-series-continuous-lessons-source-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-18T21:40:41.599598+00:00",
+  "repository_source_head": "90e1f983d6ad13349ad014757fc140a2c34bb85d",
+  "purpose": "两份既有系列复盘的窄增量出处；不运行媒体、游戏或新验收。",
+  "source_docs": [
+    {
+      "path": "promo/ck3_faith_and_power/docs/production-lessons.md",
+      "bytes": 20054,
+      "sha256": "9e0f75e183e99ffc2ff7e7f707b50f57ca3e265836c839fe2b23276469d54ba8"
+    },
+    {
+      "path": "promo/ck3_faith_and_power/docs/production-experience.md",
+      "bytes": 32674,
+      "sha256": "b67f68ba37ab71bc462b35ffc6b3c46893f5993abe169f3014d706ee3023ad2c"
+    }
+  ],
+  "sources": [
+    {
+      "id": "subtitle_final",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/editorial/subtitle-groups-a01/READBACK-FINAL-a02.json",
+      "bytes": 11723,
+      "sha256": "72d3ccc97acba23af348971e4b77dbe12175169bc4b14e55adc0838558b095d6",
+      "observed_at_utc": "2026-10-18T21:10:54.225946+00:00",
+      "supports": "最终460组；初始458字体通过后，两句语义、两句时间修正；135句区间与拼接检查，词起点/听审/最终像素未声称。"
+    },
+    {
+      "id": "subtitle_consume",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/editorial/subtitle-groups-a01/CONSUME.md",
+      "bytes": 1552,
+      "sha256": "5401d2717adddc201e6ccbae8cf9099296d58163086901ffcae03e6f5397a8be",
+      "observed_at_utc": null,
+      "supports": "时段是作者安排；用同一字幕消费者检查，非强制对齐或词起点观测。"
+    },
+    {
+      "id": "corrected_samples",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v6-production-a01/composition-samples-correction-a01/CLOSED.json",
+      "bytes": 1297,
+      "sha256": "e8878d076e89d867f3fcb48bd4ee8dd29094f9cf1e2a327bf9c986a262551c8e",
+      "observed_at_utc": "2026-10-18T20:55:38.165590+00:00",
+      "supports": "仅A/C两处校正的实际像素与旧B引用，未取得全片听审或59组资格。"
+    },
+    {
+      "id": "original_returned_inventory_capture",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0011/returned-personal-relic-a01.json",
+      "bytes": 580,
+      "sha256": "451b15a49744d430a207d18ce07c62e991b6e72cc2aad332a47719cd43f28ce1",
+      "observed_at_utc": "2026-10-17T20:53:32.824095+00:00",
+      "supports": "原观察时的2560×1440结果库存PNG身份；没有证明最后退出动作录像。"
+    },
+    {
+      "id": "scene_group_candidate",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/root/screen-copy-a01/DELIVERY.json",
+      "bytes": 1994,
+      "sha256": "ea1efe88e8fe67ee4563c911052fd7e7a874fe2e2f18d9c5adb08c593ba52606",
+      "observed_at_utc": "2026-10-18T20:58:24.693481+00:00",
+      "supports": "135cue覆盖为59个对象/状态组、每组2–4短注；候选未渲染。"
+    }
+  ],
+  "voice_final_catalog": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/editorial/voice-timing-a01/voice-authoring-catalog.measured.a01.json",
+    "bytes": 263753,
+    "sha256": "5566a249e96d96de4adaa5747a70f4c316cc1814cc25b337009b90dffdbfe3b9",
+    "observed_at_utc": "2026-10-18T19:44:08.810613+00:00",
+    "new_request_count": 134,
+    "readonly_reuse_count": 1,
+    "final_cues": 135,
+    "frames_30fps": 76832,
+    "human_listening_performed": false
+  },
+  "parent_status_reports": [
+    {
+      "observed_by_compiler_at_utc": "2026-10-18T21:38:17.541083+00:00",
+      "kind": "parent_task_message",
+      "path": null,
+      "machine_id": "4-8e1c2f1861",
+      "scope": "R24/a25以90e1f983 clean冻结，当前公共预检/启动推进中；不是本lane采样的游戏结果。"
+    },
+    {
+      "observed_by_compiler_at_utc": "2026-10-18T21:39:52Z",
+      "kind": "parent_followup_message",
+      "path": null,
+      "machine_id": "4-8e1c2f1861",
+      "scope": "原始R0011 capture已找到，现代wrapper投影进行中，尚未上报完成。"
+    }
+  ],
+  "limitations": [
+    "本索引只读上述小型回执、文字与最终声音catalog元数据，没有读媒体正文或重新散列PNG／音频／视频。",
+    "原PNG的4684538B、SHA a8d61bb5e0a1ba0615100ab51376d74d7b7f5bf98929ecafa0be3d45ccf434fe及分辨率沿原capture回执，不是本轮新视觉审阅。",
+    "作者时间、字体布局、样板区域、当前合成和最终成片互不替代；未对尚未完成产物授予通过。",
+    "新建包只含补丁与小清单；不改owner主树，不建立另一套验收工具。"
+  ]
+}

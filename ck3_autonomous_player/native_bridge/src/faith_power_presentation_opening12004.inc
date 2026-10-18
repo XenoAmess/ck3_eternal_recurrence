@@ -30,6 +30,18 @@ bool PresentationCharacter12004(std::uintptr_t base,std::uint32_t id,
       Value(character,0x1C,magic) && magic==0x43686172U;
 }
 
+// Native window owner is the current Jomini object, separate from the
+// GUI lookup owner returned by ResolveZhongguo.../FindTopLevelWidget.
+bool ReadPresentationOuterOwner12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
+    void*handler,void*window,void*&owner) noexcept {
+  owner=nullptr;void*current=nullptr,*gfx=nullptr,*back_handler=nullptr,*handler_owner=nullptr,*window_owner=nullptr;
+  if(!env.module_base||!handler||!Slot(env.module_base+ck3_12004::kUiIdlerRootSlotRva12004V1,current)||!current||
+      !Value(current,0x10,gfx)||!gfx||!Value(gfx,0x88,back_handler)||back_handler!=handler||
+      !Value(handler,0x40,handler_owner)||handler_owner!=current||
+      (window&&(!Value(window,0x98,window_owner)||window_owner!=current)))return false;
+  owner=current;return true;
+}
+
 bool ReadPresentationOwnedWindow12004(
     const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
     IngameUiWindowKindV1 kind,PresentationWindow12004 &view,std::string &reason) {
@@ -47,10 +59,12 @@ bool ReadPresentationOwnedWindow12004(
     reason="presentation_handler_binding_unavailable";return false;
   }
   ZhongguoScoreboardAccessV1 access{};
-  void *context=nullptr,*owner=nullptr,*handler_owner=nullptr;
-  if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner) ||
-     !context || !owner || !Value(handler,0x40,handler_owner) || handler_owner!=owner) {
-    reason="presentation_current_gui_owner_unavailable";return false;
+  void *context=nullptr,*lookup_owner=nullptr,*outer_owner=nullptr;
+  if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,lookup_owner)||!context||!lookup_owner){
+    reason="presentation_current_gui_lookup_owner_unavailable";return false;
+  }
+  if(!ReadPresentationOuterOwner12004(env,handler,nullptr,outer_owner)){
+    reason="presentation_current_jomini_window_owner_unavailable";return false;
   }
   const std::size_t slot=holding?0xD0:0x5E0;
   void *window=nullptr;
@@ -66,13 +80,13 @@ bool ReadPresentationOwnedWindow12004(
   const auto set_data=holding?0x12ACA30U:0x17E0F60U;
   const auto matches=holding?0x12ACA70U:0x17E1030U;
   std::uintptr_t vt=0,secondary_vt=0,set_slot=0,match_slot=0;
-  void *back_owner=nullptr,*back_handler=nullptr,*native_root=nullptr;
+  void *verified_owner=nullptr,*back_handler=nullptr,*native_root=nullptr;
   if(!Value(window,0,vt) || vt!=base+primary ||
      !Value(window,0x10,secondary_vt) || secondary_vt!=base+secondary ||
      !TypedObject(base,window,descriptor,UiExactImageSizeV1(env.gui_abi_revision)) ||
      !Value(reinterpret_cast<void *>(vt),0x90,set_slot) || set_slot!=base+set_data ||
      !Value(reinterpret_cast<void *>(vt),0x98,match_slot) || match_slot!=base+matches ||
-     !Value(window,0x98,back_owner) || back_owner!=owner ||
+     !ReadPresentationOuterOwner12004(env,handler,window,verified_owner) || verified_owner!=outer_owner ||
      !Value(window,0xA0,back_handler) || back_handler!=handler ||
      !Value(window,0x60,native_root) || !native_root) {
     reason="presentation_window_type_owner_root_or_callbacks_unavailable";return false;

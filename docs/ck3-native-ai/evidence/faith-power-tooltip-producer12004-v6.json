@@ -1,0 +1,169 @@
+{
+  "schema": "faith-power-tooltip-producer-source-v6",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T22:31:28.456129+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "source_candidate_not_compiled_or_live_qualified",
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-tooltip-live-red-a01\\finite-3ab2799.json",
+      "sha256": "4305855e0bd5a77227bf6c52a8bbc86ddf7010d5358796aa5e4a7b0d099d425e",
+      "observed_at_utc": "2026-10-18T21:57:56.298146+00:00",
+      "functions": [
+        {
+          "rva": "0x3ab26b0",
+          "end": "0x3ab2838",
+          "bytes": 392,
+          "sha256": "1ac0643b9d18a185dffa2ff62a513533823ececa29049f851c3fa559dd06aba7"
+        }
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-tooltip-live-red-a01\\finite-3bfdc98.json",
+      "sha256": "8a313a583e186d6c9c875c6bd01afc6b3ae22eb47f5d3cd6486c24e99a580aad",
+      "observed_at_utc": "2026-10-18T21:56:29.898067+00:00",
+      "functions": [
+        {
+          "rva": "0x3bfd8f0",
+          "end": "0x3bfdd55",
+          "bytes": 1125,
+          "sha256": "5eb752c610718059770ead84d8f789cde75d84a0dd3ae2dc3cd548e4073cb7b4"
+        }
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-tooltip-live-red-a01\\finite-3bff080.json",
+      "sha256": "f22bc28c0e404025879312d313461242716c8fcb69bf210e850e05057191813f",
+      "observed_at_utc": "2026-10-18T21:56:54.046689+00:00",
+      "functions": [
+        {
+          "rva": "0x3bff080",
+          "end": "0x3bff58a",
+          "bytes": 1290,
+          "sha256": "a32bc2ec7665aaac8ac702b0826f67ec85ad5b0b51766594275cca3233b28f96"
+        },
+        {
+          "rva": "0x3aa8840",
+          "end": "0x3aa891b",
+          "bytes": 219,
+          "sha256": "9fee9935982e87a962ab923701a283af5a2aea370ee4591192a25f6b9217868b"
+        }
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-tooltip-live-red-a01\\finite-3aa7eda.json",
+      "sha256": "25c85fb43136114b9c4b77306268d8d8b6e38fbcc308215dbfed1744c8a5763c",
+      "observed_at_utc": "2026-10-18T21:54:01.395611+00:00",
+      "functions": [
+        {
+          "rva": "0x3aa7eb0",
+          "end": "0x3aa81c3",
+          "bytes": 787,
+          "sha256": "ef3368714ddbde92fc775e9c3f4ee7bdcfd5a9a1799e8da43526793560af14cf"
+        },
+        {
+          "rva": "0x3aa81d0",
+          "end": "0x3aa8449",
+          "bytes": 633,
+          "sha256": "a863f2b1152130a0a8e2e5fbb599641c9cfd55ed585bbc169e257b2d10ff28b2"
+        },
+        {
+          "rva": "0x3aa8d90",
+          "end": "0x3aa9876",
+          "bytes": 2790,
+          "sha256": "93e5496c0344666c6afc45cd533865112c56bd1c02511abc006cea0c82f702f9"
+        }
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-tooltip-live-red-a01\\finite-3a75ea0.json",
+      "sha256": "735615d0be3a57c56e7f2a85b55710ae6dc8339fc1b617c55b0c9db9904f2b77",
+      "observed_at_utc": "2026-10-18T22:04:50.724331+00:00",
+      "functions": [
+        {
+          "rva": "0x3a75ea0",
+          "end": "0x3a75fb4",
+          "bytes": 276,
+          "sha256": "7a5c5c374af2aded4bc88ee6ae9a6e0ac7223780e047590662886ed16e1a7883"
+        }
+      ]
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-tooltip-live-red-a01\\finite-3a75cf0.json",
+      "sha256": "840630688069b0bfd6354c32029b4137acc1c49734c3d251ff829810c03631c9",
+      "observed_at_utc": "2026-10-18T22:04:40.822465+00:00",
+      "functions": [
+        {
+          "rva": "0x3a75cf0",
+          "end": "0x3a75dfd",
+          "bytes": 269,
+          "sha256": "e6bc8a4baea53827c614214a8cf55567c81d64f440a587c5bad89096bb985ae9"
+        }
+      ]
+    }
+  ],
+  "actual_r24": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-native-receipts\\v6-d2-Faith-core0-hover-a01.json",
+      "bytes": 487636,
+      "sha256": "39ebafcc8561816382cbb03fa93824c0251defd3738b5c33ff8b216b8121e3d9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\root-native-receipts\\v6-d2-Faith-core0-tooltip-after-a01.json",
+      "bytes": 483736,
+      "sha256": "0af7e5d0fe8c0cd22d0f17605b7a729a53c2b43e2f7a1c30583ed5edb3aeaa6a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0024\\original-stills\\operator-frame-20261018T214730Z.png",
+      "bytes": 5967030,
+      "sha256": "e66b8f0530a1bb5f1b77f07368decc021d1ce93526cbf311e5881f8515c0dd48"
+    }
+  ],
+  "fixed_calls": [
+    {
+      "rva": "0x3ab2799",
+      "hex": "e852b11400",
+      "original_target": "0x3bfd8f0"
+    },
+    {
+      "rva": "0x3ab27a8",
+      "hex": "e8d3b61400",
+      "original_target": "0x3bfde80"
+    },
+    {
+      "rva": "0x3ab27b7",
+      "hex": "e884bc1400",
+      "original_target": "0x3bfe440"
+    },
+    {
+      "rva": "0x3ab27c6",
+      "hex": "e8c5c11400",
+      "original_target": "0x3bfe990"
+    }
+  ],
+  "geometry_leaf": {
+    "rva": "0x3A77D60",
+    "bytes": 82,
+    "sha256": "5d52ac7a64071c3ca60cc29600cb3956ef33524878b2f27f1f09f66656bfd391",
+    "hex": "f30f100a4533c9f30f108128010000458bc10f2fc1418bc10f57d2410f97c00f2fca0f93c04485c07425f30f104a04418bc1f30f10812c0100000f2fc10f97c00f2fca410f93c14185c17403b001c332c0c3",
+    "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+    "meaning": "actual local [0,width128)x[0,height12C) bounds; complete through both RETs"
+  },
+  "r24_result": "ACK plus matching F0; independent stack source null and actual PNG has old map tooltip, no target tooltip. This is a preserved RED.",
+  "semantics": {
+    "override": "only actual owner-thread current typed receipt; fresh TLS/paused/date/actor/owner/root/source/path/hover and original native geometry",
+    "connection": "worker RAII publishes only atomic generation/0; owner callback cancels on actual mismatch; no cross-thread non-atomic lease writes",
+    "query": "old receipt/incorrect selector rejection never cancels a newer active lease; native delay and pending cache remain retryable",
+    "original_calls": "original GUI context, mode/policy and real dt remain; original source query/template/factory/stack renderer retained",
+    "return_path": "actual E8 to near relay, restore and tail JMP native; original normal/shadow return PC retained",
+    "no_active_target": "original packed position passed through unchanged",
+    "map_null": "only typed route explicitly permits non-target null sources; Army default and bound-target strict matching retained",
+    "not_claimed": [
+      "pixels",
+      "gameplay effect",
+      "all original factories verified",
+      "native escaping exception execution tested",
+      "personal anonymous-carrier join completed"
+    ]
+  }
+}

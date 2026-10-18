@@ -15,6 +15,12 @@ bool ResolvePresentationTarget12004(const ZhongguoScoreboardNativeEnvironmentV1 
     const IngameUiGuiOwnerBindingV1 &,void *,PresentationTargetBinding12004 &,
     FaithPowerPresentationObservationV1 &);
 
+void CancelPresentationTooltipPosition12004() noexcept;
+bool PreparePresentationTooltipPosition12004(const ZhongguoScoreboardNativeEnvironmentV1&,const IngameUiRequestV1&,
+    const game::Snapshot&,const MainThreadExecutionStampV1&,const PresentationTargetBinding12004&,void*,std::string_view);
+void ActivatePresentationTooltipPosition12004() noexcept;
+bool PresentationTooltipPositionReceipt12004(std::string_view,std::string&);
+
 constexpr std::size_t kPresentationTooltipWidgets12004=2048;
 constexpr std::size_t kPresentationTooltipTexts12004=64;
 constexpr std::size_t kPresentationTooltipOneText12004=16U*1024U;
@@ -261,6 +267,8 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
     if(!PresentationTooltipReceiptMatches12004(receipt,request,snapshot,stamp,binding,handler,value.active_tab))
       return reject("presentation_tooltip_receipt_target_frame_or_later_owner_epoch_differs");
     receipt_bound=true;value.receipt_id=receipt.nonce;value.action_owner_epoch=receipt.action_epoch;
+    if(leave)CancelPresentationTooltipPosition12004();
+    if(query&&!receipt.leave){std::string why;if(!PresentationTooltipPositionReceipt12004(receipt.nonce,why))return reject(why);}
     value.observation_owner_epoch=stamp.pump_epoch;
   }
   if(!query) {
@@ -273,7 +281,7 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
         return reject("presentation_tooltip_leave_receipt_or_current_hover_differs");
       previous=receipt.observed_root;
       ArmyTooltipStackV1 active{};
-      if(!ArmyTooltipReadStack(gui.context,active,nullptr,binding.source))
+      if(!ArmyTooltipReadStack(gui.context,active,nullptr,binding.source,true))
         return reject("presentation_tooltip_leave_current_stack_unreadable");
       if(!active.entries.empty()&&active.entries.back().source==binding.source&&active.entries.back().locked==0) {
         if(std::count_if(active.entries.begin(),active.entries.end(),[&](const auto &entry){return entry.source==binding.source;})!=1||
@@ -300,25 +308,31 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
     next.window_kind=static_cast<std::uint32_t>(request.window_kind);next.tls_context=stamp.tls_context;
     next.jomini_state=stamp.jomini_state;next.game_state=stamp.game_state;
     next.leave=leave;next.observed_root=previous;
+    if(hover&&!PreparePresentationTooltipPosition12004(env,request,snapshot,stamp,binding,handler,next.nonce))
+      return reject("presentation_tooltip_original_position_binding_or_geometry_unverified");
     out.native_dispatch_attempted=true;
     if(!ArmyTooltipInvokeHover(env,gui.context,leave?nullptr:binding.source)) {
-      receipt={};return reject("presentation_tooltip_original_setter_fault_do_not_retry_if_attempted");
+      CancelPresentationTooltipPosition12004();receipt={};return reject("presentation_tooltip_original_setter_fault_do_not_retry_if_attempted");
     }
     out.dispatch_invoked=true;out.verification_pending=true;
-    receipt=std::move(next);
+    receipt=std::move(next);if(hover)ActivatePresentationTooltipPosition12004();
     value.available=true;value.status="acknowledged_verification_pending";value.unavailable_reason.clear();
     out.available=true;out.dispatch_invoked=true;out.verification_pending=true;
     out.status=value.status;out.unavailable_reason.clear();return true;
   }
   ArmyTooltipStackV1 first{},second{};std::string why;
-  if(!ArmyTooltipReadStack(gui.context,first,&why,binding.source))return reject(why);
+  if(!ArmyTooltipReadStack(gui.context,first,&why,binding.source,true))return reject(why);
   PresentationTooltipTree12004 tree{},later_tree{};
-  PresentationTooltipRootIdentity12004 hidden{},later_hidden{},visible_root{};
+  PresentationTooltipRootIdentity12004 hidden{},later_hidden{},visible_root{};bool previous_rebound=false;
   if(receipt.leave) {
     if(first.hover==binding.source||std::any_of(first.entries.begin(),first.entries.end(),[&](const auto &entry){return entry.source==binding.source;}))
       return reject("presentation_tooltip_bound_source_still_active_after_leave");
-    if(!receipt.observed_root.root||!PresentationTooltipRootIdentityRead12004(env,receipt.observed_root.root,gui.context,true,hidden)||
-        hidden!=receipt.observed_root)return reject("presentation_tooltip_previous_root_not_hidden_or_identity_changed");
+    if(!receipt.observed_root.root)return reject("presentation_tooltip_previous_root_never_observed");
+    // The original pool may reuse the old root for a provider tooltip whose
+    // source is null. This proves retired target association, never target text.
+    previous_rebound=std::any_of(first.entries.begin(),first.entries.end(),[&](const auto&e){return e.root==receipt.observed_root.root&&e.source!=binding.source;});
+    if(!PresentationTooltipRootIdentityRead12004(env,receipt.observed_root.root,gui.context,!previous_rebound,hidden)||
+        (!previous_rebound&&hidden!=receipt.observed_root))return reject("presentation_tooltip_previous_root_not_retired_or_rebound");
   } else {
     if(first.hover!=binding.source||first.entries.empty()||first.entries.back().source!=binding.source||
         first.entries.back().locked!=0||std::count_if(first.entries.begin(),first.entries.end(),
@@ -330,10 +344,10 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
   }
   PresentationTargetBinding12004 later{};FaithPowerPresentationObservationV1 later_observation{};
   if(!PresentationTooltipBind12004(env,request,snapshot,stamp.pump_epoch,gui,handler,later,later_observation)||later!=binding||
-      later_observation.active_tab!=value.active_tab||!ArmyTooltipReadStack(gui.context,second)||second!=first)
+      later_observation.active_tab!=value.active_tab||!ArmyTooltipReadStack(gui.context,second,nullptr,binding.source,true)||second!=first)
     return reject("presentation_tooltip_target_or_stack_changed_during_read");
   if(receipt.leave) {
-    if(!PresentationTooltipRootIdentityRead12004(env,hidden.root,gui.context,true,later_hidden)||later_hidden!=hidden)
+    if(!PresentationTooltipRootIdentityRead12004(env,hidden.root,gui.context,!previous_rebound,later_hidden)||later_hidden!=hidden)
       return reject("presentation_tooltip_hidden_root_bookend_changed");
     value.leave_observed=true;
   } else {
@@ -344,7 +358,7 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
     // The final stack/hover read follows both complete bounded text captures.
     ArmyTooltipStackV1 final_stack{};
     PresentationTargetBinding12004 final_binding{};FaithPowerPresentationObservationV1 final_observation{};
-    if(!ArmyTooltipReadStack(gui.context,final_stack)||final_stack!=first||
+    if(!ArmyTooltipReadStack(gui.context,final_stack,nullptr,binding.source,true)||final_stack!=first||
         !PresentationTooltipBind12004(env,request,snapshot,stamp.pump_epoch,gui,handler,final_binding,final_observation)||
         final_binding!=binding||final_observation.active_tab!=value.active_tab)
       return reject("presentation_tooltip_final_source_stack_bookend_changed");
@@ -364,6 +378,7 @@ bool PresentationTooltipExecute12004(const ZhongguoScoreboardNativeEnvironmentV1
   try {return PresentationTooltipExecuteImpl12004(env,request,snapshot,stamp,gui,handler,out);}
   catch(...) {
     // Preserve a returned setter ACK even if a later C++ operation failed.
+    if(static_cast<std::uint32_t>(request.operation)!=0)CancelPresentationTooltipPosition12004();
     auto &value=out.presentation_ui;value.requested=true;value.available=false;
     value.status="unavailable";value.unavailable_reason="presentation_tooltip_exception_do_not_retry_if_attempted";
     value.cache_complete=false;value.rendered_pixels_observed=false;value.cache_texts.clear();
