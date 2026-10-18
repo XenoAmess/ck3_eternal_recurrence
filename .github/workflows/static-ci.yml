@@ -174,7 +174,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py ck3_autonomous_player/tests/unit/test_war_safe_rendezvous_v1.py ck3_autonomous_player/tests/unit/test_war_forced_retreat_observation_v1.py
       - name: Test ordinary active retreat and existing Native guards without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
@@ -183,7 +183,7 @@ jobs:
       - name: Test combat history projection with production query and restore paths
         env:
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_combat_history_superseded_v1.py ck3_autonomous_player/tests/unit/test_combat_simulation_inputs_bridge.py ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_bridge.py ck3_autonomous_player/tests/unit/test_combat_query_mcp_result.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_combat_history_superseded_v1.py ck3_autonomous_player/tests/unit/test_combat_simulation_inputs_bridge.py ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_bridge.py ck3_autonomous_player/tests/unit/test_combat_query_mcp_result.py ck3_autonomous_player/tests/unit/test_mercenary_query_mcp_result.py
       - name: Verify generated lifestyle catalogue and SDK resource agree
         run: python -B -X utf8 ck3_autonomous_player/native_bridge/tools/gen_lifestyle_all_catalogue_v3.py --check --python-output ck3_autonomous_player/src/xar_autoplayer/data/vanilla_lifestyle_catalog_12004.json
       - name: Test OBS delayed startup and owned close without processes or sockets

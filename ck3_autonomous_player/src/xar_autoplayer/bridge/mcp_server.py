@@ -2938,7 +2938,11 @@ def create_server(
             finally:
                 finish_army_timing(army_result_timing)
         from .combat_query_mcp_result import build_combat_query_auto_turn_mcp_result
+        from .mercenary_query_mcp_result import build_mercenary_query_auto_turn_mcp_result
 
+        market_result = build_mercenary_query_auto_turn_mcp_result(payload)
+        if market_result is not payload:
+            return market_result
         return build_combat_query_auto_turn_mcp_result(payload)
 
     @server.tool()

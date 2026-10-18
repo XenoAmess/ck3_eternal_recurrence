@@ -169,5 +169,159 @@
   "synthetic_registered_MCP_roundtrip_performed": true,
   "Native_build_or_deploy": false,
   "R9_armed_sources_modified": false,
-  "first30_completed": false
+  "first30_completed": false,
+  "market_candidate_and_R9_window_appendix": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "recorded_utc": "2026-10-18T01:55:55.550238+00:00",
+    "candidate_status": "UNCOMMITTED_SOURCE_CANDIDATE_PENDING_ROOT_REVIEW_NOT_DEPLOYED",
+    "qualification": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p77-combat-query-serialization-research01\\market-mcp01\\REGISTERED-MARKET-PASS02.json",
+      "bytes": 2295,
+      "sha256": "0d8fda2f6494540e1cecad042f08d29f010eb8686c6343c6e8142117ba02978d"
+    },
+    "candidate_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p77-combat-query-serialization-research01\\market-mcp01\\DELIVERY.json",
+      "bytes": 2635,
+      "sha256": "295210ba9025d8a9518e2ef2dcbf274ed592ea11a27e653466e609bfd29c4961"
+    },
+    "source_pins": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_mercenary_query_mcp_result.py",
+        "bytes": 11400,
+        "sha256": "01bff22ffb025c6d371bee1a77da9c56493d2c346ca84c75d286b8ae3842d5a6"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mercenary_query_mcp_result.py",
+        "bytes": 2404,
+        "sha256": "6bfbb35e96f69c35ba1fb2931474a649b6e7c580913dc2291a2c7b4bbde18e61"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 256040,
+        "sha256": "ff328ec35e485911c877e76c793bec21bac2355960880e77bc60a135d3f02d31"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_mercenary_context.py",
+        "bytes": 11353,
+        "sha256": "54acb5c62c90d10c600acd92d957dc86e738ddaa6520f3d2803694570179fe81"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 19263,
+        "sha256": "b137facb9cb7a05d41bad9c313f467e6bc6fec232a74ad3a8d985e1de18805bd"
+      }
+    ],
+    "method": "registered MCP2 official Client roundtrip on full original native-driver/service query through existing in-memory endpoint; AUTO planning result supplied by synthetic Service seam",
+    "tests_run": 4,
+    "qualification_observed_utc": "2026-10-18T01:47:14.435805+00:00",
+    "measurements": [
+      {
+        "baseline_result_bytes": 16088,
+        "candidate_result_bytes": 6468,
+        "baseline_text_bytes": 9323,
+        "candidate_text_bytes": 433,
+        "candidate_full_pretty_encodes": 0,
+        "candidate_output_model_json_dumps": 0,
+        "candidate_original_output_model_validations": 1,
+        "same_full_structured": true,
+        "actual_hire_submissions": 0,
+        "standard_JSON_bytes_decode_keeps_exact_numbers_and_binding": true
+      }
+    ],
+    "output_validation": "Original registered dict[str, object] output model validates full structured content once; malformed structured root still rejected.",
+    "business_and_binding": "Complete payload, signed64 costs, uint32 IDs including zero, nullable/zero employer, debt hire permission, query/capture sequence and source frame retained after standard JSON bytes decode. Actual consumer rejects stale identity and composition mismatch.",
+    "scope": "Only successful available native readonly market ck3_auto_turn with matching outer/plan/result step. Direct market MCP, unavailable, failure, hire, blocked, non-native and other AUTO conversions remain unchanged.",
+    "text_only_compatibility": "Successful scoped AUTO content text is a summary; use structuredContent for full market data. Direct market MCP keeps full text.",
+    "real_R9_fixed_window": {
+      "summary": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p77-combat-query-serialization-research01\\current-r9-fixed349-744\\SUMMARY.json",
+        "bytes": 6122,
+        "sha256": "5bc0c83342981594436c2b833483da097a57afa1c46ff1ff6665e66fb30ffc80"
+      },
+      "delivery": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p77-combat-query-serialization-research01\\current-r9-fixed349-744\\DELIVERY.json",
+        "bytes": 3237,
+        "sha256": "87f8468bd5e2406d2473f7065a2fdde72f66801c7804ab15e002d9733ebb0fe7"
+      },
+      "observed_utc": "2026-10-18T01:28:51.495410+00:00",
+      "closed_response_sequences": [
+        349,
+        744
+      ],
+      "start_utc": "2026-10-18T01:12:03.420044+00:00",
+      "end_utc": "2026-10-18T01:23:51.773315+00:00",
+      "wall_seconds": 708.3532710075378,
+      "calendar_days": 271.0,
+      "wall_seconds_per_day": 2.6138497085148997,
+      "response_files": 396,
+      "response_bytes": 157497002,
+      "market_calls": 46,
+      "market_response_bytes": 149754146,
+      "market_response_bytes_percent": 95.08380737304448,
+      "market_call_seconds": 45.822760798968375,
+      "market_seconds_percent_of_wall": 6.4689135597258725,
+      "objective_hold": {
+        "calls": 46,
+        "call_elapsed_seconds": 375.4284891989082,
+        "response_bytes": 5092073,
+        "days": 271.0,
+        "zero_day_turns": 0,
+        "calendar_turns": 46,
+        "pre_submit_seconds": 19.233081102371216,
+        "post_submit_seconds": 356.1954004764557,
+        "plan_timed_calls": 46,
+        "median_call_seconds": 9.217986800009385,
+        "max_call_seconds": 11.080916800070554
+      },
+      "army_strength": {
+        "calls": 46,
+        "call_elapsed_seconds": 76.93110650009476,
+        "response_bytes": 220820,
+        "days": 0.0,
+        "zero_day_turns": 46,
+        "calendar_turns": 0,
+        "pre_submit_seconds": 39.15724730491638,
+        "post_submit_seconds": 37.77388644218445,
+        "plan_timed_calls": 46,
+        "median_call_seconds": 1.3605104500893503,
+        "max_call_seconds": 4.478764700004831
+      },
+      "sameframe_army_strength_repetitions": [],
+      "TURN_rows": 188,
+      "zero_day_turns": 142,
+      "zero_day_categories": {
+        "readonly_queries": 141,
+        "event_option": 1
+      },
+      "combat_input_query_calls": 0,
+      "noncall_gaps_seconds": 143.0160505771637,
+      "largest_gap_retained_seconds": 77.89551782608032,
+      "source_read_scope": {
+        "R": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01",
+        "closed_response_sequences": [
+          349,
+          744
+        ],
+        "Root_provided_turn_candidate_range": [
+          7374,
+          7562
+        ],
+        "per_read_limit_bytes": 8192,
+        "AUTO_body_decoded": false,
+        "Driver_media_or_archive_reads": 0
+      },
+      "read_accounting": {
+        "files": 773,
+        "bytes": 2438029
+      },
+      "timing_limits": "call elapsed is outer MCP call+client model_dump; before_submit split is not Native-only; gaps include queue persist/classify/loop/feeder work; no stage CPU attribution",
+      "not_same_state_AB": true
+    },
+    "savings_seconds": "unknown; neither all 45.823s nor 95.08% response-byte share is a wall-time speedup estimate",
+    "new_actual_Game_or_Native_calls": 0,
+    "new_Driver_SAVE_media_or_large_body_reads": 0,
+    "current_R9_or_SDK04_modified_by_task": false,
+    "committed_pushed_or_installed": false,
+    "first30_completion_proven": false
+  }
 }

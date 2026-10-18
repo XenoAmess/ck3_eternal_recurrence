@@ -7914,6 +7914,12 @@ def choose_one_life_turn(
         if fallback is not None:
             plan = fallback
 
+    from .war_safe_rendezvous_v1 import review_safe_war_rendezvous_v1
+
+    plan = review_safe_war_rendezvous_v1(
+        plan, commands=_expanded_command_rows(commands), snapshot=snapshot,
+        action_steps=set(steps), bridge_capabilities=set(capabilities),
+    )
     ordinary_siege_baseline = plan
     plan = _primary_defender_siege_forecast_ingress(
         plan,
@@ -11085,6 +11091,24 @@ def _choose_one_life_turn_core(
             and not unsafe_armies
             and not threatened_stationary_armies
         ):
+            from .war_forced_retreat_observation_v1 import native_forced_retreat_observation_v1
+
+            native_retreat = native_forced_retreat_observation_v1(snapshot, controlled_armies)
+            if native_retreat is not None:
+                from .bridge.battle_reader_watch_v1 import CLOCK_CAPABILITIES
+
+                step = ('life-advance-one-day' if 'life-advance-one-day' in available_steps
+                        and CLOCK_CAPABILITIES <= set(bridge_capabilities or ()) else None)
+                return {
+                    'policy':'one-life-turn-v1',
+                    'phase':('native_war_global_combat_retreat_progress' if step is not None
+                             else 'native_war_global_combat_retreat_progress_unsupported'),
+                    'selected_step':step, 'required_step':'life-advance-one-day',
+                    'reason':'observe the already active Native retreat for at most one native-stopped day; keep the enemy siege visible and replan after the independent paused frame',
+                    'combat_retreat_armies':[{'army_id':a['army_id'],'army_state':'retreating'} for a in controlled_armies],
+                    'native_forced_retreat_observation_v1':native_retreat,
+                    'active_attack_allowed':False, 'active_wars':war_summary,
+                }
             tactical_states = [
                 {
                     "army_id": _public_cunit_int(army.get("army_id")),
@@ -19543,6 +19567,14 @@ def _primary_defender_siege_relief_assessment(
         }
     army = controlled_armies[0]
     army_id = _public_cunit_int(army.get("army_id"))
+    from .war_forced_retreat_observation_v1 import native_forced_retreat_observation_v1
+
+    native_retreat = native_forced_retreat_observation_v1(snapshot, controlled_armies)
+    if native_retreat is not None:
+        # A retreat already controlled by CK3 is not idle relief capacity.
+        # Continue through the original global route/retreat audit below.
+        return {'status':'native_forced_retreat',
+                'native_forced_retreat_observation_v1':native_retreat}
     if _army_tactical_state(army) == "combat":
         frames = (
             battle_control_state.get("full_frames")

@@ -20,3 +20,11 @@
 Native25 冻结 bridge 对一次 query 只构造一个完整 `combat_simulation_inputs` JSON，内部 knight capture 仍完整附入。公共 serializer 返回一个完整临时字符串再追加到外层 buffer，后续冷构建可考虑直接 append/stream 以少一个临时大字符串拷贝；不改变字段，也不减少 wire 字节。两份不同采样阶段的 capture 不能仅因大小相同而共享或省略。跨 JSON 路径 intern/ref 若要减少 wire 重复，需要新 Native 协议和解码合同，本次不施工。原 normalizer 的 detached-copy 合同也继续保留。
 
 后续最小测量面是分开记录 Native read/serialize/write、Python pipe decode、normalize/cache/archive、MCP shaping、client decode/model_dump 与 queue encode/write。现有87秒证据没有这些分项，不能估算墙钟收益。首30尚未完成，本工作不停止有效长局，也不要求为它轮换 SDK。
+
+2026-10-18 后续补充：已结束的 R9 响应349..744固定窗口，实际时间为01:12:03.420044Z至01:23:51.773315Z，708.353秒推进271日，即 **2.614秒/游戏日**。机器仍为 `xenoamess-full-tower-eb9d2c1186`，统计于01:28:51.495410Z；来源是已封小 MET、TURN、计划和最多8192B的 AUTO 头部，不解析大 AUTO 正文，也不读取 Driver。396份响应合计157,497,002B，其中46次市场查询149,754,146B，占 **95.08%字节**，但调用时间45.823秒仅占 **6.47%总墙钟**。46次驻守承担全部271日、耗375.428秒，占53.00%墙钟；46次军力查询未发现相同帧重复。188轮有142轮零日，其中141轮只读查询、1轮事件选项。143.016秒调用间空档含最初77.896秒未知空档，保留在统计内，没有归因到 Native CPU。此窗没有战斗输入研究查询，不能用此前 combat MCP 小样本比例解释这段吞吐；也没有同状态优化前后 A/B。
+
+针对该窗口主要的回包字节来源，另备最窄的市场 AUTO 候选：[独立 MCP shaping helper](../../ck3_autonomous_player/src/xar_autoplayer/bridge/mercenary_query_mcp_result.py) 只处理 `ck3_auto_turn` 成功、available、原生、只读且 outer／plan／result 步骤均一致的 `query-player-mercenary-context-v1`。完整原 payload 保留在 `structuredContent`，文本给出公司数、来源帧和完整结果位置。Service、Native、市场 normalizer、采购决策、价格、雇佣、cache、history 与 pending ledger 均不改；direct market MCP、unavailable、错误、hire 及其他 AUTO 仍走原转换。仅依赖成功 AUTO 文本全文的客户端需要改读 `structuredContent`。
+
+[市场测试](../../ck3_autonomous_player/tests/unit/test_mercenary_query_mcp_result.py) 在实际 Python Driver／Service 查询路径接内存 endpoint，再经真实注册 MCP 和官方 Client 往返；AUTO 规划包由合成 Service seam 提供。4项测试于01:47:14.435805Z通过。标准 JSON 字节再次解码后，完整 structured 相等，signed64资源成本、公司ID0与`0xffffffff`、employer的0／null区别、允许债务时`can_afford=false`而`can_hire=true`、query sequence及来源帧保持；现有 consumer 仍拒绝过期身份与公司 composition 错绑。输出 schema 继续校验一次，非法结构根仍拒绝。该小样本完整回包16,088→6,468B，文本9,323→433B；避免一次全文 pretty encode 和一次 output-model JSON dump，保留完整结构化编码、Client 解码及业务校验。
+
+此市场候选及新增 CI 测试条目仍待 Root 审阅，未提交、部署或纳入当前 R9／SDK04；没有新的性能实机提升结论。45.823秒包含规划、Native 等待、normalizer、传输和客户端工作，能节省多少尚未知，不能把95.08%的字节占比视为同等墙钟收益。新增资格回执、固定窗口精确摘要 SHA 和来源见同一[证据文件的追加项](evidence/p77-combat-query-mcp-serialization-2026-10-18.json)；这些材料也不证明首30已完成。

@@ -1,0 +1,241 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T02:00:29.688577+00:00",
+  "status": "SOURCE_QUALIFIED_NOT_DEPLOYED",
+  "source_base_commit": "0dfaac30e0f5836f9b7e505f4724591773331fc4",
+  "actual_fixture": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\fixtures\\p79_actual658_separated_armies.json",
+    "bytes": 9449,
+    "sha256": "1c1ed40b8439f584d679e9ac10319103e2d26d13d77382db927e106ab98bc02e"
+  },
+  "actual_native_capability_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\0002-1-result.json",
+    "bytes": 66658,
+    "sha256": "1d5be6b4f7cdebc1021c3d78de57be17ab87660ef6942a8ed26d2575ea1ff90a"
+  },
+  "actual_native_advertised_capabilities": {
+    "result/structured_content/action_steps": [
+      "merge-armies-167772577-with-486539625",
+      "merge-armies-486539625-with-167772577",
+      "move-army-167772577-to-2575",
+      "move-army-167772577-to-2612",
+      "move-army-167772577-to-2624",
+      "move-army-167772577-to-2628",
+      "move-army-167772577-to-8755",
+      "move-army-486539625-to-2575",
+      "move-army-486539625-to-2612",
+      "move-army-486539625-to-2619",
+      "move-army-486539625-to-2623",
+      "move-army-486539625-to-2624",
+      "move-army-486539625-to-2628",
+      "move-army-486539625-to-8755",
+      "preview-move-army-167772577-to-2575",
+      "preview-move-army-167772577-to-2612",
+      "preview-move-army-167772577-to-2619",
+      "preview-move-army-167772577-to-2623",
+      "preview-move-army-167772577-to-2624",
+      "preview-move-army-167772577-to-2628",
+      "preview-move-army-167772577-to-8755",
+      "preview-move-army-486539625-to-2575",
+      "preview-move-army-486539625-to-2612",
+      "preview-move-army-486539625-to-2619",
+      "preview-move-army-486539625-to-2624",
+      "preview-move-army-486539625-to-2628",
+      "preview-move-army-486539625-to-8755",
+      "query-route-contact-horizon-v1-167772577-to-2575-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-167772577-to-2612-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-167772577-to-2619-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-167772577-to-2623-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-167772577-to-2624-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-167772577-to-2628-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-167772577-to-8755-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-2575-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-2612-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-2619-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-2623-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-2624-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-2628-h-3-285213101-402653372-436207707",
+      "query-route-contact-horizon-v1-486539625-to-8755-h-3-285213101-402653372-436207707"
+    ],
+    "result/structured_content/bridge_capabilities": [
+      "game.command.query-route-contact-horizon-v1-N",
+      "game.command.preview-move-army-N-to-N",
+      "game.command.move-army-N-to-N",
+      "game.command.merge-armies-N-with-N"
+    ],
+    "result/structured_content/diagnostics/hello/capabilities": [
+      "game.command.query-route-contact-horizon-v1-N",
+      "game.command.preview-move-army-N-to-N",
+      "game.command.move-army-N-to-N",
+      "game.command.merge-armies-N-with-N"
+    ]
+  },
+  "actual_observations": {
+    "war_id": 100663323,
+    "score": -30,
+    "frames": [
+      {
+        "auto": 658,
+        "before_date_raw": 53373672,
+        "after_date_raw": 53373840,
+        "native_before": 11566,
+        "own_current_soldiers": 2034,
+        "all_hostile_current_soldiers": 2521,
+        "local_at_2629": 1465
+      },
+      {
+        "auto": 667,
+        "before_date_raw": 53373840,
+        "after_date_raw": 53374008,
+        "native_before": 11576,
+        "own_current_soldiers": 2034,
+        "all_hostile_current_soldiers": 2520,
+        "local_at_2629": 1464
+      }
+    ],
+    "own_positions": {
+      "167772577": 2619,
+      "486539625": 2623
+    },
+    "additional_hostile": {
+      "army_id": 654311862,
+      "current_soldiers": 1056,
+      "route_target": 2629,
+      "observed_progress": [
+        8756,
+        2669,
+        2609
+      ]
+    }
+  },
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\0654-1-result.json",
+      "bytes": 5306,
+      "sha256": "573e716fd005439e171573f58aa54c665d894510b233a1eecb45335773bb5e86"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\0658-1-result.json",
+      "bytes": 124883,
+      "sha256": "2ec0f48876ff6af1ec72fbfe6e07532d741cf980ad87da79ebf1a6272f78aace"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\0662-1-result.json",
+      "bytes": 5306,
+      "sha256": "6364b6befda6a6e14f916ce38051baaa0ae47153c8fa1c81b9b58405be54cb45"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\0667-1-result.json",
+      "bytes": 113408,
+      "sha256": "b816cc19c96c1cccd01e29bdebad5d3181f316842181c5289f3de5cc2a8c1f5d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\0671-1-result.json",
+      "bytes": 5306,
+      "sha256": "ef74295b0bf81910ea900582a7d52f575790f525d0f923a0d15e1fe65268f53d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\1118-1-result.json",
+      "bytes": 94495,
+      "sha256": "6f5c7259bad91a9aa204933873e8099b089cd6aba9b4f96940b4bc79b1e2d3dd"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r9-responses\\1119-1-result.json",
+      "bytes": 33688,
+      "sha256": "0a53c8e503c02629d6df174ca0a9ae9c274e9b4fce2753f67e6d95f4d21c8307"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1031113,
+      "sha256": "deaa5687379c55b86375f202541ebc43b4d40a2b23085a18be56ef732309464c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_safe_rendezvous_v1.py",
+      "bytes": 16910,
+      "sha256": "a30f347cc86983141a27dec529b8f873bbe2db680a4ba71e3ba5ff090d5742b6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_safe_rendezvous_v1.py",
+      "bytes": 12749,
+      "sha256": "0c661c8f27b6435da0c1b373809b35dd35c47399dc38c83ee70b482a4ddac1e9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_forced_retreat_observation_v1.py",
+      "bytes": 3271,
+      "sha256": "f0cafb34e720462c1059e71ff13bf559f108ea08e0dead6769091d4cb3383ec3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_forced_retreat_observation_v1.py",
+      "bytes": 4738,
+      "sha256": "77309e36bb0c74f3d42feefe8081141e8db1e683a786d49c6237c94a5a13b892"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\fixtures\\p79_actual1118_forced_retreat.json",
+      "bytes": 49916,
+      "sha256": "45198424472cf99528e8587e11a63f7cad28c0644e7c7ee1b445f10f1a0aed79"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 50954,
+      "sha256": "66e833cb2666c1609f46ab3402ccfd3e743f329359e77c2ce2ffaa9c2f949958"
+    }
+  ],
+  "verification": {
+    "tests_passed": 18,
+    "subtests_passed": 37,
+    "duration_seconds": 11.07,
+    "runner": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\run_rendezvous_tests.py",
+    "production_chain": "Rendezvous: Service.plan_turn -> actual choose common return, core return seam seeded with ordinary hold -> new observer -> original siege/general/origin/H3937/Service admission; exact Native preview/H1 normalizers. Forced retreat: unchanged actual1119 complete semantic body -> whole Service/core/global audit without core/history patch -> original exact-one-day step. Original Native merge source/postcondition regressions retained.",
+    "fixture_boundary": "Historical positions/strengths and actual1119 complete semantic body are actual. Complete rendezvous ownership/occupation context and new preview/H1 are explicit hypothetical software fixtures. No current safe rendezvous, CanMerge result, model victory or Game action is asserted.",
+    "locked_endpoint_counterexample": "Production Native H1 schema: origin2623 safe, waiting friendly2619 safe, subject first2624 arrivalday8, hostile2624 arrivalday7, horizon_day1 contact-free. Original static audit rejects when semantic enemy route agrees; independent full-ETA locked-route exposure veto also rejects when the Native timed evidence supplies the intersecting route. No delayed halt assumed.",
+    "actual1118_root_cause": "sole Native army167772577 retreating/state6 route[2623,2622,8755]; primary defensive siege guard demanded idle before original global retreat audit; no longer a separated two-army case."
+  },
+  "official_ci_group": {
+    "tests_passed": 76,
+    "subtests_passed": 62,
+    "duration_seconds": 20.04,
+    "runner": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\run_p79_ci_group.py",
+      "bytes": 690,
+      "sha256": "432471fc49f0c4dc42d76a5357afa87659bb75e73d89de9dc7443d30bb5764ab"
+    },
+    "source": "exact edited losing-war cash allocation and ordinary mercenary decisions CI command; PYTHONPATH=workspace/ck3_autonomous_player/src; no CK3/MCP"
+  },
+  "future_host04r03_consumer_qualification": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\P79-HOST04R03-OWNER-CONSUMERS-QUALIFIED01.json",
+      "bytes": 7488,
+      "sha256": "acbead2b4533f10258727d33c3f4ed05d3b78611d334649552e4acd2646fa094"
+    },
+    "runner": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\qualify_p79_real_host04r03.py",
+      "bytes": 7419,
+      "sha256": "1473edbd0ee243c871ed138c2860190bc851b9aa5a9e27b542c2148196116aa0"
+    },
+    "exact_owner_ingress": "immutable future Host04r03 queue.load_cold_result_classifier() -> CleanRobertMainMenuQueue.check_after",
+    "positive_cases": 5,
+    "negative_cases": 10,
+    "input_boundary": "Actual public Service-produced plans, historical Native DTO shapes explicitly parameterized as software fixtures; no current Game result generated.",
+    "preview_h1_move": "Original primitive_accepted scheduling acknowledgement only; zero date/business credit. Existing generic fallback does not independently reject a foreign planning actor. This limitation is retained, not passed as material source identity validation.",
+    "forced_retreat": "Existing clock validator admits the bounded day result and rejects foreign actor/date overshoot; independent paired MET still required.",
+    "immutable_host04_modified": false,
+    "actual_game_credit": 0
+  },
+  "deployment": {
+    "current_R9_modified": false,
+    "immutable_SDK04_modified": false,
+    "native_DLL_modified": false,
+    "mcp_calls": 0,
+    "native_builds": 0,
+    "g2_credit": 0,
+    "requires_new_source_generation_for_runtime": true
+  },
+  "limits": [
+    "one primary defensive active war; separated entirely idle controlled own armies only",
+    "co-located original merge/ongoing combat/committed route/other war/action priority unchanged",
+    "count comparison only chooses an observation purpose; full roster/commanders/model/Can guards still needed after concentration",
+    "complete hostile route and own horizon proof is only current-command evidence, not guaranteed future orders or arrival"
+  ]
+}
