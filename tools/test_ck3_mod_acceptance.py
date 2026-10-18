@@ -233,6 +233,84 @@ class SharedEntryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Exactly one product case'):
             entry.Selection(self.runtime_path, self.products_path, 'xqol', 'unknown-case')
 
+    def test_costs_and_hostility_case_route_enables_only_declared_readers(self):
+        import argparse, ast, asyncio
+        from types import SimpleNamespace
+        repo = Path(__file__).resolve().parents[1]
+        sys.path.insert(0, str(repo / 'ck3_autonomous_player/src'))
+        from mcp import Client
+        from xar_autoplayer.bridge.mcp_server import create_server
+        host = repo / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
+        tree = ast.parse(host.read_text(encoding='utf-8-sig'))
+        permissions = {
+            'ck3_query_player_religion_draft_resource_costs_v1':
+                'allow_private_player_religion_draft_resource_costs_query',
+            'ck3_query_player_religion_hostility_v1':
+                'allow_private_player_religion_hostility_query',
+        }
+        # Execute the actual finite CLI declaration and driver assignments,
+        # without importing or starting the managed game/session host.
+        declarations = [node for node in ast.walk(tree)
+            if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Attribute)
+            and node.value.func.attr == 'add_argument' and node.value.args
+            and isinstance(node.value.args[0], ast.Constant)
+            and node.value.args[0].value == '--case-read-only-mcp-tool']
+        mappings = [node for node in ast.walk(tree)
+            if isinstance(node, ast.Assign) and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Attribute)
+            and isinstance(node.targets[0].value, ast.Name)
+            and node.targets[0].value.id == 'driver'
+            and node.targets[0].attr in permissions.values()]
+        forwarders = [node for node in ast.walk(tree)
+            if isinstance(node, ast.For) and isinstance(node.target, ast.Name)
+            and node.target.id == 'tool' and isinstance(node.iter, ast.Call)
+            and isinstance(node.iter.func, ast.Name) and node.iter.func.id == 'getattr'
+            and len(node.iter.args) > 1 and isinstance(node.iter.args[1], ast.Constant)
+            and node.iter.args[1].value == 'case_read_only_mcp_tool'
+            and any(isinstance(child, ast.Name) and child.id == 'child_args'
+                    for child in ast.walk(node))]
+        self.assertEqual((len(declarations), len(mappings), len(forwarders)), (1, 2, 1))
+        cli = argparse.ArgumentParser()
+        exec(compile(ast.Module(body=declarations, type_ignores=[]), str(host), 'exec'), {'result': cli})
+        case = self.products['products']['xqol']['cases'][0]
+        required = list(case['required_mcp_tools'])
+        async def advertised(driver):
+            async with Client(create_server(driver)) as client:
+                return {tool.name: tool for tool in (await client.list_tools()).tools}
+        costs, hostility = permissions
+        for requested in ([], [costs], [hostility], [costs, hostility]):
+            with self.subTest(requested=requested):
+                case['required_mcp_tools'] = required + requested
+                case['opt_in_read_only_mcp_tools'] = requested
+                self.write(self.products_path, self.products)
+                selected = self.select()
+                flags = [part for index, value in enumerate(selected.argv)
+                         if value == '--case-read-only-mcp-tool'
+                         for part in (value, selected.argv[index + 1])]
+                args = cli.parse_args(flags)
+                self.assertEqual(args.case_read_only_mcp_tool, requested)
+                child = {'args': args, 'child_args': []}
+                exec(compile(ast.Module(body=forwarders, type_ignores=[]), str(host), 'exec'), child)
+                self.assertEqual(child['child_args'], flags)
+                # This checks public registration only: no native I/O, Can,
+                # current legality, command quote or business result is inferred.
+                driver = SimpleNamespace(case_declared_read_only_mcp_tools=frozenset(args.case_read_only_mcp_tool))
+                exec(compile(ast.Module(body=mappings, type_ignores=[]), str(host), 'exec'), {'driver': driver})
+                for tool, permission in permissions.items():
+                    self.assertIs(getattr(driver, permission), tool in requested)
+                tools = asyncio.run(advertised(driver))
+                self.assertEqual(set(tools) & set(permissions), set(requested))
+                for tool in requested:
+                    self.assertTrue(tools[tool].annotations.read_only_hint)
+                self.assertNotIn('ck3_execute_player_rite_creation_action_v1', tools)
+                self.assertNotIn('ck3_query_player_religion_draft_tenet_choices_v1', tools)
+        case['required_mcp_tools'] = required
+        case['opt_in_read_only_mcp_tools'] = [costs]
+        self.write(self.products_path, self.products)
+        with self.assertRaisesRegex(ValueError, 'Case read-only opt-in'):
+            self.select()
+
     def test_changed_shared_pin_blocks(self):
         self.host.write_text(self.host.read_text()+'#changed\n')
         self.assertTrue(any('Pinned input changed' in x for x in self.select().preflight()['blockers']))

@@ -49,4 +49,6 @@
 
 通用教改写入口已接入[现有MCP与Driver](../../../docs/ck3-native-ai/rite-creation-actions12004-v5-mcp.md)。Root实际运行11项焦点测试通过，覆盖正常MCP到Driver、一次提交与已知未派发后的处理；原生端为合成测试端点，不具有C++或游戏实测信用。原生实现、构建与两方向独立后验继续分别推进。
 
+`2026-10-18T07:22:14Z`实际新声收口：131条新请求全部成功、失败0，原执行进程退出0，全部worker结束；加1条逐字相同旧声引用后，132句稳定正文排片时长2921.6秒（48:41.600）。终态原件`editorial/voice-candidate-a02/VOICE-TERMINAL-READBACK.json` SHA-256 `90e19af9dfee278ed5a787961354d43e0108c07ff2f65bd9a7faed98b36a6e42`。这是测得声长，没有人工听审；两个待实机结果尚未配音，也未编码整片。新[原生教改入口](../../../docs/ck3-native-ai/rite-creation-actions12004-v5-native.md)源码提交`a5f33e174cfe9f2dbdd9bbb298552d636219be5a`已推，增量编译正在进行；两方向准备夹具已经交给唯一实机线程，未把准备当作执行结果。
+
 记录机器 `machine_id: 4-8e1c2f1861`；实际整理于 `2026-10-18T06:17Z` 起。来源为本会话用户反馈、用户对章节安排的明确选择、现有[v4交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)与本轮各专题研究。外置V5草稿和未完成结果不当成仓库内已交付实测。

@@ -1,7 +1,7 @@
 # Exact 1.20.0.4 Rite creation controller candidate
 
 `machine_id: 4-8e1c2f1861`. Root integrated this source on
-`2026-10-18T07:20:09Z`; it has not yet been built, registered or live-qualified.
+`2026-10-18T07:20:09Z`; at integration it had not been built, registered or live-qualified.
 The source delivery is `episode01/revision-v5-20261018/mcp/native-entry/`
 under the external production root. `NATIVE-DELIVERY-a02.json` binds all 14
 files and the unchanged patch SHA-256
@@ -89,3 +89,21 @@ read current player Faith/Rite full references and the actual new/edit target,
 names, selected core Tenets/Doctrines, piety and original draft/modal lifecycle
 independently. No callback return means a new Faith/Rite was created. Unknown
 writer outcomes retain the same durable action identity and must not be retried.
+
+## Actual incremental build, qualification still pending
+
+On machine `4-8e1c2f1861`, the unique runtime operator completed compilation
+and linking of the bridge and both new fixture targets at
+`2026-10-18T07:42:31Z`, from native source commit
+`a5f33e174cfe9f2dbdd9bbb298552d636219be5a`. Existing PUBLIC reader defines
+caused 806 translation units to rebuild; this was not a three-unit build.
+The original wrapper exited 1 after compilation: automatic Defender
+registration rejected published EXEs outside its named build directory.
+The existing explicit CMake registration path encountered the same directory
+restriction. The operator is preparing the existing direct-MSVC producer for
+only the two fixture programs and precise SYSTEM registration; the directory
+guard is unchanged, and the bridge is not rebuilt for this packaging issue.
+The original result remains under external
+`episode01/runtime/religion-candidate-a08/evidence-build-a01/`.
+At this cutoff, the two fixtures and original game controller have not yet
+executed. Compile/link success does not resolve that qualification.

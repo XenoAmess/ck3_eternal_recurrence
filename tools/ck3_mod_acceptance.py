@@ -61,6 +61,8 @@ CASE_READ_ONLY_MCP_TOOLS = frozenset({
     "ck3_query_player_religion_draft_groups_v1",
     "ck3_query_player_religion_draft_doctrine_choices_v1",
     "ck3_query_player_religion_draft_tenet_choices_v1",
+    "ck3_query_player_religion_draft_resource_costs_v1",
+    "ck3_query_player_religion_hostility_v1",
 })
 SHA = re.compile(r"^[0-9a-fA-F]{64}$")
 

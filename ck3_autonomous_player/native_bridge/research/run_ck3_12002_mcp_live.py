@@ -1100,6 +1100,8 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_player_religion_draft_groups_query = "ck3_query_player_religion_draft_groups_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_religion_draft_doctrine_choices_query = "ck3_query_player_religion_draft_doctrine_choices_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_religion_draft_tenet_choices_query = "ck3_query_player_religion_draft_tenet_choices_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_religion_draft_resource_costs_query = "ck3_query_player_religion_draft_resource_costs_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_religion_hostility_query = "ck3_query_player_religion_hostility_v1" in driver.case_declared_read_only_mcp_tools
     if managed_campaign_run_binding is not None:
         from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
         install_campaign_speed_presubmission_transmission(driver, PreSubmissionRevisionMismatchError)
@@ -4520,6 +4522,7 @@ def parser() -> argparse.ArgumentParser:
         "ck3_query_player_religion_doctrines_v1", "ck3_query_player_religion_tenets_v1",
         "ck3_query_player_religion_reform_context_v1", "ck3_query_player_religion_draft_groups_v1",
         "ck3_query_player_religion_draft_doctrine_choices_v1", "ck3_query_player_religion_draft_tenet_choices_v1",
+        "ck3_query_player_religion_draft_resource_costs_v1", "ck3_query_player_religion_hostility_v1",
         "ck3_query_current_title_appointment_v1"),
         help="Explicit case-declared read-only tool; default off, no related private tools enabled")
     result.add_argument("--turns", type=int, default=0, help="MCP ck3_auto_turn count after the plan")

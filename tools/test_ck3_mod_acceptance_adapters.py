@@ -40,6 +40,7 @@ class Focused(unittest.TestCase):
             selected.opt_in_read_only_mcp_tools=[]
             # This pure build_argv fixture bypasses __init__; retain every
             # explicitly initialized opt-in added by the holy-site provider.
+            selected.opt_in_player_rite_creation_actions=False
             selected.opt_in_holy_site_relic_actions=False
             selected.opt_in_holy_site_creation_ui=False
             selected.opt_in_holy_site_creation_create_once=False

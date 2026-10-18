@@ -47,3 +47,7 @@ Driver 同时要求实际 DLL 发布 `player_rite_creation_action_v1`；源码�
 Native I/O 使用明确标注的合成 endpoint，不是新编 C++ packet，也不是实机资格。
 测试覆盖 public/native 不同序号、禁止参数、unknown/null 保留、claim 先 fsync、重启防重复、只收迟到结果、身份/钱包分别判断。
 C++ 资格、SDK 构建、当前部署和双向教改实拍需各自后继实际回执；本记录没有授予这些通过事实。
+
+2026-10-18T07:42:59Z后继，同机窄补齐现有两个只读能力的公共case路由：`ck3_query_player_religion_draft_resource_costs_v1` 与 `ck3_query_player_religion_hostility_v1`。case allowlist、host CLI及child转发、Driver opt-in与实际MCP工具发现保持一致；只开放显式声明者。两项焦点检查通过，包含上述四种声明组合及缺少required声明的拒绝，并修复旧手工Selection测试夹具未设置新增默认关闭属性的问题。候选补丁SHA-256 `97b02e4c42ce9d5a4355b61ef11d7854812e3e0ddb27bd4c5b2181c973dfe2fb`，Root核对主树应用字节与已测候选逐文件相同，没有重跑旧11项或十分钟整套检查。这是公共路由资格，不是费用、敌对度实机读回。
+
+原[e8 CI失败](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39107154883/job/117615400953#step:70:603)与[a5 CI失败](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39107346352/job/117615962153#step:70:603)保留，各为同一旧手工夹具属性缺失；后继提交按自己的自然CI结果记录，不能追改原失败。
