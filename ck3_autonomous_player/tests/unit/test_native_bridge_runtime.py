@@ -221,6 +221,40 @@ class NativeBridgeInjectorTests(unittest.TestCase):
         self.assertTrue(report["complete_process_tree_proven"])
         self.assertFalse(report["role_query_authorized"])
 
+    def test_saved_load_uses_running_attach_and_keeps_cold_startup_mode(self) -> None:
+        from xar_autoplayer import runtime
+
+        cold = SimpleNamespace(pid=4123, resumed=False)
+        cold_command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]
+        delayed_command = [str(self.config.injector_path), "--pipe", self.config.pipe_name,
+                           "4124", str(self.config.dll_path)]
+        delayed = SimpleNamespace(pid=4124, resumed=False, poll=lambda: None)
+        delayed.resume = mock.Mock(side_effect=lambda: setattr(delayed, "resumed", True))
+        profile = self.evidence_root / "saved-profile"
+        (profile / "logs").mkdir(parents=True)
+        (profile / "logs/debug.log").write_bytes(
+            b"[21:29:31][D][gameapplication.cpp:635]: Setup completion (history loaded): 236.273023 seconds\n"
+            b"[21:29:32][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options\n")
+        cold_dir, delayed_dir = self.new_evidence_dir(), self.new_evidence_dir()
+        with mock.patch("xar_autoplayer.runtime.run_contained_injector_command",
+                        side_effect=lambda command, **kwargs: self.outcome(command)) as run:
+            cold_report = _inject_native_bridge(cold, self.config, cold_dir)
+            proof = runtime._resume_then_inject_after_saved_load(
+                delayed, self.config, profile_dir=profile, log_epoch_ns=0,
+                deadline=time.monotonic() + 10, stop_requested=None,
+                before_process_create=None, evidence_dir=delayed_dir)
+        self.assertEqual(run.call_args_list, [
+            mock.call(cold_command, timeout_seconds=30.0),
+            mock.call(delayed_command, timeout_seconds=30.0)])
+        delayed.resume.assert_called_once_with()
+        self.assertEqual(cold_report["argv"], cold_command)
+        self.assertEqual(delayed.injector_attestation["argv"], delayed_command)
+        self.assertEqual(delayed.injector_attestation["status"], "INJECTOR_EXIT_ZERO_TREE_PROVEN")
+        self.assertFalse(proof["native_identity_verified"])
+        self.assertFalse(proof["business_pass"])
+        self.assertEqual((delayed_dir / "argv.json").read_text().strip(),
+                         runtime._injector_json_bytes(delayed_command).decode().strip())
+
     def test_nonzero_return_preserves_diagnostic_and_refuses_resume(self) -> None:
         process = SimpleNamespace(pid=4123, resume=mock.Mock())
         command = [str(self.config.injector_path), "4123", str(self.config.dll_path)]

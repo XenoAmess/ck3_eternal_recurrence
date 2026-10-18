@@ -64,3 +64,10 @@ XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1
 该下一阶段重新建立各 journal fence、loaded表、当场 rate/stock、真实 admission及 all30桶。若得到正低库存且实际负 rate足以一次归零，以**下一真实选中 callback**为目标；若桶/身份稳定，最多30个 exact自然日只是覆盖调度机会，不能保证成功，Root deadline/存储/退出余量先到则停止。初始化到0另记，不假造低→0镜头。使用 [既有自然执行卡](episode04-r05-next-starvation-12004.md) 与 `join_actual_supply_parent_writer_observations_v1`，preferred-only小计和 residual分类分列。后续自然 casualty 正例没有取得之前，研究总账保持原状态。
 
 12项既有新增代码合同之后，本增量补了实际 parser-only 消费检查；最终精确运行次数、耗时和 stdout见[离线检查回执](acceptance/2026-10-18-r05-controlled-low-supply/offline-checks.actual.json)。这些检查执行真实生成器、公共 Selection/profile filesystem primitives、checkpoint库导入与 CommonRelay/once代码；SDK/OS-held process/native语义边界使用合成值，不是 CK3 业务通过。只需复跑这一必要新合同命令，不跑旧18矩阵。外置候选按通用存储策略48小时复核可重建派生物，小来源/结果记录180天复核；不是永久保留授权。
+
+
+## R208 注入模式勘误与 R209 选择（2026-10-18）
+
+来源机器 `machine_id: desktop-3fevhd2-1c74096080`。R208 已加载 DLL，但延迟注入在固定15秒的 PrepareStartup 等待得到258；未取得 ready、未初始化、未启动 camera。公共 run 返回2，host cleanup=false；进程消失、keeper停止与CAS释放分别记录，不能写成正常业务闭场。
+
+Python 现在依据进程是否已经 resume 选择已有 CLI：未 resume 的 primary 保留原 argc3 PrepareStartup，已运行进程使用 `--pipe` Start。后者只启动 worker，不安装 PrepareStartup-only 的 payment、regular-core、supply/loss 等观察 hooks；一个 mock-contained-Job 生产调用链测试通过不授这些 hooks 或 R05 恢复。R209 的新公共 runtime 明确设 `saved_campaign_inject_after_load=false`，走原主线程暂停冷注入 PrepareStartup 安装路径，实际资格仍由新场次读回；不新增 C++、timeout 接口或原生构建。

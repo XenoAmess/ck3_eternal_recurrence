@@ -2561,7 +2561,13 @@ def _inject_native_bridge(
     evidence_dir: Path,
 ) -> dict[str, object]:
     """Run the existing CLI inside a one-process Job for the retained CK3 process."""
-    command = [str(config.injector_path), str(process.pid), str(config.dll_path)]
+    # PrepareStartup requires a primary thread that has never been resumed.
+    # Delayed saved-load injection instead uses the existing running-process
+    # entry point; it does not install or attest startup-only observer hooks.
+    command = [str(config.injector_path)]
+    if getattr(process, "resumed", False):
+        command.extend(["--pipe", config.pipe_name])
+    command.extend([str(process.pid), str(config.dll_path)])
     attestation: dict[str, object] = {
         "schema": "xar.ck3.native-injector-attempt.v1",
         "status": "STARTING", "argv": command,
