@@ -10,6 +10,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -359,6 +360,8 @@ class ActualAdapter:
         return None  # The exact existing worker performs its single normal stop/unbind/exit.
 
     def ensure_overlay(self, game, old, rid):
+        raise RuntimeError('Legacy blue panel recovery is retired; select the independent decision-text provider')
+        # Historical implementation below is retained only for source archaeology.
         active, root = self.attempt(rid)
         if not self.exclusive_controls():
             return None
@@ -689,7 +692,10 @@ def parser():
     p.add_argument("--session", type=Path, required=True)
     p.add_argument("--sdk-prefix", required=True)
     p.add_argument("--initial-recording-request", type=Path, required=True)
-    p.add_argument("--overlay-source", type=Path, required=True)
+    p.add_argument("--overlay-source", type=Path,
+                   help="Retired input retained for historical argument parsing; live use is rejected.")
+    p.add_argument("--decision-text-publisher", action="store_true",
+                   help="Use the explicit independent text provider; never create a legacy blue window.")
     p.add_argument("--provider-source", type=Path, required=True)
     p.add_argument("--feeder-template", type=Path, required=True)
     p.add_argument("--feeder-stop-marker", type=Path)
@@ -706,32 +712,32 @@ def parser():
 
 def main():
     c = parser().parse_args()
+    if not c.decision_text_publisher or c.overlay_source is not None:
+        raise RuntimeError('Legacy blue panel recovery is retired; use --decision-text-publisher without --overlay-source')
+    if c.attach_only:
+        raise RuntimeError('New text-provider attach-only requires a separately reviewed business-halt adapter')
     c.session = c.session.resolve(strict=True)
     c.sdk_prefix = c.sdk_prefix.lower()
-    if not c.sdk_prefix.startswith("p") or not c.sdk_prefix[1:].isdigit() or not 0.1 <= c.poll_seconds <= 60:
-        raise ValueError("explicit pNN SDK prefix and finite polling interval required")
+    if not re.fullmatch(r'p\d+(?:r\d+)?',c.sdk_prefix) or not 0.1 <= c.poll_seconds <= 60:
+        raise ValueError("explicit SDK namespace and finite polling interval required")
     c.state_root = c.state_root or c.session / ("automatic-recording-recovery-" + c.sdk_prefix)
     c.placement_receipt = c.placement_receipt or c.session / "ROOT-GAME-PLACEMENT.json"
-    for name in ("overlay_source", "provider_source", "feeder_template", "automatic_source", "initial_recording_request"):
+    for name in ("provider_source", "feeder_template", "automatic_source", "initial_recording_request"):
         setattr(c, name, getattr(c, name).resolve(strict=True))
     c.state_root.mkdir(parents=True, exist_ok=True)
     platform = WindowsPlatform().lock(c.state_root / "watchdog.lock")
     try:
-        adapter = ActualAdapter(c, platform)
-        supervisor = RecoverySupervisor(adapter, session_root=c.session)
+        from recording_text_recovery import TextActualAdapter, TextRecoverySupervisor
+        adapter = TextActualAdapter(c, platform)
+        supervisor = TextRecoverySupervisor(adapter)
         while True:
             try:
-                if c.attach_only:
-                    result = {"status": adapter.drive_attach_only(supervisor), "stage": "capture_only"}
-                elif (adapter.journal.get("active") or {}).get("mode") == "attach_only":
+                if (adapter.journal.get("active") or {}).get("mode") == "attach_only":
                     raise ValueError("retained capture-only recovery requires --attach-only")
                 elif (adapter.journal.get("active") or {}).get("phase") == "settle":
                     result = {"status": adapter.finish_continuation(), "stage": "settle"}
                 else:
-                    progress = supervisor.drive()
-                    result = asdict(progress)
-                    if progress.status == "complete":
-                        result["continuation"] = adapter.finish_continuation()
+                    result = {'status':supervisor.drive(),'stage':'independent_text_recovery'}
                 atomic(c.state_root / "STATUS.json", {"at_utc": utc().isoformat(), **result})
             except Exception as error:
                 atomic(c.state_root / "STATUS.json", {"status": "blocked", "error_type": type(error).__name__,

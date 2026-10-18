@@ -111,6 +111,14 @@ class WindowSelectorAndForegroundTests(unittest.TestCase):
 
 class CaptureContractTests(unittest.TestCase):
     def setUp(self):
+        # The real retired-window gate has dedicated tests. This historical OBS
+        # boundary fixture must never enumerate the operator's current desktop.
+        policy = mock.patch.object(subject, 'require_no_retired_decision_window', return_value={
+            'legacy_blue_overlay_retired': True, 'legacy_window_count_at_start': 0})
+        policy.start(); self.addCleanup(policy.stop)
+        text_api = mock.patch.object(subject, 'decision_publisher_api', return_value=SimpleNamespace(
+            read_text_binding=mock.Mock()))
+        text_api.start(); self.addCleanup(text_api.stop)
         self.folder = tempfile.TemporaryDirectory()
         self.addCleanup(self.folder.cleanup)
         self.root = Path(self.folder.name)
@@ -211,11 +219,11 @@ class CaptureContractTests(unittest.TestCase):
         if delayed:
             job["start_signal"] = str(signal)
             text = self.root / "decision.txt"
-            text.write_text("进程绑定：PID 100 · synthetic-generation", encoding="utf-8")
-            job.update(capture_mode="game_decision", game_creation_filetime=123,
+            text.write_text("智能体实时决策\n合成源码测试", encoding="utf-8")
+            job.update(capture_mode="game_decision_text", game_creation_filetime=123,
                 desktop_id="synthetic-managed-desktop", decision_text_file=str(text),
-                overlay={"overlay_pid": 101, "overlay_executable": "synthetic-overlay.exe",
-                         "overlay_creation_filetime": 124})
+                overlay=None, decision_text_publisher_receipt={},
+                decision_text_publisher={'publisher':{'pid':101,'executable':'synthetic-publisher.exe','creation_filetime':124}})
         job_path = self.receipts / "job.json"
         job_path.write_text(json.dumps(job), encoding="utf-8")
         client = self.client()

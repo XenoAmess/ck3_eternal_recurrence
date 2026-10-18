@@ -151,6 +151,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test retired legacy decision panel before new recording
         run: python -B -X utf8 -m unittest discover -s tools -p "test_legacy_decision_overlay_retirement.py" -v
+      - name: Test independent decision text publisher and recording gates without CK3 or OBS
+        env:
+          XAR_DECISION_TEXT_PORTABLE_ONLY: "1"
+        run: python -B -X utf8 -m unittest discover -s tools/g2_saved_campaign -p "test_decision_text*.py" -v
       - name: Test formal episode metadata and subtitle timing without media
         run: python -B -X utf8 -m unittest discover -s promo/ck3_faith_and_power/integration/tests -p "test_*.py" -v
       - name: Test Episode 04 partial preview selection without media or CK3

@@ -3,6 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from datetime import datetime, timezone
 import ast,asyncio,copy,hashlib,json,sys,tempfile,time
+import pytest
 from PIL import Image,ImageDraw
 import recording_recovery_adapter as m
 from recording_recovery_supervisor import RecoverySupervisor
@@ -166,51 +167,32 @@ def test_regular_recovery():
     with tempfile.TemporaryDirectory(dir=BASE,prefix='offline-') as temp:
         c,p=fixture(Path(temp));a=m.ActualAdapter(c,p);q=actual_local_queue(c)
         s=RecoverySupervisor(a,session_root=c.session);seen=[]
-        for _ in range(20):
-            if (a.journal.get('active') or {}).get('phase')=='settle':
-                result=a.finish_continuation()
-            else:
-                progress=s.drive()
-                if progress.status=='error':raise AssertionError(progress)
-                result=a.finish_continuation() if progress.status=='complete' else None
-            consume_controls(c,q,seen)
-            if result=='complete':break
-        else:raise AssertionError('did not complete')
-        assert seen==['attach_recording_segment','resume_recording_pause','full_loop']
-        assert [x[0] for x in p.launches]==['overlay','recording','feeder']
-        assert a.observe().sdk.halt_cause is None  # Old immutable HALT remains, was handled.
-        assert s.tick().status=='idle'
-        b=m.ActualAdapter(c,p);assert b.journal['current_request']!=str(c.initial_recording_request)
-        assert b.observe().recorder.failed is False
-        feeder=next(c.state_root.glob('*/feeder.py'));rendered=feeder.read_text(encoding='utf-8')
-        assert 'return shared_json(path)' in rendered and 'FIRST_CONTROL_SEQUENCE = 102' in rendered
+        progress=s.drive()
+        assert progress.status=='error' and 'retired' in progress.reason
+        assert not p.launches and not list((c.session/'p42-requests').iterdir())
+        assert a.journal['current_request']==str(c.initial_recording_request)
 
 def test_attach_only_business_halt():
     with tempfile.TemporaryDirectory(dir=BASE,prefix='offline-') as temp:
         c,p=fixture(Path(temp),mixed=True);a=m.ActualAdapter(c,p);q=actual_local_queue(c)
         s=RecoverySupervisor(a,session_root=c.session);assert s.drive().stage=='sdk_guard'
         before=m.shared_json(c.session/'p42-queue/ROOT-CUMULATIVE-LOOP-STATE.json');seen=[]
-        for _ in range(20):
-            result=a.drive_attach_only(s);consume_controls(c,q,seen)
-            if result=='capture_restored_business_halt_preserved':break
-        else:raise AssertionError('capture only did not complete')
-        assert seen==['attach_recording_segment']
+        with pytest.raises(RuntimeError,match='retired'):a.drive_attach_only(s)
+        assert not seen and not p.launches
         assert m.shared_json(c.session/'p42-queue/ROOT-CUMULATIVE-LOOP-STATE.json')==before
         assert a.observe().sdk.halt_cause=='ValueError'
-        assert [x[0] for x in p.launches]==['overlay','recording']
-        assert a.drive_attach_only(s)=='healthy'
 
 def test_feeder_exclusion_and_unknown_launch():
     with tempfile.TemporaryDirectory(dir=BASE,prefix='offline-') as temp:
         c,p=fixture(Path(temp));p.old_feeder_alive=True;a=m.ActualAdapter(c,p)
-        s=RecoverySupervisor(a,session_root=c.session);assert s.drive().status=='waiting'
+        s=RecoverySupervisor(a,session_root=c.session);assert s.drive().status=='error'
         assert not p.launches and not list((c.session/'p42-requests').iterdir())
         p.old_feeder_alive=False;p.fail_launch=True
         assert s.drive().status=='error'
-        assert [x[0] for x in p.launches]==['overlay','recording']
+        assert not p.launches
         b=m.ActualAdapter(c,p);t=RecoverySupervisor(b,session_root=c.session)
         assert t.drive().status=='error'
-        assert [x[0] for x in p.launches]==['overlay','recording']  # No repeat after restart.
+        assert not p.launches  # Retirement cannot be bypassed after watchdog restart.
 
 def test_shared_reader_allows_replace():
     with tempfile.TemporaryDirectory(dir=BASE,prefix='offline-') as temp:
@@ -226,7 +208,7 @@ if __name__=='__main__':
                  test_feeder_exclusion_and_unknown_launch,test_shared_reader_allows_replace]:
         test();rows.append({'name':test.__name__,'status':'GREEN'});print('GREEN',test.__name__)
     result={'status':'GREEN','offline_only':True,'real_local_queue_methods':['attach_recording_segment','resume_recording_pause'],
-            'real_automatic_admission_and_segment_verify':True,
+            'legacy_panel_recovery_rejected_before_launch':True,
             'settle_transport':'simulated successful full_loop(max_turns=1); no live Game/MCP/OBS',
             'source_sha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'tests':rows}
     print(json.dumps(result))

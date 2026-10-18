@@ -12,6 +12,7 @@ from contextlib import ExitStack
 from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
+import importlib.util
 import json
 import logging
 import math
@@ -25,10 +26,23 @@ import threading
 import time
 import uuid
 
-PROVIDER_VERSION = "2.0.0"
-SCHEMA = "xar.ck3.obs-window-capture.v2"
+PROVIDER_VERSION = "3.0.0"
+SCHEMA = "xar.ck3.obs-window-capture.v3"
 ALLOWED_SECONDS = frozenset({15, 30, 45, 60, 90, 120})
 RECENT_SAMPLE_COUNT = 120
+
+def require_no_retired_decision_window():
+    """Use the current recorder's exact class check, including hidden old windows."""
+    path = Path(__file__).with_name('ck3_mod_acceptance_recorder.py')
+    spec = importlib.util.spec_from_file_location('obs_retired_decision_guard', path)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    return module.require_no_legacy_blue_overlay()
+
+def decision_publisher_api():
+    path = Path(__file__).parent / 'g2_saved_campaign'
+    if str(path) not in sys.path: sys.path.insert(0, str(path))
+    import decision_text_publisher
+    return decision_text_publisher
 
 
 def _write_new(path, value):
@@ -276,11 +290,17 @@ def validate_job(job):
             or not Path(signal).resolve().is_relative_to(Path(job["recording_root"]).resolve())):
         raise ValueError("recording start signal must remain in this recording root")
     mode = job.get("capture_mode")
-    if mode not in ("game_only", "game_decision"):
+    if mode not in ("game_only", "game_decision", "game_decision_text"):
         raise ValueError("use the fixed Game-only or Game+decision contract")
     if mode == "game_only":
-        if any(job.get(key) is not None for key in ("overlay", "desktop_id", "decision_text_file", "game_creation_filetime")):
+        if any(job.get(key) is not None for key in ("overlay", "desktop_id", "decision_text_file", "game_creation_filetime", 'decision_text_publisher', 'decision_text_publisher_receipt')):
             raise ValueError("Game-only capture may not contain a partial decision/desktop group")
+    elif mode == 'game_decision_text':
+        if (job.get('overlay') is not None or not isinstance(job.get('decision_text_publisher'), dict)
+                or not isinstance(job.get('decision_text_publisher_receipt'), dict)
+                or not job.get('decision_text_file') or not job.get('desktop_id')
+                or type(job.get('game_creation_filetime')) is not int):
+            raise ValueError('Independent text publisher group required; old overlay identity is forbidden')
     elif (not isinstance(job.get("overlay"), dict) or not job.get("decision_text_file")
           or not job.get("desktop_id") or type(job.get("game_creation_filetime")) is not int
           or job["game_creation_filetime"] <= 0):
@@ -289,13 +309,16 @@ def validate_job(job):
 
 def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
                      launch_receipt, ffprobe, placement_receipt=None, overlay_receipt=None,
-                     start_signal=None, continuous=False):
+                      decision_publisher_receipt=None, start_signal=None, continuous=False):
     """Products may record only Game; fresh-agent calls supply the complete group."""
-    if (placement_receipt is None) != (overlay_receipt is None):
-        raise ValueError("placement and decision Overlay receipts must be supplied together")
+    display_policy = require_no_retired_decision_window()
+    if overlay_receipt is not None:
+        raise ValueError('Legacy blue overlay launch is retired; use a real independent decision text publisher')
+    if (placement_receipt is None) != (decision_publisher_receipt is None):
+        raise ValueError('Placement and actual text publisher receipts must be supplied together')
     profile, launch = map(_read, (profile_path, launch_receipt))
-    placement, overlay, text = None, None, None
-    with_decision = overlay_receipt is not None
+    placement, overlay, publisher, publisher_pin, text = None, None, None, None, None
+    with_decision = decision_publisher_receipt is not None
     validate_profile(profile)
     if continuous != (profile.get("continuous") is True):
         raise ValueError("recording mode differs from the prepared profile")
@@ -310,14 +333,14 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
     if type(launch.get("pid")) is not int or launch["pid"] != pid:
         raise ValueError("launch receipt differs from the explicit Game PID")
     if with_decision:
-        placement, overlay = map(_read, (placement_receipt, overlay_receipt))
-        if (placement.get("status") != "GREEN" or placement.get("pid") != pid or placement.get("hwnd") != hwnd
-                or overlay.get("game_pid") != pid or overlay.get("game_hwnd") != hwnd
-                or overlay.get("game_creation_filetime") != placement.get("creation_filetime")
-                or overlay.get("managed_desktop_id") != placement.get("target_desktop_id")):
-            raise ValueError("matching actual placement and Overlay generation receipts required")
-        text = Path(overlay["decision_text_file"]).resolve(strict=True)
-        if not text.is_relative_to(Path(overlay["session"]).resolve()) or text.stat().st_size > 32768:
+        placement = _read(placement_receipt)
+        if placement.get('status') != 'GREEN' or placement.get('pid') != pid or placement.get('hwnd') != hwnd:
+            raise ValueError('Actual matching Game placement required')
+        api = decision_publisher_api(); publisher_pin = api.pin(decision_publisher_receipt)
+        publisher = api.read_text_binding(publisher_pin, game={'pid': pid, 'creation_filetime': placement['creation_filetime'],
+                    'hwnd': hwnd, 'desktop_id': placement['target_desktop_id']})
+        text = Path(publisher['decision_text_file']).resolve(strict=True)
+        if not text.is_relative_to(Path(publisher['session']).resolve()) or text.stat().st_size > 32768:
             raise ValueError("decision text escaped its finite session scope")
     probe = Path(ffprobe).resolve(strict=True)
     if probe.name.casefold() != "ffprobe.exe":
@@ -328,10 +351,11 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
         "profile_path": str(Path(profile_path).resolve()), "profile_sha256": _sha(profile_path),
         "recording_root": str(Path(recording_root).resolve()), "receipt_root": str(root),
         "pid": pid, "hwnd": hwnd, "duration_seconds": seconds, "launch": launch,
-        "capture_mode": "game_decision" if with_decision else "game_only",
+        "capture_mode": "game_decision_text" if with_decision else "game_only",
         "game_creation_filetime": placement["creation_filetime"] if with_decision else None,
         "desktop_id": placement["target_desktop_id"] if with_decision else None,
-        "overlay": overlay, "decision_text_file": str(text) if text else None, "ffprobe": str(probe),
+        "overlay": None, 'decision_text_publisher': publisher, 'decision_text_publisher_receipt': publisher_pin,
+        'decision_display_policy': display_policy, "decision_text_file": str(text) if text else None, "ffprobe": str(probe),
         "deadline_utc": profile["deadline_utc"], "max_output_bytes": profile["max_output_bytes"]}
     if continuous:
         job.update(continuous=True, storage=profile["storage"])
@@ -842,6 +866,7 @@ def _stop_stall_edl_metadata(job, root):
 
 
 def run_worker(path):
+    worker_display_policy = require_no_retired_decision_window()
     job = _read(path)
     validate_job(job)
     profile = _read(job["profile_path"])
@@ -853,7 +878,9 @@ def run_worker(path):
         raise ValueError("unsupported or altered dedicated OBS profile")
     root = Path(job["receipt_root"])
     ProcessGeneration, game_generation, check_game_window, deadline_check = _generation_helpers()
-    with_decision = job["capture_mode"] == "game_decision"
+    if job['capture_mode'] == 'game_decision':
+        raise ValueError('New worker cannot launch retired legacy decision overlay configuration')
+    with_decision = job["capture_mode"] == "game_decision_text"
     if with_decision:
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ck3_autonomous_player/src"))
         from xar_autoplayer.bridge.windows_virtual_desktop import window_virtual_desktop
@@ -874,9 +901,10 @@ def run_worker(path):
         initial_files.add(str(Path(job["start_signal"]).resolve()))
     with ExitStack() as custody:
         game = custody.enter_context(game_generation(job["launch"]))
-        overlay = custody.enter_context(ProcessGeneration(
-            job["overlay"]["overlay_pid"], Path(job["overlay"]["overlay_executable"]),
-            creation_filetime=job["overlay"]["overlay_creation_filetime"])) if with_decision else None
+        publisher = job.get('decision_text_publisher')
+        text_process = custody.enter_context(ProcessGeneration(
+            publisher['publisher']['pid'], Path(publisher['publisher']['executable']),
+            creation_filetime=publisher['publisher']['creation_filetime'])) if with_decision else None
         def guard():
             if continuous:
                 disk = _disk_observation(job)
@@ -892,7 +920,7 @@ def run_worker(path):
             game.check()
             check_game_window(game, job["hwnd"])
             if with_decision:
-                overlay.check()
+                text_process.check()
                 if game.creation_filetime != job["game_creation_filetime"]:
                     raise RuntimeError("Game generation differs from actual placement")
                 desktop_query_deadline = time.monotonic() + 30.0
@@ -913,9 +941,8 @@ def run_worker(path):
             if watch and watch.error:
                 raise RuntimeError(watch.error)
             if with_decision:
-                _read_decision_binding(
-                    job["decision_text_file"],
-                                            "进程绑定：PID " + str(job["pid"]) + " · " + job["launch"]["creation_date"])
+                decision_publisher_api().read_text_binding(job['decision_text_publisher_receipt'], game={
+                    'pid': job['pid'], 'creation_filetime': job['game_creation_filetime'], 'hwnd': job['hwnd'], 'desktop_id': job['desktop_id']})
 
         def screenshots(label, *, replace_latest=False):
             guard()
@@ -1038,6 +1065,8 @@ def run_worker(path):
                 "game_pid": job["pid"], "game_creation_filetime": game.creation_filetime,
                 "source_settings": client.get_input_settings(source).input_settings,
                 "capture_mode": job["capture_mode"], "decision_source": with_decision,
+                'decision_text_publisher': publisher if with_decision else None,
+                'decision_display_policy': worker_display_policy,
                 "decision_settings": client.get_input_settings(decision).input_settings if with_decision else None,
                 "video": _response_data(video), "runtime_freshness_qualified": False,
                 "continuous": continuous, "duration_seconds": job["duration_seconds"],

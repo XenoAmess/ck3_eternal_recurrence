@@ -1,0 +1,123 @@
+{
+  "schema": "xar.ck3.independent-decision-text-source-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "evidence_date_utc": "2026-10-18",
+  "scope": "Public source and ordinary Python publisher qualification; no actual new Game/OBS recording admission",
+  "machine_observation": {
+    "source": "tools/ck3_live_run_id.py machine",
+    "tool_chunk_id": "b04be1",
+    "exit_code": 0
+  },
+  "historical_base_python_qualification": {
+    "source_sha256": "47aa9bcce8811a2b248417a5b7848ffff7662b1bc04df0520340d95394ac62f6",
+    "observed_at_utc": "2026-10-18T03:01:43.950958+00:00",
+    "publisher_pid": 205748,
+    "publisher_creation_filetime": 134367661025213617,
+    "actual_original_handle_exit_code": 0,
+    "receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/next1066-recording-retirement01/TEXT-PUBLISHER-SOURCE-QUALIFIED01.json",
+      "bytes": 5265,
+      "sha256": "a5e4c04246e5c5debc72e2c494d7dba801464b79175f872244bd0b4b5a11f9d9"
+    },
+    "Host05_venv_qualification_implied": false
+  },
+  "historical_Host05_venv_failure": {
+    "source": "g2_missing_parallel actual source-qualification report",
+    "reason": "venv sys.executable redirector Popen PID differed from actual publisher STARTED PID; the generation gate rejected it",
+    "publisher_pid": 186904,
+    "publisher_creation_filetime": 134367664702294222,
+    "normal_STOP_observed": true,
+    "actual_exit_code": 0,
+    "exit_observation_handle": "New exact-creation-time handle; the original owner had exited and lost its Popen handle",
+    "original_Popen_retained_exit_zero_claimed": false,
+    "forced_process_calls": 0,
+    "closure_receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p81-sdk05-host05-adoption01/TEXT-CHILD-FAILURE-CLOSURE01.json",
+      "bytes": 2334,
+      "sha256": "2b936b654b97379247ad2d4a9ccead1b2509d59f328208449b895243a0e9766b"
+    },
+    "old_attempt_and_COW01_retained": true
+  },
+  "corrected_actual_engine_qualification": {
+    "source_sha256": "e969030afa11d3f59109bb075f82b1b69ac295bc5d8ae7ca4f994a1301a492f7",
+    "observed_at_utc": "2026-10-18T03:09:07.957579+00:00",
+    "requested_owner_interpreter": "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "actual_owner_pid": 61540,
+    "actual_owner_creation_filetime": 134367665458170924,
+    "actual_engine_executable": "C:/Users/xenoa/AppData/Local/Programs/Python/Python313/python.exe",
+    "publisher_pid": 173656,
+    "publisher_creation_filetime": 134367665464322381,
+    "actual_STARTED_and_original_Popen_generation_equal": true,
+    "actual_TEXT_PUBLISHED": true,
+    "OBS_draw_ACK_claimed": false,
+    "actual_original_handle_exit_code": 0,
+    "forced_process_calls": 0,
+    "qualification_only": true,
+    "actual_Game_recording_admitted": false,
+    "receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/next1066-recording-retirement01/TEXT-PUBLISHER-SOURCE-QUALIFIED02.json",
+      "bytes": 5624,
+      "sha256": "ae6eb075f984edde7c34471fb440c6bc4faa87f58e182ab30de02433eccdb919"
+    },
+    "tool_chunk_id": "6d9bf4",
+    "exit_code": 0
+  },
+  "focused_local_test_results": {
+    "original_total_passed": 87,
+    "groups": [15, 8, 56, 8],
+    "correct_venv_recheck": {
+      "new_tests_passed": 15,
+      "retirement_tests_passed": 8,
+      "exit_code": 0
+    },
+    "earlier_OBS_regression_attempt": {
+      "tool_chunk_id": "29ed64",
+      "exit_code": 1,
+      "actual_readonly_EnumWindows_checks": 1,
+      "cause": "Old fixture omitted a mock for the new retired-window guard",
+      "observed_existing_legacy_window": true,
+      "desktop_input_or_Game_OBS_state_mutation": false,
+      "historical_failure_preserved": true
+    },
+    "corrected_OBS_fixture_result": {
+      "retained_session_id": 46158,
+      "tool_chunk_id": "4b6b14",
+      "tests_passed": 56,
+      "exit_code": 0,
+      "actual_desktop_access": false
+    },
+    "all_historical_tests_zero_desktop_claimed": false
+  },
+  "portable_CI_step_local_verification": {
+    "observed_at_utc": "2026-10-18T03:15:26.113794+00:00",
+    "interpreter": "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "XAR_DECISION_TEXT_PORTABLE_ONLY": "1",
+    "tests_run": 15,
+    "passed": 14,
+    "skipped_actual_child": 1,
+    "exit_code": 0,
+    "actual_EnumWindows_or_Game_OBS_calls": 0,
+    "actual_publisher_child_required_or_launched": false,
+    "receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/next1066-recording-retirement01/PORTABLE-CI-STEP-QUALIFIED01.json",
+      "bytes": 1017,
+      "sha256": "5e38afddf394d27c06fccdb9a24de254990bcef36a7766741968c9172bce2088"
+    },
+    "tool_chunk_id": "4668e8"
+  },
+  "Host05_callback_and_frontend_source_adoption": {
+    "source": "g2_missing_parallel actual independent COW02 qualification report",
+    "receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p81-sdk05-host05-adoption01/TEXT-FRONTEND-CALLBACK-COW-QUALIFIED01.json",
+      "bytes": 6878,
+      "sha256": "d2ecfb9907e66c52dee666e072575e28e895a359614650bee73c402c1bf33c0b"
+    },
+    "actual_Service_callback_to_TEXT_PUBLISHED_tested": true,
+    "synthetic_NativeStart_only": true,
+    "actual_Game_OBS_or_recording_qualification": false
+  },
+  "current_frozen_Game_capture_HUD_or_SDK_modified": false,
+  "new_live_OBS_source_first_pixel_and_frontend_action_admission": "PENDING",
+  "old_failures_and_delivery01_overwritten": false,
+  "qualification_cross_machine_extrapolated": false
+}

@@ -163,3 +163,56 @@ def verify_automatic_continuity_receipt(
     if receipt != expected:
         raise ValueError("automatic continuity receipt differs from actual PNG/source proof")
     return expected
+
+
+def automatic_text_continuity_admission(*, job, started, frame, session_root,
+                                      now_utc, max_age_seconds=120):
+    """New independent publisher identity; no synthetic legacy overlay receipt."""
+    try:
+        from . import decision_text_publisher as publisher
+    except ImportError:
+        import decision_text_publisher as publisher
+    session_root = Path(session_root).resolve()
+    root = Path(job['receipt_root']).resolve()
+    if not root.is_relative_to(session_root / 'recordings'):
+        raise ValueError('Text continuity recording escaped its session')
+    reference = job['decision_text_publisher_receipt']
+    bound = publisher.read_text_binding(reference, game={
+        'pid': job['pid'], 'creation_filetime': job['game_creation_filetime'],
+        'hwnd': job['hwnd'], 'desktop_id': job['desktop_id']})
+    settings = started.get('decision_settings') or {}
+    if (job.get('capture_mode') != 'game_decision_text' or job.get('overlay') is not None
+            or job.get('continuous') is not True or any(job.get(k) is not None for k in ('duration_seconds', 'max_output_bytes', 'deadline_utc'))
+            or job.get('decision_text_publisher') != bound or started.get('decision_text_publisher') != bound
+            or started.get('state') != 'recording' or started.get('capture_mode') != 'game_decision_text'
+            or started.get('game_pid') != job['pid'] or started.get('game_creation_filetime') != job['game_creation_filetime']
+            or started.get('decision_source') is not True or settings.get('read_from_file') is not True
+            or settings.get('file') != bound['decision_text_file'] or job.get('decision_text_file') != bound['decision_text_file']):
+        raise ValueError('Actual new Game/text source identity differs')
+    at = _time(frame['at_utc'])
+    if (frame.get('mutable_latest_frame') is not False or not _time(bound['at_utc']) <= _time(started['at_utc']) <= at <= now_utc
+            or (now_utc-at).total_seconds() > max_age_seconds):
+        raise ValueError('Frozen new-text continuity frame is stale')
+    game, gs = _asset(frame['game'], root)
+    scene, ss = _asset(frame['scene'], root)
+    game_stats, scene_stats = _nonblack(game), _nonblack(scene)
+    if game.size != scene.size: raise ValueError('Actual Game/scene sizes differ')
+    diff = ImageChops.difference(game.resize((128,72)), scene.resize((128,72)))
+    fraction = sum(1 for pixel in diff.getdata() if max(pixel) >= 12) / (128*72)
+    if fraction < .005: raise ValueError('Actual new-text scene has no visible difference')
+    return {'schema': 'xar.ck3.automatic-text-recording-continuity/v1', 'status': 'GREEN',
+        'reviewer': 'automatic_text_continuity', 'admission_method': 'automatic_text_continuity',
+        'machine_id': bound['machine_id'], 'at_utc': frame['at_utc'],
+        'game_pid': job['pid'], 'game_creation_filetime': job['game_creation_filetime'],
+        'game_creation_date': job['launch']['creation_date'], 'recorder_session_id': job['session_id'],
+        'recording_job_root': str(root), 'publisher_started': reference,
+        'frame': frame, 'game_png': {**frame['game'], **game_stats, 'sha256':gs},
+        'scene_png': {**frame['scene'], **scene_stats, 'sha256':ss},
+        'scene_text_diff_fraction': round(fraction,6), 'human_pixel_review_claimed':False,
+        'exact_text_draw_ACK_claimed':False}
+
+
+def verify_automatic_text_continuity_receipt(*, receipt, **inputs):
+    expected = automatic_text_continuity_admission(**inputs)
+    if receipt != expected: raise ValueError('New text continuity receipt differs from actual proof')
+    return expected
