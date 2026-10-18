@@ -111,13 +111,13 @@ def create_challenge(run_root, keeper_root, frame_path, image, output):
     require(not output.exists(), "Use a new direct-review challenge directory")
     output.mkdir(parents=True)
     nonce = secrets.token_hex(16)
-    from PIL import Image, ImageDraw
+    from PIL import Image, ImageDraw, ImageFont
     with Image.open(image) as original:
-        reviewed = Image.new("RGB", (max(original.width, 760), original.height + 64), "white")
+        reviewed = Image.new("RGB", (max(original.width, 800), original.height + 64), "white")
         reviewed.paste(original.convert("RGB"), (0, 64))
         draw = ImageDraw.Draw(reviewed)
-        draw.text((10, 8), "DIRECT REVIEW NONCE: " + nonce, fill="black")
-        draw.text((10, 30), "Read Steam offline status in the original frame below; this banner does not certify it.", fill="black")
+        draw.text((10, 8), "DIRECT REVIEW NONCE: " + nonce, font=ImageFont.load_default(size=24), fill="black")
+        draw.text((10, 44), "Read Steam offline status in the original frame below; this banner does not certify it.", fill="black")
         reviewed.save(output / "direct-review.png")
     challenge = {"schema": "ck3-mod-acceptance-review-challenge-v1", "created_at_utc": utc(),
         "nonce": nonce, "run_id": frozen["run_id"], "screen_task": frozen["screen_task"],

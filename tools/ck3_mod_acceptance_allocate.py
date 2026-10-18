@@ -114,7 +114,7 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
         return read_json(path)
     original('frozen_argv_pin',previous/'frozen-argv.json')
     ready=original('ready_context_pin',previous/'ready-context.json')
-    original('allocated_context_pin',previous/'allocated-context.json')
+    allocated_context=original('allocated_context_pin',previous/'allocated-context.json')
     require(ready.get('run_id')==freeze['run_id'] and
             Path(ready['run_dir']).resolve()==previous.resolve() and
             Path(ready['keeper_root']).resolve()==keeper_root.resolve() and
@@ -124,11 +124,100 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
     require(parent.get('run_id')==freeze['run_id'] and parent.get('keeper_actual_exit_code')==0 and
             parent.get('keeper_report')==keeper and keeper.get('thread_exited') is True and
             keeper.get('failure') is None,'Actual cooperative keeper wait0 required')
+    modern_idle=bundle.get('unused_reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT'
+    if modern_idle:
+        machine=freeze.get('identity_allocation',{}).get('machine_id')
+        prepared_path=Path(ready.get('prepared_case',{}).get('path','')).resolve()
+        original('prepared_case_pin',prepared_path)
+        ledger=Path(freeze['state_dir']).resolve().parent/'single-use-ledger'
+        allocation_intent=original('single_use_intent_pin',ledger/'allocation-intent.json')
+        allocated=original('single_use_allocated_pin',ledger/'allocated.json')
+        keeper_ready=original('keeper_ready_pin',keeper_root/'ready.json')
+        idle=original('idle_timeout_pin',previous/'allocation-unused-idle-timeout.json')
+        stop_path=keeper_root/'STOP';stop_ref=bundle['keeper_stop_pin']
+        require(Path(stop_ref['path']).resolve()==stop_path.resolve(),'Idle STOP original path differs')
+        check_pin(stop_path,stop_ref);evidence['keeper_stop_pin']=stop_ref
+        require(bool(machine) and bundle.get('machine_id')==machine and
+                ready.get('prepared_case')==bundle['prepared_case_pin'] and
+                allocated_context.get('run_id')==freeze['run_id'] and
+                allocated_context.get('prepared_case')==ready['prepared_case'] and
+                allocation_intent.get('status')=='CONSUMED_ALLOCATION_INTENT_NOT_RUN' and
+                allocation_intent.get('prepared_case')==ready['prepared_case'] and
+                allocated.get('status')=='ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN' and
+                Path(allocated.get('live','')).resolve()==previous.resolve() and
+                allocated.get('task')==freeze['screen_task'] and
+                Path(allocated.get('keeper_root','')).resolve()==keeper_root.resolve() and
+                Path(allocated.get('prepared_case','')).resolve()==prepared_path and
+                Path(allocated.get('actual_host_argv','')).resolve()==(previous/'frozen-argv.json').resolve() and
+                allocated.get('keeper_ready')==keeper_ready and
+                keeper_ready.get('lease',{}).get('task_id')==freeze['screen_task'] and
+                keeper.get('game_actions') is False and
+                idle.get('reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT' and
+                type(idle.get('idle_seconds')) is int and idle['idle_seconds']==600 and
+                all(idle.get(k) is False for k in ('game_started','native_session_started','normal_close_qualified','business_pass')) and
+                stop_path.read_text(encoding='utf-8')=='Unused allocation idle deadline; no game/native/normal credit.\n',
+                'Actual modern unused allocation/idle STOP identity differs')
+        times=[datetime.fromisoformat(value) for value in
+               (keeper_ready['at_utc'],idle['utc'],keeper['at_utc'])]
+        require(all(t.tzinfo is not None and t.utcoffset() is not None for t in times) and
+                (times[1]-times[0]).total_seconds()>=600 and times[2]>=times[1],
+                'Actual original ten-minute idle window did not expire')
+        operation_dirs=[]
+        for mode,code in (('run',2),('allocate',0)):
+            key='public_'+mode
+            intent_path=Path(bundle[key+'_intent_pin']['path']).resolve()
+            require(intent_path.name=='intent.json','Modern original public intent path differs')
+            command=original(key+'_intent_pin',intent_path)
+            process=original(key+'_process_pin',intent_path.parent/'original-process.json')
+            ended=original(key+'_exit_pin',intent_path.parent/'original-exit.json')
+            argv=command.get('argv',[])
+            def argument(name):
+                require(isinstance(argv,list) and argv.count(name)==1 and argv.index(name)+1<len(argv),
+                        'Modern original public argument missing: '+name)
+                return argv[argv.index(name)+1]
+            require(all(row.get('machine_id')==machine for row in (command,process,ended)) and
+                    command.get('stage')==mode and bool(command.get('at_utc')) and
+                    process.get('argv')==argv and type(process.get('pid')) is int and process['pid']>0 and
+                    type(process.get('create_time')) in (int,float) and process['create_time']>0 and
+                    ended.get('pid')==process['pid'] and ended.get('actual_original_popen_wait') is True and
+                    type(ended.get('returncode')) is int and ended['returncode']==code and
+                    bool(ended.get('completed_at_utc')) and argv[-1:]==[mode] and argv.count(mode)==1 and
+                    Path(argument('--prepared-case')).resolve()==prepared_path,
+                    'Modern original public '+mode+' retained wait differs')
+            operation_dirs.append(intent_path.parent.parent)
+            if mode=='run':
+                context_path=Path(argument('--run-context')).resolve();context=read_json(context_path)
+                result=original('public_run_stdout_pin',intent_path.parent/'stdout.log')
+                refusal=original('public_run_stderr_pin',intent_path.parent/'stderr.log')
+                require(context.get('run_id')==freeze['run_id'] and
+                        Path(context.get('run_dir','')).resolve()==previous.resolve() and
+                        Path(context.get('keeper_root','')).resolve()==keeper_root.resolve() and
+                        context.get('frozen_argv')==ready['frozen_argv'] and
+                        context.get('prepared_case')==ready['prepared_case'] and
+                        result.get('run_id')==freeze['run_id'] and result.get('host_argv')==freeze['argv'] and
+                        result.get('runtime_status')=='LAUNCH_FAILED' and
+                        result.get('business_acceptance')=='NOT_ASSESSED' and result.get('launcher_exit_code')==2 and
+                        refusal.get('status')=='BLOCKED' and refusal.get('business_pass') is False and
+                        refusal.get('error')=="ValueError('Original keeper has stopped or requested STOP')",
+                        'Modern unused run is not the original keeper-STOP prelaunch refusal')
+                run_intent=intent_path;run_runtime=Path(argument('--runtime')).resolve()
+                evidence['public_run_context_pin']=pin(context_path)
+            else:
+                require(Path(argument('--keeper-output')).resolve()==keeper_root.resolve() and
+                        Path(argument('--runtime')).resolve()==run_runtime,
+                        'Modern original allocation crossed keeper/runtime')
+        require(operation_dirs[0]==operation_dirs[1] and
+                [path.resolve() for path in operation_dirs[0].glob('*/intent.json')
+                 if read_json(path).get('stage')=='run']==[run_intent] and
+                not (previous/'host-supervisor-started.json').exists(),
+                'Modern idle closure requires its unique public run and no actual supervisor')
     scene=keeper_root.parent
     refs=bundle['original_process_exit_pins']
     never_attempted=bundle.get('unused_reason')=='coordinator_interrupted_before_first_launch'
     release_stem='screen-release-01'
-    if never_attempted:
+    if modern_idle:
+        terminals=()
+    elif never_attempted:
         require(bundle.get('observer_status')=='NEVER_STARTED' and bundle.get('observer_exit_code') is None
                 and bundle.get('original_windows_expired') is True
                 and not any(scene.glob('public-run-*-operation.json'))
@@ -172,12 +261,13 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
                         result.get('business_acceptance')=='NOT_ASSESSED',
                         'Unconsumed run must be an actual prelaunch refusal')
         evidence[name]=ref
-    if not never_attempted:
+    if not never_attempted and not modern_idle:
         trigger=original('observer_trigger_pin',scene/'allocation-pressure-trigger-01.json')
         require(trigger.get('actual_run_id')==freeze['run_id'] and trigger.get('reason')==
                 'FINITE_OBSERVER_WINDOW_EXPIRED_NOT_BUSINESS_TIMEOUT', 'Original observer expiry missing')
     require(Path(bundle['release_result_pin']['path']).resolve()==
-            Path(refs[release_stem]['path']).with_name(release_stem+'.stdout.log').resolve(),
+            ((previous/'root-screen-release-a01.json').resolve() if modern_idle else
+             Path(refs[release_stem]['path']).with_name(release_stem+'.stdout.log').resolve()),
             'Unconsumed original release path differs')
     check_pin(Path(bundle['release_result_pin']['path']),bundle['release_result_pin'])
     require(read_actual_release(Path(bundle['release_result_pin']['path']))==release and

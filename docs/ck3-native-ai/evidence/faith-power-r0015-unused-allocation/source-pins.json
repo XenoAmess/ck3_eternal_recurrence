@@ -1,0 +1,47 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-18T10:22:45.846358+00:00",
+  "sources": {
+    "R15_release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0015\\root-screen-release-a01.json",
+      "bytes": 1291,
+      "sha256": "af0fe9dc85a9f82e5f2ca66c149cf3d092cce883a820b62510e2f89e6a542a7a"
+    },
+    "R15_capacity": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0015\\COMPLETED-CAPACITY-a01.json",
+      "bytes": 1692,
+      "sha256": "d6490c897ac3b2873c81315ad33e3991b190c6d7a2c6bda6fe9235ad7b9c48f2"
+    },
+    "modern_idle_closure_delivery": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\unused-r0015-fix-a01\\DELIVERY-a01.json",
+      "bytes": 4862,
+      "sha256": "f20e161f7f959fed5b767121a56ede7eafe6609b05e7bc7900dc6d321c87b879"
+    },
+    "nonce_display_source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\direct-review-font-a01\\DELIVERY-a01.json",
+      "bytes": 2573,
+      "sha256": "24ff4114873f9661654bd046bd248770beb84793b81b99c05fcfae34c642d721"
+    },
+    "stable_repair_final": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\stable-repair-a01\\FINAL.json",
+      "bytes": 2656,
+      "sha256": "90f1d0129c8dc07aa73945e1ac649632d11dce198c33ce0c81b8c466e9c95ff0"
+    },
+    "stable_repair_projection": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\stable-repair-a01\\STABLE-PROJECTION.json",
+      "bytes": 2347,
+      "sha256": "01a2d9c46ca122e65826b50f380fa77daebdf6a92b010e4e8d071ca49202c7de"
+    },
+    "Root_repair_closure": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\STABLE-REPAIR-ROOT-CLOSED-a01.json",
+      "bytes": 2675,
+      "sha256": "2f5cdd39e5cad7e1118704223a9313a33b2840d0bfad6a793eec4449ac551338"
+    },
+    "previous_source_CI": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\ci-fc4d-a01\\SUMMARY.json",
+      "bytes": 4155,
+      "sha256": "0c9e746e1d7d990e6b6c93c978fee5f2b98be7da7740c15495d3730533ec41cd"
+    }
+  },
+  "new_game_or_business_qualification": false
+}
