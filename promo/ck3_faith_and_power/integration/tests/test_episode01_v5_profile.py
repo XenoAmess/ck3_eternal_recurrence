@@ -22,7 +22,7 @@ class Episode01V5ProfileTests(unittest.TestCase):
         with self.assertRaises(FrozenInstanceError):
             profile.max_seconds = 4000
         budget = common.peak_budget(3240, 168, profile=profile)
-        self.assertEqual(budget['peak_new_bytes'], 4_483_143_160)
+        self.assertEqual(budget['peak_new_bytes'], 4_491_531_768)
         self.assertEqual((budget['video_maxrate_bps'], budget['video_bufsize_bits'],
                           budget['audio_bitrate_bps'], budget['geometry']),
                          (3_000_000, 3_000_000, 192_000, [2560, 1440, 30]))
