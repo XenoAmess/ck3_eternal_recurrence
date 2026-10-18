@@ -1,5 +1,7 @@
 # CK3 信仰与权力拍摄交接
 
+**2026-10-18现行接手要求：先读[系列研究与讲解方法](docs/production-lessons.md)，再写稿、配音或开拍。** 以玩家目标组织工作，追清机制因果、各主体的权责和利益，比较选择并回流智能体能力。下文2026-10-17的待拍状态是初始交接截点，当前已有[一期v4及研究／MCP更新](../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)，接手时复用已有成果。
+
 > **2026-10-18 后续拍摄约束：** 左上蓝色旧智能体面板已废弃，所有新录制不再启动或挂载它。不要复用历史 `decision_overlay*.py` 拍摄 helper；旧素材可保留，无须为此重录。共享 recorder 在新 take 前拒绝残留旧面板，原版 GUI、新版 decision UI 与决策记录照常使用。新 allocation 必须按当前源码重新准备并 pin recorder，不能修改旧冻结 runtime 追认新规则。详见[迁移说明](integration/legacy-decision-panel-retirement.md)。
 
 
@@ -13,6 +15,7 @@
 | --- | --- |
 | [根AGENTS](../../AGENTS.md) | 先读；决定机器身份、实机现场、离线、原生接口、存储与交付规则。 |
 | [系列入口](README.md) | 明确系列定位、三期边界和后续宗教专题。 |
+| [系列研究与讲解方法](docs/production-lessons.md) | 后续各期必读；以玩家理解和决策能力衡量研究、叙事、实证与智能体增量。 |
 | [导演案](director-plan.md) | 逐期叙事、时间预算、旁白试写、20个选题问题及S01–S18源码入口。 |
 | [镜头矩阵](shot-list.md) | 每个镜头的前态、动作、后态和需要证明的对象；用于准备实际拍摄单。 |
 | [来源锁](source-lock.json) | 固定源码提交、文件SHA与制作参考身份；不能当作目标机器的实机资格。 |
@@ -85,7 +88,7 @@ source_version_and_hashes / revised_schedule
 
 ## 工具和画面规格
 
-默认沿用导演案的2560×1440、30fps、棕金包装、中文旁白与英文副字幕；编码、字幕安全区及起始声线参数见导演案第七节。音乐拟复用战争系列母版，使用前核素材SHA；新宗教系列尚无另行冻结的正式音乐选择。
+默认沿用导演案的2560×1440、30fps、棕金包装、中文旁白与英文副字幕；编码、字幕安全区及起始声线参数见导演案第七节。用户已明确指定战争系列的`promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav`，须实际混入成片并检查最终音轨，不能只写入配置；精确身份与参数见[配乐专题](integration/episode01-music-profile.md)。
 
 每次实际生产前重新查询独立 `xar_promo_toolchain` 的最新正式Release，验证精确wheel／SHA、目标解释器、版本与相关CLI帮助。来源锁里的v0.2.1只记录原调查时点，不能成为永久停留旧版的依据。新系列的ProjectConfig和composer需要实际接线；先做30–60秒有声字幕样段，再依真实音频调整全文时间线。
 

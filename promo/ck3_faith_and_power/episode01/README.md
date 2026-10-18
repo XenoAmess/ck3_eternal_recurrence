@@ -1,5 +1,7 @@
 # 《CK3：信仰与权力》第一期文案输入
 
+后续修稿、配音与取材先读[系列研究与讲解方法](../docs/production-lessons.md)，以玩家问题、因果解释和选择比较组织每段，完成连续讲解审读后再冻结媒体。
+
 2026-10-18后继：[v4新版35:00.288讲解片已本地生成](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)，115段中文旁白、347组中英字幕，已实际混入战争系列的[quiet-courtly-tension.wav](../../ck3_native_war_ai/assets/music/quiet-courtly-tension.wav)。用户十项意见及动态数量上限追问已汇入[v4机制更正](../../../docs/ck3-native-ai/faith-and-power-episode01-v4-mechanics-corrections-12004.md)和现有MCP。音画／字幕／音乐检查、八处成片画面抽检完成；完整听审与1倍速观看仍待完成。下述v3及早期制作状态保留历史身份。旧蓝面板禁止出现在新录制，现有素材允许保留。
 
 v4已冻结为[115段中文讲解](narration-v4-final.zh.md)、[英文副字幕](narration-v4-final.en.md)与[原生项目配置](episode01-v4-final-project.json)。[逐句来源](episode01-v4-cue-claims.json)和[输入身份](episode01-v4-authoring-trace.json)保存a05及双语原件SHA，不覆写v3。中文配音于机器 `4-8e1c2f1861` 的 `2026-10-18T03:05:42.541102Z` 实际开始；原生freeze回执外置 `value-v4-production-a01/voice/FREEZE-RECEIPT.json`，SHA-256 `a0c1459477d8b88bd938dd6ec729e67549133506eb88e981fb4840e663ffd6e2`。本条只记录起步，实际音长、配乐混入及成片另以后继结果为准。
