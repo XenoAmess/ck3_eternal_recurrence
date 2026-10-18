@@ -78,3 +78,5 @@ V6是外置 `revision-v6-20261019`；新voice在 `production-candidate/value-v6-
 
 本轮a13实际构建退出0：`runtime/religion-candidate-a13-presentation/build-original-exit.json`在2026-10-18T20:53:10.410509Z记录原PID5108的wait结果，编译耗时93.515秒。该结果不授予实际游戏加载或新界面通过；后继仍完成精确EXE登记、对应导航检查与新会话后读。
 首次真实导航fixture随后因合法空tab的解析合同差异退出3221226505，尚未授予a13资格，也未启动后继游戏。后继只修对应路由并保留原断言和RED；修复、增量构建与新检查分别记录，不能用先前Python检查或编译成功替代。细节与源码界限见[展示接口专题](../../../docs/ck3-native-ai/faith-power-presentation-ui12004-v6.md)。
+
+2026-10-18T21:09Z，修复后的2TU／2link和新导航fixture实际均退出0，DLL已按新路径封存，SYSTEM精确新EXE读回通过。Root读取实际资格、原wait回执和检查输出，允许继续按公共入口准备D2补拍；当前仍未取得新窗口、tooltip或建筑的游戏／像素通过。新声、新构图、英文字幕和59组对象镜头继续并行，拍摄候选本身不算补图完成。

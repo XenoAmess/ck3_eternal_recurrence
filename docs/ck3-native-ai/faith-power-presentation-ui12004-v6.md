@@ -79,3 +79,5 @@ ACK后独立query窗口／页签；hover后用receipt读实际source、stack、r
 ## 实际原生检查的空tab修订
 
 `machine_id: 4-8e1c2f1861`。a13在2026-10-18T20:53:10Z编译退出0；第一次真实导航fixture随后因合法`presentation_tab:""`断言失败（OS3221226505），原退出与stderr保存在一期外置`runtime/religion-candidate-a13-presentation/navigation-fixture-*`，没有发布资格或启动游戏。共享`JsonStringField`按原合同拒空；本路由却用空tab作为显式展示查询标记。后继仅在此路由解析空tab与四个既定tab值，保持共享helper、合法首条断言和其余selector语义；修复补丁SHA-256 `1045addfc8ecbb062df00fe7757c2a91d272e409fa5ce720dd3b98a39de975d9`。源码修复须由受影响target增量重建及新fixture结果确认，旧RED不覆盖，也不外推成实机通过。
+
+2026-10-18T21:09:11.678630Z，实际00e9修订增量2TU／2link退出0；精确新EXE的SYSTEM排除读回verified，新fixture原PID23792的wait为0，stderr为空。新DLL14,609,920B，SHA-256 `ea408a8d09600eef308c729532b97f2dc2dde744228c7c972248c7c66a1931b6`，构建目录与新publish双SHA相同，a12未改。`qualification-a01.json`13,153B，SHA-256 `67ed11e54ff6e7b84da0ff80d6c759aa857cbf5d84ee032a8bcc2c81c598c334`；其中明确`live_presentation_qualified:false`和`business_pass:false`。旧RED与当时二进制保留；下一场仅沿公共入口取得真实窗口与独立后读，不以fixture的模拟对象取得实机或像素信用。
