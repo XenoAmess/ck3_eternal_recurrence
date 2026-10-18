@@ -1,0 +1,199 @@
+{
+  "schema": "xar.ck3.p66.origin-exposure-public-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-18T00:22:45.253189+00:00",
+  "status": "PUBLIC_SOURCE_TESTED_RUNTIME_DEPLOYMENT_SEPARATE",
+  "source_head": "82dc5fa0735387efc9517247bc649422ffb5ef1e",
+  "actual_source_observed_utc": "2026-10-17T23:52:52.639873+00:00",
+  "actual_closed_sources": [
+    {
+      "sequence": 95,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0095-1-result.json",
+        "bytes": 51293,
+        "sha256": "40f42af6a9f149bf14a7c28e19a18af2ff1c411ce448ed4871e04f971dcf69c1"
+      },
+      "started_utc": "2026-10-17T23:47:49.622914+00:00",
+      "ended_utc": "2026-10-17T23:47:51.557581+00:00",
+      "step": "query-route-contact-horizon-v1-167772577-to-2623-h-3-285213101-402653372-436207707"
+    },
+    {
+      "sequence": 103,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0103-1-result.json",
+        "bytes": 77361,
+        "sha256": "45ad50e72e2100d0d5b9455da85610bf548bd99b54a9ca92ca9d30a2272d2e93"
+      },
+      "started_utc": "2026-10-17T23:47:58.091906+00:00",
+      "ended_utc": "2026-10-17T23:47:58.299553+00:00",
+      "step": "preview-move-army-167772577-to-2619"
+    },
+    {
+      "sequence": 105,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0105-1-result.json",
+        "bytes": 80721,
+        "sha256": "c4290d0bd9c134fcf7a852e29ff42d3fb7072d070dcbf732777269a4831103b7"
+      },
+      "started_utc": "2026-10-17T23:47:58.504445+00:00",
+      "ended_utc": "2026-10-17T23:47:58.763694+00:00",
+      "step": "query-route-contact-horizon-v1-167772577-to-2619-h-3-285213101-402653372-436207707"
+    },
+    {
+      "sequence": 107,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0107-1-result.json",
+        "bytes": 81421,
+        "sha256": "214c87965d9c5be66aab9fb04b8bffb7a65402998081c413761693c4b13ec3fd"
+      },
+      "started_utc": "2026-10-17T23:47:58.823058+00:00",
+      "ended_utc": "2026-10-17T23:48:22.030540+00:00",
+      "step": "move-army-167772577-to-2619"
+    },
+    {
+      "sequence": 152,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0152-1-result.json",
+        "bytes": 150826,
+        "sha256": "043c528b9899e76c830138187cf28094d03dba90e2c6137a92a88059e468e624"
+      },
+      "started_utc": "2026-10-17T23:48:54.231535+00:00",
+      "ended_utc": "2026-10-17T23:48:54.663186+00:00",
+      "step": "query-route-contact-horizon-v1-167772577-to-2619-h-3-285213101-402653372-436207707"
+    },
+    {
+      "sequence": 157,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-responses\\0157-1-result.json",
+        "bytes": 32060,
+        "sha256": "1f80efa006ad4eda1d376d83b874fa1b4f8952de793351f0085db47548015c8c"
+      },
+      "started_utc": "2026-10-17T23:50:02.324075+00:00",
+      "ended_utc": "2026-10-17T23:50:02.333185+00:00",
+      "step": null
+    }
+  ],
+  "actual_before_move": {
+    "snapshot_id": "native:10957",
+    "revision": 17,
+    "native_revision": 10957,
+    "date_raw": 53363856,
+    "connection_generation": 18,
+    "own_current_province_id": 2623,
+    "target_province_id": 2619,
+    "hostile_army_ids": [
+      285213101,
+      402653372,
+      436207707
+    ],
+    "own_first_arrival_date_raw": 53364048,
+    "incoming_hostile_origin_arrival_date_raw": 53364024,
+    "one_day_contact_free": true,
+    "incoming_hours": 168,
+    "own_first_leg_hours": 192
+  },
+  "actual107": {
+    "move_accepted": true,
+    "war_action": {
+      "status": "moving",
+      "army_id": 167772577,
+      "target_province_id": 2619,
+      "submitted_date_raw": 53363856
+    },
+    "independent_route_snapshot_id": "native:10958",
+    "route_observed": [
+      2619
+    ]
+  },
+  "halt156_boundary": {
+    "source_causal_settlement": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r7-queue\\HALT156-SOURCE-CAUSAL-REJECTION-SETTLED.json",
+      "bytes": 2365,
+      "sha256": "80e21c85856bf45601f7c54bcc893beafb9a78ce8bc089e779a16afa430649d9"
+    },
+    "original_Native_request_id_or_frame_available": false,
+    "raw_ACK_invented": false,
+    "SDK_unique_error_path_inference_explicit": true,
+    "halt_effect_or_route_stopped": false,
+    "rejected_nonmaterial_recovery_date_and_ordinary_credit": 0,
+    "incident_specific_recovery_not_public_default": true
+  },
+  "public_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1029045,
+      "sha256": "499dad862fdf2c433e56c5dea750c6a1df6b6477d35b04109846194308885421"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_route_origin_exposure_v1.py",
+      "bytes": 19634,
+      "sha256": "4e9b5405f013b6399d8b3099f90b2467e7c7a130cb689d9e57f987416d66b79b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_route_origin_exposure_v1.py",
+      "bytes": 9735,
+      "sha256": "89e94e9c44f5afe9b2af1364a2685d6d22016e54cbdeaccd6310fac13cc246ab"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\fixtures\\p66_actual105107_origin_exposure.json",
+      "bytes": 40610,
+      "sha256": "ee5339d7162ddf71d821aa1e0c7dd927fc263e6488f077d25570cb6b3e9be886"
+    }
+  ],
+  "qualification": {
+    "command": "python -B -X utf8 run_public_guard_pytest.py (public src/tests paths; no pytest cache)",
+    "result": "27 passed, 27 subtests passed in6.68s",
+    "tool_output_chunk": "d98601",
+    "modules": [
+      "test_war_route_origin_exposure_v1",
+      "test_general_battle_strategy",
+      "test_siege_research_continuation_v2"
+    ],
+    "new_tests": 4,
+    "fixture_boundary": "historical actual105/107 data; assembled pre-move semantic and8755 future readbacks explicitly software-only",
+    "current_game_Native_MCP_calls": 0,
+    "new_business_or_date_credit": 0,
+    "git_diff_check": "PASS",
+    "additional_baseline_RED": {
+      "diagnosis": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\FIRST-HOP-BASELINE-DIAGNOSIS01.json",
+        "bytes": 7882,
+        "sha256": "db3202bfa2dec26c0f11061b30fb3d5cb570daaa016c365925ad4f6798828162"
+      },
+      "summary": {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "at_utc": "2026-10-18T00:21:18.107209+00:00",
+        "head": "82dc5fa0735387efc9517247bc649422ffb5ef1e",
+        "direct_call_function_AST_equal_to_HEAD": {
+          "_general_battle_forecast_ingress": true,
+          "_fresh_move_route_preview": true,
+          "_fresh_route_contact_horizon": true
+        },
+        "test": "test_general_battle_first_hop_before_endpoint_12004",
+        "isolated_no_new_hook_import": true,
+        "tests_run": 1,
+        "failures": 5,
+        "errors": 0,
+        "conclusion": "existing direct-general first-hop fixture red; new choose-only hook not executed"
+      }
+    }
+  },
+  "existing_origin_permission": "same-frame origin encounter + incoming roster + original general admission + recomputed original risk budget retained; destination or stale forecast cannot bypass",
+  "unknown_route_timing": "no positive route/arrival/battle guarantee and no new blanket unknown-route purchase/movement prohibition",
+  "runtime_source_only_candidates": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\DELIVERY01.json",
+      "bytes": 9295,
+      "sha256": "45c503d52b527a9456c75844f3a6fe24570fd3eb704f3e66cbef50ce021e4831"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-safe-reposition01\\halt156_followup01\\DELIVERY01.json",
+      "bytes": 5886,
+      "sha256": "465592842f40ff884e41a148ff91343a90b166c061507b92841e781e295e59c0"
+    }
+  ],
+  "current_runtime_adoption_claimed": false,
+  "Native_DLL_modified": false,
+  "new_attack_permission": false,
+  "G2_credit_added": false
+}

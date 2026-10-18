@@ -7951,6 +7951,12 @@ def choose_one_life_turn(
         action_steps=set(steps),
         bridge_capabilities=set(capabilities),
     )
+    from .war_route_origin_exposure_v1 import review_war_route_origin_exposure_v1
+
+    plan = review_war_route_origin_exposure_v1(
+        plan, commands=_expanded_command_rows(commands), snapshot=snapshot,
+        action_steps=set(steps), bridge_capabilities=set(capabilities),
+    )
     plan = _annotate_active_combat_resume_input(plan, snapshot)
     plan = _h3937_hold_selected_control(plan, snapshot)
     if (
