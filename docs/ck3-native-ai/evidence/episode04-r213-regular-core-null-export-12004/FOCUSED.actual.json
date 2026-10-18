@@ -1,0 +1,26 @@
+{
+  "schema": "xar.e04.r213-core-null-focused-consumer.v1",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261015-a01/r213-r06-core-export-diagnosis-a01/test_regular_core_capture_status_12004.py",
+    "--candidate",
+    "C:/ck3-e04-resume-20261015-a01/r213-r06-core-export-diagnosis-a01/army_regular_core_capture_status_12004.py",
+    "--evidence-root",
+    "C:/ck3-e04-resume-20261015-a01/r213-r06-core-export-diagnosis-a01"
+  ],
+  "tool_result": {
+    "chunk_id": "c90816",
+    "wall_time_seconds": 4.9254072,
+    "exit_code": 0,
+    "original_token_count": 122,
+    "output": "test_actual_null_and_window_readback_are_distinct (__main__.CaptureWindow.test_actual_null_and_window_readback_are_distinct) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 4.694s\r\n\r\nOK\r\n{\"status\": \"PASS_ONE_ACTUAL_CUT_PRODUCTION_CONTRACT_COMPOUND\", \"actual_R213_after_status_reconstructed\": false, \"production_profile_and_family_and_sampling_consumers\": true, \"synthetic_window_counterexamples\": true, \"SDK_calls\": 0, \"native_calls\": 0}\r\n"
+  },
+  "new_compound_count": 1,
+  "SDK_calls": 0,
+  "native_calls": 0,
+  "actual_after_status_reconstructed": false
+}

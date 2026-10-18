@@ -1,0 +1,1 @@
+{"at": "2026-10-18T17:12:44.407820+00:00", "direction": "python-to-dll", "message": {"type": "execute_step", "protocol_version": 1, "request_id": "step-201-de7204724cc2", "step": "query-army-strengths-v1", "expected_revision": 137, "army_strengths_profile": "observed_history_full_v1", "army_ids": [0]}}

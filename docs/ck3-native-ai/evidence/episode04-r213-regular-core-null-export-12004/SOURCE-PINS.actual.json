@@ -1,0 +1,57 @@
+{
+  "runtime_source_head": "3661e495bc45490238992d3f2850e75558566922",
+  "current_knowledge_checkout_head": "88d76975942353c47aab0eaf418fecb6a92858fd",
+  "original_runtime_not_requalified_by_new_head": true,
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_observed_phase_query_12004.hpp",
+      "bytes": 12842,
+      "sha256": "3f3c446fb2ed162de3c9997fa3a4f38ccac22328b30c06d1df025f5fe4b043b9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\army_regular_core_passive_12004.cpp",
+      "bytes": 58611,
+      "sha256": "b039f1576e1277cb869003a48e454a6023fbf342ae5b24a6c3f7f5934a972dc3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\army_natural_phase_scope_12004.cpp",
+      "bytes": 14828,
+      "sha256": "ba6566c39bc2e1ab6bc1044c14572b7fa002196adacf751fa206904ca2d958b9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observed_phase_contract_12004.py",
+      "bytes": 25149,
+      "sha256": "1a08699adb77baa4db219200e31abf719f270cf8ccbb35c52c290d0387552a4a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observed_core_validation_12004.py",
+      "bytes": 17662,
+      "sha256": "014e91c94af9e274c0b1b7a91a6f792fa2c229d08aebd2d9dfe2a8b66cc7d793"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_strengths_profile_contract.py",
+      "bytes": 2643,
+      "sha256": "fa77ddd12ffbae44d8805ee124af1d8cb7360e7ef447f5662f74d08a9c656bf6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_contract.py",
+      "bytes": 225787,
+      "sha256": "1e9d6aeaab6685324c4b87f32057bed6a03f437d68f06dd92325cea20aefa543"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_full_army.py",
+      "bytes": 10364,
+      "sha256": "d162e80d965076005c9cf3fce60d7ab1856f25670f24b7f6184e80cd2a812511"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\native71-calendar-month-flag-12004.md",
+      "bytes": 9094,
+      "sha256": "4551d1fc766d1d31d55b958da98fe4763640c3164d88142865d574335dcd424b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\native71-army-post-date-callback-stage-12004.md",
+      "bytes": 10125,
+      "sha256": "1efd4bcd43579c67b7413714e218563836082a7700f6eba763f2c3dae58aa0c1"
+    }
+  ]
+}

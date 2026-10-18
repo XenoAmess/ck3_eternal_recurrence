@@ -183,6 +183,122 @@ def load_prepared(path: Path) -> dict:
     return body
 
 
+def _checkpoint_small_json(ref):
+    path = Path(ref["path"])
+    require(path.stat().st_size <= 1024 * 1024, "Checkpoint source proof exceeds small-input bound")
+    require(identity(path) == ref, "Checkpoint source proof changed")
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def _common_normal_checkpoint_source(save, receipt_path, build_path, target, expected_actor, proof):
+    """Admit original common native_campaign rows without inventing episode fields.
+
+    The source proposal is only a pinned reference set. Recheck the original
+    Save, independent snapshot, pure profile and normal OS/native/host closure;
+    neither its status text nor a research-derived episode binding grants entry.
+    """
+    require(proof.get("machine_id") == current_machine_id(), "Normal source belongs to another machine")
+    require(target == game_target("1.20.0.4"), "Common normal source requires reviewed exact .4 target")
+    save_ref = proof["actual_save"]["reference"]
+    after_ref = proof["independent_after"]["reference"]
+    require(proof["actual_save"].get("pointer") == "/rows/0/result/checkpoint" and
+            proof["independent_after"].get("pointer") == "/rows/0/after_snapshot",
+            "Original common source pointers differ")
+    saved_rows = _checkpoint_small_json(save_ref).get("rows")
+    after_rows = _checkpoint_small_json(after_ref).get("rows")
+    require(type(saved_rows) is list and len(saved_rows) == 1 and
+            type(after_rows) is list and len(after_rows) == 1, "Ambiguous original common source rows")
+    row, independent = saved_rows[0], after_rows[0]
+    plan, body = row.get("plan") or {}, row.get("result") or {}
+    execute_save = plan.get("tool") == "ck3_execute_step" and (plan.get("args") or {}).get("step") == "save-checkpoint"
+    require(row.get("ok") is True and (plan.get("tool") == "ck3_save_checkpoint" or execute_save) and
+            body.get("step") == "save-checkpoint" and body.get("accepted") is True,
+            "Not an original successful common Save row")
+    require(independent.get("ok") is True and (independent.get("plan") or {}).get("tool") == "ck3_take_snapshot" and
+            row.get("id") != independent.get("id") and row.get("finished_at") <= independent.get("started_at"),
+            "Independent post-Save snapshot absent")
+    saved = body.get("checkpoint") or {}
+    require(saved.get("status") == "saved" and saved.get("episode_projection") == "native_campaign",
+            "Common source is not a normal native_campaign Save")
+    date = saved.get("date_raw")
+    require(type(date) is int and date > 0, "Normal source date absent")
+    profile_ref = proof["normal_campaign_provenance"]["profile"]
+    require(Path(profile_ref["path"]).resolve() == build_path.resolve(), "Normal source build receipt differs")
+    profile = _checkpoint_small_json(profile_ref)
+    require(profile.get("schema") == "ck3-mod-acceptance-prepared-product-v1" and
+            profile.get("fixture_mounted") is False and profile.get("game_version") == target["version"] and
+            str(profile.get("steam_build_id")) == str(target["steam_build"]) and
+            profile.get("exe_sha256", "").lower() == target["exe_sha256"], "Normal source profile/build differs")
+    dlc_ref = profile["files"]["dlc_load.json"]
+    require(Path(dlc_ref["path"]).resolve() == (Path(profile["profile_dir"]) / "dlc_load.json").resolve() and
+            _checkpoint_small_json(dlc_ref) == {"enabled_mods": [], "disabled_dlcs": []},
+            "Normal source profile is not pure vanilla")
+    require(Path(saved["path"]).resolve().parent == (Path(profile["profile_dir"]) / "save games").resolve(),
+            "Original Save does not belong to the prepared profile")
+    frame, after = row.get("after_snapshot") or {}, independent.get("after_snapshot") or {}
+    actor = (frame.get("played_character") or {}).get("character_id")
+    player = frame.get("local_player_id")
+    pid = (frame.get("diagnostics") or {}).get("bridge_pid")
+    generation = (frame.get("diagnostics") or {}).get("connection_generation")
+    run_id = proof.get("source_run_id")
+    require(type(actor) is int and actor > 0 and type(player) is int and player >= 0 and
+            type(pid) is int and pid > 0 and generation is not None and type(run_id) is str and run_id,
+            "Original actor/local player/PID/generation/run binding absent")
+    selected_army = (proof["independent_after"].get("army") or {}).get("army_id")
+    require(type(selected_army) is int, "Explicit original owned army required")
+    for current in (frame, after):
+        binding = current.get("managed_campaign_run_binding") or {}
+        diagnostics = current.get("diagnostics") or {}
+        require(current.get("episode_projection") == "native_campaign" and current.get("date_raw") == date and
+                current.get("paused") is True and current.get("map_ready") is True and
+                (current.get("played_character") or {}).get("character_id") == actor and
+                current.get("local_player_id") == player and diagnostics.get("bridge_pid") == pid and
+                diagnostics.get("connection_generation") == generation and binding.get("run_id") == run_id and
+                Path(binding.get("state_dir", "")).resolve() == Path(profile["state_dir"]).resolve(),
+                "Normal source frame/run/actor/local-player/date ownership drift")
+        armies = [a for a in current.get("player_armies", []) if a.get("army_id") == selected_army]
+        require(len(armies) == 1 and armies[0].get("owner_character_id") == actor,
+                "Normal source selected army is not owned by current actor")
+    require(expected_actor is None or actor == expected_actor, "Normal checkpoint actor differs from capture intent")
+    require(saved.get("episode_character_id") in (None, actor) and saved.get("episode_run_id") in (None, run_id),
+            "Original normal checkpoint episode fields conflict")
+    lifecycle = saved.get("succession_lifecycle")
+    require(lifecycle is None or (isinstance(lifecycle, dict) and
+            lifecycle.get("lifecycle") == "ordinary_campaign_succession" and lifecycle.get("xar_enabled") == "xar_off" and
+            lifecycle.get("pact_contract") == "absent_by_fresh_campaign_xar_off_contract" and
+            lifecycle.get("source") == "pure-vanilla-enabled-mods-empty"), "One-life lifecycle cannot use normal source branch")
+    closure = proof["closure"]
+    cleanup = _checkpoint_small_json(closure["cleanup"])
+    close = _checkpoint_small_json(closure["normal_close"])
+    host = _checkpoint_small_json(closure["host_original_wait"])
+    retained = close.get("retained_handle") or {}
+    native = close.get("native_zero_proof") or {}
+    shutdown = native.get("shutdown") or {}
+    actual_binding = cleanup.get("actual_binding") or {}
+    require(cleanup.get("machine_id") == proof["machine_id"] and cleanup.get("run_id") == run_id and
+            (cleanup.get("cleanup") or {}).get("errors") == [] and
+            cleanup["cleanup"].get("normal_Save_verified") is True and
+            cleanup["cleanup"].get("sampling_OFF_clear_verified") is True and
+            (cleanup["cleanup"].get("Save_result") or {}).get("checkpoint") == saved and
+            actual_binding.get("run_id") == run_id and actual_binding.get("pid") == pid and
+            type(actual_binding.get("create_time")) in (int, float) and actual_binding["create_time"] > 0 and
+            actual_binding.get("create_time") == retained.get("create_time"), "Source cleanup/Save identity unverified")
+    require(close.get("normal_close_qualified") is True and retained.get("actual_retained_os0") is True and
+            retained.get("pid") == pid and retained.get("exit_code") == 0 and native.get("pid") == pid and
+            native.get("process_exit_code") == 0 and shutdown.get("ck3_pid") == pid and
+            shutdown.get("tree_gone") is True and shutdown.get("cleanup_proven") is True and
+            host.get("run_id") == run_id and host.get("actual_original_popen_wait") is True and host.get("returncode") == 0,
+            "Same normal game/native/original host closure not proven")
+    actual = identity(save)
+    require(actual["bytes"] == saved.get("size") and actual["sha256"] == str(saved.get("sha256")).lower(),
+            "Save differs from original common materialization receipt")
+    return {"save": actual, "receipt": identity(receipt_path), "build_receipt": identity(build_path),
+            "actor_id": actor, "date_raw": date, "source_lifecycle": lifecycle,
+            "load_save_name": "episode04_frozen_start", "driver_history_copied": False,
+            "normal_source_kind": "original-common-native-campaign-with-normal-closure",
+            "original_episode_fields_preserved": True, "source_run_id": run_id}
+
+
 def checkpoint_source(save, receipt_path, build_path, target=None, expected_actor=None):
     target = target or game_target("1.20.0.3")
     require((save is None) == (receipt_path is None) == (build_path is None), "Checkpoint save, actual MCP receipt and original prepared build receipt required together")
@@ -190,6 +306,8 @@ def checkpoint_source(save, receipt_path, build_path, target=None, expected_acto
         return None
     require(save.is_file() and save.suffix.lower() == ".ck3", "Existing .ck3 source required")
     packet = json.loads(receipt_path.read_text(encoding="utf-8-sig"))
+    if packet.get("schema") == "xar.e04.normal-source-promotion-candidate.v1":
+        return _common_normal_checkpoint_source(save, receipt_path, build_path, target, expected_actor, packet)
     request = packet.get("request") or {}
     require(isinstance(request, dict), "Checkpoint request must be an object")
     arguments = request.get("arguments")

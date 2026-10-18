@@ -1058,3 +1058,13 @@ promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-
 docs/ck3-native-ai/episode04-friendly-refill-one-shot-12004.md -text whitespace=cr-at-eol
 docs/ck3-native-ai/episode04-r213-current-cash-readonly-12004.md -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/subtitles/newcue.zh-CN.provider-timed.srt -text whitespace=cr-at-eol,-blank-at-eof
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/ACTUAL-TINY-FACTS.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/query-48.request.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/query-48.response-prefix.bin -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/query-49.request.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/query-49.response-prefix.bin -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/verify_tiny.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/SOURCE-PINS.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/FOCUSED.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/actual-native-null-cuts.zip -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/FOCUSED.a02.actual.json -text whitespace=cr-at-eol

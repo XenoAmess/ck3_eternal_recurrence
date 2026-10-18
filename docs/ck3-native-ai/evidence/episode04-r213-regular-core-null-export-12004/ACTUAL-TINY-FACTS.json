@@ -1,0 +1,248 @@
+{
+  "source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-RESULT.json",
+    "bytes": 156680,
+    "sha256": "77d9394f43a5083ec00dc06fbb571dd7f5b5bf4a59dd43edff1a45ae634ca52a"
+  },
+  "source_head": "3661e495bc45490238992d3f2850e75558566922",
+  "actual_calendar_before": {
+    "source": "native_current_month_first_refill_call_inputs",
+    "status": "available",
+    "ready": true,
+    "unavailable_reason": null,
+    "subject_army_id": 0,
+    "subject_carmy_id": 0,
+    "game_state_calendar_flags_raw_u8": 0,
+    "month_first_mask_2_set": false,
+    "actual_pre_date_prepare_observed": false,
+    "actual_post_date_refill_observed": false,
+    "actual_after": false,
+    "full_monthly_ready": false
+  },
+  "before_sampling": {
+    "step": "query-army-observer-research-sampling-v1",
+    "accepted": true,
+    "status": "completed",
+    "army_observer_research_sampling_v1": {
+      "natural_phase": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 2,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "regular_core": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": true,
+        "busy": false,
+        "clear_completed": false,
+        "epoch": 3,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "enabled",
+        "readiness": "awaiting_sample"
+      },
+      "daily_assault_preparation": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "assault_placement": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "assault_consumer": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "assault_group_release": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "gathering": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "cleanup": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      },
+      "pre_date_prefix": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": false,
+        "busy": false,
+        "clear_completed": true,
+        "epoch": 0,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "disabled",
+        "readiness": "off"
+      }
+    },
+    "backend_id": "native-headless"
+  },
+  "after_enabled_sampling_readback": null,
+  "after_status_not_reconstructed_from_cleanup": true,
+  "queries": [
+    {
+      "query_sequence": 48,
+      "native_request_id": "step-201-de7204724cc2",
+      "original_response_line_pin": {
+        "begin": 844171028,
+        "end": 854762671,
+        "sha256": "b74422b88daac1b28b6b9cd371b2de2fbd0871bd89ce0ba895c88002c622d48b"
+      },
+      "original_wire_file_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\native-report.native-wire.jsonl",
+      "original_wire_file_identity": [
+        7220568048185129294,
+        281474981318762
+      ],
+      "response_prefix_file": {
+        "relative_path": "query-48.response-prefix.bin",
+        "bytes": 8192,
+        "sha256": "347ca349677388ec96fcc0d81b18c32957143b509bab1e56fc43292675124936"
+      },
+      "original_response_prefix_byte_begin": 844171028,
+      "field_absolute_offset": 844174162,
+      "field_pointer": "/message/result/army_strengths/0/actual_army_regular_core_observations_v1",
+      "field_state": "explicit_null",
+      "literal": "\"actual_army_regular_core_observations_v1\": null",
+      "request": {
+        "relative_path": "query-48.request.json",
+        "bytes": 305,
+        "sha256": "41146d48b8cd60d3f9fdeb82c7a2b6182806bd42ca47b451cb059fa84a4cd4ed"
+      },
+      "normalized_source_binding": {
+        "before": {
+          "revision": 138,
+          "native_revision": 137,
+          "snapshot_id": "native:137",
+          "date_raw": 53148408,
+          "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208"
+        },
+        "after": {
+          "revision": 138,
+          "native_revision": 137,
+          "snapshot_id": "native:137",
+          "date_raw": 53148408,
+          "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208"
+        }
+      },
+      "original_response_line_SHA_reused_not_rehashed": true
+    },
+    {
+      "query_sequence": 49,
+      "native_request_id": "step-208-5c6e98903bb9",
+      "original_response_line_pin": {
+        "begin": 856578358,
+        "end": 867282829,
+        "sha256": "9162fbb786a858b1472114936fa6ae5670b8868eaf753b5bdcdfeebe005db837"
+      },
+      "original_wire_file_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\native-report.native-wire.jsonl",
+      "original_wire_file_identity": [
+        7220568048185129294,
+        281474981318762
+      ],
+      "response_prefix_file": {
+        "relative_path": "query-49.response-prefix.bin",
+        "bytes": 8192,
+        "sha256": "9ab343a9ddf215ddf3e3f0448c3a92786412375e1b6bc48c1b0543f8daf6b23e"
+      },
+      "original_response_prefix_byte_begin": 856578358,
+      "field_absolute_offset": 856581492,
+      "field_pointer": "/message/result/army_strengths/0/actual_army_regular_core_observations_v1",
+      "field_state": "explicit_null",
+      "literal": "\"actual_army_regular_core_observations_v1\": null",
+      "request": {
+        "relative_path": "query-49.request.json",
+        "bytes": 305,
+        "sha256": "7fb6ec2ff178103662df837f82e4cfb6ac695d8e89b13030eb139961680b8ee2"
+      },
+      "normalized_source_binding": {
+        "before": {
+          "revision": 141,
+          "native_revision": 140,
+          "snapshot_id": "native:140",
+          "date_raw": 53148432,
+          "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208"
+        },
+        "after": {
+          "revision": 141,
+          "native_revision": 140,
+          "snapshot_id": "native:140",
+          "date_raw": 53148432,
+          "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208"
+        }
+      },
+      "original_response_line_SHA_reused_not_rehashed": true
+    }
+  ],
+  "large_full_payloads_parsed_or_hashed": 0,
+  "prior_discovery_reads": {
+    "two_response_prefixes_bytes": 262144,
+    "two_response_suffixes_bytes": 262144
+  }
+}
