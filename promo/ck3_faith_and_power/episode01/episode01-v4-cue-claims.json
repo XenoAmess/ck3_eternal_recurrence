@@ -204,12 +204,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-01.mp3",
+        "bytes": 95760,
+        "sha256": "cf45f49d8287fce9c3078a0574ad9847e0d52f6e98eaf9490d2f86b108b41f02"
+      },
+      "actual_speech_seconds": 15.96,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-02",
@@ -244,12 +250,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-02.mp3",
+        "bytes": 91728,
+        "sha256": "7dd1b0d3cf05fde3c518916a1f49304c99b092e4fe4ed605f9742e94858ef5d1"
+      },
+      "actual_speech_seconds": 15.288,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-03",
@@ -299,12 +311,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-03.mp3",
+        "bytes": 102528,
+        "sha256": "82699ace38f95e59cf48b176fb56fc90da3feffc4815e437f7472cb235c36667"
+      },
+      "actual_speech_seconds": 17.088,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-04",
@@ -333,12 +351,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-04.mp3",
+        "bytes": 98784,
+        "sha256": "d5e5c1db95b69dba1aea4d18358f2e953e8c36243ea8b46e57d4847f4aad20aa"
+      },
+      "actual_speech_seconds": 16.464,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-05",
@@ -383,12 +407,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-05.mp3",
+        "bytes": 102528,
+        "sha256": "ace2b2db1e1f5fdaf83ef1428979ca9beca933c11422b43a66d03633bf847333"
+      },
+      "actual_speech_seconds": 17.088,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-06",
@@ -423,12 +453,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-06.mp3",
+        "bytes": 96336,
+        "sha256": "6e4906efbad3cbf036f75f7679763892db33a9aeec765dc0a26cb088c01dca99"
+      },
+      "actual_speech_seconds": 16.056,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-07",
@@ -473,12 +509,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-07.mp3",
+        "bytes": 92880,
+        "sha256": "956f6f3b72ee0dc5c80854dce2bc09c017b0e6184d934631e9af787b19e8a983"
+      },
+      "actual_speech_seconds": 15.48,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C01-08",
@@ -524,12 +566,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C01-08.mp3",
+        "bytes": 93312,
+        "sha256": "2c33cf259f7f45c4ddac362ce7f706e55ae9d861d6c54145bd94dd0e8ae86d9e"
+      },
+      "actual_speech_seconds": 15.552,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-01",
@@ -564,12 +612,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-01.mp3",
+        "bytes": 102672,
+        "sha256": "b804f1daa0741b2385f0f62a9d92286bec4e92707c8e7b9c3dc344e693223893"
+      },
+      "actual_speech_seconds": 17.112,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-02",
@@ -609,12 +663,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-02.mp3",
+        "bytes": 115488,
+        "sha256": "00cca5ad23d30dfb39e0cd4f97f1cdb575a65aaed28c295af7f38dc84a79bfb4"
+      },
+      "actual_speech_seconds": 19.248,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.733333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-03",
@@ -649,12 +709,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-03.mp3",
+        "bytes": 103968,
+        "sha256": "9709d9f506032a55ebad0711de55a526e49a779e4ea3784c70e3712cab05c584"
+      },
+      "actual_speech_seconds": 17.328,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-04",
@@ -699,12 +765,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-04.mp3",
+        "bytes": 109440,
+        "sha256": "d12e645df795c32ce99dd15c69a57ed7cfcbca65e893d6142ebd3d5035922464"
+      },
+      "actual_speech_seconds": 18.24,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-05",
@@ -735,12 +807,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-05.mp3",
+        "bytes": 108720,
+        "sha256": "6535558101b50a98c2bb0d2deb9d18130faff27e616f069ad74d1febe75541ef"
+      },
+      "actual_speech_seconds": 18.12,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-06",
@@ -785,12 +863,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-06.mp3",
+        "bytes": 128016,
+        "sha256": "fd31723394421a034cfbbc7bfa885a16fd1b5f0a95c036530097a71d59cd5950"
+      },
+      "actual_speech_seconds": 21.336,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.866666666666667,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-07",
@@ -825,12 +909,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-07.mp3",
+        "bytes": 96624,
+        "sha256": "ee7d0239e8ed1fe94de7885c119db125b6386e3288ad706331568928a5cfbf68"
+      },
+      "actual_speech_seconds": 16.104,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C02-08",
@@ -888,12 +978,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C02-08.mp3",
+        "bytes": 106560,
+        "sha256": "75055aa5978df5867da3bb9f3ff315613468f4560ac5c0617a97f54ef5bd532d"
+      },
+      "actual_speech_seconds": 17.76,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-01",
@@ -943,12 +1039,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-01.mp3",
+        "bytes": 87552,
+        "sha256": "bc27eadd04a18a5234116ece6d73c35837931be5e65cb9dbb596fcea051ea2da"
+      },
+      "actual_speech_seconds": 14.592,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 14.933333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-02",
@@ -994,12 +1096,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-02.mp3",
+        "bytes": 107136,
+        "sha256": "d5b1b596d783076a11b0562e5e2bda7e7f960e9f1ef9d6d5048d350363ffb101"
+      },
+      "actual_speech_seconds": 17.856,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-03",
@@ -1036,12 +1144,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-03.mp3",
+        "bytes": 104976,
+        "sha256": "4a330d0d4dfad33282ad5bd406da479cd5a9074f100c0af9d41203a25ae710e5"
+      },
+      "actual_speech_seconds": 17.496,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-04",
@@ -1087,12 +1201,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-04.mp3",
+        "bytes": 109728,
+        "sha256": "808ee0835689a2414ee982ef6bf59b738df42bdc1c34dcbc83c3dc44749fc6f1"
+      },
+      "actual_speech_seconds": 18.288,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-05",
@@ -1128,12 +1248,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-05.mp3",
+        "bytes": 105408,
+        "sha256": "d60a222dbc9a76c2a567fbf209d271d6a72c90086a83cb74bd55e6a49378a8a5"
+      },
+      "actual_speech_seconds": 17.568,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-06",
@@ -1179,12 +1305,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-06.mp3",
+        "bytes": 105696,
+        "sha256": "9418dee68b1de8089a611ff787997a63670fa7f39b34e93a71af18e85d9844a8"
+      },
+      "actual_speech_seconds": 17.616,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-07",
@@ -1217,12 +1349,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-07.mp3",
+        "bytes": 119808,
+        "sha256": "689fc53fb8113ad78271f77878820ed2c3d84ade1a9f9fd9636d143ad9f5b7dc"
+      },
+      "actual_speech_seconds": 19.968,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 20.266666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C03-08",
@@ -1268,12 +1406,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C03-08.mp3",
+        "bytes": 113472,
+        "sha256": "d8e475ab5f042f736182c1d103553ae1d199b4f9a3087e68325401155a6453fc"
+      },
+      "actual_speech_seconds": 18.912,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-01",
@@ -1308,12 +1452,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-01.mp3",
+        "bytes": 105840,
+        "sha256": "6ba35511d922f0d8085280a0daceec2580da580f2b24843f4103965ec4ad8cbb"
+      },
+      "actual_speech_seconds": 17.64,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-02",
@@ -1349,12 +1499,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-02.mp3",
+        "bytes": 101088,
+        "sha256": "5af0f4c7264f52d3eb62c77d3be7703556c295635d2f1952347ec86a8e7b523a"
+      },
+      "actual_speech_seconds": 16.848,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-03",
@@ -1387,12 +1543,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-03.mp3",
+        "bytes": 99792,
+        "sha256": "7520d8b3938097f632824ea1fc5e9fd01d641e6e75e63c1bbcb0edf5b257c6e9"
+      },
+      "actual_speech_seconds": 16.632,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-04",
@@ -1434,12 +1596,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-04.mp3",
+        "bytes": 106704,
+        "sha256": "51b016e42ba44dcd8bb8bab924bd39457449222b9de5d986519715abadc18a72"
+      },
+      "actual_speech_seconds": 17.784,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-05",
@@ -1480,12 +1648,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-05.mp3",
+        "bytes": 107568,
+        "sha256": "f68c7f0f040e50225382a5efe4e531ac7a81bd5e245ec2abcf49e200030df842"
+      },
+      "actual_speech_seconds": 17.928,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-06",
@@ -1520,12 +1694,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-06.mp3",
+        "bytes": 88272,
+        "sha256": "8eb88ae9477cf5b89c19aa640f19766fdb1d06f875a29dc8892183a8e001c794"
+      },
+      "actual_speech_seconds": 14.712,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 14.933333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-07",
@@ -1560,12 +1740,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-07.mp3",
+        "bytes": 96480,
+        "sha256": "4ea06394675aee81a4654a10fbcd93054cb2528d612842d1970f21f8714d73b8"
+      },
+      "actual_speech_seconds": 16.08,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-08",
@@ -1610,12 +1796,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-08.mp3",
+        "bytes": 108000,
+        "sha256": "caf0eb38559fcb98da28585f54377f2a13b3fd82301f94dae7307b5cea8a8622"
+      },
+      "actual_speech_seconds": 18.0,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C04-09",
@@ -1647,12 +1839,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C04-09.mp3",
+        "bytes": 103104,
+        "sha256": "6077ac9f850281a01db3f8e0cbe94ebc4dfcd28c46cf1b5d98746c8852cb0a6a"
+      },
+      "actual_speech_seconds": 17.184,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-01",
@@ -1683,12 +1881,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-01.mp3",
+        "bytes": 97488,
+        "sha256": "feda72861f2f86853225d9c7816ee0e0c070bddb3ccd49f3aec34218a9df9f69"
+      },
+      "actual_speech_seconds": 16.248,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-02",
@@ -1728,12 +1932,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-02.mp3",
+        "bytes": 117216,
+        "sha256": "5e9e6fae950ab79f19a2aa9d57095f323d293ae9b3d82f052ab3a526d4b2fd49"
+      },
+      "actual_speech_seconds": 19.536,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 20.266666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-03",
@@ -1773,12 +1983,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-03.mp3",
+        "bytes": 116496,
+        "sha256": "d390044931ca95da7e1ce3bee3bd51e2f5a320f6df33d8cf8dceda6b61aabb4b"
+      },
+      "actual_speech_seconds": 19.416,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.733333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-04",
@@ -1813,12 +2029,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-04.mp3",
+        "bytes": 103680,
+        "sha256": "b91955ec6d88e70db0cebc0e135fac9b6026cae6fe5e015e5182d272768721e3"
+      },
+      "actual_speech_seconds": 17.28,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-04A",
@@ -1858,12 +2080,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-04A.mp3",
+        "bytes": 124704,
+        "sha256": "aee2595345e6a6a569d2ba6cb6df41e7a11b2050fe5721ab782eeb71084e3721"
+      },
+      "actual_speech_seconds": 20.784,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.333333333333332,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-05",
@@ -1913,12 +2141,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-05.mp3",
+        "bytes": 124704,
+        "sha256": "cd2ad8959bab4e5bb3b11e2126b9deb8a18cb8194d05049669655fd734d00882"
+      },
+      "actual_speech_seconds": 20.784,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.333333333333332,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-06",
@@ -1958,12 +2192,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-06.mp3",
+        "bytes": 123552,
+        "sha256": "abe24e1eae5e878f9eb4c29e685007bc3297fc66ac36154b943622edd777a8db"
+      },
+      "actual_speech_seconds": 20.592,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 20.8,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-07",
@@ -2003,12 +2243,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-07.mp3",
+        "bytes": 121536,
+        "sha256": "62280d298e56b0d8ffb3112242263a0e9904dc182f8a861023483f2fbe031fd9"
+      },
+      "actual_speech_seconds": 20.256,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 20.8,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-08",
@@ -2043,12 +2289,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-08.mp3",
+        "bytes": 108864,
+        "sha256": "669e059580997f3db5897e28a89bfb846d2da98be08b0dd0c6023219a303d484"
+      },
+      "actual_speech_seconds": 18.144,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C05-09",
@@ -2103,12 +2355,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C05-09.mp3",
+        "bytes": 120384,
+        "sha256": "5907e12aa98a6ffbdc4b2aa16f973d56eed460dc33f6bc16d3a0b64de5f63acd"
+      },
+      "actual_speech_seconds": 20.064,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 20.266666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-01",
@@ -2157,12 +2415,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-01.mp3",
+        "bytes": 106128,
+        "sha256": "9a46e0adac2a2e6ba9a819dc9c518b7cc8ef16e96c8780424260d97ec40b061b"
+      },
+      "actual_speech_seconds": 17.688,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-02",
@@ -2207,12 +2471,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-02.mp3",
+        "bytes": 100080,
+        "sha256": "6f90544026624450c0138240d41029433b883c99f710347204994b06d2b90e6a"
+      },
+      "actual_speech_seconds": 16.68,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-03",
@@ -2247,12 +2517,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-03.mp3",
+        "bytes": 94752,
+        "sha256": "dfc40d56e041bdca3c111b188afdf6a750b8e3a5dcd9ee7f193c31e9f807dcba"
+      },
+      "actual_speech_seconds": 15.792,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-04",
@@ -2296,12 +2572,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-04.mp3",
+        "bytes": 104688,
+        "sha256": "8fa417fa226eb8fd202447b74f1b6a0307c358d89c5eaeaf44755d4fe4b0e378"
+      },
+      "actual_speech_seconds": 17.448,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-05",
@@ -2345,12 +2627,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-05.mp3",
+        "bytes": 109152,
+        "sha256": "e1a58b85626645fbe48905aa73e3482e5bed438c7e1032d09c657f42f6ce054c"
+      },
+      "actual_speech_seconds": 18.192,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-06",
@@ -2385,12 +2673,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-06.mp3",
+        "bytes": 99360,
+        "sha256": "3f7ea93880749665f055d2c5367aa055e99ae046a549153e62730155c3f3aff1"
+      },
+      "actual_speech_seconds": 16.56,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-07",
@@ -2425,12 +2719,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-07.mp3",
+        "bytes": 105696,
+        "sha256": "ae5da30a4288c8f33de63a0b44a6b0ff6672c1880a150cf580379fe2159574e7"
+      },
+      "actual_speech_seconds": 17.616,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C06-08",
@@ -2471,12 +2771,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C06-08.mp3",
+        "bytes": 103824,
+        "sha256": "c17521ad6f0a6a639bd94d0a7641eae45781f1d7d62c1e18fa18cfab57b28f63"
+      },
+      "actual_speech_seconds": 17.304,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-01",
@@ -2521,12 +2827,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-01.mp3",
+        "bytes": 106848,
+        "sha256": "e7a24ed0c950bcd5177c6e4427c59cb98d9ea3703e20b5d2ee8bcac076cc9fc9"
+      },
+      "actual_speech_seconds": 17.808,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-02",
@@ -2566,12 +2878,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-02.mp3",
+        "bytes": 94176,
+        "sha256": "e01cfcd4b0def1c7fd0203dd537dfaeee037671b3e60e29e1b92f9e1d9828af9"
+      },
+      "actual_speech_seconds": 15.696,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-03",
@@ -2611,12 +2929,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-03.mp3",
+        "bytes": 102960,
+        "sha256": "888a6ac6b0106c6004e2888bebd383412d07022ef7e2c6bed1ca3bf921acbebd"
+      },
+      "actual_speech_seconds": 17.16,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-04",
@@ -2661,12 +2985,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-04.mp3",
+        "bytes": 116064,
+        "sha256": "d78f92f12cbd1cfea0291e61ac7495c2a59d5786118f566ff00055472572d9e5"
+      },
+      "actual_speech_seconds": 19.344,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.733333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-05",
@@ -2707,12 +3037,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-05.mp3",
+        "bytes": 111456,
+        "sha256": "2fe7261d939943a315e3d7136d3170cba6cec734c5b0873cb371e67a6702cdf0"
+      },
+      "actual_speech_seconds": 18.576,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-06",
@@ -2752,12 +3088,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-06.mp3",
+        "bytes": 115056,
+        "sha256": "c53e3f56a41f9e42d683635173e499000346dc47cd64100f348284b95716232a"
+      },
+      "actual_speech_seconds": 19.176,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.733333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-07",
@@ -2797,12 +3139,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-07.mp3",
+        "bytes": 106704,
+        "sha256": "490f0ce37e27ee049ad2959a196c4f06e62b985289d5f8176e85a744af746b96"
+      },
+      "actual_speech_seconds": 17.784,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-08",
@@ -2842,12 +3190,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-08.mp3",
+        "bytes": 104400,
+        "sha256": "285cf25a2092bdf197c0dc426a52e1071895420140e6d6751e8f4611cdc939be"
+      },
+      "actual_speech_seconds": 17.4,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C07-09",
@@ -2892,12 +3246,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C07-09.mp3",
+        "bytes": 97200,
+        "sha256": "7353c9b81602f025feb8f8461fe89cff6b47a8eeb210c13cf1383c473c288610"
+      },
+      "actual_speech_seconds": 16.2,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C08-01",
@@ -2942,12 +3302,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C08-01.mp3",
+        "bytes": 98064,
+        "sha256": "08d5a59a3cdc21604ece4a842347013f9c7f8a2eb8e22694ab8b7e9394136d43"
+      },
+      "actual_speech_seconds": 16.344,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C08-02",
@@ -2982,12 +3348,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C08-02.mp3",
+        "bytes": 102528,
+        "sha256": "8ba432c6444600ca6cad4f04c55df8788689a7ea37f5e42c084bd96d78453b92"
+      },
+      "actual_speech_seconds": 17.088,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C08-03",
@@ -3018,12 +3390,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C08-03.mp3",
+        "bytes": 95904,
+        "sha256": "262d92afe949c3616d94a9965e04eb99170caa95b49b29ba3196bdedfc9dba78"
+      },
+      "actual_speech_seconds": 15.984,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C08-04",
@@ -3058,12 +3436,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C08-04.mp3",
+        "bytes": 105552,
+        "sha256": "d01ed7abe0cd0e7fae60522e815642282292901baf4144622c5f6da3fe71405f"
+      },
+      "actual_speech_seconds": 17.592,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C08-06",
@@ -3103,12 +3487,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C08-06.mp3",
+        "bytes": 109152,
+        "sha256": "673584d2d9d3f6574e9692f8949b39e1b4cb62db7901c7130c2f93f5dd637e72"
+      },
+      "actual_speech_seconds": 18.192,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-01",
@@ -3143,12 +3533,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-01.mp3",
+        "bytes": 101232,
+        "sha256": "2615f0166489ace6da95a599eb51a0884748899906647c4423ddd03d9a4a8481"
+      },
+      "actual_speech_seconds": 16.872,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-02",
@@ -3183,12 +3579,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-02.mp3",
+        "bytes": 105552,
+        "sha256": "90cce496dc23ed1bcae10b455320a465bf4cad6fe426fee153d1ac30d58b47c9"
+      },
+      "actual_speech_seconds": 17.592,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-03",
@@ -3233,12 +3635,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-03.mp3",
+        "bytes": 92160,
+        "sha256": "627e8700d0d27314b88f7de27925d44fed6a833c3293fb8da2d93d4110d66fdb"
+      },
+      "actual_speech_seconds": 15.36,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-04",
@@ -3284,12 +3692,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-04.mp3",
+        "bytes": 99504,
+        "sha256": "83f869f40efcd9bf523e712eb8a32c842cb3f55aee021a51a092336ead481f3c"
+      },
+      "actual_speech_seconds": 16.584,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.066666666666666,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-05",
@@ -3329,12 +3743,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-05.mp3",
+        "bytes": 101376,
+        "sha256": "37ddf041f43df9bf3b1d18e1c7e9edd7d6661f1a8437dc168225ac3cb08dd4b0"
+      },
+      "actual_speech_seconds": 16.896,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-06",
@@ -3374,12 +3794,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-06.mp3",
+        "bytes": 109584,
+        "sha256": "f1afa9cd7037004f44b195f1b7f984117b5f47fa3d5c73c2a3c21137e63199cd"
+      },
+      "actual_speech_seconds": 18.264,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-07",
@@ -3420,12 +3846,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-07.mp3",
+        "bytes": 109152,
+        "sha256": "5531baba134b7f52aa8771fe8ace822a7597827dc5dd34b3584b608114614964"
+      },
+      "actual_speech_seconds": 18.192,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-08",
@@ -3465,12 +3897,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-08.mp3",
+        "bytes": 106704,
+        "sha256": "2e1c675e44b96c9a2e19472697b0c28ad78857548b75cccab008db52a7ddcf44"
+      },
+      "actual_speech_seconds": 17.784,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C09-09",
@@ -3510,12 +3948,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C09-09.mp3",
+        "bytes": 101808,
+        "sha256": "2e2bb3879710b2de69c32f679b686227534dca5482626707d9502cc2d9355f82"
+      },
+      "actual_speech_seconds": 16.968,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-01",
@@ -3550,12 +3994,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-01.mp3",
+        "bytes": 105984,
+        "sha256": "5bda93607c9ee04aba6ea56e63d3d534f225d5bf4754bf98636e225a2b8f2abb"
+      },
+      "actual_speech_seconds": 17.664,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-02",
@@ -3590,12 +4040,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-02.mp3",
+        "bytes": 88704,
+        "sha256": "fbb534dd707284839d790f361611703bbde7e8f6581a0ba8f24a303fde79f96a"
+      },
+      "actual_speech_seconds": 14.784,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 15.466666666666667,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-03",
@@ -3626,12 +4082,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-03.mp3",
+        "bytes": 105552,
+        "sha256": "514287493d5156abd978e82ff35fc39c2e75cb3b6c4c1ae922fc1df2ef5cf738"
+      },
+      "actual_speech_seconds": 17.592,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-04",
@@ -3662,12 +4124,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-04.mp3",
+        "bytes": 101808,
+        "sha256": "0a873e29f20cfd1a80f66be2aae5079117df42957cc7ca2f175548d7ed40f25d"
+      },
+      "actual_speech_seconds": 16.968,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-05",
@@ -3707,12 +4175,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-05.mp3",
+        "bytes": 102960,
+        "sha256": "f05b69e1bb0a4edf255a3a858e7bf4c0c473076100bfe07499481339aa52cf70"
+      },
+      "actual_speech_seconds": 17.16,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-06",
@@ -3743,12 +4217,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-06.mp3",
+        "bytes": 129312,
+        "sha256": "9536b9424e3151a933e378a3fc0bc0f986fc793a55078da6de1d61f8016e660e"
+      },
+      "actual_speech_seconds": 21.552,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.866666666666667,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-07",
@@ -3779,12 +4259,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-07.mp3",
+        "bytes": 128016,
+        "sha256": "31de40af32f8761d4970f9e61d230559e482471eaed40bb3f3f1ea1937ae6a95"
+      },
+      "actual_speech_seconds": 21.336,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.866666666666667,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-08",
@@ -3824,12 +4310,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-08.mp3",
+        "bytes": 111600,
+        "sha256": "7a6d851001d5eb3ebe8840058fd13d8f474b3dbfa69f5f483586a465ab647846"
+      },
+      "actual_speech_seconds": 18.6,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-09",
@@ -3873,12 +4365,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-09.mp3",
+        "bytes": 116208,
+        "sha256": "375471aa86fbe8d7887d4c7a6eaab7f8e4b23f32e38ac8ce3146b482afd95882"
+      },
+      "actual_speech_seconds": 19.368,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.733333333333334,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C10-10",
@@ -3918,12 +4416,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C10-10.mp3",
+        "bytes": 104256,
+        "sha256": "05cc7ed6b3a7554ef61f904929325ec6155fe6f589bcd028424e20a29d27d7ba"
+      },
+      "actual_speech_seconds": 17.376,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-01",
@@ -3968,12 +4472,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-01.mp3",
+        "bytes": 111024,
+        "sha256": "24c4c685c24d64ab37aa377ca41b887b79c63ba5d3eab0d8402a2b8f5ab4ee89"
+      },
+      "actual_speech_seconds": 18.504,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-02",
@@ -4004,12 +4514,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-02.mp3",
+        "bytes": 107712,
+        "sha256": "574641a8cb469b0ac13d3136da63649b2ab3de38b4c38a8f8bda40c7816ec55c"
+      },
+      "actual_speech_seconds": 17.952,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-03",
@@ -4049,12 +4565,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-03.mp3",
+        "bytes": 131472,
+        "sha256": "9a52be541f480d0afd8b1d08d09ed47ecb4784578b7bf96cc4b0a175779d09c7"
+      },
+      "actual_speech_seconds": 21.912,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 22.4,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-04",
@@ -4085,12 +4607,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-04.mp3",
+        "bytes": 125424,
+        "sha256": "c0f484a3b4864bcc6b90d14dd144a20901d2d1fede99969669557570857a9fa9"
+      },
+      "actual_speech_seconds": 20.904,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.333333333333332,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-05",
@@ -4130,12 +4658,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-05.mp3",
+        "bytes": 110304,
+        "sha256": "11907888a859e5b52aab306df5fbdc3944291d5fd27d4950287e1c12d9557f44"
+      },
+      "actual_speech_seconds": 18.384,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-06",
@@ -4170,12 +4704,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-06.mp3",
+        "bytes": 108864,
+        "sha256": "d3afa84c72fef8790c34a7ec6db70ae6dedf0eea67ac4180aec9d0213920b695"
+      },
+      "actual_speech_seconds": 18.144,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-07",
@@ -4206,12 +4746,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-07.mp3",
+        "bytes": 109584,
+        "sha256": "3b56f12665f243a22bd5973d43947f5d960f0ce71563a0316b938215c8341ad3"
+      },
+      "actual_speech_seconds": 18.264,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-08",
@@ -4256,12 +4802,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-08.mp3",
+        "bytes": 125856,
+        "sha256": "aef22b643a6d57707af9a9d43e77b1371355082d7d32247b838386041308ee9a"
+      },
+      "actual_speech_seconds": 20.976,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 21.333333333333332,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-09",
@@ -4306,12 +4858,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-09.mp3",
+        "bytes": 138672,
+        "sha256": "f70e06e1ddab1de2fe5c970c0c3c581e3991f0c3af1f610a39f730b6fa81867f"
+      },
+      "actual_speech_seconds": 23.112,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 23.466666666666665,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-10",
@@ -4342,12 +4900,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-10.mp3",
+        "bytes": 111168,
+        "sha256": "693c0cbca565e1fb8cebe26f73b2b278a8a291894a102ab68a2720e2344eeef4"
+      },
+      "actual_speech_seconds": 18.528,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C11-11",
@@ -4382,12 +4946,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C11-11.mp3",
+        "bytes": 109728,
+        "sha256": "3b2dbde970a1bbbba0ff49d452533f868f77bfe65118b1faacace9deceb99eea"
+      },
+      "actual_speech_seconds": 18.288,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-01",
@@ -4433,12 +5003,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-01.mp3",
+        "bytes": 102960,
+        "sha256": "01ace3fa9129b2e1a52867ca68d77d45f1edbedd519d05040881e3d48a75cf9d"
+      },
+      "actual_speech_seconds": 17.16,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-02",
@@ -4482,12 +5058,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-02.mp3",
+        "bytes": 97632,
+        "sha256": "abe8f3f9a306ad1715a075ce05344fca9fd67eb64d3ca07a61df0f23a948e260"
+      },
+      "actual_speech_seconds": 16.272,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-03",
@@ -4522,12 +5104,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-03.mp3",
+        "bytes": 94176,
+        "sha256": "2d5438bf4fd5062e4337d5ac520b6dc9dde33f4d9d7df6847cf629d91899ab1d"
+      },
+      "actual_speech_seconds": 15.696,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-04",
@@ -4587,12 +5175,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-04.mp3",
+        "bytes": 141984,
+        "sha256": "7a290a8f0b8818856c644d64162d157d609bf71252b276b2348f8c692e9a02bf"
+      },
+      "actual_speech_seconds": 23.664,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 24.0,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-05",
@@ -4641,12 +5235,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-05.mp3",
+        "bytes": 96912,
+        "sha256": "8ad2bc3ab7c2980a45bca0d3b041c50283e83e3901484bc5f2271a56559a5465"
+      },
+      "actual_speech_seconds": 16.152,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-06",
@@ -4681,12 +5281,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-06.mp3",
+        "bytes": 106992,
+        "sha256": "3bbce6a803ea8ec55c72080ed6c72431548aba53943baa22470e57fa8bfb5b0d"
+      },
+      "actual_speech_seconds": 17.832,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-07",
@@ -4721,12 +5327,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-07.mp3",
+        "bytes": 110016,
+        "sha256": "1b5cc0dfff7b211a11286c8dd264507f2c613ab606ab7a826a6bc1db3f25edb8"
+      },
+      "actual_speech_seconds": 18.336,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-08",
@@ -4757,12 +5369,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-08.mp3",
+        "bytes": 84528,
+        "sha256": "3acf6a06cf5076482290dc3106ffab83f7f85fcbefa2a40e78615685cc348f7d"
+      },
+      "actual_speech_seconds": 14.088,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 14.4,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C12-09",
@@ -4798,12 +5416,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C12-09.mp3",
+        "bytes": 97056,
+        "sha256": "7f0c95f2daaffd83bcc1205799e9cf8e3b353d15ba6703c98379eee329dd81fb"
+      },
+      "actual_speech_seconds": 16.176,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 16.533333333333335,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-01",
@@ -4853,12 +5477,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-01.mp3",
+        "bytes": 109872,
+        "sha256": "e896f81a7ad4a7ad6486f168f6b5e66f560a476eec4a3ecc5eaf01151ec963cd"
+      },
+      "actual_speech_seconds": 18.312,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-02",
@@ -4903,12 +5533,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-02.mp3",
+        "bytes": 112176,
+        "sha256": "bd5040ec0c355a0908e6245b28c5f68fb9b18e0bee3f25957d3c6a5e98652569"
+      },
+      "actual_speech_seconds": 18.696,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-03",
@@ -4948,12 +5584,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-03.mp3",
+        "bytes": 104112,
+        "sha256": "f9b70628ecfb79280ad206711d968a526996ecf1329d788ad5b8678397e95e0e"
+      },
+      "actual_speech_seconds": 17.352,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-04",
@@ -4988,12 +5630,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-04.mp3",
+        "bytes": 103680,
+        "sha256": "73edbb9384ddc9e1a0854e9c69e5101c203d5abdc3733bcff984aa8f7e3f81fd"
+      },
+      "actual_speech_seconds": 17.28,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-05",
@@ -5040,12 +5688,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-05.mp3",
+        "bytes": 110304,
+        "sha256": "db463f90f3bcac4557036e64e4e1292103c85e3a739dcadbe6ecc96bf78ed3ac"
+      },
+      "actual_speech_seconds": 18.384,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-06",
@@ -5096,12 +5750,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-06.mp3",
+        "bytes": 112608,
+        "sha256": "d632276cb9e0d10bdccbe33124cdf3933e749a19de0fe115a5e13658984d8f46"
+      },
+      "actual_speech_seconds": 18.768,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-07",
@@ -5136,12 +5796,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-07.mp3",
+        "bytes": 110304,
+        "sha256": "183859c52be5de067d393f3eaf5f9085fe064786fadcc5f49bcbc4e9fedf500b"
+      },
+      "actual_speech_seconds": 18.384,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": true,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.666666666666668,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-08",
@@ -5185,12 +5851,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-08.mp3",
+        "bytes": 102528,
+        "sha256": "3b1cee6838f72d012b3de19c68663f7bd37223b7e32cebbf6f7301cd0cdd04c4"
+      },
+      "actual_speech_seconds": 17.088,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-09",
@@ -5235,12 +5907,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-09.mp3",
+        "bytes": 102384,
+        "sha256": "62bbafa63d14eac794aab761e496b70ba2f902f05b38ed5ab33c3f6d387ee952"
+      },
+      "actual_speech_seconds": 17.064,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 17.6,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-10",
@@ -5279,12 +5957,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-10.mp3",
+        "bytes": 111024,
+        "sha256": "09337b50cbd256af0253dfb3114a8d9f96ca398d72404d0ad35bc75f80679ae1"
+      },
+      "actual_speech_seconds": 18.504,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 19.2,
+      "human_listening_performed": false
     },
     {
       "cue_id": "V4-C13-11",
@@ -5335,12 +6019,18 @@
           "en": null
         }
       ],
-      "audio": null,
-      "actual_speech_seconds": null,
+      "audio": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\V4-C13-11.mp3",
+        "bytes": 104976,
+        "sha256": "42466c01b75e6fa332f5d387b0a84f4bece867df7eda670edd2ebc2cf4c73067"
+      },
+      "actual_speech_seconds": 17.496,
       "actual_final_interval": null,
       "visual_asset_selection": null,
       "source_example_requires_label": false,
-      "old_audio_exact_text_match": false
+      "old_audio_exact_text_match": false,
+      "voice_frame_aligned_seconds": 18.133333333333333,
+      "human_listening_performed": false
     }
   ],
   "production_only_cues": [
@@ -5372,5 +6062,18 @@
     }
   ],
   "no_new_game_results": true,
-  "current_media_ready": false
+  "current_media_ready": false,
+  "measured_voice_source": {
+    "machine_id": "4-8e1c2f1861",
+    "closed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\CLOSED.json",
+      "bytes": 991,
+      "sha256": "264331d54a332b688f4f8925370514a8c529d8cfb0ea7128118b7b68dd9da543"
+    },
+    "measured": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\measured-narration.json",
+      "bytes": 141383,
+      "sha256": "6572615ac6a192c2204a7aea017acb0a54852cc4baaec4f41129aed0976ed873"
+    }
+  }
 }

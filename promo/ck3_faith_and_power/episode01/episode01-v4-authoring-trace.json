@@ -581,7 +581,7 @@
       "new_live_scene_required_by_this_candidate": false
     }
   ],
-  "actual_audio_seconds": null,
+  "actual_audio_seconds": 2048.64,
   "actual_film_seconds": null,
   "native_run": null,
   "media_artifacts_bound": [],
@@ -602,5 +602,28 @@
     "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\narrative\\project_v4_repo_authoring_a01.py",
     "bytes": 8705,
     "sha256": "a5b56425c14826366539cb77036f2a1791ed0e47af0626283a398fbf109761cd"
-  }
+  },
+  "measured_voice_successor": {
+    "observed_at_utc": "2026-10-18T03:14:30.298711+00:00",
+    "closed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\CLOSED.json",
+      "bytes": 991,
+      "sha256": "264331d54a332b688f4f8925370514a8c529d8cfb0ea7128118b7b68dd9da543"
+    },
+    "measured": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v4-production-a01\\voice\\native-run\\derived\\direct\\measured-narration.json",
+      "bytes": 141383,
+      "sha256": "6572615ac6a192c2204a7aea017acb0a54852cc4baaec4f41129aed0976ed873"
+    },
+    "original_execute_session_exit_code": 0,
+    "cue_count": 115,
+    "voice_calls": 115,
+    "speech_seconds": 2048.64,
+    "voice_clock_seconds": 2100.266666666667,
+    "original_source_text_or_audio_modified": false,
+    "root_approved_max_seconds_successor": 2101,
+    "actual_film_seconds": null,
+    "new_media_CAS_copies": 0
+  },
+  "voice_frame_aligned_clock_seconds": 2100.266666666667
 }

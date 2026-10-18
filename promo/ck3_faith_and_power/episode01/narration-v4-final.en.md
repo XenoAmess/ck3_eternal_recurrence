@@ -1,6 +1,6 @@
 # Are holy sites worth the investment?
 
-> v4 English subtitle script. Actual narration duration and chapter times are not available yet.
+> v4 English subtitle script. All 115 narration cues have been measured; encoded film duration and final chapter times are still pending.
 
 ## What do you want the investment to do?
 
