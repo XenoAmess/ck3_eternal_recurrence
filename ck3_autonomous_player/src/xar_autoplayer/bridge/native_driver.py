@@ -9281,6 +9281,18 @@ class NativeHeadlessGameplayDriver:
                         "status": "preserved_full_history",
                         "diagnostic": type(error).__name__, "reason": str(error)[:240],
                     }
+            if (parse_query_combat_simulation_inputs_step(step) is not None
+                    or parse_query_combat_simulation_inputs_v3_step(step) is not None):
+                try:
+                    from .combat_history_superseded_v1 import compact_superseded_combat_history_v1
+
+                    compact_superseded_combat_history_v1(self, result=result)
+                except Exception as error:
+                    # Keep the accepted full query if optional history encoding fails.
+                    self._combat_history_superseded_v1_last = {
+                        "status": "full_history_retained",
+                        "diagnostic": type(error).__name__, "reason": str(error)[:240],
+                    }
             if (
                 step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
                 and result.get("accepted") is True
@@ -15670,7 +15682,7 @@ class NativeHeadlessGameplayDriver:
             attacker_army_ids,
             defender_army_ids,
         ) = parsed
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native combat simulation input query requires a paused snapshot"
@@ -15695,6 +15707,7 @@ class NativeHeadlessGameplayDriver:
             required_capability=(
                 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
             ),
+            include_native_command_history=False,
         )
         if (
             set(result)
@@ -15743,7 +15756,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native combat simulation input query lacks query_sequence"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current) or (
             starting.get("revision") != current.get("revision")
         ):
@@ -16327,7 +16340,7 @@ class NativeHeadlessGameplayDriver:
             attacker_army_ids,
             defender_army_ids,
         ) = parsed
-        starting = self.take_snapshot()
+        starting = self.take_snapshot_without_native_command_history()
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native production combat phase query requires a paused snapshot"
@@ -16352,6 +16365,7 @@ class NativeHeadlessGameplayDriver:
             required_capability=(
                 QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY
             ),
+            include_native_command_history=False,
         )
         if (
             set(result)
@@ -16400,7 +16414,7 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native production combat phase query lacks query_sequence"
             )
-        current = self.take_snapshot()
+        current = self.take_snapshot_without_native_command_history()
         if not _same_paused_native_frame(starting, current) or (
             starting.get("revision") != current.get("revision")
         ):

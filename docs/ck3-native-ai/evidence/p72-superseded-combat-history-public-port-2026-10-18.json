@@ -1,0 +1,81 @@
+{
+  "schema": "xar.combat-history-superseded.public-port.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-18T00:29:59.953058+00:00",
+  "status": "PUBLIC_PRODUCTION_PATH_TESTS_PASS_NOT_LIVE_DEPLOYED",
+  "base_commit": "800e95d1db8097bcbb03bd76d832fc7cf28460e2",
+  "tests": {
+    "passed": 21,
+    "subtests_passed": 30,
+    "pytest_elapsed_seconds": 24.81,
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p72-combat-history-superseded01\\PUBLIC-PORT-TESTS-PASS01.json",
+      "bytes": 1829,
+      "sha256": "d94c5f0435d41747730b00460dc6cdfdabfdc7dd2bdbc1e1adc3386b5ea1ac3b"
+    }
+  },
+  "prepared_source_delivery": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p72-combat-history-superseded01\\DELIVERY.json",
+    "bytes": 3209,
+    "sha256": "132bbe49e98bea5c36caed1adc82620aec076521bad7bc5747d209b26375317b"
+  },
+  "limited_consumer_audit": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p72-combat-history-superseded01\\consumer-audit\\CONSUMER-AUDIT.json",
+    "bytes": 16179,
+    "sha256": "fc5df69cf9af18a5789e91387ebf01e778997a5f5caf01c9f797cd687d0d1a43"
+  },
+  "public_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\combat_history_superseded_v1.py",
+      "bytes": 8596,
+      "sha256": "4e96c3b15354a2fd13ff9fd8774cf963c27e129eac5dfe61cec1564a10f55713"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1588658,
+      "sha256": "8499794e9ddf67fda16ca6682e366159d035f2e5acf5d3042b2872674a035d98"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_combat_history_superseded_v1.py",
+      "bytes": 11502,
+      "sha256": "55f43aed365a32578ff18950b98d9efa7b71b54b9e6e5ac347ea41e0e82886c1"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_combat_simulation_inputs_bridge.py",
+      "bytes": 16146,
+      "sha256": "02fbab4b90a5bcefca34669c2cff79ec89005d9640636a84779b71234480d5a8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_combat_phase_inputs_v3_bridge.py",
+      "bytes": 18985,
+      "sha256": "2ab86c8ca0333156e3c9a55c4b443be17bf9b3c49fe1f3fbb924afaff2087999"
+    }
+  ],
+  "current_API_canonical_latest_row_full": true,
+  "history_rows_indices_and_nonbody_fields_retained": true,
+  "new_query_requires_original_typed_sameframe_available_and_published_cache": true,
+  "old_body_summary_lossless": false,
+  "original_receipt_path_invented": false,
+  "new_archive_writer": false,
+  "unchanged": [
+    "current canonical model input",
+    "simulation fidelity",
+    "attack/risk policy",
+    "battle-control history",
+    "actual date and war progress history",
+    "pending/decision ledger",
+    "old immutable MCP receipts and closed Driver"
+  ],
+  "digest_limits": {
+    "body_bytes": 67108864,
+    "batch_bytes": 134217728,
+    "max_rows": 8,
+    "budget_failure": "accepted full result retained"
+  },
+  "live_performance_delta": "unknown; not an in-game A/B",
+  "scope": "in-memory endpoints + tiny synthetic persist/restore through public production functions",
+  "actual_Driver_SAVE_AUTO77_archive_media_reads": 0,
+  "MCP_Native_Game_calls": 0,
+  "R8_armed_source_modified": false,
+  "first30_completed": false
+}
