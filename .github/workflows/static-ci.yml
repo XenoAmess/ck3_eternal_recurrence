@@ -174,7 +174,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py
       - name: Test combat history projection with production query and restore paths
         env:
           PYTHONDONTWRITEBYTECODE: "1"

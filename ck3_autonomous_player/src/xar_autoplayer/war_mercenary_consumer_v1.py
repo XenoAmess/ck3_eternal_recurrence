@@ -24,13 +24,12 @@ from .environment import write_json_atomic
 from .m5_observed_opportunity_selector import observed_frame
 from .war_mercenary_observer_v1 import project_mercenary_observer_v1
 from .war_reinforcement_tradeoff_v1 import (
-    _count as observed_army_count,
     observe_war_spending_priority_v1,
 )
 
 from .war_strategic_reserve_v1 import (
     assess_mercenary_reinforcement_v1, observe_mercenary_purchase_model_need_v1,
-    observe_post_hire_inventory_v1,
+    observe_post_hire_inventory_v1, observe_first_raised_inventory_v1,
 )
 
 _LEDGER = "war-mercenary-pending-v1.json"
@@ -123,15 +122,12 @@ def _plan_war_mercenary_turn_v1(
             chosen = prior.get("decision", {}).get("selected_candidate", {})
             if not active_ids.intersection(chosen.get("purpose_war_ids", chosen.get("numerical_balance_reversed_war_ids", []))):
                 continue
-            old_ids = set(prior.get("pre_player_army_ids", []))
-            new_force = [row for row in snapshot.get("player_armies", [])
-                         if isinstance(row, Mapping) and row.get("army_id") not in old_ids
-                         and row.get("current_province_id") == chosen.get("predicted_auto_raise_province_id")
-                         and (new_count := observed_army_count([row], snapshot=snapshot, role="player")) is not None
-                         and new_count > 0]
             prior["post_hire_observations_v1"] = observe_post_hire_inventory_v1(snapshot, prior)
+            first_inventory = observe_first_raised_inventory_v1(snapshot, prior)
+            if first_inventory is not None:
+                prior["first_raised_inventory_observation_v1"] = first_inventory
             write_json_atomic(directory / _LEDGER, ledger)
-            if not new_force:
+            if first_inventory is None:
                 return {**plan, "war_mercenary_status": "employment_observed_await_fresh_raised_inventory_no_duplicate_hire",
                         "war_mercenary_receipt": prior}
             break
@@ -159,6 +155,9 @@ def _plan_war_mercenary_turn_v1(
                           "employer_character_id": match["employer_id"],
                           "army_creation_verified": False, "payment_verified": False}
             employment["post_hire_observations_v1"] = observe_post_hire_inventory_v1(snapshot, pending)
+            first_inventory = observe_first_raised_inventory_v1(snapshot, employment)
+            if first_inventory is not None:
+                employment["first_raised_inventory_observation_v1"] = first_inventory
             ledger["observed"].append(employment)
             ledger["pending"] = None
             write_json_atomic(directory / _LEDGER, ledger)
@@ -183,7 +182,8 @@ def _plan_war_mercenary_turn_v1(
     if spending.get("status") != "observed":
         return {**plan, "war_mercenary_status": "existing_spending_intent_or_frame_unavailable",
                 "war_mercenary_spending_observation": spending}
-    decision = assess_mercenary_reinforcement_v1(snapshot, context, campaign_root=root, operational_plan=plan, history=history)
+    decision = assess_mercenary_reinforcement_v1(snapshot, context, campaign_root=root, operational_plan=plan,
+                                               history=history, procurement_ledger=ledger)
     decision = project_mercenary_observer_v1(
         decision,
         assessment_source_sha256=getattr(driver, "war_mercenary_assessment_source_sha256", None),
@@ -267,6 +267,19 @@ def plan_war_mercenary_turn_v1(
     driver: object, plan: dict[str, object], *, snapshot: Mapping[str, object],
     history: list[dict[str, object]], bridge_capabilities: set[str],
 ) -> dict[str, object]:
+    # Read-only inventory observations must survive while concrete army orders
+    # keep priority. They do not resolve an unknown hire or authorize a retry.
+    directory = getattr(driver, "state_dir", None)
+    if isinstance(directory, Path):
+        ledger = _ledger(directory)
+        pending = ledger["pending"]
+        if pending is not None:
+            first_inventory = observe_first_raised_inventory_v1(snapshot, pending)
+            if (first_inventory is not None
+                    and pending.get("first_raised_inventory_observation_v1") != first_inventory):
+                pending["first_raised_inventory_observation_v1"] = first_inventory
+                pending["post_hire_observations_v1"] = observe_post_hire_inventory_v1(snapshot, pending)
+                write_json_atomic(directory / _LEDGER, ledger)
     return annotate_war_decision_reason_v1(_plan_war_mercenary_turn_v1(
         driver, plan, snapshot=snapshot, history=history,
         bridge_capabilities=bridge_capabilities))

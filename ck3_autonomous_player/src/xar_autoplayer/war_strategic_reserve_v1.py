@@ -18,12 +18,86 @@ from .war_reinforcement_tradeoff_v1 import (
 
 
 def _recoverable_wars(priority):
+    # -100 is a policy suppression of new procurement, not proof that an
+    # observed active war has ended. Its armies stay in the global risk ledger.
     rows = [row for row in _armies(priority.get("wars"))
             if row.get("protect_cash_reasons") and type(row.get("war_id")) is int
             and type(row.get("player_relative_war_score")) is int
             and row["player_relative_war_score"] > -100]
     order = priority.get("cash_protection_priority_war_ids", [])
     return sorted(rows, key=lambda row: order.index(row["war_id"]) if row["war_id"] in order else len(order))
+
+
+def observe_procurement_package_budget_v1(snapshot, ledger, *, purpose_war_ids):
+    """Do not reset a procurement package's treasury-share cap after each hire.
+
+    Count independently observed employment contracts as committed quote cost,
+    without claiming payment attribution. Unknown submissions remain governed
+    by the existing single pending claim, before this assessment is reached.
+    """
+    if not isinstance(ledger, Mapping):
+        return {"status": "no_prior_package", "remaining_package_gold_raw": None}
+    episode = snapshot.get("episode_run_id")
+    actor = snapshot.get("played_character", {}).get("character_id")
+    purposes = set(purpose_war_ids)
+    records = []
+    connected_wars = purposes | {row["war_id"] for row in _armies(snapshot.get("active_wars"))
+        if row.get("player_is_primary_war_leader") is True and type(row.get("war_id")) is int}
+    for row in _armies(ledger.get("observed")):
+        if row.get("status") != "employment_observed":
+            continue
+        source = row.get("source_frame", {})
+        decision = row.get("decision", {})
+        selected = decision.get("selected_candidate", {})
+        if source.get("episode_run_id") != episode or source.get("played_character_id") != actor:
+            continue
+        prior_purposes = selected.get("purpose_war_ids", selected.get("numerical_balance_reversed_war_ids", []))
+        prior_scope = decision.get("war_spending_priority", {}).get("primary_war_hostile_union_v1", {}).get("war_ids", [])
+        records.append((row, selected, set(prior_purposes) | set(prior_scope)))
+    # Shared simultaneous wars cannot alternate fresh half-treasury caps. A
+    # later overlapping contract retains the old package while any linked war
+    # remains active; genuinely disjoint later wars can start a new package.
+    changed = True
+    while changed:
+        changed = False
+        for _, _, scope in records:
+            if connected_wars.intersection(scope) and not scope.issubset(connected_wars):
+                connected_wars.update(scope)
+                changed = True
+    receipts = []
+    seen = set()
+    for row, selected, scope in records:
+        if not connected_wars.intersection(scope):
+            continue
+        identity = row.get("action_request_id")
+        if not isinstance(identity, str) or not identity or identity in seen:
+            return {"status": "unavailable", "reason": "same_purpose_contract_claim_identity_missing_or_duplicated",
+                    "remaining_package_gold_raw": None}
+        seen.add(identity)
+        receipts.append((row, selected))
+    if not receipts:
+        return {"status": "no_prior_package", "remaining_package_gold_raw": None}
+    first, anchor = receipts[0]
+    finance = anchor.get("finance", {})
+    treasury, reserve, cap = (finance.get("observed_treasury_raw"), finance.get("required_gold_reserve_raw"),
+                              anchor.get("cash_opportunity_cost_limit_raw"))
+    costs = [selected.get("gold_cost_raw") for _, selected in receipts]
+    if (any(type(value) is not int or value < 0 for value in (treasury, reserve, cap))
+            or any(type(value) is not int or value < 0 for value in costs)):
+        return {"status": "unavailable", "reason": "same_purpose_original_package_budget_or_committed_quote_missing",
+                "remaining_package_gold_raw": None}
+    envelope = max(0, min(cap, treasury - reserve))
+    committed = sum(costs)
+    return {"status": "available", "anchor_action_request_id": first["action_request_id"],
+            "anchor_source_frame": dict(first["source_frame"]), "purpose_war_ids": sorted(purposes),
+            "shared_active_war_package_scope_ids": sorted(connected_wars),
+            "original_treasury_raw": treasury, "original_required_reserve_raw": reserve,
+            "original_treasury_share_cap_raw": cap, "original_package_gold_limit_raw": envelope,
+            "committed_contract_quote_gold_raw": committed,
+            "remaining_package_gold_raw": max(0, envelope - committed),
+            "committed_action_request_ids": [row["action_request_id"] for row, _ in receipts],
+            "payment_attribution_verified": False, "future_income_credited_raw": 0,
+            "current_cash_and_military_reserve_must_also_pass": True}
 
 
 def _strategic_need(war):
@@ -124,7 +198,7 @@ def _current_local_scope(snapshot, plan, history, focus):
 
 
 def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve_raw=RESERVE_RAW,
-                                     campaign_root=None, operational_plan=None, history=()):
+                                     campaign_root=None, operational_plan=None, history=(), procurement_ledger=None):
     """Compare every company and select a legal cash-bounded reserve purchase.
 
     A current local count reversal is useful conditional arithmetic. Otherwise
@@ -137,6 +211,8 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
     wars = _recoverable_wars(priority)
     focus = wars[0] if wars else None
     reserve_need = _strategic_need(focus)
+    package = observe_procurement_package_budget_v1(snapshot, procurement_ledger,
+        purpose_war_ids=[focus["war_id"]] if focus else [])
     local = _current_local_scope(snapshot, operational_plan, history, focus)
     actor = snapshot.get("played_character", {}).get("character_id")
     money = snapshot.get("played_character_gold")
@@ -210,6 +286,11 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
         cash_share_limit = treasury // cash_fraction_denominator if type(treasury) is int and treasury >= 0 else None
         if cash_share_limit is None or type(price) is not int or price > cash_share_limit:
             reasons.append("contract_exceeds_declared_cash_opportunity_cost_limit")
+        if package["status"] == "unavailable":
+            reasons.append("same_purpose_original_procurement_package_budget_unavailable")
+        elif (package["status"] == "available"
+              and (type(price) is not int or price > package["remaining_package_gold_raw"])):
+            reasons.append("contract_exceeds_remaining_same_purpose_package_budget")
         assessments.append({
             "company_id": company.get("company_id"), "gold_cost_raw": price,
             "quoted_resource_costs_raw": list(costs) if full_costs else None,
@@ -226,6 +307,7 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
             "strategic_minimum_marginal_soldiers": minimum_marginal,
             "cash_opportunity_cost_limit_raw": cash_share_limit,
             "cash_opportunity_cost_fraction": f"1/{cash_fraction_denominator}",
+            "procurement_package_budget_v1": package,
             "numerical_balance_reversed_war_ids": [focus["war_id"]] if flip else [],
             "conditional_local_player_soldiers_after_arrival": combined,
             "local_comparison": local,
@@ -267,6 +349,56 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
                          "reserve efficiency is not a calibrated utility or win probability", "native spawn selector does not publish every safety branch"],
         "postcondition_verified": False,
     }
+
+
+def observe_first_raised_inventory_v1(snapshot, employment):
+    """Persist the first independent inventory delta, even if it later moves.
+
+    This is an anti-duplicate observation milestone, not strict proof that a
+    company created the army. Employment and company attribution stay separate.
+    """
+    prior = employment.get("first_raised_inventory_observation_v1")
+    source = employment.get("source_frame", {})
+    selected = employment.get("decision", {}).get("selected_candidate", {})
+    if isinstance(prior, Mapping):
+        binding = prior.get("source_frame", {})
+        old_ids = set(employment.get("pre_player_army_ids", []))
+        rows = _armies(prior.get("observed_new_player_armies"))
+        if (prior.get("company_id") == employment.get("company_id")
+                and binding.get("episode_run_id") == source.get("episode_run_id")
+                and binding.get("episode_run_id") == snapshot.get("episode_run_id")
+                and binding.get("played_character_id") == source.get("played_character_id")
+                and binding.get("played_character_id") == snapshot.get("played_character", {}).get("character_id")
+                and type(binding.get("native_revision")) is int
+                and type(source.get("native_revision")) is int
+                and type(snapshot.get("native_revision")) is int
+                and snapshot["native_revision"] >= binding["native_revision"] > source["native_revision"]
+                and prior.get("predicted_auto_raise_province_id") == selected.get("predicted_auto_raise_province_id")
+                and rows and all(type(row.get("army_id")) is int and row["army_id"] not in old_ids
+                    and row.get("controllable") is True
+                    and row.get("current_province_id") == selected.get("predicted_auto_raise_province_id")
+                    and type(row.get("current_soldiers")) is int and row["current_soldiers"] > 0 for row in rows)):
+            return dict(prior)
+    post = observe_post_hire_inventory_v1(snapshot, employment)
+    frame = post["source_frame"]
+    if (frame.get("episode_run_id") != source.get("episode_run_id")
+            or frame.get("played_character_id") != source.get("played_character_id")
+            or type(frame.get("native_revision")) is not int or type(source.get("native_revision")) is not int
+            or frame["native_revision"] <= source["native_revision"]):
+        return None
+    matches = [row for row in post["new_observed_player_armies"]
+               if row.get("controllable") is True
+               and row.get("current_province_id") == selected.get("predicted_auto_raise_province_id")
+               and type(row.get("current_soldiers")) is int and row["current_soldiers"] > 0]
+    if not matches:
+        return None
+    return {"company_id": employment.get("company_id"), "source_frame": frame,
+            "pre_source_frame": dict(source), "pre_player_army_ids": post["pre_player_army_ids"],
+            "observed_new_player_armies": matches,
+            "predicted_auto_raise_province_id": selected.get("predicted_auto_raise_province_id"),
+            "observation_kind": "independent_player_inventory_delta_not_strict_company_attribution",
+            "company_to_new_army_binding_verified": False, "army_creation_verified": False,
+            "does_not_require_army_to_remain_at_spawn_on_later_turns": True}
 
 
 def observe_post_hire_inventory_v1(snapshot, pending):

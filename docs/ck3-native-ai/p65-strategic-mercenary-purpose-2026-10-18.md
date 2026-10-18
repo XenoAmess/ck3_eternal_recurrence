@@ -39,3 +39,5 @@
 定向新测试与原相关测试共 **22 个 pytest 用例通过**。新测试内部含 21 组检查，包括 15 类硬约束拒绝、11 个 stakes/score/边际兵力/现金上限场景、真实 normal contact selector 与五种过期绑定，以及完整候选保留和原行动优先。
 
 真实注册 MCP→`GameplayBridgeService`→consumer 链验证了：己军 2000 领先敌军 1500、root 明确主头衔目标时，仍能形成查询→单次雇佣→未知不重试→冷恢复独立雇主/钱包/库存观察。外层 Native 回复、chooser 与 camera 是明确合成 fixture，未连接 CK3；这项资格不增加 G2 M6/M7 或实机战争能力信用。当前 SDK/R7 和冻结 runtime 均未修改；后续自然维护安装必须另记实际源码绑定与实机结果。
+
+2026-10-18 补注：[P71](p71-mercenary-followup-and-package-budget-2026-10-18.md)记录随后 R8 的实际首次购买与独立钱包/库存观察，并纠正旧“terminal defeat”表述：-100只保留为抑制新采购的政策，不证明 active 战争已结束。后续源码增加库存首次观察持久化和同包累计预算；本页上文的22项测试、源码未部署及当时业务边界仍是原时点记录。

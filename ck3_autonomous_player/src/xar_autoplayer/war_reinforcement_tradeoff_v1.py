@@ -116,7 +116,7 @@ def observe_war_spending_priority_v1(
         if primary and war.get("player_side") == "defender" and hostile_occupations:
             reasons.append("observed_primary_opponent_occupation_of_defensive_objective")
         if primary and type(score) is int and score <= -100:
-            reasons.append("native_score_already_terminal_defeat")
+            reasons.append("score_defeat_threshold_reached_war_still_observed_active")
         wars.append({
             "war_id": war.get("war_id"), "primary_player_war": primary,
             "player_side": war.get("player_side"), "player_relative_war_score": score,
@@ -127,6 +127,8 @@ def observe_war_spending_priority_v1(
                 "directly_held_target_title_ids": sorted(held.intersection(targets)) if root else None,
                 "source": "same-native-frame root title identities; CB defeat transfer remains unverified"},
             "defeat_title_transfer_verified": False,
+            "active_war_observed": True, "war_resolution_verified": False,
+            "new_procurement_suppressed_by_score_policy": type(score) is int and score <= -100,
             "observed_hostile_siege_in_player_subrealm_army_ids": hostile_sieges,
             "observed_primary_opponent_objective_occupation_province_ids": hostile_occupations,
             "objective_control_projection_available": bool(objective_states),

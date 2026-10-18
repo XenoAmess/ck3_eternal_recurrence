@@ -1,0 +1,276 @@
+{
+  "schema": "xar.p71-mercenary-followup-package-budget.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_utc": "2026-10-18T00:37:58.228134+00:00",
+  "status": "PUBLIC_SOURCE_CHANGE_NOT_CURRENT_R9_DEPLOYED",
+  "actual_observation": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r8-responses\\0025-1-result.json",
+      "bytes": 93579,
+      "sha256": "f35ed36aa4119c587bc5158949abc9a28a35e81a9a72a9de3baac6ac1f9fcafd",
+      "top_keys": [
+        "started_at_utc",
+        "ended_at_utc",
+        "elapsed_seconds",
+        "request",
+        "result",
+        "mcp_result_projection_json_utf8_bytes"
+      ]
+    },
+    "SEM40_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r8-responses\\0040-1-result.json",
+      "bytes": 33548,
+      "sha256": "a6acd9ec6c0ade868f6190ae49815f2ad46ea040ae31847719d4f21de8d2a54a"
+    },
+    "action_started_utc": "2026-10-18T00:24:46.466348Z",
+    "action_ended_utc": "2026-10-18T00:24:48.897626Z",
+    "action_timestamps_source": "recording agent relay of original frozen AUTO25 producer, exact source SHA above",
+    "observed_utc": "2026-10-18T00:28:13.769341+00:00",
+    "company_id": 152,
+    "quoted_soldiers": 856,
+    "quoted_gold_raw": 21100000,
+    "quoted_contract_months": 36,
+    "native_ack_status": "submitted_verification_pending",
+    "native_after_state_observed": false,
+    "before_gold_raw": 43489448,
+    "SEM40_gold_raw": 22389448,
+    "observed_gold_delta_raw": -21100000,
+    "SEM40_binding": {
+      "snapshot_id": "native:10978",
+      "revision": 3,
+      "native_revision": 10978,
+      "date_raw": 53364000,
+      "episode_run_id": "native-40695-9cf747ffe1ee"
+    },
+    "SEM40_army_strengths": [
+      {
+        "army_id": 486539625,
+        "native_carmy_id": 67109372,
+        "scope_role": "player",
+        "war_ids": [
+          100663323,
+          134217796
+        ],
+        "current_soldiers": 856,
+        "ai_base_power_raw": 2779600000
+      },
+      {
+        "army_id": 167772577,
+        "native_carmy_id": 285212807,
+        "scope_role": "player",
+        "war_ids": [
+          100663323,
+          134217796
+        ],
+        "current_soldiers": 844,
+        "ai_base_power_raw": 2942100000
+      },
+      {
+        "army_id": 436207707,
+        "native_carmy_id": 134218137,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          100663323
+        ],
+        "current_soldiers": 117,
+        "ai_base_power_raw": 500800000
+      },
+      {
+        "army_id": 402653372,
+        "native_carmy_id": 134218144,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          100663323
+        ],
+        "current_soldiers": 474,
+        "ai_base_power_raw": 1937200000
+      },
+      {
+        "army_id": 285213101,
+        "native_carmy_id": 285212890,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          134217796
+        ],
+        "current_soldiers": 4152,
+        "ai_base_power_raw": 11551700000
+      }
+    ],
+    "SEM40_player_armies": [
+      {
+        "army_id": 486539625,
+        "current_province_id": 2623,
+        "move_target_province_id": null,
+        "route_province_ids": [],
+        "controllable": true,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular"
+      },
+      {
+        "army_id": 167772577,
+        "current_province_id": 2623,
+        "move_target_province_id": 2619,
+        "route_province_ids": [
+          2619
+        ],
+        "controllable": true,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving"
+      }
+    ],
+    "employer_independently_confirmed_in_authorized_small_range": false,
+    "strict_company_to_new_army_binding_verified": false,
+    "payment_attribution_verified": false,
+    "arrival_relief_or_victory_verified": false,
+    "selected_purpose_war_ids": [
+      100663323
+    ],
+    "selected_stakes": {
+      "worth_strategic_reserve": true,
+      "critical_primary_title": true,
+      "reasons": [
+        "losing_defence_targets_current_primary_title",
+        "losing_defence_targets_current_directly_held_title"
+      ]
+    },
+    "complete_market_observer": {
+      "schema": "xar.mercenary-candidate-observer.v1",
+      "candidate_count": 584,
+      "eligible_count": 1,
+      "rejection_reason_counts": {
+        "company_already_employed": 63,
+        "contract_exceeds_declared_cash_opportunity_cost_limit": 507,
+        "native_composition_or_complete_hire_terms_not_ready": 564,
+        "native_hire_or_affordability_rejected": 571,
+        "same_frame_contract_and_military_cash_allocation_not_ready_or_not_retained": 480
+      },
+      "candidate_digest_sha256": "fd9dde2ffb0350cfaf45d45774d4117ea16a2af583df696c846badaf9c6e6fda",
+      "digest_error": null,
+      "digest_representation": "UTF-8 JSON array, sorted mapping keys, compact separators, no NaN",
+      "non_selected_counterfactual_details_retained": false,
+      "full_diagnostic_reconstruction_available": false,
+      "assessment_source_sha256": "542712b175d3b6db71fe2368e965a8955062b5080261637f8a6f7764b5489e99",
+      "input_observation_binding": {
+        "schema": "ck3_12004_player_mercenary_context_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "actor_character_id": 40695,
+        "date_raw": 53364000,
+        "capture_epoch": 4320245,
+        "source_kind": "current_validated_market_observation_not_immutable_archive"
+      },
+      "input_query_reference": null
+    },
+    "market_body_reread": false,
+    "all_hostile_soldiers": 4743,
+    "current_cash_above_200_gold_raw": 2389448,
+    "original_half_cash_package_cap_raw": 21744724,
+    "original_package_remaining_after_quote_raw": 644724,
+    "no_fresh_quote_or_additional_purchase_recommendation": true
+  },
+  "source_changes": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 19263,
+      "sha256": "b137facb9cb7a05d41bad9c313f467e6bc6fec232a74ad3a8d985e1de18805bd"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_tradeoff_v1.py",
+      "bytes": 18843,
+      "sha256": "184be038b8d340331065df657b447f3d76f7b04c87adb73212a85d24f149bd57"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+      "bytes": 29166,
+      "sha256": "284f2115eeeb79c31fe5522c30c8d60d434cdf79c9aaccee030a0c9613e09b45"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_mercenary_package_followup_v1.py",
+      "bytes": 11557,
+      "sha256": "4370ba9d0554d40a18f2ff8f2b43e585cd08b760a2caa96772e6a28e42d5940c"
+    }
+  ],
+  "source_tests": {
+    "pytest_passed": 45,
+    "schema": "xar.p71-inventory-package-source-tests.v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_utc": "2026-10-18T00:37:02.970356+00:00",
+    "ended_utc": "2026-10-18T00:37:17.619425+00:00",
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\test-tmp02",
+      "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py"
+    ],
+    "exit_code": 0,
+    "log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\PUBLIC-FINAL-TESTS02.log",
+      "bytes": 102,
+      "sha256": "a6888d23591e6e6ce50f7f9794d28fea896b10261f30f440e582ae97e2ada9df"
+    },
+    "live_operations": 0
+  },
+  "external_evidence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\R8-HIRE-POST-FOCUSED.json",
+    "bytes": 62137,
+    "sha256": "2b24c094744108ab8dc0736f2b2bdf5936547214227d4c00cbef21fd1b7964f5"
+  },
+  "source_only_capacity": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-MERCENARY-COMBINATION-AUDIT-SOURCE-CONSUMER.json",
+    "bytes": 3311,
+    "sha256": "bc45bedef701a506d54e5e32c77711dc039e34588eba46e6c3db58258fdfcd4d"
+  },
+  "limits": [
+    "-100 can suppress new procurement by policy; observed active war and global hostile risk remain",
+    "first inventory milestone is not strict company affiliation or army creation proof",
+    "unknown pending claims never resubmitted",
+    "overlapping wars share the original cumulative cash envelope; no repeated current-half-cash reset",
+    "no complete fresh market in this audit; cannot advise another hire or assert a 4152-man reversal",
+    "current R9 safe route work, Native risk guards and live owner untouched"
+  ],
+  "runtime_deployment": false,
+  "live_operations": 0,
+  "driver_archive_large_market_save_media_body_reads": 0,
+  "external_review_utc": "2026-10-19T23:30:00Z",
+  "prior_source_test_epoch": {
+    "pytest_passed": 44,
+    "schema": "xar.p71-inventory-package-source-tests.v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_utc": "2026-10-18T00:34:02.085354+00:00",
+    "ended_utc": "2026-10-18T00:34:15.484028+00:00",
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\test-tmp01",
+      "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py"
+    ],
+    "exit_code": 0,
+    "log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\PUBLIC-FINAL-TESTS01.log",
+      "bytes": 187,
+      "sha256": "56f8a0d886309f77206e652425529133eb4de73ceba54308b717813896caa75e"
+    },
+    "live_operations": 0
+  },
+  "final_diff_after_prior_tests": "Persist inventory observation during concrete army orders before employer readback; pending remains unresolved; new mandatory regression added"
+}
