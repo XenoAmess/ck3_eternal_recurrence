@@ -882,7 +882,7 @@ def _normalize_active_siege(
                 f"native {name}.assault_daily_casualties is required"
             )
     result = {
-        "siege_id": _positive_int32_id(
+        "siege_id": _observed_siege_id(
             value.get("siege_id"), f"{name}.siege_id"
         ),
         "besieging_army_id": optional_public_cunit_id(
@@ -4952,6 +4952,14 @@ def is_native_war_step(step: object) -> bool:
 def _non_negative_id(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise ValueError(f"{name} must be a non-negative integer")
+    return value
+
+
+def _observed_siege_id(value: object, name: str) -> int:
+    # Validated component handles may use slot zero. Missing/-1 are not an
+    # active siege; keep the existing nonnegative signed-int32 wire boundary.
+    if type(value) is not int or not 0 <= value <= 2**31 - 1:
+        raise ValueError(f"{name} must be a non-negative observed SiegeID int32")
     return value
 
 

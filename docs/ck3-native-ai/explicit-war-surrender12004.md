@@ -29,3 +29,15 @@
 来源包：`C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v5-20261018/mcp/explicit-surrender-a01/HANDOVER.json`，4147B，SHA-256 `2f52c6c628bb3a18869cef8ab60de8df579905cceebeb28623b5384f3c3c3f4e`。补丁23361B，SHA-256 `2ed557191a75663ae4f1e7e5b8a36d8f67ba7b58c45588f5135c7ea9c877fe55`。八项检查及冻结查询回放的精确回执身份在该清单中，原失败检查保留。
 
 实现位于 `bridge/explicit_war_surrender_v1.py`、`bridge/native_driver.py` 与 `bridge/service.py`；使用既有 `mcp_server.py` 工具注册。原游戏命令链和自动应急策略保留，当前新增业务资格仍待后继实机读回。
+
+## R0021 实机补注：普通显式认输已完成
+
+`machine_id: 4-8e1c2f1861`，**2026-10-18T15:23:49Z**：`ck3_surrender_war(8, expected_revision=3)` 从正常防守方查询单次提交，原查询结果为 `attacker_victory`。首 ACK 后战争仍在，记 `submitted_pending`；未重复发送。**15:24:07Z** 独立快照 `revision=4/native_revision=3` 中 `active_wars=[]`，虔诚 `20000→19655`，坎特伯雷 `355` 前后仍由玩家 `15893` 持有。CB 专用条款及对方响应不可观察的字段保持未知；其它战争影响另看实际领地与资源读回。
+
+这为普通显式入口补上游戏内业务后验；自动投降策略的条件没有扩大。随后实际修改主流礼仪 `13` 花费 `300`，采用因管理身份失败而未提交，详见 [R0021 的规划经验](faith-and-power-r0021-agent-experience-12004.md)。精确原件、时间及 SHA 见同名 `.sources.json`；独立实验不构成自然战役全策略资格。原 host1、public0 与 CK3 normalOS0 分别保留。
+
+## R0022：认输后编辑主流礼仪的核心信条，并正常采用
+
+`machine_id: 4-8e1c2f1861`，2026-10-18 R0022 再次经新鲜原查询单次认输 War8；初 ACK 为 pending，独立后态战争清空，虔诚 `20000→19655`。坎特伯雷355保留，Jazira6707归对方12908，投降实际支出345；这不是无代价退战。
+
+随后在保留自身 Faith 宗教领袖的明示准备下，编辑原主流礼仪13的一个核心信条，实际支出300；再以原Can真、bypass0正常采用坎特伯雷4，支出1000。Faith50圣地5→6，旧七Faith等级及库存ID22保留，Faith50/Religion19/礼仪13保持。两次确认分别由独立实际take记录，未重演、未执行键鼠兜底。完整机制与规划边界见 [R0022经验](faith-and-power-r0022-agent-experience-12004.md)及其sources；原public0/host1/CK3normalOS0分别保留，无新恢复资格。
