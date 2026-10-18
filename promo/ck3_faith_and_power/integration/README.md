@@ -2,6 +2,8 @@
 
 **后续生产先读[系列研究与讲解方法](../docs/production-lessons.md)。** 先明确要支持的玩家决策、所需观测和因果验证，再编排声画；研究同时演进现有MCP与智能体。下述初始试拍／authoring状态保留各自历史身份，当前成果见[一期v4交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)；技术检查与讲解效果、实际听审分别记录。
 
+本轮按[第五轮整体重排](../docs/episode01-revision-v5.md)实现缺失教改MCP并制作双向案例；配音与新take前应用[制作经验](../docs/production-experience.md)。源码候选、构建、实测、配音和最终媒体各自保留实际状态，不从已有run继承新版资格。
+
 采用／圣物两条因果试拍仍是 `CAPTURE_PENDING`，系列 ProjectConfig 三章均为 `planned`。第一期已有独立的158条逐句文稿和准备场景有声样段；[第一期输入与机器索引](../episode01/README.md)保存其边界。上下文原片不补齐原生业务链，也不让两条因果试拍获得采用／圣物结果信用。
 
 2026-10-17T05:42:56.604633Z，`machine_id: 4-8e1c2f1861` 已创建并验证一个[authoring-only run](../build-records/authoring-20261017-a01.json)：12份小型输入、270,034 B，固定源码提交`bf5d4d871f4a974339279a110693074df3aef406`和再次查询的最新0.3.0 wheel。其phase明确跳过实际试拍，不能作为capture或render资格；下文命令是此能力的可复用入口，新attempt须另选目录。

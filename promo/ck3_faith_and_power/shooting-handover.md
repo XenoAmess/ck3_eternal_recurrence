@@ -2,6 +2,8 @@
 
 **2026-10-18现行接手要求：先读[系列研究与讲解方法](docs/production-lessons.md)，再写稿、配音或开拍。** 以玩家目标组织工作，追清机制因果、各主体的权责和利益，比较选择并回流智能体能力。下文2026-10-17的待拍状态是初始交接截点，当前已有[一期v4及研究／MCP更新](../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)，接手时复用已有成果。
 
+同时读[制作经验](docs/production-experience.md)，将已归纳的指导用于本次写稿和审片。当前执行[第五轮整体重排](docs/episode01-revision-v5.md)：双向跨宗教采用已获用户确认进入一期主线，补完整条件、主体后果、建筑分类与实例，并重新编排顺序和转场。
+
 > **2026-10-18 后续拍摄约束：** 左上蓝色旧智能体面板已废弃，所有新录制不再启动或挂载它。不要复用历史 `decision_overlay*.py` 拍摄 helper；旧素材可保留，无须为此重录。共享 recorder 在新 take 前拒绝残留旧面板，原版 GUI、新版 decision UI 与决策记录照常使用。新 allocation 必须按当前源码重新准备并 pin recorder，不能修改旧冻结 runtime 追认新规则。详见[迁移说明](integration/legacy-decision-panel-retirement.md)。
 
 
