@@ -20,3 +20,7 @@
 machine_id仍为`4-8e1c2f1861`。上述20:52:13Z冻结收据及其pending原文保留；后继实际证据见[独立闭场记录](faith-and-power-episode01-r0011-closure.json)。游戏PID14764经原生GUI正常退出，独立retained OS0及正常关闭资格true；原public进程16340实际wait0、keeper实际0。**原native host18004实际wait1，原报告仍RED/error=null/cleanup=true**，原因是早先`r10-value-abandon-open-decision-a01`的MCP错误仍留在整段trace中，后续continue成功没有把它洗成PASS。
 
 普通normal-close helper坚持host0条件，故拒绝STOP；没有放松该门、伪造host0或改RED为GREEN。Root以本场明确绑定的mixed-result proof，执行仅回收资源的协作keeper STOP，再取得原keeper退出与CAS11619，于2026-10-17T21:06:31.538158Z释放，state=done/resources=[]。正常游戏退出、资源释放、独立单项业务成功与整段trace资格分别记录；本场不能写“全部0”或“trace PASS”，整产品/发布仍false。
+
+## 2026-10-18：放弃时接收者的来源规则
+
+[1.20.0.4 放弃圣地与圣物接收者](holy-site-abandon-relic-recipient12004-v5.md)逐项区分共享、最后关联、有无县主及空库存。最后关联且县主存在时选该县主，是原版脚本的确定目标；本场 actor=县主的实测边界仍按上文保留，不追认为异人对照。

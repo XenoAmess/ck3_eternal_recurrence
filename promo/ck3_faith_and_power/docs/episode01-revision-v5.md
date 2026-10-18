@@ -27,6 +27,8 @@
 
 这里是工作范围，不是各项已完成的声明。已完成研究可并行支持写稿；必要实机、MCP编译资格、配音与媒体生产分别取得当次准入和真实结果后，更新原专题与本记录。
 
+2026-10-18T06:28Z后继：五项静态专题已进入主树，分别为[双向采用](../../../docs/ck3-native-ai/holy-site-cross-religion-adoption-12004.md)、[AI清理](../../../docs/ck3-native-ai/holy-site-relic-ai-cleanup-conditions12004-v5.md)、[好感完整分支](../../../docs/ck3-native-ai/holy-site-relic-opinion-conditions12004-v5.md)、[退出收件人](../../../docs/ck3-native-ai/holy-site-abandon-relic-recipient12004-v5.md)和[特殊建筑全集分类](../../../docs/ck3-native-ai/special-building-religion-holy-site-gates12004.md)。各自保存源码范围、来源SHA与实测边界。技术作者的口播段仍为编排依据，Root已横查术语、条件与转场，纠正其中沿用的非官方简称；整片讲解和新实例继续由制作线程重写。不能把技术表列全认作最终旁白合格。
+
 ## 时长依据与当前状态
 
 用户作决定前的估算：完整双向章节6–8分钟，吸收已有铺垫后净增约5–7分钟；若直接加到旧35分钟版，约40–42分钟。用户选择整体重排，因此新版以完整新稿和实际配音重新计时，不能机械相加，也不为保住旧片长删掉已确认的核心内容。

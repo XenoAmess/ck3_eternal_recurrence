@@ -1,0 +1,131 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "holy-site-ai-removal-conditions-v5",
+  "question": "What exact actor and per-item conditions admit AI relic cleanup, what does multi-clause NOT compute, and what are reclaim-relic AI zeal/title thresholds?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "AI cleanup actor, directly held county, HolySite association and per-item recognition; separate reclaim CB attacker",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "session/fullID generation for game objects; exact EXE build for code; no cross-reload pointer reuse",
+    "producer_trigger": "unknown",
+    "producer": "Fresh stock ai_remove decision; original NOT/NOR shareCNot and HasAnyVariable family semantics",
+    "caller": "Existing exact remove script effect guard/receiver reused, no native calls",
+    "consumer": "Complete per-item actual Boolean filter, original guarded remove consumer reused; reclaim AI>=100 and highestHeld>=duchy",
+    "cache_lifetime": "Script full-file SHA binds conditions; live object facts and natural eligibility are not inferred",
+    "expected_signal": "Complete exact body/branch/source pins, actual callsites on instruction boundaries, per-slot contribution/zero reasons, and explicit cache write/read sites; numerical examples separately static/pending/live history",
+    "zero_sample_meaning": "No process/runtime samples are taken. No new callsite found in bounded static set does not prove the engine never refreshes or refreshes on a calendar cadence.",
+    "stop_condition": "2MiB maximum; reviewed focused NOT/NOR family and one availability HasAnyVariable family only, at most20 small functions/chunks/windows; no general script compiler/variable platform",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "prior",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/permissions-ai-opinion/ai/ai-callgraph-review.md",
+      "sha256": "5fa36b1bc1ba265f1168bce06c94ca3dbf1912018090e6844571923d93965f5a",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Prior exact AI script-to-guard/receiver and explicitly unresolved multi-clause NOT"
+    },
+    {
+      "id": "stock",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v5-20261018/relic-ai/stock-source-excerpts-a01.json",
+      "sha256": "562ef57bdaddd17f0b993276032b1126880a47f7efc0bb5ed588a71431657a7e",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Fresh exact stock decision, availability, defines and CB full-file hashes and numbered excerpts"
+    },
+    {
+      "id": "logic",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v5-20261018/relic-ai/SOURCE-CONTRACT.logic-not-a01.json",
+      "sha256": "77308320c316155969ddadbfaed9d948e4aeb32db7252f05b7933cda061f69bc",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Reviewed NOT/NOR registry->factory->bool semantics plus HasAnyVariable receiver; no live invocation"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "script",
+      "label": "script"
+    },
+    {
+      "id": "availability",
+      "label": "availability"
+    },
+    {
+      "id": "not_semantics",
+      "label": "not_semantics"
+    },
+    {
+      "id": "per_item",
+      "label": "per_item"
+    },
+    {
+      "id": "CB",
+      "label": "CB"
+    }
+  ],
+  "edges": [
+    {
+      "id": "availability",
+      "from": "script",
+      "to": "availability",
+      "label": "Expand actual availability flags and adult threshold",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock",
+        "logic"
+      ]
+    },
+    {
+      "id": "protection",
+      "from": "not_semantics",
+      "to": "per_item",
+      "label": "Close actual multi-clause NOT before Boolean simplification",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock",
+        "logic"
+      ]
+    },
+    {
+      "id": "cleanup",
+      "from": "script",
+      "to": "per_item",
+      "label": "Separate is_valid witness from effect sweep and final original guard",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock",
+        "logic"
+      ]
+    },
+    {
+      "id": "CB",
+      "from": "script",
+      "to": "CB",
+      "label": "Exact AI zeal and title plus artifact eligibility",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock",
+        "logic"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "static_conditions",
+      "question": "Complete source decision conditions, no new natural execution",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T06:16:33.223363+00:00",
+  "source_head": "fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36"
+}

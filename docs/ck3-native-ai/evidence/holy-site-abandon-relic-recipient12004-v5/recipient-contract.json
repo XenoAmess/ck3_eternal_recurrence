@@ -1,0 +1,112 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T06:10:55.612758+00:00",
+  "source_commit": "fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36",
+  "build_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "proof_layer": "existing-exact-build-native-source-and-fresh-stock-script-review",
+  "new_live_evidence": false,
+  "build_performed": false,
+  "new_EXE_reads": 0,
+  "game_or_process_access": false,
+  "review_by_utc": "2026-10-24T00:00:00Z",
+  "schema": "ck3-12004-abandon-last-faith-return-conditions-v1",
+  "scope": "Normal vanilla1.20.0.4 Abandon action with valid objects and completed original decision effect. Script target guarantees are distinct from live postcondition observations.",
+  "identities": {
+    "A": "decision root/actor",
+    "F": "A.faith",
+    "S": "selected HolySite",
+    "H": "S.holy_site_county.holder, saved once before return loop",
+    "D": "original donor, not read by this return branch"
+  },
+  "ordered_effect": [
+    "Save H from S.holy_site_county.holder at374–375",
+    "If H exists and no associated Faith other than F, every_enshrined_artifact set_owner H at379–387",
+    "F.remove_holy_site S with actor A at391–395",
+    "Consume free HolySite action at396",
+    "If H exists and H!=A, countyholder opinion modifier at398–408",
+    "Actor ten-year modifier at410–413"
+  ],
+  "decision_table": [
+    {
+      "case": "normal decision not admitted",
+      "conditions": "selected Site missing, this Faith not associated, current Site eminent for actor Faith, total count at minimum, or other normal decision guard fails",
+      "transfer": "No normal Abandon execution",
+      "membership": "No normal execution",
+      "confidence": "source validity gates; not a failed live attempt"
+    },
+    {
+      "case": "another associated Faith remains",
+      "conditions": "At least one any_holy_site_faith full identity != actor.faith, regardless followers/grade/recognition",
+      "transfer": "No return loop; original site keeps its enshrined artifacts through this script",
+      "membership": "Remove only actor Faith relation",
+      "confidence": "source; R0010 nonempty shared readback corroborates"
+    },
+    {
+      "case": "last associated Faith, H exists, enshrined objects exist",
+      "conditions": "No other associated Faith; saved countyholder H resolves",
+      "transfer": "Every object enumerated by every_holy_site_enshrined_artifact gets set_owner target H before membership removal",
+      "membership": "Remove actor Faith after transfers",
+      "confidence": "script guarantees chosen target; R0011 confirms H=actor only"
+    },
+    {
+      "case": "last associated Faith, H exists, no enshrined objects",
+      "conditions": "Same return guard, but iterator yields none",
+      "transfer": "Zero objects transferred; no object is created",
+      "membership": "Remove actor Faith",
+      "confidence": "script empty-loop boundary, no new live test"
+    },
+    {
+      "case": "last associated Faith, H absent",
+      "conditions": "exists scope:county_holder is false",
+      "transfer": "Return branch skipped; no actor/donor/HoF fallback and no transfer in this script",
+      "membership": "Remove actor Faith still follows",
+      "confidence": "source branch only; do not claim a new no-holder live outcome or later object reachability"
+    }
+  ],
+  "recipient_tests": {
+    "H_equals_actor": "Not required; only when H=A does return happen to actor",
+    "H_equals_original_donor": "Not required; original donor is not selected",
+    "H_is_vassal_of_A": "Not tested; H receives because H holds the county, not because of vassal status",
+    "H_faith_equals_F": "Not tested",
+    "H_faith_recognizes_each_relic": "Not tested",
+    "other_associated_faith_followers_positive": "Not tested; any other association blocks this last-Faith return loop",
+    "other_associated_faith_eminent": "Not tested",
+    "site_Active_or_rarity": "Not tested by return guard"
+  },
+  "what_H_is_not": [
+    "top liege",
+    "barony/temple holder merely by local rank",
+    "original donor",
+    "current actor unless the same countyholder",
+    "automatic Head of Faith"
+  ],
+  "different_path_comparison": {
+    "explicit_remove": "old object -> valid command actor, explicit removal callback applies",
+    "same_slot_replacement": "old object -> valid command actor, new object -> site; enshrine/remove callbacks apply",
+    "Abandon_last_Faith": "objects -> saved countyholder via generic set_owner, not explicit removal callback"
+  },
+  "cost_scope": "Abandon retains its own piety/cooldown/free-use/opinion logic. inventory_on_actions322–325 excludes generic effects from explicit relic-removal on_action; do not add explicit remove piety/devotion cost or declare every unrelated owner effect risk-free.",
+  "historical_observations": {
+    "R0010": "2026-10-17 20:12:41–42Z: site14 leaves Faith50 but still26/27/36/49; artifact64 remains slot0, owner site14. Actor is countyholder; this is shared branch.",
+    "R0011": "2026-10-17 20:51:03Z independent artifact237 owner=15893, holy-site owner null, player owned true/unequipped; last Faith exits site326. Actor and H are both15893; this does not empirically distinguish different-person target selection. Successful Abandon action was not recorded on video."
+  },
+  "planner_observations_before": [
+    "actual A/F/S identity and original fresh normal permission",
+    "complete associated Faith fullID list, not followers or recognition substitutes",
+    "actual county title holder H, distinct from barony holder/top liege",
+    "actual enshrined objects via existing supported native context; raw ref list is not assumed equivalent to the original iterator"
+  ],
+  "planner_observations_after": [
+    "Faith relation removal",
+    "independent each-object character/holy-site owner and receiver inventory",
+    "world Site/object availability and inventory, not assume destroyed",
+    "resource/cooldown/opinion postconditions separately from ACK"
+  ],
+  "source_evidence_original": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\return\\return-source-evidence-a01.json",
+    "bytes": 13387,
+    "sha256": "621a4b13f4073620ebc6055efd218de7d731c82604cca4a639f9023af8fa924a"
+  },
+  "source_evidence_repository_path": "docs/ck3-native-ai/evidence/holy-site-abandon-relic-recipient12004-v5/source.json"
+}

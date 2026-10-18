@@ -1,0 +1,114 @@
+{
+  "schema": "ck3-holy-site-relic-opinion-conditions-source-contract-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_observed_at_utc": "2026-10-18T06:11:51.892031+00:00",
+  "assembled_at_utc": "2026-10-18T06:24:07.991775+00:00",
+  "repo_head_context_at_assembly": "438517c223b45faa7de77bee782cca4c341aa70e",
+  "game_version_baseline": "1.20.0.4",
+  "steam_build_baseline": "25734779",
+  "version_boundary": "version identity reuses prior permissions research; this package adds fresh script reads, not new EXE or live qualification",
+  "source_pins": [
+    {
+      "id": "callbacks",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+      "bytes": 13630,
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "line_count": 541,
+      "read_at_utc": "2026-10-18T06:11:51.885716+00:00",
+      "machine_id": "4-8e1c2f1861"
+    },
+    {
+      "id": "modifiers",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\pam_opinions.txt",
+      "bytes": 4274,
+      "sha256": "68cdfc641a32a38daf6e9de6651634278b522b26c2886fbf6b55341ce7e09b52",
+      "line_count": 192,
+      "read_at_utc": "2026-10-18T06:11:51.886173+00:00",
+      "machine_id": "4-8e1c2f1861"
+    },
+    {
+      "id": "opinion_format",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\_opinions.info",
+      "bytes": 2385,
+      "sha256": "fac241b8983c5593d9528e8e3e84ce98e9f8cf089760f24ad534d80d381efec0",
+      "line_count": 94,
+      "read_at_utc": "2026-10-18T06:11:51.886455+00:00",
+      "machine_id": "4-8e1c2f1861"
+    },
+    {
+      "id": "traits_zh",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\traits_l_simp_chinese.yml",
+      "bytes": 127953,
+      "sha256": "4499144a67951fa7c5fba5e0f52de2db94b3b1f85bfee3cc03ab9bf7e46fb554",
+      "line_count": 1372,
+      "read_at_utc": "2026-10-18T06:11:51.887835+00:00",
+      "machine_id": "4-8e1c2f1861"
+    },
+    {
+      "id": "stances_zh",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\vassal_stances_l_simp_chinese.yml",
+      "bytes": 24244,
+      "sha256": "327d3c0f1e2e56d50c3d6a011c04de9ae022b7de5d18572e005158fa1e955f9d",
+      "line_count": 163,
+      "read_at_utc": "2026-10-18T06:11:51.888356+00:00",
+      "machine_id": "4-8e1c2f1861"
+    },
+    {
+      "id": "faith_followers",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "line_count": 3599,
+      "read_at_utc": "2026-10-18T06:11:51.889152+00:00",
+      "machine_id": "4-8e1c2f1861"
+    }
+  ],
+  "evidence": {
+    "path": "stock-source-excerpts.json",
+    "bytes": 23178,
+    "sha256": "72e8186daa0730b5505d8bd491cc588cff9657d3917d2d777c3b55ab00b4072c"
+  },
+  "derivation": {
+    "enshrine_nonempty_positive_gate": "R(new,actor_faith) && R(old,actor_faith) && old_rarity >= new_rarity",
+    "loss_gate_L": "R(old,actor_faith) && (replacement_absent || new_rarity < old_rarity)",
+    "nonloss_negative_subject_gate": "subject_faith != actor_faith && R(old,subject_faith)",
+    "named_modifiers": {
+      "enshrined_holy_relic_at_holy_site": {
+        "opinion": 15,
+        "years": 10,
+        "decaying": true
+      },
+      "removed_holy_relic_from_holy_site": {
+        "opinion": -20,
+        "years": 10,
+        "decaying": true
+      }
+    },
+    "stacking": "default no in _opinions.info; neither named modifier overrides; reapplication resets duration",
+    "semantic_review": "manual full branch inspection; no new parser or engine execution proof"
+  },
+  "unknowns": [
+    "truth value for absent replacing scope in the enshrine ?= gate",
+    "actual live before/after net opinion and prior modifier state",
+    "natural NPC execution of these callbacks in a fresh campaign"
+  ],
+  "qualification": {
+    "script_branch_review": true,
+    "source_pin_reuse": true,
+    "game_actions": 0,
+    "SDK_calls": 0,
+    "builds": 0,
+    "tests": 0,
+    "continuous_narration_review_completed": false,
+    "narration_or_media_produced": false
+  },
+  "original_frozen_delivery": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\opinion\\DELIVERY.json",
+    "bytes": 4726,
+    "sha256": "8d53f11c8f593a5100a5f0b4ca86851a8638849ede481f8bae663d4395f205e3"
+  },
+  "retention": {
+    "review_after_utc": "2026-10-20T06:11:51.531947+00:00",
+    "reason": "active v5 opinion correction and planner/narration source contract"
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "schema": "ck3_holy_site_relic_ai_cleanup_planning_clarification_v5",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T06:16:33.223363+00:00",
+  "source_head": "fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_contract": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v5-20261018/relic-ai/SOURCE-CONTRACT.logic-not-a01.json",
+    "bytes": 150698,
+    "sha256": "77308320c316155969ddadbfaed9d948e4aeb32db7252f05b7933cda061f69bc"
+  },
+  "actor_admission": {
+    "all": [
+      "AI",
+      "available_ai_adult",
+      "actor Faith == top_liege Faith",
+      "top_liege AI",
+      "ownFaith religious_head absent OR AI",
+      "zealous trait OR ai_zeal>=25",
+      "exists direct-held county target witness"
+    ],
+    "independent_topliege": "self",
+    "human_protection_checks_exactly": [
+      "top_liege",
+      "actor currentFaith religious_head"
+    ],
+    "not_checked_as_human_protection": [
+      "original donor",
+      "any intermediate liege",
+      "another associatedFaith religious_head"
+    ],
+    "availability": {
+      "all_quick_flags": {
+        "ai": true,
+        "adult": true,
+        "alive": true,
+        "travel": false,
+        "in_army": false,
+        "imprisoned": false,
+        "incapable": false
+      },
+      "adult_stock_defines": {
+        "male": 16,
+        "female": 16
+      },
+      "contagious_deadly_disease_trait_flag_absent": true,
+      "involved_activity_absent": true,
+      "no_any_variables": [
+        "homage_liege_scope",
+        "meditation_character_flag",
+        "local_shrine_rite",
+        "petition_liege_character_flag",
+        "petition_head_of_faith_petitioner",
+        "holding_court_character_flag",
+        "gone_adventuring"
+      ],
+      "is_being_visited_on_tour_strict": false,
+      "planning_an_activity_character_flag_absent": true
+    },
+    "realm_at_war_excluded": false
+  },
+  "per_item": {
+    "definitions": {
+      "F": "actor currentFaith",
+      "S": "current HolySite",
+      "I": "current enshrined artifact",
+      "G": "associated Faith being iterated",
+      "R": "original is_holy_relic_for",
+      "OwnSite": "Faith F in associated HolySite faiths"
+    },
+    "is_valid_witness_A": "OwnSite(S,F) AND exists I: NOT R(I,F) AND CanRemove(actor,S,I)",
+    "is_valid_witness_B": "exists associated G!=F: G.num_county_followers>0 AND hostility(F,G)>=2 AND exists I: R(I,G) AND CanRemove(actor,S,I)",
+    "effect_A": "G==F AND NOT R(I,F)",
+    "effect_B": "G!=F AND G.num_county_followers>0 AND hostility(F,G)>=2 AND R(I,G) AND NOT R(I,F) AND NOT OwnSite(S,F)",
+    "combined_static_filter": "NOT R(I,F) AND (OwnSite(S,F) OR exists associated G!=F: G.num_county_followers>0 AND hostility(F,G)>=2 AND R(I,G))",
+    "final_admission": "original remove script effect rechecks29ABB20 for each attempted removal; no implication from is_valid witness to actual success",
+    "hostile_branch_protection_truth_table": [
+      {
+        "recognized_self": false,
+        "own_site": false,
+        "multi_clause_NOT": true,
+        "hostile_branch_protected": false
+      },
+      {
+        "recognized_self": true,
+        "own_site": false,
+        "multi_clause_NOT": false,
+        "hostile_branch_protected": true
+      },
+      {
+        "recognized_self": false,
+        "own_site": true,
+        "multi_clause_NOT": false,
+        "hostile_branch_protected": true
+      },
+      {
+        "recognized_self": true,
+        "own_site": true,
+        "multi_clause_NOT": false,
+        "hostile_branch_protected": true
+      }
+    ],
+    "county_followers_scope": "G Faith scope; not asserted to be local to S county",
+    "loop_atomicity": "not asserted; per-item callbacks may alter later world state"
+  },
+  "CB_AI_local_rules": {
+    "key": "reclaim_relic_artifact_war",
+    "AI_zeal_minimum": 100,
+    "AI_highest_held_title_tier_minimum": "tier_duchy",
+    "zealous_trait_bypass_for_AI_100_gate": false,
+    "humans_exempt_from_these_two_AI_gates": true,
+    "all_attackers_exclude_landless_adventurer": true,
+    "different_attacker_defender_Faith": true,
+    "ordinary_item_all": [
+      "recognized by attackerFaith",
+      "not recognized by defenderFaith",
+      "artifact_prevent_transfer variable absent"
+    ],
+    "ordinary_item_hostility_2_gate_present": false,
+    "original_donor_or_personal_claim_gate_present": false,
+    "AI_inventory_scope": "defender own character inventory",
+    "human_extra_inventory_scope": "defender vassal-or-below whose Faith differs from attackerFaith",
+    "AI_neighbor_only_config": true,
+    "max_ai_diplo_distance_to_title_config": 500,
+    "struggle_item": "separate Iberian struggle flag/access branch; exact2231..2248 retained",
+    "native_full_declare_permission": "still separate, not observed",
+    "natural_choice_and_result": "not observed"
+  },
+  "normal_remove_recipient": "valid current AI actor, not donor",
+  "scope": "static planning knowledge; no current actor permission/natural execution qualification",
+  "current_actor_admission_observed": false,
+  "natural_execution_observed": false,
+  "new_tool_flag_or_native_calls": false,
+  "target_docpath": "docs/ck3-native-ai/holy-site-relic-ai-cleanup-conditions12004-v5.md",
+  "truth_table": [
+    {
+      "recognized_self": false,
+      "own_site": false,
+      "multi_clause_NOT": true,
+      "hostile_branch_protected": false
+    },
+    {
+      "recognized_self": true,
+      "own_site": false,
+      "multi_clause_NOT": false,
+      "hostile_branch_protected": true
+    },
+    {
+      "recognized_self": false,
+      "own_site": true,
+      "multi_clause_NOT": false,
+      "hostile_branch_protected": true
+    },
+    {
+      "recognized_self": true,
+      "own_site": true,
+      "multi_clause_NOT": false,
+      "hostile_branch_protected": true
+    }
+  ]
+}

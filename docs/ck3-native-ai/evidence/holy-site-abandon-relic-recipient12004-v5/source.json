@@ -1,0 +1,158 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T06:10:55.612758+00:00",
+  "source_commit": "fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36",
+  "build_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "proof_layer": "existing-exact-build-native-source-and-fresh-stock-script-review",
+  "new_live_evidence": false,
+  "build_performed": false,
+  "new_EXE_reads": 0,
+  "game_or_process_access": false,
+  "review_by_utc": "2026-10-24T00:00:00Z",
+  "schema": "ck3-12004-last-faith-return-review-source-v1",
+  "admission": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\ADMISSION.json",
+    "bytes": 1682,
+    "sha256": "791b184097adce3fb954829ec56c1e2d4d30b984cbbd5b2d649503b86e191a7a"
+  },
+  "machine_identity": {
+    "argv": [
+      "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_live_run_id.py",
+      "machine"
+    ],
+    "exit_code": 0,
+    "stdout": "4-8e1c2f1861\n"
+  },
+  "fresh_exe_identity_reuse": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\ROOT-TASK-START-PREFLIGHT.json",
+    "bytes": 21681,
+    "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+  },
+  "stock_scripts": [
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+        "bytes": 19759,
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+      },
+      "excerpts": [
+        {
+          "first_line": 323,
+          "last_line": 414,
+          "numbered_text": "323: \t\tbarony = 0\n324: \t\tcounty = 0\n325: \t\tduchy = 0\n326: \t\tkingdom = 0\n327: \t\tempire = 0\n328: \t\thegemony = 0\n329: \t}\n330: \n331: \tis_invisible = yes\n332: \n333: \tis_valid_showing_failures_only = {\n334: \t\texists = scope:selected_item\n335: \t}\n336: \n337: \tis_valid = {\n338: \t\tsave_temporary_scope_as = root\n339: \t\texists = scope:selected_item\n340: \n341: \t\tcan_manage_faith_holy_sites_trigger = yes\n342: \n343: \t\tscope:selected_item ?= {\n344: \t\t\troot.faith = {\n345: \t\t\t\tsave_temporary_scope_as = faith\n346: \t\t\t\tis_faith_holy_site = prev\n347: \t\t\t\tNOT = { is_faith_eminent_holy_site = prev }\n348: \t\t\t\tcustom_tooltip = {\n349: \t\t\t\t\ttext = abandon_holy_site_decision_above_holy_sites_min\n350: \t\t\t\t\tlist_size:holy_site > root.faith.religion.holy_sites_min\n351: \t\t\t\t}\n352: \t\t\t}\n353: \t\t}\n354: \n355: \t\t# Show usage of free holy site action, if appropriate\n356: \t\tfaith = {\n357: \t\t\tholy_site_free_action_show_usage_trigger = yes\n358: \t\t}\n359: \t}\n360: \n361: \tcost = {\n362: \t\tpiety = {\n363: \t\t\tvalue = 1000\n364: \t\t\tif = {\n365: \t\t\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }\n366: \t\t\t\tmultiply = 0\n367: \t\t\t}\n368: \t\t}\n369: \t}\n370: \n371: \tcooldown = { years = holy_site_decision_cooldown_value }\n372: \n373: \teffect = {\n374: \t\tscope:selected_item.holy_site_county.holder = {\n375: \t\t\tsave_scope_as = county_holder\n376: \t\t}\n377: \t\thidden_effect = {\n378: \t\t\t# The site outlives its last faith, but nothing can reach it again, so its relics leave before the faith does\n379: \t\t\tscope:selected_item ?= {\n380: \t\t\t\tif = {\n381: \t\t\t\t\tlimit = {\n382: \t\t\t\t\t\texists = scope:county_holder\n383: \t\t\t\t\t\tNOT = { any_holy_site_faith = { this != root.faith } }\n384: \t\t\t\t\t}\n385: \t\t\t\t\tevery_holy_site_enshrined_artifact = {\n386: \t\t\t\t\t\tset_owner = { target = scope:county_holder }\n387: \t\t\t\t\t}\n388: \t\t\t\t}\n389: \t\t\t}\n390: \t\t}\n391: \t\troot.faith = {\n392: \t\t\tremove_holy_site = {\n393: \t\t\t\ttarget = scope:selected_item\n394: \t\t\t\tactor = root\n395: \t\t\t}\n396: \t\t\tconsume_free_holy_site_action_effect = yes\n397: \t\t}\n398: \t\tif = {\n399: \t\t\tlimit = {\n400: \t\t\t\texists = scope:county_holder\n401: \t\t\t\tNOT = { scope:county_holder = root }\n402: \t\t\t}\n403: \t\t\tscope:county_holder = {\n404: \t\t\t\tadd_opinion = {\n405: \t\t\t\t\tmodifier = holy_site_demoted_county_holder_opinion\n406: \t\t\t\t\ttarget = root\n407: \t\t\t\t}\n408: \t\t\t}\n409: \t\t}\n410: \t\tadd_character_modifier = {\n411: \t\t\tmodifier = holy_site_demoted_modifier\n412: \t\t\tyears = 10\n413: \t\t}\n414: \t}"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+        "bytes": 13630,
+        "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67"
+      },
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 29,
+          "numbered_text": "1: # An artifact has changed ownership\n2: # root = the artifact\n3: # scope:owner = the person who now holds the artifact\n4: # scope:old_owner = the person who used to hold the artifact\n5: # scope:old_holy_site = the holy site that used to hold the artifact (set only when\n6: #                       the artifact transitioned out of holy-site ownership into\n7: #                       character ownership; otherwise absent)\n8: on_artifact_changed_owner = {\n9: \tevents = {\n10: \t\tartifact.0011\n11: \t\tartifact.0101\n12: \t}\n13: \n14: \teffect = {\n15: \t\tif = {\n16: \t\t\tlimit = {\n17: \t\t\t\texists = scope:old_owner\n18: \t\t\t}\n19: \n20: \t\t\tsave_scope_as = artifact\n21: \t\t\tgrant_banner_house_claim_effect = yes\n22: \t\t\tevery_artifact_claimant = { #This on_action is not triggered on succession for the ones getting the claim, so we force it here\n23: \t\t\t\ttrigger_event = {\n24: \t\t\t\t\ton_action = on_artifact_claim_gained\n25: \t\t\t\t}\n26: \t\t\t}\n27: \t\t}\n28: \t}\n29: }"
+        },
+        {
+          "first_line": 318,
+          "last_line": 330,
+          "numbered_text": "318: \t\t}\n319: \t}\n320: }\n321: \n322: # Fired when an artifact has been removed from a holy site (back into the actor's inventory).\n323: # Also fires for the artifact replaced by a swap-style enshrining — in that\n324: # (Only fired from explicit enshrining/removing effects, not generic inventory effects)\n325: # case scope:replacing is the artifact that took its place.\n326: # root             = the artifact that was removed\n327: # scope:holy_site  = the holy site the artifact was taken from\n328: # scope:actor      = the character who initiated the removal\n329: # scope:replacing  = the artifact taking this one's place, if removal is part of a swap\n330: on_holy_site_artifact_removed = {"
+        },
+        {
+          "first_line": 527,
+          "last_line": 541,
+          "numbered_text": "527: # Fired whenever an artifact's holy-site ownership has changed.\n528: # (artifact is now owned by a holy site, or no longer owner by a holy site)\n529: #\n530: # root                 = the artifact\n531: # scope:holy_site      = the holy site that now owns the artifact, if any\n532: # scope:old_holy_site  = the holy site that used to own the artifact, if any\n533: # scope:old_owner      = the character who used to own the artifact, if any\n534: #\n535: # Either or both of the old_* scopes may be present depending on what the previous\n536: # owner was. The new holy_site scope is absent only if the artifact was cleared of\n537: # holy-site ownership without immediately being given to a new one.\n538: on_artifact_changed_holy_site_owner = {\n539: \teffect = {\n540: \t}\n541: }"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\artifacts\\artifact_events.txt",
+        "bytes": 97658,
+        "sha256": "aab135e64c2586b7315f0ab2e7ab14bb35801ffbbb6368649305a8d5379bfbb5"
+      },
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 57,
+          "numbered_text": "1: \n2: namespace = artifact\n3: \n4: # An artifact has changed owners.\n5: artifact.0011 = {\n6: \tscope = artifact\n7: \thidden = yes\n8: \n9: \ttrigger = {\n10: \t\texists = scope:old_owner\n11: \t\tNOT = { has_variable = suppress_artifact_notifications } \n12: \t}\n13: \n14: \timmediate = {\n15: \t\tsave_scope_as = this_artifact\n16: \t\tif = {\n17: \t\t\tlimit = {\n18: \t\t\t\tscope:old_owner = { is_alive = yes }\n19: \t\t\t}\n20: \t\t\tscope:old_owner = {\n21: \t\t\t\tsend_interface_toast = {\n22: \t\t\t\t\ttype = msg_artifact_lost\n23: \t\t\t\t\ttitle = artifact.0011.t\n24: \t\t\t\t\tleft_icon = scope:owner\n25: \t\t\t\t\tright_icon = scope:this_artifact\n26: \t\t\t\t\tcustom_tooltip = artifact.0011.tooltip\n27: \t\t\t\t}\n28: \t\t\t}\n29: \t\t}\n30: \t\t\n31: \t\tscope:owner = {\n32: \t\t\ttrigger_event = {\n33: \t\t\t\tid = artifact.0012\n34: \t\t\t\tdays = 0\n35: \t\t\t}\n36: \t\t}\n37: \t\thidden_effect = {\n38: \t\t\tif = {\n39: \t\t\t\tlimit = { has_variable = desecrated_artifact_var }\n40: \t\t\t\tremove_variable = desecrated_artifact_var\n41: \t\t\t}\n42: \t\t}\n43: \t}\n44: }\n45: \n46: artifact.0012 = {\n47: \thidden = yes\n48: \n49: \timmediate = {\n50: \t\tscope:owner = {\n51: \t\t\tsend_interface_toast = {\n52: \t\t\t\ttype = msg_artifact_gained\n53: \t\t\t\tright_icon = scope:this_artifact\n54: \t\t\t}\n55: \t\t}\n56: \t}\n57: }"
+        },
+        {
+          "first_line": 91,
+          "last_line": 99,
+          "numbered_text": "91: artifact.0101 = {\n92: \tscope = artifact\n93: \thidden = yes\n94: \n95: \ttrigger = {\n96: \t\texists = scope:old_owner\n97: \t\thas_variable = artifact_santiago_bells\n98: \t}\n99: "
+        }
+      ]
+    }
+  ],
+  "existing_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\holy-site-shared-relic-value12004.md",
+      "bytes": 23897,
+      "sha256": "44371c2c6009951bf7d1ccedaf7b362914e9856bf08a8cd26cd87e74ebb78852"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\holy-site-shared-relic-value12004\\script-costs.evidence.json",
+      "bytes": 67513,
+      "sha256": "fdde0a6ecb0ac7f2fe439ac83f46c3e706be68419f2de48f963f04efe3862a11"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r9-r0010-observations.md",
+      "bytes": 3598,
+      "sha256": "23ab61b8c6d5ae97190f2ba407536ba233403472101a82a99fea6c3e05167000"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r9-r0010-observations.evidence.json",
+      "bytes": 27032,
+      "sha256": "216d7788252fd4953cdd56ceaab4d10112584ad7dabc2a2fa8c2e5ffce4a741d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r0011-last-faith-exit.md",
+      "bytes": 4165,
+      "sha256": "bc95d725a64011e05164b27cc9467cea9930e56ba4030c017650385bcf63949d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r0011-last-faith-exit.evidence.json",
+      "bytes": 15600,
+      "sha256": "271f23b3bcdb811ec8673def15499ada7aceb456077e6641d25f963f92afb811"
+    }
+  ],
+  "native_remove_reuse": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\major-grade-value-a01\\native-child\\faith-holy-site-remove.json",
+      "bytes": 2223,
+      "sha256": "ccb0459323e690b888be1da706e607e09b4599761033630127bae98e62ce09fa"
+    },
+    "assembly": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\major-grade-value-a01\\native-child\\faith-holy-site-remove.asm",
+      "bytes": 12122,
+      "sha256": "c9a10e3099e0a37efa2b4de7fe5ba4eea423d6598de75140b1f54ebd5dbec11a"
+    },
+    "range": "2441C40..2441F23",
+    "original_boundary_scope": "bounded source range retained with full raw bytes and physical body; not newly claimed pdata closure",
+    "review": "Removes site from Faith+890/+8A8 and Faith from Site+98, then notifications/on-action dispatch. No new countyholder/donor inventory transfer is selected in the visible body."
+  },
+  "not_newly_closed": [
+    "Generic script set_owner registrar ->252FDD0 has no independent complete existing bridge in this lane. Do not substitute the explicit Remove callback as that route.",
+    "The every_holy_site_enshrined_artifact native iterator collection is not newly mapped to raw owned-ref or slot arrays. Keep original script iterator semantics, not an invented raw collection.",
+    "Invalid/corrupt object refs and later world-object lifecycle are not inferred from the normal scripted branch."
+  ],
+  "read_only_tooling_errors_preserved": [
+    {
+      "kind": "two read invocations accidentally omitted read-lines.py",
+      "result": "Python syntax parsing of inventory text failed before execution; no write or native/game dispatch; corrected read-only helper subsequently succeeded"
+    },
+    {
+      "kind": "historical pointer missing",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-0252fdd0.json",
+      "result": "FileNotFound; no replacement or fresh inverse dump; rely on preserved tracked receiver excerpts only"
+    }
+  ]
+}

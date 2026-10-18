@@ -43,3 +43,8 @@ flowchart LR
 本轮只跑新permissions target及其生产serializer12包，没有重跑旧context28/9/4资格。独立MSVC `/W4 /WX`、32 native checks、真实Driver→Service→MCP的4 tests/0 skip、12正包和11个人工变异拒绝均有实际回执；注入getter不证明CK3引擎/TLS/trigger运行。新生产mailbox分支独立编译为对象，不等于整DLL已链接。首次编译的长对象路径与两处warning失败原样保留，后续短自有build通过。
 
 来源与代码在2026-10-24或EXE/GUI/相关script SHA变化时复核；外置派生build在Root合入核验48小时后按统一存储策略复核。当前保留理由是一期第二试拍施工、动作缺口和失败纠正，不能无限保留重复源码/包。
+
+
+## 2026-10-18 V5 好感条件后继导航
+
+[好感条件完整表与作者候选](holy-site-relic-opinion-conditions12004-v5.md)补充供奉、同档/升档/降档替换与单独取出时的逐组关系筛选、好感方向、官方术语及同名修正刷新期限。原始脚本摘录和逐源 SHA 已随新页保存；旧表、旧 JSON 与当时知识状态保留。空槽 `scope:replacing ?=` 判断及实际净好感仍按新页的精确未知边界处理；本补注没有新增游戏、自然 AI 执行或口播连续审读资格。机器 `4-8e1c2f1861`。
