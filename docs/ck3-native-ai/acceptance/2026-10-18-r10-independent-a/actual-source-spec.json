@@ -1,0 +1,100 @@
+{
+  "schema": "xar.e04.r10-independent-a-input-spec.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T21:45:44.767294+00:00",
+  "plan_id": "R206-normal-1506-to-1513-independent-A",
+  "source_head_at_preparation": "8185f7da734c57bc5cbbe1ae9cd0280e8ec347ba",
+  "evidence_root": "D:/workspace/ck3_native_war_ai_promo_work",
+  "saved_campaign": {
+    "save": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\initial-normalized-s0-a01.ck3",
+    "bytes": 72572514,
+    "sha256": "aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da",
+    "player_id": 33388,
+    "date_raw": 53147376
+  },
+  "normal_checkpoint_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-02-save-once.json",
+    "bytes": 20858,
+    "sha256": "ab71834e88d71f3b4d059bc71a745d8ddb5b82377d835d955e11925c41d5926f"
+  },
+  "normal_checkpoint_build_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\prepared-a01\\prepared.json",
+    "bytes": 13512,
+    "sha256": "73a26707d71cdf34b47ad7a2aef07422a488a37128e5a1434005d69780cc9675"
+  },
+  "normal_origin_proof": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-terminal-a02-close-a01\\SCREEN-RELEASE.actual.json",
+    "bytes": 4827,
+    "sha256": "73c0f87ddf14550b061a8fcaa27a3a8ae7caeb6c29a57ef83c806de526aeb581"
+  },
+  "normal_promotion": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-r05-live-prep-a01\\r206-initial-promotion-a05\\PROMOTION.actual.json",
+    "bytes": 3232,
+    "sha256": "651a9bbefab106acd21e2d5a4707396db8cc770ed33e000244ae43223792b77c"
+  },
+  "plain_configuration": {
+    "pdx_settings.txt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\pdx_settings.txt",
+      "bytes": 7133,
+      "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+    },
+    "tutorial.txt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    },
+    "presets.txt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    "player/game_rules/presets.txt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    }
+  },
+  "army_id": 0,
+  "native_carmy_id": 0,
+  "war_id": 1,
+  "staging_province_id": 1506,
+  "goal_province_id": 1513,
+  "arrival_states": [
+    "regular",
+    "sieging"
+  ],
+  "report_days": [
+    30,
+    60,
+    90
+  ],
+  "event_policy": "Existing dedicated registry policy first; unknown native event first actually shown enabled option; ordinary interaction original GUI left semantic. Preserve ACK and independent window disappearance, continue the original daily clock without reArm.",
+  "budgets": {
+    "command_timeout": 120,
+    "readiness_timeout": 1800,
+    "timeout": 7200,
+    "hold_seconds": 7200,
+    "poll_interval": 0.25
+  },
+  "one_day_timeout_seconds": 120,
+  "normal_close_reserve_seconds": 900,
+  "cleanup_reserve_seconds": 120,
+  "raw_Save_read_or_rehashed": false,
+  "actual_source_only_not_frozen_baseline": true,
+  "formal_ABC_qualified": false,
+  "actual_start_frame": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-03-after-snapshot.json",
+      "bytes": 219808,
+      "sha256": "0c6738b50171f473637fd54f5f8b1dedf128bf79011443f4f95fd7db3bb85267"
+    },
+    "pointer": "/body",
+    "date_raw": 53147376,
+    "army_id": 0,
+    "CArmy_id": 0,
+    "province_id": 1506,
+    "route": [],
+    "war_id": 1
+  },
+  "scope": "A only land movement from R206 early normal S0. Does not represent Mar31 source or joint ABC; fresh full/commander/cash/features/preview must be captured before freeze."
+}

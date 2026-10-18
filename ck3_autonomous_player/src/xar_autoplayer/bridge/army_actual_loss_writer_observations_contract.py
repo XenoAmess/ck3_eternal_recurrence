@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .army_actual_supply_parent_join_contract import normalize_supply_parent_writer_context_v1
+from .army_county_primary_owner_12004 import normalize_county_primary_owner_at_writer_v1
 from .army_actual_residual_parent_contract import normalize_actual_residual_parent_v1
 from .army_actual_siege_budget_at_writer_contract import normalize_siege_budget_at_writer_v1
 
@@ -88,6 +89,8 @@ def normalize_actual_loss_writer_observations_v1(
             event_keys |= {"residual_parent_context_v1"}
         if isinstance(raw_event, dict) and "siege_budget_at_writer_v1" in raw_event:
             event_keys |= {"siege_budget_at_writer_v1"}
+        if isinstance(raw_event,dict) and "county_primary_owner_at_writer_v1" in raw_event:
+            event_keys.add("county_primary_owner_at_writer_v1")
         event = _object(raw_event, event_keys, name)
         row: dict[str, object] = {}
         for key in ("sequence", "capture_failure_flags", "captured_data_record_count",
@@ -157,6 +160,12 @@ def normalize_actual_loss_writer_observations_v1(
             if row["caller_return_rva"] != 0x24E377C or row["caller_kind"] != "siege_or_raid_preferred":
                 raise ValueError(name + " siege stack budget requires exact combined writer caller")
             row["siege_budget_at_writer_v1"] = normalize_siege_budget_at_writer_v1(event["siege_budget_at_writer_v1"])
+        if "county_primary_owner_at_writer_v1" in event:
+            row["county_primary_owner_at_writer_v1"]=normalize_county_primary_owner_at_writer_v1(
+                event["county_primary_owner_at_writer_v1"])
+            if (row["county_primary_owner_at_writer_v1"] is not None
+                    and row["caller_return_rva"] != 0x24E25EE):
+                raise ValueError(name + " county primary owner requires exact direct writer caller")
         normalized.append(row)
     result["events"] = normalized
     return result

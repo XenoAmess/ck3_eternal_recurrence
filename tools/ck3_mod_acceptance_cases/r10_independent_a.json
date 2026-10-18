@@ -1,0 +1,15 @@
+{
+  "schema": "xar.e04.r10-independent-a-case.v1",
+  "execution_scope": "independent-A-only",
+  "phases": [
+    "collect-baseline",
+    "execute"
+  ],
+  "same_owned_public_client": true,
+  "new_host_created": false,
+  "collect_baseline_scope": "readonly endpoint and native preview; no Move or natural day; terminal Save remains normal cleanup",
+  "execute_scope": "existing strategy_a.admit/update/report; frozen before a new independent cold process",
+  "business_pass": false,
+  "joint_ABC_completed": false,
+  "B_C_sites_or_fee_qualification_inferred": false
+}

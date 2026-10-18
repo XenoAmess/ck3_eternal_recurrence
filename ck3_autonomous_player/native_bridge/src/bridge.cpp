@@ -30212,6 +30212,19 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     xar::ck3_12004::ActualLossWriterJournalInstallEnvironmentV1 loss_environment{};
     loss_environment.bindings =
         xar::ck3_12004::BindActualLossWriterJournalImage12004(base, sha);
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+#if !defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)
+#error County_primary_owner_requires_the_real_natural_phase_observer
+#endif
+    loss_environment.bindings.county_primary_phase_reader=+[]() noexcept {
+      xar::ck3_12004::CountyPrimaryPhaseCapture12004 out{};
+      if(!xar::ck3_12004::ReadArmyNaturalPhaseResearchSampling12004().capture_enabled)
+        return out;
+      out.scope=xar::ck3_12004::CopyActiveArmyNaturalPhaseScope12004();
+      out.writer_event=xar::ck3_12004::NextArmyNaturalPhaseEvent12004();
+      return out;
+    };
+#endif
     loss_environment.bindings.game_state_slot = bindings.game_state_slot;
     loss_environment.primary_thread_suspended_proven = true;
     if (!xar::ck3_12004::InstallActualLossWriterJournal12004(

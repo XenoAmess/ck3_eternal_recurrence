@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/army_actual_loss_writer_observations_v1.hpp"
+#include "xar_bridge/county_primary_owner_at_writer_12004.hpp"
 
 #include <atomic>
 #include <cstddef>
@@ -40,6 +41,8 @@ struct ActualLossWriterJournalBindingsV1 {
   // Fixture-local readers operate on a declared synthetic graph; no wire setter.
   void *read_context = nullptr;
   ActualLossWriterReadMemoryV1 read_memory = nullptr;
+  // Bridge owns the actual pre-date TLS and supplies this synchronous copy only.
+  CountyPrimaryPhaseReader12004 county_primary_phase_reader = nullptr;
 };
 
 struct ActualLossWriterJournalInstallEnvironmentV1 {

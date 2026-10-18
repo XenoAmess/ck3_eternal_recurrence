@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_actual_siege_budget_at_writer_v1.hpp"
+#include "xar_bridge/army_county_primary_owner_at_writer_v1.hpp"
 #include "xar_bridge/army_actual_residual_parent_v1.hpp"
 
 #include "xar_bridge/army_actual_supply_parent_join_v1.hpp"
@@ -73,6 +74,7 @@ struct ArmyActualLossWriterDataAliasV1 {
 
 struct ArmyActualLossWriterObservationV1 {
   std::uint64_t sequence = 0;
+  std::optional<ArmyCountyPrimaryOwnerAtWriterV1> county_primary_owner_at_writer_v1;
   std::optional<ArmyActualSupplyParentWriterContextV1> supply_parent_context_v1;
   std::optional<ArmyActualSiegeBudgetAtWriterV1> siege_budget_at_writer_v1;
   std::optional<ArmyActualResidualParentV1> residual_parent_context_v1;
@@ -170,6 +172,10 @@ inline void AppendArmyActualLossWriterObservationsV1(
     if (event.supply_parent_context_v1) {
       output += ",\"supply_parent_context_v1\":";
       AppendArmyActualSupplyParentWriterContextV1(output, *event.supply_parent_context_v1);
+    }
+    if (event.county_primary_owner_at_writer_v1) {
+      output += ",\"county_primary_owner_at_writer_v1\":";
+      AppendArmyCountyPrimaryOwnerAtWriterV1(output,*event.county_primary_owner_at_writer_v1);
     }
     output += ",\"army_regiment_id\":";
     Number(output, event.army_regiment_id);

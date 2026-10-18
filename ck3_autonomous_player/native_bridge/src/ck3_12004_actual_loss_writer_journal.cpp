@@ -13,6 +13,9 @@
 #endif
 
 namespace xar::ck3_12004 {
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+extern "C" void XarActualLossWriterCountyEntryThunk12004V1(void *,std::int64_t) noexcept;
+#endif
 namespace {
 
 constexpr std::array<std::uint8_t, kActualLossWriterPatchBytes12004>
@@ -36,6 +39,13 @@ std::atomic<bool> g_available{false};
 std::atomic<ActualLossWriterOriginalV1> g_original{nullptr};
 std::atomic<ActualLossWriterJournalDetourStateV1 *> g_active_state{nullptr};
 std::atomic<ActualLossWriterCompletionObserverV1> g_completion_observer{nullptr};
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+thread_local const CountyPrimaryWriterRegisters12004 *g_county_writer_registers=nullptr;
+struct RestoreCountyWriterRegisters {
+  const CountyPrimaryWriterRegisters12004 *previous;
+  ~RestoreCountyWriterRegisters(){g_county_writer_registers=previous;}
+};
+#endif
 
 template <typename Callback> bool FaultBoundary(Callback callback) noexcept {
 #if defined(_MSC_VER)
@@ -329,7 +339,11 @@ std::array<std::uint8_t, kActualLossWriterPatchBytes12004> HookPatch() noexcept 
   std::array<std::uint8_t, kActualLossWriterPatchBytes12004> patch{};
   patch.fill(0x90);
   WriteAbsoluteJump(patch.data(), reinterpret_cast<std::uintptr_t>(
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+      &XarActualLossWriterCountyEntryThunk12004V1));
+#else
       &XarActualLossWriterHook12004V1));
+#endif
   return patch;
 }
 
@@ -497,6 +511,27 @@ ReadActualLossWriterObservations12004(
   }
 }
 
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+// The MASM entry owns the original return slot and caller R13 before
+// a C++ prologue can reuse them. This is not a new native detour location.
+extern "C" void __fastcall XarActualLossWriterHookCapturedCounty12004V1(
+    void *regiment,std::int64_t request_raw,const void *return_slot,
+    const void *source_carmy) noexcept {
+  std::uintptr_t caller=0;
+  const bool readable=ReadMemory(return_slot,&caller,sizeof caller);
+  const auto rva=readable&&g_bindings.image_base&&caller>=g_bindings.image_base
+      ?std::optional<std::uint64_t>(caller-g_bindings.image_base):std::nullopt;
+  const auto token=rva==0x24E25EE
+      ?native_invocation_detail_12004::AllocateToken(native_invocation_detail_12004::next_token):0;
+  const CountyPrimaryWriterRegisters12004 registers{regiment,source_carmy,
+      rva.value_or(0),token,GetCurrentThreadId()};
+  RestoreCountyWriterRegisters restore{g_county_writer_registers};
+  // Unknown/nested callers mask an outer register context instead of borrowing it.
+  g_county_writer_registers=&registers;
+  InvokeActualLossWriterJournalWithCaller12004V1(regiment,request_raw,rva,return_slot);
+}
+#endif
+
 extern "C" void __fastcall XarActualLossWriterHook12004V1(
     void *regiment, std::int64_t request_raw) noexcept {
 #if defined(_MSC_VER)
@@ -561,6 +596,21 @@ void InvokeActualLossWriterJournalWithCaller12004V1(
 #if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
   if (before_read) event.residual_parent_context_v1 = CaptureResidualParentWriterContext12004(
       static_cast<std::uint32_t>(GetCurrentThreadId()), before.id, event.caller_return_rva);
+#endif
+
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+  if(before_read&&g_county_writer_registers&&caller_return_rva==0x24E25EE&&
+     g_county_writer_registers->writer_receiver==regiment&&g_bindings.county_primary_phase_reader){
+    void *current_state=nullptr;
+    (void)ReadMemory(g_bindings.game_state_slot,&current_state,sizeof current_state);
+    const auto active=g_bindings.county_primary_phase_reader();
+    const auto reader=[](void *,const void *p,void *out,std::size_t n) noexcept {
+      return ReadMemory(p,out,n);
+    };
+    event.county_primary_owner_at_writer_v1=CaptureCountyPrimaryOwnerAtWriter12004(
+        reader,nullptr,*g_county_writer_registers,active,before.id,event.observed_date_raw,
+        reinterpret_cast<std::uintptr_t>(current_state));
+  }
 #endif
 
   // The natural native invocation is forwarded exactly once, outside capture

@@ -1,0 +1,90 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "8185f7da734c57bc5cbbe1ae9cd0280e8ec347ba",
+  "observed_at_utc": "2026-10-18T21:45:44.788570+00:00",
+  "A": {
+    "product": "war-episode04-r10",
+    "case": "r10-independent-a",
+    "spec": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r10-formal-actual-inputs-a01\\R206-A-SOURCE.actual.json",
+      "bytes": 4437,
+      "sha256": "11e107560e2a8bab5c1953669c1af4df591a0e424bffa6097ac18ac206877eeb"
+    },
+    "checked": "actual source/config small identities PASS; formal baseline absent until collect-baseline",
+    "source_date_raw": 53147376,
+    "initial_province": 1506,
+    "goal": 1513,
+    "maximum_days": 90,
+    "arrival_may_end_early": true,
+    "steps": [
+      "collect-baseline public cold run: baseline -> finish -> normal GUI/OS0/host0/keeper release",
+      "freeze actual baseline before new process birth",
+      "execute public independent cold run: baseline -> Move-once -> Move-post -> advance per exact actual day -> finish -> normal close"
+    ],
+    "compare_fees": false,
+    "joint_ABC_eligible": false
+  },
+  "B": {
+    "product": "war-episode04-r10",
+    "case": "r10-common-arm",
+    "arm_label": "B",
+    "source_proposal": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r215-mar31-normal-source-a01\\R214-MAR31-NORMAL-S0-PROMOTION.actual-a01.json",
+      "bytes": 9210,
+      "sha256": "5890702bcafc5f3c21418c59797ba4bca7a01bedd339d304b10dfd37941d5337"
+    },
+    "source_date_raw": 53149056,
+    "qualified_positive_stock_sites": 0,
+    "required_distinct_sites": 2,
+    "formal_PLAN_check": "RED until the two real site_input pins and one complete common PLAN exist; no fabricated B fixture emitted",
+    "R215_troop_net_plus10_is_site_evidence": false,
+    "required_stages": [
+      "baseline",
+      "split-once",
+      "post-split",
+      "move-stage-once each actual role",
+      "move-stage-post each role",
+      "advance-stage-day",
+      "rest on entry and actual threshold/maximum-rest exit",
+      "move-stage-once/post to meeting",
+      "merge-once",
+      "post-merge",
+      "move-stage-once/post to common goal",
+      "advance-stage-day",
+      "route readonly",
+      "finish"
+    ]
+  },
+  "C": {
+    "product": "war-episode04-r10",
+    "case": "r10-common-arm",
+    "arm_label": "C",
+    "source_proposal": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r215-mar31-normal-source-a01\\R214-MAR31-NORMAL-S0-PROMOTION.actual-a01.json",
+      "bytes": 9210,
+      "sha256": "5890702bcafc5f3c21418c59797ba4bca7a01bedd339d304b10dfd37941d5337"
+    },
+    "source_date_raw": 53149056,
+    "formal_PLAN_check": "RED: same full joint PLAN still needs B sites, shared nontrivial goal, baseline and ordered actual waypoint/preview; A-only mode does not apply",
+    "required_stages": [
+      "baseline",
+      "Move-once",
+      "Move-post",
+      "advance until actual waypoint arrival",
+      "fresh next waypoint preview and Move-once/post",
+      "advance to actual goal",
+      "finish"
+    ]
+  },
+  "mutual_exclusion": [
+    "only one common owned host/screen lease at a time",
+    "every executable A/B/C starts in its own new cold process from its frozen source, no samePID reload arm",
+    "do not change source/DLL/goal/cohort/policies after PLAN freeze",
+    "inline full history/typed exact-day only; additional sampling/DR and fee ledgers require their own actual qualification and budget",
+    "A R206 1513 observation is separate from later Mar31 joint comparison; it cannot substitute a Mar31 A row"
+  ],
+  "readiness_pilot_credited_as_formal": false,
+  "SDK_calls": 0,
+  "game_or_public_prepare_executed": false,
+  "D_new_written_bytes": 0
+}

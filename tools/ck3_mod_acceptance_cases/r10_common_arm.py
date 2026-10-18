@@ -169,6 +169,39 @@ def validate_normal_common_source(context, prepared, frozen, profile, inventory,
         'normal_source': 'actual_normal_Save_and_empty_mod_profile', 'original_context_modified': False}
 
 
+A_ONLY_SCHEMA = 'xar.e04.r10-independent-a-case.v1'
+
+
+def independent_a_phase(context):
+    """An explicit new public case; the joint A/B/C case keeps its old gate."""
+    if context['case_contract'].get('schema') != A_ONLY_SCHEMA:
+        return None
+    need(context.get('case') == 'r10-independent-a'
+         and context['case_inputs']['arm'].get('label') == 'A', 'Independent A case/label differs')
+    phase = context['case_inputs']['arm'].get('phase')
+    need(phase in ('collect-baseline', 'execute'), 'Explicit independent A phase required')
+    return phase
+
+
+def public_plan_baseline(context, plan, evidence, compare):
+    """Select the existing A-only consumer without weakening joint PLAN."""
+    phase = independent_a_phase(context)
+    if phase is None:
+        return compare.check_plan(plan, evidence)
+    need(plan.get('execution_scope') == 'independent-A-only'
+         and plan.get('strategies', {}).get('B') is None
+         and plan.get('strategies', {}).get('C') is None
+         and plan.get('compare_fees') is False,
+         'Independent A neither supplies B/C sites nor qualifies fee/joint comparison')
+    if phase == 'collect-baseline':
+        need(plan.get('status') == 'baseline-capture' and plan.get('baseline') is None
+             and plan.get('original_regiment_ids') == [], 'Readonly A baseline seed differs')
+        return None
+    need(plan.get('status') == 'frozen', 'Independent A execution requires a frozen plan')
+    a = importlib.import_module('strategy_a')
+    return a._whole(plan['baseline'], plan, evidence)[0]
+
+
 class CommonArmIO:
     """Current public run constructor, complete packets, once actions and clocks."""
     def __init__(self, context, client):
@@ -267,11 +300,13 @@ class CommonArmIO:
             'connection_generation': self.binding['generation'], 'episode': self.binding['episode'],
             'player_character_id': self.binding['actor'], 'source_head': self.source,
             'native_dll_sha256': dll, 'source_proof': self.relative(pin(proof))}
-        frozen = datetime.fromisoformat(self.plan['frozen_at_utc'].replace('Z', '+00:00'))
-        need(frozen < datetime.fromisoformat(self.runtime['started_at_utc']),
-             'Formal arm must independently cold-start after plan freeze')
+        self.independent_a_phase = independent_a_phase(context)
+        if self.independent_a_phase != 'collect-baseline':
+            frozen = datetime.fromisoformat(self.plan['frozen_at_utc'].replace('Z', '+00:00'))
+            need(frozen < datetime.fromisoformat(self.runtime['started_at_utc']),
+                 'Formal arm must independently cold-start after plan freeze')
         need(self.plan['build']['native_dll_sha256'] == dll, 'Frozen plan DLL differs from current common DLL')
-        self.c.check_plan(self.plan, self.e)
+        public_plan_baseline(context, self.plan, self.e, self.c)
         self.r = module(base / 'split_merge/root_relay.py', 'r10_existing_split_business')
         from xar_autoplayer.bridge import army_split_merge_observation_12004 as observation
         from xar_autoplayer.bridge.army_replenishment_records_contract import normalize_regiment_replenishment_records_v1

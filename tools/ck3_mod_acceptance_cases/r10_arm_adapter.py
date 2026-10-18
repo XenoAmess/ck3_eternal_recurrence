@@ -10,13 +10,14 @@ from types import SimpleNamespace
 import json
 
 from . import r10_prepare_adapter as normal
-from .r10_common_arm import CommonArmIO
+from .r10_common_arm import CommonArmIO, A_ONLY_SCHEMA, independent_a_phase, public_plan_baseline
 
 
 def validate_contract(context):
-    normal.need(context['case_contract'].get('schema') == 'xar.e04.r10-common-arm-case.v1', 'Common arm case contract differs')
+    normal.need(context['case_contract'].get('schema') in ('xar.e04.r10-common-arm-case.v1', A_ONLY_SCHEMA), 'Common arm case contract differs')
     if not context.get('case_inputs'): return
     arm = context['case_inputs']['arm']
+    independent_a_phase(context)
     normal.need(arm.get('label') in ('A', 'B', 'C'), 'Explicit independent arm label required')
     for key in ('plan', 'capacity_admission'):
         normal.need(type(arm.get(key)) is dict and {'path','bytes','sha256'} <= set(arm[key]), 'Exact arm ' + key + ' pin required')
@@ -72,7 +73,22 @@ class Stages:
         ep = self.endpoint('cold-start')
         normal.need(ep['day'] == 0, 'Actual independent cold frame is not common T0')
         cold = io.c.endpoint(ep, io.plan, io.e, io.runtime)
-        normal.need(cold == io.c.check_plan(io.plan, io.e), 'Actual independent cold observables differ from common S0')
+        expected = public_plan_baseline(io.context, io.plan, io.e, io.c)
+        if independent_a_phase(io.context) == 'collect-baseline':
+            _, preview = io.preview(ep, io.plan['goal_province_id'])
+            frozen = deepcopy(io.plan)
+            frozen['baseline'] = ep
+            frozen['original_regiment_ids'] = sorted(r['army_regiment_id'] for r in cold['DATA'])
+            # Validate complete whole-Army DATA and the real native land route now.
+            self.A._whole(ep, frozen, io.e, io.runtime)
+            route = self.A._preview(preview, ep, frozen, io.e, io.runtime)
+            self.state = {'schema': 'xar.e04.r10-independent-a-baseline.v1',
+                'baseline': ep, 'route_preview': preview, 'route': route,
+                'original_regiment_ids': frozen['original_regiment_ids'], 'runtime': io.runtime,
+                'seed_plan': io.settings['plan'], 'Move_submitted': False, 'natural_days': 0,
+                'formal_arm_qualified': False, 'joint_ABC_completed': False}
+            return self.save('baseline', self.state)
+        normal.need(cold == expected, 'Actual independent cold observables differ from common S0')
         self.cold = ep; self.observations = [ep]
         if io.label == 'A':
             _, preview = io.preview(ep, io.plan['goal_province_id'])
@@ -157,6 +173,8 @@ class Stages:
         stage = command['stage']
         if stage == 'baseline': return self.baseline()
         normal.need(self.state is not None, 'Baseline stage required before continuation')
+        normal.need(independent_a_phase(io.context) != 'collect-baseline',
+                    'Readonly A baseline collection permits only baseline then finish; no Move/day')
         if io.label != 'B':
             if stage == 'Move-once': return self.move()
             if stage == 'Move-post': return self.move(post=True)
@@ -196,7 +214,10 @@ def _run_case_steps(context, client, io):
             result = {'machine_id': io.machine, 'label': io.label, 'actual_public_run_id': io.run.name,
                 'stage_results': results, 'state': stages.state, 'actual_day_records': stages.days,
                 'formal_arm_qualified': False, 'business_pass': False, 'joint_ABC_completed': False,
-                'scope': 'Actual staged operations only. Original causal ledgers/complete policy trace/joint comparison remain separate.'}
+                'scope': 'Actual staged operations only. Original causal ledgers/complete policy trace/joint comparison remain separate.',
+                'independent_a_phase': independent_a_phase(context),
+                'A_only_report': stages.A.report(stages.state) if io.label == 'A' and stages.state is not None
+                    and independent_a_phase(context) != 'collect-baseline' else None}
             return result
         io.a.stage = command['stage']; io.a.attempt = 'arm-' + io.label.lower() + '-' + str(number).zfill(4)
         io.attempt = io.case / io.a.attempt; io.attempt.mkdir(exist_ok=False)
