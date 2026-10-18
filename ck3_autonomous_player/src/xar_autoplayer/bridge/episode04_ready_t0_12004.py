@@ -39,6 +39,24 @@ def _sha(value: object) -> bool:
     return isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdefABCDEF" for c in value)
 
 
+def _normal_source_receipt_sha256(binding: Mapping[str, object]) -> str:
+    """Accept a neutral source pin; keep the old Robert key for Robert only."""
+    neutral = binding.get("normal_source_receipt_sha256")
+    legacy_robert = binding.get("normal_robert_source_receipt_sha256")
+    _need(neutral is not None or legacy_robert is not None,
+          "normal source receipt SHA-256 required")
+    if neutral is not None:
+        _need(_sha(neutral), "normal source receipt SHA-256 malformed")
+    if legacy_robert is not None:
+        _need(binding.get("actor_id") == 31254,
+              "legacy Robert source key is valid only for Robert 31254")
+        _need(_sha(legacy_robert), "legacy Robert source receipt SHA-256 malformed")
+        if neutral is not None:
+            _need(neutral.lower() == legacy_robert.lower(),
+                  "neutral and legacy Robert source receipts differ")
+    return str(neutral if neutral is not None else legacy_robert).lower()
+
+
 def ready_t0_readonly_requests_12004(
     frame: Mapping[str, object], *, army_id: int, war_id: int,
 ) -> list[dict[str, object]]:
@@ -105,9 +123,9 @@ def _frame_pair(before, after, binding, army_id, expected_province_id):
     _need(all(type(binding.get(k)) is int and binding[k] > 0 for k in ("pid", "connection_generation"))
           and isinstance(binding.get("episode_run_id"), str) and bool(binding["episode_run_id"]),
           "positive Root PID/generation and episode required")
-    _need(_sha(binding.get("normal_robert_source_receipt_sha256"))
-          and isinstance(binding.get("director_scope_revision"), str) and bool(binding["director_scope_revision"]),
-          "normal Robert/director source binding required")
+    _normal_source_receipt_sha256(binding)
+    _need(isinstance(binding.get("director_scope_revision"), str) and bool(binding["director_scope_revision"]),
+          "normal source/director scope revision required")
     for f in (before, after):
         _need(isinstance(f, Mapping) and f.get("paused") is True and f.get("map_ready") is True,
               "independent F must remain paused/map-ready")

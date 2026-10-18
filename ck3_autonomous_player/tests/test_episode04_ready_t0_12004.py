@@ -3,7 +3,8 @@ from copy import deepcopy
 import unittest
 
 from xar_autoplayer.bridge.episode04_ready_t0_12004 import (
-    EXE_12004, evaluate_episode04_ready_t0_12004, ready_t0_readonly_requests_12004,
+    EXE_12004, _normal_source_receipt_sha256,
+    evaluate_episode04_ready_t0_12004, ready_t0_readonly_requests_12004,
 )
 
 
@@ -89,6 +90,23 @@ def fixture():
 
 
 class ReadyT0NewBehavior(unittest.TestCase):
+    def test_neutral_william_source_and_explicit_legacy_robert_compatibility(self):
+        neutral = {"actor_id": 33388, "normal_source_receipt_sha256": "b" * 64}
+        self.assertEqual(_normal_source_receipt_sha256(neutral), "b" * 64)
+        legacy = {"actor_id": 31254, "normal_robert_source_receipt_sha256": "a" * 64}
+        self.assertEqual(_normal_source_receipt_sha256(legacy), "a" * 64)
+        with self.assertRaisesRegex(ValueError, "Robert 31254"):
+            _normal_source_receipt_sha256({"actor_id": 33388,
+                "normal_robert_source_receipt_sha256": "a" * 64})
+        with self.assertRaisesRegex(ValueError, "receipts differ"):
+            _normal_source_receipt_sha256({"actor_id": 31254,
+                "normal_source_receipt_sha256": "b" * 64,
+                "normal_robert_source_receipt_sha256": "a" * 64})
+        args = fixture()
+        args["source_binding"]["normal_source_receipt_sha256"] = (
+            args["source_binding"].pop("normal_robert_source_receipt_sha256"))
+        self.assertTrue(evaluate_episode04_ready_t0_12004(**args)["military_t0_frame_ready"])
+
     def test_actual_regular1_accepts_and_legacy0_is_rejected(self):
         # R0180 day5/native boundary observed regular=1. This is a synthetic
         # semantic F using that real enum, not a new actual ready-T0 result.

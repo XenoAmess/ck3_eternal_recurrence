@@ -1,0 +1,52 @@
+{
+  "schema": "xar.e04.r206-ready-t0-neutral-focused.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T05:03:40.328596+00:00",
+  "base_source_head": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d",
+  "status": "FOCUSED_OFFLINE_ACTUAL_SHAPE_AND_COMPATIBILITY_PASS",
+  "focused_tests": [
+    "test_neutral_william_source_and_explicit_legacy_robert_compatibility",
+    "test_save_requires_the_actual_same_T0_epoch"
+  ],
+  "R206_actual_shape": {
+    "initial_normal_source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\INITIAL-SAVE-PRESERVED.actual-a01.json",
+      "bytes": 731,
+      "sha256": "e7562e1d2fb1e990d807fde6a8f809b6bdc20806c0694a0c370e1ccf6f6e0dca"
+    },
+    "normal_save_report": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 3296,
+      "sha256": "6e6aaca03610f0f3a8d6d02c46cac2b6a5afc75537f0d8fd4fb149262502ebaf"
+    },
+    "paused_snapshot_response": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-03-after-snapshot.json",
+      "bytes": 219808,
+      "sha256": "0c6738b50171f473637fd54f5f8b1dedf128bf79011443f4f95fd7db3bb85267"
+    },
+    "actor_id": 33388,
+    "date_raw": 53147376,
+    "selected_army_id": 0,
+    "staging_province_id": 1506,
+    "neutral_binding_passed": true,
+    "legacy_robert_only_binding_rejected": true,
+    "single_frame_used_twice_for_shape_only": true,
+    "formal_independent_T0_qualified": false
+  },
+  "candidate_source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r206-ready-t0-neutral-a01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\episode04_ready_t0_12004.py",
+    "bytes": 19457,
+    "sha256": "9c4a860a1ccf5fea3603ddf1d6b80555830fefaf0e0f22748be601473fff4017"
+  },
+  "candidate_test": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r206-ready-t0-neutral-a01\\candidate\\ck3_autonomous_player\\tests\\test_episode04_ready_t0_12004.py",
+    "bytes": 12651,
+    "sha256": "aea10e32a8ffe129bc7afb10083417ce997f8bf3698cc9a0f35f78d730eadded"
+  },
+  "patch": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r206-ready-t0-neutral-a01\\ready-t0-william-neutral.patch",
+    "bytes": 4171,
+    "sha256": "c413222c4add07d23eab8918fe76f3f8d8aaf3f73820b856412761affdae9d31"
+  },
+  "ck3_sdk_desktop_actions": 0
+}
