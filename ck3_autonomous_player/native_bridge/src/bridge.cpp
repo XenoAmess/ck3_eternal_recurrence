@@ -11974,6 +11974,16 @@ std::string RunCouncilPrivate12004(
 }
 #endif
 
+#if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
+bool RegisterRiteCreationOwnerExecutor12004(
+    xar::ck3_11906::MainThreadQueryInstallEnvironmentV1 &environment) noexcept {
+  if (environment.permitted_executor_unvigintary != nullptr) return false;
+  environment.permitted_executor_unvigintary =
+      &xar::ck3_12004::religion::rite_creation_actions::ExecuteMailbox12004;
+  return true;
+}
+#endif
+
 class WarEntryApplicationMainMailboxWorkerLifetime final {
 public:
   explicit WarEntryApplicationMainMailboxWorkerLifetime(
@@ -12502,6 +12512,10 @@ public:
       xar::ck3_11906::ConfigureIdlePresentationV1(
           &xar::presentation::CameraPresentationRuntimeV1::Pump, &camera_presentation_);
     }
+#if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
+    // A conflicting fixed executor must leave this installation unmodified.
+    if (!RegisterRiteCreationOwnerExecutor12004(environment)) return;
+#endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(

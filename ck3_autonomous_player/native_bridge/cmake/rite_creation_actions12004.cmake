@@ -50,6 +50,23 @@ if(XAR_ENABLE_RITE_CREATION_ACTIONS12004)
       target_link_options(xar_ck3_12004_rite_creation_wire_test PRIVATE /OPT:REF)
     endif()
     add_test(NAME xar_ck3_12004_rite_creation_wire_test COMMAND xar_ck3_12004_rite_creation_wire_test)
+    add_executable(xar_ck3_12004_rite_creation_guard_test
+      "${CMAKE_CURRENT_LIST_DIR}/../tests/rite_creation_actions12004_guard_test.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/../src/rite_creation_actions12004_wire.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/../src/rite_creation_actions12004.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004.cpp")
+    target_include_directories(xar_ck3_12004_rite_creation_guard_test PRIVATE include)
+    target_compile_features(xar_ck3_12004_rite_creation_guard_test PRIVATE cxx_std_20)
+    target_compile_definitions(xar_ck3_12004_rite_creation_guard_test PRIVATE
+      NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE XAR_ENABLE_RITE_CREATION_ACTIONS12004=1)
+    target_link_libraries(xar_ck3_12004_rite_creation_guard_test PRIVATE
+      xar_bridge_protocol xar_ck3_12002_runtime user32 bcrypt)
+    if(MSVC)
+      target_compile_options(xar_ck3_12004_rite_creation_guard_test PRIVATE
+        /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8 /Gy)
+      target_link_options(xar_ck3_12004_rite_creation_guard_test PRIVATE /OPT:REF)
+    endif()
+    add_test(NAME xar_ck3_12004_rite_creation_guard_test COMMAND xar_ck3_12004_rite_creation_guard_test)
     # Request/formatter fixtures do not execute original game controller code.
   endif()
 endif()

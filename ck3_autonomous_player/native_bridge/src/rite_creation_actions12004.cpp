@@ -1,4 +1,5 @@
 #include "xar_bridge/rite_creation_actions12004.hpp"
+#include "rite_creation_actions12004_guards.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_religion_bindings.hpp"
 #include "xar_bridge/ck3_12004_religion_draft_bindings.hpp"
@@ -554,7 +555,7 @@ bool ReadRiteCreationController12004(const Bindings&b,const Admission&a,const Fr
   out=first.value;
   if(!CompleteCommandPreview(b,a,f,r,first,out)){out.available=false;out.status="unavailable";}
   return true;
- }catch(...){out.unavailable_reason="rite_creation_capture_exception";return false;}
+ }catch(...){detail::MarkCaptureException(out);return false;}
 }
 bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Result&out) noexcept {
  out={};out.operation=r.operation;out.frame=f;
@@ -567,16 +568,18 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
   if(r.operation==Operation::preview)return ReadRiteCreationController12004(b,a,f,r,out);
   if(!a.draft_action_opt_in||!Owner(b,a,f))return fail("rite_creation_explicit_draft_optin_owner_required");
   if(r.operation==Operation::open_create_draft||r.operation==Operation::open_edit_current_rite_draft){
-   Result existing{};
-   if(ReadRiteCreationController12004(b,a,f,r,existing)){
-    const bool edit_requested=r.operation==Operation::open_edit_current_rite_draft;
-    if(!existing.draft.actual_outcome_kind||
-       ((*existing.draft.actual_outcome_kind==Outcome::edit_rite)!=edit_requested)||
-       (r.expected_outcome_kind&&r.expected_outcome_kind!=existing.draft.actual_outcome_kind))
-     return fail("rite_creation_existing_native_draft_mode_differs_do_not_reinitialize");
-    out=std::move(existing);out.available=true;out.unavailable_reason.clear();out.already_in_requested_state=true;
-    out.draft_open_postcondition_observed=true;out.status="already_in_requested_state";return true;
-   }
+   return detail::GuardOpenDraft(r,out,
+    [&](bool&visible){
+     reform::DraftWindowView presence{};
+     if(!reform::ReadCurrentRiteCreationWindow12002(
+         BindCurrentRiteCreationWindow12004(b.image_base,ck3_12004::kExecutableSha256),f.capture_epoch,presence)||
+        !presence.available||presence.capture_epoch!=f.capture_epoch||presence.date_raw!=f.date_raw||
+        presence.played_character_id!=static_cast<std::uint32_t>(f.played_character_id)||!Owner(b,a,f))return false;
+     visible=presence.present&&presence.visible;
+     return !presence.visible||(presence.present&&presence.window);
+    },
+    [&](Result&existing){return ReadRiteCreationController12004(b,a,f,r,existing);},
+    [&](){
    if(!a.modal_scope_state(a.gui_context,nullptr))return fail("rite_creation_open_blocked_by_effective_visible_modal");
    ck3_12002::religion::Context context{};
    if(!ReadPlayedReligionContext12004(BindReligionContextImage12004(b.image_base,ck3_12004::kExecutableSha256),f.capture_epoch,context)||
@@ -608,6 +611,7 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
    }
    if(out.native_dispatch_attempted&&!out.draft_open_postcondition_observed){out.available=false;out.unavailable_reason="rite_creation_open_postcondition_unverified_do_not_retry";}
    return invoked;
+    });
   }
   Pass state{};std::string why;
   if(!Capture(b,a,f,r,state,why)){out.unavailable_reason=why;return false;}out=state.value;
@@ -690,8 +694,6 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
    slot<after.draft.selected_doctrines.size()&&after.draft.selected_doctrines[slot].group_key==r.group_key&&after.draft.selected_doctrines[slot].doctrine_key==r.doctrine_key;
   if(out.native_dispatch_attempted&&!out.selection_or_name_postcondition_observed){out.available=false;out.unavailable_reason="rite_creation_selection_postcondition_unverified_do_not_retry";}
   return invoked;
- }catch(...){out.verification_pending=out.native_dispatch_attempted;out.status=out.native_dispatch_attempted?"dispatch_result_unknown":"unavailable";
-  out.original_writer_may_have_been_queued=r.operation==Operation::confirm_once&&out.native_dispatch_attempted;
-  out.unavailable_reason="rite_creation_action_exception_do_not_retry_if_attempted";return false;}
+ }catch(...){detail::MarkActionException(r,out);return false;}
 }
 } // namespace xar::ck3_12004::religion::rite_creation_actions

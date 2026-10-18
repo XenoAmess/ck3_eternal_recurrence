@@ -1,0 +1,69 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-18T11:57:56.288834+00:00",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\root-screen-release-a01.json",
+      "bytes": 1381,
+      "sha256": "2ed288a15e6eec78bae39c966230c4ce3b3fdc6679b00132d59e5f8128cfa911"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\root-keeper-stop-proof-a01.json",
+      "bytes": 1651,
+      "sha256": "2710b0e741086c44cf64e2c1bd69c4b68e90b0a9aec04a55e9f3c1b1bd7a750d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\case-output\\normal-close-result.json",
+      "bytes": 15504,
+      "sha256": "0567584faf0ad508e4ed29024e589b5c2edf2ae8b07399a1868ef88b1d66d768"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\COMPLETED-CAPACITY-a01.json",
+      "bytes": 5684,
+      "sha256": "8a26850482e4c0b531795b230f101439fbfeb8bb99380aebe54c0c8c8173dd18"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\owner-ticket-failure-native-extract-a01.json",
+      "bytes": 6813,
+      "sha256": "65d87364949b6639681297f104cfcdd9c3a4d9b86f2161c9ee7e27bcbeb129e5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\root-native-receipts\\d1-frame-preopen-a01.json",
+      "bytes": 35536,
+      "sha256": "7be1c72da5180a49d73d2c07aeab718832a49f585e8648e106061389acd92d8c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0017\\root-native-receipts\\d1-query-current-faith-window-a01.json",
+      "bytes": 465679,
+      "sha256": "ea0cbb27a7d410695ca729751098b260f07414a27c76ac314fab8b093437d57a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-owner-ticket-a01\\DELIVERY-a03.json",
+      "bytes": 1482,
+      "sha256": "5da7c83145d641af4e4d665ab916e11c78a24a72c6ad4f8a8415e1b931868036"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-owner-ticket-a01\\OWNER-CHAIN-a02.json",
+      "bytes": 22276,
+      "sha256": "ee12c8624886552c9307658d4dd288ae7b9b676974b5db0d6d0ff09ec60a499f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\A10-ROOT-CLOSED-a01.json",
+      "bytes": 1267,
+      "sha256": "e4f25730604f59a8fff648ebd34f527f471ce2d48eb8d43613dcb5644538f533"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\R0017-ROOT-STEAM-DIRECT-REVIEW-a01.json",
+      "bytes": 835,
+      "sha256": "0e89a9c32ba4fda25e1182a31f43b8b544741a532c4056a12d567a17518099c1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\ACTIVE-PHASE-TTL-EXTENSION-a02.json",
+      "bytes": 1992,
+      "sha256": "7ef10b3267f2ba929bc1e2735db70a6d47913517be02fc9760fb32e58f23dd60"
+    }
+  ],
+  "capacity_scope_text_erratum": "a17 in old scope text; actual keeper row and allocation are a18",
+  "new_cpp_fixture_compiled_or_executed": false,
+  "successor_business_credit": false
+}
