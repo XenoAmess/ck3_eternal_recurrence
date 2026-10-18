@@ -34,9 +34,15 @@ def small_json(ref, limit=1024 * 1024):
 
 
 def module(path, name):
+    path = Path(path)
     spec = importlib.util.spec_from_file_location(name, path)
     value = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(value)
+    original = list(sys.path)
+    sys.path.insert(0, str(path.parent))
+    try:
+        spec.loader.exec_module(value)
+    finally:
+        sys.path[:] = original
     return value
 
 
