@@ -29,3 +29,12 @@ machine_id: xenoamess-full-tower-eb9d2c1186；实际记录：2026-10-18T12:30:47
 并行源码已推送93d334ba4a6540b468ecfc1158abe7576022a309；[Official](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39125589110)与[Linear](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39125589115)于12:23:59Z经只读线程核为success。历史展开按真实消费者延迟、减少同锁重复读取；仅有软件路径验证，未测本局墙钟收益。G2补Start后早期基线、独立命名增量和后续普通消费的软件链；M6真实终局及M7完整自然继承仍未验，G2仍6/8。
 
 本机OneDrive映射已核为C:/Users/xenoa/OneDrive/CK3-War-AI-20260923；旧C:/Users/1路径不存在。12:28:08Z此C卷free19,894,026,240B，低于通用安全余量，尚未复制成片。不得把目录存在写成上传完成；交付容量研究仅评估既有项目副本，不触及个人文件。
+
+
+## 编码估时更正与有限加速样本
+
+machine_id: xenoamess-full-tower-eb9d2c1186；实际追加2026-10-18T13:24:25.281049+00:00。原K末源的近期frame+drop与30fps来源互证，仅约1.12×原片速度；按该速率条件估算尚需约11小时。此前按累计输出speed给出的21:30—23:00窗口撤回，不能把成片时间轴百分比直接当剩余编码工作量。原81740继续，无重录、游戏或界面操作。
+
+[有限样本实证](../ck3-native-ai/evidence/first30-film-throughput-sample-2026-10-18.json)：603.7秒原片的小图实际67.85秒完成，12个自有子进程均kernel0、0强制；分组输出比单小图多1帧/0.032667秒。Root审阅4张样本PNG，但采样按名义接缝，不能冒充实际组间时钟或音频连续性通过。下一步先控制source6全315分支，只比较complex线程auto/2，保持原codec默认线程；尚未执行、更未授完整替代。此法若有效可保原400全局图和一次AAC，避免先引入分组新时钟。原片、SAVE及旧证据不修改。
+
+进度文档提交b04b4e5a6434641aa4d065b5e10b45dce7ad2628的[Official](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39127701743)与[Linear](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39127701737)已于12:51:38Z由只读线程核实success；不授视频完成或新的G2信用。

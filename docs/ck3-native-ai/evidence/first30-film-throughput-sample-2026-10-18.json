@@ -1,0 +1,75 @@
+{
+  "schema": "xar.first30.film-throughput-sample-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-18T13:24:25.281049+00:00",
+  "actual_sample_completed_at_utc": "2026-10-18T13:09:44.739844+00:00",
+  "source_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\p0-group-benchmark01\\RESULT.json",
+    "bytes": 19091,
+    "sha256": "657a8eb0e1b821eac73896ebe9a943971f24021beaf6a8f1b9bc4ec97feaecb1"
+  },
+  "Root_actual_retained_exec": {
+    "session": 1329,
+    "completion_chunk": "d2ad60",
+    "exit_code": 0
+  },
+  "sample_original_seconds": 603.7,
+  "sample_nominal_output_seconds": 18.57638377069175,
+  "commands": {
+    "A": {
+      "wall_seconds": 67.85086420015432,
+      "actual_kernel_wait": 0,
+      "actual_exit_code": 0,
+      "q_requested": false,
+      "forced_calls": 0
+    },
+    "B1": {
+      "wall_seconds": 57.41236550011672,
+      "actual_kernel_wait": 0,
+      "actual_exit_code": 0,
+      "q_requested": false,
+      "forced_calls": 0
+    },
+    "B2": {
+      "wall_seconds": 8.345213399967179,
+      "actual_kernel_wait": 0,
+      "actual_exit_code": 0,
+      "q_requested": false,
+      "forced_calls": 0
+    },
+    "B-final": {
+      "wall_seconds": 0.5421551999170333,
+      "actual_kernel_wait": 0,
+      "actual_exit_code": 0,
+      "q_requested": false,
+      "forced_calls": 0
+    }
+  },
+  "A_actual_video_frames": 559,
+  "B_actual_video_frames": 560,
+  "A_actual_duration_seconds": 18.633333,
+  "B_actual_duration_seconds": 18.666,
+  "A_minus_B_seconds": -0.032667,
+  "actual_sample_bytes_before_result": 50147043,
+  "Root_viewed_sample_PNGs": [
+    "A-before.png",
+    "B-before.png",
+    "A-after.png",
+    "B-after.png"
+  ],
+  "image_seeks_used_nominal_not_actual_group_join": true,
+  "actual_group_seams_or_audio_samples_accepted": false,
+  "full_film_or_replacement_accepted": false,
+  "original_K_session": 81740,
+  "original_K_continues": true,
+  "throughput_correction": {
+    "basis": "12:08:57 to12:40:55 observed frame+drop:1148453 to1212800; source6 component video30fps; narrative source85859.733s",
+    "recent_source_equivalent_fps_approx": 33.55,
+    "conditional_original_K_remaining_hours_approx": 11.3,
+    "decoder_cursor_or_finish_guarantee_claimed": false,
+    "old_cumulative_output_speed_ETA_withdrawn": true
+  },
+  "next": "Controlled full315-source6 graph test: original codec threads auto; vary only filter_complex_threads auto/2; not yet executed",
+  "Game_SDK_OBS_desktop_or_SAVE_body_calls": 0,
+  "raw_source_SHA_or_packet_index_passes": 0
+}
