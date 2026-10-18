@@ -23,6 +23,14 @@ def _integer(value):
     return type(value) is int
 
 
+def _focus_row_height(cue):
+    # Extra bottom margin stays before the next fixed-layout row label.
+    height = cue.get('focus_row_height', 100)
+    if not _integer(height) or not 100 <= height <= 116:
+        raise ValueError('Semantic row focus height must be an integer from 100 to 116')
+    return height
+
+
 def checked_cue(storyboard, cue_id):
     if storyboard.get('schema') != SCHEMA or storyboard.get('focus_state_columns') != COLUMNS:
         raise ValueError('Unknown semantic storyboard/frame column contract')
@@ -35,6 +43,7 @@ def checked_cue(storyboard, cue_id):
     if len(matches) != 1:
         raise ValueError('Semantic cue is missing or duplicated')
     cue = matches[0]
+    _focus_row_height(cue)
     if cue.get('source_class') != 'rule' or cue.get('native_fields') is not None:
         raise ValueError('This source-rule consumer cannot award native-readback provenance')
     if len(cue['steps']) != 3 or cue.get('connectors') not in {'none', 'sequence'}:
@@ -72,7 +81,7 @@ def state_layout(cue, index):
         raise ValueError('Unknown semantic state')
     low, high, panel, row, groups = cue['focus_states'][index]
     x = 100 + 825 * panel
-    rect = [x, 405, 710, 560] if row is None else [x + 24, 620 + 103 * row, 662, 100]
+    rect = [x, 405, 710, 560] if row is None else [x + 24, 620 + 103 * row, 662, _focus_row_height(cue)]
     hidden = []
     # Role overview shows all row labels but none of their values. Each row
     # state reveals that row and earlier values, never a later value.
