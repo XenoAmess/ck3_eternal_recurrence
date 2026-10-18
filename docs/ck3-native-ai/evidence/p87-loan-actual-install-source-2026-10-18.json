@@ -1,0 +1,88 @@
+{
+  "schema": "xar.p87-loan-actual-install-source-correction.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T06:41:00Z",
+  "read_window_utc": ["2026-10-18T06:37:03Z", "2026-10-18T06:41:00Z"],
+  "mode": "source-only installed stock definition research and append-only documentation correction",
+  "install_root": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game",
+  "game_identity": {
+    "version": "1.20.0.4",
+    "executable_sha256_prefix": "98702F",
+    "source": "Root current-run identity report; this agent did not read/stat/hash EXE",
+    "current_loaded_definitions_independently_verified": false,
+    "current_actor_loan_eligibility_or_quote_observed": false
+  },
+  "public_source_head_observed": "fa0d46eec95064a2a25fb2af74abc9bcc5f4bd36",
+  "installed_sources": [
+    {"path": "common/decisions/00_holy_order_decisions.txt", "bytes": 27897, "sha256": "137cc1b2daa7a7f615e597cd1623cc0c9d29052e63ca73ccbf94e5db38c34e4f", "bounded_definition": "borrow_from_holy_order_decision from line275", "tool_chunk": "aa57b5"},
+    {"path": "events/religion_events/holy_order_events.txt", "bytes": 104485, "sha256": "f4820ff47c6edd0e4d3723ae14f56cd3374846f7f3f5b4843c3810e2450b4622", "bounded_definitions": ["0200:457", "0206:532", "0202:564", "0203:746", "0204:837"], "tool_chunk": "00e92f"},
+    {"path": "common/scripted_effects/00_scripted_effects.txt", "bytes": 4172, "sha256": "d9e594cdcaf8da1f844b77d34170caf1b5ecfe20def7e9711756d81643cf1563", "bounded_lines": [20, 79], "tool_chunk": "fd8e71"},
+    {"path": "common/script_values/00_basic_values.txt", "bytes": 50566, "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef", "bounded_definitions": ["medium_gold_max_value:83-114", "massive_gold_max_value:149-180", "major_income_multiplier_value:454"], "tool_chunk": "3eecf8"},
+    {"path": "common/script_values/01_dynamic_values.txt", "bytes": 48201, "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a", "bounded_lines": [552, 557], "tool_chunk": "4a37f9"},
+    {"path": "common/decisions/80_major_decisions.txt", "bytes": 79302, "sha256": "402334eae65e42376d39c7085c0b7a0cf3b1b01f8591c712280b0608c8fe2e69", "bounded_lines": [2396, 2439], "tool_chunk": "cdd128"},
+    {"path": "common/on_action/yearly_on_actions.txt", "bytes": 147319, "sha256": "14c97f3845138d74a2c2552c5dd3c95de1da035014a5cdf31c92540aae3390fe", "bounded_lines": [3170, 3188], "tool_chunk": "b004da"},
+    {"path": "common/opinion_modifiers/00_opinion_modifiers.txt", "bytes": 40010, "sha256": "e921cbfec164e8b36cd3bfbdfcbc05b8152ec17cbf5b49e440d3a71d09afddb4", "bounded_lines": [1464, 1468], "tool_chunk": "76c07a"},
+    {"path": "common/scripted_triggers/00_relation_triggers.txt", "bytes": 28552, "sha256": "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44", "bounded_lines": [471, 499], "tool_chunk": "0ffece"}
+  ],
+  "reference_source_correction": {
+    "reference_root": "Z:/ck3_mod_rewrite/Crusader Kings III/game",
+    "old_reference_decision_sha256": "3485f694017bf90273b35c5523b86ddba1cd70746199c775cfb40590f3440146",
+    "old_reference_event_sha256": "ea23e5674633526d160be0a738fa0fee3702560dd1e289ad28b0cd9f758bcfd0",
+    "same_as_install": false,
+    "material_difference": "installed borrow decision requires military holy-order government and root.holy_order_gold_value; reference definition does not have the same gates/scope",
+    "old_history_or_DELIVERY_rewritten": false
+  },
+  "installed_definition_findings": {
+    "shown": ["playable character", "tier above barony", "faith has a military-order leader", "no loan_amount_owed or loan_holder variable"],
+    "validity": ["is_available", "eligible leader has military holy-order government", "leader gold >= borrower root.holy_order_gold_value", "no potential-rival/victim/bully/rival relationship"],
+    "declared_piety_cost": 50,
+    "declared_cooldown_days": 5475,
+    "war_prohibition_present": false,
+    "lender_selection": "random eligible order; actual selected recipient must be observed",
+    "principal_definition_only": "12 * monthly_character_income, lower clamp300*era_factor, upper clamp750*era_factor",
+    "era_factor_definition": {"culture_absent": 1, "before_early_medieval": 0.75, "early_medieval": 1, "high_medieval": 1.5, "late_medieval": 3},
+    "current_native_principal_quote_raw": null,
+    "confirm_effect": "decision execution/cost and random recipient, then holy_order.0200 event",
+    "principal_and_debt_commit_point": "actual available holy_order.0200.a calls set_up_loan_effect, recomputing holy_order_gold_value",
+    "amount_to_loan": "one-day tooltip variable; neither actual payment nor locked final quote",
+    "setup": ["loan_holder=LENDER", "loan_amount_owed=AMOUNT", "borrower years_since_loan=0", "original_loan_holder and original_lender", "lender owes_me_money includes borrower", "lender pay_short_term_gold to borrower"],
+    "repay": "shown needs owed and lender debtor-list membership; is_available and gold>=owed; pays owed, clears loan variables/flag and lender list member",
+    "years_since_loan_not_removed_by_clear_helper": true,
+    "interest_scope": "no principal-interest accumulation or extra repayment charge in the bounded setup/yearly/repay chain; not a global rule for mods or other debts",
+    "yearly": "random yearly pulse for each character;0206 increments debtors' years;0202 weighted500 empty/100 subject to trigger",
+    "maturity_not_promised": "0202 checks years_since_loan in holder scope, whereas setup/year growth stores borrower years; no fixed ten-year demand guarantee",
+    "default": ["legal repayment option", "piety_level>=3 can ask five additional years", "conditional25/75 weights for holding lease/child request; not measured probabilities", "not_repay_loan_opinion=-30 decays20years", "same-faith refusal can lose piety level", "removing loan flag does not prove principal cleared"]
+  },
+  "existing_native_reuse": {
+    "public_tool": "ck3_confirm_ingame_decision_outcome_v1",
+    "request": "selected borrow_from_holy_order_decision;expected_outcome=event_window;expected_event_definition_key=holy_order.0200",
+    "source_anchors": ["mcp_server.py:4076", "bridge.cpp:19023-19045", "ingame_decision_item_v1.cpp:304-331,487,525-529", "native_driver.py:7432-7475", "service.py:14118-14140"],
+    "native_item_source_sha256": "da0fcbe025ef1b409941378700e1b0434b504ffd9710c1bf288ebc9141116511",
+    "guards": ["exact .3/.4 identity", "same actual selected definition/actor/detail", "unique visible enabled Native Confirm receiver", "persistent unknown-once claim across revisions", "independent declared event/root proof; business credit false"],
+    "correction": "vivhite-only guard belongs to old fixed-modal Confirm, not generic confirm_outcome",
+    "current_DLL_capability_advertisement_observed": false,
+    "existing_loan_query": "MCP may register it, but Python schema/normalizer and native mailbox currently enforce exact1.20.0.3; costs DTO projects four resources",
+    "existing_debt_fields_in_12003": ["loan_amount_quote_raw", "owed presence/raw", "holder presence/fullID/resolved", "borrower years", "lender years", "borrow/repay shown/can_take/affordable"],
+    "existing_12004_binding_reuse": "religion_context_addons.cpp:26-41 DecisionBindings; holy_site_decision_cooldown.cpp:25-45 registry/key/type pins"
+  },
+  "minimal_future_1066_work": [
+    "Add exact .4 loan reader, reusing current .4 final decision bindings; complete ten-resource costs, real Native principal expression and typed debt variables/relationships.",
+    "Evaluate source-bound major war loss and fresh useful company quotes against fees/debt consequences; no current quote is supplied by static definitions.",
+    "Reuse existing select/generic Confirm unique claim, verify holy_order.0200/root/recipient, then a separately claimed Native event-option submission.",
+    "Independently read current wallet/piety, new owed principal and holder matching actual recipient, preferably original IDs and lender debtor-list membership; ACK, event closure or wallet delta alone is insufficient.",
+    "Only confirmed attributable received funds revise the same procurement epoch by unique receipt; accumulate paid and unknown commitments, requery market and retain Native CanHire/CanAfford; do not reset the cash anchor or pre-spend expected principal.",
+    "Construction cancellation still needs real .4 project identity, final CanCancel, numeric full refund/cost quote, Native single submit and independent wallet/project result."
+  ],
+  "execution_boundary": {
+    "new_source_code": false,
+    "tests_run": 0,
+    "native_builds": 0,
+    "live_MCP_or_game_operations": 0,
+    "EXE_or_frozen_runtime_reads": 0,
+    "deployment_changes": 0,
+    "loan_cancel_refund_hire_payment_arrival_victory_credit": false,
+    "commit_or_push": false,
+    "tracked_documentation_and_evidence_growth_limit_bytes": 24576,
+    "capacity": "nested original P87 512KiB allowance; no expiry extension or new independent/global allowance"
+  }
+}

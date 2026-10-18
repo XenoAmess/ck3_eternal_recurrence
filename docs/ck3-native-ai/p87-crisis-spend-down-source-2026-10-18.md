@@ -29,3 +29,13 @@
 新测试已列入 `static-ci.yml` 现有 losing-war 组，紧随原 emergency budget 测试；该登记未重跑已通过的 36 项，也不冒充远端 CI 终态。差异检查与可用工作流解析结果见 source proof。后续 SDK 采用及实际游戏验收分别记录。
 
 取消在建与显式贷款仍沿 P83 的真实接口缺口：本次没有实现当前 build 的可核数值退款报价、取消单发和独立项目／钱包后验，也没有实现合法贷款完整条款、原生提交及债务／钱包到账全链。不得用 stock 名称、ACK 或钱包差额伪记退款或本金。此 source 候选不提供这些业务信用。
+
+## 追加勘误：显式借款的已有入口与实际剩余范围（2026-10-18）
+
+只读观察截止 `2026-10-18T06:41:00Z`，`machine_id: xenoamess-full-tower-eb9d2c1186`。上文候选状态与 36 项软件资格保留为当时历史；本追加不改源码、原 DELIVERY 或资格，不授远端 CI、当前运行采用或业务信用。[实际安装 source proof](evidence/p87-loan-actual-install-source-2026-10-18.json) 记录九个定义叶及来源边界，完整解释见 [P83 追加勘误](p83-wartime-construction-cash-and-financing-gaps-2026-10-18.md)。
+
+“贷款完整闭环未实现”仍属实，但不能解释为所有提交通道都不存在。现有 exact `.4` generic decision outcome API 可对当前合法、实际选中的 `borrow_from_holy_order_decision` 原生 Confirm，并独立验证 `holy_order.0200`。它已有唯一 claim 和未知不重放；旧白绮专用 Confirm 的限制不适用于这条 generic 路由。是否在当前 DLL 公告、当前人物是否有足额虔诚及合格军事团长，仍须真实 Native 观测。
+
+实际安装定义确认：费用 50 虔诚、冷却 5475 天，合格军事团长随机选取；**`holy_order.0200.a` 才实际建立债务并由团长付款**，Confirm 和事件 tooltip 都不算到账。本金定义按当前角色收入、文化时代与上下限求值，不能拿固定 300 金或旧参考条款冒充当前原生报价。实际安装与仓库参考两叶 SHA 不同，已分别记录，未追认旧机器或 build 效力。当前所核普通还款按 owed 本金支付，年度催收与拒付有条件和作用域限制，不能承诺固定期限或无代价债务。
+
+未来最小实现是补 `.4` loan reader：复用现有 `.4` decision gates／cost bindings，闭原生本金与 typed 债务关系，保留完整十槽费用；再复用 generic Confirm → 已验证事件和选项单发 → 新帧钱包／债务共同后验。旧 `.3` query 的 four-resource DTO 和旧 ABI 不能直接改 build 标签使用。P87 的 `crisis_spend_down` 仅接受现有现款不足以保留军费缓冲的风险，并不借钱，也不会因后来钱包增长自动放开旧包上限。未来真实到账需独立、可归因、按 receipt ID 去重地修订**同一采购 epoch**，累计已付及未知承诺后再查询当前佣兵完整报价；未知 ACK 不重试，未到账资金仍为零信用。取消工程退款全链仍待实现。
