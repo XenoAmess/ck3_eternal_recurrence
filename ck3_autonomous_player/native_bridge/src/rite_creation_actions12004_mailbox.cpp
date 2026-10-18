@@ -81,7 +81,10 @@ bool ModalScope(void*opaque,const void*original_modal_root) noexcept {
   for(std::int32_t i=0;i<count;++i){const void*receiver=nullptr;std::uint8_t later=0;auto index=static_cast<std::size_t>(i);
    if(!Value(rows,index*sizeof(void*),receiver)||receiver!=receivers[index]||
       !Value(receiver,ui::kZhongguoWidgetHiddenFlagsOffset,later)||later!=flags[index])return false;}
-  return (!original_modal_root||admitted==1)&&CurrentGui(*c);
+  // Original confirmations need not register an effective input receiver.
+  // The controller independently proves the exact visible modal/draft/Can;
+  // the list above vetoes foreign effective receivers, not modal presence.
+  return CurrentGui(*c);
  }catch(...){return false;}
 }
 }

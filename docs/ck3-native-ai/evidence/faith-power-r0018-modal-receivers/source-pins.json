@@ -1,0 +1,88 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-18T13:02:30.229051+00:00",
+  "source_commit": "0f161417552a4ac01e90707f44f5724e2fdd9f93",
+  "files": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\root-screen-release-a01.json",
+      "bytes": 1396,
+      "sha256": "39bcbca2f3f45395892103045529638c77d4c203bff8caf71d17ff36eeb9049c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\root-keeper-stop-proof-a01.json",
+      "bytes": 2659,
+      "sha256": "afb9919bbc88f811108bbe76300d5fe0afb7f5ce11b15e12a3efec8d8f3d099a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\case-output\\normal-close-result.json",
+      "bytes": 15608,
+      "sha256": "a342d7d64853a395565fab6e81795f8e66c35e93e2fd0eaac0707064f70e77ad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\COMPLETED-CAPACITY-a01.json",
+      "bytes": 6483,
+      "sha256": "f510adddf92e63f8cd41a116dc6adacb3fd3358e86235a797c25f8272d93a59f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\root-native-receipts\\d1-final-draft-preview-a01.json",
+      "bytes": 27101,
+      "sha256": "ad34c20f58a220234ad885560ca96fa4a89fe2043321fa6305c8f7569607b084"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\root-native-receipts\\d1-prepare-core-confirmation-a01.json",
+      "bytes": 27361,
+      "sha256": "aa4105f0866533bb79c12131220db52dc8013b7d35e5696a86700de66d5a2167"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\root-native-receipts\\d1-postmodal-preview-a01.json",
+      "bytes": 22267,
+      "sha256": "f5b2bea9f7fc084e55a5f18b0874c1cce470d5366c8bd2d5226cad12b8417236"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0018\\modal-storage-and-receiver-probe-a01.json",
+      "bytes": 6897,
+      "sha256": "8e00d47b7f763b985e76f4ca492e57330283173a6e51a2ce40085e357ef9ea37"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-modal-scope-a01\\DELIVERY-a01.json",
+      "bytes": 2799,
+      "sha256": "71f7712369243b82e3ba30943d8b4ab414e293b4abf77561e68c733d5fbc7a8c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-modal-scope-a01\\modal-zero-receiver-source-a01.json",
+      "bytes": 2577,
+      "sha256": "7831b393ee130a9cd32b3851526a9b0133a0ae210d2c36dff43753c74296cbdf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-modal-scope-a01\\R18-CONCLUSION.md",
+      "bytes": 3726,
+      "sha256": "dfb411bd2924c6e10417b80e186c63914dd0b911fcf4c805385e46639ed74c43"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\captures\\v5-d1-final-core-adoption-a01\\recorder-final.json",
+      "bytes": 1507,
+      "sha256": "5da7f648ac3d4a82bd230b812c55d26397f1cff4bfd3a5b809f8db585e5cdeae"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\captures\\v5-d1-final-core-adoption-a01\\qa-a01\\DELIVERY.json",
+      "bytes": 2213,
+      "sha256": "0613389e0f91a4cfd6b35a27c00284def24bf787e7055642d51f3a61bc5d3975"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\A11-ROOT-CLOSED-a01.json",
+      "bytes": 1334,
+      "sha256": "8f112e21b71668fba097358a27d418d76567c3cd44fdb946eea78c2be1d64f6c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\ci-0f16-a01\\SUMMARY.json",
+      "bytes": 2717,
+      "sha256": "bd53348b1ee723630edf1df1fad8dd005115ac2166073cd1649bdc5c090fb447"
+    }
+  ],
+  "original_CaseClient_normal_close_qualified": true,
+  "final_creation_or_adoption_confirm_submitted": false,
+  "selected_fix_compiled_or_live_qualified": false,
+  "raw_measured_seconds": 76.9,
+  "native_scope_subpackage_max_bytes": 81920,
+  "old_64KiB_excess_preserved_bytes": 230
+}
