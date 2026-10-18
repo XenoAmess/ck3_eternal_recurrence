@@ -1,31 +1,29 @@
 {
   "schema": "xar.legacy-managed-original-index.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-18T03:10:43.391881+00:00",
-  "source_scene": "actual R205 at probe time; later R206 identity invalidates this predecessor",
   "evidence_entries": [
     {
       "role": "allocation_context",
       "source": {
-        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\allocated-context.actual-a01.json",
-        "bytes": 4144,
-        "sha256": "1019a1b886149d661d9bafc89929bf3e8f3868016bc219504bda4ecf05521e9e"
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\allocated-context.actual-a01.json",
+        "bytes": 2812,
+        "sha256": "a22b283dbdb4029328390113d196b88a2e5b3404e1e2b195ec69c39a524a5a14"
       }
     },
     {
       "role": "bootstrap_result",
       "source": {
-        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\desktop-3fevhd2-1c74096080--vanilla--R0205\\bootstrap-result.json",
-        "bytes": 14520,
-        "sha256": "35120de3751be868f02ae2ab13ee439a7eeb66dd3f280bddd58d02e2d1b7d021"
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\bootstrap-result.json",
+        "bytes": 15209,
+        "sha256": "39d3020c2888d27028bd93e660d02da2103ca8ba9f0f3e8c41d04cf3194088b1"
       }
     },
     {
       "role": "screen_release",
       "source": {
-        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r205-r04-scout-a01\\r205-r04-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
-        "bytes": 4817,
-        "sha256": "4191692a60507b52dcca1bd46678a70dcbc8bb2b25b74252a845c82669eb13b6"
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-terminal-a02-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4827,
+        "sha256": "73c0f87ddf14550b061a8fcaa27a3a8ae7caeb6c29a57ef83c806de526aeb581"
       }
     }
   ]

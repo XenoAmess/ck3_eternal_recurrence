@@ -1,4 +1,4 @@
-"""Pure R203 exact-one-day composite postcondition; no SDK or live input."""
+"""Pure exact-day contract for two actually observed CK3 1.20.0.4 policies."""
 from __future__ import annotations
 
 
@@ -15,11 +15,19 @@ def exact_day_postcondition(step: object, before: object, after: object) -> dict
     end = after.get("date_raw")
     if type(start) is not int or type(end) is not int or end != start + 24:
         raise ValueError("independent native date is not exactly one day")
+    # Both literals have independent native evidence: R203 battle/contact and
+    # R206 William noncombat speed 5. No arbitrary policy string is accepted.
+    actual_policy = step.get("timeline_policy")
+    allowed_policies = (
+        "exact_one_day_unavoidable_contact",
+        "exact_one_day_noncombat_native_speed_5",
+    )
+    if type(actual_policy) is not str or actual_policy not in allowed_policies:
+        raise ValueError("unreviewed exact-day timeline policy")
     expected = {
         "step": "life-advance-one-day",
         "backend_id": "native-headless",
         "source": "native-composite",
-        "timeline_policy": "exact_one_day_unavoidable_contact",
         "progress_status": "postcondition",
         "starting_date_raw": start,
         "ending_date_raw": end,
@@ -56,5 +64,6 @@ def exact_day_postcondition(step: object, before: object, after: object) -> dict
         raise ValueError("native day trigger was not exact date deadline")
     return {"exact_day": True, "starting_date_raw": start,
             "ending_date_raw": end, "elapsed_days": 1,
+            "actual_timeline_policy": actual_policy,
             "evidence_scope": "composite_postcondition_plus_independent_snapshot",
             "first_take_historical_RED_relabelled": False}
