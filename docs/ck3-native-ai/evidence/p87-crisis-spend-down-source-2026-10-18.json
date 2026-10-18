@@ -1,0 +1,165 @@
+{
+  "schema": "xar.p87-crisis-spend-down-public-source-proof.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T05:59:41.143134+00:00",
+  "status": "Root-reviewed public source preparation; uncommitted/unpushed, not installed",
+  "public_head_observed": "ccce391f806fc2750aa0ee4f5abfa3e7f560340a",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_emergency_budget_v1.py",
+      "bytes": 15329,
+      "sha256": "46ef28bb2102520d93ba10d154529fd169a3e7b4058bd41939bd3a635dfae420"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+      "bytes": 32987,
+      "sha256": "0bddd4183b7fb6b6f24c9097794af6c769d28d25e7115b0bc62cb6c321801b95"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 20825,
+      "sha256": "0d1bdb3d5a9c5a3f7aa8d353ca00ce22da38d42e27a580d3c7ad4f733d9f2f9c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_finance_v1.py",
+      "bytes": 4409,
+      "sha256": "8ab37b734192598c4b8698d14f2f26bd05c41bcc5e02285fc0aa6f8639f72971"
+    }
+  ],
+  "new_test": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_crisis_spend_down_v1.py",
+    "bytes": 9858,
+    "sha256": "83bead7057032650ec36089dce14cfd12f39d673e489713dada36d5551af3743"
+  },
+  "topic": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\p87-crisis-spend-down-source-2026-10-18.md",
+    "bytes": 5599,
+    "sha256": "89290e78c1224ffb31ea590c974e90e3fe93cf54d57aa10392746fd4df97137b"
+  },
+  "qualification": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "deselected": 0,
+    "started_at_utc": "2026-10-18T05:55:50.298572+00:00",
+    "ended_at_utc": "2026-10-18T05:55:59.873921+00:00",
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p87-crisis-spend-down-source01\\PUBLIC-QUALIFICATION01.json",
+      "bytes": 10326,
+      "sha256": "2e6ac3e8780660be542e4e5be7eefcd145a0cfb291c5956ea83678fddb2823ff"
+    },
+    "loaded_public_modules": [
+      {
+        "module": "xar_autoplayer.bridge.service",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 860861,
+        "sha256": "c8cc2228c73efb3875003242cab05edaa4b2e9b1a9df23c37dc7c644e7f869b2"
+      },
+      {
+        "module": "xar_autoplayer.bridge.mcp_server",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 256040,
+        "sha256": "ff328ec35e485911c877e76c793bec21bac2355960880e77bc60a135d3f02d31"
+      },
+      {
+        "module": "xar_autoplayer.war_mercenary_consumer_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 20825,
+        "sha256": "0d1bdb3d5a9c5a3f7aa8d353ca00ce22da38d42e27a580d3c7ad4f733d9f2f9c"
+      },
+      {
+        "module": "xar_autoplayer.war_strategic_reserve_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+        "bytes": 32987,
+        "sha256": "0bddd4183b7fb6b6f24c9097794af6c769d28d25e7115b0bc62cb6c321801b95"
+      },
+      {
+        "module": "xar_autoplayer.war_emergency_budget_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_emergency_budget_v1.py",
+        "bytes": 15329,
+        "sha256": "46ef28bb2102520d93ba10d154529fd169a3e7b4058bd41939bd3a635dfae420"
+      },
+      {
+        "module": "xar_autoplayer.war_reinforcement_finance_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_finance_v1.py",
+        "bytes": 4409,
+        "sha256": "8ab37b734192598c4b8698d14f2f26bd05c41bcc5e02285fc0aa6f8639f72971"
+      }
+    ],
+    "command_tool_chunk": "157e19",
+    "completion_tool_chunk": "1fea40",
+    "exit_code": 0,
+    "game_process_native_replies": "synthetic",
+    "actual_path": "public registered MCP -> ordinary GameplayBridgeService -> original mercenary planner/submit",
+    "repeated_for_workflow_edit": false
+  },
+  "workflow": {
+    "path": ".github/workflows/static-ci.yml",
+    "file": {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 52007,
+      "sha256": "c48e1cc6a764eee557cc5b49b3c3f0413544f5c459f1cd285a13ca2cfab1d3dd"
+    },
+    "previous_sha256": "03fbfdbf9af3958c05737edb5b1456273239bdb0fae3b5e54e3d4e3e3a035fc8",
+    "only_change": "insert new test immediately after test_war_emergency_budget_v1.py in existing losing-war file list",
+    "other_job_bytes_and_order_unchanged": true,
+    "parse": {
+      "available": true,
+      "parser": "existing installed PyYAML safe_load; no dependency installed",
+      "status": "passed",
+      "target_group_count": 1,
+      "new_test_occurrences": 1
+    },
+    "diff_check_exit_code": 0,
+    "remote_CI_status": "not observed for a published P87 commit"
+  },
+  "policy": {
+    "mode": "crisis_spend_down level3",
+    "overrides_only": [
+      "military cash allocation policy",
+      "treasury share policy"
+    ],
+    "requires": [
+      "source-bound major defensive territorial stakes and existing level2 deterioration",
+      "conditional relevant headcount reversal; arrival and combat power unverified",
+      "Native CanHire/CanAfford and complete ten-resource current terms",
+      "current gold sufficient for entire contract and known other reserved commitments",
+      "original procurement epoch cash anchor and cumulative paid/unknown commitments"
+    ],
+    "military_allocation_retained_can_remain_false": true,
+    "unreceived_funding_credited_raw": 0,
+    "invented_loan_capacity": null,
+    "future_debt_occurrence_verified": false,
+    "arrival_eta_days": null,
+    "battle_win_probability": null,
+    "native_active_minus100_is_not_terminal": true,
+    "unknown_pending_resubmitted": false
+  },
+  "remaining_interfaces": {
+    "reference": "p83-wartime-construction-cash-and-financing-gaps-2026-10-18.md",
+    "cancel_numeric_refund_native_submit_independent_wallet_project_chain": "not implemented by this candidate",
+    "explicit_loan_current_build_terms_native_submit_debt_wallet_chain": "not implemented by this candidate"
+  },
+  "business_credit": {
+    "real_native_hire": false,
+    "employment": false,
+    "payment": false,
+    "army_creation": false,
+    "arrival": false,
+    "relief": false,
+    "victory": false,
+    "cancellation_refund": false,
+    "explicit_loan": false,
+    "ACK_is_payment_or_employment_proof": false
+  },
+  "deployment": {
+    "current_runtime_modified": false,
+    "sdk49_modified": false,
+    "frozen_sdk06_modified": false,
+    "game_or_mcp_live_operations": 0,
+    "native_builds": 0,
+    "committed": false,
+    "pushed": false
+  },
+  "physical_hash_note": "All pins above read actual retained bytes; earlier LF-buffer console hashes are corrected append-only in PUBLIC-INTEGRATION-READY01.json."
+}

@@ -100,13 +100,24 @@ def valid_saved_emergency_revision_v1(selected, source_frame, snapshot):
             or binding.get("played_character_id") != snapshot.get("played_character", {}).get("character_id")
             or type(binding.get("native_revision")) is not int
             or binding["native_revision"] > snapshot.get("native_revision", -1)
-            or type(revision.get("level")) is not int or revision["level"] not in (1, 2)
+            or type(revision.get("level")) is not int or revision["level"] not in (1, 2, 3)
             or not isinstance(revision.get("epoch_id"), str)
             or not revision["epoch_id"]
             or any(type(revision.get(key)) is not int or revision[key] < 0 for key in
                    ("anchor_treasury_raw", "total_package_limit_raw", "ordinary_reserve_target_raw"))
             or revision["total_package_limit_raw"] > revision["anchor_treasury_raw"]):
         return None
+    if revision["level"] == 3:
+        crisis = revision.get("crisis_spend_down_v1")
+        if (not isinstance(crisis, Mapping)
+                or crisis.get("policy") != "major-defence-conditional-count-reversal-spend-down-v1"
+                or crisis.get("future_funding_credited_raw") != 0
+                or crisis.get("ordinary_military_allocation_retained") is not False
+                or crisis.get("future_debt_occurrence_verified") is not False
+                or any(type(crisis.get(key)) is not int or crisis[key] < 0 for key in
+                       ("current_treasury_raw", "complete_contract_gold_raw", "other_reserved_gold_raw"))
+                or crisis["current_treasury_raw"] < crisis["complete_contract_gold_raw"] + crisis["other_reserved_gold_raw"]):
+            return None
     return dict(revision)
 
 
@@ -128,6 +139,35 @@ def emergency_quote_budget_v1(snapshot, *, policy, focus, local, troops, price, 
         maintenance_reservation_months=policy["maintenance_window_months"])
     if finance.get("status") != "available":
         return inactive
+    # A one-time contract can be affordable now even when the current military
+    # cash buffer is not retained. Only the strongest existing major-defence
+    # crisis may accept that later cash-flow risk, and only for a conditional
+    # count reversal. This does not forecast arrival, victory or an actual debt.
+    live_war = next((war for war in (snapshot.get("active_wars") or [])
+                     if isinstance(war, Mapping) and war.get("war_id") == policy.get("war_id")), {})
+    crisis = (policy.get("level") == 2
+              and live_war.get("player_is_primary_war_leader") is True
+              and live_war.get("player_side") == "defender"
+              and live_war.get("player_relative_war_score") == focus.get("player_relative_war_score")
+              and finance.get("retains_military_allocation") is False
+              and own + troops > enemy
+              and normal_finance["observed_treasury_raw"] >= price + policy["other_reserved_gold_raw"])
+    spend_down = None
+    if crisis:
+        spend_down = {"policy": "major-defence-conditional-count-reversal-spend-down-v1",
+            "current_treasury_raw": normal_finance["observed_treasury_raw"],
+            "complete_contract_gold_raw": price,
+            "other_reserved_gold_raw": policy["other_reserved_gold_raw"],
+            "ordinary_military_allocation_retained": False,
+            "overridden_policy_checks": ["military_cash_allocation", "treasury_share_limit"],
+            "conditional_count_reversal_only": True,
+            "future_funding_credited_raw": 0, "future_debt_occurrence_verified": False,
+            "future_maintenance_debt_risk_accepted": True,
+            "loan_principal_or_debt_capacity": None,
+            "arrival_eta_days": None, "battle_win_probability": None}
+    effective_level = 3 if crisis else policy["level"]
+    # Known unrelated unpaid obligations remain protected in every mode.
+    required_cash = policy["other_reserved_gold_raw"] if crisis else finance["required_gold_reserve_raw"]
     committed = package.get("committed_contract_quote_gold_raw", 0)
     previous = package.get("emergency_budget_epoch_v1")
     anchor_cash = package.get("original_treasury_raw", normal_finance["observed_treasury_raw"])
@@ -136,7 +176,7 @@ def emergency_quote_budget_v1(snapshot, *, policy, focus, local, troops, price, 
         str(package.get("anchor_action_request_id") or hashlib.sha256(json.dumps(
             [observed_frame(snapshot), sorted(policy["global_hostile_scope"]["war_ids"])], sort_keys=True).encode()).hexdigest()[:24]))
     previous_level = previous.get("level", 0) if isinstance(previous, Mapping) else 0
-    if previous_level >= policy["level"]:
+    if previous_level >= effective_level:
         # More current cash or another war cannot refresh this level's funding.
         limit = previous["total_package_limit_raw"]
         revision = dict(previous)
@@ -146,8 +186,8 @@ def emergency_quote_budget_v1(snapshot, *, policy, focus, local, troops, price, 
         if (previous_level and snapshot["native_revision"] <= previous["source_frame"]["native_revision"]):
             return {**inactive, "reason": "higher_emergency_level_requires_new_native_observation"}
         limit = max(prior_limit, min(anchor_cash, committed + max(0,
-            finance["observed_treasury_raw"] - finance["required_gold_reserve_raw"])))
-        revision = {"epoch_id": epoch_id, "level": policy["level"],
+            finance["observed_treasury_raw"] - required_cash)))
+        revision = {"epoch_id": epoch_id, "level": effective_level,
                     "source_frame": observed_frame(snapshot), "anchor_treasury_raw": anchor_cash,
                     "total_package_limit_raw": limit, "prior_total_limit_raw": prior_limit,
                     "ordinary_reserve_target_raw": (previous.get("ordinary_reserve_target_raw")
@@ -156,8 +196,12 @@ def emergency_quote_budget_v1(snapshot, *, policy, focus, local, troops, price, 
                     "newly_opened_package_gold_raw": max(0, limit - prior_limit),
                     "reuses_locked_level_limit": False,
                     "policy_evidence": policy}
+        if crisis:
+            revision["crisis_spend_down_v1"] = spend_down
     remaining = max(0, limit - committed)
     return {"applied": True, "finance": finance, "revision": revision,
+            "crisis_spend_down_policy_eligible": crisis,
+            **({"crisis_spend_down_v1": spend_down} if crisis else {}),
             "remaining_package_gold_raw": remaining, "total_package_limit_raw": limit,
             "conditional_counts": {"player": own, "enemy": enemy, "after_company_arrival": own + troops,
                 "deficit_closed_soldiers": min(troops, enemy - own), "local_native_members_available": local.get("status") == "available",

@@ -283,7 +283,8 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
             reasons.append("native_hire_or_affordability_rejected")
         if company.get("employer_id") is not None:
             reasons.append("company_already_employed")
-        if finance.get("retains_military_allocation") is not True:
+        if (finance.get("retains_military_allocation") is not True
+                and emergency.get("crisis_spend_down_policy_eligible") is not True):
             reasons.append("same_frame_contract_and_military_cash_allocation_not_ready_or_not_retained")
         if type(troops) is not int or troops <= 0 or strength.get("available") is not True:
             reasons.append("positive_current_company_strength_unavailable")
@@ -352,6 +353,8 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
                 "emergency_arrival_risk_v1": {key: emergency[key] for key in
                     ("arrival_eta_days", "arrival_estimate", "cannot_guarantee_arrival_before_loss", "battle_win_probability")}}
                if emergency["applied"] else {}),
+            **({"crisis_spend_down_v1": emergency["crisis_spend_down_v1"]}
+               if emergency.get("crisis_spend_down_policy_eligible") is True else {}),
             "numerical_balance_reversed_war_ids": [focus["war_id"]] if flip else [],
             "conditional_local_player_soldiers_after_arrival": combined,
             "local_comparison": local,

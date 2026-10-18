@@ -245,6 +245,10 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
         if isinstance(emergency, Mapping):
             text += (f"防御危机资金等级{emergency.get('level')}，同包总上限"
                      f"{money(emergency.get('total_package_limit_raw'))}金；缩减现金缓冲承担救援不及时的风险。")
+        if isinstance(chosen.get("crisis_spend_down_v1"), Mapping):
+            text += ("绝境消耗现金缓冲：现款足付完整合同并保留已知其他承诺，"
+                     "未保留常规军费储备；接受后续军费可能入债的风险，"
+                     "完整净现金流、抵达与胜率未知，未计未到账筹款。")
     elif status == "strategic_model_has_no_current_evidenced_purpose_keep_war_action":
         text += "当前尚无足够战略采购用途，保留战争行动；未来增援与抵达仍未知。"
     elif plan.get("selected_step") == QUERY_STEP:
