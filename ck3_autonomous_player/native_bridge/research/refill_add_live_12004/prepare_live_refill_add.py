@@ -188,7 +188,15 @@ def main():
     need(gate.get('new_live_build_and_SYSTEM_verified') is True and gate.get('next_scene_capacity_and_observer_admitted') is True,'Root actual build/SYSTEM/capacity/window admission required')
     source_dir=validate_source_dir(gate.get('source_dir'))
     need(gate.get('target')=='refill_add_hwprobe_12004','admitted C-source live target')
-    need(gate.get('cmake_defines')=={'XAR_ENABLE_REFILL_ADD_HWPROBE_12004':'ON','XAR_ENABLE_REFILL_STACK_Q_COLD_12004':'OFF','XAR_ENABLE_REFILL_V3_COLD_PROBE_12004':'OFF'},'exact live-only compile options')
+    worker = gate.get('observer_thread_policy') == 'carrier_owned_target'
+    need(gate.get('observer_thread_policy') in (None, 'fixed_tid', 'carrier_owned_target'), 'explicit observer thread policy')
+    maximum_threads = gate.get('maximum_owned_threads') if worker else None
+    if worker:
+        need(integer(maximum_threads, 1, 256), 'explicit finite worker ownership bound')
+    definitions = {'XAR_ENABLE_REFILL_ADD_HWPROBE_12004':'ON','XAR_ENABLE_REFILL_STACK_Q_COLD_12004':'OFF','XAR_ENABLE_REFILL_V3_COLD_PROBE_12004':'OFF'}
+    if worker:
+        definitions.update(XAR_ENABLE_REFILL_CARRIER_THREAD_DISCOVERY_12004='ON', XAR_ENABLE_REFILL_V5_COLD_PROBE_12004='OFF')
+    need(gate.get('cmake_defines') == definitions, 'exact admitted live-only compile options')
     need(gate.get('carrier_bridge_source_epoch')==20261018 and type(gate.get('carrier_bridge_source_epoch')) is int and gate.get('carrier_source_and_runtime_verified') is True,'Root actual carrier source/runtime gate')
     module=gate.get('carrier_bridge_module_path');need(type(module) is str and Path(module).is_absolute() and Path(module).name.lower()=='xar_ck3_bridge.dll','actual admitted carrier DLL path')
     exe=Path(gate['observer_exe']);need(exe.name=='refill_add_hwprobe_12004.exe','production observer basename')
@@ -217,28 +225,39 @@ def main():
     occurrences=[r for r in classified['DATA_occurrences'] if (r['persistent_regiment_id']&0xFFFFFFFF)==a.regiment and r['chunk_index']==a.slot]
     need(occurrences and all(r['army_regiment_id']==arrg for r in occurrences),'selected complete DATA alias association')
     identity=os_identity(pid,tid)
-    binding={'schema':('xar.ck3.refill_ADD_12004.owner_binding.v3' if native_campaign_null else 'xar.ck3.refill_ADD_12004.owner_binding.v2'),'machine_id':machine,'exact_executable_sha256':EXE_SHA,
-      'pid':pid,'process_created_filetime':identity['process_created_filetime'],'thread_id':tid,
+    binding={'schema':('xar.ck3.refill_ADD_12004.owner_binding.v4' if worker else ('xar.ck3.refill_ADD_12004.owner_binding.v3' if native_campaign_null else 'xar.ck3.refill_ADD_12004.owner_binding.v2')),'machine_id':machine,'exact_executable_sha256':EXE_SHA,
+      'pid':pid,'process_created_filetime':identity['process_created_filetime'],'thread_id':None if worker else tid,
       'regi_full_id_u32':a.regiment,'physical_slot':a.slot,'arrg_full_id_i32':arrg,'army_full_id_i32':carmy,
       'connection_generation':diag['connection_generation'],'episode_run_id':frame.get('episode_run_id'),
       'carrier_module_path':module,'carrier_source_epoch':20261018,'source_dir':source_dir,
       'source_admission_receipt_sha256':gate['source_admission_receipt_sha256'],
       'observer_build_and_SYSTEM_gate_receipt_sha256':pg['sha256']}
     if native_campaign_null:binding['episode_projection']='native_campaign'
+    if worker:
+        binding.update(episode_projection=frame.get('episode_projection'), admission_mailbox_thread_id=tid,
+            thread_policy='carrier_owned_target', maximum_owned_threads=maximum_threads)
     out=a.output_root.resolve();raw=out/'observer.raw.ndjson';ready=out/'observer.ready.json'
-    argv=[str(exe),'--enable','--pid',str(pid),'--thread',str(tid),'--regiment',str(a.regiment),'--slot',str(a.slot),
+    argv=[str(exe),'--enable','--pid',str(pid),'--thread',str(0 if worker else tid),'--regiment',str(a.regiment),'--slot',str(a.slot),
       '--created',str(identity['process_created_filetime']),'--timeout-ms',str(a.timeout_ms),'--raw',str(raw),'--ready',str(ready),'--machine-id',machine]
+    if worker:argv += ['--thread-policy','carrier-owned-target','--max-threads',str(maximum_threads)]
     consume=[sys.executable,'-B','-X','utf8',str(a.repo/'ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py'),
       '--raw',str(raw),'--binding',str(out/'owner-binding.json'),'--output',str(out/'instruction-item.json')]
-    result={'schema':('xar.ck3.refill_ADD_12004.prepared_live_argv.v3' if native_campaign_null else 'xar.ck3.refill_ADD_12004.prepared_live_argv.v2'),'machine_id':machine,'observed_at':datetime.now(timezone.utc).isoformat(),
+    result={'schema':('xar.ck3.refill_ADD_12004.prepared_live_argv.v4' if worker else ('xar.ck3.refill_ADD_12004.prepared_live_argv.v3' if native_campaign_null else 'xar.ck3.refill_ADD_12004.prepared_live_argv.v2')),'machine_id':machine,'observed_at':datetime.now(timezone.utc).isoformat(),
       'input_pins':[pf,pd,pp,pg],'source_dir':source_dir,'positive_prepare_target':positive,'identity':identity,'native_argv':argv,'consume_argv':consume,'DATA_occurrences':occurrences,
       'selected_eligibility':[r for r in classified['physical_chunks'] if (r['persistent_regiment_id']&0xFFFFFFFF)==a.regiment and r['chunk_index']==a.slot],
       'carrier_module_path':module,'carrier_source_epoch':20261018,
       'consume_argv_requires_core_observation':True,'consume_core_observation_argument_name':'--core-observation',
       'Root_admission_authority_verified_here':False,'exe_content_rehashed_here':False,'observer_launched':False,'actual_ADD_observed':False,
-      'ready_must_match':{'schema':'xar.ck3.refill_ADD_12004.hwprobe_ready.v3','machine_id':machine,'pid':pid,'process_created_filetime':identity['process_created_filetime'],
-        'thread_id':tid,'regi_full_id_u32':a.regiment,'physical_slot':a.slot,'site_0':'0x2A98B88','site_1':'0x2A98B8B','carrier_module_path':module,'carrier_source_epoch':20261018},
+      'ready_must_match':{'schema':('xar.ck3.refill_ADD_12004.hwprobe_ready.v4' if worker else 'xar.ck3.refill_ADD_12004.hwprobe_ready.v3'),'machine_id':machine,'pid':pid,'process_created_filetime':identity['process_created_filetime'],
+        'thread_id':None if worker else tid,'regi_full_id_u32':a.regiment,'physical_slot':a.slot,'site_0':'0x2A98B88','site_1':'0x2A98B8B','carrier_module_path':module,'carrier_source_epoch':20261018},
       'no_new_MCP_query_required':True,'natural_core_token':None,'full_R06_qualified':False}
+    if worker:
+        result['ready_must_match'].update(thread_policy='carrier_owned_target', maximum_owned_threads=maximum_threads)
+        result.update(consume_argv_requires_core_observation=False, consume_argv_requires_target_core_proof=True,
+            consume_core_observation_argument_name=None, consume_full_parent_argument_name='--full-parent-proof',
+            observer_thread_policy='carrier_owned_target', maximum_owned_threads=maximum_threads,
+            actual_callback_thread_id=None)
+        consume += ['--create-target-core-proof', str(out/'target-core-proof.json')]
     out.mkdir(parents=True,exist_ok=False)
     for name,value in [('owner-binding.json',binding),('PREPARED.actual.json',result)]:
         with (out/name).open('x',encoding='utf-8') as f:json.dump(value,f,indent=2);f.write('\n')

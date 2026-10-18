@@ -440,7 +440,7 @@ def _core_complete_frame(frame: dict, binding: Mapping[str, object], hit: dict) 
         _need(list(maps[objects]) == ordered, 'complete core physical first-observation order and references')
 
 
-def _join_actual_core(frame: dict, observation: object, binding: Mapping[str, object], hit: dict) -> dict:
+def _join_actual_core_provenance(frame: dict, observation: object) -> dict:
     _need(type(observation) is dict, 'v4 requires one complete actual raw CoreEvent record')
     _core_typed(observation, 'Event')
     core = observation
@@ -473,12 +473,17 @@ def _join_actual_core(frame: dict, observation: object, binding: Mapping[str, ob
           'actual core entry/return and captured natural parent event/context/date join')
     _need(scope['saved_c0_raw'] is None or scope['saved_c0_raw'] & 0x02 != 0,
           'known saved C0 byte agrees with actual admitted mask02 branch')
-    for label in ('entry', 'returned'): _core_complete_frame(core[label], binding, hit)
     return {'native_core_invocation_token':core['native_core_invocation_token'],
             'parent_invocation_token':parent_token, 'nesting_depth':core['core_invocation_nesting_depth'],
             'core_entry_event':dict(entry), 'core_returned_event':dict(returned),
             'natural_parent_event':dict(natural), 'source_epoch':_CARRIER_EPOCH,
-            'entry_and_returned_complete':True, 'original_called_and_returned':True}
+            'original_called_and_returned':True}
+
+
+def _join_actual_core(frame: dict, observation: object, binding: Mapping[str, object], hit: dict) -> dict:
+    join = _join_actual_core_provenance(frame, observation)
+    for label in ('entry', 'returned'): _core_complete_frame(observation[label], binding, hit)
+    return {**join, 'entry_and_returned_complete':True}
 
 
 def _normalize_core_carrier_v4_12004(raw: bytes, binding: Mapping[str, object], core_observation: object) -> dict[str, object]:

@@ -24,20 +24,28 @@ def validate_prepared_ready_scope(prepared):
     schema=prepared.get('schema')
     need(schema in ('xar.ck3.refill_ADD_12004.prepared_live_argv.v1',
                     'xar.ck3.refill_ADD_12004.prepared_live_argv.v2',
-                    'xar.ck3.refill_ADD_12004.prepared_live_argv.v3'), 'PREPARED schema')
+                    'xar.ck3.refill_ADD_12004.prepared_live_argv.v3',
+                    'xar.ck3.refill_ADD_12004.prepared_live_argv.v4'), 'PREPARED schema')
     need(prepared.get('observer_launched') is False and prepared.get('actual_ADD_observed') is False,'unlaunched preparation')
     argv=prepared['native_argv']; consume=prepared['consume_argv']
-    need(type(argv) is list and len(argv)==20 and all(type(x) is str and x for x in argv),'structured native argv')
-    need(argv[1]=='--enable' and argv[2::2]==['--pid','--thread','--regiment','--slot','--created','--timeout-ms','--raw','--ready','--machine-id'],'existing production CLI only')
+    worker = schema == 'xar.ck3.refill_ADD_12004.prepared_live_argv.v4'
+    need(type(argv) is list and len(argv)==(24 if worker else 20) and all(type(x) is str and x for x in argv),'structured native argv')
+    need(argv[1]=='--enable' and argv[2:20:2]==['--pid','--thread','--regiment','--slot','--created','--timeout-ms','--raw','--ready','--machine-id'],'existing production CLI prefix')
+    if worker:
+        need(argv[20:23] == ['--thread-policy','carrier-owned-target','--max-threads'] and argv[5] == '0', 'explicit deferred callback worker CLI')
+        need(argv[23].isdigit() and 1 <= int(argv[23]) <= 256, 'finite worker bound')
     need(Path(argv[0]).name=='refill_add_hwprobe_12004.exe' and argv[13]=='30000','live target and 30s native window')
     values=dict(zip(argv[2::2],argv[3::2])); expected=prepared['ready_must_match']
-    ready_schema=('xar.ck3.refill_ADD_12004.hwprobe_ready.v3'
+    ready_schema=('xar.ck3.refill_ADD_12004.hwprobe_ready.v4' if worker else 'xar.ck3.refill_ADD_12004.hwprobe_ready.v3'
                   if schema.endswith(('.v2','.v3')) else 'xar.ck3.refill_ADD_12004.hwprobe_ready.v2')
     need(type(expected) is dict and expected.get('schema')==ready_schema,'production ready contract')
     for flag,key in [('--pid','pid'),('--thread','thread_id'),('--regiment','regi_full_id_u32'),('--slot','physical_slot'),('--created','process_created_filetime')]:
-        need(type(expected.get(key)) is int and str(expected[key])==values[flag],'same prepared '+key)
+        if worker and key == 'thread_id':
+            need(expected.get(key) is None, 'callback thread remains unknown before actual candidate')
+        else:
+            need(type(expected.get(key)) is int and str(expected[key])==values[flag],'same prepared '+key)
     need(expected.get('machine_id')==prepared.get('machine_id')==values['--machine-id'],'same prepared machine')
-    if schema.endswith(('.v2','.v3')):
+    if schema.endswith(('.v2','.v3','.v4')):
         module=prepared.get('carrier_module_path'); epoch=prepared.get('carrier_source_epoch')
         need(type(module) is str and Path(module).is_absolute()
              and Path(module).name.lower()=='xar_ck3_bridge.dll', 'prepared actual carrier module path')
@@ -45,7 +53,22 @@ def validate_prepared_ready_scope(prepared):
         need(type(expected.get('carrier_module_path')) is str and expected['carrier_module_path']==module
              and type(expected.get('carrier_source_epoch')) is int and expected['carrier_source_epoch']==epoch,
              'same prepared/ready carrier module and source epoch')
+    if worker:
+        need(expected.get('thread_policy') == prepared.get('observer_thread_policy') == 'carrier_owned_target', 'same worker policy')
+        maximum = int(values['--max-threads'])
+        need(type(expected.get('maximum_owned_threads')) is int and expected['maximum_owned_threads'] == prepared.get('maximum_owned_threads') == maximum, 'same worker bound')
     return argv, consume, expected, values
+
+
+def validate_actual_ready(prepared, value, expected):
+    need(type(value) is dict and all(type(value.get(k)) is type(v) and value[k] == v for k, v in expected.items()), 'ready exact owner/generation/slot mismatch')
+    if prepared['schema'] == 'xar.ck3.refill_ADD_12004.prepared_live_argv.v4':
+        ids = value.get('armed_thread_ids'); count = value.get('armed_thread_count')
+        need(type(ids) is list and type(count) is int and count == len(ids)
+             and 0 < count <= prepared['maximum_owned_threads']
+             and all(type(tid) is int and 0 < tid <= 0xFFFFFFFF for tid in ids)
+             and len(set(ids)) == count, 'actual finite owned worker set armed')
+    return value
 
 
 def main():
@@ -76,7 +99,7 @@ def main():
                     try:
                         content=ready.read_bytes(); need(0<len(content)<=16384,'bounded ready')
                         value=json.loads(content)
-                        need(type(value) is dict and all(type(value.get(k)) is type(v) and value[k]==v for k,v in expected.items()),'ready exact owner/generation/slot mismatch')
+                        validate_actual_ready(prepared, value, expected)
                         if proc.poll() is None:
                             verified=True
                             item={**record,'observed_at_utc':now(),'ready':{'path':str(ready),'bytes':len(content),'sha256':sha(content)},'ready_verified':True,'observer_alive_at_check':True,'actual_ADD_observed':False}
