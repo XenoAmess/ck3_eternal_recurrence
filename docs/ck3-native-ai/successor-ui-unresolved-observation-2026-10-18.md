@@ -21,3 +21,9 @@
 4 项新 focused unittest 最终通过（0.005s；含 8 个坏输入子例），使用实际原 normalizer，但所有快照、事件、日期和 PID 均为合成：旧 root/新玩家共存、不可用事件、事件消失但 open 仍 true、三类 modal、严格 clear 和 unknown，以及旧帧/异事件/异 build/待决 episode/混合角色/消失后陈旧事件。没有重跑历史九 call 或 P85 矩阵。CI 已接这一个小测试文件。
 
 M7 仍缺多 ruler/seed/government 的实际普通游玩及继承和精确配对 checkpoint 的真实新 Game 冷恢复；同场两次自然继承与 SDK-only 轮换不能补齐这些格。M6 自然命名收益→终态→之后普通使用仍须实局来源。G2 保持 **6/8**。
+
+2026-10-19追加（machine_id: xenoamess-full-tower-eb9d2c1186，封定2026-10-18T16:33:54Z）：公共owner新增内部opt-in持久UI义务；[源码与软件测试摘要](evidence/successor-ui-pending-ledger-source-2026-10-19.json)绑定六叶。原before_submit全部旧守卫及外部拦截通过后，先写handoff_unverified、文件fsync并读回，再允许原logical Continue；原full/title/persist通过才转pending。首次保留失败留下未验证意图，只收集原回执、不重发。冷读重跑原完整验证，核机器、源码epoch、原Game出生/镜像、goal/actor/episode；新SDK连接另需原ledger SHA到新帧的精确内部授权，epoch仅初始化计算一次。
+
+binding摘要不能自签授权：真实Service必须使用实际driver登记、由ledger.load签发的同值binding，重核磁盘SHA、原Game/源码epoch与完整证明。伪造birth/epoch后重算摘要仍拒。原typed Close前按proof SHA建立create-only UNKNOWN意图，fsync/读回失败零提交；ACK、异常、结果写失败均保防重锁。原Close validator和独立post通过才resolved；原_materialize_checkpoint先拒未解决义务。原full/Close/timeline验证器AST未改，无pending且无opt-in沿旧路径；已有pending缺binding在session前拒。
+
+Root最终独立跑新旧两模块12测试通过（chunk521b2c，body0.953秒／实际外层0），包含真实Service伪造拒绝、冷owner先Close后普通AUTO、0Continue重放及失败守卫；早期失败在摘要保留。全为合成端点和临时小JSON，零真实Native/SDK/Host/游戏/桌面/媒体操作。仅支持原Game仍存活的owner/SDK重建；新Game／载SAVE后出生改变按设计拒，冻结Host06/SDK未采用，旧report缺出生证据不补造。没有directory-fsync或掉电完整性保证。M6命名收益终态、M7跨Game/多格实局仍缺，G2继续6/8；不授影片或业务完成信用。

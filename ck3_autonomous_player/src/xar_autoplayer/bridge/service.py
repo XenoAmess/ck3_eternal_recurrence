@@ -15504,14 +15504,22 @@ class GameplayBridgeService:
 
     def observe_verified_successor_ui_v1(
         self, *, transition, snapshot, timeline_query,
-        previous_observation=None, event_context=None,
+        previous_observation=None, event_context=None, cold_resume_binding=None,
     ) -> dict[str, object]:
         """Consume existing guarded reads after the owner's full handoff gates."""
         from .verified_successor_ui_service_v1 import observe_verified_successor_ui_v1
 
+        if cold_resume_binding is not None:
+            from ..successor_ui_pending_ledger_v1 import SuccessorUIPendingLedger
+            ledger = getattr(self.driver, "_successor_ui_pending_ledger_v1", None)
+            if type(ledger) is not SuccessorUIPendingLedger:
+                raise ValueError("successor UI cold observation requires the actual driver's registered ledger")
+            ledger.validate_service_binding(cold_resume_binding, transition=transition,
+                previous_observation=previous_observation, snapshot=snapshot)
         return observe_verified_successor_ui_v1(
             transition=transition, snapshot=snapshot, timeline_query=timeline_query,
-            previous_observation=previous_observation, event_context=event_context)
+            previous_observation=previous_observation, event_context=event_context,
+            cold_resume_binding=cold_resume_binding)
 
     def query_current_timeline_blocker_context_v1(
         self,

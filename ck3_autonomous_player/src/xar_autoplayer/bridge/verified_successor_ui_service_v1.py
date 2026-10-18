@@ -21,7 +21,7 @@ PROOF = ("status", "predecessor_character_id", "successor_character_id", "source
 
 
 def observe_verified_successor_ui_v1(*, transition, snapshot, timeline_query,
-                                    previous_observation=None, event_context=None):
+                                    previous_observation=None, event_context=None, cold_resume_binding=None):
     """Require the original full verifier's proof; retain every native predicate.
 
 The caller must already have passed its original full transition, goal and
@@ -56,7 +56,11 @@ same certified successor, never another Continue or a different generation.
     if (snapshot.get("episode_character_id") != transition.get("successor_character_id")
             or snapshot.get("episode_run_id") != transition.get("episode_run_id")):
         raise ValueError("successor UI changed the verified episode")
-    if previous_observation is None:
+    if cold_resume_binding is not None:
+        from ..successor_ui_pending_ledger_v1 import validate_cold_ui_binding_v1
+        validate_cold_ui_binding_v1(cold_resume_binding, transition=transition,
+            previous_observation=previous_observation, snapshot=snapshot)
+    elif previous_observation is None:
         if any(current[key] != binding.get(key) for key in FRAME):
             raise ValueError("successor UI left the original six-field handoff frame")
     else:

@@ -225,7 +225,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py ck3_autonomous_player/tests/unit/test_succession_transition_contract.py tools/g2_saved_campaign/test_verified_vanilla_successor.py tools/g2_saved_campaign/test_m7_async_successor_owner.py tools/g2_saved_campaign/test_m7_async_successor_modal.py tools/g2_saved_campaign/test_m7_async_successor_adoption.py tools/g2_saved_campaign/test_m7_async_successor_persistence.py tools/g2_saved_campaign/test_m7_async_successor_per_title.py
+          python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py ck3_autonomous_player/tests/unit/test_succession_transition_contract.py tools/g2_saved_campaign/test_verified_vanilla_successor.py tools/g2_saved_campaign/test_m7_async_successor_owner.py tools/g2_saved_campaign/test_m7_async_successor_modal.py tools/g2_saved_campaign/test_m7_async_successor_adoption.py tools/g2_saved_campaign/test_m7_async_successor_persistence.py tools/g2_saved_campaign/test_m7_async_successor_per_title.py ck3_autonomous_player/tests/unit/test_verified_successor_ui_service_v1.py ck3_autonomous_player/tests/unit/test_successor_ui_pending_ledger_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py tools/g2_saved_campaign/test_verified_vanilla_successor.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

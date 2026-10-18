@@ -1,0 +1,94 @@
+{
+  "schema": "xar.g2.successor-ui-pending-ledger-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T16:33:54Z",
+  "Root_written_at_utc": "2026-10-18T16:39:38.787974+00:00",
+  "base_commit": "1f80339c34d20c1409a746a77ebacb5ce9a9969d",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21230,
+      "sha256": "b3d59b98595b902907e509e8760e86714f4e1b2ce5ff816dbc6c06f927e2dfab"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_owner_continuation_v1.py",
+      "bytes": 7327,
+      "sha256": "3fdcecee1a7c1ad7e95da00aff19c008b92d46d4c715ca37a6c5b77fcc10eb36"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
+      "bytes": 458599,
+      "sha256": "39c928ba26ee74c0b74d41b873d252cd6697a8995746e44816b54e96fec31a04"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/verified_successor_ui_service_v1.py",
+      "bytes": 6674,
+      "sha256": "8a5cee33bb36e08e3c0bed68b3a3228235637269a5c57ccc22cb47e161412dd3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 862522,
+      "sha256": "912eed9b61d2879a82c78bc9602ef6fb8efb9c86bfea1def4fc1d98fcd48a116"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_pending_ledger_v1.py",
+      "bytes": 19773,
+      "sha256": "75efadb1d18fb170f2b4b8b2e3ecba099171f316bbd5a7153cc1bbc73d02d77c"
+    }
+  ],
+  "agent_conservative_added_text_bytes": 48210,
+  "source_only": true,
+  "internal_opt_in": "native_auto_run successor_ui_durability_binding",
+  "source_epoch_hash_frequency": "once per owner initialization",
+  "states": [
+    "handoff_unverified",
+    "pending",
+    "resolved"
+  ],
+  "close_intent": "proof SHA path; create-only UNKNOWN; fsync/readback before original typed Close; ACK/exception/write failure never rearms",
+  "cold_authority": "Actual driver registered ledger.load instance; on-disk SHA/source/original Game/full proof rechecked. Caller digest insufficient.",
+  "pending_without_binding": "reject before session/AUTO/SAVE",
+  "original_full_Close_timeline_validators_AST_changed": false,
+  "Root_verification": {
+    "chunk": "521b2c",
+    "exit_code": 0,
+    "tests": 12,
+    "body_seconds": 0.953,
+    "wall_seconds": 3.6391539,
+    "modules": [
+      "test_successor_ui_pending_ledger_v1",
+      "test_verified_successor_ui_service_v1"
+    ],
+    "scope": "Synthetic endpoints and small temporary JSON; actual Service/full verifier/owner code; no Native/Game/SDK/Host execution"
+  },
+  "prior_failures": [
+    {
+      "chunk": "1d8a85",
+      "exit_code": 1,
+      "reason": "Windows rb-fd fsync Errno9; r+b fix retains barrier"
+    },
+    {
+      "chunk": "0b74ca",
+      "exit_code": 1,
+      "reason": "callback activation and old synthetic harness omitted generic Continue callback"
+    },
+    {
+      "chunk": "e459f9",
+      "exit_code": 1,
+      "reason": "same old harness gap; independent new canonical callback fixture fixed without guard weakening"
+    }
+  ],
+  "limits": [
+    "Same original live Game process only",
+    "New Game birth or SAVE load into another process rejected",
+    "Frozen Host06/SDK not adopted",
+    "Old reports lacking birth not migrated",
+    "No power-loss/directory-fsync guarantee",
+    "Unknown results require original evidence, never retry"
+  ],
+  "g2_qualified": 6,
+  "g2_total": 8,
+  "M6_M7_runtime_qualification_granted": false,
+  "film_complete_claimed": false,
+  "Native_Game_MCP_desktop_media_calls": 0
+}

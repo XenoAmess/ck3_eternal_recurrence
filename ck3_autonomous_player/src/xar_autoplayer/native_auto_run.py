@@ -428,6 +428,7 @@ def native_auto_run(
     timeout_seconds: float,
     readiness_timeout_seconds: float,
     cold_start_checkpoint: bool = False,
+    successor_ui_durability_binding: Mapping[str, object] | None = None,
     start_minimized: bool = False,
     native_bridge: NativeBridgeLaunchConfig | None = None,
     readiness_stable_seconds: float = READINESS_STABLE_SECONDS,
@@ -838,6 +839,19 @@ def native_auto_run(
         if succession_lifecycle_binding["xar_enabled"] == "xar_off"
         else {}
     )
+    from .successor_ui_pending_ledger_v1 import requires_owner_binding_v1, owner_source_epoch_v1
+    successor_ui_source_epoch = None
+    if successor_ui_durability_binding is not None:
+        if (not isinstance(successor_ui_durability_binding, Mapping)
+                or not isinstance(successor_ui_durability_binding.get("machine_id"), str)
+                or not successor_ui_durability_binding["machine_id"]
+                or successor_ui_durability_binding["machine_id"] == "unknown"):
+            raise AgentError("successor UI durability needs an explicit owner machine/source binding")
+        successor_ui_source_epoch = owner_source_epoch_v1()
+        if successor_ui_durability_binding.get("source_epoch") != successor_ui_source_epoch:
+            raise AgentError("successor UI owner source epoch differs; no automatic migration")
+    elif requires_owner_binding_v1(spec.state_dir):
+        raise AgentError("pending successor UI requires its bound cold owner before any AUTO/SAVE")
     started_wall = utc_now()
     started = time.monotonic()
     run_deadline = started + timeout
@@ -871,6 +885,7 @@ def native_auto_run(
     next_episode_transition: dict[str, object] | None = None
     natural_succession_transitions: list[dict[str, object]] = []
     pending_successor_ui: dict[str, object] | None = None
+    successor_ui_ledger = None
     post_transition_visible_gameplay_turns = 0
     post_transition_last_gameplay_turn_index: int | None = None
     post_transition_checkpoint: dict[str, object] | None = None
@@ -1278,6 +1293,20 @@ def native_auto_run(
             "date_raw": readiness.get("date_raw"),
         }
         current_episode = copy.deepcopy(initial_episode)
+        if successor_ui_durability_binding is not None:
+            from .successor_ui_pending_ledger_v1 import SuccessorUIPendingLedger, observe_game_identity_v1
+            cold_snapshot = _runner_semantic_snapshot(driver)
+            successor_ui_ledger = SuccessorUIPendingLedger(spec.state_dir,
+                machine_id=successor_ui_durability_binding["machine_id"], source_epoch=successor_ui_source_epoch,
+                game_identity=observe_game_identity_v1(cold_snapshot, spec.game_exe),
+                verify_transition=_verify_natural_succession_transition,
+                close_validator=_ordinary_succession_close_issue,
+                timeline_classifier=_ordinary_succession_timeline_state)
+            pending_successor_ui = successor_ui_ledger.load(cold_snapshot,
+                reconnect_authorization=successor_ui_durability_binding.get("reconnect_authorization"))
+            driver._successor_ui_pending_ledger_v1 = successor_ui_ledger
+            if pending_successor_ui is not None:
+                modal_decision_pending = True
         if opening_focus_gate is not None:
             opening_focus_gate["episode_run_id"] = readiness.get("episode_run_id")
         if completion_contract in strict_completion_contracts:
@@ -1443,6 +1472,9 @@ def native_auto_run(
                     current_attempt["epidemic_recovery_pre"] = copy.deepcopy(
                         epidemic_recovery_pre
                     )
+            if (successor_ui_ledger is not None
+                    and candidate.get("selected_step") == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP):
+                successor_ui_ledger.begin_transition(_public_binding(before), candidate)
             return None
 
         def finish_private_feast_start_trial(
@@ -1550,15 +1582,17 @@ def native_auto_run(
             # Recheck once when the event disappears, before another ordinary
             # action; an event reply is not proof that the death modal cleared.
             if (pending_successor_ui is not None
-                    and before.get("active_context", {}).get("active_event") is None
-                    and before.get("active_context", {}).get("pending_character_interaction") is None):
+                    and (pending_successor_ui.get("_successor_ui_cold_binding_v1") is not None
+                         or (before.get("active_context", {}).get("active_event") is None
+                             and before.get("active_context", {}).get("pending_character_interaction") is None))):
                 from .successor_ui_owner_continuation_v1 import continue_verified_successor_ui_v1
                 recheck_snapshot = _runner_semantic_snapshot(driver)
                 rechecked, modal_decision_pending, ui_advanced, ui_pending = continue_verified_successor_ui_v1(
                     service, transition=pending_successor_ui, snapshot=recheck_snapshot,
                     attempt=current_attempt, classify_timeline=_ordinary_succession_timeline_state,
                     close_issue=_ordinary_succession_close_issue, capture_failure=capture_first_failure,
-                    previous_observation=pending_successor_ui["successor_ui_observation"])
+                    previous_observation=pending_successor_ui.get("successor_ui_observation"),
+                    durability=successor_ui_ledger)
                 current_attempt["successor_ui_recheck"] = copy.deepcopy(
                     pending_successor_ui["timeline_blocker_continuation"])
                 if not ui_pending:
@@ -2063,6 +2097,7 @@ def native_auto_run(
                             opening_focus_gate is not None
                             or private_child_matrilineal_pending_recovery_only is True
                             or before_submit is not None
+                            or successor_ui_ledger is not None
                             or exact_move_contract is not None
                             or allow_private_epidemic_recovery_near_pair is True
                         )
@@ -3116,10 +3151,21 @@ def native_auto_run(
                             "ordinary successor lacks a stable paused timeline binding"
                         )
                     from .successor_ui_owner_continuation_v1 import continue_verified_successor_ui_v1
+                    if successor_ui_ledger is not None:
+                        # Original full transition and driver-persistence gates
+                        # above still finish before retaining this UI obligation.
+                        successor_ui_ledger.retain(natural_transition, after_snapshot, verification={
+                            "result": copy.deepcopy(outcome["result"]),
+                            "snapshot": {key: copy.deepcopy(after_snapshot.get(key)) for key in (
+                                "played_character", "episode_character_id", "episode_run_id",
+                                "one_life_terminal", "one_life_terminal_reason")},
+                            "binding": _public_binding(after), "before": _public_binding(before),
+                            "succession_lifecycle": copy.deepcopy(succession_lifecycle_binding)})
                     after_snapshot, modal_decision_pending, ui_advanced, ui_pending = continue_verified_successor_ui_v1(
                         service, transition=natural_transition, snapshot=after_snapshot,
                         attempt=current_attempt, classify_timeline=_ordinary_succession_timeline_state,
-                        close_issue=_ordinary_succession_close_issue, capture_failure=capture_first_failure)
+                        close_issue=_ordinary_succession_close_issue, capture_failure=capture_first_failure,
+                        durability=successor_ui_ledger)
                     pending_successor_ui = natural_transition if ui_pending else None
                     after = _compact_binding(driver.capabilities(), after_snapshot)
                     current_attempt["after"] = _public_binding(after)
@@ -9224,6 +9270,9 @@ def _materialize_checkpoint(
     poll_interval_seconds: float,
     on_checkpoint_submit: Callable[[], None] | None = None,
 ) -> tuple[dict[str, object], dict[str, object]]:
+    ui_ledger = getattr(driver, "_successor_ui_pending_ledger_v1", None)
+    if ui_ledger is not None:
+        ui_ledger.require_resolved_before_save()
     binding = _wait_for_readiness(
         driver,
         session_done=session_done,
