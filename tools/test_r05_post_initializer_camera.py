@@ -35,7 +35,8 @@ class CameraWait(unittest.TestCase):
         self.assertIsNone(module.post_initializer_camera_settings(None))
         self.assertIsNone(module.post_initializer_camera_settings({'enabled':False}))
         self.assertIsNone(module.await_post_initializer_camera({},object(),{}, {},None))
-        with self.assertRaises(ValueError):module.post_initializer_camera_settings({'enabled':True,'maximum_wait_seconds':181})
+        self.assertEqual(module.post_initializer_camera_settings({'enabled':True,'maximum_wait_seconds':900}), {'maximum_wait_seconds':900})
+        with self.assertRaises(ValueError):module.post_initializer_camera_settings({'enabled':True,'maximum_wait_seconds':901})
         option=module.post_initializer_camera_settings({'enabled':True,'maximum_wait_seconds':2})
         with tempfile.TemporaryDirectory(dir=SCRATCH) as temporary:
             root=Path(temporary);receipt=root/'actual-start.json';raw=b'{"operation":"StartRecording","synthetic":true}\n';receipt.write_bytes(raw)

@@ -45,8 +45,8 @@ def post_initializer_camera_settings(value):
     if value['enabled'] is False:
         return None
     seconds=value.get('maximum_wait_seconds')
-    require(type(seconds) is int and 1 <= seconds <= 180,
-            'post_initializer_camera maximum_wait_seconds must be explicit1..180')
+    require(type(seconds) is int and 1 <= seconds <= 900,
+            'post_initializer_camera maximum_wait_seconds must be explicit1..900')
     return {'maximum_wait_seconds':seconds}
 
 
