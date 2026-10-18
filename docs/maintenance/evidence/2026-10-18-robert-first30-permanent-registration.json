@@ -1,0 +1,87 @@
+{
+  "schema": "xar.first30.actual-permanent-asset-registration-manifest/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-18T08:52:48.952255+00:00",
+  "status": "ACTUAL_COPY_QUALIFIED_REGISTRY_CANDIDATE_ONLY",
+  "asset_id": "ck3-first30-20261018-manual-checkpoint",
+  "replica_id": "xenoamess-full-tower-eb9d2c1186:331dc531a33ec749",
+  "absolute_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\Robert-first30-raw53407320.ck3",
+  "bytes": 143852966,
+  "sha256": "331dc531a33ec74990edd3385574d055a7b946427aa20de10c231a6da73bce71",
+  "source_copy_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\PERMANENT-FIRST30-SAVE.json",
+    "bytes": 8547,
+    "sha256": "e826423ff40bc91db0f29d050a7a2b0cca828a1ac6584f54282226f33ca0e042"
+  },
+  "film_closeout_qualified": {
+    "schema": "xar.first30.film-closeout-qualified/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "at_utc": "2026-10-18T08:52:48.951487+00:00",
+    "status": "FIRST30_MANUAL_PERMANENT_LOCKED_SAVE_VERIFIED_NO_GAME_EXIT_CLAIM",
+    "actual_Game_normal_exit_claimed": false,
+    "copy_safety_mode": "exact_MCP168_deny_write_delete_lock",
+    "initial_date_raw": 53144328,
+    "narrative_target_date_raw": 53407320,
+    "actual_saved_date_raw": 53407320,
+    "terminal_sdk_prefix": "p50r15",
+    "batch_boundary_overshoot_raw": 0,
+    "batch_boundary_overshoot_days": 0.0,
+    "successful_FULL_has_recorded_execution_timestamps": false,
+    "successful_FULL_missing_execution_timestamps_fabricated": false,
+    "first30_marker_detected_at_utc": "2026-10-18T08:18:54.733062+00:00",
+    "crossing_after_date_raw": 53407320,
+    "actual_Game_binding": {
+      "game_pid": 51028,
+      "game_creation_filetime": 134367033244212072
+    },
+    "manual_SAVE_protected_span": {
+      "kind": "actual_manual_terminal_SAVE_and_immediate_post_SEM",
+      "start_at_utc": "2026-10-18T08:20:02.348938+00:00",
+      "end_at_utc": "2026-10-18T08:21:43.840561+00:00",
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r15-responses\\0168-1-result.json",
+        "bytes": 10173,
+        "sha256": "6bba6ccd12b0bf77035972705a8f4f240b859adc3a184d8ece7ec74c9f4d8f7e"
+      },
+      "pre_SEM": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r15-responses\\0167-1-result.json",
+        "sha256": "6b68e0b93c50860ca28fd02cf24459807ebde1066c5b4949325e73753da03a9e",
+        "bytes": 27170
+      },
+      "post_SEM": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r15-responses\\0169-1-result.json",
+        "bytes": 27171,
+        "sha256": "fcc6960b88a2a551c44c817e12032920e833c64bc6f2c0289dbf4a2818cfab9a"
+      },
+      "protection_speed": 1.0,
+      "additional_gameplay_credit": 0
+    },
+    "narrative_end_must_be_after_utc": "2026-10-18T08:21:43.840561+00:00",
+    "independent_SAVE": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\Robert-first30-raw53407320.ck3",
+      "bytes": 143852966,
+      "sha256": "331dc531a33ec74990edd3385574d055a7b946427aa20de10c231a6da73bce71"
+    },
+    "stable_goal_complete_claimed": false,
+    "source_media_SAVE_body_reads": 0,
+    "render_authorized": false
+  },
+  "registry_before": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 1202,
+    "sha256": "215cc07f4e7d17ff0446eeb043504616878f79c5b75a2603da147c6d481e5d8e"
+  },
+  "retention_policy": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "authorization_source": "Root relayed current user instruction: MCP manual independent permanent first30 checkpoint; permanent copy and complete film take priority; no next campaign now",
+  "additional_SAVE_or_media_body_reads": 0,
+  "target_size_observed_now": true,
+  "target_SHA_source": "Actual independent copy receipt; no repeated SAVE hash by registration producer",
+  "tracked_registry_modified": false,
+  "film_complete_claimed": false,
+  "actual_Game_normal_exit_claimed": false,
+  "copy_safety_mode": "exact_MCP168_deny_write_delete_lock"
+}

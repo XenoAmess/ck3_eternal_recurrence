@@ -14,10 +14,55 @@
     "historical_default_permanent_retention_is_not_new_authority": true
   },
   "asset_entry_required_fields": [
-    "asset_id", "replica_id", "machine_id", "absolute_path", "bytes", "sha256",
-    "registered_at_utc", "source_copy_receipt", "asset_registration_manifest",
-    "user_explicit_permanent", "no_autoexpiry", "expires_at_utc",
-    "deletion_forbidden", "ancestor_deletion_forbidden", "integrity_capacity_review_at_utc"
+    "asset_id",
+    "replica_id",
+    "machine_id",
+    "absolute_path",
+    "bytes",
+    "sha256",
+    "registered_at_utc",
+    "source_copy_receipt",
+    "asset_registration_manifest",
+    "user_explicit_permanent",
+    "no_autoexpiry",
+    "expires_at_utc",
+    "deletion_forbidden",
+    "ancestor_deletion_forbidden",
+    "integrity_capacity_review_at_utc"
   ],
-  "assets": []
+  "assets": [
+    {
+      "asset_id": "ck3-first30-20261018-manual-checkpoint",
+      "replica_id": "xenoamess-full-tower-eb9d2c1186:331dc531a33ec749",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "absolute_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\Robert-first30-raw53407320.ck3",
+      "bytes": 143852966,
+      "sha256": "331dc531a33ec74990edd3385574d055a7b946427aa20de10c231a6da73bce71",
+      "registered_at_utc": "2026-10-18T08:54:52.806277+00:00",
+      "source_copy_receipt": {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\maintenance\\evidence\\2026-10-18-robert-first30-locked-copy.json",
+        "bytes": 8547,
+        "sha256": "e826423ff40bc91db0f29d050a7a2b0cca828a1ac6584f54282226f33ca0e042"
+      },
+      "asset_registration_manifest": {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\maintenance\\evidence\\2026-10-18-robert-first30-permanent-registration.json",
+        "bytes": 4650,
+        "sha256": "06899aabb06a020e30dc3c3df3b8b7c51f54370ed972eceed39539e49999b6f9"
+      },
+      "user_explicit_permanent": true,
+      "no_autoexpiry": true,
+      "expires_at_utc": null,
+      "deletion_forbidden": true,
+      "ancestor_deletion_forbidden": true,
+      "integrity_capacity_review_at_utc": "2026-11-17T08:54:52.806277+00:00",
+      "integrity_capacity_review_revokes_retention": false,
+      "active_references": [
+        "Current explicit user permanent-retention instruction",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\PERMANENT-FIRST30-SAVE.json"
+      ],
+      "actual_saved_date_raw": 53407320,
+      "actor_character_id": 82925,
+      "episode_run_id": "native-82925-10f472663752"
+    }
+  ]
 }
