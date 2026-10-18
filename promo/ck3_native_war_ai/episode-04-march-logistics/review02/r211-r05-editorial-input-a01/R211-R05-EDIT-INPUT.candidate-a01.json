@@ -1,0 +1,211 @@
+{
+  "schema": "xar.e04.r211-r05-edit-input-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-18T13:17:17.284348+00:00",
+  "repo_head_at_preparation": "037dbf6e6e69c5a2b20864c01068ec8a5223cae5",
+  "status": "ROUGH_EDITORIAL_INPUT_ONLY",
+  "new_cue_id": "R211-R05-ACTUAL-INSERT",
+  "source": {
+    "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+    "runtime_source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+    "final_render_source_raw": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/raw-r211/take02/raw.mkv",
+      "bytes": 589432005,
+      "sha256": "2a738ecf3dbf29e64cd79526542f4fe939b2a5c590be67c0cac1c399a2febbee"
+    },
+    "review_only_preview": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/preview-a01/army-supply-transition-888-912.mp4",
+      "bytes": 2055681,
+      "sha256": "818c6c9a1de7e411a94c3f797777ea4e3659aa2c90e263f2802d03c92ebf09cb",
+      "source_start_seconds": 888,
+      "source_end_seconds_exclusive": 912,
+      "duration_seconds": 24,
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "frames": 720,
+      "fps": 30,
+      "full_decode_exit_code": 0,
+      "preview_ceiling_bytes": 50331648,
+      "within_preview_ceiling": true,
+      "encoding": "ffmpeg -ss 888 -i source_raw -t 24 -an -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart",
+      "audio": false,
+      "overlay_or_crop_added": false
+    },
+    "source_interval_seconds": [
+      888,
+      912
+    ],
+    "source_frames_30fps": [
+      26640,
+      27360
+    ],
+    "date_and_strength_transition_bracket_source_seconds": [
+      897.5,
+      898.0
+    ],
+    "transition_bracket_frame_indices": [
+      26925,
+      26940
+    ],
+    "root_viewed_original_before_after": true,
+    "raw_or_png_copied_into_candidate": false
+  },
+  "full69_next_run_mapping": {
+    "shot_group": "M_R05",
+    "existing_mechanism_context_cues": [
+      "C03-10",
+      "C03-11"
+    ],
+    "following_cue_is_different_claim": "C03-12",
+    "insert_after_existing_cue": "C03-11",
+    "insert_before_existing_cue": "C03-12",
+    "insertion_frame_in_frozen_full69": 26668,
+    "new_source_duration_frames_if_whole_clip_used": 720,
+    "full69_existing_total_frames": 58406,
+    "existing_C03_11_frames": [
+      25809,
+      26668
+    ],
+    "existing_C03_12_frames": [
+      26668,
+      27542
+    ],
+    "source_and_output_timeaxes_independent": true,
+    "old_audio_subtitles_segments_modified": false,
+    "final_duration_pending_recorded_voice_fit": true
+  },
+  "voiceover_zh_draft": "这支军队的补给先被受控地设为零，不是行军中自然耗尽。二月四日到五日，兵数从六千七百四十六变为六千三百四十二，画面净少四百零四。原生写入分别证实：供给扣兵三百三十七；围城与劫掠共用阶段另扣六十七。",
+  "subtitle_drafts": [
+    {
+      "draft_subtitle_id": "R211-A",
+      "preview_relative_seconds": [
+        0.0,
+        8.8
+      ],
+      "source_seconds": [
+        888.0,
+        896.8
+      ],
+      "zh": "这支军队的补给先被受控地设为零；这不是行军中自然耗尽。",
+      "purpose": "state controlled initial condition before visible change"
+    },
+    {
+      "draft_subtitle_id": "R211-B",
+      "preview_relative_seconds": [
+        8.8,
+        13.5
+      ],
+      "source_seconds": [
+        896.8,
+        901.5
+      ],
+      "zh": "二月四日到五日，兵数6746→6342，画面净少404。",
+      "purpose": "state visible net only; keep transition unobscured"
+    },
+    {
+      "draft_subtitle_id": "R211-C",
+      "preview_relative_seconds": [
+        13.5,
+        24.0
+      ],
+      "source_seconds": [
+        901.5,
+        912.0
+      ],
+      "zh": "原生写入分别证实：供给扣兵337，围城／劫掠阶段另扣67。",
+      "purpose": "attribute by strict native writers, not by visual subtraction"
+    }
+  ],
+  "visual_claims": {
+    "before": {
+      "source_second": 897.5,
+      "date": "1067-02-04",
+      "strength": 6746,
+      "supply_display": "0/300"
+    },
+    "after": {
+      "source_second": 898.0,
+      "date": "1067-02-05",
+      "strength": 6342,
+      "supply_display": "0/300"
+    },
+    "visible_net_change": -404,
+    "native_supply_preferred_physical_debit": -337,
+    "native_siege_or_raid_physical_debit": -67,
+    "numeric_partition_evidence": "strict R211 native production consumer and Root adoption, not pixels"
+  },
+  "visual_layout_draft": {
+    "preserve_ui_regions": [
+      "ArmyWindow bottom-left strength/supply panel",
+      "army marker strength near top-center",
+      "game date bottom-right"
+    ],
+    "transition_source_seconds_without_new_numeric_overlay": [
+      897.25,
+      898.25
+    ],
+    "candidate_annotation": "For any number card, use separate cutaway after transition or a reviewed open map region; do not cover the three UI readouts.",
+    "continuous_frame_review_required_before_position_final": true
+  },
+  "forbidden_claims": [
+    "natural depletion from positive stock",
+    "all 404 caused by supply",
+    "404 soldiers died",
+    "fixed 5 percent per cycle",
+    "whole army net loss across full cycle",
+    "formal qualified dynamic shot"
+  ],
+  "remaining_gates": [
+    "record and fit new narration/subtitle timing",
+    "review complete selected source at 1x for clean continuity",
+    "verify final encoded overlay readability and full decode",
+    "human editorial signoff",
+    "separate formal dynamic-shot qualification"
+  ],
+  "formal_dynamic_credit": false,
+  "new_tts_or_media_created": false,
+  "old_cue_or_movie_changed": false,
+  "source_pins": {
+    "actual_day16": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r211-zero-stock-physical-12004\\R211-DAY16-PRODUCTION-CONSUMPTION.actual-a01.json",
+      "bytes": 177218,
+      "sha256": "69bfd6991396120dedb63ffe26442dfd2334184820901da890ed19d23d611d66"
+    },
+    "root_adoption": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r211-zero-stock-physical-12004\\integration-adoption.actual.json",
+      "bytes": 1876,
+      "sha256": "9759b94b41e946a2e08c8c7e0e23eb4760b64d977085427069b9a651fc931428"
+    },
+    "normal_close": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-18-r211-r05-normal-close\\monitor-result.actual.json",
+      "bytes": 5095,
+      "sha256": "e5e84e7f172a4b07b56a60e149b12aab9ccbb766ba1a1074cb09a301a11f137d"
+    },
+    "media_review": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r211-window-take02\\media-review.json",
+      "bytes": 3513,
+      "sha256": "3461cc6ca9b09ac3a7b705071da16dea37676276dad77c9ee6bdb86b8e1e598c"
+    },
+    "preview_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\media-review-take02-a01\\preview-a01\\PREVIEW-RESULT.actual.json",
+      "bytes": 4169,
+      "sha256": "407139786a38150551fd5df389837aa97b80ede29c622b87d15b94b6694f783d"
+    },
+    "full69_map": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\full69-method-preview-a02\\encoded-segment-map.json",
+      "bytes": 37031,
+      "sha256": "2928073c90920ce7ce8eaa75ad6f5d15167a8262ff4dde699838723be0bd628a"
+    },
+    "full69_project": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\full69-method-preview-a02\\project-binding.json",
+      "bytes": 1423,
+      "sha256": "46682bcf07b5006da2320f774106c2a8a57f223b262e9366a000accf5bcf2085"
+    },
+    "full69_decision": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+      "bytes": 118194,
+      "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c"
+    }
+  }
+}

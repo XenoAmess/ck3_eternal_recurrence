@@ -977,3 +977,6 @@ docs/ck3-native-ai/evidence/episode04-r211-zero-stock-physical-12004/integration
 docs/ck3-native-ai/episode04-r210-starvation-observation-window-12004.md -text whitespace=cr-at-eol
 docs/ck3-native-ai/episode04-r209-zero-stock-observation-clock-12004.md -text whitespace=cr-at-eol
 docs/ck3-native-ai/war-r05-r210-initializer-success-host-error-12004.md -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-editorial-input-a01/R211-R05-EDIT-INPUT.candidate-a01.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-editorial-input-a01/R211-R05-EDIT-CARD.zh-CN.md -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-editorial-input-a01/ROOT-DELIVERY.candidate-a01.json -text whitespace=cr-at-eol

@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.r211-r05-editorial-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-18T13:17:17.284348+00:00",
+  "source_master_at_preparation": "037dbf6e6e69c5a2b20864c01068ec8a5223cae5",
+  "outputs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-edit-candidate-a01\\R211-R05-EDIT-INPUT.candidate-a01.json",
+      "bytes": 8378,
+      "sha256": "caf1472f2013b3487cc3096fc2ff8c81d442c9d02d5f1f124d20755c426ca8ae"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-edit-candidate-a01\\R211-R05-EDIT-CARD.zh-CN.md",
+      "bytes": 2486,
+      "sha256": "dce745f0a3508bdc0e2b6aed1acc2da935c81d736e49c89dcb9d1a0ae082f089"
+    }
+  ],
+  "old_movie_or_cue_written": false,
+  "tts_or_media_generated": false,
+  "sdk_desktop_actions": 0,
+  "formal_dynamic_credit": false
+}
