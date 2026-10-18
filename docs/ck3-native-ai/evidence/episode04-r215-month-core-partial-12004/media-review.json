@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.r215-window-take01-readonly-media-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T20:07:00Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+  "source_probe": {
+    "path": "PROBE.actual.json",
+    "bytes": 5602,
+    "sha256": "1f15205774073041200be781525aef9265df6c1d3ddcc2143a323599a0ee2798"
+  },
+  "transition_probe": {
+    "path": "TRANSITION.actual-a02.json",
+    "sha256": "8e3f0d40e22a1fb6d8d2a7ab8eee55b0ecbfa88778d1a1fd18f877a97ca09156",
+    "prior_a01_unqualified": "Odd YUV crop origin was rounded by FFmpeg; a02 aligns exact original pixels and both endpoint templates have MAE 0."
+  },
+  "film_result": {
+    "path": "../R215-WINDOW-TAKE01-film-result.actual.json",
+    "state": "NORMAL_TREE_EMPTY",
+    "finish_reason": "actual_observer_result_after_minimum_duration",
+    "elapsed_wall_seconds": 193.6551722
+  },
+  "business_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/r06-month-one-day-a01/R06-MONTH-TERMINAL.json",
+    "bytes": 1087,
+    "sha256": "e76bf54a9a0e006e4aa9d7a7b708e0b0790ca35ec7987aa79b902443f6eadf14",
+    "status": "ONE_EXACT_MONTH_DAY_CORE_EXPORTED",
+    "actual_days": 1,
+    "actual_ADD_observed": false
+  },
+  "media": {
+    "raw_bytes": 114440559,
+    "raw_sha256": "f627cbee92c88ad20819fbafd08b8ab967c123901321694a7d005944c12da2d7",
+    "duration_seconds": 191.9,
+    "video": "H.264 1280x720 30fps, verified CK3 client region only",
+    "full_decode_single_thread_exit_code": 0,
+    "sampled_original_png_seconds": [1.0, 95.95, 190.9],
+    "sampled_original_png_total_bytes": 4058867,
+    "visual_early_middle": "Paused 1067-03-31; ArmyWindow and map label 6679; supply 103/300.",
+    "visual_late": "Paused 1067-04-01; ArmyWindow and map label 6689; supply 103/300.",
+    "army_label_change_ram_bracket_seconds": [121.912890625, 122.2837890625],
+    "date_change_precise_timecode": null,
+    "technical_media_pass": true,
+    "human_full_speed_review": false,
+    "formal_dynamic_shot_qualified": false
+  },
+  "claim_boundary": "Original frames show a March 31 to April 1 date change and 6679 to 6689 visible army count in this take. Native result independently reports one exact day; this visual sample alone does not prove the source of the gain, instruction ADD, or full formal shot qualification.",
+  "method": "One raw hash in canonical probe, one full single-thread decode, three original PNGs directly viewed, and nine RAM-only aligned-crop samples. No game, GUI, SDK, additional recording, raw re-hash, or extra media output."
+}

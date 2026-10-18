@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.owned-client-window-take-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T19:58:12.901164+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+  "state": "NORMAL_TREE_EMPTY",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 28840,
+    "owned_ck3_create_time": 1792352212.7811677,
+    "hwnd": 303631074,
+    "foreground_hwnd": 303631074,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-18T19:54:58.180187+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "recorder_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\raw-r215\\take01\\result.json",
+    "bytes": 2028,
+    "sha256": "df5c02336b66cf412ee833780ee12f7d320bfe0e861006801692220af7c43daa"
+  },
+  "primary_action_error": null,
+  "recorder_finish_error": null,
+  "secondary_cleanup_error": null,
+  "finish_reason": "actual_observer_result_after_minimum_duration",
+  "elapsed_wall_seconds_at_terminal": 193.6551722,
+  "planned_recording_max_seconds": 480,
+  "hard_terminal_wall_seconds_met": true,
+  "actual_observer_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\R06-MONTH-TERMINAL.json",
+    "bytes": 1087,
+    "sha256": "e76bf54a9a0e006e4aa9d7a7b708e0b0790ca35ec7987aa79b902443f6eadf14"
+  },
+  "one_actual_ffmpeg_job_no_replay": true,
+  "raw_video_human_approved": false,
+  "business_result_inferred_from_video": false
+}

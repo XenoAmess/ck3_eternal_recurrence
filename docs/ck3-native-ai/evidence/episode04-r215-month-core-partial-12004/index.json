@@ -1,0 +1,183 @@
+{
+  "schema": "xar.e04.r215-progress-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-18T20:15:38.850247+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+  "runtime_source_head": "a5744dd8d2efd6bfcb84af2dd0d424ee00efaa33",
+  "claim": "actual one month day and +10 copied physical endpoint; core subject coverage incomplete; no same-core NET or ADD",
+  "copies": [
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/month-terminal.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/r06-month-one-day-a01/R06-MONTH-TERMINAL.json",
+        "bytes": 1087,
+        "sha256": "e76bf54a9a0e006e4aa9d7a7b708e0b0790ca35ec7987aa79b902443f6eadf14"
+      },
+      "bytes": 1087,
+      "sha256": "e76bf54a9a0e006e4aa9d7a7b708e0b0790ca35ec7987aa79b902443f6eadf14"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/core-classified.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/r06-month-one-day-a01/R06-MONTH-CAPTURE-CLASSIFIED.json",
+        "bytes": 1154,
+        "sha256": "0a8acbd6a884604ed990b056e3bb6e8a5abd35803b7e6e43fc1d8011385f1eee"
+      },
+      "bytes": 1154,
+      "sha256": "0a8acbd6a884604ed990b056e3bb6e8a5abd35803b7e6e43fc1d8011385f1eee"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/core-consumed.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/r06-month-one-day-a01/R06-MONTH-CORE-CONSUMED.json",
+        "bytes": 3626,
+        "sha256": "a087d8f173fa7bb6aa2e44edd48c3c9bf0c29db83e4cda3ae2d7157dd1f88ed2"
+      },
+      "bytes": 3626,
+      "sha256": "a087d8f173fa7bb6aa2e44edd48c3c9bf0c29db83e4cda3ae2d7157dd1f88ed2"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/light-consumption.json",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r215-light-ready-monitor-a01/CORE-TERMINAL-CONSUMED.actual-a01.json",
+        "bytes": 3086,
+        "sha256": "6f627eb4ea03d818e8e614972d6a98e777bbb0f76e0255cb17362eb1211ddcff"
+      },
+      "bytes": 3086,
+      "sha256": "6f627eb4ea03d818e8e614972d6a98e777bbb0f76e0255cb17362eb1211ddcff"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/facts-summary.json",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r215-core-contract-consume-a01/FACTS-SUMMARY.actual-a01.json",
+        "bytes": 8127,
+        "sha256": "81570bc0cf7079103a454b18a8073594533ba8f293eea280901f9c673f60e059"
+      },
+      "bytes": 8127,
+      "sha256": "81570bc0cf7079103a454b18a8073594533ba8f293eea280901f9c673f60e059"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/core-facts.json",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r215-core-contract-consume-a01/CORE-FACTS.actual-a01.json",
+        "bytes": 33443,
+        "sha256": "1ed27c3e3943f2baeb8435774889fe8ad17eb083b4cca1db294face3b1689494"
+      },
+      "bytes": 33443,
+      "sha256": "1ed27c3e3943f2baeb8435774889fe8ad17eb083b4cca1db294face3b1689494"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/media-review.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-refill-month-core-a01/media-probe-take01-a01/MEDIA-REVIEW.actual.json",
+        "bytes": 2645,
+        "sha256": "081ceaeb7eebe4499373bca2cc1a1c1cd2f167a08f774895a9601ea1782ccace"
+      },
+      "bytes": 2645,
+      "sha256": "081ceaeb7eebe4499373bca2cc1a1c1cd2f167a08f774895a9601ea1782ccace"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/film-result.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-refill-month-core-a01/R215-WINDOW-TAKE01-film-result.actual.json",
+        "bytes": 1841,
+        "sha256": "43dc8856039f62b5ef73c4bdaca60e62366dfacc24a6a35fa54bbfbcfc4e773b"
+      },
+      "bytes": 1841,
+      "sha256": "43dc8856039f62b5ef73c4bdaca60e62366dfacc24a6a35fa54bbfbcfc4e773b"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/native-exit.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/case-output/acceptance-normal-exit-finish-hold.actual-results.json",
+        "bytes": 2557,
+        "sha256": "1d0fb2b42b35c7ef3dc10fd5454e5f9e61f05b8d479b1faf0884ad247d12eab6"
+      },
+      "bytes": 2557,
+      "sha256": "1d0fb2b42b35c7ef3dc10fd5454e5f9e61f05b8d479b1faf0884ad247d12eab6"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/os-exit.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/case-output/actual-retained-handle-os-exit.json",
+        "bytes": 179,
+        "sha256": "15c9a5487c450fca0ed4b7f938eec79d9952ddf95c1df6546a915c9de41ecb7b"
+      },
+      "bytes": 179,
+      "sha256": "15c9a5487c450fca0ed4b7f938eec79d9952ddf95c1df6546a915c9de41ecb7b"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/host-exit.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/host-original-process-exit.json",
+        "bytes": 245,
+        "sha256": "0904db2014b283eaf566d674aefb09cff645a3f4afb65ef84c449eb3ff64909c"
+      },
+      "bytes": 245,
+      "sha256": "0904db2014b283eaf566d674aefb09cff645a3f4afb65ef84c449eb3ff64909c"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/keeper-report.json",
+      "source": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r215-refill-month-core-a01/keeper-a01/report.json",
+        "bytes": 464,
+        "sha256": "a1b600381cf6d9341d9aa5f187b79236a023dab4bc4ebf4d3ea18e45d17a8908"
+      },
+      "bytes": 464,
+      "sha256": "a1b600381cf6d9341d9aa5f187b79236a023dab4bc4ebf4d3ea18e45d17a8908"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/cas6753-release.json",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r215-cas6753-reconstruction-a01/R215-CAS6753.canonical-reconstruction.actual.json",
+        "bytes": 2377,
+        "sha256": "3ff299db585439f363d89e24cdb232cce130af2ea1d50de7450eab233ec0a5e3"
+      },
+      "bytes": 2377,
+      "sha256": "3ff299db585439f363d89e24cdb232cce130af2ea1d50de7450eab233ec0a5e3"
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/verify_portable.py",
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r215-progress-portable-a01/verify_portable.py",
+        "bytes": 1077,
+        "sha256": "4d58f5f3f733d3cc74ee1b8feafd8b0ecc66dbb21b830b5e07282cc5f1c6b9e5"
+      },
+      "bytes": 1229,
+      "sha256": "7665aa0cb87483a0345f376c0bb56a3c24b936c0126068f4ebfd9c51613cd52d"
+    }
+  ],
+  "references_only": [
+    {
+      "role": "raw_original_not_copied",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\raw-r215\\take01\\raw.mkv",
+      "bytes": 114440559,
+      "sha256": "f627cbee92c88ad20819fbafd08b8ab967c123901321694a7d005944c12da2d7"
+    },
+    {
+      "role": "large_normalized_not_copied",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\r215-refill-month-a01-r05obs-0015-month-one-day-after-full-derived-normalized-full.json",
+      "bytes": 31691058,
+      "sha256": null
+    },
+    {
+      "role": "standalone_core_not_exported",
+      "bytes": 9236295
+    }
+  ],
+  "integration_verifier_update": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-18T20:19:08.752992+00:00",
+    "reason": "Use explicit ValueError guards so Python optimization cannot skip portable verification; original actual evidence bytes unchanged.",
+    "original_index": {
+      "path": "C:/ck3-e04-resume-20261015-a01/r215-progress-portable-a01/payload/docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/index.json",
+      "bytes": 8363,
+      "sha256": "128481c9e6e734302695d89f4f2d3f77c64bdbcdaa5307a0785a0c6972b773d7"
+    },
+    "original_verifier": {
+      "path": "C:/ck3-e04-resume-20261015-a01/r215-progress-portable-a01/payload/docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/verify_portable.py",
+      "bytes": 1077,
+      "sha256": "4d58f5f3f733d3cc74ee1b8feafd8b0ecc66dbb21b830b5e07282cc5f1c6b9e5"
+    }
+  }
+}

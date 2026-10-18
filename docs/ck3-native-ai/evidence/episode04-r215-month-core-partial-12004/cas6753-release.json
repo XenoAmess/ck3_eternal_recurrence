@@ -1,0 +1,54 @@
+{
+  "schema": "xar-screen-release-canonical-reconstruction-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_event_stream": "D:\\workspace\\.codex-task-bus\\events.jsonl",
+  "source_event_byte_offset": 3971413,
+  "source_event_bytes": 505,
+  "source_event_raw_utf8": "{\"event_id\": \"89f4cfd1442545dd8d12912aac317bd7\", \"git\": {\"branch\": \"master\", \"dirty_entries\": 0, \"head\": \"a5744dd8d2efd6bfcb84af2dd0d424ee00efaa33\"}, \"kind\": \"completed\", \"next_step\": \"\", \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\", \"resources\": [], \"schema\": \"codex.task_bus.v1\", \"sequence\": 6753, \"state\": \"done\", \"summary\": \"R215_actual_one_day_normal_game_native_host_keeper_zero_Root_release\", \"task_id\": \"e04-common-12004-a215\", \"timestamp_utc\": \"2026-10-18T20:08:20.761964+00:00\", \"to\": [\"*\"]}\n",
+  "source_event_raw_sha256": "57809f184f20feed895a95674aa8b38192025964c0cc83d7f21625b18f80e738",
+  "event": {
+    "event_id": "89f4cfd1442545dd8d12912aac317bd7",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "a5744dd8d2efd6bfcb84af2dd0d424ee00efaa33"
+    },
+    "kind": "completed",
+    "next_step": "",
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "sequence": 6753,
+    "state": "done",
+    "summary": "R215_actual_one_day_normal_game_native_host_keeper_zero_Root_release",
+    "task_id": "e04-common-12004-a215",
+    "timestamp_utc": "2026-10-18T20:08:20.761964+00:00",
+    "to": [
+      "*"
+    ]
+  },
+  "actual_task_pin": {
+    "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-common-12004-a215.json",
+    "bytes": 500,
+    "sha256": "ee6ac313a1e47b22aae990353059615071726f1512890930707d59da7d26212f"
+  },
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "a5744dd8d2efd6bfcb84af2dd0d424ee00efaa33"
+    },
+    "last_sequence": 6753,
+    "next_step": "",
+    "pid": 37240,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R215_actual_one_day_normal_game_native_host_keeper_zero_Root_release",
+    "task_id": "e04-common-12004-a215",
+    "updated_at_utc": "2026-10-18T20:08:20.760668+00:00"
+  },
+  "release_confirmed_by_canonical_readback": true,
+  "original_stdout_captured": false
+}

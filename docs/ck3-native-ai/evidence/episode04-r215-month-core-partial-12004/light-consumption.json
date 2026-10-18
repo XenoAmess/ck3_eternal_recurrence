@@ -1,0 +1,89 @@
+{
+  "schema": "xar.e04.r215.core-terminal-light-consumption.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-18T19:59:24.802361+00:00",
+  "observed_terminal_at_utc": "2026-10-18T19:58:25.357572Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+  "source_head": "a5744dd8d2efd6bfcb84af2dd0d424ee00efaa33",
+  "sources": {
+    "terminal": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/r06-month-one-day-a01/R06-MONTH-TERMINAL.json",
+      "bytes": 1087,
+      "sha256": "e76bf54a9a0e006e4aa9d7a7b708e0b0790ca35ec7987aa79b902443f6eadf14"
+    },
+    "small_result": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0210/r06-month-one-day-a01/R06-MONTH-RESULT.json",
+      "bytes": 169043,
+      "sha256": "c177cc751f53c62937141c2a85c9efdcb9a3089e80a50ccf03ba910919fd263c"
+    }
+  },
+  "status": "ONE_EXACT_MONTH_DAY_CORE_EXPORTED",
+  "actual_days": 1,
+  "finaldate": 53149080,
+  "province_id": 2170,
+  "retained_pid": 28840,
+  "create_time": 1792352212.7811677,
+  "generation": 1,
+  "original_hold_deadline": 1792356319.7194765,
+  "ordered_refill_entry_mode": "fixed_chunk0_prepare",
+  "core_event_count": 1,
+  "sampling_before": {
+    "epoch": 1,
+    "retained_records": 0,
+    "qualified_records": 0,
+    "capture_enabled": true
+  },
+  "sampling_after_day_before_OFF": {
+    "epoch": 1,
+    "retained_records": 1,
+    "qualified_records": 1,
+    "capture_enabled": true
+  },
+  "selected_conditional_target": {
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "q_index": 1,
+    "conditional_shared_q_i32": 1,
+    "before_current": 68,
+    "before_maximum": 69,
+    "model_after_current": 69,
+    "model_after_maximum": 69
+  },
+  "selected_slot_after": {
+    "current_soldiers": 69,
+    "maximum_soldiers": 69,
+    "state_raw": 0,
+    "stored_prepared148_raw": 4020,
+    "native_unit_position_eligible": true,
+    "observed_prepared_writes": [],
+    "fixed_chunk0_prepare_writes": []
+  },
+  "physical_comparison": {
+    "same_full_roster_alias_max_state_shape": true,
+    "before_current": 6674,
+    "after_current": 6684,
+    "raw_physical_net": 10,
+    "cause_attributed": false,
+    "gross_ADD_qualified": false
+  },
+  "standalone_core_export": {
+    "journal_sequence": 1,
+    "bytes": 9236295,
+    "exported": false,
+    "reason": "above4MiB standalone consumer bound; full original native wire remains preserved"
+  },
+  "production_core_consumer_result_unread": true,
+  "cleanup": {
+    "OFFclear": true,
+    "Save": true,
+    "errors": [],
+    "native_checkpoint_saved": true,
+    "driver_state_replace_binding": "unconfirmed/save_binding_mismatch"
+  },
+  "actual_ADD_observed": false,
+  "actual_instruction_EDX_observed": false,
+  "SDK_calls": 0,
+  "GUI_calls": 0,
+  "raw_full_query_reads": 0,
+  "scope": "Actual small metadata only. Net change, conditional q, and matching Core record do not qualify instruction ADD. Original native wire and oversized event not read."
+}

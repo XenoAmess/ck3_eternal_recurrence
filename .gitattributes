@@ -1081,3 +1081,4 @@ docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/monitor-t
 docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/prep-terminal.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-findings.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-gate.actual.json.gz -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r215-month-core-partial-12004/** -text whitespace=cr-at-eol

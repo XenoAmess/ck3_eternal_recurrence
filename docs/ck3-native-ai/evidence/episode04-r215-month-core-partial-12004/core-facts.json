@@ -1,0 +1,1349 @@
+{
+  "schema": "xar.e04.r215.month-core-partial-contract-facts.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T20:11:25.504589+00:00",
+  "source_head": "a5744dd8d2efd6bfcb84af2dd0d424ee00efaa33",
+  "actual_binding": {
+    "pid": 28840,
+    "create_time": 1792352212.7811677,
+    "hold": 1792356319.7194765,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+    "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\case-output\\retained-current-process-identity.json",
+    "control_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\state-a01\\control\\ck3.json"
+  },
+  "actual_days": 1,
+  "status_preserved": "ONE_EXACT_MONTH_DAY_CORE_EXPORTED",
+  "standalone_event_artifact_exported": false,
+  "original_event_serialized_size_from_producer": 9236295,
+  "normalized_source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\r215-refill-month-a01-r05obs-0015-month-one-day-after-full-derived-normalized-full.json",
+    "bytes": 31691058,
+    "full_file_hash_computed": false,
+    "original_wire_proof": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\native-report.native-wire.jsonl",
+      "file_identity": [
+        7220568048185129294,
+        562949958045619
+      ],
+      "begin": 51157529,
+      "end": 69977950,
+      "bytes": 18820421,
+      "sha256": "143757f99332e617a01f5804528e9123276d427ee4ea68d258a43d43544eaa14",
+      "native_request_id": "step-14-462bfe7dc33d",
+      "query_sequence": 3,
+      "request_line": {
+        "begin": 51220576,
+        "end": 51220878,
+        "sha256": "333a73806051ffa071988bc55f4a74660b47604512a434d721f76bbb041469c1"
+      },
+      "response_line": {
+        "begin": 51226610,
+        "end": 69777323,
+        "sha256": "6ca57021d7c37a7b953d076fcf72837af46c396be1c1750b6886a953ca8191cd"
+      },
+      "source": "existing shared host native-wire original range",
+      "complete_Driver_packet": false,
+      "query_reissued": false,
+      "public_step_id": "r215-refill-month-a01-r05obs-0015-month-one-day-after-full",
+      "public_control_name": "r215-refill-month-a01-r05obs-0015-month-one-day-after-full",
+      "public_original": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\r215-refill-month-a01-r05obs-0015-month-one-day-after-full.actual-results.json",
+      "representation": "derived production-normalized native wire result plus actual paired host frames; not complete Driver packet",
+      "normalized_source_binding": {
+        "before": {
+          "revision": 6,
+          "native_revision": 5,
+          "snapshot_id": "native:5",
+          "date_raw": 53149080,
+          "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210"
+        },
+        "after": {
+          "revision": 6,
+          "native_revision": 5,
+          "snapshot_id": "native:5",
+          "date_raw": 53149080,
+          "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210"
+        }
+      }
+    }
+  },
+  "small_sources": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\R06-MONTH-RESULT.json",
+      "bytes": 169043,
+      "sha256": "c177cc751f53c62937141c2a85c9efdcb9a3089e80a50ccf03ba910919fd263c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\R06-MONTH-CORE-CONSUMED.json",
+      "bytes": 3626,
+      "sha256": "a087d8f173fa7bb6aa2e44edd48c3c9bf0c29db83e4cda3ae2d7157dd1f88ed2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\R06-MONTH-CAPTURE-CLASSIFIED.json",
+      "bytes": 1154,
+      "sha256": "0a8acbd6a884604ed990b056e3bb6e8a5abd35803b7e6e43fc1d8011385f1eee"
+    }
+  ],
+  "production_source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp",
+      "bytes": 58611,
+      "sha256": "b039f1576e1277cb869003a48e454a6023fbf342ae5b24a6c3f7f5934a972dc3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_consumption_12004.py",
+      "bytes": 15060,
+      "sha256": "19362871b12b4693306ae3a88a7b0bcef2879feb80b1ce20494c30932d370bf5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_subject_physical_coverage_12004.py",
+      "bytes": 11955,
+      "sha256": "b304779ca1d2f0b8135325db6dcffbda34fd95cb61984a2540eb13317a8ac740"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_refill_application_qualification_12004.py",
+      "bytes": 5401,
+      "sha256": "1c5b5ab35fe60cea445978e33a653fb263ad3d1d67664f2a2f38c55ff3067460"
+    }
+  ],
+  "read_correction": {
+    "initial_RAM_parse_exited_on_stdin_EOF": true,
+    "this_second_named_RAM_parse_explicitly_authorized_by_Root": true,
+    "interactive": false,
+    "raw_wire_reads": 0,
+    "large_duplicate_writes": 0,
+    "new_SDK_calls": 0
+  },
+  "query": {
+    "step": "query-army-strengths-v1",
+    "accepted": true,
+    "status": "available",
+    "query_sequence": 3,
+    "army_strengths_profile": "observed_history_full_v1",
+    "army_observed_phase_coverage": "exported_retained",
+    "army_strengths_query_scope": {
+      "army_ids": [
+        0
+      ],
+      "published_scope_status": "available"
+    },
+    "queried_snapshot_id": "native:5",
+    "queried_revision": 6,
+    "queried_native_revision": 5,
+    "queried_date_raw": 53149080,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210"
+  },
+  "monthly_flag": {
+    "baseline_current_inputs": {
+      "source": "native_current_month_first_refill_call_inputs",
+      "status": "available",
+      "ready": true,
+      "unavailable_reason": null,
+      "subject_army_id": 0,
+      "subject_carmy_id": 0,
+      "game_state_calendar_flags_raw_u8": 0,
+      "month_first_mask_2_set": false,
+      "actual_pre_date_prepare_observed": false,
+      "actual_post_date_refill_observed": false,
+      "actual_after": false,
+      "full_monthly_ready": false
+    },
+    "baseline_next_calendar": {
+      "schema_version": 1,
+      "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+      "stage": "source_derived_conditional_next_date_pair",
+      "status": "available",
+      "ready": true,
+      "unavailable_reason": null,
+      "subject_army_id_u32": 0,
+      "subject_carmy_id_u32": 0,
+      "current_date_storage_raw64": 300336128075693440,
+      "current_date_raw_i32": 53149056,
+      "current_native_day_index_raw_i32": 389544,
+      "source_derived_next_date_raw_i32": 53149080,
+      "source_derived_next_native_day_index_raw_i32": 389545,
+      "source_derived_next_date_storage_raw64": 300337098738302360,
+      "source_derived_next_calendar_day_u8": 0,
+      "source_derived_next_calendar_month_u8": 3,
+      "source_derived_full_cdate64_ready": true,
+      "actual_future_date_stage_observed": false,
+      "actual_future_callback_observed": false,
+      "future_bucket_mutations_reconstructed": false,
+      "future_stock_or_strength_ready": false,
+      "full_daily_supply_transition_ready": false,
+      "full_monthly_ready": false
+    },
+    "after_current_inputs": {
+      "source": "native_current_month_first_refill_call_inputs",
+      "status": "available",
+      "ready": true,
+      "unavailable_reason": null,
+      "subject_army_id": 0,
+      "subject_carmy_id": 0,
+      "game_state_calendar_flags_raw_u8": 2,
+      "month_first_mask_2_set": true,
+      "actual_pre_date_prepare_observed": false,
+      "actual_post_date_refill_observed": false,
+      "actual_after": false,
+      "full_monthly_ready": false
+    },
+    "observed_parent_entry_c0_raw": 2,
+    "observed_parent_saved_mask02_admitted": true
+  },
+  "family": {
+    "schema_version": 1,
+    "source": "native_natural_army_regular_core_entry_return",
+    "membership_basis": "captured_core_entry_resolved_Army_roster_full_ID",
+    "observer_initialized": true,
+    "observer_installed": true,
+    "latest_journal_sequence": 1,
+    "overwritten_events": 0,
+    "publication_failures": 0
+  },
+  "core_join": {
+    "journal_sequence": 1,
+    "manager_identity": 1663378045568,
+    "caller_return_rva": 44673250,
+    "raw_return_bits": 237499048272,
+    "native_core_invocation_token": 1,
+    "parent_invocation_token": null,
+    "core_invocation_nesting_depth": 1,
+    "core_carrier_published": true,
+    "core_carrier_source_epoch": 20261018,
+    "entry_date_raw": 300337098738302360,
+    "returned_date_raw": 300337098738302360,
+    "observed": true,
+    "original_called": true,
+    "original_returned": true,
+    "entry_provenance_complete": true,
+    "return_provenance_complete": true,
+    "parent_scope": {
+      "observed": true,
+      "phase": "post_date",
+      "actual_entry_rva": 44672368,
+      "caller_return_rva": 36314476,
+      "primary_manager_identity": 1663378045568,
+      "secondary_manager_identity": 1663378045576,
+      "game_state_identity": 1664514842160,
+      "session_identity": null,
+      "entry_event": {
+        "clock_identity": 140715002313736,
+        "sequence": 15698774,
+        "thread_id": 23704
+      },
+      "date_raw": 300337098738302360,
+      "prefix_date_raw": null,
+      "absolute_day_raw": 389545,
+      "entry_c0_raw": 2,
+      "saved_c0_raw": null,
+      "saved_mask02_admitted": true,
+      "saved_c0_observed_rva": 44673250,
+      "saved_c0_event": {
+        "clock_identity": 140715002313736,
+        "sequence": 15698778,
+        "thread_id": 23704
+      },
+      "original_army_roster": {
+        "boundary": "parent_entry",
+        "capture_rva": 44672368,
+        "capture_event": {
+          "clock_identity": 140715002313736,
+          "sequence": 15698774,
+          "thread_id": 23704
+        },
+        "begin_identity": 1663915055920,
+        "end_identity": 1663915056820,
+        "count": 225,
+        "complete": true,
+        "ordered_full_ids": [
+          0,
+          16777217,
+          16777218,
+          16777219,
+          33554436,
+          16777221,
+          16777222,
+          7,
+          8,
+          9,
+          33554442,
+          11,
+          16777228,
+          13,
+          16777230,
+          16777231,
+          16,
+          17,
+          18,
+          19,
+          16777236,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          33554468,
+          37,
+          16777254,
+          16777255,
+          16777256,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          33554479,
+          33554480,
+          33554481,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          16777273,
+          58,
+          59,
+          16777276,
+          61,
+          62,
+          16777279,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          16777289,
+          74,
+          16777291,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          16777300,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          33554523,
+          92,
+          93,
+          94,
+          95,
+          96,
+          16777313,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          16777326,
+          16777327,
+          16777328,
+          16777329,
+          16777330,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          16777341,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          16777355,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          16777369,
+          154,
+          155,
+          156,
+          157,
+          158,
+          16777375,
+          160,
+          161,
+          162,
+          163,
+          16777380,
+          165,
+          166,
+          167,
+          169,
+          16777386,
+          171,
+          16777388,
+          16777389,
+          16777390,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          16777407,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          16777419,
+          16777420,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225
+        ]
+      }
+    },
+    "entry_event": {
+      "clock_identity": 140715002313736,
+      "sequence": 15698777,
+      "thread_id": 23704
+    },
+    "returned_event": {
+      "clock_identity": 140715002313736,
+      "sequence": 15698779,
+      "thread_id": 23704
+    },
+    "provenance_failures": []
+  },
+  "entry": {
+    "capture_complete": false,
+    "missing_inputs": [
+      "scoped_capture_omits_unselected_physical_context"
+    ],
+    "subject_coverage_v1": {
+      "schema_version": 1,
+      "mode": "explicit_full_carmy_physical_closure",
+      "scope_epoch": 1,
+      "bound_game_state_identity": 1664514842160,
+      "bound_owner_character_id": 33388,
+      "requested_full_carmy_ids": [
+        0
+      ],
+      "manager_occurrences_complete": true,
+      "physical_closure_complete": false,
+      "subject_identity_witnesses": [
+        {
+          "full_carmy_id": 0,
+          "resolved_full_carmy_id": 0,
+          "carmy_magic_14_raw": 1098018169,
+          "public_unit_id": 0,
+          "unit_resolved_full_id": 0,
+          "unit_magic_14_raw": 1433299316,
+          "unit_owner_character_id": 33388,
+          "unit_full_carmy_id": 0
+        }
+      ],
+      "missing_inputs": [
+        "subject_character_override_has_no_physical_DATA_closure"
+      ]
+    },
+    "production_subject_validation": {
+      "returned_qualified_closure": false,
+      "exception": null
+    },
+    "manager_rosters": {
+      "persistent": {
+        "declared": 18065,
+        "copied": 18065,
+        "all_occurrences_materialized_without_null_or_reason": true,
+        "fallback_true_count": 0,
+        "bad_count": 0,
+        "bad_reasons": {},
+        "first_bad_original_rows": []
+      },
+      "army_refresh": {
+        "declared": 225,
+        "copied": 225,
+        "all_occurrences_materialized_without_null_or_reason": true,
+        "fallback_true_count": 0,
+        "bad_count": 0,
+        "bad_reasons": {},
+        "first_bad_original_rows": []
+      }
+    },
+    "subject_CArmy0_original_roster_rows": [
+      {
+        "stored_index": 0,
+        "raw_full_id": 0,
+        "resolved_full_id": 0,
+        "physical_token": 1663520141344,
+        "used_fallback": false,
+        "unavailable_reason": ""
+      }
+    ],
+    "physical_object_count": 37,
+    "physical_full_regiment_ids": [
+      2602,
+      2604,
+      2606,
+      2608,
+      2610,
+      2612,
+      2614,
+      2616,
+      2618,
+      2620,
+      2622,
+      2624,
+      2626,
+      2628,
+      2630,
+      2632,
+      2634,
+      2636,
+      2638,
+      9884,
+      9886,
+      10178,
+      15158,
+      15159,
+      15160,
+      15161,
+      15162,
+      15163,
+      15164,
+      15165,
+      15166,
+      15167,
+      15168,
+      15169,
+      15170,
+      16793680,
+      17948
+    ],
+    "physical_objects_all_seven": true,
+    "raw_slot_count": 259,
+    "copied_raw_current_sum": 6674,
+    "copied_raw_maximum_sum": 6742,
+    "physical_object_unavailable_reasons": {},
+    "chunk_context_reasons": {},
+    "captured_army_object_ids": [
+      0
+    ],
+    "ArRg_occurrence_count": 27,
+    "ArRg_original_full_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      82
+    ],
+    "ArRg_records_complete_count": 27,
+    "ArRg_refresh_admitted_count": 27,
+    "ArRg_loss_writer_skipped_true_count": 5,
+    "ArRg_unavailable_reasons": {},
+    "DATA_record_count": 37,
+    "DATA_admitted_count": 37,
+    "DATA_distinct_physical_pairs": 37,
+    "DATA_referenced_physical_count": 37,
+    "all_37_captured_persistents_referenced_by_subject_DATA": true,
+    "DATA_references_missing_physical_tokens": [],
+    "DATA_records_for_selected_Regi2602": [
+      {
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "persistent_physical_token": 1665356287056,
+        "state_raw": 0,
+        "native_record_admitted": true,
+        "unavailable_reason": ""
+      }
+    ],
+    "selected_Regi2602": {
+      "physical_token": 1665356287056,
+      "resolved_full_id": 2602,
+      "unavailable_reason": "",
+      "physical_value_scalar_fields": {
+        "persistent_regiment_id": 2602,
+        "prepared_fraction_raw": 4020,
+        "unavailable_reason": null
+      },
+      "raw_columns": [
+        "physical_index",
+        "current_soldiers",
+        "maximum_soldiers",
+        "owner_persistent_regiment_id",
+        "q_ordinal_raw",
+        "army_regiment_id_raw",
+        "exclusion_byte_14_raw",
+        "state_raw"
+      ],
+      "seven_slots": [
+        [
+          0,
+          0,
+          0,
+          2602,
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          1,
+          68,
+          69,
+          2602,
+          1,
+          82,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          2602,
+          2,
+          -1,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0,
+          2602,
+          3,
+          -1,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0,
+          2602,
+          4,
+          -1,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          2602,
+          5,
+          -1,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0,
+          2602,
+          6,
+          -1,
+          0,
+          0
+        ]
+      ],
+      "context_reasons": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "returned": {
+    "capture_complete": false,
+    "missing_inputs": [
+      "scoped_capture_omits_unselected_physical_context"
+    ],
+    "subject_coverage_v1": {
+      "schema_version": 1,
+      "mode": "explicit_full_carmy_physical_closure",
+      "scope_epoch": 1,
+      "bound_game_state_identity": 1664514842160,
+      "bound_owner_character_id": 33388,
+      "requested_full_carmy_ids": [
+        0
+      ],
+      "manager_occurrences_complete": true,
+      "physical_closure_complete": false,
+      "subject_identity_witnesses": [
+        {
+          "full_carmy_id": 0,
+          "resolved_full_carmy_id": 0,
+          "carmy_magic_14_raw": 1098018169,
+          "public_unit_id": 0,
+          "unit_resolved_full_id": 0,
+          "unit_magic_14_raw": 1433299316,
+          "unit_owner_character_id": 33388,
+          "unit_full_carmy_id": 0
+        }
+      ],
+      "missing_inputs": [
+        "subject_character_override_has_no_physical_DATA_closure"
+      ]
+    },
+    "production_subject_validation": {
+      "returned_qualified_closure": false,
+      "exception": null
+    },
+    "manager_rosters": {
+      "persistent": {
+        "declared": 18065,
+        "copied": 18065,
+        "all_occurrences_materialized_without_null_or_reason": true,
+        "fallback_true_count": 0,
+        "bad_count": 0,
+        "bad_reasons": {},
+        "first_bad_original_rows": []
+      },
+      "army_refresh": {
+        "declared": 225,
+        "copied": 225,
+        "all_occurrences_materialized_without_null_or_reason": true,
+        "fallback_true_count": 0,
+        "bad_count": 0,
+        "bad_reasons": {},
+        "first_bad_original_rows": []
+      }
+    },
+    "subject_CArmy0_original_roster_rows": [
+      {
+        "stored_index": 0,
+        "raw_full_id": 0,
+        "resolved_full_id": 0,
+        "physical_token": 1663520141344,
+        "used_fallback": false,
+        "unavailable_reason": ""
+      }
+    ],
+    "physical_object_count": 37,
+    "physical_full_regiment_ids": [
+      2602,
+      2604,
+      2606,
+      2608,
+      2610,
+      2612,
+      2614,
+      2616,
+      2618,
+      2620,
+      2622,
+      2624,
+      2626,
+      2628,
+      2630,
+      2632,
+      2634,
+      2636,
+      2638,
+      9884,
+      9886,
+      10178,
+      15158,
+      15159,
+      15160,
+      15161,
+      15162,
+      15163,
+      15164,
+      15165,
+      15166,
+      15167,
+      15168,
+      15169,
+      15170,
+      16793680,
+      17948
+    ],
+    "physical_objects_all_seven": true,
+    "raw_slot_count": 259,
+    "copied_raw_current_sum": 6684,
+    "copied_raw_maximum_sum": 6742,
+    "physical_object_unavailable_reasons": {},
+    "chunk_context_reasons": {},
+    "captured_army_object_ids": [
+      0
+    ],
+    "ArRg_occurrence_count": 27,
+    "ArRg_original_full_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      82
+    ],
+    "ArRg_records_complete_count": 27,
+    "ArRg_refresh_admitted_count": 27,
+    "ArRg_loss_writer_skipped_true_count": 5,
+    "ArRg_unavailable_reasons": {},
+    "DATA_record_count": 37,
+    "DATA_admitted_count": 37,
+    "DATA_distinct_physical_pairs": 37,
+    "DATA_referenced_physical_count": 37,
+    "all_37_captured_persistents_referenced_by_subject_DATA": true,
+    "DATA_references_missing_physical_tokens": [],
+    "DATA_records_for_selected_Regi2602": [
+      {
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "persistent_physical_token": 1665356287056,
+        "state_raw": 0,
+        "native_record_admitted": true,
+        "unavailable_reason": ""
+      }
+    ],
+    "selected_Regi2602": {
+      "physical_token": 1665356287056,
+      "resolved_full_id": 2602,
+      "unavailable_reason": "",
+      "physical_value_scalar_fields": {
+        "persistent_regiment_id": 2602,
+        "prepared_fraction_raw": 4020,
+        "unavailable_reason": null
+      },
+      "raw_columns": [
+        "physical_index",
+        "current_soldiers",
+        "maximum_soldiers",
+        "owner_persistent_regiment_id",
+        "q_ordinal_raw",
+        "army_regiment_id_raw",
+        "exclusion_byte_14_raw",
+        "state_raw"
+      ],
+      "seven_slots": [
+        [
+          0,
+          0,
+          0,
+          2602,
+          0,
+          -1,
+          0,
+          0
+        ],
+        [
+          1,
+          69,
+          69,
+          2602,
+          1,
+          82,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          2602,
+          2,
+          -1,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0,
+          2602,
+          3,
+          -1,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0,
+          2602,
+          4,
+          -1,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          2602,
+          5,
+          -1,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0,
+          2602,
+          6,
+          -1,
+          0,
+          0
+        ]
+      ],
+      "context_reasons": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "copied_endpoint_arithmetic_not_strict_qualification": {
+    "stable_captured_physical_tokens_and_full_ids": true,
+    "raw_columns": [
+      "physical_index",
+      "current_soldiers",
+      "maximum_soldiers",
+      "owner_persistent_regiment_id",
+      "q_ordinal_raw",
+      "army_regiment_id_raw",
+      "exclusion_byte_14_raw",
+      "state_raw"
+    ],
+    "changed_slots": [
+      {
+        "physical_token": 1665356287056,
+        "regi_full_id": 2602,
+        "before_raw": [
+          1,
+          68,
+          69,
+          2602,
+          1,
+          82,
+          0,
+          0
+        ],
+        "returned_raw": [
+          1,
+          69,
+          69,
+          2602,
+          1,
+          82,
+          0,
+          0
+        ],
+        "raw_current_difference": 1,
+        "raw_maximum_difference": 0
+      },
+      {
+        "physical_token": 1665356289744,
+        "regi_full_id": 2610,
+        "before_raw": [
+          0,
+          299,
+          302,
+          2610,
+          0,
+          54,
+          0,
+          0
+        ],
+        "returned_raw": [
+          0,
+          302,
+          302,
+          2610,
+          0,
+          54,
+          0,
+          0
+        ],
+        "raw_current_difference": 3,
+        "raw_maximum_difference": 0
+      },
+      {
+        "physical_token": 1665356293104,
+        "regi_full_id": 2620,
+        "before_raw": [
+          1,
+          68,
+          69,
+          2620,
+          1,
+          62,
+          0,
+          0
+        ],
+        "returned_raw": [
+          1,
+          69,
+          69,
+          2620,
+          1,
+          62,
+          0,
+          0
+        ],
+        "raw_current_difference": 1,
+        "raw_maximum_difference": 0
+      },
+      {
+        "physical_token": 1665356294448,
+        "regi_full_id": 2624,
+        "before_raw": [
+          1,
+          73,
+          75,
+          2624,
+          1,
+          50,
+          0,
+          0
+        ],
+        "returned_raw": [
+          1,
+          75,
+          75,
+          2624,
+          1,
+          50,
+          0,
+          0
+        ],
+        "raw_current_difference": 2,
+        "raw_maximum_difference": 0
+      },
+      {
+        "physical_token": 1665361869088,
+        "regi_full_id": 16793680,
+        "before_raw": [
+          0,
+          9,
+          10,
+          16793680,
+          0,
+          53,
+          0,
+          0
+        ],
+        "returned_raw": [
+          0,
+          10,
+          10,
+          16793680,
+          0,
+          53,
+          0,
+          0
+        ],
+        "raw_current_difference": 1,
+        "raw_maximum_difference": 0
+      },
+      {
+        "physical_token": 1665362367728,
+        "regi_full_id": 17948,
+        "before_raw": [
+          0,
+          198,
+          200,
+          17948,
+          0,
+          52,
+          0,
+          0
+        ],
+        "returned_raw": [
+          0,
+          200,
+          200,
+          17948,
+          0,
+          52,
+          0,
+          0
+        ],
+        "raw_current_difference": 2,
+        "raw_maximum_difference": 0
+      }
+    ],
+    "copied_current_difference": 10,
+    "copied_maximum_difference": 0,
+    "strict_pair_available": false,
+    "cause_attributed": false,
+    "instruction_ADD_observed": false
+  },
+  "conditional_q_target_from_before_query": {
+    "schema": "xar.ck3.refill_ADD_12004.positive_prepare_target.v1",
+    "ordered_refill_entry_mode": "fixed_chunk0_prepare",
+    "input_basis": "same_capture_fixed_chunk0_conditional_preparation_ordered_occurrences",
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "q_index": 1,
+    "conditional_shared_q_i32": 1,
+    "selected_write": {
+      "physical_index": 1,
+      "q_ordinal_raw": 1,
+      "q": 1,
+      "before_current": 68,
+      "before_maximum": 69,
+      "after_current": 69,
+      "after_maximum": 69,
+      "pair_cleared": false
+    },
+    "selected_occurrence_stored_index": 2602
+  },
+  "separate_current_query_window_net": {
+    "same_full_roster_alias_max_state_shape": true,
+    "before_current": 6674,
+    "after_current": 6684,
+    "raw_physical_net": 10,
+    "cause_attributed": false,
+    "gross_ADD_qualified": false
+  },
+  "production_consumer_replayed_on_actual_row_equals_existing": true,
+  "production_core_qualification": [
+    {
+      "journal_sequence": 1,
+      "entry_event": {
+        "clock_identity": 140715002313736,
+        "sequence": 15698777,
+        "thread_id": 23704
+      },
+      "returned_event": {
+        "clock_identity": 140715002313736,
+        "sequence": 15698779,
+        "thread_id": 23704
+      },
+      "owned_original_return_observed": true,
+      "entry_capture_complete": false,
+      "returned_capture_complete": false,
+      "conditional_entry_projection": null,
+      "missing_inputs": [
+        "actual_core_complete_entry_copy"
+      ],
+      "returned_frame_used_to_fill_entry": false,
+      "subject_raw_physical_delta_v1": {
+        "schema_version": 1,
+        "subject_full_carmy_id_u32": 0,
+        "basis": "owned_same_core_entry_and_return_raw_physical_seven",
+        "status": "unavailable",
+        "physical_objects": [],
+        "missing_inputs": [
+          "subject_coverage_v1 both raw subject closures must independently qualify"
+        ],
+        "actual_ADD_observed": false,
+        "causal_attribution_ready": false,
+        "full_manager_ready": false,
+        "full_monthly_ready": false,
+        "conditional_entry_projection_used": false
+      },
+      "refill_application_qualification_v1": {
+        "schema_version": 1,
+        "source_contract_game_version": "1.20.0.4",
+        "evidence_kind": "natural_core_return_only",
+        "natural_core_return_observed": true,
+        "subject_physical_net_ready": false,
+        "raw_current_net": null,
+        "raw_maximum_net": null,
+        "unique_physical_objects": null,
+        "actual_ADD_observed": false,
+        "applied_positive_refill_soldiers": null,
+        "no_ADD_proven": false,
+        "toggle_effect_proven": false,
+        "continuous_window_coverage_proven": false,
+        "current_runtime_binding_proven": false,
+        "conditional_projection_promoted": false,
+        "missing_inputs": [
+          "complete_owned_subject_raw_physical_pair"
+        ]
+      }
+    }
+  ],
+  "capture_classifier": {
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "family_key": "actual_army_regular_core_observations_v1",
+    "profile": "observed_history_full_v1",
+    "field_state": "exported",
+    "callback_execution_claim": false,
+    "physical_ADD_claim": false,
+    "full_monthly_ready": false,
+    "historical_entry_filled_from_current": false,
+    "reasons": [
+      "Pass these actual events to the existing strict core/physical application consumer; this status grants no ADD."
+    ],
+    "before_sampling": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": true,
+      "busy": false,
+      "clear_completed": false,
+      "epoch": 1,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "enabled",
+      "readiness": "awaiting_sample"
+    },
+    "after_sampling": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": true,
+      "busy": false,
+      "clear_completed": false,
+      "epoch": 1,
+      "active_captures": 0,
+      "retained_records": 1,
+      "qualified_records": 1,
+      "status": "enabled",
+      "readiness": "retained_observation"
+    },
+    "exported_event_count": 1,
+    "status": "matching_core_events_exported"
+  },
+  "policy_source": {
+    "global_capture_false": "ScopedCapture cpp560-561 explicitly omits unselected physical context",
+    "manager_complete_rule": "cpp492-499 every original persistent and Army occurrence must resolve; no slot filtering",
+    "subject_closure_rule": "cpp559 requires manager_occurrences_complete AND no subject missing leaf",
+    "scoped_37_origin": "cpp500-515 selects requested exact CArmy, materializes its original ArRg DATA; cpp511-513 ownership does not filter Regi receivers"
+  },
+  "actual_ADD_observed": false,
+  "same_core_causal_application_qualified": false,
+  "v4_join_boundary": "Invocation token/date/GameState/manager/TID/clock evidence can be reused as original join metadata. No B88/B8B instruction-local pair exists; incomplete subject closure cannot be promoted by net+10."
+}

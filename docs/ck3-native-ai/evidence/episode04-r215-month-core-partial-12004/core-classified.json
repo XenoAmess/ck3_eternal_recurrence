@@ -1,0 +1,42 @@
+{
+  "army_id": 0,
+  "native_carmy_id": 0,
+  "family_key": "actual_army_regular_core_observations_v1",
+  "profile": "observed_history_full_v1",
+  "field_state": "exported",
+  "callback_execution_claim": false,
+  "physical_ADD_claim": false,
+  "full_monthly_ready": false,
+  "historical_entry_filled_from_current": false,
+  "reasons": [
+    "Pass these actual events to the existing strict core/physical application consumer; this status grants no ADD."
+  ],
+  "before_sampling": {
+    "installed": true,
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 1,
+    "active_captures": 0,
+    "retained_records": 0,
+    "qualified_records": 0,
+    "status": "enabled",
+    "readiness": "awaiting_sample"
+  },
+  "after_sampling": {
+    "installed": true,
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 1,
+    "active_captures": 0,
+    "retained_records": 1,
+    "qualified_records": 1,
+    "status": "enabled",
+    "readiness": "retained_observation"
+  },
+  "exported_event_count": 1,
+  "status": "matching_core_events_exported"
+}

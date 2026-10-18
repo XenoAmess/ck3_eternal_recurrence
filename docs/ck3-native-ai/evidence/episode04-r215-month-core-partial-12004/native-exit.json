@@ -1,0 +1,66 @@
+{
+  "rows": [
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "plan": {
+        "id": "acceptance-normal-exit-finish-hold",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "started_at": "2026-10-18T20:01:51.525580+00:00",
+      "ok": true,
+      "result": {
+        "hold_finished": true
+      },
+      "resolved_expect": {
+        "hold_finished": true
+      },
+      "after_snapshot": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 28840,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0210",
+        "started_at": "2026-10-18T19:36:50.165323+00:00",
+        "finished_at": "2026-10-18T20:01:10.105771+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "8a76cd92df644fd392653b73c79ee78c",
+          "ck3_pid": 28840,
+          "ck3_creation_date": "20261018193652.781167+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 3124,
+          "watchdog_creation_date": "20261018193651.174125+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\state-a01\\control\\ck3.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\state-a01\\control\\watchdog-8a76cd92df644fd392653b73c79ee78c.ready.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\state-a01\\control\\ck3.watchdog_error": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\state-a01\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finished_at": "2026-10-18T20:01:51.926513+00:00"
+    }
+  ],
+  "business_PASS_inferred": false
+}

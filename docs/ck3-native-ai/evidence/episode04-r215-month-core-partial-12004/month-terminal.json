@@ -1,0 +1,24 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+  "status": "ONE_EXACT_MONTH_DAY_CORE_EXPORTED",
+  "actual_binding": {
+    "pid": 28840,
+    "create_time": 1792352212.7811677,
+    "hold": 1792356319.7194765,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0210",
+    "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\case-output\\retained-current-process-identity.json",
+    "control_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r215-refill-month-core-a01\\state-a01\\control\\ck3.json"
+  },
+  "generation": 1,
+  "actual_days": 1,
+  "finaldate": 53149080,
+  "province_id": 2170,
+  "OFFclear": true,
+  "Save": true,
+  "errors": [],
+  "actual_ADD_observed": false,
+  "core_event_count": 1,
+  "ordered_refill_entry_mode": "fixed_chunk0_prepare",
+  "full_result_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0210\\r06-month-one-day-a01\\R06-MONTH-RESULT.json"
+}

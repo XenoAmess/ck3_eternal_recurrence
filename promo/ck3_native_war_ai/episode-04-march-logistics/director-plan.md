@@ -374,3 +374,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ### 2026-10-19 R214 本机月界补员拍摄增量（源事实，非镜头验收）
 
 `machine_id: desktop-3fevhd2-1c74096080`，source `191568c281bbde92feeb9f96fe40736be1b63ca8`。R214 准备真实推进 Mar5→Mar31 共 26 日并保存 74,273,410 B/`42dfd2c0…bd1f0bc` 正常源；月界 core 因旧 `observed_prepared` 的 prepared148 全 0，只读门禁终止，实际推进 0 日、ADD 未见。独立 `fixed_chunk0_prepare` 仅给 6 个**条件 q>0** 槽，尚未执行。73.3 秒原片显示暂停 Mar31 军队 6679/补给 103/300；机器解码通过，片内无动态，人工 1×/clean/signoff 未过。研究 10/14、业务 7/11、动态 0/11、ABC 0/3 不变。下一场才从已保 Mar31 正常 S0 试实月界，不以源码条件代替 ADD。[R214 专题](../../../docs/ck3-native-ai/episode04-r214-month-boundary-q-gate-12004.md)。
+
+### R215 月界真实增兵的镜头和研究边界（2026-10-18 20:11 UTC；machine_id: desktop-3fevhd2-1c74096080）
+
+[R215 专题候选](../../../docs/ck3-native-ai/episode04-r215-one-day-core-partial-12004.md)保留 R0210/a574 实际 Mar31→Apr1 **1 日**、native DATA 端点 **6674→6684 / +10**、片内军队标签 **6679→6689** 的分层证据。录制 191.9 秒、完整解码成功，标签转场约 121.913–122.284 秒；可作“月界画面与净兵数变化”的粗剪候选。Core retained/qualified 1/1，但两侧 `subject_character_override_has_no_physical_DATA_closure`，生产 consumer 仅 `natural_core_return_only`；不配“同次 Core 实施 ADD”或“AI 补员已证”的口播。R10 B 仍缺两处实际省份库存正增长，不能拿士兵 +10 抵扣。正式动态 0/11、ABC 0/3、研究 10/14、业务 7/11；连续 clean、人工 1×及签核待做。原片留外置，证据小件由集成者按精确 COPYPLAN 入库。

@@ -1,0 +1,98 @@
+{
+  "army_id": 0,
+  "native_carmy_id": 0,
+  "source_contract_game_version": "1.20.0.4",
+  "input_basis": "owned_natural_stage_copies_joined_by_captured_full_CArmy_ID",
+  "later_current_query_used": false,
+  "game_load_epoch_inferred": false,
+  "full_daily_assault_ready": false,
+  "full_monthly_ready": false,
+  "phase_lineage": [],
+  "ordered_regular_core": [
+    {
+      "journal_sequence": 1,
+      "entry_event": {
+        "clock_identity": 140715002313736,
+        "sequence": 15698777,
+        "thread_id": 23704
+      },
+      "returned_event": {
+        "clock_identity": 140715002313736,
+        "sequence": 15698779,
+        "thread_id": 23704
+      },
+      "owned_original_return_observed": true,
+      "entry_capture_complete": false,
+      "returned_capture_complete": false,
+      "conditional_entry_projection": null,
+      "missing_inputs": [
+        "actual_core_complete_entry_copy"
+      ],
+      "returned_frame_used_to_fill_entry": false,
+      "subject_raw_physical_delta_v1": {
+        "schema_version": 1,
+        "subject_full_carmy_id_u32": 0,
+        "basis": "owned_same_core_entry_and_return_raw_physical_seven",
+        "status": "unavailable",
+        "physical_objects": [],
+        "missing_inputs": [
+          "subject_coverage_v1 both raw subject closures must independently qualify"
+        ],
+        "actual_ADD_observed": false,
+        "causal_attribution_ready": false,
+        "full_manager_ready": false,
+        "full_monthly_ready": false,
+        "conditional_entry_projection_used": false
+      },
+      "refill_application_qualification_v1": {
+        "schema_version": 1,
+        "source_contract_game_version": "1.20.0.4",
+        "evidence_kind": "natural_core_return_only",
+        "natural_core_return_observed": true,
+        "subject_physical_net_ready": false,
+        "raw_current_net": null,
+        "raw_maximum_net": null,
+        "unique_physical_objects": null,
+        "actual_ADD_observed": false,
+        "applied_positive_refill_soldiers": null,
+        "no_ADD_proven": false,
+        "toggle_effect_proven": false,
+        "continuous_window_coverage_proven": false,
+        "current_runtime_binding_proven": false,
+        "conditional_projection_promoted": false,
+        "missing_inputs": [
+          "complete_owned_subject_raw_physical_pair"
+        ]
+      }
+    }
+  ],
+  "preparation": [],
+  "placement": [],
+  "daily_assault": [],
+  "group_release": [],
+  "gathering_due": [],
+  "monthfirst_cleanup": [],
+  "pre_date_prefix": [],
+  "family_status": {
+    "army_natural_phase_observations_v1": "unavailable",
+    "actual_army_regular_core_observations_v1": "available",
+    "actual_army_daily_assault_preparation_observations_v1": "unavailable",
+    "actual_army_assault_placement_observations_v1": "unavailable",
+    "army_actual_assault_consumer_observations_v1": "unavailable",
+    "actual_army_assault_group_release_observations_v1": "unavailable",
+    "native_gathering_due_natural_stage_12004": "unavailable",
+    "actual_army_cleanup_observations_v1": "unavailable",
+    "actual_army_pre_date_prefix_observations_v1": "unavailable"
+  },
+  "status": "partial",
+  "missing_inputs": [
+    "owned_army_natural_phase_observations_v1",
+    "owned_actual_army_daily_assault_preparation_observations_v1",
+    "owned_actual_army_assault_placement_observations_v1",
+    "owned_army_actual_assault_consumer_observations_v1",
+    "owned_actual_army_assault_group_release_observations_v1",
+    "owned_native_gathering_due_natural_stage_12004",
+    "owned_actual_army_cleanup_observations_v1",
+    "owned_actual_army_pre_date_prefix_observations_v1"
+  ]
+}
