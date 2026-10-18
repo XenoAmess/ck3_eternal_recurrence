@@ -1470,5 +1470,36 @@
     "bytes": 423,
     "sha256": "41241b3bbdd6f04805ecf9d5296d0adaa73fe8300eb0bbf7d55fb5f1d0ed4946"
   },
-  "live_refusal_or_war_result_claimed": false
+  "live_refusal_or_war_result_claimed": false,
+  "machine_id": "unknown",
+  "machine_identity_annotation_2026_10_18": {
+    "historical_machine_id": "unknown",
+    "historical_machine_status": "所属机器未核实",
+    "historical_record_at_utc_preserved": "2026-10-17T13:10:29.372929+00:00",
+    "basis": "The retained P43 Markdown and AUDIT originals omit machine_id and do not include a machine identity proof bound to the historical capture. This annotation does not infer historical identity from current access, paths, drive letters, actor or Git commit.",
+    "annotation_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "annotation_observed_at_utc": "2026-10-18T02:33:55.180567+00:00",
+    "annotation_machine_source": "Fresh python -B -X utf8 tools/ck3_live_run_id.py machine",
+    "files_reviewed_before_annotation": {
+      "docs\\ck3-native-ai\\p43-populist-current-source-and-natural-audit-2026-10-17.md": {
+        "bytes": 4163,
+        "sha256": "3ab1ec025197dd40475ffbf4869e8fe5fe71712de145f80ae16ca6622ac8e4d8"
+      },
+      "docs\\ck3-native-ai\\evidence\\p43-populist-current-source-and-natural-audit-2026-10-17.json": {
+        "bytes": 61435,
+        "sha256": "4c65c1ba58e7cddebdd99e5a049fba05ec28d4af7af22d0c0abfa6af913a1eed"
+      }
+    },
+    "original_audit_byte_reconstruction": {
+      "prefix_bytes": 61432,
+      "closing_bytes_hex": "0a7d0a",
+      "sha256": "4c65c1ba58e7cddebdd99e5a049fba05ec28d4af7af22d0c0abfa6af913a1eed",
+      "recipe": "Take this annotated file prefix of prefix_bytes, then append closing_bytes_hex decoded. Original historical payload bytes are preserved."
+    },
+    "historical_values_modified": false,
+    "history_machine_qualification_created": false,
+    "Driver_SAVE_media_body_reads": 0,
+    "Game_MCP_SDK_OBS_calls": 0,
+    "business_or_G2_credit_added": 0
+  }
 }

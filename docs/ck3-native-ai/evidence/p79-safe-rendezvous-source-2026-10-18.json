@@ -237,5 +237,15 @@
     "co-located original merge/ongoing combat/committed route/other war/action priority unchanged",
     "count comparison only chooses an observation purpose; full roster/commanders/model/Can guards still needed after concentration",
     "complete hostile route and own horizon proof is only current-command evidence, not guaranteed future orders or arrival"
-  ]
+  ],
+  "related_native26_offline_chain_appendix": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "actual_execution_observed_at_utc": "2026-10-18T02:20:12.280774+00:00",
+    "evidence_path": "docs/ck3-native-ai/evidence/native26-build-and-offline-fixture-2026-10-18.json",
+    "evidence_bytes": 7243,
+    "evidence_sha256": "88d300108dcc36d940f8c456f4fd34403855230228be584a644861a9a1a74220",
+    "scope": "Separate Native26 build/fixture packages P79/P80; original safe-rendezvous source scope and historical deployment/native_builds fields remain unchanged.",
+    "safe_rendezvous_actual_Game_credit_added": 0,
+    "production_Native26_Game_load_or_12004_runtime_qualified": false
+  }
 }

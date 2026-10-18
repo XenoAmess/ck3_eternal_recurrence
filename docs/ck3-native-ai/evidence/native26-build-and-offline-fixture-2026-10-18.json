@@ -1,0 +1,146 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T02:28:22.066805+00:00",
+  "status": "ACTUAL_NATIVE26_BUILD_AND_OFFLINE_PRODUCTION_CHAIN_QUALIFIED_NOT_GAME_LOADED",
+  "scope": "Separate Native26 build/fixture work packages P79/P80; public P79 safe-rendezvous source candidate keeps its original evidence/time scope.",
+  "source_evidence": {
+    "production_build_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p79-native26-build01\\DELIVERY.json",
+      "bytes": 14336,
+      "sha256": "62fe1b49436240c33ec9f1466dfc47dcb3e2b5f0c4e16c369c0c8de99a1f47f8"
+    },
+    "fixture_build_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p80-native26-offline-fixture01\\BUILD-DELIVERY.json",
+      "bytes": 14181,
+      "sha256": "82f50c1155d0637c392ff5cb655ebb9bc4ff83bef083b481b5312c29b9f948a7"
+    },
+    "actual_isolated_execution": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p80-native26-offline-fixture01\\EXECUTION-RESULT.json",
+      "bytes": 68295,
+      "sha256": "0ad3f28e6407c17ffb13c330e5606ef3e3303490e129e6f87849d84675b445c7"
+    },
+    "independent_JSON_review": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p78-native-next-generation-source01\\NATIVE26-OFFLINE-CHAIN-INDEPENDENT-REVIEW01.json",
+      "bytes": 10718,
+      "sha256": "38f9c07a39013891a1c39fd4ba9dce5ac87d4f7e10553e125aa437da2eecefa0"
+    }
+  },
+  "production_build": {
+    "observed_at_utc": "2026-10-18T01:45:59.763044+00:00",
+    "DLL_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p79-native26-build01\\build\\native26.dll",
+    "DLL_bytes": 18442240,
+    "DLL_sha256": "0d2e96e1f735a8f4cae03beee39f22070b7a778b4d9e5d121e3258cda5628447",
+    "derived_bridge_sha256": "1b18b0a04a2eee3ea8a2db2e9650ba65c468947db6c293926642d8af4397cffa",
+    "compile_exit_code": 0,
+    "link_exit_code": 0,
+    "exports": [
+      "XarCk3BridgeIdentity",
+      "XarCk3BridgePrepareStartup",
+      "XarCk3BridgeStart",
+      "XarCk3BridgeStartWithPipe",
+      "XarCk3BridgeStop"
+    ],
+    "actual_output_logical_bytes": 65699167,
+    "production_DLL_loaded_into_Game": false
+  },
+  "fixture_build": {
+    "observed_at_utc": "2026-10-18T02:06:36.389543+00:00",
+    "DLL_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p80-native26-offline-fixture01\\build\\native26-combat-fixture.dll",
+    "DLL_bytes": 18464256,
+    "DLL_sha256": "765aafa30cd483d862f86daa8cb28a10a13ef968f1f3d482002d91279a7c0985",
+    "source_freeze_sha256": "a9381af499c4e70bdf376035bac69b0c53b9208708899f40bb8cf1760c5314ed",
+    "production_DllMain_renamed": true,
+    "compile_exit_code": 0,
+    "link_exit_code": 0,
+    "new_EXEs": 0,
+    "EXE_Defender_registration_applicable": false
+  },
+  "actual_offline_execution": {
+    "observed_at_utc": "2026-10-18T02:20:12.280774+00:00",
+    "status": "PASS_OFFLINE_PRODUCTION_V2_CHAIN",
+    "Cpp_DTO_check_failures": 0,
+    "cases": [
+      {
+        "name": "exact04_ctor0_ordered_sides",
+        "reader_calls": 1,
+        "accepted": true,
+        "status": "available",
+        "input_observation_ready": true,
+        "monte_carlo_ready": false
+      },
+      {
+        "name": "retained03_ctor0",
+        "reader_calls": 1,
+        "accepted": true,
+        "status": "available",
+        "input_observation_ready": true,
+        "monte_carlo_ready": false
+      },
+      {
+        "name": "wrong_exe_rejected",
+        "reader_calls": 0,
+        "accepted": false
+      },
+      {
+        "name": "wrong_version_rejected",
+        "reader_calls": 0,
+        "accepted": false
+      },
+      {
+        "name": "duplicate_full_id_rejected",
+        "reader_calls": 0,
+        "accepted": false
+      },
+      {
+        "name": "noncanonical_ctor_literal_rejected",
+        "reader_calls": 0,
+        "accepted": false
+      },
+      {
+        "name": "unpaused_real_reader_error",
+        "reader_calls": 1,
+        "accepted": false
+      },
+      {
+        "name": "retained04_positive_entry",
+        "reader_calls": 1,
+        "accepted": true,
+        "status": "available",
+        "input_observation_ready": true,
+        "monte_carlo_ready": false
+      }
+    ],
+    "production_DllMain_invoked": false,
+    "production_Start_Stop_Identity_or_Game_calls": 0,
+    "transport": "local capture lambda, not native pipe"
+  },
+  "verified_scope": [
+    "actual separately built fixture executed in isolated Python child",
+    "full copied production V2 dispatch branch, unchanged linked archive reader, production serializer",
+    "eight actual structured frames and reader call counts, C++ DTO check failure count zero",
+    ".4 ctor0 and retained .3 preserve four full IDs, side order/roles, null entry and raw0",
+    "exact EXE/version and grammar negative gates reject before reader; unpaused real-reader error serialized",
+    "legacy .4 positive entry remains available/partial according to actual output"
+  ],
+  "limits": [
+    "synthetic memory/callbacks and same paused-scope fixture adapter replace live .4 adapter memory binding",
+    "fixture DllMain is isolated; production Native26 DLL was not loaded into CK3",
+    "no real .4 constructor stack/RVA, native transport, application-main mailbox scheduling, or Game business qualification",
+    "no installed SDK04 ordinary App policy stack qualification; input completeness is recorded, not promoted to model readiness"
+  ],
+  "future_App_Native26_profile_requirements": [
+    "Create a separate generation/profile; preserve current Native25/Host04 and source epoch unchanged.",
+    "Bind exact actual Native26 DLL 0d2e96e1...8447, derived source 1b18b0a0...cffa, exact target .4 EXE identity, SDK04 frozen commit/source closure and actual machine ID.",
+    "COW SDK generation spec, bootstrap and host adapter pins. Old a144...Native25 pins must fail for Native26 rather than silently accepting another binary.",
+    "Omit old general_constructor_passive_defense_v1 18595185...e8266 hook in the new profile, or bind it only to exact old Native25; verify it no longer preempts native V2 ctor0 before query submission.",
+    "Keep current exact .4 V2 capability advertisement and all existing gates; do not advertise V3 to bypass consumers.",
+    "Run source/App full-entry fixture through installed policy stack: actual projected incoming defender roles, ordered full ID sides, canonical V2 ctor0, raw0 and null entry must reach new Native driver, then decode production frame.",
+    "Fresh target-machine actual runtime qualification must separately bind Steam offline/live EXE/loaded DLL and the ordinary owning-thread query route; ACK or this offline fixture cannot replace it.",
+    "Only Root may decide later deployment/injection/profile adoption; protect current film finish and recording. No deployment authorized by this JSON review."
+  ],
+  "safe_rendezvous_actual_Game_credit_added": 0,
+  "G2_credit_added": 0,
+  "this_publication_binary_reads_or_hashes_or_new_compile_or_DllLoad_or_Game_calls": 0,
+  "immutable_existing_inputs_modified": false,
+  "git_commit_or_push_performed": false
+}

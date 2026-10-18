@@ -28,3 +28,5 @@ R9 CAP2 实际广告了合并、预览、移动及 H1 能力，且当时同省�
 另通过冻结 Host04r03 的真实 `queue.load_cold_result_classifier()→owner.check_after`，消费上述 Service 实产的五类计划及明确参数化的旧 Native DTO，十个拒绝例通过。preview、两类 H1 与 move 使用原 `primitive_accepted` 调度分支，仅表明结果形状可继续消费，日期和业务信用均为零；该通用旧分支没有独立拒绝被改写的 planning actor，此局限保留在资格报告中，不能据此声称完整来源身份已获验收。退却的一日计划则通过原 clock validator，并拒绝外国 actor 和超出日期。没有修改不可变 Host04/SDK04；实际提交仍依赖原 SDK/Native 门禁及独立后验。报告来源、SHA 与各分支结果见小证据。
 
 采用本改进需要后续新源码 generation；当前长局继续使用已经冻结的源。这不是本期三十年、视频完成或新1066开局的前置门槛。下一次自然业务验证应保存原 preview/H1、单次移动及独立 committed route、实际会合、合并源军移除、重新采集的 roster/model 和真实战斗后验，逐步记录获得的信用。
+
+2026-10-18 补注：后续战斗输入链的 [Native26 独立构建与离线夹具证据](evidence/native26-build-and-offline-fixture-2026-10-18.json)已补齐；`machine_id: xenoamess-full-tower-eb9d2c1186`，生产 DLL 构建回执为 `01:45:59.763044Z`，隔离夹具执行为 `02:20:12.280774Z`。独立 Native 构建包 P79/P80 与本文会合候选分别记录来源：真实 V2 分发、原 archive 读取器和生产序列化的八个离线场景通过，三个有效场景均为 `available`、`input_observation_ready=true`、`monte_carlo_ready=false`。生产 Native26 DLL 尚未加载到 Game，`.4` 实机、普通 App/profile 接入及会合业务均未由此验收；本文此前状态、历史构建计数和会合实机信用保持原有范围。

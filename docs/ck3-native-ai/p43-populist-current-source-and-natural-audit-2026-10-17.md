@@ -23,3 +23,11 @@ AUTO193面对 faction_demand.1001／instance41／calculated3571001，当前可�
 源、四批、before/after、学习发布、held材料、测试和候选精确 SHA 见同名 AUDIT JSON。下一步仅在必要维护窗口评审 COW；不要为该研究停当前游戏。
 
 [本仓库AUDIT投影](evidence/p43-populist-current-source-and-natural-audit-2026-10-17.json)保留精确来源。本批已将该单叶候选窄合公共源码并运行相关旧／新测试；当前SDK43冻结源未改，合成拒绝回执不记作本次实机拒绝或保地成功。
+
+## 2026-10-18 机器身份补注
+
+本页及对应 AUDIT 的历史材料记为 **`machine_id: unknown`，所属机器未核实**。两份保留原件均没有 `machine_id`，也未附可绑定至该次历史采集的机器身份原始证明；原 AUDIT 的 `at_utc=2026-10-17T13:10:29.372929+00:00` 及全部历史结果原样保留。路径、盘符、角色、Git commit，以及现在能读取文件的机器，均不能用来追认历史执行机器。
+
+本次只追加身份说明；补注执行的 `machine_id: xenoamess-full-tower-eb9d2c1186`，实际审计 UTC 为 `2026-10-18T02:33:55.180567+00:00`，身份出处为当次 `python -B -X utf8 tools/ck3_live_run_id.py machine`。该身份仅证明此次补注的执行机器，不赋予 P43 历史安装、环境、部署、实机或录制事实以当前机器效力。
+
+出处为[保留的 AUDIT 投影](evidence/p43-populist-current-source-and-natural-audit-2026-10-17.json)及本页。AUDIT 补注前 SHA-256 为 `4c65c1ba58e7cddebdd99e5a049fba05ec28d4af7af22d0c0abfa6af913a1eed`，补注后为 `04df7c14ffa2f3cd33c819d7d33ced3c1c884ce270edf442e244a1c761ad5af7`；新增字段保留原件的精确字节重建方法，既有字段和值未改。本次未读取旧 Driver、SAVE 或媒体正文，Game／MCP／SDK／OBS 调用为0，业务及 G2 信用新增为0。
