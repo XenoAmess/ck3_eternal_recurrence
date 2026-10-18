@@ -54,7 +54,7 @@ def assess_rendezvous_locked_route_v1(horizon):
 
 
 def review_safe_war_rendezvous_v1(baseline, *, commands, snapshot,
-        action_steps, bridge_capabilities):
+        action_steps, bridge_capabilities, command_rows_factory=None):
     from . import strategy
     from .bridge.native_driver import _route_contact_hostile_ids
     from .bridge.war_contract import (MERGE_ARMIES_CAPABILITY,
@@ -150,7 +150,7 @@ def review_safe_war_rendezvous_v1(baseline, *, commands, snapshot,
         if a['current_province_id'] in objectives
         and states.get(a['current_province_id'], {}).get('occupation_observable') is True
         and states[a['current_province_id']].get('is_occupied') is False]
-    rows = list(commands)
+    rows = list(command_rows_factory() if command_rows_factory is not None else commands)
     rejections = []
 
     def decorate(plan, anchor, mover, stage, **extra):

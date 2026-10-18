@@ -145,6 +145,6 @@ def test_ordinary_non_move_retains_other_reviewers_but_skips_both_forecast_expan
             patch.object(strategy, "_expanded_command_rows", wraps=strategy._expanded_command_rows) as expand:
         actual = strategy.choose_one_life_turn(raw, snapshot=snapshot, action_steps=[])
     assert actual == baseline
-    # Rendezvous and origin-exposure retain their separate original expansions.
-    # The two forecast reviews and the unrelated formal review add none.
-    assert expand.call_count == 2
+    # Only origin-exposure retains its original eager expansion. The rendezvous,
+    # forecast reviews and unrelated formal review add none.
+    assert expand.call_count == 1

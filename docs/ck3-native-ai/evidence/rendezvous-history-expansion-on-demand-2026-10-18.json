@@ -1,0 +1,82 @@
+{
+  "schema": "xar.rendezvous-history-factory.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T11:49:38.542219+00:00",
+  "machine_identity_source": {
+    "command": "tools/ck3_live_run_id.py machine",
+    "tool_chunk": "410a1f",
+    "utc": "2026-10-18T10:56:09Z"
+  },
+  "source_baseline_commit": "a5cb4d258a34b0c3df7c1cbc7fd446b8240b8e4c",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031675,
+      "sha256": "ce8a6d7cb13fa723421c73ecb47bbc9d228732fcf588d2a8ba3018a837442dcf"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_safe_rendezvous_v1.py",
+      "bytes": 17001,
+      "sha256": "6df6bc79cfcc902766e27f4fffa367d12fb241245c7569de4d75764a19c32281"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_rendezvous_history_factory_v1.py",
+      "bytes": 3355,
+      "sha256": "12de0eabef8a477ab9fb6a95f076ac247ae0e7c605b23f43955cbc0d15e2d2ec"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_forecast_history_factory_v1.py",
+      "bytes": 7396,
+      "sha256": "470052118898ae3dae1da927900075403c9b9e84534791f9a14fdade61bbdb56"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 53068,
+      "sha256": "c7e986a53b89404427125bd434083f35a124031e0398a31973f25f8476a1fb38"
+    },
+    {
+      "path": "docs/ck3-native-ai/rendezvous-history-expansion-on-demand-2026-10-18.md",
+      "bytes": 1455,
+      "sha256": "bf758d9a05bae5b60a3054b2db533ecfea71b3874b69f48d9e21f241ee8b9469"
+    }
+  ],
+  "structural_credit": {
+    "inapplicable_factory_calls": 0,
+    "applicable_factory_calls": 1,
+    "ordinary_nonmove_other_expansions": 1
+  },
+  "tests": [
+    {
+      "stdout": "1 failed, 36 passed, 14 subtests passed in 11.62s",
+      "tool_chunk": "547c52",
+      "failure": "New test imported MERGE_ARMIES_CAPABILITY from strategy; corrected to war_contract. Production source unchanged."
+    },
+    {
+      "stdout": "14 passed in 2.56s",
+      "exit_code": 0,
+      "tool_chunk": "961cd1",
+      "scope": "All new tests after fixture import correction"
+    }
+  ],
+  "priority_readback": "BELOW_NORMAL(0x4000)",
+  "synthetic_only": true,
+  "preserved": [
+    "complete separate history",
+    "direct list API",
+    "route preview",
+    "all friendly H1",
+    "stale query checks",
+    "move intent and backoff",
+    "Native guards",
+    "query frequency"
+  ],
+  "performance_credit": "Structural only; actual wall and CPU benefit unknown.",
+  "runtime_operations": 0,
+  "forbidden_input_reads_or_stats": {
+    "Driver": 0,
+    "SAVE": 0,
+    "media": 0,
+    "indexes": 0
+  },
+  "frozen_sources_modified": false
+}

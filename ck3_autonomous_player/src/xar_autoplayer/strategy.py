@@ -7920,8 +7920,9 @@ def choose_one_life_turn(
     from .war_safe_rendezvous_v1 import review_safe_war_rendezvous_v1
 
     plan = review_safe_war_rendezvous_v1(
-        plan, commands=_expanded_command_rows(commands), snapshot=snapshot,
+        plan, commands=commands, snapshot=snapshot,
         action_steps=set(steps), bridge_capabilities=set(capabilities),
+        command_rows_factory=lambda: _expanded_command_rows(commands),
     )
     ordinary_siege_baseline = plan
     plan = _primary_defender_siege_forecast_ingress(
