@@ -32,3 +32,11 @@ Root 独立复核（同一机器，结果复核时钟 `2026-10-18T17:19:40Z`）�
 最小候选是在单次choose内惰性物化一次，让核心的可选工厂及现有审查工厂消费该结果；直接调用核心仍保原默认行为，不跨轮缓存，不改变早退、调用顺序、原帧与Native守卫。可把k次O(N)展开降至一次。**尚未资格的阻点**是独立可变列表合同：AST只见核心对rows的初始赋值，尚未证明所有下游都不修改list、外层row或index；不能直接共享，更不能假称已有只读资格。
 
 必要资格应先有限追踪这些变更，再用真实核心到适用预测的生产路径比较完整plan、selected_step及拒绝，并计展开2→1；无关／terminal早退保持原0或1，混合AUTO-run／restore／错误行次序不变。同帧两轮间追加history必须重新展开；陈旧帧、参与者或风险变化仍选原查询／拒绝。另在首消费者主动尝试list／row修改，证明拒绝或隔离不会污染后续消费者。若隔离需要改写整条消费链则停止此候选。本补注没有实现、测试、现场操作或性能收益测量，也没有重复assault投影优化。
+
+2026-10-18T19:38:24Z 隔离资格补注（`machine_id: xenoamess-full-tower-eb9d2c1186`；控制源码补核19:39:39Z）：新[有限所有权检查](../../ck3_autonomous_player/tests/unit/test_command_row_cache_isolation_audit.py)首轮6 PASS，单进程BELOW_NORMAL、禁字节码，测试体0.004s／进程2.73s（`fe9f87`）。这是写入探针与对象身份检查，不是性能基准；使用可拒绝调用方dict/list写入、但允许deepcopy成私有可变副本的容器。完整源码pins、各域判定与边界在[小证据](evidence/p72-command-row-isolation-audit-2026-10-19.json)，没有Git查询、实现修改或现场操作。
+
+检查确认：两次原展开的list及外层row各自独立，nested result原本就共享。battle-control读取只读history后产生私有规范化frame，两次规范化结果互不污染；同次current与records则刻意共享一个规范化record。adapter在162–302的入口先deepcopy原frame，clear用replace创建新数值状态；selected-owner撤出在原正向资格夹具中复制backing映射并构造新side／condition；normal finalizer的daily-row投影也不写调用方condition／manager／backing。这四域的输入读取通过，但不代表其输出深不可变：clear新condition仍与旧私有condition共享source_snapshot／source_entry映射，frozen dataclass不足以允许跨消费者缓存模型输出。可复用原始只读观察的判断不能扩张为取消adapter的复制屏障；可选分支、所有事件registry及其余post-review仍未全部资格。
+
+另核真实控制边界：NativeDriver的retreat preview在13272清旧token、13406写新token；order在13521先清token再做新鲜观察／提交。`finalize_projected_one_life_settlement:23501–23527`调用终端并记录成功或失败。这些会改变状态的控制不在纯规划行缓存内，不能跳过。battle-control在9345–9369过滤history后递归choose；Council在14872–14883改变capability集合后递归，同帧并不等于相同输入。
+
+结论是**不启用全规划共享cache，也不缓存规范化或模型返回值**。本轮仅排除所查四域主动修改输入的疑点，未抹去外层容器的独立合同。最小后继实现边界仍只在strategy的单次choose创建惰性展开工厂、核心保留直接调用默认路径；每个递归子调用必须建立自己的新作用域。剩余资格应只追踪未审的事件registry／post-review外层list、row、index写入，再比较完整plan、拒绝及混合AUTO／restore和变帧路径；没有这项证明就保留现实现。现有原生读取、normalizer、adapter隔离和提交后验均不应因该候选减少。

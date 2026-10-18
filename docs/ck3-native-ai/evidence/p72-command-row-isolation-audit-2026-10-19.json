@@ -1,0 +1,152 @@
+{
+  "schema": "xar.autoplayer.command-row-isolation-audit/v1",
+  "status": "SOURCE_AND_BOUNDED_ISOLATION_CHECKS_ONLY_NO_CACHE_ADOPTION",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_observed_at_utc": "2026-10-18T19:38:24.560548+00:00",
+  "control_source_observed_at_utc": "2026-10-18T19:39:39.425734+00:00",
+  "prior_research_head": "ae1a97e742c982ea381102e223fabe57b2ca6834",
+  "current_head_requeried": false,
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031722,
+      "sha256": "38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/battle_control_contract.py",
+      "bytes": 91388,
+      "sha256": "2a5509214b8c0187bb0799a4fc10728d7ea7b7954a525af977d768de0528c3de"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/battle_current_adapter.py",
+      "bytes": 13410,
+      "sha256": "7860986a1e435b6e992b840e50072ae8106ed7f05c1787de99a5c57c80751155"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/combat_core.py",
+      "bytes": 47581,
+      "sha256": "15a9efce451e1830def6a7d93c87d0d00b7bb4e852fd75895780d289108a11b6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/battle_current_phase_transition.py",
+      "bytes": 16542,
+      "sha256": "bf3f237171626989d86bcb02a0d6bafd87cf82100f41a37bef8d9ee212e03547"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/battle_selected_owner_subset_retreat_12003.py",
+      "bytes": 25955,
+      "sha256": "8a02d091bc489e5336754d8cbfc0e748d43b6844791d31671ef1d66fc446e16b"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/battle_current_normal_finalizer.py",
+      "bytes": 25984,
+      "sha256": "e60aa1721abe81bf68be54a4d89059faddadddeebde15efcdbc2a922354791b9"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_command_row_cache_isolation_audit.py",
+      "bytes": 9680,
+      "sha256": "8c9f48ebd6327690fb80cdc74b524dc6d3a6e05c9520482ba0fee91430e22d72"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1596131,
+      "sha256": "4bf357b97b7339a1979a26ee23fdb28945cdd7e890f6b4e9695797ca0bc8a28e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 863707,
+      "sha256": "e9a6f46b2a9542c4f11f291da7a3f9880f912cec98a731fafc2fb79998a6da87"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/simulation/battle_current_retreat_policy.py",
+      "bytes": 9468,
+      "sha256": "76fbc9a96754044395cf3904e8ec7e97ba4e5c86c68f65851183973f4ac5ad53"
+    }
+  ],
+  "test_result": {
+    "tool_chunk": "fe9f87",
+    "tests_run": 6,
+    "passed": 6,
+    "unittest_elapsed_seconds": 0.004,
+    "whole_process_wall_seconds": 2.7287958,
+    "priority": "BELOW_NORMAL_0x4000",
+    "bytecode_disabled": true,
+    "scope": "one new in-memory unit module; no endpoint or daemon",
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 -c <in-memory hex-encoded runner: set own BELOW_NORMAL, add src/tests/unit to sys.path, unittest.loadTestsFromName('test_command_row_cache_isolation_audit')>"
+  },
+  "findings": [
+    {
+      "scope": "expanded rows",
+      "source": "strategy.py:453-477",
+      "fact": "Two current expansions produce distinct lists and outer row dicts; nested result payload identity is already shared.",
+      "verdict": "Do not silently replace the independent outer-container contract."
+    },
+    {
+      "scope": "battle-control",
+      "source": "strategy.py:3874-4035",
+      "fact": "Read-only input rows accepted. Normalized records/frames contain no mutable object from the base input fixture. Same-call current and records intentionally share a normalized record.",
+      "verdict": "Audited input reads do not mutate history; returned normalized frames remain mutable and must not be memoized across consumers."
+    },
+    {
+      "scope": "clear",
+      "source": "battle_current_adapter.py:179; combat_core.py:793-809; battle_current_phase_transition.py:138-185",
+      "fact": "Adapter deep-copies its source frame; clear uses dataclasses.replace. New conditions still share source_snapshot/source_entry mappings with the prior private condition.",
+      "verdict": "Read-only input check passed; frozen dataclass is not a deeply immutable cache value."
+    },
+    {
+      "scope": "selected-owner withdrawal",
+      "source": "battle_selected_owner_subset_retreat_12003.py:222-421",
+      "fact": "Positive qualified owner callback with recursive read-only carried/events/backing inputs preserved the prior source; new side/condition built with replace and private backing map.",
+      "verdict": "Qualified fixture input reads passed; not a complete native withdrawal or all optional numerical branch matrix."
+    },
+    {
+      "scope": "normal finalizer",
+      "source": "battle_current_normal_finalizer.py:394-503",
+      "fact": "Daily-row projection accepted read-only condition, manager and carried backing; no actual effects or days credited.",
+      "verdict": "Input preservation passed; returned mutable diagnostic/accounting DTO is outside the proposed row cache."
+    },
+    {
+      "scope": "recursive planning",
+      "source": "strategy.py:9345-9369;14872-14883",
+      "fact": "Battle conversion passes reduced history to a new choose call; council continuation changes capability scope. Same snapshot does not identify the same planning input.",
+      "verdict": "Cache must be owned by one choose invocation; do not inherit it into child recursion."
+    },
+    {
+      "scope": "native clear/withdraw/finalize controls",
+      "source": "native_driver.py:13258-13447;13500-13743;23501-23527",
+      "fact": "Preview clears/replaces the retreat token; order clears it before fresh reads/submission; settlement finalizer calls native terminal and records success or failure.",
+      "verdict": "These state-changing controls are outside pure planning and cannot be cached or skipped."
+    }
+  ],
+  "minimum_patch_boundary": {
+    "allowed_candidate": "Only a fresh, lazy memo closure inside one choose invocation, holding expanded raw rows only; preserve all native reads, normalizers, model adapters and submission guards.",
+    "not_yet_qualified": "The complete core plus all post-review and event-registry consumers have not been transitively proved to preserve outer row/list/index containers.",
+    "required_remaining_checks": [
+      "Audit event-registry and remaining post-review consumers before replacing independent outer views.",
+      "Keep new cache scope for battle-reduced-history and council capability recursion.",
+      "Compare complete plan/selected_step/rejections with independent expansions using mixed AUTO/restore rows and changed frames.",
+      "Do not share normalized records or model outputs merely because dataclasses are frozen."
+    ],
+    "production_patch_written": false
+  },
+  "limits": {
+    "optional_branches_complete": false,
+    "game_native_mcp_desktop_calls": 0,
+    "driver_save_media_reads": 0,
+    "git_calls": 0,
+    "wall_time_or_cpu_speedup_claimed": false,
+    "implementation_deployed": false
+  },
+  "Root_final_verification": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-18T19:43:01.158604+00:00",
+    "source_review_chunk_id": "59467f",
+    "actual_completion_chunk_id": "bf1e85",
+    "actual_outer_exit_code": 0,
+    "actual_child_exit_code": 0,
+    "tests": 6,
+    "test_body_seconds": "3.04",
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_command_row_cache_isolation_audit.py",
+    "Game_Native_media_calls": 0
+  }
+}
