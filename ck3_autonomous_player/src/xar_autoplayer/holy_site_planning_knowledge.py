@@ -8,6 +8,7 @@ historical cases; it never evaluates current scopes or grants native permission.
 from __future__ import annotations
 
 from copy import deepcopy
+from .holy_site_v5_clarifications import holy_site_v5_clarifications
 from .holy_site_v4_clarifications import holy_site_v4_clarifications
 from typing import Literal
 
@@ -582,6 +583,7 @@ def query_holy_site_planning_knowledge_v1(
         result["reason"] = "Revalidate the source rules for the requested build; 1.20.0.4 rules are not a new-build permission."
         return result
     knowledge = deepcopy(_KNOWLEDGE[action])
+    knowledge["v5_clarifications"] = holy_site_v5_clarifications(action)
     knowledge["v4_clarifications"] = holy_site_v4_clarifications(action)
     fields = knowledge.pop("base_observations", _COMMON_OBSERVATIONS) + knowledge.pop("additional_observations")
     knowledge["required_observations"] = [{"field": field, "status": "unknown"} for field in fields]
