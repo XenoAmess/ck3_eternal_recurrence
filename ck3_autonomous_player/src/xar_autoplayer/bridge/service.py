@@ -2259,6 +2259,11 @@ class GameplayBridgeService:
                 )
             )
             if window_priority is None and not opening_focus_first:
+                from .ordinary_retreat_service_v1 import plan_ordinary_retreat_v1
+                plan = plan_ordinary_retreat_v1(
+                    self.driver, plan, snapshot=planning_snapshot, history=history,
+                    bridge_capabilities=set(bridge_capabilities),
+                )
                 from ..war_mercenary_consumer_v1 import plan_war_mercenary_turn_v1
 
                 plan = plan_war_mercenary_turn_v1(
@@ -2303,6 +2308,9 @@ class GameplayBridgeService:
                 plan = {**plan, "activity_feast_lifecycle_observation": feast_lifecycle_observation}
             routable_steps = set(available_steps)
             selected_step = plan.get("selected_step")
+            from .ordinary_retreat_service_v1 import STEPS as ordinary_retreat_steps
+            if selected_step in ordinary_retreat_steps:
+                routable_steps.add(selected_step)
             if (selected_step in {"query-player-mercenary-context-v1", "hire-mercenary-v1"}
                     and "game.command." + selected_step in bridge_capabilities):
                 routable_steps.add(selected_step)
@@ -5041,6 +5049,10 @@ class GameplayBridgeService:
                     "revision": planned.get("revision"),
                     "interception": copy.deepcopy(interception),
                 }
+        from .ordinary_retreat_service_v1 import STEPS as ordinary_retreat_steps
+        if selected_step in ordinary_retreat_steps:
+            from .ordinary_retreat_service_v1 import execute_ordinary_retreat_v1
+            return execute_ordinary_retreat_v1(self, planned)
         if selected_step == "ordinary-sway-opportunity-v1":
             from .ordinary_sway_service_v1 import execute_ordinary_sway_v1
             return execute_ordinary_sway_v1(self, planned, before_submit=before_submit)

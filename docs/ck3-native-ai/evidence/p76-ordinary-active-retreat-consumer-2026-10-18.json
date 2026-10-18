@@ -1,0 +1,144 @@
+{
+  "schema": "p76-ordinary-retreat-offline-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_source": "tools/ck3_live_run_id.py machine actual readback",
+  "began_utc": "2026-10-18T00:58:12.010476+00:00",
+  "ended_utc": "2026-10-18T00:58:26.887246+00:00",
+  "elapsed_seconds": 14.875761899864301,
+  "exit_code": 0,
+  "command": [
+    "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "ck3_autonomous_player/tests/unit/test_ordinary_active_retreat_v1.py",
+    "ck3_autonomous_player/tests/unit/test_active_combat_retreat_v1_bridge.py",
+    "ck3_autonomous_player/tests/unit/test_battle_current_retreat_policy.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p76-ordinary-retreat-consumer01\\qualification-tmp"
+  ],
+  "output": "...............................................                          [100%]\n47 passed in 12.11s\n\n",
+  "pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_active_retreat_v1.py",
+      "bytes": 24377,
+      "sha256": "394ca42348fba6de418f6ccf4fe8593be195ea21b4f5365ab19f35fe99037a21"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_retreat_service_v1.py",
+      "bytes": 12466,
+      "sha256": "8a25cb902df8ffb263220071aecbc0d3f21c6a7536a310217f5828764e42e772"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 860861,
+      "sha256": "c8cc2228c73efb3875003242cab05edaa4b2e9b1a9df23c37dc7c644e7f869b2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1588658,
+      "sha256": "8499794e9ddf67fda16ca6682e366159d035f2e5acf5d3042b2872674a035d98"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_ordinary_active_retreat_v1.py",
+      "bytes": 25395,
+      "sha256": "b8ef9235d28bad6ea3cde6e5692ff58de722c597d5e5c6f6d1b4be4f4405d85d"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_active_combat_retreat_v1_bridge.py",
+      "bytes": 28198,
+      "sha256": "6bc83633125c25cda179f386e45a976d2f5ceeb6948588cebdefd3cdfdcfe42e"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_battle_current_retreat_policy.py",
+      "bytes": 5952,
+      "sha256": "36ca975108d8496319ee7af361a40c71eadcfa3184955c086fe42ca0f596d9b9"
+    }
+  ],
+  "runtime_install": false,
+  "live_Game_or_Native_calls": 0,
+  "SDK48_armed_changes": 0,
+  "qualification_scope": "public production Service normal plan and auto dispatch plus real NativeDriver with synthetic .4 endpoint; strict post/terminal readers tested separately; old fixture constructors do not confer old or new live credit",
+  "g2": "6/8 unchanged",
+  "capacity_global_added_bytes": 0,
+  "capacity_max_external_bytes": 524288,
+  "capacity_expiry_utc": "2026-10-18T11:49:00.265518Z",
+  "source_first_receipt": {
+    "schema": "p76-source-first-reuse/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_utc": "2026-10-18T00:45:39.628735+00:00",
+    "source_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p70-native-retreat-admission01\\ordinary_retreat_candidate.py",
+    "source_sha256": "9bdfe453492ed6813e546c25363df3a0c2164dad5a8e97a3cd47dc3a2d1acf85",
+    "new_path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_active_retreat_v1.py",
+    "native_tree_reused": [
+      "p70-native-retreat-admission01/AUDIT.md",
+      "docs/ck3-native-ai/p60-native-constructor-nohire-and-retreat-2026-10-18.md"
+    ],
+    "exact_build": "1.20.0.4",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "vanilla_ai_active_retreat_intent_and_ranking": "unknown; not inferred from permission or old .3 trees",
+    "our_candidate_source": "other current stationary same-owner CUnits; complete published hostile current routes; typed Native route preview",
+    "capacity_max_bytes": 524288,
+    "global_added_bytes": 0,
+    "capacity_expiry_utc": "2026-10-18T11:49:00.265518Z",
+    "runtime_calls": 0,
+    "g2": "6/8 unchanged"
+  },
+  "delivery_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_active_retreat_v1.py",
+      "bytes": 24377,
+      "sha256": "394ca42348fba6de418f6ccf4fe8593be195ea21b4f5365ab19f35fe99037a21"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_retreat_service_v1.py",
+      "bytes": 12466,
+      "sha256": "8a25cb902df8ffb263220071aecbc0d3f21c6a7536a310217f5828764e42e772"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 860861,
+      "sha256": "c8cc2228c73efb3875003242cab05edaa4b2e9b1a9df23c37dc7c644e7f869b2"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_ordinary_active_retreat_v1.py",
+      "bytes": 25395,
+      "sha256": "b8ef9235d28bad6ea3cde6e5692ff58de722c597d5e5c6f6d1b4be4f4405d85d"
+    },
+    {
+      "path": "docs/ck3-native-ai/p76-ordinary-active-retreat-consumer-2026-10-18.md",
+      "bytes": 7499,
+      "sha256": "75b8034f79e77006d933a09edc4c55789d702cdb43a807f1bd16ddc61ca6ea13"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 50747,
+      "sha256": "a410eeb48d8c9d0704ab15de1795f55988d105cef9fc122982d9e6cab5c160ce"
+    }
+  ],
+  "new_tests": 34,
+  "related_existing_tests": 13,
+  "production_paths": [
+    "Service normal plan staging before optional hire",
+    "Service before_submit interception and ordinary executor",
+    "Service.auto_turn through real NativeDriver with synthetic exact .4 identity / existing preview and move primitives",
+    "strict independent Core / original Combat transition and removed original terminal consumer"
+  ],
+  "policy_budget": "5% of selected-owner current Entry fighting troops for current losing primary territorial defence with opposing CUnit association; conditional one-frozen-main-tick loss, not actual future or win probability",
+  "remaining": [
+    "sole-army safe destination producer",
+    "full future hostile/reinforcement and pursuit cost knowledge",
+    "removed owner-subset lifecycle closure",
+    "cross-connection post attribution",
+    "same CombatID reconsideration after known rejection",
+    "actual owner route adoption / first natural .4 retreat and SAVE outcome"
+  ],
+  "no_new_native_build_or_approval_gate": true,
+  "game_actions": 0,
+  "runtime_deployments": 0
+}
