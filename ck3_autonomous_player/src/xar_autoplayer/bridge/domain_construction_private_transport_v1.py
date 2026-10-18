@@ -643,6 +643,16 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
                 and source["native_revision"] > applied_scope["native_revision"]
                 and source["date_raw"] > applied_scope["date_raw"]):
             raise BridgeUnavailableError("construction receipt not yet consumed on a later game day")
+    if starting.get("active_wars") != []:
+        from ..wartime_construction_cash_v1 import observe_driver_wartime_construction_cash_v1
+
+        kind = ("upgrade_building" if candidate.get("slot_was_empty") is False
+                or candidate.get("old_building_key") else "new_building")
+        admission = observe_driver_wartime_construction_cash_v1(driver, starting,
+            kind=kind, construction_gold_raw=candidate.get("stock_gold_cost_raw"),
+            procurement_decision={"selected_candidate": query.get("wartime_selected_procurement_candidate_v1")})
+        if admission["new_spend_allowed"] is not True:
+            raise BridgeUnavailableError("wartime optional construction deferred before intent/send: " + admission["reason"])
     request_id = f"construction-submit-{uuid.uuid4().hex}"
     history = starting.get("native_command_history")
     _, pre_income = same_frame_construction_income(

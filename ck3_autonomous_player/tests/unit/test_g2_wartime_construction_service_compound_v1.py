@@ -38,11 +38,27 @@ class WartimeConstructionDriver(NormalConstructionFixtureDriver):
 
     def set_frame(self, revision):
         self.snapshot = self.current_frame(revision)
+        # This is now an explicitly ample military treasury. The user's war
+        # rule also requires current maximum maintenance and emergency quotes.
+        self.snapshot["played_character_gold"]["raw"] = 160_000_000 if revision == 3 else 145_000_000
+        self.gold_override = self.snapshot["played_character_gold"]["raw"]
         self.snapshot["active_wars"] = [{"war_id": 100663329}]
         self.snapshot["player_armies"] = [{"army_id": 218104048}]
         current_root = root(revision)[0]["result"]
         current_root["campaign_root_context"]["date_raw"] = self.snapshot["date_raw"]
+        current_root["campaign_root_context"]["readiness"] = {"ready": True}
+        current_root["campaign_root_context"]["player_max_monthly_gold_maintenance_v1"] = {
+            "status": "unavailable" if self.missing_raised else "available",
+            "value": None if self.missing_raised else {"raw": self.all_raised_expense, "scale": 100000}}
         self.recorded = [("query-campaign-root-context-v1", current_root)]
+        from test_war_reinforcement_tradeoff_v1 import company, context
+        from xar_autoplayer.m5_observed_opportunity_selector import observed_frame
+        self.recorded.append(("query-player-mercenary-context-v1", {
+            "accepted": True, "status": "completed", "read_only": True,
+            "query_sequence": revision, "snapshot_revision": self.snapshot["native_revision"],
+            "date_raw": self.snapshot["date_raw"],
+            "mercenary_query_source_frame_v1": observed_frame(self.snapshot),
+            "player_mercenary_context": context(self.snapshot, [company(7, 5000000, 1400, 9999)], revision)}))
 
     def take_internal_semantic_snapshot(self):
         return self.take_snapshot()
@@ -54,7 +70,11 @@ class WartimeConstructionDriver(NormalConstructionFixtureDriver):
     def wait_for_command_result(self, request_id, timeout):
         request = self.requests[-1]
         if request["step"] != CURRENT_STEP:
-            return super().wait_for_command_result(request_id, timeout)
+            reply = super().wait_for_command_result(request_id, timeout)
+            probe = reply.get("result", {}).get("private_probe", {})
+            if "private_action" in probe:
+                probe["private_action"]["gold_before_raw"] = self.snapshot["played_character_gold"]["raw"]
+            return reply
         cash = cash_fixture(
             gold=self.snapshot["played_character_gold"]["raw"],
             gross=450_000, expenses=10_400_000,
@@ -112,13 +132,14 @@ def test_registered_wartime_quote_submit_material_cold_and_observed_cash_floor(t
                 selected = await client.call_tool("ck3_plan_turn", {})
                 assert not selected.is_error, selected.content
                 plan = selected.structured_content["plan"]
-                assert plan["selected_step"] == SUBMIT_STEP
+                assert plan["selected_step"] == SUBMIT_STEP, plan
                 assert plan["phase"] == "construction_wartime_typed_submit"
                 budget = plan["construction_monthly_budget"]
                 assert budget["horizon_months"] == 1
                 assert budget["scenarios"]["current"]["net_monthly_gold_raw"] == -9_950_000
                 assert budget["scenarios"]["all_raised"]["net_monthly_gold_raw"] == -12_950_000
-                assert budget["scenarios"]["all_raised"]["minimum_projected_gold_raw"] == 22_050_000
+                assert budget["scenarios"]["all_raised"]["minimum_projected_gold_raw"] == 132_050_000
+                assert plan["wartime_construction_cash_v1"]["required_remaining_gold_raw"] == 125_000_000
                 assert budget["future_war_cost_upper_ready"] is False
                 assert all(row["scenario_floor_ready"] is True for row in budget["scenarios"].values())
                 assert sends(driver) == 0
@@ -142,7 +163,7 @@ def test_registered_wartime_quote_submit_material_cold_and_observed_cash_floor(t
                 receipt = material.structured_content["result"]
                 assert receipt["status"] == "applied"
                 assert receipt["postcondition_verified"] is True
-                assert receipt["post_player_gold_raw"] == 35_000_000
+                assert receipt["post_player_gold_raw"] == 145_000_000
                 assert receipt["candidate"]["province_id"] == 2635
                 assert read_construction_ledger(driver.state_dir)["pending"] is None
                 following = await client.call_tool("ck3_plan_turn", {})
@@ -178,9 +199,9 @@ def test_registered_wartime_quote_submit_material_cold_and_observed_cash_floor(t
                     assert not result.is_error, result.content
                     plan = result.structured_content["plan"]
                     assert plan["selected_step"] == "life-advance"
-                    assert plan["phase"] == "construction_cash_budget_deferred"
-                    assert plan["construction_monthly_budget"]["scenarios"]["current"]["scenario_floor_ready"] is True
-                    assert plan["construction_monthly_budget"]["scenarios"]["all_raised"]["scenario_floor_ready"] is not True
+                    assert plan["phase"] == "construction_wartime_cash_deferred"
+                    assert plan["wartime_construction_cash_v1"]["new_spend_allowed"] is False
+                    assert not deferred.requests
                 assert sends(deferred) == 0
                 records.append({"scene": scene, "plan": plan, "submit_count": 0})
 

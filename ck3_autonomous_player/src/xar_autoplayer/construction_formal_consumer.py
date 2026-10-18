@@ -530,6 +530,21 @@ def plan_construction_private(
                 "deferred_domain": "new_economic_construction",
                 "original_selected_step": original_step,
             }}}
+    # Every active war protects optional capital outlays, including a winning
+    # or quiet war. Missing inputs preserve the selected war/clock action.
+    from .wartime_construction_cash_v1 import observe_driver_wartime_construction_cash_v1
+
+    if wars != [] or plan.get("construction_expenditure_kind") == "new_holding":
+        admission = observe_driver_wartime_construction_cash_v1(driver, snapshot,
+            kind=plan.get("construction_expenditure_kind", "new_building"),
+            construction_gold_raw=0, history=history,
+            procurement_decision=plan.get("war_mercenary_decision_v1"))
+        plan = {**plan, "wartime_construction_cash_v1": admission}
+        if admission["new_spend_allowed"] is not True:
+            return {**planned, "plan": {**plan,
+                "phase": "construction_wartime_cash_deferred",
+                "construction_spending_deferred_v1": {"reason": admission["reason"],
+                    "deferred_domain": "new_building_upgrade_or_holding", "original_selected_step": original_step}}}
     scope = same_frame_construction_scope_v1(snapshot, history)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:
@@ -607,6 +622,26 @@ def plan_construction_private(
             "construction_private_query": query,
             "reason": "private construction source unavailable; preserve RED"}}
     wartime = isinstance(wars, list) and bool(wars)
+    if wartime:
+        candidate = query.get("candidate", {})
+        kind = ("upgrade_building" if candidate.get("slot_was_empty") is False
+                or candidate.get("old_building_key") else "new_building")
+        admission = observe_driver_wartime_construction_cash_v1(driver, snapshot,
+            kind=kind, construction_gold_raw=candidate.get("stock_gold_cost_raw"), history=history,
+            procurement_decision=plan.get("war_mercenary_decision_v1"))
+        query = {**query, "wartime_construction_cash_v1": admission}
+        assessed = plan.get("war_mercenary_decision_v1")
+        assessed = assessed.get("selected_candidate") if isinstance(assessed, Mapping) else None
+        if (admission.get("emergency_quote_reserve_policy") == "current_frame_assessed_suitable_procurement_quote"
+                and isinstance(assessed, Mapping)):
+            query["wartime_selected_procurement_candidate_v1"] = {key: assessed.get(key) for key in
+                ("company_id", "gold_cost_raw", "purpose_war_ids", "finance", "rejection_reasons")}
+        plan = {**plan, "wartime_construction_cash_v1": admission}
+        if admission["new_spend_allowed"] is not True:
+            return {**planned, "plan": {**plan, "construction_private_query": query,
+                "phase": "construction_wartime_cash_deferred",
+                "construction_spending_deferred_v1": {"reason": admission["reason"],
+                    "deferred_domain": "new_building_upgrade_or_holding", "original_selected_step": original_step}}}
     if observed is not None or wartime:
         try:
             query, cash_reason = project_construction_quote_current_cash(

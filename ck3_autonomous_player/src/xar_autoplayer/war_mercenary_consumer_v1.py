@@ -102,8 +102,14 @@ def _plan_war_mercenary_turn_v1(
     if not isinstance(directory, Path):
         return {**plan, "war_mercenary_status": "durable_state_unavailable"}
     from .construction_formal_consumer import read_construction_ledger
+    from .wartime_construction_cash_v1 import observe_war_financing_capability_gap_v1
 
-    if read_construction_ledger(directory).get("pending") is not None:
+    construction = read_construction_ledger(directory)
+    financing = observe_war_financing_capability_gap_v1(snapshot, priority=priority,
+        construction_ledger=construction, root=_same_frame_campaign_root_context(history, dict(snapshot)))
+    if financing is not None:
+        plan = {**plan, "war_financing_capability_gap_v1": financing}
+    if construction.get("pending") is not None:
         return {**plan, "war_mercenary_status": "existing_construction_pending_receipt_keeps_priority"}
     ledger = _ledger(directory)
     pending = ledger["pending"]
@@ -245,12 +251,16 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
         text += "先查询当帧雇佣报价与集结地点。"
     elif plan.get("selected_step") == ROOT_STEP:
         text += "先核当帧收入与最大军费；总收入不作净收入。"
+    elif status == "existing_construction_pending_receipt_keeps_priority":
+        text += "先核已有工程提交的独立回执，保留战争行动。"
     elif status and ("pending" in status or "employment" in status):
         text += "先核上一份雇佣回执，不重复购买。"
     elif isinstance(decision, Mapping):
         text += "当帧候选未同时满足原生征募、完整报价、现金预留及当前用途，继续原行动。"
     else:
         text += "具体战争行动优先；雇佣报价与抵达未核实。"
+    if isinstance(plan.get("war_financing_capability_gap_v1"), Mapping):
+        text += "已评估取消工程与合法借款筹军费；当前缺少可核退款或借款执行通道，未计入未到账资金。"
     text += "头数不代表胜率。"
     return {**plan,
             "war_decision_presentation_v1": {

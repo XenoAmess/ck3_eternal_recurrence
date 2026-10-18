@@ -1,0 +1,335 @@
+{
+  "schema": "xar.p83-wartime-construction-financing-source-candidate.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T03:10:11.480470+00:00",
+  "base_head": "a5855a9a41f9f23b96baa147026ca4c1e4c46b27",
+  "candidate_only": true,
+  "commit_push": "not performed; pending Root review",
+  "current_R9_changed": false,
+  "SDK05_9032_Native26_frozen_inputs_changed": false,
+  "live_operations": 0,
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\AGENTS.md",
+      "bytes": 89720,
+      "sha256": "b2624e7279a9f83baa6884e1080b16c93588eecf02b906f3f121a92d2d11d78b",
+      "relative_path": "AGENTS.md"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 51941,
+      "sha256": "6c149eadd8bec3784c1b36bf3da84b6c06505ad0f1d10fbc78060d0427467193",
+      "relative_path": ".github/workflows/static-ci.yml"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\wartime_construction_cash_v1.py",
+      "bytes": 14991,
+      "sha256": "8b134657814f1ed98430d25fb8bf96109887565275c217ed5aee418e0b3d6096",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/wartime_construction_cash_v1.py"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\construction_formal_consumer.py",
+      "bytes": 38521,
+      "sha256": "ed408b47b0e9de3851a79aa06b4abaa631f8d663c46ee02e51b777905e75af5c",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 20462,
+      "sha256": "d03b237a681da9a26733855db7f8d54861f44a8a36f75f5e557751ec22c642e1",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\domain_construction_private_transport_v1.py",
+      "bytes": 66026,
+      "sha256": "c36fd21d16b897304c08cd8f0a9b9d26b19178c2fbeb3e1fbcc7a4f0d456dd2e",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/domain_construction_private_transport_v1.py"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_wartime_construction_cash_v1.py",
+      "bytes": 11338,
+      "sha256": "d6ee4d890a785c3b644427abd524db65a79d73a6d6ef220de793887bf3042602",
+      "relative_path": "ck3_autonomous_player/tests/unit/test_wartime_construction_cash_v1.py"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_g2_wartime_construction_service_compound_v1.py",
+      "bytes": 13147,
+      "sha256": "8c834a752d16691302a9fb46ff800ae3e89c52bc72f08e0c11f9133ca1c0a579",
+      "relative_path": "ck3_autonomous_player/tests/unit/test_g2_wartime_construction_service_compound_v1.py"
+    }
+  ],
+  "review_diff": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\PUBLIC-P83-REVIEW.diff",
+    "bytes": 44202,
+    "sha256": "2cae18b2d1f15221b7ecf0906002a8719073601a8da2d1fb2199f083c2825b6d"
+  },
+  "user_rules_persisted_in_AGENTS": [
+    "war capital outlays only with very ample military funds",
+    "consider real legal cancellation/refund in cash shortage or crisis",
+    "consider real legal debt in desperation without spending unreceived principal"
+  ],
+  "cash_policy": {
+    "fixed_buffer_raw": 40000000,
+    "maximum_military_months": 24,
+    "formula": "max(fixed buffer, same-frame maximum upkeep * 24) + existing unpaid commitments + native emergency quote",
+    "quote_order": [
+      "current frame assessed suitable purchase with known deficit",
+      "cheapest complete legal current quote sufficient for focused known headcount deficit",
+      "maximum complete current legal quote when no known adequate company"
+    ],
+    "complete_empty_market": "known empty; conservatively defer optional construction without further waiting",
+    "unknown_market": "missing or stale; defer optional construction",
+    "unreceived_refunds_or_loans_credited_raw": 0,
+    "future_income_credited_raw": 0,
+    "budget_epoch_reset": false,
+    "NativeCanAfford_bypass": false,
+    "new_holding": "same cost category; blocked because current production Native interface absent",
+    "ETA_or_win_forecast": null,
+    "thresholds_are_user_hard_limits": false
+  },
+  "qualification": {
+    "latest_changed_ci_group": {
+      "schema": "xar.p83-source-test.v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_utc": "2026-10-18T03:08:33.930522+00:00",
+      "ended_utc": "2026-10-18T03:08:48.206982+00:00",
+      "command": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\case-6ojafb5p",
+        "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py",
+        "ck3_autonomous_player/tests/unit/test_wartime_construction_cash_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py",
+        "ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py",
+        "ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py",
+        "ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py",
+        "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+        "ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py",
+        "ck3_autonomous_player/tests/unit/test_war_safe_rendezvous_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_forced_retreat_observation_v1.py"
+      ],
+      "exit_code": 0,
+      "source_only": true,
+      "live_operations": 0,
+      "preflight_retained_bytes": 48333,
+      "planned_scratch_bytes": 262144,
+      "planned_log_bytes": 32768,
+      "observed_before_cleanup_bytes": 224798,
+      "observed_scratch_bytes": 176465,
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\TESTS-CIGROUP2.log",
+        "bytes": 184,
+        "sha256": "888757a477964f12ecd0ed8584b311cdbf789bd9b892fccde09e0dafa6ea4cb6"
+      }
+    },
+    "result": "112 passed in 12.90s",
+    "ordinary_Service_after_quote_review": {
+      "schema": "xar.p83-source-test.v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_utc": "2026-10-18T03:04:00.454714+00:00",
+      "ended_utc": "2026-10-18T03:04:08.625529+00:00",
+      "command": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\case-xe86usxn",
+        "ck3_autonomous_player/tests/unit/test_wartime_construction_cash_v1.py",
+        "ck3_autonomous_player/tests/unit/test_g2_wartime_construction_service_compound_v1.py"
+      ],
+      "exit_code": 0,
+      "source_only": true,
+      "live_operations": 0,
+      "preflight_retained_bytes": 30575,
+      "planned_scratch_bytes": 262144,
+      "planned_log_bytes": 32768,
+      "observed_before_cleanup_bytes": 60505,
+      "observed_scratch_bytes": 29930,
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\TESTS-QUOTES.log",
+        "bytes": 101,
+        "sha256": "4bb61bd3550dce980bd599b29800e309b51afdbd93fe5b335e89c625793f8433"
+      }
+    },
+    "ordinary_Service_result": "19 passed in 6.69s",
+    "earlier_regression": {
+      "schema": "xar.p83-source-test.v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_utc": "2026-10-18T03:01:07.517537+00:00",
+      "ended_utc": "2026-10-18T03:01:22.564005+00:00",
+      "command": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\case-q8lvfpfs",
+        "ck3_autonomous_player/tests/unit/test_wartime_construction_cash_v1.py",
+        "ck3_autonomous_player/tests/unit/test_g2_wartime_construction_service_compound_v1.py",
+        "ck3_autonomous_player/tests/unit/test_g2_normal_construction_cli_service_compound_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py"
+      ],
+      "exit_code": 0,
+      "source_only": true,
+      "live_operations": 0,
+      "preflight_retained_bytes": 27442,
+      "planned_scratch_bytes": 262144,
+      "planned_log_bytes": 32768,
+      "observed_before_cleanup_bytes": 239167,
+      "observed_scratch_bytes": 211725,
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\TESTS-FINAL.log",
+        "bytes": 268,
+        "sha256": "e7dbae917af2c2e29b4e5f904fa7184b02fa3d50445aeb2e48f8767430b73b42"
+      }
+    },
+    "earlier_result": "80 passed in 13.35s",
+    "retained_reds": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\TESTS-SERVICE.json",
+        "bytes": 1208,
+        "sha256": "9d6a6155a672f62e9fe740178c7a3bef1688846fd74cc1868cc9c65ba2a51f2a"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\TESTS-SERVICE2.json",
+        "bytes": 1112,
+        "sha256": "bb8b53ccafb2ae3f288dbac28fe71e195402a355336fd9813956822c41dd2ccd"
+      }
+    ],
+    "red_cause": "synthetic root lacked required readiness.ready; fixed fixture only, production guard unchanged",
+    "public_remote_ci_for_candidate": "not yet run for a published commit",
+    "game_inputs": "synthetic Driver replies and existing fixtures; no live application or game instance"
+  },
+  "capability_source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_order_loan_context_private_transport.py",
+      "bytes": 5753,
+      "sha256": "c3bb4b5aa257477c055e0254edcaf426cf2f16fe46452930be2cd89d8c508d82",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_holy_order_loan_context_private_transport.py"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_construction.cpp",
+      "bytes": 26175,
+      "sha256": "851801a8b8f0d0d22c0c59541911587a6443a93c69910cc86c85924004f52260",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_construction.cpp"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_construction_process.cpp",
+      "bytes": 5346,
+      "sha256": "8f24838547d20cd4b8e3bfecde1f4b2eb68ce049577fe9f56ab90356e35f82d0",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_construction_process.cpp"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_construction_submit_binding.cpp",
+      "bytes": 11515,
+      "sha256": "3c8ab85ab166ca225099de84aebb23fa41fffc11379fea36e56960b87ea701d8",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_construction_submit_binding.cpp"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\player_world_building_action_candidate_v1.hpp",
+      "bytes": 2235,
+      "sha256": "e877ca37a9a93c8e95ebf02695ddceea0833932a883c70dc2a0aff9f042c1897",
+      "relative_path": "ck3_autonomous_player/native_bridge/src/player_world_building_action_candidate_v1.hpp"
+    }
+  ],
+  "generic_decision_confirm_restriction": {
+    "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "git_blob_id": "e6155a2a669138591094a7291783043bd1ff9599",
+    "lines": [
+      7535,
+      7546
+    ],
+    "finding": "confirm requires expected_window_kind vivhite_courtier; no generic borrow business route"
+  },
+  "stock_reference_pins": [
+    {
+      "relative": "gui/window_county_view.gui",
+      "absolute_path": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\game\\gui\\window_county_view.gui",
+      "available": true,
+      "bytes": 105393,
+      "sha256": "e4121041153486379d813bc0154718f48446ea5f2143bff4adf06d7e9b8c4e8e"
+    },
+    {
+      "relative": "common/buildings/_buildings.info",
+      "absolute_path": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\game\\common\\buildings\\_buildings.info",
+      "available": true,
+      "bytes": 15266,
+      "sha256": "90c339547c755ef976d6a5f8f99a1b7ad3ded61bc75073fea50cc4215b571780"
+    },
+    {
+      "relative": "common/decisions/00_holy_order_decisions.txt",
+      "absolute_path": "Z:\\ck3_mod_rewrite\\Crusader Kings III\\game\\common\\decisions\\00_holy_order_decisions.txt",
+      "available": true,
+      "bytes": 10681,
+      "sha256": "3485f694017bf90273b35c5523b86ddba1cd70746199c775cfb40590f3440146"
+    }
+  ],
+  "stock_excerpts": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\STOCK-CONTRACT-EXCERPTS.json",
+    "bytes": 9634,
+    "sha256": "a5c9f185f4bd9b9760446ebfb5306825aea9a0667d33cb980c7e67d4b6b59784"
+  },
+  "stock_reference_matches_installed_build": "unverified; no installation/business qualification inferred",
+  "current_R9_old_guard_check": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01\\R9-OLD-WAR-CASH-SOURCE-CHECK.json",
+      "bytes": 10265,
+      "sha256": "74860d78cf221e0b279410122907d86c573577bd02c1d607ecd6054154f8a330"
+    },
+    "current_fields_source": "Root report; no independent live read",
+    "finding": "SDK48 consumer alone lacks losing-war protection. R9 bootstrap installs source-pinned P62 finance wrapper which rejects optional new construction for losing primary defensive title exposure.",
+    "applies_to_reported_minus87_primary_defensive_territorial_war": true,
+    "all_wars_new_P83_gate_claim": false
+  },
+  "proposed_interfaces_not_implemented_or_registered": [
+    "query-player-construction-cancel-terms-v1",
+    "query-player-emergency-loan-terms-v1"
+  ],
+  "future_funding_contract": {
+    "exact_build_final_native_legality_required": true,
+    "complete_refund_or_loan_terms_required": true,
+    "single_pending_claim_unknown_never_replay": true,
+    "independent_wallet_and_project_or_debt_readbacks_required": true,
+    "same_epoch_confirmed_attributable_funding_credit_deduplicated_by_receipt": true,
+    "current_P80_cap_not_automatically_increased": true
+  },
+  "business_credit": {
+    "cancellation": false,
+    "refund": false,
+    "debt": false,
+    "hire": false,
+    "victory": false
+  },
+  "capacity": {
+    "root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p83-wartime-cash01",
+    "limit_bytes": 524288,
+    "scratch_limit_bytes": 262144,
+    "maximum_observed_test_scratch_bytes": 211725,
+    "maximum_observed_before_test_cleanup_bytes": 239167,
+    "active_scratch_count": 0,
+    "old_P71_unchanged": true,
+    "global_additional_bytes": 0,
+    "expiry_not_extended": "2026-10-18T11:49:00.265518Z",
+    "review_at_utc": "2026-10-19T23:30:00Z"
+  }
+}
