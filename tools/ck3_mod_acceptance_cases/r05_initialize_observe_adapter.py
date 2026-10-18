@@ -1,5 +1,6 @@
 """Controlled R05 initialization and bounded natural observation, public host."""
 from pathlib import Path
+import hashlib
 import json
 import time
 
@@ -33,6 +34,94 @@ def initializer(context):
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     return module
 
+def post_initializer_camera_settings(value):
+    """An explicit bounded coordination option; absent or disabled never waits."""
+    from xar_autoplayer.bridge.r05_low_supply_fixture import require
+    if value is None:
+        return None
+    require(type(value) is dict and type(value.get('enabled')) is bool,
+            'post_initializer_camera needs an explicit boolean enabled')
+    require(set(value) <= {'enabled','maximum_wait_seconds'}, 'unknown post_initializer_camera setting')
+    if value['enabled'] is False:
+        return None
+    seconds=value.get('maximum_wait_seconds')
+    require(type(seconds) is int and 1 <= seconds <= 180,
+            'post_initializer_camera maximum_wait_seconds must be explicit1..180')
+    return {'maximum_wait_seconds':seconds}
+
+
+def await_post_initializer_camera(context,client,settings,initialization,camera,*,
+                                  _time=time.time,_monotonic=time.monotonic,_sleep=time.sleep):
+    """Read only a Root Start signal under the original hold; never start a camera.
+
+    The signal is coordination, not video/R05 qualification. Its fixed path is
+    client.output/post-initializer-camera-started.actual.json. Required fields:
+    machine_id, run_id, bridge_pid, date_raw, camera_started=true, and
+    start_receipt={path,bytes,sha256}. A relative receipt path is relative to the
+    signal directory. Root writes the actual receipt before publishing signal.
+    """
+    from xar_autoplayer.bridge.r05_low_supply_fixture import require
+    if camera is None:
+        return None
+    assessment=initialization.get('assessment',{})
+    after=initialization.get('independent_after',{})
+    frame=after.get('machine_independent_frame',{})
+    stock=after.get('current_supply_raw')
+    require(assessment.get('status')=='prepared_low_stock' and assessment.get('low_stock_observed') is True
+            and assessment.get('physical_soldiers_unchanged') is True and type(stock) is int
+            and 0 <= stock < 1000000 and assessment.get('actual_after_stock_raw')==stock,
+            'camera wait requires independently verified prepared low stock')
+    machine=context['machine_id'];run_id=client.selection.run_dir.name;pid=after.get('pid');date=frame.get('date_raw')
+    require(initialization.get('machine_id')==machine and initialization.get('pid')==pid
+            and type(pid) is int and pid>0 and type(date) is int
+            and frame.get('episode_run_id')==run_id and initialization.get('natural_days_advanced')==0,
+            'camera wait initializer machine/run/PID/date binding differs')
+    signal=Path(client.output)/'post-initializer-camera-started.actual.json'
+    reserve=settings['normal_close_reserve_seconds']+settings['cleanup_save_reserve_seconds']
+    binding={'machine_id':machine,'run_id':run_id,'bridge_pid':pid,'date_raw':date}
+    checkpoint={**binding,'stock_raw':stock,'original_hold_unix_seconds':client._hold,
+                'original_deadline_unix_seconds':settings['deadline_unix_seconds'],
+                'cleanup_normal_close_reserve_seconds':reserve,'maximum_wait_seconds':camera['maximum_wait_seconds'],
+                'signal_path':str(signal),'coordination_only':True,'video_or_R05_PASS_inferred':False}
+    client.checkpoint('post-initializer-camera-awaiting',checkpoint)
+    started=_monotonic()
+    while True:
+        left=camera['maximum_wait_seconds']-(_monotonic()-started)
+        require(left>0,'post-initializer camera Start signal wait timed out')
+        room=min(client.remaining(),client._hold-_time(),settings['deadline_unix_seconds']-_time())-reserve
+        require(room>1,'original camera wait cleanup/normal-close reserve exhausted')
+        client.guard(reserve=reserve+1)
+        value=None
+        if signal.exists():
+            try:
+                value=json.loads(signal.read_bytes())
+            except json.JSONDecodeError:
+                # A partially published signal is never an ACK; the same bound applies.
+                pass
+        if value is not None:
+            require(type(value) is dict and all(type(value.get(k)) is type(v) and value.get(k)==v
+                    for k,v in binding.items()) and value.get('camera_started') is True,
+                    'Root camera Start signal machine/run/PID/date differs')
+            ref=value.get('start_receipt')
+            require(type(ref) is dict and type(ref.get('path')) is str and ref['path']
+                    and type(ref.get('bytes')) is int and 0<ref['bytes']<=1048576
+                    and type(ref.get('sha256')) is str and len(ref['sha256'])==64
+                    and all(c in '0123456789abcdef' for c in ref['sha256'].lower()),
+                    'Root camera Start signal needs an actual small JSON receipt pin')
+            path=Path(ref['path']);path=path if path.is_absolute() else signal.parent/path
+            require(path.suffix.lower()=='.json' and path.is_file() and path.stat().st_size==ref['bytes'],
+                    'Root camera Start receipt absent or size differs')
+            raw=path.read_bytes()
+            require(len(raw)==ref['bytes'] and hashlib.sha256(raw).hexdigest()==ref['sha256'].lower()
+                    and type(json.loads(raw)) is dict,'Root camera Start receipt SHA/JSON differs')
+            accepted={**checkpoint,'camera_started':True,'start_receipt':ref,
+                      'elapsed_wait_seconds':_monotonic()-started,'signal_only_accepted':True}
+            client.checkpoint('post-initializer-camera-signal-accepted',accepted)
+            return accepted
+        _sleep(min(0.25,left,room-1))
+
+
+
 def validate_contract(context):
     from xar_autoplayer.bridge.r05_supply_observation_case import observation_settings
     from xar_autoplayer.bridge.r05_low_supply_fixture import require
@@ -41,8 +130,10 @@ def validate_contract(context):
     # Public plan can remain explicitly unbound; prepare/run cannot.
     value=context['case_inputs'].get('observation')
     if value is not None:observation_settings(value)
+    post_initializer_camera_settings(context['case_inputs'].get('post_initializer_camera'))
 
 def prepare_case(context):
+    post_initializer_camera_settings(context['case_inputs'].get('post_initializer_camera'))
     from xar_autoplayer.bridge.r05_supply_observation_case import observation_settings
     settings=observation_settings(context['case_inputs']['observation'])
     result=initializer(context).prepare_case(context)
@@ -56,6 +147,7 @@ def run_case(context,client):
     from ck3_live_run_id import current_machine_id
     from xar_autoplayer.bridge import r05_supply_observation_case as observe
     settings=observe.observation_settings(context['case_inputs']['observation'])
+    camera=post_initializer_camera_settings(context['case_inputs'].get('post_initializer_camera'))
     reserve=settings['normal_close_reserve_seconds']+settings['cleanup_save_reserve_seconds']
     # All commands, initializer and observation consume the same original hold.
     observe.require(type(client._hold) in (int,float) and client._hold<=settings['deadline_unix_seconds'],
@@ -68,6 +160,7 @@ def run_case(context,client):
     source=Path(context['output'])/'r05-controlled-initializer-outcome.json'
     init=json.loads(source.read_bytes())
     actual_context={**context,'machine_id':current_machine_id(),'command_timeout':budget['command_timeout']}
+    await_post_initializer_camera(actual_context,client,settings,init,camera)
     result=observe.observe_initialized_supply(client,settings,context=actual_context,initialization=init)
     return {'machine_id':actual_context['machine_id'],'status':result['status'],
         'verified_actual_days':result['verified_actual_days'],'R05_physical_predicate':result['R05_positive'],
