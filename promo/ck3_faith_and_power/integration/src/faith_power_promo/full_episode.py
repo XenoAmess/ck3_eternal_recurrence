@@ -603,18 +603,21 @@ def fixed_music_lag(actual, expected, pad, *, max_lag=240):
 def music_presence(ffmpeg, final_ref, dry_manifest, music, source_duration, duration, directory, machine):
     """At most five 4s windows; final AAC minus independently decoded dry narration.
 
-    Only 8k mono float PCM pipes in RAM. One calibration lag is fixed for every
-    window. No whole-film extra audio decode, WAV, AAC scratch, or per-window fit.
+    Only 8k mono float PCM pipes in RAM. Dry concat seeks absolute input PTS;
+    final and theme stay at the authored audio time. No fitted signal shifts,
+    whole-film extra audio decode, WAV, or AAC scratch.
     """
     import numpy as np
     if duration<12:raise ValueError('Music proof needs a timeline of at least12 seconds')
     audit=Path(directory)/'audit/music-windows';audit.mkdir(parents=True,exist_ok=False)
-    rate=8000;length=4.;padding=.04;pad=round(padding*rate)
+    rate=8000;length=4.
     points=sorted({round(min(max(.5,t),duration-length-.1),6) for t in (.5,min(30,duration/4),duration/2,duration*.75,duration-6)})
-    calibration=points[1]
     def decode(label,path,start,seconds,*,concat=False,loop=False):
         argv=[str(ffmpeg),'-nostdin','-hide_banner','-v','error','-threads','2']
         if loop:argv+=['-stream_loop','-1']
+        # The concat demuxer can expose negative AAC priming start_time.
+        # Relative -ss offsets the dry reference while final/theme start at0.
+        if concat:argv+=['-seek_timestamp','1']
         argv+=['-ss',f'{start:.9f}']
         if concat:argv+=['-f','concat','-safe','0']
         argv+=['-i',str(path),'-map','0:a:0','-vn','-t',f'{seconds:.9f}',
@@ -629,26 +632,24 @@ def music_presence(ffmpeg, final_ref, dry_manifest, music, source_duration, dura
             raise ValueError('Bounded audio proof decode failed; diagnostics retained')
         return np.frombuffer(result.stdout,dtype='<f4').astype(np.float64)
     def window(index,start):
-        final=decode(f'{index}-final',final_ref['path'],start-padding,length+2*padding)
+        final=decode(f'{index}-final',final_ref['path'],start,length)
         dry=decode(f'{index}-dry',dry_manifest,start,length,concat=True)
         original=decode(f'{index}-theme',music['file']['path'],start%source_duration,length,loop=True)
         n=round(length*rate)
-        if len(final)<n+2*pad or len(dry)<n or len(original)<n:raise ValueError('Short decoded music-proof window')
+        if len(final)<n or len(dry)<n or len(original)<n:raise ValueError('Short decoded music-proof window')
         times=start+np.arange(n)/rate
         fade=np.minimum(np.clip(times/2,0,1),np.clip((duration-times)/8,0,1))
         expected=original[:n]*(10**(-17/20))*fade
-        return final,dry[:n],expected
-    calibration_index=points.index(calibration)
-    calibrated=window(calibration_index,calibration)
-    lag=fixed_music_lag(calibrated[0],calibrated[1]+calibrated[2],pad)
+        return final[:n],dry[:n],expected
     rows=[]
     for i,start in enumerate(points):
-        actual,dry,expected=calibrated if i==calibration_index else window(i,start)
-        metrics=music_window_metrics(actual[pad+lag:pad+lag+len(dry)],dry,expected)
+        actual,dry,expected=window(i,start)
+        metrics=music_window_metrics(actual,dry,expected)
         rows.append({'start_seconds':start,'duration_seconds':length,**metrics})
-    report={'machine_id':machine,'observed_at_utc':now(),'evidence_source':'Actual final AAC minus independent seeked dry segment-concat decode, compared with exact theme loop/gain/fades; bounded PCM in RAM only',
-        'final':final_ref,'music':music,'dry_manifest':pin(dry_manifest),'global_lag_samples_at_8000Hz':lag,
-        'lag_calibrated_once_at_seconds':calibration,'lag_search_limit_samples':240,'per_window_refitting':False,
+    report={'machine_id':machine,'observed_at_utc':now(),'evidence_source':'Actual final AAC minus absolute-PTS seeked dry concat, compared with exact theme at authored audio time; no fitted signal shifts; bounded PCM in RAM only',
+        'final':final_ref,'music':music,'dry_manifest':pin(dry_manifest),'global_lag_samples_at_8000Hz':0,
+        'lag_calibrated_once_at_seconds':None,'lag_search_limit_samples':0,'per_window_refitting':False,
+        'dry_seek_timestamp_absolute':True,'final_and_theme_shifted':False,
         'thresholds':{'correlation_above':.90,'gain_open_interval':[.85,1.15],'error_RMS_over_music_RMS_below':.5,'music_RMS_above':1e-6},
         'windows':rows,'passed':all(r['passed'] for r in rows),'whole_film_extra_audio_decode':False,
         'PCM_WAV_AAC_scratch_files':0,'estimated_peak_RAM_bytes':8*1024**2,'human_listening_performed':False}
