@@ -1,0 +1,45 @@
+{
+  "schema": "xar.ck3.successor-ui-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-18T11:17:16Z",
+  "status": "pure_projection_software_qualified_not_owner_adopted",
+  "source_commit_before_change": "8a911f5d1b202e7a2ccfb852f3592f0402c1b33e",
+  "working_raw_source_sha256": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_ui_observation_v1.py": "05694356218da8dc50ce825dd34d41e2033bc75e2406eb292ddb36d038ef6973",
+    "ck3_autonomous_player/tests/unit/test_succession_ui_observation_v1.py": "c0f01025f0a1fa43c73d69f0629884e5d2ae16668debd36c117d6a730939749d",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/timeline_blocker_context_contract.py": "4b7cb728141fef3eb10d4caf2a90ad71004e6c93893eaf6f76ddaa4f6b0bc38f",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/event_window_context_contract.py": "c98985f1afe9196331e30c0f9b0cc2a7fadc9507ef6d3c2b77292bc82e619ef4"
+  },
+  "contract": {
+    "entry": "xar_autoplayer.bridge.succession_ui_observation_v1.project_successor_ui_observation_v1",
+    "inputs": ["stable living successor snapshot", "guarded Service timeline context", "optional guarded Service current event context"],
+    "clear_requires": ["available timeline", "identity none", "blocks_simulation false", "has_open_succession false", "active_event explicit null"],
+    "none_plus_open_or_blocked": "unresolved",
+    "recognized_modal": "modal_present",
+    "unavailable_timeline": "unknown",
+    "old_root_event_rewritten": false,
+    "event_unavailability_promoted": false,
+    "event_policy_changed": false,
+    "authorizes_save_close_selection_or_retry": false,
+    "caller_still_requires": ["owner/source epoch", "owned process birth and connection proof", "original guarded query envelopes", "original complete successor/title reconciliation", "durable once intent", "actual SAVE and independent postSEM/MET"]
+  },
+  "qualification": {
+    "command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 ck3_autonomous_player\\tests\\unit\\test_succession_ui_observation_v1.py",
+    "shell": "cmd.exe",
+    "login": false,
+    "exit_code": 0,
+    "tests_passed": 4,
+    "bad_input_subcases": 8,
+    "unittest_elapsed_seconds": 0.005,
+    "tool_elapsed_seconds": 3.0217052,
+    "synthetic_boundary": "All snapshots, process IDs, event/scope identities, dates and observations synthetic; original timeline/event normalizers run unchanged. No actual 2304 replay, P85 or owner transaction qualification."
+  },
+  "adoption": {
+    "automatic_hook_installed": false,
+    "new_stop_gate_installed": false,
+    "current_game_or_frozen_sdk_changed": false,
+    "host06_or_p85_transaction_qualified": false,
+    "next_required_step": "Explicit future COW owner source binding and complete original transaction qualification before adopting this observation projection."
+  },
+  "credit": {"game_calls": 0, "native_calls": 0, "mcp_calls": 0, "desktop_calls": 0, "game_days": 0, "business_cycles": 0, "g2_completed_items": 6, "g2_total_items": 8}
+}
