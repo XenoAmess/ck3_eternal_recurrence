@@ -217,6 +217,7 @@ class FormalInputs:
             raise ValueError('Sequence must contain every selected voice once')
         rows = [by_id[key] for key in order]
         gaps, intervals, raw_seconds, graphic_seconds = [], {}, 0.0, 0.0
+        focus_checks=[]
         max_graphic_run = graphic_run = 0.0
         motion_seconds = explanation_run = max_explanation_run = 0.0
         motion_intervals = {}
@@ -265,6 +266,8 @@ class FormalInputs:
                 raise ValueError('Visual parts must cover the exact measured cue')
             for part in parts:
                 common.validate_burned_in_disclosure(part,self.bound)
+                focus=common.focus_geometry(part,self.bound,metadata_only=self.metadata_only)
+                if focus is not None:focus_checks.append({'cue_id':row['id'],**focus})
                 duration = part['duration_seconds']
                 if duration <= 0 or abs(duration * 30 - round(duration * 30)) > 1e-4 or not part.get('disclosure'):
                     raise ValueError('Visual needs positive frame-aligned duration and source disclosure')
@@ -391,6 +394,7 @@ class FormalInputs:
         return {'rows': rows, 'seconds': total, 'gaps': gaps, 'ready_to_build': not gaps and not self.metadata_only,
             'content_ready':not gaps,'metadata_only':self.metadata_only,'fullrender_admitted':False,
             'media_bytes_revalidated':not self.metadata_only,'media_stat_observations':media_stats,
+            'focus_geometry_checks':focus_checks,
             'metadata_SHA_checked_inputs':metadata_checked,
             'evidence_unknowns':getattr(self,'evidence_unknowns',[]),
             'source_claim_limits':getattr(self,'source_claim_limits',[]),

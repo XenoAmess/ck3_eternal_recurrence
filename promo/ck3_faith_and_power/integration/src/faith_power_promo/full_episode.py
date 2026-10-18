@@ -27,7 +27,7 @@ from xar_promo.render import RenderOptions, execute_render_plan, plan_concat, pl
 from xar_promo.subtitles import AssCue, AssDocumentConfig, AssStyleConfig, SubtitleTrackConfig, render_ass_document
 from xar_promo.layout import FontSpec, WrapPolicy, wrap_text
 from xar_promo.audio import AudioMixSpec, AudioStem, plan_audio_mix
-from PIL import ImageFont
+from PIL import Image, ImageFont
 
 from .production import fresh_runtime, pin, read, write, project, cue_duration, package_bytes
 from .context_composer import font_render_planner
@@ -104,7 +104,41 @@ def validate_burned_in_disclosure(part, bound):
     if (receipt.get('schema') not in schemas[part['kind']] or receipt.get('image')!=part['image']
         or receipt.get('permanent_disclosure')!=declared['text']):
         raise ValueError('Burned disclosure differs from the exact image render receipt')
-    return True
+    return 'focus_rect' not in part  # Original full-image receipt cannot prove a cropped label visible.
+
+
+def focus_geometry(part, bound, *, metadata_only=False):
+    """Validate integer xywh; metadata plans defer real PNG geometry."""
+    if 'focus_rect' not in part:return None
+    if part['kind'] not in {'diagram','native-readback'}:
+        raise ValueError('focus_rect is allowed only for diagram/native-readback PNGs')
+    rect=part['focus_rect']
+    if (not isinstance(rect,(list,tuple)) or len(rect)!=4
+        or any(type(value) is not int for value in rect)):
+        raise ValueError('focus_rect needs four finite integers; bool/float/NaN/Infinity are invalid')
+    x,y,width,height=rect
+    if x<0 or y<0 or width<=0 or height<=0:
+        raise ValueError('focus_rect needs nonnegative origin and positive width/height')
+    path=bound(part['image'])
+    if metadata_only:
+        return {'focus_rect':list(rect),'source_geometry':None,'source_geometry_checked':False,
+            'verification':'deferred to normal PNG prepare; binary stat only'}
+    with Image.open(path) as source:
+        if source.format!='PNG':raise ValueError('focus_rect requires an actual PNG source')
+        actual_width,actual_height=source.size  # Header only; no pixel decode/load.
+    if x+width>actual_width or y+height>actual_height:
+        raise ValueError('focus_rect is outside the actual source PNG dimensions')
+    return {'focus_rect':list(rect),'source_geometry':[actual_width,actual_height],
+        'source_geometry_checked':True,'verification':'actual source PNG header'}
+
+
+def focus_filter(part, bound):
+    checked=focus_geometry(part,bound)
+    if checked is None:return 'scale=2560:1440:flags=lanczos'
+    x,y,width,height=checked['focus_rect']
+    return (f'crop={width}:{height}:{x}:{y},'
+        'scale=2560:1440:force_original_aspect_ratio=decrease:flags=lanczos,'
+        'pad=2560:1440:(ow-iw)/2:(oh-ih)/2:color=0x211813')
 
 
 def now(): return datetime.now(timezone.utc).isoformat()
@@ -211,7 +245,7 @@ class Inputs:
                 raise ValueError('Full episode needs all frozen cues or explicit reasoned exclusions')
         elif not selected_ids.issubset(baseline):
             raise ValueError('Short review references an unknown existing cue')
-        rows=[]; intervals={}
+        rows=[]; intervals={}; focus_checks=[]
         for row in doc['cues']:
             old=baseline[row['id']]
             if any(row[key]!=old[key] for key in ('zh','en','claim_ids','shot_ids')):
@@ -274,6 +308,8 @@ class Inputs:
                 raise ValueError('Visual parts must exactly cover their measured cue')
             for part in parts:
                 validate_burned_in_disclosure(part,self.bound)
+                focus=focus_geometry(part,self.bound)
+                if focus is not None:focus_checks.append({'cue_id':row['id'],**focus})
                 duration=part['duration_seconds']
                 if duration<=0 or abs(duration*30-round(duration*30))>1e-4:
                     raise ValueError('Each authored visual duration must align to 30fps')
@@ -331,7 +367,7 @@ class Inputs:
         budget=peak_budget(total,len(ordered),profile=profile)
         return {'rows':ordered,'seconds':total,'gaps':self.errors,
             'ready_to_build':not self.errors,'budget':budget,'background_music':music,
-            'existing_measured_audio_inventory_count':158,'existing_audio_selected_count':len(doc['cues']),
+            'focus_geometry_checks':focus_checks,'existing_measured_audio_inventory_count':158,'existing_audio_selected_count':len(doc['cues']),
             'scope':scope,'new_TTS_requested':False,
             'result_slots':slots,'native_business_verified':False,'human_1x_signoff':False}
 
@@ -410,7 +446,7 @@ def subtitle(row,font_path,font_name):
     tracks.append(SubtitleTrackConfig('source','zh-CN',3,style)); cursor=0
     for number,part in enumerate(row['visual_parts']):
         if (part['kind']!='mechanism-motion' and not
-            (part['kind'] in {'diagram','native-readback'} and part.get('burned_in_disclosure'))):
+            (part['kind'] in {'diagram','native-readback'} and part.get('burned_in_disclosure') and 'focus_rect' not in part)):
             # Explicit graphic receipt validation happens before build; raw gameplay keeps its label.
             cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],part['disclosure']))
         cursor+=part['duration_seconds']
@@ -425,7 +461,7 @@ def visual_command(ffmpeg,row,target,bound):
         d=part['duration_seconds']
         if part['kind'] in {'diagram','native-readback'}:
             argv+=['-loop','1','-framerate','30','-t',f'{d:.9f}','-i',str(bound(part['image']))]
-            scale='scale=2560:1440:flags=lanczos'
+            scale=focus_filter(part,bound)
         elif part['kind']=='mechanism-motion':
             argv+=['-ss',f"{part['source_start_seconds']:.9f}",'-t',f'{d:.9f}','-i',str(bound(part['video']))]
             scale='scale=2560:1440:flags=lanczos'
