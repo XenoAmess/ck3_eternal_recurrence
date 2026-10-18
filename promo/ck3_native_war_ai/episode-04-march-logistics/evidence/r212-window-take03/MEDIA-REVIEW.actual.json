@@ -1,0 +1,49 @@
+{
+  "schema": "xar.e04.r212-window-take03-ai-media-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T15:18:27Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0207",
+  "media_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/media-probe-take03-a01/PROBE.actual.json",
+    "bytes": 5477,
+    "sha256": "736fb92f4941505af886a063a823b2d5f950727262d292d599e3463363d32ce8"
+  },
+  "raw": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/raw-r212/take03/raw.mkv",
+    "bytes": 45964189,
+    "sha256_from_single_canonical_probe": "60c0f1585aae4d74ab5e32aaeb075c4c3682749242ae386af9418bd9c9cafc39",
+    "duration_seconds": 73.3,
+    "video": "H.264 1280x720 30 fps, CK3 client region only"
+  },
+  "film_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/R212-WINDOW-TAKE03-film-result.actual.json",
+    "bytes": 1835,
+    "sha256": "722357d7187b39272dc04042eace4044ae599d795075c50d87ad6f769dbe103b",
+    "state": "NORMAL_TREE_EMPTY",
+    "elapsed_wall_seconds": 74.7249328
+  },
+  "business_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0207/county-actor-a03/R04-BAYEUX-TERMINAL.json",
+    "bytes": 443,
+    "sha256": "44adc7b81d2a2a25d9b5a4e3009dcb363408f236ee66ac6b7b11ed8b7f1b261e",
+    "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+    "actual_days": 0,
+    "arrived": false,
+    "final_province": 1506
+  },
+  "ai_original_frame_samples": [
+    {"second": 1.0, "file": "frame-early.png", "sha256": "01b46c87e8122d156d19dec1fd6ab5e12e2003ab2c3beb7f6ded7aa3b6dae647"},
+    {"second": 36.65, "file": "frame-middle.png", "sha256": "9ef0824423869cb33a6362be888d403c5a56077dcd07fd57884f83a9aec8ad06"},
+    {"second": 72.3, "file": "frame-late.png", "sha256": "f4b474d05e591318c2e76b86888e67bef4030010d3da008a37de1d32949554a9"}
+  ],
+  "qa": {
+    "canonical_probe_technical_media_pass": true,
+    "single_full_decode_exit_code": 0,
+    "ai_sample_review": "Three original client frames show the paused CK3 map and ArmyWindow, army 6746 and supply 116/300 on 1067-01-20; no visible route, march, arrival, or date progression. Pointer remains near the army panel.",
+    "human_full_playback_reviewed": false,
+    "formal_dynamic_shot_qualified": false,
+    "business_success_inferred_from_video": false,
+    "business_limit": "Native Move was rejected before in-game submission; actor records zero actual days and no arrival. This recording is static army-context footage only."
+  },
+  "processing_limit": "One canonical raw hash, one full single-thread decode, three source frames; no raw copy or additional render."
+}

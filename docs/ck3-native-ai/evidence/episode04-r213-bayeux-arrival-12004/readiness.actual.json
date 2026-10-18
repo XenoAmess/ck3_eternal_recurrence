@@ -1,0 +1,35 @@
+{
+  "schema": "ck3-mod-acceptance-readiness-window-result-v1",
+  "binding": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "screen_task": "e04-common-12004-a213",
+    "live": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "state_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01",
+    "frozen_argv": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\frozen-argv.json",
+      "bytes": 31434,
+      "sha256": "311f2a2f64a890dd98df55c7244e12cb69a22f7dcd53f7f59e070c7b4022c271"
+    },
+    "runtime_manifest": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r213-r10-public-prepare-a01\\bound-a01\\manifest.json",
+      "bytes": 5775,
+      "sha256": "32ff2bc89d4bef8a47743cdca851820ab60d6fed948712b74429d2a6b8cd6d02"
+    }
+  },
+  "status": "READINESS_HOLD_OBSERVED",
+  "observed_at_utc": "2026-10-18T15:48:00.939734+00:00",
+  "observed_monotonic": 1561299.8815669,
+  "elapsed_seconds": 479.69714409997687,
+  "deadline_monotonic": 1562620.1844228,
+  "within_original_deadline": true,
+  "host_phase": "hold",
+  "host_started_at": "2026-10-18T15:40:05.341176+00:00",
+  "host_finished_at": null,
+  "restore_status": "ACTUAL_SAVED_CAMPAIGN_CURRENT_CONTEXT_BOUND",
+  "restore_finished_at": "2026-10-18T15:47:59.063354+00:00",
+  "hold_until_utc_estimated": 1792345680.3129077,
+  "error": null,
+  "host_exit_before_report": null,
+  "new_wait_or_replay": false,
+  "business_pass": false
+}

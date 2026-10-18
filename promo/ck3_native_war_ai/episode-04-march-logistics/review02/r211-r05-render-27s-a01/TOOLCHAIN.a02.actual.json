@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.r211-insert-a02-toolchain-late-prebuild.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "query_at_utc": "2026-10-18T15:57:50.141176+00:00",
+  "chronology": "queried after native a02 start-run, before a02 media build; a01 had pre-run fresh check",
+  "query_argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+  ],
+  "query_exit_code": 0,
+  "release_id": 415596198,
+  "release_tag": "v0.3.0",
+  "draft": false,
+  "prerelease": false,
+  "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+  "wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+  "requirements_path": "D:/workspace/ck3_eternal_recurrence/tools/requirements-promo-toolchain.txt",
+  "requirements_sha256": "73f18d03acc1699b00769a34a8fb64ce748b8c9dd1b2b7cc215177e1e356e1f7",
+  "requirements_exact_url_hash_match": true,
+  "installed_version": "0.3.0",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "wheel_downloaded_here": false
+}

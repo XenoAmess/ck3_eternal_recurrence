@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "shots": [
+    {
+      "id": "S-R211-R05",
+      "title": "受控零补给 6746→6342 实录与原生分账",
+      "claim_ids": [
+        "R211-R05-ACTUAL-INSERT"
+      ]
+    }
+  ]
+}

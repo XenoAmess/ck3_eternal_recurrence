@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.r213-root-release-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-18T17:55:54.730191+00:00",
+  "actual_release_at_utc": "2026-10-18T17:46:42.901Z",
+  "cas_sequence": 6714,
+  "cas_event_id": "19de82e43f4c4187ad7385e368a99d75",
+  "task_state": "done",
+  "resources": [],
+  "normal_close_qualified": true,
+  "retained_game_os_exit": 0,
+  "native_process_exit": 0,
+  "host_original_popen_exit": 0,
+  "original_public_run_wait": 0,
+  "original_allocator_wait": 0,
+  "keeper_last_sequence": 6713,
+  "keeper_thread_exited": true,
+  "keeper_failure": null,
+  "provenance_kind": "Root actual tool-readback message authorizing this intake",
+  "original_release_file_pin_supplied_to_integrator": false,
+  "monitor_history_unchanged": "monitor a06 predates CAS and retains its assessed=false field"
+}

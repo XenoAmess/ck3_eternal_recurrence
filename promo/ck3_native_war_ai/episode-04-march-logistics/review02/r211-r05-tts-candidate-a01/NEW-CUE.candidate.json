@@ -1,0 +1,94 @@
+{
+  "schema": "xar.e04.r211-newcue-tts-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-18T13:29:39.956019+00:00",
+  "state": "ACTUAL_AUDIO_AND_PROVIDER_TIMING_NO_VIDEO",
+  "cue_id": "R211-R05-ACTUAL-INSERT",
+  "insert_after_existing_cue": "C03-11",
+  "insert_before_existing_cue": "C03-12",
+  "old_full69_insertion_frame": 26668,
+  "source_raw_window_seconds": [
+    888,
+    912
+  ],
+  "source_raw_frames_30fps": [
+    26640,
+    27360
+  ],
+  "raw_media_source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/raw-r211/take02/raw.mkv",
+    "bytes": 589432005,
+    "sha256": "2a738ecf3dbf29e64cd79526542f4fe939b2a5c590be67c0cac1c399a2febbee"
+  },
+  "review_only_preview": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/preview-a01/army-supply-transition-888-912.mp4",
+    "bytes": 2055681,
+    "sha256": "818c6c9a1de7e411a94c3f797777ea4e3659aa2c90e263f2802d03c92ebf09cb",
+    "source_start_seconds": 888,
+    "source_end_seconds_exclusive": 912,
+    "duration_seconds": 24,
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "frames": 720,
+    "fps": 30,
+    "full_decode_exit_code": 0,
+    "preview_ceiling_bytes": 50331648,
+    "within_preview_ceiling": true,
+    "encoding": "ffmpeg -ss 888 -i source_raw -t 24 -an -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -movflags +faststart",
+    "audio": false,
+    "overlay_or_crop_added": false
+  },
+  "source_and_output_timeaxes_independent": true,
+  "original_visual_transition_source_seconds": [
+    897.5,
+    898.0
+  ],
+  "visual_transition_local_seconds": [
+    9.5,
+    10.0
+  ],
+  "audio_start_offset_candidate_seconds": 0.0,
+  "transition_occurs_during_actual_second_sentence": true,
+  "actual_audio": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/speech/R211-R05-ACTUAL-INSERT.mp3",
+    "bytes": 136656,
+    "sha256": "58c465f14ea737d85e4286a3976893a550c5470a182f6c10e74ecb515e77ca21"
+  },
+  "speech_seconds": 22.776,
+  "normal_onecue_timeline_seconds": 24.4,
+  "normal_onecue_timeline_frames_30fps": 732,
+  "actual_provider_timing": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/subtitles/newcue.zh-CN.provider-timed.json",
+    "bytes": 1628,
+    "sha256": "36b4ac00d7d740d0038dae2d2287d1d3a0b40990bf2b3537e1116aeaf98325c5"
+  },
+  "subtitle_srt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/subtitles/newcue.zh-CN.provider-timed.srt",
+    "bytes": 393,
+    "sha256": "acb5003717c2ea70c16ea35234130bbc84dcc121930b17057bc71e270a5f937a"
+  },
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-5%",
+  "minimum_static_card_after_24s_raw_seconds": 0.4,
+  "minimum_static_card_after_24s_raw_frames_30fps": 12,
+  "recommended_readable_static_card_after_raw_seconds": 3.0,
+  "recommended_readable_static_card_after_raw_frames_30fps": 90,
+  "recommended_total_duration_seconds": 27.0,
+  "card_content": "R211 原生写入：供给扣兵337；围城／劫掠共用阶段67；画面净少404。受控零库存，不是自然耗尽。",
+  "numeric_overlay_during_transition": false,
+  "layout_next_run_review_required": true,
+  "old_69cue_audio_subtitles_movie_modified": false,
+  "video_encoded_here": false,
+  "continuous_1x_review": false,
+  "human_signoff": false,
+  "formal_dynamic_credit": false,
+  "forbidden_claims": [
+    "natural depletion from positive stock",
+    "all 404 caused by supply",
+    "404 soldiers died",
+    "fixed 5 percent per cycle",
+    "whole army net loss across full cycle",
+    "formal qualified dynamic shot"
+  ]
+}

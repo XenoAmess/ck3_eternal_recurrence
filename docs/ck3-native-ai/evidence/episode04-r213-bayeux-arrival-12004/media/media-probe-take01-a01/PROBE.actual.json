@@ -1,0 +1,190 @@
+{
+  "schema": "xar.e04.owned-client-window-media-probe.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T16:34:46.045044+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\raw-r213\\take01\\raw.mkv",
+    "bytes": 912089219,
+    "sha256": "947246ebc98e3c0de1c2747ffdf82db91fdada4e7a69e5134776dc18027f4389"
+  },
+  "terminal": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\raw-r213\\take01\\result.json",
+    "bytes": 2021,
+    "sha256": "3e08c1287da51846ec75e8e02fb3c3e4251f7be14f12cd9c5f187199fa299c24"
+  },
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\R213-WINDOW-TAKE01-film-result.actual.json",
+    "bytes": 1523,
+    "sha256": "9d2246371f6be2d69890c35a520ff9cc01407be26b32b51a6e70a7ab04545173"
+  },
+  "ffprobe": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "bytes": 222026240,
+    "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 27056,
+    "owned_ck3_create_time": 1792338019.838657,
+    "hwnd": 153291484,
+    "foreground_hwnd": 153291484,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-18T16:07:58.329334+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "video_stream": {
+    "index": 0,
+    "codec_name": "h264",
+    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+    "profile": "Constrained Baseline",
+    "codec_type": "video",
+    "codec_tag_string": "[0][0][0][0]",
+    "codec_tag": "0x0000",
+    "mime_codec_string": "avc1.42c01f",
+    "width": 1280,
+    "height": 720,
+    "coded_width": 1280,
+    "coded_height": 720,
+    "has_b_frames": 0,
+    "pix_fmt": "yuv420p",
+    "level": 31,
+    "color_range": "tv",
+    "chroma_location": "left",
+    "field_order": "progressive",
+    "is_avc": "true",
+    "nal_length_size": "4",
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "start_pts": 0,
+    "start_time": "0.000000",
+    "bits_per_raw_sample": "8",
+    "extradata_size": 38,
+    "disposition": {
+      "default": 0,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0,
+      "non_diegetic": 0,
+      "captions": 0,
+      "descriptions": 0,
+      "metadata": 0,
+      "dependent": 0,
+      "still_image": 0,
+      "multilayer": 0
+    },
+    "tags": {
+      "ENCODER": "Lavc63.1.101 libx264",
+      "DURATION": "00:24:59.033000000"
+    }
+  },
+  "duration_seconds": 1499.033,
+  "frames": [
+    {
+      "label": "early",
+      "second": 1.0,
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\media-probe-take01-a01\\frame-early.png",
+        "bytes": 1268695,
+        "sha256": "bb76faaa9386ec14f8e7b3292a266f48ef86a9fbf7ab1ba5582bec24a69ce3bf"
+      },
+      "rgb_mean": [
+        101.92830620659723,
+        104.58103407118055,
+        116.44947591145834
+      ],
+      "rgb_stddev": [
+        44.96761925717186,
+        41.81298875906167,
+        41.733814922596785
+      ],
+      "near_black": false
+    },
+    {
+      "label": "middle",
+      "second": 749.5165,
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\media-probe-take01-a01\\frame-middle.png",
+        "bytes": 1350680,
+        "sha256": "0605dd32b6e81bd8d755a782b36b584fbe5ea581341aa94f97373e44ae92cb4d"
+      },
+      "rgb_mean": [
+        101.56748806423612,
+        104.25025716145834,
+        116.111787109375
+      ],
+      "rgb_stddev": [
+        44.83607791568287,
+        41.84917521514863,
+        41.86488404393317
+      ],
+      "near_black": false
+    },
+    {
+      "label": "late",
+      "second": 1498.033,
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\media-probe-take01-a01\\frame-late.png",
+        "bytes": 1365595,
+        "sha256": "03f5e3b5c9a6eaa1cbded12e468735912d34c2a3303041fb01137023b7c4ce06"
+      },
+      "rgb_mean": [
+        96.28756401909722,
+        99.18369466145833,
+        110.92653645833333
+      ],
+      "rgb_stddev": [
+        44.18293923244477,
+        39.94932449143164,
+        38.066355257460785
+      ],
+      "near_black": false
+    }
+  ],
+  "changes": [
+    {
+      "pixels_changed": true,
+      "mean_absolute_channel_delta": [
+        3.577250434027778,
+        3.1294835069444447,
+        3.440659722222222
+      ]
+    },
+    {
+      "pixels_changed": true,
+      "mean_absolute_channel_delta": [
+        9.86532986111111,
+        9.287484809027777,
+        8.689907769097223
+      ]
+    }
+  ],
+  "technical_media_pass": true,
+  "human_original_frame_review_pending": true,
+  "business_or_video_signoff": false
+}

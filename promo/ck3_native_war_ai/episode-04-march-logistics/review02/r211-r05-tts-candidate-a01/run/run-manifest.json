@@ -1,0 +1,90 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "r211-r05-tts-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/2B/2B7D83D8F133AD2DE75426AFDACBC6664A884584CA3DA3A5EEC87C7883C17745.json",
+    "bytes": 1428,
+    "sha256": "2B7D83D8F133AD2DE75426AFDACBC6664A884584CA3DA3A5EEC87C7883C17745"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "source.r211-newcue",
+      "collection": "raw",
+      "role": "script",
+      "path": "artifacts/raw/sha256/3F/3FADD803637B22B622584CDF666C5C6FF9B55628EE8C6319FD7D40C042BCF694.zhcn.json",
+      "label": "newcue.zh-CN.json",
+      "bytes": 524,
+      "sha256": "3FADD803637B22B622584CDF666C5C6FF9B55628EE8C6319FD7D40C042BCF694",
+      "media_type": "application/json",
+      "source_name": "newcue.zh-CN.json"
+    },
+    {
+      "id": "source.r211-shot",
+      "collection": "raw",
+      "role": "storyboard",
+      "path": "artifacts/raw/sha256/51/51A78842680B1C11D8D70D71567AAB4F338F4F207C8970297BA4DD385712DF77.timeline.json",
+      "label": "newshot.timeline.json",
+      "bytes": 212,
+      "sha256": "51A78842680B1C11D8D70D71567AAB4F338F4F207C8970297BA4DD385712DF77",
+      "media_type": "application/json",
+      "source_name": "newshot.timeline.json"
+    },
+    {
+      "id": "audio.r211-r05-insert",
+      "collection": "derived",
+      "role": "audio",
+      "path": "artifacts/derived/sha256/58/58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21.mp3",
+      "label": "R211-R05-ACTUAL-INSERT.mp3",
+      "bytes": 136656,
+      "sha256": "58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21",
+      "media_type": "audio/mpeg",
+      "source_name": "R211-R05-ACTUAL-INSERT.mp3"
+    },
+    {
+      "id": "subtitle.r211-r05-provider-srt",
+      "collection": "derived",
+      "role": "subtitle",
+      "path": "artifacts/derived/sha256/AC/ACB5003717C2EA70C16EA35234130BBC84DCC121930B17057BC71E270A5F937A.zhcn.providertimed.srt",
+      "label": "newcue.zh-CN.provider-timed.srt",
+      "bytes": 393,
+      "sha256": "ACB5003717C2EA70C16EA35234130BBC84DCC121930B17057BC71E270A5F937A",
+      "media_type": "application/x-subrip",
+      "source_name": "newcue.zh-CN.provider-timed.srt"
+    },
+    {
+      "id": "subtitle.r211-r05-provider-timing",
+      "collection": "derived",
+      "role": "subtitle",
+      "path": "artifacts/derived/sha256/36/36B4AC00D7D740D0038DAE2D2287D1D3A0B40990BF2B3537E1116AEAF98325C5.zhcn.providertimed.json",
+      "label": "newcue.zh-CN.provider-timed.json",
+      "bytes": 1628,
+      "sha256": "36B4AC00D7D740D0038DAE2D2287D1D3A0B40990BF2B3537E1116AEAF98325C5",
+      "media_type": "application/json",
+      "source_name": "newcue.zh-CN.provider-timed.json"
+    },
+    {
+      "id": "candidate.r211-r05-newcue",
+      "collection": "derived",
+      "role": "editorial",
+      "path": "artifacts/derived/sha256/2C/2CFBEBD0E6A37EE841BAC4F244A041482ED51E51DA348B70BDF3FCE9DAD17988.candidate.json",
+      "label": "NEW-CUE.candidate.json",
+      "bytes": 3673,
+      "sha256": "2CFBEBD0E6A37EE841BAC4F244A041482ED51E51DA348B70BDF3FCE9DAD17988",
+      "media_type": "application/json",
+      "source_name": "NEW-CUE.candidate.json"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

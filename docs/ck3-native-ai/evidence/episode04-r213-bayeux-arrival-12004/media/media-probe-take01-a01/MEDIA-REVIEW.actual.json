@@ -1,0 +1,43 @@
+{
+  "schema": "xar.e04.r213-window-take01-ai-media-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T16:37:55Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/media-probe-take01-a01/PROBE.actual.json",
+    "bytes": 5480,
+    "sha256": "b056d066ba8d595ab07b3441bd2deadb8cea5404764215f272cf0565ee5da432"
+  },
+  "raw": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/raw-r213/take01/raw.mkv",
+    "bytes": 912089219,
+    "sha256_from_single_canonical_probe": "947246ebc98e3c0de1c2747ffdf82db91fdada4e7a69e5134776dc18027f4389",
+    "duration_seconds": 1499.033,
+    "codec": "H.264 1280x720 30fps",
+    "source": "verified CK3 client-screen region [640,360,1920,1080]"
+  },
+  "recorder_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/R213-WINDOW-TAKE01-film-result.actual.json",
+    "bytes": 1523,
+    "sha256": "9d2246371f6be2d69890c35a520ff9cc01407be26b32b51a6e70a7ab04545173",
+    "state": "NORMAL_TREE_EMPTY",
+    "finish_reason": "timer",
+    "wall_seconds": 1503.3423282
+  },
+  "ai_original_frame_samples": [
+    {"second": 1.0, "file": "frame-early.png", "sha256": "bb76faaa9386ec14f8e7b3292a266f48ef86a9fbf7ab1ba5582bec24a69ce3bf", "visible": "paused 1067-01-20, ArmyWindow 6746 and supply 116/300"},
+    {"second": 749.5165, "file": "frame-middle.png", "sha256": "0605dd32b6e81bd8d755a782b36b584fbe5ea581341aa94f97373e44ae92cb4d", "visible": "paused 1067-02-07, ArmyWindow 6679 and supply 107/300, route line across the Channel"},
+    {"second": 1498.033, "file": "frame-late.png", "sha256": "03f5e3b5c9a6eaa1cbded12e468735912d34c2a3303041fb01137023b7c4ce06", "visible": "paused 1067-02-22, ArmyWindow 6679 and supply 107/300, army icon near opposite shore"}
+  ],
+  "qa": {
+    "canonical_probe_technical_media_pass": true,
+    "single_full_decode_exit_code": 0,
+    "dynamic_march_visual_candidate": true,
+    "human_full_playback_reviewed": false,
+    "formal_dynamic_shot_qualified": false,
+    "arrival_or_supply_causality_inferred_from_video": false,
+    "business_terminal_at_review": "pending; native day/status receipts must be evaluated separately",
+    "limits": "Three sparse AI-reviewed original frames do not certify a continuous clean span, arrival, or combat outcome."
+  },
+  "processing_limit": "One canonical probe and one full single-thread decode; no raw copy or second raw hash."
+}

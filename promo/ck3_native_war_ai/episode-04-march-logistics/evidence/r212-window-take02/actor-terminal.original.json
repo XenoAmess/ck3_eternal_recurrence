@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+  "arrived": false,
+  "actual_days": 0,
+  "Move_attempts": 1,
+  "OFFclear": true,
+  "Save": true,
+  "errors": [],
+  "full_result_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\county-actor-a02\\R04-BAYEUX-RESULT.json",
+  "finaldate": 53147376,
+  "finalprovince": 1506
+}

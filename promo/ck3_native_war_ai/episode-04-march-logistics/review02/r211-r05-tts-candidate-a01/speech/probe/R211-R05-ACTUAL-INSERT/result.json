@@ -1,0 +1,8 @@
+{
+  "partial_artifacts": [],
+  "returncode": 0,
+  "schema_version": 1,
+  "status": "succeeded",
+  "stderr": "stderr.txt",
+  "stdout": "stdout.txt"
+}

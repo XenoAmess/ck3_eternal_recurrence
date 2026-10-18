@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.r08-parent-order-video-claims.v1",
+  "source_kind": "retained_exact_12004_bytes_only",
+  "safe_lines": [
+    "这段调度代码先调用净额结算，后面才调用所列费率和角色上下文入口。",
+    "本次后段getter的返回值不能直接生成同次更早已经消费的结算输入；前一轮或其他副作用另论。",
+    "结算收到的是原入口Character参数；实际付款账户仍须以钱包回调身份核验。",
+    "函数自身每次正常路径一次，不等于每日一次或每月一次。"
+  ],
+  "forbidden_lines": [
+    "已证明c/d是军费",
+    "相同数值copy就是实际支付",
+    "后段top liege参数就是早期实际付款人",
+    "current-maintenance向量就是这一笔已付军费",
+    "跨Apr1或一次parent调用证明月结cadence",
+    "已证明所有callee无副作用或跨轮完全无关"
+  ],
+  "paid_military_amount": null,
+  "actual_payer_from_this_static_check": null,
+  "cadence": null,
+  "new_live_or_dynamic_credit": false,
+  "watcher_permission_granted": false,
+  "precision": "Own-body normal control-flow and selected register/call bytes; exceptions/reentrancy/opaque callee effects excluded"
+}

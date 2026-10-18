@@ -1,0 +1,290 @@
+{
+  "schema": "xar.e04.friendly-refill-one-shot-knowledge.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T13:23:28.255395+00:00",
+  "evidence_layer": "held_native_source_and_current_source_inference_only",
+  "game_source_identity": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "current_machine_installation_requalified_here": false
+  },
+  "proposal": {
+    "start_province": 1506,
+    "destination_province": 2170,
+    "max_travel_natural_days": 60,
+    "Root_final_H": null,
+    "run_id": null,
+    "PID": null,
+    "positive_target": null
+  },
+  "claims": {
+    "actual_arrival": null,
+    "actual_native_position_true": null,
+    "conditional_shared_q_positive": null,
+    "actual_ADD_observed": false,
+    "same_core_invocation_join_ready": false,
+    "whole_core_NET_cause_proven": false,
+    "full_window_coverage_proven": false,
+    "toggle_effect_proven": false,
+    "full_R06_qualified": false
+  },
+  "source_positive_findings": [
+    {
+      "id": "position_full_ID_equality",
+      "evidence": "2C097F0 held mapping plus current PositionPolitical source",
+      "meaning": "Equal resolved Unit owner and Province holder FullIDs imply true position verdict. Friendly labels alone do not."
+    },
+    {
+      "id": "origin_is_not_current_Unit_position",
+      "evidence": "native2657EF0 bytes",
+      "meaning": "Origin Province788/73C and Army lifecycle/combat/Unit170 branches precede current Unit position; arrival does not itself change those operands."
+    },
+    {
+      "id": "natural_TLS_does_not_require_natural_journal_ON",
+      "evidence": "army_natural_phase_scope.cpp151-204,224-256",
+      "meaning": "Actual callback creates TLS parent before journal Permit check. With admitted installed hook and scoped regular_core sampling, v4 CoreEvent can carry parent_scope without enabling natural_phase journal."
+    },
+    {
+      "id": "export_before_disable",
+      "evidence": "sampling Policy ReadableLocked/SetLocked",
+      "meaning": "Read is enabled && active0; OFF active0 clears. Export exact CoreEvent before disable/clear."
+    }
+  ],
+  "required_existing_receipts": [
+    {
+      "kind": "arrival_snapshot",
+      "fields": [
+        "player_armies[].army_id",
+        "player_armies[].current_province_id",
+        "actual same-run identity/paused/date/revision/native_revision/snapshot_id",
+        "native_carmy_id from the same Army query row, not invented on the snapshot"
+      ]
+    },
+    {
+      "kind": "fresh_complete_army_query",
+      "fields": [
+        "fullwire immutable pin and actual request/query sequence",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "queried_date_raw",
+        "queried_episode_run_id",
+        "queried_connection_generation",
+        "regiment_replenishment_records_v1",
+        "scoped_ordered_refill_inputs_v1",
+        "fixed_chunk0_preparation_inputs_v1"
+      ]
+    },
+    {
+      "kind": "existing_positive_prepare_target.v1",
+      "fields": [
+        "ordered_refill_entry_mode",
+        "input_basis",
+        "regi_full_id_u32",
+        "physical_slot",
+        "arrg_full_id_i32",
+        "army_full_id_i32",
+        "q_index",
+        "conditional_shared_q_i32",
+        "native_unit_position_eligible",
+        "selected_occurrence_stored_index",
+        "selected_write",
+        "ordered_occurrences",
+        "DATA_occurrences"
+      ]
+    },
+    {
+      "kind": "fresh_diagnostics",
+      "fields": [
+        "connected",
+        "bridge_pid",
+        "connection_generation",
+        "last_heartbeat.main_thread_query_mailbox_v1.owner_tid/current_tid",
+        "installed/ready/stamp_read_success/application_main_observed/paused_main_thread_observed/paused",
+        "stop=false/failure=0/date_raw"
+      ]
+    },
+    {
+      "kind": "Root_authority",
+      "existing_schema": "xar.ck3.refill_ADD_12004.live_owner_admission.v1",
+      "fields": [
+        "schema",
+        "machine_id",
+        "exact_executable_sha256",
+        "episode_run_id",
+        "scene_sequence",
+        "scene_run_id",
+        "new_live_build_and_SYSTEM_verified",
+        "next_scene_capacity_and_observer_admitted",
+        "source_dir",
+        "target",
+        "cmake_defines",
+        "carrier_bridge_source_epoch",
+        "carrier_source_and_runtime_verified",
+        "carrier_bridge_module_path",
+        "observer_exe",
+        "source_admission_receipt_sha256",
+        "observer_exe_sha256",
+        "build_result_sha256",
+        "SYSTEM_receipt_sha256"
+      ],
+      "must_not_fill_true_from_source_alone": true
+    },
+    {
+      "kind": "actual_sampling_control",
+      "fields": [
+        "regular_core enabled/epoch/scope readback",
+        "regular_core_full_carmy_ids exact selected subject",
+        "completed callback active0 before export"
+      ]
+    },
+    {
+      "kind": "launcher_and_native",
+      "fields": [
+        "prepared_live_argv.v2 and owner-binding.v2",
+        "actual hardware READY.v3",
+        "raw.start64B header",
+        "raw two selected trap records and native cleanup terminal",
+        "actual normal exit plus DR restore/detach"
+      ]
+    },
+    {
+      "kind": "independent_CoreEvent",
+      "existing_path": "actual_army_regular_core_observations_v1.events[]",
+      "fields": [
+        "one untouched full record with fullwire reference",
+        "observed/original_called/original_returned",
+        "entry/return provenance",
+        "core_carrier_published",
+        "matching token/ancestry/date/TID/event-clock/manager/GameState",
+        "complete selected seven-slot/DATA closure"
+      ],
+      "export_before_OFF_clear": true
+    }
+  ],
+  "existing_limits": {
+    "prepare_input_each_max_bytes": 2097152,
+    "core_event_max_bytes": 4194304,
+    "raw_max_bytes": 131072,
+    "binding_max_bytes": 16384,
+    "launcher_native_timeout_ms": 30000,
+    "cleanup_may_add_ms": 5000,
+    "launcher_wait_is_not_force_kill": true,
+    "native_argc": 20,
+    "native_parameter_flags": [
+      "--pid",
+      "--thread",
+      "--regiment",
+      "--slot",
+      "--created",
+      "--timeout-ms",
+      "--raw",
+      "--ready",
+      "--machine-id"
+    ],
+    "enable_flag": "--enable",
+    "DR_slots": [
+      0,
+      1
+    ],
+    "debug_hit_ceiling": 100000
+  },
+  "stop_rules": [
+    "No existing arrival callback can be recovered by arming later.",
+    "Use final shared q, not earlier calculated_q; two preparation alternatives are not added.",
+    "One authorized future natural opportunity only; next day is not guaranteed core/mask02/ADD.",
+    "No hit/no parent/timeout is unknown; no automatic extra day or rearm.",
+    "Missing exact CoreEvent rejects v4 join; no v3 downgrade or NET substitution.",
+    "Restore/detach and regular_core OFF/clear independent readback are required.",
+    "Root final source/cap/PID/observer allowance and exit reserve remain actual inputs."
+  ],
+  "held_native_functions": [
+    {
+      "id": "chunk2657EF0",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_observed_at_utc": "2026-10-15T18:57:16.941967+00:00",
+      "begin_rva": "0x2657ef0",
+      "end_rva_exclusive": "0x2658030",
+      "bytes": 320,
+      "sha256": "b3a395591951e838217d9f7fad5aec803f2684b9d2f86ce6074e6af069628e3c",
+      "full_function_hex": "4883ec288b01488bd185c00f8428010000448b4104443bc00f8d1b010000488b05536c6c034885c07429448b4908418bc981e1ffffff003b482c7317488b40204803c9488b44c8084885c07406443948107407488b050e6c6c03488b882001000083b988070000ff0f85cb000000837a1803750b4585c00f9fc04883c428c383b93c070000ff0f85ad000000488d4a10e81bf25bfe4c8bc0817814675272410f858d000000837810ff0f8483000000488b05a25e6c034885c0742b418b90400100008bca81e1ffffff003b482c7317488b40204803c94c8b44c8084d85c074064139501074074c8b05735e6c034180b8d40100000075424180b8ec010000007538498d8824010000e8232a49fe498bc84c8bc8e83803e9ff84c0751d4183b970010000007f13498bc9e8824ae5ff84c07407b0014883c428c332c04883c428c3",
+      "original_repo_relative_index": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/source-index.json",
+      "original_instructions_sha256": "3fdf0e6ee68b05f0a180fb544a7a7337f108141b3b37ffa30a1e15bb844427ec"
+    },
+    {
+      "id": "request262C9B0",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_observed_at_utc": "2026-10-15T18:57:16.941967+00:00",
+      "begin_rva": "262C9B0",
+      "end_rva_exclusive": "0x262caa5",
+      "bytes": 245,
+      "sha256": "e673e9d722ae706c075b998f78c04fe8f6a3b75787ecf9c4aa00517482e6eeaf",
+      "full_function_hex": "405341574883ec284d8bf8488bda4885d27f0a32c04883c428415f5bc348896c244048897c2450488d79184c89742420488daffc0000004532f6483bfd0f849700000048897424484883c7044c8964245849bc09e1d1c6116bf1290f1f440000488d4ffce8d7b4020084c07456486347fc4869d0a0860100837f14034c8bc07505833f0074028b0748984869c86079feff4803d14885d27e2a4c0fafc3498bc441b6014c3bc2490f4cd048f7ea48c1fa0e488bc248c1e83f4803d048634708418914874883c724488d4ffc483bcd75904c8b642458488b742448488b7c2450410fb6c64c8b742420488b6c24404883c428415f5bc3",
+      "original_repo_relative_index": "docs/ck3-native-ai/evidence/episode04-persistent-refill-eligibility-12004/source-index.json",
+      "original_instructions_sha256": "903d19730e81291de1283d5ffb968e6186bc0af746378a706d868615ce968b7d"
+    }
+  ],
+  "repo_source_refs": [
+    {
+      "bytes": 58611,
+      "sha256": "b039f1576e1277cb869003a48e454a6023fbf342ae5b24a6c3f7f5934a972dc3",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp",
+      "git_blob": "db1e97346f0e16919c9142b930c7aa48d76a93c3"
+    },
+    {
+      "bytes": 14828,
+      "sha256": "ba6566c39bc2e1ab6bc1044c14572b7fa002196adacf751fa206904ca2d958b9",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/src/army_natural_phase_scope_12004.cpp",
+      "git_blob": "43cf0c94f8c28ac07089209bfba0675e54cd7922"
+    },
+    {
+      "bytes": 2880,
+      "sha256": "79b03692cc9d87f6f9c4cdcd74f0445db31929d0daed020d24f70f482909cf53",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_observer_research_sampling_12004.hpp",
+      "git_blob": "0d39885f4e86290ed66939bf9872abc620afac5b"
+    },
+    {
+      "bytes": 20030,
+      "sha256": "3345621886f9a5cffabb5e45b62356ca20a872f72d54269941dff5aec89bdd37",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/prepare_live_refill_add.py",
+      "git_blob": "9b4c8d47afb5455acd01eea2100f31c047d0b5cf"
+    },
+    {
+      "bytes": 7056,
+      "sha256": "e62853f5ab41bc47a4bf9e0cbcfdac16fcea13c56205de14c4e3a4ecf40570b7",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/launch_live_refill_add.py",
+      "git_blob": "6346f18f468000d4fd7968c8fc26438fba1a08f2"
+    },
+    {
+      "bytes": 2346,
+      "sha256": "10c10d3d2700462972530494fd5ed5cea36aabd675181a3cae61d05623393da9",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py",
+      "git_blob": "2a9536c524b46c8d73865afa62c36bca186541a1"
+    },
+    {
+      "bytes": 44228,
+      "sha256": "0d2315a6f0e6c84837f4abb67b9f40d0af0f11d7ed8d4a969488bc9651dafbc2",
+      "repo_relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_instruction_local_refill_add_12004.py",
+      "git_blob": "3c99ed3295d1829b7c4e6e4845c11246655dff8a"
+    },
+    {
+      "bytes": 8963,
+      "sha256": "2f3283a7cf3806de5b91223d3d4f8922a230c1cc686e8ecd39757d722647bc13",
+      "repo_relative_path": "docs/ck3-native-ai/army-next-route-replenishment-position-condition-12004.md",
+      "git_blob": "cdd8573276c1a58b84047c765349768d304afe9e"
+    },
+    {
+      "bytes": 8195,
+      "sha256": "b6406a00f44682ffa8f4b917ca4786b3776a8718c03101cda8c5fc430b21f988",
+      "repo_relative_path": "docs/ck3-native-ai/army-natural-regular-core-entry-observation-12004.md",
+      "git_blob": "98befcea5d63a04dd0403eb2eb66b8f3cbddc4b8"
+    }
+  ],
+  "new_EXE_bytes_read": 0,
+  "SDK_calls": 0,
+  "native_builds": 0,
+  "main_or_index_modified": false,
+  "canonical_document_target": "docs/ck3-native-ai/episode04-friendly-refill-one-shot-12004.md",
+  "canonical_JSON_target": "docs/ck3-native-ai/evidence/episode04-friendly-refill-one-shot-12004/contract.json"
+}

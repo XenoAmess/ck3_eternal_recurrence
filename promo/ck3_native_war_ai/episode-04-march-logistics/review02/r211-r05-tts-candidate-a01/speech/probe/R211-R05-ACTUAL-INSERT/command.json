@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "ffprobe",
+    "-v",
+    "error",
+    "-show_streams",
+    "-show_format",
+    "-of",
+    "json",
+    "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/speech/R211-R05-ACTUAL-INSERT.mp3"
+  ],
+  "cwd": null,
+  "label": "probe media D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\R211-R05-ACTUAL-INSERT.mp3",
+  "partial_artifacts": [],
+  "schema_version": 1,
+  "shell": false
+}

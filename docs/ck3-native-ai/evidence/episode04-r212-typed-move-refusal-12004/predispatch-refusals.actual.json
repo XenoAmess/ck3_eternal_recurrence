@@ -1,0 +1,62 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T15:21:28.947689+00:00",
+  "original_red_preserved": true,
+  "records": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\county-actor-a02\\r212-county-bayeux-a02-r05obs-0013-MOVE-ONCE.actual-results.json",
+      "bytes": 750,
+      "sha256": "39294a44bc38e3e6f1fc0101c62d1d03319c2f0316b407e2f3454230b2f2375b",
+      "body": {
+        "rows": [
+          {
+            "id": "r212-county-bayeux-a02-r05obs-0013-MOVE-ONCE",
+            "plan": {
+              "id": "r212-county-bayeux-a02-r05obs-0013-MOVE-ONCE",
+              "tool": "ck3_move_army",
+              "args": {
+                "army_id": 0,
+                "target_province_id": 2170,
+                "expected_revision": 3
+              },
+              "fresh_revision": false,
+              "continue_on_error": true
+            },
+            "started_at": "2026-10-18T14:10:07.677040+00:00",
+            "ok": false,
+            "error": "RuntimeError: MCP tool ck3_move_army returned an error: Error executing tool ck3_move_army: typed native move requires a paused ready map and owned noncombat army",
+            "finished_at": "2026-10-18T14:10:08.164685+00:00"
+          }
+        ],
+        "business_PASS_inferred": false
+      }
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\county-actor-a03\\r212-county-bayeux-a03-r05obs-0014-MOVE-ONCE.actual-results.json",
+      "bytes": 731,
+      "sha256": "8cf3b41e2d7722faced76d5e8b083569e6a2a8809888d290fc0123a945170d6b",
+      "body": {
+        "rows": [
+          {
+            "id": "r212-county-bayeux-a03-r05obs-0014-MOVE-ONCE",
+            "plan": {
+              "id": "r212-county-bayeux-a03-r05obs-0014-MOVE-ONCE",
+              "tool": "ck3_execute_step",
+              "args": {
+                "step": "move-army-0-to-2170",
+                "expected_revision": 4
+              },
+              "fresh_revision": false,
+              "continue_on_error": true
+            },
+            "started_at": "2026-10-18T14:54:54.128467+00:00",
+            "ok": false,
+            "error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: native DLL does not implement gameplay step move-army-0-to-2170",
+            "finished_at": "2026-10-18T14:54:54.649509+00:00"
+          }
+        ],
+        "business_PASS_inferred": false
+      }
+    }
+  ]
+}

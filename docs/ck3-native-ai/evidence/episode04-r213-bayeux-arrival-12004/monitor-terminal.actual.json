@@ -1,0 +1,139 @@
+{
+  "schema": "xar.e04.r213-monitor-terminal-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T17:42:24.047812+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "source_head": "3661e495bc45490238992d3f2850e75558566922",
+  "county_typed_terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "status": "ARRIVED_TARGET_READONLY_CONSUMED",
+    "arrived": true,
+    "actual_days": 43,
+    "Move_attempts": 1,
+    "OFFclear": true,
+    "Save": true,
+    "errors": [],
+    "full_result_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\R04-BAYEUX-RESULT.json",
+    "finaldate": 53148408,
+    "finalprovince": 2170
+  },
+  "r06a01_typed_terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+    "actual_days": 0,
+    "actual_ADD_observed": false,
+    "OFFclear": true,
+    "Save": true,
+    "errors": []
+  },
+  "r06a02_typed_terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "status": "ONE_EXACT_DAY_NO_RETAINED_CORE_UNKNOWN",
+    "actual_days": 1,
+    "actual_ADD_observed": false,
+    "OFFclear": true,
+    "Save": true,
+    "errors": []
+  },
+  "preparation_only": {
+    "status": "READINESS_PILOT_ONLY",
+    "business_pass": false
+  },
+  "game_lifecycle": {
+    "normal_close_qualified": true,
+    "actual_retained_os0": true,
+    "retained_exit_code": 0,
+    "native_process_exit_code": 0,
+    "native_shutdown_ok": true,
+    "native_tree_gone": true,
+    "native_job_active_final": 0,
+    "cleanup_ok": true,
+    "managed_thread_finished": true,
+    "host_error": null
+  },
+  "host_original_exit": {
+    "at_utc": "2026-10-18T17:41:46.548030+00:00",
+    "pid": 37208,
+    "returncode": 0,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "launcher_exit_code": 0,
+  "native_report_header": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\native-report.json",
+    "bytes_stat_only": 39622388,
+    "prefix_bytes_read": 256,
+    "fields": {
+      "status": "GREEN",
+      "phase": "hold"
+    },
+    "body_read_or_hashed": false
+  },
+  "modal_boundary": {
+    "county_named_decision_file_count": 0,
+    "county_large_result_modals_not_read": true,
+    "zero_packet_count_does_not_prove_zero_game_events": true
+  },
+  "monitor_storage": {
+    "journal_through_day": 37,
+    "later_days_read_from_originals_in_memory": true,
+    "original_daily_files_retained": true
+  },
+  "business_research_count_incremented_by_monitor": false,
+  "keeper_allocator_CAS_release_assessed": false,
+  "SDK_GUI_queue_or_main_write": false,
+  "small_originals": {
+    "ready": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\ready-context.json",
+      "bytes": 5865,
+      "sha256": "d3d9bb98070522813d404af18945bfaf99dbf872e04b22f9981a5637383fe218"
+    },
+    "readiness": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\readiness-window-result.json",
+      "bytes": 1596,
+      "sha256": "60702a0b5b6f3976d5bd3f1469f9605bedddbef857b3256517babcbc9d6be5c2"
+    },
+    "preparation": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-common-preparation-result.json",
+      "bytes": 4314,
+      "sha256": "1c1a63f3bf1bf21e546ee64e0d7aae0b4a504b455527f6c84d388e3cd800adfe"
+    },
+    "county": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\R04-BAYEUX-TERMINAL.json",
+      "bytes": 442,
+      "sha256": "bf8bc438d17813c8f9ac18dedfadbc134a60547a5e69860234329f63cbafc587"
+    },
+    "r06a01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a01\\R06-ONE-DAY-TERMINAL.json",
+      "bytes": 202,
+      "sha256": "8fdf2c32a55560affb86fd6189cdf608105dc488cc42926a2520f5a6c143edd3"
+    },
+    "r06a02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-TERMINAL.json",
+      "bytes": 207,
+      "sha256": "cf0e1ef7f7e471453699110e75c839bf32e65f110ff4d9ec50b189f79b92ef19"
+    },
+    "normal_close": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\normal-close-result.json",
+      "bytes": 9989,
+      "sha256": "785d3489c167c099cf264ea210fff6f74f022619f127d57aa7bfc89c0c6b2388"
+    },
+    "retained_exit": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "4678eba8a21315f8874962e3e38f30c52f9ea72ec31b24485d470551ebd811f4"
+    },
+    "host_exit": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "18380030fd350bd7978c285daba2a2d14ed505d2b66eae45993d422137b8cd07"
+    },
+    "entry": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\entry-run-result.json",
+      "bytes": 24231,
+      "sha256": "9aef649ff9aaa5770ce1cfc99b2b33051cb54c418b1b99256e456434bccd0161"
+    }
+  }
+}

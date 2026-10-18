@@ -1,0 +1,79 @@
+{
+  "schema": "xar.r212.typed-native-campaign-final.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observer_machine_id": "desktop-3fevhd2-1c74096080",
+  "ci_execution_machine_id": "unknown",
+  "observed_at_utc": "2026-10-18T15:50:44.687588+00:00",
+  "master": "3661e495bc45490238992d3f2850e75558566922",
+  "source_only_repair": true,
+  "source_write_purpose_closed": true,
+  "ci_purpose_closed": true,
+  "observer_process_exit": 0,
+  "new_ci_observer_after_18_30_grant_started": false,
+  "reason": "Same run completed naturally during polling interval switch; no process termination or workflow rerun occurred.",
+  "official": {
+    "conclusion": "success",
+    "databaseId": 39140381053,
+    "headSha": "3661e495bc45490238992d3f2850e75558566922",
+    "name": "Official Runner CI",
+    "status": "completed",
+    "updatedAt": "2026-10-18T15:49:33Z",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39140381053"
+  },
+  "linear": {
+    "conclusion": "success",
+    "databaseId": 39140381036,
+    "headSha": "3661e495bc45490238992d3f2850e75558566922",
+    "name": "Linear history",
+    "status": "completed",
+    "updatedAt": "2026-10-18T15:25:49Z",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39140381036"
+  },
+  "canonical_new_compound_pass": true,
+  "post_rebase_compound_pass": true,
+  "repair_scope": [
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "ck3_autonomous_player/tests/unit/test_typed_generic_province_move.py"
+  ],
+  "native_tree_unchanged": "4ec333de8724ea6aa9a5e6e6cc99b67fef419d25",
+  "actual_old_move_refusals_preserved": true,
+  "live_move_qualification": false,
+  "new_sdk_calls": 0,
+  "new_native_builds": 0,
+  "machine_boundary": "Local machine identifies the observer and offline test execution. Hosted CI runner machine was not independently assigned a ck3_live_run_id machine identity.",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\PUSHED.actual.json",
+      "bytes": 1085,
+      "sha256": "eb44a6034e788c50990ed6248a21c069324606eb50f2cd7419143701e279ca35"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\SOURCE-WRITES-CLOSED.actual.json",
+      "bytes": 1838,
+      "sha256": "fb92b38a35374f232edb42c9e20d39cb09cc7d9e3957000a0a0b533c4e355330"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\CI-FINAL.actual.json",
+      "bytes": 1064,
+      "sha256": "fba7eba103d57470e56f72e79e07db9b44f66b1eeddb87afdf5eb196a8198e80"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\MAIN-APPLIED.actual.json",
+      "bytes": 1815,
+      "sha256": "6a7aafe56c6b973570c106a1a73340206313dcae3f8e60e5c2bc82fb2824239b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\POST-REBASE-FOCUSED.stdout.txt",
+      "bytes": 315,
+      "sha256": "c6421ec5395f7d60595b36c307df4ce8c2ec9069b14c89c156e862c46a1a9650"
+    }
+  ],
+  "independent_review": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r213-typed-move-independent-review-a01/DELIVERY.actual.json",
+    "bytes": 2383,
+    "sha256": "fac992c050d550ad7b89edba72784def847d0609c84d1f2ca21e9109bf30667f",
+    "owner_reported": "No P0/P1; source only, no repeated test/SDK"
+  },
+  "knowledge_next_release_queue": "C:/ck3-e04-resume-20261015-a01/r212-sealed-portable-intake-prep-a01/NEXT-KNOWLEDGE-QUEUE.actual-a02.json",
+  "c_owned_bytes_before_final_receipts": 138568
+}

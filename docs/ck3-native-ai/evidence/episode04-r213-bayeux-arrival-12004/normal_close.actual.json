@@ -1,0 +1,232 @@
+{
+  "root_normal_gui_review": {
+    "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "reviewer": "/root",
+    "pid": 27056,
+    "create_time": 1792338019.838657,
+    "original_hold_deadline": 1792345680.3129077,
+    "quit_request": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\normal-quit-awaiting.json",
+      "bytes": 674,
+      "sha256": "a16d8205aa65a7480b4f221ae0fc464fa9351b8c71faa6beb1163eb9b2263260"
+    },
+    "normal_gui_quit": true,
+    "direct_reviewed": true,
+    "review_method": "explicit operator direct image review; no automatic image-content judgment",
+    "autosave_unchecked_observed": true,
+    "autosave_unchecked_screenshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-unchecked-original-a02.png",
+      "bytes": 1454860,
+      "sha256": "c4354f70aa8003ab22812d29849924fd4b4fae0de065ee191a946a32635ac74f"
+    },
+    "final_click": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png.json",
+      "bytes": 1419,
+      "sha256": "6877f6dbb051e18a8a4efa581ba1a5edec730d077b8f66f7bf3bcd2aa644dd5b"
+    },
+    "after_click_screenshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png",
+      "bytes": 1455322,
+      "sha256": "82090c9e0b775e52b60d75b8f0ea4e2b5f2ef77309e4882f73850182ae315a91"
+    },
+    "evidence": [
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-unchecked-original-a02.png",
+        "bytes": 1454860,
+        "sha256": "c4354f70aa8003ab22812d29849924fd4b4fae0de065ee191a946a32635ac74f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png.json",
+        "bytes": 1419,
+        "sha256": "6877f6dbb051e18a8a4efa581ba1a5edec730d077b8f66f7bf3bcd2aa644dd5b"
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png",
+        "bytes": 1455322,
+        "sha256": "82090c9e0b775e52b60d75b8f0ea4e2b5f2ef77309e4882f73850182ae315a91"
+      }
+    ],
+    "actual_os0_proven": false,
+    "actual_native0_proven": false,
+    "process_exit_claimed": false,
+    "business_pass": false
+  },
+  "operator_normal_gui_review": {
+    "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "reviewer": "/root",
+    "pid": 27056,
+    "create_time": 1792338019.838657,
+    "original_hold_deadline": 1792345680.3129077,
+    "quit_request": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\normal-quit-awaiting.json",
+      "bytes": 674,
+      "sha256": "a16d8205aa65a7480b4f221ae0fc464fa9351b8c71faa6beb1163eb9b2263260"
+    },
+    "normal_gui_quit": true,
+    "direct_reviewed": true,
+    "review_method": "explicit operator direct image review; no automatic image-content judgment",
+    "autosave_unchecked_observed": true,
+    "autosave_unchecked_screenshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-unchecked-original-a02.png",
+      "bytes": 1454860,
+      "sha256": "c4354f70aa8003ab22812d29849924fd4b4fae0de065ee191a946a32635ac74f"
+    },
+    "final_click": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png.json",
+      "bytes": 1419,
+      "sha256": "6877f6dbb051e18a8a4efa581ba1a5edec730d077b8f66f7bf3bcd2aa644dd5b"
+    },
+    "after_click_screenshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png",
+      "bytes": 1455322,
+      "sha256": "82090c9e0b775e52b60d75b8f0ea4e2b5f2ef77309e4882f73850182ae315a91"
+    },
+    "evidence": [
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-unchecked-original-a02.png",
+        "bytes": 1454860,
+        "sha256": "c4354f70aa8003ab22812d29849924fd4b4fae0de065ee191a946a32635ac74f"
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png.json",
+        "bytes": 1419,
+        "sha256": "6877f6dbb051e18a8a4efa581ba1a5edec730d077b8f66f7bf3bcd2aa644dd5b"
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\close-final-click-a01.png",
+        "bytes": 1455322,
+        "sha256": "82090c9e0b775e52b60d75b8f0ea4e2b5f2ef77309e4882f73850182ae315a91"
+      }
+    ],
+    "actual_os0_proven": false,
+    "actual_native0_proven": false,
+    "process_exit_claimed": false,
+    "business_pass": false
+  },
+  "normal_quit_automation": null,
+  "normal_quit_automation_failure_preserved": null,
+  "retained_handle": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 27056,
+    "create_time": 1792338019.838657,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "native_zero_proof": {
+    "status": "not_applicable",
+    "reason": "finished_native_process_exit_zero_cleanup_proven",
+    "alive_or_business_credit": false,
+    "managed_session_done": true,
+    "pid": 27056,
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "started_at": "2026-10-18T15:40:17.829752+00:00",
+    "finished_at": "2026-10-18T17:40:24.906966+00:00",
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "7733996253bc481e96a526115a8c59c0",
+      "ck3_pid": 27056,
+      "ck3_creation_date": "20261018154019.838656+000",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 24656,
+      "watchdog_creation_date": "20261018154018.678287+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\ck3.json": true,
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\watchdog-7733996253bc481e96a526115a8c59c0.ready.json": true,
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\ck3.watchdog_error": true,
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "finish_hold_rows": [
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "plan": {
+        "id": "acceptance-normal-exit-finish-hold",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "started_at": "2026-10-18T17:41:41.262775+00:00",
+      "ok": true,
+      "result": {
+        "hold_finished": true
+      },
+      "resolved_expect": {
+        "hold_finished": true
+      },
+      "after_snapshot": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 27056,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0208",
+        "started_at": "2026-10-18T15:40:17.829752+00:00",
+        "finished_at": "2026-10-18T17:40:24.906966+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "7733996253bc481e96a526115a8c59c0",
+          "ck3_pid": 27056,
+          "ck3_creation_date": "20261018154019.838656+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 24656,
+          "watchdog_creation_date": "20261018154018.678287+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\ck3.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\watchdog-7733996253bc481e96a526115a8c59c0.ready.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\ck3.watchdog_error": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finished_at": "2026-10-18T17:41:42.154551+00:00"
+    }
+  ],
+  "host_finished_at": "2026-10-18T17:41:44.939805+00:00",
+  "managed_thread_finished": true,
+  "cleanup_ok": true,
+  "host_error": null,
+  "failure_shutdown_proof": null,
+  "failure_preserved": false,
+  "failure_lifecycle_completed": false,
+  "business_pass": false,
+  "normal_close_qualified": true
+}

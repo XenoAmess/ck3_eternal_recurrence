@@ -1,0 +1,936 @@
+{
+  "schema": "xar.e04.r212-r213-portable-small-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-18T17:55:54.730191+00:00",
+  "integration_base": "2ff430b5984c47a54d345767640984f24f44d2c4",
+  "runtime_source": "3661e495bc45490238992d3f2850e75558566922",
+  "files": [
+    {
+      "target": "docs/ck3-native-ai/episode04-r212-native-campaign-typed-move-refusal-12004.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-sealed-portable-intake-prep-a01\\payload\\typed-review-with-identity-note.md",
+        "bytes": 6060,
+        "sha256": "77b11fb985eb07e8b1af8434c1cf8aef5a34dfda804859198577ceb24e9570e0"
+      },
+      "canonical_postimage": {
+        "bytes": 6523,
+        "sha256": "87517cc511acc6dba485f3954b47587f10e5e0d6f74643b8e33f0a3ef6ca6a63"
+      },
+      "exact_source_copy": false
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r212-typed-move-refusal-12004/DELIVERY.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-source-review-a01\\DELIVERY.actual.json",
+        "bytes": 3303,
+        "sha256": "4b0bf9a976384a00841153b78f49afc3579cf94d5fa66ad8054d484ad68837df"
+      },
+      "canonical_postimage": {
+        "bytes": 3303,
+        "sha256": "4b0bf9a976384a00841153b78f49afc3579cf94d5fa66ad8054d484ad68837df"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/ROOT-DELIVERY.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\ROOT-DELIVERY.actual.json",
+        "bytes": 5208,
+        "sha256": "043025f62db6ed79df011870d47394442b3d22f18f33f6383e18950f6a844d5d"
+      },
+      "canonical_postimage": {
+        "bytes": 5208,
+        "sha256": "043025f62db6ed79df011870d47394442b3d22f18f33f6383e18950f6a844d5d"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/NEW-CUE.candidate.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\NEW-CUE.candidate.json",
+        "bytes": 3673,
+        "sha256": "2cfbebd0e6a37ee841bac4f244a041482ed51e51da348b70bdf3fce9dad17988"
+      },
+      "canonical_postimage": {
+        "bytes": 3673,
+        "sha256": "2cfbebd0e6a37ee841bac4f244a041482ed51e51da348b70bdf3fce9dad17988"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/TOOLCHAIN.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\TOOLCHAIN.actual.json",
+        "bytes": 1826,
+        "sha256": "384754c145d399d8bd9afb012ce51b8f59c2bde0a51c58ff4284790c55ec4fbb"
+      },
+      "canonical_postimage": {
+        "bytes": 1826,
+        "sha256": "384754c145d399d8bd9afb012ce51b8f59c2bde0a51c58ff4284790c55ec4fbb"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/subtitles/newcue.zh-CN.provider-timed.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\subtitles\\newcue.zh-CN.provider-timed.json",
+        "bytes": 1628,
+        "sha256": "36b4ac00d7d740d0038dae2d2287d1d3a0b40990bf2b3537e1116aeaf98325c5"
+      },
+      "canonical_postimage": {
+        "bytes": 1628,
+        "sha256": "36b4ac00d7d740d0038dae2d2287d1d3a0b40990bf2b3537e1116aeaf98325c5"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/subtitles/newcue.zh-CN.provider-timed.srt",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\subtitles\\newcue.zh-CN.provider-timed.srt",
+        "bytes": 393,
+        "sha256": "acb5003717c2ea70c16ea35234130bbc84dcc121930b17057bc71e270a5f937a"
+      },
+      "canonical_postimage": {
+        "bytes": 393,
+        "sha256": "acb5003717c2ea70c16ea35234130bbc84dcc121930b17057bc71e270a5f937a"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/speech/production-inputs.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\production-inputs.json",
+        "bytes": 2017,
+        "sha256": "977711cf02e076ddd7e0e615c690a02c20c5732942ad90f796c27e963cc07898"
+      },
+      "canonical_postimage": {
+        "bytes": 2017,
+        "sha256": "977711cf02e076ddd7e0e615c690a02c20c5732942ad90f796c27e963cc07898"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/speech/R211-R05-ACTUAL-INSERT.request.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\R211-R05-ACTUAL-INSERT.request.json",
+        "bytes": 424,
+        "sha256": "303a63a46af5e71153fa6d050a48ca0512558283592da00110fe944923e013a2"
+      },
+      "canonical_postimage": {
+        "bytes": 424,
+        "sha256": "303a63a46af5e71153fa6d050a48ca0512558283592da00110fe944923e013a2"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/speech/R211-R05-ACTUAL-INSERT.boundaries.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\R211-R05-ACTUAL-INSERT.boundaries.json",
+        "bytes": 612,
+        "sha256": "6ef384dfe34af950ee30eef2adf515264d0221b5155af479c0f38540a2e65d93"
+      },
+      "canonical_postimage": {
+        "bytes": 612,
+        "sha256": "6ef384dfe34af950ee30eef2adf515264d0221b5155af479c0f38540a2e65d93"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/commands/official_latest_query.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\commands\\official_latest_query.actual.json",
+        "bytes": 7990,
+        "sha256": "9441a66b0ef28029012620696f82e89c051e5e5f8636c2e1e8d3f331036ff00c"
+      },
+      "canonical_postimage": {
+        "bytes": 7990,
+        "sha256": "9441a66b0ef28029012620696f82e89c051e5e5f8636c2e1e8d3f331036ff00c"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/commands/tts_provider.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\commands\\tts_provider.actual.json",
+        "bytes": 1005,
+        "sha256": "3149fd6b728ae3d96599ab6204dd396238a9fc17d0d7e9ccb3926291827c1a75"
+      },
+      "canonical_postimage": {
+        "bytes": 1005,
+        "sha256": "3149fd6b728ae3d96599ab6204dd396238a9fc17d0d7e9ccb3926291827c1a75"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/project/promo-project.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\project\\promo-project.json",
+        "bytes": 1428,
+        "sha256": "2b7d83d8f133ad2de75426afdacbc6664a884584ca3da3a5eec87c7883c17745"
+      },
+      "canonical_postimage": {
+        "bytes": 1428,
+        "sha256": "2b7d83d8f133ad2de75426afdacbc6664a884584ca3da3a5eec87c7883c17745"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/inputs/newcue.zh-CN.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\inputs\\newcue.zh-CN.json",
+        "bytes": 524,
+        "sha256": "3fadd803637b22b622584cdf666c5c6ff9b55628ee8c6319fd7d40c042bcf694"
+      },
+      "canonical_postimage": {
+        "bytes": 524,
+        "sha256": "3fadd803637b22b622584cdf666c5c6ff9b55628ee8c6319fd7d40c042bcf694"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/inputs/newshot.timeline.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\inputs\\newshot.timeline.json",
+        "bytes": 212,
+        "sha256": "51a78842680b1c11d8d70d71567aab4f338f4f207c8970297ba4dd385712df77"
+      },
+      "canonical_postimage": {
+        "bytes": 212,
+        "sha256": "51a78842680b1c11d8d70d71567aab4f338f4f207c8970297ba4dd385712df77"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/run/run-manifest.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\run\\run-manifest.json",
+        "bytes": 3509,
+        "sha256": "7ba0bda1afd63e8817059d25d31f0e3dbe25e9c8de2ec1de89898b3f73b3864b"
+      },
+      "canonical_postimage": {
+        "bytes": 3509,
+        "sha256": "7ba0bda1afd63e8817059d25d31f0e3dbe25e9c8de2ec1de89898b3f73b3864b"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/speech/probe/R211-R05-ACTUAL-INSERT/command.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\probe\\R211-R05-ACTUAL-INSERT\\command.json",
+        "bytes": 448,
+        "sha256": "8e67c30be1b3003955a8bcc31320e21257e5862e6706d6916545e56a989d2a08"
+      },
+      "canonical_postimage": {
+        "bytes": 448,
+        "sha256": "8e67c30be1b3003955a8bcc31320e21257e5862e6706d6916545e56a989d2a08"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/speech/probe/R211-R05-ACTUAL-INSERT/result.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\probe\\R211-R05-ACTUAL-INSERT\\result.json",
+        "bytes": 149,
+        "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+      },
+      "canonical_postimage": {
+        "bytes": 149,
+        "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/speech/R211-R05-ACTUAL-INSERT.mp3",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech\\R211-R05-ACTUAL-INSERT.mp3",
+        "bytes": 136656,
+        "sha256": "58c465f14ea737d85e4286a3976893a550c5470a182f6c10e74ecb515e77ca21"
+      },
+      "canonical_postimage": {
+        "bytes": 136656,
+        "sha256": "58c465f14ea737d85e4286a3976893a550c5470a182f6c10e74ecb515e77ca21"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/source-index.integration-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-sealed-portable-intake-prep-a01\\payload\\tts-source-index.prepared.json",
+        "bytes": 5594,
+        "sha256": "f0fd9df25d65a7a15d18d33b6529e83c58b818ec272bb1f95ef443b1cc672cb6"
+      },
+      "canonical_postimage": {
+        "bytes": 5594,
+        "sha256": "f0fd9df25d65a7a15d18d33b6529e83c58b818ec272bb1f95ef443b1cc672cb6"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/README.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-sealed-portable-intake-prep-a01\\payload\\tts-README.md",
+        "bytes": 1413,
+        "sha256": "90fb1495fc1e686ee15514aa40881f0ae179d786dab734efcfab8baa81e0d943"
+      },
+      "canonical_postimage": {
+        "bytes": 1744,
+        "sha256": "eed85f39a28df56ec9ce7c0a154ea33ff10e834b0bebedb166db8fadac4eb6d9"
+      },
+      "exact_source_copy": false
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/media-review.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r212-county-readiness-a01\\media-probe-take02-a01\\MEDIA-REVIEW.actual.json",
+        "bytes": 2914,
+        "sha256": "875ec51a170aa750b129a8d76ed9a4bf03e6e99d34d2e60936d4e03da762158b"
+      },
+      "canonical_postimage": {
+        "bytes": 2914,
+        "sha256": "875ec51a170aa750b129a8d76ed9a4bf03e6e99d34d2e60936d4e03da762158b"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/probe.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r212-county-readiness-a01\\media-probe-take02-a01\\PROBE.actual.json",
+        "bytes": 5468,
+        "sha256": "4a669a9030a1a62968b4b9c355fd100b00b654233f58e42d974b1f1f6033260b"
+      },
+      "canonical_postimage": {
+        "bytes": 5468,
+        "sha256": "4a669a9030a1a62968b4b9c355fd100b00b654233f58e42d974b1f1f6033260b"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/film-terminal.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r212-county-readiness-a01\\R212-WINDOW-TAKE02-film-result.actual.json",
+        "bytes": 1834,
+        "sha256": "1e7611cec2f193c3bc9d1e0096a8331881e8a0c1e8354b8df41a2f4e59d12596"
+      },
+      "canonical_postimage": {
+        "bytes": 1834,
+        "sha256": "1e7611cec2f193c3bc9d1e0096a8331881e8a0c1e8354b8df41a2f4e59d12596"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/actor-terminal.original.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\county-actor-a02\\R04-BAYEUX-TERMINAL.json",
+        "bytes": 443,
+        "sha256": "7eefe90b7576d7c1677480bbbebe16200f396f52b79fdad90e4e91c462bcd4fc"
+      },
+      "canonical_postimage": {
+        "bytes": 443,
+        "sha256": "7eefe90b7576d7c1677480bbbebe16200f396f52b79fdad90e4e91c462bcd4fc"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/recorder-result.original.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r212-county-readiness-a01\\raw-r212\\take02\\result.json",
+        "bytes": 2026,
+        "sha256": "1c86dbdc9180457b671ac753b2d552ce3bc8f0c247f60b967cff2413b72f6627"
+      },
+      "canonical_postimage": {
+        "bytes": 2026,
+        "sha256": "1c86dbdc9180457b671ac753b2d552ce3bc8f0c247f60b967cff2413b72f6627"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/source-index.integration-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-sealed-portable-intake-prep-a01\\payload\\media-source-index.prepared.json",
+        "bytes": 3564,
+        "sha256": "7bfd2619f66f22e38fd769fd3e4e0f5be3bf505882d7114cbcab084fa41dd813"
+      },
+      "canonical_postimage": {
+        "bytes": 3564,
+        "sha256": "7bfd2619f66f22e38fd769fd3e4e0f5be3bf505882d7114cbcab084fa41dd813"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take02/README.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-sealed-portable-intake-prep-a01\\payload\\media-README.md",
+        "bytes": 1037,
+        "sha256": "174fa650d9f256639bfe001fa4133895e9d8de0723188ebf87253181d4faf410"
+      },
+      "canonical_postimage": {
+        "bytes": 1037,
+        "sha256": "174fa650d9f256639bfe001fa4133895e9d8de0723188ebf87253181d4faf410"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/episode04-r08-settlement-parent-order-12004.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\KNOWLEDGE.md",
+        "bytes": 6565,
+        "sha256": "80de73df38f65fdb1ffe61333200e8d3bd5affd0c3fe6a5f130b3570f0f11ae3"
+      },
+      "canonical_postimage": {
+        "bytes": 6565,
+        "sha256": "80de73df38f65fdb1ffe61333200e8d3bd5affd0c3fe6a5f130b3570f0f11ae3"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-parent-order-12004/PARENT-ORDER-SOURCE.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\PARENT-ORDER-SOURCE.actual.json",
+        "bytes": 16523,
+        "sha256": "225e299acfa16f158407a0a1d63bbfc7a6d6d24f044e7c33d4334305fb5d378b"
+      },
+      "canonical_postimage": {
+        "bytes": 16523,
+        "sha256": "225e299acfa16f158407a0a1d63bbfc7a6d6d24f044e7c33d4334305fb5d378b"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-parent-order-12004/verify_parent_order.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\verify_parent_order.py",
+        "bytes": 7126,
+        "sha256": "dd41c75f7d3b55bfa0234543351f292c98716eb820c6f43aeb1f40a894414ff3"
+      },
+      "canonical_postimage": {
+        "bytes": 7126,
+        "sha256": "dd41c75f7d3b55bfa0234543351f292c98716eb820c6f43aeb1f40a894414ff3"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-parent-order-12004/FACTS.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\FACTS.actual.json",
+        "bytes": 2772,
+        "sha256": "796163d9a005c4096a001a66344d46d1a3894345d4d333b883d27c22ff5dedd7"
+      },
+      "canonical_postimage": {
+        "bytes": 2772,
+        "sha256": "796163d9a005c4096a001a66344d46d1a3894345d4d333b883d27c22ff5dedd7"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r08-parent-order-12004/VIDEO-CLAIMS.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\VIDEO-CLAIMS.actual.json",
+        "bytes": 1205,
+        "sha256": "2efc806b524384edf1881ed2764d2517c118c844850f5bc8e174ab7419481d34"
+      },
+      "canonical_postimage": {
+        "bytes": 1205,
+        "sha256": "2efc806b524384edf1881ed2764d2517c118c844850f5bc8e174ab7419481d34"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r212-typed-move-refusal-12004/predispatch-refusals.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\ACTUAL-PREDISPATCH-REFUSALS.readonly.json",
+        "bytes": 2652,
+        "sha256": "43400ef7a74f825fd4dc82c1f66e348dcdaf856f361f874910f6fa5fdddb2654"
+      },
+      "canonical_postimage": {
+        "bytes": 2652,
+        "sha256": "43400ef7a74f825fd4dc82c1f66e348dcdaf856f361f874910f6fa5fdddb2654"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r212-typed-move-refusal-12004/source-repair.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-native-campaign-fix-a01\\ROOT-DELIVERY.final.json",
+        "bytes": 3672,
+        "sha256": "84d3d4ff558a7711a809136b845bd5af05ce2633e1cc55845cc00321bab88dcc"
+      },
+      "canonical_postimage": {
+        "bytes": 3672,
+        "sha256": "84d3d4ff558a7711a809136b845bd5af05ce2633e1cc55845cc00321bab88dcc"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r212-typed-move-refusal-12004/host-exit-reason.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-host-exit-reason-a01\\R212-HOST-EXIT-REASON.actual-a01.json",
+        "bytes": 9975,
+        "sha256": "3a69205dc1da7d0187eb897c9c1bc80b5c57fb794c4d7050ae1a4a0e456f3430"
+      },
+      "canonical_postimage": {
+        "bytes": 9975,
+        "sha256": "3a69205dc1da7d0187eb897c9c1bc80b5c57fb794c4d7050ae1a4a0e456f3430"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take03/MEDIA-REVIEW.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r212-county-readiness-a01\\media-probe-take03-a01\\MEDIA-REVIEW.actual.json",
+        "bytes": 2766,
+        "sha256": "607d2702a1b86440f39c3d8a01cf9d3ff2d35a05269f627a299977d30c11d1b8"
+      },
+      "canonical_postimage": {
+        "bytes": 2766,
+        "sha256": "607d2702a1b86440f39c3d8a01cf9d3ff2d35a05269f627a299977d30c11d1b8"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r212-window-take03/PROBE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r212-county-readiness-a01\\media-probe-take03-a01\\PROBE.actual.json",
+        "bytes": 5477,
+        "sha256": "736fb92f4941505af886a063a823b2d5f950727262d292d599e3463363d32ce8"
+      },
+      "canonical_postimage": {
+        "bytes": 5477,
+        "sha256": "736fb92f4941505af886a063a823b2d5f950727262d292d599e3463363d32ce8"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/monitor-terminal.actual.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r213-county-monitor-a01\\R213-MONITOR-TERMINAL.actual-a06.json",
+        "bytes": 5877,
+        "sha256": "885c1622699edc54ad1088a5bacc0936a67e4d7dff748be26da0e537c509cfd3"
+      },
+      "canonical_postimage": {
+        "bytes": 5877,
+        "sha256": "885c1622699edc54ad1088a5bacc0936a67e4d7dff748be26da0e537c509cfd3"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/ready.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\ready-context.json",
+        "bytes": 5865,
+        "sha256": "d3d9bb98070522813d404af18945bfaf99dbf872e04b22f9981a5637383fe218"
+      },
+      "canonical_postimage": {
+        "bytes": 5865,
+        "sha256": "d3d9bb98070522813d404af18945bfaf99dbf872e04b22f9981a5637383fe218"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/readiness.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\readiness-window-result.json",
+        "bytes": 1596,
+        "sha256": "60702a0b5b6f3976d5bd3f1469f9605bedddbef857b3256517babcbc9d6be5c2"
+      },
+      "canonical_postimage": {
+        "bytes": 1596,
+        "sha256": "60702a0b5b6f3976d5bd3f1469f9605bedddbef857b3256517babcbc9d6be5c2"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/preparation.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-common-preparation-result.json",
+        "bytes": 4314,
+        "sha256": "1c1a63f3bf1bf21e546ee64e0d7aae0b4a504b455527f6c84d388e3cd800adfe"
+      },
+      "canonical_postimage": {
+        "bytes": 4314,
+        "sha256": "1c1a63f3bf1bf21e546ee64e0d7aae0b4a504b455527f6c84d388e3cd800adfe"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/county.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\R04-BAYEUX-TERMINAL.json",
+        "bytes": 442,
+        "sha256": "bf8bc438d17813c8f9ac18dedfadbc134a60547a5e69860234329f63cbafc587"
+      },
+      "canonical_postimage": {
+        "bytes": 442,
+        "sha256": "bf8bc438d17813c8f9ac18dedfadbc134a60547a5e69860234329f63cbafc587"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/r06a01.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a01\\R06-ONE-DAY-TERMINAL.json",
+        "bytes": 202,
+        "sha256": "8fdf2c32a55560affb86fd6189cdf608105dc488cc42926a2520f5a6c143edd3"
+      },
+      "canonical_postimage": {
+        "bytes": 202,
+        "sha256": "8fdf2c32a55560affb86fd6189cdf608105dc488cc42926a2520f5a6c143edd3"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/r06a02.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-TERMINAL.json",
+        "bytes": 207,
+        "sha256": "cf0e1ef7f7e471453699110e75c839bf32e65f110ff4d9ec50b189f79b92ef19"
+      },
+      "canonical_postimage": {
+        "bytes": 207,
+        "sha256": "cf0e1ef7f7e471453699110e75c839bf32e65f110ff4d9ec50b189f79b92ef19"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/normal_close.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\normal-close-result.json",
+        "bytes": 9989,
+        "sha256": "785d3489c167c099cf264ea210fff6f74f022619f127d57aa7bfc89c0c6b2388"
+      },
+      "canonical_postimage": {
+        "bytes": 9989,
+        "sha256": "785d3489c167c099cf264ea210fff6f74f022619f127d57aa7bfc89c0c6b2388"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/retained_exit.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 178,
+        "sha256": "4678eba8a21315f8874962e3e38f30c52f9ea72ec31b24485d470551ebd811f4"
+      },
+      "canonical_postimage": {
+        "bytes": 178,
+        "sha256": "4678eba8a21315f8874962e3e38f30c52f9ea72ec31b24485d470551ebd811f4"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/host_exit.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\host-original-process-exit.json",
+        "bytes": 245,
+        "sha256": "18380030fd350bd7978c285daba2a2d14ed505d2b66eae45993d422137b8cd07"
+      },
+      "canonical_postimage": {
+        "bytes": 245,
+        "sha256": "18380030fd350bd7978c285daba2a2d14ed505d2b66eae45993d422137b8cd07"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/MOVEMENT-PROGRESS.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r213-movement-edge-analysis-a01\\MOVEMENT-PROGRESS.actual-a01.json",
+        "bytes": 7522,
+        "sha256": "abb093216df2b761353f1e4c60b4007d5d64c3043d4480c371cb8c316a396b4a"
+      },
+      "canonical_postimage": {
+        "bytes": 7522,
+        "sha256": "abb093216df2b761353f1e4c60b4007d5d64c3043d4480c371cb8c316a396b4a"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/MOVEMENT-FIRST-SEA-EDGE.actual-a02.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r213-movement-edge-analysis-a01\\MOVEMENT-FIRST-SEA-EDGE.actual-a02.json",
+        "bytes": 1813,
+        "sha256": "e1998951750bca84c72c75c3532ebd357bf6562f33744e06ac5ac766ee693cc4"
+      },
+      "canonical_postimage": {
+        "bytes": 1813,
+        "sha256": "e1998951750bca84c72c75c3532ebd357bf6562f33744e06ac5ac766ee693cc4"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/R213-REFILL-ONE-DAY.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r213-refill-one-day-a01\\R213-REFILL-ONE-DAY.actual-a01.json",
+        "bytes": 6639,
+        "sha256": "e9eed41b10c7327dbc2abcdd96cc227ddf2b0f6cbf5efc33b9c6bc9746fabc96"
+      },
+      "canonical_postimage": {
+        "bytes": 6639,
+        "sha256": "e9eed41b10c7327dbc2abcdd96cc227ddf2b0f6cbf5efc33b9c6bc9746fabc96"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/R213-PHYSICAL-NET.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r213-refill-one-day-a01\\R213-PHYSICAL-NET.actual-a01.json",
+        "bytes": 1379,
+        "sha256": "9a44e8d4677c528d5ae754d1ace7e14eb9a2af061310c47352208e39a84d89e3"
+      },
+      "canonical_postimage": {
+        "bytes": 1379,
+        "sha256": "9a44e8d4677c528d5ae754d1ace7e14eb9a2af061310c47352208e39a84d89e3"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/media/media-probe-take01-a01/PROBE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\media-probe-take01-a01\\PROBE.actual.json",
+        "bytes": 5480,
+        "sha256": "b056d066ba8d595ab07b3441bd2deadb8cea5404764215f272cf0565ee5da432"
+      },
+      "canonical_postimage": {
+        "bytes": 5480,
+        "sha256": "b056d066ba8d595ab07b3441bd2deadb8cea5404764215f272cf0565ee5da432"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/media/media-probe-take01-a01/MEDIA-REVIEW.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\media-probe-take01-a01\\MEDIA-REVIEW.actual.json",
+        "bytes": 2547,
+        "sha256": "d8173ba3da953830ca309f70d92d124ad2071a0fa1e3727567340f2b4a78a19b"
+      },
+      "canonical_postimage": {
+        "bytes": 2547,
+        "sha256": "d8173ba3da953830ca309f70d92d124ad2071a0fa1e3727567340f2b4a78a19b"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/media/R213-WINDOW-TAKE01-film-result.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\R213-WINDOW-TAKE01-film-result.actual.json",
+        "bytes": 1523,
+        "sha256": "9d2246371f6be2d69890c35a520ff9cc01407be26b32b51a6e70a7ab04545173"
+      },
+      "canonical_postimage": {
+        "bytes": 1523,
+        "sha256": "9d2246371f6be2d69890c35a520ff9cc01407be26b32b51a6e70a7ab04545173"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/media/media-probe-take02-budget-a01/PROBE.budget-constrained.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\media-probe-take02-budget-a01\\PROBE.budget-constrained.actual.json",
+        "bytes": 2554,
+        "sha256": "e9042b7e453c677535ab1ac9ced2996e3deae9ddca709c276d3a0a93f62a4c05"
+      },
+      "canonical_postimage": {
+        "bytes": 2554,
+        "sha256": "e9042b7e453c677535ab1ac9ced2996e3deae9ddca709c276d3a0a93f62a4c05"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/media/R213-WINDOW-TAKE02-film-result.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\R213-WINDOW-TAKE02-film-result.actual.json",
+        "bytes": 1834,
+        "sha256": "c8a0c1309c411fad59ad37ebe021b16e6c2a754f9ecdb8857d36f6a2855bd909"
+      },
+      "canonical_postimage": {
+        "bytes": 1834,
+        "sha256": "c8a0c1309c411fad59ad37ebe021b16e6c2a754f9ecdb8857d36f6a2855bd909"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-a01/ROOT-DELIVERY.final-a02.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\ROOT-DELIVERY.final-a02.json",
+        "bytes": 5720,
+        "sha256": "939977e67d94b6b9f4aacfa7989d56fc94d98624e9145f83bc30f1303bbbaacc"
+      },
+      "canonical_postimage": {
+        "bytes": 5720,
+        "sha256": "939977e67d94b6b9f4aacfa7989d56fc94d98624e9145f83bc30f1303bbbaacc"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-a01/audit/media-qa-a03/AUTO-MEDIA-CHECK.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\audit\\media-qa-a03\\AUTO-MEDIA-CHECK.actual.json",
+        "bytes": 3877,
+        "sha256": "0cc3fd425ea6a24bf1d66f83dd56745793efdcccfccdacbedbf53455b1fe7672"
+      },
+      "canonical_postimage": {
+        "bytes": 3877,
+        "sha256": "0cc3fd425ea6a24bf1d66f83dd56745793efdcccfccdacbedbf53455b1fe7672"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-a01/inputs/render-inputs.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\inputs\\render-inputs.json",
+        "bytes": 4095,
+        "sha256": "ecad44cbe8663e522efda47c67835a3a0a14ff24c196f1ce8d54095fb1cfba68"
+      },
+      "canonical_postimage": {
+        "bytes": 4095,
+        "sha256": "ecad44cbe8663e522efda47c67835a3a0a14ff24c196f1ce8d54095fb1cfba68"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-a01/run-a02/run-manifest.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\run-a02\\run-manifest.json",
+        "bytes": 8777,
+        "sha256": "1badf4fe7d4dfe771aa0dfa4f765bbb8723b0d032b5aa00f42ff33fcac7e05bf"
+      },
+      "canonical_postimage": {
+        "bytes": 8777,
+        "sha256": "1badf4fe7d4dfe771aa0dfa4f765bbb8723b0d032b5aa00f42ff33fcac7e05bf"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-a01/TOOLCHAIN.a02.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\TOOLCHAIN.a02.actual.json",
+        "bytes": 1111,
+        "sha256": "589609e1f93be3aa2b130a682121f385afb47fd021e0da13e8b25de664d13825"
+      },
+      "canonical_postimage": {
+        "bytes": 1111,
+        "sha256": "589609e1f93be3aa2b130a682121f385afb47fd021e0da13e8b25de664d13825"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-render-27s-a01/BUILD-RESULT.a02.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-actual-insert-render-a01\\BUILD-RESULT.a02.actual.json",
+        "bytes": 1523,
+        "sha256": "384540aff8316e2341e70ba3b26d4ca321b7f35c4bae36cbf73f1ac17c09c2df"
+      },
+      "canonical_postimage": {
+        "bytes": 1523,
+        "sha256": "384540aff8316e2341e70ba3b26d4ca321b7f35c4bae36cbf73f1ac17c09c2df"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-friendly-refill-one-shot-12004/ONE-SHOT.md",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\ONE-SHOT.md",
+        "bytes": 8676,
+        "sha256": "ac4a7ff0a1b82f4668f2244c13f1b1272007a75c0ccb88a2227fb4e51b80f44e"
+      },
+      "canonical_postimage": {
+        "bytes": 8676,
+        "sha256": "ac4a7ff0a1b82f4668f2244c13f1b1272007a75c0ccb88a2227fb4e51b80f44e"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-friendly-refill-one-shot-12004/INPUTS.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\INPUTS.json",
+        "bytes": 12696,
+        "sha256": "f72dd3c94cfe30b766688581ae8ee3efcc47088cfbe23b6e6eb22ac78a056cf1"
+      },
+      "canonical_postimage": {
+        "bytes": 12696,
+        "sha256": "f72dd3c94cfe30b766688581ae8ee3efcc47088cfbe23b6e6eb22ac78a056cf1"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-friendly-refill-one-shot-12004/verify_offline.py",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\verify_offline.py",
+        "bytes": 2105,
+        "sha256": "e7a6e15991c1f0906308fe22296ef05610aaccc48e65cf3872a236c9e53b9613"
+      },
+      "canonical_postimage": {
+        "bytes": 2105,
+        "sha256": "e7a6e15991c1f0906308fe22296ef05610aaccc48e65cf3872a236c9e53b9613"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-friendly-refill-one-shot-12004/DELIVERY.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\DELIVERY.json",
+        "bytes": 1387,
+        "sha256": "7c84954b049303b2985022453d7b80631cd254074573df97db0c9df3ef4caee2"
+      },
+      "canonical_postimage": {
+        "bytes": 1387,
+        "sha256": "7c84954b049303b2985022453d7b80631cd254074573df97db0c9df3ef4caee2"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/R213-CASH-READONLY.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r213-cash-readonly-a02\\R213-CASH-READONLY.actual.json",
+        "bytes": 7249,
+        "sha256": "072e3ddb788d003534a9dd893f0ac1efaf613835dd916baf56c6301cab3b3ddb"
+      },
+      "canonical_postimage": {
+        "bytes": 7249,
+        "sha256": "072e3ddb788d003534a9dd893f0ac1efaf613835dd916baf56c6301cab3b3ddb"
+      },
+      "exact_source_copy": true
+    },
+    {
+      "target": "docs/ck3-native-ai/evidence/episode04-r213-bayeux-arrival-12004/normal-S0-promotion-not-activated.candidate.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r214-normal-s0-promotion-a01\\R213-NORMAL-S0-PROMOTION.candidate.json",
+        "bytes": 6531,
+        "sha256": "0cd13f1c73d6f10e6b4c18683e5f8d35c66b9917888c2e12963994965352b0c1"
+      },
+      "canonical_postimage": {
+        "bytes": 6531,
+        "sha256": "0cd13f1c73d6f10e6b4c18683e5f8d35c66b9917888c2e12963994965352b0c1"
+      },
+      "exact_source_copy": true
+    }
+  ],
+  "large_query_raw_png_save_copied": false,
+  "counts": {
+    "research": "10/14",
+    "business": "7/11",
+    "formal_dynamic": "0/11",
+    "ABC": "0/3"
+  },
+  "root_release": {
+    "schema": "xar.e04.r213-root-release-adoption.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "recorded_at_utc": "2026-10-18T17:55:54.730191+00:00",
+    "actual_release_at_utc": "2026-10-18T17:46:42.901Z",
+    "cas_sequence": 6714,
+    "cas_event_id": "19de82e43f4c4187ad7385e368a99d75",
+    "task_state": "done",
+    "resources": [],
+    "normal_close_qualified": true,
+    "retained_game_os_exit": 0,
+    "native_process_exit": 0,
+    "host_original_popen_exit": 0,
+    "original_public_run_wait": 0,
+    "original_allocator_wait": 0,
+    "keeper_last_sequence": 6713,
+    "keeper_thread_exited": true,
+    "keeper_failure": null,
+    "provenance_kind": "Root actual tool-readback message authorizing this intake",
+    "original_release_file_pin_supplied_to_integrator": false,
+    "monitor_history_unchanged": "monitor a06 predates CAS and retains its assessed=false field"
+  },
+  "cross_machine_boundary": "Repository targets are portable evidence; source absolute paths retain machine-bound provenance. New runtime/installation/capacity/live qualification must be established on the target machine."
+}

@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T13:27:21.567623+00:00",
+  "scope": "R211 onecue TTS only",
+  "latest_query": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/commands/official_latest_query.actual.json",
+    "bytes": 7990,
+    "sha256": "9441a66b0ef28029012620696f82e89c051e5e5f8636c2e1e8d3f331036ff00c"
+  },
+  "official_release": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/official-release.actual.json",
+    "bytes": 8281,
+    "sha256": "69fa13cbf87ef5275cf0e9043bbc68cc7371d7b7e8c289c2cfd6c48c6332a6e6"
+  },
+  "release_tag": "v0.3.0",
+  "draft": false,
+  "prerelease": false,
+  "wheel_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+  "wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+  "requirements": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/requirements-promo-toolchain.txt",
+    "bytes": 598,
+    "sha256": "73f18d03acc1699b00769a34a8fb64ce748b8c9dd1b2b7cc215177e1e356e1f7"
+  },
+  "requirements_exact_match": true,
+  "installed_package_version": "0.3.0",
+  "installed_direct_url": {
+    "archive_info": {
+      "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+      "hashes": {
+        "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+      }
+    },
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+  },
+  "edge_tts_version": "7.3.1",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "project_voice": "zh-CN-XiaoxiaoNeural",
+  "project_rate": "-5%",
+  "wheel_redownload_or_reinstall": false
+}

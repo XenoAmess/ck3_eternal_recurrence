@@ -1,0 +1,243 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "r211-r05-actual-insert-a02"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/A8/A8EB8A96B5BB9C492324F1D159E4AFC2F621310F83C85EFB9D25007315D13FEF.json",
+    "bytes": 1707,
+    "sha256": "A8EB8A96B5BB9C492324F1D159E4AFC2F621310F83C85EFB9D25007315D13FEF"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [
+    {
+      "sequence": 1,
+      "id": "phase-000001",
+      "phase_id": "build.draft",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:27.507163Z",
+      "artifacts": [],
+      "detail": "1 segment(s)"
+    },
+    {
+      "sequence": 2,
+      "id": "phase-000002",
+      "phase_id": "build.visual",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:27.677990Z",
+      "artifacts": [
+        {
+          "artifact_id": "visual.R211-R05-ACTUAL-INSERT",
+          "artifact_bytes": 2055681,
+          "artifact_sha256": "818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB"
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "id": "phase-000003",
+      "phase_id": "build.narration",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:27.820565Z",
+      "artifacts": [
+        {
+          "artifact_id": "narration.R211-R05-ACTUAL-INSERT",
+          "artifact_bytes": 136656,
+          "artifact_sha256": "58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21"
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "id": "phase-000004",
+      "phase_id": "build.subtitle",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:27.992200Z",
+      "artifacts": [
+        {
+          "artifact_id": "subtitle.R211-R05-ACTUAL-INSERT",
+          "artifact_bytes": 1881,
+          "artifact_sha256": "39EC01BE0E72F1D91F5523ABD0B89AE1246084F8CC9D1390CC318CA64AAA7B4D"
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "id": "phase-000005",
+      "phase_id": "build.segment-plan",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:28.148637Z",
+      "artifacts": [],
+      "detail": "1 immutable render plan(s)"
+    },
+    {
+      "sequence": 6,
+      "id": "phase-000006",
+      "phase_id": "build.segment-render",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:28.308653Z",
+      "artifacts": [
+        {
+          "artifact_id": "segment.R211-R05-ACTUAL-INSERT",
+          "artifact_bytes": 1954015,
+          "artifact_sha256": "F7AE6A172732CA5095489747D7E98BC73253EBC33376C2A43484CB9F66153E9A"
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "id": "phase-000007",
+      "phase_id": "build.concat",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:28.461192Z",
+      "artifacts": [
+        {
+          "artifact_id": "concat.manifest",
+          "artifact_bytes": 51,
+          "artifact_sha256": "0408F1F8BCCF50E7D2E174D03F65926FBD5A2E97664D5B815ED6A9901D3528CE"
+        },
+        {
+          "artifact_id": "r211-r05-actual-insert-review-no-signoff",
+          "artifact_bytes": 1954195,
+          "artifact_sha256": "3D8DA9B2E87E65101A3ECF8D44DAE5CE4F1953F1D404E100B3B8DDEAC7847E3A"
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "id": "phase-000008",
+      "phase_id": "build.audit-record-ready",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T15:58:28.660447Z",
+      "artifacts": [
+        {
+          "artifact_id": "r211-r05-actual-insert-review-no-signoff",
+          "artifact_bytes": 1954195,
+          "artifact_sha256": "3D8DA9B2E87E65101A3ECF8D44DAE5CE4F1953F1D404E100B3B8DDEAC7847E3A"
+        }
+      ],
+      "detail": "pending project audit and explicit human sign-off"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "source.render-inputs",
+      "collection": "raw",
+      "role": "script",
+      "path": "artifacts/raw/sha256/EC/ECAD44CBE8663E522EFDA47C67835A3A0A14FF24C196F1CE8D54095FB1CFBA68.json",
+      "label": "render-inputs.json",
+      "bytes": 4095,
+      "sha256": "ECAD44CBE8663E522EFDA47C67835A3A0A14FF24C196F1CE8D54095FB1CFBA68",
+      "media_type": "application/json",
+      "source_name": "render-inputs.json"
+    },
+    {
+      "id": "source.preview24",
+      "collection": "raw",
+      "role": "capture",
+      "path": "artifacts/raw/sha256/81/818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB.mp4",
+      "label": "army-supply-transition-888-912.mp4",
+      "bytes": 2055681,
+      "sha256": "818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB",
+      "media_type": "video/mp4",
+      "source_name": "army-supply-transition-888-912.mp4"
+    },
+    {
+      "id": "source.tts-audio",
+      "collection": "raw",
+      "role": "audio",
+      "path": "artifacts/raw/sha256/58/58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21.mp3",
+      "label": "R211-R05-ACTUAL-INSERT.mp3",
+      "bytes": 136656,
+      "sha256": "58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21",
+      "media_type": "audio/mpeg",
+      "source_name": "R211-R05-ACTUAL-INSERT.mp3"
+    },
+    {
+      "id": "source.card",
+      "collection": "raw",
+      "role": "still",
+      "path": "artifacts/raw/sha256/FE/FE4D12B60BD6FFB41304A0AE47D5D11D1CCD984E624A43792D2C3AD97E443466.png",
+      "label": "evidence-tail-card.png",
+      "bytes": 127357,
+      "sha256": "FE4D12B60BD6FFB41304A0AE47D5D11D1CCD984E624A43792D2C3AD97E443466",
+      "media_type": "image/png",
+      "source_name": "evidence-tail-card.png"
+    },
+    {
+      "id": "visual.R211-R05-ACTUAL-INSERT",
+      "collection": "derived",
+      "role": "visual-input",
+      "path": "artifacts/derived/sha256/81/818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB.mp4",
+      "label": "818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB.mp4",
+      "bytes": 2055681,
+      "sha256": "818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB",
+      "media_type": "video/mp4",
+      "source_name": "818C6C9A1DE7E411A94C3F797777EA4E3659AA2C90E263F2802D03C92EBF09CB.mp4"
+    },
+    {
+      "id": "narration.R211-R05-ACTUAL-INSERT",
+      "collection": "derived",
+      "role": "narration",
+      "path": "artifacts/derived/sha256/58/58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21.mp3",
+      "label": "58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21.mp3",
+      "bytes": 136656,
+      "sha256": "58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21",
+      "media_type": "audio/mpeg",
+      "source_name": "58C465F14EA737D85E4286A3976893A550C5470A182F6C10E74ECB515E77CA21.mp3"
+    },
+    {
+      "id": "subtitle.R211-R05-ACTUAL-INSERT",
+      "collection": "derived",
+      "role": "subtitle",
+      "path": "artifacts/derived/sha256/39/39EC01BE0E72F1D91F5523ABD0B89AE1246084F8CC9D1390CC318CA64AAA7B4D.ass",
+      "label": "0001-R211-R05-ACTUAL-INSERT.ass",
+      "bytes": 1881,
+      "sha256": "39EC01BE0E72F1D91F5523ABD0B89AE1246084F8CC9D1390CC318CA64AAA7B4D",
+      "media_type": "text/x-ass",
+      "source_name": "0001-R211-R05-ACTUAL-INSERT.ass"
+    },
+    {
+      "id": "segment.R211-R05-ACTUAL-INSERT",
+      "collection": "derived",
+      "role": "rendered-segment",
+      "path": "artifacts/derived/sha256/F7/F7AE6A172732CA5095489747D7E98BC73253EBC33376C2A43484CB9F66153E9A.mp4",
+      "label": "0001-R211-R05-ACTUAL-INSERT.mp4",
+      "bytes": 1954015,
+      "sha256": "F7AE6A172732CA5095489747D7E98BC73253EBC33376C2A43484CB9F66153E9A",
+      "media_type": "video/mp4",
+      "source_name": "0001-R211-R05-ACTUAL-INSERT.mp4"
+    },
+    {
+      "id": "concat.manifest",
+      "collection": "derived",
+      "role": "concat-manifest",
+      "path": "artifacts/derived/sha256/04/0408F1F8BCCF50E7D2E174D03F65926FBD5A2E97664D5B815ED6A9901D3528CE.txt",
+      "label": "segments.txt",
+      "bytes": 51,
+      "sha256": "0408F1F8BCCF50E7D2E174D03F65926FBD5A2E97664D5B815ED6A9901D3528CE",
+      "media_type": "text/plain",
+      "source_name": "segments.txt"
+    },
+    {
+      "id": "r211-r05-actual-insert-review-no-signoff",
+      "collection": "derived",
+      "role": "deliverable",
+      "path": "artifacts/derived/sha256/3D/3D8DA9B2E87E65101A3ECF8D44DAE5CE4F1953F1D404E100B3B8DDEAC7847E3A.mp4",
+      "label": "R211-R05-ACTUAL-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+      "bytes": 1954195,
+      "sha256": "3D8DA9B2E87E65101A3ECF8D44DAE5CE4F1953F1D404E100B3B8DDEAC7847E3A",
+      "media_type": "video/mp4",
+      "source_name": "R211-R05-ACTUAL-INSERT-27s-REVIEW-NO-SIGNOFF.mp4"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

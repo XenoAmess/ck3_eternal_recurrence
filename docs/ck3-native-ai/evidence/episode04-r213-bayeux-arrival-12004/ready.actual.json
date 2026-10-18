@@ -1,0 +1,113 @@
+{
+  "schema": "ck3-mod-acceptance-run-context-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "keeper_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\keeper-a01",
+  "prepared_case": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\prepared-a01\\prepared-case.json",
+    "bytes": 12121,
+    "sha256": "df0b4b7faf87a0e54ff6335b31fdfe1f811deb3d6ffe450b005fb241bb482e09"
+  },
+  "case_inputs": {
+    "normal_checkpoint_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-william-a01-ready-close-a01-02-save-once.json",
+      "bytes": 20858,
+      "sha256": "ab71834e88d71f3b4d059bc71a745d8ddb5b82377d835d955e11925c41d5926f"
+    },
+    "normal_checkpoint_build_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\prepared-a01\\prepared.json",
+      "bytes": 13512,
+      "sha256": "73a26707d71cdf34b47ad7a2aef07422a488a37128e5a1434005d69780cc9675"
+    },
+    "plain_configuration": {
+      "pdx_settings.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7134,
+        "sha256": "b4dc4d1cebf5ab82710db386500b760f5ce9925ae8c83db595ac5209807720ce"
+      },
+      "tutorial.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\state-a01\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      },
+      "presets.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      }
+    },
+    "phase": "readiness",
+    "army_id": 0,
+    "native_carmy_id": null,
+    "war_id": 1,
+    "goal_province_id": 1527,
+    "staging_province_id": 1506,
+    "agreed_commander_id": null,
+    "director_scope_revision": "3661e495bc45490238992d3f2850e75558566922",
+    "budgets": {
+      "command_timeout": 120,
+      "readiness_timeout": 1800,
+      "timeout": 7200,
+      "hold_seconds": 7200,
+      "poll_interval": 0.25
+    },
+    "continuation": {
+      "kind": "R04-R06-friendly-county-physical-arrival-pilot",
+      "army_id": 0,
+      "b_march_target_province_id": 2170,
+      "b_march_target_name": "Bayeux",
+      "second_station_candidate_province_id": 2325,
+      "forbidden_B_march_target_province_ids": [
+        1527
+      ],
+      "goal_province_id_semantics": "The separate goal_province_id=1527 is the historical opposing war objective used by the six-query military-readiness validator. It is never a B station or Move target.",
+      "maximum_actual_days": 60,
+      "move_once_after_actual_preview": true,
+      "typed_modal_policy": "capture actual IDs/options, choose first displayed via native MCP, preserve ACK and actual after-state separately",
+      "before_unique_Move_order": "One legal actual preview, then at most 900 seconds waiting for real camera Start; after Start one fresh paused snapshot verifies date/actor/Army owner/position/empty route/noncombat/nonretreat unchanged, then submit the single Move with fresh revision. No second preview or Move; material drift stops to OFF/Save.",
+      "stop_on_first_arrival": true,
+      "deadline_utc": "2026-10-18T18:30:00Z",
+      "deadline_adopted_by_Root": true,
+      "normal_close_reserve_seconds": 900,
+      "cleanup_save_reserve_seconds": 120,
+      "same_original_hold_only": true,
+      "T0_frozen": false,
+      "formal_90_day_ABC": false,
+      "Root_capacity_parameters": {
+        "source": "Root explicit R212 instruction; actual capacity receipt/adoption remains with capacityowner",
+        "review_started_at_utc": "2026-10-18T15:20:00Z",
+        "deadline_utc": "2026-10-18T18:30:00Z",
+        "D_peak_total_bytes": 6442450944,
+        "driver_limit_bytes": 4294967296,
+        "raw_limit_bytes": 1073741824,
+        "profile_limit_bytes": 805306368,
+        "other_limit_bytes": 268435456
+      },
+      "before_action_camera": {
+        "camera_output_name": "county-actor-a01",
+        "awaiting_relative_to_actual_READY_live": "county-actor-a01/before-action-camera-awaiting.json",
+        "signal_relative_to_actual_READY_live": "county-actor-a01/before-action-camera-started.json",
+        "maximum_wait_seconds": 900,
+        "coordination_only": true,
+        "action_kind": "Move",
+        "army_id": 0,
+        "target_province_id": 2170,
+        "new_camera_kind_or_source_extension": false
+      },
+      "actor_handoff_gate": "Original public owner has reached manual-quit-awaiting, host remains hold/error-free with no inflight queue step; Root defers GUI Quit until actor Save/OFF and handback.",
+      "actor_entry": "R213 original typed a04 actor through the sealed R213 thin entry; actual READY derives LIVE output and original owner identity."
+    }
+  },
+  "product": "war-episode04-r10",
+  "case": "r10-common-preparation",
+  "frozen_argv": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\frozen-argv.json",
+    "bytes": 31434,
+    "sha256": "311f2a2f64a890dd98df55c7244e12cb69a22f7dcd53f7f59e070c7b4022c271"
+  }
+}

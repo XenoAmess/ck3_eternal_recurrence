@@ -1,0 +1,99 @@
+{
+  "readiness": {
+    "military_t0_frame_ready": false,
+    "normal_t0_saved": false,
+    "r01_research_core_closed": false,
+    "loss_sampling_ready": false,
+    "missing_inputs": [
+      "native_carmy_id must retain its signed full generation"
+    ],
+    "loss_sampling_missing_inputs": [],
+    "remaining_policy_inputs": [
+      "freeze agreed goal and surrounding land/sea/rest locations with actual native previews",
+      "bind this F and the normal save as the chosen R01 T0"
+    ],
+    "new_live_credit": false,
+    "actual_loss_observed": false,
+    "actual_ADD_observed": false
+  },
+  "sources": {
+    "r10-ready-before": {
+      "status": "received",
+      "envelope": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-ready-before-r10-common-envelope.json",
+        "bytes": 49120,
+        "sha256": "227eb55b33d735cd909c02b822a7122c830204017290c9052b1b2d94dc066dee"
+      }
+    },
+    "r10-ready-strengths": {
+      "status": "received",
+      "envelope": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-ready-strengths-r10-common-envelope.json",
+        "bytes": 15846192,
+        "sha256": "8556a828a3e887e7b11f7b85165c1d1c373f7206cf7298c7ef436f51d3a592f8"
+      }
+    },
+    "r10-ready-commander": {
+      "status": "received",
+      "envelope": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-ready-commander-r10-common-envelope.json",
+        "bytes": 40177,
+        "sha256": "7b9b6cec75e65fef1d9730729a98165a3ac79cf4df124373c74133b19a4dd1e9"
+      }
+    },
+    "r10-ready-cash": {
+      "status": "received",
+      "envelope": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-ready-cash-r10-common-envelope.json",
+        "bytes": 5193,
+        "sha256": "6386096136c1b8117fca15f77b924b63cf727eab61d85733ca45fdb9789346e5"
+      }
+    },
+    "r10-ready-occupation": {
+      "status": "received",
+      "envelope": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-ready-occupation-r10-common-envelope.json",
+        "bytes": 105315,
+        "sha256": "9ad36f4ec7c6146691e0610c40d9c593d6573eb8f72f6503cf43b4407eb27044"
+      }
+    },
+    "r10-ready-after": {
+      "status": "received",
+      "envelope": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\r10-ready-after-r10-common-envelope.json",
+        "bytes": 49266,
+        "sha256": "c24234f12dee6678fc8fc9b44a7ea36d760df074fc6d2677481882a58dfbb1fd"
+      }
+    }
+  },
+  "queries_submitted": 6,
+  "natural_days_advanced": 0,
+  "Move_split_merge_Save_submitted": false,
+  "common_T0_frozen": false,
+  "formal_ABC_arm": false,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T15:48:44.799639+00:00",
+  "source_binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "pid": 27056,
+    "process_creation_filetime_100ns": 134368116198386569,
+    "connection_generation": 1,
+    "actor_id": 33388,
+    "episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "normal_source_receipt_sha256": "ab71834e88d71f3b4d059bc71a745d8ddb5b82377d835d955e11925c41d5926f",
+    "director_scope_revision": "3661e495bc45490238992d3f2850e75558566922"
+  },
+  "status": "READINESS_PILOT_ONLY",
+  "remaining": [
+    "Root chooses and normally saves common S0 after actual route/site pilot",
+    "two distinct stationary sites with qualified actual positive stock growth",
+    "frozen PLAN then three independent normal cold loads",
+    "formal common A/B/C stage executor connection and actual 90-day horizon",
+    "R08 qualified applied maintenance/payer/cadence before compare_fees=true"
+  ],
+  "research_card_closed": false,
+  "business_pass": false,
+  "formal_ABC_completed": 0
+}

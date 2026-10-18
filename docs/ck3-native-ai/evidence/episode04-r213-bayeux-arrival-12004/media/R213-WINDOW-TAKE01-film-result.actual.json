@@ -1,0 +1,49 @@
+{
+  "schema": "xar.e04.owned-client-window-take-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T16:33:02.751816+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "state": "NORMAL_TREE_EMPTY",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 27056,
+    "owned_ck3_create_time": 1792338019.838657,
+    "hwnd": 153291484,
+    "foreground_hwnd": 153291484,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-18T16:07:58.329334+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "recorder_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\raw-r213\\take01\\result.json",
+    "bytes": 2021,
+    "sha256": "3e08c1287da51846ec75e8e02fb3c3e4251f7be14f12cd9c5f187199fa299c24"
+  },
+  "primary_action_error": null,
+  "recorder_finish_error": null,
+  "secondary_cleanup_error": null,
+  "finish_reason": "timer",
+  "elapsed_wall_seconds_at_terminal": 1503.3423282,
+  "planned_recording_max_seconds": 1500,
+  "hard_terminal_wall_seconds_met": true,
+  "actual_observer_result": null,
+  "one_actual_ffmpeg_job_no_replay": true,
+  "raw_video_human_approved": false,
+  "business_result_inferred_from_video": false
+}

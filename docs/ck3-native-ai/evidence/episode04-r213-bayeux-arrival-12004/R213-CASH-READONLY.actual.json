@@ -1,0 +1,185 @@
+{
+  "status": "ACTUAL_READONLY_CASH_COLLECTED_NOT_PAYMENT_ATTRIBUTION",
+  "source_head": "3661e495bc45490238992d3f2850e75558566922",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "county_terminal": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\R04-BAYEUX-TERMINAL.json",
+    "bytes": 442,
+    "sha256": "bf8bc438d17813c8f9ac18dedfadbc134a60547a5e69860234329f63cbafc587"
+  },
+  "county_cleanup_originals": {
+    "terminal": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\R04-BAYEUX-TERMINAL.json",
+      "bytes": 442,
+      "sha256": "bf8bc438d17813c8f9ac18dedfadbc134a60547a5e69860234329f63cbafc587"
+    },
+    "original_retained_process": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\retained-current-process-identity.json",
+      "bytes": 109,
+      "sha256": "20095d9b63d99b43d48f42c2b17b84918c35b0b0148af04079a56c00c6165b52"
+    },
+    "original_hold": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\manual-quit-awaiting.json",
+      "bytes": 657,
+      "sha256": "c422284fc840e6ce2b2660c5b4b1f5089aee81cef21c2c6b0b19ea05e0396815"
+    },
+    "OFF_query": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\r213-county-bayeux-a01-r05obs-0281-sampling-all.actual-results.json",
+      "bytes": 56990,
+      "sha256": "f19a6eb9143bf7dd92f56692433dcf4a3e01c60f2c6a399356e7ffa55d003f92"
+    },
+    "native_Save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\r213-county-bayeux-a01-r05obs-0283-Save-once.actual-results.json",
+      "bytes": 56538,
+      "sha256": "d50b05805615711d473e94c32f7d6a699fd49ee438ed38e6ac5ec10803401060"
+    },
+    "independent_saved_snapshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\county-actor-a01\\r213-county-bayeux-a01-r05obs-0284-Save-independent-after.actual-results.json",
+      "bytes": 105297,
+      "sha256": "3b6e025fcefe93d9bcc920bc53fd2ef019fa1cc16326662a4f4dc197b5590b07"
+    },
+    "public_result_pointer": "/rows/0/result",
+    "county_full_result_bytes_read": 0,
+    "arrival_readonly_bytes_read": 0
+  },
+  "actual_identity": {
+    "pid": 27056,
+    "generation": 1,
+    "actor": 33388,
+    "date_raw": 53148408,
+    "episode_run_id": null,
+    "local_player_id": 1
+  },
+  "retained_creation_FILETIME": 134368116198386569,
+  "before": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r213-cash-readonly-a02\\views\\r213-cash-a02-before.common-view.json",
+    "bytes": 47678,
+    "sha256": "a274d1915e481603a1e2d6f329ca01cf0e4fe7e77d42af60af66f3bfc403bfce"
+  },
+  "cash": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r213-cash-readonly-a02\\views\\r213-cash-a02-cash.common-view.json",
+    "bytes": 5159,
+    "sha256": "31713c46e4a98cfb5addd38cdf6d8c778e45a18ab6b8b0d7ae91b6a03add76b3"
+  },
+  "after": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r213-cash-readonly-a02\\views\\r213-cash-a02-after.common-view.json",
+    "bytes": 47676,
+    "sha256": "bfbeb10b6a886b6cb8a4fa65c3c8550d8916279fba2b21f78263d737dc3c6663"
+  },
+  "arguments": {
+    "expected_revision": 137
+  },
+  "current_resources": {
+    "schema": "xar.ck3.war-cash-current-resources.v1",
+    "status": "available",
+    "date_raw": 53148408,
+    "played_character_id": 33388,
+    "snapshot_revision": 136,
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "current_treasury": {
+      "raw": 63728159,
+      "scale": 100000
+    },
+    "player_monthly_net_income": {
+      "raw": 32540,
+      "scale": 100000
+    },
+    "military_expenses": {
+      "current": {
+        "status": "available",
+        "resource_kind": "actor_military_current_maintenance",
+        "resource_id": "33388",
+        "owner_character_id": 33388,
+        "war_ids": [
+          1
+        ],
+        "time_basis": "month",
+        "raw_scale": 100000,
+        "source_scope": "actor_owned_military_once_across_all_wars",
+        "source": "native_character_current_military_expenses",
+        "resource_raw_native": [
+          386622,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gold_raw": 386622,
+        "treasury_raw": 0,
+        "future_war_cost_upper_ready": false,
+        "unavailable_reason": null
+      },
+      "all_raised": {
+        "status": "available",
+        "resource_kind": "actor_military_all_raised_maintenance",
+        "resource_id": "33388",
+        "owner_character_id": 33388,
+        "war_ids": [
+          1
+        ],
+        "time_basis": "month",
+        "raw_scale": 100000,
+        "source_scope": "actor_owned_military_once_across_all_wars",
+        "source": "native_character_all_raised_military_expenses",
+        "resource_raw_native": [
+          493650,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "gold_raw": 493650,
+        "treasury_raw": 0,
+        "future_war_cost_upper_ready": false,
+        "unavailable_reason": null
+      }
+    },
+    "player_monthly_gross_income": {
+      "raw": 469940,
+      "scale": 100000
+    },
+    "player_monthly_total_expenses": {
+      "raw": 437400,
+      "scale": 100000
+    },
+    "monthly_income_semantics": {
+      "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+      "time_basis": "month",
+      "source_scope": "played_character_personal_gold",
+      "income_source": "native_character_monthly_gold_income",
+      "expense_source": "native_character_monthly_total_gold_expenses",
+      "military_expenses_included": true
+    },
+    "readiness": {
+      "current_treasury_ready": true,
+      "monthly_gross_income_ready": true,
+      "monthly_total_expenses_ready": true,
+      "monthly_net_income_ready": true,
+      "current_military_expenses_ready": true,
+      "all_raised_military_expenses_ready": true,
+      "same_frame_ready": true
+    }
+  },
+  "current_raw_context_v1_present": true,
+  "payment_journal_present": false,
+  "sampling_controls": 0,
+  "natural_days": 0,
+  "debugger_started": false,
+  "host_started": false,
+  "military_paid_claim": false,
+  "payer_claim": false,
+  "cadence_claim": false,
+  "limitation": "Current monthly expense/NET and raw context are observations, not proof of actual military payment or payer/cadence. Original complete response preserved."
+}

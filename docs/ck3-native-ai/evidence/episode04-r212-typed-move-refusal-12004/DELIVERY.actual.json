@@ -1,0 +1,71 @@
+{
+  "schema": "xar.e04.r212-typed-move-independent-source-review.v1",
+  "status": "CONFIRMED_PROJECTION_TYPED_GUARD_MISMATCH",
+  "source_head": "5818b04e47b22a36cbecee700145b6c0075bdd43",
+  "observed_at_utc": "2026-10-18T14:28:48.824152+00:00",
+  "report": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r212-typed-move-source-review-a01\\REVIEW.md",
+    "bytes": 5374,
+    "sha256": "593639524bbeed0a0bbcb34fac6ae4c2cd1f60ea670c708d7e4eecc42cc0aa6d"
+  },
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1591699,
+      "sha256": "512bc240671a64a48deb93fa124f6c273357bc8d9a3e72051cba299f8e5d77d7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 861001,
+      "sha256": "a997c1dfa3c75f7811b30a04d9bed63770f2d0c90fd0b2b52dfcc6140b536a65"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 256551,
+      "sha256": "979303fcdd4dee9811dc748a289a16091d65def4521596737b1180eb9f0a078a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1601192,
+      "sha256": "2ec4ee5035cefe7ac4eac925413c8ddb0c86b741d371313b491ca2e96e04595a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_semantic_adapter.cpp",
+      "bytes": 44661,
+      "sha256": "ba2265b777fe6b52089a23aa5912b9f4cb47e7bfc388245084116852d6b434ba"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp",
+      "bytes": 7274,
+      "sha256": "81f5fd3f73808720226b6721aea95f3fea9c69c1557f611334c97067fc9ca641"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_adapter.cpp",
+      "bytes": 39321,
+      "sha256": "b04c80dda3e11afb4b74a2fb6c394fe81e3d640edc9927b7cc1bfdcdfed65ccb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_military.cpp",
+      "bytes": 29699,
+      "sha256": "1c0b5696657031c47fda701a69071f54ee611155278cc61e786944d4072fe3ac"
+    }
+  ],
+  "source_check": {
+    "native_campaign_early_return_before_one_life_bind": true,
+    "typed_failure_raise_line": 9159,
+    "first_typed_move_primitive_line": 9185,
+    "native_move_send_not_reached_for_this_exact_raise": true,
+    "generic_source_route_exists": true,
+    "generic_and_typed_python_guards_identical": false
+  },
+  "actual_inputs_boundary": "Root supplied current typed error/outer-fence facts; county owner independently pinned actual small error. No live packet or historical R206 response re-read in this lane.",
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "native_builds": 0,
+  "native_execution": 0,
+  "main_writes": 0,
+  "unit_matrix_reruns": 0,
+  "actual_current_Move_success_claim": false,
+  "R206_generic_execution_claim": false,
+  "generic_use": "Only an independently guarded single public action; no synthesized episode, unknown action replay or raw primitive access."
+}

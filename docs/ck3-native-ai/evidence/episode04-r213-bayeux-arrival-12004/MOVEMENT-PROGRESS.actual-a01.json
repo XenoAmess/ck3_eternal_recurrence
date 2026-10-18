@@ -1,0 +1,231 @@
+{
+  "schema": "xar.e04.r213.observed-first-edge-progress.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_files_read_at_utc": "2026-10-18T16:29:01Z",
+  "receipt_at_utc": "2026-10-18T16:31:57.117497+00:00",
+  "representation": "derived selected-field analysis from five original small DAY packets; not a native response",
+  "rows": [
+    {
+      "day": 1,
+      "date_raw": 53147400,
+      "source_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/county-actor-a01/R04-DAY-01.json",
+        "bytes": 13596,
+        "sha256": "1fad73385888b7980005fe4b7d4490b19b568b6c723c4e94f8e1d23dac6054de"
+      },
+      "province": 1506,
+      "route": [
+        725,
+        1009,
+        2170
+      ],
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 100000,
+      "cached_edge_speed_raw": 100000,
+      "first_route_edge_weight_cost_raw": 3000000,
+      "first_route_edge_remaining_duration": {
+        "raw": 2900000,
+        "scale": 100000
+      },
+      "normalized_edge_progress": {
+        "raw": 3333,
+        "scale": 100000
+      },
+      "native_army_movement_admission": true,
+      "first_edge_arrival_provider_byte_e_u8": 0,
+      "current_edge_movement_rate_raw": null,
+      "current_definition_1b": 1,
+      "first_target_definition_1b": 0,
+      "committed_route_timeline_status": "unavailable"
+    },
+    {
+      "day": 2,
+      "date_raw": 53147424,
+      "source_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/county-actor-a01/R04-DAY-02.json",
+        "bytes": 13598,
+        "sha256": "31c8c1a1e15daf67648bcfc4ac92aad95f9e0cf12e61aa45e634849fe53de508"
+      },
+      "province": 1506,
+      "route": [
+        725,
+        1009,
+        2170
+      ],
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 200000,
+      "cached_edge_speed_raw": 100000,
+      "first_route_edge_weight_cost_raw": 3000000,
+      "first_route_edge_remaining_duration": {
+        "raw": 2800000,
+        "scale": 100000
+      },
+      "normalized_edge_progress": {
+        "raw": 6666,
+        "scale": 100000
+      },
+      "native_army_movement_admission": true,
+      "first_edge_arrival_provider_byte_e_u8": 0,
+      "current_edge_movement_rate_raw": null,
+      "current_definition_1b": 1,
+      "first_target_definition_1b": 0,
+      "committed_route_timeline_status": "unavailable"
+    },
+    {
+      "day": 9,
+      "date_raw": 53147592,
+      "source_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/county-actor-a01/R04-DAY-09.json",
+        "bytes": 13606,
+        "sha256": "d505029b38205634c46679507f14d3db4a086f18a77691dd2dcc0142205b8c27"
+      },
+      "province": 1506,
+      "route": [
+        725,
+        1009,
+        2170
+      ],
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 900000,
+      "cached_edge_speed_raw": 100000,
+      "first_route_edge_weight_cost_raw": 3000000,
+      "first_route_edge_remaining_duration": {
+        "raw": 2100000,
+        "scale": 100000
+      },
+      "normalized_edge_progress": {
+        "raw": 30000,
+        "scale": 100000
+      },
+      "native_army_movement_admission": true,
+      "first_edge_arrival_provider_byte_e_u8": 0,
+      "current_edge_movement_rate_raw": null,
+      "current_definition_1b": 1,
+      "first_target_definition_1b": 0,
+      "committed_route_timeline_status": "unavailable"
+    },
+    {
+      "day": 18,
+      "date_raw": 53147808,
+      "source_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/county-actor-a01/R04-DAY-18.json",
+        "bytes": 13607,
+        "sha256": "771a58c0f49a751a4dd7bf578779ee0c3172320aac54c3ddee3a2d1bfaf1fca0"
+      },
+      "province": 1506,
+      "route": [
+        725,
+        1009,
+        2170
+      ],
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 1800000,
+      "cached_edge_speed_raw": 100000,
+      "first_route_edge_weight_cost_raw": 3000000,
+      "first_route_edge_remaining_duration": {
+        "raw": 1200000,
+        "scale": 100000
+      },
+      "normalized_edge_progress": {
+        "raw": 60000,
+        "scale": 100000
+      },
+      "native_army_movement_admission": true,
+      "first_edge_arrival_provider_byte_e_u8": 0,
+      "current_edge_movement_rate_raw": null,
+      "current_definition_1b": 1,
+      "first_target_definition_1b": 0,
+      "committed_route_timeline_status": "unavailable"
+    },
+    {
+      "day": 26,
+      "date_raw": 53148000,
+      "source_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/county-actor-a01/R04-DAY-26.json",
+        "bytes": 13606,
+        "sha256": "4e518ebd902fa00fada216afab6ad402d56801fef200f6ab3fd56aea02dee02e"
+      },
+      "province": 1506,
+      "route": [
+        725,
+        1009,
+        2170
+      ],
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 2600000,
+      "cached_edge_speed_raw": 100000,
+      "first_route_edge_weight_cost_raw": 3000000,
+      "first_route_edge_remaining_duration": {
+        "raw": 400000,
+        "scale": 100000
+      },
+      "normalized_edge_progress": {
+        "raw": 86666,
+        "scale": 100000
+      },
+      "native_army_movement_admission": true,
+      "first_edge_arrival_provider_byte_e_u8": 0,
+      "current_edge_movement_rate_raw": null,
+      "current_definition_1b": 1,
+      "first_target_definition_1b": 0,
+      "committed_route_timeline_status": "unavailable"
+    }
+  ],
+  "observed_slope": {
+    "raw_movement_weight_per_actual_day": 100000,
+    "each_interval_matches": true,
+    "total_actual_days_from_source": 26,
+    "total_date_raw_delta": 624
+  },
+  "conditional_first_edge_forecast": {
+    "held_inputs_required": true,
+    "cost_equality_day": 30,
+    "cost_equality_date_raw": 53148096,
+    "provider_byte_e": 0,
+    "equality_does_not_select_arrival": true,
+    "first_strict_greater_day": 31,
+    "first_strict_greater_date_raw": 53148120,
+    "actual_future_arrival_observed": false,
+    "whole_route_target2170_ETA": null
+  },
+  "interpretation": {
+    "observed_first_edge_movement_is_advancing": true,
+    "unit_state3_does_not_prove_stall": true,
+    "explicit_boarding_phase_published": false,
+    "quartership_field_published": false,
+    "loaded_disembark_rule30_is_not_an_embark_duration_proof": true
+  },
+  "source_refs": [
+    {
+      "path": "docs/ck3-native-ai/unit-first-edge-arrival-selection-12004.md",
+      "lines": [
+        11,
+        24
+      ],
+      "fact": "actual signed strict JG at24AB7E4, less/equal+byteE0 holds"
+    },
+    {
+      "path": "docs/ck3-native-ai/unit-next-movement-weight-prefix-12004.md",
+      "lines": [
+        11,
+        17,
+        40
+      ],
+      "fact": "positive cache190 supplies ADD to raw168; fallback getter only demanded cache<=0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "lines": [
+        275,
+        298
+      ],
+      "fact": "existing admission/cost/provider byte publication and positive-cache fallback nonexecution"
+    }
+  ],
+  "actual_Move_already_owned_by_Root": true,
+  "new_Move_requests": 0,
+  "new_clock_requests": 0,
+  "SDK_calls": 0,
+  "large_raw_or_report_reads": 0,
+  "actor_source_modified": false
+}

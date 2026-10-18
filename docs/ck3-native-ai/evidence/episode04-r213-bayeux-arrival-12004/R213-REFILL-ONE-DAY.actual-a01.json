@@ -1,0 +1,168 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T17:17:29.871540+00:00",
+  "source_head": "3661e495bc45490238992d3f2850e75558566922",
+  "status": "ONE_EXACT_DAY_NO_RETAINED_CORE_UNKNOWN",
+  "actual_binding": {
+    "pid": 27056,
+    "create_time": 1792338019.838657,
+    "hold": 1792345680.3129077,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+    "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\retained-current-process-identity.json",
+    "control_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\control\\ck3.json"
+  },
+  "actual_days": 1,
+  "clock": {
+    "armed": {
+      "state": "armed",
+      "generation": 44,
+      "starting_date_raw": 53148408,
+      "target_date_raw": 53148432,
+      "last_observed_date_raw": 53148408,
+      "trigger_date_raw": 0,
+      "speed": 5,
+      "mode": "terminal_or_sentinel",
+      "army_count": 0,
+      "combat_count": 0,
+      "completed_daily_ticks": 0,
+      "intermediate_pause_count": 0,
+      "trigger_flags": 0,
+      "trigger_reasons": [],
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": -1,
+      "pause_wrapper_called": false,
+      "pause_observed": false,
+      "terminal_observed": false,
+      "abnormal": false
+    },
+    "stopped": {
+      "state": "triggered",
+      "generation": 44,
+      "starting_date_raw": 53148408,
+      "target_date_raw": 53148432,
+      "last_observed_date_raw": 53148432,
+      "trigger_date_raw": 53148432,
+      "speed": 5,
+      "mode": "terminal_or_sentinel",
+      "army_count": 0,
+      "combat_count": 0,
+      "completed_daily_ticks": 1,
+      "intermediate_pause_count": 0,
+      "trigger_flags": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": 0,
+      "pause_wrapper_called": true,
+      "pause_observed": true,
+      "terminal_observed": false,
+      "abnormal": false
+    },
+    "exact_day_verified": true,
+    "modal_actions": 0,
+    "Arm_reissued": false
+  },
+  "selected_positive_target": {
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "q_index": 1,
+    "conditional_shared_q_i32": 1,
+    "native_unit_position_eligible": true,
+    "selected_eligibility": [
+      {
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "current_soldiers": 68,
+        "maximum_soldiers": 69,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "permission_source_branch": "non_GDbo_direct_true_after_Army_guards",
+        "containing_guard_138_raw": 0,
+        "containing_definition_magic_38": 1316318316,
+        "persistent_enum_name": null,
+        "player_origin_category": null,
+        "observed_prepared148_raw": 4020,
+        "observed_fresh_fraction_raw": 4020,
+        "conditional_prepared_if_normal_preparation_called_raw": 4020,
+        "conditional_preparation_branch": "ordinary_guard_bypass",
+        "fraction_scale": 100000,
+        "stored_prepared_is_positive": true,
+        "independent_chunk_gate_for_stored_core": true,
+        "current_permission_false_does_not_rule_out_stored_core_request": false,
+        "integer_request_can_still_truncate_to_zero": true,
+        "actual_preparation_observed": false,
+        "actual_ADD_observed": false
+      }
+    ]
+  },
+  "current_month_inputs": {
+    "source": "native_current_month_first_refill_call_inputs",
+    "status": "available",
+    "ready": true,
+    "unavailable_reason": null,
+    "subject_army_id": 0,
+    "subject_carmy_id": 0,
+    "game_state_calendar_flags_raw_u8": 0,
+    "month_first_mask_2_set": false,
+    "actual_pre_date_prepare_observed": false,
+    "actual_post_date_refill_observed": false,
+    "actual_after": false,
+    "full_monthly_ready": false
+  },
+  "regular_core_ON": {
+    "installed": true,
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 3,
+    "active_captures": 0,
+    "retained_records": 0,
+    "qualified_records": 0,
+    "status": "enabled",
+    "readiness": "awaiting_sample"
+  },
+  "retained_core_child_present": false,
+  "core_event_count": 0,
+  "actual_ADD_observed": false,
+  "OFFclear": true,
+  "normal_Save": true,
+  "saved_date": 53148432,
+  "cleanup_errors": [],
+  "modal_actions": 0,
+  "modals_count": 0,
+  "original_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-RESULT.json",
+    "bytes": 156680,
+    "sha256": "77d9394f43a5083ec00dc06fbb571dd7f5b5bf4a59dd43edff1a45ae634ca52a"
+  },
+  "portable_lossless_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r213-refill-one-day-a01\\R06-ONE-DAY-RESULT.actual.original.json.gz",
+    "bytes": 11405,
+    "sha256": "8a457434ee30474edc806f25f9abc68acfee77d3458e3a613c47ce0722ed9000",
+    "uncompressed_bytes": 156680,
+    "uncompressed_sha256": "77d9394f43a5083ec00dc06fbb571dd7f5b5bf4a59dd43edff1a45ae634ca52a",
+    "representation": "lossless gzip of exact actor result bytes; not a complete native Driver packet"
+  },
+  "terminal": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-TERMINAL.json",
+    "bytes": 207,
+    "sha256": "cf0e1ef7f7e471453699110e75c839bf32e65f110ff4d9ec50b189f79b92ef19"
+  },
+  "production_consumption": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-CORE-CONSUMED.json",
+    "bytes": 1703,
+    "sha256": "b4c450b44e94b482b78417f3dd82488319d45a1c49eb40f33ee8fa8834be81c2"
+  },
+  "qualification": {
+    "Core_return_observed": false,
+    "no_native_refill_call_claimed": false,
+    "gross_ADD_qualified": false,
+    "one_day_whole_army_net_attributed": false,
+    "R04_physical_county_positive": null,
+    "new_day_covered_by_take02_video": false
+  },
+  "meaning": "Actual position/positive final q/Can were available. A single exact native day was observed with inline regular-core sampling ON, but the full child remained null; absence is unavailable evidence, not proof no native refill or zero ADD. OFF/clear and normal Save succeeded. Root retains normal-close responsibility."
+}

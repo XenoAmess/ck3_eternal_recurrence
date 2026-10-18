@@ -1,0 +1,38 @@
+{
+  "schema": "xar.e04.r211-insert-native-build-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "ended_at_utc": "2026-10-18T15:58:29.120178+00:00",
+  "exit_code": 0,
+  "stop_reason": null,
+  "launch": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/BUILD-LAUNCH.a02.actual.json",
+    "bytes": 1862,
+    "sha256": "d646d7cb7d9a36a29e7511618f5ba1716edf163659184a46473d153e684fd462"
+  },
+  "stdout": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/commands/build-a02.stdout.log",
+    "bytes": 8510,
+    "sha256": "6c933a33caf5593948922324f01d6db23949d7f2ad6ef61d88c4011e3e1856e5"
+  },
+  "stderr": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/commands/build-a02.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "run_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/run-a02/run-manifest.json",
+    "bytes": 8777,
+    "sha256": "1badf4fe7d4dfe771aa0dfa4f765bbb8723b0d032b5aa00f42ff33fcac7e05bf"
+  },
+  "workdir": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/work-build-a02",
+  "root_bytes_at_exit": 31622336,
+  "fresh_free_at_exit": {
+    "C:/": 26600865792,
+    "D:/": 33249402880
+  },
+  "video_27s_completed": true,
+  "automated_media_qa_pending": true,
+  "human_1x_review": false,
+  "signoff": false,
+  "old69_modified": false
+}

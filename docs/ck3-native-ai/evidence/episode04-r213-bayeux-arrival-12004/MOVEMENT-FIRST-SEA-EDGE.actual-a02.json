@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.r213.first-sea-edge-observed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T16:32:58.372881+00:00",
+  "representation": "derived selected-field analysis; original packet unchanged",
+  "source_pin": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/county-actor-a01/R04-DAY-31.json",
+    "bytes": 13596,
+    "sha256": "e38d78fae68e444e2a387ae58224f0e36fbca32fa7247ebcff189c1fb2230e37"
+  },
+  "day": 31,
+  "date_raw": 53148120,
+  "current_province_id": 725,
+  "route": [
+    1009,
+    2170
+  ],
+  "unit_state_raw": 4,
+  "movement": {
+    "status": "available",
+    "accumulated_movement_weight_raw": 3375000,
+    "cached_edge_speed_raw": 100000,
+    "current_edge_movement_rate_raw": null,
+    "native_army_movement_admission": true,
+    "first_route_edge_weight_cost_raw": 7100000,
+    "first_edge_arrival_provider_byte_e_u8": 0,
+    "current_province_definition_byte_1b_u8": 0,
+    "first_route_target_province_definition_byte_1b_u8": 0,
+    "normalized_edge_progress": {
+      "raw": 47535,
+      "scale": 100000
+    },
+    "first_route_edge_remaining_duration": {
+      "raw": 110370,
+      "scale": 100000
+    },
+    "committed_route_timeline_status": "unavailable"
+  },
+  "actual_first_edge_transfer_observed": true,
+  "strict_greater_first_edge_day31_prediction_matches": true,
+  "conditional_next_edge_remaining_days": 1.1037,
+  "whole_route2170_ETA": null,
+  "old_first_edge_raw100000_per_day_slope_applies_to_new_edge": false,
+  "writer_window_status": "no_retained_matching_invocation",
+  "county_physical_debit_qualified": false,
+  "whole_callback_or_final_arrival_qualified": false,
+  "new_SDK_calls": 0,
+  "new_Move": 0,
+  "new_clock": 0,
+  "actor_modified": false
+}

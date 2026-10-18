@@ -1,0 +1,44 @@
+{
+  "schema": "xar.e04.r213-window-take02-budget-constrained-media-qa.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T17:16:04Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "method": "ffprobe once, full FFmpeg decode once with one decoder thread, two JPEG source frames; canonical three-PNG probe omitted to stay under the adopted 2 MiB D increment",
+  "raw": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/raw-r213/take02/raw.mkv",
+    "bytes": 65177593,
+    "sha256_from_recorder_terminal_without_rehash": "535b75c7ea3cf836b277849a60b2ca5f6cf8d5c83e758a67fbc58ac35c3cbb2d",
+    "codec": "H.264",
+    "width": 1280,
+    "height": 720,
+    "frame_rate": "30/1",
+    "duration_seconds": 106.3
+  },
+  "film_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/R213-WINDOW-TAKE02-film-result.actual.json",
+    "state": "NORMAL_TREE_EMPTY",
+    "finish_reason": "actual_observer_result_after_minimum_duration",
+    "elapsed_wall_seconds": 107.8917988,
+    "client_screen_rect": [640, 360, 1920, 1080]
+  },
+  "frames": [
+    {"second": 1.0, "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/media-probe-take02-budget-a01/frame-early.jpg", "bytes": 152294, "sha256": "0088fddeff374126265fef4f6f193c9cf89da873e5af91a938d18d8c4138be74"},
+    {"second": 105.3, "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r213-county-readiness-a01/media-probe-take02-budget-a01/frame-late.jpg", "bytes": 151524, "sha256": "db05e57177eaf7925471012c4ee0e21f61ddf8ff674c0410ab108458bd21e59e"}
+  ],
+  "ai_original_frame_review": "Both frames visibly show paused CK3 on 1067-03-04 with ArmyWindow, 6679 troops and supply 107/300, near the target; no visible date or route change.",
+  "business_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/r06-one-day-a01/R06-ONE-DAY-TERMINAL.json",
+    "bytes": 202,
+    "sha256": "8fdf2c32a55560affb86fd6189cdf608105dc488cc42926a2520f5a6c143edd3",
+    "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+    "actual_days": 0,
+    "actual_ADD_observed": false
+  },
+  "full_single_thread_decode_exit_code": 0,
+  "budget_constrained_technical_media_pass": true,
+  "canonical_three_png_probe_executed": false,
+  "dynamic_shot_qualified": false,
+  "human_full_playback_reviewed": false,
+  "later_r06_a02_day_excluded_from_this_film": true,
+  "business_success_inferred_from_video": false
+}

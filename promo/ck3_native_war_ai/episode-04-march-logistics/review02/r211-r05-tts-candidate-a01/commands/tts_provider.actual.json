@@ -1,0 +1,32 @@
+{
+  "label": "tts_provider",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "war_ai_promo.prepare_narration",
+    "--script",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\inputs\\newcue.zh-CN.json",
+    "--timeline",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\inputs\\newshot.timeline.json",
+    "--output",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-editorial-tts-a01\\speech",
+    "--provider",
+    "edge",
+    "--voice",
+    "zh-CN-XiaoxiaoNeural",
+    "--rate=-5%",
+    "--workers",
+    "1",
+    "--narration-only"
+  ],
+  "cwd": "D:/workspace/ck3_eternal_recurrence",
+  "started_at_utc": "2026-10-18T13:27:23.370693+00:00",
+  "ended_at_utc": "2026-10-18T13:27:28.028402+00:00",
+  "return_code": 0,
+  "stop_reason": null,
+  "stdout": "Speech 1/1: R211-R05-ACTUAL-INSERT\r\nPrepared 1 cues, 24.40 seconds\r\n",
+  "stderr": ""
+}

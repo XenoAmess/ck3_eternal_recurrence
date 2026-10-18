@@ -1,5 +1,12 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+
+### 2026-10-19 当前实证导航（R212/R213）
+
+`machine_id: desktop-3fevhd2-1c74096080`；补录 `2026-10-18T17:55:54.730191+00:00`。当前研究10/14、业务7/11、正式动态0/11、ABC0/3。R212两接口均提交前拒绝，host1保留；3661为共享 typed 会话修复，R213另有真实一次 native Move/路线与43日到达2170、OFFSave及normal OS0/host0/CAS6714。R06后继一天为CORE_UNKNOWN，不授ADD。两段R213片分别未包含到达/新日；技术QA不等于正式镜头签核。R211原生供给337+另67与画面净404分列。
+
+见 [R213跨机知识与实际小原件](episode04-r213-bayeux-arrival-and-refill-boundary-12004.md)、[R08保留源码父体调用顺序](episode04-r08-settlement-parent-order-12004.md)、[R211新TTS输入](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-tts-candidate-a01/README.md)。午夜后事实归新周，旧日报周报只追加晚补记录；旧69cue/电影不变。
+
 > 最新采纳：R211 已取得受控初始化后自然供给扣兵337，研究10/14、基本业务7/11；动态0/11、ABC0/3。见文末 R211 补注与[严格证据](episode04-r211-zero-stock-physical-12004.md)，旧段落保留原时间边界。
 
 ## 2026-10-18 R200环境RED与R201异常移动前缀

@@ -1,0 +1,122 @@
+{
+  "schema": "xar.e04.r211-r05-actual-insert-27s-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T15:59:56.040963+00:00",
+  "status": "ENCODED_AUTO_MEDIA_PASS_TWO_FRAME_AI_SAMPLE_PASS_PENDING_HUMAN_1X",
+  "preview_purpose": "27 second R05 research insert for later editorial review",
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/work-build-a02/R211-R05-ACTUAL-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1954195,
+    "sha256": "3d8da9b2e87e65101a3ecf8d44dae5ce4f1953f1d404e100b3b8ddeac7847e3a"
+  },
+  "native_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/run-a02/run-manifest.json",
+    "bytes": 8777,
+    "sha256": "1badf4fe7d4dfe771aa0dfa4f765bbb8723b0d032b5aa00f42ff33fcac7e05bf"
+  },
+  "native_build_result": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/BUILD-RESULT.a02.actual.json",
+    "bytes": 1523,
+    "sha256": "384540aff8316e2341e70ba3b26d4ca321b7f35c4bae36cbf73f1ac17c09c2df"
+  },
+  "automated_media_qa": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/AUTO-MEDIA-CHECK.actual.json",
+    "bytes": 3877,
+    "sha256": "0cc3fd425ea6a24bf1d66f83dd56745793efdcccfccdacbedbf53455b1fe7672"
+  },
+  "toolchain_official_latest_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/TOOLCHAIN.a02.actual.json",
+    "bytes": 1111,
+    "sha256": "589609e1f93be3aa2b130a682121f385afb47fd021e0da13e8b25de664d13825"
+  },
+  "composer": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/r211_insert_composer.py",
+    "bytes": 9800,
+    "sha256": "273aab1b5746a97b4b431097009e4120e660b47bfa51d62aaa8d4449738d1ea5"
+  },
+  "project_config": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/project/promo-project.json",
+    "bytes": 1707,
+    "sha256": "a8eb8a96b5bb9c492324f1d159e4afc2f621310f83c85efb9d25007315d13fef"
+  },
+  "source_inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/inputs/render-inputs.json",
+    "bytes": 4095,
+    "sha256": "ecad44cbe8663e522efda47c67835a3a0a14ff24c196f1ce8d54095fb1cfba68"
+  },
+  "r211_preview_source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/preview-a01/army-supply-transition-888-912.mp4",
+    "bytes": 2055681,
+    "sha256": "818c6c9a1de7e411a94c3f797777ea4e3659aa2c90e263f2802d03c92ebf09cb"
+  },
+  "r211_tts_audio_source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/speech/R211-R05-ACTUAL-INSERT.mp3",
+    "bytes": 136656,
+    "sha256": "58c465f14ea737d85e4286a3976893a550c5470a182f6c10e74ecb515e77ca21"
+  },
+  "bgm_source_read_only": {
+    "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+    "bytes": 30726160,
+    "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+  },
+  "r211_edit_evidence": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r211-r05-edit-candidate-a01/R211-R05-EDIT-INPUT.candidate-a01.json",
+    "bytes": 8378,
+    "sha256": "caf1472f2013b3487cc3096fc2ff8c81d442c9d02d5f1f124d20755c426ca8ae"
+  },
+  "source_commit_at_close": "3661e495bc45490238992d3f2850e75558566922",
+  "timing": {
+    "duration_seconds": 27.021354,
+    "video_frames": 810,
+    "video_fps": "30/1",
+    "game_seconds": 24,
+    "evidence_card_seconds": 3,
+    "narration_seconds": 22.776
+  },
+  "media_validation": {
+    "h264_fhd30_810_frames": true,
+    "aac_48k_stereo": true,
+    "strict_full_decode_exit_zero": true,
+    "all_pts_strict_monotone_30fps": true,
+    "pts_mux_first_seconds": 0.021354,
+    "pts_mux_last_seconds": 26.988021
+  },
+  "encoded_frame_ai_sample_review": {
+    "scope": "two encoded still frames only; no continuous 1x viewing",
+    "game_10_1s": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/frames/game.jpg",
+      "bytes": 248322,
+      "sha256": "6267a3a49cd33d09affc4605717f347cc9155db3f2696161e83956100762e01d"
+    },
+    "card_25_5s": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/frames/card.jpg",
+      "bytes": 144289,
+      "sha256": "1dd1731aad1525430250a822b9f24ddc43ac76d20ece3a88fe27717e7135ff1d"
+    },
+    "finding": "FHD game/subtitles readable, R211 337+67=404 card clear; a01 label overlap absent in a02 card",
+    "sample_pass": true
+  },
+  "historical_a01_visual_red": {
+    "old_movie": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/work-build-a01/R211-R05-ACTUAL-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+      "bytes": 1956559,
+      "sha256": "22e17a3727fa73fb60da5184af42eaccc48b63241a2dfc7e9b4c1cb83413e9fd"
+    },
+    "finding": "small generic label crossed English source note on tail card",
+    "preserved": true
+  },
+  "research_boundary": "Controlled zero supply; 337 native supply loss plus 67 siege/raid shared phase equals visible net 404. The zero stock was not naturally depleted; do not attribute all 404 to supply.",
+  "formal_dynamic_credit": false,
+  "continuous_human_1x_review": false,
+  "human_signoff": false,
+  "old_69_cues_modified": false,
+  "upload": false,
+  "media_root_limit_bytes": 33554432,
+  "media_root_bytes_before_receipt": 32061209,
+  "c_metadata_new_write_bytes": 0,
+  "fresh_free_at_close": {
+    "C:/": 26599559168,
+    "D:/": 33245286400
+  },
+  "future_media_writes_this_purpose": 0
+}

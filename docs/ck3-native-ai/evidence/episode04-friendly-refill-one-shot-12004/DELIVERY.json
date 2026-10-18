@@ -1,0 +1,33 @@
+{
+  "schema": "xar.e04.friendly-refill-one-shot-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T13:23:28.255395+00:00",
+  "status": "SOURCE_INPUTS_READY_RUNTIME_NOT_GRANTED",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\ONE-SHOT.md",
+      "relative_path": "ONE-SHOT.md",
+      "bytes": 8676,
+      "sha256": "ac4a7ff0a1b82f4668f2244c13f1b1272007a75c0ccb88a2227fb4e51b80f44e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\INPUTS.json",
+      "relative_path": "INPUTS.json",
+      "bytes": 12696,
+      "sha256": "f72dd3c94cfe30b766688581ae8ee3efcc47088cfbe23b6e6eb22ac78a056cf1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-friendly-refill-one-shot-a01\\verify_offline.py",
+      "relative_path": "verify_offline.py",
+      "bytes": 2105,
+      "sha256": "e7a6e15991c1f0906308fe22296ef05610aaccc48e65cf3872a236c9e53b9613"
+    }
+  ],
+  "source_head_at_read": "037dbf6e6e69c5a2b20864c01068ec8a5223cae5",
+  "source_head_is_R212_final": false,
+  "new_EXE_bytes_read": 0,
+  "SDK_calls": 0,
+  "new_native_builds": 0,
+  "main_or_index_modified": false,
+  "retention": "Source-only candidate for Root existing shared pool; no new heavy reservation; live fields remain null until actual receipts"
+}

@@ -1,0 +1,126 @@
+{
+  "schema": "xar.e04.r211-editorial-tts-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "completed_at_utc": "2026-10-18T13:29:46.590612+00:00",
+  "status": "ONE_CUE_TTS_AND_PROVIDER_SUBTITLES_READY_NO_VIDEO",
+  "candidate_source": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r211-r05-edit-candidate-a01/R211-R05-EDIT-INPUT.candidate-a01.json",
+    "bytes": 8378,
+    "sha256": "caf1472f2013b3487cc3096fc2ff8c81d442c9d02d5f1f124d20755c426ca8ae"
+  },
+  "capacity_pool_source": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-r211-public-a01/R211-PUBLIC-R05-CAPACITY.actual-root-a01.json",
+    "bytes": 19203,
+    "sha256": "1cf7d0b0bfa129d3739ed947b6120ed242d6bc75b737221396f09a33b6c81caf"
+  },
+  "storage_policy": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "registered_subgrant": {
+    "d_root": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01",
+    "d_max_bytes": 8388608,
+    "c_metadata_max_bytes": 131072,
+    "new_independent_claims": 0,
+    "deadline_utc": "2026-10-18T14:18:23+00:00",
+    "capacity_owner_registered": true
+  },
+  "capacity_at_resume": {
+    "phase": "resume_after_provider_boundary_overlap",
+    "at_utc": "2026-10-18T13:29:39.938075+00:00",
+    "root_bytes": 347636,
+    "c_free_bytes": 32872128512,
+    "d_free_bytes": 34868944896,
+    "c_floor_bytes": 25946154182,
+    "d_floor_bytes": 29192355840,
+    "d_sublimit_bytes": 8388608,
+    "d_soft_stop_bytes": 7340032,
+    "deadline_utc": "2026-10-18T14:18:23+00:00"
+  },
+  "capacity_at_close": {
+    "phase": "task_close",
+    "at_utc": "2026-10-18T13:29:46.563539+00:00",
+    "root_bytes": 523020,
+    "c_free_bytes": 32874283008,
+    "d_free_bytes": 34868695040,
+    "c_floor_bytes": 25946154182,
+    "d_floor_bytes": 29192355840,
+    "d_sublimit_bytes": 8388608,
+    "d_soft_stop_bytes": 7340032,
+    "deadline_utc": "2026-10-18T14:18:23+00:00"
+  },
+  "first_finalization_failure": {
+    "producer": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/run_r211_tts.py",
+      "bytes": 19690,
+      "sha256": "c2b60e914e1c659ead77788048c422cfdaf5cba07354022d2de95e7910d49c23"
+    },
+    "reason": "Edge returned 50ms adjacent sentence-boundary overlap; audio provider succeeded and was not rerun",
+    "status": "RETAINED_RED_EDITORIAL_TIMING_GUARD"
+  },
+  "finalizer": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/finalize_r211_tts.py",
+    "bytes": 13636,
+    "sha256": "754184f98b837c645391283d0dad8afd03231f827ba3a788649c5c09a2776e4d"
+  },
+  "toolchain_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/TOOLCHAIN.actual.json",
+    "bytes": 1826,
+    "sha256": "384754c145d399d8bd9afb012ce51b8f59c2bde0a51c58ff4284790c55ec4fbb"
+  },
+  "project_config": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/project/promo-project.json",
+    "bytes": 1428,
+    "sha256": "2b7d83d8f133ad2de75426afdacbc6664a884584ca3da3a5eec87c7883c17745"
+  },
+  "native_run_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/run/run-manifest.json",
+    "bytes": 3509,
+    "sha256": "7ba0bda1afd63e8817059d25d31f0e3dbe25e9c8de2ec1de89898b3f73b3864b"
+  },
+  "production_inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/speech/production-inputs.json",
+    "bytes": 2017,
+    "sha256": "977711cf02e076ddd7e0e615c690a02c20c5732942ad90f796c27e963cc07898"
+  },
+  "actual_audio": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/speech/R211-R05-ACTUAL-INSERT.mp3",
+    "bytes": 136656,
+    "sha256": "58c465f14ea737d85e4286a3976893a550c5470a182f6c10e74ecb515e77ca21"
+  },
+  "subtitle_srt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/subtitles/newcue.zh-CN.provider-timed.srt",
+    "bytes": 393,
+    "sha256": "acb5003717c2ea70c16ea35234130bbc84dcc121930b17057bc71e270a5f937a"
+  },
+  "provider_timing": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/subtitles/newcue.zh-CN.provider-timed.json",
+    "bytes": 1628,
+    "sha256": "36b4ac00d7d740d0038dae2d2287d1d3a0b40990bf2b3537e1116aeaf98325c5"
+  },
+  "newcue_candidate": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-editorial-tts-a01/NEW-CUE.candidate.json",
+    "bytes": 3673,
+    "sha256": "2cfbebd0e6a37ee841bac4f244a041482ed51e51da348b70bdf3fce9dad17988"
+  },
+  "actual_speech_seconds": 22.776,
+  "normal_timeline_seconds": 24.4,
+  "provider_sentence_count": 3,
+  "minimum_card_tail_frames_30fps": 12,
+  "recommended_card_frames_30fps": 90,
+  "root_bytes_before_delivery": 523020,
+  "c_metadata_written_bytes": 0,
+  "video_encoded": false,
+  "old_69cue_modified": false,
+  "human_1x_review": false,
+  "signoff": false,
+  "upload": false,
+  "retention": {
+    "category": "derived",
+    "default_ttl_hours": 48,
+    "active_next_edit_input": true,
+    "review_due_utc": "2026-10-20T14:18:23+00:00",
+    "no_automatic_delete": true
+  }
+}

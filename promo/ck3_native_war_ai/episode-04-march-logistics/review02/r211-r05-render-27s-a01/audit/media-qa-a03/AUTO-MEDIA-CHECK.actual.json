@@ -1,0 +1,103 @@
+{
+  "schema": "xar.e04.r211-insert-27s-automated-media-check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T15:59:13.525997+00:00",
+  "status": "AUTO_MEDIA_PASS_PENDING_HUMAN_REVIEW",
+  "native_build_result": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/BUILD-RESULT.a02.actual.json",
+    "bytes": 1523,
+    "sha256": "384540aff8316e2341e70ba3b26d4ca321b7f35c4bae36cbf73f1ac17c09c2df"
+  },
+  "native_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/run-a02/run-manifest.json",
+    "bytes": 8777,
+    "sha256": "1badf4fe7d4dfe771aa0dfa4f765bbb8723b0d032b5aa00f42ff33fcac7e05bf"
+  },
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/work-build-a02/R211-R05-ACTUAL-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1954195,
+    "sha256": "3d8da9b2e87e65101a3ecf8d44dae5ce4f1953f1d404e100b3b8ddeac7847e3a"
+  },
+  "bound_probe": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/movie.bound-probe.json",
+    "bytes": 4100,
+    "sha256": "2511a883f5d494ac1f30dea29bb93bd3cdaf96461b681e67d84895ed4e0e1d38"
+  },
+  "ffprobe_count": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/commands/stream_count.actual.json",
+    "bytes": 1332,
+    "sha256": "4ec818c7697867b9523e008b260cff6dd6c1f7a011deac7f673fa7d9e5553d86"
+  },
+  "strict_decode": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/commands/strict_full_decode.actual.json",
+    "bytes": 465,
+    "sha256": "06c07ede417e8d04cdd640f70102c5f5cb4f27035db9b86f8cefa813e1bf7259"
+  },
+  "pts_command": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/commands/all_video_pts.actual.json",
+    "bytes": 10689,
+    "sha256": "4748e42241a834964529531c14dcd54bfd613a889337b337356d4cfa82f2b3df"
+  },
+  "duration_seconds": 27.021354,
+  "video_frames": 810,
+  "frame_rate": "30/1",
+  "pts_first": 0.021354,
+  "pts_last": 26.988021,
+  "max_pts_grid_delta_seconds": 6.666666684182476e-07,
+  "video": {
+    "codec_name": "h264",
+    "codec_type": "video",
+    "width": 1920,
+    "height": 1080,
+    "r_frame_rate": "30/1",
+    "nb_read_frames": "810"
+  },
+  "audio": {
+    "codec_name": "aac",
+    "codec_type": "audio",
+    "sample_rate": "48000",
+    "channels": 2,
+    "r_frame_rate": "0/0",
+    "nb_read_frames": "1267"
+  },
+  "review_frames": [
+    {
+      "label": "game",
+      "requested_seconds": 10.1,
+      "jpeg": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/frames/game.jpg",
+        "bytes": 248322,
+        "sha256": "6267a3a49cd33d09affc4605717f347cc9155db3f2696161e83956100762e01d"
+      }
+    },
+    {
+      "label": "card",
+      "requested_seconds": 25.5,
+      "jpeg": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-actual-insert-render-a01/audit/media-qa-a03/frames/card.jpg",
+        "bytes": 144289,
+        "sha256": "1dd1731aad1525430250a822b9f24ddc43ac76d20ece3a88fe27717e7135ff1d"
+      }
+    }
+  ],
+  "capacity_qa_start": {
+    "stage": "qa_start",
+    "at_utc": "2026-10-18T15:59:01.542024+00:00",
+    "root_bytes": 31631917,
+    "c_free_bytes": 26598477824,
+    "d_free_bytes": 33248645120
+  },
+  "capacity_qa_close": {
+    "stage": "qa_close",
+    "at_utc": "2026-10-18T15:59:13.444626+00:00",
+    "root_bytes": 32052368,
+    "c_free_bytes": 26596544512,
+    "d_free_bytes": 33246801920
+  },
+  "aggregate_limit_bytes": 33554432,
+  "aggregate_root_bytes_before_receipt": 32052368,
+  "full_1x_human_review": false,
+  "human_signoff": false,
+  "formal_dynamic_credit": false,
+  "old69_modified": false
+}

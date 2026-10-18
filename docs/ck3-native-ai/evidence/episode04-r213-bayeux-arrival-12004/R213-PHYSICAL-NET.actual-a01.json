@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T17:18:38.276889+00:00",
+  "basis": "original actor baseline unique DATA inventory plus exact named production-normalized after full; not CoreEvent or ADD instruction",
+  "same_full_roster_alias_max_state_shape": true,
+  "unique_physical_slots_before": 37,
+  "unique_physical_slots_after": 37,
+  "current_sum_before": 6674,
+  "current_sum_after": 6674,
+  "raw_physical_net": 0,
+  "changed_slots": [],
+  "selected_Regi2602_slot1": {
+    "before": 68,
+    "after": 68
+  },
+  "actual_core_child": null,
+  "gross_ADD_qualified": false,
+  "cause_attributed": false,
+  "after_source": {
+    "queried_snapshot_id": "native:140",
+    "queried_revision": 141,
+    "queried_native_revision": 140,
+    "queried_date_raw": 53148432,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208"
+  },
+  "baseline_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-BASELINE.json",
+  "after_normalized_full_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\r213-r06-one-day-a02-r05obs-0013-one-day-after-full-derived-normalized-full.json"
+}

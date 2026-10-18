@@ -1,0 +1,164 @@
+{
+  "schema": "xar.ck3.r212-host-original-returncode-reason.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T15:26:49.217593+00:00",
+  "runtime_source_head": "5818b04e47b22a36cbecee700145b6c0075bdd43",
+  "read_only_checkout_head": "3661e495bc45490238992d3f2850e75558566922",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0207",
+  "live_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207",
+  "game_pid": 32828,
+  "host_pid": 32136,
+  "status": "HISTORICAL_FAILED_STEPS_EXPLAIN_HOST_RC1",
+  "direct_cause": {
+    "main_returns_1_when_final_report_not_GREEN": true,
+    "final_GREEN_requires_all_historical_step_ok_true": true,
+    "historical_failed_continue_on_error_rows_preserved": [
+      {
+        "id": "r212-county-bayeux-a02-r05obs-0013-MOVE-ONCE",
+        "plan": {
+          "id": "r212-county-bayeux-a02-r05obs-0013-MOVE-ONCE",
+          "tool": "ck3_move_army",
+          "args": {
+            "army_id": 0,
+            "target_province_id": 2170,
+            "expected_revision": 3
+          },
+          "fresh_revision": false,
+          "continue_on_error": true
+        },
+        "started_at": "2026-10-18T14:10:07.677040+00:00",
+        "ok": false,
+        "error": "RuntimeError: MCP tool ck3_move_army returned an error: Error executing tool ck3_move_army: typed native move requires a paused ready map and owned noncombat army",
+        "finished_at": "2026-10-18T14:10:08.164685+00:00"
+      },
+      {
+        "id": "r212-county-bayeux-a03-r05obs-0014-MOVE-ONCE",
+        "plan": {
+          "id": "r212-county-bayeux-a03-r05obs-0014-MOVE-ONCE",
+          "tool": "ck3_execute_step",
+          "args": {
+            "step": "move-army-0-to-2170",
+            "expected_revision": 4
+          },
+          "fresh_revision": false,
+          "continue_on_error": true
+        },
+        "started_at": "2026-10-18T14:54:54.128467+00:00",
+        "ok": false,
+        "error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: native DLL does not implement gameplay step move-army-0-to-2170",
+        "finished_at": "2026-10-18T14:54:54.649509+00:00"
+      }
+    ],
+    "continue_on_error_allows_same_hold_but_does_not_convert_failed_row_to_success": true,
+    "at_least_these_two_rows_suffice_for_RED": true,
+    "exhaustive_failed_row_inventory_claimed": false,
+    "host_stderr_empty": true,
+    "supervisor_stderr_empty": true,
+    "host_stdout": "{\"status\": \"RED\", \"output\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\common-runtime-a36\\\\runs\\\\desktop-3fevhd2-1c74096080--vanilla--R0207\\\\native-report.json\", \"fixture_only\": false, \"error\": null}\r\n"
+  },
+  "independent_normal_game_lifecycle": {
+    "normal_close_qualified": true,
+    "retained_os0": true,
+    "native_process_exit_code": 0,
+    "cleanup_ok": true,
+    "managed_thread_finished": true,
+    "host_error": null,
+    "original_host_popen_returncode": 1,
+    "normal_close_does_not_clear_historical_action_failures": true
+  },
+  "post_quit_final_snapshot_error": {
+    "error": "RuntimeError: MCP tool ck3_take_snapshot returned an error: Error executing tool ck3_take_snapshot: native DLL is not connected to \\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0207",
+    "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\native-report.json",
+    "source_total_bytes_stat_only": 17947884,
+    "bounded_tail_offset": 17939692,
+    "bounded_tail_bytes": 8192,
+    "bounded_tail_sha256": "a72975e8da994b366b8886cccc1fc9c4d794b7e658d0f8525569abdf0f89bd06",
+    "exact_field_line_sha256": "a223097ef5c767999056f5e8aa4f52dae25a61bdc800785d3c3fe4bfb78f84fb",
+    "not_a_direct_term_in_final_GREEN_predicate": true,
+    "not_claimed_as_reason_for_game_exit_failure": true
+  },
+  "R213_implication": {
+    "no_cleanup_failure_inferred_from_host_rc1": true,
+    "no_old_host_or_game_restart_needed_to_erase_history": true,
+    "new_run_requires_supported_and_qualified_actual_Move_route": true,
+    "same_typed_guard_or_unsupported_literal_move_path_would_fail_again": true,
+    "no_new_source_build_or_whole_host_failure_inferred": true,
+    "business_research_credit_added": false
+  },
+  "release": {
+    "parent_reported_actual_CAS_event_sequence": 6666,
+    "independently_read_release_original": false,
+    "old_monitor_receipt_preserved": true
+  },
+  "source_spans": [
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "commit": "5818b04e47b22a36cbecee700145b6c0075bdd43",
+      "first_line": 2538,
+      "last_line": 2556,
+      "text": "                    if proof is None:\n                        row[\"after_snapshot\"] = await self.fresh()\n                    else:\n                        row[\"after_snapshot\"] = proof\n                        marker = \"post_failure_exit_finish_hold\" if failure_shutdown else \"post_exit_finish_hold\"\n                        self.report[marker] = {\"step_id\": row[\"id\"], \"proof\": copy.deepcopy(proof)}\n                row[\"ok\"] = True\n            except Exception as error:\n                row[\"error\"] = f\"{type(error).__name__}: {error}\"\n                pause_diagnostic = getattr(error, \"ck3_campaign_pause_frame_diagnostic\", None)\n                if isinstance(pause_diagnostic, dict):\n                    row[\"campaign_pause_frame_diagnostic\"] = pause_diagnostic\n                if not step.get(\"continue_on_error\", False):\n                    raise\n            finally:\n                row[\"finished_at\"] = now()\n                self.write()\n            previous_rows.append(row)\n\n",
+      "utf8_sha256": "2f323c5a04b93e5bbdf817e143a21324af1f97075e8f4fb241d299647b580108"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "commit": "5818b04e47b22a36cbecee700145b6c0075bdd43",
+      "first_line": 4434,
+      "last_line": 4447,
+      "text": "        report[\"finished_at\"] = now()\n        native_report = session_state.get(\"report\")\n        cleanup_ok = args.sdk_smoke_test or (\n            isinstance(native_report, dict) and isinstance(native_report.get(\"shutdown\"), dict)\n            and native_report[\"shutdown\"].get(\"ok\") is True and native_report.get(\"ok\") is True\n        )\n        report[\"cleanup_ok\"] = cleanup_ok\n        report[\"status\"] = \"GREEN\" if (\n            report[\"error\"] is None and report.get(\"readiness\") is not None\n            and all(row.get(\"ok\") is True for row in report[\"steps\"])\n            and report[\"managed_session_thread_finished\"] and cleanup_ok\n        ) else \"RED\"\n        write()\n    return report\n",
+      "utf8_sha256": "72481a7c23403b60f09e2747f278702f7646a227bed922389f8137a5f533e5d6"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "commit": "5818b04e47b22a36cbecee700145b6c0075bdd43",
+      "first_line": 4629,
+      "last_line": 4632,
+      "text": "    report = asyncio.run(run(args))\n    print(json.dumps({\"status\": report[\"status\"], \"output\": str(args.output.resolve()),\n                      \"fixture_only\": args.sdk_smoke_test, \"error\": report[\"error\"]}, ensure_ascii=False))\n    return 0 if report[\"status\"] == \"GREEN\" else 1\n",
+      "utf8_sha256": "6dec397aa5a2e5c5f0e2c83d50203ddfda88bac482fdd911b9d7fa2e20da701d"
+    }
+  ],
+  "small_originals": {
+    "host_exit": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "10e1d2dbf084bb64e4b2314ba9f86bacd5d2c02a5c1a5deabcbedbbb75edd872"
+    },
+    "host_stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\host-stdout.log",
+      "bytes": 204,
+      "sha256": "59bc415a46b383a6d0b303d5696d24c80cc5ce22612b39d80d7804a86036d7ee"
+    },
+    "host_stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\host-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "supervisor_stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\host-supervisor-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "normal_close": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\case-output\\normal-close-result.json",
+      "bytes": 10028,
+      "sha256": "86d1f50be5df724b1dae6020525fabbb538e8c48a5b975d92feb468b0365a063"
+    },
+    "failed_typed_move": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\county-actor-a02\\r212-county-bayeux-a02-r05obs-0013-MOVE-ONCE.actual-results.json",
+      "bytes": 750,
+      "sha256": "39294a44bc38e3e6f1fc0101c62d1d03319c2f0316b407e2f3454230b2f2375b"
+    },
+    "failed_generic_move": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0207\\county-actor-a03\\r212-county-bayeux-a03-r05obs-0014-MOVE-ONCE.actual-results.json",
+      "bytes": 731,
+      "sha256": "8cf3b41e2d7722faced76d5e8b083569e6a2a8809888d290fc0123a945170d6b"
+    }
+  },
+  "read_boundary": {
+    "whole_native_report_read": false,
+    "whole_native_report_hashed": false,
+    "SDK_used": false,
+    "desktop_used": false,
+    "main_written": false,
+    "game_started": false
+  }
+}

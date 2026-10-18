@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.r212-client-window-ai-sample-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T14:13:31Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0207",
+  "scope": "closed take02 raw; three original-frame AI samples and full-stream technical decode",
+  "media_probe": {"path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/media-probe-take02-a01/PROBE.actual.json", "bytes": 5468, "sha256": "4a669a9030a1a62968b4b9c355fd100b00b654233f58e42d974b1f1f6033260b"},
+  "raw": {"path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/raw-r212/take02/raw.mkv", "bytes": 28142858, "sha256": "213057a7d6d94df460fc603f59345fc904b91d1e22c1a6b3bd01ce789b2c2961"},
+  "film_terminal": {"path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/R212-WINDOW-TAKE02-film-result.actual.json", "bytes": 1834, "sha256": "1e7611cec2f193c3bc9d1e0096a8331881e8a0c1e8354b8df41a2f4e59d12596"},
+  "business_terminal": {"path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0207/county-actor-a02/R04-BAYEUX-TERMINAL.json", "bytes": 443, "sha256": "7eefe90b7576d7c1677480bbbebe16200f396f52b79fdad90e4e91c462bcd4fc"},
+  "technical": {"probe_pass": true, "full_ffmpeg_decode_exit_code": 0, "duration_seconds": 45.433, "resolution": [1280, 720], "frame_rate": "30/1", "capture_source": "gdigrab-desktop-client-region", "client_screen_rect": [640, 360, 1920, 1080], "owned_ck3_pid": 32828, "normal_tree_empty": true, "single_start_finish": true},
+  "ai_samples": [
+    {"second": 1.0, "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/media-probe-take02-a01/frame-early.png", "bytes": 1267861, "sha256": "757dc85aa41396875fa787b610d749514fa12c1b56edeee0ac5ebd907a5962b0"},
+    {"second": 22.7165, "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/media-probe-take02-a01/frame-middle.png", "bytes": 1352843, "sha256": "da774e35b71d8d554f222978ac747419b62e72a2efafbb42c45a4ccb85da8769"},
+    {"second": 44.433, "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r212-county-readiness-a01/media-probe-take02-a01/frame-late.png", "bytes": 1351711, "sha256": "0c81e481439739e3224b9b87b3d435c0d745912999c6458c4f25923ccdf9bb4f"}
+  ],
+  "ai_sample_observation": "All three samples show CK3 ArmyWindow for 6746 soldiers, supply 116/300, paused map date 1067-01-20; the cursor remains visible near the Army panel. The samples do not show a marching route, date advance, or arrival.",
+  "business_result": {"status": "STOPPED_ERROR_PRESERVED_NO_REPLAY", "actual_days": 0, "move_attempts": 1, "arrived": false, "final_date_raw": 53147376, "final_province_id": 1506},
+  "human_full_playback_reviewed": false,
+  "formal_dynamic_shot_qualified": false,
+  "business_success_inferred_from_video": false
+}

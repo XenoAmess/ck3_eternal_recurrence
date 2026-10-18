@@ -1,0 +1,61 @@
+{
+  "schema": "xar.e04.r08-parent-order-focused-source-result.v1",
+  "actual_argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261015-a01/r212-r08-source-and-rebind-a01/verify_parent_order.py",
+    "--independent-decode",
+    "--counterexample"
+  ],
+  "chunk_id": "b5aed0",
+  "wall_time_seconds": 0.3036484,
+  "exit_code": 0,
+  "original_token_count": 249,
+  "output": "{\r\n  \"normal_return_settlement_counts\": [\r\n    1\r\n  ],\r\n  \"exactly_once_on_all_own_body_normal_paths\": true,\r\n  \"direct_calls_before_settlement\": [],\r\n  \"getter_calls\": {\r\n    \"top_liege\": [\r\n      42957525\r\n    ],\r\n    \"current_maintenance\": [\r\n      42957872\r\n    ]\r\n  },\r\n  \"getter_can_reach_earlier_settlement\": {\r\n    \"top_liege\": false,\r\n    \"current_maintenance\": false\r\n  },\r\n  \"getter_reachable_without_settlement\": {\r\n    \"top_liege\": false,\r\n    \"current_maintenance\": false\r\n  },\r\n  \"entry_character_saved_RDX_and_passed_as_RCX\": true,\r\n  \"synthetic_bypass_normal_counts\": [\r\n    0,\r\n    1\r\n  ],\r\n  \"status\": \"PASS_RETAINED_STATIC_PARENT_ORDER\",\r\n  \"SDK_calls\": 0,\r\n  \"new_EXE_reads\": 0,\r\n  \"game_actions\": 0,\r\n  \"normal_control_flow_only\": true,\r\n  \"opaque_callee_effects_not_modeled\": true,\r\n  \"exceptions_or_reentrancy_not_qualified\": true,\r\n  \"military_paid_amount\": null,\r\n  \"payer_from_static_getter_name\": null,\r\n  \"calendar_cadence\": null,\r\n  \"independent_decode\": true\r\n}\r\n",
+  "result": {
+    "normal_return_settlement_counts": [
+      1
+    ],
+    "exactly_once_on_all_own_body_normal_paths": true,
+    "direct_calls_before_settlement": [],
+    "getter_calls": {
+      "top_liege": [
+        42957525
+      ],
+      "current_maintenance": [
+        42957872
+      ]
+    },
+    "getter_can_reach_earlier_settlement": {
+      "top_liege": false,
+      "current_maintenance": false
+    },
+    "getter_reachable_without_settlement": {
+      "top_liege": false,
+      "current_maintenance": false
+    },
+    "entry_character_saved_RDX_and_passed_as_RCX": true,
+    "synthetic_bypass_normal_counts": [
+      0,
+      1
+    ],
+    "status": "PASS_RETAINED_STATIC_PARENT_ORDER",
+    "SDK_calls": 0,
+    "new_EXE_reads": 0,
+    "game_actions": 0,
+    "normal_control_flow_only": true,
+    "opaque_callee_effects_not_modeled": true,
+    "exceptions_or_reentrancy_not_qualified": true,
+    "military_paid_amount": null,
+    "payer_from_static_getter_name": null,
+    "calendar_cadence": null,
+    "independent_decode": true
+  },
+  "new_EXE_reads": 0,
+  "SDK_calls": 0,
+  "DR_attach": 0,
+  "previous_source_boundaries_are_not_new_runtime_qualification": true
+}

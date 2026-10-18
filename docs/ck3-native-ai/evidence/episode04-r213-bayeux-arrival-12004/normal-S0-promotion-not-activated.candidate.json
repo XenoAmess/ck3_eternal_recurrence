@@ -1,0 +1,149 @@
+{
+  "schema": "xar.e04.normal-source-promotion-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T17:54:47.257340+00:00",
+  "status": "ORIGINAL_SAVE_AND_NORMAL_RESOURCE_CLOSURE_BOUND_COPY_NOT_RUN",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0208",
+  "source_head": "3661e495bc45490238992d3f2850e75558566922",
+  "source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 73748014,
+    "sha256": "79ab2849cf12b17f583cf1943af22250f579a28840e65ad363232f39544f8566"
+  },
+  "copy_target": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\normal-s0-date53148432-a01.ck3",
+  "source_identity_mode": "Original native Save receipt SHA plus current stat only; payload not read by builder",
+  "actual_save": {
+    "reference": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\r213-r06-one-day-a02-r05obs-0020-Save-once.actual-results.json",
+      "bytes": 56531,
+      "sha256": "a1b33befb9008758d812bed8ed0357dfbb73dca8b10497636f12e03fbff6bbbe"
+    },
+    "pointer": "/rows/0/result/checkpoint",
+    "date_raw": 53148432,
+    "projection": "native_campaign",
+    "episode_character_id": null,
+    "episode_run_id": null,
+    "succession_lifecycle": null
+  },
+  "actual_actor": {
+    "value": 33388,
+    "reference": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\r213-r06-one-day-a02-r05obs-0020-Save-once.actual-results.json",
+      "bytes": 56531,
+      "sha256": "a1b33befb9008758d812bed8ed0357dfbb73dca8b10497636f12e03fbff6bbbe"
+    },
+    "pointer": "/rows/0/after_snapshot/played_character/character_id"
+  },
+  "independent_after": {
+    "reference": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\r213-r06-one-day-a02-r05obs-0021-Save-independent-after.actual-results.json",
+      "bytes": 105291,
+      "sha256": "2ae03459837cfb83bb97bb29def3f5eb752ad9795120a90a3f0b69d9f530500b"
+    },
+    "pointer": "/rows/0/after_snapshot",
+    "date_raw": 53148432,
+    "revision": 142,
+    "army": {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 2170,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  },
+  "normal_campaign_provenance": {
+    "source": "Actual native_campaign Save + same managed run + prepared pure-vanilla empty-mod profile; original null lifecycle/EP retained",
+    "profile": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\prepared-a01\\profile-preparation.json",
+      "bytes": 3854,
+      "sha256": "ca61792d12629d3e5fb8c24693fe53b80a4623e02b95726f1b416c8d832f2df4"
+    },
+    "empty_mods": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\state-a01\\profile\\dlc_load.json",
+      "bytes": 48,
+      "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+    },
+    "fixture_mounted": false,
+    "raw_Save_fields_rewritten": false,
+    "research_derived_episode_binding_not_used": true
+  },
+  "closure": {
+    "cleanup": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\r06-one-day-a02\\R06-ONE-DAY-RESULT.json",
+      "bytes": 156680,
+      "sha256": "77d9394f43a5083ec00dc06fbb571dd7f5b5bf4a59dd43edff1a45ae634ca52a"
+    },
+    "normal_close": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\case-output\\normal-close-result.json",
+      "bytes": 9989,
+      "sha256": "785d3489c167c099cf264ea210fff6f74f022619f127d57aa7bfc89c0c6b2388"
+    },
+    "host_original_wait": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0208\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "18380030fd350bd7978c285daba2a2d14ed505d2b66eae45993d422137b8cd07"
+    },
+    "keeper": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r213-county-readiness-a01\\keeper-a01\\report.json",
+      "bytes": 463,
+      "sha256": "e7da3ec9b7312637ec15493238fb6194d00ea171bd262a5229f04bf97f4eebb9"
+    },
+    "CAS_done_task_snapshot": {
+      "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-common-12004-a213.json",
+      "bytes": 478,
+      "sha256": "ef2af46ba963c077efdae72cf64e22070519248a03da9eb632c2c629e90974e1"
+    },
+    "CAS_sequence": 6714,
+    "CAS_original_journal_event_not_claimed_by_snapshot": true,
+    "game_native_host_exit_codes": [
+      0,
+      0,
+      0
+    ]
+  },
+  "payload_read_hash_copy_performed": false,
+  "destination_created": false,
+  "source_qualified_for_old_bootstrap_checkpoint_source": false,
+  "existing_public_entry": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "commands": [
+      "plan",
+      "prepare",
+      "allocate",
+      "preflight",
+      "run",
+      "verify"
+    ],
+    "standalone_promote_command_exists": false
+  },
+  "actual_public_prepare_gap": {
+    "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+    "function": "checkpoint_source",
+    "requires_old_fields": [
+      "succession_lifecycle ordinary contract",
+      "episode_character_id positive"
+    ],
+    "original_new_Save_fields": [
+      null,
+      null
+    ],
+    "next_prepare_requires_explicit_actual_common_Save_source_branch": true
+  },
+  "next_root_step": "Root fresh capacity check includes 73748014 new immutable source bytes within R213 profile remainder, then execute exact external exclusive-copy helper once; public prepare needs real DTO support first",
+  "B_qualified_sites": 0,
+  "formal_ABC_completed": 0,
+  "business_pass": false
+}
