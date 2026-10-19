@@ -33,7 +33,7 @@ class _LocalReceiverV1:
 
 
 def receive_inherited_preload_v1(*, inherited, owned_control_handle, facade, machine_id,
-                                 native_pipe_name, enabled=False):
+                                 native_pipe_name, enabled=False, _control_transfer_seal=None):
     """Take ownership only after inherited-flag/client-peer checks; no JSON proof.
 
     The caller must retain returned holder on cleanup failure. Neither the
@@ -58,8 +58,12 @@ def receive_inherited_preload_v1(*, inherited, owned_control_handle, facade, mac
         native_pipe_name=_validate_pipe_name(native_pipe_name)
         with facade._lock:
             api=facade._os()
-            contract._require(not any(h in facade._owned for h in values+[owned_control_handle]),
+            transferred=(_control_transfer_seal is contract._RESOURCE_SEAL
+                         and facade._owned.get(owned_control_handle)=="origin_client")
+            contract._require(not any(h in facade._owned for h in values)
+                and (owned_control_handle not in facade._owned or transferred),
                               "resource already registered or borrowed")
+            if transferred:acquired.append(owned_control_handle)
             for handle in values:
                 api.accept_inherited_handle(handle)
                 facade._owned[handle]="received_pending"
@@ -69,7 +73,7 @@ def receive_inherited_preload_v1(*, inherited, owned_control_handle, facade, mac
             contract._require(api.private_parent_pid(owned_control_handle)==parent.pid,
                               "private control server is not the inherited parent")
             facade._owned[owned_control_handle]="received_control"
-            acquired.append(owned_control_handle)
+            if not transferred:acquired.append(owned_control_handle)
             contract._require(api.wait_zero(inherited["revoke"])==0x102,"root already revoked")
             volume,identity,size=api.file_identity(inherited["lease"])
             dos=_normal_dos(api.final_path(inherited["lease"],nt=False))

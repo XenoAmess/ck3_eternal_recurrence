@@ -168,7 +168,7 @@ def verify_cold_profile(spec):
     return manifest
 
 
-def launch_prepared(spec, dll, injector, *, before_process_create=None):
+def launch_prepared(spec, dll, injector, *, before_process_create=None, pre_native_resume=None):
     _, native_session, runtime = api()
     verify_cold_profile(spec)
     pre = read(N / PRELAUNCH)
@@ -176,7 +176,8 @@ def launch_prepared(spec, dll, injector, *, before_process_create=None):
     bridge = runtime.NativeBridgeLaunchConfig('native-headless', pre['pipe_name'], Path(dll), Path(injector))
     return runtime.launch(spec, native_bridge=bridge, continue_last_save=False,
         load_save_name='xar_checkpoint', verify_prepared_profile=False,
-        start_minimized=True, before_process_create=before_process_create)
+        start_minimized=True, before_process_create=before_process_create,
+        **({"pre_native_resume": pre_native_resume} if pre_native_resume is not None else {}))
 
 
 def main():

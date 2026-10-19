@@ -1,0 +1,341 @@
+{
+  "schema": "xar.g2.m7.canonical-source-chain-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:46:01.846187+00:00",
+  "machine_source": {
+    "command": "python -B tools/ck3_live_run_id.py machine",
+    "tool_chunk": "d98bf1",
+    "actual_readback": "xenoamess-full-tower-eb9d2c1186"
+  },
+  "status": "DEFAULT_OFF_SOURCE_READY_DIRECT_SCRIPT_GUARD_CORRECTED",
+  "runtime_adopted": false,
+  "actual_H": "unknown",
+  "original_M7_breadth": "incomplete; one natural succession subchain does not establish multi-ruler/seed/government breadth",
+  "phase_base_commit": "1fbb3071d74d3f39fb3cb20a9bfe1a51500bf1b1",
+  "scope": {
+    "new_source_test_review_hard_bytes": 131072,
+    "max_new_owned_harmless_children_per_attempt": 4,
+    "Game_RPC": 0,
+    "current_Game_MCP_Job_connections": 0,
+    "Native_builds": 0,
+    "desktop_calls": 0,
+    "SYSTEM_changes": 0,
+    "stage_commit_push": false
+  },
+  "storage": {
+    "admission": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/MINOR2MiB-M7-CANONICAL-SOURCE128KiB-COMMITMENT01.json",
+      "bytes": 787,
+      "sha256": "cb490c263fd5a1fd61bab9ea447b5fac841622154651e11220b2ade161d9335d",
+      "observed_at_utc": "2026-10-19T16:02:47.712788+00:00",
+      "source": "Root exact card; read/hash verified tool0b7aa5",
+      "pool_remaining_bytes": 106496
+    },
+    "start": {
+      "observed_at_utc": "2026-10-19T15:55:29.596070+00:00",
+      "disk_usage_target": "Z:/ck3_mod_rewrite",
+      "volume": "Z:",
+      "free_bytes": 178238472192,
+      "source": "tool5ad77c"
+    },
+    "closing_source_observation": {
+      "observed_at_utc": "2026-10-19T16:31:45.137284+00:00",
+      "disk_usage_target": "Z:\\ck3_mod_rewrite",
+      "volume": "Z:",
+      "free_bytes": 178218258432,
+      "source": "tool55c81f",
+      "scope": "source-only small writes; not D: child or heavy asset admission"
+    },
+    "cost_method": "New files count their full bytes; existing files count UTF-8 added plus removed source lines against phase_base_commit, excluding diff headers/context. Unchanged full legacy source files are not duplicated or charged as new assets. Add complete wiring packet and this proof.",
+    "changed_source_test_bytes": 72751,
+    "packet_bytes": 7181,
+    "proof_bytes": 18546,
+    "total_changed_source_test_review_bytes": 98478,
+    "within_hard_cap": true,
+    "within_card_remaining": true
+  },
+  "predecessors": [
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-canonical-preload-origin-promotion-plan-2026-10-19.json",
+      "bytes": 8142,
+      "sha256": "6224f2931b43c29683275ceb7485eea290bf476765901bd7a20edfae36a18cb8",
+      "scope": "Accepted historical seven-hunk plan, unchanged"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-native-custody-local-receiver-source-ready-2026-10-19.json",
+      "bytes": 11238,
+      "sha256": "de89e4d0f01c396cabc1ed119e6fe75ec0423938fc029d4259cdabf4d376a0f2",
+      "scope": "Local receiver predecessor; its then-unqualified source boundary is historical"
+    },
+    {
+      "commit": "7f540720",
+      "scope": "Strict direct actual-base child creator; venv forwarding launcher remains unsupported by production binder, no PID substitution"
+    }
+  ],
+  "implementation": {
+    "original_authority": "The same original _PreloadCustodyV1/_RESOURCE_SEAL is captured from the actual _SuspendedWindowsProcess before either original resume/injection branch. Same unique _LoadedNativeProviderV1/_LOADED_NATIVE_SEAL remains the only provider mint.",
+    "actual_creation": "The canonical supervisor actually creates SDKowner, which creates Queue, which uses a private namespace of original stock MCP code objects to create App. Exact returned child handles and kernel pipe peers establish each local edge; original shared WeakJob table and cleanup remain in use.",
+    "source_closure": "Frozen actual entry paths/SHA are re-read before creation; creator digest covers creator, MCP binder and retained-process helper. SDK epoch is computed by existing owner_source_epoch_v1. Matching JSON bodies do not independently establish source qualification.",
+    "upward_continuity": "Each parent duplicates read handles upward using its actual returned child process handle. Unknown rights reject; no process is opened from an asserted PID. Final App opens a fresh origin connection; both kernel pipe peers match retained generations.",
+    "received_role": "Received holders retain source_role=received and _preload_source_verified=False. The existing issuer requires a live original-controller readback over the private session, then every original Native module/FileID/peer/hello/generation guard. No JSON qualification token or source_verified=True promotion.",
+    "exact_birth": "The same held target supplies integer 100ns FILETIME through all hops and the existing typed DTO. Consumer checks that exact value and source liveness; no CIM rounding, global environment parser change, or old ledger rewrite.",
+    "lazy_consumption": "Only a valid existing optional root component can trigger first qualification for a staged owner. Missing component/bootstrap adds no OS/RPC/persistence. Eligible use performs real private IPC/held liveness checks; zero OS overhead is not claimed.",
+    "invalidation": "Root revoke is signaled before controller lease release. Driver disconnect/adoption/close clear DTO and identity cache before owned close. Failed/unverified release remains strongly referenced; original runtime target/Job/Native pipe ownership is untouched.",
+    "default_behavior": "No preload callback, adapter entry, enabled facade or received bootstrap is installed by default. Current runtime external sources are unchanged. The new methods are explicit source adapters for a future normal maintenance attempt.",
+    "source_epoch_additions": [
+      "bridge/native_loaded_provider_custody_v1.py",
+      "bridge/native_loaded_provider_windows_v1.py",
+      "bridge/native_loaded_provider_receiver_v1.py",
+      "bridge/native_loaded_provider_origin_v1.py",
+      "bridge/native_loaded_provider_origin_io_v1.py"
+    ],
+    "untouched": "Service, Native C++, camera/business/persist spans, ledger _checked, current C16/d804/Native29 and existing Native freeze; original T0/campaign/fixed D0=174 and pending/UNKNOWN obligations",
+    "direct_script_guard": "M0 independent review found that an entry merely appearing later in argv could pass. The corrected producer permits only -B/-u/-X utf8 before the exact first script operand, and verifies actual held returned image against command[0] using existing retained-creator image path rules before any child ACK. No command rewrite or descendant PID substitution."
+  },
+  "qualification": {
+    "prior_narrow_runs": [
+      {
+        "tool_chunk": "056c2b",
+        "observed_at_utc": "2026-10-19T16:14:19+00:00",
+        "result": "29 passed, 43 subtests passed in 4.30s",
+        "scope": "Then-current new contracts plus existing local receiver/issuer/parser compatibility"
+      },
+      {
+        "tool_chunk": "e15f75",
+        "result": "18 passed, 7 subtests passed in 3.61s",
+        "scope": "New software cases plus original runtime create/default and Driver disconnect/close/restart"
+      },
+      {
+        "tool_chunk": "5377e7",
+        "started_at_utc": "2026-10-19T16:24:47.833021+00:00",
+        "result": "17 passed, 10 subtests passed in 8.89s",
+        "scope": "Actual entry source closure and complete owned chain before the final private-argv adapter addition; final run above supersedes source pins"
+      }
+    ],
+    "owned_kernel": {
+      "new_children": 4,
+      "target": {
+        "role": "owned suspended Python; not CK3",
+        "pid": 206832,
+        "creation_filetime": "134369010528696774",
+        "birth_ISO7": "2026-10-19T16:30:52.8696774Z"
+      },
+      "actual_chain": [
+        {
+          "role": "SDKowner",
+          "pid": 229356,
+          "creation_filetime": "134369010529134900"
+        },
+        {
+          "role": "Queue",
+          "pid": 130092,
+          "creation_filetime": "134369010546831227"
+        },
+        {
+          "role": "MCPApp",
+          "pid": 255056,
+          "creation_filetime": "134369010574245671"
+        }
+      ],
+      "actual_child_image": "c:/users/xenoa/appdata/local/programs/python/python313/python.exe",
+      "SDK_source_epoch": "c6fb72219b4aae77a80f62e9307be52daf4e20aed3058a52da1bcbfe75d2934e",
+      "creator_source_digest": "9b0d4fd7ce9b64456580b3e49c8bc75e5466e87e2418ecd74565d08b0ad20a65",
+      "real_observations": "Actual suspended target and pre-resume callback, fixed-share tiny file lease/hash/FileID, inherited/duplicated handles, actual child creation returns, fresh origin pipe kernel peers, exact FILETIME, original stock MCP Job membership/cleanup, root event revocation and CloseHandle.",
+      "synthetic_observations": "Native pre-resume module absence, loaded-module enumeration/path/base and Native hello are explicit SyntheticNativeReads/owned Python fixture values. Tiny lease is not a DLL; no real Native load or candidate query occurred. Actual owner/driver classes use detached shapes without Game constructors.",
+      "unique_DTO_software_branch": {
+        "type": "_LoadedNativeProviderV1",
+        "issued_once": true,
+        "received_source_verified": false,
+        "actual_H_credit": 0
+      },
+      "revocation": {
+        "DTO_and_cache_cleared_before_real_CloseHandle_count": 9,
+        "App_owned_holder_handles_remaining": 0,
+        "original_stock_Job_entry_removed": true,
+        "original_stock_Job_handle_closed_error": 6,
+        "retained_MCP_handle_closed": true
+      },
+      "cleanup": {
+        "target_exit_code": 0,
+        "SDKowner_exit_code": 0,
+        "Queue_and_App_exit_code": 0,
+        "root_Job_initial_post_wait_active": 1,
+        "root_Job_final_active": 0,
+        "root_Job_accounting_wait": "Bounded <=3s; final zero required before pass",
+        "owned_handles_remaining": 0,
+        "temporary_mappings_remaining": 0,
+        "release_errors": [],
+        "borrowed_handles_closed": 0,
+        "target_process_control_calls": 0
+      }
+    },
+    "historical_failed_owned_attempts": [
+      {
+        "tool_chunk": "c87742",
+        "result": "FAIL",
+        "reason": "Initial preload failure; not counted as qualified"
+      },
+      {
+        "tool_chunk": "c20ebd",
+        "result": "FAIL",
+        "reason": "Strict path guard received pathlib.Path; producer corrected to explicit str(config.dll_path); guard unchanged"
+      },
+      {
+        "tool_chunk": "a8d56d",
+        "result": "FAIL",
+        "reason": "Local Edge and original origin used different IO objects; producer now reuses the same per-actor IO, strict identity guard unchanged"
+      },
+      {
+        "tool_chunk": "520333",
+        "result": "FAIL",
+        "reason": "Complete chain/revocation passed but immediate Job accounting still active=1; final code waits bounded accounting readback and requires actual zero"
+      }
+    ],
+    "historical_failure_policy": "These failed attempts remain failed. Only newly owned actors/resources were involved; original root kill-on-close cleanup remained in each attempt. No failed Game operation was retried.",
+    "prior_owned_run": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_at_utc": "2026-10-19T16:30:48.374012+00:00",
+      "caller": "tools/.venv/Scripts/python.exe",
+      "tool_initial_chunk": "eb58fd",
+      "tool_completion_chunk": "e64adf",
+      "result": "18 passed, 12 subtests passed in 10.67s",
+      "exit_code": 0,
+      "nodes": [
+        "tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py",
+        "ck3_autonomous_player/tests/unit/test_native_bridge_runtime.py::NativeBridgeCreateProcessTests",
+        "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py::NativeHeadlessGameplayDriverTests::test_disconnect_removes_semantic_state",
+        "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py::NativeHeadlessGameplayDriverTests::test_close_does_not_loop_without_driver_state_storage"
+      ],
+      "coverage": "Default OFF/no IO; bounded private argv consumption; JSON/boolean promotion refusal; wrong epoch; sequence/nonce/resource/peer/root rejection; unknown duplicate rights; incomplete typed chain; frozen entry source absent/wrong/duplicate; actual runtime hook order; Driver clear-before-close; actual four-child positive/revocation/cleanup."
+    },
+    "prior_owned_source_difference": {
+      "superseded_proof_sha256": "f9910bcbcb6284af8341e37838852b80446270595b5d522753305c79525648d8",
+      "changed_after_run": [
+        {
+          "path": "tools/g2_saved_campaign/canonical_native_provider_chain_v1.py",
+          "bytes": 13497,
+          "sha256": "c552c8e6912d41b083d5619e4f30161847f1b2de976334a8e037b1bc9a7bc4bd",
+          "changed_source_bytes": 13497,
+          "new_file": true
+        },
+        {
+          "path": "tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py",
+          "bytes": 26158,
+          "sha256": "5e7c4d0534f995cd3223cb9e3acbe85510491d238ccf2eaa5baa0e83e1f7b115",
+          "changed_source_bytes": 26158,
+          "new_file": true
+        }
+      ],
+      "other_nine_source_pins": "Unchanged from the actual owned run; match files below.",
+      "credit_boundary": "Prior real kernel/Job result remains tied to these earlier source pins. No four-child run of corrected creator is claimed."
+    },
+    "final_run": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_at_utc": "2026-10-19T16:45:11.112247+00:00",
+      "caller": "tools/.venv/Scripts/python.exe",
+      "tool_chunk": "3bb775",
+      "result": "12 passed, 26 subtests passed in 1.57s",
+      "exit_code": 0,
+      "nodes": [
+        "tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py::CanonicalSourceContracts"
+      ],
+      "created_children": 0,
+      "coverage": "Finite direct Python flags/script operand, -c/-m/--/stdin/unknown flags/wrong script refusal; actual returned-image path rules and refusal before child ACK, plus original pure contracts. No four-child rerun."
+    }
+  },
+  "production_remaining": [
+    "Freeze these SDK/creator/actual entry bytes, and have the sole runtime owner adopt the explicit adapters at a normal maintenance boundary. Independently launched SDKowner cannot acquire source authority afterward.",
+    "Prove actual pre-load target and real DLL lease, genuine injection and unique full-module/FileID/native peer/connection tuple with the real Windows facade; the synthetic fixture gives no DLL/Native qualification.",
+    "Run the naturally produced optional Native component with its trusted exact frame and fixed D0=174 mapper. Missing data remains unknown; complete backup eligibility and original M7 breadth are not established here.",
+    "Observe actual disconnect/normal close behavior and retain precise source/adoption receipts. No current runtime entry, Game process, C16 control source or public MCP protocol was modified/deployed by this package."
+  ],
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1623300,
+      "sha256": "e4c7b21c1e7a8003d420e538c0eadd70f0df49efa3a3c35bb09df010af6326ae",
+      "changed_source_bytes": 1029,
+      "new_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "bytes": 21503,
+      "sha256": "a935b8912fd553058b10e7307c04e9103669279d723a0caeff68ac9acd4ac563",
+      "changed_source_bytes": 854,
+      "new_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+      "bytes": 9299,
+      "sha256": "10fdcb40766c913671c797e848d078dad7f4f4ffdd87cec80b9473b26fe53d7e",
+      "changed_source_bytes": 771,
+      "new_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "bytes": 12841,
+      "sha256": "69977b160964c526187e3ae4612d2da670e6af5e6f76acc5fb2ccdfd4570342a",
+      "changed_source_bytes": 1872,
+      "new_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+      "bytes": 15954,
+      "sha256": "3b8bd840df7b3d6af7326f388363729e909c88355d0649f892189d70ae390695",
+      "changed_source_bytes": 15954,
+      "new_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+      "bytes": 6755,
+      "sha256": "9b0e5e3528f68777979afd1742cd4d525051ad0e9b16225d7175d4a29474827e",
+      "changed_source_bytes": 6755,
+      "new_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "bytes": 170719,
+      "sha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c",
+      "changed_source_bytes": 1338,
+      "new_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21905,
+      "sha256": "9de01d4f0d1c45d0c28a964d03f41abaad36c1c18fad2fec3ba561361a78583b",
+      "changed_source_bytes": 487,
+      "new_file": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/native29_checkpoint_bootstrap_v1.py",
+      "bytes": 10772,
+      "sha256": "55ac741624ef2b6abfe74c913f5fa1c98bb290dbf7eed1521bc0e226ccc47874",
+      "changed_source_bytes": 420,
+      "new_file": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/canonical_native_provider_chain_v1.py",
+      "bytes": 15176,
+      "sha256": "0831aa80e3b0391174ad5e44c9c614b9e48d9cff49f6c6ad7d2be78082ec1daf",
+      "changed_source_bytes": 15176,
+      "new_file": true
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py",
+      "bytes": 28095,
+      "sha256": "b901ea920145467ce0372da9925af0cfa67c48337471bf5cbef378ad636a477b",
+      "changed_source_bytes": 28095,
+      "new_file": true
+    }
+  ],
+  "wiring_packet": {
+    "path": "docs/ck3-native-ai/evidence/g2-m7-canonical-cold-wiring-packet-2026-10-19.md",
+    "bytes": 7181,
+    "sha256": "52a1410d9bd9fa91c3d3ac4cfd8f65871b26890a8f2e1c30403458ce9d2a651d"
+  },
+  "retention": {
+    "category": "record",
+    "review_after_days": 180,
+    "purpose": "Consolidate source/mechanical qualification after real adoption. No raw Game/SAVE/Driver copies or permanent owned runtime assets were created."
+  }
+}

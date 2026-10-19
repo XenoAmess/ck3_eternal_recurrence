@@ -201,6 +201,13 @@ class _PreloadCustodyV1:
         if self.owner is not None:
             _clear_issued(self.owner, self)
         self.closed = True
+        origin = getattr(self, "_canonical_origin_v1", None)
+        if origin is not None:
+            try:
+                origin.revoke_before_close()
+            except Exception as error:
+                self.last_error = type(error).__name__ + ":origin_revocation_unverified"
+                return CustodyIssueResultV1(False, self.last_error)
         errors = []
         for handle in tuple(self._owned):
             try:
@@ -265,6 +272,7 @@ def prepare_canonical_cold_custody_v1(*, target, dll_path, expected_dll_sha256,
         # Such a returned holder is closed/unqualified and exists for cleanup.
         failed = []
         if isinstance(os_facade, _CustodyOSFacadeV1):
+            os_facade._preload_prepare_error_v1 = type(error).__name__ + ":" + str(error)[:240]
             for handle in reversed(handles):
                 try:
                     os_facade.close_owned_handle(handle)
@@ -329,8 +337,8 @@ def _issue_locked(*, custody, owner, driver, endpoint, transfer, os_facade):
         from . import player_heir_candidate_component_v1 as component
         _require(isinstance(custody, _PreloadCustodyV1) and custody.seal is _RESOURCE_SEAL
                  and custody.closed is False, "pre-load resource missing or closed")
-        _require(custody._preload_source_verified is True,
-                 "received canonical preload continuity is not qualified")
+        from .native_loaded_provider_origin_v1 import require_original_preload_origin_v1
+        require_original_preload_origin_v1(custody, owner)
         _require(custody.owner is None or custody.owner is owner, "resource belongs to another SDK owner")
         current = getattr(owner, "_player_heir_loaded_custody_v1", None)
         _require(current is None or current is custody, "previous custody must be normally released first")
@@ -398,6 +406,8 @@ def _issue_locked(*, custody, owner, driver, endpoint, transfer, os_facade):
         with driver.state._condition:
             _require(driver.state._connected is True and driver.state._connection_generation == generation
                      and driver.state._hello == hello, "connection changed during qualification")
+        if custody.source_role == "received":
+            custody._origin_session_v1.require(owner, full=False)
         # Single qualification token: reuse M7's existing private DTO and seal.
         provider = component._LoadedNativeProviderV1(owner, driver, owner.machine,
             custody.process.pid, custody.process.creation_date, custody.process.executable,

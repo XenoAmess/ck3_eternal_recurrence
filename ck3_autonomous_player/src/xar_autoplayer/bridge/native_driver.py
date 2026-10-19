@@ -2182,7 +2182,19 @@ class NativeHeadlessGameplayDriver:
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
-        self.endpoint.start(self._ingest, self.state.mark_disconnected)
+        self.endpoint.start(self._ingest, self._mark_bridge_disconnected_v1)
+
+    def _invalidate_player_heir_provider_v1(self, reason: str) -> None:
+        owner = getattr(self, "_player_heir_candidate_owner_v1", None)
+        if owner is not None and getattr(owner, "_player_heir_loaded_custody_v1", None) is not None:
+            from .native_loaded_provider_custody_v1 import invalidate_loaded_native_provider_v1
+            invalidate_loaded_native_provider_v1(owner, reason=reason)
+
+    def _mark_bridge_disconnected_v1(self) -> None:
+        try:
+            self.state.mark_disconnected()
+        finally:
+            self._invalidate_player_heir_provider_v1("native_disconnect")
 
     def bind_succession_lifecycle_v1(self, binding: object) -> None:
         """Freeze the run profile before the first bridge session is adopted."""
@@ -2212,7 +2224,7 @@ class NativeHeadlessGameplayDriver:
                     }
                 )
             except BridgeUnavailableError:
-                self.state.mark_disconnected()
+                self._mark_bridge_disconnected_v1()
 
     def _h3937_date_hold_active(
         self, snapshot: dict[str, object] | None = None
@@ -11558,6 +11570,7 @@ class NativeHeadlessGameplayDriver:
 
     def _adopt_bridge_session(self, bridge_pid: int) -> None:
         """Adopt a bridge now, but delay cross-PID identity until map-ready."""
+        self._invalidate_player_heir_provider_v1("native_connection_adoption")
         first_connection = False
         with self._driver_state_lock:
             first_connection = self._session_bridge_pid is None
@@ -26019,6 +26032,7 @@ class NativeHeadlessGameplayDriver:
 
     def close(self) -> None:
         from .normal_exit_pending_observer_v1 import dispose_normal_exit_observer_v1
+        self._invalidate_player_heir_provider_v1("native_driver_close")
         dispose_normal_exit_observer_v1(self)
         while True:
             with self._driver_state_lock:

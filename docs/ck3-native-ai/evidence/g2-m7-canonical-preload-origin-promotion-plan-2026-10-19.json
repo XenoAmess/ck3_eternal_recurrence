@@ -1,0 +1,87 @@
+{
+ "schema": "xar.g2.m7.canonical-preload-origin-promotion-plan/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T15:51:58.806835+00:00",
+ "machine_source": "tools/ck3_live_run_id.py machine, tool2e2563; source-only follow-up on the same machine",
+ "status": "REVIEWABLE_DELTA_NOT_IMPLEMENTED",
+ "budget": {
+  "hard_bytes": 8192,
+  "pool": "Root1MiB minor source pool"
+ },
+ "storage": {
+  "path": "Z:/ck3_mod_rewrite",
+  "volume": "Z:",
+  "observed_at_utc": "2026-10-19T15:46:42.569883+00:00",
+  "free_bytes": 178239836160,
+  "scope": "small source-plan write, not D/heavy admission"
+ },
+ "reuse": {
+  "receiver_source_proof": [
+   "docs/ck3-native-ai/evidence/g2-m7-native-custody-local-receiver-source-ready-2026-10-19.json",
+   11238,
+   "de89e4d0f01c396cabc1ed119e6fe75ec0423938fc029d4259cdabf4d376a0f2"
+  ],
+  "direct_creator_fix": "7f540720: direct executable required; production binder never rewrites a command.",
+  "same_types": "Original holder/resource seal; unique loaded DTO/seal; no serialized qualification token."
+ },
+ "source_readbacks": [
+  [
+   "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+   169403,
+   "bfaadaaedf3d499339b5223d722930b20644fc090bc1b8a04f83e0eb8d5b2726"
+  ]
+ ],
+ "real_creation_locators": {
+  "repository": "native29_checkpoint_bootstrap_v1.launch_prepared:171-178 calls runtime.launch. Runtime creates the actual suspended process3082, verifies it3096-3137, then resumes/injects3138-3153. before_process_create has no process argument and is not the needed custody hook.",
+  "closed_generated_sources": "Source-only read e73448 under D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime: root_native29_supervisor_c11.py:448 launch; launch_sdk_p37c15_owner.py:50 Queue Popen; root_p37c15_sdk_queue.py:3524-3525 retained MCP creator/stdio; root_p37c15_mcp_entry.py:97-102 original_create and retained actual service. These historical source files identify real seams, not current-process or future-adoption proof.",
+  "blocker": "Supervisor and SDKowner are independently invoked today. Mere receipt of equal target/hash/parent handles cannot prove the DLL lease existed before LoadLibrary. The canonical supervisor must actually create and retain the SDK child chain; an App cannot repair this temporal gap locally."
+ },
+ "minimal_hunks_in_dependency_order": [
+  {
+   "where": "runtime.launch after3137, before either resume branch; launch_prepared wrapper",
+   "change": "Add private optional pre_native_resume(process,native_bridge), default None, after3137. Canonical callback calls existing prepare on the actual suspended target and actual DLL hash. Hold controller custody through original injection and SDK lifetime. Existing cleanup also closes its owned custody. Do not repurpose before_process_create, reopen post-load evidence or change Game Job ownership."
+  },
+  {
+   "where": "future canonical supervisor at the real launch448; its existing maintenance/control lifetime",
+   "change": "Supervisor retains the prepared controller holder and private origin server. Its handler answers only from that holder. After normal recording/map admission, it actually creates SDKowner as its direct child and retains the returned process handle. Source epoch is computed from frozen SDK modules, never caller JSON. Independently launched owner is ineligible."
+  },
+  {
+   "where": "owner Queue Popen50, Queue MCP creator3524-3525, App entry97-102",
+   "change": "Carry selective owned target/file/root-revoke/origin-process/parent/control copies at each actual returned-child boundary. Require direct verified Python/dependency env. Owner retains Queue; Queue uses bind_owned_stdio_v1 private namespace with original MCP Job/cleanup. Child validates inherited resources/parent peer then ACKs before sender copies close. App binds its same holder to actual retained service owner. No global patch/public MCP parameter."
+  },
+  {
+   "where": "new small private origin-channel helper; existing local receiver/facade transfer_readback",
+   "change": "Keep an origin-process read/sync handle beside existing resources; immediate parent alone cannot identify the supervisor. Queue exports its actual retained MCP App read-handle. Each parent pulls that duplicate upward with DuplicateHandle using its held actual returned-child process handle; numeric locations are not authority. No arbitrary PID reopen or Game duplicate/control rights. Unknown child-handle rights fail closed. Origin retains final App birth. Require fresh final App to origin pipe connection; inherited connected endpoints must not be assumed to identify their new holder. Origin kernel clientPID must equal held final App; App serverPID must equal held origin. Request/response sequence, root liveness, accepted hop registry, exact target/FileID/hash and computed SDK epoch must agree with original controller custody. Private handler is bound to that prepared holder; serialized bodies never promote source. Missing steps stay unknown."
+  },
+  {
+   "where": "custody._issue_locked329-332; same holder/transfer types",
+   "change": "Replace the received-role boolean rejection with require_original_preload_origin_v1 over the live private origin session and same local verified holder. Keep controller prepare proof and every existing downstream Native peer/module/FileID/generation/owner guard. Never write _preload_source_verified=True, accept a source assertion, or forge a suspended target. The received local holder remains the identity compared by _TransferReadbackV1; it does not pretend to be the remote Python object. Unique existing DTO mint remains the final branch only."
+  },
+  {
+   "where": "App retained service after original_create; optional root consumer174-192 and driver disconnect/close",
+   "change": "Bind staged holder to installed owner once. On the first actual optional component for a connection, attempt existing issuer using the real endpoint/hello and trusted origin session; no new Native query. Reuse exact integer FILETIME from the same accepted custody/DTO for candidate identity, instead of trying to recover its last digit from CIM. Keep global environment/ledger parser unchanged. Every eligible use checks cheap root/parent revocation under owner lock; disconnect/generation replacement/close clear DTO/cache before owned release. Missing component preserves zero new OS/RPC work. Missing source leaves Hunknown without degrading root readiness."
+  },
+  {
+   "where": "successor_ui_pending_ledger_v1.owner_source_epoch_v1 names; future frozen creation spec",
+   "change": "Add custody/Windows/receiver/new origin helper to owner_source_epoch before activation; runtime/owner/driver/component already included. Canonical launch spec pins actual creator/entry closure before spawn. Compare computed SDK epochs; no historical epoch rewrite or source-hash-as-DLL substitution."
+  }
+ ],
+ "qualification_remaining": {
+  "next_software": "Owned suspended Python/tiny lease: callback once before resume, three child/peer ACKs, final App handle upstream, fresh origin pipe, unique DTO mint and exact100ns birth. Refuse post-load reopen/wrong epoch/missing hop/foreign App/old connection/root death; verify original Job and clear-before-close.",
+  "unique_runtime": "Sole runtime owner at future normal maintenance must prove actual pre-load target/lease, child chain, Native peer/fullmodule/epoch and natural root candidate frame. No process/connection is created by this plan. Software readiness grants no H/complete backup domain/M7 breadth.",
+  "invariants": "Original D0=174/T0/campaign goal and all pending/UNKNOWN business obligations remain unchanged. No original AUTO/SAVE replay, new seed matrix or public migration/issuer API."
+ },
+ "execution": {
+  "source_edits_except_this_plan": 0,
+  "Game_RPC": 0,
+  "MCP_Job_calls": 0,
+  "current_runtime_connections": 0,
+  "stage_commit": false,
+  "target_test_or_job_processes_created": 0
+ },
+ "retention": {
+  "category": "record",
+  "review_after_days": 180,
+  "purpose": "Implement and consolidate this narrow delta; no permanent raw source copies"
+ }
+}

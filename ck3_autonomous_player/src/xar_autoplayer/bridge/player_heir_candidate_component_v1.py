@@ -172,6 +172,10 @@ def project_existing_root_player_heir_v1(driver, *, starting, current, root, req
                 or not _integer(query_sequence, 1, 2**64 - 1)):
             return _unknown("SDK_query_or_actor_frame_changed")
         provider = getattr(owner, "_player_heir_loaded_provider_v1", None)
+        if provider is None and getattr(owner, "_player_heir_loaded_custody_v1", None) is not None:
+            from .native_loaded_provider_origin_v1 import ensure_received_provider_v1
+            ensure_received_provider_v1(owner)
+            provider = getattr(owner, "_player_heir_loaded_provider_v1", None)
         if (not isinstance(provider, _LoadedNativeProviderV1) or provider.seal is not _LOADED_NATIVE_SEAL
                 or provider.owner is not owner or provider.driver is not driver
                 or provider.machine_id != owner.machine or provider.game_pid != first[6]
@@ -180,16 +184,20 @@ def project_existing_root_player_heir_v1(driver, *, starting, current, root, req
                 or any(c not in "0123456789abcdef" for c in provider.native_dll_sha256)
                 or provider.native_dll_sha256 == GETTER_SOURCE_CLOSURE_SHA256):
             return _unknown("trusted_loaded_Native_DLL_custody_unavailable")
-        key = (first[6], first[7], driver.pipe_name)
-        cached = getattr(owner, "_player_heir_game_identity_cache_v1", None)
-        if not isinstance(cached, tuple) or len(cached) != 2 or cached[0] != key:
-            game = _game_identity(current)
-            owner._player_heir_game_identity_cache_v1 = (key, deepcopy(game))
+        if provider.game_creation_filetime is not None:
+            from .native_loaded_provider_origin_v1 import exact_live_provider_game_v1
+            game = exact_live_provider_game_v1(owner, provider)
         else:
-            game = deepcopy(cached[1])
-        if not same_game_identity_v1(game, {"pid": provider.game_pid, "creation_date": provider.game_birth,
-                                         "executable": provider.game_executable}):
-            return _unknown("loaded_provider_actual_Game_birth_mismatch")
+            key = (first[6], first[7], driver.pipe_name)
+            cached = getattr(owner, "_player_heir_game_identity_cache_v1", None)
+            if not isinstance(cached, tuple) or len(cached) != 2 or cached[0] != key:
+                game = _game_identity(current)
+                owner._player_heir_game_identity_cache_v1 = (key, deepcopy(game))
+            else:
+                game = deepcopy(cached[1])
+            if not same_game_identity_v1(game, {"pid": provider.game_pid, "creation_date": provider.game_birth,
+                                             "executable": provider.game_executable}):
+                return _unknown("loaded_provider_actual_Game_birth_mismatch")
         goal = normalize_ordinary_campaign_goal_v1(current.get("campaign_goal"))
         if (goal != normalize_ordinary_campaign_goal_v1(driver._campaign_goal)
                 or goal != normalize_ordinary_campaign_goal_v1(starting.get("campaign_goal"))
