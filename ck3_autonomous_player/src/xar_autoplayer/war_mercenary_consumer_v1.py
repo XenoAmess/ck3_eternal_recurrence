@@ -76,9 +76,54 @@ def _context(history: list[dict[str, object]], snapshot: Mapping[str, object]):
     return _context_with_reference(history, snapshot)[0]
 
 
+def _loan_financing_input(snapshot: Mapping[str, object], cash_resources: object,
+                          cash_source_frame: object) -> dict[str, object] | None:
+    """Consume an owner's optional same-frame query result; performs no IO.
+
+    The caller must capture this complete frame around its actual query. No
+    Driver cache, historical packet or partial native tuple can supply it here.
+    """
+    if cash_resources is None and cash_source_frame is None:
+        return None
+    from .bridge.war_cash_private_transport_v1 import (
+        HOLY_ORDER_LOAN_KEY, _unavailable_holy_order_loan,
+        normalize_war_cash_current_resources_v1,
+    )
+    diagnostics = snapshot.get("diagnostics")
+    played = snapshot.get("played_character")
+    diagnostics = diagnostics if isinstance(diagnostics, Mapping) else {}
+    expected = {"schema": "xar.ck3.planning-source-frame/v1", "status": "complete",
+        "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"), "date_raw": snapshot.get("date_raw"),
+        "actor_character_id": played.get("character_id") if isinstance(played, Mapping) else None,
+        "episode_run_id": snapshot.get("episode_run_id"), "bridge_pid": diagnostics.get("bridge_pid"),
+        "connection_generation": diagnostics.get("connection_generation")}
+    numeric = {"revision": 0, "native_revision": 1, "date_raw": 0, "actor_character_id": 1,
+        "bridge_pid": 1, "connection_generation": 0}
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or any(type(expected[key]) is not int or expected[key] < minimum for key, minimum in numeric.items())
+            or any(not isinstance(expected[key], str) or not expected[key] for key in ("snapshot_id", "episode_run_id"))
+            or not isinstance(cash_source_frame, Mapping) or dict(cash_source_frame) != expected
+            or any(type(cash_source_frame.get(key)) is not type(value) for key, value in expected.items())
+            or not isinstance(cash_resources, Mapping)
+            or any(type(cash_resources.get(key)) is not type(expected[source])
+                or cash_resources.get(key) != expected[source] for key, source in (
+                    ("queried_snapshot_id", "snapshot_id"), ("queried_revision", "revision"),
+                    ("queried_native_revision", "native_revision")))):
+        return _unavailable_holy_order_loan("loan_complete_planning_source_frame_unqualified")
+    try:
+        normalized = normalize_war_cash_current_resources_v1(cash_resources, snapshot=snapshot)
+    except (ValueError, TypeError, KeyError):
+        return _unavailable_holy_order_loan("loan_cash_input_unqualified")
+    loan = normalized.get(HOLY_ORDER_LOAN_KEY)
+    return {**loan, "planning_source_frame": dict(expected)} if isinstance(loan, dict) else None
+
+
 def _plan_war_mercenary_turn_v1(
     driver: object, plan: dict[str, object], *, snapshot: Mapping[str, object],
     history: list[dict[str, object]], bridge_capabilities: set[str],
+    cash_resources: Mapping[str, object] | None = None,
+    cash_source_frame: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Insert one existing query/hire only at an otherwise quiet war opportunity.
 
@@ -109,6 +154,12 @@ def _plan_war_mercenary_turn_v1(
         construction_ledger=construction, root=_same_frame_campaign_root_context(history, dict(snapshot)),
         bridge_capabilities=bridge_capabilities)
     if financing is not None:
+        loan = _loan_financing_input(snapshot, cash_resources, cash_source_frame)
+        if loan is not None:
+            financing = {**financing, "legal_debt": {**financing["legal_debt"],
+                "principal_quote_raw": loan["principal_quote_raw"],
+                "borrow_eligible": loan["borrow_eligible"],
+                "read_only_loan_observation_v1": loan}}
         plan = {**plan, "war_financing_capability_gap_v1": financing}
     if construction.get("pending") is not None:
         return {**plan, "war_mercenary_status": "existing_construction_pending_receipt_keeps_priority"}
@@ -291,6 +342,8 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
 def plan_war_mercenary_turn_v1(
     driver: object, plan: dict[str, object], *, snapshot: Mapping[str, object],
     history: list[dict[str, object]], bridge_capabilities: set[str],
+    cash_resources: Mapping[str, object] | None = None,
+    cash_source_frame: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     # Read-only inventory observations must survive while concrete army orders
     # keep priority. They do not resolve an unknown hire or authorize a retry.
@@ -314,7 +367,8 @@ def plan_war_mercenary_turn_v1(
                 write_json_atomic(directory / _LEDGER, ledger)
     return annotate_war_decision_reason_v1(_plan_war_mercenary_turn_v1(
         driver, plan, snapshot=snapshot, history=history,
-        bridge_capabilities=bridge_capabilities))
+        bridge_capabilities=bridge_capabilities, cash_resources=cash_resources,
+        cash_source_frame=cash_source_frame))
 
 
 def submit_war_mercenary_v1(driver: object, *, plan: Mapping[str, object], expected_revision: int):

@@ -1,0 +1,256 @@
+{
+  "schema": "xar.ck3.c5-closed-persistence-analysis.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:27:38.353078+00:00",
+  "sourcepins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0252-0286-COMPACT70.json",
+      "bytes": 55609,
+      "sha256": "fc066be0f93adf9141be43ff1b3175565a1781be4735a6f4b72fdec45a199e1e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C5-CLOSED-STAGE-TRACE70.json",
+      "bytes": 888,
+      "sha256": "96e85e205a48212e6a2ed7669810ce2dc39b812af3701f53e64118fe3a2a4773"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C5-CLOSED-STAGE-TRACE70.jsonl",
+      "bytes": 35349,
+      "sha256": "47a85997f2672f1bfaa7fc01c97bd5bf5f803d9af6b762e287fb67c2ae6665e3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c4-closed-persistence-analysis01.json",
+      "bytes": 26589,
+      "sha256": "c648b3f20c77cd2772d265753721d25791eb92e41c79d87224a3f00e61bbb9f8"
+    }
+  ],
+  "evidence_layer": "naturally closed scalar runtime receipts; no benchmark or gameplay calls",
+  "source_business_commit": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+  "control_status": "FULL258 failed after MET286 succeeded but display ACK failed from publisher CURRENT-INPUT read PermissionError; 13 ordinary cycles98to111 settled, 3 days107to110; AUTO285 verified and pending112 awaits exactly original completedMET286 settlement; neither285 nor286 replayed",
+  "windows": {
+    "entire_run_including_maintenance": {
+      "start_utc": "2026-10-19T03:26:49.420926+00:00",
+      "end_utc": "2026-10-19T06:14:20.215501+00:00",
+      "wall_seconds": 10050.794575,
+      "actual_days": 110.0,
+      "seconds_per_actual_day": 91.37085977272727
+    },
+    "SDK115_including_maintenance": {
+      "start_utc": "2026-10-19T03:54:19.068067+00:00",
+      "end_utc": "2026-10-19T06:14:20.215501+00:00",
+      "wall_seconds": 8401.147434,
+      "actual_days": 92.0,
+      "seconds_per_actual_day": 91.31681993478261
+    },
+    "C5_from_failed_first_AUTO_including_repairs": {
+      "start_utc": "2026-10-19T06:00:38.447748+00:00",
+      "end_utc": "2026-10-19T06:14:20.215501+00:00",
+      "wall_seconds": 821.767753,
+      "actual_days": 3.0,
+      "seconds_per_actual_day": 273.9225843333333
+    },
+    "FULL258_only_partial_failure_window": {
+      "start_utc": "2026-10-19T06:14:01.154842+00:00",
+      "end_utc": "2026-10-19T06:14:20.215501+00:00",
+      "wall_seconds": 19.060659,
+      "actual_days": 3.0,
+      "seconds_per_actual_day": 6.353553000000001
+    }
+  },
+  "settled_new_cycle_count": 13,
+  "pending_unsettled_cycle": 112,
+  "verified_AUTO_pending_settlement": 285,
+  "original_successful_MET_pending_display_settlement": 286,
+  "last_verified_date_raw": 53146968,
+  "inter_generation_maintenance_since_C4_end_seconds": 1168.766516,
+  "repair_wall_first_failed_AUTO_to_FULL258_first_AUTO_seconds": 802.707094,
+  "post_MET286_to_outer_failure_seconds": 5.040468,
+  "open_maintenance_after_closed_endpoint_seconds": 549.893561,
+  "known_FULL258_RPC_count": 27,
+  "known_FULL258_RPC_seconds": 5.800019299611449,
+  "unknown_RPC263_plus_all_other_control_and_publication_seconds": 13.260639700388552,
+  "RPC263_upper_interval_seconds_not_its_measured_duration": 5.896678,
+  "RPC263_timing": null,
+  "stage_totals": {
+    "service.planner_capabilities": {
+      "count": 38,
+      "seconds": 0.1694449
+    },
+    "service.normal_plan_turn": {
+      "count": 16,
+      "seconds": 3.2126848
+    },
+    "driver.full_state_write_lock_wait": {
+      "count": 3,
+      "seconds": 5.4e-06
+    },
+    "driver.full_state_state_lock_wait": {
+      "count": 3,
+      "seconds": 4e-06
+    },
+    "driver.full_state_json_serialization": {
+      "count": 3,
+      "seconds": 0.0023611
+    },
+    "driver.full_state_utf8_encoding": {
+      "count": 3,
+      "seconds": 0.001547
+    },
+    "driver.full_state_temp_open": {
+      "count": 3,
+      "seconds": 0.0006217
+    },
+    "driver.full_state_temp_stream_write": {
+      "count": 3,
+      "seconds": 0.0024114
+    },
+    "driver.full_state_temp_close": {
+      "count": 3,
+      "seconds": 0.0001176
+    },
+    "driver.full_state_temp_write_bytes": {
+      "count": 3,
+      "seconds": 0.0045733
+    },
+    "driver.full_state_replace": {
+      "count": 3,
+      "seconds": 0.0027139
+    },
+    "driver.full_state_atomic_write": {
+      "count": 3,
+      "seconds": 0.0088159
+    },
+    "driver.full_state_persistence": {
+      "count": 3,
+      "seconds": 0.0158058
+    },
+    "service.planner_history_rows": {
+      "count": 17,
+      "seconds": 0.0036495
+    },
+    "service.planner_public_plan_copy": {
+      "count": 15,
+      "seconds": 0.0038571
+    },
+    "service.auto_turn_camera": {
+      "count": 13,
+      "seconds": 0.1220984
+    },
+    "service.planner_choose": {
+      "count": 12,
+      "seconds": 0.2542919
+    },
+    "driver.life_advance_public_change_wait": {
+      "count": 7,
+      "seconds": 2.5456674
+    },
+    "driver.life_advance_total": {
+      "count": 1,
+      "seconds": 2.4300574
+    }
+  },
+  "stage_rule": "nested and reused labels cannot be added; use time containment",
+  "persistence_attempts": [
+    {
+      "persistence_attempt_id": "persist-driver-state:1616035512131500",
+      "finished_at_utc": "2026-10-19T06:12:36.479859+00:00",
+      "full_barrier_reason": "succession_expectation",
+      "history_json_bytes": 1329562,
+      "history_rows": 164,
+      "timeline_append_candidate": false,
+      "candidate_append_run_length": 0,
+      "closed_candidate_run_length": 0,
+      "candidate_activation_churn_count": 0,
+      "full_seconds": 0.0040099,
+      "logical_payload_bytes": 1332029
+    },
+    {
+      "persistence_attempt_id": "persist-driver-state:1616132927510300",
+      "finished_at_utc": "2026-10-19T06:14:13.898217+00:00",
+      "full_barrier_reason": "record_command:life-advance",
+      "history_json_bytes": 1538529,
+      "history_rows": 178,
+      "timeline_append_candidate": true,
+      "candidate_append_run_length": 1,
+      "closed_candidate_run_length": 0,
+      "candidate_activation_churn_count": 1,
+      "full_seconds": 0.0069887,
+      "logical_payload_bytes": 1540996
+    },
+    {
+      "persistence_attempt_id": "persist-driver-state:1616134132573600",
+      "finished_at_utc": "2026-10-19T06:14:15.101099+00:00",
+      "full_barrier_reason": "record_command:select-event-option-3",
+      "history_json_bytes": 1553028,
+      "history_rows": 181,
+      "timeline_append_candidate": false,
+      "candidate_append_run_length": 0,
+      "closed_candidate_run_length": 1,
+      "candidate_activation_churn_count": 1,
+      "full_seconds": 0.0048072,
+      "logical_payload_bytes": 1555495
+    }
+  ],
+  "growth": {
+    "first_history_bytes": 1329562,
+    "last_history_bytes": 1553028,
+    "bytes_delta": 223466,
+    "rows_delta": 17,
+    "delta_since_C4_last_barrier_bytes": 246998,
+    "logical_full_payload_bytes_sum": 4428520,
+    "scope": "observed barriers only; no long-term extrapolation or allocation claim"
+  },
+  "WAL": {
+    "actual_appends": 0,
+    "candidate_runs": [
+      1
+    ],
+    "closed_by": "select-event-option-3 full barrier",
+    "eligibility_qualified": false,
+    "default_off": true,
+    "demonstrated_consecutive_append_saving": false
+  },
+  "ordinary_event_wait_sample": {
+    "sequence": 281,
+    "requested_days": 8,
+    "actual_days": 3.0,
+    "active_event_source": "native",
+    "progress_status": "postcondition",
+    "clock_stopped_state": "armed",
+    "clock_completed_ticks": 3,
+    "clock_cancel": {
+      "step": "research-cancel-tactical-daily-sentinel-v1-generation-7",
+      "accepted": true,
+      "status": "canceled",
+      "backend_id": "native-headless"
+    },
+    "AUTO_seconds": 2.8818131000734866,
+    "life_total_seconds": 2.4300574,
+    "within_life_wait_count": 6,
+    "within_life_wait_seconds": 2.3049562,
+    "outside_life_wait_seconds_in_AUTO285": 0.2407112,
+    "coverage": "this actual ordinary-event early boundary returned without old30s tail; not all variants or batch success"
+  },
+  "limitations": [
+    "First failed C5 AUTO and all maintenance remain in adopted-window and cumulative denominators.",
+    "263 body was not read and no tiny timing header exists; remainder is not a queue/display attribution.",
+    "286 result succeeded; display failure prevents cycle112 settlement, no replay and no extra day credit.",
+    "Shared wait stage is still labelled life-advance for event selection; timestamps separate it.",
+    "The native-only portion of declarable execution and cause of prior3.4GB Driver remain unqualified."
+  ],
+  "sustained_goal_qualified": false,
+  "game_RPC_calls": 0,
+  "Driver_SAVE_reads": 0,
+  "external_writes_bytes": 0,
+  "producer": {
+    "path": "tools\\g2_saved_campaign\\analyze_c5_closed_persistence_v1.py",
+    "sha256": "76e7c2a0f76d868751a554927f058648af997480b96c1b508aa5d1a8704de623"
+  },
+  "storage": {
+    "pool": "REPO-ONLY-MICROPOOL01 existing32KiB follow-up",
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}

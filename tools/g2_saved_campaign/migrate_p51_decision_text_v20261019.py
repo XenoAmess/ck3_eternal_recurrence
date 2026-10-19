@@ -31,6 +31,8 @@ def _install_current_input_replace_retry(api, session):
     No new observation/input/source IDs, no business call and no child-source
     modification. All create-only writes and other paths keep the frozen API.
     """
+    if getattr(api,'SHARED_IO_RETRY_VERSION',None)==1:
+        return api  # The paired provider already bounds all shared I/O.
     target=Path(session).resolve()/'decision-text-publisher/CURRENT-INPUT.json'
     marker=getattr(api,'_root_current_input_replace_retry_v1',None)
     if marker is not None:

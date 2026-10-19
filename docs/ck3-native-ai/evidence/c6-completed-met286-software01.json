@@ -1,0 +1,315 @@
+{
+  "schema": "xar.completed-MET286-C6-software-composition/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:28:42.669255+00:00",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\completed_metrics286_warm_resume_v1.py",
+      "bytes": 20937,
+      "sha256": "b9bed3c5f0a392133efd8a598850da9b88af585cb0d4893ffe1a841bec77490b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\startup_readiness_v1.py",
+      "bytes": 5937,
+      "sha256": "c9b1bfa0efd002d2fd9f05298ba1d2ba218fa5dded335b30de18ced7d5f7b2c3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c6_sdk_queue.py",
+      "bytes": 264839,
+      "sha256": "600703088920399e0d8c354ec283d84144c660cb9f761900df603e2077a2e63f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-full258-MET286-failure69\\FROZEN.json",
+      "bytes": 16689,
+      "sha256": "2a4d013976ff6b6657261b8ad45a45960c8f2a9cefaaf2f434aac5b773fc1ae3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c5-current-input-read-review01\\META.json",
+      "bytes": 16018,
+      "sha256": "5d127ca01b9bd0ed1b1fd00a725d91b7e78be30a99d363da8b5505584ed688c6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0285-1-result.json",
+      "bytes": 54585,
+      "sha256": "487e865c297abe24b4f375017c65ba44e963b8d1b19e890292b69d819a49303f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0286-1-result.json",
+      "bytes": 1474,
+      "sha256": "3ac0c68febd1b4ddb4f4de3541d1c970201e287f2b96a74fb566c6ab68a2ea07"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C5-OWNER-CLOSED.json",
+      "bytes": 866,
+      "sha256": "1abf627635b333818a6c1e5174e427ce3412f77761419109a29523900d2eb997"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C5.json",
+      "bytes": 657,
+      "sha256": "9b30e1c863fc95385bb92e1f0b484f3fdb3ede5db0d3c2592dd34e38a25ccf57"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c6-same-game-warm70\\POST-C5-CLOSE.json",
+      "bytes": 6621,
+      "sha256": "ccc49c3dd4352ec729b019ec3393df53270853bfe9afb7dffec78499cca7f95f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\responses\\p37-responses-0286-1-result.json",
+      "bytes": 552,
+      "sha256": "75c43f5340a9bfeee5dea461d0e26ddada620cf584484e9b7c7a1e457d373fe3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-met286-review03\\fixture\\SOFTWARE-ONLY-ACK.json",
+      "bytes": 536,
+      "sha256": "022ae1ebbd2cb7c6e63e78791c5d89e4200e1ee1bcd0d8ba3d0a40e97cc4c956"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0252-1-result.json",
+      "bytes": 50837,
+      "sha256": "76c62d88abeda99e05f2937c8cdffdd54ab0e5bb3cbc7333f38aa181756c3155"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0253-1-result.json",
+      "bytes": 57855,
+      "sha256": "fa451ba86216bdc0943f3d27fa63093f40c19efd45274da2b860fb4e4c2dd68b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_result_classifier.py",
+      "bytes": 260311,
+      "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-met286-review03\\fixture\\classifier-pin.json",
+      "bytes": 236,
+      "sha256": "84551d3d6722e46d6d5bd54f15f01ecefe11a487ae053fe8d7530a2613d4a115"
+    }
+  ],
+  "leaf": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\completed_metrics286_warm_resume_v1.py",
+    "bytes": 20937,
+    "sha256": "b9bed3c5f0a392133efd8a598850da9b88af585cb0d4893ffe1a841bec77490b"
+  },
+  "future_SEM287_CAP288_and_ACK_are_explicit_software_fixtures": true,
+  "actual_readiness_check_after_consume_canonical_publish_explicit_relay_CAP_flow": true,
+  "observed": [
+    {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-met286-review03\\fixture\\queue\\READINESS-0287-000001-result.json",
+      "next_sequence": 287,
+      "canonical287_exists": false
+    }
+  ],
+  "exact_C6_original_full_loop_generated_call_AST_used": true,
+  "original_Clean_map_gate_and_MET_postcheck_executed": true,
+  "old_MET286_replayed_RPC_count": 0,
+  "full289_settled_cycle": 112,
+  "first_counts": {
+    "submitted_pending_turns": 4,
+    "lifestyle_material_verified_turns": 1,
+    "existing_focus_verified_turns": 3,
+    "primitive_accepted_turns": 69,
+    "council_material_verified_turns": 1,
+    "construction_material_verified_turns": 0,
+    "construction_start_verified_turns": 0,
+    "construction_completion_verified_turns": 0,
+    "crown_material_verified_turns": 2,
+    "crown_receipt_nonmaterial_turns": 0,
+    "existing_typed_material_verified_turns": 0,
+    "typed_nonmaterial_observation_turns": 32,
+    "date_advanced_turns": 16,
+    "checkpoint_saved": 5,
+    "checkpoint_deferred": 0,
+    "checkpoint_calendar_deferred": 20,
+    "checkpoint_readonly_skipped": 1
+  },
+  "original_MET_path_and_public_revision9_preserved": true,
+  "next_new_AUTO_sequence": 291,
+  "settled112_then_current_source_rebound_to_fresh_SEM287_public2": true,
+  "negative_cases_rejected": [
+    "wrong_actor",
+    "wrong_Game",
+    "date_drift",
+    "Native_regressed",
+    "cold_CAP",
+    "AUTO_before_original_MET286_rejected"
+  ],
+  "software_calls": [
+    {
+      "tool": "ck3_take_semantic_snapshot_private_v1",
+      "sequence": 287
+    },
+    {
+      "tool": "ck3_get_capabilities",
+      "sequence": 288
+    },
+    {
+      "tool": "ck3_auto_turn",
+      "sequence": null,
+      "next_sequence": 292
+    }
+  ],
+  "events": [
+    {
+      "event": "persist",
+      "file": "ROOT-ACTUAL-DRIVER-MODE-P37C6.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0287.json"
+    },
+    {
+      "event": "persist",
+      "file": "READINESS-0287-000001-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "0287-1-result.json"
+    },
+    {
+      "event": "explicit_C6_relay",
+      "file": "0287-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0287-after-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0288.json"
+    },
+    {
+      "event": "persist",
+      "file": "0288-before-action.json"
+    },
+    {
+      "event": "persist",
+      "file": "0288-1-result.json"
+    },
+    {
+      "event": "explicit_C6_relay",
+      "file": "0288-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-COMPLETED-MET286-WARM-BOUND.json"
+    },
+    {
+      "event": "persist",
+      "file": "0288-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0288-after-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CAMPAIGN-MAP-ADMITTED-C6.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0289.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-COMPLETED-MET-286-CONSUME-INTENT.json"
+    },
+    {
+      "event": "persist",
+      "file": "CUMULATIVE-TURN-000112.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-MET286-SETTLED-AND-WARM-REBOUND.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "0289-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0290.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "0291-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0291.json"
+    },
+    {
+      "event": "persist",
+      "file": "0291-before-action.json"
+    }
+  ],
+  "actual_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "actual_C6_preflight_or_warm_claimed": false,
+  "limits": [
+    "Constructor process/recording guards require actual runtime preflight.",
+    "Physical C6 SEM/CAP and publisher ACK remain owner-produced live evidence."
+  ]
+}

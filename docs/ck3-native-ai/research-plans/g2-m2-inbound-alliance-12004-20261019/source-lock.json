@@ -1,0 +1,109 @@
+{
+  "schema": "xar.g2.m2.inbound-alliance-next-source-leaf/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:29:35.117742+00:00",
+  "exact_build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "historical_source_capture_machine_id": "unknown",
+  "historical_identity_boundary": "Existing code/cached native instructions reused; original machine runtime/install/qualification is not inherited.",
+  "status": "EXACT_SCORE_GETTER_CALLER_ABI_SOURCE_LOCKED_NO_NATIVE_EXECUTION",
+  "source_pins": {
+    "recipient235": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\stock_recipient_root_scope_owner-DETAIL.json",
+      "bytes": 32339,
+      "sha256": "239ca4cbd6d0c5c67ff3875cb7f3752f5dec8f7fcea90c2f87f1b56dde8a8e56"
+    },
+    "outer259": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\complete-cached\\evaluate_answer_complete_cached_function-DETAIL.json",
+      "bytes": 48389,
+      "sha256": "6306d42c4fcb75a3e7c7453a5435559b2e066f4356ea11dc3b19bfb2e9c03a61"
+    },
+    "inner678": {
+      "path": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-39c\\actual-helper-source\\answer-mode-branch-307BD70.json",
+      "bytes": 45643,
+      "sha256": "4173ec9eda9221362e6f29c321321c35c258362c4ccbf044aa16b5ad3a1e3e8b"
+    },
+    "pending_and_copy": {
+      "path": "C:\\codex-ck3-background\\packets\\pending-interaction12004-migration-20261007\\HELD-JOINS-SOURCE-LEDGER.json",
+      "bytes": 101011,
+      "sha256": "0d6fd09dcf300b6642b644e40a6fdd39baa2e1150c5900554d9868f416227d23"
+    },
+    "numeric726": {
+      "path": "D:\\codex-ck3-background-spill\\native71-continuation-20261010\\continuation-35c\\ACTUAL-3761780-SOURCE.json",
+      "bytes": 50153,
+      "sha256": "d3e98f56ceb4096b2e8ef2c8d9c235e3daf93c2440eb6c660b1a5e9ed562adab"
+    },
+    "binder": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_interaction_context.hpp",
+      "bytes": 3192,
+      "sha256": "bb3b4d7dd29f5794b8bf41b2fbff4408004000bc9394046cf1f67e6c10939db6"
+    },
+    "pending_collector": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_pending_context.cpp",
+      "bytes": 70906,
+      "sha256": "98716c5d59154c257a2d2e32393be0534ed211539c88cce3cc16ea14862ab6a5"
+    },
+    "world": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_world.cpp",
+      "bytes": 2551,
+      "sha256": "e4aca2fa0c1c0adf1f451155a2671e3bbb75d0298579df91466f348fc712bfd4"
+    },
+    "military_old": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\fixtures\\military_preparation_summary_v1_evaluator_abi.json",
+      "bytes": 21827,
+      "sha256": "454633c9a70a2650ab1abefe426eeabb7be3d3fca3c82c64b2c7cfdafb58c6a9"
+    }
+  },
+  "locked": {
+    "pending_context": "pending+0x18 (actual constructor 2A32770 calls context-copy3076B60 with RCX=pending+18); original scope is pending+20/context+8",
+    "getter": {
+      "rva": "0x307C440",
+      "body_bytes": 235,
+      "abi": "int64_t* (void* context, int64_t* out); Win64 RCX=context,RDX=out,RAX=original out",
+      "scale": 100000,
+      "callsite": "0x307BEF4",
+      "consumer": "0x307BEF9 reads QWORD[RAX]",
+      "roles": "DWORD context+2D8 actor, +2DC recipient; source compares complete stored bits, not a low24 index",
+      "constant_branch": "actor==recipient writes10000000; actual closed invitation had distinct roles",
+      "scoring_branch": "clone context+8 via373ACF0; overwrite clone root WORD4 and payload8 with zero-extended recipient DWORD; call3761680 at307C4A3 on [context]+1918, original out, cloned scope; retain native cleanup and returned-pointer check"
+    },
+    "numeric_producer": "3761680 ->3761780; signed baseQ64 block+28 and ordered modifier occurrence callbacks at vtable+30 update same output; do not replace unknown callbacks with zero or generic addition",
+    "outer_answer": "307BC60 ABI uint8_t(void*,uint8_t mode,uint8_t flag,void* sinkA,void* sinkB); intermediary and recipient are separate branches; not the human responder authority",
+    "current_placeholder": "InitializeUnavailableTerms sets recipient_ai_acceptance_score and recipient_ai_final_decision unavailable; existing native/Python serializers also enforce unavailable-only",
+    "human_scope": "This incoming recipient is human31254. Raw score if explicitly evaluated is player-as-AI counterfactual guidance, never opponent-would-accept, strategic utility, or an actual player decision."
+  },
+  "next_implementation_leaf": {
+    "name": "pending_negotiate_alliance_observation_12004",
+    "inputs": [
+      "same existing owner main-thread paused pending collector and full pending ID",
+      "native/public revision kept distinct; actor/recipient/current definition/source binding",
+      "BindInteractionContext12004 getter and guarded native invoker",
+      "borrowed context pending+18, never refresh/finalize/destroy the pending-owned context"
+    ],
+    "outputs": [
+      "counterfactual_recipient_ai_acceptance signed rawQ64/scale100000 + actual getter-returned-original-out and exact role/frame provenance",
+      "recipient_ai_final_decision=not_applicable_human_responder; retain native legality separately",
+      "sender wars only from current actual World source, with completeness flag; no absent-as-empty conversion"
+    ],
+    "integration": "Add an exact .4 read-only sibling collector called from existing pending query, then update native serializer and Python contract together. Do not alter strategy, auto-accept bool, action path, or public routing in this leaf.",
+    "status": "IMPLEMENTATION_NOT_AUTHORED_OR_DEPLOYED"
+  },
+  "remaining_minimal_source_request": {
+    "score_getter_and_pending_scope_new_EXE_bytes": 0,
+    "sender_wars": "Reuse BindWorldImage12004 contains-participant2494B40 and validated active-war storage/participant IDs. Current software ReadActiveWars scans capacity; implement two-bound-ID projection from a single bounded scan or existing same-frame projection, without rescanning all armies per sender.",
+    "military": "No .4 exact current/max getter was found in the bounded existing files. Legacy1.19 fixture has canonical current_military_strength leaf2849550/129B and max_military_strength28494C0/129B; these addresses/offsets are NOT .4 authority.",
+    "request": "Ask existing source/cache owner for only exact .4 registration/callback anchors for canonical current_military_strength and max_military_strength, plus each complete leaf body (budget256B per leaf). If no named .4 anchor exists, stop before any native byte capture and return those two missing locator identities; do not infer image delta, scan whole AI, or label army-subtotal as either stock scalar."
+  },
+  "validation_scope": {
+    "plan_check": "record structure and pinned files only",
+    "open_kaishek": "not-applicable: native getter ABI/scope/cached instruction review; no deterministic CK3 script execution subset being newly accepted",
+    "new_Game_RPC_native_calls_builds": 0,
+    "new_EXE_bytes": 0,
+    "Driver_SAVE_media_reads": 0,
+    "strategy_or_frozen_changes": 0,
+    "new_business_or_G2_credit": 0
+  },
+  "review_at_utc": "2027-04-17T06:29:35.117742+00:00"
+}

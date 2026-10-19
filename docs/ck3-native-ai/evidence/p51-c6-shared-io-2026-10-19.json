@@ -1,0 +1,216 @@
+{
+  "schema": "xar.decision-text-shared-io-source-and-readback/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-19T06:36:00.092660+00:00",
+  "machine_identity": {
+    "observed_at_utc": "2026-10-19T06:34:02Z",
+    "source_command": "python tools/ck3_live_run_id.py machine",
+    "actual_output": "xenoamess-full-tower-eb9d2c1186",
+    "cross_machine_credit": false
+  },
+  "scope": "Versioned narrow source result and actual MET286 text-publication readback. No new Game, Native, desktop, OBS or business action was performed by this evidence writer.",
+  "source_pins": [
+    {
+      "repository_path": "tools/g2_saved_campaign/decision_text_publisher.py",
+      "bytes": 29409,
+      "sha256": "38438b9b50896e8050f6c864c78a11291750a33bd7d0f73a5e0bde0130008bbe"
+    },
+    {
+      "repository_path": "tools/g2_saved_campaign/migrate_p51_decision_text_v20261019.py",
+      "bytes": 31358,
+      "sha256": "107209e67ff0f947c5fae8cd661f1064caffad29148536cd27da9c854f90b0f7"
+    },
+    {
+      "repository_path": "tools/g2_saved_campaign/test_decision_text_shared_io.py",
+      "bytes": 9053,
+      "sha256": "9dfbbae243d323544fd63e8c4b9b59c731ce88a02bdbf23e4b306a57616a1c88"
+    }
+  ],
+  "source_contract": {
+    "Windows_read": {
+      "access": "GENERIC_READ",
+      "share_flags": [
+        "FILE_SHARE_READ",
+        "FILE_SHARE_WRITE",
+        "FILE_SHARE_DELETE"
+      ],
+      "share_mask": 7,
+      "creation": "OPEN_EXISTING",
+      "lifetime": "Read finite bytes and close immediately; close handle/descriptor on adoption errors too"
+    },
+    "same_bytes_check": "checked() validates exact resolved path, length and SHA256 and parses the same single raw read",
+    "retry_policy": {
+      "read_and_metadata": "Only WinError5/32/33 or actual PermissionError errno13 without winerror;8 attempts maximum,local0.5seconds",
+      "text_replace": "Only WinError5;8 attempts maximum,local2seconds",
+      "publication_budget_seconds": 4,
+      "nested_deadline": "Minimum of existing and new deadline; never reset for nested read/write",
+      "parent_ACK_configured_ceiling_seconds": 5,
+      "parent_wait_start": "Before source validation and enqueue; actual deadline also capped by shared4s budget",
+      "identity": "Reuse the same generated temp/content/publication ID. Do not recreate business results or overwrite occupied immutable names"
+    },
+    "ACK_order": "Complete real atomic text replacement, then create exact TEXT_PUBLISHED. Service before_submit dispatch remains after successful real ACK consumption.",
+    "late_or_permanent_failure": "LateACK is not admitted as a business result; exhausted permanent lock/permission, corruptJSON, source mismatch and missing input still fail honestly.",
+    "API_compatibility": "SHARED_IO_RETRY_VERSION==1 returns the new provider unchanged. Legacy path-only CURRENT-INPUT wrapper is only fallback for old provider source.",
+    "no_new_IPC_or_recording_schema": true,
+    "official_reference": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+    "sharing_limit": "Sharing DELETE enables subsequent delete-access requests; it is not a guarantee that a replacement succeeds while a reader remains open."
+  },
+  "actual_fault": {
+    "at_utc": "2026-10-19T06:14:15.202945+00:00",
+    "publisher": {
+      "pid": 187296,
+      "creation_filetime": 134368630096239765
+    },
+    "trace": "run:314 read(pointer) -> read:28 Path.open(rb) -> PermissionError errno13 on decision-text-publisher-c5/CURRENT-INPUT.json",
+    "CLOSED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c5-current-input-read-review01\\frozen\\decision-text-publisher-c5\\CLOSED.json",
+      "bytes": 894,
+      "sha256": "2d25f2ac077cf1d292a832d35dc40c5bf833f6509bd40389994e332448247cb6"
+    },
+    "normal_STOP_observed": false,
+    "OWNER_CLOSED_present_at_freeze": false,
+    "actual_owner_exit": "Runtime retained owner reports exit1, not normal0",
+    "original_frozen_proof": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c5-current-input-read-review01\\META.json",
+      "bytes": 16018,
+      "sha256": "5d127ca01b9bd0ed1b1fd00a725d91b7e78be30a99d363da8b5505584ed688c6"
+    },
+    "actual_lock_or_ACL_holder": "unknown; local injected Windows handles do not identify the campaign holder"
+  },
+  "targeted_qualification": {
+    "recorded_at_utc": "2026-10-19T06:28:11.487076+00:00",
+    "time_basis": "Bounded source-ready record time; no individual test timestamps are reconstructed",
+    "source_ready_record": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c6-text-review02\\FINAL-READY.json",
+      "bytes": 4326,
+      "sha256": "f351bd8b472d4a0cfc8f9a68908037e4e7347297f828fac9481cc6fe95af5c22"
+    },
+    "cases_passed": 10,
+    "suites": [
+      {
+        "command": "python tools/g2_saved_campaign/test_decision_text_shared_io.py",
+        "cases": 5,
+        "result": "PASS:4-case run, then the newly added metadata case alone1PASS",
+        "coverage": [
+          "actual Windows exclusive read lock, release and exact JSON",
+          "actual DELETE access allowed while own reader is open; immediate close before replace",
+          "actual metadata replace lock retries the same temp and bytes",
+          "production parentwait and local qualification-only publisher thread emit and consume actual text/ACK",
+          "permanent errno13 bounded; shared4s deadline; corruptJSON not retried; single raw hash/parse"
+        ],
+        "child_processes_started": 0,
+        "Game_OBS_SDK_processes_started": 0
+      },
+      {
+        "command": "python tools/g2_saved_campaign/test_decision_text_replace_retry.py",
+        "cases": 3,
+        "result": "PASS",
+        "coverage": [
+          "actual local Windows Win5 reader-release retry",
+          "permanent Win5 bounded and old target retained",
+          "other error not retried"
+        ],
+        "Timer_trigger": "First actual failure starts the release Timer"
+      },
+      {
+        "command": "python tools/g2_saved_campaign/test_decision_text_subdecisions.py",
+        "cases": 2,
+        "result": "PASS",
+        "coverage": [
+          "distinct callback ordinals and same-decision refusal",
+          "bounded actual feed transformation"
+        ]
+      }
+    ],
+    "paired_namespace_fixture": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c6-text-review02\\SOURCE-QUALIFICATION.json",
+      "bytes": 853,
+      "sha256": "b6c0215e58460a102193aa14c6148af367893e208ba08e62b41fefe08cd49ea7"
+    },
+    "before_OBS_owner_AST_fixture": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c6-text-review02\\OWNER-SEAM-QUALIFICATION.json",
+      "bytes": 566,
+      "sha256": "d4d0494bf1043e8bb59515d7023e8229644c3cd2862b83e55d5c450b8acaf0d7"
+    },
+    "paired_fixture_limit": "Those two source fixtures explicitly use local fake ACK dependencies; no live Game/recording credit",
+    "failed_assumption_retained": "Initial held-reader replace fixture failed locally; it was corrected to the actual sharing contract. The bounded source-ready record retains this history; replacement retry is separately tested."
+  },
+  "actual_MET286_recovery": {
+    "independent_frozen_readback": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c6-text-review02\\ACTUAL-MET286-RECOVERY01.json",
+      "bytes": 3511,
+      "sha256": "2a61e8a700ec8fa8234b268e3fc71eb5adf5f004ea61058aa8a81338eb6db83b"
+    },
+    "recovery_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-MET286-TEXT-PUBLICATION-RECOVERED-C6.json",
+      "bytes": 2730,
+      "sha256": "f338434147ba1fb8707896fd6f54d9c25afc65d53489bdcb90ef82412b54851b"
+    },
+    "new_TEXT_PUBLISHED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\decision-text-publisher-c6\\TEXT-PUBLISHED-75c43f5340a9bfeee5dea461d0e26ddada620cf584484e9b7c7a1e457d373fe3.json",
+      "bytes": 1258,
+      "sha256": "b4ac4f665f69905a1fa8d80a16c182cb3c9f0e17a65e090d41cd56e6ca741a85"
+    },
+    "OBS_started": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\started.json",
+      "bytes": 3736,
+      "sha256": "e63e4dd5a968a2fc572584b9761681fbf328713e57978a1d0863370249909bc5"
+    },
+    "new_publisher": {
+      "pid": 179008,
+      "creation_filetime": 134368649316828418,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+    },
+    "same_Game": {
+      "pid": 153556,
+      "creation_filetime": 134368602545256920,
+      "creation_date": "20261019051054.525692+000",
+      "hwnd": 48958518,
+      "desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe"
+    },
+    "actual_publisher_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\presentation-c6\\g2_saved_campaign\\decision_text_publisher.py",
+      "bytes": 29409,
+      "sha256": "38438b9b50896e8050f6c864c78a11291750a33bd7d0f73a5e0bde0130008bbe"
+    },
+    "TEXT_PUBLISHED_at_utc": "2026-10-19T06:28:51.930951+00:00",
+    "OBS_started_at_utc": "2026-10-19T06:29:00.258469+00:00",
+    "recording_session_id": "e6f643ea-3404-446b-ae18-6b75cb9d682a",
+    "sequence": "Original completed MET286 source/projection -> new generation realTEXTACK -> new OBS request and actual started",
+    "original_MET286_response": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c5-current-input-read-review01\\frozen\\p37-responses\\0286-1-result.json",
+      "bytes": 1474,
+      "sha256": "3ac0c68febd1b4ddb4f4de3541d1c970201e287f2b96a74fb566c6ab68a2ea07"
+    },
+    "original_immutable_projection": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c5-current-input-read-review01\\frozen\\responses\\p37-responses-0286-1-result.json",
+      "bytes": 552,
+      "sha256": "75c43f5340a9bfeee5dea461d0e26ddada620cf584484e9b7c7a1e457d373fe3"
+    },
+    "new_AUTO_or_MET_RPC": false,
+    "CURRENT_request_rewound": false,
+    "new_projection_created": false,
+    "actual_retry_hit_observed": "unknown",
+    "not_claimed": [
+      "new option285 event outcome",
+      "OBS draw/pixel admission",
+      "subsequent ordinary cycle credit",
+      "long-term Windows stability"
+    ]
+  },
+  "CI": {
+    "runner": "Existing static-ci.yml windows-latest job",
+    "single_command": "python -B -X utf8 tools/g2_saved_campaign/test_decision_text_shared_io.py",
+    "existing_entry": "python -B -X utf8 -m unittest discover -s tools/g2_saved_campaign -p \"test_decision_text*.py\" -v",
+    "already_discovered": true,
+    "duplicate_step_needed": false,
+    "additional_dependencies": "stdlib only;no CK3/OBS/Native"
+  },
+  "history_and_credit": {
+    "external_attempts_retained": true,
+    "old_failure_or_STARTUP_receipts_overwritten": false,
+    "Game_Native_OBS_Desktop_calls_by_this_agent": 0,
+    "runtime_mutations_by_this_agent": 0,
+    "actual_ACK_is_not_original_event_result": true
+  }
+}

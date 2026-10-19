@@ -1,0 +1,496 @@
+{
+  "schema": "xar.c5-estate255-readonly-recovery-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:14:30.184893+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-estate255-clear-review02\\QUALIFICATION.json",
+      "bytes": 3548,
+      "sha256": "d2ef42cf1340bc7fc8924e0472eb7da47686e6bd6634e52df4d1f8c9af245945"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-estate255-clear-review02\\SOURCE-CONTRACT.json",
+      "bytes": 2201,
+      "sha256": "2e116861cb695029275fd81aa9aaa27e3d01e44a1ddee1d739167b2a99939e07"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0256-1-result.json",
+      "bytes": 3329,
+      "sha256": "df1ab7ca00a499c4829d62e019906b3c7b0d80be19cb3ea96145e82f475fcc99"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0257-1-result.json",
+      "bytes": 14096,
+      "sha256": "82c89a260d19eaf9d951696a230ac31d096b8c1cae3022f8c3d2d3aa08b0df58"
+    }
+  ],
+  "software_qualification": {
+    "schema": "xar.c5-estate255-clear-normalPLAN-software/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T06:11:24.905734+00:00",
+    "sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\FROZEN.json",
+        "bytes": 6295,
+        "sha256": "2596ab289cc30be4befedb33d80ae653b406b69c10ac9d441aa96a4b498f90b8"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\CALLBACK-ABSENCE.json",
+        "bytes": 2054,
+        "sha256": "d02174b0697491ded03f7e63845e5a7ec89643f5887b30f81744134abd79e652"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C5.json",
+        "bytes": 403021,
+        "sha256": "84fbe82908590e5b2813430f33ef4cb10cd8326bb2c98f0c3ee4aecfaf716290"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src04\\xar_autoplayer\\bridge\\succession_expectation_invalidation_v1.py",
+        "bytes": 3772,
+        "sha256": "33a1905f3e142e7784165dc706d2be0749e9a74d4745c9c43fe975689c1ca3da"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_saved_campaign_preflight.py",
+        "bytes": 11320,
+        "sha256": "8d3cfea291222537d557edbaa61cab6f41e823f74a93e5d5018807514bbe8694"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c5_estate255_predispatch_clear_v1.py",
+        "bytes": 6724,
+        "sha256": "f2f96175c74ba94408d823cf85878850472732be9208496ca7c132b2084d2a2f"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c5_sdk_queue.py",
+        "bytes": 264837,
+        "sha256": "0752acc6993c1fd92df133c8a4078fc5722a99bc5160ade0395e07c3443bff95"
+      }
+    ],
+    "control": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-estate255-clear-review02\\root_saved_campaign_preflight.py",
+      "bytes": 15049,
+      "sha256": "167f1840a25bbc62eb2fd032bb17e1e0183a6c14ad9a93745773d7d036b5909e"
+    },
+    "leaf": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-estate255-clear-review02\\root_c5_estate255_predispatch_clear.py",
+      "bytes": 6724,
+      "sha256": "f2f96175c74ba94408d823cf85878850472732be9208496ca7c132b2084d2a2f"
+    },
+    "source_contract": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-estate255-clear-review02\\SOURCE-CONTRACT.json",
+      "bytes": 2201,
+      "sha256": "2e116861cb695029275fd81aa9aaa27e3d01e44a1ddee1d739167b2a99939e07"
+    },
+    "actual_original_outer_dispatch_and_Clean_before_after_call_used": true,
+    "256_new_RPC_calls": 0,
+    "257_mock_normal_PLAN_calls": 1,
+    "mock_PLAN_does_not_claim_actual_estate_refresh": true,
+    "state_only_pending_cycle_changed": true,
+    "counts98_T0_day107_lastSaved61_preserved": true,
+    "negative_cases_rejected": [
+      "unknown_original",
+      "pending_changed",
+      "foreign_Game"
+    ],
+    "runtime_files_mutated": 0,
+    "actual_Game_Native_MCP_calls": 0
+  },
+  "source_contract": {
+    "schema": "xar.c5-exact255-predispatch-source-contract/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T06:11:24.609199+00:00",
+    "business_source_commit": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+    "SDK_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C5.json",
+      "bytes": 403021,
+      "sha256": "84fbe82908590e5b2813430f33ef4cb10cd8326bb2c98f0c3ee4aecfaf716290"
+    },
+    "guard": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src04\\xar_autoplayer\\bridge\\succession_expectation_invalidation_v1.py",
+      "bytes": 3772,
+      "sha256": "33a1905f3e142e7784165dc706d2be0749e9a74d4745c9c43fe975689c1ca3da"
+    },
+    "callback_absence": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\CALLBACK-ABSENCE.json",
+      "bytes": 2054,
+      "sha256": "d02174b0697491ded03f7e63845e5a7ec89643f5887b30f81744134abd79e652"
+    },
+    "frozen66": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\FROZEN.json",
+      "bytes": 6295,
+      "sha256": "2596ab289cc30be4befedb33d80ae653b406b69c10ac9d441aa96a4b498f90b8"
+    },
+    "source_flow": {
+      "Service.auto_turn": "plan_turn4771 precedes execute4779 and before_submit5076",
+      "Service.query_campaign_root_context": "independently validated root response8318 then invalidator8320",
+      "NativeDriver.invalidater": "pure decision4840 precedes estate assignment4851 and persistence4854",
+      "NativeDriver.execute_step": "successful root history recorded before response returns to Service",
+      "Service.prepare": "same-frame history→_planning_root_result→strict turn_bundle→retain; unchanged validators"
+    },
+    "selected_business_dispatch_occurred": false,
+    "readonly_root_query_did_occur": true,
+    "same_frame_root_cache_reuse_is_revalidated_by_normal_PLAN": true,
+    "live_history_read_claimed": false
+  },
+  "actual256": {
+    "request": {
+      "sequence": 256,
+      "command": "clear_zero_rpc_preflight_rejection",
+      "arguments": {
+        "repair_kind": "estate255_before_dispatch_for_readonly_PLAN"
+      }
+    },
+    "result": {
+      "is_error": false,
+      "structured_content": {
+        "schema": "xar.c5-estate255-before-dispatch-clear/v1",
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "observed_at_utc": "2026-10-19T06:12:08.932879+00:00",
+        "status": "estate255_before_dispatch_cleared_for_readonly_PLAN",
+        "original255_error_retained": true,
+        "retained_originals": [
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\00-ROOT-CUMULATIVE-LOOP-STATE.json",
+            "bytes": 5072,
+            "sha256": "1d40e45069d6ba610006419b97f591a1f97ae1a1c258e12b4f00650dfccb7cc0"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\01-ROOT-GOVERNANCE-RESULT-STATE.json",
+            "bytes": 855,
+            "sha256": "afaacd28c74b98f559bab592b8645656f775f7f52556e45c7c8eb2b6d271727a"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\02-ROOT-CURRENT-HALT-P37.json",
+            "bytes": 708,
+            "sha256": "8fbedd0fe2d7863c4707dc1562a4451673a30aa3418268710be54783e5da5e1e"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\03-NEXT-SEQUENCE-P37.json",
+            "bytes": 65,
+            "sha256": "c9578ca84f974d13a36b76e9e7b1b05b7d9734e960b7079ef07dcd48670cc8aa"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\06-0252-1-result.json",
+            "bytes": 50837,
+            "sha256": "76c62d88abeda99e05f2937c8cdffdd54ab0e5bb3cbc7333f38aa181756c3155"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\07-0253-1-result.json",
+            "bytes": 57855,
+            "sha256": "fa451ba86216bdc0943f3d27fa63093f40c19efd45274da2b860fb4e4c2dd68b"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\09-0255-1-result.json",
+            "bytes": 563,
+            "sha256": "2169d7152cc02bf3b59c39d72f8161fe5c5c5ac151b67bc66f6c537853b93d52"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-estate255-failure66\\05-ROOT-PUBLISHER251-WARM-BOUND.json",
+            "bytes": 1171,
+            "sha256": "adf312fa7af93b2bb523b615d9738610d791bca9cfa3ba5a88fa91d8318b800d"
+          }
+        ],
+        "source_contract": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-estate255-clear-review02\\SOURCE-CONTRACT.json",
+          "bytes": 2201,
+          "sha256": "2e116861cb695029275fd81aa9aaa27e3d01e44a1ddee1d739167b2a99939e07"
+        },
+        "completed_cycles": 98,
+        "observed_game_days": 107,
+        "ordinary_cycle_credit": 0,
+        "business_action_credit": 0,
+        "selected_business_dispatch_occurred": false,
+        "readonly_root_query_did_occur": true,
+        "estate_fields_changed_by_this_control": false,
+        "new_RPC_calls": 0,
+        "new_Game_actions": 0,
+        "original_AUTO_replayed": false,
+        "next_required_step": "new normal ck3_plan_turn257 with empty arguments",
+        "current_resident_frame_only_from_retained_metadata": true,
+        "PLAN_must_revalidate_root_and_retain_strictly": true,
+        "next_sequence": 257
+      }
+    }
+  },
+  "actual257": {
+    "started_at_utc": "2026-10-19T06:12:36.469080+00:00",
+    "ended_at_utc": "2026-10-19T06:12:36.520224+00:00",
+    "elapsed_seconds": 0.051144300028681755,
+    "request": {
+      "sequence": 257,
+      "tool": "ck3_plan_turn",
+      "arguments": {}
+    },
+    "result": {
+      "meta": null,
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"snapshot_id\": \"native:61\",\n  \"revision\": 2,\n  \"planning_source_frame\": {\n    \"schema\": \"xar.ck3.planning-source-frame/v1\",\n    \"status\": \"complete\",\n    \"snapshot_id\": \"native:61\",\n    \"revision\": 2,\n    \"native_revision\": 61,\n    \"date_raw\": 53146896,\n    \"actor_character_id\": 31254,\n    \"episode_run_id\": \"native-31254-6271ac8cd441\",\n    \"connection_generation\": 2,\n    \"bridge_pid\": 153556\n  },\n  \"_declaration_opportunity_cooldown_v1\": {\n    \"schema\": \"xar.ck3.declaration-opportunity-cooldown/v1\",\n    \"status\": \"inactive\",\n    \"consecutive_no_war_rounds\": 2,\n    \"cooldown_until_date_raw\": 53146896,\n    \"remaining_days\": 0,\n    \"pending_query_sequence\": null,\n    \"actor_character_id\": 31254,\n    \"episode_run_id\": \"native-31254-6271ac8cd441\"\n  },\n  \"_auto_camera_hotspot_input\": {\n    \"source_frame\": {\n      \"schema\": \"xar.ck3.planning-source-frame/v1\",\n      \"status\": \"complete\",\n      \"snapshot_id\": \"native:61\",\n      \"revision\": 2,\n      \"native_revision\": 61,\n      \"date_raw\": 53146896,\n      \"actor_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-6271ac8cd441\",\n      \"connection_generation\": 2,\n      \"bridge_pid\": 153556\n    },\n    \"active_wars\": [],\n    \"map_ready\": true,\n    \"has_active_event\": false,\n    \"has_pending_interaction\": false,\n    \"mandatory_choice\": false,\n    \"has_player_armies\": false,\n    \"source_build\": {\n      \"game_version\": \"1.20.0.4\",\n      \"executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\"\n    }\n  },\n  \"plan\": {\n    \"policy\": \"ordinary-war-results-window-v1\",\n    \"phase\": \"war_results_window\",\n    \"status\": \"ready\",\n    \"selected_step\": \"query-war-results-window-v1\",\n    \"reason\": \"observe the war results once before ordinary actions\",\n    \"pending_actions\": [\n      \"query-war-results-window-v1\"\n    ],\n    \"war_results_window\": {\n      \"presence\": \"unknown\",\n      \"close_pending\": false,\n      \"query_attempt_status\": null,\n      \"check_due\": true,\n      \"next_check_date_raw\": 53146896,\n      \"close_action_credit\": false\n    },\n    \"lifestyle_receipt_consumed\": {\n      \"action_request_id\": \"life-focus-23f68889642d4cbda55c11e8a7cfd71f\",\n      \"target_key\": \"martial_authority_focus\",\n      \"post_snapshot_id\": \"native:4\",\n      \"post_public_revision\": 4,\n      \"post_date_raw\": 53144328,\n      \"episode_run_id\": \"native-31254-6271ac8cd441\",\n      \"post_target_perk_owned\": false,\n      \"postcondition_verified\": true,\n      \"kind\": \"focus\",\n      \"post_has_current_focus\": true,\n      \"post_current_focus_key\": \"martial_authority_focus\"\n    },\n    \"campaign_goal_plan_used\": {\n      \"policy\": \"ordinary-campaign-goal-v1\",\n      \"goal_key\": \"dynasty_continuity\",\n      \"campaign_id\": \"native-31254-6271ac8cd441\",\n      \"current_character_id\": 31254,\n      \"progress\": {\n        \"reconciled_successions\": 0,\n        \"last_succession\": null\n      },\n      \"focus\": \"marriage\",\n      \"priorities\": [\n        {\n          \"priority\": 100,\n          \"action\": \"seek_current_ruler_marriage_and_family_continuity\",\n          \"reason\": \"retain the campaign's family intent with fresh ruler candidates\"\n        },\n        {\n          \"priority\": 60,\n          \"action\": \"review_current_ruler_succession_and_partition\",\n          \"reason\": \"reuse the current native heir and estate observations\"\n        }\n      ]\n    },\n    \"activity_feast_lifecycle_observation\": {\n      \"status\": \"no_tracking\",\n      \"lifecycle_terminal_observed\": false\n    },\n    \"player_risk_context\": {\n      \"schema\": \"xar.ck3.ordinary-player-risk-context/v1\",\n      \"status\": \"partial\",\n      \"binding\": {\n        \"snapshot_id\": \"native:61\",\n        \"revision\": 2,\n        \"native_revision\": 61,\n        \"date_raw\": 53146896,\n        \"character_id\": 31254\n      },\n      \"source\": {\n        \"capability\": \"game.command.query-campaign-root-context-v1\",\n        \"query_sequence\": 9,\n        \"backend_id\": \"native-headless\"\n      },\n      \"current_scope\": {\n        \"connection_generation\": 2,\n        \"source\": \"current_snapshot_diagnostics\",\n        \"response_connection_generation_observed\": false\n      },\n      \"health\": {\n        \"status\": \"available\",\n        \"value\": {\n          \"raw\": 453660,\n          \"scale\": 100000,\n          \"band\": \"fine_or_better\",\n          \"below_fine\": false,\n          \"at_or_below_death_chance_dying\": false\n        },\n        \"unavailable_reason\": null\n      },\n      \"stress\": {\n        \"status\": \"available\",\n        \"value\": {\n          \"points\": 0,\n          \"at_or_above_first_break_threshold\": false\n        },\n        \"unavailable_reason\": null\n      },\n      \"alerts\": {\n        \"ruler_health_below_fine\": {\n          \"status\": \"available\",\n          \"value\": false,\n          \"unavailable_reason\": null\n        },\n        \"ruler_stress_at_or_above_100\": {\n          \"status\": \"available\",\n          \"value\": false,\n          \"unavailable_reason\": null\n        },\n        \"no_primary_title_heir\": {\n          \"status\": \"available\",\n          \"value\": false,\n          \"unavailable_reason\": null\n        },\n        \"succession_partition_split\": {\n          \"status\": \"available\",\n          \"value\": true,\n          \"unavailable_reason\": null\n        }\n      },\n      \"planner_signals\": {\n        \"succession_preparation_priority\": {\n          \"status\": \"available\",\n          \"value\": \"normal\",\n          \"unavailable_reason\": null\n        },\n        \"avoid_discretionary_stress_gain\": {\n          \"status\": \"available\",\n          \"value\": false,\n          \"unavailable_reason\": null\n        },\n        \"protect_legitimacy_floor\": {\n          \"status\": \"unavailable\",\n          \"value\": null,\n          \"unavailable_reason\": \"player_legitimacy_state_unavailable\"\n        }\n      },\n      \"readiness\": {\n        \"health_ready\": true,\n        \"stress_ready\": true,\n        \"succession_priority_ready\": true,\n        \"legitimacy_protection_ready\": false\n      },\n      \"unavailable_reason\": null\n    }\n  },\n  \"_ordinary_sway_input_v1\": {\n    \"snapshot\": {\n      \"snapshot_id\": \"native:61\",\n      \"revision\": 2,\n      \"native_revision\": 61,\n      \"date_raw\": 53146896,\n      \"paused\": true,\n      \"map_ready\": true,\n      \"episode_run_id\": \"native-31254-6271ac8cd441\",\n      \"episode_character_id\": 31254,\n      \"one_life_terminal_reason\": null,\n      \"played_character\": {\n        \"character_id\": 31254,\n        \"alive\": true,\n        \"source\": \"native\",\n        \"stress_points\": 0,\n        \"event_trait_membership\": {\n          \"schema\": \"xar.ck3.player-event-trait-membership/v1\",\n          \"game_version\": \"1.20.0.4\",\n          \"executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n          \"status\": \"available\",\n          \"snapshot_revision\": 61,\n          \"date_raw\": 53146896,\n          \"played_character_id\": 31254,\n          \"traits\": {\n            \"lifestyle_poet\": false,\n            \"journaller\": false\n          },\n          \"unavailable_reason\": null\n        },\n        \"betrothed_id\": null,\n        \"primary_spouse_id\": 36311,\n        \"spouse_ids\": [\n          36311\n        ]\n      },\n      \"active_context\": {\n        \"active_event\": null,\n        \"pending_character_interaction\": null\n      }\n    },\n    \"root\": {\n      \"status\": \"available\",\n      \"player_character_id\": 31254,\n      \"player_character_alive\": true,\n      \"snapshot_revision\": 61,\n      \"date_raw\": 53146896,\n      \"direct_landed_vassal_character_ids\": [\n        33946,\n        34232,\n        34973,\n        35899,\n        36445,\n        45458,\n        45464\n      ]\n    }\n  }\n}",
+          "annotations": null,
+          "meta": null
+        }
+      ],
+      "structured_content": {
+        "snapshot_id": "native:61",
+        "revision": 2,
+        "planning_source_frame": {
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "status": "complete",
+          "snapshot_id": "native:61",
+          "revision": 2,
+          "native_revision": 61,
+          "date_raw": 53146896,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441",
+          "connection_generation": 2,
+          "bridge_pid": 153556
+        },
+        "_declaration_opportunity_cooldown_v1": {
+          "schema": "xar.ck3.declaration-opportunity-cooldown/v1",
+          "status": "inactive",
+          "consecutive_no_war_rounds": 2,
+          "cooldown_until_date_raw": 53146896,
+          "remaining_days": 0,
+          "pending_query_sequence": null,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441"
+        },
+        "_auto_camera_hotspot_input": {
+          "source_frame": {
+            "schema": "xar.ck3.planning-source-frame/v1",
+            "status": "complete",
+            "snapshot_id": "native:61",
+            "revision": 2,
+            "native_revision": 61,
+            "date_raw": 53146896,
+            "actor_character_id": 31254,
+            "episode_run_id": "native-31254-6271ac8cd441",
+            "connection_generation": 2,
+            "bridge_pid": 153556
+          },
+          "active_wars": [],
+          "map_ready": true,
+          "has_active_event": false,
+          "has_pending_interaction": false,
+          "mandatory_choice": false,
+          "has_player_armies": false,
+          "source_build": {
+            "game_version": "1.20.0.4",
+            "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+          }
+        },
+        "plan": {
+          "policy": "ordinary-war-results-window-v1",
+          "phase": "war_results_window",
+          "status": "ready",
+          "selected_step": "query-war-results-window-v1",
+          "reason": "observe the war results once before ordinary actions",
+          "pending_actions": [
+            "query-war-results-window-v1"
+          ],
+          "war_results_window": {
+            "presence": "unknown",
+            "close_pending": false,
+            "query_attempt_status": null,
+            "check_due": true,
+            "next_check_date_raw": 53146896,
+            "close_action_credit": false
+          },
+          "lifestyle_receipt_consumed": {
+            "action_request_id": "life-focus-23f68889642d4cbda55c11e8a7cfd71f",
+            "target_key": "martial_authority_focus",
+            "post_snapshot_id": "native:4",
+            "post_public_revision": 4,
+            "post_date_raw": 53144328,
+            "episode_run_id": "native-31254-6271ac8cd441",
+            "post_target_perk_owned": false,
+            "postcondition_verified": true,
+            "kind": "focus",
+            "post_has_current_focus": true,
+            "post_current_focus_key": "martial_authority_focus"
+          },
+          "campaign_goal_plan_used": {
+            "policy": "ordinary-campaign-goal-v1",
+            "goal_key": "dynasty_continuity",
+            "campaign_id": "native-31254-6271ac8cd441",
+            "current_character_id": 31254,
+            "progress": {
+              "reconciled_successions": 0,
+              "last_succession": null
+            },
+            "focus": "marriage",
+            "priorities": [
+              {
+                "priority": 100,
+                "action": "seek_current_ruler_marriage_and_family_continuity",
+                "reason": "retain the campaign's family intent with fresh ruler candidates"
+              },
+              {
+                "priority": 60,
+                "action": "review_current_ruler_succession_and_partition",
+                "reason": "reuse the current native heir and estate observations"
+              }
+            ]
+          },
+          "activity_feast_lifecycle_observation": {
+            "status": "no_tracking",
+            "lifecycle_terminal_observed": false
+          },
+          "player_risk_context": {
+            "schema": "xar.ck3.ordinary-player-risk-context/v1",
+            "status": "partial",
+            "binding": {
+              "snapshot_id": "native:61",
+              "revision": 2,
+              "native_revision": 61,
+              "date_raw": 53146896,
+              "character_id": 31254
+            },
+            "source": {
+              "capability": "game.command.query-campaign-root-context-v1",
+              "query_sequence": 9,
+              "backend_id": "native-headless"
+            },
+            "current_scope": {
+              "connection_generation": 2,
+              "source": "current_snapshot_diagnostics",
+              "response_connection_generation_observed": false
+            },
+            "health": {
+              "status": "available",
+              "value": {
+                "raw": 453660,
+                "scale": 100000,
+                "band": "fine_or_better",
+                "below_fine": false,
+                "at_or_below_death_chance_dying": false
+              },
+              "unavailable_reason": null
+            },
+            "stress": {
+              "status": "available",
+              "value": {
+                "points": 0,
+                "at_or_above_first_break_threshold": false
+              },
+              "unavailable_reason": null
+            },
+            "alerts": {
+              "ruler_health_below_fine": {
+                "status": "available",
+                "value": false,
+                "unavailable_reason": null
+              },
+              "ruler_stress_at_or_above_100": {
+                "status": "available",
+                "value": false,
+                "unavailable_reason": null
+              },
+              "no_primary_title_heir": {
+                "status": "available",
+                "value": false,
+                "unavailable_reason": null
+              },
+              "succession_partition_split": {
+                "status": "available",
+                "value": true,
+                "unavailable_reason": null
+              }
+            },
+            "planner_signals": {
+              "succession_preparation_priority": {
+                "status": "available",
+                "value": "normal",
+                "unavailable_reason": null
+              },
+              "avoid_discretionary_stress_gain": {
+                "status": "available",
+                "value": false,
+                "unavailable_reason": null
+              },
+              "protect_legitimacy_floor": {
+                "status": "unavailable",
+                "value": null,
+                "unavailable_reason": "player_legitimacy_state_unavailable"
+              }
+            },
+            "readiness": {
+              "health_ready": true,
+              "stress_ready": true,
+              "succession_priority_ready": true,
+              "legitimacy_protection_ready": false
+            },
+            "unavailable_reason": null
+          }
+        },
+        "_ordinary_sway_input_v1": {
+          "snapshot": {
+            "snapshot_id": "native:61",
+            "revision": 2,
+            "native_revision": 61,
+            "date_raw": 53146896,
+            "paused": true,
+            "map_ready": true,
+            "episode_run_id": "native-31254-6271ac8cd441",
+            "episode_character_id": 31254,
+            "one_life_terminal_reason": null,
+            "played_character": {
+              "character_id": 31254,
+              "alive": true,
+              "source": "native",
+              "stress_points": 0,
+              "event_trait_membership": {
+                "schema": "xar.ck3.player-event-trait-membership/v1",
+                "game_version": "1.20.0.4",
+                "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+                "status": "available",
+                "snapshot_revision": 61,
+                "date_raw": 53146896,
+                "played_character_id": 31254,
+                "traits": {
+                  "lifestyle_poet": false,
+                  "journaller": false
+                },
+                "unavailable_reason": null
+              },
+              "betrothed_id": null,
+              "primary_spouse_id": 36311,
+              "spouse_ids": [
+                36311
+              ]
+            },
+            "active_context": {
+              "active_event": null,
+              "pending_character_interaction": null
+            }
+          },
+          "root": {
+            "status": "available",
+            "player_character_id": 31254,
+            "player_character_alive": true,
+            "snapshot_revision": 61,
+            "date_raw": 53146896,
+            "direct_landed_vassal_character_ids": [
+              33946,
+              34232,
+              34973,
+              35899,
+              36445,
+              45458,
+              45464
+            ]
+          }
+        }
+      },
+      "is_error": false,
+      "result_type": "complete"
+    },
+    "mcp_result_projection_json_utf8_bytes": 13833
+  },
+  "no_new_Game_Native_MCP_call_by_evidence_collection": true,
+  "actual257_after_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\0257-after-result.json",
+    "bytes": 453,
+    "sha256": "e68c6bd5aa15f12dd73d1570866f77bbd81cc45adee11cc2a4f872d7737247a6"
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "actual_after": {
+    "action_receipt": {
+      "accepted": true,
+      "native_request_id": null,
+      "paused": true,
+      "request_id": null,
+      "revision": 51,
+      "snapshot_id": "native:50",
+      "status": "submitted",
+      "step": "reject-pending-character-interaction"
+    },
+    "before": {
+      "bytes": 23854,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-interactions\\81caf9941b5f462ab7f464c273250b10.before.json",
+      "sha256": "e636eac00be95385e8b3d68637fe5e98204ab27106251bf7aee78a11eab7fd5b"
+    },
+    "captured_at_utc": "2026-10-19T05:41:02.376942+00:00",
+    "command_acknowledged": true,
+    "error": null,
+    "incident_id": "81caf9941b5f462ab7f464c273250b10",
+    "interaction_result": {
+      "instance_id": 150995095,
+      "sender_character_id": 36445,
+      "status": "rejected"
+    },
+    "kind": "pending_character_interaction",
+    "material_effects_verified": false,
+    "original_pending_advanced_verified": true,
+    "remaining_pending_character_interaction": null,
+    "replay_allowed": false,
+    "schema": "xar.pending-interaction-left-reply/v1",
+    "stage": "after_response"
+  },
+  "actual_choice": {
+    "action": "reject",
+    "action_reachable": true,
+    "button": "reject_button",
+    "enabled": "CharacterInteractionNotificationWindow.CanReject",
+    "native_legal": true,
+    "onclick": "CharacterInteractionNotificationWindow.Reject",
+    "position": "left",
+    "rendered_index": 0,
+    "step": "reject-pending-character-interaction"
+  },
+  "actual_context": {
+    "binding": {
+      "actor_character_id": 31254,
+      "bridge_pid": 153556,
+      "connection_generation": 1,
+      "date_raw": 53146704,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "map_ready": true,
+      "native_revision": 49,
+      "paused": true,
+      "revision": 50,
+      "snapshot_id": "native:49"
+    },
+    "build": {
+      "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "version": "1.20.0.4"
+    },
+    "deadline": {
+      "age_days": 1,
+      "expiration_days": 60,
+      "expiry_boundary_status": "not_reached",
+      "remaining_days": 59
+    },
+    "definition": {
+      "canonical_key": "negotiate_alliance_interaction",
+      "deterministic_key_hash": 2566946210,
+      "runtime_ordinal": 4
+    },
+    "legality": {
+      "accept": {
+        "allowed": true,
+        "reason": null,
+        "status": "available"
+      },
+      "acknowledge": {
+        "allowed": false,
+        "reason": "normal_reply_channel",
+        "status": "available"
+      },
+      "block": {
+        "allowed": true,
+        "reason": null,
+        "status": "available"
+      },
+      "reject": {
+        "allowed": true,
+        "reason": null,
+        "status": "available"
+      }
+    },
+    "roles": {
+      "actor_character_id": 36445,
+      "intermediary_character_id": -1,
+      "recipient_character_id": 31254,
+      "secondary_actor_character_id": -1,
+      "secondary_recipient_character_id": -1
+    },
+    "routing": {
+      "auto_accept_notification": false,
+      "current_responder_role": "recipient",
+      "kind": 0,
+      "local_route": true,
+      "played_character_id": 31254,
+      "reply_execution_channel": "recipient"
+    },
+    "send_options": {
+      "context_count": 2,
+      "definition_count": 2,
+      "exclusive": false,
+      "rows": [
+        {
+          "canonical_flag_key": null,
+          "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed",
+          "canonical_flag_status": "unavailable",
+          "is_shown": false,
+          "is_valid": true,
+          "native_index": 0,
+          "numeric_flag_identifier": 49,
+          "selected": false
+        },
+        {
+          "canonical_flag_key": null,
+          "canonical_flag_reason": "numeric_flag_identifier_string_mapping_not_closed",
+          "canonical_flag_status": "unavailable",
+          "is_shown": false,
+          "is_valid": false,
+          "native_index": 1,
+          "numeric_flag_identifier": 7106,
+          "selected": false
+        }
+      ]
+    },
+    "terms": {
+      "recipient_ai_acceptance_score": {
+        "reason": "recipient_ai_acceptance_score_unavailable",
+        "status": "unavailable",
+        "value": null
+      },
+      "recipient_ai_final_decision": {
+        "reason": "recipient_ai_final_decision_unavailable",
+        "status": "unavailable",
+        "value": null
+      },
+      "special_data_present": false,
+      "special_war_binding": {
+        "reason": "special_war_binding_not_applicable",
+        "status": "unavailable",
+        "value": null
+      },
+      "structured_costs": {
+        "reason": null,
+        "status": "available",
+        "value": {
+          "application_timing": "on_send",
+          "entries": [
+            {
+              "raw": 0,
+              "resource_key": "gold"
+            },
+            {
+              "raw": 0,
+              "resource_key": "prestige"
+            },
+            {
+              "raw": 0,
+              "resource_key": "piety"
+            },
+            {
+              "raw": 0,
+              "resource_key": "renown"
+            },
+            {
+              "raw": 0,
+              "resource_key": "influence"
+            },
+            {
+              "raw": 0,
+              "resource_key": "herd"
+            },
+            {
+              "raw": 0,
+              "resource_key": "treasury"
+            },
+            {
+              "raw": 0,
+              "resource_key": "treasury_or_gold"
+            },
+            {
+              "raw": 0,
+              "resource_key": "merit"
+            },
+            {
+              "raw": 0,
+              "resource_key": "barter_goods"
+            }
+          ],
+          "payer_role": "actor",
+          "pending_payment_state": "already_applied",
+          "raw_scale": 100000
+        }
+      },
+      "structured_effect_preview": {
+        "reason": "structured_effect_preview_unavailable",
+        "status": "unavailable",
+        "value": null
+      },
+      "structured_exchanges": {
+        "reason": "structured_exchanges_unavailable",
+        "status": "unavailable",
+        "value": null
+      }
+    }
+  },
+  "analysis": {
+    "accept_effects": "Source on_accept triggers char_interaction.0235, shy stress/fulfillment, conditional selected-hook/influence spending, conditional alliance creation via relation/perk/oath branches, and minor clan-unity gain. Full branch bodies retained; none inferred applied.",
+    "actual_available_inputs": [
+      "sender36445 -> player31254",
+      "normal recipient channel",
+      "both accept/reject native-legal",
+      "age1/remaining59",
+      "zero selected send options",
+      "actor on_send costs already_applied and all listed raw values0",
+      "original dedicated accept rule reports no active defensive war and non-same-day shape"
+    ],
+    "actual_numeric_material_effects_verified": false,
+    "actual_opportunity_cost": "Native accept was legal; the ordinary source branch could create a strategically useful alliance. This left refusal declined that opportunity, so a harmless-notification characterization would be false. Its actual value is not computable from the closed supplied context.",
+    "already_analyzed_class": "Existing exact .4 shared source review, same fingerprint/source/definition; current namespace had no matching interaction source entry before this publication.",
+    "counterfactual_optimality_verified": false,
+    "minimal_future_strategy_hook": "Use the existing pending negotiate_alliance_inbound comparison before the ordinary left-fallback only after exact current source, current native roles/channel/options/legality, independent relation/strength/war-obligation inputs and material postconditions exist. The absence of an active defensive war alone is not proof an alliance has no strategic value. This work adds knowledge only and does not change the old narrow accept policy or current frozen SDK.",
+    "missing_for_utility": [
+      "actual qualifying kinship/perk/oath alliance branch and created-relation outcome",
+      "sender realm effective military strength and current wars/war participation obligations",
+      "current alliance roster and marginal coverage of player threats",
+      "joint campaign costs and likely willingness/timing to aid",
+      "native evaluated ai_accept_score/final decision (not available in supplied context)",
+      "material opinion/clan-unity/stress changes after decline"
+    ],
+    "native_AI_boundary": "Source ai_accept is an incoming-recipient acceptance evaluator. Its authored weights and native legality do not evaluate the autonomous player's strategic marginal value; no current native AI acceptance result was supplied.",
+    "refusal_effects": "Source on_decline triggers char_interaction.0236 for puppet_or_actor, adds refused_alliance_opinion toward recipient, and calls add_clan_unity_interaction_effect(VALUE=minor_unity_loss). This is not an effect-free close.",
+    "rollback_or_new_interaction_requested": false
+  },
+  "boundaries": {
+    "Driver_SAVE_media_body_reads": 0,
+    "G2_credit_added": 0,
+    "Game_MCP_OBS_calls": 0,
+    "existing_incident_original_fields_rewritten": false,
+    "material_effect_credit_added": 0,
+    "new_action_submitted": false,
+    "source_or_strategy_or_frozen_SDK_edits": 0,
+    "state_edits": "one immutable interaction source entry and its exact facts only",
+    "unknown_action_replayed": false
+  },
+  "campaign_id": "robert-first30-v20261019",
+  "checks": {
+    "ACK_and_original_pending_advanced_separately_true": true,
+    "accept_decline_AI_source_bodies_retained": true,
+    "closed_index_before_after_exact_SHA": true,
+    "left_reject_source_order_and_native_legality": true,
+    "old_pending_absent_in_post_receipt": true,
+    "same_incident_and_pending_id": true,
+    "same_source_definition_as_prior_review": true,
+    "source_reviewed_known_after_publication": true
+  },
+  "completed_at_utc": "2026-10-19T06:13:33.052625+00:00",
+  "incident_id": "81caf9941b5f462ab7f464c273250b10",
+  "loader_after": {
+    "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c.json",
+    "entry_sha256": "c8399771d5afefdccda73b076f35c09cd3c8b1827a727abe6a50b9eb56207366",
+    "fingerprint": "c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c",
+    "gui_sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0",
+    "material_effects_verified": false,
+    "source_sha256": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4",
+    "status": "offline-source-reviewed"
+  },
+  "loader_before": {
+    "rejected_entries": [],
+    "status": "unknown"
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:13:32.460781+00:00",
+  "pending_interaction_id": 150995095,
+  "reviewed_source": {
+    "ai_accept": "\tai_accept = {\n\t\tbase = 0\n\n\t\tnegotiate_alliance_interaction_ai_acceptance = yes\n\n\t\t# Tier Difference \t(+/-)\n\t\t# Inheritance \t\t(+)\n\t\t# Opinion \t\t\t(+/-)\n\t\t# Dynasty Prestige. (+)\n\t\t# Different Faith.\t(-)\n\t\t# Liege is asking \t(+)\n\t\t# Dread \t\t\t(+)\n\t\t# Power difference \t(+/-)\n\t\t# Claimants (+/-)\n\t\t# Same House (+)\n\t\t# Declared war opinion\n\t\t# Actor is at war penalty\n\n\t\tmodifier = {\n\t\t\tadd = 20\n\t\t\tscope:recipient = {\n\t\t\t\tis_close_family_of = scope:puppet_or_actor\n\t\t\t}\n\t\t\tdesc = CLOSE_FAMILY_REASON\n\t\t}\n\n\t\tmodifier = {\n\t\t\tadd = 10\n\t\t\tscope:recipient = {\n\t\t\t\tNOT = { is_close_family_of = scope:puppet_or_actor }\n\t\t\t\tis_extended_family_of = scope:puppet_or_actor\n\t\t\t}\n\t\t\tdesc = EXTENDED_FAMILY_REASON\n\t\t}\n\n\t\tmodifier = {\n\t\t\tadd = -20\n\t\t\tscope:recipient = {\n\t\t\t\tNOT = { is_close_or_extended_family_of = scope:puppet_or_actor }\n\t\t\t\tany_spouse = {\n\t\t\t\t\tNOT = { is_close_family_of = scope:puppet_or_actor }\n\t\t\t\t\tis_extended_family_of = scope:puppet_or_actor\n\t\t\t\t}\n\t\t\t}\n\t\t\tdesc = DISTANT_FAMILY_CONNECTION_REASON\n\t\t}\n\n\t\tmodifier = {\n\t\t\tscope:recipient = {\n\t\t\t\thas_relation_lover = scope:puppet_or_actor\n\t\t\t}\n\t\t\tadd = {\n\t\t\t\tvalue = 25\n\t\t\t}\n\t\t\tdesc = WE_ARE_LOVERS\n\t\t}\n\t\tmodifier = {\n\t\t\tscope:recipient = {\n\t\t\t\thas_relation_friend = scope:puppet_or_actor\n\t\t\t}\n\t\t\tadd = {\n\t\t\t\tvalue = 25\n\t\t\t}\n\t\t\tdesc = WE_ARE_FRIENDS\n\t\t}\n\t\tmodifier = {\n\t\t\tscope:recipient = {\n\t\t\t\tis_heir_of = scope:puppet_or_actor\n\t\t\t}\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\ttier_difference = {\n\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\tvalue > 0\n\t\t\t\t}\n\t\t\t}\n\t\t\tadd = {\n\t\t\t\tvalue = 10\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tscope:puppet_or_actor = { player_heir = scope:recipient }\n\t\t\t\t\t}\n\t\t\t\t\tadd = 10\n\t\t\t\t}\n\t\t\t}\n\t\t\tdesc = IS_HEIR_REASON\n\t\t}\n\t\tmodifier = {\n\t\t\tadd = 20\n\t\t\tdesc = FAMILY_BLOOD_BROTHERHOOD_REASON\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\thas_opinion_modifier = {\n\t\t\t\t\tmodifier = blood_brother_close_family_opinion\n\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t# Unity modifiers\n\t\tevaluate_action_increasing_house_unity = {\n\t\t\tVALUE = 100\n\t\t}\n\n\t\tfp3_struggle_resist_allied_wars_modifier = yes\n\n\t\t# LOW LEGITIMACY\n\t\tmodifier = {\n\t\t\tdesc = \"LOW_LEGITIMACY_REASON\"\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\tOR = {\n\t\t\t\t\thas_legitimacy_flag = reduced_alliance_acceptance\n\t\t\t\t\thas_legitimacy_flag = very_reduced_alliance_acceptance\n\t\t\t\t\thas_legitimacy_flag = massively_reduced_alliance_acceptance\n\t\t\t\t}\n\t\t\t}\n\t\t\tadd = {\n\t\t\t\tvalue = 0\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { scope:puppet_or_actor = { has_legitimacy_flag = reduced_alliance_acceptance } }\n\t\t\t\t\tadd = -25\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { scope:puppet_or_actor = { has_legitimacy_flag = very_reduced_alliance_acceptance } }\n\t\t\t\t\tadd = -50\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { scope:puppet_or_actor = { has_legitimacy_flag = massively_reduced_alliance_acceptance } }\n\t\t\t\t\tadd = -100\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t# HIGH LEGITIMACY\n\t\tmodifier = {\n\t\t\tdesc = \"HIGH_LEGITIMACY_REASON\"\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\tOR = {\n\t\t\t\t\thas_legitimacy_flag = increased_alliance_acceptance\n\t\t\t\t\thas_legitimacy_flag = very_increased_alliance_acceptance\n\t\t\t\t\thas_legitimacy_flag = extra_increased_alliance_acceptance\n\t\t\t\t}\n\t\t\t}\n\t\t\tadd = {\n\t\t\t\tvalue = 0\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { scope:puppet_or_actor = { has_legitimacy_flag = increased_alliance_acceptance } }\n\t\t\t\t\tadd = 10\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { scope:puppet_or_actor = { has_legitimacy_flag = very_increased_alliance_acceptance } }\n\t\t\t\t\tadd = 25\n\t\t\t\t}\n\t\t\t\tif = {\n\t\t\t\t\tlimit = { scope:puppet_or_actor = { has_legitimacy_flag = extra_increased_alliance_acceptance } }\n\t\t\t\t\tadd = 50\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t# TGP ALLIANCE WITH NF HOUSE HEAD\n\t\tmodifier = {\n\t\t\tadd = 750\n\t\t\tscope:puppet_or_actor = {\n\t\t\t\tis_house_head = yes\n\t\t\t\tscope:recipient.house ?= this.house\n\t\t\t\tany_held_title = { is_noble_family_title = yes }\n\t\t\t}\n\t\t\tdesc = JAPANESE_HOUSE_HEAD_ALLIANCE_REASON\n\t\t}\n\n\t\tmodifier = {\n\t\t\tadd = 10\n\t\t\tdesc = pam_praised_hunting_alliance_accept_reason\n\t\t\tscope:recipient = {\n\t\t\t\texists = var:pam_praised_hunting_alliance_var\n\t\t\t\tvar:pam_praised_hunting_alliance_var = scope:puppet_or_actor\n\t\t\t}\n\t\t}\n\t}",
+    "fingerprint": "c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c",
+    "gui_sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0",
+    "on_accept": "\n\ton_accept = {\n\t\tscope:puppet_or_actor = {\n\t\t\ttrigger_event = char_interaction.0235\n\n\t\t\tstress_and_fulfillment_impact = {\n\t\t\t\tshy = minor_stress_impact_gain\n\t\t\t}\n\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:hook = yes\n\t\t\t\t\thas_usable_hook = scope:recipient\n\t\t\t\t}\n\t\t\t\tuse_hook = scope:recipient\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:influence = yes\n\t\t\t\t}\n\t\t\t\tchange_influence = major_influence_loss\n\t\t\t}\n\t\t}\n\n\t\tscope:recipient = {\n\t\t\tcustom_tooltip = negotiate_alliance_effect_recipient_tooltip\n\t\t}\n\n\t\t#Set up alliance, depending on relation between rulers.\n\t\thidden_effect = {\n\t\t\t#Prioritize marriage between rulers and/or direct blood relation between rulers first.\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\tis_spouse_of = scope:recipient\n\t\t\t\t\t\t\tis_child_of = scope:recipient\n\t\t\t\t\t\t\tis_parent_of = scope:recipient\n\t\t\t\t\t\t\tis_sibling_of = scope:recipient\n\t\t\t\t\t\t\tis_grandparent_of = scope:recipient\n\t\t\t\t\t\t\tis_great_grandparent_of = scope:recipient\n\t\t\t\t\t\t\tis_grandchild_of = scope:recipient\n\t\t\t\t\t\t\tis_great_grandchild_of = scope:recipient\n\t\t\t\t\t\t\tis_uncle_or_aunt_of = scope:recipient\n\t\t\t\t\t\t\tis_nibling_of = scope:recipient\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tcreate_alliance = {\n\t\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\t\tallied_through_owner = scope:puppet_or_actor\n\t\t\t\t\t\tallied_through_target = scope:recipient\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\t#...Then marriage between close family members and either actor or recipient.\n\t\t\telse_if = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:recipient = {\n\t\t\t\t\t\tany_spouse = {\n\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\tis_close_family_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_nibling_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_uncle_or_aunt_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:recipient = {\n\t\t\t\t\trandom_spouse = {\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\tis_close_family_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_nibling_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_uncle_or_aunt_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tsave_scope_as = recipient_spouse\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tcreate_alliance = {\n\t\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\t\tallied_through_owner = scope:recipient_spouse\n\t\t\t\t\t\tallied_through_target = scope:recipient\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\telse_if = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\t\tany_spouse = {\n\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\tis_close_family_of = scope:recipient\n\t\t\t\t\t\t\t\tis_nibling_of = scope:recipient\n\t\t\t\t\t\t\t\tis_uncle_or_aunt_of = scope:recipient\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\trandom_spouse = {\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\tis_close_family_of = scope:recipient\n\t\t\t\t\t\t\t\tis_nibling_of = scope:recipient\n\t\t\t\t\t\t\t\tis_uncle_or_aunt_of = scope:recipient\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tsave_scope_as = actor_spouse\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tcreate_alliance = {\n\t\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\t\tallied_through_owner = scope:puppet_or_actor\n\t\t\t\t\t\tallied_through_target = scope:actor_spouse\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\t#...And finally marriage between close relatives and close relatives.\n\t\t\telse_if = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\t\tany_close_family_member = {\n\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\tis_child_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_parent_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_sibling_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tany_spouse = {\n\t\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\t\tis_child_of = scope:recipient\n\t\t\t\t\t\t\t\t\tis_parent_of = scope:recipient\n\t\t\t\t\t\t\t\t\tis_sibling_of = scope:recipient\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\trandom_close_family_member = {\n\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\tis_child_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_parent_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t\tis_sibling_of = scope:puppet_or_actor\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tany_spouse = {\n\t\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\t\tis_child_of = scope:recipient\n\t\t\t\t\t\t\t\t\tis_parent_of = scope:recipient\n\t\t\t\t\t\t\t\t\tis_sibling_of = scope:recipient\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tsave_scope_as = actor_spouse\n\t\t\t\t\t\trandom_spouse = {\n\t\t\t\t\t\t\tlimit = {\n\t\t\t\t\t\t\t\tOR = {\n\t\t\t\t\t\t\t\t\tis_child_of = scope:recipient\n\t\t\t\t\t\t\t\t\tis_parent_of = scope:recipient\n\t\t\t\t\t\t\t\t\tis_sibling_of = scope:recipient\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tsave_scope_as = recipient_spouse\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tcreate_alliance = {\n\t\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\t\tallied_through_owner = scope:actor_spouse\n\t\t\t\t\t\tallied_through_target = scope:recipient_spouse\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\telse_if = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:puppet_or_actor = { has_perk = defensive_negotiations_perk }\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tcreate_alliance = {\n\t\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\t\tallied_through_owner = scope:puppet_or_actor\n\t\t\t\t\t\tallied_through_target = scope:recipient\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:recipient = { # This opinion modifier controls the interaction, and is removed when breaking the alliance in any way (though on_actions)\n\t\t\t\t\tadd_opinion = {\n\t\t\t\t\t\tmodifier = perk_negotiated_alliance_opinion\n\t\t\t\t\t\ttarget = scope:puppet_or_actor\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\telse_if = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\t\thostage_oath_of_friendship_trigger = yes\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:puppet_or_actor = {\n\t\t\t\t\tcreate_alliance = {\n\t\t\t\t\t\ttarget = scope:recipient\n\t\t\t\t\t\tallied_through_owner = scope:puppet_or_actor\n\t\t\t\t\t\tallied_through_target = scope:recipient\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\tadd_clan_unity_interaction_effect = {\n\t\t\tCHARACTER = scope:puppet_or_actor\n\t\t\tTARGET = scope:recipient\n\t\t\tVALUE = minor_unity_gain\n\t\t\tDESC = clan_unity_alliance.desc\n\t\t\tREVERSE_NON_HOUSE_TARGET = no\n\t\t}\n\t}",
+    "on_decline": "\n\ton_decline = {\n\t\tscope:puppet_or_actor = {\n\t\t\ttrigger_event = char_interaction.0236\n\t\t}\n\t\tscope:puppet_or_actor = {\n\t\t\tadd_opinion = {\n\t\t\t\tmodifier = refused_alliance_opinion\n\t\t\t\ttarget = scope:recipient\n\t\t\t}\n\t\t}\n\n\t\tadd_clan_unity_interaction_effect = {\n\t\t\tCHARACTER = scope:puppet_or_actor\n\t\t\tTARGET = scope:recipient\n\t\t\tVALUE = minor_unity_loss\n\t\t\tDESC = clan_unity_alliance_refusal.desc\n\t\t\tREVERSE_NON_HOUSE_TARGET = no\n\t\t}\n\t}",
+    "source_relative": "common/character_interactions/00_alliance.txt",
+    "source_sha256": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4"
+  },
+  "schema": "xar.g2.m2.negotiate-alliance-source-closure/v1",
+  "sources": {
+    "GUI_file": {
+      "bytes": 2750,
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\interaction_notification_window.gui",
+      "sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0"
+    },
+    "actual_after": {
+      "bytes": 1157,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-interactions\\81caf9941b5f462ab7f464c273250b10.after.json",
+      "sha256": "ec5c90580fc03a6ba4b84df24fcd15aff6469457a60da7c219ddfda7b1a55a79"
+    },
+    "actual_before": {
+      "bytes": 23854,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-interactions\\81caf9941b5f462ab7f464c273250b10.before.json",
+      "sha256": "e636eac00be95385e8b3d68637fe5e98204ab27106251bf7aee78a11eab7fd5b"
+    },
+    "analyzer": {
+      "bytes": 9269,
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\interaction_offline_analysis.py",
+      "sha256": "a96fbbb20836a237126560e0901690e39f534061e1754ccdfc69b0bea1bcddfc"
+    },
+    "normalization_manifest": {
+      "bytes": 2424,
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-alliance66-20261019\\CLOSED-BATCH-NORMALIZED.json",
+      "sha256": "91c219e35ba105d231c9146392273ae3d76b971b59e3165db1a24bb01560489e"
+    },
+    "owner_closed_index": {
+      "bytes": 1935,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-C4-C5-EVENT-INPUTS66.json",
+      "sha256": "6ff58afc422ea51963f214be071bbb6ce9ee4c05cf22e73c2c0ce3969917ba6c"
+    },
+    "prior_shared_source_facts": {
+      "bytes": 32160,
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\interaction-source-registry\\negotiate_alliance_interaction-1.20.0.4.json",
+      "sha256": "e4fe925a4a9dc9964e76e6d12ee6db8ceda80f239f68cc3053ad5986bb78b5ca"
+    },
+    "published_entry": {
+      "bytes": 1430,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c.json",
+      "sha256": "c8399771d5afefdccda73b076f35c09cd3c8b1827a727abe6a50b9eb56207366"
+    },
+    "published_facts": {
+      "bytes": 30018,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\facts\\c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c.json",
+      "sha256": "b19502a43b118e2e730ad32d060bdc202c0cfa5ca941d672f21258ebc650d8f6"
+    },
+    "reader": {
+      "bytes": 4325,
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\pending_interaction_source_registry.py",
+      "sha256": "b38a7c242809f551e527848053ba0cd07785417a7be3155d898bb595b039cf32"
+    },
+    "source_definition_file": {
+      "bytes": 90662,
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_alliance.txt",
+      "sha256": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4"
+    }
+  },
+  "status": "SOURCE_CLOSED_AND_CURRENT_STATE_KNOWN",
+  "storage": {
+    "close_capacity": {
+      "D:\\": {
+        "free": 885859598336,
+        "total": 14000483987456
+      },
+      "Z:\\ck3_mod_rewrite": {
+        "free": 178396774400,
+        "total": 4096787476480
+      }
+    },
+    "derived_review_at_utc": "2026-10-21T06:13:32.460781+00:00",
+    "new_small_output_budget_bytes": 1048576,
+    "policy_version": "1.0.0",
+    "record_review_at_utc": "2027-04-17T06:13:32.460781+00:00",
+    "source_knowledge_reason": "Retain exact source knowledge while this .4 source is relevant; review build/source drift and consolidate at record review; no old retention extension.",
+    "start_capacity": {
+      "D:\\": {
+        "free": 885859643392,
+        "total": 14000483987456
+      },
+      "Z:\\ck3_mod_rewrite": {
+        "free": 178396823552,
+        "total": 4096787476480
+      }
+    }
+  }
+}

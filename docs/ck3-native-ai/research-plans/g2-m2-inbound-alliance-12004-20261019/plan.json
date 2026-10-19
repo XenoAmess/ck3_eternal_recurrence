@@ -1,0 +1,136 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "g2-m2-inbound-alliance-ai-acceptance-12004",
+  "question": "Can the current pending invitation expose the already source-closed .4 recipient raw score with honest human counterfactual scope, and which narrow sender inputs remain missing?",
+  "purpose": "own-policy",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "Current incoming negotiate_alliance sender36445/recipient player31254; no runtime access",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Full native character/pending generations and same query frame; definition key/source separately bound",
+    "producer_trigger": "paused-query",
+    "producer": "307C440 recipient raw getter ->3761680 ->3761780 ordered numerical score",
+    "caller": "Native inner307BD70 mode1 call307BEF4; proposed sibling existing pending collector borrows pending+18",
+    "consumer": "Native307BEF9 dereferences returned QWORD; proposed typed diagnostic explicitly counterfactual for human recipient",
+    "cache_lifetime": "No score cache claimed; reevaluate only in a future same-frame existing paused query; no query executed here",
+    "expected_signal": "Returned-original-output pointer and signedQ64 with roles/frame; missing military anchors remain explicit, not zero",
+    "zero_sample_meaning": "No native evaluations permitted in this source-only work, so no calls/observed raw score says nothing about AI value or candidate existence",
+    "stop_condition": "One bounded review of held235B getter,678B caller,existing pending-copy/score evidence; zero new EXE bytes/Game calls",
+    "runtime_window_ref": "not-applicable: offline-only source plan"
+  },
+  "evidence": [
+    {
+      "id": "lock",
+      "layer": "source-contract",
+      "path": "source-lock.json",
+      "sha256": "b084a1f393ad3d3c4b5119bcfd811abbbd069b960da8a163916d50e23668acc6",
+      "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "supports": "Manually reviewed exact cached getter/caller and pending-copy operands, current binder ABI, and explicit human-scope boundary; nested original evidence pins retained."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pending",
+      "label": "Existing paused pending query"
+    },
+    {
+      "id": "raw",
+      "label": "307C440 recipient getter"
+    },
+    {
+      "id": "numeric",
+      "label": "3761680 ->3761780"
+    },
+    {
+      "id": "native",
+      "label": "307BEF9 QWORD consumer"
+    },
+    {
+      "id": "wire",
+      "label": "Proposed human counterfactual diagnostic"
+    },
+    {
+      "id": "strength",
+      "label": "Exact .4 current/max strength anchors missing"
+    }
+  ],
+  "edges": [
+    {
+      "id": "pendingraw",
+      "from": "pending",
+      "to": "raw",
+      "label": "Proposed borrowed pending+18 read, no pending mutation",
+      "status": "counter-policy",
+      "evidence": [
+        "lock"
+      ]
+    },
+    {
+      "id": "producer",
+      "from": "raw",
+      "to": "numeric",
+      "label": "Exact definition+1918 and recipient-root clone",
+      "status": "static-confirmed",
+      "evidence": [
+        "lock"
+      ]
+    },
+    {
+      "id": "consume",
+      "from": "raw",
+      "to": "native",
+      "label": "Unique307BEF4 call and307BEF9 output dereference",
+      "status": "static-confirmed",
+      "evidence": [
+        "lock"
+      ]
+    },
+    {
+      "id": "diagnostic",
+      "from": "raw",
+      "to": "wire",
+      "label": "Future signed raw; human final N/A, no strategy change",
+      "status": "counter-policy",
+      "evidence": [
+        "lock"
+      ]
+    },
+    {
+      "id": "strengthgap",
+      "from": "pending",
+      "to": "strength",
+      "label": "Next narrow named source lookup only",
+      "status": "unknown",
+      "evidence": [
+        "lock"
+      ],
+      "open_question": "Need the two named .4 leaf registration/callback anchors; legacy1.19 addresses cannot migrate by delta."
+    }
+  ],
+  "cases": [
+    {
+      "id": "offline",
+      "question": "Exact .4 source/ABI ready for a sibling pending observation leaf?",
+      "status": "pending",
+      "evidence": [
+        "lock"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Any current native score/result qualified?",
+      "status": "not-applicable",
+      "evidence": [
+        "lock"
+      ],
+      "reason": "This package performs no native evaluation, Game query or live sampling."
+    }
+  ],
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:29:35.117742+00:00"
+}

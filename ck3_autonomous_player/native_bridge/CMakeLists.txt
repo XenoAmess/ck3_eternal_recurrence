@@ -1316,7 +1316,7 @@ add_library(xar_ck3_12002_runtime STATIC
   research/ck3_12002_construction_submit_binding.cpp
   src/player_lifestyle_window_candidates_v1.cpp
   src/main_thread_query_mailbox_v1.cpp)
-target_include_directories(xar_ck3_12002_runtime PUBLIC include PRIVATE src research)
+target_include_directories(xar_ck3_12002_runtime PUBLIC include research PRIVATE src)
 target_compile_definitions(xar_ck3_12002_runtime PUBLIC
   NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
 target_link_libraries(xar_ck3_12002_runtime PUBLIC bcrypt)

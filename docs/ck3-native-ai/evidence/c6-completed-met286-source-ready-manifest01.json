@@ -1,0 +1,36 @@
+{
+  "schema": "xar.C6-completed-MET286-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:29:46.399445+00:00",
+  "source_qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-met286-review03\\QUALIFICATION.json",
+    "bytes": 10565,
+    "sha256": "321e164131d21be129cc63e0736462b7679d25ef704261d7c73b71020ce0c81d"
+  },
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/completed_metrics286_warm_resume_v1.py",
+      "bytes": 20937,
+      "sha256": "b9bed3c5f0a392133efd8a598850da9b88af585cb0d4893ffe1a841bec77490b"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_completed_metrics286_warm_v1.py",
+      "bytes": 16971,
+      "sha256": "c8e739de2e4836ee078edeab3359f4cd1fbd0da77291f109376b622bddf5c7d3"
+    },
+    {
+      "path": "docs/ck3-native-ai/c6-completed-met286-warm-recovery-2026-10-19.md",
+      "bytes": 3716,
+      "sha256": "2a028efd7af2ad834064c2502f755c347093f4ad0061e1f01487e58b1568ad7e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c6-completed-met286-software01.json",
+      "bytes": 10565,
+      "sha256": "321e164131d21be129cc63e0736462b7679d25ef704261d7c73b71020ce0c81d"
+    }
+  ],
+  "software_status": "PASS",
+  "live_C6_status": "pending actual owner adoption; no actual C6 pass claimed",
+  "new_actual_RPC_calls": 0,
+  "runtime_files_mutated": 0
+}

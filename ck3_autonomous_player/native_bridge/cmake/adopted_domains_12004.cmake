@@ -215,6 +215,9 @@ endif()
 # Council delivery declares no new fixture or consumer; register its five real TUs.
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_religion_context_addons.cpp
+  research/holy_order_loan_decision_costs_12004.cpp
+  research/holy_order_loan_principal_12004.cpp
+  research/holy_order_loan_war_cash_attach_12004.cpp
   src/ck3_12004_doctrine_catalogue_bindings.cpp
   src/ck3_12004_religion_parameter_bindings.cpp
   src/ck3_12004_government_runtime_binder.cpp

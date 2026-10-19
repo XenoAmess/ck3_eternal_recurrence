@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/war_payment_generic_context_12004.hpp"
+#include "holy_order_loan_war_cash_attach_12004.hpp"
 
 #include <array>
 #include <cstddef>
@@ -82,6 +83,8 @@ struct ActorResources {
   std::string unavailable_reason = "not_sampled";
   // Fresh paused-query read, never a synthesized wallet observation.
   std::optional<CurrentRawContext> current_raw_context;
+  // Independent exact-.4 inputs; never a component of treasury/readiness.
+  std::optional<ck3_12004::religion::loan_war_cash::Observation> holy_order_loan;
 };
 
 // Exact .3 identity; the production path binds these actual native getters.

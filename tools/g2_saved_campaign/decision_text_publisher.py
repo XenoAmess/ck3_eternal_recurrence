@@ -6,7 +6,10 @@ The source-qualification mode is explicit and can never pass a recording gate.
 from __future__ import annotations
 import argparse
 import ctypes
+from contextlib import contextmanager
+from contextvars import ContextVar
 from datetime import datetime, timezone
+from functools import wraps
 import hashlib
 import json
 import os
@@ -21,23 +24,82 @@ ACK_SCHEMA = 'xar.ck3.decision-text-published/v1'
 TITLE = '智能体实时决策'
 LIMIT = 32768
 CALLBACK_PROTOCOL = 'xar.ck3.decision-subdecision/v1'
+SHARED_IO_RETRY_VERSION = 1
+_IO_DEADLINE = ContextVar('decision_text_io_deadline', default=None)
 
 def utc(): return datetime.now(timezone.utc).isoformat()
 
-def read(path, limit=LIMIT):
-    with Path(path).open('rb') as stream: raw = stream.read(limit + 1)
+@contextmanager
+def _io_budget():
+    # One publication shares this retry budget across all its reads/writes.
+    # Keep it below the existing five-second before-submit ACK gate.
+    previous = _IO_DEADLINE.get()
+    deadline = time.monotonic() + 4.0
+    token = _IO_DEADLINE.set(min(deadline, previous) if previous is not None else deadline)
+    try: yield _IO_DEADLINE.get()
+    finally: _IO_DEADLINE.reset(token)
+
+def _budgeted(function):
+    @wraps(function)
+    def call(*args, **kwargs):
+        with _io_budget(): return function(*args, **kwargs)
+    return call
+
+def _retry_windows_io(operation, *, seconds=.5, only_win5=False):
+    deadline = time.monotonic() + seconds
+    shared = _IO_DEADLINE.get()
+    if shared is not None: deadline = min(deadline, shared)
+    delays = (.02, .04, .08, .16, .32, .5, .5) if seconds > .5 else (.01, .02, .04, .08, .1, .1, .1)
+    for attempt in range(8):
+        try: return operation()
+        except OSError as error:
+            code = getattr(error, 'winerror', None)
+            transient = code == 5 if only_win5 else (
+                code in (5, 32, 33) or (code is None and isinstance(error, PermissionError) and error.errno == 13))
+            remaining = deadline - time.monotonic()
+            if os.name != 'nt' or not transient or attempt == 7 or remaining <= 0: raise
+            time.sleep(min(delays[attempt], remaining))
+
+def _shared_read_once(path, limit):
+    if os.name != 'nt':
+        with Path(path).open('rb') as stream: return stream.read(limit + 1)
+    import msvcrt
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+        ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_void_p]
+    kernel.CreateFileW.restype = ctypes.c_void_p
+    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+    kernel.CloseHandle.restype = ctypes.c_int
+    handle = kernel.CreateFileW(str(path), 0x80000000, 7, None, 3, 0x80, None)
+    if handle == ctypes.c_void_p(-1).value: raise ctypes.WinError(ctypes.get_last_error())
+    try: descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY | os.O_BINARY)
+    except BaseException:
+        kernel.CloseHandle(handle)
+        raise
+    try: stream = os.fdopen(descriptor, 'rb')
+    except BaseException:
+        os.close(descriptor)
+        raise
+    with stream: return stream.read(limit + 1)
+
+def _shared_bytes(path, limit=LIMIT):
+    raw = _retry_windows_io(lambda: _shared_read_once(path, limit))
     if len(raw) > limit: raise ValueError('Decision metadata exceeds its finite limit')
-    return json.loads(raw)
+    return raw
+
+def read(path, limit=LIMIT): return json.loads(_shared_bytes(Path(path), limit))
 
 def pin(path, limit=LIMIT):
     path = Path(path).resolve(strict=True)
-    with path.open('rb') as stream: raw = stream.read(limit + 1)
-    if len(raw) > limit: raise ValueError('Only bounded decision metadata may be pinned')
+    raw = _shared_bytes(path, limit)
     return {'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
 
 def checked(reference, limit=LIMIT):
-    if pin(reference['path'], limit) != reference: raise ValueError('Exact decision metadata pin differs')
-    return read(reference['path'], limit)
+    path = Path(reference['path']).resolve(strict=True)
+    raw = _shared_bytes(path, limit)
+    if {'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()} != reference:
+        raise ValueError('Exact decision metadata pin differs')
+    return json.loads(raw)
 
 def atomic(path, value, *, new=False):
     path = Path(path)
@@ -46,8 +108,7 @@ def atomic(path, value, *, new=False):
     temp = path.with_name(path.name + '.' + uuid.uuid4().hex + '.pending')
     with temp.open('xb') as stream: stream.write(data)
     try:
-        if new: os.link(temp, path)
-        else: os.replace(temp, path)
+        _retry_windows_io(lambda: os.link(temp, path) if new else os.replace(temp, path))
     finally: temp.unlink(missing_ok=True)
 
 def process_identity(pid):
@@ -136,6 +197,7 @@ def _callback_identity(row, source):
                 or any(c not in '0123456789abcdef' for c in fingerprint)):
             raise ValueError('Actual callback source identity differs')
 
+@_budgeted
 def publish_callback_observation(row, publisher_started_pin, *, actual_observation,
                                  timeout_seconds=5, identity_reader=process_identity, recording=True):
     """Publish each real internal plan once, without replaying any business call."""
@@ -198,12 +260,13 @@ def enqueue_observation(source, started):
     finally: lock.unlink(missing_ok=True)
     return reference
 
+@_budgeted
 def wait_text_published(source, publisher_started_pin, *, timeout_seconds=5, identity_reader=process_identity, recording=True):
     """Call after the real before_submit source is written, before returning to SDK."""
     if not 0 < timeout_seconds <= 30: raise ValueError('Finite text ACK timeout required')
+    deadline = min(time.monotonic() + timeout_seconds, _IO_DEADLINE.get())
     started = validate_started(publisher_started_pin, identity_reader=identity_reader, recording=recording)
     reference = enqueue_observation(source, started); target = ack_path(started, reference)
-    deadline = time.monotonic() + timeout_seconds
     while time.monotonic() < deadline:
         if target.exists():
             ack = read(target)
@@ -211,6 +274,7 @@ def wait_text_published(source, publisher_started_pin, *, timeout_seconds=5, ide
                     or ack.get('source_observation') != reference or ack.get('publisher') != started['publisher']
                     or ack.get('publisher_started') != publisher_started_pin or ack.get('OBS_draw_ack') is not False
                     or ack.get('machine_id') != started['machine_id']): raise ValueError('Exact publisher text ACK differs')
+            if time.monotonic() >= deadline: break
             if identity_reader(started['publisher']['pid']) != started['publisher']: raise RuntimeError('Publisher exited before ACK consumption')
             return ack
         time.sleep(.02)
@@ -257,7 +321,7 @@ def read_text_binding(reference, *, game, identity_reader=process_identity):
             or binding.get('game') != started['game'] or binding.get('decision_text_file') != str(path)
             or binding.get('configuration') != started['configuration'] or binding.get('publisher_sources') != started['publisher_sources']
             or binding.get('binding_hidden_from_video') is not True): raise ValueError('Exact hidden text publisher binding differs')
-    with path.open('rb') as stream: raw = stream.read(LIMIT + 1)
+    raw = _shared_bytes(path)
     if len(raw) > LIMIT or not raw.decode('utf-8').startswith(TITLE + '\n'): raise ValueError('Bounded generic decision text is absent')
     return started
 
@@ -269,18 +333,8 @@ def publish_text(path, text):
     # OBS and bounded readers can briefly deny delete-sharing on Windows.
     # Keep the same bytes/temp/publication identity, and ACK only after the
     # actual atomic replacement succeeds within the five-second caller gate.
-    delays = (.02, .04, .08, .16, .32, .5, .5)
-    deadline = time.monotonic() + 2.0
     try:
-        for attempt in range(8):
-            try:
-                os.replace(temp, path)
-                break
-            except PermissionError as error:
-                remaining = deadline - time.monotonic()
-                if getattr(error, 'winerror', None) != 5 or attempt == 7 or remaining <= 0:
-                    raise
-                time.sleep(min(delays[attempt], remaining))
+        _retry_windows_io(lambda: os.replace(temp, path), seconds=2.0, only_win5=True)
     finally: temp.unlink(missing_ok=True)
     return hashlib.sha256(raw).hexdigest()
 
@@ -309,25 +363,26 @@ def run(config_path):
             if not config['qualification_only']:
                 identity = process_identity(config['game']['pid'])
                 if identity['creation_filetime'] != config['game']['creation_filetime']: raise RuntimeError('Exact Game generation changed')
-            pointer = state / 'CURRENT-INPUT.json'
-            if pointer.exists():
-                current = read(pointer); key = current['input']['sha256']
-                if key != signature:
-                    input_row = checked(current['input']); reference = input_row['source_observation']; target = ack_path(started, reference)
-                    if not target.exists():
-                        row = checked(reference); validate_observation(row, reference['path'], config)
-                        request = row.get('request') or {}
-                        sequence = request.get('sequence', request.get('parent_sequence'))
-                        key_order = (sequence, 0 if request.get('tool') == 'root_before_auto_turn_submit' else 1)
-                        if type(sequence) is not int or key_order < view.last_key:
-                            raise ValueError('Out-of-order decision would be ignored; do not acknowledge it as published')
-                        view.consume(row); digest = publish_text(text_path, view.render())
-                        atomic(target, {'schema': ACK_SCHEMA, 'status': 'TEXT_PUBLISHED', 'machine_id': config['machine_id'], 'at_utc': utc(),
-                          'publisher': actual, 'publisher_started': started_pin, 'source_observation': reference,
-                          'text_sha256': digest, 'decision_text_file': str(text_path), 'OBS_draw_ack': False,
-                          'publication_scope': 'bounded_actual_observation_only',
-                          'qualification_only': config['qualification_only'], 'business_submission_or_outcome_inferred': False}, new=True)
-                    signature = key
+            with _io_budget():
+                pointer = state / 'CURRENT-INPUT.json'
+                if pointer.exists():
+                    current = read(pointer); key = current['input']['sha256']
+                    if key != signature:
+                        input_row = checked(current['input']); reference = input_row['source_observation']; target = ack_path(started, reference)
+                        if not target.exists():
+                            row = checked(reference); validate_observation(row, reference['path'], config)
+                            request = row.get('request') or {}
+                            sequence = request.get('sequence', request.get('parent_sequence'))
+                            key_order = (sequence, 0 if request.get('tool') == 'root_before_auto_turn_submit' else 1)
+                            if type(sequence) is not int or key_order < view.last_key:
+                                raise ValueError('Out-of-order decision would be ignored; do not acknowledge it as published')
+                            view.consume(row); digest = publish_text(text_path, view.render())
+                            atomic(target, {'schema': ACK_SCHEMA, 'status': 'TEXT_PUBLISHED', 'machine_id': config['machine_id'], 'at_utc': utc(),
+                              'publisher': actual, 'publisher_started': started_pin, 'source_observation': reference,
+                              'text_sha256': digest, 'decision_text_file': str(text_path), 'OBS_draw_ack': False,
+                              'publication_scope': 'bounded_actual_observation_only',
+                              'qualification_only': config['qualification_only'], 'business_submission_or_outcome_inferred': False}, new=True)
+                        signature = key
             time.sleep(.02)
     except BaseException as error:
         first_error = {'type': type(error).__name__, 'message': str(error)}

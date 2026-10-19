@@ -1,0 +1,28 @@
+{
+  "schema": "xar.c6-qualified-runtime-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:20:55.621228+00:00",
+  "base_commit": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+  "qualified_fix_on_master": "86946eef76e25aa78df80c30a6426c433fd8faa6",
+  "runtime_source_commit": "13eb02ce80249921b1ac1313507793c382e08448",
+  "runtime_source_ref": "refs/heads/runtime/robert-v20261019-c6-warm-epoch",
+  "runtime_source_tree": "f6605ccffd378b341e043fdcc0a1fce9d95f0b2e",
+  "exact_changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "git_blob": "2909e1903c84938ffe7fc354dcb2408520c3e32d",
+      "bytes": 1612085,
+      "sha256": "f64d8c6478b37fe39a3baca6f7794b89a1e20072b443895b9e9e29de6158226f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_warm_publication_refresh_v1.py",
+      "git_blob": "41a60af6c2a5a61395ae3cfd8c7f4dd8c723be37",
+      "bytes": 4040,
+      "sha256": "31d0d331874e0d9fe1b626af3433392f6a5f30604aaa97551063a56bdd392294"
+    }
+  ],
+  "canonical_master_branch_unchanged": true,
+  "unqualified_GUI_and_M4_changes_included": false,
+  "Game_Native_and_SDK_calls": 0,
+  "live_adoption": "pending C6 source freeze/reference"
+}

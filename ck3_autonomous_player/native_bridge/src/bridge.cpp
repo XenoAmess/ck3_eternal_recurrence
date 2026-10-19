@@ -11746,6 +11746,10 @@ bool ExecuteWarCashCurrentResources12004(
       cash, xar::ck3_12004::ResolveCoreCharacter(
           owned.core, snapshot.played_character_id),
       snapshot.played_character_id, query.observation);
+  auto &loan = query.observation.holy_order_loan.emplace();
+  (void)xar::ck3_12004::religion::loan_war_cash::ReadHolyOrderLoanWarCashAttach12004(
+      xar::ck3_12004::religion::loan_war_cash::
+          BindHolyOrderLoanWarCashAttachImage12004(base, sha), *envelope, loan);
   query.completed = true;
   return xar::ck3_12002::FinishQueryMailbox(*envelope);
 }

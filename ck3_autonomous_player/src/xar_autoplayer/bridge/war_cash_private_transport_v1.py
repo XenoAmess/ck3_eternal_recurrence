@@ -14,6 +14,8 @@ from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 CURRENT_STEP = "query-war-cash-current-resources-v1"
+HOLY_ORDER_LOAN_KEY = "holy_order_loan_observation_v1"
+HOLY_ORDER_LOAN_SCHEMA = "xar.ck3.holy-order-loan-war-cash.v1"
 TERMINATION_PREFIX = "query-war-cash-termination-send-costs-v1-"
 OUTCOMES = ("enforce_demands", "surrender", "white_peace")
 MONTHLY_FLOW_SEMANTICS = {
@@ -96,6 +98,92 @@ def _resource_vector(value: object) -> bool:
             and all(type(raw) is int and -(1 << 63) <= raw < (1 << 63) for raw in value))
 
 
+def _unavailable_holy_order_loan(reason: str) -> dict[str, object]:
+    return {"schema": HOLY_ORDER_LOAN_SCHEMA, "status": "unavailable",
+        "read_only": True, "advertised": False, "formal_action_ready": False,
+        "source_frame": None, "decision_costs": None, "decision_observation": None,
+        "decision_costs_unavailable_reason": reason, "principal": None,
+        "principal_quote_raw": None, "principal_unavailable_reason": reason,
+        "borrow_eligible": None, "complete_loan_terms": False,
+        "existing_debt_principal_raw": None, "received_funds_verified": False,
+        "funding_credit_raw": 0, "submit_planned": False}
+
+
+def _normalize_holy_order_loan(value: object, current: Mapping[str, object],
+                              snapshot: Mapping[str, object]) -> dict[str, object]:
+    """Validate copied native inputs independently; never degrade valid cash."""
+    def integer(raw: object, minimum: int, maximum: int) -> bool:
+        return type(raw) is int and minimum <= raw <= maximum
+
+    if (require_exact_native_build(current.get("game_version"), current.get("executable_sha256")) != CK3_12004
+            or not isinstance(value, Mapping) or value.get("schema") != HOLY_ORDER_LOAN_SCHEMA
+            or value.get("read_only") is not True or value.get("advertised") is not False
+            or value.get("formal_action_ready") is not False
+            or value.get("complete_loan_terms") is not False
+            or value.get("existing_debt_principal_raw") is not None
+            or value.get("received_funds_verified") is not False
+            or type(value.get("funding_credit_raw")) is not int or value["funding_credit_raw"] != 0
+            or value.get("submit_planned") is not False):
+        return _unavailable_holy_order_loan("loan_scope_or_funding_assertion_unqualified")
+    f = value.get("source_frame")
+    readiness = current.get("readiness")
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or not isinstance(f, Mapping) or not isinstance(readiness, Mapping)
+            or readiness.get("same_frame_ready") is not True
+            or f.get("full_snapshot_owner_retained") is not True or f.get("same_frame_ready") is not True
+            or not integer(f.get("snapshot_revision"), 1, 2**64 - 1)
+            or f["snapshot_revision"] != current.get("snapshot_revision")
+            or not integer(f.get("played_character_id"), 1, 2**31 - 1)
+            or f["played_character_id"] != current.get("played_character_id")
+            or not integer(f.get("date_raw"), 0, 2**31 - 1) or f["date_raw"] != current.get("date_raw")
+            or not integer(f.get("local_player_id"), -(2**31), 2**31 - 1)
+            or not integer(f.get("ticket_sequence"), 1, 2**64 - 1)):
+        return _unavailable_holy_order_loan("loan_native_source_frame_unqualified")
+    stamp = f.get("execution_stamp")
+    unsigned = {"pump_epoch": (1, 2**64 - 1), "thread_id": (1, 2**32 - 1),
+        "rng_wrapper": (0, 2**64 - 1), "rng_state": (0, 2**64 - 1),
+        "rng_owner_thread_id": (0, 2**32 - 1), "tls_initialized_flag_address": (0, 2**64 - 1),
+        "tls_initialized": (0, 255), "tls_context": (0, 2**64 - 1),
+        "tls_main_thread_marker": (0, 255), "jomini_state": (0, 2**64 - 1), "game_state": (0, 2**64 - 1)}
+    if (not isinstance(stamp, Mapping) or stamp.get("paused") is not True
+            or not integer(stamp.get("date_raw"), 0, 2**31 - 1) or stamp["date_raw"] != f["date_raw"]
+            or any(not integer(stamp.get(key), *bounds) for key, bounds in unsigned.items())):
+        return _unavailable_holy_order_loan("loan_execution_stamp_unqualified")
+    result = _unavailable_holy_order_loan("not_sampled")
+    result["source_frame"] = deepcopy(f)
+    decisions = value.get("decision_costs")
+    cost_reason = value.get("decision_costs_unavailable_reason")
+    result["decision_costs_unavailable_reason"] = cost_reason if isinstance(cost_reason, str) and cost_reason else "decision_costs_unavailable"
+    if decisions is not None:
+        from ..holy_order_loan_decision_observation_v1 import project_holy_order_loan_decision_observation_v1
+        try:
+            projected = project_holy_order_loan_decision_observation_v1(decisions,
+                expected_played_character_id=f["played_character_id"], expected_date_raw=f["date_raw"],
+                expected_capture_epoch=stamp["pump_epoch"])
+            result["decision_costs"] = deepcopy(decisions)
+            result["decision_observation"] = projected
+            result["decision_costs_unavailable_reason"] = projected["unavailable_reason"]
+            result["borrow_eligible"] = projected["borrow_decision"]["native_gates_allow_decision"]
+        except (ValueError, TypeError, KeyError):
+            result["decision_costs_unavailable_reason"] = "loan_decision_child_malformed_or_mismatched"
+    principal = value.get("principal")
+    reason = principal.get("unavailable_reason") if isinstance(principal, Mapping) else None
+    result["principal_unavailable_reason"] = reason if isinstance(reason, str) and reason else "principal_unavailable"
+    if (isinstance(principal, Mapping) and principal.get("status") == "available"
+            and principal.get("value_key") == "holy_order_gold_value"
+            and type(principal.get("raw_scale")) is int and principal["raw_scale"] == 100000
+            and principal.get("owned_temporaries_released") is True
+            and principal.get("unavailable_reason") is None
+            and integer(principal.get("prospective_principal_raw"), -(2**63), 2**63 - 1)):
+        result["principal"] = deepcopy(principal)
+        result["principal_quote_raw"] = principal["prospective_principal_raw"]
+        result["principal_unavailable_reason"] = None
+    cost_ready = isinstance(result["decision_observation"], Mapping) and result["decision_observation"]["available"] is True
+    quote_ready = result["principal_quote_raw"] is not None
+    result["status"] = "available" if cost_ready and quote_ready else "partial" if cost_ready or quote_ready else "unavailable"
+    return result
+
+
 def normalize_war_cash_current_resources_v1(value: object, *, snapshot: Mapping[str, object]) -> dict[str, object]:
     current = _native_frame(value, snapshot, "xar.ck3.war-cash-current-resources.v1")
     if current.get("status") not in {"available", "partial", "unavailable"}:
@@ -131,7 +219,10 @@ def normalize_war_cash_current_resources_v1(value: object, *, snapshot: Mapping[
     if "current_raw_context_v1" in current:
         from .war_cash_current_raw_context_v1 import validate_current_raw_context_v1
         validate_current_raw_context_v1(current, snapshot=snapshot)
-    return deepcopy(current)
+    result = deepcopy(current)
+    if HOLY_ORDER_LOAN_KEY in current:
+        result[HOLY_ORDER_LOAN_KEY] = _normalize_holy_order_loan(current[HOLY_ORDER_LOAN_KEY], current, snapshot)
+    return result
 
 
 def normalize_war_cash_termination_send_costs_v1(

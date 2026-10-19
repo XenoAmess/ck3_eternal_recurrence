@@ -1,0 +1,32 @@
+{
+  "schema": "xar.c5-estate255-tools-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:14:30.193079+00:00",
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c5_estate255_predispatch_clear_v1.py",
+      "bytes": 6724,
+      "sha256": "f2f96175c74ba94408d823cf85878850472732be9208496ca7c132b2084d2a2f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c5_estate255_predispatch_v1.py",
+      "bytes": 15178,
+      "sha256": "d108d1d444f2a3aedb97f99e897e79cab7b2b84f62ea1c24fce62cbb9b2931a9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\c5-estate255-readonly-recovery-2026-10-19.md",
+      "bytes": 3157,
+      "sha256": "d26a10118dc49d20005fc8bd124357aa02cc08270dd4428e363b299c03b6f5bf"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c5-estate255-readonly-recovery01.json",
+      "bytes": 30211,
+      "sha256": "be71d2081848fc64db6e14ead00fdb5f2b66cdd4d3e044c731c44f5c054a5248"
+    }
+  ],
+  "frozen": true,
+  "runtime_candidate_bytes_changed_after_adoption": false,
+  "actual256_257_succeeded": true,
+  "original255_error_retained": true,
+  "ready_for_parent_commit": true
+}

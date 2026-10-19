@@ -1,0 +1,105 @@
+{
+  "schema": "xar.C6-MET286-actual-adoption-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:37:39.809804+00:00",
+  "sources": {
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C6-MET286-RESUME-ADMISSION.json",
+      "bytes": 4819,
+      "sha256": "6b46572b6001673e339ec6d5cc029ff3a62abfbcb0924c9fac407c2855a1a903"
+    },
+    "SEM287": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0287-1-result.json",
+      "bytes": 50836,
+      "sha256": "3e3c6fb28c743ddbd74323f59f42b6feccb897feb7174a5909d41ad6b2c7104d"
+    },
+    "CAP288": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0288-1-result.json",
+      "bytes": 57857,
+      "sha256": "65140b06abbb1f242e69d00c0889360405a91f733cf69c0913507c52e6e79abd"
+    },
+    "FULL289": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0289-1-result.json",
+      "bytes": 1194,
+      "sha256": "efd1abad199eb0b2e2b3c2f9ba8852a3122a707157bffc6b8b0799c88d8d07de"
+    },
+    "SAVE290": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0290-1-result.json",
+      "bytes": 9675,
+      "sha256": "4ec5f1faf5baa86b7259b8a10654b0fd9b28f0927c7a2f4e7659b9cd53850e61"
+    },
+    "original_MET286": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0286-1-result.json",
+      "bytes": 1474,
+      "sha256": "3ac0c68febd1b4ddb4f4de3541d1c970201e287f2b96a74fb566c6ab68a2ea07"
+    },
+    "original_settlement_event": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\CUMULATIVE-TURN-000112.json",
+      "bytes": 2039,
+      "sha256": "746fb568e9279ad56b66e7cbd2f607d5db3a74716763bc623e914752e0c51d6f"
+    },
+    "opening_rebind": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-MET286-SETTLED-AND-WARM-REBOUND.json",
+      "bytes": 1287,
+      "sha256": "d9cb79db035d390c1a80d9f529dd2e26b5e59a90b12a2c2acd495467706b86d3"
+    },
+    "consume_intent": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-COMPLETED-MET-286-CONSUME-INTENT.json",
+      "bytes": 396,
+      "sha256": "959889a38512da173242249cd113db32898f84e7c155ae79e005eff658b5af3e"
+    },
+    "owner_actual_summary": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C6-MET286-ACTUAL-SETTLED71.json",
+      "bytes": 1331,
+      "sha256": "f96aded4db88c871d2df3c265fc1aac74518e24c5a570e9e6f0f3c15aa4fc189"
+    },
+    "actual_warm_bound": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-COMPLETED-MET286-WARM-BOUND.json",
+      "bytes": 903,
+      "sha256": "7277f2b97d9961fe640ead60c79ac18f15db1c3323146cfce2e4eb1053d457db"
+    }
+  },
+  "actual_original_285_286_replay_calls": 0,
+  "actual_completed_cycles_after_FULL289": 112,
+  "date_raw": 53146968,
+  "actual_game_days": 110,
+  "original_MET_public_revision": 9,
+  "current_opening_public_revision": 2,
+  "original_settlement_event_preserved": true,
+  "same_Game_pid": 153556,
+  "Game_creation_filetime": 134368602545256920,
+  "actual_SAVE110": {
+    "status": "saved",
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 71985063,
+    "sha256": "1ff70d45f282f8a6d0cea762afc4602b5386a822caadc680401a2611e301da0c",
+    "date_raw": 53146968,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": null,
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+    },
+    "history_index": 182,
+    "episode_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441"
+  },
+  "actual_SAVE290_elapsed_seconds": 2.5216115000657737,
+  "loop_lastSaved_cache": "Direct SAVE is separate from cumulative cadence; prior61 cache may remain until ordinary cadence updates it. No cache update claimed.",
+  "consume_intent_identity_supplement": {
+    "original_machine_id_field": "absent; original retained unchanged",
+    "machine_id_source": "Exact C6 admission plus same source pin and actual FULL289/owner settlement receipt",
+    "UTC_scope": "This evidence observation time; does not invent an original intent timestamp"
+  },
+  "C6_constructor_first_rejection": "Owner argv referred to C5 recording job/first admission; strict C6 STARTED source guard refused before SEM287. Original failed owner preserved by sole runtime owner.",
+  "new_research_RPC_calls": 0,
+  "research_runtime_files_mutated": 0,
+  "long_term_seconds_per_game_day_target_achieved_claimed": false,
+  "warm_bound_scope": "Bootstrap marker before original MET consumption:111/pending112/credit0; later settlement is independently pinned.",
+  "final_observed_at_utc": "2026-10-19T06:38:08.464290+00:00"
+}

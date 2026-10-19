@@ -1,0 +1,1315 @@
+{
+  "schema": "xar.m4-holy-order-loan-war-cash-integration.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:16:59.207778+00:00",
+  "identity_source": "tools/ck3_live_run_id.py current_machine_id in COMPILE01",
+  "head_at_observation": "bb2944bafa900761a3488b949e9c693eb1261871",
+  "status": "SOURCE_INTEGRATED_SERIALIZER_OBJECT_AND_FOCUSED_PYTHON_ONLY",
+  "shared_source_changes": [
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_reader.hpp",
+        "bytes": 4570,
+        "sha256": "655a22a9c7707cb50634abf9a4bb4c9b9ddd17ba502918c81bfa3ef71e316a69"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_reader.hpp",
+        "bytes": 4780,
+        "sha256": "54046cc9c5e35509d7f12492955d75c999bc42ad5d6bd47339b61a3d82b14036"
+      },
+      "net_increase_bytes": 210
+    },
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp",
+        "bytes": 9999,
+        "sha256": "280a1bdf15b096a115f758d1f50b74b5dd46113fa972dbcc75aea99476c8b1d3"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp",
+        "bytes": 14781,
+        "sha256": "e30adc88f6fbfbac766967550e2a17be8c978c9ecb250a7e68c4114378e640ad"
+      },
+      "net_increase_bytes": 4782
+    },
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1602801,
+        "sha256": "68ad29060e19a17727ab7b961a4efbe7f21f5f036ac252a9e6cd40b98ac833b1"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1603076,
+        "sha256": "9aac734ffd7e97f1193aec2dbddf3a670a7894c0d9163db932566c49293bc572"
+      },
+      "net_increase_bytes": 275
+    },
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+        "bytes": 11901,
+        "sha256": "e33f43c54fe4fa0960383065931a1b2179b8b40b706393f628a94dbb6b6d4249"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+        "bytes": 18284,
+        "sha256": "6d6f4e9e1251305c5e9785f01831a735454301dcec1a1556a9a531b9193ced44"
+      },
+      "net_increase_bytes": 6383
+    },
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 21416,
+        "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 24986,
+        "sha256": "f930fecd6a5c76855236a69dd6ef825a583bd139e921825410cd99cb26c707dc"
+      },
+      "net_increase_bytes": 3570
+    },
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 453329,
+        "sha256": "efa4008fe05dc92fc0eb182531260b63061720cbfe6d23987f914e0e21a65604"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+        "bytes": 453329,
+        "sha256": "b2e0d46fd5554c6887f94c9a55b3cb6d35d3d58b7a7852a13f5c27e0ed428323"
+      },
+      "net_increase_bytes": 0
+    },
+    {
+      "before": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\cmake\\adopted_domains_12004.cmake",
+        "bytes": 15658,
+        "sha256": "8d65631e51ee6d320d639f15f77010447960b7234fa3824a13ff7256fb49c73c"
+      },
+      "after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\cmake\\adopted_domains_12004.cmake",
+        "bytes": 15810,
+        "sha256": "3f1f6d480bb75ebced83c76d7c4442f169d114cf22c6b6c26bbd6f6f5468ea7e"
+      },
+      "net_increase_bytes": 152
+    }
+  ],
+  "new_test": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py",
+    "bytes": 9192,
+    "sha256": "d174bd4c8c6d78d477e6e7dd4940bff0909a84062410d4a42986adec564ed63c"
+  },
+  "test_activities": [
+    {
+      "schema": "xar.m4-getter-shared-focused-test.v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "identity_source": "py -B tools/ck3_live_run_id.py machine",
+      "started_at_utc": "2026-10-19T06:12:00.797295+00:00",
+      "admission": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M4-GETTER-SHARED-INTEGRATION-CHILD01.json",
+        "bytes": 3585,
+        "sha256": "da22249ae8101a5f12dbae2ca0b1d87d91069d3b456241503ad77d02b9edf4de"
+      },
+      "runner": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\run_focused01.py",
+        "bytes": 2896,
+        "sha256": "ced70d7c4b5a21a489e4a7b911798c3e11f79dbd53a1d663e02f0af181f8bc9e"
+      },
+      "test_source": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py",
+        "bytes": 8772,
+        "sha256": "9009671c0d7829cdbd597d4560159203998bf4b6f4dfe1b3d6bea39a8ed2cd1d"
+      },
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\pytest-temp",
+        "--junitxml=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\TEST01.junit.xml"
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src;Z:\\ck3_mod_rewrite",
+        "TEMP": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\temp",
+        "TMP": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\temp"
+      },
+      "priority": "BELOW_NORMAL_PRIORITY_CLASS",
+      "native_compile_or_link": false,
+      "native_dll_or_exe_or_game_execution": false,
+      "live_rpc_driver_or_save": false,
+      "returncode": 0,
+      "test_source_after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py",
+        "bytes": 8772,
+        "sha256": "9009671c0d7829cdbd597d4560159203998bf4b6f4dfe1b3d6bea39a8ed2cd1d"
+      },
+      "finished_at_utc": "2026-10-19T06:12:02.688989+00:00",
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\TEST01.log",
+        "bytes": 231,
+        "sha256": "c2173ad9eff8895cc44546bb03a5f8e3530379a2fa81a7debbee1ac9cb3a9df8"
+      },
+      "producer_closed": true,
+      "future_write_reserved_bytes": 0,
+      "processes_left_running": 0,
+      "allocated_bytes": null,
+      "qualification": "focused synthetic Python DTO and pure consumer input only; no native ABI or funds qualification",
+      "junit": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\TEST01.junit.xml",
+        "bytes": 4668,
+        "sha256": "0cab02a09fc814e0431ff164c41675726df6b4f3f2c4ec83a97894ee9d5ef741"
+      }
+    },
+    {
+      "schema": "xar.m4-getter-shared-focused-test.v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "identity_source": "py -B tools/ck3_live_run_id.py machine",
+      "started_at_utc": "2026-10-19T06:15:49.839168+00:00",
+      "admission": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M4-GETTER-SHARED-INTEGRATION-CHILD01.json",
+        "bytes": 3585,
+        "sha256": "da22249ae8101a5f12dbae2ca0b1d87d91069d3b456241503ad77d02b9edf4de"
+      },
+      "runner": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\run_focused02.py",
+        "bytes": 3341,
+        "sha256": "c98e706fbfd02a05bd6e4660dd13200c0deec0353a54692907ba810b381af849"
+      },
+      "test_source": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py",
+        "bytes": 9192,
+        "sha256": "d174bd4c8c6d78d477e6e7dd4940bff0909a84062410d4a42986adec564ed63c"
+      },
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py::test_unpaused_or_unready_current_snapshot_keeps_cash_but_not_loan",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\pytest-temp02",
+        "--junitxml=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\TEST02.junit.xml"
+      ],
+      "correction_reason": "Explicitly reject loan-only quote admission when supplied current snapshot is unpaused or map not ready; retain cash DTO; original27 preserved",
+      "module_pins": [
+        {
+          "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+          "bytes": 18284,
+          "sha256": "6d6f4e9e1251305c5e9785f01831a735454301dcec1a1556a9a531b9193ced44"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+          "bytes": 24986,
+          "sha256": "f930fecd6a5c76855236a69dd6ef825a583bd139e921825410cd99cb26c707dc"
+        }
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src;Z:\\ck3_mod_rewrite",
+        "TEMP": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\temp02",
+        "TMP": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\temp02"
+      },
+      "priority": "BELOW_NORMAL_PRIORITY_CLASS",
+      "native_compile_or_link": false,
+      "native_dll_or_exe_or_game_execution": false,
+      "live_rpc_driver_or_save": false,
+      "returncode": 0,
+      "test_source_after": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_cash_holy_order_loan_attach_v1.py",
+        "bytes": 9192,
+        "sha256": "d174bd4c8c6d78d477e6e7dd4940bff0909a84062410d4a42986adec564ed63c"
+      },
+      "finished_at_utc": "2026-10-19T06:15:51.554710+00:00",
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\TEST02.log",
+        "bytes": 230,
+        "sha256": "6f1597225bab826e007a850a1c1def3c343a8490c25922a4c2bb916fdddbbb81"
+      },
+      "producer_closed": true,
+      "future_write_reserved_bytes": 0,
+      "processes_left_running": 0,
+      "allocated_bytes": null,
+      "qualification": "focused synthetic Python DTO and pure consumer input only; no native ABI or funds qualification",
+      "junit": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-getter-shared-integration01\\TEST02.junit.xml",
+        "bytes": 597,
+        "sha256": "cb8559e6e06946d6e6a7867ba13a689c5931ffed3601f2fd7314badb051bc957"
+      }
+    }
+  ],
+  "test_counts": [
+    27,
+    2
+  ],
+  "test_history_note": "TEST01 passed27 before minimal current snapshot paused/map_ready admission correction; TEST02 ran only2 new parameter cases against final modules; no full final29 rerun",
+  "failed_test_or_compile_attempts": 0,
+  "compile_external_record": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\COMPILE01.json",
+    "bytes": 139993,
+    "sha256": "cd38d9b98876eb02fa0dc6baf9b9bb0cd66a1d54fe51f5c68379700ab74d6977"
+  },
+  "compile_summary": {
+    "schema": "xar.g2-m4-loan-serializer-object-only.v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_at_utc": "2026-10-19T06:15:22.445616+00:00",
+    "identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+    "storage_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M4-LOAN-SERIALIZER-OBJECT-CHILD01.json",
+      "bytes": 2959,
+      "sha256": "92318c07c73005daaff8e3f6d4b3a595595f0fe5152a896ad97e56fd8f0a9790",
+      "mtime_ns": 1792390487379211100
+    },
+    "hard_total_child_bytes": 8388608,
+    "source_before": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp",
+        "bytes": 14781,
+        "sha256": "e30adc88f6fbfbac766967550e2a17be8c978c9ecb250a7e68c4114378e640ad",
+        "mtime_ns": 1792390213631889300
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_serializer.hpp",
+        "bytes": 779,
+        "sha256": "28a55d21c45b94f523c9b610c9eabe7538e5d9e4fed1fd8200a43ea077d4a0d3",
+        "mtime_ns": 1791614397455435900
+      }
+    ],
+    "frozen_source_contract": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_war_cash_attach_12004_source_contract.json",
+      "bytes": 12448,
+      "sha256": "0ac119597da4dda2e87d0770fb24831dfc3cc4ed2913fa2561fcf8d443ee960d",
+      "mtime_ns": 1792390178307523300
+    },
+    "status": "COMPILE_ONLY_PASS",
+    "compiler_invocations": 1,
+    "link_invocations": 0,
+    "executable_or_dll_execution": false,
+    "game_native_rpc_desktop_access": false,
+    "producer_wrapper": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\run_native_msvc.py",
+      "bytes": 13321,
+      "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e",
+      "mtime_ns": 1792251138506247200
+    },
+    "runner": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\compile_serializer01.py",
+      "bytes": 7493,
+      "sha256": "bc74737ea097d9d30f55b6a4709022f243d10d6e776a16e8bee737ba237e6f71",
+      "mtime_ns": 1792390522100313900
+    },
+    "tools": {
+      "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+      "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+      "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+      "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+    },
+    "vcvars64": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+      "bytes": 39,
+      "sha256": "6b516d8fcf543c14b2d861e1f45661e0029230fe0dc48e86ce78522801822209",
+      "mtime_ns": 1790015612231251300
+    },
+    "compiler_components": [
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+        "bytes": 893288,
+        "sha256": "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640",
+        "mtime_ns": 1790015611989600300
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\c1xx.dll",
+        "bytes": 13249848,
+        "sha256": "a7c72add21b5a00944858b35126b5ea606250ea71672cf6d4277ad0f043371b2",
+        "mtime_ns": 1790015611790682800
+      },
+      {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\c2.dll",
+        "bytes": 11492152,
+        "sha256": "8e282530349f5bf9eb3dd24212666f5664781ea3513f587c177e80932435c9a4",
+        "mtime_ns": 1790015611852710900
+      }
+    ],
+    "command_argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+      "/nologo",
+      "/Bv",
+      "/c",
+      "/std:c++20",
+      "/permissive-",
+      "/Zc:__cplusplus",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/utf-8",
+      "/DNOMINMAX",
+      "/MD",
+      "/O2",
+      "/IZ:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include",
+      "/IZ:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp",
+      "/FoD:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\serializer.obj",
+      "/sourceDependencies",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\COMPILE01.dependencies.json"
+    ],
+    "command_line_windows": "\"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe\" /nologo /Bv /c /std:c++20 /permissive- /Zc:__cplusplus /EHsc /W4 /WX /utf-8 /DNOMINMAX /MD /O2 /IZ:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include /IZ:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp /FoD:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\serializer.obj /sourceDependencies D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\COMPILE01.dependencies.json",
+    "command_cwd": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01",
+    "temporary_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\.msvc-temp",
+    "compiler_started_at_utc": "2026-10-19T06:15:24.335189+00:00",
+    "compiler_started_ns": 1792390524335216200,
+    "sampled_compile_logical_peak_bytes": 342866,
+    "sampled_peak_kind": "25ms logical lower bound, not exact transient or allocated peak",
+    "compiler_seconds": 4.071657299995422,
+    "compiler_returncode": 0,
+    "compiler_finished_at_utc": "2026-10-19T06:15:28.406880+00:00",
+    "compiler_log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\COMPILE01.log",
+      "bytes": 1118,
+      "sha256": "0ff7bc5358d0dda95a76a2b03449b5716850e5b310dea133d7e5cdc5dfeb5635",
+      "mtime_ns": 1792390524411661000
+    },
+    "source_after": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp",
+        "bytes": 14781,
+        "sha256": "e30adc88f6fbfbac766967550e2a17be8c978c9ecb250a7e68c4114378e640ad",
+        "mtime_ns": 1792390213631889300
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_serializer.hpp",
+        "bytes": 779,
+        "sha256": "28a55d21c45b94f523c9b610c9eabe7538e5d9e4fed1fd8200a43ea077d4a0d3",
+        "mtime_ns": 1791614397455435900
+      }
+    ],
+    "source_unchanged": true,
+    "dependency_file": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\COMPILE01.dependencies.json",
+      "bytes": 56153,
+      "sha256": "ea76ebccc73aa3383bf4e3546d87125da808bc93057fbe4bdd44ff6a0ca7b64f",
+      "mtime_ns": 1792390527585639900
+    },
+    "headers_with_mtime_after_compile_start": [],
+    "object": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-serializer-object01\\serializer.obj",
+      "bytes": 277949,
+      "sha256": "ea366df1d4696640d7472cfaae03482eac16dca7e925e1174a68a862f2e90e50",
+      "mtime_ns": 1792390528386439900
+    },
+    "closed_at_utc": "2026-10-19T06:15:28.500545+00:00",
+    "future_write_reserved_bytes": 0,
+    "allocated_bytes": null,
+    "abi_or_business_qualification": false,
+    "cpp_or_game_execution": false,
+    "logical_bytes_before_report": 342866,
+    "actual_project_header_pins": [
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_serializer.hpp",
+        "bytes": 779,
+        "sha256": "28a55d21c45b94f523c9b610c9eabe7538e5d9e4fed1fd8200a43ea077d4a0d3",
+        "mtime_ns": 1791614397455435900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_reader.hpp",
+        "bytes": 4780,
+        "sha256": "54046cc9c5e35509d7f12492955d75c999bc42ad5d6bd47339b61a3d82b14036",
+        "mtime_ns": 1792390213626454200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003.hpp",
+        "bytes": 1058,
+        "sha256": "ef7a8a1854e6c8c129fd66bf5397bdf453a1f0d46ff855b57ec3c5d70b1f1c6a",
+        "mtime_ns": 1791614397340582900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002.hpp",
+        "bytes": 3947,
+        "sha256": "68090ab62c92b65a8009dbd2e76327d95ccaa8be0fef360189714555d5ccc649",
+        "mtime_ns": 1790788679276573800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\war_payment_generic_context_12004.hpp",
+        "bytes": 3260,
+        "sha256": "4b3a62dc218ecbf320616effff212eab99f1369665d18ad26ce753389991317c",
+        "mtime_ns": 1792176501702187400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_war_cash_attach_12004.hpp",
+        "bytes": 2935,
+        "sha256": "60c612eda4e0e0942dbb715828510542ec584fcf275dad8d2b0b4de756cba431",
+        "mtime_ns": 1792390178307239700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_decision_costs_12004.hpp",
+        "bytes": 2091,
+        "sha256": "529539d86c67fa611a6ac26b268dfec45fe4602a12b2357c6e6f56eb53a23819",
+        "mtime_ns": 1792375243547089100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004.hpp",
+        "bytes": 2922,
+        "sha256": "03f3487d485c75996a9f1bd022f2454cae04ea1f2293aa6d62441ed294e203e6",
+        "mtime_ns": 1791614397456568100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_mystical_communion_decision_terms.hpp",
+        "bytes": 2672,
+        "sha256": "79d7bd46cdad3ead43b934a0a9c728cc1cfd8d3c248a9a913c6e9f16a6fe8a91",
+        "mtime_ns": 1791614397406421300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_principal_12004.hpp",
+        "bytes": 1661,
+        "sha256": "2388e5b7b1b2a62c453e5a0aac715e613d792051c14caa4a78ed05be24f78a3d",
+        "mtime_ns": 1792385081414427200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_prisoner_named.hpp",
+        "bytes": 3791,
+        "sha256": "a4a661e5d1d4e90047be3e37ff7ec0eec729a975f2a4c246d8f2d61082fca8d7",
+        "mtime_ns": 1791614397539839200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_query_mailbox.hpp",
+        "bytes": 1739,
+        "sha256": "ec9daa105d421b7b3720c84e56ff34746b8fb33a2a4adf1b1f9550b751ea4f55",
+        "mtime_ns": 1791614397304223800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\game_adapter.hpp",
+        "bytes": 21554,
+        "sha256": "52890bc550750eb5b21689e058f42db9b14c0fe57a0dde1662f2009a9fd24d55",
+        "mtime_ns": 1791614397633956200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\combat_v3.hpp",
+        "bytes": 8210,
+        "sha256": "70ab19d9e26832202fa2577684d42e001fb68e38d320449b860bc67c803e81d7",
+        "mtime_ns": 1791614397582261900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\combat_v3_test_only.hpp",
+        "bytes": 5028,
+        "sha256": "41382ec82a9d5b1e083a5fdb47b52da1f452c32e0861b6ff03a892ff61656450",
+        "mtime_ns": 1787694003519717600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\game_contract.hpp",
+        "bytes": 175382,
+        "sha256": "6c300e7626bdf47fcafdfa4f51fcb70b56adf7c689d597db016d057ace960c2b",
+        "mtime_ns": 1792184993937553500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_county_entry_preview_condition_v1.hpp",
+        "bytes": 1654,
+        "sha256": "d76f314bdfe85dfafc2c04715de2719982439ac2c7afb0fcb78137a3c1e31f17",
+        "mtime_ns": 1792293110278119800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_county_predicate_trace_v1.hpp",
+        "bytes": 1240,
+        "sha256": "6fbdc1dcee79d1d3a63677fc2defbccfa182b461dd4db056a2e03d73299062ed",
+        "mtime_ns": 1792206843017560600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_county_relation_inputs_v1.hpp",
+        "bytes": 1426,
+        "sha256": "45a4c6c20cb3a1511b2b7a6467957ae610605666b409ccceff79f3c5be6e40b1",
+        "mtime_ns": 1792206843018563700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_origin_adjacency_v1.hpp",
+        "bytes": 1095,
+        "sha256": "8b169378712146bcfe5efde30ed866eec16a44015babdf1e108c6468bbbfb590",
+        "mtime_ns": 1792293110280254600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_reinforcement_arrival_admission_12003.hpp",
+        "bytes": 3380,
+        "sha256": "aa2a04102456e30f6e06ba66ecf2b27550ec721cecd07a076da51e2915f79ebe",
+        "mtime_ns": 1791614397229572500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_context_source_inputs_v1.hpp",
+        "bytes": 18323,
+        "sha256": "b8f629bc4bc4dc7c9b8ba40ae2acee87762fe9a534f5f3032cd0d01c1bbd5c58",
+        "mtime_ns": 1791614397184794700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_context_locale_inputs_v1.hpp",
+        "bytes": 1093,
+        "sha256": "c7149e495e8142e2882b4b69d1d71b1b8a6acc4bab002561b3cba24735011d55",
+        "mtime_ns": 1791614397183680400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_rule43_diac_v1.hpp",
+        "bytes": 2740,
+        "sha256": "59b9c544db71436456b219ae94ca30e49071a4b0cc4205c1838bc29768402347",
+        "mtime_ns": 1791614397222649800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\diac_literal_numeric_inputs_12003.hpp",
+        "bytes": 3167,
+        "sha256": "0e7154324f1aeeefc49b551ecc38eb7b4882ed51951940764bfa4c1e659c51ba",
+        "mtime_ns": 1791614397612485700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_remaining_helpers_v1.inc.hpp",
+        "bytes": 4645,
+        "sha256": "052f2f72c8a90d3a9116860c4927122f5e4859800503babf55c7f924a65a8cb2",
+        "mtime_ns": 1791614397220790200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_tail_direct_v1.inc.hpp",
+        "bytes": 2311,
+        "sha256": "e3fb872b0072c9bcab1355aef42267e63d8ff57ede5e7daf334b4b2338a8469f",
+        "mtime_ns": 1791614397223913300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_middle_helpers_v1.inc.hpp",
+        "bytes": 4874,
+        "sha256": "1d4b668728e184d058986c9c25e4ed7cf77300b5e0c50ab524a9ad938f3d69dc",
+        "mtime_ns": 1791614397214478400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_tail_prefix_v1.inc.hpp",
+        "bytes": 4156,
+        "sha256": "10f576a56b6033082f14cc07d91e890cf66585957c3c1e5a88a5d100e556a964",
+        "mtime_ns": 1791614397224916900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_trait_stage_291d460_v1.inc.hpp",
+        "bytes": 5055,
+        "sha256": "a61b142e033aa815c99bb8fef470b153f6a648e7a42977a3d4c5c1c6aae4facc",
+        "mtime_ns": 1791614397227971600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_absent_recipient_v1.inc.hpp",
+        "bytes": 3401,
+        "sha256": "cc63d350bbec6d5da151584812b2235683be3ab19585ac3a045d1780bb831495",
+        "mtime_ns": 1791614397198005000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_uncached_recipient_v1.inc.hpp",
+        "bytes": 3674,
+        "sha256": "4524420cfc5815b5270f5ac12e7b2dee72283127ca707af5a36ae4c8fcc743ca",
+        "mtime_ns": 1791614397229572500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_helper_2922070_v1.inc.hpp",
+        "bytes": 5291,
+        "sha256": "2603ee4f387a904de48f49611f41d91e715d26e89d5f98833853dfe9acc8e193",
+        "mtime_ns": 1791614397210162800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_conference_24b1d00_v1.inc.hpp",
+        "bytes": 2896,
+        "sha256": "8dc2940d55a8b68d2a8b0e77052689ac6e3a18e9cf132718fc1d69a9876dcc53",
+        "mtime_ns": 1791614397200191100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_provider_bucket_v1.inc.hpp",
+        "bytes": 1139,
+        "sha256": "e151b9464ff724dfc54828c4a77173e5351049261159c5d61a1ce2211161bcb3",
+        "mtime_ns": 1791614397217718600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_qualifier_28bc0d0_v1.inc.hpp",
+        "bytes": 2494,
+        "sha256": "afb697be24495844f78fcba7178fdf676803b0174347b042f4c1e4a840973f7b",
+        "mtime_ns": 1791614397219754600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_list_predicate_2530dd0_v1.inc.hpp",
+        "bytes": 1998,
+        "sha256": "69084a3cd99b4412d16b8f8883d5d1084c5f56e2cc675af150c49ddb51834c61",
+        "mtime_ns": 1791614397212408300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_gated_temporary_tail_v1.inc.hpp",
+        "bytes": 6006,
+        "sha256": "360dc54c034f4f23f06706902cc4bb9dbbaf19e7eb190e59df62e77d7d085b45",
+        "mtime_ns": 1791614397208743900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_after_gated_tail_v1.inc.hpp",
+        "bytes": 7553,
+        "sha256": "c017315c1ebb15fbde04e11d45b837571d9f4cc2d1120b8e9d25faba4951d6ae",
+        "mtime_ns": 1791614397199064500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_provider192_and2920850_v1.inc.hpp",
+        "bytes": 3193,
+        "sha256": "f9c421b35aed173b507509c64d39219e129053e73a5af06c4e5955b81bc73f8e",
+        "mtime_ns": 1791614397216064000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_following_2920b50_v1.inc.hpp",
+        "bytes": 3176,
+        "sha256": "1708211671837a12875d0b72d670656fade54e9aa5da5b5140482867092b2286",
+        "mtime_ns": 1791614397202352100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_following_2bca620_v1.inc.hpp",
+        "bytes": 1808,
+        "sha256": "5e73f1c39323966a303372a10f71f929bc5d7ac4b2ef149c4eb11aa924f66e42",
+        "mtime_ns": 1791614397205587800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_following_312a950_v1.inc.hpp",
+        "bytes": 3386,
+        "sha256": "ef74142ac5b1d84064021a0ecf23aa17dc1441b6644ac403571462e82c4e0113",
+        "mtime_ns": 1791614397206620800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_following_2921350_v1.inc.hpp",
+        "bytes": 5630,
+        "sha256": "ac0c44fd2b8708fb81c3601ce4044cbbc602424e2023293982dfb97f5b6c93c3",
+        "mtime_ns": 1791614397204487500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_person_following_2921020_v1.inc.hpp",
+        "bytes": 1407,
+        "sha256": "365e75699ba1362bb366d8324e4f8ed7b422fd6407525a42f54085a298b0831f",
+        "mtime_ns": 1791614397203394500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_current_finalizer_manager_inputs_v1.hpp",
+        "bytes": 630,
+        "sha256": "ef0ff19f1f0a6c53a318e5b5fcb5034b84aad1dccddad5928cc729e57804479c",
+        "mtime_ns": 1791614397190445100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_current_warscore_caps_v1.hpp",
+        "bytes": 1666,
+        "sha256": "f64670d2e0acb24a6b15d022d2923d3b7951a962726e8f0b227a1d4d35458b48",
+        "mtime_ns": 1791614397194837300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_current_own_nested_modifier_dto.hpp",
+        "bytes": 1177,
+        "sha256": "3105056aee4536f1113bd5782128291a7538b346ce1f9b6bc8d681ec2fa7391d",
+        "mtime_ns": 1791614397191527000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\knight_current_model_association_v1.hpp",
+        "bytes": 9834,
+        "sha256": "6b585ea6b847b0167ac3466bb2ddf07e89f9dabde6262650d216425ab43d9cf5",
+        "mtime_ns": 1791614397647555600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\knight_stat_consumption_12004.hpp",
+        "bytes": 6463,
+        "sha256": "b2e5eb80a6d6621ab594c12ed1522a61a522ce5764e8c3460014814679ee9288",
+        "mtime_ns": 1791698918382985400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_following_2922680.hpp",
+        "bytes": 8786,
+        "sha256": "61f393ca79042c6e0d5827286c8a13ff0e9d1ea8eee6a84aacec8acaa5282e27",
+        "mtime_ns": 1791614397526176200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_carrier_direct.hpp",
+        "bytes": 4264,
+        "sha256": "dda067131c616b984879cdc543b6f49a149d221a088df0c59460dda3060d2883",
+        "mtime_ns": 1791614397521306500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_six_stage_capture.hpp",
+        "bytes": 11292,
+        "sha256": "d288d1a1c4b796f972f31e7f1bff8ad86bcf90d784054291b757fedc7b96a611",
+        "mtime_ns": 1792375243545399100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_actual_loss_writer_journal.hpp",
+        "bytes": 6226,
+        "sha256": "523dd15609b1e544c3cfbd8f7d7992fd84e0deaede5725a07319ed0485c3b04d",
+        "mtime_ns": 1792378704438237500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_actual_loss_writer_observations_v1.hpp",
+        "bytes": 12057,
+        "sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9",
+        "mtime_ns": 1792378704436145100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_actual_siege_budget_at_writer_v1.hpp",
+        "bytes": 4248,
+        "sha256": "02439df2f725109f4ade1630dda2bdd764ac85dfe2713bed3b27a0af7ffca2fe",
+        "mtime_ns": 1792176501653025000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_county_primary_owner_at_writer_v1.hpp",
+        "bytes": 2980,
+        "sha256": "cb0a585150d26e0ca2c6ed7e0cf996557563f3285f2dc34afaa8fa1196557e2e",
+        "mtime_ns": 1792362047871086300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\county_primary_direct_owner_at_writer_v2.hpp",
+        "bytes": 4231,
+        "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb",
+        "mtime_ns": 1792378704438237500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\county_primary_owner_at_writer_12004.hpp",
+        "bytes": 1140,
+        "sha256": "cc03587631765964221bbfe8d1ed640035e15dd0add180cfa0ef68de8e59dc20",
+        "mtime_ns": 1792378704439667800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_natural_phase_scope_12004.hpp",
+        "bytes": 7509,
+        "sha256": "6f68438d7424db19218737db1a24a1ba3d771de726dc03c1634d5c8579f60cce",
+        "mtime_ns": 1791839710837014200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_observer_research_sampling_12004.hpp",
+        "bytes": 2880,
+        "sha256": "79b03692cc9d87f6f9c4cdcd74f0445db31929d0daed020d24f70f482909cf53",
+        "mtime_ns": 1791839710837993700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\person_natural_lineage_clock_12004.hpp",
+        "bytes": 451,
+        "sha256": "4848f3ddb0c2342f0eb905137aef6680faec4c42a60be1f6addcde2033c73e77",
+        "mtime_ns": 1791630431545737500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\person_installed_transfer_stage_12004.hpp",
+        "bytes": 5260,
+        "sha256": "5f36df858b619fff32bfb4376f6ea6b78a5c1d565228310c48727090b42c4dfb",
+        "mtime_ns": 1791635163597464200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_actual_residual_parent_v1.hpp",
+        "bytes": 3054,
+        "sha256": "4b9138b8e483c0f4e9f3ef8874f8c514c69586fd4649c22f8c6db9a19ecc35b6",
+        "mtime_ns": 1792176501653025000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_actual_residual_siege_budget_v1.hpp",
+        "bytes": 1170,
+        "sha256": "28e8cc8ff7736b3ed3437cd4cc1e3363128595fd1d0154a814ea347cce3b80a8",
+        "mtime_ns": 1792176501653025000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_actual_supply_parent_join_v1.hpp",
+        "bytes": 3014,
+        "sha256": "ff5ab39d80f79852298de1fafb290209b71d9a2b03b781a5791a6bf99d3b3af9",
+        "mtime_ns": 1792176501654101600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\entry_selected_receiver_stage_12004.hpp",
+        "bytes": 3384,
+        "sha256": "b41b6cabe080ac10f72ce383da44100006c2368ac030faf3ee194de0af497c4d",
+        "mtime_ns": 1791626178689528200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\person_callback_entry_inputs_12004.hpp",
+        "bytes": 4413,
+        "sha256": "65d753f165de30e5128936ae37186b0a061d631e14d2f1a864ae64ec40fbe373",
+        "mtime_ns": 1792375243545961700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\person_current_input_outcome_binding_12004.hpp",
+        "bytes": 1979,
+        "sha256": "668122375edffbd2374c63fa3064e688a5493f4011824ab2cbc9f0e538816df7",
+        "mtime_ns": 1791698918383981000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_following_2921a90.hpp",
+        "bytes": 3028,
+        "sha256": "99cb7508a5597f0ef48e989789cf585c15a8e86bdc2e4494d338a7f034cc2459",
+        "mtime_ns": 1791614397525670800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_conditional_2921a90.hpp",
+        "bytes": 4775,
+        "sha256": "a5b1f976b75ec8a5df76b9bc66c8d95af89c84890602a5ed5120364cd9111b81",
+        "mtime_ns": 1791614397522448400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_conditional_opinion.hpp",
+        "bytes": 3271,
+        "sha256": "4f67d999340a1ce9bed9b3fa01041e1d194d322ed2ba51d751e3dc71a0fc1c93",
+        "mtime_ns": 1791614397523496700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_gift_opinion.hpp",
+        "bytes": 8251,
+        "sha256": "e5c9deacf5f7d470f7dd84a783747ffa5122d1624131a66a528bd3abf5b34e50",
+        "mtime_ns": 1791614397506474300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_gift_opinion.hpp",
+        "bytes": 6929,
+        "sha256": "3f04f349fe554eea98f3a829e97de08aebbeb8120fc984cddf73a01989fcc567",
+        "mtime_ns": 1791614397288927400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_conditional_scope_weights.hpp",
+        "bytes": 3239,
+        "sha256": "2804f6490008bb91a1f070612b13ffdd189bd444c42ae6740cec3a0be7395654",
+        "mtime_ns": 1791614397523496700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_government_gate.hpp",
+        "bytes": 2492,
+        "sha256": "a1e25cefb9a6fa5da1507799a716a3c0257970c61154735668672b412b4dd4f2",
+        "mtime_ns": 1791614397527357700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_local_titles.hpp",
+        "bytes": 6272,
+        "sha256": "044e6ab8e15925a4171c69a7861a679b0d387e166a081703b59a6434addcd08d",
+        "mtime_ns": 1791614397527865200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_first_title_vector.hpp",
+        "bytes": 5634,
+        "sha256": "4b38236c714111ae978ba11706e1eb7eb2207e0e7095d8c3245ff4af19c652ec",
+        "mtime_ns": 1791642049192694800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_person_title_tail_capture.hpp",
+        "bytes": 4039,
+        "sha256": "d8eb33ef921d75f550720f952cd23ff7b1d4983b47e99fe714b94573004fe08f",
+        "mtime_ns": 1791614397528904800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_maa_recruitment.hpp",
+        "bytes": 3175,
+        "sha256": "a10d411c7dd895b02f72da34071e213f380ebe36f3e79f255cc974ba99c3b5c9",
+        "mtime_ns": 1791614397402288600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\owned_regiments.hpp",
+        "bytes": 2995,
+        "sha256": "265faaa76aa6031b44a72432381f94ae1ed2a5c3de3cf2532fadb90502d9446b",
+        "mtime_ns": 1791614397681232900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\war_occupation_targets_v1.hpp",
+        "bytes": 4885,
+        "sha256": "19307b209cb215403c601f6a6c658e66523442ffa591b50477ce71fcc23314cb",
+        "mtime_ns": 1791614397810053500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\siege_membership_v1.hpp",
+        "bytes": 1996,
+        "sha256": "d2057d2c205500096565f1c6bc904af2c75549b99080034c81ea4ba9112db5a6",
+        "mtime_ns": 1791614397790671000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\province_besieging_army_selection_v1.hpp",
+        "bytes": 1205,
+        "sha256": "b77408358245e22421cd80d1930f9f350ba8cf3b371cd5522786664f99b5ad39",
+        "mtime_ns": 1791614397726523600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_native_owner_recall_inputs_12003.hpp",
+        "bytes": 4046,
+        "sha256": "e58fb7895e442f769efedf8721f4281c5d20c85ef2f5ade24909aa7af9ca7edc",
+        "mtime_ns": 1791614397195913900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\battle_native_activity_context_12003.hpp",
+        "bytes": 2955,
+        "sha256": "8bd81a1e442a95f0449a98eada6ea21beae8b302cd279cc29c05eb5b1e04cccc",
+        "mtime_ns": 1791614397195913900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_army_supply_timing.hpp",
+        "bytes": 2407,
+        "sha256": "617144e2f89053e30719d70333ea09b47a0f7f9337f7a00a890314004d5a300b",
+        "mtime_ns": 1791614397348629500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_army_replenishment_records.hpp",
+        "bytes": 3439,
+        "sha256": "ffb1f12a3df1e2ce5a9ed941d1bca15d0782503aa22e4d261d3cb22f3db72d33",
+        "mtime_ns": 1792176501676067300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_regiment_character_role_v1.hpp",
+        "bytes": 936,
+        "sha256": "854242d85a940ac3c9f3e81d8e43756f042901380180e6ae45cf4310b23dfa3b",
+        "mtime_ns": 1792176501666495900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_scoped_ordered_refill_inputs_v1.hpp",
+        "bytes": 2854,
+        "sha256": "098398d4d678acf45c2c552952c74d38fa258826cb86c58e3d7d68c5a05e2cf8",
+        "mtime_ns": 1792176501668620900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_refill_permission_switch_v1.hpp",
+        "bytes": 1059,
+        "sha256": "891cf3c352bc9f67532c026e32570e84b78614cbfafa0416b2d1052c680131ac",
+        "mtime_ns": 1792176501661949800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_next_route_replenishment_position_inputs_v1.hpp",
+        "bytes": 1188,
+        "sha256": "91e8401592ca07683d59e683e6c0675c717b39a3d6be79771daceb79f606dd34",
+        "mtime_ns": 1791614397167479300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_first_route_target_supply_contributors_v1.hpp",
+        "bytes": 1067,
+        "sha256": "649798b48c7d0b644f31369e0a5385318c1abee9c279064aeefb4cd7f0c353d5",
+        "mtime_ns": 1791614397146904800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_fleet_supply_tick_inputs_v1.hpp",
+        "bytes": 1952,
+        "sha256": "a9949fa894fabe4bcf37f14f9450239589a4d2064d20979fa1a791ecab684bf1",
+        "mtime_ns": 1791614397152338600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_captured_target_land_supply_inputs_v1.hpp",
+        "bytes": 2216,
+        "sha256": "4c5304b675e397aa52289fdb070d942742d99ac2b1c0fa47d93159df26e0ffe7",
+        "mtime_ns": 1792176501655172100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_daily_supply_dispatch_inputs_v1.hpp",
+        "bytes": 1287,
+        "sha256": "317ba8ec25dd8d110903d45621536615cd5a4491de6462db9ae3396c59d7d6e6",
+        "mtime_ns": 1791614397142605000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_future_daily_supply_schedule_v1.hpp",
+        "bytes": 1738,
+        "sha256": "85ecd897ee34a5ea1b0532251ad1331e3aa57fb2e56340d51e9eafaaad4978c5",
+        "mtime_ns": 1791614397167479300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_source_derived_next_daily_supply_frame_v1.hpp",
+        "bytes": 1526,
+        "sha256": "10e20dea5c1677ced0c704a155d23835f20fdd78fcb572d702e9fa043012dbd8",
+        "mtime_ns": 1791614397176948100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_unit_new_date_schedule_inputs_v1.hpp",
+        "bytes": 2040,
+        "sha256": "6d0293675224365c34525adb144d5f87818dfe64247db7d2c6effdccc09b8b5e",
+        "mtime_ns": 1791614397161052100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_unit_new_date_callback_entry_inputs_v1.hpp",
+        "bytes": 1163,
+        "sha256": "d2ad05ba32244b91c93594e4849d427440d2d7b41ac34c54f4baa0f4589c3fe6",
+        "mtime_ns": 1791614397160028900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_detachment_callback_inputs_v1.hpp",
+        "bytes": 2679,
+        "sha256": "873a0d20d28071d72722e379ea800b8d214b6444980fba9ba2fed9aeef5d230a",
+        "mtime_ns": 1791614397143690400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_detachment_store_inputs_v1.hpp",
+        "bytes": 2517,
+        "sha256": "445c2348003c14430b48cd242c68443a628c0dd5f85d37f00db7a886934a94a8",
+        "mtime_ns": 1791614397146308400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_character_detachment_inputs_v1.hpp",
+        "bytes": 2928,
+        "sha256": "287590c0ea6db78fee545f45d8258807aec872f5e562c169d46320c9a417b7d1",
+        "mtime_ns": 1791614397139917400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_month_first_refill_call_inputs_v1.hpp",
+        "bytes": 842,
+        "sha256": "ed5a5dbd6cbfe0b30261f0a48f71efb39b831b062dd417986050b3b1d4636d2c",
+        "mtime_ns": 1791614397155446600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_fixed_chunk0_preparation.hpp",
+        "bytes": 2433,
+        "sha256": "207d0cd53067aa91eecd09553fad9828943fed3b52535083865a41ce9e204acb",
+        "mtime_ns": 1791614397386178900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_ordered_besieging_refill_inputs_v1.hpp",
+        "bytes": 1625,
+        "sha256": "1e1c5d5bd03551bb49f261ba6be7768cc4eea81ff1bc2d63cf2b9c8d095854d0",
+        "mtime_ns": 1791614397169537600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_ordered_besieging_fixed_chunk0_preparation_v1.hpp",
+        "bytes": 816,
+        "sha256": "3c9d132ae668a782755282020030bec2417f646e7a1f1a12346b58a6d673a27b",
+        "mtime_ns": 1791614397168535000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_rite_parameters_v1.hpp",
+        "bytes": 903,
+        "sha256": "1e07f20d261e79c8d569ba4e812b55a788a2abe9e683987f02dd7603fcb7523b",
+        "mtime_ns": 1791614397699955800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_warmonger_core_v1.hpp",
+        "bytes": 607,
+        "sha256": "1d4cc5d9e65e84b3fd534e3b5e9785644bbca76ca73783768300d73d30e87525",
+        "mtime_ns": 1791614397702067000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_berserker_validity_inputs_v1.hpp",
+        "bytes": 1821,
+        "sha256": "400d0d8010173d993364f5ea45471ec671fb43c9f8113070a770676b42dc4d45",
+        "mtime_ns": 1791614397691018400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_berserker_chance_inputs_v1.hpp",
+        "bytes": 2152,
+        "sha256": "9457a8c48b3f9244212ee7eab655b790c66d330eb31f4733aff0e3a2422c2228",
+        "mtime_ns": 1791614397689978600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\player_event_trait_membership_12004.hpp",
+        "bytes": 1915,
+        "sha256": "b9d9ac2f35a2cd6730069beb8f2dabbdf1b1ef973888cd366132c27aaf62eaa0",
+        "mtime_ns": 1791614397709502600
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_phase_character.hpp",
+        "bytes": 1101,
+        "sha256": "19b03277dff1c0a4badb45361e5a4ca2bf1bbba9a937ddc8a5fd360a4a6fc8bd",
+        "mtime_ns": 1791614397530708300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_phase_character.hpp",
+        "bytes": 3911,
+        "sha256": "84c164293ffe0a4aeb0ecc88c481a35914e81ced7bd69b24b47aecc55752ed12",
+        "mtime_ns": 1790790459241698900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_event_calendar_observation_v1.hpp",
+        "bytes": 1748,
+        "sha256": "56d2aa9f5624503251dba7679a14645a7d9aacf6e35d4cb8882b7811671cfd5a",
+        "mtime_ns": 1791614397693158100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_event_role_compatibility_v1.hpp",
+        "bytes": 2511,
+        "sha256": "85d0fa434ba090d5bd83da6f7f3a3cd85ac9922c8bcbe5f820391bae90e87676",
+        "mtime_ns": 1791614397698647800
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_event_commander_side_identity_v1.hpp",
+        "bytes": 1711,
+        "sha256": "6933438c8262a72fa1c32ef74e2ca288c39d68f27be89017d62a8a92c106c7c5",
+        "mtime_ns": 1791614397696482900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_event_commander_trigger_conditions_v1.hpp",
+        "bytes": 1925,
+        "sha256": "5b9a3fac5628cda5ea50b13b5b9bcc3d3e97ad61bafa0ce520de98251e345f7b",
+        "mtime_ns": 1791614397697644900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\phase_event_commander_chance_weights_v1.hpp",
+        "bytes": 2252,
+        "sha256": "d55a2bdd047defc0940f9436738f0269fe12123fc12d0c7f34d923675e1d4321",
+        "mtime_ns": 1791614397694693000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_daily_assault_active_table_v1.inc.hpp",
+        "bytes": 5728,
+        "sha256": "6bc88af8e9a203ff96c446175caa63012b60efda2bbbd8b6b3be93559b39aa7b",
+        "mtime_ns": 1791614397163256300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_assault_removal_reference_v1.inc.hpp",
+        "bytes": 2660,
+        "sha256": "e521c380cde50253a950d9a97e534919964be7ee1c52377f94960234f6a7203d",
+        "mtime_ns": 1791614397137233700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_daily_assault_loss_inputs_v1.inc.hpp",
+        "bytes": 2731,
+        "sha256": "c31b865832cca3ea15d7b985bf9387fb88185e1e2c720b53b6b94484d98b785a",
+        "mtime_ns": 1791630430843906100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_daily_assault_roster_admission_v1.inc.hpp",
+        "bytes": 9653,
+        "sha256": "9390fbf61b272dd93d37ae1613eeedd88c04224c9d73c7ebb8e43b4979efb6ca",
+        "mtime_ns": 1791614397165299200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_pre_date_dated_append_v1.inc.hpp",
+        "bytes": 2420,
+        "sha256": "7009a1a52f8b585d922678e3d016bbee1ff42f4c9015cf6bdcc516e060a0c648",
+        "mtime_ns": 1791614397172764900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_post_admission_refresh_v1.inc.hpp",
+        "bytes": 2917,
+        "sha256": "0943aa241294d327097abdaf203b63946dd57cc4db79fa3b69643e184ef9d82b",
+        "mtime_ns": 1791614397156569000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_condition30_inputs_v1.inc.hpp",
+        "bytes": 2634,
+        "sha256": "af997d67d83423a1c3819fdb7a6db217d97ba4ef4fd85e9a4075c0aa7a31d17e",
+        "mtime_ns": 1791614397141601000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_flag20_inputs_v1.inc.hpp",
+        "bytes": 1650,
+        "sha256": "5d2ff782127c1ed81064e29829136e2732f3a2f1251daec28a79275cd75d6d9c",
+        "mtime_ns": 1791614397148967700
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_flag21_inputs_v1.inc.hpp",
+        "bytes": 2587,
+        "sha256": "01af32d6657a4109a90c966c01c1d93df0359eb8617da80b73fc44076f7499c8",
+        "mtime_ns": 1791614397150192100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_flag31_inputs_v1.inc.hpp",
+        "bytes": 3141,
+        "sha256": "d036291acf82d2c26f8ee20a211112871f8b78a940eaeb40d5c099eaf001999f",
+        "mtime_ns": 1791614397151271500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_rule24_source_pins_v1.inc.hpp",
+        "bytes": 1333,
+        "sha256": "7d86d3713b7d044a715125d3c63ea970ed3f3e21497a70de5ebd75e1a663f379",
+        "mtime_ns": 1791614397157641400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_combat_roles_phase_inputs_v1.inc.hpp",
+        "bytes": 4499,
+        "sha256": "b3f267be709c101715c196277937f4745287ce3b87fd4f2bc207214d0acf0fd6",
+        "mtime_ns": 1791614397140443900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_candidate_detachment_mapper_v1.inc.hpp",
+        "bytes": 3528,
+        "sha256": "aae43d2156a8de0f834d5a1aaa624a48a6e2ded6378394426569d29a0a340245",
+        "mtime_ns": 1791614397138289500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_detachment_data_v1.inc.hpp",
+        "bytes": 6385,
+        "sha256": "6fcba290dfa539958faa33af0b1c2ccfa6e84e781a73317b79fc7d635a802cbd",
+        "mtime_ns": 1791614397144729200
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_pre_date_pending_update_v1.inc.hpp",
+        "bytes": 5464,
+        "sha256": "6ce2c7da2936f80aa3857ad46b260de468aa6adbf5788eb1f802b46af25d1c10",
+        "mtime_ns": 1791614397173822900
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_pre_date_character_prefix_v1.inc.hpp",
+        "bytes": 2335,
+        "sha256": "55f6324ee62fe4dd0cd9d5b01e574f5503a0c0d5054762d19b52f63096046408",
+        "mtime_ns": 1791614397171670400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_current_selected_title_holder_owner_relation_v1.inc.hpp",
+        "bytes": 3755,
+        "sha256": "b6a0e6d7a184a1cd3705b887bcd6d455e7ae9fd1e8d6e4c86e6c167752444b81",
+        "mtime_ns": 1791614397158645100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\title_holder_v1.hpp",
+        "bytes": 1173,
+        "sha256": "cc60a39bac437a0df8e27949bfb6d6c989ef001fbbe9c7c4470cd9db6d85dd67",
+        "mtime_ns": 1791614397800379300
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\player_claims_v1.hpp",
+        "bytes": 1110,
+        "sha256": "3a2471762db10e45294c5017665dc9dc7ca295e1d90c7ec6bc46c650fdca3418",
+        "mtime_ns": 1791614397704256500
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\title_own_laws_v1.hpp",
+        "bytes": 1021,
+        "sha256": "d88c4b734e8fa8bb4e14169324740e0f86e4f36c4289384267153b154dfcf9c7",
+        "mtime_ns": 1791614397803604100
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\raiktor_actual_truce_expiry_v1.hpp",
+        "bytes": 2694,
+        "sha256": "43b90ee1f4ebaae83785c786e9c38d9a7396bab07858f0ccd702165181572747",
+        "mtime_ns": 1791614397728673000
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\h2743_preaction_existing_truce_v1.hpp",
+        "bytes": 3552,
+        "sha256": "71d82f46ee084ea18661826f7e36036079e92af48c156a26f528f92c1854bb04",
+        "mtime_ns": 1791614397641643400
+      },
+      {
+        "path": "z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp",
+        "bytes": 44898,
+        "sha256": "cc28ec3ec5ae12160d440c7ccb04b6ff650956b585bb178bce54edf656cb722c",
+        "mtime_ns": 1792176501691161700
+      }
+    ],
+    "all_header_count": 485,
+    "all_header_pins_canonical_sha256": "6e527a1e39c8adc6d503a240aa567ae4fd5f56d21f15addf753a8caf0930b778"
+  },
+  "semantics": {
+    "query_step": "query-war-cash-current-resources-v1",
+    "new_query_permission_or_action": false,
+    "loan_failures_degrade_only_loan_leaf": true,
+    "full_native_stamp_preserved": true,
+    "costs_native_slots": 10,
+    "quote_independent_of_gates_and_costs": true,
+    "unknown_eligibility": null,
+    "funding_credit_raw": 0,
+    "received_funds_verified": false,
+    "complete_loan_terms": false,
+    "existing_debt_principal_raw": null,
+    "existing_cash_status_and_wallet_unchanged": true,
+    "consumer_optional_args": [
+      "cash_resources",
+      "cash_source_frame"
+    ],
+    "service_handoff_implemented": false
+  },
+  "boundaries": {
+    "native26_current_sdk_c5_game_driver_save_rpc_touched": false,
+    "service_driver_strategy_modified": false,
+    "cmake_configured": false,
+    "production_archive_linked": false,
+    "native_abi_or_principal_business_qualified": false,
+    "consistent_actor_resources_dependent_recompile_still_required": true
+  },
+  "storage": {
+    "shared_repo_net_increase_before_new_evidence_bytes": 24564,
+    "repo_limit_bytes": 131072,
+    "allocated_bytes": null,
+    "future_write_reserved_bytes": 0,
+    "processes_left_running": 0,
+    "physical_credit_bytes": 0
+  },
+  "checks": {
+    "old7_sha_match_frozen_plan": true,
+    "python_ast_parse": true,
+    "git_diff_check_exit": 0,
+    "old_collector_getters_and_closed_children_unchanged": true
+  }
+}

@@ -31,6 +31,73 @@ std::string Fixed(const std::optional<std::int64_t> &value) {
                      ",\"scale\":100000}" : "null";
 }
 
+std::string LoanLeaf(const ActorResources &resources, const game::Snapshot &snapshot,
+    std::uint64_t revision, bool same_frame_ready, std::string_view version,
+    std::string_view sha) {
+  if (!resources.holy_order_loan || version != ck3_12004::kGameVersion ||
+      sha != ck3_12004::kExecutableSha256) return {};
+  const auto &loan = *resources.holy_order_loan;
+  const auto &f = loan.source_frame;
+  const auto &s = f.execution_stamp;
+  const bool frame = same_frame_ready && loan.completed &&
+      f.full_snapshot_owner_retained && snapshot.paused && snapshot.map_ready &&
+      snapshot.has_played_character && snapshot.played_character_alive &&
+      f.snapshot_revision == revision && f.ticket_sequence && s.pump_epoch &&
+      s.thread_id && s.paused && f.local_player_id == snapshot.player_id &&
+      f.played_character_id > 0 && f.played_character_id == snapshot.played_character_id &&
+      f.date_raw == snapshot.date_raw && s.date_raw == f.date_raw;
+  const auto matches = [&](const auto &v) {
+    return v.available && v.played_character_id == f.played_character_id &&
+        v.date_raw == f.date_raw && v.capture_epoch == s.pump_epoch;
+  };
+  const bool costs = frame && loan.decision_costs && matches(*loan.decision_costs);
+  const bool principal = frame && loan.principal && matches(*loan.principal) &&
+      loan.principal->owned_temporaries_released &&
+      loan.principal->prospective_principal_raw.has_value();
+  const std::string cost_reason = costs ? "" : !frame ? "loan_cash_owner_frame_unqualified"
+      : loan.decision_costs_unavailable_reason.empty() ? "decision_costs_unavailable"
+                                                     : loan.decision_costs_unavailable_reason;
+  const std::string principal_reason = principal ? "" : !frame ? "loan_cash_owner_frame_unqualified"
+      : loan.principal_unavailable_reason.empty() ? "principal_unavailable"
+                                                 : loan.principal_unavailable_reason;
+  const std::string status = costs && principal ? "available" : costs || principal ? "partial" : "unavailable";
+  // Preserve every copied stamp member. The Python caller still owns the full
+  // episode/public snapshot/PID/connection frame; native values cannot invent it.
+  const auto stamp = "{\"pump_epoch\":" + std::to_string(s.pump_epoch) +
+      ",\"thread_id\":" + std::to_string(s.thread_id) +
+      ",\"rng_wrapper\":" + std::to_string(s.rng_wrapper) +
+      ",\"rng_state\":" + std::to_string(s.rng_state) +
+      ",\"rng_owner_thread_id\":" + std::to_string(s.rng_owner_thread_id) +
+      ",\"tls_initialized_flag_address\":" + std::to_string(s.tls_initialized_flag_address) +
+      ",\"tls_initialized\":" + std::to_string(s.tls_initialized) +
+      ",\"tls_context\":" + std::to_string(s.tls_context) +
+      ",\"tls_main_thread_marker\":" + std::to_string(s.tls_main_thread_marker) +
+      ",\"jomini_state\":" + std::to_string(s.jomini_state) +
+      ",\"game_state\":" + std::to_string(s.game_state) +
+      ",\"date_raw\":" + std::to_string(s.date_raw) + ",\"paused\":" + Bool(s.paused) + '}';
+  return ",\"holy_order_loan_observation_v1\":{"
+      "\"schema\":\"xar.ck3.holy-order-loan-war-cash.v1\",\"read_only\":true,"
+      "\"advertised\":false,\"formal_action_ready\":false,\"status\":" + Quote(status) +
+      ",\"source_frame\":{\"snapshot_revision\":" + std::to_string(f.snapshot_revision) +
+      ",\"ticket_sequence\":" + std::to_string(f.ticket_sequence) +
+      ",\"local_player_id\":" + std::to_string(f.local_player_id) +
+      ",\"played_character_id\":" + std::to_string(f.played_character_id) +
+      ",\"date_raw\":" + std::to_string(f.date_raw) +
+      ",\"full_snapshot_owner_retained\":" + Bool(f.full_snapshot_owner_retained) +
+      ",\"same_frame_ready\":" + Bool(frame) + ",\"execution_stamp\":" + stamp + '}' +
+      ",\"decision_costs\":" + (costs ?
+          ck3_12004::religion::loan_decision_costs::SerializeHolyOrderLoanDecisionCosts12004(
+              *loan.decision_costs) : "null") +
+      ",\"decision_costs_unavailable_reason\":" + Reason(cost_reason) +
+      ",\"principal\":{\"status\":" + Quote(principal ? "available" : "unavailable") +
+      ",\"value_key\":\"holy_order_gold_value\",\"raw_scale\":100000,\"prospective_principal_raw\":" +
+      (principal ? std::to_string(*loan.principal->prospective_principal_raw) : "null") +
+      ",\"owned_temporaries_released\":" + (principal ? "true" : "null") +
+      ",\"unavailable_reason\":" + Reason(principal_reason) + '}' +
+      ",\"complete_loan_terms\":false,\"existing_debt_principal_raw\":null,"
+      "\"received_funds_verified\":false,\"funding_credit_raw\":0,\"submit_planned\":false}";
+}
+
 #if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
 template<class T> std::string RawOptional(const std::optional<T> &value) {
   return value ? std::to_string(*value) : "null";
@@ -150,6 +217,7 @@ std::string SerializeCurrentResourcesV1(
       ",\"date_raw\":" + std::to_string(snapshot.date_raw) +
       ",\"active_war_ids\":" + war_ids + ",\"player_army_ids\":" + ArmyIds(snapshot) +
       CurrentRawContextLeaf(resources,snapshot,revision,same_frame_ready)+
+      LoanLeaf(resources, snapshot, revision, same_frame_ready, game_version, executable_sha256) +
       ",\"current_treasury\":" + Fixed(resources.current_treasury_raw) +
       ",\"player_monthly_gross_income\":" + Fixed(resources.monthly_gross_income_raw) +
       ",\"player_monthly_total_expenses\":" + Fixed(resources.monthly_total_expenses_raw) +

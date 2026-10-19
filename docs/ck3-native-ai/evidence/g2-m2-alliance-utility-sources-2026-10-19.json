@@ -1,0 +1,104 @@
+{
+  "boundaries": {
+    "Driver_SAVE_media_body_reads": 0,
+    "G2_credit_added": 0,
+    "Game_MCP_OBS_calls": 0,
+    "actual_material_numeric_credit": 0,
+    "shared_or_frozen_strategy_edits": 0
+  },
+  "conclusions": {
+    "actual_decision_review": "The same-day + active-defensive-war accept gate was not met (age1 and no active defensive war). This gate does not establish that refusing an otherwise legal alliance is strategically beneficial. Acceptance could provide useful deterrence/help, while reciprocal duties and current actor wars could impose cost; supplied observations do not resolve either direction.",
+    "knowledge_closure": "One exact known-source immutable interaction entry/facts was published in the new current state; the original unknown incident and its actual refusal remain unchanged. Source review is closed, material/counterfactual strategy quality is not fabricated.",
+    "minimal_later_implementation_contract": {
+      "current_frozen_runtime_changed": false,
+      "existing_hook": "negotiate_alliance_inbound policy before authored-left fallback",
+      "must_bind": [
+        "exact build/definition/source/GUI",
+        "current sender and responder roles, pending ID, frame and channel",
+        "actual displayed native legal accept/reject and all selected send options",
+        "current alliance relation/creation eligibility and actor/recipient wars",
+        "effective useful strength and arrival/participation limits",
+        "reciprocal obligations and observed costs",
+        "after acceptance: independent actual alliance and old-pending disappearance"
+      ],
+      "would_change_only_when_complete": "Compare marginal deterrence/support against reciprocal obligations/costs without an unconditional requirement that a defensive war already exists."
+    },
+    "recipient_AI_acceptance": "Current source helper includes tier difference, opinions, personality, rival/nemesis, dynasty prestige, faith, relative military-power and other authored criteria; interaction ai_accept adds family/relations/heir, unity/struggle, legitimacy, Japanese noble-family and hunting branches. These are source expressions, not a current evaluated score or the autonomous player's alliance utility.",
+    "refusal_opinion_source_only": {
+      "actual_native_delta_verified": false,
+      "direction": "puppet_or_actor toward recipient",
+      "opinion": -25,
+      "years": 100
+    },
+    "unity_source_only": "add_clan_unity_interaction_effect applies ordinary value only if both characters are clan, both have a house, and their houses match; the reversed non-house route additionally requires REVERSE_NON_HOUSE_TARGET=yes, while this alliance call supplies no. No current government/house match was supplied, so do not claim an actual unity loss."
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:15:11.483983+00:00",
+  "review_at_utc": "2027-04-17T06:15:11.483983+00:00",
+  "schema": "xar.g2.m2.alliance-current-source-callees-and-utility-review/v1",
+  "source_build_claim": "Exact current script bytes only; no new EXE/install/runtime qualification inferred.",
+  "sources": [
+    {
+      "blocks": [
+        {
+          "body": "\r\nnegotiate_alliance_interaction_ai_acceptance = {\r\n\t# Tier Differences\r\n\tmodifier = {\r\n\t\tscope:actor = {\r\n\t\t\ttier_difference = {\r\n\t\t\t\ttarget = scope:recipient\r\n\t\t\t\tvalue >= 1\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd = {\r\n\t\t\tvalue = 30\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = 2\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = 30\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = 3\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = 60\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = 4\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = 90\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = 5\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = 120\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = RANK_DIFFERENCE_REASON\r\n\t}\r\n\tmodifier = {\r\n\t\tscope:actor = {\r\n\t\t\ttier_difference = {\r\n\t\t\t\ttarget = scope:recipient\r\n\t\t\t\tvalue <= -1\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd = {\r\n\t\t\tvalue = -30\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = -2\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = -30\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = -3\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = -60\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = -4\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = -90\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\ttier_difference = {\r\n\t\t\t\t\t\ttarget = scope:recipient\r\n\t\t\t\t\t\tvalue = -5\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tadd = -120\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = RANK_DIFFERENCE_REASON\r\n\t}\r\n\tmodifier = {\r\n\t\tscope:recipient = {\r\n\t\t\thas_relation_lover = scope:actor\r\n\t\t}\r\n\t\tadd = {\r\n\t\t\tvalue = 25\r\n\t\t}\r\n\t\tdesc = WE_ARE_LOVERS\r\n\t}\r\n\tmodifier = {\r\n\t\tscope:recipient = {\r\n\t\t\thas_relation_friend = scope:actor\r\n\t\t}\r\n\t\tadd = {\r\n\t\t\tvalue = 25\r\n\t\t}\r\n\t\tdesc = WE_ARE_FRIENDS\r\n\t}\r\n\topinion_modifier = { # More likely to accept if Recipient likes the Actor\r\n\t\twho = scope:recipient\r\n\t\topinion_target = scope:actor\r\n\t\tmultiplier = 0.25\r\n\t\tmin = 0\r\n\t\tdesc = AI_OPINION_REASON\r\n\t}\r\n\topinion_modifier = { # Less likely to accept if Recipient dislikes the Actor\r\n\t\twho = scope:recipient\r\n\t\topinion_target = scope:actor\r\n\t\tmultiplier = 1\r\n\t\tmax = 0\r\n\t\tdesc = AI_OPINION_REASON\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = 20\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = loyal\r\n\t\t}\r\n\t\tdesc = INTERACTION_LOYAL\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = 20\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = trusting\r\n\t\t}\r\n\t\tdesc = INTERACTION_TRUSTING\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = 5\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = craven\r\n\t\t}\r\n\t\tdesc = INTERACTION_CRAVEN\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = -20\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = paranoid\r\n\t\t}\r\n\t\tdesc = INTERACTION_PARANOID\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = -20\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = arrogant\r\n\t\t}\r\n\t\tdesc = INTERACTION_ARROGANT\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = -20\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = ambitious\r\n\t\t}\r\n\t\tdesc = INTERACTION_AMBITIOUS\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = -40\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = disloyal\r\n\t\t}\r\n\t\tdesc = INTERACTION_DISLOYAL\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = -10\r\n\t\tscope:recipient = {\r\n\t\t\thas_trait = fickle\r\n\t\t}\r\n\t\tdesc = INTERACTION_FICKLE\r\n\t}\r\n\r\n\t# Rivalry\r\n\tmodifier = { # Say no to rivals\r\n\t\tadd = -100\r\n\t\tscope:recipient = {\r\n\t\t\thas_relation_rival = scope:actor\r\n\t\t\tNOT = { has_relation_nemesis = scope:actor }\r\n\t\t}\r\n\t\tdesc = \"ACTOR_RIVAL_TO_ME_REASON\"\r\n\t}\r\n\tmodifier = { # Say no to nemesis\r\n\t\tadd = -300\r\n\t\tscope:recipient = {\r\n\t\t\thas_relation_nemesis = scope:actor\r\n\t\t}\r\n\t\tdesc = \"ACTOR_NEMESIS_TO_ME_REASON\"\r\n\t}\r\n\r\n\t# Dynasty Prestige Levels\r\n\tmodifier = {\r\n\t\tadd = -5\r\n\t\tdesc = AI_DYNASTY_PRESTIGE_REASON\r\n\t\tscope:actor = { has_dynasty = yes }\r\n\t\tscope:actor.dynasty != scope:recipient.dynasty\r\n\t\tscope:actor.dynasty = { dynasty_prestige_level = 0 }\r\n\t}\r\n\tmodifier = {\r\n\t\tdesc = AI_DYNASTY_PRESTIGE_REASON\r\n\t\tscope:actor = { has_dynasty = yes }\r\n\t\tscope:actor.dynasty != scope:recipient.dynasty\r\n\t\tscope:actor.dynasty = { dynasty_prestige_level >= 2 }\r\n\t\tadd = {\r\n\t\t\tvalue = 10\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 3 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 4 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 5 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 6 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 7 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 8 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 9 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:actor.dynasty = { dynasty_prestige_level >= 10 }\r\n\t\t\t\t}\r\n\t\t\t\tadd = 5\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tmodifier = { #Faith compatibility\r\n\t\tscope:recipient.rite = {\r\n\t\t\trite_hostility_level = {\r\n\t\t\t\ttarget = scope:actor.rite\r\n\t\t\t\tvalue > faith_fully_accepted_level\r\n\t\t\t}\r\n\t\t}\r\n\t\tNOT = {\r\n\t\t\tscope:recipient.ai_zeal <= -50\r\n\t\t}\r\n\t\tadd = {\r\n\t\t\tvalue = -10\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\t# Exempt certain struggle phases.\r\n\t\t\t\t\tNOT = { is_struggle_parameter_active_interfaith_marriages_available_between_involved_characters_trigger = yes }\r\n\t\t\t\t}\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tscope:recipient.rite = {\r\n\t\t\t\t\t\t\trite_hostility_level = {\r\n\t\t\t\t\t\t\t\ttarget = scope:actor.rite\r\n\t\t\t\t\t\t\t\tvalue >= faith_astray_level\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tsubtract = 20\r\n\t\t\t\t}\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tscope:recipient.rite = {\r\n\t\t\t\t\t\t\trite_hostility_level = {\r\n\t\t\t\t\t\t\t\ttarget = scope:actor.rite\r\n\t\t\t\t\t\t\t\tvalue >= faith_hostile_level\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tsubtract = 20\r\n\t\t\t\t}\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tscope:recipient.rite = {\r\n\t\t\t\t\t\t\trite_hostility_level = {\r\n\t\t\t\t\t\t\t\ttarget = scope:actor.rite\r\n\t\t\t\t\t\t\t\tvalue >= faith_evil_level\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tsubtract = 50\r\n\t\t\t\t}\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tscope:recipient.ai_zeal <= -25\r\n\t\t\t\t\t}\r\n\t\t\t\t\tdivide = 2\r\n\t\t\t\t}\r\n\t\t\t\telse_if = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tscope:recipient.ai_zeal >= 50\r\n\t\t\t\t\t}\r\n\t\t\t\t\tmultiply = 2\r\n\t\t\t\t}\r\n\t\t\t\tif = {\r\n\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\tscope:recipient.rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }\r\n\t\t\t\t\t}\r\n\t\t\t\t\tdivide = 2\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = MARRY_DIFFERENT_FAITH_REASON\r\n\t}\r\n\r\n\tmodifier = { # A Recipient is more likely to agree to an alliance requested by his liege.\r\n\t\tadd = 20\r\n\t\tscope:recipient = {\r\n\t\t\ttarget_is_liege_or_above = scope:actor\r\n\t\t}\r\n\t\tdesc = LIEGE_REASON\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = {\r\n\t\t\tvalue = 1\r\n\t\t\tsubtract = {\r\n\t\t\t\tvalue = scope:recipient.max_military_strength # For foreign diplomacy, consider recipients max\r\n\t\t\t\tdivide = { value = scope:actor.current_military_strength min = 1 }\r\n\t\t\t}\r\n\t\t\tmultiply = 20\r\n\t\t\tmin = -1000\r\n\t\t\tmax = 100\r\n\t\t}\r\n\t\tdesc = AI_MILITARY_BALANCE_REASON\r\n\t}\r\n\t# Recipient is a Claimant to Actor's titles.\r\n\tmodifier = {\r\n\t\tscope:recipient = {\r\n\t\t\tany_claim = {\r\n\t\t\t\tholder = scope:actor\r\n\t\t\t}\r\n\t\t\tNOR = {\r\n\t\t\t\tis_heir_of = scope:actor\r\n\t\t\t\tai_greed <= -25\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd = {\r\n\t\t\tvalue = -50\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:recipient.ai_greed >= 25\r\n\t\t\t\t}\r\n\t\t\t\tadd = ai_greed\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = {\r\n\t\t\t\t\tscope:recipient.house != scope:actor.house\r\n\t\t\t\t}\r\n\t\t\t\tmultiply = 2\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = IS_CLAIMANT_TO_ACTORS_TITLES\r\n\t}\r\n\tmodifier = {\r\n\t\tscope:actor = {\r\n\t\t\tany_claim = {\r\n\t\t\t\tholder = scope:recipient\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd = 25\r\n\t\tdesc = IS_CLAIMANT_TO_RECIPIENT_TITLES\r\n\t}\r\n\tmodifier = {\r\n\t\tscope:recipient = {\r\n\t\t\tNOT = {\r\n\t\t\t\tany_claim = {\r\n\t\t\t\t\tholder = scope:actor\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tscope:recipient.house = scope:actor.house\r\n\t\tadd = 15\r\n\t\tdesc = IS_SAME_HOUSE_REASON\r\n\t}\r\n\tmodifier = {\r\n\t\tscope:recipient = {\r\n\t\t\thas_opinion_modifier = {\r\n\t\t\t\ttarget = scope:actor\r\n\t\t\t\tmodifier = declared_war\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd = -100\r\n\t\tdesc = DECLARED_WAR_REASON\r\n\t}\r\n\r\n\t# Don't form new alliances with people already at war.\r\n\tmodifier = {\r\n\t\tscope:actor = {\r\n\t\t\tis_at_war = yes\r\n\r\n\t\t\t# Since vassals and lieges can't call us into wars, this doesn't matter for us if we have that relationship.\r\n\t\t\tNOR = {\r\n\t\t\t\ttarget_is_liege_or_above = scope:recipient\r\n\t\t\t\ttarget_is_vassal_or_below = scope:recipient\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd = -50\r\n\t\tdesc = IS_AT_WAR_REASON\r\n\t}\r\n\r\n\t#Bonus from Tradition Astute Diplomats\r\n\tmodifier = {\r\n\t\tscope:actor.culture = { has_cultural_parameter = facilitate_alliance_acceptance }\r\n\t\tadd = 50 #should be in a file 00_traditions_values\r\n\t\tdesc = TRADITION_ASTUTE_DIPLOMATS_ACCEPTANCE_MODIFIER\r\n\t}\r\n\r\n\t# The AI doesn't want to form alliances with AI vassals within its capital duchy, so it can revoke them\r\n\tmodifier = {\r\n\t\tscope:actor = {\r\n\t\t\tis_ai = yes\r\n\t\t\tis_vassal_or_below_of = scope:recipient\r\n\t\t\tany_held_title = {\r\n\t\t\t\ttitle_tier = county\r\n\t\t\t\tde_jure_liege = scope:actor.primary_title.title_capital_county.de_jure_liege\r\n\t\t\t}\r\n\t\t}\r\n\t\tscope:recipient = {\r\n\t\t\tis_ai = yes\r\n\t\t}\r\n\t\tadd = -5000\r\n\t}\r\n\r\n\t# Feud\r\n\tmodifier = {\r\n\t\tadd = -25\r\n\t\tscope:recipient = {\r\n\t\t\thouse_has_feud_relation_with_trigger = { TARGET = scope:actor }\r\n\t\t}\r\n\t\tdesc = MARRY_FAMILY_FEUD_REASON\r\n\t}\r\n\r\n\t# Existing Alliances\r\n\tmodifier = {\r\n\t\tadd = {\r\n\t\t\tscope:actor = {\r\n\t\t\t\tevery_ally = {\r\n\t\t\t\t\tadd = -15\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tscope:actor = {\r\n\t\t\tany_ally = {\r\n\t\t\t\tcount >= 2\r\n\t\t\t}\r\n\t\t}\r\n\t\tNOT = {\r\n\t\t\tscope:recipient = {\r\n\t\t\t\tgovernment_has_flag = government_is_clan\r\n\t\t\t\tis_vassal_or_below_of = scope:actor\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = EXISTING_ALLIANCES_REASON\r\n\t}\r\n\r\n\t# Existing Alliances\r\n\tmodifier = {\r\n\t\tadd = {\r\n\t\t\tscope:recipient = {\r\n\t\t\t\tevery_ally = {\r\n\t\t\t\t\tadd = -15\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tscope:recipient = {\r\n\t\t\tany_ally = {\r\n\t\t\t\tcount >= 2\r\n\t\t\t}\r\n\t\t}\r\n\t\tNOT = {\r\n\t\t\tscope:recipient = {\r\n\t\t\t\tgovernment_has_flag = government_is_clan\r\n\t\t\t\tis_vassal_or_below_of = scope:actor\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = THEIR_EXISTING_ALLIANCES_REASON\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = intimidated_reason_value\r\n\t\tscope:recipient = {\r\n\t\t\ttarget_is_liege_or_above = scope:actor\r\n\t\t\thas_dread_level_towards = {\r\n\t\t\t\ttarget = scope:actor\r\n\t\t\t\tlevel = 1\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = INTIMIDATED_REASON\r\n\t}\r\n\tmodifier = {\r\n\t\tadd = cowed_reason_value\r\n\t\tscope:recipient = {\r\n\t\t\ttarget_is_liege_or_above = scope:actor\r\n\t\t\thas_dread_level_towards = {\r\n\t\t\t\ttarget = scope:actor\r\n\t\t\t\tlevel = 2\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = COWED_REASON\r\n\t}\r\n\r\n\tmodifier = {\r\n\t\tadd = intimidated_external_reason_value\r\n\t\tscope:recipient = {\r\n\t\t\tNOT = { target_is_liege_or_above = scope:actor }\r\n\t\t\thas_dread_level_towards = {\r\n\t\t\t\ttarget = scope:actor\r\n\t\t\t\tlevel = 1\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = INTIMIDATED_REASON\r\n\t}\r\n\tmodifier = {\r\n\t\tadd = cowed_external_reason_value\r\n\t\tscope:recipient = {\r\n\t\t\tNOT = { target_is_liege_or_above = scope:actor }\r\n\t\t\thas_dread_level_towards = {\r\n\t\t\t\ttarget = scope:actor\r\n\t\t\t\tlevel = 2\r\n\t\t\t}\r\n\t\t}\r\n\t\tdesc = COWED_REASON\r\n\t}\r\n\r\n\t# INFLUENCE\r\n\tmodifier = {\r\n\t\tdesc = INFLUENCE_REASON\r\n\t\tscope:influence ?= yes\r\n\t\tadd = {\r\n\t\t\tvalue = 10\r\n\t\t\tmultiply = scope:actor.influence_level\r\n\t\t\tmin = 5\r\n\t\t}\r\n\t}\r\n}",
+          "body_utf8_sha256": "38ddc24d5ada169070a990029563f55b33effcb122ecad7b909ad5d652c164b2",
+          "first_line": 930,
+          "key": "negotiate_alliance_interaction_ai_acceptance"
+        }
+      ],
+      "relative_path": "common/scripted_modifiers/00_character_interaction_modifiers.txt",
+      "source_bytes": 33285,
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_modifiers\\00_character_interaction_modifiers.txt",
+      "source_sha256": "e37452cb00c9d17160c2be1b2d5cdd0547781fcb8362ae5267fd1ef7ce6ed776"
+    },
+    {
+      "blocks": [
+        {
+          "body": "\t\t\t\t\tadd_clan_unity_interaction_effect = {\r\n\t\t\t\t\t\tCHARACTER = scope:puppet_or_actor\r\n\t\t\t\t\t\tTARGET = scope:recipient\r\n\t\t\t\t\t\tVALUE = scope:revoke_title_unity_loss\r\n\t\t\t\t\t\tDESC = clan_unity_title_revoked.desc\r\n\t\t\t\t\t\tREVERSE_NON_HOUSE_TARGET = no\r\n\t\t\t\t\t}",
+          "body_utf8_sha256": "8cc483b213e7cc7d69c39cdbfe0c6633de0b4dcc5d31c7982780b8a0c413c9ff",
+          "first_line": 3738,
+          "key": "add_clan_unity_interaction_effect"
+        },
+        {
+          "body": "\r\n\t\tapply_clan_unity_interaction_effect = {\r\n\t\t\tCHARACTER = $CHARACTER$\r\n\t\t\tTARGET = $TARGET$\r\n\t\t\tDESC = $DESC$\r\n\t\t\tVALUE = $VALUE$\r\n\t\t\tVALUE_REVERSED = no\r\n\t\t}",
+          "body_utf8_sha256": "4f3a222b8d0681a97b7d8934347185578a8f5ed4fea33f1e0591f2d3891041e4",
+          "first_line": 5174,
+          "key": "apply_clan_unity_interaction_effect"
+        }
+      ],
+      "relative_path": "common/scripted_effects/00_interaction_effects.txt",
+      "source_bytes": 144351,
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_interaction_effects.txt",
+      "source_sha256": "4247f484295988b50098a43869d4c4056b7e0855bf8d5fa6ec0755cb996d7e82"
+    },
+    {
+      "blocks": [
+        {
+          "body": "refused_alliance_opinion = {\r\n\topinion = -25\r\n\tyears = 100\r\n}",
+          "body_utf8_sha256": "6e3b0584699f749da3fdb8b31e95dc782b1b7bb6073b940dc77ce67e17a0a7a9",
+          "first_line": 11,
+          "key": "refused_alliance_opinion"
+        }
+      ],
+      "relative_path": "common/opinion_modifiers/00_marriage_opinions.txt",
+      "source_bytes": 3735,
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\00_marriage_opinions.txt",
+      "source_sha256": "f01b11d3850e5bcab6fee8816bbd5f77fc9ee24950a2376aed3248c631a28a56"
+    },
+    {
+      "blocks": [
+        {
+          "body": "char_interaction.0236 = {\n\ttype = letter_event\n\topening = {\n\t\tdesc = char_interaction.0001.opening\n\t}\n\tdesc = char_interaction.0236.desc\n\t\t\n\tsender = {\n\t\tcharacter = scope:recipient\n\t\tanimation = dismissal\n\t}\n\n\timmediate = {\n\t\tnotify_puppeteer_of_outcome_effect = {\n\t\t\tTYPE = event_toast_effect_bad\n\t\t\tTITLE = char_interaction.0236.toast_puppeteer\n\t\t}\n\t}\n\n\toption = {\n\t\tname = char_interaction.0236.a\n\t}\n}",
+          "body_utf8_sha256": "e340c56168126920a86ad7c9f6dad419c25f358523101d727df8cf2439994da9",
+          "first_line": 1935,
+          "key": "char_interaction.0236"
+        }
+      ],
+      "relative_path": "events/interaction_events/character_interaction_events.txt",
+      "source_bytes": 62800,
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\interaction_events\\character_interaction_events.txt",
+      "source_sha256": "46d0e436bbb9694e60e46c0c1c5ebc3ae1c14afa041a8b8cd9548bd5c3836c69"
+    }
+  ]
+}
