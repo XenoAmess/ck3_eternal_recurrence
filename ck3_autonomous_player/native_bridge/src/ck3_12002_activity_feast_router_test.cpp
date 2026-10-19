@@ -1,4 +1,5 @@
 #include "ck3_12002_activity_feast_router.hpp"
+#include "ck3_12004_player_pilgrimage_activities_private_v1.hpp"
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
 #include "ck3_12002_activity_stage5_canstart_private_transport_v1.hpp"
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
@@ -189,9 +190,10 @@ bool TestRouter() {
   memory.jomini[0x20] = std::byte{1};
   memory.tls[0x20] = std::byte{1};
   std::memcpy(memory.state.data() + 0x08, &adapter.frame.date_raw, sizeof(adapter.frame.date_raw));
-  const std::array<api::MainThreadQueryExecutorV1, 3> executors{
+  const std::array<api::MainThreadQueryExecutorV1, 4> executors{
       &build::ExecuteActivityStage5CanStartPrivate12002V1,
       &build::ExecuteActivityFeastStage5Private12002V1,
+      &build::ExecutePlayerPilgrimageActivitiesPrivate12004V1,
       &build::ExecuteActivityFeastPlannerOpenPrivate12002V1};
   auto environment = build::BindThreadRuntimeImage(0x140000000ULL, build::kExecutableSha256, executors);
   environment.offline_fixture = true;
@@ -415,18 +417,6 @@ std::string SerializeActivityStage5CanStartPrivate12002V1(
 bool ExecuteActivityFeastStage5Private12002V1(
     void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   auto &query = *static_cast<ActivityFeastStage5Private12002QueryV1 *>(opaque);
-  if (query.pilgrimage_identities_only) {
-    ++pilgrimage_calls;
-    if (!CheckCallback(query, stamp)) return false;
-    pilgrimage_readonly_contract =
-        query.executable_sha256 == xar::ck3_12004::kExecutableSha256 &&
-        query.mode == ck3_11906::ActivityFeastStage5PrivateModeV1::start_inputs &&
-        query.passive_cost == nullptr && !query.policy_positive &&
-        !query.previous_submit_pending &&
-        query.reserve_raw == std::array<std::int64_t, 4>{} &&
-        !query.start.invoked && !query.guest_route_qualified && query.invocations == 0;
-    return pilgrimage_readonly_contract;
-  }
   ++feast_calls;
   if (!CheckCallback(query, stamp)) return false;
   last_mode = query.mode;
@@ -444,12 +434,18 @@ std::string SerializeActivityFeastStage5Private12002V1(
   ++feast_serializer_calls;
   return "{\"query_status\":\"available\",\"fixture_dispatch\":true}";
 }
-// Keep this symbol in the spy TU: do not pull the real transport TU (which
-// also defines the executor and old serializer above) from the runtime archive.
+bool ExecutePlayerPilgrimageActivitiesPrivate12004V1(
+    void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &query = *static_cast<PlayerPilgrimageActivitiesPrivateQuery12004V1 *>(opaque);
+  ++pilgrimage_calls;
+  if (!CheckCallback(query, stamp)) return false;
+  pilgrimage_readonly_contract = query.executable_sha256 == xar::ck3_12004::kExecutableSha256;
+  return pilgrimage_readonly_contract;
+}
 std::string SerializePlayerPilgrimageActivitiesPrivate12004V1(
-    const ActivityFeastStage5Private12002QueryV1 &query) {
+    const PlayerPilgrimageActivitiesPrivateQuery12004V1 &query) {
   ++pilgrimage_serializer_calls;
-  if (!query.pilgrimage_identities_only)
+  if (!query.completed)
     return "{\"fixture_dispatch\":false}";
   return "{\"schema\":\"ck3_12004_player_pilgrimage_activities_v1\","
       "\"read_only\":true,\"fixture_dispatch\":true,"

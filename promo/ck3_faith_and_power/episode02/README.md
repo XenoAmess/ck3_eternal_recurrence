@@ -6,9 +6,10 @@
 - [研究缺口与执行计划](docs/research-and-production-plan.md)：工作量、并发分工、拍摄批次、相对节点和风险。
 - [导演案审计](docs/director-audit-20261020.md)：开拍前的实际复核、问题及修订结果。
 - [执行进度](docs/production-progress.md)：真实完成项、北京时间节点、当前准备与实机边界。
-- [七章连续初稿](docs/continuous-script-v0.md)：当前约23.7分钟的文字版；补入实际案例后预计26.8—29.9分钟，尚未配音计时。
+- [七章连续初稿](docs/continuous-script-v0.md)：当前约23.7分钟的文字版；补入实际案例后预计26.8—29.9分钟，全稿尚未配音计时。
 - [首批实拍与验片](docs/footage-b1-20261020.md)：104.866秒原片、三类预览、真实PTS和画面可用范围。
 - [定向原生与消费者资格](docs/qualification-b2-20261020.md)：4项原生执行、朝圣6项与决议18项消费者检查及未完成的生产部署边界。
+- [生产通路与前四章样片](docs/production-b3-20261020.md)：新DLL、9项原生执行、6项MCP接缝与前四章9分25.87秒配音实测；渲染及新实机另记。
 - 机制研究：[圣物与类型效果](docs/research-artifacts-and-site-effects.md)、[普通朝圣](docs/research-pilgrimage.md)、[精神领袖与大圣战](docs/research-spiritual-head-and-ghw.md)。
 
 导演案已审计修正，随后完成首批创建预览拍摄及七章文字初稿；尚未完成二期成片。类型选择、稀有度4/8与地点变换均保留独立原生读回，只证明预览。拍摄结束后，媒体检查的错误内联命令生成空临时文件并触发原keeper停止；原场次RED与后继正常退出的证据分别保留，详见验片记录。研究、写稿、代码候选和审计并行；实际游戏与屏幕继续单一所有者执行。

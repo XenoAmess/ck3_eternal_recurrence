@@ -523,17 +523,7 @@ bool ExecuteActivityFeastStage5Private12002V1(
     const bridge::ActivityHostedIdentityFrameV1 frame{
         query->expected_revision, current.date_raw,
         current.played_character_id, true, true, true, true};
-    if (query->pilgrimage_identities_only) {
-      if (!bridge::IsActivity12004BuildV1(query->executable_sha256)) {
-        query->failure = "exact_player_pilgrimage_identities_build_unavailable";
-      } else {
-        query->pilgrimage_identities = bridge::ReadActivityHostedIdentityV1(
-            HostedEnvironment(context), frame);
-        query->hosted_status = query->pilgrimage_identities.status;
-        if (query->hosted_status != bridge::ActivityHostedIdentityStatusV1::observed)
-          query->failure = "native_player_pilgrimage_identities_unavailable";
-      }
-    } else if (query->mode == ActivityFeastStage5PrivateModeV1::hosted_post) {
+    if (query->mode == ActivityFeastStage5PrivateModeV1::hosted_post) {
       if (!CapturePost(context, frame, query->post))
         query->failure = "native_activity_feast_post_read_unavailable";
     } else if (!Capture(&context, frame, query->inputs)) {
@@ -576,49 +566,5 @@ std::string SerializeActivityFeastStage5Private12002V1(
 }
 
 
-std::string SerializePlayerPilgrimageActivitiesPrivate12004V1(
-    const ActivityFeastStage5Private12002QueryV1 &query) {
-  const auto &identities = query.pilgrimage_identities;
-  if (!query.completed || !query.pilgrimage_identities_only ||
-      !query.failure.empty() ||
-      !bridge::IsActivity12004BuildV1(query.executable_sha256) ||
-      identities.status != bridge::ActivityHostedIdentityStatusV1::observed ||
-      identities.hosted_count > identities.hosted.size())
-    return {};
-  std::string rows = "[";
-  std::uint32_t count = 0;
-  const auto boolean = [](bool value) { return value ? "true" : "false"; };
-  for (std::size_t index = 0; index < identities.hosted_count; ++index) {
-    const auto &row = identities.hosted[index];
-    if (row.type_key_size > row.type_key.size()) return {};
-    if (std::string_view(row.type_key.data(), row.type_key_size) != "activity_pilgrimage")
-      continue;
-    if (row.host_character_id != query.expected_snapshot.played_character_id)
-      return {};
-    if (count++ != 0) rows += ',';
-    rows += "{\"activity_id\":" + std::to_string(row.activity_id) +
-        ",\"host_character_id\":" + std::to_string(row.host_character_id) +
-        ",\"type_key\":\"activity_pilgrimage\",\"terminal_flags_observed\":" +
-        boolean(row.terminal_flags_observed) + ",\"native_completed\":";
-    rows += row.terminal_flags_observed ? boolean(row.native_completed) : "null";
-    rows += ",\"native_invalidated\":";
-    rows += row.terminal_flags_observed ? boolean(row.native_invalidated) : "null";
-    rows += ",\"native_completion_stamp_observed\":";
-    rows += boolean(row.native_completion_stamp_observed);
-    rows += ",\"native_completion_stamp_raw\":";
-    rows += row.native_completion_stamp_observed
-        ? std::to_string(row.native_completion_stamp_raw) : "null";
-    rows += '}';
-  }
-  rows += ']';
-  return "{\"schema\":\"ck3_12004_player_pilgrimage_activities_v1\",\"read_only\":true,"
-      "\"snapshot_revision\":" + std::to_string(query.expected_revision) +
-      ",\"date_raw\":" + std::to_string(query.expected_snapshot.date_raw) +
-      ",\"played_character_id\":" + std::to_string(query.expected_snapshot.played_character_id) +
-      ",\"scope\":\"currently-hosted-by-current-player\","
-      "\"activity_type_key\":\"activity_pilgrimage\",\"activity_count\":" +
-      std::to_string(count) + ",\"activities\":" + rows +
-      ",\"absence_is_completion\":false,\"raw_pointer_fields_persisted\":false}";
-}
 
 } // namespace xar::ck3_12002

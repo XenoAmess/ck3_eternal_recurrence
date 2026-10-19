@@ -1,4 +1,4 @@
-#include "ck3_12002_activity_feast_private_transport_v1.hpp"
+#include "ck3_12004_player_pilgrimage_activities_private_v1.hpp"
 #include "xar_bridge/activity_hosted_identity_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_activity_migration_v1.hpp"
@@ -98,9 +98,9 @@ struct Memory {
     Put(chunk + 9 * 0x628 + 0x408, std::uint64_t{0});
   }
 };
-n::ActivityFeastStage5Private12002QueryV1 Query(Memory &memory) {
-  n::ActivityFeastStage5Private12002QueryV1 q{};
-  q.completed = true; q.pilgrimage_identities_only = true;
+n::PlayerPilgrimageActivitiesPrivateQuery12004V1 Query(Memory &memory) {
+  n::PlayerPilgrimageActivitiesPrivateQuery12004V1 q{};
+  q.completed = true;
   q.executable_sha256 = actual::kExecutableSha256; q.expected_revision = revision;
   q.expected_snapshot.date_raw = date; q.expected_snapshot.played_character_id = actor_id;
   q.pilgrimage_identities = b::ReadActivityHostedIdentityV1(memory.Environment(), memory.frame);
@@ -109,7 +109,7 @@ n::ActivityFeastStage5Private12002QueryV1 Query(Memory &memory) {
   return q;
 }
 void Save(const std::filesystem::path &directory, const char *name,
-          const n::ActivityFeastStage5Private12002QueryV1 &q) {
+          const n::PlayerPilgrimageActivitiesPrivateQuery12004V1 &q) {
   const auto native = n::SerializePlayerPilgrimageActivitiesPrivate12004V1(q);
   Require(!native.empty(), "production serializer returned empty for observed fixture");
   std::ofstream out(directory / (std::string(name) + ".json"));

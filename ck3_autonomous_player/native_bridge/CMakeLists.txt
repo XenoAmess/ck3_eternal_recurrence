@@ -655,6 +655,8 @@ option(
   "Enable default-off paused native feast stage-5 four-resource cost and CanStart read"
   OFF
 )
+option(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1
+  "Enable independent default-off current-player pilgrimage identity readonly leaf" OFF)
 option(
   XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1
   "Enable default-off paused feast Stage-5 inputs, guarded Start and hosted post"
@@ -1265,6 +1267,7 @@ if(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)
 endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
+  src/ck3_12004_player_pilgrimage_activities_private_v1.cpp
   src/game_adapter_capabilities.cpp
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
@@ -1317,6 +1320,14 @@ add_library(xar_ck3_12002_runtime STATIC
   src/player_lifestyle_window_candidates_v1.cpp
   src/main_thread_query_mailbox_v1.cpp)
 target_include_directories(xar_ck3_12002_runtime PUBLIC include research PRIVATE src)
+# This independent read gate never enables Start/full-cost/guest features.
+if(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1)
+  set_property(SOURCE
+    src/ck3_12002_activity_feast_router.cpp
+    src/ck3_12002_nonwar_router.cpp
+    src/ck3_12002_nonwar_mailbox.cpp
+    APPEND PROPERTY COMPILE_DEFINITIONS XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1=1)
+endif()
 target_compile_definitions(xar_ck3_12002_runtime PUBLIC
   NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
 target_link_libraries(xar_ck3_12002_runtime PUBLIC bcrypt)
@@ -2581,10 +2592,13 @@ if(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1=1)
 endif()
+if(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1 OR
+   XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE src/activity_hosted_identity_v1.cpp)
+endif()
 if(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/activity_feast_resource_balance_v1.cpp
-    src/activity_hosted_identity_v1.cpp
     src/activity_stage5_feast_guest_join_v1.cpp
     src/activity_feast_guest_candidate_v1.cpp
     src/activity_feast_stage5_start_v1.cpp
@@ -2896,6 +2910,7 @@ if(BUILD_TESTING)
       target_compile_definitions(${fixture_target} PRIVATE
         XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1=1
         XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=1
+        XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1=1
         XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=1)
       target_link_libraries(${fixture_target} PRIVATE
         xar_ck3_12002_feast_fixture_support xar_bridge_protocol)
@@ -2938,11 +2953,56 @@ if(BUILD_TESTING)
 
   # Whole production reader/serializer packets for the Python strict consumer.
   # Owned memory only; this fixture never starts CK3 or submits gameplay actions.
+  # Each variant compiles the real production classifiers/populators/registrar
+  # with its own definitions. Wrappers include the original translation units
+  # so the production source-level READ definition cannot leak into OFF cases.
+  # LINK_ONLY excludes runtime PUBLIC feature definitions from these variants.
+  foreach(_xar_pilgrimage_read IN ITEMS 0 1)
+    foreach(_xar_pilgrimage_start IN ITEMS 0 1)
+      set(_xar_pilgrimage_variant "r${_xar_pilgrimage_read}_s${_xar_pilgrimage_start}")
+      set(_xar_pilgrimage_target "xar_ck3_12004_pilgrimage_gate_${_xar_pilgrimage_variant}_test")
+      set(_xar_pilgrimage_wrappers)
+      foreach(_xar_pilgrimage_source IN ITEMS
+          ck3_12002_activity_feast_router
+          ck3_12002_nonwar_router
+          ck3_12002_nonwar_mailbox)
+        set(_xar_pilgrimage_wrapper
+          "${CMAKE_CURRENT_BINARY_DIR}/pilgrimage-gate-matrix/${_xar_pilgrimage_variant}-${_xar_pilgrimage_source}.cpp")
+        file(GENERATE OUTPUT "${_xar_pilgrimage_wrapper}" CONTENT
+          "#include \"${CMAKE_CURRENT_SOURCE_DIR}/src/${_xar_pilgrimage_source}.cpp\"\n")
+        list(APPEND _xar_pilgrimage_wrappers "${_xar_pilgrimage_wrapper}")
+      endforeach()
+      add_executable(${_xar_pilgrimage_target} EXCLUDE_FROM_ALL
+        src/ck3_12004_player_pilgrimage_readonly_gate_test.cpp
+        src/activity_hosted_identity_v1.cpp
+        ${_xar_pilgrimage_wrappers})
+      target_include_directories(${_xar_pilgrimage_target} PRIVATE include src research)
+      target_link_libraries(${_xar_pilgrimage_target} PRIVATE
+        "$<LINK_ONLY:xar_ck3_12002_runtime>"
+        "$<LINK_ONLY:xar_ck3_12002_feast_fixture_support>"
+        xar_bridge_protocol user32 bcrypt)
+      target_compile_definitions(${_xar_pilgrimage_target} PRIVATE
+        NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+      if(_xar_pilgrimage_read)
+        target_compile_definitions(${_xar_pilgrimage_target} PRIVATE
+          XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1=1)
+      endif()
+      if(_xar_pilgrimage_start)
+        target_compile_definitions(${_xar_pilgrimage_target} PRIVATE
+          XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=1)
+      endif()
+      if(MSVC)
+        target_compile_options(${_xar_pilgrimage_target} PRIVATE
+          /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+      endif()
+    endforeach()
+  endforeach()
   add_executable(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture EXCLUDE_FROM_ALL
-    src/ck3_12004_player_pilgrimage_serializer_whole_fixture.cpp)
+    src/ck3_12004_player_pilgrimage_serializer_whole_fixture.cpp
+    src/activity_hosted_identity_v1.cpp)
   target_include_directories(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture PRIVATE src)
   target_link_libraries(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture PRIVATE
-    xar_ck3_12002_runtime xar_ck3_12002_feast_fixture_support xar_bridge_protocol)
+    xar_ck3_12002_runtime xar_bridge_protocol)
   if(MSVC)
     target_compile_options(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture PRIVATE
       /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)

@@ -2265,7 +2265,8 @@ def create_server(
             """Read current and main Faith doctrines and native parameter rows."""
             return driver.query_player_religion_doctrines_private_v1(expected_revision=expected_revision)
 
-    if getattr(driver, "allow_private_player_rite_governance_query", False) is True:
+    if (getattr(driver, "allow_private_player_rite_governance_query", False) is True
+            or "ck3_query_player_rite_governance_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_rite_governance_v1(expected_revision: int) -> dict[str, object]:
             """Read the state Rite, heads and organization with separate source status."""

@@ -66,6 +66,7 @@ EXTENDED_PROFILE = RenderProfile('episode01-35m-1440p30-v1', 2100)
 PADDING_PROFILE = RenderProfile('episode01-2101s-1440p30-v1', 2101)
 V5_REORDER_PROFILE = RenderProfile('episode01-v5-54m-1440p30-v1', 3240)
 EPISODE02_PROFILE = RenderProfile('episode02-34m-1440p30-v1', 2040)
+EPISODE02_SAMPLE_PROFILE = RenderProfile('episode02-first4-570s-1440p30-v1', 570, 29)
 
 
 def episode_prefix(scope):
@@ -83,7 +84,7 @@ def render_profile(document, bound):
     if reference is None:return DEFAULT_PROFILE
     if Path(reference['path']).suffix.lower()!='.json':raise ValueError('Render profile must be pinned JSON')
     actual=read(bound(reference))
-    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE,EPISODE02_PROFILE):
+    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE,EPISODE02_PROFILE,EPISODE02_SAMPLE_PROFILE):
         if actual==profile.to_mapping():return profile
     raise ValueError('Unknown immutable render profile or changed quality settings')
 
@@ -170,7 +171,7 @@ def media_limit(seconds, *, audio):
 
 def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE):
     """New future bytes, not an existing-package cap or measured output size."""
-    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE,EPISODE02_PROFILE):raise ValueError('Unknown render profile')
+    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE,EPISODE02_PROFILE,EPISODE02_SAMPLE_PROFILE):raise ValueError('Unknown render profile')
     seconds=profile.max_seconds if seconds is None else seconds
     if not 0 < seconds <= profile.max_seconds or not 0 < segments <= profile.max_segments:
         raise ValueError(f'{profile.max_seconds}-second / {profile.max_segments}-segment limit exceeded')
@@ -188,6 +189,73 @@ def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE)
         'media_CAS_copies':0,'whole_raw_or_existing_MP3_copies':0,
         'artifact_mode':'direct actual run-relative outputs; explicit external SHA-bound inputs',
         'file_size_caps_required':True,'once_attempt_no_automatic_retry':True}
+
+
+
+REVIEW_CLASSES = {'rule', 'preview', 'historical-recall', 'editorial'}
+REVIEW_CLAIMS = {'source-rule', 'rule-example', 'observed-preview', 'historical-recall', 'editorial-scope'}
+PREPARED_RETIRE_POLICY = 'verified-segment-exact-prepared-retirement-v1'
+
+
+def rules_preview_segment(document, voices=None, evidence=None):
+    """An empty live-result inventory is legal only for an explicit review excerpt."""
+    if document.get('scope') != 'episode02-review-segment':return False
+    if document.get('review_content_kind') != 'rules-and-previews-only':return False
+    cues=document.get('cues',[])
+    if not cues or any(row.get('content_class') not in REVIEW_CLASSES for row in cues):return False
+    if document.get('result_voice_batches') or document.get('pending_result_slots'):return False
+    if any(row.get('live_result_asserted',False) is not False for row in cues):return False
+    if voices is not None and voices.get('new_live_result_voice_slots'):return False
+    if evidence is not None:
+        claims=evidence.get('claims',[])
+        if not claims or any(row.get('claim_kind') not in REVIEW_CLAIMS
+            or row.get('live_result_asserted',False) is not False for row in claims):return False
+    return True
+
+
+def document_budget(document,rows,*,profile):
+    budget=peak_budget(sum(row['duration_seconds'] for row in rows),len(rows),profile=profile)
+    policy=document.get('prepared_visual_policy')
+    if policy is None:return budget
+    if policy!=PREPARED_RETIRE_POLICY or not rules_preview_segment(document):
+        raise ValueError('Prepared retirement is restricted to explicit rules/preview excerpts')
+    if profile!=EPISODE02_SAMPLE_PROFILE:raise ValueError('Prepared retirement requires the immutable excerpt profile')
+    # At most one newly generated visual coexists with retained narrated clips.
+    # The final stream-copy film coexists with all narrated clips. Voice and original
+    # source files remain external inputs; the admission helper charges current usage.
+    single=max(media_limit(row['duration_seconds'],audio=False) for row in rows)
+    side=48*1024**2
+    budget.update(prepared_visual_bytes=single,graphics_metadata_audio_audit_scratch_bytes=side,
+        peak_new_bytes=single+2*budget['narrated_segment_bytes']+side+budget['conservative_packet_overshoot_bytes'],
+        prepared_visual_policy=policy,required_workers=1,
+        retained_prepared_visuals=0,existing_author_voice_bytes_charged_by_admission=True)
+    return budget
+
+
+def retire_prepared(visual,target,probe,duration,directory,machine_id):
+    """Retire exactly this attempt's prepared visual after a verified voiced clip."""
+    visual=Path(visual);target=Path(target)
+    if (visual.parent!=target.parent or visual.name!=target.stem+'.visual.mp4'
+        or visual.suffix!='.mp4' or not visual.is_file() or not target.is_file()):
+        raise ValueError('Prepared retirement path is not the exact corresponding generated clip')
+    video=[row for row in probe['streams'] if row.get('codec_type')=='video']
+    audio=[row for row in probe['streams'] if row.get('codec_type')=='audio']
+    if (len(video)!=1 or len(audio)!=1 or video[0].get('codec_name')!='h264'
+        or (video[0].get('width'),video[0].get('height'))!=(2560,1440)
+        or audio[0].get('codec_name')!='aac'
+        or abs(float(probe['format']['duration'])-duration)>.04):
+        raise ValueError('Prepared retirement requires the actual complete voiced AV clip')
+    directory=Path(directory);directory.mkdir(parents=True,exist_ok=False)
+    receipt={'schema':'ck3-faith-power-exact-prepared-retirement-v1','machine_id':machine_id,
+        'observed_at_utc':now(),'prepared':pin(visual),'verified_voiced_clip':pin(target),
+        'reason':'Derived prepared video can be rebuilt from preserved SHA-bound visuals and recorded prepare argv; corresponding voiced clip is verified and retained.',
+        'probe_checked':{'duration_seconds':float(probe['format']['duration']),'video':'h264 2560x1440','audio':'aac'},
+        'recursive_delete':False,'source_media_removed':False}
+    write(directory/'before-delete.json',receipt)
+    visual.unlink()
+    if visual.exists():raise ValueError('Exact prepared file still exists after unlink')
+    write(directory/'deleted.json',{**receipt,'deleted_at_utc':now(),'prepared_exists_after':False})
+    return directory/'deleted.json'
 
 
 def admit_v2(repo, reservation, package_root, output, machine, peak):
@@ -711,6 +779,9 @@ def build(args,doc,inspection,inputs,admission):
     music=background_music(doc,inputs.bound,repo=args.repo)
     if profile!=DEFAULT_PROFILE and (music is None or doc.get('project_config') is None):
         raise ValueError('Explicit extended profile requires exact music and actual selected ProjectConfig')
+    retiring=doc.get('prepared_visual_policy')==PREPARED_RETIRE_POLICY
+    if retiring and (not rules_preview_segment(doc) or args.workers!=1 or profile!=EPISODE02_SAMPLE_PROFILE):
+        raise ValueError('Exact prepared retirement requires the excerpt profile and a single worker')
     out=Path(args.output).resolve(); out.mkdir(parents=True,exist_ok=False)
     write(out/'storage-admission.json',admission)
     runtime=read(args.runtime)
@@ -751,8 +822,12 @@ def build(args,doc,inspection,inputs,admission):
             execute_render_plan(bounded(plan,d,audio=True))
             probe=media_duration(ffprobe,target,out/'audit/segment-probe'/key)
             if abs(float(probe['format']['duration'])-d)>.04:raise ValueError('Narrated segment truncated or exceeded its clock')
-            return row,target,[(key+'.visual','prepared-visual',visual,'video/mp4'),(key+'.subtitle','subtitle',ass,'text/x-ass'),
-                (key+'.segment','rendered-segment',target,'video/mp4')],float(probe['format']['duration'])
+            files=[(key+'.subtitle','subtitle',ass,'text/x-ass'),(key+'.segment','rendered-segment',target,'video/mp4')]
+            if retiring:
+                receipt=retire_prepared(visual,target,probe,d,out/'audit/prepared-retirement'/key,doc['machine_id'])
+                files.append((key+'.prepared-retirement','exact-prepared-retirement',receipt,'application/json'))
+            else:files.insert(0,(key+'.visual','prepared-visual',visual,'video/mp4'))
+            return row,target,files,float(probe['format']['duration'])
         workers=args.workers
         if workers==2 and (os.cpu_count() or 1)<4:raise ValueError('Two encoders require at least four logical CPUs')
         memory=available_memory()

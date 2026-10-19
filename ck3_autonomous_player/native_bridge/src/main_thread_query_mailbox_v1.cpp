@@ -651,7 +651,8 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_religion_conversion_inputs12002 == nullptr &&
        environment.permitted_executor_epidemic_treatment12002 == nullptr &&
        environment.permitted_executor_epidemic_recovery12002 == nullptr &&
-       environment.permitted_executor_feast_stage2_confirm12002 == nullptr
+       environment.permitted_executor_feast_stage2_confirm12002 == nullptr &&
+       environment.permitted_executor_player_pilgrimage_identities12004 == nullptr
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
        && environment.permitted_executor_mandatory_choice12004 == nullptr
 #endif
@@ -1076,6 +1077,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_epidemic_recovery12002;
   mailbox.permitted_executor_feast_stage2_confirm12002 =
       environment.permitted_executor_feast_stage2_confirm12002;
+  mailbox.permitted_executor_player_pilgrimage_identities12004 =
+      environment.permitted_executor_player_pilgrimage_identities12004;
   mailbox.snapshot_observer_callback = environment.snapshot_observer_callback;
   mailbox.snapshot_observer_context = environment.snapshot_observer_context;
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
@@ -1289,6 +1292,7 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   mailbox.permitted_executor_confucian_challenger_graph12003 = nullptr;
   mailbox.permitted_executor_ordinary_interaction12003 = nullptr;
   mailbox.permitted_executor_child_education_focus12004 = nullptr;
+  mailbox.permitted_executor_player_pilgrimage_identities12004 = nullptr;
   mailbox.state.store(MainThreadQueryMailboxStateV1::detached,
                       std::memory_order_release);
   return MainThreadQueryUninstallResultV1::uninstalled;
@@ -1432,7 +1436,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_religion_conversion_inputs12002 != nullptr ||
          mailbox.permitted_executor_epidemic_treatment12002 != nullptr ||
          mailbox.permitted_executor_epidemic_recovery12002 != nullptr ||
-        mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr
+        mailbox.permitted_executor_feast_stage2_confirm12002 != nullptr ||
+         mailbox.permitted_executor_player_pilgrimage_identities12004 != nullptr
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
         || mailbox.permitted_executor_mandatory_choice12004 != nullptr
 #endif
@@ -1581,7 +1586,8 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_religion_conversion_inputs12002 &&
       executor != mailbox.permitted_executor_epidemic_treatment12002 &&
       executor != mailbox.permitted_executor_epidemic_recovery12002 &&
-       executor != mailbox.permitted_executor_feast_stage2_confirm12002) {
+       executor != mailbox.permitted_executor_feast_stage2_confirm12002 &&
+       executor != mailbox.permitted_executor_player_pilgrimage_identities12004) {
     return MainThreadQuerySubmitResultV1::invalid_request;
   }
   if (!mailbox.executor_submission_enabled) {

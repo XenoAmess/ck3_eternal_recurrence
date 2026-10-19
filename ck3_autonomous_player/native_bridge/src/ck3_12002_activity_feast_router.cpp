@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "ck3_12002_activity_feast_router.hpp"
+#include "ck3_12004_player_pilgrimage_activities_private_v1.hpp"
 
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
 #include "ck3_12002_activity_stage5_canstart_private_transport_v1.hpp"
@@ -269,8 +270,10 @@ bool IsActivityFeastPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
   if (step == kActivityStage5FeastFullCostPrivateStepV1) return true;
 #endif
-#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1)
   if (step == kPlayerPilgrimageActivitiesPrivate12004StepV1) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   if (step == ck3_11906::kActivityFeastStage5InputsPrivateStepV1 ||
       step == ck3_11906::kActivityFeastStage5StartPrivateStepV1 ||
       step == ck3_11906::kActivityFeastHostedPostPrivateStepV1) return true;
@@ -743,7 +746,7 @@ bool HandleActivityFeastPrivate12002(
           serialized, failure, true);
     }
 #endif
-#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1)
     if (step == kPlayerPilgrimageActivitiesPrivate12004StepV1) {
       std::string activity_key;
       if (!bridge::IsActivity12004BuildV1(ActivityAbiSha(adapter)) ||
@@ -753,15 +756,16 @@ bool HandleActivityFeastPrivate12002(
         failure = "player pilgrimage identity request invalid";
         return false;
       }
-      ActivityFeastStage5Private12002QueryV1 query{};
+      PlayerPilgrimageActivitiesPrivateQuery12004V1 query{};
       BindQuery(query, adapter, mailbox, current, revision);
-      query.pilgrimage_identities_only = true;
-      if (!RunQuery(query, &ExecuteActivityFeastStage5Private12002V1, failure))
+      if (!RunQuery(query, &ExecutePlayerPilgrimageActivitiesPrivate12004V1, failure))
         return false;
       return FinishRead(query, &SerializePlayerPilgrimageActivitiesPrivate12004V1,
           adapter, current, request_id, step, "player_pilgrimage_activities",
           serialized, failure);
     }
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
     if (step == ck3_11906::kActivityFeastStage5InputsPrivateStepV1 ||
         step == ck3_11906::kActivityFeastStage5StartPrivateStepV1 ||
         step == ck3_11906::kActivityFeastHostedPostPrivateStepV1) {
