@@ -183,7 +183,10 @@ bool PresentationCensus12004(const IngameUiRequestV1&r,const PresentationPanel12
       if(x.runtime_name=="doctrine_icon_main"||x.runtime_name=="doctrine_icon_other"||x.runtime_name=="doctrine_icon_special")
         add("faith_doctrine",PresentationParentPath12004(x.child_path,2));
     }
-    if(r.window_kind==IngameUiWindowKindV1::holding&&x.runtime_name=="building_button"&&PresentationUnderName12004(p.tree,x.child_path,"buildings_grid"))add("holding_building",x.child_path);
+    if(r.window_kind==IngameUiWindowKindV1::holding&&x.runtime_name=="building_button"&&
+        (PresentationUnderName12004(p.tree,x.child_path,"buildings_grid")||
+         PresentationUnderName12004(p.tree,x.child_path,"special_building")||
+         PresentationUnderName12004(p.tree,x.child_path,"special_building_no_others")))add("holding_building",x.child_path);
     if(r.window_kind==IngameUiWindowKindV1::rite_creation&&x.runtime_name=="tenet_name"&&PresentationUnderName12004(p.tree,x.child_path,"tenet_selection"))
       add("rite_core_tenet_choice",PresentationParentPath12004(x.child_path,3));
     if(r.window_kind==IngameUiWindowKindV1::rite_creation&&x.runtime_name=="tenet_name"&&PresentationUnderName12004(p.tree,x.child_path,"left_side")&&PresentationUnderName12004(p.tree,x.child_path,"tenets_grid"))

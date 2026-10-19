@@ -5,6 +5,8 @@ constexpr std::array<unsigned char,24>kPresentationConstructTooltipPin12004{
   0x74,0x38,0x4C,0x8B,0x41,0x08,0x8B,0x51,0x10,0x48,0x8B,0x09};
 struct PresentationBuildingReceiver12004 {
   void *callback=nullptr,*callback_vtable=nullptr,*context=nullptr,*declarations=nullptr,*indices=nullptr;
+  void *callback_data=nullptr;std::size_t callback_group=0;
+  std::int32_t primary_count=0,callback_count=0;
   void *definition=nullptr,*entries=nullptr,*entry=nullptr,*row=nullptr,*rows=nullptr;
   void *registry=nullptr,*type_rows=nullptr,*converter=nullptr,*getter=nullptr;
   void *row_owner_raw=nullptr,*building=nullptr,*next_building=nullptr;
@@ -47,10 +49,15 @@ bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvi
   auto*type_record=static_cast<unsigned char*>(v.type_rows)+static_cast<std::size_t>(v.type_id)*0x130;
   if(!Value(type_record,0xE8,v.converter)||!Value(type_record,0xF0,v.getter)||(v.converter&&v.getter))
     return fail("presentation_building_model_provider_path_not_supported");
-  void*widget=nullptr,*data=nullptr,*entry_function=nullptr,*slot2=nullptr;std::int32_t count=0;
+  void*widget=nullptr,*entry_function=nullptr,*slot2=nullptr;
   if(!ArmyTooltipResolvePath(env,root,gui.context,path,widget,false)||
-      !Value(widget,0x404,count)||count!=(conditions?2:1)||!Value(widget,0x3F8,data)||!data||
-      !Value(data,0x40,v.callback)||!v.callback||!Value(v.callback,0,v.callback_vtable)||
+      !Value(widget,0x404,v.primary_count)||v.primary_count<0||v.primary_count>256)
+    return fail("presentation_building_original_callback_group_unverified");
+  // Original mode0 dispatch uses the fallback only when primary is empty.
+  v.callback_group=v.primary_count?0x3F8U:0x338U;
+  if(!Value(widget,v.callback_group+0xC,v.callback_count)||v.callback_count!=(conditions?2:1)||
+      !Value(widget,v.callback_group,v.callback_data)||!v.callback_data||
+      !Value(v.callback_data,0x40,v.callback)||!v.callback||!Value(v.callback,0,v.callback_vtable)||
       !Value(v.callback_vtable,0x10,slot2)||reinterpret_cast<std::uintptr_t>(slot2)!=env.module_base+0x3AA30E0||
       !Value(v.callback,8,entry_function)||reinterpret_cast<std::uintptr_t>(entry_function)!=env.module_base+0x3A9F960||
       !Value(v.callback,0x1C,v.dynamic_count)||!Value(v.callback,0x9C,v.literal_count)||v.dynamic_count||v.literal_count||
@@ -86,6 +93,9 @@ bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvi
     member=v.array_count&&row>=rows&&(row-rows)%0x28==0&&(row-rows)/0x28<static_cast<std::uint32_t>(v.array_count);
     // Original GetGUIHoldingBuilding separately returns the exact inline row.
     member=member||v.row==static_cast<unsigned char*>(panel.window)+0x118;
+    // Stock GetGUISpecialBuilding: 12B5F20 -> C41480, LEA current view+140.
+    // Exact name, registration, thunk and getter are covered by source pins.
+    member=member||v.row==static_cast<unsigned char*>(panel.window)+0x140;
   }
   if(!member||!Value(v.row,0,v.row_owner_raw)||!Value(v.row,8,v.building))return fail("presentation_building_row_not_owned_by_current_view");
   if(potential){

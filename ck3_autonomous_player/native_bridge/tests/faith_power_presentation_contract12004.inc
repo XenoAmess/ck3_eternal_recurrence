@@ -72,6 +72,14 @@ void FaithPowerPresentationContractFixture12004() {
   assert(v.targets[0].index==0&&v.targets[1].index==0);
   assert(PresentationCoreClickPath12004(p,0)==std::optional<std::string>("0/0/0"));
   assert(!PresentationCoreClickPath12004(p,1));
+  p={};r.window_kind=IngameUiWindowKindV1::holding;
+  row("0","buildings_grid");row("0/0","building_button");
+  row("1","special_building");row("1/0","building_button",true,false);
+  row("2","unrelated_popup");row("2/0","building_button");
+  row("3","special_building_no_others",false);row("3/0","building_button",false);
+  if(!PresentationCensus12004(r,p,sources,v)||v.targets.size()!=2||sources[1].path!="1/0"||
+      v.targets[1].kind!="holding_building"||v.targets[1].enabled)
+    throw "production census omitted the actual stock special carrier or admitted an unrelated/hidden carrier";
   p={};r.window_kind=IngameUiWindowKindV1::personal_beliefs;
   row("0","personal_tenets_tutorial_uses_this");row("0/0","");
   assert(PresentationCensus12004(r,p,sources,v)&&v.targets.empty());
@@ -230,6 +238,27 @@ void FaithPowerBuildingReceiverFixture12004(){
  put(viewp,0x100,owned);put(viewp,0x108,one);put(viewp,0x10C,one);put(rowp,0,groupowner);put(rowp,8,building);put(entryp,0,rowp);
  declaration=2;put(entryp,0x48,declaration);put(cbp,0x58,declaration);fn=image+0x12B2610;put(cbp,0x48,fn);
  assert(read(false)&&observed.row_owner_raw==groupowner&&observed.row_owner_raw!=viewp);
+ // Actual R27 ordinary and special buttons use the original mode0 fallback.
+ // Explicit failures keep these new acceptance checks active with NDEBUG.
+ const auto verify_receiver=[](bool ok,const char*why){if(!ok)throw why;};
+ put(widgetp,0x404,zero);put(widgetp,0x338,groupp);put(widgetp,0x344,one);
+ verify_receiver(read(false)&&observed.callback_group==0x338&&observed.callback_data==groupp,
+     "production receiver did not follow actual empty-primary fallback");
+ fn=image+0x12B3390;put(cbp,0x48,fn);
+ verify_receiver(!read(false),"fallback admitted a different original method");
+ fn=image+0x12B2610;put(cbp,0x48,fn);
+ auto*special_row=static_cast<unsigned char*>(viewp)+0x140;
+ put(special_row,0,groupowner);put(special_row,8,building);put(entryp,0,special_row);
+ verify_receiver(read(false)&&observed.row==special_row&&observed.building_key=="temple_01",
+     "production receiver did not bind exact owned special row");
+ put(entryp,0,special_row+1);
+ verify_receiver(!read(false),"special receiver admitted a non-owned row alias");
+ put(entryp,0,special_row);image[0xC41480]^=1;
+ verify_receiver(!read(false),"special receiver ignored original getter source mismatch");
+ image[0xC41480]^=1;put(entryp,0,rowp);put(widgetp,0x404,one);
+ verify_receiver(read(false)&&observed.callback_group==0x3F8,
+     "production receiver changed nonempty-primary precedence");
+
  put(entryp,0,widgetp);assert(!read(false));put(entryp,0,rowp);
  auto&rpin=kPresentationReceiverPins12004[0];const auto original=image[rpin.rva];image[rpin.rva]^=1;assert(!read(false));image[rpin.rva]=original;
  fixture_army_root_available=false;fixture_tooltip_tree=false;fixture_army_root=nullptr;fixture_supplies=nullptr;

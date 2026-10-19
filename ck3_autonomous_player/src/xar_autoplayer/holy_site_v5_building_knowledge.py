@@ -264,6 +264,51 @@ SPECIAL_BUILDINGS = {'schema': 'ck3-special-building-planning-knowledge-v1',
                                                                        6119,
                                                                        6121]}},
                                'source': ['common/buildings/00_special_buildings.txt', 6108, 6168],
+                               'source_file_sha256': '33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4'}]},
+              {'keys': ['palace_of_ctesiphon_02'],
+               'explanation': '泰西封大王宫02：建造要求持有者满足琐罗亚斯德教／当前礼仪东方综摄或三种指定信仰之一，并且最高头衔至少为王国、自己为最高领主；这些建造条件不等于另有宗教启用门。历史01与目标02必须分别观察。',
+               'conditions': [{'key': 'palace_of_ctesiphon_02',
+                               'official_zh_hans_name': '泰西封大王宫',
+                               'phases': {'can_construct': {'class': 'affiliation_hard_gate',
+                                                            'logic': 'OR(Z, scope:holder.faith = '
+                                                                     'faith:manichaean_faith, scope:holder.faith '
+                                                                     '= faith:nestorian, scope:holder.faith = '
+                                                                     'faith:hellenic_pagan)',
+                                                            'full_expanded_gate': 'AND(scope:holder{AND(OR(AND(scope:holder{OR(faith.religion '
+                                                                                  '= '
+                                                                                  'religion:zoroastrianism_religion, '
+                                                                                  'rite{rite_has_parameter = '
+                                                                                  'eastern_syncretic_actor})}), '
+                                                                                  'faith = '
+                                                                                  'faith:manichaean_faith, faith '
+                                                                                  '= faith:nestorian, faith = '
+                                                                                  'faith:hellenic_pagan), '
+                                                                                  'highest_held_title_tier >= '
+                                                                                  'tier_kingdom, top_liege = '
+                                                                                  'this)})',
+                                                            'source': ['common/buildings/00_special_buildings.txt',
+                                                                       5286,
+                                                                       5299]}},
+                               'source': ['common/buildings/00_special_buildings.txt', 5275, 5335],
+                               'source_file_sha256': '33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4'}]},
+              {'keys': ['etchmiadzin_cathedral'],
+               'explanation': '瓦加尔沙帕特主教座堂：启用要求地产持有者当前礼仪恰为armenian_rite，不能以泛基督教、圣地关联或个人信条替代。空槽、候选、建成与启用状态仍须分别读回。',
+               'conditions': [{'key': 'etchmiadzin_cathedral',
+                               'official_zh_hans_name': '瓦加尔沙帕特主教座堂',
+                               'phases': {'is_enabled': {'class': 'affiliation_hard_gate',
+                                                         'logic': 'scope:holder.rite = rite:armenian_rite',
+                                                         'full_expanded_gate': 'AND(scope:holder.rite = '
+                                                                               'rite:armenian_rite)',
+                                                         'source': ['common/buildings/00_special_buildings.txt',
+                                                                    7140,
+                                                                    7142]},
+                                          'can_construct': {'class': 'no_religion_or_holy_gate',
+                                                            'logic': '—',
+                                                            'full_expanded_gate': 'AND()',
+                                                            'source': ['common/buildings/00_special_buildings.txt',
+                                                                       7136,
+                                                                       7138]}},
+                               'source': ['common/buildings/00_special_buildings.txt', 7125, 7182],
                                'source_file_sha256': '33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4'}]}],
  'native_legality': None,
  'state_observed': False,

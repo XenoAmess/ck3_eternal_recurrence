@@ -338,7 +338,10 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
     if(first.hover!=binding.source||first.entries.empty()||first.entries.back().source!=binding.source||
         first.entries.back().locked!=0||std::count_if(first.entries.begin(),first.entries.end(),
         [&](const auto &entry){return entry.source==binding.source;})!=1)
-      return reject("presentation_tooltip_hover_source_top_unlocked_join_failed");
+      return reject(std::string("presentation_")+ArmyTooltipStackJoinFailure(first,binding.source)+
+          ";top_source_null="+(first.entries.empty()?std::string("unavailable"):first.entries.back().source?std::string("false"):std::string("true"))+
+          ";bound_entries="+std::to_string(std::count_if(first.entries.begin(),first.entries.end(),
+              [&](const auto &entry){return entry.source==binding.source;})));
     if(!PresentationTooltipRootIdentityRead12004(env,first.entries.back().root,gui.context,false,visible_root)||
         !PresentationTooltipReadTree12004(env,first.entries.back().root,gui.context,tree,why))
       return reject(why.empty()?"presentation_tooltip_visible_root_unverified":why);

@@ -36,6 +36,45 @@ class V5ClarificationsMcpTests(unittest.IsolatedAsyncioTestCase):
     actual_mcp_summaries = []
     actual_game_driver_calls = []
 
+    async def test_two_building_examples_match_reviewed_source_through_existing_mcp(self):
+        catalogue_path = Path(__file__).resolve().parents[3] / "docs/ck3-native-ai/evidence/special-building-religion-holy-site-gates12004/catalogue.json"
+        raw = catalogue_path.read_bytes()
+        catalogue = json.loads(raw)
+        source_rows = {row["key"]: row for row in catalogue["buildings"]}
+        keys = {"palace_of_ctesiphon_02", "etchmiadzin_cathedral"}
+        fields = ("key", "official_zh_hans_name", "phases", "source", "source_file_sha256")
+        driver = NoGameDriver()
+        async with Client(create_server(driver)) as client:
+            for action in ("create", "adopt"):
+                reply = await client.session.call_tool(TOOL, {"action": action})
+                self.assertFalse(reply.is_error)
+                result = reply.structured_content
+                self.assertFalse(result["state_observed"])
+                self.assertIsNone(result["native_legality"])
+                self.assertFalse(result["action_ready"])
+                knowledge = result["knowledge"]["v5_clarifications"]["special_buildings"]
+                self.assertEqual(knowledge["catalogue_sha256"], hashlib.sha256(raw).hexdigest())
+                self.assertFalse(knowledge["state_observed"])
+                self.assertIsNone(knowledge["native_legality"])
+                self.assertFalse(knowledge["action_ready"])
+                self.assertFalse(knowledge["business_pass"])
+                rows = {row["key"]: row for example in knowledge["examples"] for row in example["conditions"]}
+                self.assertEqual(len(rows), 9)
+                for key in keys:
+                    self.assertEqual(rows[key], {name: source_rows[key][name] for name in fields})
+                palace = rows["palace_of_ctesiphon_02"]["phases"]
+                self.assertNotIn("is_enabled", palace)
+                gate = palace["can_construct"]["full_expanded_gate"]
+                self.assertIn("highest_held_title_tier >= tier_kingdom", gate)
+                self.assertIn("top_liege = this", gate)
+                self.assertIn("rite_has_parameter = eastern_syncretic_actor", gate)
+                self.assertIn("faith = faith:nestorian", gate)
+                cathedral = rows["etchmiadzin_cathedral"]["phases"]
+                self.assertEqual(cathedral["is_enabled"]["full_expanded_gate"],
+                    "AND(scope:holder.rite = rite:armenian_rite)")
+                self.assertEqual(cathedral["can_construct"]["full_expanded_gate"], "AND()")
+        self.assertEqual(driver.calls, [])
+
     async def test_v5_new_decision_boundaries_existing_tool(self):
         driver = NoGameDriver()
         type(self).actual_game_driver_calls = driver.calls
