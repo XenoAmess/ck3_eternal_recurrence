@@ -1,0 +1,668 @@
+{
+  "schema": "xar.player-heir12004.field8-receiver-discovery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T07:51:04.858171+00:00",
+  "ended_at_utc": "2026-10-19T07:51:05.441977+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "file_stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "file_stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-receiver12004-20261019/plan01.json",
+    "bytes": 4851,
+    "sha256": "2b6d7ef08c47fdbd781ad30368dba95669959bde8e74a2c1359b7a273e5dbc4c"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-player-heir-receiver01.py",
+    "bytes": 11271,
+    "sha256": "e11b3654c4b7ae9fd4b35111c490f0cbbba55c677a7077ad37f735bec08a73cb"
+  },
+  "existing_cache_probe": {
+    "tool": {
+      "path": "Z:/ck3_mod_rewrite/_runtime/m3-player-heir-receiver-cache01.py",
+      "bytes": 1026,
+      "sha256": "a86968e17b82242a7a150cd7cc9552e37d2ed75ce3e6cf0980cc2eaeca9fc067"
+    },
+    "actual_result_chunk": "d18fd8",
+    "direct_named_spans_exist": [
+      false,
+      false
+    ],
+    "CORE_FUNCTION_MAP_target_key_hits": 0,
+    "cache_machine_id": "unknown"
+  },
+  "fixed_target_rdata_refs": [
+    {
+      "target_rva": 38747808,
+      "rdata_VA8_ref_rvas": [],
+      "cap": 3,
+      "tail_unexamined_if_cap_reached": false
+    },
+    {
+      "target_rva": 38749298,
+      "rdata_VA8_ref_rvas": [],
+      "cap": 3,
+      "tail_unexamined_if_cap_reached": false
+    }
+  ],
+  "direct_CALL_candidates": [
+    {
+      "call_rva": 37598155,
+      "target_rva": 38747808,
+      "function_record": {
+        "index": 125640,
+        "begin_rva": 37594816,
+        "end_rva_exclusive": 37598483,
+        "unwind_rva": 86265068,
+        "row_rva": 99823968
+      }
+    }
+  ],
+  "source_windows": [
+    {
+      "kind": "exact-target-direct-CALL-candidate",
+      "rva": 37597963,
+      "bytes": 512,
+      "hex": "e8f02a61ff80be6002000000743e488bcfe85fd8ba01bafb3b0000488bcfe892dbba01ba01000000488bcfe885dbba010fb69660020000488bcfe816e0ba01ba10000000488bcfe869dbba0180bec8020000000f84a4000000488d9e68020000807b60000f8498010000488bcfe803d8ba01bafc3b0000488bcfe836dbba01ba01000000488bcfe829dbba0148895d678b471085c0781dba03000000488bcfe811dbba01ba10000000488bcfe804dbba018b4710ffc0894710488bd7488d4d67e8d08a1100ff4f10488bcfe8a5d7ba01837f10007c1aba04000000488bcfe8d2daba01ba10000000488bcfe8c5daba01ba10000000488bcfe8b8daba010fb79ef0020000b805000000663bc37439488bcfe85fd7ba01bab83d0000488bcfe892daba01ba01000000488bcfe885daba018bd3488bcfe8bbddba01ba10000000488bcfe86edaba014c8d86f8020000488bcfe80f3d0000488d8e00030000e843e5890084c0750b4c8bc1488bcfe8843e00004c8975e748c745ef000000000f1045e70f294507f20f104df7f20f114d174c8d8640030000c6442420004c8d4d07baa23e0000488bcfe8f93e00004c8975e748c745ef000000000f1045e70f294507f20f104df7f20f114d174c8d8668030000c6442420004c8d4d07ba00410000488bcfe8be3e0000488b9c24e80000004881c490000000415f415e415d415c5f5e",
+      "sha256": "39a75d2f918b5efdeda9eff22d3ff3fe4348edc366c54b69a4a5f7af006aff68",
+      "call_rva": 37598155,
+      "target_rva": 38747808,
+      "function_record": {
+        "index": 125640,
+        "begin_rva": 37594816,
+        "end_rva_exclusive": 37598483,
+        "unwind_rva": 86265068,
+        "row_rva": 99823968
+      }
+    }
+  ],
+  "source_window_bytes": 512,
+  "static_receiver_identity": null,
+  "current_living_player_or_qualification_claim": false,
+  "forbidden_operations": {
+    "process_Game_RPC_builds": 0,
+    "EXE_copied": false,
+    "callee_AI_traversal": false,
+    "numeric_token_rescan": false,
+    "old_frozen_file_edits": 0
+  },
+  "additional_receiver_entries": {
+    "started_at_utc": "2026-10-19T07:52:49.939771+00:00",
+    "ended_at_utc": "2026-10-19T07:52:49.941673+00:00",
+    "file_stat_before": {
+      "bytes": 101040248,
+      "mtime_ns": 1791307594040564100,
+      "file_id": 1688849860293886
+    },
+    "file_stat_after": {
+      "bytes": 101040248,
+      "mtime_ns": 1791307594040564100,
+      "file_id": 1688849860293886
+    },
+    "windows": [
+      {
+        "kind": "directly-reached-receiver-entry",
+        "rva": 38747808,
+        "bytes": 512,
+        "hex": "48895c24084889742410574883ec40488b39488bf1488bca488bdae8c04ca901ba013c0000488bcbe8f34fa901ba01000000488bcbe8e64fa9018b431085c0781dba03000000488bcbe8d24fa901ba10000000488bcbe8c54fa9018b4310ffc0c644243000894310ba952c0000448b4f34488bcb4c8b4728e853f92900448b4f4cba1b2800004c8b4740488bcbc644243000e839f92900837f58ff743a488bcbe83b4ca901bafd3b0000488bcbe86e4fa901ba01000000488bcbe8614fa9018b5758488bcbe89652a901ba10000000488bcbe8494fa901ff4b10488bcbe8fe4ba901837b10007c1aba04000000488bcbe82b4fa901ba10000000488bcbe81e4fa901ba10000000488bcbe8114fa901488b3e833fff743c488bcbe8c14ba901ba07070000488bcbe8f44ea901ba01000000488bcbe8e74ea9018b17488bcbe81d52a901ba10000000488bcbe8d04ea901488b3e837f08ff743d488bcbe87f4ba901baa6310000488bcbe8b24ea901ba01000000488bcbe8a54ea9018b5708488bcbe8da51a901ba10000000488bcbe88d4ea901488b3e837f04ff743d488bcbe83c4ba901bad72d0000488bcbe86f4ea901ba01000000488bcbe8624ea9018b5704488bcbe89751a901ba10000000488bcbe84a4ea901488b3e8b771c488b7f1085f60f8e27010000488bcbe8f04aa901bad5270000488bcbe8234ea901ba0100",
+        "sha256": "7454013c80c748fbdf77c3065c153f9d614fe90c2746c2404d65fabd1efc0d0c",
+        "function_record": {
+          "index": 129036,
+          "begin_rva": 38747808,
+          "end_rva_exclusive": 38748607,
+          "unwind_rva": 84986992,
+          "row_rva": 99864720
+        },
+        "entry_instructions_max40": [
+          {
+            "rva": 38747808,
+            "bytes": "48895c2408",
+            "instruction": "mov qword ptr [rsp + 8], rbx"
+          },
+          {
+            "rva": 38747813,
+            "bytes": "4889742410",
+            "instruction": "mov qword ptr [rsp + 0x10], rsi"
+          },
+          {
+            "rva": 38747818,
+            "bytes": "57",
+            "instruction": "push rdi"
+          },
+          {
+            "rva": 38747819,
+            "bytes": "4883ec40",
+            "instruction": "sub rsp, 0x40"
+          },
+          {
+            "rva": 38747823,
+            "bytes": "488b39",
+            "instruction": "mov rdi, qword ptr [rcx]"
+          },
+          {
+            "rva": 38747826,
+            "bytes": "488bf1",
+            "instruction": "mov rsi, rcx"
+          },
+          {
+            "rva": 38747829,
+            "bytes": "488bca",
+            "instruction": "mov rcx, rdx"
+          },
+          {
+            "rva": 38747832,
+            "bytes": "488bda",
+            "instruction": "mov rbx, rdx"
+          },
+          {
+            "rva": 38747835,
+            "bytes": "e8c04ca901",
+            "instruction": "call 0x143f88b80"
+          },
+          {
+            "rva": 38747840,
+            "bytes": "ba013c0000",
+            "instruction": "mov edx, 0x3c01"
+          },
+          {
+            "rva": 38747845,
+            "bytes": "488bcb",
+            "instruction": "mov rcx, rbx"
+          },
+          {
+            "rva": 38747848,
+            "bytes": "e8f34fa901",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 38747853,
+            "bytes": "ba01000000",
+            "instruction": "mov edx, 1"
+          },
+          {
+            "rva": 38747858,
+            "bytes": "488bcb",
+            "instruction": "mov rcx, rbx"
+          },
+          {
+            "rva": 38747861,
+            "bytes": "e8e64fa901",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 38747866,
+            "bytes": "8b4310",
+            "instruction": "mov eax, dword ptr [rbx + 0x10]"
+          },
+          {
+            "rva": 38747869,
+            "bytes": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "rva": 38747871,
+            "bytes": "781d",
+            "instruction": "js 0x1424f3efe"
+          },
+          {
+            "rva": 38747873,
+            "bytes": "ba03000000",
+            "instruction": "mov edx, 3"
+          },
+          {
+            "rva": 38747878,
+            "bytes": "488bcb",
+            "instruction": "mov rcx, rbx"
+          },
+          {
+            "rva": 38747881,
+            "bytes": "e8d24fa901",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 38747886,
+            "bytes": "ba10000000",
+            "instruction": "mov edx, 0x10"
+          },
+          {
+            "rva": 38747891,
+            "bytes": "488bcb",
+            "instruction": "mov rcx, rbx"
+          },
+          {
+            "rva": 38747894,
+            "bytes": "e8c54fa901",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 38747899,
+            "bytes": "8b4310",
+            "instruction": "mov eax, dword ptr [rbx + 0x10]"
+          },
+          {
+            "rva": 38747902,
+            "bytes": "ffc0",
+            "instruction": "inc eax"
+          },
+          {
+            "rva": 38747904,
+            "bytes": "c644243000",
+            "instruction": "mov byte ptr [rsp + 0x30], 0"
+          },
+          {
+            "rva": 38747909,
+            "bytes": "894310",
+            "instruction": "mov dword ptr [rbx + 0x10], eax"
+          },
+          {
+            "rva": 38747912,
+            "bytes": "ba952c0000",
+            "instruction": "mov edx, 0x2c95"
+          },
+          {
+            "rva": 38747917,
+            "bytes": "448b4f34",
+            "instruction": "mov r9d, dword ptr [rdi + 0x34]"
+          },
+          {
+            "rva": 38747921,
+            "bytes": "488bcb",
+            "instruction": "mov rcx, rbx"
+          },
+          {
+            "rva": 38747924,
+            "bytes": "4c8b4728",
+            "instruction": "mov r8, qword ptr [rdi + 0x28]"
+          },
+          {
+            "rva": 38747928,
+            "bytes": "e853f92900",
+            "instruction": "call 0x142793870"
+          },
+          {
+            "rva": 38747933,
+            "bytes": "448b4f4c",
+            "instruction": "mov r9d, dword ptr [rdi + 0x4c]"
+          },
+          {
+            "rva": 38747937,
+            "bytes": "ba1b280000",
+            "instruction": "mov edx, 0x281b"
+          },
+          {
+            "rva": 38747942,
+            "bytes": "4c8b4740",
+            "instruction": "mov r8, qword ptr [rdi + 0x40]"
+          },
+          {
+            "rva": 38747946,
+            "bytes": "488bcb",
+            "instruction": "mov rcx, rbx"
+          },
+          {
+            "rva": 38747949,
+            "bytes": "c644243000",
+            "instruction": "mov byte ptr [rsp + 0x30], 0"
+          },
+          {
+            "rva": 38747954,
+            "bytes": "e839f92900",
+            "instruction": "call 0x142793870"
+          },
+          {
+            "rva": 38747959,
+            "bytes": "837f58ff",
+            "instruction": "cmp dword ptr [rdi + 0x58], -1"
+          }
+        ],
+        "calls_reported_only_not_followed": true
+      },
+      {
+        "kind": "directly-reached-receiver-entry",
+        "rva": 37594816,
+        "bytes": 512,
+        "hex": "48895c242048895424105556574154415541564157488d6c24d94881ec90000000488bfa488bf1488d81b80000008b481048837818107203488b00488945c7894dcfc645d300488bcfe872e4ba01ba1b000000488bcfe8a5e7ba01ba01000000488bcfe898e7ba014533c0488d55c7488bcfe879edba01ba10000000488bcfe87ce7ba01488bcfe834e4ba01baec060000488bcfe867e7ba01ba01000000488bcfe85ae7ba018b96b0000000488bcfe88ceaba01ba10000000488bcfe83fe7ba01488bcfe8f7e3ba01ba4a270000488bcfe82ae7ba01ba01000000488bcfe81de7ba018b96d8000000488bcfe89fe9ba01ba10000000488bcfe802e7ba014c8d356bf34afe4c8975c74533e44c8965cf443966180f845c010000488bcfe89ee3ba01ba9b300000488bcfe8d1e6ba01418d542401488bcfe8c4e6ba014c8965e74c8965ef488d05edaf1003488945f70f1045c70f294507f20f104dd7f20f114d174c8d4507488d5608488d4de7e89e5700008b471085c0781d418d542403488bcfe87ae6ba01418d542410488bcfe86de6ba018b4710ffc08947104c637df349c1e7044c8b6de74d03fd4d8bf54d3bef74770f1f400066660f1f8400000000004d8b6608498b1e488bcfe8f1e2ba01488b134885d2750433c9eb0f488b4208486348044883c1084803ca488b01488bd7ff5008ba01000000488bcfe800e6ba01",
+        "sha256": "b3e2c7758ea56c0255795a59d0790066a03d74b6a0363df06cea7590303350df",
+        "function_record": {
+          "index": 125640,
+          "begin_rva": 37594816,
+          "end_rva_exclusive": 37598483,
+          "unwind_rva": 86265068,
+          "row_rva": 99823968
+        },
+        "entry_instructions_max40": [
+          {
+            "rva": 37594816,
+            "bytes": "48895c2420",
+            "instruction": "mov qword ptr [rsp + 0x20], rbx"
+          },
+          {
+            "rva": 37594821,
+            "bytes": "4889542410",
+            "instruction": "mov qword ptr [rsp + 0x10], rdx"
+          },
+          {
+            "rva": 37594826,
+            "bytes": "55",
+            "instruction": "push rbp"
+          },
+          {
+            "rva": 37594827,
+            "bytes": "56",
+            "instruction": "push rsi"
+          },
+          {
+            "rva": 37594828,
+            "bytes": "57",
+            "instruction": "push rdi"
+          },
+          {
+            "rva": 37594829,
+            "bytes": "4154",
+            "instruction": "push r12"
+          },
+          {
+            "rva": 37594831,
+            "bytes": "4155",
+            "instruction": "push r13"
+          },
+          {
+            "rva": 37594833,
+            "bytes": "4156",
+            "instruction": "push r14"
+          },
+          {
+            "rva": 37594835,
+            "bytes": "4157",
+            "instruction": "push r15"
+          },
+          {
+            "rva": 37594837,
+            "bytes": "488d6c24d9",
+            "instruction": "lea rbp, [rsp - 0x27]"
+          },
+          {
+            "rva": 37594842,
+            "bytes": "4881ec90000000",
+            "instruction": "sub rsp, 0x90"
+          },
+          {
+            "rva": 37594849,
+            "bytes": "488bfa",
+            "instruction": "mov rdi, rdx"
+          },
+          {
+            "rva": 37594852,
+            "bytes": "488bf1",
+            "instruction": "mov rsi, rcx"
+          },
+          {
+            "rva": 37594855,
+            "bytes": "488d81b8000000",
+            "instruction": "lea rax, [rcx + 0xb8]"
+          },
+          {
+            "rva": 37594862,
+            "bytes": "8b4810",
+            "instruction": "mov ecx, dword ptr [rax + 0x10]"
+          },
+          {
+            "rva": 37594865,
+            "bytes": "4883781810",
+            "instruction": "cmp qword ptr [rax + 0x18], 0x10"
+          },
+          {
+            "rva": 37594870,
+            "bytes": "7203",
+            "instruction": "jb 0x1423da6fb"
+          },
+          {
+            "rva": 37594872,
+            "bytes": "488b00",
+            "instruction": "mov rax, qword ptr [rax]"
+          },
+          {
+            "rva": 37594875,
+            "bytes": "488945c7",
+            "instruction": "mov qword ptr [rbp - 0x39], rax"
+          },
+          {
+            "rva": 37594879,
+            "bytes": "894dcf",
+            "instruction": "mov dword ptr [rbp - 0x31], ecx"
+          },
+          {
+            "rva": 37594882,
+            "bytes": "c645d300",
+            "instruction": "mov byte ptr [rbp - 0x2d], 0"
+          },
+          {
+            "rva": 37594886,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          },
+          {
+            "rva": 37594889,
+            "bytes": "e872e4ba01",
+            "instruction": "call 0x143f88b80"
+          },
+          {
+            "rva": 37594894,
+            "bytes": "ba1b000000",
+            "instruction": "mov edx, 0x1b"
+          },
+          {
+            "rva": 37594899,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          },
+          {
+            "rva": 37594902,
+            "bytes": "e8a5e7ba01",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 37594907,
+            "bytes": "ba01000000",
+            "instruction": "mov edx, 1"
+          },
+          {
+            "rva": 37594912,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          },
+          {
+            "rva": 37594915,
+            "bytes": "e898e7ba01",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 37594920,
+            "bytes": "4533c0",
+            "instruction": "xor r8d, r8d"
+          },
+          {
+            "rva": 37594923,
+            "bytes": "488d55c7",
+            "instruction": "lea rdx, [rbp - 0x39]"
+          },
+          {
+            "rva": 37594927,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          },
+          {
+            "rva": 37594930,
+            "bytes": "e879edba01",
+            "instruction": "call 0x143f894b0"
+          },
+          {
+            "rva": 37594935,
+            "bytes": "ba10000000",
+            "instruction": "mov edx, 0x10"
+          },
+          {
+            "rva": 37594940,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          },
+          {
+            "rva": 37594943,
+            "bytes": "e87ce7ba01",
+            "instruction": "call 0x143f88ec0"
+          },
+          {
+            "rva": 37594948,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          },
+          {
+            "rva": 37594951,
+            "bytes": "e834e4ba01",
+            "instruction": "call 0x143f88b80"
+          },
+          {
+            "rva": 37594956,
+            "bytes": "baec060000",
+            "instruction": "mov edx, 0x6ec"
+          },
+          {
+            "rva": 37594961,
+            "bytes": "488bcf",
+            "instruction": "mov rcx, rdi"
+          }
+        ],
+        "calls_reported_only_not_followed": true
+      }
+    ],
+    "total_source_windows_in_packet": 3,
+    "total_source_window_bytes_in_packet": 1536,
+    "prior_output_sha256": "892a22d409e66d10cec2ff3a5004231213f55f4b75ab3ceff61a6727b3578cfe",
+    "prior_output_reconstruction": "Remove only additional_receiver_entries and source_review members, encode ensure_ascii=False/indent2/newline.",
+    "producer": {
+      "path": "Z:/ck3_mod_rewrite/_runtime/m3-player-heir-receiver-entries02.py",
+      "bytes": 3957,
+      "sha256": "43f47a21206205abf45e150ad572d88db24e18fe9a3313875952517e490b2441"
+    }
+  },
+  "supplemental_name_lookup": {
+    "target_token_u32": 15361,
+    "name": "destiny_characters",
+    "record_rva": 74426304,
+    "record_bytes": 16,
+    "record_hex": "013c000000000000a05e6d4401000000",
+    "record_sha256": "ecd23e698117394926740d31873580d0770ca1f0631bb268236b9df1c8cb9c1b",
+    "name_rva": 74276512,
+    "name_bytes_including_NUL": 19,
+    "name_hex_including_NUL": "64657374696e795f6368617261637465727300",
+    "name_sha256": "be82305d635b8e66f75e2166a734f655b750435fe228578b5b7119f5cb63ed78",
+    "table_begin_rva": 74321248,
+    "record_index": 6566,
+    "match_count": 1,
+    "started_at_utc": "2026-10-19T07:55:46.654869+00:00",
+    "ended_at_utc": "2026-10-19T07:55:46.656937+00:00",
+    "file_stat_before": {
+      "bytes": 101040248,
+      "mtime_ns": 1791307594040564100,
+      "file_id": 1688849860293886
+    },
+    "file_stat_after": {
+      "bytes": 101040248,
+      "mtime_ns": 1791307594040564100,
+      "file_id": 1688849860293886
+    },
+    "function_windows_added": 0,
+    "original_function_window_count": 3,
+    "producer": {
+      "path": "Z:/ck3_mod_rewrite/_runtime/m3-player-heir-token3c01-lookup.py",
+      "bytes": 4623,
+      "sha256": "6f14f34393f3b6e1b9f12041bc9aaa779bb500a28774fcf628b855e011674150"
+    }
+  },
+  "plan_before_supplemental_lookup": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-receiver12004-20261019/plan01.json",
+    "bytes": 3992,
+    "sha256": "dbf5d8f767618f9cfc94c90526e5d6e07685bc2f50628a7752f99eaefc25e30f"
+  },
+  "source_review": {
+    "observed_at_utc": "2026-10-19T07:58:33.461898+00:00",
+    "receiver_chain": [
+      "23DA6C0 entry: RSI=incomingRCX; RDI=incomingRDX (output stream).",
+      "Already copied caller window: RBX=RSI+268; QWORD[RBP+67]=RBX; RCX=&QWORD[RBP+67],RDX=RDI; CALL24F3EA0 at23DB3CB.",
+      "24F3EA0 entry: RDI=QWORD[RCX]; RSI=RCX; RBX=RDX. Its token31A6 field reads DWORD[RDI+8]. Thus the serialized field belongs to parent+268+8=parent+270.",
+      "24F3EA0 starts a serialized block with canonical token3C01; the exact ID record and referenced NUL name close that block key as destiny_characters."
+    ],
+    "object_identity_closed": "Serialized destiny_characters nested storage embedded at parent+268, with player_heir DWORD at+8. This is a storage identity, not a C++ RTTI/class name or a current living-owner witness.",
+    "not_inferred": [
+      "parent is CCharacter",
+      "field+8 is a native eligibility Boolean or an independently qualified living successor",
+      "destiny character pool equals complete legal backups",
+      "source is law enum because the token is also used there",
+      "nameGetPlayerHeir has no implementation because fixed ref encodings were zero"
+    ],
+    "authored_GUI_getter_entry": {
+      "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/window_character.gui",
+      "bytes": 159279,
+      "sha256": "8cd9ed0cca9699ea08dc29ae444802f1d842cc332156b072283146075840e2d9",
+      "observed_at_utc": "2026-10-19T07:58:33.463062+00:00",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "lines": [
+        {
+          "line": 883,
+          "text": "\t\t\twidget = { # Player Heir for the local player"
+        },
+        {
+          "line": 884,
+          "text": "\t\t\t\tname = \"heir_player\""
+        },
+        {
+          "line": 885,
+          "text": "\t\t\t\tdatacontext = \"[CharacterWindow.GetCharacter.GetPlayerHeir]\""
+        },
+        {
+          "line": 886,
+          "text": "\t\t\t\tvisible = \"[And( Character.IsValid, CharacterWindow.GetCharacter.IsLocalPlayer )]\""
+        }
+      ]
+    },
+    "independent_GUI_successor_character_consumer": {
+      "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/window_succession_event.gui",
+      "bytes": 44369,
+      "sha256": "eabeebd8fd0d71dfae4e0ba6108001a936db5251a55643522a04f66ce5433b00",
+      "observed_at_utc": "2026-10-19T07:58:33.463465+00:00",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "lines": [
+        {
+          "line": 1343,
+          "text": "\t\t\tvisible = \"[Not(SuccessionEventWindow.GetPlayerHeir.GetPlayerHeir.IsValid)]\""
+        },
+        {
+          "line": 1344,
+          "text": "\t\t\ttext = \"LEGACY_NO_HEIR\""
+        }
+      ]
+    },
+    "GUI_boundary": "The ordinary CharacterWindow authored local-player heir widget uses the Character receiver GetPlayerHeir with valid returned Character and IsLocalPlayer gates. This identifies a concrete native DataFunction registration/callback target to locate; it is not a live query or proof of original continuation eligibility, alive state, D0 match or complete backup coverage.",
+    "unique_next_source": "Exact-build Character.GetPlayerHeir DataFunction registration -> typed Character receiver and returned full CharacterID -> native current-player continuation qualifier/caller. Start with this authored ordinary-character getter, not SuccessionEventWindow.GetPlayerHeir, title-law order, or additional31A6 serializer scans.",
+    "parallel_boundary": "M7 owns LandState+3A0 writer/update and eligible-pool source. Same+8 displacements in its generic membership predicate are not joined to this storage.",
+    "checks": {
+      "ordinary_plan": "1eeec7 exit0; after authorized fixed data supplement6d7e4c exit0, record integrity only",
+      "for_observation": "3d232f exit2 offline-only/no live producer, retained",
+      "source_windows": "3 windows of512B; additional token data exactly16+19B; no additional functions, calls followed, process/Game/RPC/build or EXE copies"
+    },
+    "earliest_output_reconstruction": "Remove additional_receiver_entries, supplemental_name_lookup, plan_before_supplemental_lookup and source_review; replace plan with plan_before_supplemental_lookup value saved before removal; encode ensure_ascii=False/indent2/newline. Original SHA892a22d409e66d10cec2ff3a5004231213f55f4b75ab3ceff61a6727b3578cfe.",
+    "H_or_runtime_credit": false,
+    "retention": {
+      "review_at_utc": "2027-04-17T07:57:27Z",
+      "automatic_renewal": false,
+      "purpose": "Source-bound destiny storage exclusion and ordinary local-player getter target; keeps future work off repeated token/name discovery"
+    }
+  }
+}

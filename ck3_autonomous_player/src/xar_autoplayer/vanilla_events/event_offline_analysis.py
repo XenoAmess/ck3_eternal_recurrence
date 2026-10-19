@@ -404,14 +404,21 @@ def load_source_reviewed_event_v1(state_dir, capture):
             try:
                 facts, _ = read_json(known["source_facts"]["path"])
                 populist_letter = current["event_definition_key"] == "faction_demand.1001"
-                shape = (_populist1001_source_rebind_shape(capture, facts, current)
-                         if populist_letter else _source_rebind_root_shape(capture, facts, current))
+                reviewed_letter = current["event_definition_key"] in {
+                    "faction_demand.0101", "ecumenical_council_events.0082"}
+                if reviewed_letter:
+                    from .reviewed_letter_source_rebind_v1 import reviewed_letter_source_rebind_shape_v1
+                    shape = reviewed_letter_source_rebind_shape_v1(capture, facts, current)
+                else:
+                    shape = (_populist1001_source_rebind_shape(capture, facts, current)
+                             if populist_letter else _source_rebind_root_shape(capture, facts, current))
                 old_binding = known["binding"]
                 fresh_binding = {**current,
                                  "source_sha256": old_binding["source_sha256"],
                                  "option_catalogue_sha256": old_binding["option_catalogue_sha256"]}
                 return known, {"status": "offline-source-reviewed",
-                    "binding_mode": ("populist1001_source_rebound" if populist_letter else "source_rebound"),
+                    "binding_mode": ("reviewed_letter_source_rebound" if reviewed_letter else
+                                     "populist1001_source_rebound" if populist_letter else "source_rebound"),
                     "fingerprint": path.stem,
                     "entry_path": str(path), "entry_sha256": _sha(raw),
                     "fresh_binding": fresh_binding,
@@ -422,6 +429,10 @@ def load_source_reviewed_event_v1(state_dir, capture):
                     "equivalent_source_fingerprints": [p.stem for p, _, _ in source_rebind_entries],
                     "root_scope_shape": shape,
                     **({"source_rebind_policy": shape["source_rebind_policy"]} if populist_letter else {}),
+                    **({key: shape[key] for key in ("source_rebind_policy", "knowledge_scope",
+                        "scope_identity_gaps", "current_role_identities", "gui_source_sha256",
+                        "loaded_gui_bytes_verified", "execution_contract_qualified",
+                        "semantic_decision_ready")} if reviewed_letter else {}),
                     "material_effects_verified": False, "registry_contract_accepted": False}
             except (OSError, ValueError, KeyError, TypeError) as error:
                 rejected.append({"entry": path.name, "reason": str(error)})

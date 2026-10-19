@@ -1,0 +1,73 @@
+{
+  "schema": "xar.Character.GetPlayerHeir.registration-discovery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T08:02:07.419070+00:00",
+  "ended_at_utc": "2026-10-19T08:02:08.677934+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "docs\\ck3-native-ai\\research-plans\\player-heir-getter12004-20261019\\plan01.json",
+    "bytes": 6368,
+    "sha256": "1f3dd96b6023fae1ca74786d6e3b7f0a08d47c9f3fe7e87a15342c70d596b6c8"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-character-playerheir-getter01.py",
+    "bytes": 10323,
+    "sha256": "c92ceb0390d8efc87692f621a82a7ecfa8bb8b400b06b5ba683b9ae39d65d378"
+  },
+  "literal_neighbor_window": {
+    "kind": "only-target-literal-neighbor-metadata",
+    "rva": 72495312,
+    "bytes": 512,
+    "hex": "726163746572000053656c65637444657374696e794368617261637465720000497353656c656374656444657374696e7943686172616374657252616e646f6d000000000000000048617352616e646f6d44657374696e79436861726163746572730000000000004861734d61696e44657374696e7943686172616374657273000000000000000047657444656164436861726163746572000000000000000053756363657373696f6e4576656e7457696e646f77000000476574446561644465736300000000004861734c6f73745469746c6573000000476574496e686572697465645469746c65730000000000004765744c6f73745469746c6573000000476574506c61796572486569720000004765745072696d617279486569720000476574506c61796572486569724c65676163790000000000476574446561644368617261637465724c65676163790000476574486569720053756363657373696f6e4576656e7457696e646f774c6f73745469746c65734974656d0000000000433a5c6d6e745c6773675c636b335c74697475735c736f757263655c696e746572666163655c73756363657373696f6e5f6576656e745f77696e646f772e6370700000000000000047657454797065546f6f6c746970000052414e444f4d5f44455354494e595f4348415241435445525f545950455f544f4f4c5449505f2573",
+    "sha256": "7055b0dd1c2fb10b41f750c2312ea0c059c1a56e5cfa53d5a499fb476d97d2a7"
+  },
+  "relative_data_refs": [],
+  "relative_metadata_windows": [],
+  "text_absolute_encodings": [
+    {
+      "encoding": "RVA4",
+      "matching_operand_rvas": [],
+      "cap": 10,
+      "tail_unexamined_if_cap_reached": false
+    },
+    {
+      "encoding": "preferredVA8",
+      "matching_operand_rvas": [],
+      "cap": 10,
+      "tail_unexamined_if_cap_reached": false
+    }
+  ],
+  "candidate_function_windows": [],
+  "original_RIP_and_absolute_data_zero_reused": true,
+  "scope_boundary": {
+    "process_Game_RPC_builds": 0,
+    "EXE_copy": false,
+    "AI_or_callee_tree": false,
+    "other_method_names_scanned": false,
+    "H_provider_or_qualification_claim": false
+  },
+  "original_plan_at_source_read": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-getter12004-20261019/plan01.json",
+    "bytes": 5234,
+    "sha256": "4a570e7b0a7a1746ca717c83ef551a68974e8b6cd9674661cce79466d75f3607"
+  },
+  "source_review": {
+    "literal_neighbor_source_facts": "The exact512B neighboring buffer contains SuccessionEventWindow, GetDeadCharacter, GetPrimaryHeir, GetPlayerHeirLegacy and source path C:/mnt/gvs/ck3/titus/source/interface/succession_event_window.cpp. No registration structure or code pointer is exposed by this window.",
+    "owner_boundary": "Neighboring text identifies a death-window string cluster, not the Character.GetPlayerHeir callback. Compiler string pooling can share a literal, so neither sole ownership nor absence of the Character getter is inferred.",
+    "new_encoding_results": "No aligned cell-relative32 ref in declared .rdata/.data conventions, and no fixed textRVA4/preferredVA8 operand matched the same single literal. Original fixedRIP/absolute data zero remains preserved.",
+    "function_windows_read": 0,
+    "next_specific_source": "Character DataFunction registration producer/table bootstrap or a source-bound Character method binder; the ordinary CharacterWindow local-player getter consumer is concrete, but this death-window literal cluster gives no candidate callback. Do not switch back to destiny/title heirs.",
+    "H_provider_or_score_credit": false,
+    "research_interruption": "Runtime asked for P0 closed3851 natural-succession evidence review; no new source acquisition until that independent task is assessed."
+  }
+}

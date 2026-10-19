@@ -1,0 +1,107 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "player-heir31A6-field8-receiver",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Identify actual object receiver and living owner of the31A6 field+8 consumers before treating them as a player-heir getter.",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Only exact24F3EA0/24F4472 source consumers and at most3 directly reached caller/constructor/vtable source windows<=512B each",
+    "identity_lifetime": "single exact hashed file with pre/post metadata equality",
+    "producer_trigger": "not-applicable",
+    "producer": "living selector owner and qualification caller remain the source question",
+    "caller": "offline fixed-address source locator, no callback invocation",
+    "consumer": "human source review, no H scorer/runtime provider",
+    "cache_lifetime": "this frozen source output",
+    "expected_signal": "source-bound RTTI object identity or direct caller receiver setup",
+    "zero_sample_meaning": "no entry in declared exact refs, not absence of living player heir",
+    "stop_condition": "3 windows maximum512B each; no unrelated callee/AI expansion, no Game/process/RPC/build",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "function_targets_rva": [
+      38747808,
+      38749298
+    ],
+    "source_windows_max": 3,
+    "window_bytes_max": 512,
+    "prefer_cache": "Exact known shared-span filenames and CORE-FUNCTION-MAP were checked with no demanded span/key hit; no whole-cache enumeration",
+    "fixed_refs": ".rdata VA8 exact targets; if absent, .text CALL rel32 to those exact targets only. No numeric31A6/31A7 rescan.",
+    "vtable_branch": "One reached vtable window; nearest preceding rdata pointer followed by text pointer gives a COL candidate. At most one COL window and one reached TypeDescriptor window; fail/unknown does not fan out.",
+    "caller_branch": "If no vtable pointer ref, at most3 directly matching CALL-site windows with exact pdata record bounds; no callee expansion.",
+    "receipt_total_max_bytes": 32768,
+    "original_files_readonly": true,
+    "Root_authorization": "2026-10-19 continuation: up to3 concrete caller/constructor/vtable windows<=512B for24F4001/24F4515 field+8 receiver; regular bounded source reads authorized"
+  },
+  "evidence": [
+    {
+      "id": "exact-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "one actual direct hashed file, not receiver or qualification truth"
+    },
+    {
+      "id": "source-candidates",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/canonical-token-immediate-refs04.json",
+      "sha256": "5dba51aafc049838c25507e0be9a15fa4886eb410dd3e8977b7d60d6e37ecc55",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "existing field+8 numeric consumers, no living-player qualifier"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "field8",
+      "label": "canonical token31A6 field+8"
+    },
+    {
+      "id": "owner",
+      "label": "source-bound object/living owner"
+    }
+  ],
+  "edges": [
+    {
+      "id": "receiver",
+      "from": "field8",
+      "to": "owner",
+      "label": "actual vtable/constructor/caller identity",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does this exact receiver belong to a living player-heir producer or a distinct serialized data object?"
+    }
+  ],
+  "cases": [],
+  "supplemental_data_lookup": {
+    "prior_plan_sha256": "dbf5d8f767618f9cfc94c90526e5d6e07685bc2f50628a7752f99eaefc25e30f",
+    "prior_plan_reconstruction": "Remove only supplemental_data_lookup; JSON ensure_ascii=False/indent2/newline.",
+    "target_initial_token_u32": 15361,
+    "authoritative_table_ranges_rva": [
+      [
+        71767664,
+        71767984
+      ],
+      [
+        74321248,
+        74461472
+      ]
+    ],
+    "ID_field": {
+      "record_stride_bytes": 16,
+      "field_offset": 0,
+      "bytes": 4
+    },
+    "one_matching_record_max_bytes": 16,
+    "one_referenced_CString_NUL_limit_bytes": 128,
+    "function_window_count_stays": 3,
+    "Root_authorization": "Necessary fixed-table3C01 ID lookup<=16B record+<=128B NUL name is metadata outside the3 function windows; no new callee. Record raw bytes and obey32KiB total output."
+  }
+}

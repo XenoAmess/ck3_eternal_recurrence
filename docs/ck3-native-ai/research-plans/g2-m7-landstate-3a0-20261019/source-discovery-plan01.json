@@ -1,0 +1,103 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "g2-m7-landstate-3a0-producer",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Which exact.4 writer/refresh path supplies actor+0x1C0 LandState+0x3A0, and does it enumerate then filter a complete living player-continuation candidate domain?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Known cached consumer RVA2C0B4B0 only, then at most two directly reached source callees selected from its observed receiver/array flow; no whole AI tree",
+    "identity_lifetime": "Existing exact hashed file identity with matching pre/post stat; no process memory",
+    "producer_trigger": "not-applicable",
+    "producer": "LandState+3A0 writer/refresh and generation boundary remain the question",
+    "caller": "Explicit file-only PE RVA window reader and installed capstone; no engine invocation",
+    "consumer": "Human source review, no runtime provider or H score",
+    "cache_lifetime": "This bounded frozen micro result",
+    "expected_signal": "Actual consumer call/receiver edges leading to the exact +3A0 writer or an explicitly complete candidate enumerator and qualification filter",
+    "zero_sample_meaning": "No qualifying writer in admitted windows; never b=0 or eligibility absent",
+    "stop_condition": "At most 3 unique functions, at most512 total decoded bytes per function, receipt <=32768 bytes; only direct edges; no process/RPC/build/EXE copy; report needed extension rather than traverse",
+    "runtime_window_ref": null
+  },
+  "micro_read": {
+    "exe_path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "existing_identity": "../player-heir-h12004-20261019/exact-file-identity01.json",
+    "full_file_hash_passes": 0,
+    "initial_function_rva": "0x2C0B4B0",
+    "initial_windows": [
+      {
+        "rva": "0x2C0B4B0",
+        "bytes": 320
+      },
+      {
+        "rva": "0x2C0B660",
+        "bytes": 192
+      }
+    ],
+    "initial_unique_function_bytes": 512,
+    "direct_reached_followup_function_cap": 2,
+    "followup_bytes_per_function_cap": 512,
+    "PE_metadata_bytes_cap": 4096,
+    "pdata_access": "binary search only matching PCs, no table dump",
+    "total_new_file_read_cap_bytes": 8192,
+    "receipt_bytes_cap": 32768,
+    "source_cache_checked": "Exact named consumer span and historical blob absent at supplied shared-span-cache root; CORE map has no cached consumer entry; historical comment original_machine_id unknown",
+    "Root_authorization": "2026-10-19 Root direct task: existing-cache first; exact currentEXE independent<=32KiB plan, <=3 functions/each<=512B/file only via admitted micro pool. No approval requested for routine reads."
+  },
+  "evidence": [
+    {
+      "id": "exact-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Current machine's actual streamed EXE identity, exact stat before/after; no semantic credit"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cache",
+      "label": "Actor LandState+3A0 raw array"
+    },
+    {
+      "id": "writer",
+      "label": "Exact cache producer and generation boundary"
+    },
+    {
+      "id": "eligible",
+      "label": "Complete living player-eligible backup domain"
+    }
+  ],
+  "edges": [
+    {
+      "id": "produce",
+      "from": "writer",
+      "to": "cache",
+      "label": "Actual exact-cache writer/refresh edge",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which reached function owns the +3A0 array, and which trigger rebuilds it?"
+    },
+    {
+      "id": "filter",
+      "from": "writer",
+      "to": "eligible",
+      "label": "Original per-candidate player-continuation eligibility and completeness",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does this producer supply all eligible living backups, or only a political succession/order cache?"
+    }
+  ],
+  "cases": [],
+  "storage": {
+    "policy_version": "1.0.0",
+    "maximum_new_peak_bytes": 65536,
+    "heavy_writes": false,
+    "record_review_after_utc": "2027-04-17T07:55:00Z"
+  }
+}

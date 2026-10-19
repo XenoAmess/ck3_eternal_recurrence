@@ -1,0 +1,178 @@
+{
+ "schema": "xar.m4.c7-auto1819-final-construction-gate-source-proof.v1",
+ "status": "closed_source_proof_no_runtime_change",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T07:52:18.785157+00:00",
+ "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id read-only invocation",
+ "prior_frozen_evidence": {
+  "relative": "docs/ck3-native-ai/evidence/m4-c7-first-natural-war-cash-audit-2026-10-19.json",
+  "bytes": 24173,
+  "sha256": "9f4beb9475902bc7a8377e30a19348174e0015664ac219c0f95e8ba6a9f65ad0",
+  "unchanged": true
+ },
+ "source_binding": {
+  "artifact_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep",
+  "business_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+  "sdk_relative": "sdk-v20261019-candidate/src06/xar_autoplayer",
+  "runtime_relative": "robert30-v20261019-campaign01/runtime",
+  "runtime": "closed C7 / Native26; no fresh binary or live Driver inspection",
+  "freeze": {
+   "relative": "ROOT-FINAL-SDK-FREEZE-P37C7.json",
+   "bytes": 403018,
+   "sha256": "4c9de700f1572ad81627fe6c92cd5fec4b05cb4e02b0c4e6449bda48b32cb4d9"
+  },
+  "closed_responses": [
+   {
+    "sequence": 1819,
+    "relative": "p37-responses/1819-1-result.json",
+    "bytes": 131885,
+    "sha256": "35991d4a04a94c2d86a1e59494c9788ce78a08484c78a0cd74ea63ed51097865",
+    "ended_at_utc": "2026-10-19T07:39:04.085445+00:00"
+   },
+   {
+    "sequence": 1820,
+    "relative": "p37-responses/1820-1-result.json",
+    "bytes": 23438,
+    "sha256": "cfc7c3f126ffa08f7a0037b4d495cfed6b784915a0b1c46a253376c7dbc4aa8f",
+    "ended_at_utc": "2026-10-19T07:39:04.276006+00:00"
+   }
+  ],
+  "sources": [
+   {
+    "relative": "bridge/domain_construction_private_transport_v1.py",
+    "bytes": 66026,
+    "sha256": "c36fd21d16b897304c08cd8f0a9b9d26b19178c2fbeb3e1fbcc7a4f0d456dd2e"
+   },
+   {
+    "relative": "bridge/service.py",
+    "bytes": 867830,
+    "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+   },
+   {
+    "relative": "construction_formal_consumer.py",
+    "bytes": 38521,
+    "sha256": "ed408b47b0e9de3851a79aa06b4abaa631f8d663c46ee02e51b777905e75af5c"
+   },
+   {
+    "relative": "wartime_construction_cash_v1.py",
+    "bytes": 16639,
+    "sha256": "9eb2f93a573e2c6f467e6ff478c50d9856350cb4c436b5403fd0dd70351b772e"
+   },
+   {
+    "relative": "m5_formal_proposal_collector.py",
+    "bytes": 36095,
+    "sha256": "27e24743ebe5a5b33e049a88406a683ec3b8201208970d35c8664f7d9693c5cf"
+   }
+  ]
+ },
+ "closed_observations": {
+  "AUTO1819": {
+   "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:1779",
+    "revision": 1361,
+    "native_revision": 1779,
+    "date_raw": 53174928,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "connection_generation": 4,
+    "bridge_pid": 153556
+   },
+   "selected_step": "advance-route-contact-horizon-v1-33554800-to-2604-h-3-393-33554439-83886299",
+   "construction_periodic_review": {
+    "status": "cooldown_after_three_no_action_checks",
+    "consecutive_no_action": 0,
+    "next_due_date_raw": 53175528,
+    "remaining_game_days": 25
+   },
+   "war": {
+    "id": 16777278,
+    "player_side": "defender",
+    "player_relative_war_score": 0,
+    "possible_defensive_target_title_ids": [
+     2488
+    ],
+    "directly_held_target_title_ids": [],
+    "defeat_title_transfer_verified": false,
+    "defer_new_economic_construction": false,
+    "protect_cash_reasons": [],
+    "observed_player_raised_soldiers": 1431,
+    "observed_enemy_raised_soldiers": null,
+    "war_win_probability": null
+   },
+   "wallet": "Unavailable at planning frame; historical receipts are not current money.",
+   "meaning": "Route advancement, not construction submission. Empty direct targets do not establish safety of realm/vassal targets."
+  },
+  "MET1820": {
+   "cash_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:1782",
+    "revision": 1364,
+    "native_revision": 1782,
+    "date_raw": 53174952,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "connection_generation": 4,
+    "bridge_pid": 153556
+   },
+   "cash_root_source_and_closing_frame_equal": true,
+   "same_native_capture": false,
+   "native_capture_epochs": "not exposed",
+   "gold_raw": 24086841,
+   "gold": "240.86841",
+   "relation": "Post-action monthly point one day after AUTO1819: date_raw 53174952 versus 53174928; not its pre-action wallet."
+  }
+ },
+ "final_submission_proof": {
+  "ordinary_path": [
+   "bridge/service.py:5256-5262: PRIVATE_CONSTRUCTION_SUBMIT_STEP -> submit_construction_private.",
+   "bridge/domain_construction_private_transport_v1.py:608-625 rebinds current frame; stale candidate/pending action rejects.",
+   "Transport:646-655: active_wars != [] invokes observe_driver_wartime_construction_cash_v1 for new_building/upgrade and candidate stock gold cost; requires new_spend_allowed is True.",
+   "Denial/unknown raises before UUID:656, intent:676 and Native send:681."
+  ],
+  "all_war_policy": {
+   "source": "wartime_construction_cash_v1.py:94-138,150-162,201-215",
+   "default_new_spend_allowed": false,
+   "floor_gold_raw": 40000000,
+   "floor_gold": "400",
+   "floor_authority": "Existing agent AMPLE_FIXED_BUFFER_RAW policy, not native affordability or a user-specified exact amount.",
+   "formula": "military=max(40000000, maximum_root_military_monthly_raw*24); required=military+reserved_gold_raw+emergency_company_contract_gold_raw; after=wallet_raw-construction_gold_raw; allow iff after>=required",
+   "constraints": "Missing bound cash/root, commitments, quote or pending state defers. Construction cost, commitments and quote must be nonnegative; invalid inputs grant no permission.",
+   "exits": "Only active-war True exit is after>=required. Peace True requires wars==[]; unsupported holding kind defers.",
+   "proof": "required>=40000000 and after<=wallet_raw. Thus bound wallet<40000000 cannot pass nonnegative ordinary new-building/upgrade outlay, regardless of priority False.",
+   "MET1820_floor_deficit_gold_raw": 15913159,
+   "MET1820_floor_deficit_gold": "159.13159",
+   "limit": "MET1820 is below floor at its own frame; does not establish AUTO1819 wallet or an executed cash guard."
+  },
+  "other_paths": [
+   "construction_formal_consumer.py:525-547: priority False skips specific losing-risk deferral; general wartime cash gate remains. :629-644 rechecks chosen quote.",
+   "bridge/service.py:18219-18238: review cooldown may retain a plan; grants no submit permission.",
+   "m5_formal_proposal_collector.py proposes; ordinary construction still reaches the same final transport guard."
+  ],
+  "conclusion": "No final ordinary wartime construction cash bypass established; no patch justified. Priority False leaves territory/procurement risk incompletely described; proves neither new expense nor safety or ample funds."
+ },
+ "verification_and_limits": {
+  "method": "Closed JSON/source review, byte/SHA checks against freeze, integer inequality; no runtime test.",
+  "tests_run": 0,
+  "production_source_changes": 0,
+  "new_game_RPC": 0,
+  "live_Driver_reads": 0,
+  "SAVE_reads_or_exports": 0,
+  "native_builds": 0,
+  "current_SDK_or_Native_adoption_changes": 0,
+  "funding_credit_gold_raw": 0,
+  "loan": "New getter/handoff research is outside deployed C7; no ABI, actual amount or loan availability inferred.",
+  "payment_or_arrival": "None inferred from ACK, flags, army counts or source paths.",
+  "storage": {
+   "scope": "one repo JSON <=8192 bytes; prior evidence/source/closed packages frozen",
+   "budget": "original other-research 128MiB / review unchanged",
+   "external_written_bytes": 0,
+   "allocated_bytes": null,
+   "future_write_bytes": 0,
+   "producer_processes": 0,
+   "physical_credit_bytes": 0
+  }
+ }
+}

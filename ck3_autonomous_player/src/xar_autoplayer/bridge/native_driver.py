@@ -59,6 +59,7 @@ from .war_results_window_contract import (
 from collections.abc import Callable, Mapping
 import copy
 import ctypes
+from functools import lru_cache
 from ctypes import wintypes
 import hashlib
 import json
@@ -36147,6 +36148,7 @@ _ERROR_PIPE_CONNECTED = 535
 _ERROR_PIPE_LISTENING = 536
 
 
+@lru_cache(maxsize=1)
 def _kernel32():
     if os.name != "nt":
         raise RuntimeError("native named pipes require Windows")

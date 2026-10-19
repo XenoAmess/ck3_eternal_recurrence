@@ -1,0 +1,306 @@
+{
+  "boundaries": {
+    "Game_RPC_OBS_calls": 0,
+    "compiled_or_deployed": false,
+    "material_effects_credit_added": 0,
+    "new_Game_state_or_action": false,
+    "new_native_event": false,
+    "opaque_scope_payload_IDs_invented": false,
+    "registry_contract_accepted": false,
+    "runtime_C7_hot_update": false,
+    "strategy_policy_change": false
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:55:30.256871+00:00",
+  "results": [
+    {
+      "actual_before": {
+        "bytes": 6693,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\1ee8d76f0b974525b62e38aab749a965.before.json",
+        "sha256": "459e00cf8bc0ea9616162bac9b6b014978639b702b952d550bc496213954a24e"
+      },
+      "actual_closed_native_ID": 4350101,
+      "key": "faction_demand.0101",
+      "offline_existing_loader_audit": {
+        "adapted_from": {
+          "calculated_event_id": 4410101,
+          "entry_sha256": "3e10a9e79d64104ad012619ed8216f8708eb2f13031f5bb93c618e47d45ffeae",
+          "fingerprint": "e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137"
+        },
+        "binding_mode": "reviewed_letter_source_rebound",
+        "current_role_identities": {
+          "faction_id": 52,
+          "faction_leader_character_id": 34973,
+          "faction_target_character_id": 31254
+        },
+        "entry_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-letter-rebind-qualification-20261019\\faction_demand.0101\\evidence\\event-source-registry\\e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137.json",
+        "entry_sha256": "3e10a9e79d64104ad012619ed8216f8708eb2f13031f5bb93c618e47d45ffeae",
+        "equivalent_source_fingerprints": [
+          "e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137"
+        ],
+        "execution_contract_qualified": false,
+        "fingerprint": "e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137",
+        "fresh_binding": {
+          "calculated_event_id": 4350101,
+          "ck3_build": "1.20.0.4",
+          "event_definition_key": "faction_demand.0101",
+          "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+          "native_option_count": 3,
+          "option_catalogue_sha256": "fe3f9e729592133fed0faaa4b4b57b0051183a1450bcdb85d37627700f017ea6",
+          "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "source_sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+        },
+        "fresh_binding_fingerprint": "bf3ff1869667c6e5938442dd6ef5b397c547ca0e8953dd4e8bbeb3e41eed2e72",
+        "gui_source_sha256": {
+          "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+          "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+        },
+        "knowledge_scope": "exact_definition_source_and_current_native_role_type_shape_only",
+        "loaded_gui_bytes_verified": false,
+        "material_effects_verified": false,
+        "registry_contract_accepted": false,
+        "root_scope_shape": {
+          "actor_character_id": 31254,
+          "current_role_identities": {
+            "faction_id": 52,
+            "faction_leader_character_id": 34973,
+            "faction_target_character_id": 31254
+          },
+          "execution_contract_qualified": false,
+          "gui_source_sha256": {
+            "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+            "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+          },
+          "knowledge_scope": "exact_definition_source_and_current_native_role_type_shape_only",
+          "loaded_gui_bytes_verified": false,
+          "raw_type_index": 4,
+          "reviewed_letter_key": "faction_demand.0101",
+          "scope_identity_gaps": [],
+          "semantic_decision_ready": false,
+          "source_event_type": "letter_event",
+          "source_rebind_policy": "two-reviewed-letter-source-shapes-12004-v1",
+          "subtype": 0,
+          "type_key": "character",
+          "typed_identity_kind": "character"
+        },
+        "scope_identity_gaps": [],
+        "semantic_decision_ready": false,
+        "source_rebind_policy": "two-reviewed-letter-source-shapes-12004-v1",
+        "status": "offline-source-reviewed"
+      },
+      "ordinary_annotation": {
+        "offline_followup_required": false,
+        "registry_known": true,
+        "selected_step_unchanged": true
+      },
+      "prior_entry": {
+        "bytes": 1284,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137.json",
+        "sha256": "3e10a9e79d64104ad012619ed8216f8708eb2f13031f5bb93c618e47d45ffeae"
+      },
+      "prior_facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137.json",
+        "sha256": "bb971aafbcbd92e83f1818a0c3e164a23466bab59ee2d2e410cab49ddfb52e55"
+      },
+      "synthetic_future_ID_test": {
+        "binding_mode": "reviewed_letter_source_rebound",
+        "calculated_event_id": 14350101
+      }
+    },
+    {
+      "actual_before": {
+        "bytes": 8648,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\74d4de55506049a1b3d4faf4abccf3cb.before.json",
+        "sha256": "9c48bc4e9812f064f07ebb9e43e5f4e478a602074edfa37e66317dd0e181706e"
+      },
+      "actual_closed_native_ID": 2740082,
+      "key": "ecumenical_council_events.0082",
+      "offline_existing_loader_audit": {
+        "adapted_from": {
+          "calculated_event_id": 5020082,
+          "entry_sha256": "ee21f671d81f497988691afc796dbf3c28d3ec3e2954efb8f3b289bd2704e366",
+          "fingerprint": "c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716"
+        },
+        "binding_mode": "reviewed_letter_source_rebound",
+        "current_role_identities": {
+          "ec_reporter_character_id": 58487,
+          "host_character_id": 30490,
+          "root_scope_character_id": 30490
+        },
+        "entry_path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-letter-rebind-qualification-20261019\\ecumenical_council_events.0082\\evidence\\event-source-registry\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+        "entry_sha256": "ee21f671d81f497988691afc796dbf3c28d3ec3e2954efb8f3b289bd2704e366",
+        "equivalent_source_fingerprints": [
+          "c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716"
+        ],
+        "execution_contract_qualified": false,
+        "fingerprint": "c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716",
+        "fresh_binding": {
+          "calculated_event_id": 2740082,
+          "ck3_build": "1.20.0.4",
+          "event_definition_key": "ecumenical_council_events.0082",
+          "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+          "native_option_count": 1,
+          "option_catalogue_sha256": "80ad6cd429d44d7a785575f7417d3a8bb06c4a51b574ebc8f8cbb0acf9fe771a",
+          "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "source_sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+        },
+        "fresh_binding_fingerprint": "6a2d5c2e98e59017f6c58f659a604d1fc9a8aa9184a11b8fc40c3c1fdd8e746e",
+        "gui_source_sha256": {
+          "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+          "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+        },
+        "knowledge_scope": "exact_definition_source_and_current_native_role_type_shape_only",
+        "loaded_gui_bytes_verified": false,
+        "material_effects_verified": false,
+        "registry_contract_accepted": false,
+        "root_scope_shape": {
+          "actor_character_id": 31254,
+          "current_role_identities": {
+            "ec_reporter_character_id": 58487,
+            "host_character_id": 30490,
+            "root_scope_character_id": 30490
+          },
+          "execution_contract_qualified": false,
+          "gui_source_sha256": {
+            "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+            "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+          },
+          "knowledge_scope": "exact_definition_source_and_current_native_role_type_shape_only",
+          "loaded_gui_bytes_verified": false,
+          "raw_type_index": 4,
+          "reviewed_letter_key": "ecumenical_council_events.0082",
+          "scope_identity_gaps": [
+            {
+              "role": "activity",
+              "type_key": "activity",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "province",
+              "type_key": "province",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "activity_location",
+              "type_key": "province",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "ec_council",
+              "type_key": "activity",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "ec_council_faith",
+              "type_key": "faith",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "ec_letter_tenet_1",
+              "type_key": "tenet",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "ec_letter_tenet_2",
+              "type_key": "tenet",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "ec_letter_doctrine_1",
+              "type_key": "doctrine",
+              "typed_identity_verified": false
+            }
+          ],
+          "semantic_decision_ready": false,
+          "source_event_type": "letter_event",
+          "source_rebind_policy": "two-reviewed-letter-source-shapes-12004-v1",
+          "subtype": 0,
+          "type_key": "character",
+          "typed_identity_kind": "character"
+        },
+        "scope_identity_gaps": [
+          {
+            "role": "activity",
+            "type_key": "activity",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "province",
+            "type_key": "province",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "activity_location",
+            "type_key": "province",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "ec_council",
+            "type_key": "activity",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "ec_council_faith",
+            "type_key": "faith",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "ec_letter_tenet_1",
+            "type_key": "tenet",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "ec_letter_tenet_2",
+            "type_key": "tenet",
+            "typed_identity_verified": false
+          },
+          {
+            "role": "ec_letter_doctrine_1",
+            "type_key": "doctrine",
+            "typed_identity_verified": false
+          }
+        ],
+        "semantic_decision_ready": false,
+        "source_rebind_policy": "two-reviewed-letter-source-shapes-12004-v1",
+        "status": "offline-source-reviewed"
+      },
+      "ordinary_annotation": {
+        "offline_followup_required": false,
+        "registry_known": true,
+        "selected_step_unchanged": true
+      },
+      "prior_entry": {
+        "bytes": 1340,
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+        "sha256": "ee21f671d81f497988691afc796dbf3c28d3ec3e2954efb8f3b289bd2704e366"
+      },
+      "prior_facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+        "sha256": "8baf602abac1051b0ace8c1f60a22c3c06f080aa31c3831121f6ae5dc701b95c"
+      },
+      "synthetic_future_ID_test": {
+        "binding_mode": "reviewed_letter_source_rebound",
+        "calculated_event_id": 12740082
+      }
+    }
+  ],
+  "schema": "xar.g2.m2.two-letter-cold-ID-qualification/v1",
+  "source": {
+    "dispatch": {
+      "bytes": 28072,
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+      "sha256": "929802ce55f9626a16ded0c59177cae3048ffe6ca5007b60165aac629b9b8a6a"
+    },
+    "leaf": {
+      "bytes": 10292,
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\reviewed_letter_source_rebind_v1.py",
+      "sha256": "6d88bf7d5be9aabf12fa4126268b6857a47dda422fcda3498e03bf5c8ba99b91"
+    },
+    "tests": {
+      "bytes": 8302,
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_reviewed_letter_source_rebind_v1.py",
+      "sha256": "f0277bdc2cee1c93b0436fbd46816bdd85aa78204b26c15efd4d0eee8f6e4033"
+    }
+  },
+  "status": "OFFLINE_CLOSED_INPUTS_QUALIFIED"
+}

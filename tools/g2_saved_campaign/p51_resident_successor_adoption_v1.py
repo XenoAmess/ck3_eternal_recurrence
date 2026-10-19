@@ -2,12 +2,15 @@
 
 The runtime owner emits to a separate review directory, inspects the result,
 then installs it. Importing this file never reads or operates a runtime.
+The current caller must pass --relay-module for its source-pinned provider;
+handoff and deferred UI receive those exact relay functions explicitly.
 """
 from __future__ import annotations
 
 import argparse
 import ast
 import copy
+import keyword
 from pathlib import Path
 import textwrap
 
@@ -114,7 +117,7 @@ def classify_ui_auto_result_v1(body, *, queue_state):
                        "episode_run_id": snap.get("episode_run_id"), "native_revision": snap.get("native_revision")}}
 
 
-async def finish_deferred_ui_v1(queue, session, state, env):
+async def finish_deferred_ui_v1(queue, session, state, env, *, relay_compact, error_projection):
     """At batch end only, finish an existing UI obligation; no new Continue."""
     pending = state.get("resident_successor_ui_pending")
     if pending is None:
@@ -133,7 +136,8 @@ async def finish_deferred_ui_v1(queue, session, state, env):
              "original_handoff": pending["audit"], "same_game": {"pid": pid, "creation_filetime": birth},
              "new_natural_succession_credit": 0, "ordinary_cycle_credit": 0, "original_actions_replayed": False}
     env["atomic"](audit_path, audit, limit=65536)
-    call = _resident_make_call(queue, session, env, audit, audit_path, process_birth_filetime, pid, birth)
+    call = _resident_make_call(queue, session, env, audit, audit_path, process_birth_filetime, pid, birth,
+                               relay_compact=relay_compact, error_projection=error_projection)
     try:
         before, before_path = await call(env["SEMANTIC"], {})
         qualified_frame(before, queue, normalize_succession_lifecycle_binding_v1, terminal=False)
@@ -195,6 +199,54 @@ def _replace(source, old, new):
     return source.replace(old, new, 1)
 
 
+def _relay_module_v1(relay_module):
+    require(isinstance(relay_module, str) and bool(relay_module)
+            and all(part.isidentifier() and not keyword.iskeyword(part)
+                    for part in relay_module.split('.')),
+            "explicit current relay module required")
+    return relay_module
+
+
+def bind_handoff_relay_v1(source):
+    """Bind only the two legacy relay imports in the reviewed handoff shape."""
+    old_import = '    from root_p37_overlay_relay import relay_compact, error_projection\n'
+    require(source.count(old_import) == 2, "expected the original two handoff relay imports")
+    source = source.replace(old_import, '')
+    source = _replace(source,
+        '                            birth_reader=None):\n',
+        '                            relay_compact, error_projection, birth_reader=None):\n')
+    source = _replace(source,
+        'def _resident_make_call(queue, session, env, audit, audit_path, birth_reader, pid, birth):\n',
+        'def _resident_make_call(queue, session, env, audit, audit_path, birth_reader, pid, birth,\n'
+        '                        *, relay_compact, error_projection):\n'
+        '    require(callable(relay_compact) and callable(error_projection), "current relay functions required")\n')
+    source = _replace(source,
+        '    call = _resident_make_call(queue, session, env, audit, audit_path, birth_reader, pid, birth)\n',
+        '    call = _resident_make_call(queue, session, env, audit, audit_path, birth_reader, pid, birth,\n'
+        '                               relay_compact=relay_compact, error_projection=error_projection)\n')
+    ast.parse(source)
+    return source
+
+
+def bind_queue_relay_v1(source, *, relay_module):
+    """The generation owner names the qualified relay; no implicit fallback."""
+    relay_module = _relay_module_v1(relay_module)
+    source = _replace(source,
+        '                state = await automatic_handoff(self, session, state,\n'
+        '                    original_before=before, event=event, env=globals())\n',
+        f'                from {relay_module} import relay_compact, error_projection\n'
+        '                state = await automatic_handoff(self, session, state,\n'
+        '                    original_before=before, event=event, env=globals(),\n'
+        '                    relay_compact=relay_compact, error_projection=error_projection)\n')
+    source = _replace(source,
+        '            state = await finish_deferred_ui_v1(self, session, state, globals())\n',
+        f'            from {relay_module} import relay_compact, error_projection\n'
+        '            state = await finish_deferred_ui_v1(self, session, state, globals(),\n'
+        '                relay_compact=relay_compact, error_projection=error_projection)\n')
+    ast.parse(source)
+    return source
+
+
 def transform_handoff_v1(source):
     # Lift the original durable unique-request I/O unchanged; both paths retain
     # original kernel birth, guard, held-control, overlay and response evidence.
@@ -242,11 +294,11 @@ def transform_handoff_v1(source):
     source = source.replace('unresolved_decisions_saved_not_resolved=True)',
                             'unresolved_decisions_saved_not_resolved=saved is not None, resident_ui_deferred=deferred_ui)')
     source += factory
-    ast.parse(source)
-    return source
+    return bind_handoff_relay_v1(source)
 
 
-def transform_queue_v1(source):
+def transform_queue_v1(source, *, relay_module):
+    _relay_module_v1(relay_module)
     source = _replace(source, '            if observation is None:\n                observation, self.governance_result_state, self.lifestyle_pending_focus = classifier(\n',
         '            if observation is None:\n                from p51_resident_successor_adoption_v1 import classify_ui_auto_result_v1\n                observation = classify_ui_auto_result_v1(body, queue_state=ordinary_state)\n            if observation is None:\n                observation, self.governance_result_state, self.lifestyle_pending_focus = classifier(\n')
     source = _replace(source, '            event = {**pending, "after": after, "after_metrics_response": str(after_path),\n',
@@ -269,20 +321,24 @@ def transform_queue_v1(source):
         '            elif not state.get("resident_successor_ui_pending") and checkpoint_after_settled_cycle(state, pending, after):\n')
     source = _replace(source, '        result = {"status": "bounded_loop_finished", "batch": self.loop_count, "actual_turns": settled,\n',
         '        if state.get("resident_successor_ui_pending") is not None:\n            from p51_resident_successor_adoption_v1 import finish_deferred_ui_v1\n            state = await finish_deferred_ui_v1(self, session, state, globals())\n        result = {"status": "bounded_loop_finished", "batch": self.loop_count, "actual_turns": settled,\n')
-    ast.parse(source)
-    return source
+    return bind_queue_relay_v1(source, relay_module=relay_module)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--relay-module", required=True,
+                        help="Current source-pinned relay module for this generation")
     args = parser.parse_args()
+    _relay_module_v1(args.relay_module)
     require(args.source_root.resolve() != args.output_root.resolve(), "review output must differ from runtime source")
     args.output_root.mkdir(parents=True, exist_ok=False)
     for name, transform in (("root_p37_sdk_queue.py", transform_queue_v1),
                             ("root_p37_automatic_natural_succession_handoff.py", transform_handoff_v1)):
-        content = transform((args.source_root / name).read_text(encoding="utf-8"))
+        source = (args.source_root / name).read_text(encoding="utf-8")
+        content = (transform(source, relay_module=args.relay_module)
+                   if transform is transform_queue_v1 else transform(source))
         (args.output_root / name).write_text(content, encoding="utf-8", newline="\n")
     (args.output_root / Path(__file__).name).write_bytes(Path(__file__).read_bytes())
     print("REVIEW_OUTPUT_EMITTED_NO_RUNTIME_MUTATION")

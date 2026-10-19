@@ -1,0 +1,174 @@
+{
+  "schema": "xar.g2-m7-landstate-3a0-source-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:56:13.322717+00:00",
+  "status": "partial_source_progress; eligibility_and_complete_backup_domain_unknown",
+  "source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\research-plans\\g2-m7-landstate-3a0-20261019\\consumer-windows01.json",
+      "bytes": 23868,
+      "sha256": "fa239ccc422f69ed04e48be6e9b5776c2bba54af6fbd53c868f6f25ae074c7e5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\research-plans\\g2-m7-landstate-3a0-20261019\\reached-predicates02.json",
+      "bytes": 7691,
+      "sha256": "c81ccafe18dc442eaa5ee9857c1f0c5f4cac05fe290542ce1305af96a5ef06bc"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\research-plans\\g2-m7-landstate-3a0-20261019\\source-discovery-plan01.json",
+      "bytes": 4520,
+      "sha256": "641dccaafb0de9a08785a9c649cd3b6dca9db72ef93fa8600bcf19bf5a62d8d5"
+    }
+  ],
+  "existing_anchor": {
+    "path": "docs/ck3-native-ai/evidence/player-heir-h12004-source-anchors-2026-10-19.json",
+    "bytes": 8567,
+    "sha256": "4d9cb1fa78aa7319abb9d6c766005ea5834b2ddb9a54cd29a276a6688c15c1cf",
+    "supports": "Original source questions and raw reader, not writer or player eligibility"
+  },
+  "exact_file": {
+    "identity_receipt": "docs/ck3-native-ai/research-plans/player-heir-h12004-20261019/exact-file-identity01.json",
+    "identity_receipt_sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+    "version": "1.20.0.4",
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "current_stat_matches": true,
+    "bytes": "101040248",
+    "mtime_ns": "1791307594040564100",
+    "file_id": "1688849860293886",
+    "new_hash_passes": 0
+  },
+  "actual_source_findings": [
+    {
+      "id": "raw-cache-current-file",
+      "status": "static-confirmed",
+      "source": "consumer-windows01.json",
+      "instructions": [
+        "2C0B66F: RAX=[actor/RSI+1C0]",
+        "2C0B67B: RDX=RAX+3A0",
+        "2C0B687: R15D=DWORD[RDX+C]",
+        "2C0B6AE/6B4: data pointer then DWORD stride4 ID",
+        "2C0B6D7: candidate own full ID+18 compare"
+      ],
+      "meaning": "Current file confirms the known raw cache read chain and generation-ID check, without process observation."
+    },
+    {
+      "id": "consumer-local-cap",
+      "status": "static-confirmed",
+      "source": "consumer-windows01.json",
+      "instructions": [
+        "2C0B68D: R12D=DWORD[RIP+2845D80] (target RVA5451414)",
+        "2C0B6A0: compare index EBP with R12D",
+        "2C0B6A3: jge2C0B75E"
+      ],
+      "meaning": "This consumer has a separate global-index limit as well as native count. Limit value and name were not read. Its scan cannot be assumed to cover every raw ID or the complete legal domain."
+    },
+    {
+      "id": "not-a-living-qualification-predicate",
+      "status": "static-confirmed",
+      "source": "reached-predicates02.json",
+      "instructions": [
+        "2494B30: cmp DWORD[RCX+8],EDX; sete AL; ret",
+        "2494B40 prefix: receiver array+8/count+14, pointer stride8, call2494B30 per element, return found/nonzero flag"
+      ],
+      "meaning": "The reached predicate is field equality and its wrapper is a generic membership search. These leaves do not test alive/player continuation. The receiver object's semantic type remains unknown."
+    },
+    {
+      "id": "consumer-membership-input",
+      "status": "static-confirmed",
+      "source": "consumer-windows01.json",
+      "instructions": [
+        "2C0B4DF/4EE/4FA: input actor+1B0 -> +288 pointer -> DWORD passed to2494B40",
+        "2C0B6DF/6EF/6FF: resolved candidate+1B0 -> +288 pointer -> DWORD used by2494B30"
+      ],
+      "meaning": "This is membership of an unidentified field in the caller's R8/R13 collection, not a proven player-eligibility edge. No religion/dynasty/class meaning inferred."
+    }
+  ],
+  "source_cautions": {
+    "tail_alignment": "The second consumer window begins at2C0B660, which is not independently established as an instruction boundary. Its leading8 bytes are not used for semantics; only the known+1C0/+3A0 anchor sequence from2C0B668 onward is joined. No claim of complete linear/CFG decoding across the omitted middle.",
+    "small_leaf_pdata": "First binary search found no pdata envelope for2494B30; this was a real metadata-read failure, not absence of a function. Subsequent fixed16-byte entry window shows a7-byte equality leaf and padding.",
+    "wrapper_partial": "Current2494B40 entry window is128 bytes inside pdata range2494B40..2494BC2 (130 bytes); final2 bytes were not read. Observed search and computed AL return flag are local source facts, not whole-function equivalence.",
+    "original_consumer_blob": "Historical73146-byte ACTUAL4-CACHED-CANDIDATE-CONSUMER.actual.json was not relocated; original_machine_id unknown. No current writer fact inferred from its header comment.",
+    "M3_separation": "M3's separate serializer receiver parent+268/DWORD+270 is not joined merely because this generic predicate also reads+8."
+  },
+  "cache_only_probes": {
+    "directory": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache",
+    "machine_id": "unknown",
+    "current_collection_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "original_consumer_named_span_found": false,
+    "core_map": {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/function-match-core/CORE-FUNCTION-MAP.json",
+      "bytes": 14166,
+      "sha256": "a065f974170f0ac1d945366dec40cbea91eb7f80b03a225ca9a74af3fb997859",
+      "consumer_entry_found": false
+    },
+    "bounded_nearby_cached_bodies": [
+      {
+        "name": "new-02C0AA90-02C0B057.bin",
+        "bytes": 1479,
+        "sha256": "121bbb9eb584e47f22ec1d369a0c54aee7cbe5778ec89336628244cef3fa8524"
+      },
+      {
+        "name": "new-02C0B250-02C0B320.bin",
+        "bytes": 208,
+        "sha256": "6a41eac00ad364d2c3d4ff769b199c69f966537556e8a0b61889766a3d5fa6d4"
+      },
+      {
+        "name": "new-02C0C390-02C0CC04.bin",
+        "bytes": 2164,
+        "sha256": "87a7a45ab3ff4e3d0c9a6c0186a73b099e0b0a8e816f2e984960dbfc61a79949"
+      }
+    ],
+    "result": "No+1C0/+3A0 operand or direct2C0B4B0 call in these three cached nearby bodies. Address proximity is not a writer/caller proof. No whole cache/AI-tree content scan.",
+    "filename_search_note": "An earlier broad external filename enumeration was interrupted; it supplied no admitted source fact and is not a complete source search."
+  },
+  "remaining_gap": {
+    "exact_cache_writer": "unknown",
+    "refresh_trigger": "unknown",
+    "generation_boundary": "unknown",
+    "complete_candidate_enumerator": "unknown",
+    "original_player_continuation_filter": "unknown",
+    "next_specific_source": "A receiver-proven LandState+3A0 mutation/vector refresh call or its exact constructor/update caller, followed by that producer's complete domain and original per-candidate player continuation filter. A generic offset hit, this membership leaf, title heirs or alive/dynasty checks alone do not close it.",
+    "current_micro_budget_exhausted": true,
+    "additional_EXE_reads_started": false
+  },
+  "credit": {
+    "H_provider_implemented": false,
+    "H": "unknown/interval unchanged",
+    "M7": "in_progress",
+    "new_seed_or_government_credit": 0,
+    "natural_succession_credit": 0,
+    "runtime_adoption_credit": 0
+  },
+  "collector_actions": {
+    "unique_current_EXE_entries": 3,
+    "current_code_bytes_by_entry": {
+      "consumer": 512,
+      "equality_leaf": 16,
+      "membership_wrapper": 128
+    },
+    "total_current_file_read_bytes_upper_bound": 3700,
+    "new_process_reads": 0,
+    "new_Game_MCP_RPC_calls": 0,
+    "Native_builds": 0,
+    "whole_EXE_copies": 0,
+    "source_code_changes": 0
+  },
+  "validation": {
+    "plan_check": "exit0, plan-consistent; record/file integrity only",
+    "semantic_correctness_verified_by_plan_tool": false,
+    "new_test_matrix": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_after_utc": "2027-04-17T07:56:13Z",
+    "maximum_new_peak_bytes": 65536,
+    "heavy_write_admitted": false,
+    "Z_capacity": {
+      "total": 4096787476480,
+      "used": 3918424113152,
+      "free": 178363363328
+    },
+    "files_deleted": 0
+  }
+}

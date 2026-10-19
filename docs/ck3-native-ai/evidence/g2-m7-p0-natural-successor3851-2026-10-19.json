@@ -1,0 +1,167 @@
+{
+  "schema": "xar.g2-m7-P0-natural-successor3851.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:06:32.813075Z",
+  "snapshot_scope": "Sealed first natural-successor SEM3851 before logical handoff completion; no later recovery result inferred.",
+  "sealed_projection": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/SEM3851-PROJECTION.json",
+    "bytes": 4387,
+    "sha256": "8662c9f59197f89cf071713bb752e451cf518e078e1f5099d98fd8f70ebc1c68",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T08:05:20.236890Z"
+  },
+  "raw_source_reference": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-responses/3851-1-result.json",
+    "bytes": 59273,
+    "sha256": "34d51307b4d8de7707bed4e0ad6991a692eed9f5c044d943dd5b9ec6d6fefda3",
+    "pointer": "/result/structured_content",
+    "raw_body_read_by_this_collector": false
+  },
+  "actual_request": {
+    "sequence": 3851,
+    "tool": "ck3_take_semantic_snapshot_private_v1",
+    "source": "g2.queue.automatic-natural-succession-handoff/v1; unique request; no original action replay",
+    "ended_at_utc": "2026-10-19T08:00:41.696827Z",
+    "client_error": null,
+    "is_error": false
+  },
+  "actual_frame": {
+    "snapshot_id": "native:3002",
+    "revision": 2584,
+    "native_revision": 3002,
+    "date_raw": 53186856,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "episode_character_id": 31254,
+    "one_life_terminal": true,
+    "one_life_terminal_reason": "played_character_changed",
+    "played_character_id": 40526,
+    "played_character_alive": true
+  },
+  "retained_binding": {
+    "physical_Game": {
+      "pid": 153556,
+      "creation_filetime_decimal": "134368602545256920",
+      "new_Game_or_cold_credit": 0
+    },
+    "bridge": {
+      "connected": true,
+      "pipe_name": "\\\\.\\pipe\\xar-g2-robert30-v20261019-campaign01",
+      "connection_generation": 4,
+      "hello_pid": 153556,
+      "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
+      "game_adapter_status": "ready",
+      "ck3_build_match": true
+    },
+    "T0_start_date_raw": 53144328,
+    "endpoint_date_raw": 53407128,
+    "elapsed_campaign_days": 1772,
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    },
+    "lifecycle": {
+      "lifecycle": "ordinary_campaign_succession",
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+    },
+    "source_owner_epoch": "not_observed in sealed projection; no value inferred from process PID or SDK commit",
+    "absolute_character_or_LandState_pointers": "not_projected; no live memory/Driver read",
+    "epoch_note": "Game birth, connection generation, native revision and public revision are distinct identities. No high FILETIME value passed through floating-point serialization."
+  },
+  "retained_predeath_expectation": {
+    "status": "available",
+    "binding": {
+      "snapshot_id": "native:2999",
+      "revision": 2581,
+      "native_revision": 2999,
+      "date_raw": 53186832,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "episode_character_id": 31254
+    },
+    "predecessor_character_id": 31254,
+    "expected_successor_character_id": 40526,
+    "expectation_state": "successor_expected",
+    "risk_state": "split_successors",
+    "title_expectations": [
+      {
+        "title_id": 2230,
+        "tier_key": "duchy",
+        "first_heir_character_id": 40526,
+        "primary": true
+      },
+      {
+        "title_id": 2231,
+        "tier_key": "county",
+        "first_heir_character_id": 40526,
+        "primary": false
+      },
+      {
+        "title_id": 2262,
+        "tier_key": "county",
+        "first_heir_character_id": 40695,
+        "primary": false
+      }
+    ],
+    "expected_successor_matches_actual_played_character": true,
+    "actual_post_succession_title_ownership_or_partition_reconciliation": "not_observed; these are retained expectations, not actual title outcomes"
+  },
+  "fixed_original_D0": {
+    "rule": "Keep original T0 dynasty anchor; never substitute the new ruler's dynasty or name.",
+    "protected_original_T0_SAVE_reference": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/baselines/robert-v20261019-T0-1066-09-15.ck3",
+      "bytes": 68936116,
+      "sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+      "source": "Runtime owner supplied existing protected baseline reference; original T0 file anchor previously observed; body not reread."
+    },
+    "original_D0_full_dynasty_id": "not_observed in the small sources available to this collector",
+    "new_40526_full_house_or_dynasty_id": "not_observed",
+    "same_original_D0_comparison": "not_observed",
+    "family_lineage_match": "not_observed; expected heir match alone does not prove same dynasty or parentage",
+    "M3_existing_raw_review": {
+      "source": "M3 message; existing raw3851 review chunk043a70",
+      "finding": "All non-diagnostics/history business fields contain no dynasty/house_id/parent_id/mother_id/father_id; played_character has no full house/dynasty/parent lineage.",
+      "new_query_requested": false
+    }
+  },
+  "adoption_scope": {
+    "physical_player_switch_to_alive_expected_successor": "observed",
+    "formal_logical_successor_handoff_complete": false,
+    "campaign_goal_reconciled_to_new_ruler": false,
+    "formal_successor_continuation_or_resolved_Close_credit": 0,
+    "reason": "Actual new played actor is40526, but old episode actor/current goal remain31254, terminal reason is played_character_changed and goal successions remains0. The sealed projection explicitly does not claim logical handoff completion.",
+    "original3851_display_relay": "Root/runtime report Foreign cached decision provider after successful native SEM; no display-publication success inferred.",
+    "later_finite_recovery_result": "not_collected in this snapshot",
+    "complete_predeath_player_eligible_backup_domain": "not_observed; one realized successor does not establish the complete living backup pool or prior H",
+    "H_or_scoring_credit": 0,
+    "independent_seed_or_government_credit": 0,
+    "M7": "in_progress"
+  },
+  "collector_actions": {
+    "new_Game_Native_MCP_queries": 0,
+    "new_Close_calls": 0,
+    "new_SAVE_calls": 0,
+    "live_Driver_or_SAVE_body_reads": 0,
+    "reissued3851": 0,
+    "process_reads": 0,
+    "source_changes": 0,
+    "new_tests_or_builds": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "maximum_product_bytes": 12288,
+    "heavy_write_admitted": false,
+    "record_review_after_utc": "2027-04-17T08:06:32Z",
+    "files_deleted": 0
+  }
+}

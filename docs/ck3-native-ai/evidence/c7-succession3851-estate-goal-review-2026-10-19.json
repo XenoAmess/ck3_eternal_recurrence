@@ -1,0 +1,293 @@
+{
+  "schema": "xar.C7-succession3851.estate-goal-closed-review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:10:24.536898+00:00",
+  "source_scope": "Only sealed3851 failure packet and its exact closed3847-3851 responses; no live Driver/SAVE or new game calls",
+  "sources": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/FROZEN.json",
+      "bytes": 16550,
+      "sha256": "098d9a0c539b23eecc63e09d028b6c9d41194dd20d045a0db08280f410c0c2d9"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/SEM3851-PROJECTION.json",
+      "bytes": 4387,
+      "sha256": "8662c9f59197f89cf071713bb752e451cf518e078e1f5099d98fd8f70ebc1c68"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-queue/ROOT-CUMULATIVE-LOOP-STATE.json",
+      "bytes": 5347,
+      "sha256": "37812c9f4c07bc2105cd3fc34e717ed86575abfde7acb08d8a919a1656d51804"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-queue/AUTOMATIC-SUCCESSION-HANDOFF-001839.json",
+      "bytes": 1199,
+      "sha256": "c9ba53e7c1dfbd3e33268421db27552160eac128dd462c573978d66b58c1ab8a"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-queue/CUMULATIVE-TURN-001839.json",
+      "bytes": 2627,
+      "sha256": "7d9bb2a3760a20d20dd2e23c72d303bc52bdbcccff1bad9a784823a386393401"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/ROOT-CURRENT-HALT-P37.json",
+      "bytes": 756,
+      "sha256": "0913f21d19c49a4c97dec3ba1dc0e5baa10cd8923dd3ae51e1f864e37cefd5cc"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-responses/3847-1-result.json",
+      "bytes": 166118,
+      "sha256": "e3e01ec94aaa97a6801bc17c491c2e59480608d085ff85db3c1cf3850e3dba48"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-responses/3848-1-result.json",
+      "bytes": 1821,
+      "sha256": "e82e1278be59faf2672a42b431b15306ce0ab3077692043a94182a8ebc7875dd"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-responses/3849-1-result.json",
+      "bytes": 181788,
+      "sha256": "2e6aa3233b6405bb75bb6872f4537fcb8a19c2445fc2375b727b1886f21fe690"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-responses/3850-1-result.json",
+      "bytes": 1793,
+      "sha256": "bab399d58017c4e862b9ad47796ad0ff1a3e4fcacb6c73cc8d15a19ceebdc09e"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/p37-responses/3851-1-result.json",
+      "bytes": 59273,
+      "sha256": "34d51307b4d8de7707bed4e0ad6991a692eed9f5c044d943dd5b9ec6d6fefda3"
+    }
+  ],
+  "before_source": {
+    "sequence": 3848,
+    "json_pointer": "/result/structured_content",
+    "snapshot_id": "native:2999",
+    "revision": 2581,
+    "native_revision": 2999,
+    "date_raw": 53186832,
+    "actor_character_id": 31254,
+    "actor_alive": true,
+    "episode_run_id": "native-31254-6271ac8cd441"
+  },
+  "actual_unique_advance": {
+    "sequence": 3849,
+    "selected_step": "advance-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439",
+    "status": "executed",
+    "starting_date_raw": 53186832,
+    "ending_date_raw": 53186856,
+    "elapsed_days": 1,
+    "ordinary_events_count": 0,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "final_screen": "map_hud"
+  },
+  "post_switch_source": {
+    "sequence": 3851,
+    "native_completed_utc": [
+      "2026-10-19T08:00:41.691014+00:00",
+      "2026-10-19T08:00:41.696827+00:00"
+    ],
+    "frame": {
+      "snapshot_id": "native:3002",
+      "revision": 2584,
+      "native_revision": 3002,
+      "date_raw": 53186856,
+      "paused": true,
+      "map_ready": true,
+      "episode_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "one_life_terminal": true,
+      "one_life_terminal_reason": "played_character_changed"
+    },
+    "played_character_id": 40526,
+    "played_character_alive": true
+  },
+  "retained_estate": {
+    "expectation": {
+      "schema": "xar.ck3.succession-expectation/v1",
+      "status": "available",
+      "binding": {
+        "snapshot_id": "native:2999",
+        "revision": 2581,
+        "native_revision": 2999,
+        "date_raw": 53186832,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "episode_character_id": 31254
+      },
+      "expectation_state": "successor_expected",
+      "predecessor_character_id": 31254,
+      "expected_successor_character_id": 40526,
+      "title_expectations": [
+        {
+          "title": {
+            "title_id": 2230,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "first_heir_character_id": 40526,
+          "primary": true
+        },
+        {
+          "title": {
+            "title_id": 2231,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40526,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2262,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        }
+      ],
+      "risk_state": "split_successors",
+      "unavailable_reason": null
+    },
+    "age_at_observed_switch_raw": 24,
+    "age_days_at_observed_switch": 1.0,
+    "available_complete_title_rows": 3,
+    "expected_successor_matches_observed_played_character": true,
+    "actual_post_switch_title_holders_in_this_packet": null,
+    "actual_per_title_reconciliation_credit": false,
+    "boundary": "Complete prediction was1 day before observed switch, rather than the old3121-day stale case. Its expected player ID matches observed40526, but title-holder postimages and original player-continuation qualification are not supplied by SEM3851."
+  },
+  "goal_and_episode": {
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    },
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": null,
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+    },
+    "succession_reconciliation": null,
+    "queue_campaign_goal_anchor": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    },
+    "queue_pending_natural_succession": {
+      "global_turn": 1839,
+      "original_before": {
+        "snapshot_id": "native:2999",
+        "revision": 2581,
+        "native_revision": 2999,
+        "date_raw": 53186832,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "auto_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3849-1-result.json",
+      "typed_natural_boundary": false
+    },
+    "boundary": "Keep origin31254 and original campaign/episode anchor. Goal current31254/reconciled0 is still the pre-handoff state; no metadata-only reassignment, resigning old estate, or D0 rebase is authorized by this review."
+  },
+  "failure_order": {
+    "handoff": {
+      "schema": "g2.queue.automatic-natural-succession-handoff/v1",
+      "status": "failed_retained",
+      "completed_cycles_before_after": 1839,
+      "original_before": {
+        "snapshot_id": "native:2999",
+        "revision": 2581,
+        "native_revision": 2999,
+        "date_raw": 53186832,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "settled_after": {
+        "snapshot_id": "native:3002",
+        "revision": 2584,
+        "native_revision": 3002,
+        "date_raw": 53186856,
+        "actor_character_id": 40526,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "original_cycle": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3849-1-result.json",
+      "calls": [
+        {
+          "sequence": 3851,
+          "tool": "ck3_take_semantic_snapshot_private_v1",
+          "response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3851-1-result.json",
+          "status": "received"
+        }
+      ],
+      "same_game": {
+        "pid": 153556,
+        "creation_filetime": 134368602545256920
+      },
+      "original_AUTO_replayed": false,
+      "business_cycle_credit": 0,
+      "new_process_launch_or_restart_calls": 0,
+      "error_type": "ValueError",
+      "error": "Foreign cached decision provider",
+      "original_actions_replayed": false,
+      "automatic_action_retry": false
+    },
+    "halt": {
+      "at_utc": "2026-10-19T08:00:41.703232+00:00",
+      "error_type": "ValueError",
+      "message": "Foreign cached decision provider",
+      "first_exception_receipt": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FIRST-QUEUE-EXCEPTION-P37C7.json",
+      "original_request": {
+        "sequence": 3851,
+        "tool": "ck3_take_semantic_snapshot_private_v1",
+        "arguments": {},
+        "source": "g2.queue.automatic-natural-succession-handoff/v1; unique request; no original action replay"
+      },
+      "original_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3851-1-result.json",
+      "replay_allowed": false,
+      "sdk_kept_alive_for_original_collection": true,
+      "next_sequence": 3852
+    },
+    "first_exception_receipt_warning": "FROZEN explicitly says ROOT-FIRST-QUEUE-EXCEPTION-P37C7 may describe earlier map520; it is not reattributed to3851.",
+    "interpretation": "Actual SEM3851 completed before Foreign cached decision provider relay error. It is not a Native query failure or evidence that the old estate actor/frame guard should be weakened."
+  },
+  "unobserved_boundaries": {
+    "old31254_explicit_native_death_field": false,
+    "closed_small_source_proves": "Old31254 alive at3848; one-day advance; new40526 alive by3850/3851. Physical actor switch is directly observed.",
+    "formal_logical_handoff_complete": false,
+    "original_D0_value_in_this_packet": null,
+    "new40526_house_or_dynasty_ID_in_SEM3851": null,
+    "new40526_D0_comparison": "not_observed",
+    "complete_eligible_backup_domain": "not_observed",
+    "scheme_terminal_or_old_instance_reuse_credit": false,
+    "multi_seed_or_cold_restore_credit": false
+  },
+  "operations": {
+    "new_Game_RPC_Close_Continue_SAVE_calls": 0,
+    "live_Driver_or_large_SAVE_reads": 0,
+    "original3851_or3849_replays": 0,
+    "runtime_mutations_or_source_hot_patch": 0
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2027-04-17T08:10:24.536898+00:00",
+    "automatic_renewal": false,
+    "reason": "Compact pending-handoff estate and origin-goal boundary; revisit after original tail obtains actual reconciled successor evidence"
+  }
+}

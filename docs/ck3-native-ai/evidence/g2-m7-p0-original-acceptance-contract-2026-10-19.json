@@ -1,0 +1,71 @@
+{
+  "schema": "xar.g2-m7.P0-original-acceptance-contract/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:12:31.889388+00:00",
+  "source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\autonomous-agent-progress\\g2-requirements-v1.json",
+      "bytes": 132408,
+      "sha256": "4af8d801b82867949a47cc6a06a42bc7a58777d59877e4f3c7159305bcf7624b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\p55-g2-m6-m7-natural-coverage-2026-10-18.md",
+      "bytes": 8987,
+      "sha256": "43391a4a4c383277e8d63b5609fc60308ae401efbc051f9f6d6211743850b8ee"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\g2-government-seed-qualification-12004.md",
+      "bytes": 17543,
+      "sha256": "9d02301239b78892d59741f55ab481c17ea410eaedba5f9137c91726eaa9e014"
+    }
+  ],
+  "original_M7": {
+    "id": "G2-M7",
+    "name": "identity adapters and long campaign qualification",
+    "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
+    "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance"
+  },
+  "original_denominator": {
+    "kind": "visible_ooda_milestones",
+    "total": 8,
+    "complete": 6,
+    "progress_label": "6/8",
+    "percent_reporting_allowed": false
+  },
+  "natural_transition_subchain": [
+    "Use the original once-executed action and actual alive new played actor; do not replay3851 or applied/unknown actions.",
+    "Reuse original logical Continue, full title reconciliation and any genuinely necessary modal Close with independent clear.",
+    "Retain original campaign/origin/goal while current ruler and verified succession progress change through the normal consumer.",
+    "Use the actual normal successor SAVE receipt; preserve its write guarantee and pair/source scope.",
+    "Observe later successful ordinary AUTO/plan actually consuming that successor goal.",
+    "Deduplicate machine+campaign+old/new episode; files, reconnects and SDK rotations do not add transitions."
+  ],
+  "interpretation": {
+    "D0": "The original M7 definition and P55 acceptance chain do not require a separate raw fixed-D0 comparison. D0/family identity remains not_observed for scoring/family analysis; it is not a new gate on this natural-transition subchain.",
+    "actual_titles": "Retained title expectations alone are not post-succession results. Reconciliation and legal partition follow the original contract.",
+    "one_transition": "P55 explicitly separates one real transition/depth1 from broad M7 coverage. Do not invent a fixed required generation count.",
+    "independent_seed": "P55 permits actual initial checkpoint/RNG or initial-state lineage evidence. An explicit RNG numeric ID is not an added universal gate; PID, name, title or same-save reload alone is insufficient.",
+    "government": "Original multiple-government breadth requires actual current government identity/build and useful normal policy/result. Only feudal Robert or old failed Clan/Tribal bootstraps do not close it; all18 recognized keys are not mandatory.",
+    "cold": "A same-Game SDK rotation is not a Game checkpoint reload. Reuse a normally needed true cold boundary and exact paired successor proof when it occurs; this audit requests no restart or additional query."
+  },
+  "score_rule": {
+    "after_3852_reconcile_SAVE_and_following_AUTO": "If original fields close, award this campaign's natural transition and successor goal-consumption subchain.",
+    "M7_complete_from_this_chain_alone": false,
+    "reason": "Original visible outcome still includes multiple rulers, seeds and governments; known government breadth remains open. D0 unknown is not the reason for retaining M7 in_progress.",
+    "change_6_of_8_to_7_of_8_from_this_M7_transition_alone": false,
+    "other_milestone_completion": "Evaluate M6 separately under its own original contract; this file does not freeze the overall count against independently completed milestones.",
+    "formal_P0_posthandoff_sources": "not_collected in this contract-only audit; retain3851 pre-handoff snapshot separately."
+  },
+  "collector_actions": {
+    "new_Game_RPC_Close_SAVE_queries": 0,
+    "original_SAVE_body_reads": 0,
+    "live_Driver_reads": 0,
+    "new_tests_or_source_changes": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_after_utc": "2027-04-17T08:12:31Z",
+    "heavy_writes": false
+  }
+}

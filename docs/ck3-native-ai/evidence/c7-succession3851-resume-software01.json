@@ -1,0 +1,44 @@
+{
+  "schema": "xar.succession3851-source-and-prefix-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:13:39.019802+00:00",
+  "status": "PASS_SOFTWARE_PREFIX_NOT_LIVE_OR_COMPLETE_HANDOFF",
+  "frozen_inputs": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-succession3851-failure77/FROZEN.json",
+    "bytes": 16550,
+    "sha256": "098d9a0c539b23eecc63e09d028b6c9d41194dd20d045a0db08280f410c0c2d9"
+  },
+  "original_Queue_sha256": "fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30",
+  "original_handoff_sha256": "af114b3088ca847fdd14affe40f1c942f191fc0c2cac81e45d431eda64e070e1",
+  "original3851_sha256": "34d51307b4d8de7707bed4e0ad6991a692eed9f5c044d943dd5b9ec6d6fefda3",
+  "original_failed_audit_sha256": "c9ba53e7c1dfbd3e33268421db27552160eac128dd462c573978d66b58c1ab8a",
+  "sources": {
+    "tools/g2_saved_campaign/succession3851_first_semantic_resume_v1.py": [12330, "9ec92c2ed9f005c9a3fcdc0e523afa960ab2e3de37b57ecefa70c5aaa15f070c"],
+    "tools/g2_saved_campaign/qualify_succession3851_resume_v1.py": [7566, "7958c8db3afaddd672fdd1be4cf1c13bd0317d80f10e9c4a253fa5791632230b"],
+    "tools/g2_saved_campaign/prepare_succession3851_resume_v1.py": [3594, "f9cd2c1b7a39b668a69a07e559fced3583cd0f659702e8682c9c5557b06bcf04"]
+  },
+  "command": "py tools/g2_saved_campaign/qualify_succession3851_resume_v1.py",
+  "qualification": {
+    "actual_C7_outer_dispatch_consume_halt_AST": true,
+    "all_runtime_writes_captured_in_memory": true,
+    "original_source_AST_except_two_C6_provider_imports_and_new_audit_basename_identical": true,
+    "original3851_RPC_calls": 0,
+    "following_simulated_call": [3853, "ck3_auto_turn", {}],
+    "following_call_result": "Deliberate simulated failure before any real business action. Original halt_request retained new3853 unknown; original1839 state and pending_natural_succession unchanged.",
+    "exact_negative_cases_rejected": ["different_Game", "queue_pending", "wrong_old_response", "wrong_next_sequence"],
+    "real_MCP_or_Game_calls": 0,
+    "live_handoff_finished_claim": false,
+    "full_future_tail_DTO_simulated_success_claim": false
+  },
+  "review_candidate": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/c7-succession3851-review01/REVIEW.json",
+    "bytes": 2862,
+    "sha256": "a79937c6e024aa3ff326df1b3f3b33524331e086c0aea379d812aac572f0041a",
+    "known_owner_candidate_bytes": 33417,
+    "known_owner_candidate_sha256": "c818380740e0f552ce37be893b63c9ce7cb782755cf8bc58a779e95f5543278f",
+    "request3852_sha256": "ce973cd132726b743178d5d35abcc3320b7810b8959815a279420ff1b6f08968"
+  },
+  "operator_scope": "Runtime sole owner may adopt unused dynamic control only after unchanged source/state/row pins read back. Real C6 publication of original3851 must precede the next uniquely numbered Continue. Original handoff then validates Continue, successor reconciliation, CAP, App UI and SAVE without copying or bypassing its tail. Failure preserves new attempted action; no automatic retry.",
+  "retained_history": "Old3790 failure, old3851 result and missing original-after status, failed audit, T0, original1839 ordinary credit and unknown actions remain. New isolated audit records original3851 consumption; it does not rewrite the failed audit.",
+  "next_FULL": "Original tail changes initial_frame. Actual final_semantic_response/final_frame and fresh frozen pixels require the original camera admission contract before subsequent FULL. No camera guard change is included."
+}

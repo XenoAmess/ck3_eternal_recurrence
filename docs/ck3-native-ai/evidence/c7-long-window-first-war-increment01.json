@@ -1,0 +1,297 @@
+{
+  "schema": "xar.ck3.c7-long-window-first-war-increment.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:45:45.800284+00:00",
+  "business_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+  "evidence_layer": "Natural sealed runtime projections and one listed/pinned1818B closed MET; no new game observation.",
+  "sourcepins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-CONTINUOUS-THROUGH-1024-75.json",
+      "bytes": 25705,
+      "sha256": "63a4358b124517c6fea269918358b7170dd71e4cc07a83ffe07a90d3aeba4f4b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-CONTINUOUS-THROUGH-1886-75.json",
+      "bytes": 56826,
+      "sha256": "72ceaa4bc0ffd9966228bde59a93532fd20a5da2256f519de6e7ea6ff8a6d657"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-COMPACT.json",
+      "bytes": 229835,
+      "sha256": "fc3e3eeccd51de35650c4adb9a53a1551b01d7d3db3ca79e6d507467c9c958bb"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-STAGE-TRACE.json",
+      "bytes": 986,
+      "sha256": "d7853b0738c3ae8a471d865b01736492559dd9b8c06707b8507167eac44bfd3e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-STAGE-TRACE.jsonl",
+      "bytes": 236790,
+      "sha256": "e3777c3db721e47dd25bf491eef74178d49acc34c61e458aec9107241b18ca88"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\1946-1-result.json",
+      "bytes": 1818,
+      "sha256": "c06457fc505379cf5b42aee8dad1304eca12c2dfa3039d5c95763609449bc610"
+    }
+  ],
+  "anchors": {
+    "AUTO9": "2026-10-19T03:26:49.420926+00:00",
+    "SDK115": "2026-10-19T03:54:19.068067+00:00",
+    "C7_first_AUTO523": "2026-10-19T07:23:56.695174+00:00",
+    "C7_warm_SEM518": "2026-10-19T07:10:43.640678+00:00",
+    "campaign_T0_date_raw": 53144328
+  },
+  "earlier_nine_batch_prefix": {
+    "batches": 9,
+    "new_cycles": 270,
+    "actual_days": 617,
+    "last_day": 998,
+    "last_cycles": 489,
+    "closed_index_utc": "2026-10-19T07:31:51.448346+00:00",
+    "first_AUTO_to_closed_index_seconds": 474.753172,
+    "warm_first_SEM_to_closed_index_seconds": 1267.807668,
+    "AUTO9_to_closed_index_seconds": 14702.02742,
+    "cycle_series": [
+      249,
+      279,
+      309,
+      339,
+      369,
+      399,
+      429,
+      459,
+      489
+    ],
+    "first_AUTO_seconds_per_day": 0.7694540875202593,
+    "warm_seconds_per_day": 2.054793627228525,
+    "AUTO9_seconds_per_day": 14.731490400801604
+  },
+  "latest_23_batch_prefix": {
+    "batches": 23,
+    "new_cycles": 690,
+    "actual_days": 914,
+    "last_day": 1295,
+    "last_cycles": 909,
+    "closed_index_utc": "2026-10-19T07:40:03.269335+00:00",
+    "first_AUTO_to_closed_index_seconds": 966.574161,
+    "warm_first_SEM_to_closed_index_seconds": 1759.628657,
+    "AUTO9_to_closed_index_seconds": 15193.848409,
+    "cycle_series": [
+      249,
+      279,
+      309,
+      339,
+      369,
+      399,
+      429,
+      459,
+      489,
+      519,
+      549,
+      579,
+      609,
+      639,
+      669,
+      699,
+      729,
+      759,
+      789,
+      819,
+      849,
+      879,
+      909
+    ],
+    "first_AUTO_seconds_per_day": 1.0575209638949672,
+    "warm_seconds_per_day": 1.9251954671772429,
+    "AUTO9_seconds_per_day": 11.732701474131273
+  },
+  "window_rules": [
+    "First-AUTO includes all intervening batches/planning/checkpoints/gaps; warm includes C7 startup/map repair; AUTO9 retains every earlier maintenance gap.",
+    "End is actually observed completed-control manifest index; FULL wrapper has no own duration. No filemtime or invented elapsed.",
+    "Closed latest is909cycles/day1295; live915/day1297 is not used.",
+    "Nine-prefix below1s/day does not qualify the campaign; later23-prefix includes war and is above1s/day."
+  ],
+  "first_verified_war_batch": {
+    "start_utc": "2026-10-19T07:33:43.237041+00:00",
+    "end_at_MET1273_utc": "2026-10-19T07:34:13.103229+00:00",
+    "new_cycles": 30,
+    "actual_days": 12,
+    "first_to_last_tool_wall_seconds": 29.866188,
+    "seconds_per_actual_day": 2.488849,
+    "all_30_MET_war_count": 1,
+    "known_tool_RPC_count": 60,
+    "known_tool_RPC_wall_seconds": 23.55407170113176,
+    "other_inter_RPC_or_control_seconds": 6.31211629886824,
+    "Native_command_count": null,
+    "Native_only_total_wall_seconds": null,
+    "route_queries": {
+      "count": 13,
+      "tool_wall_seconds": 4.276740200119093
+    },
+    "route_advances": {
+      "count": 12,
+      "tool_wall_seconds": 15.228816600283608
+    },
+    "move1220_tool_seconds": 2.485397400101647,
+    "route_frame_correlation": {
+      "columns": ["AUTO", "after_MET_date_raw", "native_revision", "public_revision"],
+      "query_move_query": [[1218, 53171784, 1423, 1005], [1220, 53171784, 1424, 1006], [1222, 53171784, 1424, 1006]],
+      "advance_AUTO_sequence": [1224, 1228, 1232, 1236, 1240, 1244, 1250, 1256, 1260, 1264, 1268, 1272],
+      "each_advance_actual_days": 1,
+      "h2_first_query_AUTO": 1258,
+      "scope": "1218 proof precedes actual move1220; same date does not preserve native/public frame. Each later query is after a new-day advance; no compact proof of duplicate dispatch. Position/contact/arrival stay unknown."
+    },
+    "selected_stage_totals": {
+      "service.normal_plan_turn": {
+        "count": 30,
+        "wall_seconds_sum": 4.6142052
+      },
+      "driver.native_pipe_send_wait": {
+        "count": 1,
+        "wall_seconds_sum": 0.2488295
+      },
+      "driver.army_normalize": {
+        "count": 1,
+        "wall_seconds_sum": 0.0118279
+      },
+      "driver.record_command": {
+        "count": 1,
+        "wall_seconds_sum": 0.0213937
+      },
+      "mcp.auto_turn_service": {
+        "count": 1,
+        "wall_seconds_sum": 0.3883358
+      },
+      "driver.route_preview_native_pipe_send_wait": {
+        "count": 14,
+        "wall_seconds_sum": 0.3235843
+      },
+      "driver.full_state_persistence": {
+        "count": 26,
+        "wall_seconds_sum": 0.3691463
+      },
+      "driver.full_state_json_serialization": {
+        "count": 26,
+        "wall_seconds_sum": 0.0050262
+      },
+      "driver.full_state_utf8_encoding": {
+        "count": 26,
+        "wall_seconds_sum": 0.1303367
+      },
+      "driver.full_state_temp_stream_write": {
+        "count": 26,
+        "wall_seconds_sum": 0.106793
+      },
+      "driver.life_advance_public_change_wait": {
+        "count": 37,
+        "wall_seconds_sum": 12.9801101
+      },
+      "driver.exact_clock_resume_to_paused": {
+        "count": 12,
+        "wall_seconds_sum": 12.8518825
+      }
+    },
+    "nested_clock_phases": {
+      "count": 60,
+      "invalid_to_add_cumulative_phase_seconds": 37.042865,
+      "interval_union_seconds": 12.860759999999999,
+      "resume_to_paused_interval_union_seconds": 12.851883,
+      "method": "Merge [finished_at_utc-elapsed_ns,finished_at_utc]; UTC microsecond precision. Nested stage totals are not additive, elapsed is wall not CPU.",
+      "observed_speed": 3,
+      "speed_horizon_or_AB_guard_changed": false
+    },
+    "persistence": {
+      "full_success_count": 26,
+      "wall_seconds": 0.3691463,
+      "logical_full_payload_bytes": 311375753,
+      "history_bytes_first": 11772428,
+      "history_rows_first": 1027,
+      "history_bytes_last": 12168956,
+      "history_rows_last": 1078,
+      "history_growth_bytes": 396528,
+      "history_growth_rows": 51,
+      "reason_counts": {
+        "record_command:move-army-33554800-to-2604": 1,
+        "succession_expectation": 12,
+        "record_command:advance-route-contact-horizon-v1-33554800-to-2604-h-1-33554439": 8,
+        "record_command:query-campaign-root-context-v1": 1,
+        "record_command:advance-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439": 4
+      },
+      "candidate_run_lengths": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "actual_WAL_appends": 0,
+      "WAL_qualified": false,
+      "default_off": true
+    }
+  },
+  "latest_closed_MET1946": {
+    "date_raw": 53175408,
+    "actual_day": 1295,
+    "cumulative_cycles": 909,
+    "war_count": 1,
+    "paused": true,
+    "snapshot_id": "native:1840",
+    "native_revision": 1840,
+    "driver_state_file_bytes": 16109398,
+    "army_strength_result_write_v1": {
+      "query_sequence": 91,
+      "payload_bytes": 21235329,
+      "limit_bytes": 67108864,
+      "stage": "complete",
+      "success": true,
+      "windows_error": null
+    },
+    "interpretation": "Writer payload bytes are not proven one Native leaf/body. No large writer payload or Driver body was read."
+  },
+  "after_first_verified_war_sample": {
+    "start_utc": "2026-10-19T07:33:43.237041+00:00",
+    "end_observed_index_utc": "2026-10-19T07:40:03.269335+00:00",
+    "actual_days": 151,
+    "wall_seconds": 380.032294,
+    "seconds_per_day": 2.516770158940397,
+    "scope": "Both endpoints war_count1; intermediate frame-by-frame war state is not independently projected."
+  },
+  "next_work": {
+    "route_quality": "13queries/12advances can be initial query plus new-frame observation after each advance; no duplicate-dispatch defect proven.",
+    "coordination": "M0 reviews route freshness/arrival consumer source; performance_python correlates existing compact frames; Native reports available timing.",
+    "missing_fields": "Position/contact/arrival missing from compact stay unknown. No large raw response read to fill them.",
+    "planner_timers": "Source-only planner_internal/sway_staging is separate and not adopted in these C7 traces; choose-to-copy residual unassigned.",
+    "policy": "Keep speed3, AB guard, horizon, full planner and war decisions. Preserve legal marching waits."
+  },
+  "prior_ledger": {
+    "path": "docs/ck3-native-ai/evidence/c6-closed-persistence-analysis01.json",
+    "sha256": "3ede1776d0facd8585ccdd4bf0e925aa753864a1a7d30616b980e6e50717ffa6",
+    "modified": false
+  },
+  "producer": {
+    "method": "Inline bounded Python JSON parse with explicit size/SHA/machine checks and contiguous30-turn control increments; no removable acceptance assert.",
+    "formulas": "wall=(endpointUTC-anchorUTC).total_seconds; days=(end_raw-start_raw)/24. Clock intervals union merges overlap; label stage sums never added as total.",
+    "provenance": "long.controls[].summary/last_complete_frame/last_feeder_closed_manifest_utc; war.responses[].after_frame/timings; sealed trace rows; listed last_original_responses[-1].source MET1946."
+  },
+  "game_RPC_calls": 0,
+  "live_Driver_SAVE_reads": 0,
+  "large_raw_response_reads": 0,
+  "external_writes_bytes": 0,
+  "sustained_goal_qualified": false,
+  "storage": {
+    "pool": "existing REPO-ONLY-MICROPOOL01<=12KiB follow-up",
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}

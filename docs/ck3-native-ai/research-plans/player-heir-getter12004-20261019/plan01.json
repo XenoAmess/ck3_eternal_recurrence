@@ -1,0 +1,135 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "Character.GetPlayerHeir-registration",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Locate exact Character.GetPlayerHeir DataFunction registration/callback and its receiver/qualification boundary from the ordinary local-player CharacterWindow consumer.",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "OnlyGetPlayerHeir literal45231D0 adjacent metadata and fixed-target registration references; at most3 concrete candidate functions<=512B each",
+    "identity_lifetime": "existing actual direct-hashed file with same metadata; no address migration",
+    "producer_trigger": "not-applicable",
+    "producer": "actual Character getter registration and player-continuation qualifier remain the source question",
+    "caller": "offline file mapper; no engine callbacks invoked",
+    "consumer": "human source review, no runtime/H score consumer",
+    "cache_lifetime": "one frozen source result",
+    "expected_signal": "source-bound DataFunction record or registration code with explicit Character receiver and getter callback",
+    "zero_sample_meaning": "no declared encoding hit, not absence of a native getter or an heir",
+    "stop_condition": "at most3 candidate function windows<=512B; no AI/callee tree, process/Game/RPC/build/EXEcopy",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "unique_literal_rva": 72495568,
+    "literal_adjacent_metadata_bytes": 512,
+    "fixed_target_relative_data_refs": {
+      "sections": [
+        ".rdata",
+        ".data"
+      ],
+      "alignment": 4,
+      "encoded_width": 4,
+      "conventions": [
+        "cell_rva+signedDWORD",
+        "cell_rva+4+signedDWORD"
+      ],
+      "max_hits": 10,
+      "matched_metadata_windows_max": 3,
+      "matched_metadata_window_bytes": 128
+    },
+    "fixed_target_text_absolute_encodings": [
+      "RVA4",
+      "preferredVA8"
+    ],
+    "candidate_functions_max": 3,
+    "candidate_function_bytes_max": 512,
+    "pdata": "binary-search matching candidate only; record bounds do not imply a complete logical function",
+    "old_fixed_RIP_and_VA_RVA_zero": "reuse old frozen receipts; do not repeat prior scans",
+    "regular_source_scope": "Root permits unique-literal neighboring metadata/registration matching, same file only, no unrelated names orAI",
+    "receipt_total_max_bytes": 32768
+  },
+  "existing_tools_audit": {
+    "sources": [
+      {
+        "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/research/find_string_xrefs.py",
+        "bytes": 6203,
+        "sha256": "b0821ee50603cd1754d6270c395cf1f2746d6b7b36aacb11de26eca704c46144"
+      },
+      {
+        "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/research/find_xrefs.py",
+        "bytes": 5104,
+        "sha256": "3f99b3c39064a67b389b4dd83db56cbdb55ac2696d8b9f1df88103538ca8e64f"
+      }
+    ],
+    "reuse": "fixed-reference encoding ideas only; originals whole-file read/hash/full pdata/decode paths are not executed",
+    "performance_native_handoff": "No source-bound Character.GetPlayerHeir binder cache/tool known; widget route sources do not prove a DataFunction callback"
+  },
+  "evidence": [
+    {
+      "id": "actual-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "actual current file hash, not callback truth"
+    },
+    {
+      "id": "ordinary-local-player-widget",
+      "layer": "source-contract",
+      "path": "../player-heir-receiver12004-20261019/source-output01.json",
+      "sha256": "5aabbf0fca4c6df5a938d5a8907a0012f3fc6e7fb113958533bd017a267b2bf2",
+      "supports": "pinned current GUI lines883-886 establish Character receiver GetPlayerHeir consumer, not native continuation qualification",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gui",
+      "label": "ordinary local-player Character.GetPlayerHeir"
+    },
+    {
+      "id": "callback",
+      "label": "native getter registration and Character return"
+    },
+    {
+      "id": "legal",
+      "label": "original player-continuation qualification"
+    }
+  ],
+  "edges": [
+    {
+      "id": "registered",
+      "from": "gui",
+      "to": "callback",
+      "label": "exact DataFunction receiver/registration/callback",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which exact record or constructor binds this Character method to code?"
+    },
+    {
+      "id": "qualification",
+      "from": "callback",
+      "to": "legal",
+      "label": "original rules and valid living player successor",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which original caller makes the returned candidate legal to continue?"
+    }
+  ],
+  "cases": [],
+  "validation_correction": {
+    "observed_at_utc": "2026-10-19T08:04:03.169845+00:00",
+    "prior_plan_sha256": "4a570e7b0a7a1746ca717c83ef551a68974e8b6cd9674661cce79466d75f3607",
+    "prior_plan_reconstruction": "Remove validation_correction; set evidence[1].layer back to authored-source and remove its exe_sha256; JSON ensure_ascii=False/indent2/newline.",
+    "initial_ordinary_check": "b79ab7 exit2: authored-source not accepted evidence layer; actual source discovery was then run within independent Root authorization before correcting this metadata error. Do not relabel the original check as GREEN.",
+    "initial_for_observation": "fc34f5 exit2 offline-only/no live producer; preserved.",
+    "correction": "Use allowed source-contract layer for the pinned authored GUI consumer receipt; no source facts, callback result or runtime permission added.",
+    "second_ordinary_check": "85ce23 exit2: source-contract evidence had no explicit exe_sha256; corrected to the independently pinned exact file build. No additional EXE read."
+  }
+}

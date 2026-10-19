@@ -1,0 +1,319 @@
+{
+ "schema": "xar.g2-m0-c7-route-convergence-review/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T08:01:21.473816+00:00",
+ "machine_identity_source": "Fresh python tools/ck3_live_run_id.py machine readback during this audit; exact machine_id above.",
+ "disposition": "NO_NEW_ROUTE_CONVERGENCE_DEFECT_PROVEN; ACTUAL_ARRIVAL_COMBAT_AND_LATER_OBJECTIVE_HOLD_OBSERVED",
+ "finding": "The earlier compact-only slice could not establish arrival. Three later closed bodies now show army33554800 physically at objective2604, then real combat with enemy393, then a later regular stationary hold while both observed enemies retreat and war_score is22. Route step counts alone do not establish a stall.",
+ "business_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+ "scope": "Existing closed FULL1213 range1213..1273 timing/frame evidence and exactly three later closed bodies3057,3059,3103, each below512KiB; frozen C7 src06 source only. No new live sampling.",
+ "inputs": {
+  "compact": {
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-COMPACT.json",
+   "bytes": 229835,
+   "sha256": "fc3e3eeccd51de35650c4adb9a53a1551b01d7d3db3ca79e6d507467c9c958bb"
+  },
+  "stage_trace": {
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-STAGE-TRACE.jsonl",
+   "bytes": 236790,
+   "sha256": "e3777c3db721e47dd25bf491eef74178d49acc34c61e458aec9107241b18ca88"
+  },
+  "SDK_freeze": {
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C7.json",
+   "bytes": 403018,
+   "sha256": "4c9de700f1572ad81627fe6c92cd5fec4b05cb4e02b0c4e6449bda48b32cb4d9"
+  },
+  "compact_captured_at_utc": "2026-10-19T07:34:59.423607+00:00",
+  "source_files": [
+   {
+    "path": "strategy.py",
+    "bytes": 1032678,
+    "sha256": "ddc62e3093564f8b8126507ce7d0e2639a154ebffa15e6312a8fc74b45c9bf29"
+   },
+   {
+    "path": "bridge\\native_driver.py",
+    "bytes": 1612085,
+    "sha256": "f64d8c6478b37fe39a3baca6f7794b89a1e20072b443895b9e9e29de6158226f"
+   },
+   {
+    "path": "bridge\\service.py",
+    "bytes": 867830,
+    "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+   }
+  ],
+  "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer"
+ },
+ "later_closed_inputs": [
+  {
+   "sequence": 3057,
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3057-1-result.json",
+   "bytes": 145920,
+   "sha256": "8edceb6b2f2dc1eaa0cdb9aeda38ef1779f432dfe476acfc861c2ff7cfda8de8"
+  },
+  {
+   "sequence": 3059,
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3059-1-result.json",
+   "bytes": 165374,
+   "sha256": "4d446aa95d326b619c64dfbacb4ddf97e26e5c7044804fe6a5cf089fac592196"
+  },
+  {
+   "sequence": 3103,
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3103-1-result.json",
+   "bytes": 191923,
+   "sha256": "f686ee70930c2bfc5e76fe65dc519f36ecac9d5d13f09d93ac6b8c0170f69d9a"
+  }
+ ],
+ "supporting_timing_ledger": {
+  "path": "docs/ck3-native-ai/evidence/c7-long-window-first-war-increment01.json",
+  "bytes": 11326,
+  "sha256": "f902f92024829eefa6514b5c7d82a1dc8539025bacf6153ebe0bc68218818215",
+  "owner": "performance_python"
+ },
+ "initial_cadence": {
+  "closed_ordinary_cycles": 30,
+  "cycle_distribution": {
+   "army_strengths_query": 1,
+   "route_preview": 1,
+   "route_contact_query": 13,
+   "move_order": 1,
+   "route_advance": 12,
+   "war_results_query": 1,
+   "war_termination_query": 1
+  },
+  "army_id": 33554800,
+  "target_province_id": 2604,
+  "only_move_sequence": 1220,
+  "actual_daily_advances": 12,
+  "each_advance_raw_date_delta": 24,
+  "raw_date_start": 53171784,
+  "raw_date_end": 53172072,
+  "frame_correlation": [
+   {
+    "after_sequence": 1218,
+    "date_raw": 53171784,
+    "native_revision": 1423,
+    "public_revision": 1005
+   },
+   {
+    "after_sequence": 1220,
+    "date_raw": 53171784,
+    "native_revision": 1424,
+    "public_revision": 1006
+   },
+   {
+    "after_sequence": 1222,
+    "date_raw": 53171784,
+    "native_revision": 1424,
+    "public_revision": 1006
+   }
+  ],
+  "meaning": "1218 is pre-move proof. The1220 move changes native/public frame without advancing date;1222 refreshes that changed frame. Each subsequent daily query follows a real one-day advance. No unchanged-frame repeated move or stale proof reuse is shown in this slice.",
+  "distinct_interleaves": {
+   "1246": "war-results-window",
+   "1252": "war-termination-options-16777278"
+  },
+  "hostile_scope": {
+   "initial": [
+    33554439
+   ],
+   "from_query1258": [
+    393,
+    33554439
+   ]
+  }
+ },
+ "actual_military_progress": {
+  "shared_identity": {
+   "Game_PID": 153556,
+   "connection_generation": 4,
+   "actor_id": 31254,
+   "episode": "native-31254-6271ac8cd441",
+   "war_id": 16777278,
+   "player_side": "defender",
+   "subject_army_id": 33554800,
+   "objective_province_ids": [
+    2604
+   ]
+  },
+  "query3057": {
+   "phase": "native_war_stationary_contact_horizon",
+   "native_revision": 2372,
+   "public_revision": 1954,
+   "date_raw": 53179464,
+   "query_status": "available",
+   "subject": {
+    "current_province_id": 2604,
+    "effective_origin_province_id": 2604,
+    "queried_target_province_id": 2604,
+    "remaining_route": [],
+    "arrival_dates": []
+   },
+   "enemy393": {
+    "current_province_id": 2603,
+    "route": [
+     2604
+    ],
+    "arrival_dates": [
+     53179488
+    ]
+   },
+   "enemy33554439": {
+    "current_province_id": 2598,
+    "route": [
+     2595,
+     2603,
+     2604
+    ],
+    "arrival_dates": [
+     53179512,
+     53179680,
+     53179896
+    ]
+   },
+   "one_day_contact_free": false,
+   "predicted_contact": {
+    "kind": "same_province",
+    "enemy_army_id": 393,
+    "province_id": 2604,
+    "date_raw": 53179488
+   },
+   "war_score": 0,
+   "meaning": "The subject is already physically at the target with no route or ETA remaining. The contact prediction itself is not a combat result."
+  },
+  "advance3059": {
+   "phase": "native_war_unavoidable_contact_transition",
+   "start_date_raw": 53179464,
+   "end_date_raw": 53179488,
+   "actual_days": 1,
+   "existing_policy": "exact_one_day_unavoidable_contact",
+   "observed_timeline_speed": 1,
+   "contact_transition_status": "observed",
+   "postcondition": "active_combat_observed",
+   "after_native_revision": 2376,
+   "after_public_revision": 1958,
+   "before": {
+    "subject": {
+     "province": 2604,
+     "in_combat": false,
+     "state": "regular"
+    },
+    "enemy393": {
+     "province": 2603,
+     "in_combat": false,
+     "target": 2604
+    }
+   },
+   "after": {
+    "subject": {
+     "province": 2604,
+     "in_combat": true,
+     "state": "combat",
+     "route": []
+    },
+    "enemy393": {
+     "province": 2604,
+     "in_combat": true,
+     "state": "combat",
+     "route": []
+    }
+   },
+   "war_score_before_and_after": 0,
+   "meaning": "Actual one-day advancement and two real combat-state observations prove contact. Speed1 is the already implemented unavoidable-contact policy, not a setting changed by this review."
+  },
+  "hold3103": {
+   "selected_step": "war-objective-hold-sentinel-advance-war-16777278-army-33554800-at-2604-until-53181000",
+   "start_date_raw": 53180832,
+   "end_date_raw": 53181000,
+   "before_native_revision": 2453,
+   "after_native_revision": 2464,
+   "before_public_revision": 2035,
+   "after_public_revision": 2046,
+   "actual_days": 7,
+   "observed_timeline_speed": 3,
+   "sentinel_scope": "stationary_objective_hold",
+   "timeline_policy": "decision_epoch",
+   "completed_daily_ticks": 7,
+   "overshoot_days": 0,
+   "intermediate_pause_count": 0,
+   "war_score_before_and_after": 22,
+   "subject_before_and_after": {
+    "province": 2604,
+    "target": null,
+    "route": [],
+    "in_combat": false,
+    "retreating": false,
+    "state": "regular"
+   },
+   "enemies": [
+    {
+     "army_id": 393,
+     "before_province": 2604,
+     "after_province": 2603,
+     "retreating_before_and_after": true,
+     "target": 2547
+    },
+    {
+     "army_id": 33554439,
+     "before_province": 2604,
+     "after_province": 2603,
+     "retreating_before_and_after": true,
+     "target": 2565
+    }
+   ],
+   "paused_map_hud_after": true,
+   "active_event_after": null,
+   "pending_interaction_after": null,
+   "terminal": false,
+   "meaning": "This later closed DTO has score22, continuing actual seven-day clock advancement and retreating enemies moving away while the subject remains at2604. It supersedes a blanket claim that the newer war still has score0 and no route progress."
+  }
+ },
+ "source_checks": [
+  {
+   "source": "strategy.py:11446-11469,11730-11765",
+   "finding": "Current province/observed target come from current pursuit_army. Accepted move intent supplements the audit; an old ACK alone does not create an observed route."
+  },
+  {
+   "source": "strategy.py:11809-11889,21248-21332",
+   "finding": "Current route proof is bound to date, native/public revisions, connection generation, episode, subject, target, origin, canonical remaining route and full hostile scope; failed unchanged-frame query and merge barriers are handled. No stale-frame fallback identified."
+  },
+  {
+   "source": "strategy.py:22742-22818",
+   "finding": "Active move intent checks current snapshot.player_armies and clears on actual currentprovince==target or changed/cancelled observable target. The later3057 actual arrival is consistent with this behavior."
+  },
+  {
+   "source": "bridge/native_driver.py:14957-15024,23983-24020,33385-33450",
+   "finding": "Route query validates paused/controllable/full-hostile inputs; advance rechecks current semantic revision and matching normalized route proof before exact-day execution."
+  }
+ ],
+ "performance_context": {
+  "first_slice_closed_RPC_wall_seconds": 29.866188,
+  "first_slice_actual_days": 12,
+  "first_slice_wall_seconds_per_day": 2.488849,
+  "route_query_RPC_elapsed_seconds": 4.2767402,
+  "route_advance_RPC_elapsed_seconds": 15.2288166,
+  "move_RPC_elapsed_seconds": 2.4853974,
+  "reading": "About2.49s/day in the first slice exceeds the1s/day objective, but these materials do not justify removing fresh proof or altering speed/horizon/guards. The later hold already advances seven days in one selected step. Native/Python timing owners handle latency attribution; nested cumulative phases must not be summed."
+ },
+ "limits": [
+  "Three discrete later closed bodies are not the whole84cycle interval or every intervening battle. Exact arrival time before3057 remains unmeasured.",
+  "There are56days between3059 ending and3103 starting. Do not attribute all observed0-to22 score change to the one3059 contact or claim a formal battle or war victory.",
+  "Objective IDs identify2604, but objective_province_states is empty and siege-holder/days and soldiers are null. No ownership transfer, siege completion, effective-force advantage or win probability is established.",
+  "Planner words occupied objective are not substituted for missing native ownership evidence. No current CB or termination-option material is inferred from historical policy rows.",
+  "Enemy retreat is an observed DTO state, not proof of the entire enemy force, final loss, surrender or player territorial gain. No later campaign outcome is claimed."
+ ],
+ "decision": {
+  "source_patch": null,
+  "test_patch": null,
+  "reason": "No reproducible route convergence, stale-frame or missed-arrival defect was demonstrated by the authorized closed material. No new matrix or qualification credit is manufactured.",
+  "M0_prior_source_and_credit": "unchanged",
+  "speed_horizon_guards": "unchanged",
+  "Game_Desktop_OBS_Native_calls": 0,
+  "new_RPC": 0,
+  "active_Driver_SAVE_reads": 0,
+  "unique_raw_bodies_read": 3,
+  "raw_body_copies": 0,
+  "large_evidence_copies": 0,
+  "production_or_runtime_writes": 0,
+  "new_business_credit": 0
+ }
+}
