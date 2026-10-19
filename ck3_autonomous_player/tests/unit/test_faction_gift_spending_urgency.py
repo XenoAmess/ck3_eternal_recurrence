@@ -107,6 +107,7 @@ def test_actual_515_watch_stays_ordinary_despite_legal_funded_gift(tmp_path):
 @pytest.mark.parametrize('checkpoint,expected', [(True, route.SUBMIT_STEP), (False, 'save-checkpoint')])
 def test_synthetic_same_scope_danger_keeps_original_checkpoint_submit_gate(tmp_path, checkpoint, expected):
     def dangerous(candidate, frame, history, planned):
+        frame['active_wars'] = []  # Synthetic known peace isolates the checkpoint gate.
         history[1]['result']['player_faction_alerts']['targeting_factions'][0]['dangerous_by_stock_rule'] = True
     out, driver = run(tmp_path, alter=dangerous, checkpoint=checkpoint)
     if out['plan']['selected_step'] != expected or driver.candidate_reads != 1:

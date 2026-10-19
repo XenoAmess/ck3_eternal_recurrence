@@ -1,0 +1,205 @@
+{
+  "schema": "xar.faction-gift-known-peace-fixtures-ci.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T13:03:31.264382+00:00",
+  "ci_worker_machine_id": "unknown",
+  "baseline_commit": "36c8348f0e70c495ef134aca549b462d81b79fce",
+  "docs_child_commit": "667678c51fd25893461919d49e87ea5d4623ed3c",
+  "baseline_run": {
+    "id": 39250756069,
+    "conclusion": "failure",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39250756069"
+  },
+  "docs_child_run": {
+    "id": 39251915699,
+    "conclusion": "failure",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39251915699"
+  },
+  "same_three_failure_nodeids": [
+    "FAILED ck3_autonomous_player\\tests\\unit\\test_faction_gift_spending_urgency.py::test_synthetic_same_scope_danger_keeps_original_checkpoint_submit_gate[True-private-submit-faction-gift-member-v1]",
+    "FAILED ck3_autonomous_player\\tests\\unit\\test_faction_gift_spending_urgency.py::test_synthetic_same_scope_danger_keeps_original_checkpoint_submit_gate[False-save-checkpoint]",
+    "FAILED ck3_autonomous_player\\tests\\unit\\test_faction_gift_formal_route_v1.py::test_planner_preserves_known_empty_and_requires_pre_submit_checkpoint"
+  ],
+  "failed_batch_counts": {
+    "failed": 3,
+    "passed": 145,
+    "subtests_passed": 113
+  },
+  "cause": "The new wartime cash guard treats an omitted active_wars field as current_war_scope_unobserved and defers spending before checkpoint selection. Two older synthetic checkpoint fixtures omitted that field. Both parent and docs-only child CI have the same failures.",
+  "repair_scope": [
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_faction_gift_spending_urgency.py",
+        "bytes": 9527,
+        "sha256": "ff84932ae2227d1efa4afbc8ce898d183418838dba30a5672db4f8c4f1583a88"
+      },
+      "added_line": "        frame['active_wars'] = []  # Synthetic known peace isolates the checkpoint gate.",
+      "all_other_text_and_original_assertions_identical": true
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_faction_gift_formal_route_v1.py",
+        "bytes": 29688,
+        "sha256": "d1431a0854e4fb7b19a3094baf2d7f6ca7ae3c4599115345eee831c6560156d0"
+      },
+      "added_line": "        \"active_wars\": [],",
+      "all_other_text_and_original_assertions_identical": true
+    }
+  ],
+  "production_cash_and_checkpoint_guards_unchanged": true,
+  "unknown_war_scope_guard_preserved": true,
+  "historical_war_entry_fixture_preserved": true,
+  "actual_focused_run": {
+    "argv": [
+      "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+      "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+      "--basetemp",
+      "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\tmp\\pytest-focused-a01"
+    ],
+    "exit_code": 0,
+    "summary": "40 passed in 5.58s",
+    "run_count": 1,
+    "test_wait_observed": true,
+    "receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\focused-tests.actual.json",
+      "bytes": 2975,
+      "sha256": "c36dfd1981af9c588e3f9d0d6406d196698490924a728aaf18820529228cdc60"
+    },
+    "stdout": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\focused-tests.stdout.log",
+      "bytes": 101,
+      "sha256": "e362c11bdfa7be89de1d76e0194cf54e7634025d2886ce36bfeed0ffda0e8828"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\focused-tests.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "environment": {
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "interpreter": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "pytest_version": "9.1.1",
+    "actual_imports": [
+      {
+        "module": "pytest",
+        "version": "9.1.1",
+        "actual_module_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\pytest\\__init__.py"
+      },
+      {
+        "module": "iniconfig",
+        "version": "2.3.1",
+        "actual_module_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\iniconfig\\__init__.py"
+      },
+      {
+        "module": "pluggy",
+        "version": "1.7.0",
+        "actual_module_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\pluggy\\__init__.py"
+      },
+      {
+        "module": "pygments",
+        "version": "2.21.0",
+        "actual_module_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\pygments\\__init__.py"
+      },
+      {
+        "module": "colorama",
+        "version": "0.4.6",
+        "actual_module_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\colorama\\__init__.py"
+      },
+      {
+        "module": "packaging",
+        "version": "26.3",
+        "actual_module_path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\packaging\\__init__.py"
+      }
+    ],
+    "requirements": [
+      {
+        "owner": "pytest",
+        "requirement": "colorama>=0.4; sys_platform == \"win32\"",
+        "actual_version": "0.4.6",
+        "satisfied": true,
+        "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\colorama-0.4.6.dist-info"
+      },
+      {
+        "owner": "pytest",
+        "requirement": "iniconfig>=1.0.1",
+        "actual_version": "2.3.1",
+        "satisfied": true,
+        "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\iniconfig-2.3.1.dist-info"
+      },
+      {
+        "owner": "pytest",
+        "requirement": "packaging>=22",
+        "actual_version": "26.3",
+        "satisfied": true,
+        "source": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\packaging-26.3.dist-info"
+      },
+      {
+        "owner": "pytest",
+        "requirement": "pluggy<2,>=1.5",
+        "actual_version": "1.7.0",
+        "satisfied": true,
+        "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\pluggy-1.7.0.dist-info"
+      },
+      {
+        "owner": "pytest",
+        "requirement": "pygments>=2.7.2",
+        "actual_version": "2.21.0",
+        "satisfied": true,
+        "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages\\pygments-2.21.0.dist-info"
+      }
+    ],
+    "isolated_target": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\packages",
+    "tools_or_system_install_modified": false,
+    "original_installer_wrapper_exit_code": 1,
+    "original_pip_exit_code": "unknown",
+    "original_pip_wait_observed": false,
+    "installer_boundary": "Capacity monitor encountered a disappearing pip temp file. Successful pip stdout was retained; installed METADATA requirements/imports and the independent original pytest wait qualified testing. Installation was not repeated.",
+    "dependency_closure": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\ci-test-deps-a01\\CLOSED.json",
+      "bytes": 1473,
+      "sha256": "6f2907a22e2913bdb1123115652789ca93ada345426946fba994d715d00da0ef"
+    }
+  },
+  "sources": {
+    "attribution": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\source-attribution.actual.json",
+      "bytes": 23532,
+      "sha256": "0611bb2048403fc261b0a8f6fd535a4f3591b1d024bb993e7037f8dddd3e4e52"
+    },
+    "docs_child_failed_log": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\failed-step.actual.log",
+      "bytes": 16360,
+      "sha256": "fd70185fdd4938c8c2e60a53c014252e463b1af783b6380854f040aa472b5781"
+    },
+    "parent_failed_log": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\parent-failed-step.actual.log",
+      "bytes": 16360,
+      "sha256": "780e5aa644d36bcaf32faa6d0ac2235d9c0b41fd5104fd7fb84bbb2ac5b67d63"
+    },
+    "ci_pytest_setup": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\CI-PYTEST-VERSION-SOURCE.actual.json",
+      "bytes": 1872,
+      "sha256": "4cbbfdf9f1d3503b7e938e96c325668581284167f6530a206a99c0e614099f5e"
+    }
+  },
+  "limitations": [
+    "Original official CI runs remain failure; no new official CI result is claimed.",
+    "Only these two existing test files ran locally once; no full-suite or native gameplay claim.",
+    "Video preparation/encoding inputs, promo production source and faction production code were untouched.",
+    "Original pip process exit and full installation peak allocation were not observed; neither is backfilled from successful stdout."
+  ],
+  "git_diff_check_exit_code": 0,
+  "commit_and_push_performed": false
+}
