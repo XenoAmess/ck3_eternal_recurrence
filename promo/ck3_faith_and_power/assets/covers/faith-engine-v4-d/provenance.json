@@ -1,0 +1,92 @@
+{
+  "schema": "ck3-series-cover-artifacts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T17:43:15.724890+00:00",
+  "series_title": "CK3:信仰引擎",
+  "version": "v4-d",
+  "selected_option": "D",
+  "selected_design_name": "秘仪符刻",
+  "artwork_method": "16x9 approved existing image reused;4x3 built-in image_gen edit/adaptation",
+  "fallback_CLI_used": false,
+  "user_selection_source": "几张都上库作为存根. 选用D. D方案要补齐4:3以及16:9两张。",
+  "user_design_selected": true,
+  "approved_16x9_exact_sha256": "3bbfca07601d7b84f3fe87a73a9f601443de0749ee5cc3a5c3a399e0d2dedc94",
+  "four_options_archive": "../type-options-20261020/provenance.json",
+  "records": [
+    {
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "png": {
+        "file": "faith-engine-16x9.png",
+        "bytes": 2481190,
+        "sha256": "01995be3a18f1e810c7e01ace2684791e803052ff734a0d426ac35d282a07154"
+      },
+      "jpg": {
+        "file": "faith-engine-16x9.jpg",
+        "bytes": 621421,
+        "sha256": "3bbfca07601d7b84f3fe87a73a9f601443de0749ee5cc3a5c3a399e0d2dedc94"
+      },
+      "prompt": {
+        "file": "prompts/16x9.txt",
+        "bytes": 2537,
+        "sha256": "116dafaf705674891132e9f8bfd780706010f84d3a1f0696fa3dd37895d1ecc7"
+      },
+      "native_generated_art": {
+        "file": "exec-33edabec-d9f7-4d49-a382-a5f707cf02dc.png",
+        "bytes": 2516052,
+        "sha256": "f8e3328cdd2c1323afcaa62a0f0689fdb783ab37efb4c5b545a38f03abc12ab1"
+      },
+      "technical_edge_crop": {
+        "source_width": 1672,
+        "source_height": 941,
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936
+      },
+      "status": "User-selected approved D16x9 JPG reused byte-for-byte; PNG exported from the original selected source with the same edge crop."
+    },
+    {
+      "ratio": "4x3",
+      "width": 1448,
+      "height": 1086,
+      "png": {
+        "file": "faith-engine-4x3.png",
+        "bytes": 2693224,
+        "sha256": "1c0bfdc2b0ebc11bc143ff1bf1c0d666e0c642da72d165ef463287a22d4c5164"
+      },
+      "jpg": {
+        "file": "faith-engine-4x3.jpg",
+        "bytes": 769751,
+        "sha256": "4d766e1794ef3793b74d29beb3266c1c7adca9e2f0a89c3b7b947a7557bbef20"
+      },
+      "prompt": {
+        "file": "prompts/4x3.txt",
+        "bytes": 2645,
+        "sha256": "ee2e9ff20c290251ee6b0270b62065e265d4cae21c3c07d99238faae92864c33"
+      },
+      "native_generated_art": {
+        "file": "exec-32461913-af73-41af-8973-a117f77e2e59.png",
+        "bytes": 2693224,
+        "sha256": "1c0bfdc2b0ebc11bc143ff1bf1c0d666e0c642da72d165ef463287a22d4c5164"
+      },
+      "technical_edge_crop": null,
+      "status": "New4x3 adaptation generated in the user-selected D style as requested."
+    }
+  ],
+  "review_scope": "16x9精确复用用户已选JPG并核SHA；4x3生成原图直接审阅标题、仪轨圆环、人物、动作与圣堂，导出后另核最终JPG；全部PNG/JPG核对尺寸、比例与身份。",
+  "upload_performed": false,
+  "retention": {
+    "category": "delivered_media",
+    "state": "selected_series_cover",
+    "active_references": [
+      "../../../docs/cover-design.md",
+      "../../../README.md"
+    ],
+    "protected_until_utc": "2026-10-26T17:43:15.724890+00:00",
+    "protection_reason": "用户选定D的当前双比例封面交付，供后续Bilibili使用，到期复核当前用途。",
+    "expires_at_utc": "2026-11-18T17:43:15.724890+00:00",
+    "expiry_means_review_not_unconditional_delete": true
+  }
+}

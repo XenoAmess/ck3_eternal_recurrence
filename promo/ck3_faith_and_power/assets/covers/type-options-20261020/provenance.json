@@ -44,7 +44,8 @@
         "y": 2,
         "width": 1664,
         "height": 936
-      }
+      },
+      "usage": "design_archive_only"
     },
     {
       "option": "B",
@@ -75,7 +76,8 @@
         "y": 2,
         "width": 1664,
         "height": 936
-      }
+      },
+      "usage": "design_archive_only"
     },
     {
       "option": "C",
@@ -106,7 +108,8 @@
         "y": 2,
         "width": 1664,
         "height": 936
-      }
+      },
+      "usage": "design_archive_only"
     },
     {
       "option": "D",
@@ -137,24 +140,32 @@
         "y": 2,
         "width": 1664,
         "height": 936
-      }
+      },
+      "usage": "selected_and_archived"
     }
   ],
-  "selected_option": null,
-  "user_approved": false,
+  "selected_option": "D",
+  "user_approved": true,
   "upload_performed": false,
   "review_scope": "四张生成原图分别直接审阅文字、标题边距、方案差异和人物场景延续；最终JPG核对精确比例、尺寸与文件身份。",
   "native_sources_location": "Built-in generated_images directory; originals remain available with hashes recorded, not duplicated into Git.",
   "technical_export": "FFmpeg only aligns a sub1% outer edge crop to exact16:9 and encodes high-quality4:4:4 JPEG; no manual letter compositing.",
   "retention": {
-    "category": "derived",
-    "state": "active_typography_selection_mockups",
+    "category": "record",
+    "state": "repository_design_stubs_user_requested",
     "active_references": [
       "../../../docs/type-options-20261020.md"
     ],
-    "protected_until_utc": "2026-10-21T17:30:41.200903+00:00",
-    "protection_reason": "本次用户请求的四方案选型比较输入，48小时后复核当前用途。",
-    "expires_at_utc": "2026-10-21T17:30:41.200903+00:00",
-    "expiry_means_review_not_unconditional_delete": true
-  }
+    "protected_until_utc": "2026-10-26T17:44:44.596446+00:00",
+    "protection_reason": "用户明确要求四图作为存根，D同时为正式采用方案；保留设计来源与对照。",
+    "expires_at_utc": "2027-04-17T17:44:44.596446+00:00",
+    "expiry_means_review_not_unconditional_delete": true,
+    "policy_note": "Git跟踪设计存根按record类别复核维护，不进入本机派生文件逐项自动删除。"
+  },
+  "initial_delivery_user_approved": false,
+  "approval_scope": "用户要求四张全部作为仓库设计存根；正式采用仅D。",
+  "selection_recorded_at_utc": "2026-10-19T17:44:44.596446+00:00",
+  "selection_source": "几张都上库作为存根. 选用D. D方案要补齐4:3以及16:9两张。",
+  "selected_pair_delivery": "../faith-engine-v4-d/provenance.json",
+  "archive_first_import_commit": "17104af448d4b3d698139ba2ebfee8f5b1f88f94"
 }
