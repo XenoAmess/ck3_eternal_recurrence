@@ -1,0 +1,161 @@
+{
+  "schema": "native30-fixture04-result-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T18:51:59.181017+00:00",
+  "status": "FAILED",
+  "phases": [
+    {
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\tools\\run_native_msvc.py",
+        "--source-dir",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\ck3_autonomous_player\\native_bridge",
+        "--build-dir",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build",
+        "--configuration",
+        "Release",
+        "--jobs",
+        "4",
+        "--defender-external-candidate",
+        "native30-fixture04",
+        "--evidence-dir",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\configure",
+        "--configure",
+        "--cmake-define",
+        "CMAKE_PROJECT_INCLUDE=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\fixture-only-override.cmake"
+      ],
+      "pid": 224492,
+      "start_utc": "2026-10-19T18:52:00.332564+00:00",
+      "end_utc": "2026-10-19T18:52:38.283727+00:00",
+      "returncode": 0,
+      "owned_active_after": 0,
+      "auxiliary_cleanup": {
+        "auxiliary_forced_cleanup": [],
+        "failure_job_termination": false,
+        "owned_active_after": 0,
+        "argv": [
+          "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\tools\\run_native_msvc.py",
+          "--source-dir",
+          "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\ck3_autonomous_player\\native_bridge",
+          "--build-dir",
+          "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build",
+          "--configuration",
+          "Release",
+          "--jobs",
+          "4",
+          "--defender-external-candidate",
+          "native30-fixture04",
+          "--evidence-dir",
+          "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\configure",
+          "--configure",
+          "--cmake-define",
+          "CMAKE_PROJECT_INCLUDE=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\fixture-only-override.cmake"
+        ],
+        "pid": 224492,
+        "start_utc": "2026-10-19T18:52:00.332564+00:00",
+        "original_root_exit_code": 0,
+        "auxiliary_policy": "exact-msvc-owned-after-root-zero-v1",
+        "end_utc": "2026-10-19T18:52:38.291845+00:00"
+      },
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\configure\\producer.log",
+        "bytes": 3101,
+        "sha256": "f8f35bbd98ff34bd002653ea85b926db0ccab5fd30099ad278e85c8c4535f0db"
+      }
+    }
+  ],
+  "command_attempts": [
+    {
+      "auxiliary_forced_cleanup": [],
+      "failure_job_termination": false,
+      "owned_active_after": 0,
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\tools\\run_native_msvc.py",
+        "--source-dir",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\ck3_autonomous_player\\native_bridge",
+        "--build-dir",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build",
+        "--configuration",
+        "Release",
+        "--jobs",
+        "4",
+        "--defender-external-candidate",
+        "native30-fixture04",
+        "--evidence-dir",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\configure",
+        "--configure",
+        "--cmake-define",
+        "CMAKE_PROJECT_INCLUDE=D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\fixture-only-override.cmake"
+      ],
+      "pid": 224492,
+      "start_utc": "2026-10-19T18:52:00.332564+00:00",
+      "original_root_exit_code": 0,
+      "auxiliary_policy": "exact-msvc-owned-after-root-zero-v1",
+      "end_utc": "2026-10-19T18:52:38.291845+00:00"
+    }
+  ],
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FIXTURE-ATTEMPT04-ADMITTED01.json",
+    "bytes": 3812,
+    "sha256": "762891a1fff2fe0816498e223f746c8e63130d4c70ce1d2ba4fe38ab0c4e1e31"
+  },
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-fixture04-nopdb-plan-2026-10-19.json",
+    "bytes": 13138,
+    "sha256": "80ec3a5de3dc304ff163ee5b3300a7bc2340d641fabc35212bd65629391fc118"
+  },
+  "Game_calls": 0,
+  "production_recompiled": false,
+  "DLL_loaded": false,
+  "known_not_generated": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_bridge.pdb",
+      "role": "known_not_generated",
+      "observed_absent": true,
+      "prior_closed_inventory_absent": true,
+      "FileAPI_prediction": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-cf7f76aeeefcc7c49fe9.json",
+        "bytes": 116879,
+        "sha256": "14772544e60d9174c668c5cff3f3d2d911f67d8d8c8cfd2bb69218751b9648c8"
+      },
+      "actual_link": {
+        "source_log": {
+          "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\actual-generated-commands.log",
+          "bytes": 5650066,
+          "sha256": "35d50d64e941086ac18df500f5c313c637ae95456672a9b77b0e01db97585316"
+        },
+        "line": 981,
+        "line_sha256": "5745fdd72cee9597e61bbbd58c503434b2c5c9ea12cdfeb5c4c752086cdb2753",
+        "line_bytes": 620,
+        "link_options": {
+          "out": [
+            "xar_ck3_bridge.dll"
+          ],
+          "pdb": [
+            "xar_ck3_bridge.pdb"
+          ],
+          "incremental": [
+            "no",
+            "no"
+          ]
+        }
+      }
+    }
+  ],
+  "error": {
+    "type": "RuntimeError",
+    "text": "fixture flags/includes/tool changed beyond source/object paths"
+  },
+  "end_utc": "2026-10-19T18:52:40.455493+00:00",
+  "sampled_peak_eof": 672328271,
+  "sampled_peak_allocation": 687032816,
+  "guard_samples": 29,
+  "owned_active_after": 0,
+  "future_writes": 0
+}

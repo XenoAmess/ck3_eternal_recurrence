@@ -1,0 +1,21 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:52:08.489653+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine, Root8f725e",
+  "status": "EXACT_SPEC_RELEASED_FOR_ONE_TASK",
+  "spec": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner04\\owner-spec\\SPEC.json",
+    "bytes": 2054,
+    "sha256": "a6133bf00eb1778bcc9740b84c0312e4a297501c509212615c0a05119f18fee4"
+  },
+  "source_tools": [
+    "d1a26d complete SPEC direct read",
+    "750e7b independent SPEC/bootstrap/stage SHA readback"
+  ],
+  "task_name": "XARG2ManagedOwner-2fd22e9a31ef43c29407323d7f8b5cfa",
+  "bootstrap_sha256": "c0d76a7064996cafd7412f8f39ba2bb5c5cb6271627246b84e946c00bafb864f",
+  "stage_sha256": "90757ab85f19bbd834210070f37dd12c0753c79c5b8d6de1ca882765bc585eec",
+  "admission_sha256": "762891a1fff2fe0816498e223f746c8e63130d4c70ce1d2ba4fe38ab0c4e1e31",
+  "operator": "performance_native only",
+  "scope": "Unique Task register/readback/run. Exact planned nine fixtures, retained production read-only. Native30 not deployed; Game/SDK/OBS remain owned by runtime. No actual fixture success credit in this release."
+}

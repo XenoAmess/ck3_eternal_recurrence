@@ -1,0 +1,39 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:52:08.489653+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine, Root8f725e",
+  "status": "ROOT_DIRECT_IMAGE_REVIEW_PASS",
+  "review_method": "Two original files displayed directly with tools.view_image; no desktop input or OCR",
+  "pair_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c18-currentmap01-FROZEN-PAIR.json",
+    "bytes": 2800,
+    "sha256": "47c5c861cac1a60f7305356685ebdd9a286756c38a8d2edd032d249461f17fbe"
+  },
+  "image_dimensions": [
+    1280,
+    720
+  ],
+  "game_image": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c18-currentmap01-game.png",
+    "bytes": 1595678,
+    "sha256": "ca86bda0130554e81232b914b5d59c628d8fb918b4aace28965ca0bb9c54d6d7"
+  },
+  "scene_image": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c18-currentmap01-scene.png",
+    "bytes": 1459697,
+    "sha256": "57fa8e3b8dd7384cb16401bc8bf2c8f3e71667ec46050784fc00390524a62aba"
+  },
+  "observed": "Both show readable current southern Italy/Sicily map, HUD, portrait and pause. Date visible1078年1月31日. Scene has right gray current status/decision/reason panel; no film title or retired blue decision window. Upper-left rectangle is the native game Holy Roman Empire tooltip.",
+  "not_qualified": [
+    "continuous hotspot following",
+    "exact entire realm county coverage"
+  ],
+  "game_pid": 30852,
+  "game_birth_filetime": 134368995759027619,
+  "recording_uuid": "2b8912a6-757d-46a4-a8ae-b7702a730a90",
+  "campaign_completed_days": 4153,
+  "completed_cycles": 4262,
+  "ordinary_credit_for_warm": 0,
+  "released_next": "normal FULL9426 and durable full ordinary feeder",
+  "original_wall_anchor": "2026-10-19T03:26:49.420926Z"
+}

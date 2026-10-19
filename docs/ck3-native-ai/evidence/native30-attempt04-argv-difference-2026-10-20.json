@@ -1,0 +1,35 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "utc": "2026-10-19T18:57:34.473909+00:00",
+  "inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\selected-fileapi-graph.json",
+      "bytes": 6186111,
+      "sha256": "5fce8ce90b7acb8cec9925557a87598dbfa907a0011dda551eba1d975b02e565"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\compile_commands.json",
+      "bytes": 11961988,
+      "sha256": "3ba1d5f9aef3784ff00fc3b502030d76b7f537a5fc34baf084026b627063304f"
+    }
+  ],
+  "outputs": [
+    "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/build/CMakeFiles/xar_ck3_camera_tracking_v1_test.dir/src/camera_tracking_v1_test.cpp.obj",
+    "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/build/CMakeFiles/xar_ck3_camera_tracking_v1_test.dir/native30-fixture04/camera_tracking_v1_test.cpp.obj"
+  ],
+  "normalized_token_counts": [
+    28,
+    28
+  ],
+  "changes": [
+    {
+      "operation": "replace",
+      "old": [
+        "/FoCMakeFiles\\xar_ck3_camera_tracking_v1_test.dir\\src\\camera_tracking_v1_test.cpp.obj"
+      ],
+      "new": [
+        "/FoCMakeFiles\\xar_ck3_camera_tracking_v1_test.dir\\native30-fixture04\\camera_tracking_v1_test.cpp.obj"
+      ]
+    }
+  ]
+}

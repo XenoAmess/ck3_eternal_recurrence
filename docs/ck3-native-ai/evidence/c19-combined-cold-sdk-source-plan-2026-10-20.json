@@ -1,0 +1,196 @@
+{
+  "schema": "xar.c19.combined-cold-sdk-frozen-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:54:36.502357+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine toolf18291",
+  "status": "SOURCE_FROZEN_DEFAULT_OFF_NO_CURRENT_C18_RUNTIME_CHANGE",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c19_combined_cold_sdk_v1.py",
+    "bytes": 12899,
+    "sha256": "4831dc944a60aa0861ce8f769988b44463ef27312e4acabeca492cd4111523f5"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c19_combined_cold_sdk_v1.py",
+    "bytes": 7198,
+    "sha256": "f29907d1d942f10483c7b2f4c35c962fa148d759eda10564d9042b923808295c"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-combined-cold-sdk-source-qualification-2026-10-20.json",
+    "bytes": 50330,
+    "sha256": "6bf8a60137edc13f626315cde1b9ecb0da61e63bf1e6594f0175d6048bd6931b"
+  },
+  "entry": "prepare_c19_combined_cold_sdk_v1.compose() -> changed15 byte leaves, complete1454 mode/blob/SHA/size rows, proof dictionary; entirely in memory.",
+  "base": {
+    "freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+      "bytes": 375083,
+      "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b"
+    },
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15",
+    "business_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "actual_files": 1445,
+    "family_fix": {
+      "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 61273,
+      "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+      "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+      "git_mode": "100644"
+    }
+  },
+  "output": {
+    "complete_manifest": {
+      "file_count": 1454,
+      "source_bytes": 59176029,
+      "canonical_rows_JSON": {
+        "bytes": 373692,
+        "sha256": "a91c8952d863eafbf433b1aa4fedec5ad42f8edfe0da4f14a3b29de972649b10"
+      },
+      "access": "compose() returns full exact1454 rows in memory"
+    },
+    "new_leaves": 9,
+    "changed_existing_leaves": 6,
+    "unchanged_original_leaves": 1439,
+    "changed_source_logical_bytes_each": 2055094,
+    "prospective_dual_changed_data4096cluster_upper": 4161536,
+    "prospective_bytes_are_not_deployment_or_capacity_admission": true
+  },
+  "layers": [
+    {
+      "name": "M7",
+      "source": "Reuse only seven pinned leaves and named70137/6db hunks from unchanged prior producer; never call old C18-M7 compose() over source14.",
+      "new_leaves": [
+        "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+        "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+        "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+        "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+        "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+        "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+        "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py"
+      ],
+      "existing_leaves": [
+        "bridge/native_driver.py",
+        "runtime.py",
+        "bridge/campaign_root_context_contract.py",
+        "bridge/successor_ui_app_owner_v1.py",
+        "successor_ui_pending_ledger_v1.py"
+      ]
+    },
+    {
+      "name": "bounded_multiday_WAL",
+      "source": "Frozen transform_driver_bytes_v1 on M7-composed Driver; exact two required method fingerprints. Inverse returns exact330caa M7 Driver; applying WAL before M7 yields identical final bytes.",
+      "helper": "bridge/bounded_multiday_wal_v1.py",
+      "Driver_methods": [
+        "_route_horizon_wal_eligible_v1",
+        "_execute_life_advance"
+      ],
+      "unchanged": "Original WAL schema/cold/once/prefix/caps/persist/record/day-sentinel logic and planning/speed/horizon."
+    },
+    {
+      "name": "M2_finite",
+      "source": "Frozen loader f76ee baseline plus three uniquely matched hunks and new finite helper; inverse restores exact old1003 source.",
+      "new_leaf": "vanilla_events/c19_finite_source_rebind_v1.py",
+      "existing_leaf": "vanilla_events/event_offline_analysis.py",
+      "keys": [
+        "coming_of_age.0004",
+        "pam_decision_events.0018"
+      ],
+      "scope": "Knowledge only; exact stock/GUI/native-role/schema guards preserved. Registry execution/material/optimal-policy claims remainFalse."
+    }
+  ],
+  "qualification_detail": {
+    "tool_start": "8aca47",
+    "tool_completion": "1a9e6c",
+    "tests": 5,
+    "runner_seconds": 2.369,
+    "checks": [
+      "Full1445 source hash+blob checks and full1454 manifest closure",
+      "M7/WAL two application orders byte-identical; WAL inverse preserves M7",
+      "M2 exact inverse/double-apply refusal keeps prior1003 branch",
+      "Epoch calculated after final Driver; mandatory familyd8bb not a delta",
+      "All15 new/changed modules import against actualsource15 dependencies",
+      "Missing optional-root behavior remains original; unproved multiday/root query never gains WAL eligibility"
+    ],
+    "historical57_M7_10_WAL_12_timing_repeated": false,
+    "test_scratch_files": 0,
+    "new_children": 0,
+    "source_epoch_model": "3642dbf251640efc845ab0c633d8f5f832e49682e482cd1df9b676324fb6ddc3",
+    "actual_filesystem_source_authority_qualified": false,
+    "actual_H": "unknown",
+    "actual_seconds_saved": null
+  },
+  "future_controls_separate": {
+    "owner": "perf_harness; new actualC19 enabled canonical controls plan",
+    "timing_sources": "Frozen full_batch_timing_v1 + full_lifecycle_timing_v1 are control helpers, not SDK business leaves.",
+    "correct_order": "Build then-C19 canonical custody graph with genuine M7 enabled first; then call transform_queue/transform_handoff/transform_feeder on that graph/feeder with explicit timing choice.",
+    "forbidden_shortcut": "Do not call prepare_full_batch_timing_sources_v1.build_sources() to replace C19 controls: it fixes outer.build_sources(enabled=False) and historicalC17 source names.",
+    "unchanged_control_probe": "OFF unless separately authorized; no new Game/Native timing RPC or IO sink.",
+    "display_binding": "Preserve display/API behavior, but actual then newGame/newrecording/gates must be bound afresh; old physicalC16 PID/UUID cannot be carried as a new fact."
+  },
+  "Native29_to30_separate_transition": {
+    "owner": "g2_m7_lineage read-only contract proposal; later explicit source/release authorization",
+    "current_baseline": "624c/source15 records Native29; those historical pins remain unchanged.",
+    "original_exporter_guard": "validate_inputs requires native label/SHA to match base freeze. New Native30 pin cannot simply bypass this guard or mutate old624c metadata.",
+    "required": "Explicit reviewed version-transition contract, qualified exact Native30 RESULT/artifact/source/actual EXE binding, original base source hash/NTFS/Host preservation and new output Native metadata.",
+    "current_binary_or_qualification_added_by_composer": 0
+  },
+  "future_normal_cold_only": {
+    "campaign": "Original campaign/SAVE/goal/T0/D0 and all-wall anchor retained; genuine new Game process/birth.",
+    "bind_then": [
+      "Actual machine/EXE/newDLL",
+      "normal SAVE plus SDK/Game closure",
+      "actor/episode/date",
+      "recording and display gates",
+      "preload lease/module/native-peer/generation",
+      "actual supervisor-created owner->Queue->App chain"
+    ],
+    "old_F90_exception_or_hardcoded_actor_date_used": false,
+    "received_source_verified": "RemainsFalse; original unique issuer only.",
+    "old_candidates": "Old C18 M7 misname, M2 finite and boundedWAL candidates remain untouched and historical; this new composer is their family-fixed integration.",
+    "current_C18_Gates_Task_Game_recording_modified": false
+  },
+  "storage": {
+    "source_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\FUTURE-COLD-C19-COMBINED-SDK-COMPOSER-SOURCE128KiB-COMMITMENT01.json",
+      "bytes": 1695,
+      "sha256": "ab2158bb311cb4054593836b6a421d76d6a782cca6f4d7c5b946927015baf898"
+    },
+    "cap_bytes": 131072,
+    "owned_retained_files": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c19_combined_cold_sdk_v1.py",
+        "bytes": 12899,
+        "sha256": "4831dc944a60aa0861ce8f769988b44463ef27312e4acabeca492cd4111523f5"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c19_combined_cold_sdk_v1.py",
+        "bytes": 7198,
+        "sha256": "f29907d1d942f10483c7b2f4c35c962fa148d759eda10564d9042b923808295c"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-combined-cold-sdk-source-qualification-2026-10-20.json",
+        "bytes": 50330,
+        "sha256": "6bf8a60137edc13f626315cde1b9ecb0da61e63bf1e6594f0175d6048bd6931b"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\_runtime\\c19_combined_cold_sdk_finalize.py",
+        "bytes": 8319,
+        "sha256": "c38f349c701a50d229bde2d7befd2cdce59c4884a9a30677397b459272c4438f"
+      }
+    ],
+    "total_retained_logical_including_this_plan": 88797,
+    "new_scratch_bytes": 0,
+    "full_Driver_or_SDK_copy_written": false,
+    "D_Git_Task_Game_RPC_or_DriverSAVE_ledger_body_writes": 0,
+    "allocated_bytes": null,
+    "physical_release_credit_bytes": 0,
+    "future_writes_after_freeze": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "small_proof_review_days": 180
+  },
+  "remaining": [
+    "Root review/commit exact frozen sources",
+    "Native30 real qualification and explicit metadata transition",
+    "Then-C19 enabled controls and separate capacity/canonical anchor/export/cold admission",
+    "Actual Native loaded custody and natural optional-root H plus performance observations"
+  ]
+}
