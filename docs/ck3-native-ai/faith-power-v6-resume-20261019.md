@@ -1,6 +1,12 @@
 # 信仰与权力一期 V6 接手续作
 
-用户于2026-10-19明确要求阅读[休假交接](../handover/2026-10-19-faith-power-episode01-v6-handover.md)并继续研究与拍摄。交接中的停工是当时事实，本轮恢复沿现有135段、460组双语字幕、76,832帧声钟及生产链继续；V6尚无最终成片。
+用户于2026-10-19明确要求阅读[休假交接](../handover/2026-10-19-faith-power-episode01-v6-handover.md)并继续研究与拍摄。交接中的停工是当时事实，本轮恢复沿现有135段、460组双语字幕、76,832帧声钟及生产链继续；初次恢复时V6尚无最终成片。现已于2026-10-19T10:42:39Z完成[本地审阅交付](faith-and-power-episode01-value-v6-delivery.md)，技术检查通过，完整人工听看片仍待完成。
+
+## 2026-10-19T10:43Z：本地审阅版实际交付
+
+`machine_id: 4-8e1c2f1861`。Root已直接审阅SC28/a36修正像素并封a08；最终只合a17＋a29＋a36。a37唯一正常metadata plan实际exit0、remaining={}、content_ready=true，随后新有限full grant沿现有正式链2workers编码，09:58:39Z开始、10:42:39Z原Popen wait0。135段/460组字幕/17章/76,832帧保持，实际1440p/H264/30fps成片145,383,839B，SHA `c1329d56c4ddf4e6017bce33e22fcffc93b90c0a12b2d3cdb4c810d20dc0a819`；完整严格AV、全部PTS/帧数、音频信号和原音乐存在性检查通过，状态ENCODED_REVIEW_PENDING。字幕/讲稿/17章时间点均已交付，人工1倍速听看片和签收仍false。
+
+容量按唯一新增输出根实际368,175,552B AllocationSize、含guard369,224,128B/future0闭账；项目upper47,339,029,581B仍低于quota51,177,672,294B，没有把未用预留当物理回收。原累计小型额度只续时间至12:13:52Z、未补容量或重置历史保护。ad245ac官方CI39233520388实际success/10:38:02Z，worker机器未核实。直接文件、实际容器/声钟差别、小回执及未取得的原生业务范围均见[交付记录](faith-and-power-episode01-value-v6-delivery.md)。以下保留此前各截点。
 
 ## 2026-10-19T09:48Z：补拍结束，进入最终作者合并
 
