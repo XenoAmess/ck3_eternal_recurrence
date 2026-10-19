@@ -153,16 +153,19 @@ def test_unavailable_alert_keeps_ordinary_plan_and_records_unknown(tmp_path):
 def test_pending_is_verified_before_new_spending_filter(tmp_path, monkeypatch, same_process, expected):
     candidate, frame, history, planned = data()
     observation = candidate['observation']
+    # Synthetic Windows birth identities preserve the same/new process cases.
+    source_birth = '20261019131054.525692+480'
+    observed_birth = source_birth if same_process else '20261019051054.525693+000'
     begin_faction_gift_submission_v1(
         tmp_path, request_id='faction-gift-existing-515', episode_run_id=frame['episode_run_id'],
         source_round_id='R515', source_bridge_pid=111,
-        source_bridge_creation_date='fixture-birth', observation=observation,
+        source_bridge_creation_date=source_birth, observation=observation,
         minimum_gold_reserve_raw=10000000, checkpoint_sha256_before_submit='a' * 64)
     frame['native_revision'] += 1
     driver = Driver(tmp_path, frame, candidate)
     if not same_process:
         driver._session_bridge_pid = 222
-    monkeypatch.setattr(route, '_process_identity', lambda pid: {'creation_date': 'fixture-birth'})
+    monkeypatch.setattr(route, '_process_identity', lambda pid: {'creation_date': observed_birth})
     out = route.plan_faction_gift_private_v1(driver, planned, frame, [], set())
     if out['plan']['selected_step'] != expected or driver.candidate_reads != 0:
         raise ValueError('existing pending was subjected to new-spend policy or resubmitted')

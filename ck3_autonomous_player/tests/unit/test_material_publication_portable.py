@@ -190,7 +190,14 @@ class PublicationFenceTests(unittest.TestCase):
         final["played_character"]["gold"] = 15810153
         for item in (before, intermediate, final):
             item["date_raw"] = 53153304
-        pending = {"pre_snapshot_revision": 506, "pre_date_raw": 53153304,
+        # Synthetic pending identity matches the paused frames; the gold-only
+        # intermediate publication must still wait for real native progress.
+        pending = {"request_id": "synthetic-faction-publication-1",
+                   "status": "submitted_verification_pending",
+                   "pre_snapshot_revision": 506, "pre_native_snapshot_revision": 506,
+                   "pre_date_raw": 53153304, "pre_player_character_id": 31254,
+                   "source_bridge_pid": 230672,
+                   "source_bridge_creation_date": "20261019131054.525692+480",
                    "episode_run_id": before["episode_run_id"]}
         observed = []
 
