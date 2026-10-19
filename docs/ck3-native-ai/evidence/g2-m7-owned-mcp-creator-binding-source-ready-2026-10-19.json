@@ -1,0 +1,192 @@
+{
+  "schema": "xar.g2-m7-owned-mcp-creator-binding-source-ready.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T14:48:45.252256+00:00",
+  "status": "SOURCE_READY_SOFTWARE_AND_REAL_OWNED_STOCK_JOB_NORMAL_CLEANUP_PASS_PRODUCTION_CUSTODY_UNQUALIFIED",
+  "authored_files": [
+    {
+      "path": "tools/g2_saved_campaign/mcp_owned_stdio_binding_v1.py",
+      "bytes": 10967,
+      "sha256": "b69e4203bf0fd478f9363b95463a7b8bd0c18df9c39bf4e8b9573110bf1fc942"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_mcp_owned_stdio_binding_v1.py",
+      "bytes": 17185,
+      "sha256": "752d7d5b01a5e9da27833e03b3a3d4fd74274220d53605c6af504579d257750d"
+    }
+  ],
+  "API": {
+    "file": "tools/g2_saved_campaign/mcp_owned_stdio_binding_v1.py",
+    "constructor": "bind_owned_stdio_v1(*, inherited_custody, expected_server, startupinfo, enabled=False)",
+    "callsite": "Future Queue bootstrap constructs the binding before App creation; use retain_mcp_stdio_process(binding.private_stdio, ...) around binding.stdio_client(params). No running session or current factory is changed.",
+    "default": "Returns None before SDK/dependency/OS work when disabled. Public JSON/primitive custody refuses; enabled needs actual private M0 resource-holder type/seal, nonclosed owned handles and exact stock StdioServerParameters.",
+    "startup": "Accept only a Windows STARTUPINFO with selective owned handle list, no caller standard/control handles. Snapshot caller handle list; recheck list/ownership and custody before creation. The actual receiver must prepare inheritable copies and keep original lease until verified child ACK.",
+    "no_new_authority": "This is a one-shot spawn binding, not a Native token or a custody producer. It cannot mint M7 DTOs or replace actual cross-process receiver/loaded-DLL proof."
+  },
+  "code_and_isolation": {
+    "stock_code_objects": "Only original stdio async-generator, platform creator, Windows creator and stock fallback code objects are rebound with their defaults into per-binding dictionaries. Installed files/modules, AnyIO and subprocess references are never patched; no sys.modules replacements or dependency source copies.",
+    "private_hook": "Existing retain_mcp_stdio_process receives the fresh ModuleType. Its normal setattr wraps only that module; rebound stdio_client uses that exact private dictionary, so it actually consults the capture wrapper.",
+    "preserved_cleanup": "Original transport/shutdown/cancellation body and Job helper references remain in use. The original Job table is shared by identity, never copied or replaced.",
+    "real_Job_table_type": "weakref.WeakKeyDictionary",
+    "invariant_observation": {
+      "source_output": "a9983d",
+      "assignment_table_same": true,
+      "termination_table_same": true,
+      "stdio_stop_termination_helper_same": true,
+      "actual_entries_before": 0,
+      "normal_cleanup_source": "2d6659 / 98f82a: normal stock shutdown calls close_process_job, whose original WeakKeyDictionary and stdio helper identity both match. Final source explicitly checks this link."
+    },
+    "invariant_guard": "Assignment, abnormal termination AND normal close_process_job must share the same original MutableMapping; original stdio stop must reference both original cleanup helpers. Different table/helper refuses before creation.",
+    "creation": "Per-binding lock/one-shot phase and frozen exact command+environment+cwd. Async proxy adds startupinfo only to this call. Original NotImplemented fallback is preserved; private Popen forwarder adds the same startupinfo and close_fds=True. Installed globals are untouched.",
+    "errors": "Original OSError/cancellation is re-raised, no second spawn. A real returned child is kept strongly even if original Job setup raises afterward; existing creator owner must clean that exact child. Successful fallback clears the earlier NotImplemented diagnostic.",
+    "production_compatibility": "Source SHA/function shape/co_filename guards limit support to the observed stock dependency. Source SHA is ONLY library compatibility and never loaded Native DLL provenance."
+  },
+  "qualification": {
+    "software": {
+      "source_output": "e894fb",
+      "result": "Eight software/injected-owned cases passed on final source; ninth opt-in real case initially failed only its notification fixture attribute.",
+      "started_utc": "2026-10-19T14:45:57.493250+00:00",
+      "finished_utc": "2026-10-19T14:45:58.648577+00:00",
+      "cases": [
+        "Disabled is lazy; public JSON cannot act as custody.",
+        "Original weak Job-table/helper identities retained; per-session globals are disjoint and all installed module/AnyIO/subprocess references unchanged.",
+        "Detached assignment/cleanup table is rejected.",
+        "Wrong command, changed handles and one-shot reuse refuse; original OSError object propagates.",
+        "Async and stock NotImplemented/Popen fallback run concurrently in separate namespaces; both inherit their own pipe payload and exit 0.",
+        "Original post-create Job-setup exception propagates with the exact created child retained for normal owned cleanup.",
+        "Cancellation before creation propagates without child or second spawn.",
+        "Public source-only constructor accepts actual private holder TYPE in a synthetic fixture, preserves original weak Job table and snapshots caller handles; this is not actual custody qualification."
+      ]
+    },
+    "real_owned_stock": {
+      "source_output": "988767",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_utc": "2026-10-19T14:46:19.955669+00:00",
+      "finished_utc": "2026-10-19T14:46:20.884335+00:00",
+      "elapsed_seconds": 0.929,
+      "successful": true,
+      "tests_run": 1,
+      "stdout": "test_stock_stdio_job_identity_and_original_normal_cleanup (tools.g2_saved_campaign.test_mcp_owned_stdio_binding_v1.RealStockOwnedTest.test_stock_stdio_job_identity_and_original_normal_cleanup) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.929s\n\nOK\n",
+      "owned_receipts": [
+        {
+          "real_stock_MCP": true,
+          "existing_runtime_access": false,
+          "production_custody": false,
+          "pid": 142608,
+          "creation_filetime": "134368947807944277",
+          "inherited_payload": "R",
+          "job_table_entry": true,
+          "child_in_exact_job": true,
+          "job_handle": "688",
+          "exit_code": 0,
+          "wait_zero": 0,
+          "original_job_entry_removed": true,
+          "job_handle_closed": true,
+          "job_handle_error": 6,
+          "capture_handle_closed_by_owner_after_context": true
+        }
+      ],
+      "authorization": "Root explicitly authorized a fresh isolated interpreter's fully owned stock MCP/Job example after the software cases.",
+      "default_gate": "XAR_OWNED_STOCK_MCP_TEST=1 is required; ordinary test runs skip this real case.",
+      "scope": "Only a newly created harmless Python command, own inherited pipes and the original stock MCP stdio/Job lifecycle. No existing runtime/session/PID was accessed."
+    },
+    "normal_cleanup_verified": "Actual own child matched retained PID and integer FILETIME, was in the exact stock Job, exited 0/signaled, original Job entry was removed, original Job handle read back invalid (6), and capture generation was closed by its original owner.",
+    "isolation": "All installed module/AnyIO/subprocess references remained identical; real stock WeakKeyDictionary was used directly and returned to empty. No copied or fake table is claimed equivalent for the real case.",
+    "not_claimed": "Production custody/Native DLL source, real Game/App adoption, forced Job tree/cancellation and actual provider revocation remain unqualified. No H/DTO was issued.",
+    "normal_close_negative": {
+      "source_output": "2c4d4c",
+      "result": "same test node separately verified detached termination AND normal close_process_job table refusal; no process spawned"
+    }
+  },
+  "development_record": {
+    "first_attempt": {
+      "source_output": "755bf8",
+      "result": "4 pass, 3 errors; not accepted",
+      "causes": [
+        "Initial new binder incorrectly assumed stock Job table was dict; actual same table is WeakKeyDictionary. Guard changed to MutableMapping without changing any dependency object.",
+        "Fixture used unavailable FallbackProcess.aclose and extend instead of appending its owned-handle pair; final fixture uses the fallback stream cleanup contract and correct owner list.",
+        "JSON refusal imported SDK before primitive rejection in a bare test environment; rejection now happens before dependency import."
+      ],
+      "cleanup_limit": "First attempt's fixture close loop errored; no all-zero explicit cleanup/exit qualification is claimed for that rejected attempt. Only own process/handles were involved; final accepted run establishes normal owned cleanup."
+    },
+    "directed_followup": {
+      "source_output": "0f9f0e",
+      "result": "7 tests pass; then positive public constructor/handle snapshot and successful-fallback diagnostic were added."
+    },
+    "final": "Final acceptance is e894fb's eight software cases plus 988767's bounded real stock owned example. Only fixture packet access and preserving pre-close job integer changed between these runs; production source stayed frozen. Then 2c4d4c verified both detached-cleanup-table negative branches; only that test loop changed, no production source change or further owned run.",
+    "real_case_initial": {
+      "source_output": "e894fb",
+      "result": "Software eight passed; real case fixture error after child creation.",
+      "cause": "Installed SessionMessage.message is a JSONRPCNotification directly, not a .root wrapper. The fixture assertion was corrected; stock context's original shielded cleanup remained in control.",
+      "acceptance": "Only the subsequent 988767 real example supplies exact identity/job/normal-cleanup readback."
+    }
+  },
+  "existing_frozen_scope": {
+    "unchanged": [
+      {
+        "path": "tools/g2_saved_campaign/private_handle_chain_v1.py",
+        "bytes": 24624,
+        "sha256": "52f5dacb85573c906b4c60413efc618be200046dd1c40268ac4e7e9253fd0451"
+      },
+      {
+        "path": "tools/g2_saved_campaign/test_private_handle_chain_v1.py",
+        "bytes": 3548,
+        "sha256": "4bbb8fb2900ad7a60e52bbc4d30d55c92735581c4b896ed1283989f55fba9f3a"
+      },
+      {
+        "path": "docs/ck3-native-ai/evidence/g2-m7-owned-private-handle-chain-prototype-2026-10-19.json",
+        "bytes": 20439,
+        "sha256": "9e96ca51829065aa521cd3772cd2036accf412bacb83ffbe55814b4e8f834bac"
+      },
+      {
+        "path": "docs/ck3-native-ai/evidence/g2-m7-owned-mcp-creator-binding-design-2026-10-19.json",
+        "bytes": 15617,
+        "sha256": "34e020ffc407f9f2aafbb5dcb014532d1a5e1c57a47ae92a363a0002d017c00b"
+      }
+    ],
+    "current_C13_C14_or_Game_changes": 0,
+    "M0_adapter_issuer_or_DTO_changes": 0,
+    "original_prototype_design_changes": 0,
+    "stage": false,
+    "commit": false
+  },
+  "remaining_production_work": [
+    "Canonical supervisor must actually own the SDK owner/Queue creation chain and provide pre-load target/DLL lease continuity; this binding cannot reconstruct it.",
+    "The internal App receiver must build a legitimate local M0 resource holder from real inherited/duplicated handles and independent peer/FILETIME/FileID evidence. Public JSON/numeric hints remain insufficient.",
+    "Candidate-only exact FILETIME field/custody reference through existing unique M7 token and consumer still needs its separate approved change. Global CIM/ledger/_checked guards are untouched.",
+    "Actual Native peer/fullmodule/connection qualification, App DTO/cache revocation before owned close, and owner_source_epoch dependencies are still not wired.",
+    "The bounded real owned stock Job's membership and normal cleanup are now verified; production actual custody, Native App adoption, cancellation/abnormal tree cleanup and DTO revocation still require their own scoped evidence."
+  ],
+  "storage": {
+    "checkpoint_start": "2026-10-19T14:34:43.216636+00:00",
+    "path": "Z:/ck3_mod_rewrite",
+    "volume": "Z:",
+    "start_free_bytes": 178243833856,
+    "close_free_bytes": 178242920448,
+    "source_test_bytes": 28152,
+    "hard_cap_new_bytes": 49152,
+    "purpose": "New source/test/review under explicit 48 KiB cap. The originally estimated 32 KiB was increased within that cap for Root-authorized real stock Job validation; not D-volume/heavy admission.",
+    "evidence_retained": "Only small source/proof; child programs are inline commands, no fixture program files were generated. Accepted owned processes exit 0; their pipes, normal stock Job and capture handles are closed."
+  },
+  "result": {
+    "Native_DTOs_issued": 0,
+    "actual_H": "unknown",
+    "M7_breadth": "not_qualified"
+  },
+  "retention": {
+    "category": "record",
+    "review_by_utc": "2026-11-18T14:42:25Z",
+    "reason": "Active creator-binding source qualification; consolidate once real production adoption supersedes it."
+  },
+  "execution": {
+    "existing_Game_or_MCP_Job_or_desktop_access": 0,
+    "current_runtime_connections": 0,
+    "installed_package_edits": 0,
+    "current_C13_C14_edits": 0,
+    "production_custody": 0,
+    "Native_DTOs_issued": 0,
+    "actual_H": "unknown",
+    "stage": false,
+    "commit": false
+  }
+}

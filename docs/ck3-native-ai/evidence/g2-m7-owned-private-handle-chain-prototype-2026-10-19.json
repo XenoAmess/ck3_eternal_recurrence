@@ -1,0 +1,382 @@
+{
+  "schema": "xar.g2-m7-owned-private-handle-chain-prototype.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T13:35:06.142090+00:00",
+  "source_head": "c5a228c95ab56e310380b63c3e53ed52b26d7138",
+  "status": "DEFAULT_OFF_OWNED_MECHANICS_READY_PRODUCTION_TRANSFER_NOT_WIRED",
+  "authorization": "Root delegated source/design and owned-only prototype up to 96 KiB; no CK3/actual target handles/settings/new DLL/current C13 factory edits.",
+  "authored_files": [
+    {
+      "path": "tools\\g2_saved_campaign\\private_handle_chain_v1.py",
+      "bytes": 24624,
+      "sha256": "52f5dacb85573c906b4c60413efc618be200046dd1c40268ac4e7e9253fd0451"
+    },
+    {
+      "path": "tools\\g2_saved_campaign\\test_private_handle_chain_v1.py",
+      "bytes": 3548,
+      "sha256": "4bbb8fb2900ad7a60e52bbc4d30d55c92735581c4b896ed1283989f55fba9f3a"
+    }
+  ],
+  "reused_immutable_sources": [
+    {
+      "path": "tools\\g2_saved_campaign\\sdk_process_custody.py",
+      "bytes": 14743,
+      "sha256": "55e4409b2b0920085d432cd4a7ef9eef316a49762856db33e07d802128c274cc"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\windows_injector_job.py",
+      "bytes": 21062,
+      "sha256": "82c379bb59fb3b7631179ad3d4128dc3433133efabfc5d36ef89a907b2adb7b6"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_loaded_provider_custody_v1.py",
+      "bytes": 19991,
+      "sha256": "5540d39a166b709479260a0665fcdd97be5cf27ce5043bcd6d637de55fbba799"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_loaded_provider_windows_v1.py",
+      "bytes": 18425,
+      "sha256": "34ed125fd8325f785846c6be4a139ac0e1270db5dbdd0f35f6a2b36b2a1fcfaf"
+    },
+    {
+      "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py",
+      "bytes": 13827,
+      "sha256": "bc987925a3da72f4ca59ccd627a6fc6ba258582d50515a532503abe6d1b9dbab"
+    },
+    {
+      "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\os\\win32\\utilities.py",
+      "bytes": 10336,
+      "sha256": "98e87c776a14cf326e63f8da007119156d3ad643ae7fbf27e9b6e6ef1dc534bf"
+    }
+  ],
+  "installed_packages": {
+    "mcp": "2.0.0",
+    "anyio": "4.14.2",
+    "machine_scope_only": true,
+    "inspection_output": "46c1b1"
+  },
+  "official_sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute",
+      "use": "Explicit inheritable HANDLE_LIST; bInheritHandles TRUE with this allowlist. Pseudo handles are not passed."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-duplicatehandle",
+      "use": "Own duplicates with inherited/read-only access; originals remain borrowed."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeserverprocessid",
+      "use": "Child binds the actual server PID to its inherited live parent handle."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeclientprocessid",
+      "use": "Parent binds actual client PID to the process returned by its exact creator and retained birth."
+    }
+  ],
+  "implemented_prototype": {
+    "origin": "Only this Python process and a new 33-byte fixture file plus 6-byte decoy under project _runtime. No caller PID/path/CK3 handle can create the fixture origin. All received holders are source_fixture=true and are not Native tokens.",
+    "inheritance": "Each hop duplicates only target-read, stable read/share-read file lease, SYNCHRONIZE-only root revoke event, and query/synchronize parent-process handle into a STARTUPINFOEX handle_list. Standard IO handles are additionally managed by Popen/MCP. Receiver requires actual inherited flags then clears inheritance; next hop receives fresh copies. Sender copies remain held until actual receiver ACK.",
+    "kernel_peer": "Random first-instance local-only pipes. Parent independently reads actual client PID and exact returned child generation. Child reads actual server PID and compares its inherited live parent handle. Raw argv/env handle numbers only locate inherited handles; they do not authorize Native custody or a DTO.",
+    "receiver": "Fixture receiver independently re-reads exact integer target FILETIME/image/live state and FileID/volume/size/full-path/hash from inherited handles. Parent comparisons reject mismatched claims. Root fixture authority remains owned-mechanics only.",
+    "real_MCP_seam": "Installed mcp.client.stdio._create_platform_compatible_process actually creates the MCPApp fixture child; existing retain_mcp_stdio_process captures that actual child. A one-shot proxy changes ONLY mcp.os.win32.utilities.anyio reference in this isolated fixture Queue during the exact expected creation, forwards startupinfo to installed AnyIO, and restores it immediately. Original MCP creator and Job-management code remain in use. No installed file/global AnyIO/subprocess function is edited.",
+    "fallback": "AnyIO NotImplemented is converted to ChainUnavailable so the installed MCP Popen fallback cannot silently lose resource inheritance. Foreign/repeated creations and startupinfo collisions refuse.",
+    "revocation": "All three receivers prove their inherited root event lacks modification access. Root sets its own event; each receiver invalidates its local fixture binding before closing only owned copies, then confirms normal descendants and exits normally. Immediate-parent handle liveness and authenticated parent revoke command are implemented guards. Root revocation is the actual tested path.",
+    "close_ownership": "Original/pseudo target handle and borrowed actual SDK pipe are never closed or terminated. Only returned fixture child objects can be terminated on failure. Normal positive chain requires every child to exit 0; each retained Popen/MCP-capture process handle is closed by its own owner. Original MCP Job is closed if present after leaf exit; Job membership was not independently queried.",
+    "precision": "Observed target birth is preserved as a decimal string derived from exact integer FILETIME, including nonzero final 100 ns digits. No CIM parsing, float reconstruction, rounding or ledger guard changes are used by this fixture.",
+    "not_a_second_token": "_PROTOTYPE_SEAL only controls an internal fixture resource holder. It cannot construct existing M7 _LoadedNativeProviderV1 or M0 production custody."
+  },
+  "qualification": {
+    "source_output": "78fd0a",
+    "started_utc": "2026-10-19T13:34:58.145608+00:00",
+    "finished_utc": "2026-10-19T13:35:06.142090+00:00",
+    "elapsed_seconds": 7.996,
+    "successful": true,
+    "tests_run": 6,
+    "stdout": "test_real_bad_manifest_is_rejected_before_forwarding (tools.g2_saved_campaign.test_private_handle_chain_v1.OwnedMechanicalTests.test_real_bad_manifest_is_rejected_before_forwarding) ... ok\ntest_real_four_roles_actual_MCP_creator_and_revocation (tools.g2_saved_campaign.test_private_handle_chain_v1.OwnedMechanicalTests.test_real_four_roles_actual_MCP_creator_and_revocation) ... ok\ntest_real_wrong_parent_handle_is_rejected_by_kernel_pipe_peer (tools.g2_saved_campaign.test_private_handle_chain_v1.OwnedMechanicalTests.test_real_wrong_parent_handle_is_rejected_by_kernel_pipe_peer) ... ok\ntest_default_off_never_loads_windows_or_launches (tools.g2_saved_campaign.test_private_handle_chain_v1.PureBoundaryTests.test_default_off_never_loads_windows_or_launches) ... ok\ntest_json_cannot_create_a_resource_holder (tools.g2_saved_campaign.test_private_handle_chain_v1.PureBoundaryTests.test_json_cannot_create_a_resource_holder) ... ok\ntest_parent_manifest_must_equal_actual_kernel_observation (tools.g2_saved_campaign.test_private_handle_chain_v1.PureBoundaryTests.test_parent_manifest_must_equal_actual_kernel_observation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 7.996s\n\nOK\n",
+    "owned_runs": [
+      {
+        "source_fixture": true,
+        "Native_DTO_issued": false,
+        "H": "unknown",
+        "current_Game_access": 0,
+        "new_DLLs": 0,
+        "roles": [
+          "supervisor",
+          "owner",
+          "Queue",
+          "MCPApp"
+        ],
+        "status": "wrong_claim_rejected",
+        "reason": "receiver did not adopt: ChainUnavailable:parent claim differs from inherited kernel resources",
+        "cleanup": {
+          "owned_remaining": 0,
+          "errors": [],
+          "temporary_remaining": 0
+        },
+        "fixture_directory_removed": true
+      },
+      {
+        "source_fixture": true,
+        "Native_DTO_issued": false,
+        "H": "unknown",
+        "current_Game_access": 0,
+        "new_DLLs": 0,
+        "roles": [
+          "supervisor",
+          "owner",
+          "Queue",
+          "MCPApp"
+        ],
+        "status": "owned_chain_pass",
+        "nodes": [
+          {
+            "role": "owner",
+            "source_fixture": true,
+            "Native_DTO_issued": false,
+            "process": {
+              "pid": 237468,
+              "birth_filetime": "134368904999611364",
+              "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+            },
+            "parent": {
+              "pid": 95532,
+              "birth_filetime": "134368904979735707",
+              "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+            },
+            "pipe_server_pid": 95532,
+            "exact_resources": {
+              "target": {
+                "pid": 95532,
+                "birth_filetime": "134368904979735707",
+                "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+              },
+              "file": {
+                "volume": "15312367356600444416",
+                "file_id": "c96e1900000004000000000000000000",
+                "size": 33,
+                "sha256": "a805026d324df9aff4cff5f4fd12d40cd7d3c9967cb8b2927b516f634399660f",
+                "final_path": "\\\\?\\Z:\\ck3_mod_rewrite\\_runtime\\owned-private-chain-uw45_sdb\\owned-lease.txt"
+              }
+            },
+            "adopted": true,
+            "decoy_not_used": true,
+            "valid_before_close": false,
+            "revocation_cause": "root revoked",
+            "resource_handles_remaining": 0
+          },
+          {
+            "role": "Queue",
+            "source_fixture": true,
+            "Native_DTO_issued": false,
+            "process": {
+              "pid": 204968,
+              "birth_filetime": "134368905009562216",
+              "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+            },
+            "parent": {
+              "pid": 237468,
+              "birth_filetime": "134368904999611364",
+              "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+            },
+            "pipe_server_pid": 237468,
+            "exact_resources": {
+              "target": {
+                "pid": 95532,
+                "birth_filetime": "134368904979735707",
+                "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+              },
+              "file": {
+                "volume": "15312367356600444416",
+                "file_id": "c96e1900000004000000000000000000",
+                "size": 33,
+                "sha256": "a805026d324df9aff4cff5f4fd12d40cd7d3c9967cb8b2927b516f634399660f",
+                "final_path": "\\\\?\\Z:\\ck3_mod_rewrite\\_runtime\\owned-private-chain-uw45_sdb\\owned-lease.txt"
+              }
+            },
+            "adopted": true,
+            "decoy_not_used": true,
+            "valid_before_close": false,
+            "revocation_cause": "root revoked",
+            "resource_handles_remaining": 0
+          },
+          {
+            "role": "MCPApp",
+            "source_fixture": true,
+            "Native_DTO_issued": false,
+            "process": {
+              "pid": 199984,
+              "birth_filetime": "134368905028414614",
+              "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+            },
+            "parent": {
+              "pid": 204968,
+              "birth_filetime": "134368905009562216",
+              "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+            },
+            "pipe_server_pid": 204968,
+            "exact_resources": {
+              "target": {
+                "pid": 95532,
+                "birth_filetime": "134368904979735707",
+                "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+              },
+              "file": {
+                "volume": "15312367356600444416",
+                "file_id": "c96e1900000004000000000000000000",
+                "size": 33,
+                "sha256": "a805026d324df9aff4cff5f4fd12d40cd7d3c9967cb8b2927b516f634399660f",
+                "final_path": "\\\\?\\Z:\\ck3_mod_rewrite\\_runtime\\owned-private-chain-uw45_sdb\\owned-lease.txt"
+              }
+            },
+            "adopted": true,
+            "decoy_not_used": true,
+            "valid_before_close": false,
+            "revocation_cause": "root revoked",
+            "resource_handles_remaining": 0
+          }
+        ],
+        "root": {
+          "target": {
+            "pid": 95532,
+            "birth_filetime": "134368904979735707",
+            "image": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe"
+          },
+          "file": {
+            "volume": "15312367356600444416",
+            "file_id": "c96e1900000004000000000000000000",
+            "size": 33,
+            "sha256": "a805026d324df9aff4cff5f4fd12d40cd7d3c9967cb8b2927b516f634399660f",
+            "final_path": "\\\\?\\Z:\\ck3_mod_rewrite\\_runtime\\owned-private-chain-uw45_sdb\\owned-lease.txt"
+          }
+        },
+        "actual_MCP_creator": true,
+        "revocation": "root readonly-shared event; parent peer also checked",
+        "cleanup": {
+          "owned_remaining": 0,
+          "errors": [],
+          "temporary_remaining": 0
+        },
+        "fixture_directory_removed": true
+      },
+      {
+        "source_fixture": true,
+        "Native_DTO_issued": false,
+        "H": "unknown",
+        "current_Game_access": 0,
+        "new_DLLs": 0,
+        "roles": [
+          "supervisor",
+          "owner",
+          "Queue",
+          "MCPApp"
+        ],
+        "status": "wrong_parent_peer_rejected",
+        "reason": "ChainUnavailable:receiver rejected kernel peer: ChainUnavailable:server is not held parent",
+        "cleanup": {
+          "owned_remaining": 0,
+          "errors": [],
+          "temporary_remaining": 0
+        },
+        "fixture_directory_removed": true
+      }
+    ],
+    "scope": "Six tests: three real owned Windows cases plus three pure boundaries. Only self-created Python processes/random private pipes/files were used.",
+    "no_extra_full_M7_or_government_matrix": true
+  },
+  "development_failures_preserved": [
+    {
+      "output": "fd8bc8",
+      "result": "4 pass / 1 error",
+      "cause": "Shared-root event already revoked leaf while parent attempted another revoke write.",
+      "repair": "Skip redundant command on shared event revocation; read child receipt and wait actual owned child."
+    },
+    {
+      "output": "0e91c5",
+      "result": "5 pass / 1 error",
+      "cause": "Real wrong-parent receiver rejected, but immediate nonblocking pipe close hid its reason before parent read it."
+    },
+    {
+      "output": "ae6fa6",
+      "result": "1 error",
+      "diagnostic": "WinError232 confirmed refusal-receipt/close ordering issue, not a bypass or accepted wrong peer.",
+      "repair": "Authenticated rejection ACK before client closure; actual wrong-parent and wrong-manifest cases then both passed (037f89)."
+    },
+    {
+      "output": "037f89",
+      "result": "2 directed negative cases pass",
+      "qualification_role": "Necessary follow-up after failure-path repair."
+    }
+  ],
+  "production_wiring_not_done": [
+    {
+      "seam": "Canonical cold supervisor before original DLL load",
+      "specific_work": "Create actual source custody on canonical retained target handle before load; retain exact FILETIME and stable fixed-share DLL lease. This prototype's self-process origin cannot substitute."
+    },
+    {
+      "seam": "Supervisor -> SDK owner creation",
+      "specific_work": "Make future canonical supervisor actually create/retain the SDK owner. Current separate/manual launch has no such authority channel. Do not retrofit current C13."
+    },
+    {
+      "seam": "SDK owner -> Queue Popen",
+      "specific_work": "Pass restricted inherited resources and retained parent identity through the real owner spawn. Reuse selective STARTUPINFOEX, not broad inheritance."
+    },
+    {
+      "seam": "Queue -> actual MCP App creator",
+      "specific_work": "Current installed MCP private creator exposes no startupinfo argument although installed AnyIO does. Adopt an approved one-shot bootstrap seam preserving existing process capture and Job semantics; this isolated fixture module-reference proxy is not a concurrency-safe general production hook. No current factory was changed."
+    },
+    {
+      "seam": "Actual App bootstrap private receiver",
+      "specific_work": "Add a canonical receiver producing a LOCAL original M0 sealed holder from proven cross-process resources. Original Python identity/source_resource/facade/target objects cannot cross the process boundary. No JSON receipt can create these identities."
+    },
+    {
+      "seam": "Exact birth -> existing M7 token/consumer",
+      "specific_work": "M0 frozen _process and current consumer still have the microsecond guard. A separately reviewed candidate-only exact integer field or retained custody reference is still required; do not loosen environment/same_game_identity/ledger/_checked."
+    },
+    {
+      "seam": "Native adoption",
+      "specific_work": "Only after real target/loaded DLL/actual native pipe peer/fullmodule/connection qualification may the existing unique issuer mint its existing token. This prototype never exercises or qualifies Native30."
+    },
+    {
+      "seam": "Owner revocation and close",
+      "specific_work": "Install actual disconnect/reconnect/close/failure hooks that clear real DTO/cache FIRST and then release owned resources. Root event mechanics are proven; actual App callbacks, abrupt parent-exit cascade, cleanup-error retention and production jobs remain unqualified."
+    },
+    {
+      "seam": "Source epoch and default gate",
+      "specific_work": "When actually wired, include all adopted guard leaves in owner_source_epoch_v1; missing chain/peer/holder stays unknown. No current epoch/frozen owner/Service/Driver/adapter/parser was edited."
+    }
+  ],
+  "independent_scope": {
+    "Game_Native_RPC": 0,
+    "current_Game_or_existing_pipe_access": 0,
+    "live_Driver_or_SAVE_reads": 0,
+    "new_DLL_or_native_build": 0,
+    "system_settings_changes": 0,
+    "current_C13_factory_edits": 0,
+    "production_issuer_or_DTO_edits": 0,
+    "Native_DTOs_issued": 0,
+    "actual_H": "unknown",
+    "M7_multi_ruler_seed_government_breadth": "not_qualified",
+    "stage": false,
+    "commit": false
+  },
+  "storage": {
+    "path": "Z:/ck3_mod_rewrite",
+    "volume": "Z:",
+    "disk_usage": {
+      "total": 4096787476480,
+      "used": 3918526935040,
+      "free": 178260541440
+    },
+    "max_authored_bytes": 98304,
+    "not_D_or_heavy_write_admission": true,
+    "policy": "docs/storage-retention-policy.json",
+    "checks": "Small source/test/proof under 96 KiB; no heavy output or D-volume admission. All owned fixture directories were removed by each completed case.",
+    "artifact_body_availability": "Temporary 33-byte fixture and decoy no longer exist. Exact hashes and deterministic source recipe remain; removed files are not represented as readable originals.",
+    "owned_fixture_directories_remaining": []
+  },
+  "retention": {
+    "category": "record",
+    "review_by_utc": "2026-11-18T13:35:06Z",
+    "reason": "Active future Native custody seam prototype; consolidate or retire once canonical production receiver supersedes it."
+  }
+}

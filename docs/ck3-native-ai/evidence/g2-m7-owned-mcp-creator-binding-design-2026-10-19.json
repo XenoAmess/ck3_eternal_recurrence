@@ -1,0 +1,168 @@
+{
+  "schema": "xar.g2-m7-owned-mcp-creator-binding-design.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T14:01:09.177620+00:00",
+  "status": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_QUALIFIED",
+  "scope": "Queue-to-App owned creator seam only; original three prototype leaves frozen. No installed MCP/current C13/C14/source factory/session is modified.",
+  "sources": {
+    "inspection_output": "ef9429",
+    "callsite_search_output": "110f98",
+    "metadata_output": "ddc2c3",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_utc": "2026-10-19T14:01:09.177620+00:00",
+    "functions": [
+      {
+        "name": "mcp.client.stdio.stdio_client",
+        "signature": "(server: mcp.client.stdio.StdioServerParameters, errlog: <class 'TextIO'> = <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>) -> collections.abc.AsyncGenerator[tuple[mcp.shared._stream_protocols.ReadStream[mcp.shared.message.SessionMessage | Exception], mcp.shared._stream_protocols.WriteStream[mcp.shared.message.SessionMessage]], None]",
+        "file": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py",
+        "first_line": 113,
+        "freevars": []
+      },
+      {
+        "name": "mcp.client.stdio._create_platform_compatible_process",
+        "signature": "(command: str, args: list[str], env: dict[str, str] | None = None, errlog: <class 'TextIO'> = <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>, cwd: pathlib._local.Path | str | None = None) -> anyio.abc.Process | mcp.os.win32.utilities.FallbackProcess",
+        "file": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py",
+        "first_line": 328,
+        "freevars": []
+      },
+      {
+        "name": "mcp.os.win32.utilities.create_windows_process",
+        "signature": "(command: str, args: list[str], env: dict[str, str] | None = None, errlog: typing.TextIO | None = <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>, cwd: pathlib._local.Path | str | None = None) -> anyio.abc.Process | mcp.os.win32.utilities.FallbackProcess",
+        "file": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\os\\win32\\utilities.py",
+        "first_line": 136,
+        "freevars": []
+      },
+      {
+        "name": "mcp.os.win32.utilities._create_windows_fallback_process",
+        "signature": "(command: str, args: list[str], env: dict[str, str] | None = None, errlog: typing.TextIO | None = <_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>, cwd: pathlib._local.Path | str | None = None) -> mcp.os.win32.utilities.FallbackProcess",
+        "file": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\os\\win32\\utilities.py",
+        "first_line": 176,
+        "freevars": []
+      }
+    ],
+    "anyio_has_startupinfo": true,
+    "files": [
+      {
+        "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py",
+        "bytes": 13827,
+        "sha256": "bc987925a3da72f4ca59ccd627a6fc6ba258582d50515a532503abe6d1b9dbab"
+      },
+      {
+        "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\os\\win32\\utilities.py",
+        "bytes": 10336,
+        "sha256": "98e87c776a14cf326e63f8da007119156d3ad643ae7fbf27e9b6e6ef1dc534bf"
+      },
+      {
+        "path": "tools\\g2_saved_campaign\\sdk_process_custody.py",
+        "bytes": 14743,
+        "sha256": "55e4409b2b0920085d432cd4a7ef9eef316a49762856db33e07d802128c274cc"
+      }
+    ]
+  },
+  "observations": [
+    "Installed stdio_client takes only server/errlog and resolves a module-global _create_platform_compatible_process. No process_factory/startupinfo parameter is exposed.",
+    "Installed Windows creator calls AnyIO open_process, falls back to _create_windows_fallback_process on NotImplementedError, then executes original Job creation/assignment. AnyIO accepts startupinfo; fallback uses subprocess.Popen without it.",
+    "Existing project retain_mcp_stdio_process already accepts a stdio_module object and wraps its _create_platform_compatible_process attribute. Its capture/normal exception/cleanup contract can be reused with a PRIVATE module rather than installed stdio.",
+    "In tracked project src/tools, the bounded search found the capture hook but no active public Queue stdio_client callsite. Existing external/generated Queue seam is documented in native30-exact-birth-private-transfer-plan-2026-10-19.json; current C13/C14 factories were not read or changed."
+  ],
+  "recommendation": {
+    "proposed_file": "tools/g2_saved_campaign/mcp_owned_stdio_binding_v1.py",
+    "proposed_constructor": "bind_owned_stdio_v1(*, inherited_custody, expected_server, enabled=False) -> BoundOwnedStdioV1",
+    "injected_owner": "Construct once at future Queue bootstrap before App creation, from the actual private inherited-custody receiver. The constructor imports the real installed modules internally; a client cannot choose module/function objects or provide a JSON custody claim.",
+    "binding_shape": "BoundOwnedStdioV1 exposes private_stdio (a fresh ModuleType-like namespace) and stdio_client. No installed module is assigned, no sys.modules entry is replaced, and no existing session is rebound.",
+    "minimal_code_binding": "Reuse four existing dependency code objects with types.FunctionType in per-binding global dictionaries: the unwrapped stdio_client async generator, _create_platform_compatible_process, create_windows_process, and _create_windows_fallback_process. Copy defaults/kwdefaults/annotations as needed; require the observed top-level no-freevars/signatures and pinned dependency source. Wrap the rebound async generator with contextlib.asynccontextmanager. This does not copy or exec dependency source, vendor a package, or reimplement its transport/Job/shutdown logic.",
+    "private_dictionary_links": [
+      "private_stdio.__dict__ is the actual globals dictionary for rebound stdio_client and platform creator. The existing capture hook's setattr(private_stdio, '_create_platform_compatible_process', wrapper) therefore affects ONLY this binding and is actually consulted by that client.",
+      "Only the private platform creator resolves create_windows_process to its private bound counterpart.",
+      "The private Windows creator receives a private AnyIO forwarding object whose open_process injects the already-created selective startupinfo into this exact expected command; every other API delegates unchanged. The installed utilities.anyio reference is never modified.",
+      "Its fallback resolves a private bound _create_windows_fallback_process. That function receives a private subprocess forwarding object whose Popen supplies startupinfo and close_fds=True for the exact same owned spawn. The installed subprocess/MCP references are unchanged.",
+      "Retain original _create_job_object/_maybe_assign_process_to_job/FallbackProcess and original shutdown helpers by reference. Keep the SAME original _process_jobs mapping by identity, not a copied replacement table: original cleanup must see the actual returned process's Job."
+    ],
+    "queue_callsite_sketch": [
+      "binding = bind_owned_stdio_v1(inherited_custody=internal_received_holder, expected_server=params, enabled=owned_gate)",
+      "async with retain_mcp_stdio_process(binding.private_stdio, expected_executable=resolved_exe) as capture:",
+      "    async with binding.stdio_client(params) as (read_stream, write_stream):",
+      "        actual_child = capture.require_generation()  # use actual existing capture API; not a JSON PID",
+      "        # complete existing private parent/receiver verification; then original ClientSession(read_stream, write_stream)"
+    ],
+    "constructor_note": "The sketch expresses injection ownership; production implementation must use the existing capture object's exact require_generation signature. It is not executable code or a new public API.",
+    "source_contract": "Version/source/code-identity guards run before creating a child. These hashes are dependency compatibility guards only; they never substitute for actual loaded Native DLL SHA or kernel custody evidence."
+  },
+  "preserve_original_semantics": {
+    "transport": "Original stdio_client async-generator bytecode still creates streams/tasks, applies encoding, drains output, flushes writer, shields bounded shutdown, and cancels the group. None of this body is rewritten.",
+    "jobs": "Original Windows creator performs its original Job creation/assignment; original cleanup sees the same returned process object and same original Job table. Do not hand-create or pop a second Job, detach Job ownership, or replace the library's stop helpers.",
+    "fallback": "Keep the existing NotImplementedError fallback behavior by adding selective inheritance to BOTH original async and fallback creation paths. If future implementation cannot prove the fallback seam/signature, refuse optional custody before a child is created rather than silently spawning an unqualified resource receiver.",
+    "exceptions": "OSError/ValueError/cancellation/creation errors retain original propagation and traceback code filenames. Guard failures are explicit private-binding failures; do not convert an unknown post-create failure into a second spawn, no-op, or retry. Original capture keeps the real child cleanup owner even when generation capture fails.",
+    "boundary_default": "Missing/disabled custody or unsupported library qualification yields Hunknown and the prior ordinary transport before any owned spawn begins. Never retrofit an already-running session. After creation begins, keep the original error and normal cleanup path; do not create a replacement App under this API."
+  },
+  "resource_and_concurrency_guards": [
+    "The constructor accepts only the actual internal inherited-custody object with live exact target/file handles and a validated parent chain. CLI/env numbers locate resources; neither JSON nor source hashes authorize them.",
+    "Per-binding resource reservation is one-shot and tied to exact resolved command/args/environment/cwd. Do not reuse one holder to create two App receivers. Freeze request parameters before allocation; source mismatch is unavailable before CreateProcess.",
+    "Every new binding has disjoint stdio and utility globals/forwarding objects. No process-wide monkeypatch or global spawn lock is needed; running legacy sessions and unrelated AnyIO/Popen calls remain untouched.",
+    "The existing hook's global bookkeeping lock remains only its normal short dictionary guard, keyed by id(private_stdio). Two independent private bindings can be active concurrently; re-entering the SAME binding must refuse before spawning.",
+    "Only explicit inheritable owned target-read/file-lease/parent-query/root-revoke handles plus normal stdio handles enter STARTUPINFOEX. Require close_fds behavior, no runtime Game/job/control handles, no unrelated inheritable handles.",
+    "Do not release last sender DLL lease or mark transfer success until the actual receiver independently verifies parent pipe peer, exact FILETIME/image/liveness and held file identity/hash. This creator constructs a process, not a DTO.",
+    "On capture/adoption failure or cancellation, revoke the actual optional DTO/cache FIRST if one exists, then release owned handles through canonical owner cleanup. Unknown closes retain the owner-held resource for retry, never the borrowed target or pipe.",
+    "Actual App receiver and issuer stay M0/M7's unique typed contract. No second qualification seal/DTO is created by this binding. Exact-100ns candidate path and source_epoch dependency registration remain separate unfinished work."
+  ],
+  "maintenance_boundary": {
+    "supported_current_sources": [
+      {
+        "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py",
+        "bytes": 13827,
+        "sha256": "bc987925a3da72f4ca59ccd627a6fc6ba258582d50515a532503abe6d1b9dbab"
+      },
+      {
+        "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\os\\win32\\utilities.py",
+        "bytes": 10336,
+        "sha256": "98e87c776a14cf326e63f8da007119156d3ad643ae7fbf27e9b6e6ef1dc534bf"
+      }
+    ],
+    "scope": "Explicit compatibility adapter for the observed installed MCP, not a generic function-cloning framework. Bind only the four named top-level functions; no AST search, dependency-source rewriting, or arbitrary replacement maps.",
+    "fail_closed": "If __wrapped__/signatures/co_freevars/source pins/code links change, this optional owned binding is unavailable pending a targeted review; do not guess a new API or silently drop handles.",
+    "exit_path": "If a future MCP version exposes an owned process_factory/startupinfo seam, replace the private binding with that supported injection point after preserving the same capture/Job/shutdown evidence.",
+    "evidence_limit": "Only source-level compatibility is reviewed here. No private-namespace FunctionType binder was executed in this turn, and no concurrency/fallback/cancellation behavior is claimed passed."
+  },
+  "future_minimum_software_validation_not_run": [
+    "Two concurrent private bindings plus an untouched original session: disjoint globals/resources, original module/AnyIO/subprocess references unchanged, both actual child captures paired correctly.",
+    "Exercise original async path and original NotImplemented fallback with injected owned creators: exact selective startupinfo, same process object and original Job map, no unqualified fallback.",
+    "Original OSError/ValueError and cancellation before/after child return: no second spawn, original shutdown/Job cleanup and capture retain the exact child.",
+    "One-shot reuse and wrong command/custody refuse before creation; disabled/missing/unsupported binding does not issue DTO or interfere with ordinary root readiness.",
+    "Later one bounded owned mechanical run through the full bound stdio_client may qualify this adapter; current prototype's factory mechanics cannot substitute. No such run is authorized/executed by this design record."
+  ],
+  "references": {
+    "frozen_prototype": {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-owned-private-handle-chain-prototype-2026-10-19.json",
+      "bytes": 20439,
+      "sha256": "9e96ca51829065aa521cd3772cd2036accf412bacb83ffbe55814b4e8f834bac"
+    },
+    "existing_transfer_plan": {
+      "path": "docs/ck3-native-ai/evidence/native30-exact-birth-private-transfer-plan-2026-10-19.json",
+      "bytes": 12232,
+      "sha256": "154df56ff1fab7ae7aa375bdb573be77b8771b93bb3904c3d9fb652e70cff1b1"
+    },
+    "python_primary": [
+      "https://docs.python.org/3.13/library/types.html#types.FunctionType",
+      "https://docs.python.org/3.13/library/contextlib.html#contextlib.asynccontextmanager"
+    ]
+  },
+  "execution": {
+    "new_processes": 0,
+    "Game_or_native_RPC": 0,
+    "existing_Game_or_Driver_SAVE_access": 0,
+    "new_fixtures_or_Win32_trials": 0,
+    "installed_package_edits": 0,
+    "current_C13_C14_edits": 0,
+    "frozen_prototype_edits": 0,
+    "tests_run": 0,
+    "DTOs_issued": 0,
+    "H": "unknown",
+    "stage": false,
+    "commit": false
+  },
+  "retention": {
+    "category": "record",
+    "review_by_utc": "2026-11-18T14:01:09Z",
+    "reason": "Small pending creation-boundary design; retire or consolidate after implementation review."
+  }
+}
