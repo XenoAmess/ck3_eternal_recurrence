@@ -12,7 +12,6 @@ import sys
 from types import ModuleType, SimpleNamespace
 
 from prepare_c3_life_opening_classifier_v1 import load_functions, pinned
-from saved61_cold_queue_v1 import make_saved61_cold_queue_v1, bind_opening
 
 
 def main():
@@ -21,7 +20,13 @@ def main():
     p.add_argument('--seed', type=Path, required=True)
     p.add_argument('--output-root', type=Path, required=True)
     args = p.parse_args(); root = args.runtime_root.resolve(strict=True)
-    leaf, lp = pinned(Path(__file__).with_name('saved61_cold_queue_v1.py'))
+    # Reproduce the historical phase-only qualification against its exact leaf;
+    # the corrected current source uses qualify_saved61_call_order_v1.py.
+    leaf, lp = pinned(root / 'root_p37c4_cold_resume.py',
+        expected='82d40a057f5091094728c0ca1a77cdb990c8b649b6c2ce2199f8dde53d2b44d9')
+    old_scope = {}
+    exec(compile(leaf, str(root / 'root_p37c4_cold_resume.py'), 'exec'), old_scope)
+    make_saved61_cold_queue_v1 = old_scope['make_saved61_cold_queue_v1']
     queue, qp = pinned(root / 'root_p37c3_sdk_queue.py', expected='18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6', limit=1024**2)
     seed_raw, sp = pinned(args.seed, expected='13ace44626932920b7558ac7c74e5f648e697d291aa1d84a6671d166be4efdbc')
     seed = json.loads(seed_raw)

@@ -1,0 +1,572 @@
+{
+  "schema": "xar.ck3.g2-m7-native26-actual-cold-adoption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:39:27.931580+00:00",
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "bytes": 48771,
+      "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f",
+      "record_machine_id": "unknown",
+      "record_utc": "2026-10-19T05:25:15.834431+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0199-1-result.json",
+      "bytes": 57813,
+      "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1",
+      "record_machine_id": "unknown",
+      "record_utc": "2026-10-19T05:25:33.902604+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH-C4.json",
+      "bytes": 6215,
+      "sha256": "c394af10b70fd06ed08c8703af3ff838d6d443e093030bcf2271ff14c5ad6cc5",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T05:10:58.551063+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C4.json",
+      "bytes": 402606,
+      "sha256": "d99b9b0ef92a82529a198c67cb5bb2170aa1e7456ecf31548d58c72b9466ed19",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T05:00:47.064455+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-C4-COLD-PRELAUNCH.json",
+      "bytes": 4684,
+      "sha256": "34879b8554328591c07967df8e1e78422446d694580042f6c0f84756a630b1c4",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T05:05:41.616888+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-EXIT.json",
+      "bytes": 358,
+      "sha256": "3a58773c5bc08ac07767d4ca2ef0aa5b6e5409b6786872dfe2b6680bb1aded5b",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T04:56:11.075694+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\FINAL-C3-DRIVER-CLOSE52.json",
+      "bytes": 2569,
+      "sha256": "80f948193aac3cd62380d8603f04543705a158c662e6f70ae65b7e957e0b9bad",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T04:55:11.615348+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\COLD-CUMULATIVE-LOOP-SEED.json",
+      "bytes": 4000,
+      "sha256": "13ace44626932920b7558ac7c74e5f648e697d291aa1d84a6671d166be4efdbc",
+      "record_machine_id": "unknown",
+      "record_utc": null
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\FROZEN.json",
+      "bytes": 4962,
+      "sha256": "ae3e2e231dd9f5450b3e6e2569f26b3a515c01e0dbfb7c24c5ba69f94fffd613",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T05:28:46.164814+00:00"
+    }
+  ],
+  "launch": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T05:10:58.551063+00:00",
+    "pid": 153556,
+    "creation_date": "20261019051054.525692+000",
+    "creation_filetime": "134368602545256920",
+    "pipe": "\\\\.\\pipe\\xar-g2-robert30-v20261019-campaign01",
+    "source_head": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+    "dll_sha256": "eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184",
+    "native_build_label": "Native26 narrow Native25 successor",
+    "old_save_loaded": true,
+    "load_save_name": "xar_checkpoint"
+  },
+  "injector_status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+  "SDK": {
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src04",
+    "source_file_count": 1435,
+    "business_source_commit": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+    "git_head": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+    "native_build_label": "Native26 narrow Native25 successor",
+    "native_dll_sha256": "eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184",
+    "physical_opening_date_raw": 53145792,
+    "campaign_start_date_raw": 53144328
+  },
+  "SEM": {
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53145792,
+    "paused": true,
+    "map_ready": true,
+    "episode_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    },
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": null,
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+    },
+    "one_life_terminal": false,
+    "episode_identity_pending": false,
+    "succession_expectation": null,
+    "succession_reconciliation": null
+  },
+  "CAP": {
+    "native_session_control": {
+      "configured": true,
+      "queue_dir": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\bridge",
+      "restore_checkpoint": true,
+      "driver_state_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\driver-state.json",
+      "driver_state_restored": true,
+      "driver_state_error": null,
+      "driver_state_restore_kind": "cold_checkpoint",
+      "episode_binding_state": "active_resumed",
+      "cold_candidate_rejection": null,
+      "episode_transition": null,
+      "episode_transition_error": null
+    },
+    "episode_seed": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 68936116,
+      "sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+      "date_raw": 53144328,
+      "character_id": 31254,
+      "source_run_id": "native-31254-6271ac8cd441",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    },
+    "episode_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441"
+  },
+  "prelaunch": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "at_utc": "2026-10-19T05:05:41.616888+00:00",
+    "status": "EXACT_CLOSED_SAVE61_COLD_INPUT_VALIDATED",
+    "validation": {
+      "name": "xar_checkpoint.ck3",
+      "load_save_name": "xar_checkpoint",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 70300340,
+      "sha256": "cb385a8fd4be62b6e553a4d0a5575d50886e8d894dc8ed83173d9ae851d4075d",
+      "saved_date_raw": 53145792,
+      "history_index": 122,
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": null,
+        "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+        "source": "absent_by_verified_xar_mod_not_loaded",
+        "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+      }
+    },
+    "driver_state": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\driver-state.json",
+      "bytes": 880726,
+      "sha256": "0c7e6dbfd329249c6b1106ecd4e028b78e25292d72ce1cddad8db04d69f718dd"
+    },
+    "final_driver_close": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\FINAL-C3-DRIVER-CLOSE52.json",
+      "bytes": 2569,
+      "sha256": "80f948193aac3cd62380d8603f04543705a158c662e6f70ae65b7e957e0b9bad"
+    },
+    "sidecars": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\active-scheme-sway-formal-private-v1.json",
+        "bytes": 8808,
+        "sha256": "54829a6fc69bfec57fed58754ea35e382806c6f9dcac4b62ec33edafd7a8458f"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\ordinary-sway-schedule-v1.json",
+        "bytes": 430,
+        "sha256": "8b6073f661ea19894d06222f29aa4d47111a4f8291a51b64c50d11932b904d1c"
+      }
+    ],
+    "pipe_name": "\\\\.\\pipe\\xar-g2-robert30-v20261019-campaign01",
+    "old_Game_exit": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-EXIT.json",
+      "bytes": 358,
+      "sha256": "3a58773c5bc08ac07767d4ca2ef0aa5b6e5409b6786872dfe2b6680bb1aded5b"
+    },
+    "old_sdk_pair_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C3-OWNER-CLOSED.json",
+      "bytes": 865,
+      "sha256": "e07f605557447919e512b623f0865159f9a0a8c6d9111cc48100deb227170fa1"
+    },
+    "environment_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\xar-autoplayer-environment.json",
+      "bytes": 12282,
+      "sha256": "7eadbd895f81198f3d41cffc38b175519ac260ec2b60604ab310861a6d246e34"
+    },
+    "seed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\COLD-CUMULATIVE-LOOP-SEED.json",
+      "bytes": 4000,
+      "sha256": "13ace44626932920b7558ac7c74e5f648e697d291aa1d84a6671d166be4efdbc"
+    },
+    "canonical_validator_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src04\\xar_autoplayer\\cold_checkpoint_validator.py",
+      "bytes": 4766,
+      "sha256": "d89180d9abbcffcd71a33387826b751e31ecd7709683576e35cbb5358d4509a3"
+    },
+    "Game_Native_RPC_calls": 0,
+    "new_Game_launched": false,
+    "history_trimmed": false,
+    "old_Game_forced_exit1_preserved": true,
+    "validator_api": "xar_autoplayer.native_session.validate_cold_start_checkpoint_for_pipe",
+    "validator_provenance_annotation": {
+      "basis": "actual call in bind_c4_cold_metadata54.py; returned validation dictionary unchanged",
+      "producer": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\bind_c4_cold_metadata54.py",
+        "bytes": 5431,
+        "sha256": "47dc122a136f2d8f73ccede9c9168b61150659fcb7c21b8c408cea6f3c3c83dc"
+      },
+      "previous_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\ROOT-C4-COLD-PRELAUNCH-before-api-provenance55.json",
+        "bytes": 3854,
+        "sha256": "a72cec3de9d6a1d3df9f82b8620af1769e1da61dcd6e478110e7beb570a0d8ee"
+      }
+    }
+  },
+  "old_Game_exit": {
+    "kernel_signaled": true,
+    "exit_code": 1,
+    "pid": 214568,
+    "creation_filetime": "134368503807325674",
+    "at_utc": "2026-10-19T04:56:11.075669+00:00",
+    "forced_owned_job_cleanup": true,
+    "normal_wm_close_qualified": false,
+    "sdk_actual_exit_status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T04:56:11.075694+00:00"
+  },
+  "source_index_error": {
+    "status": "ACTUAL_C4_SOURCE_INDEX_ERROR_FROZEN_BEFORE_ANY_FULL",
+    "expected_semantic_sequence": 198,
+    "recorded_wrong_source_sequence": 197,
+    "actual_cold_frame_correct": true,
+    "ordinary_cycles": 74,
+    "pending": null,
+    "Native_or_Game_RPC_calls": 0
+  },
+  "Z_capacity": {
+    "total": 4096787476480,
+    "used": 3918383542272,
+    "free": 178403934208
+  },
+  "actual_scope": {
+    "same_campaign_exact_checkpoint_cold_baseline": "observed",
+    "input_checkpoint": "Actual197 saved61/h122/cb385a8fd4be62b6e553a4d0a5575d50886e8d894dc8ed83173d9ae851d4075d, original postclose Driver0c7e and two existing Sway sidecars; core cold validator/Driver accepted.",
+    "ordinary_goal_retained": "observed in actualSEM198; origin/current31254, dynasty_continuity, original episode/campaignID, successions0.",
+    "Native26_scope": "Exact launch/injector and new PID bridge binding with DLL eaee4443...032184; no claim that all providers or live speed are qualified.",
+    "normal_next_plan_goal_consumption": "not_observed at initial 05:39 snapshot; actual AUTO203 consumption added in dated supplement below",
+    "zero_RPC_source_pointer_correction": "not_observed at initial snapshot; actual200 refused, actual201 corrected at 05:40:17Z as recorded below",
+    "resolved_successor_retirement": "not_observed; no old resolved proof exercised",
+    "natural_succession": "not_observed",
+    "RNG_seed_identifier": "not_observed",
+    "new_seed_or_government_credit": 0,
+    "M7": "in_progress",
+    "G2": "6/8 unchanged"
+  },
+  "source_index_failure": {
+    "recorded_source": "0197 SAVE response",
+    "actual_semantic": "0198 SEM response; frame itself correct",
+    "ordinary_AUTO_before_correction": 0,
+    "root_cause": "Ready-SEM check_after runs before original consume advances next_sequence; factory next_sequence-1 predicted previous response.",
+    "phase_software_qualification_limit": "Explicit future phase fixtures did not establish the actual callback/pointer timing. Earlier M7 preparation no-gap review missed this ordering and is not actual-source-binding proof.",
+    "old_evidence": "PACK/c4-source-index-before-repair58/FROZEN.json preserves original state/bound/pointers/actual198199; no original overwritten by M7.",
+    "future_correction_scope": "Historical proposal was exact200; actual200 was refused by retained HALTED198. Actual201 corrected only source metadata and the exact retained relay halt, with zero RPC/action and no SEM/CAP/AUTO replay; see dated supplement."
+  },
+  "identity_note": "Standalone RPC records keep machine_id unknown. Explicit same-machine launch/prelaunch/freeze/old-exit receipts bind new PID153556/birth134368602545256920 to their native hello. No new OS process query by collector.",
+  "collector_actions": {
+    "new_Game_Native_MCP_calls": 0,
+    "live_Driver_or_SAVE_body_reads": 0,
+    "new_tests_or_compile": 0,
+    "source_changes": 0
+  },
+  "actual_correction_and_first_FULL_supplement": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T05:46:40.853738+00:00",
+    "source_pins": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C4-REAL-COLD-READY61.json",
+        "bytes": 1795,
+        "sha256": "ced133cd501ebe9e782d8da6303a3a6ec63c5d7251589707ecb3f8f898afb2aa",
+        "record_machine_id": "xenoamess-full-tower-eb9d2c1186"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0201-1-result.json",
+        "bytes": 4223,
+        "sha256": "ec8e3151df30179a7041621605ac42ca721948b0314f32474a8af849c6275765",
+        "record_machine_id": "unknown"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-full202-publisher-failure62\\FROZEN.json",
+        "bytes": 21054,
+        "sha256": "c12e80e04e6f4601d40eab9865639c46cdd7d04d29b7b5eaa641056e87f48409",
+        "record_machine_id": "xenoamess-full-tower-eb9d2c1186"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-full202-publisher-failure62\\00-ROOT-CUMULATIVE-LOOP-STATE.json",
+        "bytes": 4325,
+        "sha256": "994f364260b6ea53e290e9439e55220d0c0d5a85046cca3d8ba70cbbc529b69c",
+        "record_machine_id": "unknown"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0203-1-result.json",
+        "bytes": 15723,
+        "sha256": "22e79ffd7e752bbf189dca15b44e738f28b5a52aefed644fbf6c6e66a6c70999",
+        "record_machine_id": "unknown"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0250-1-result.json",
+        "bytes": 1476,
+        "sha256": "e664efe52f1369e74c8813f107418040db87411e39a5ed3b43ce4da2671e38dc",
+        "record_machine_id": "unknown"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0251-1-result.json",
+        "bytes": 576,
+        "sha256": "c3ac06a1400157f969cd16fc04120b1f0a27d4548b8694fd64af934ac8fd9597",
+        "record_machine_id": "unknown"
+      }
+    ],
+    "correction_201": {
+      "observed_at_utc": "2026-10-19T05:40:17.063087+00:00",
+      "status": "cold_semantic_source_pointer_corrected",
+      "recovery_kind": "saved61_cold_semantic_pointer198_and_relay_halt",
+      "original_incorrect_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+      "correct_actual_semantic_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "actual_frame": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53145792,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "completed_cycles": 74,
+      "next_sequence": 202,
+      "new_RPC_calls": 0,
+      "new_action_calls": 0,
+      "ordinary_cycle_credit": 0,
+      "game_day_credit": 0,
+      "SEM_CAP_replayed": false,
+      "original198_post_read_relay_error": "Foreign cached decision provider",
+      "failed_local200_retained": true,
+      "original198_display_publication_claimed_success": false,
+      "original_errors_preserved": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\00-0200-1-result.json",
+          "bytes": 465,
+          "sha256": "7e7691b9158902dd1e68731d0a082bcef25ae5e7dd7861d4e61fb63c19b8c226"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\01-ROOT-REQUEST-HALTED-0198.json",
+          "bytes": 651,
+          "sha256": "41acd49770448614e4fb9e7ab49fdf21c128d0c468093776e97b8371e1a6bf75"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\02-ROOT-REQUEST-HALTED-0200.json",
+          "bytes": 686,
+          "sha256": "23e99a6c1be0dbb5701888fa23e3e0eb9d45f9ad9675704f5bfcac46bb34a766"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\08-ROOT-FIRST-QUEUE-EXCEPTION-P37C4.json",
+          "bytes": 3115,
+          "sha256": "e55520c2c1e2c27ad967fdcf134418e456238e294439f4d6f9c753efc37bc2db"
+        }
+      ]
+    },
+    "first_normal_auto": {
+      "sequence": 203,
+      "started_at_utc": "2026-10-19T05:40:36.934621+00:00",
+      "ended_at_utc": "2026-10-19T05:40:37.746125+00:00",
+      "status": "executed",
+      "selected_step": "query-war-results-window-v1",
+      "campaign_goal_plan_used": {
+        "policy": "ordinary-campaign-goal-v1",
+        "goal_key": "dynasty_continuity",
+        "campaign_id": "native-31254-6271ac8cd441",
+        "current_character_id": 31254,
+        "progress": {
+          "reconciled_successions": 0,
+          "last_succession": null
+        },
+        "focus": "marriage",
+        "priorities": [
+          {
+            "priority": 100,
+            "action": "seek_current_ruler_marriage_and_family_continuity",
+            "reason": "retain the campaign's family intent with fresh ruler candidates"
+          },
+          {
+            "priority": 60,
+            "action": "review_current_ruler_succession_and_partition",
+            "reason": "reuse the current native heir and estate observations"
+          }
+        ]
+      },
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53145792,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "connection_generation": 1,
+        "bridge_pid": 153556
+      }
+    },
+    "closed_boundary": {
+      "frozen_at_utc": "2026-10-19T05:43:12.568206+00:00",
+      "completed_cycles": 98,
+      "elapsed_campaign_days": 107,
+      "cold_session_settled_cycles": 24,
+      "cold_session_elapsed_days": 46,
+      "frame": {
+        "snapshot_id": "native:60",
+        "revision": 61,
+        "native_revision": 60,
+        "date_raw": 53146896,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "paired_MET_sequence": 250,
+      "metrics": {
+        "campaign_score_sample_candidate": null,
+        "snapshot_id": "native:60",
+        "revision": 61,
+        "native_revision": 60,
+        "date_raw": 53146896,
+        "paused": true,
+        "map_ready": true,
+        "actor_character_id": 31254,
+        "actor_alive": true,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "bridge_pid": 153556,
+        "connection_generation": 1,
+        "war_count": 0,
+        "driver_state_bytes": 1284965,
+        "army_strengths_profile": null,
+        "army_strengths_query_sequence": null,
+        "army_strength_result_write_v1": null
+      },
+      "campaign_goal_anchor": {
+        "format_version": 1,
+        "goal_key": "dynasty_continuity",
+        "campaign_id": "native-31254-6271ac8cd441",
+        "origin_character_id": 31254,
+        "current_character_id": 31254,
+        "progress": {
+          "reconciled_successions": 0,
+          "last_succession": null
+        }
+      },
+      "cold_session_opening": {
+        "frame": {
+          "snapshot_id": "native:1",
+          "revision": 2,
+          "native_revision": 1,
+          "date_raw": 53145792,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441"
+        },
+        "semantic_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+        "ordinary_cycle_credit": 0,
+        "game_day_credit": 0
+      },
+      "pending_cycle": {
+        "global_turn": 99,
+        "before": {
+          "snapshot_id": "native:60",
+          "revision": 61,
+          "native_revision": 60,
+          "date_raw": 53146896,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441"
+        },
+        "before_metrics_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0250-1-result.json",
+        "auto_sequence": 251,
+        "stage": "auto_unsettled"
+      },
+      "last_saved_checkpoint": {
+        "status": "saved",
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 70300340,
+        "sha256": "cb385a8fd4be62b6e553a4d0a5575d50886e8d894dc8ed83173d9ae851d4075d",
+        "date_raw": 53145792,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": null,
+          "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+          "source": "absent_by_verified_xar_mod_not_loaded",
+          "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+        },
+        "history_index": 122,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "checkpoint_dirty_since_save": true,
+      "new_SAVE_observed": false,
+      "FULL202_completed": false,
+      "unsettled_AUTO251_replayed": false,
+      "AUTO251_error": "Error executing tool ck3_auto_turn: Exact text publication not observed; no OBS drawn or business-submitted claim",
+      "AUTO251_ended_at_utc": "2026-10-19T05:41:09.671222+00:00",
+      "publisher_file_sharing_handle_cause": "unknown_no_new_handle_probe"
+    },
+    "credit": {
+      "same_campaign_exact_checkpoint_cold": "observed",
+      "preserved_goal_consumed_by_normal_planner": "observed in first new AUTO203 campaign_goal_plan_used and planning_source_frame",
+      "completed_full_request": "not_observed; FULL202 stopped at AUTO251/pending99",
+      "resolved_successor_retirement": "not_observed",
+      "natural_succession": "not_observed",
+      "RNG_seed_identifier": "not_observed",
+      "independent_seed_credit": 0,
+      "additional_government_credit": 0,
+      "M7": "in_progress",
+      "G2": "6/8 unchanged"
+    },
+    "identity_encoding_correction": {
+      "original_local_index_precision_loss": "JavaScript Number serialization rounded two FILETIME integers beyond 2^53.",
+      "corrected_from_original_pinned_receipts": true,
+      "launch_creation_filetime_decimal": "134368602545256920",
+      "old_Game_creation_filetime_decimal": "134368503807325674",
+      "encoding": "Exact decimal strings; original launch/exit receipts unchanged.",
+      "qualification_effect": "No new process observation or lineage credit."
+    },
+    "collector_actions": {
+      "new_Game_Native_MCP_calls": 0,
+      "live_Driver_or_SAVE_body_reads": 0,
+      "new_tests_or_compile": 0,
+      "source_changes": 0
+    }
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_after_utc": "2027-04-17T05:39:27.931Z",
+    "maximum_new_peak_bytes": 1048576,
+    "heavy_write_admitted": false,
+    "reason": "Small actual cold baseline and separate metadata-failure source index; no large Driver/SAVE or source inventory copied."
+  }
+}

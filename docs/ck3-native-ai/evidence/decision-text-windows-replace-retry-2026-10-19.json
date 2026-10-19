@@ -1,0 +1,56 @@
+{
+  "schema": "xar.decision-text-windows-replace-retry/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:51:21.097534+00:00",
+  "actual_failure": {
+    "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c4-child-text-retry-review01\\META.json",
+    "bytes": 15547,
+    "sha256": "dfe9834d06efecba05681f18746108b8de8891c535db2702a3f7c7736774de33",
+    "full_control": 202,
+    "settled_cycles": 98,
+    "actual_game_days": 107,
+    "failed_auto_sequence": 251,
+    "failed_plan": "query-war-results-window-v1",
+    "phase": "before_submit_first_callback",
+    "selected_query_dispatched": false,
+    "publisher_error": "WinError 5 in atomic os.replace",
+    "actual_handle_holder": null
+  },
+  "change": {
+    "same_temp_and_bytes_retained": true,
+    "winerror5_only_retry": true,
+    "maximum_attempts": 8,
+    "retry_deadline_seconds": 2,
+    "text_ACK_requires_actual_replace_success": true,
+    "permanent_denial_remains_failure": true
+  },
+  "qualification": {
+    "source_review_initial_tests": "3 passed",
+    "final_test_change": "Start release Timer only after first actual sharing denial",
+    "changed_real_windows_case_only": "1 passed; 0.150 seconds",
+    "other_two_cases_repeated": false,
+    "real_local_CreateFile_sharing_test": true,
+    "test_holder_is_actual_incident_holder": false,
+    "Game_RPC_calls": 0,
+    "new_publisher_live_adoption": "pending C5 same-Game segment",
+    "business_SDK_source": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+    "business_SDK_source_changed": false
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/decision_text_publisher.py",
+      "bytes": 26919,
+      "sha256": "06d75841371d66d794b4541f0f9c6bd24a1e9a48969a84ad2820baafabfa2c51"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_decision_text_replace_retry.py",
+      "bytes": 4511,
+      "sha256": "ea4e2ac52058617e4a0d2bb1a1f94571cb44ee8f38135e13af4118f8059080e4"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m1-c4-month003-actual-inputs-2026-10-19.json",
+      "bytes": 8963,
+      "sha256": "f3c034d2dea7fa42d287ad8d2dd91d98a71d5efd5e06a46cd2494ab670e44e53"
+    }
+  ]
+}

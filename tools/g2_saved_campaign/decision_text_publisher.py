@@ -266,7 +266,21 @@ def publish_text(path, text):
     if not text.startswith(TITLE + '\n') or len(raw) > LIMIT: raise ValueError('Generic bounded decision text required')
     temp = path.with_name(path.name + '.' + uuid.uuid4().hex + '.pending')
     with temp.open('xb') as stream: stream.write(raw)
-    try: os.replace(temp, path)
+    # OBS and bounded readers can briefly deny delete-sharing on Windows.
+    # Keep the same bytes/temp/publication identity, and ACK only after the
+    # actual atomic replacement succeeds within the five-second caller gate.
+    delays = (.02, .04, .08, .16, .32, .5, .5)
+    deadline = time.monotonic() + 2.0
+    try:
+        for attempt in range(8):
+            try:
+                os.replace(temp, path)
+                break
+            except PermissionError as error:
+                remaining = deadline - time.monotonic()
+                if getattr(error, 'winerror', None) != 5 or attempt == 7 or remaining <= 0:
+                    raise
+                time.sleep(min(delays[attempt], remaining))
     finally: temp.unlink(missing_ok=True)
     return hashlib.sha256(raw).hexdigest()
 

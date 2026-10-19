@@ -15,3 +15,13 @@ C4 queue/entry/Native binder、SDK freeze、publisher started、mod absence、�
 [组合资格工具](../../tools/g2_saved_campaign/qualify_saved61_cold_queue_v1.py)用实际197/seed51和明确软件构造的未来Game SEM/CAP/map，组合原 `full_loop/generated/consume/persist` 与原camera合同，验证cold Native1重绑旧98、74计数/T0不变；原FULL首新请求恰为AUTO75，在RPC前截停。错误日期、episode、same_pid_hot CAP均拒绝。[软件资格](evidence/saved61-cold-phase-software-qualification01.json)没有声称preflight、未来Game、Native26或录制实机通过。runtime以真实新输入做正常preflight/SEM/CAP/current-map后，才允许首普通FULL；实际后验另存。
 
 最终factory15895B，SHA256 `82d40a057f5091094728c0ca1a77cdb990c8b649b6c2ce2199f8dde53d2b44d9`。这是正常cold连接叶，不是额外平台或批准流程。来源review在维护实机验收后7日复核用途；按统一存储策略清理过期派生副本，保留仍为活跃输入的必要原件与理由。
+
+## 2026-10-19 05:40Z 追加更正：实际调用顺序与显示来源
+
+上段82d4是当时交付的历史源。原软件资格先手动 consume 再调用 `check_after`，没有覆盖真正的 `P37C4oldReadyQueue.call → startup_readiness_call → check_after → consume → canonical response publish → relay` 顺序。这使 `next_sequence-1` 在实际198首SEM后错误指向197 SAVE；Native198与冷恢复CAP199仍各自真实成功，但冷绑定metadata来源不正确。另一个独立错误是旧readiness叶在完成198原件发布后导入旧显示relay，真实报 `Foreign cached decision provider` 并保留198 halt。CAP199成功没有清该halt。原错误bound、198 halt、200修正拒绝均保留，不能把这些记录改称当时通过。
+
+200候选的直接leaf资格为1正5负；它错误假设现场为clean边界，实际200于该guard拒绝并登记NEXT201，没有改来源、没有新RPC。后继201经尚未加载的 `recover_known_owner_1024` 既有动态入口，严格绑定FROZEN58、FROZEN60、198/199原件、原Game153556/birth134368602545256920、74cycles/noPending与精确显示异常，0RPC更正两个持久来源字段及内存来源，并清已证显示halt。实际201于05:40:17.063087Z成功，NEXT202、74cycles/61days不变；原198、200错误与原bound继续保留。[来源修正与实际后验](evidence/c4-cold-source-pointer-correction01.json)分列软件和现场结果。
+
+当前修正factory从 `current_attempt.request.sequence` 取SEM权威序号，核实际完整row/request/body与序列边界；observer使用当时已真实持久的READINESS attempt原件，canonical198在外层consume后才发布。它显式注入当前C4 relay到[公共readiness叶](../../tools/g2_saved_campaign/startup_readiness_v1.py)，不再通过旧模块选择publisher。它继续复用原 `root_score_month_samples_c4.observe_semantic`，不重写T0评分/月样本。[实际调用顺序软件资格](evidence/c4-cold-real-call-order-qualification01.json)使用真实closed198/199 payload，执行readiness、postcheck、consume、外层发布、当前relay和原ordinary CAP call：四个cold来源均为198，offset0，计数74/T0/current-map合同保持；没有现场RPC或启动新cold。
+
+业务守卫逐项保留：`saved_inputs/bind_opening/preflight/check_before`及整个CAP分支AST与82d4相同；SEM仍用原 `frame(...semantic=True, expected_lifecycle=...)` 验证paused map、存活actor/lifecycle，再核bridge/hello两PID、pipe、连接代、build/adapter、原episode/date61、goal及无未处理选择。82d4原本在调用Clean SEM分支前已设 `initial_frame`，因此其newGame专用 `verify_first_semantic` 当时也不会执行；本次保留saved61身份合同，没有把新局校验省略冒作优化。当前map/camera合同仍由原方法执行，ordinary `generated/full_loop`仍继承原函数。本次回归补原先漏掉的实际调用顺序，旧phase资格文件不覆盖更新。

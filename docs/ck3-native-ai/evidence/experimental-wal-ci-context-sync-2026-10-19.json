@@ -1,0 +1,140 @@
+{
+  "schema": "xar.ck3.experimental-wal-ci-context-sync.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:38:36.192359+00:00",
+  "machine_id_source": "tools/ck3_live_run_id.py current_machine_id (same machine CLI helper)",
+  "source_commit": "59a0cb4125df5b47a890eac7589608adb8619cad",
+  "status": "LOCAL_SIX_EXISTING_CASES_PASS_OFFICIAL_CI_NOT_RERUN",
+  "official_failure": {
+    "machine_id": "unknown",
+    "scope": "GitHub hosted runner identity not provided; local machine identity does not qualify that runner",
+    "run_id": 39203094225,
+    "job_id": 117900049082,
+    "commit": "59a0cb4125df5b47a890eac7589608adb8619cad",
+    "step": 54,
+    "result": "six PortableWal setup errors at git apply, before behavior assertions",
+    "preserved_excerpt": {
+      "path": "_runtime/ci-job-117900049082-failure-focused-excerpt.json",
+      "bytes": 26621,
+      "sha256": "1f77844e1dd925b3f21f8560de52d6b9f3169145ec6feac2315bf0459fcdcf7f"
+    }
+  },
+  "original_patch": {
+    "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+    "bytes": 14432,
+    "sha256": "318612ca06da970f5d090ba92702056dac89c670be473faf34a37952db806be4",
+    "rebuild": "git show 59a0cb41:ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch"
+  },
+  "original_local_rejection": {
+    "command": "git apply --check --verbose ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+    "exit_code": 1,
+    "combined_output": "Checking patch ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py...\nHunk #1 succeeded at 2113 (offset 21 lines).\nerror: while searching for:\n                capture_failure_diagnostic=(\n                    ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP),\n                save_request=save_request,\n            )\n\n    def _observe_arrange_marriage_outcome(\n\nerror: patch failed: ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py:10753\nerror: ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py: patch does not apply\n",
+    "reason": "production persistence observability added reason/candidate arguments, encoder fields and failure counters; old context no longer matches"
+  },
+  "change": {
+    "experimental_driver_patch": "only four context spans plus current hunk offsets/counts synchronized",
+    "wal_added_removed_lines": "byte content by splitlines exactly identical to original +/- lines, excluding ---/+++ file headers",
+    "test_setup": "failed git apply now exposes stdout/stderr and patch filename, preserving original CalledProcessError as cause",
+    "production_driver_modified": false,
+    "production_native_session_modified": false,
+    "wal_logic_modified": false
+  },
+  "checks": {
+    "driver_apply_check": {
+      "command": "git apply --check --verbose ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+      "exit_code": 0,
+      "combined_output": "Checking patch ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py...\n"
+    },
+    "session_apply_check": {
+      "command": "git apply --check --verbose ck3_autonomous_player/experimental/driver_state_wal_v1/native_session.py.patch",
+      "exit_code": 0,
+      "combined_output": "Checking patch ck3_autonomous_player/src/xar_autoplayer/native_session.py...\n"
+    },
+    "six_existing_tests": {
+      "exact_shell_command": "python -B -c exec(bytes.fromhex('696d706f7274206a736f6e2c6f732c7379732c74656d7066696c652c756e6974746573740a66726f6d20706174686c696220696d706f727420506174680a706172656e743d506174682827443a2f636f6465782d636b332d64656d6f732f323032362d31302d31392d726f626572742d7632303236313031392d73746f72616765303127292e7265736f6c766528290a726f6f743d706172656e742f27706572666f726d616e63652d77616c2d63692d636f6e746578743031270a696620726f6f742e65786973747328293a72616973652056616c75654572726f7228277363726174636820726f6f74206d757374206265206372656174652d6f6e6c7927290a726f6f742e6d6b64697228290a74656d7066696c652e74656d706469723d73747228726f6f74290a6f732e656e7669726f6e5b2754454d50275d3d73747228726f6f74293b6f732e656e7669726f6e5b27544d50275d3d73747228726f6f74290a6f726967696e616c3d74656d7066696c652e54656d706f726172794469726563746f72790a637265617465643d5b5d0a64656620636f6e74726f6c6c6564282a617267732c2a2a6b7761726773293a0a206974656d3d6f726967696e616c282a617267732c2a2a6b7761726773290a207265736f6c7665643d50617468286974656d2e6e616d65292e7265736f6c766528290a206966206e6f74207265736f6c7665642e69735f72656c61746976655f746f28726f6f742e7265736f6c76652829293a72616973652056616c75654572726f722827746573742074656d7020657363617065642061646d697474656420726f6f7427290a20637265617465642e617070656e6428737472287265736f6c76656429290a2072657475726e206974656d0a74656d7066696c652e54656d706f726172794469726563746f72793d636f6e74726f6c6c65640a7379732e706174682e696e7365727428302c27636b335f6175746f6e6f6d6f75735f706c617965722f6578706572696d656e74616c2f6472697665725f73746174655f77616c5f763127290a73756974653d756e6974746573742e64656661756c74546573744c6f616465722e6c6f6164546573747346726f6d4e616d652827746573745f706f727461626c652e506f727461626c6557616c27290a726573756c743d756e6974746573742e546578745465737452756e6e657228766572626f736974793d32292e72756e287375697465290a72656d61696e696e673d5b7b2770617468273a73747228702e72656c61746976655f746f28726f6f7429292c276279746573273a702e7374617428292e73745f73697a657d20666f72207020696e20726f6f742e72676c6f6228272a272920696620702e69735f66696c6528295d0a7072696e74286a736f6e2e64756d7073287b27736372617463685f726f6f74273a73747228726f6f74292c27637265617465645f707269766174655f74656d705f726f6f7473273a637265617465642c2772656d61696e696e675f66696c6573273a72656d61696e696e672c2774657374735f72756e273a726573756c742e746573747352756e2c276572726f7273273a6c656e28726573756c742e6572726f7273292c276661696c75726573273a6c656e28726573756c742e6661696c75726573297d29290a6966206e6f7420726573756c742e7761735375636365737366756c28293a72616973652053797374656d457869742831290a').decode())",
+      "cwd": "Z:/ck3_mod_rewrite",
+      "shell": "cmd.exe",
+      "exit_code": 0,
+      "combined_output": "test_default_off_and_route_exact_delta (test_portable.PortableWal.test_default_off_and_route_exact_delta) ... ok\r\ntest_missing_reordered_truncated_foreign_base_never_replays (test_portable.PortableWal.test_missing_reordered_truncated_foreign_base_never_replays) ... ok\r\ntest_reader_rejects_sealed_base_then_full_barrier_and_materializer (test_portable.PortableWal.test_reader_rejects_sealed_base_then_full_barrier_and_materializer) ... ok\r\ntest_save_receipt_and_normal_close_are_full_barriers (test_portable.PortableWal.test_save_receipt_and_normal_close_are_full_barriers) ... ok\r\ntest_second_append_does_not_read_base_stat_mutation_rejects (test_portable.PortableWal.test_second_append_does_not_read_base_stat_mutation_rejects) ... ok\r\ntest_strict_route_mutations_fall_back_to_full (test_portable.PortableWal.test_strict_route_mutations_fall_back_to_full) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 6 tests in 0.938s\r\n\r\nOK\r\n{\"scratch_root\": \"D:\\\\codex-ck3-demos\\\\2026-10-19-robert-v20261019-storage01\\\\performance-wal-ci-context01\", \"created_private_temp_roots\": [\"D:\\\\codex-ck3-demos\\\\2026-10-19-robert-v20261019-storage01\\\\performance-wal-ci-context01\\\\tmp3rcrmi0i\", \"D:\\\\codex-ck3-demos\\\\2026-10-19-robert-v20261019-storage01\\\\performance-wal-ci-context01\\\\tmpq_mn_2lb\", \"D:\\\\codex-ck3-demos\\\\2026-10-19-robert-v20261019-storage01\\\\performance-wal-ci-context01\\\\tmp7q6afuua\", \"D:\\\\codex-ck3-demos\\\\2026-10-19-robert-v20261019-storage01\\\\performance-wal-ci-context01\\\\tmpqo_q546m\", \"D:\\\\codex-ck3-demos\\\\2026-10-19-robert-v20261019-storage01\\\\performance-wal-ci-context01\\\\tmp4u0uyacm\"], \"remaining_files\": [], \"tests_run\": 6, \"errors\": 0, \"failures\": 0}\r\n"
+    },
+    "setup_stderr_direct_negative": {
+      "exit_code": 0,
+      "combined_output": "PASS: setup failure exposes exact git stderr, patch filename, and original CalledProcessError; 0 filesystem writes\r\n",
+      "scope": "mock git error, mkdir and copyfile; no filesystem writes"
+    },
+    "portable_test_ast_compile": "PASS",
+    "whitespace_check": "git diff --check -- two changed experimental files: exit0",
+    "original_wal_edit_lines_equality": "PASS; context changes do not alter prospective WAL policy or code"
+  },
+  "sourcepins": [
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+      "bytes": 15292,
+      "sha256": "f695f9c6a08688da15db51932b0a8ed7c74e1ec4ab66e9201c1f970b115304ac"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py",
+      "bytes": 12550,
+      "sha256": "ba127391f44cf46ed335e47b36a1c3ebd3263fa062d5bdf6621fc016adeed8fd"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/native_session.py.patch",
+      "bytes": 1265,
+      "sha256": "553029dd5acbc1f641cef3e409738b188e67abb9dab0571fc6ceba170bf54e29"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/driver_state_wal_v1.py",
+      "bytes": 20272,
+      "sha256": "fdca7355377e957bbbcffcef509988e3f34f488ef3340256dfdf7214534303c1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1611698,
+      "sha256": "7b58e526580d7b2b49f8472a6296aaae03fabe19c15bfc88b68f224a366509b8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "bytes": 76078,
+      "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8"
+    },
+    {
+      "path": "_runtime/ci-job-117900049082-failure-focused-excerpt.json",
+      "bytes": 26621,
+      "sha256": "1f77844e1dd925b3f21f8560de52d6b9f3169145ec6feac2315bf0459fcdcf7f"
+    }
+  ],
+  "storage": {
+    "admission": "WAL-CI-CONTEXT-CHILD01.json 2696B SHA dd3ba6ca0d98fce1c7fa97279abd4488ecf86318b9c323a655e6b2b73a20e985",
+    "closure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\performance-wal-ci-context01\\CLOSURE.json",
+      "bytes": 1566,
+      "sha256": "8f8ad4064cfdee89cdb437652f2e7d74a9795dd4baef2670724fb43335d6e9b0",
+      "root_files": [
+        {
+          "path": "CLOSURE.json",
+          "bytes": 1566
+        }
+      ]
+    },
+    "hard_max_bytes": 8388608,
+    "source_copy_logical_bytes": 1687776,
+    "measured_peak_bytes": null,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "future_writes": 0,
+    "physical_credit_bytes": 0,
+    "repo_receipt_pool": "existing 1MiB micro pool; <=16KiB receipt"
+  },
+  "boundaries": {
+    "game_rpc_count": 0,
+    "live_driver_or_save_reads": 0,
+    "build_outputs": 0,
+    "enabled_in_current_game": false,
+    "default_off": true,
+    "freeze_source_edited": false,
+    "prior_closed_wal_package_reopened": false,
+    "old_qualification_records_overwritten": false,
+    "official_ci_success_claimed": false,
+    "wall_throughput_qualification": false
+  }
+}

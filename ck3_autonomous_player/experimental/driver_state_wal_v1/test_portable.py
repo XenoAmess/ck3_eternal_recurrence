@@ -46,8 +46,14 @@ def patched_modules(root):
         target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(SRC/'xar_autoplayer'/relative,target)
     for filename in ('bridge-native_driver.py.patch','native_session.py.patch'):
-        subprocess.run(['git','apply',str(HERE/filename)],cwd=root,check=True,
-                       stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        try:
+            subprocess.run(['git','apply',str(HERE/filename)],cwd=root,check=True,
+                           stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        except subprocess.CalledProcessError as error:
+            raise RuntimeError(
+                f'experimental WAL git apply failed: {filename}\n'
+                f'stdout:\n{error.stdout}\nstderr:\n{error.stderr}'
+            ) from error
     driver=load('xar_autoplayer.bridge.native_driver_wal_portable',
                 root/'ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py')
     cold=load('xar_autoplayer.native_session_wal_portable',

@@ -1,0 +1,175 @@
+{
+  "schema": "xar.saved61-real-call-order-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:42:09.211076+00:00",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\saved61_cold_queue_v1.py",
+      "bytes": 18230,
+      "sha256": "0a42eedf8e677a7dc47ce93c0de274285f237de344ce450e1ad4122485d7fdbf"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\startup_readiness_v1.py",
+      "bytes": 5937,
+      "sha256": "c9b1bfa0efd002d2fd9f05298ba1d2ba218fa5dded335b30de18ced7d5f7b2c3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_sdk_queue.py",
+      "bytes": 264831,
+      "sha256": "9832cbdaeeb1a0add22a97d039aa83eb677853f731abebbd15a61e804f6f3b0f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_cold_resume.py",
+      "bytes": 15895,
+      "sha256": "82d40a057f5091094728c0ca1a77cdb990c8b649b6c2ce2199f8dde53d2b44d9"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\COLD-CUMULATIVE-LOOP-SEED.json",
+      "bytes": 4000,
+      "sha256": "13ace44626932920b7558ac7c74e5f648e697d291aa1d84a6671d166be4efdbc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "bytes": 48771,
+      "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0199-1-result.json",
+      "bytes": 57813,
+      "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH-C4.json",
+      "bytes": 6215,
+      "sha256": "c394af10b70fd06ed08c8703af3ff838d6d443e093030bcf2271ff14c5ad6cc5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C4.json",
+      "bytes": 2079,
+      "sha256": "eb8ec7716e2dd9676b9c61e0315d4cea8eadda59712e609325c1f797424e84af"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C4.json",
+      "bytes": 402606,
+      "sha256": "d99b9b0ef92a82529a198c67cb5bb2170aa1e7456ecf31548d58c72b9466ed19"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C4-CLASSIFIER-PIN.json",
+      "bytes": 497,
+      "sha256": "3223648d85d04b60753729a4c2b79a00bb7a500a135b942e13da9112cc5ad9e6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_result_classifier.py",
+      "bytes": 260311,
+      "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991"
+    }
+  ],
+  "actual_closed198_199_payloads_used": true,
+  "actual_readiness_check_after_consume_publish_order": true,
+  "actual_C4_ordinary_CAP_call_used": true,
+  "source_pointer_sequence": 198,
+  "source_pointer_offset": 0,
+  "observer": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-real-call-order-review01\\fixture\\queue\\READINESS-0198-000001-result.json",
+      "row_sha256": "cb264eabefac660f41f507f0b5822bb2c3a4f78e54c2cf26047c4bfa45156302",
+      "canonical198_exists": false,
+      "next_sequence": 198
+    }
+  ],
+  "events": [
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0198.json"
+    },
+    {
+      "event": "persist",
+      "file": "READINESS-0198-000001-result.json"
+    },
+    {
+      "event": "observe",
+      "file": "READINESS-0198-000001-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "0198-1-result.json"
+    },
+    {
+      "event": "current_C4_relay",
+      "file": "0198-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0198-after-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0199.json"
+    },
+    {
+      "event": "persist",
+      "file": "0199-before-action.json"
+    },
+    {
+      "event": "persist",
+      "file": "0199-1-result.json"
+    },
+    {
+      "event": "current_C4_relay",
+      "file": "0199-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-SAVED61-COLD-BOUND.json"
+    },
+    {
+      "event": "persist",
+      "file": "0199-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0199-after-result.json"
+    }
+  ],
+  "historical_cycles74_counts_T0_preserved": true,
+  "preflight_bind_goal_and_CAP_guard_AST_unchanged": true,
+  "original_generated_full_loop_inherited": true,
+  "actual_current_C4_map_contract_used": true,
+  "negative_cases_rejected": [
+    "wrong_actor",
+    "wrong_Game",
+    "wrong_goal",
+    "unknown_result"
+  ],
+  "mock_closed_payload_calls": [
+    "ck3_take_semantic_snapshot_private_v1",
+    "ck3_get_capabilities"
+  ],
+  "actual_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "actual_preflight_recording_or_new_cold_pass_claimed": false
+}

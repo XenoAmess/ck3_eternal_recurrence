@@ -1,6 +1,6 @@
 --- a/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
 +++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
-@@ -2092,6 +2092,14 @@
+@@ -2113,6 +2113,14 @@
          self._last_checkpoint: dict[str, object] | None = None
          self._command_history: list[dict[str, object]] = []
          self._driver_state_history_json = DriverStateHistoryJsonCache()
@@ -15,10 +15,12 @@
          self._rollback_war_failures: list[dict[str, object]] = []
          self._rollback_war_failures_migration_required = False
          self._managed_restore_transaction: dict[str, object] | None = None
-@@ -10753,6 +10761,11 @@
+@@ -11129,8 +11137,13 @@
                  capture_failure_diagnostic=(
                      ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP),
                  save_request=save_request,
+                 persistence_reason=("record_command:" + step)[:160],
+                 timeline_append_candidate=ok and is_life_advance_step(step),
 +                journal_append=(ok and (
 +                    step in {"life-advance", "life-advance-one-day"}
 +                    or parse_committed_route_sentinel_advance_step(step) is not None
@@ -27,7 +29,7 @@
              )
  
      def _observe_arrange_marriage_outcome(
-@@ -11161,6 +11174,14 @@
+@@ -11548,6 +11561,14 @@
          restored: dict[str, object] | None = None
          if first_connection:
              restored = self._read_driver_state()
@@ -42,7 +44,7 @@
              if isinstance(restored, dict):
                  lifecycle_migration_required = bool(
                      restored.get(
-@@ -11596,17 +11617,143 @@
+@@ -11994,19 +12015,145 @@
          if not path.is_file():
 +            from .driver_state_wal_v1 import FILENAME, JournalInvalid
 +            if path.with_name(FILENAME).exists():
@@ -183,11 +185,13 @@
      def _persist_driver_state(
          self, *, capture_failure_diagnostic: bool = False,
          save_request: tuple[dict[str, object], int, object, dict[str, object]] | None = None,
+         persistence_reason: str = "unspecified",
+         timeline_append_candidate: bool = False,
 +        journal_append: bool = False,
      ) -> dict[str, object] | None:
          save_receipt: dict[str, object] | None = (
              {
-@@ -11620,6 +11764,9 @@
+@@ -12020,6 +12167,9 @@
              if save_request is not None else None
          )
          if self.state_dir is None:
@@ -197,9 +201,10 @@
              return save_receipt
          attempt_binding: dict[str, object] | None = None
          persistence_timing = start_army_timing("driver.full_state_persistence")
-@@ -11715,7 +11862,19 @@
+@@ -12138,8 +12288,20 @@
                              encoded = self._encode_driver_state_locked(
-                                 persistence_step=persistence_step
+                                 persistence_step=persistence_step,
+                                 persistence_fields=persistence_fields,
                              )
 +                        encoded_history_rows = len(self._command_history)
                          self._driver_state_dirty = False
@@ -217,7 +222,7 @@
                      write_timing = (
                          start_army_timing("driver.full_state_atomic_write")
                          if persistence_step is not None
-@@ -11736,6 +11895,18 @@
+@@ -12160,14 +12322,26 @@
                      finally:
                          if persistence_step is not None:
                              finish_army_timing(write_timing, step=persistence_step)
@@ -234,9 +239,17 @@
 +                        # this full base after an SDK/process restart.
 +                        pass
                  except (OSError, TypeError, ValueError) as error:
+                     if persistence_fields is not None:
+                         counters = getattr(self, "_persistence_growth_timing_v1", None)
+                         if counters is None:
+                             counters = self._persistence_growth_timing_v1 = PersistenceGrowthTimingV1()
+                         persistence_fields.update(counters.observe(
+                             candidate=timeline_append_candidate, succeeded=False,
+                             error_type=type(error).__name__,
+                         ))
                      # A gameplay command has already happened by this point.  Keep
                      # the live agent usable and surface persistence failure in
-@@ -25077,7 +25248,9 @@
+@@ -25876,7 +26050,9 @@
                  flush_driver_state = bool(
                      self.state_dir is not None
                      and self._session_bridge_pid is not None

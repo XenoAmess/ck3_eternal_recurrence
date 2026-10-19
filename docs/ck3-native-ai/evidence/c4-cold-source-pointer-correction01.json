@@ -1,0 +1,426 @@
+{
+  "schema": "xar.c4-cold-pointer-correction-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:43:27.671449+00:00",
+  "software200": {
+    "schema": "xar.c4-cold-source200-software-qualification/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T05:33:40.810424+00:00",
+    "sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\FROZEN.json",
+        "bytes": 4962,
+        "sha256": "ae3e2e231dd9f5450b3e6e2569f26b3a515c01e0dbfb7c24c5ba69f94fffd613"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_saved_campaign_preflight.py",
+        "bytes": 8397,
+        "sha256": "353c93a6de3896859618b417db223b2f94849fb88313b439c226c004396b2289"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c4_cold_semantic_pointer_repair_v1.py",
+        "bytes": 7002,
+        "sha256": "ce892cbf7684fc34a9b0b4ffabf19ebec398967f93e3de8790a1a943619fb8dd"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_sdk_queue.py",
+        "bytes": 264831,
+        "sha256": "9832cbdaeeb1a0add22a97d039aa83eb677853f731abebbd15a61e804f6f3b0f"
+      }
+    ],
+    "control": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-source-pointer-repair-review02\\root_saved_campaign_preflight.py",
+      "bytes": 11320,
+      "sha256": "8d3cfea291222537d557edbaa61cab6f41e823f74a93e5d5018807514bbe8694"
+    },
+    "leaf": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-source-pointer-repair-review02\\root_c4_cold_semantic_pointer_repair.py",
+      "bytes": 7002,
+      "sha256": "ce892cbf7684fc34a9b0b4ffabf19ebec398967f93e3de8790a1a943619fb8dd"
+    },
+    "original_control_AST_unchanged_except_final_name": true,
+    "actual_consume_persist_composition": true,
+    "only_two_state_pointer_fields_changed": true,
+    "negative_cases_rejected": [
+      "wrong_birth",
+      "pending",
+      "unknown_CAP",
+      "wrong_semantic",
+      "already_corrected"
+    ],
+    "receipt": {
+      "schema": "xar.c4-cold-source-pointer-correction/v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-19T05:33:40.792271+00:00",
+      "status": "cold_semantic_source_pointer_corrected",
+      "original_incorrect_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+      "correct_actual_semantic_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "retained_originals": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\05-0198-1-result.json",
+          "bytes": 48771,
+          "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\06-0199-1-result.json",
+          "bytes": 57813,
+          "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\00-ROOT-CUMULATIVE-LOOP-STATE.json",
+          "bytes": 3892,
+          "sha256": "c1b83e736d3774c4d4804c24cbea0a2dce54f8ab859afe6be6a72d3e9a3e797e"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\01-ROOT-GOVERNANCE-RESULT-STATE.json",
+          "bytes": 458,
+          "sha256": "34d671291162f5b4aba42708b8287e8a0f94048f25edf649580c06a5d4bfa7ba"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\02-ROOT-SAVED61-COLD-BOUND.json",
+          "bytes": 1666,
+          "sha256": "53b4c0859ddb2eb76e065581bc172e9b30a87016449215059053a9b7adbd354b"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\03-NEXT-SEQUENCE-P37.json",
+          "bytes": 65,
+          "sha256": "ba817bf341637fd23118e1ae59fe45a5bd5f72b25f772765c9088ebff84217d2"
+        }
+      ],
+      "actual_frame": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53145792,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "completed_cycles": 74,
+      "new_RPC_calls": 0,
+      "new_action_calls": 0,
+      "ordinary_cycle_credit": 0,
+      "game_day_credit": 0,
+      "SEM_CAP_replayed": false,
+      "initial_incorrect_bound_claimed_correct": false,
+      "next_sequence": 201
+    },
+    "new_Game_MCP_Native_calls": 0,
+    "runtime_files_mutated": 0,
+    "live_adopted": false
+  },
+  "software201": {
+    "schema": "xar.c4-pointer201-actual-dispatch-software/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T05:39:43.265859+00:00",
+    "sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\FROZEN.json",
+        "bytes": 4962,
+        "sha256": "ae3e2e231dd9f5450b3e6e2569f26b3a515c01e0dbfb7c24c5ba69f94fffd613"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\FROZEN.json",
+        "bytes": 4600,
+        "sha256": "b51b9386ab8259707f4b4049801ab542b2c0371a4defffb13a25f7ac8d142e95"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_known_owner_recovery.py",
+        "bytes": 27908,
+        "sha256": "0c39687265aa73b165b173e49a02ff1c2f1f340af74f5dd136b184792a3edd5c"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c4_cold_semantic_pointer_repair_v1.py",
+        "bytes": 8885,
+        "sha256": "ebc7cecf9d87b8d8591a8d88b1914846fa8f9d51bcd3aca60ecf87b05b22eae6"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_sdk_queue.py",
+        "bytes": 264831,
+        "sha256": "9832cbdaeeb1a0add22a97d039aa83eb677853f731abebbd15a61e804f6f3b0f"
+      }
+    ],
+    "control": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-pointer201-repair-review02\\root_p37_known_owner_recovery.py",
+      "bytes": 32841,
+      "sha256": "47274e0d53f0b4383d11ec8cb40a5fed731fa0b5ba76bb738b71f33f9e77a74b"
+    },
+    "leaf": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-pointer201-repair-review02\\root_c4_cold_semantic_pointer_repair201.py",
+      "bytes": 8885,
+      "sha256": "ebc7cecf9d87b8d8591a8d88b1914846fa8f9d51bcd3aca60ecf87b05b22eae6"
+    },
+    "actual_C4_run_request_loop_and_halt_request": true,
+    "actual_C4_CAP_call": true,
+    "actual198_post_read_halt_200_rejection_201_repair_order": true,
+    "201_new_RPC_calls": 0,
+    "mock_closed_CAP_calls": 1,
+    "only_two_state_pointer_fields_changed": true,
+    "201_local_writes": 7,
+    "negative_cases_rejected": [
+      "foreign_halt",
+      "pending",
+      "unknown_CAP",
+      "held_other_control",
+      "wrong_Game_birth"
+    ],
+    "runtime_files_mutated": 0,
+    "live_adopted": false,
+    "result": {
+      "schema": "xar.c4-cold-source-pointer-correction/v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-19T05:39:43.236749+00:00",
+      "status": "cold_semantic_source_pointer_corrected",
+      "original_incorrect_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+      "correct_actual_semantic_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "retained_originals": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\05-0198-1-result.json",
+          "bytes": 48771,
+          "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\06-0199-1-result.json",
+          "bytes": 57813,
+          "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\04-ROOT-CUMULATIVE-LOOP-STATE.json",
+          "bytes": 3892,
+          "sha256": "c1b83e736d3774c4d4804c24cbea0a2dce54f8ab859afe6be6a72d3e9a3e797e"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\05-ROOT-GOVERNANCE-RESULT-STATE.json",
+          "bytes": 458,
+          "sha256": "34d671291162f5b4aba42708b8287e8a0f94048f25edf649580c06a5d4bfa7ba"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\06-ROOT-SAVED61-COLD-BOUND.json",
+          "bytes": 1666,
+          "sha256": "53b4c0859ddb2eb76e065581bc172e9b30a87016449215059053a9b7adbd354b"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\07-NEXT-SEQUENCE-P37.json",
+          "bytes": 118,
+          "sha256": "8c7423110d8a00c2667316164e39408f7d1971b5a8f30e67dcc148653487d963"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\00-0200-1-result.json",
+          "bytes": 465,
+          "sha256": "7e7691b9158902dd1e68731d0a082bcef25ae5e7dd7861d4e61fb63c19b8c226"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\01-ROOT-REQUEST-HALTED-0198.json",
+          "bytes": 651,
+          "sha256": "41acd49770448614e4fb9e7ab49fdf21c128d0c468093776e97b8371e1a6bf75"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\02-ROOT-REQUEST-HALTED-0200.json",
+          "bytes": 686,
+          "sha256": "23e99a6c1be0dbb5701888fa23e3e0eb9d45f9ad9675704f5bfcac46bb34a766"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\03-ROOT-CURRENT-HALT-P37.json",
+          "bytes": 686,
+          "sha256": "23e99a6c1be0dbb5701888fa23e3e0eb9d45f9ad9675704f5bfcac46bb34a766"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\08-ROOT-FIRST-QUEUE-EXCEPTION-P37C4.json",
+          "bytes": 3115,
+          "sha256": "e55520c2c1e2c27ad967fdcf134418e456238e294439f4d6f9c753efc37bc2db"
+        }
+      ],
+      "actual_frame": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53145792,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "completed_cycles": 74,
+      "new_RPC_calls": 0,
+      "new_action_calls": 0,
+      "ordinary_cycle_credit": 0,
+      "game_day_credit": 0,
+      "SEM_CAP_replayed": false,
+      "initial_incorrect_bound_claimed_correct": false,
+      "original198_post_read_relay_error": "Foreign cached decision provider",
+      "failed_local200_retained": true,
+      "original198_display_publication_claimed_success": false,
+      "next_sequence": 202
+    }
+  },
+  "actual200": {
+    "ended_at_utc": "2026-10-19T05:35:52.585550+00:00",
+    "request": {
+      "sequence": 200,
+      "command": "clear_zero_rpc_preflight_rejection",
+      "arguments": {
+        "repair_kind": "saved61_cold_semantic_pointer198"
+      }
+    },
+    "client_error": "C4 cold source200 repair denied: current clean200 boundary required",
+    "replay_allowed": false,
+    "original_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json"
+  },
+  "actual201": {
+    "request": {
+      "sequence": 201,
+      "command": "recover_known_owner_1024",
+      "arguments": {
+        "recovery_kind": "saved61_cold_semantic_pointer198_and_relay_halt"
+      }
+    },
+    "result": {
+      "is_error": false,
+      "structured_content": {
+        "schema": "xar.c4-cold-source-pointer-correction/v1",
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "observed_at_utc": "2026-10-19T05:40:17.063087+00:00",
+        "status": "cold_semantic_source_pointer_corrected",
+        "original_incorrect_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+        "correct_actual_semantic_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+        "retained_originals": [
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\05-0198-1-result.json",
+            "bytes": 48771,
+            "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-source-index-before-repair58\\06-0199-1-result.json",
+            "bytes": 57813,
+            "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\04-ROOT-CUMULATIVE-LOOP-STATE.json",
+            "bytes": 3892,
+            "sha256": "c1b83e736d3774c4d4804c24cbea0a2dce54f8ab859afe6be6a72d3e9a3e797e"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\05-ROOT-GOVERNANCE-RESULT-STATE.json",
+            "bytes": 458,
+            "sha256": "34d671291162f5b4aba42708b8287e8a0f94048f25edf649580c06a5d4bfa7ba"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\06-ROOT-SAVED61-COLD-BOUND.json",
+            "bytes": 1666,
+            "sha256": "53b4c0859ddb2eb76e065581bc172e9b30a87016449215059053a9b7adbd354b"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\07-NEXT-SEQUENCE-P37.json",
+            "bytes": 118,
+            "sha256": "8c7423110d8a00c2667316164e39408f7d1971b5a8f30e67dcc148653487d963"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\00-0200-1-result.json",
+            "bytes": 465,
+            "sha256": "7e7691b9158902dd1e68731d0a082bcef25ae5e7dd7861d4e61fb63c19b8c226"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\01-ROOT-REQUEST-HALTED-0198.json",
+            "bytes": 651,
+            "sha256": "41acd49770448614e4fb9e7ab49fdf21c128d0c468093776e97b8371e1a6bf75"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\02-ROOT-REQUEST-HALTED-0200.json",
+            "bytes": 686,
+            "sha256": "23e99a6c1be0dbb5701888fa23e3e0eb9d45f9ad9675704f5bfcac46bb34a766"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\03-ROOT-CURRENT-HALT-P37.json",
+            "bytes": 686,
+            "sha256": "23e99a6c1be0dbb5701888fa23e3e0eb9d45f9ad9675704f5bfcac46bb34a766"
+          },
+          {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c4-pointer200-rejected60\\08-ROOT-FIRST-QUEUE-EXCEPTION-P37C4.json",
+            "bytes": 3115,
+            "sha256": "e55520c2c1e2c27ad967fdcf134418e456238e294439f4d6f9c753efc37bc2db"
+          }
+        ],
+        "actual_frame": {
+          "snapshot_id": "native:1",
+          "revision": 2,
+          "native_revision": 1,
+          "date_raw": 53145792,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441"
+        },
+        "completed_cycles": 74,
+        "new_RPC_calls": 0,
+        "new_action_calls": 0,
+        "ordinary_cycle_credit": 0,
+        "game_day_credit": 0,
+        "SEM_CAP_replayed": false,
+        "initial_incorrect_bound_claimed_correct": false,
+        "original198_post_read_relay_error": "Foreign cached decision provider",
+        "failed_local200_retained": true,
+        "original198_display_publication_claimed_success": false,
+        "next_sequence": 202
+      }
+    }
+  },
+  "actual_cold_ready": {
+    "schema": "xar.c4-real-cold-ready/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "at_utc": "2026-10-19T05:40:17.063087+00:00",
+    "actual_cold_semantic": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "bytes": 48771,
+      "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f"
+    },
+    "actual_cold_capabilities": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0199-1-result.json",
+      "bytes": 57813,
+      "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1"
+    },
+    "actual_local_correction": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0201-1-result.json",
+      "bytes": 4223,
+      "sha256": "ec8e3151df30179a7041621605ac42ca721948b0314f32474a8af849c6275765"
+    },
+    "corrected_bound": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-SAVED61-COLD-BOUND.json",
+      "bytes": 2166,
+      "sha256": "4a3952b5becde15cfc4e81e7dc07ef7c47c4182683617a21181faec369b0fd93"
+    },
+    "full_control_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\admit_c4_cold_map61.py",
+      "bytes": 3171,
+      "sha256": "4b694ff3612cf1a86a82c57143bb5e57c0dc5791b9a4bfe1a64057469d4e70cd"
+    },
+    "T0_date_raw": 53144328,
+    "endpoint_date_raw": 53407128,
+    "completed_cycles": 74,
+    "elapsed_days": 61,
+    "new_cold_session_gameplay_credit": 0
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-source-pointer-repair-review02\\QUALIFICATION.json",
+      "bytes": 5363,
+      "sha256": "22f23830a59086436b2febe467590b701f9efe9a848c58c99c64026c58727640"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-pointer201-repair-review02\\QUALIFICATION.json",
+      "bytes": 7464,
+      "sha256": "ce72670893cbd264fed5425fad7295c298fb523351ee637b204245d85d98d85e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0200-1-result.json",
+      "bytes": 465,
+      "sha256": "7e7691b9158902dd1e68731d0a082bcef25ae5e7dd7861d4e61fb63c19b8c226"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0201-1-result.json",
+      "bytes": 4223,
+      "sha256": "ec8e3151df30179a7041621605ac42ca721948b0314f32474a8af849c6275765"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C4-REAL-COLD-READY61.json",
+      "bytes": 1795,
+      "sha256": "ced133cd501ebe9e782d8da6303a3a6ec63c5d7251589707ecb3f8f898afb2aa"
+    }
+  ],
+  "old_bound_and_halts_retained": true,
+  "new_Game_Native_MCP_calls_by_evidence_collection": 0
+}

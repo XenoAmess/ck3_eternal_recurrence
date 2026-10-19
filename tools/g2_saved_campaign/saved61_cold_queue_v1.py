@@ -123,6 +123,17 @@ def project_opening(seed, opening, source):
 
 def make_saved61_cold_queue_v1(base, env, *, admission_path):
     class Saved61ColdQueue(base):
+        async def call(self, session, request, path):
+            if (self._saved61_cold['phase'] == 'semantic'
+                    and request.get('tool') == env['SEMANTIC']
+                    and not getattr(self, 'cold_readiness_verified', False)
+                    and self.initial_camera is None and not self.checkpoint_bootstrap_verified):
+                from startup_readiness_v1 import startup_readiness_call
+                from root_p37c4_overlay_relay import relay_compact
+                return await startup_readiness_call(self, session, request, path, env,
+                    relay_compact=relay_compact)
+            return await super().call(session, request, path)
+
         def preflight(self):
             from root_continuous_segment_auto_c4 import verify_segment
             from root_decision_text_api_c4 import load_api, started_reference
@@ -191,12 +202,33 @@ def make_saved61_cold_queue_v1(base, env, *, admission_path):
         def check_after(self, tool, arguments, body):
             cold = self._saved61_cold
             if cold['phase'] == 'semantic' and tool == env['SEMANTIC']:
+                attempt = self.current_attempt
+                require(isinstance(attempt, dict) and isinstance(attempt.get('request'), dict)
+                    and isinstance(attempt.get('row'), dict), 'actual cold SEM call context required')
+                request = attempt['request']; row = attempt['row']; sequence = request.get('sequence')
+                require(type(sequence) is int and sequence > 0
+                    and self.next_sequence in (sequence, sequence + 1)
+                    and request.get('tool') == env['SEMANTIC'] and request.get('arguments') == {}
+                    and row.get('request') == request and row.get('client_error') is None
+                    and (row.get('result') or {}).get('is_error') is False
+                    and (row.get('result') or {}).get('result_type') == 'complete'
+                    and env['decoded'](row) == body, 'actual completed SEM request/body differs')
+                semantic_response = str(env['OUTBOX'] / f'{sequence:04d}-1-result.json')
                 actual = bind_opening(body, seed=cold['seed'], launch=self.launch,
                     lifecycle=self.expected_lifecycle_binding, frame=env['frame'])
                 self.initial_frame = copy.deepcopy(actual)
-                super().check_after(tool, arguments, body)
+                self.semantic = body
+                self.cold_semantic_response_path = semantic_response
+                # Readiness persists its exact attempt before check_after, and
+                # publishes the canonical outer response after this postcheck.
+                observer_source = Path(attempt['response']).resolve(strict=True)
+                require(observer_source.is_relative_to(env['N'].resolve())
+                    and env['read'](observer_source, env['REPLY_RESERVE']) == row,
+                    'actual persisted SEM observer row differs from completed call')
+                from root_score_month_samples_c4 import observe_semantic
+                observe_semantic(env['N'], body, self.launch, observer_source)
                 cold['opening'] = actual
-                cold['semantic_response'] = str(env['OUTBOX'] / f'{self.next_sequence-1:04d}-1-result.json')
+                cold['semantic_response'] = semantic_response
                 cold['phase'] = 'capabilities'
                 return
             if cold['phase'] == 'capabilities' and tool == env['CAPABILITIES']:

@@ -1,0 +1,493 @@
+{
+  "schema": "xar.ck3.declaration-upstream-reuse-boundary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:13:50.471049+00:00",
+  "task_boundary": "Reuse existing exact .4 source first; at most one bounded caller branch; no Game/RPC/compile/Driver/SAVE/closed-build write",
+  "result": "NO_NEW_SAFE_FULL_CATALOGUE_UPSTREAM_INDEX",
+  "existing_authoritative_entries": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\declaration-candidate-generation-12004.md",
+      "bytes": 16201,
+      "sha256": "3a739b99f93d1be7af23813f5502aab35dec0a8d9027ea42b3eb4c2a7e2b4362"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\declaration-candidate-provider-12004.md",
+      "bytes": 12079,
+      "sha256": "5e25c117c06750024449d127e1cc8d52bcf1fe0b344db4997385fc08b5aefd6d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\cb-discovery-vanilla-12004-research03\\CURRENT-CHAIN.md",
+      "bytes": 5426,
+      "sha256": "8e9ad8163f2cb9e848fad90e5ce6e42dbccbaad46c08a20d3e8e05ea5e7d08a3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\cb-discovery-vanilla-12004-research03\\MANIFEST.json",
+      "bytes": 1056,
+      "sha256": "bfcb80f1f11ae70df857029adca5f07a1dd721efd4fa9708dca19fcf9085004f"
+    }
+  ],
+  "original_AI_order": [
+    "1A6A210 selector ->1A6A8C0 candidate producer",
+    "actor-root/named-actor scope ->rule/type AI bitmap before targets",
+    "context+20 strategy via19EC4D0 ->strategy+A8 CharacterID vector",
+    "target resolution/effective recipient2C13440 ->power1A23220",
+    "stock31F4520(true,true) ->configuration0x908 candidate",
+    "score/Top5/weighted choice; not player full semantics"
+  ],
+  "human_boundary": "1A2FA50/1A2FAF0 call2BAA6F0 and return for current human player vector membership before manager context construction; missing or stale human strategy is unavailable, not empty legality",
+  "already_adopted_safe_index": "31F4520(false,false)->31F1660 target_titles_mode1..4->31EFBC0->31EF2F0 actor+1C8 replacement-or-normal union secondary; absent defender cannot materialize title; already implemented sinceNative18, not new work",
+  "new_bounded_source": {
+    "source_reader": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\cb-discovery-vanilla-12004-research02\\read_small_windows.py",
+      "bytes": 3560,
+      "sha256": "cd116cf2ad5683c1529707d32a73f2d92081d913ff7bc2bce84b2d2e391a0d58"
+    },
+    "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "exe_sha256_reused_prior_binding": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "whole_EXE_rehashed": false,
+    "source_identity_evidence": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native26-actor-zero-mod-source-admission-2026-10-19.json",
+      "bytes": 56227,
+      "sha256": "0c3a315267a3363ab57cd51455e8af531a063a5261280fc355b421fbdb37ceb7"
+    },
+    "image_base": "0x140000000",
+    "rva": "0x19ead90",
+    "size": 239,
+    "window_sha256": "dc9df24089a568667f3823a3758b30025472cda5f3f059feee741c7aaf7da56b",
+    "containing_pdata": {
+      "start": "0x19ead90",
+      "end": "0x19eae7f",
+      "unwind": "0x512de20"
+    },
+    "raw_hex": "48895c24084889742410574883ec70488b4120498bd88bf2488bf94885c00f84b900000085d2741683fa037409488d05ec6a3304eb0e4805a0010000eb0648056001000033c948890848894808488948104889481848394f207447488bd7488d4c2420e8a8fbffff0f10000f1048100f1050200f1058300f106040488b47200f1180e00100000f1188f00100000f1190000200000f1198100200000f11a0200200004885db7e1e4c8bc38bd6488bcf4c8d5c2470498b5b10498b7318498be35fe92b000000791648f7db41b9030000004c8bc38bd6488bcfe8530700004c8d5c2470498b5b10498b7318498be35fc3",
+    "decoder": "Capstone 5.0.7",
+    "instructions": [
+      {
+        "rva": "0x19ead90",
+        "bytes": "48895c2408",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rsp + 8], rbx"
+      },
+      {
+        "rva": "0x19ead95",
+        "bytes": "4889742410",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rsp + 0x10], rsi"
+      },
+      {
+        "rva": "0x19ead9a",
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": "rdi"
+      },
+      {
+        "rva": "0x19ead9b",
+        "bytes": "4883ec70",
+        "mnemonic": "sub",
+        "operands": "rsp, 0x70"
+      },
+      {
+        "rva": "0x19ead9f",
+        "bytes": "488b4120",
+        "mnemonic": "mov",
+        "operands": "rax, qword ptr [rcx + 0x20]"
+      },
+      {
+        "rva": "0x19eada3",
+        "bytes": "498bd8",
+        "mnemonic": "mov",
+        "operands": "rbx, r8"
+      },
+      {
+        "rva": "0x19eada6",
+        "bytes": "8bf2",
+        "mnemonic": "mov",
+        "operands": "esi, edx"
+      },
+      {
+        "rva": "0x19eada8",
+        "bytes": "488bf9",
+        "mnemonic": "mov",
+        "operands": "rdi, rcx"
+      },
+      {
+        "rva": "0x19eadab",
+        "bytes": "4885c0",
+        "mnemonic": "test",
+        "operands": "rax, rax"
+      },
+      {
+        "rva": "0x19eadae",
+        "bytes": "0f84b9000000",
+        "mnemonic": "je",
+        "operands": "0x1419eae6d"
+      },
+      {
+        "rva": "0x19eadb4",
+        "bytes": "85d2",
+        "mnemonic": "test",
+        "operands": "edx, edx"
+      },
+      {
+        "rva": "0x19eadb6",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0x1419eadce"
+      },
+      {
+        "rva": "0x19eadb8",
+        "bytes": "83fa03",
+        "mnemonic": "cmp",
+        "operands": "edx, 3"
+      },
+      {
+        "rva": "0x19eadbb",
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x1419eadc6"
+      },
+      {
+        "rva": "0x19eadbd",
+        "bytes": "488d05ec6a3304",
+        "mnemonic": "lea",
+        "operands": "rax, [rip + 0x4336aec]"
+      },
+      {
+        "rva": "0x19eadc4",
+        "bytes": "eb0e",
+        "mnemonic": "jmp",
+        "operands": "0x1419eadd4"
+      },
+      {
+        "rva": "0x19eadc6",
+        "bytes": "4805a0010000",
+        "mnemonic": "add",
+        "operands": "rax, 0x1a0"
+      },
+      {
+        "rva": "0x19eadcc",
+        "bytes": "eb06",
+        "mnemonic": "jmp",
+        "operands": "0x1419eadd4"
+      },
+      {
+        "rva": "0x19eadce",
+        "bytes": "480560010000",
+        "mnemonic": "add",
+        "operands": "rax, 0x160"
+      },
+      {
+        "rva": "0x19eadd4",
+        "bytes": "33c9",
+        "mnemonic": "xor",
+        "operands": "ecx, ecx"
+      },
+      {
+        "rva": "0x19eadd6",
+        "bytes": "488908",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rax], rcx"
+      },
+      {
+        "rva": "0x19eadd9",
+        "bytes": "48894808",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rax + 8], rcx"
+      },
+      {
+        "rva": "0x19eaddd",
+        "bytes": "48894810",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rax + 0x10], rcx"
+      },
+      {
+        "rva": "0x19eade1",
+        "bytes": "48894818",
+        "mnemonic": "mov",
+        "operands": "qword ptr [rax + 0x18], rcx"
+      },
+      {
+        "rva": "0x19eade5",
+        "bytes": "48394f20",
+        "mnemonic": "cmp",
+        "operands": "qword ptr [rdi + 0x20], rcx"
+      },
+      {
+        "rva": "0x19eade9",
+        "bytes": "7447",
+        "mnemonic": "je",
+        "operands": "0x1419eae32"
+      },
+      {
+        "rva": "0x19eadeb",
+        "bytes": "488bd7",
+        "mnemonic": "mov",
+        "operands": "rdx, rdi"
+      },
+      {
+        "rva": "0x19eadee",
+        "bytes": "488d4c2420",
+        "mnemonic": "lea",
+        "operands": "rcx, [rsp + 0x20]"
+      },
+      {
+        "rva": "0x19eadf3",
+        "bytes": "e8a8fbffff",
+        "mnemonic": "call",
+        "operands": "0x1419ea9a0"
+      },
+      {
+        "rva": "0x19eadf8",
+        "bytes": "0f1000",
+        "mnemonic": "movups",
+        "operands": "xmm0, xmmword ptr [rax]"
+      },
+      {
+        "rva": "0x19eadfb",
+        "bytes": "0f104810",
+        "mnemonic": "movups",
+        "operands": "xmm1, xmmword ptr [rax + 0x10]"
+      },
+      {
+        "rva": "0x19eadff",
+        "bytes": "0f105020",
+        "mnemonic": "movups",
+        "operands": "xmm2, xmmword ptr [rax + 0x20]"
+      },
+      {
+        "rva": "0x19eae03",
+        "bytes": "0f105830",
+        "mnemonic": "movups",
+        "operands": "xmm3, xmmword ptr [rax + 0x30]"
+      },
+      {
+        "rva": "0x19eae07",
+        "bytes": "0f106040",
+        "mnemonic": "movups",
+        "operands": "xmm4, xmmword ptr [rax + 0x40]"
+      },
+      {
+        "rva": "0x19eae0b",
+        "bytes": "488b4720",
+        "mnemonic": "mov",
+        "operands": "rax, qword ptr [rdi + 0x20]"
+      },
+      {
+        "rva": "0x19eae0f",
+        "bytes": "0f1180e0010000",
+        "mnemonic": "movups",
+        "operands": "xmmword ptr [rax + 0x1e0], xmm0"
+      },
+      {
+        "rva": "0x19eae16",
+        "bytes": "0f1188f0010000",
+        "mnemonic": "movups",
+        "operands": "xmmword ptr [rax + 0x1f0], xmm1"
+      },
+      {
+        "rva": "0x19eae1d",
+        "bytes": "0f119000020000",
+        "mnemonic": "movups",
+        "operands": "xmmword ptr [rax + 0x200], xmm2"
+      },
+      {
+        "rva": "0x19eae24",
+        "bytes": "0f119810020000",
+        "mnemonic": "movups",
+        "operands": "xmmword ptr [rax + 0x210], xmm3"
+      },
+      {
+        "rva": "0x19eae2b",
+        "bytes": "0f11a020020000",
+        "mnemonic": "movups",
+        "operands": "xmmword ptr [rax + 0x220], xmm4"
+      },
+      {
+        "rva": "0x19eae32",
+        "bytes": "4885db",
+        "mnemonic": "test",
+        "operands": "rbx, rbx"
+      },
+      {
+        "rva": "0x19eae35",
+        "bytes": "7e1e",
+        "mnemonic": "jle",
+        "operands": "0x1419eae55"
+      },
+      {
+        "rva": "0x19eae37",
+        "bytes": "4c8bc3",
+        "mnemonic": "mov",
+        "operands": "r8, rbx"
+      },
+      {
+        "rva": "0x19eae3a",
+        "bytes": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi"
+      },
+      {
+        "rva": "0x19eae3c",
+        "bytes": "488bcf",
+        "mnemonic": "mov",
+        "operands": "rcx, rdi"
+      },
+      {
+        "rva": "0x19eae3f",
+        "bytes": "4c8d5c2470",
+        "mnemonic": "lea",
+        "operands": "r11, [rsp + 0x70]"
+      },
+      {
+        "rva": "0x19eae44",
+        "bytes": "498b5b10",
+        "mnemonic": "mov",
+        "operands": "rbx, qword ptr [r11 + 0x10]"
+      },
+      {
+        "rva": "0x19eae48",
+        "bytes": "498b7318",
+        "mnemonic": "mov",
+        "operands": "rsi, qword ptr [r11 + 0x18]"
+      },
+      {
+        "rva": "0x19eae4c",
+        "bytes": "498be3",
+        "mnemonic": "mov",
+        "operands": "rsp, r11"
+      },
+      {
+        "rva": "0x19eae4f",
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "rdi"
+      },
+      {
+        "rva": "0x19eae50",
+        "bytes": "e92b000000",
+        "mnemonic": "jmp",
+        "operands": "0x1419eae80"
+      },
+      {
+        "rva": "0x19eae55",
+        "bytes": "7916",
+        "mnemonic": "jns",
+        "operands": "0x1419eae6d"
+      },
+      {
+        "rva": "0x19eae57",
+        "bytes": "48f7db",
+        "mnemonic": "neg",
+        "operands": "rbx"
+      },
+      {
+        "rva": "0x19eae5a",
+        "bytes": "41b903000000",
+        "mnemonic": "mov",
+        "operands": "r9d, 3"
+      },
+      {
+        "rva": "0x19eae60",
+        "bytes": "4c8bc3",
+        "mnemonic": "mov",
+        "operands": "r8, rbx"
+      },
+      {
+        "rva": "0x19eae63",
+        "bytes": "8bd6",
+        "mnemonic": "mov",
+        "operands": "edx, esi"
+      },
+      {
+        "rva": "0x19eae65",
+        "bytes": "488bcf",
+        "mnemonic": "mov",
+        "operands": "rcx, rdi"
+      },
+      {
+        "rva": "0x19eae68",
+        "bytes": "e853070000",
+        "mnemonic": "call",
+        "operands": "0x1419eb5c0"
+      },
+      {
+        "rva": "0x19eae6d",
+        "bytes": "4c8d5c2470",
+        "mnemonic": "lea",
+        "operands": "r11, [rsp + 0x70]"
+      },
+      {
+        "rva": "0x19eae72",
+        "bytes": "498b5b10",
+        "mnemonic": "mov",
+        "operands": "rbx, qword ptr [r11 + 0x10]"
+      },
+      {
+        "rva": "0x19eae76",
+        "bytes": "498b7318",
+        "mnemonic": "mov",
+        "operands": "rsi, qword ptr [r11 + 0x18]"
+      },
+      {
+        "rva": "0x19eae7a",
+        "bytes": "498be3",
+        "mnemonic": "mov",
+        "operands": "rsp, r11"
+      },
+      {
+        "rva": "0x19eae7d",
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "rdi"
+      },
+      {
+        "rva": "0x19eae7e",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": ""
+      }
+    ],
+    "first_locator_body_read_bytes": 239,
+    "second_preservation_body_read_bytes": 239,
+    "metadata_read_bytes": null,
+    "metadata_read_bytes_reason": "Original bounded PE reader performs fixed header and binary pdata lookup; reads not instrumented in this pass, not claimed0"
+  },
+  "actual_callers": {
+    "input": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\cb-discovery-vanilla-12004-research03\\current-context-update-body01.json",
+      "bytes": 12781,
+      "sha256": "5a9a9187bde9e3924c67bbe8739b59b44957d3fe667c282d19aada1558f43bd6"
+    },
+    "source_window_sha256": "b79850e46f348096689c25631edb27a5ec3a04c52b8350f94eb436eb29255c6d",
+    "edges": [
+      "19E7D1E CALL19EAD90 withEDX0/R8 actor extension+100",
+      "19E7D9D CALL19EAD90 withEDX3/R8 resolved Land+318"
+    ]
+  },
+  "new_source_findings": {
+    "direct_stores": [
+      "19EADCE selectsstrategy+160 forselector0",
+      "19EADC6 selectsstrategy+1A0 forselector3",
+      "19EADD6..19EADE1 clears32B selected block",
+      "19EAE0F..19EAE2B writes80B atstrategy+1E0..220"
+    ],
+    "does_not_directly_write_target_vector_A8_B4": true,
+    "unexpanded_edges": [
+      "19EADF3 CALL19EA9A0",
+      "19EAE50 tail19EAE80 whenR8>0",
+      "19EAE68 CALL19EB5C0 whenR8<0"
+    ],
+    "transitive_target_writer_excluded": false,
+    "other_machine_knowledge_boundary": "war-payment-passive-12004.md cites desktop-3fevhd2-1c74096080 static19EB5C0 balance-pool leaf; same declared EXE supports reusable static knowledge only, no target-machine deployment/runtime fact inferred"
+  },
+  "remaining_exact_gap": "Non-default store/append/copy into strategy+A8/+B4 plus its scheduling/invalidation caller. No known RVA. Existing+128 writer and default constructor zeros are not that writer. No complete human/full-catalogue equivalence fromAIshortlist. GUI CalculateCBCandidates registration callback remains unresolved.",
+  "next_implementable_seam_status": "Existing research03 proposal only: same paused full pass coverage diagnostic over readonly existing strategy vector; no safe filtering or guaranteed speedup; null/malformed/truncated/drift remains wide. No implementation submitted.",
+  "Game_calls": 0,
+  "RPC_calls": 0,
+  "compilations": 0,
+  "production_changes": 0,
+  "closed_build_writes": 0,
+  "live_speedup_claim": false,
+  "new_actor_families_added": 0,
+  "record_retention": "Repo small source record; externally referenced immutable source windows retain their owners original review deadlines; no extension or capacity credit"
+}

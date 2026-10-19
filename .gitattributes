@@ -1168,3 +1168,9 @@ docs/maintenance/machine-preferences/desktop-3fevhd2-1c74096080.steam-workshop.j
 docs/maintenance/steam-five-local-control-2026-10-19-desktop-3fevhd2-1c74096080.md -text whitespace=cr-at-eol
 tools/maintenance/steam_workshop_local_block.py -text whitespace=cr-at-eol
 tools/maintenance/steam_workshop_local_block_child_verify.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/holy-order-loan-principal-object-compile-2026-10-19.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c4-cold-source-pointer-correction01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c4-cold-real-call-order-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c4-cold-tool-source-ready-manifest01.json -text whitespace=cr-at-eol
+# Preserve the exact bytes of the rejected historical control200 candidate.
+tools/g2_saved_campaign/c4_cold_semantic_pointer_repair200_v1.py whitespace=-blank-at-eof

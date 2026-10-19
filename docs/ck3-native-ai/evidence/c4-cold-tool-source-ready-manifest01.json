@@ -1,0 +1,63 @@
+{
+  "schema": "xar.c4-cold-tool-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:43:27.671449+00:00",
+  "frozen": true,
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\saved61_cold_queue_v1.py",
+      "bytes": 18230,
+      "sha256": "0a42eedf8e677a7dc47ce93c0de274285f237de344ce450e1ad4122485d7fdbf"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_saved61_call_order_v1.py",
+      "bytes": 13725,
+      "sha256": "0449b42f7d52373980b808e9175d701a7079dcf34a99043ef461732784b705c7"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_saved61_cold_queue_v1.py",
+      "bytes": 11882,
+      "sha256": "a4005d7af2664aa717741e15143d37faa6d08c2869ece9bdf6f8a8f34284e8ff"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c4_cold_semantic_pointer_repair_v1.py",
+      "bytes": 8885,
+      "sha256": "ebc7cecf9d87b8d8591a8d88b1914846fa8f9d51bcd3aca60ecf87b05b22eae6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c4_cold_semantic_pointer_repair200_v1.py",
+      "bytes": 7003,
+      "sha256": "bedab6ae7823c553a5226eb5434e4b9ef8cd9b274e089c855eb2a647b042638b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c4_pointer201_repair_v1.py",
+      "bytes": 14042,
+      "sha256": "7c854f65579f5c4e02ea33476e22b69cf00dd93423234e7342a6921e23f24ef6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c4_cold_semantic_pointer_repair_v1.py",
+      "bytes": 8948,
+      "sha256": "a3d85ff5ef0f1c8f6129a8679e447622f2981868c70b1562a45dd68f1033c409"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\saved61-normal-cold-bootstrap-2026-10-19.md",
+      "bytes": 7365,
+      "sha256": "40c8eac978bd34092f4708313c87ebdd8f83a883d6a426a7e1e1534ada677204"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c4-cold-source-pointer-correction01.json",
+      "bytes": 22953,
+      "sha256": "9582320a6a78cd42f0069b4c1a81f7b750086a451c3ce5b14ae0b1f6b47cf2fe"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c4-cold-real-call-order-qualification01.json",
+      "bytes": 6281,
+      "sha256": "3c4ce16d311b05c3d10139c6b3e2996845cb5ebeb054d592bb397f2aa3fe006d"
+    }
+  ],
+  "business_SDK_6ebbffcd_changed": false,
+  "runtime_candidate_bytes_changed_after_adoption": false,
+  "qualification_command": "python tools/g2_saved_campaign/qualify_saved61_call_order_v1.py --runtime-root D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime --seed D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\COLD-CUMULATIVE-LOOP-SEED.json --output-root <new-empty-review>",
+  "qualification_result": "PASS; actual closed198/199 payloads, real call order, no live RPC",
+  "ready_for_parent_commit": true
+}

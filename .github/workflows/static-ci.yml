@@ -124,6 +124,10 @@ jobs:
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_sway_actual4_start_observation.py
       - name: Test actual natural sentinel boundary contract without CK3
         run: python -B -X utf8 tools/g2_saved_campaign/test_natural_succession_sentinel_boundary_v1.py
+      - name: Test explicit cold readiness relay and result publication order without CK3
+        run: python -B -X utf8 tools/g2_saved_campaign/test_startup_readiness_v1.py
+      - name: Test atomic decision text replacement with a Windows reader without CK3
+        run: python -B -X utf8 tools/g2_saved_campaign/test_decision_text_replace_retry.py
       - name: Test unresolved successor event and timeline observations without CK3
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_succession_ui_observation_v1.py
       - name: Test closed owner cold evidence projection without CK3
