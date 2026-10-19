@@ -1,0 +1,102 @@
+{
+  "schema": "ck3-series-cover-artifacts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T17:15:07.740864+00:00",
+  "series_title": "CK3:信仰引擎",
+  "version": "v3",
+  "artwork_method": "built-in image_gen edit",
+  "fallback_CLI_used": false,
+  "request_source": "用户指出v2标题仍有血色效果，认可银白经书字、极细暗金边、少量幽青反光和碑铭风格CK3的建议，要求对两种比例制作一版。",
+  "change_scope": "沿用v2人物、祭台与幽暗圣堂构图，重新处理标题字形和材质，去除血色与尖锐破损。",
+  "type_direction": "端正宋体结构；银白字面、极细暗金边和克制冷光。字体名只作生成字形的视觉参考，本次未安装或调用方正字库/Cinzel字体文件，不把生成结果声称为精确字库排版。",
+  "records": [
+    {
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "png": {
+        "file": "faith-engine-16x9.png",
+        "bytes": 2417030,
+        "sha256": "40c3acca2bf74b946aac173202537066aa461d282845ce3615657037a9f35277"
+      },
+      "jpg": {
+        "file": "faith-engine-16x9.jpg",
+        "bytes": 595983,
+        "sha256": "77c467720659f2e70c58a3b141056f7599a1a1a2b490cd554ac1e3edd139c2ff"
+      },
+      "prompt": {
+        "file": "prompts/16x9.txt",
+        "bytes": 2569,
+        "sha256": "e9196aa83c91d755b8a79abc86ae2efd9c028ae0527b095e03c1e7d1cdfb19be"
+      },
+      "edit_target": {
+        "repository_file": "promo/ck3_faith_and_power/assets/covers/faith-engine-v2/faith-engine-16x9.png",
+        "file": "faith-engine-16x9.png",
+        "bytes": 2629862,
+        "sha256": "f273823e1af6d2809cb33aefcb38f2d86c16ee28497b797c86c2067a4f864295"
+      },
+      "native_generated_art": {
+        "file": "exec-5bfb68ca-8f41-4e63-b09c-3f3f6d9b4c67.png",
+        "bytes": 2445207,
+        "sha256": "efd19110f597baeea40339ab0685ea2feb12aec82c2e969e0458bd9e6342df30"
+      },
+      "technical_edge_crop": {
+        "source_width": 1672,
+        "source_height": 941,
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936
+      },
+      "technical_export": "FFmpeg exact edge alignment and JPEG encoding only; no manual letter compositing or image drawing."
+    },
+    {
+      "ratio": "4x3",
+      "width": 1448,
+      "height": 1086,
+      "png": {
+        "file": "faith-engine-4x3.png",
+        "bytes": 2572417,
+        "sha256": "2d6f2add6a7a6a6d257e0e087b4705e79f79ce23437c3c8fcc96ee742492ff2a"
+      },
+      "jpg": {
+        "file": "faith-engine-4x3.jpg",
+        "bytes": 686974,
+        "sha256": "4a66e810d9b062152c0810670ec2db577165cf8272576f60b3b2b587a3bcea14"
+      },
+      "prompt": {
+        "file": "prompts/4x3.txt",
+        "bytes": 2648,
+        "sha256": "b61137210d8dd8733efa2f4e1d9e91469807eae5d496bb8b2b5a814f5797527c"
+      },
+      "edit_target": {
+        "repository_file": "promo/ck3_faith_and_power/assets/covers/faith-engine-v2/faith-engine-4x3.png",
+        "file": "faith-engine-4x3.png",
+        "bytes": 2684360,
+        "sha256": "afee7879a72b460063cce7dae66a1565f983f009f9d36015a2d306e22cffce2a"
+      },
+      "native_generated_art": {
+        "file": "exec-c062e19b-9547-4559-a6ab-2b01f071197b.png",
+        "bytes": 2572417,
+        "sha256": "2d6f2add6a7a6a6d257e0e087b4705e79f79ce23437c3c8fcc96ee742492ff2a"
+      },
+      "technical_edge_crop": null,
+      "technical_export": "FFmpeg exact edge alignment and JPEG encoding only; no manual letter compositing or image drawing."
+    }
+  ],
+  "review_scope": "生成图直接审阅；最终导出JPG另直接查看文字、边距、去血色效果、两图风格及人物场景延续；PNG/JPG画幅与SHA核对。",
+  "user_approved": false,
+  "upload_performed": false,
+  "retention": {
+    "category": "delivered_media",
+    "state": "current_series_cover_revision",
+    "active_references": [
+      "../../../docs/cover-design.md",
+      "../../../README.md"
+    ],
+    "protected_until_utc": "2026-10-26T17:15:07.740864+00:00",
+    "protection_reason": "本次字体材质修订交付，供用户审阅及Bilibili封面使用，到期复核用途。",
+    "expires_at_utc": "2026-11-18T17:15:07.740864+00:00",
+    "expiry_means_review_not_unconditional_delete": true
+  }
+}
