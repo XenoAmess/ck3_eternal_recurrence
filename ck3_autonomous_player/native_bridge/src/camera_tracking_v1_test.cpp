@@ -7,7 +7,7 @@ int main() {
   r.request_sequence = 2; r.province_count = 1; r.owner_epoch = 1;
   r.scope_generation = 0x100000001ULL; r.actor = 40526; r.fullarmy_id = 33554800;
   r.start_date_raw = 1000; r.max_date_raw = 1240;
-  r.provinces[0].id = 2615; std::strcpy(r.provinces[0].title_key, "b_fixture");
+  r.provinces[0].id = 2615; std::memcpy(r.provinces[0].title_key, "b_fixture", sizeof("b_fixture"));
   assert(ValidRequestV1(r, 2));
   assert(!ValidRequestV1(r, 4)); assert(!ValidRequestV1(r, 3));
   auto changed = r; changed.province_count = 33; assert(!ValidRequestV1(changed, 2));

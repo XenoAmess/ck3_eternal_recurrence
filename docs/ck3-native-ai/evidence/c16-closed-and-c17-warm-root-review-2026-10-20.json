@@ -1,0 +1,91 @@
+{
+  "schema": "xar.robert-v20261019.c16-closed-c17-warm-root-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:43:02.235863+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine tool8f725e",
+  "current_game": {
+    "pid": 30852,
+    "creation_filetime": "134368995759027619",
+    "native": "Native29 unchanged",
+    "recording_uuid": "2b8912a6-757d-46a4-a8ae-b7702a730a90",
+    "evidence_source": "runtime_v20261019 actual CLOSED+cleanseed+STAT notices; Root did not query Game or read active Driver/SAVE"
+  },
+  "campaign": {
+    "settled_cycles": 4013,
+    "actual_days_from_original_T0": 3513,
+    "raw_date": 53228640,
+    "original_T0_raw": 53144328,
+    "endpoint_raw": 53407128,
+    "goal_days": 10950,
+    "first_next_sequence_after_8891": 8892,
+    "next_sequence_semantics": "SEM then CAP then FULL using each actual returned NEXT; no fixed FULL sequence",
+    "wall_anchor_utc": "2026-10-19T03:26:49.420926Z",
+    "wall_anchor_reset": false,
+    "one_second_per_day_achieved": false
+  },
+  "construction8890": {
+    "status": "Original predispatch failure retained; selectednull and callback absent",
+    "8891": "Original clear_blocked_no_action verified0RPC,0cyclecredit,dirty/count/goal unchanged,pendingnull",
+    "fix": "Only complete sameframe optional construction cost source_red defers building and retains ordinary planner; changed/missing frame remains RED",
+    "source_evidence": "construction8890-optional-source-defer-2026-10-19.json"
+  },
+  "normal_close": {
+    "SDK": "Both kernel0, launcher0, original Job0; not TaskCount inferred",
+    "feeder91": "kernel0 and bootstrap0, Job0",
+    "unregister_utc": "2026-10-19T17:36:43Z and17:36:44Z",
+    "unregister_evidence": [
+      {
+        "path": "c16-construction8890-failure92/SDK-TASK-UNREGISTER.stdout.json",
+        "bytes": 1112,
+        "sha256": "dd4cc8166179d2152e88d90e3700a4c88d7a00d67f2c35c5a74168c4c3e7bc56"
+      },
+      {
+        "path": "c16-construction8890-failure92/FEEDER91-TASK-UNREGISTER.stdout.json",
+        "bytes": 1115,
+        "sha256": "99fe7497f40fb2c5706fcfd46c2414b0ae072eaffd5c923b450af9b5207babcf"
+      }
+    ],
+    "closed_Driver_stat": {
+      "bytes": 28473426,
+      "file_id": "281474989013790",
+      "volume_serial": "46b2bed7",
+      "last_write_filetime": "134369045839390144",
+      "source": "c16-construction8890-failure92/POST-C16-CLOSE-STAT-ONLY.json",
+      "receipt_bytes": 5956,
+      "receipt_sha256": "69d685edf0bc2f9641a4fbf9331c42f191b331f04dd7fa7f108f3212dc6e6a80",
+      "body_read_by_Root": false
+    }
+  },
+  "M2_natural_closed_events": {
+    "source": "g2_m2_events SHA-bound actual compact DTOs and original stockdefinitions, reported2026-10-19T17:36-40Z; no new registry writes",
+    "8789": "health.2202 source_rebound, thirdparty patient40695,post27->null",
+    "8815": "stress.1711, original stress110->80; source flagellant/wounds effects do not establish actual traits/wounds",
+    "player40526_medical_chain": "8847 health.1010 ->8859 health.3001 ->8869 health.3101 ->8873 health.3103; actual gold14604659->9604659 raw(-50gold); subsequent typed physician16825061/patient40526",
+    "qualification_limit": "Window postverified; no invented missing ACK, courtposition, cure, healthmodifier or disease removal readback"
+  },
+  "Native30_attempt02": {
+    "status": "FAILED",
+    "production_targets": "Actual command root0/Job0,794.263112seconds; not whole package qualified",
+    "failure": "First fixture camera_tracking_v1_test.cpp strcpy C4996 underWX/C2220; eight subsequent fixtures unrun",
+    "stage_exit": 1,
+    "bootstrap_exit": 1,
+    "Job_active_after": 0,
+    "forced": false,
+    "unregistered_utc": "2026-10-19T17:26:46.395858Z",
+    "RESULT": {
+      "bytes": 18031,
+      "sha256": "463ecf78743479acbb4315868e8901478bc2837a93e3f8c0edde1ffb14430cb6"
+    },
+    "closed_aggregate_allocation_bytes": 659564464,
+    "release_credit_bytes": 0,
+    "currently_deployed": false
+  },
+  "next_warm": "Minimal11leaf delta, complete1445 tree,33unittest90pytestPASS4existing skips. Explicit SDK-owner WALenv=1 seam required; source/recipe qualified, actual adoption and performance not yet proven. No M7 custody adoption or Game/Native/OBS restart.",
+  "G2": {
+    "credited_directions": 6,
+    "total": 8,
+    "M6_natural_chain": "Incomplete: no full same-scheme start/gain/terminal/following chain",
+    "M7_H": "Unknown; canonical source creator tests are not actual custody proof"
+  },
+  "source_review_native03": "g2_m1_entities independent exactpins no blocking; only fixture memcpy includesNUL and original assert/WX preserved; requires actual9fixtures/artifact/Defender qualification before deployment"
+}

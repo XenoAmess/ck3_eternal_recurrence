@@ -1,0 +1,44 @@
+{
+  "schema": "xar.c17-perf-warm-root-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:44:57.573813+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine tool8f725e",
+  "authorization": "Continue user-authorized Robert30 v20261019, sustained performance and parallel research. Root owns Git; runtime alone owns Game/MCP/Task/export.",
+  "capacity_preanchor": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C17-WARM12MiB-PREANCHOR-ADMITTED01.json",
+    "bytes": 5368,
+    "sha256": "c80edcb63b9802dc5edaa243ffd632c0b223290ac6a3b8036d1c18830bc40de9"
+  },
+  "exact_source_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c16-perf-warm-minimal-sdk-plan-2026-10-20.json",
+    "bytes": 14141,
+    "sha256": "e7cf846e78acde0f2f48cdead3ec12a9b2f4d7bdbc49d7d695bb96987ab7ad91"
+  },
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c16_perf_warm_sdk_v1.py",
+    "bytes": 25869,
+    "sha256": "ed79fdb82f422c4cd17dc9fc1c00a133603dbea2ca4374b980172c1eb33a916b"
+  },
+  "source_qualification": "33unittest PASS,90pytest PASS,4existing skips; M0 independent canonical/NTFS review no blocking",
+  "scope": "Create-only dedicated canonical anchor over actual d804 baseline, exact11changed/1445complete rows. No index/checkout/master changes in recipe.",
+  "dedicated_ref": "refs/heads/campaign/robert-v20261019-c17-perf-warm-01",
+  "complete_rows_sha256": "8a9811eb2b85882d912e94f2b8ad8a608dcf4978945abfcd24edd3cb0261ea59",
+  "allocation_bounds": {
+    "total_stage": 12582912,
+    "Git_Z": 2097152,
+    "closed_Driver_copy_separate_existing11GiB_guard": 67108864,
+    "retained_original64GiB_Native1p5GiB_unchanged": true
+  },
+  "D_export_gate": "Resulting canonical commit must bind actual exporter capacity card before any SDK/control materialization.",
+  "warm_execution_gate": "Actual normal C16 both0+Job0 and8891clear already observed; use exact closed seed/current NEXT. New SDK only, same Game30852/birth134368995759027619/Native29/record UUID2b8912a6-757d-46a4-a8ae-b7702a730a90. No replay. Fresh SEM/CAP and original pixel gate before ordinary FULL and durable feeder.",
+  "WAL_activation": "Only new independently frozen SDK-owner Task opt-in exact XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1=1, inherited Queue/App readback; defaultOFF unchanged.",
+  "not_granted": [
+    "M7 actual custody/H",
+    "Native30 deployment",
+    "1second/day achievement",
+    "disease cure"
+  ],
+  "whole_wall_anchor_utc": "2026-10-19T03:26:49.420926Z",
+  "endpoint_raw": 53407128,
+  "anchor_reset": false
+}

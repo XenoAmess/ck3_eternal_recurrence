@@ -1,0 +1,540 @@
+{
+  "schema": "xar.c16.perf-warm-minimal-sdk-composition/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:28:20.292510+00:00",
+  "status": "COMPOSED_ACTUAL_SDK_FOCUSED_SOFTWARE_PASS_NOT_ADMITTED",
+  "actual_base_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C16.json",
+    "bytes": 375121,
+    "sha256": "4d609077db641724096d019d970839e974e293fa07f39a6b369343163647e6b9"
+  },
+  "actual_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13",
+  "base_business_commit": "d804be64838b25c234ef1f805d8e641e4f677450",
+  "base_source_file_count": 1443,
+  "base_source_bytes": 58993449,
+  "all_actual_base_leaves_content_verified": true,
+  "complete_composed_manifest": {
+    "file_count": 1445,
+    "source_bytes": 59051187,
+    "canonical_rows_json": {
+      "bytes": 371514,
+      "sha256": "8a9811eb2b85882d912e94f2b8ad8a608dcf4978945abfcd24edd3cb0261ea59"
+    },
+    "reconstruction": "Original pinned full manifest plus exact delta below; unchanged rows retained byte for byte."
+  },
+  "delta": [
+    {
+      "relative": "xar_autoplayer/bridge/driver_state_history_json.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/driver_state_history_json.py",
+        "bytes": 3584,
+        "sha256": "1ad843c2347e2e1b07c007aa9dd45d4011baa70253b07f7a16695fab3dd1fc46",
+        "git_blob_sha1": "139d633bc553088607d48c87886e1f387bff5625",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/driver_state_history_json.py",
+        "bytes": 4172,
+        "sha256": "224f0422a8e17e77b988a0482d6bdd6bdd2d231b74a88031ee8cac991882ee7c",
+        "git_blob_sha1": "62af72ac1d509810a5f57e937470d2bd5cbe1b0a",
+        "git_mode": "100644"
+      },
+      "net_bytes": 588
+    },
+    {
+      "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+        "bytes": 23998,
+        "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d",
+        "git_blob_sha1": "165c6711feb372f6b0693c3e2862d33a32a6f011",
+        "git_mode": "100644"
+      },
+      "net_bytes": 23998
+    },
+    {
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 3412,
+        "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185",
+        "git_blob_sha1": "fd4af79da8533cdbc82604902cd3c520ae0966ea",
+        "git_mode": "100644"
+      },
+      "net_bytes": 3412
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1620598,
+        "sha256": "db9f8fb05483146abe1bea7c00d5ec4c53e5fc6a9c370133ba7e8ff7ebedb3da",
+        "git_blob_sha1": "a64ef509d48648e418fe7a98484aa93cb5be96d9",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1637048,
+        "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab",
+        "git_blob_sha1": "6418873e0ffbf1a8fe29ba4e73065d196f92d4a0",
+        "git_mode": "100644"
+      },
+      "net_bytes": 16450
+    },
+    {
+      "relative": "xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+        "bytes": 18205,
+        "sha256": "1570cd2424b81927aa14649437375bb1b0acecea87a28d8d7d8ab54ab5371af4",
+        "git_blob_sha1": "f5082f51d12dd836d434a4d45276d4305420eece",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+        "bytes": 18986,
+        "sha256": "5c33c735f3e5b5a76b1f9498528cf10821d5ff30257aa9846c274cd557feb7f4",
+        "git_blob_sha1": "4da5f9bd99e965dca2d70e556300ae163770a5c6",
+        "git_mode": "100644"
+      },
+      "net_bytes": 781
+    },
+    {
+      "relative": "xar_autoplayer/construction_formal_consumer.py",
+      "before": {
+        "relative": "xar_autoplayer/construction_formal_consumer.py",
+        "bytes": 38521,
+        "sha256": "ed408b47b0e9de3851a79aa06b4abaa631f8d663c46ee02e51b777905e75af5c",
+        "git_blob_sha1": "d6241a5db623d280c86241c2b4bb0f9d5d23298d",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/construction_formal_consumer.py",
+        "bytes": 40243,
+        "sha256": "3bd067119b9d98eea6f1f57416fc5d42560dfde57183f67ff56926d314b62431",
+        "git_blob_sha1": "9089e0753c83448a645a0c0a471fcca7600995a8",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1722
+    },
+    {
+      "relative": "xar_autoplayer/native_session.py",
+      "before": {
+        "relative": "xar_autoplayer/native_session.py",
+        "bytes": 76078,
+        "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8",
+        "git_blob_sha1": "8891f82a7265f4fb7cdd25f8f1752ea8d906d5ba",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/native_session.py",
+        "bytes": 76143,
+        "sha256": "b88e5162902ca5407132e04e23acc9db292cb6b3a35560b09236c14b795eee49",
+        "git_blob_sha1": "aa6ea7a232ee10a477ec9d4062340d570e327ee8",
+        "git_mode": "100644"
+      },
+      "net_bytes": 65
+    },
+    {
+      "relative": "xar_autoplayer/sway_lifecycle_consumer.py",
+      "before": {
+        "relative": "xar_autoplayer/sway_lifecycle_consumer.py",
+        "bytes": 15067,
+        "sha256": "64f77cbfa900168824b8f9f8d0aad98c40038de5822923d0eb98d10a2ba4b674",
+        "git_blob_sha1": "9d6c124ef8cd712372cc702ef38babc4c6e25cb5",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/sway_lifecycle_consumer.py",
+        "bytes": 19194,
+        "sha256": "cfa0e5680ec4ca7a6c691c2388f85ce38d1ec9643aa060b244caed460c990353",
+        "git_blob_sha1": "8bf7034fceb721f7e43ad41c671dde2712bc2232",
+        "git_mode": "100644"
+      },
+      "net_bytes": 4127
+    },
+    {
+      "relative": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "before": {
+        "relative": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+        "bytes": 28072,
+        "sha256": "929802ce55f9626a16ded0c59177cae3048ffe6ca5007b60165aac629b9b8a6a",
+        "git_blob_sha1": "9041c52e994892539cd11b04682d048f4b2138dd",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+        "bytes": 28093,
+        "sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f",
+        "git_blob_sha1": "0116eed1f6bc7a9a30adf1234c33162bd0a2665b",
+        "git_mode": "100644"
+      },
+      "net_bytes": 21
+    },
+    {
+      "relative": "xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+        "bytes": 10292,
+        "sha256": "6d88bf7d5be9aabf12fa4126268b6857a47dda422fcda3498e03bf5c8ba99b91",
+        "git_blob_sha1": "73784d715e4564f2bb623608f9bb16d186eaef02",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+        "bytes": 12122,
+        "sha256": "24d7937aa3d6be34adb1da9fb67eb5536e9494c4615dac810f98f6fae10c98f9",
+        "git_blob_sha1": "2d961c67ad9d1731e35f46bf8be206e6ebfd0e66",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1830
+    },
+    {
+      "relative": "xar_autoplayer/war_results_scope_pause_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/war_results_scope_pause_v1.py",
+        "bytes": 6325,
+        "sha256": "697bde508093b4ea1bd9612730ecfe3b0fdd434efc9fdf890ccc229e08592161",
+        "git_blob_sha1": "1354fb1b77901fadba57dce3780fab43e5700c9f",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/war_results_scope_pause_v1.py",
+        "bytes": 11069,
+        "sha256": "26f8facdf8235f7ef2a0640044d588351a8aeefc81e2417d487fd3b72b2eb771",
+        "git_blob_sha1": "31a1acfdb0dd673fe21170b521b4515fa89ef163",
+        "git_mode": "100644"
+      },
+      "net_bytes": 4744
+    }
+  ],
+  "operations": [
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "from_commit": "f17196cd5557e3b56d61f5f2291d4b9e5da1c0ee",
+      "to_commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+      "donor_before": {
+        "bytes": 1623300,
+        "sha256": "e4c7b21c1e7a8003d420e538c0eadd70f0df49efa3a3c35bb09df010af6326ae"
+      },
+      "donor_after": {
+        "bytes": 1640148,
+        "sha256": "397ca34de66a69d28a4d206b1574d2186282b8563d2cc8d2059704466b68030e"
+      },
+      "patch": {
+        "bytes": 22279,
+        "sha256": "2d18c55f4e3568af5f0c5105388f6a0fbdd21acfe3ad54a6028cace8131a159d"
+      },
+      "hunk_count": 10,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/bridge/driver_state_history_json.py",
+      "from_commit": "f17196cd5557e3b56d61f5f2291d4b9e5da1c0ee",
+      "to_commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+      "donor_before": {
+        "bytes": 3584,
+        "sha256": "1ad843c2347e2e1b07c007aa9dd45d4011baa70253b07f7a16695fab3dd1fc46"
+      },
+      "donor_after": {
+        "bytes": 4172,
+        "sha256": "224f0422a8e17e77b988a0482d6bdd6bdd2d231b74a88031ee8cac991882ee7c"
+      },
+      "patch": {
+        "bytes": 1290,
+        "sha256": "acd63db2a0aa481dd970f212cc10f3201a442105d1fb1271b67e8c2184a93527"
+      },
+      "hunk_count": 1,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/native_session.py",
+      "from_commit": "f17196cd5557e3b56d61f5f2291d4b9e5da1c0ee",
+      "to_commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+      "donor_before": {
+        "bytes": 76078,
+        "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8"
+      },
+      "donor_after": {
+        "bytes": 76143,
+        "sha256": "b88e5162902ca5407132e04e23acc9db292cb6b3a35560b09236c14b795eee49"
+      },
+      "patch": {
+        "bytes": 940,
+        "sha256": "4123d51fe7a5db52f297367a455032d9959931f3333449984306525f5941793a"
+      },
+      "hunk_count": 1,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "new_exact_committed_leaf",
+      "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+      "after": {
+        "bytes": 23998,
+        "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d"
+      }
+    },
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "from_commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+      "to_commit": "9bd0557b6ab7c05059c7114fe02b508959b38958",
+      "donor_before": {
+        "bytes": 1640148,
+        "sha256": "397ca34de66a69d28a4d206b1574d2186282b8563d2cc8d2059704466b68030e"
+      },
+      "donor_after": {
+        "bytes": 1639750,
+        "sha256": "b30c072273e1c19630e95ce10d1ba0d0da54f9dbdc93ba457c46b07aa692dc4e"
+      },
+      "patch": {
+        "bytes": 1528,
+        "sha256": "016a7547f134a5fdf505e6b275bc3dbcb4105f9406e7a0736adcbcc47e6633fc"
+      },
+      "hunk_count": 1,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "new_exact_committed_leaf",
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "commit": "9bd0557b6ab7c05059c7114fe02b508959b38958",
+      "after": {
+        "bytes": 3412,
+        "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185"
+      }
+    },
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/war_results_scope_pause_v1.py",
+      "from_commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+      "to_commit": "9bd0557b6ab7c05059c7114fe02b508959b38958",
+      "donor_before": {
+        "bytes": 6325,
+        "sha256": "697bde508093b4ea1bd9612730ecfe3b0fdd434efc9fdf890ccc229e08592161"
+      },
+      "donor_after": {
+        "bytes": 11069,
+        "sha256": "26f8facdf8235f7ef2a0640044d588351a8aeefc81e2417d487fd3b72b2eb771"
+      },
+      "patch": {
+        "bytes": 7526,
+        "sha256": "9fd6b22fbf8639c16da1975a7b343d193a50005d1f2df27f75b276b38db9e5f5"
+      },
+      "hunk_count": 6,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+      "from_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+      "to_commit": "18c4bfcdac7e7afaff64c2802907d8c9e644b378",
+      "donor_before": {
+        "bytes": 18205,
+        "sha256": "1570cd2424b81927aa14649437375bb1b0acecea87a28d8d7d8ab54ab5371af4"
+      },
+      "donor_after": {
+        "bytes": 18986,
+        "sha256": "5c33c735f3e5b5a76b1f9498528cf10821d5ff30257aa9846c274cd557feb7f4"
+      },
+      "patch": {
+        "bytes": 2552,
+        "sha256": "da04447ba8b28d2182026262e24448af7eb7a05d84383125d4af8dda99cb98ce"
+      },
+      "hunk_count": 2,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_committed_hunks",
+      "relative": "xar_autoplayer/sway_lifecycle_consumer.py",
+      "from_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+      "to_commit": "18c4bfcdac7e7afaff64c2802907d8c9e644b378",
+      "donor_before": {
+        "bytes": 15067,
+        "sha256": "64f77cbfa900168824b8f9f8d0aad98c40038de5822923d0eb98d10a2ba4b674"
+      },
+      "donor_after": {
+        "bytes": 19194,
+        "sha256": "cfa0e5680ec4ca7a6c691c2388f85ce38d1ec9643aa060b244caed460c990353"
+      },
+      "patch": {
+        "bytes": 5379,
+        "sha256": "754c5b2dd4e85da37019a647a58180699b48c7475d057df262321bb47297ad0d"
+      },
+      "hunk_count": 1,
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_frozen_worktree_hunks",
+      "relative": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "from_commit": "9bd0557b6ab7c05059c7114fe02b508959b38958",
+      "patch": {
+        "bytes": 1108,
+        "sha256": "a4dcb52d2c1543f776b3dec20ab659ca6848500a9f3bb81ba5ebe19002e5e36c"
+      },
+      "donor_after": {
+        "bytes": 28093,
+        "sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f"
+      },
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_frozen_worktree_hunks",
+      "relative": "xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+      "from_commit": "9bd0557b6ab7c05059c7114fe02b508959b38958",
+      "patch": {
+        "bytes": 5227,
+        "sha256": "062e2f42a42bbe8326fa83486d246ac1b249084d9ab187b6db513c3e094c1bce"
+      },
+      "donor_after": {
+        "bytes": 12122,
+        "sha256": "24d7937aa3d6be34adb1da9fb67eb5536e9494c4615dac810f98f6fae10c98f9"
+      },
+      "inverse_restores_entire_actual_leaf": true
+    },
+    {
+      "kind": "exact_reversible_frozen_worktree_hunks",
+      "relative": "xar_autoplayer/construction_formal_consumer.py",
+      "from_commit": "9bd0557b6ab7c05059c7114fe02b508959b38958",
+      "patch": {
+        "bytes": 4120,
+        "sha256": "ee3d909e551646919dbfbc230358ed5a2ecd7d95d59022c55deec36d77c7c0af"
+      },
+      "donor_after": {
+        "bytes": 40243,
+        "sha256": "3bd067119b9d98eea6f1f57416fc5d42560dfde57183f67ff56926d314b62431"
+      },
+      "inverse_restores_entire_actual_leaf": true
+    }
+  ],
+  "driver_changed_function_asts": [
+    "NativeHeadlessGameplayDriver.__init__",
+    "NativeHeadlessGameplayDriver._adopt_bridge_session",
+    "NativeHeadlessGameplayDriver._advance_exact_day_with_sentinel",
+    "NativeHeadlessGameplayDriver._driver_state_wal_scalar_fields_locked_v1",
+    "NativeHeadlessGameplayDriver._persist_driver_state",
+    "NativeHeadlessGameplayDriver._read_driver_state",
+    "NativeHeadlessGameplayDriver._record_command",
+    "NativeHeadlessGameplayDriver._route_horizon_wal_eligible_v1",
+    "NativeHeadlessGameplayDriver._try_persist_driver_state_wal_append_v1",
+    "NativeHeadlessGameplayDriver.close",
+    "load_native_driver_state_for_resume"
+  ],
+  "close_only_exact_WAL_flush_hunk_and_original_callback_cleanup_preserved": true,
+  "constructor_only_exact_WAL_hunk": true,
+  "M7_camera_Service_strategy_newest_tree_overlay": false,
+  "construction": "FROZEN_EXACT_DELTA_COMPOSED",
+  "changed_leaf_count": 11,
+  "changed_logical_bytes_each": 1874480,
+  "candidate_and_reference_changed_data_logical_bytes": 3748960,
+  "unchanged_frozen_leaves_may_be_hardlinked_only_after_new_admission": true,
+  "current_runtime_Game_Native_OBS_modified": false,
+  "D_output_writes": 0,
+  "Driver_SAVE_body_reads": 0,
+  "Game_MCP_RPC_calls": 0,
+  "WAL_default": "OFF; explicit new SDK owner environment required for writer adoption",
+  "actual_runtime_or_performance_credit": false,
+  "qualification": {
+    "scope": "Actual src13 imports plus exact in-memory composed leaves; tiny synthetic fixtures only",
+    "unittest_cases": 33,
+    "unittest_errors": 0,
+    "unittest_failures": 0,
+    "pytest_exit_code": 0,
+    "pytest_args": [
+      "-q",
+      "-rs",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=Z:\\ck3_mod_rewrite\\_runtime\\c16-warm-sdk-pytest92",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_construction_optional_source_8890.py",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_results_pause_wait_8495.py",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_sway_retained_wrapper_persistence_12004.py",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_reviewed_letter_source_rebind_v1.py"
+    ],
+    "WAL_fixture_adaptation": {
+      "input": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_driver_state_wal_production_v1.py",
+        "bytes": 21491,
+        "sha256": "7c6ceb55b6dd31ee6c972e03669d1075083df8cbe9ef63bbf78479986879de45"
+      },
+      "removed_unrelated_M7_cleanup_mock_contexts": 2,
+      "production_objects_or_assertions_modified": false,
+      "reason": "Actual C16 Driver predates M7; only the unrelated cleanup mocks are absent."
+    },
+    "loaded_changed_modules": [
+      {
+        "module": "xar_autoplayer.bridge.driver_state_history_json",
+        "relative": "xar_autoplayer/bridge/driver_state_history_json.py",
+        "bytes": 4172,
+        "sha256": "224f0422a8e17e77b988a0482d6bdd6bdd2d231b74a88031ee8cac991882ee7c"
+      },
+      {
+        "module": "xar_autoplayer.bridge.native_driver",
+        "relative": "xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1637048,
+        "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab"
+      },
+      {
+        "module": "xar_autoplayer.bridge.driver_state_wal_v1",
+        "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+        "bytes": 23998,
+        "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d"
+      },
+      {
+        "module": "xar_autoplayer.native_session",
+        "relative": "xar_autoplayer/native_session.py",
+        "bytes": 76143,
+        "sha256": "b88e5162902ca5407132e04e23acc9db292cb6b3a35560b09236c14b795eee49"
+      },
+      {
+        "module": "xar_autoplayer.bridge.exact_day_speed_configuration_v1",
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 3412,
+        "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185"
+      },
+      {
+        "module": "xar_autoplayer.construction_formal_consumer",
+        "relative": "xar_autoplayer/construction_formal_consumer.py",
+        "bytes": 40243,
+        "sha256": "3bd067119b9d98eea6f1f57416fc5d42560dfde57183f67ff56926d314b62431"
+      },
+      {
+        "module": "xar_autoplayer.war_results_scope_pause_v1",
+        "relative": "xar_autoplayer/war_results_scope_pause_v1.py",
+        "bytes": 11069,
+        "sha256": "26f8facdf8235f7ef2a0640044d588351a8aeefc81e2417d487fd3b72b2eb771"
+      },
+      {
+        "module": "xar_autoplayer.sway_lifecycle_consumer",
+        "relative": "xar_autoplayer/sway_lifecycle_consumer.py",
+        "bytes": 19194,
+        "sha256": "cfa0e5680ec4ca7a6c691c2388f85ce38d1ec9643aa060b244caed460c990353"
+      },
+      {
+        "module": "xar_autoplayer.vanilla_events.event_offline_analysis",
+        "relative": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+        "bytes": 28093,
+        "sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f"
+      },
+      {
+        "module": "xar_autoplayer.vanilla_events.reviewed_letter_source_rebind_v1",
+        "relative": "xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+        "bytes": 12122,
+        "sha256": "24d7937aa3d6be34adb1da9fb67eb5536e9494c4615dac810f98f6fae10c98f9"
+      },
+      {
+        "module": "xar_autoplayer.bridge.sway_terminal_source_producer_12004",
+        "relative": "xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+        "bytes": 18986,
+        "sha256": "5c33c735f3e5b5a76b1f9498528cf10821d5ff30257aa9846c274cd557feb7f4"
+      }
+    ],
+    "production_dependencies_only_actual_src13": true,
+    "new_D_SDK_views_or_control_Task_Game_calls": 0
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "schema": "xar.c16-perf-warm-minimal-sdk-final-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:35:33.142866+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine tool8a2bdc",
+  "status": "SOURCE_FROZEN_QUALIFIED_AWAITING_ROOT_ANCHOR_AND_ACTUAL_STORAGE_CARD",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c16_perf_warm_sdk_v1.py",
+    "bytes": 25869,
+    "sha256": "ed79fdb82f422c4cd17dc9fc1c00a133603dbea2ca4374b980172c1eb33a916b"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c16_perf_warm_sdk_v1.py",
+    "bytes": 10151,
+    "sha256": "23e40457b8a291c21c7affde5141e688930888b1dfcbdd8243b58aa1908d73a9"
+  },
+  "actual_composed_SDK_qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c16-perf-warm-minimal-sdk-qualification-2026-10-20.json",
+    "bytes": 21877,
+    "sha256": "6d5bd2223fd550d3e78102e55309f69d1af3aa65f11f7618374c4bf5bca59aa2"
+  },
+  "tests": {
+    "final_tool_chunks": [
+      "a334da",
+      "e305f8"
+    ],
+    "unittest_pass": 33,
+    "pytest_pass": 90,
+    "pytest_skip": 4,
+    "skip_reason": "Existing M2 sway-specific role/negative shapes are inapplicable to two other letter events.",
+    "earlier_unittest33_pytest75_was_missing_M6_pytest_collection": "Added the missing M6 pytest module; final 90 includes its 15 cases.",
+    "WAL_fixture_only_adaptation": "Two M7 cleanup mock contexts removed in memory; actual C16 production Driver has no M7 provider method; all test assertions and production objects unchanged.",
+    "post_qualification_source_edits": "Resolved the identical f171 parent to full commit ID and added an explicit Root-only canonical Git recipe. compose output/production candidate bytes did not change; final files in-memory compiled, Git recipe not executed."
+  },
+  "historical_source_guard_failures": [
+    {
+      "tool_chunk": "1bc74c",
+      "cause": "Initial 4MiB per-base-leaf cap rejected two existing portable evidence gzip blobs, largest5245153B; base limit changed to8MiB inside unchanged64MiB aggregate. No outputs written."
+    },
+    {
+      "tool_chunk": "6233fc",
+      "cause": "AST review initially required close unchanged; WAL legitimately adds only its precise full-barrier flush predicate. Exact reversible hunk retained; no M7 cleanup copied."
+    }
+  ],
+  "actual_base_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C16.json",
+    "bytes": 375121,
+    "sha256": "4d609077db641724096d019d970839e974e293fa07f39a6b369343163647e6b9"
+  },
+  "complete_composed_manifest": {
+    "file_count": 1445,
+    "source_bytes": 59051187,
+    "canonical_rows_json": {
+      "bytes": 371514,
+      "sha256": "8a9811eb2b85882d912e94f2b8ad8a608dcf4978945abfcd24edd3cb0261ea59"
+    },
+    "reconstruction": "Original pinned full manifest plus exact delta below; unchanged rows retained byte for byte."
+  },
+  "complete_rows_access": "prepare_c16_perf_warm_sdk_v1.compose(construction_pin={bytes:40243,sha256:3bd067119b9d98eea6f1f57416fc5d42560dfde57183f67ff56926d314b62431}) returns all1445 exact rows (relative,bytes,SHA256,Gitblob,mode) in memory.",
+  "changed_relative_paths": [
+    "xar_autoplayer/bridge/driver_state_history_json.py",
+    "xar_autoplayer/bridge/driver_state_wal_v1.py",
+    "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+    "xar_autoplayer/bridge/native_driver.py",
+    "xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+    "xar_autoplayer/construction_formal_consumer.py",
+    "xar_autoplayer/native_session.py",
+    "xar_autoplayer/sway_lifecycle_consumer.py",
+    "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+    "xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+    "xar_autoplayer/war_results_scope_pause_v1.py"
+  ],
+  "unchanged_dependency_count": 1434,
+  "changed_count": 11,
+  "new_helpers": 2,
+  "protected_actual_sources": [
+    "Service",
+    "strategy",
+    "camera",
+    "original callback/cleanup except exact WAL flush predicate",
+    "M7 custody defaults"
+  ],
+  "canonical_anchor": {
+    "callable": "prepare_c16_perf_warm_sdk_v1.canonical_anchor_with_root_writer",
+    "anchor_ref": "refs/heads/campaign/robert-v20261019-c17-perf-warm-01",
+    "root_release_sha256": "Root supplies actual SHA256 of its exact release JSON, not this placeholder.",
+    "parent_business_commit": "d804be64838b25c234ef1f805d8e641e4f677450",
+    "writer_callback_python": "def git_writer(args, data=None): return subprocess.check_output([\"git\", \"-C\", str(repo), *args], input=data)",
+    "call_python": "canonical_anchor_with_root_writer(git_writer, anchor_ref=\"refs/heads/campaign/robert-v20261019-c17-perf-warm-01\", root_release_sha256=<actual release sha>)",
+    "mechanics": "Verify full original1443 Git rows before writes; hash exact11 changed blobs; recursive mktree; splice only ck3_autonomous_player/src into original d804 tree; commit-tree parent d804; independently read exact1445 rows; create-only update-ref old0. No index, checkout, master or current Driver modifications.",
+    "executed_by_composer": false
+  },
+  "exporter": {
+    "source": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\export_immutable_sdk_views_v1.py",
+      "bytes": 22964,
+      "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+    },
+    "entry": "export_views(args)",
+    "schema_required": "xar.ck3.immutable-sdk-view-capacity/v1",
+    "business_source_repo": "Z:\\ck3_mod_rewrite",
+    "business_source_commit": "actual Root-created canonical commit returned above",
+    "runtime_source_repo": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\host-checkout",
+    "runtime_source_commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+    "base_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C16.json",
+      "bytes": 375121,
+      "sha256": "4d609077db641724096d019d970839e974e293fa07f39a6b369343163647e6b9"
+    },
+    "native_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-NATIVE29-NATIVE-PIN-C16.json",
+      "bytes": 4546,
+      "sha256": "8ace8deb48058b1043374ee49b4be3249359f75123cf236907e43067bbfc1e5b"
+    },
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "sdk_generation": "P37C17",
+    "source_destination": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src14",
+    "reference_destination": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\reference-c17\\src",
+    "output_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c17-performance-warm92\\immutable-source-export",
+    "capacity_card": "NEW actual ADMITTED card bound to final canonical commit, exact roots, base/native pins, expiry and upper bounds; not the source256KiB card.",
+    "capacity_card_fields": {
+      "base_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13",
+      "approved_output_roots": [
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src14",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\reference-c17\\src",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c17-performance-warm92\\immutable-source-export"
+      ],
+      "new_allocation_limit_bytes": 8232960,
+      "metadata_reserve_bytes": 4456448,
+      "filesystem_metadata_reserve_bytes": 262144,
+      "disk_reserve_bytes": "Actual fresh machine storage policy reserve, not a fixed guessed value.",
+      "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+    },
+    "freeze_boundary": "Rich SOURCE/REFERENCE manifests stay in output root; compact RootFINAL<=524288 with pinned rich refs retains existing2MiB-read guard.",
+    "all1445_dependencies_in_each_view": true,
+    "unchanged1443_base_leaves_eligible_for_hardlinks_except9_changed_originals": true,
+    "unchanged_leaves": 1434,
+    "source_root_writes": 0
+  },
+  "future_stage_complete_code_budget": {
+    "Root_authorized_independent_cap_bytes": 12582912,
+    "original_code3_and64_and_Native1p5_cards_unchanged": true,
+    "dual_changed_data_logical_bytes": 3748960,
+    "actual_NTFS_cluster_bytes": 4096,
+    "dual_changed_allocation_upper_bytes": 3776512,
+    "JSON_and_FS_reserve_bytes": 5242880,
+    "JSON_and_FS_breakdown": {
+      "SDK_rich_manifests_and_export_attempt_complete_error_envelope": 4194304,
+      "compact_ROOT_FINAL_envelope": 524288,
+      "shared_FS_MFT_and_control_cluster_padding_unknown_reserve": 262144,
+      "other_small_metadata_envelope": 262144
+    },
+    "Git_object_new_temp_final_aggregate_upper_bytes": 2097152,
+    "controls_logical_bytes": 368122,
+    "controls_source_owner": "perf_harness",
+    "control_Taskspec_log_qualification_metadata_envelope_bytes": 262144,
+    "sum_gross_upper_bytes": 11746810,
+    "cap_spare_bytes": 836102,
+    "measured_allocation_for_future_outputs": null,
+    "physical_release_credit_bytes": 0,
+    "counter_guard": "Account unique FileIDs/max(EOF,allocation) and all stages cumulatively; all unknown directory/MFT growth remains reserved, not measured0."
+  },
+  "Driver_separate_existing_11GiB": {
+    "composer_body_reads": 0,
+    "closure_owner": "runtime_v20261019",
+    "prior_active_metadata_only_bytes": 28469457,
+    "actual_closed_bytes_identity": "Await runtime normalSDK double0 closure+fresh stat receipt; no closed body copied by composer.",
+    "new_closed_copy_hard_guard_bytes": 67108864,
+    "old24MiB_guard_reused": false,
+    "allocation_and_original_tmp_rewrite_peaks": "Require actual closed stat and existing11GiB Driver ledger admission; no WAL shrink presumed.",
+    "once_sidecars_retained": true
+  },
+  "warm_activation": {
+    "physical_Game_pid": 30852,
+    "physical_Game_creation_filetime": "134368995759027619",
+    "Native": "Native29 unchanged",
+    "recording_UUID": "2b8912a6-757d-46a4-a8ae-b7702a730a90",
+    "normal_factory_controls_owner": "perf_harness; physical display/API/relay stay C16",
+    "old_SDK_close_required": "Actual normal both kernel0 and launcher0; taskCount0 is insufficient.",
+    "boundary": "Actual normal cleanseed/postclose after8891 clearance; read actual next sequence, actor/episode/date; do not synthesize boundary.",
+    "WAL_writer": "Freeze new SDKowner Task spec env XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1=1 and read back Queue/App inherited environment; constructor default staysOFF.",
+    "same_speed": "No new CLI/capability; exact native daily Arm/Resume/Status preserved.",
+    "actual_gate": "Fresh original SEM then CAP must prove same_Game/same_pid_hot restore, no state error/cold rejection, exact goal/episode; no action replay.",
+    "actual_performance_credit": false,
+    "Game_Native_OBS_restarts_required": false
+  },
+  "storage_source_package": {
+    "original192KiB_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\WARM-SDK-COMPOSER-SOURCE192KiB-COMMITMENT01.json",
+      "bytes": 1619,
+      "sha256": "cc92de90f99d1c20a7c8dd11bc76073c3b43dddeefddb16ebfcddaf6c75fc0bb"
+    },
+    "actual256KiB_supplement": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\COMPOSER256KiB-NATIVE64KiB-HEALTH32KiB-SOURCE-SUPPLEMENTS01.json",
+      "bytes": 1867,
+      "sha256": "5bc2ebb24dfe1f184e9e25882c0542abf74708a4e9690c275cea685200c59226"
+    },
+    "historical_192_cap_overrun_bytes": 800,
+    "historical_197408_bytes_not_retroactively_compliant": true,
+    "current_source_and_qualification_inputs": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c16_perf_warm_sdk_v1.py",
+        "bytes": 25869,
+        "sha256": "ed79fdb82f422c4cd17dc9fc1c00a133603dbea2ca4374b980172c1eb33a916b"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c16_perf_warm_sdk_v1.py",
+        "bytes": 10151,
+        "sha256": "23e40457b8a291c21c7affde5141e688930888b1dfcbdd8243b58aa1908d73a9"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\_runtime\\warm_composer_inspect.py",
+        "bytes": 1959,
+        "sha256": "ad6683f529041b5e76fb5eb25d108a8a752518c53d12e818a612af01574bd66d"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\_runtime\\warm_composer_close_packet.py",
+        "bytes": 1292,
+        "sha256": "851c15fe0280b05522b26f8cad43deea3874de6d0dfb15a46321cc313e0996e0"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\_runtime\\warm_composer_finalize.py",
+        "bytes": 11193,
+        "sha256": "d22da12b91928d6ed4f27778d9d032168db45afa08546c5c381bf9ba9b5b80fd"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c16-perf-warm-minimal-sdk-qualification-2026-10-20.json",
+        "bytes": 21877,
+        "sha256": "6d5bd2223fd550d3e78102e55309f69d1af3aa65f11f7618374c4bf5bca59aa2"
+      }
+    ],
+    "scratch": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\c16-warm-sdk-pytest92",
+      "file_count": 198,
+      "logical_bytes": 143219,
+      "review_after_hours": 48,
+      "derived_synthetic_tests_only": true
+    },
+    "source_gross_cap_bytes": 262144,
+    "source_package_final_logical_bytes_including_this_plan": 229701,
+    "allocated_bytes": null,
+    "future_D_writes_already_performed": 0
+  },
+  "remaining": [
+    "Root reviews and writes source anchor under new independent12MiB release",
+    "Storage exact live capacity card binds resulting commit and roots",
+    "Runtime sole materialization/normal SDK constructor and env readback",
+    "Fresh SEM/CAP and actual subsequent clock/side-effect evidence"
+  ]
+}

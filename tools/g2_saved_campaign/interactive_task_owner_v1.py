@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 SCHEMA = "xar.interactive-task-owner/v1"
 ROLES = {"supervisor", "display_owner", "sdk_owner", "feeder", "native_build", "fixture"}
 MAX_SOURCE = 524288
+SDK_WAL_ENV_KEY = "XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1"
 
 
 def now():
@@ -97,9 +98,12 @@ def checked_spec(path, expected_sha):
         if not stop.is_absolute() or not stop.name.startswith(("STOP-", "EXIT-", "fixture-stop")):
             raise ValueError("normal STOP must name an explicit stage marker")
     if not isinstance(s.get("env", {}), dict) or any(
-            k not in {"PATH", "PYTHONPATH", "PYTHONDONTWRITEBYTECODE"}
+            k not in {"PATH", "PYTHONPATH", "PYTHONDONTWRITEBYTECODE", SDK_WAL_ENV_KEY}
             or not isinstance(v, str) or "\0" in v for k, v in s.get("env", {}).items()):
         raise ValueError("owner environment must use explicit non-secret import roots")
+    if SDK_WAL_ENV_KEY in s.get("env", {}) and (
+            s["role"] != "sdk_owner" or s["env"][SDK_WAL_ENV_KEY] != "1"):
+        raise ValueError("WAL environment requires sdk_owner and the exact value '1'")
     return s
 
 
@@ -206,7 +210,8 @@ def require_caller(s, caller):
 
 def prepare_spec(*, root, role, stage, stage_sha256, bootstrap_path, cwd,
                  machine_id, stage_args=(), stop_path=None, pythonpath=None,
-                 admission_path=None, admission_sha256=None):
+                 admission_path=None, admission_sha256=None,
+                 enable_driver_state_wal=False):
     """Create one stage spec only; does not contact/register Task Scheduler.
 
     Production bootstrap must be an independently admitted frozen source copy,
@@ -215,6 +220,8 @@ def prepare_spec(*, root, role, stage, stage_sha256, bootstrap_path, cwd,
     root, stage, boot = Path(root).resolve(), Path(stage).resolve(), Path(bootstrap_path).resolve()
     if role not in ROLES - {"fixture"} or sha(stage) != stage_sha256:
         raise ValueError("exact admitted production role/stage source required")
+    if type(enable_driver_state_wal) is not bool or (enable_driver_state_wal and role != "sdk_owner"):
+        raise ValueError("WAL opt-in requires a boolean and the sdk_owner role")
     if boot == Path(__file__).resolve() or sha(boot) != sha(__file__):
         raise ValueError("independent exact frozen bootstrap copy required")
     osapi = Windows()
@@ -229,6 +236,8 @@ def prepare_spec(*, root, role, stage, stage_sha256, bootstrap_path, cwd,
     env = {"PYTHONDONTWRITEBYTECODE": "1"}
     if pythonpath is not None:
         env["PYTHONPATH"] = pythonpath
+    if enable_driver_state_wal:
+        env[SDK_WAL_ENV_KEY] = "1"
     spec = {"schema": SCHEMA, "role": role, "machine_id": machine_id, "nonce": nonce,
         "task_name": "XARG2ManagedOwner-" + nonce, "sid": me["sid"], "session": me["session"],
         "root": str(root), "cwd": str(Path(cwd).resolve()), "python": str(python),
@@ -510,6 +519,7 @@ def main(argv=None):
     p.add_argument("--spec", type=Path)
     p.add_argument("--spec-sha")
     p.add_argument("--allow-production", action="store_true")
+    p.add_argument("--enable-driver-state-wal", action="store_true")
     for name in ("root", "stage", "bootstrap-path", "cwd", "stop-path", "admission-path"):
         p.add_argument("--" + name, type=Path)
     for name in ("role", "stage-sha", "machine-id", "pythonpath", "admission-sha"):
@@ -522,7 +532,8 @@ def main(argv=None):
         print(json.dumps(prepare_spec(root=a.root, role=a.role, stage=a.stage,
             stage_sha256=a.stage_sha, bootstrap_path=a.bootstrap_path, cwd=a.cwd,
             machine_id=a.machine_id, stage_args=a.stage_arg, stop_path=a.stop_path,
-            pythonpath=a.pythonpath, admission_path=a.admission_path, admission_sha256=a.admission_sha)))
+            pythonpath=a.pythonpath, admission_path=a.admission_path, admission_sha256=a.admission_sha,
+            enable_driver_state_wal=a.enable_driver_state_wal)))
         return 0
     if not a.spec or not a.spec_sha:
         p.error("exact spec and spec-sha required")

@@ -1,0 +1,68 @@
+{
+  "schema": "native30-fixture03-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:39:58.834477+00:00",
+  "machine_id_source": "Fresh tools/ck3_live_run_id.py machine",
+  "status": "SOURCE_READY_PATCH_CPP_NOTRUN",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture03-qualification-plan-2026-10-19.json",
+    "bytes": 10814,
+    "sha256": "c638458c8c840071aca86f779463a3e86ec9acb0341422ed5f0cb9e896763e6b"
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture03_20261019.py",
+      "bytes": 24116,
+      "sha256": "8304a9ad5a970d1cfd2e1a1ce428abee51d2c3e3bb5961e7907b14a674de1d31"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_fixture03_override_20261019.cmake",
+      "bytes": 1277,
+      "sha256": "5f3f29ca6c836db788c0b9d83f1c5262f2e59d9ccb654af7eec836b2383c7fd5"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_fixture03_contract_20261019.py",
+      "bytes": 8283,
+      "sha256": "8dbded5f0e56e534961960adc266e8b99a9c4b9a5692943475050187dab1f6cb"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_fixture03_source_20261019.py",
+      "bytes": 11563,
+      "sha256": "f0d669dd7d613eb0f5b065bc15b7dff461e740d6f14888379d5c1508d8d0f03b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/camera_tracking_v1_test.cpp",
+      "bytes": 2647,
+      "sha256": "6393d0168cdf4ffc4b701c4a349dacc1d7ed3cac51ec8fece409d245e35ed9c1"
+    }
+  ],
+  "source_tests": {
+    "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_fixture03_contract_20261019 -q",
+    "actual_result": "29PASS/0.088s",
+    "tool_exec": "6a8352",
+    "earlier": "25PASS/0.097s/daf3a9",
+    "limits": "Pure admission/source-literal/argv/no-work/prior-output finite tests. Not MSVC/CMake/Defender/real fixture qualification."
+  },
+  "old_attempt02": {
+    "status": "FAILED",
+    "result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\RESULT.json",
+      "bytes": 18031,
+      "sha256": "463ecf78743479acbb4315868e8901478bc2837a93e3f8c0edde1ffb14430cb6"
+    },
+    "rootcause": "fixture1 C4996 strcpy underWX; production command completed root0/Job0, all9fixtures notpassed",
+    "Task_unregistered": "Actual17:26:46.395858Z tool9375db absent_aftertrue; no TaskStop or buildretry"
+  },
+  "retained_original_fixture": {
+    "bytes": 2626,
+    "sha256": "abe6400b1e2c808b7d85e9067b69163ab1be3eb268685faf7c08e90e7f9498fa"
+  },
+  "modified_existing_fixture_net_bytes": 21,
+  "unrelated_CPP_or_production_changes": 0,
+  "configure_or_build": "NOTRUN",
+  "Task_prepared": false,
+  "new_external_files": 0,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}
