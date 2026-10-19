@@ -4924,6 +4924,7 @@ class GameplayBridgeService:
         | None = None,
     ) -> dict[str, object]:
         """Plan and execute exactly one backend-supported gameplay turn."""
+        from .auto_camera_pre_advance_v1 import camera_pre_advance_scope_v1
         retained_war_entry_read = getattr(self, "_readonly_war_entry_rejection_refresh", None)
         if retained_war_entry_read is not None:
             refreshed = observe_readonly_war_entry_rejection_v1(self, retained_war_entry_read)
@@ -4937,7 +4938,8 @@ class GameplayBridgeService:
                     "snapshot_id": planned["snapshot_id"], "revision": planned["revision"],
                     "planning_source_frame": planned["planning_source_frame"],
                     "plan": planned["plan"], "result": unavailable}
-        outcome = self._execute_planned_turn(planned, before_submit=before_submit)
+        with camera_pre_advance_scope_v1(self, planned):
+            outcome = self._execute_planned_turn(planned, before_submit=before_submit)
         successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
         if successor_owner is not None:
             outcome = successor_owner.after_continue(planned, outcome)

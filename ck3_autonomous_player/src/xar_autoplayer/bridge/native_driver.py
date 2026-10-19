@@ -12368,6 +12368,7 @@ class NativeHeadlessGameplayDriver:
         protocol_result_evidence_path: Path | None = None,
         pause_recovery_source: dict[str, object] | None = None,
         absolute_deadline: float | None = None,
+        _tactical_camera_before_resume_v1: dict[str, object] | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
@@ -12512,6 +12513,19 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError(
                     f"frontend StartGame deadline expired before native {step} submission"
                 )
+            # Only the validated tactical composite opts in. Reuse this exact
+            # already guarded submission snapshot, after every Python guard.
+            if step == "resume-map" and _tactical_camera_before_resume_v1 is not None:
+                presentation = getattr(self, "_ordinary_auto_camera_pre_resume_v1", None)
+                if callable(presentation):
+                    try:
+                        _tactical_camera_before_resume_v1["receipt"] = presentation(
+                            step=_tactical_camera_before_resume_v1["step"], current=snapshot)
+                    except Exception as error:
+                        _tactical_camera_before_resume_v1["receipt"] = {
+                            "status": "unavailable",
+                            "reason": f"presentation:{type(error).__name__}: {str(error)[:512]}",
+                        }
             if protocol_packet_evidence_path is None:
                 self.endpoint.send(request)
             else:
@@ -24492,6 +24506,7 @@ class NativeHeadlessGameplayDriver:
         player_decision_boundary_cancel: dict[str, object] | None = None
         boundary_pause_diagnostics: dict[str, object] | None = None
         cleanup_error: str | None = None
+        camera_pre_advance: dict[str, object] = {"step": step}
         try:
             speed_step = f"set-speed-{speed}"
             speed_result = self._execute_composite_primitive(
@@ -24536,6 +24551,7 @@ class NativeHeadlessGameplayDriver:
                 "resume-map",
                 expected_revision=None,
                 internal_semantic_snapshot=True,
+                _tactical_camera_before_resume_v1=camera_pre_advance,
             )
             actions.append({"step": "resume-map", "result": resume_result})
 
@@ -24836,6 +24852,8 @@ class NativeHeadlessGameplayDriver:
             result["progress_status"] = "postcondition"
             if campaign_deadline is not None:
                 result["campaign_deadline_v1"] = campaign_deadline
+            if camera_pre_advance.get("receipt") is not None:
+                result["camera_pre_advance_v1"] = camera_pre_advance["receipt"]
             return result
         except Exception as error:
             try:

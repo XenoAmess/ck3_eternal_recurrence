@@ -52,6 +52,7 @@ class LatestCameraFollowWorker:
         self._sequence = 0
         self._identity = uuid.uuid4().hex[:12]
         self._pending: dict[str, object] | None = None
+        self._urgent_pending: dict[str, object] | None = None
         self._last: dict[str, object] | None = None
         self._recent_failures: deque[dict[str, object]] = deque(maxlen=16)
         self._last_failure_key: tuple | None = None
@@ -79,8 +80,8 @@ class LatestCameraFollowWorker:
             "receipt": summary,
         }
 
-    def schedule(self, payload: object = None) -> dict[str, object]:
-        """Overwrite one waiting request and return with a bounded reference."""
+    def schedule(self, payload: object = None, *, urgent: bool = False) -> dict[str, object]:
+        """Coalesce ordinary work; retain one immediate pre-advance request."""
         start_thread = None
         with self._condition:
             if self._closed:
@@ -88,13 +89,24 @@ class LatestCameraFollowWorker:
             self._sequence += 1
             request_id = f"auto-camera-{self._identity}-{self._sequence}"
             superseded = self._pending.get("request_id") if self._pending else None
-            eligible_at = (self._pending["eligible_at"] if self._pending else
+            superseded_urgent = None
+            eligible_at = (time.monotonic() if urgent else
+                           self._pending["eligible_at"] if self._pending else
                            time.monotonic() + self._quiet_seconds)
-            self._pending = {
+            request = {
                 "request_id": request_id,
                 "eligible_at": eligible_at,
                 "payload": payload,
+                "urgent": urgent,
             }
+            if urgent:
+                superseded_urgent = (self._urgent_pending["request_id"]
+                                     if self._urgent_pending else None)
+                self._urgent_pending = request
+                # An older ordinary frame must not run after this newer intent.
+                self._pending = None
+            else:
+                self._pending = request
             if self._thread is None:
                 start_thread = threading.Thread(
                     target=self._run, name="xar-auto-camera", daemon=True,
@@ -109,6 +121,7 @@ class LatestCameraFollowWorker:
                 with self._condition:
                     self._closed = True
                     self._pending = None
+                    self._urgent_pending = None
                     self._last = {
                         "request_id": request_id, "status": "failed",
                         "reason": f"worker_start:{type(error).__name__}: {error}",
@@ -123,6 +136,8 @@ class LatestCameraFollowWorker:
             "status": "scheduled",
             "request_id": request_id,
             "superseded_pending_request_id": superseded,
+            "superseded_urgent_request_id": superseded_urgent,
+            "urgent": urgent,
             "latest_actual": previous,
             "same_frame_with_gameplay_claim": False,
         }
@@ -139,22 +154,26 @@ class LatestCameraFollowWorker:
         with self._condition:
             self._closed = True
             self._pending = None
+            self._urgent_pending = None
             self._condition.notify_all()
 
     def _run(self) -> None:
         while True:
             with self._condition:
-                while self._pending is None and not self._closed:
+                while self._pending is None and self._urgent_pending is None and not self._closed:
                     self._condition.wait()
                 if self._closed:
                     return
-                assert self._pending is not None
-                delay = float(self._pending["eligible_at"]) - time.monotonic()
+                request = self._urgent_pending if self._urgent_pending is not None else self._pending
+                assert request is not None
+                delay = float(request["eligible_at"]) - time.monotonic()
                 if delay > 0:
                     self._condition.wait(timeout=delay)
                     continue
-                request = self._pending
-                self._pending = None
+                if self._urgent_pending is request:
+                    self._urgent_pending = None
+                else:
+                    self._pending = None
             started = time.monotonic()
             try:
                 receipt = self._work(request["payload"])
@@ -168,6 +187,7 @@ class LatestCameraFollowWorker:
                 actual = {
                     "schema": "xar.ck3.auto-camera-actual/v1",
                     "request_id": request["request_id"],
+                    "urgent": request["urgent"],
                     "status": status,
                     "available": available,
                     "work_status": work_status,
