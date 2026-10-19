@@ -14,6 +14,7 @@
 #endif
 #endif
 #include "ck3_12002_activity_feast_router.hpp"
+#include "ck3_12004_player_pilgrimage_activities_private_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_faction_mailbox.hpp"
 #endif
@@ -367,6 +368,9 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1)
   out.feast_destination = &ExecuteActivityStage2DestinationSelectPrivate12002V1;
   out.feast_stage2_confirm = &ExecuteActivityStage2ConfirmPrivate12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1)
+  out.pilgrimage_identities = &ExecutePlayerPilgrimageActivitiesPrivate12004V1;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   out.feast_start = &ExecuteActivityFeastStage5Private12002V1;

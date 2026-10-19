@@ -1,8 +1,10 @@
 #include "ck3_12002_activity_feast_router.hpp"
+#include "ck3_12004_player_pilgrimage_activities_private_v1.hpp"
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
 #include "ck3_12002_activity_stage5_canstart_private_transport_v1.hpp"
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 
 #include <array>
@@ -28,6 +30,7 @@ public:
   mutable std::atomic<std::uint32_t> reads{0};
   bool available = true;
   bool patch3 = false;
+  bool patch4 = false;
   FixtureAdapter() {
     frame.date_raw = 53220000;
     frame.paused = true;
@@ -43,7 +46,10 @@ public:
     static const game::AdapterDescriptor patch3_result{
         xar::ck3_12003::kAdapterId, "1.20.0.3",
         xar::ck3_12003::kExecutableSha256, "fixture-only", {}};
-    return patch3 ? patch3_result : result;
+    static const game::AdapterDescriptor patch4_result{
+        xar::ck3_12004::kAdapterId, xar::ck3_12004::kGameVersion,
+        xar::ck3_12004::kExecutableSha256, "fixture-only", {}};
+    return patch4 ? patch4_result : patch3 ? patch3_result : result;
   }
   bool enabled() const noexcept override { return true; }
   bool read_snapshot(game::Snapshot &output) const noexcept override {
@@ -108,6 +114,9 @@ MemoryFixture *memory_fixture = nullptr;
 FixtureAdapter *expected_adapter = nullptr;
 std::uint32_t callback_reads = 0, canstart_calls = 0, feast_calls = 0;
 std::uint32_t current_view_calls = 0, planner_open_calls = 0;
+std::uint32_t pilgrimage_calls = 0, pilgrimage_serializer_calls = 0;
+std::uint32_t feast_serializer_calls = 0;
+bool pilgrimage_readonly_contract = false;
 bool current_view_fail = false;
 constexpr std::uint32_t kFixtureActivityId = 553648129;
 bool domain_unavailable = false, start_policy = false, prior_pending = false;
@@ -139,7 +148,8 @@ template <typename Query>
 bool CheckCallback(Query &query, const api::MainThreadExecutionStampV1 &stamp) noexcept {
   game::Snapshot observed{};
   const bool okay = query.enabled && query.module_base != 0 &&
-      query.executable_sha256 == build::kExecutableSha256 &&
+      query.executable_sha256 == (expected_adapter->patch4
+          ? xar::ck3_12004::kExecutableSha256 : build::kExecutableSha256) &&
       query.native_context == expected_adapter && query.read_snapshot != nullptr &&
       query.expected_revision == 19 && query.expected_snapshot == expected_adapter->frame &&
       query.read_snapshot(query.native_context, observed) && observed == query.expected_snapshot &&
@@ -180,9 +190,10 @@ bool TestRouter() {
   memory.jomini[0x20] = std::byte{1};
   memory.tls[0x20] = std::byte{1};
   std::memcpy(memory.state.data() + 0x08, &adapter.frame.date_raw, sizeof(adapter.frame.date_raw));
-  const std::array<api::MainThreadQueryExecutorV1, 3> executors{
+  const std::array<api::MainThreadQueryExecutorV1, 4> executors{
       &build::ExecuteActivityStage5CanStartPrivate12002V1,
       &build::ExecuteActivityFeastStage5Private12002V1,
+      &build::ExecutePlayerPilgrimageActivitiesPrivate12004V1,
       &build::ExecuteActivityFeastPlannerOpenPrivate12002V1};
   auto environment = build::BindThreadRuntimeImage(0x140000000ULL, build::kExecutableSha256, executors);
   environment.offline_fixture = true;
@@ -309,6 +320,58 @@ bool TestRouter() {
         Contains(serialized, "\"native_dispatch_invoked\":false") &&
         Contains(serialized, "fixture current activity unavailable") &&
         mailbox.state == api::MainThreadQueryMailboxStateV1::idle);
+  // The actual router sees an exact .4 descriptor. The mailbox environment
+  // remains this test's synthetic dispatch fixture; no .4 native leaf runs.
+  constexpr std::string_view pilgrimage_request =
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,"
+      "\"expected_date_raw\":53220000,\"expected_activity_key\":\"activity_pilgrimage\"}";
+  CHECK(build::IsActivityFeastPrivateStep12002(
+      build::kPlayerPilgrimageActivitiesPrivate12004StepV1));
+  const auto reads_before_pilgrimage = callback_reads;
+  const auto requests_before_pilgrimage = mailbox.executed_requests.load();
+  const auto canstart_before_pilgrimage = canstart_calls;
+  const auto feast_before_pilgrimage = feast_calls;
+  const auto feast_serializer_before_pilgrimage = feast_serializer_calls;
+  const auto planner_before_pilgrimage = planner_open_calls;
+  const auto view_before_pilgrimage = current_view_calls;
+  CHECK(!run(build::kPlayerPilgrimageActivitiesPrivate12004StepV1, pilgrimage_request));
+  CHECK(failure == "player pilgrimage identity request invalid"); // .3 refused
+  adapter.patch3 = false;
+  CHECK(!run(build::kPlayerPilgrimageActivitiesPrivate12004StepV1, pilgrimage_request));
+  CHECK(failure == "player pilgrimage identity request invalid"); // .2 refused
+  adapter.patch4 = true;
+  for (const std::string_view invalid : {
+      "{\"expected_revision\":18,\"expected_actor_character_id\":29829,\"expected_date_raw\":53220000,\"expected_activity_key\":\"activity_pilgrimage\"}",
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29830,\"expected_date_raw\":53220000,\"expected_activity_key\":\"activity_pilgrimage\"}",
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,\"expected_date_raw\":53220024,\"expected_activity_key\":\"activity_pilgrimage\"}",
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,\"expected_date_raw\":53220000,\"expected_activity_key\":\"activity_feast\"}",
+      "{\"expected_revision\":19,\"expected_actor_character_id\":29829,\"expected_date_raw\":53220000}"}) {
+    CHECK(!run(build::kPlayerPilgrimageActivitiesPrivate12004StepV1, invalid));
+  }
+  CHECK(pilgrimage_calls == 0 && pilgrimage_serializer_calls == 0 &&
+        callback_reads == reads_before_pilgrimage &&
+        mailbox.executed_requests == requests_before_pilgrimage);
+  CHECK(WorkerQuery(mailbox, [&] {
+    return run(build::kPlayerPilgrimageActivitiesPrivate12004StepV1, pilgrimage_request);
+  }));
+  CHECK(pilgrimage_calls == 1 && pilgrimage_serializer_calls == 1 &&
+        pilgrimage_readonly_contract && callback_reads == reads_before_pilgrimage + 1 &&
+        executor_thread == GetCurrentThreadId());
+  CHECK(canstart_calls == canstart_before_pilgrimage &&
+        feast_calls == feast_before_pilgrimage &&
+        feast_serializer_calls == feast_serializer_before_pilgrimage &&
+        planner_open_calls == planner_before_pilgrimage &&
+        current_view_calls == view_before_pilgrimage);
+  CHECK(Contains(serialized, "\"player_pilgrimage_activities\":{") &&
+        Contains(serialized, "\"schema\":\"ck3_12004_player_pilgrimage_activities_v1\"") &&
+        Contains(serialized, "\"fixture_serializer\":\"player-pilgrimage\"") &&
+        Contains(serialized, "\"read_only\":true") &&
+        !Contains(serialized, "\"read_only\":false") &&
+        Contains(serialized, "\"status\":\"available\"") &&
+        Contains(serialized, "fixture-request"));
+  CHECK(mailbox.executed_requests == requests_before_pilgrimage + 1 &&
+        mailbox.failure_flags == 0 &&
+        mailbox.state == api::MainThreadQueryMailboxStateV1::idle);
   CHECK(api::UninstallMainThreadQueryMailboxV1(mailbox, 0) == api::MainThreadQueryUninstallResultV1::uninstalled);
   CHECK(memory.iat == reinterpret_cast<void *>(&FakePeek));
   return true;
@@ -368,7 +431,25 @@ bool ExecuteActivityFeastStage5Private12002V1(
 }
 std::string SerializeActivityFeastStage5Private12002V1(
     const ActivityFeastStage5Private12002QueryV1 &) {
+  ++feast_serializer_calls;
   return "{\"query_status\":\"available\",\"fixture_dispatch\":true}";
+}
+bool ExecutePlayerPilgrimageActivitiesPrivate12004V1(
+    void *opaque, const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &query = *static_cast<PlayerPilgrimageActivitiesPrivateQuery12004V1 *>(opaque);
+  ++pilgrimage_calls;
+  if (!CheckCallback(query, stamp)) return false;
+  pilgrimage_readonly_contract = query.executable_sha256 == xar::ck3_12004::kExecutableSha256;
+  return pilgrimage_readonly_contract;
+}
+std::string SerializePlayerPilgrimageActivitiesPrivate12004V1(
+    const PlayerPilgrimageActivitiesPrivateQuery12004V1 &query) {
+  ++pilgrimage_serializer_calls;
+  if (!query.completed)
+    return "{\"fixture_dispatch\":false}";
+  return "{\"schema\":\"ck3_12004_player_pilgrimage_activities_v1\","
+      "\"read_only\":true,\"fixture_dispatch\":true,"
+      "\"fixture_serializer\":\"player-pilgrimage\"}";
 }
 } // namespace xar::ck3_12002
 
@@ -381,6 +462,6 @@ std::string SerializeActivityFeastPlannerOpenPrivateV1(
 
 int main() {
   if (!TestRouter()) return 1;
-  std::puts("PASS: production feast router and mailbox dispatch; existing routes and exact .3 current-view action full ID/actor/date/revision, owner-thread once invocation, pending-only receipt and domain RED; native leaf is fixture data, no CK3 contact or live qualification");
+  std::puts("PASS: production feast router and mailbox dispatch; existing routes and exact .3 current-view action full ID/actor/date/revision, owner-thread once invocation, pending-only receipt and domain RED; exact .4 pilgrimage identity read route with serializer spy and no Start/cost policy; native leaf is fixture data, no CK3 contact or live qualification");
   return 0;
 }

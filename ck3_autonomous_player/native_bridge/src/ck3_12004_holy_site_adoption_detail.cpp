@@ -284,6 +284,98 @@ void Planning(const AdoptionDetailBindings&b,const Pass&p,std::uint32_t requeste
   out.native_planning_unavailable_reason="native_detail_planning_component_unavailable";
 }
 }
+
+bool ReadSelectedDecisionTerms12004(const AdoptionDetailBindings&b,
+ const ck3_12002::religion::Context&frame,const void*detail,
+ const void*definition,std::string_view expected_key,
+ SelectedDecisionTermsSnapshot12004&out)noexcept{
+ out={};out.capture_epoch=frame.capture_epoch;out.date_raw=frame.date_raw;
+ out.played_character_id=frame.played_character_id;out.decision_key=expected_key;
+ try{
+  const auto fail=[&](const char*why){out.available=false;out.context_verified=false;
+   out.unavailable_reason=why;out.native={};return false;};
+  if(!b.enabled||!b.image_base||!b.read_memory||!frame.available||
+     !frame.capture_epoch||frame.played_character_id<=0||!detail||!definition||
+     expected_key.empty())return fail("selected_terms_current_player_context_unavailable");
+  if(!Pins(b)||!TextPlanningPins(b)||!CostPlanningPins(b))
+   return fail("selected_terms_existing_exact12004_pins_changed");
+  struct GenericPass{
+   const void*definition=nullptr;const void*actor_object=nullptr;
+   std::uint32_t actor=absent,current_actor=absent;
+   std::int32_t option=-1;std::string key;Scope scope{};Header dictionary{};
+   bool operator==(const GenericPass&)const=default;
+  };
+  const auto context=[&](GenericPass&p)->bool{
+   if(!Typed(b,detail,0x455D4F8,0x5795050)||
+      !Read(b,detail,0xD0,p.definition)||p.definition!=definition||
+      !Key(b,p.definition,p.key)||p.key!=expected_key||
+      !Read(b,detail,0xD8,p.actor)||p.actor!=static_cast<std::uint32_t>(frame.played_character_id)||
+      !Read(b,b.current_actor_reference,0,p.current_actor)||p.current_actor!=p.actor||
+      !Read(b,detail,0xDC,p.option)||p.option!=-1||
+      !ScopeAt(b,detail,0xE0,p.scope)||p.scope.kind!=4||p.scope.flags!=0||p.scope.payload!=p.actor||
+      !Array(b,detail,0xF8,p.dictionary))return false;
+   out.parameter_count=static_cast<std::uint32_t>(p.dictionary.count);
+   // No arbitrary Scope-kind semantics or selected_item is fabricated.
+   if(p.dictionary.count!=0)return false;
+   const void*storage=nullptr,*slots=nullptr;std::int32_t count=0,actual=-1;
+   return Read(b,b.character_storage,0,storage)&&storage&&
+    Read(b,storage,ck3_12004::kCharacterStorageCapacityOffset,count)&&count>0&&
+    Read(b,storage,ck3_12004::kCharacterStorageSlotsOffset,slots)&&slots&&
+    (p.actor&0xFFFFFFU)<static_cast<std::uint32_t>(count)&&
+    Read(b,slots,static_cast<std::size_t>(p.actor&0xFFFFFFU)*ck3_12004::kCharacterStorageSlotStride+
+         ck3_12004::kCharacterStorageObjectOffset,p.actor_object)&&p.actor_object&&
+    Read(b,p.actor_object,ck3_12004::kCharacterFullIdOffset,actual)&&
+    actual==static_cast<std::int32_t>(p.actor);
+  };
+  GenericPass first{},last{};
+  if(!context(first))return fail(out.parameter_count?
+    "selected_terms_nonempty_parameters_not_yet_qualified":"selected_terms_actual_context_unverified");
+  Pass selected{};selected.detail=detail;selected.definition=definition;
+  selected.actor=first.actor;selected.key=first.key;
+  PlanningIdentity identity{};identity.actor=first.scope;
+  identity.dictionary=first.dictionary;identity.actor_object=first.actor_object;
+  bool can_before=false,can_after=false;
+  if(!CanConfirm(b,detail,can_before))return fail("selected_terms_can_confirm_unavailable");
+  std::uint8_t bypass_before=0,bypass_after=0;
+  const bool bypass_observed=Requirements(b,bypass_before);
+  auto&n=out.native;n.decision_key=first.key;n.detail_actor_id=first.actor;
+  n.current_actor_id=first.current_actor;n.native_detail_context_verified=true;
+  n.native_can_confirm=can_before;
+  n.confirm_tooltip_available=Tooltip(b,detail,n.confirm_tooltip);
+   n.native_requirements_description_available=b.requirements_description&&
+    Tooltip(b,detail,n.native_requirements_description,b.requirements_description);
+   n.native_cost_description_available=b.cost_description&&
+    Tooltip(b,detail,n.native_cost_description,b.cost_description);
+  std::array<std::int64_t,10>quote_first{},quote_last{};
+  bool afford_first=false,afford_last=false;
+  const bool quote_a=CostQuote(b,selected,identity,quote_first,afford_first);
+  const bool quote_b=CostQuote(b,selected,identity,quote_last,afford_last);
+  n.native_resource_quote_available=quote_a&&quote_b&&quote_first==quote_last&&afford_first==afford_last;
+  if(quote_a&&quote_b&&(quote_first!=quote_last||afford_first!=afford_last))
+   return fail("selected_terms_native_quote_changed");
+  if(n.native_resource_quote_available){n.native_resource_vector_raw=quote_first;n.native_affordable=afford_first;}
+  CooldownPass cooldown_a{},cooldown_b{};
+  const bool clock_a=Cooldown(b,selected,identity,cooldown_a),clock_b=Cooldown(b,selected,identity,cooldown_b);
+  if(clock_a&&clock_b&&cooldown_a!=cooldown_b)return fail("selected_terms_native_cooldown_changed");
+  n.native_decision_cooldown_observed=clock_a&&clock_b;
+  if(n.native_decision_cooldown_observed){
+   n.native_decision_cooldown_present=cooldown_a.present;
+   n.native_decision_clock_raw=cooldown_a.current;n.native_decision_expiry_raw=cooldown_a.expiry;
+   n.native_decision_cooldown_active=cooldown_a.present&&cooldown_a.current<cooldown_a.expiry;
+  }
+  const bool bypass_after_observed=Requirements(b,bypass_after);
+  if(bypass_observed!=bypass_after_observed||(bypass_observed&&bypass_before!=bypass_after))
+   return fail("selected_terms_requirements_bypass_changed");
+  if(!CanConfirm(b,detail,can_after)||can_after!=can_before)
+   return fail("selected_terms_can_confirm_changed");
+  if(!context(last)||first!=last)return fail("selected_terms_actual_context_changed");
+  n.bypass_requirements_observed=bypass_observed;n.bypass_requirements_raw=bypass_before;
+  n.available=true;out.available=true;out.context_verified=true;out.unavailable_reason.clear();
+  return true;
+ }catch(...){out.available=false;out.context_verified=false;out.native={};
+  out.unavailable_reason="selected_terms_reader_exception";return false;}
+}
+
 AdoptionDetailBindings BindHolySiteAdoptionDetailImage12004(std::uintptr_t base,std::string_view sha)noexcept{
  AdoptionDetailBindings b{};if(!base||sha!=ck3_12004::kExecutableSha256)return b;
  b.enabled=true;b.image_base=base;b.holy_site_storage=reinterpret_cast<void**>(base+0x5D1DE80);

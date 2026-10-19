@@ -4,6 +4,7 @@
 #include "xar_bridge/ingame_decision_outcome_contract_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
+#include "xar_bridge/ck3_12004_holy_site_adoption_detail.hpp"
 #include <string>
 
 namespace xar::ck3_11906 {
@@ -31,6 +32,7 @@ struct IngameDecisionItemResultV1 {
   bool detail_definition_available=false, detail_definition_matches_target=false;
   bool detail_actor_binding_verified=false;
   std::string decision_key, detail_decision_key, unavailable_reason;
+  ck3_12004::religion::holy_site::SelectedDecisionTermsSnapshot12004 selected_terms{};
   KeyedQueryCompletionDiagnosticsV1 completion_diagnostics{};
   // Failure-only diagnostics: never used as ownership, frame or action proof.
   std::string model_read_pass, model_failed_stage;
@@ -41,6 +43,7 @@ struct IngameDecisionItemContextV1 {
   game::Snapshot expected_snapshot{};
   std::uint64_t native_revision=0, connection_generation=0;
   std::string requested_key;
+  bool include_selected_terms=false;
   IngameDecisionItemResultV1 result{};
 };
 bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &,

@@ -565,4 +565,6 @@ std::string SerializeActivityFeastStage5Private12002V1(
   return ck3_11906::SerializeActivityFeastStage5PrivateV1(query);
 }
 
+
+
 } // namespace xar::ck3_12002

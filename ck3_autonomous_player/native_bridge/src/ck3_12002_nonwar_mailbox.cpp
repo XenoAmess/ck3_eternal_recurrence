@@ -65,6 +65,9 @@ void RegisterNonwarMailboxExecutorsV1(
   environment.permitted_executor_trisexagintary = executors.feast_destination;
   environment.permitted_executor_feast_stage2_confirm12002 = executors.feast_stage2_confirm;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1)
+  environment.permitted_executor_player_pilgrimage_identities12004 = executors.pilgrimage_identities;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   environment.permitted_executor_quattuorsexagintary = executors.feast_start;
 #endif

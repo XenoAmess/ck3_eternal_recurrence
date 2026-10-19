@@ -2265,7 +2265,8 @@ def create_server(
             """Read current and main Faith doctrines and native parameter rows."""
             return driver.query_player_religion_doctrines_private_v1(expected_revision=expected_revision)
 
-    if getattr(driver, "allow_private_player_rite_governance_query", False) is True:
+    if (getattr(driver, "allow_private_player_rite_governance_query", False) is True
+            or "ck3_query_player_rite_governance_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_rite_governance_v1(expected_revision: int) -> dict[str, object]:
             """Read the state Rite, heads and organization with separate source status."""
@@ -2657,6 +2658,18 @@ def create_server(
             return driver.query_faction_gift_cold_recovery_private_v1(
                 pending=pending, expected_revision=expected_revision,
             )
+
+    if (getattr(driver, "allow_private_player_pilgrimage_activities_query", False) is True
+            or "ck3_query_player_pilgrimage_activities_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_pilgrimage_activities_v1(
+            expected_revision: int,
+        ) -> dict[str, object]:
+            """Read current-player hosted pilgrimage IDs; absence is not completion."""
+            return driver.query_player_pilgrimage_activities_private_v1(
+                expected_revision=expected_revision,
+            )
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_pilgrimage_activities_v1")
 
     if getattr(driver, "allow_private_activity_feast_stage5_start_query", False) is True:
         @server.tool(annotations=read_only_tool)

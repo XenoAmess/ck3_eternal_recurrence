@@ -354,7 +354,7 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
     const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {
   auto &out=query.result;out={};out.native_revision=query.native_revision;out.connection_generation=query.connection_generation;out.game_pid=GetCurrentProcessId();
   try {
-    const auto reject=[&](const char *reason){out.available=false;out.unavailable_reason=reason;return true;};
+    const auto reject=[&](const char *reason){out.available=false;out.selected_terms={};out.unavailable_reason=reason;return true;};
     if(!query.game||
        !query.native_revision||!query.connection_generation||!KeySyntax(query.requested_key)||
        !env.exact_build_admitted||env.offline_fixture_function_overrides)
@@ -396,6 +396,25 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,
     void *detail_root=nullptr;
     if(!Root(env,"decisiondetail_view",detail_root,out.detail_root_visible,out.detail_tree_complete)||
        (detail_root&&detail_root!=first.detail_root))return reject("actual_detail_root_or_census_unverified");
+    // Same qualified selected detail, not a synthetic HolySite or arbitrary key evaluator.
+    // Never run native terms getters for Select/Confirm's internal model guard.
+    out.selected_terms.capture_epoch=stamp.pump_epoch;
+    out.selected_terms.date_raw=before.date_raw;
+    out.selected_terms.played_character_id=before.played_character_id;
+    out.selected_terms.decision_key=query.requested_key;
+    if(!query.include_selected_terms)
+      out.selected_terms.unavailable_reason="selected_terms_not_requested_in_action_guard";
+    if(query.include_selected_terms&&env.gui_abi_revision==GuiAbiRevisionV1::crozier12004&&
+       out.detail_definition_matches_target&&out.detail_root_visible&&out.detail_tree_complete&&
+       out.detail_actor_binding_verified){
+      ck3_12002::religion::Context terms_frame{};terms_frame.available=true;
+      terms_frame.capture_epoch=stamp.pump_epoch;terms_frame.date_raw=before.date_raw;
+      terms_frame.played_character_id=before.played_character_id;
+      const auto terms_bindings=ck3_12004::religion::holy_site::BindHolySiteAdoptionDetailImage12004(
+          env.module_base,descriptor.executable_sha256);
+      (void)ck3_12004::religion::holy_site::ReadSelectedDecisionTerms12004(
+          terms_bindings,terms_frame,first.detail,first.selected_definition,query.requested_key,out.selected_terms);
+    }
     void *last_context=nullptr,*last_owner=nullptr;game::Snapshot after{};Pass last{};
     out.gui_owner_binding_verified=ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,last_context,last_owner)&&last_context==context&&last_owner==owner;
     out.frame_verified=game::ReadSnapshot(*query.game,after)&&after==before;
@@ -448,6 +467,8 @@ std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &v) {
     }
     s+="]}";
   }
+  if(v.game_version=="1.20.0.4")
+    s+=",\"selected_terms\":"+ck3_12004::religion::holy_site::SerializeSelectedDecisionTerms12004(v.selected_terms);
   text("decision_key",v.decision_key);text("detail_decision_key",v.detail_decision_key);text("unavailable_reason",v.unavailable_reason);return s+'}';
 }
 bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,

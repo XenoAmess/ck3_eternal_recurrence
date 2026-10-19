@@ -149,7 +149,10 @@ class FormalInputs:
         if len(claims)!=len(evidence['claims']) or len(checks)!=len(evidence['native_checks']):
             raise ValueError('Duplicate evidence claim/check identifiers')
         expected_slots=voices.get('new_live_result_voice_slots',{})
-        if not expected_slots or set(doc['pending_result_slots'])!=set(expected_slots):
+        review_only = self.common.rules_preview_segment(doc, voices, evidence)
+        if not expected_slots and not review_only:
+            raise ValueError('Value-v3 must preserve every pending live-result slot')
+        if set(doc['pending_result_slots'])!=set(expected_slots):
             raise ValueError('Value-v3 must preserve every pending live-result slot')
         self.evidence_unknowns=evidence.get('unknowns',[])
         self.source_claim_limits=[{'claim_id':claim['id'],'known_limits':claim['known_limits']}
@@ -428,7 +431,7 @@ class FormalInputs:
             'metadata_SHA_checked_inputs':metadata_checked,
             'evidence_unknowns':getattr(self,'evidence_unknowns',[]),
             'source_claim_limits':getattr(self,'source_claim_limits',[]),
-            'budget': common.peak_budget(total, len(rows),profile=profile),'background_music':music,
+            'budget': common.document_budget(doc,rows,profile=profile),'background_music':music,
             'scope': doc['scope'], 'editorial_warnings': warnings,
             'selected_existing_voice_count': sum(row['id'] in old for row in rows),
             'selected_new_voice_count': sum(row['id'] in new for row in rows),
