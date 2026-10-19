@@ -15,6 +15,7 @@ from xar_autoplayer.construction_formal_consumer import write_construction_ledge
 def inputs(driver):
     snapshot = driver.snapshot
     snapshot['active_wars'][0]['player_relative_war_score'] = 40
+    snapshot['player_armies'][0]['soldiers'] = 2000  # winning, no observed raised-force deficit
     snapshot['played_character_gold']['raw'] = 100000000
     frame = observed_frame(snapshot)
     return dict(root=snapshot['campaign_root_context'],
@@ -156,6 +157,7 @@ def test_weak_cheap_company_cannot_replace_a_quote_covering_known_deficit(tmp_pa
     driver = WarDriver(tmp_path)
     values = inputs(driver)
     driver.snapshot['active_wars'][0]['player_relative_war_score'] = -60
+    driver.snapshot['player_armies'][0]['soldiers'] = 800
     values['market']['rows'][0]['troop_strength']['current_soldiers'] = 50
     decision = observe_wartime_construction_cash_v1(driver.snapshot, kind='new_building',
         construction_gold_raw=0, **values)
@@ -175,6 +177,7 @@ def test_current_assessed_suitable_quote_has_priority_but_old_decision_does_not(
     driver = WarDriver(tmp_path)
     values = inputs(driver)
     driver.snapshot['active_wars'][0]['player_relative_war_score'] = -60
+    driver.snapshot['player_armies'][0]['soldiers'] = 800
     frame = values['market_source_frame']
     selected = {'company_id': 8, 'gold_cost_raw': 30000000, 'rejection_reasons': [],
         'purpose_war_ids': [driver.snapshot['active_wars'][0]['war_id']],

@@ -229,6 +229,7 @@ def test_rejects_unhelpful_or_untimely_spend_and_keeps_input(change, tmp_path):
 def test_winning_or_allied_war_does_not_become_a_blanket_building_ban(tmp_path):
     driver = WarDriver(tmp_path)
     driver.snapshot["active_wars"][0]["player_relative_war_score"] = 12
+    driver.snapshot["player_armies"][0]["soldiers"] = 2000  # observed lead, not a threatened defence
     assert not observe_war_spending_priority_v1(driver.snapshot)["defer_new_economic_construction"]
 
 
