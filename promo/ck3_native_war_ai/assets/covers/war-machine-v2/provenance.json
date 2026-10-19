@@ -1,0 +1,91 @@
+{
+  "schema": "ck3-series-cover-artifacts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T15:48:59.156977+00:00",
+  "series_title": "CK3:战争机器",
+  "version": "v2",
+  "artwork_method": "built-in image_gen",
+  "fallback_CLI_used": false,
+  "scene": "角色在暗光战争议事厅中冷静推演战局，以青色数据指令影响地图上的军队；两军、城堡、行军路线、王冠与封蜡文书连起战争行动与权力。",
+  "character_direction": "以用户原封面作为整幅场景与气质参考，保留青色数据幽灵、黑衣、白发红瞳与略带危险感的操盘者神态。控制金色装饰与总体亮度，横排标题服务于叙事地图。",
+  "review_scope": "模型直接查看两张最终JPG，核对文字、人物动作、场景融合、画幅及裁切；随后用户明确认可这两张暗色版并要求入库、提交与推送。",
+  "upload_performed": false,
+  "records": [
+    {
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "png": {
+        "file": "war-machine-16x9.png",
+        "bytes": 2658295,
+        "sha256": "1902d436996c85683b117b18487836a247646bb1c756f4c591c41774f3192769"
+      },
+      "jpg": {
+        "file": "war-machine-16x9.jpg",
+        "bytes": 683494,
+        "sha256": "e2788cb8968846011cb1a8ab310798d9bdb6fecdd43f2c7696691fa1920a1e5b"
+      },
+      "prompt": {
+        "file": "prompts/16x9.txt",
+        "bytes": 3545,
+        "sha256": "80fe4424ec1f91ccb9366b8a9a28456aabb51612e8dbf2f5883d267e12321241"
+      },
+      "native_generated_art": {
+        "file": "exec-28b4c267-900f-4924-964c-ba02e3d5575d.png",
+        "bytes": 2734832,
+        "sha256": "c0cdc87608def6776ebe814260ef2733eefb4d3053fe8ca5a1cef6b51bdb47ef"
+      },
+      "technical_edge_crop": {
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936,
+        "source_width": 1672,
+        "source_height": 941
+      },
+      "technical_export": "FFmpeg仅校齐边缘比例与JPEG编码；未拉伸、手绘覆盖或另行生成画面元素"
+    },
+    {
+      "ratio": "4x3",
+      "width": 1448,
+      "height": 1086,
+      "png": {
+        "file": "war-machine-4x3.png",
+        "bytes": 2798557,
+        "sha256": "0d0c032ebac14cefa6c62f0e62f649bda069bc89f2cd419a262dabd8b164844b"
+      },
+      "jpg": {
+        "file": "war-machine-4x3.jpg",
+        "bytes": 771595,
+        "sha256": "91ca3c267465cc2e7db3a978c63812e2bd2da6fb83c7fc114664843c6f13c545"
+      },
+      "prompt": {
+        "file": "prompts/4x3.txt",
+        "bytes": 2424,
+        "sha256": "9b94be38cd87982cd8fe9df4912b504dce641b40837c0ba721a3eba4dee51990"
+      },
+      "native_generated_art": {
+        "file": "exec-09160f14-ca7e-4ffa-9b7b-25b79b1e7e71.png",
+        "bytes": 2798557,
+        "sha256": "0d0c032ebac14cefa6c62f0e62f649bda069bc89f2cd419a262dabd8b164844b"
+      },
+      "technical_edge_crop": null,
+      "technical_export": "FFmpeg仅校齐边缘比例与JPEG编码；未拉伸、手绘覆盖或另行生成画面元素"
+    }
+  ],
+  "retention": {
+    "category": "delivered_media",
+    "state": "current_series_cover",
+    "active_references": [
+      "../../../docs/cover-design.md",
+      "../../../README.md"
+    ],
+    "protected_until_utc": "2026-10-26T15:48:59.156977+00:00",
+    "protection_reason": "用户明确认可的现行战争机器系列封面，供后续Bilibili使用及信仰引擎视觉方向参考；到期复核用途。",
+    "expires_at_utc": "2026-11-18T15:48:59.156977+00:00",
+    "expiry_means_review_not_unconditional_delete": true
+  },
+  "user_approved": true,
+  "user_approval_source": "本会话用户明确指令：战争机器这两张图我很喜欢，给我放进仓库，提交、推送。",
+  "user_approval_recorded_at_utc": "2026-10-19T16:01:54.410673+00:00"
+}

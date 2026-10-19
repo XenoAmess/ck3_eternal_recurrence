@@ -1,0 +1,13 @@
+Make ONE exact 4:3 landscape companion cover for “CK3:战争机器”.
+Input 1 is the revised 16:9 design with the CORRECT approved-direction mood: dark, mysterious cyber-ghost strategist. Input 2 is the user's original cover and should guide atmosphere and character personality. Recompose this scene thoughtfully for 4:3, not a stretched or blindly cropped image.
+
+PRESERVE this mood: low-key candlelit medieval war chamber, deep warm-brown/charcoal shadows, cool cyan spectral/data fragments around a dark hooded silver-haired strategist, red eyes with a cold, self-possessed, faintly knowing expression. The person is an eerie, intelligent observer manipulating a war map, not a bright gilded royal hero. Keep restrained black clothing, red spiral brooch, subtle medieval metalwork. No bright sunlit cathedral, extra gold jewelry, lavish golden armor, cheerful innocent expression, or glossy gold poster treatment.
+Keep their same meaningful action integrated into the room: one hand near the chin, the other two fingers issuing a cyan command over the parchment map. Red/blue army miniatures, a contested fortress, painted irregular route arrows, river/terrain, a separate royal crown and sealed scroll are visible on the broad strategy table. Preserve the original's quiet menace and controlled cyan energy; no sci-fi machine or robot, no faith-engine gears. Use consistent refined dark anime/concept-art rendering, coherent shadows and lighting.
+
+For 4:3: commander upper-right, restrained title upper-left, a broad readable campaign-map story across the lower half. Redistribute crown/books/candles so nothing important collides with title or the command hand. The atmosphere and meaningful map must remain more prominent than decorative type.
+ONLY these exact words:
+small “CK3”
+main ONE horizontal line “战争机器”
+subtitle “战争机制与AI解析”
+Match input 1's aged ivory/pale bronze lettering with subtle dark red weathering, not enormous sparkling 3D gold letters. Readable series name inside safe margins, no extra slogans or episode numbers.
+Keep all text, both eyes, command hand and main army/fortress action inside 5% safe margins. The original avatar is part of the unified scene, never a pasted giant head. Avoid watermark, fake UI, tiny English phrases, modern flags, modern weapons, extra people, distorted fingers and bright generic palace-poster styling. One finished 4:3 cover.

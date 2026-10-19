@@ -1,0 +1,17 @@
+Use case: precise-object-edit / ads-marketing.
+Create ONE improved 16:9 Bilibili cover for “CK3:战争机器”, based closely on the PROVIDED ORIGINAL COVER. The user prefers this original's distinctive mood and dislikes an overly bright, gold, generic royal-poster redesign. This image is the entire scene reference, not an avatar to paste onto a new background.
+
+Art direction goal: preserve and strengthen the original's DARK, QUIETLY MENACING, CEREBRAL CYBER-GHOST STRATEGIST atmosphere. This is an intelligent supernatural/data-soul observer manipulating a medieval war, with a cold self-possessed, faintly knowing expression. Keep the recognizable silver-white tousled hair, sharp red eyes, dark hooded mantle, red spiral brooch, one hand thoughtfully near the mouth/chin, the other two fingers issuing a cyan command over the map. A medium-wide view lets the full campaign map and character breathe, with the person physically sharing the scene and perspective.
+
+PRESERVE the original's restrained candlelit chamber, deep charcoal/brown shadows, muted parchment map, books, separate crown and scrolls. Preserve the cool cyan spectral data fragments merging into the character's silhouette and illuminating small army figures on the map. This controlled cyber-ghost quality is essential to the identity, not just a blue glow on a generic medieval noble. Keep the face partly in shadow and the red eyes distinct. Medieval black outfit with SUBTLE ornament, not heavily encrusted gold embroidery, necklaces or luxury shoulder armor.
+Lighting: the image remains low-key and atmospheric, warm candle pools against cold cyan command light, deep negative space, soft depth and a mysterious observer's gaze. No huge bright sunlit cathedral windows, no bright gold palace, no cheerful/innocent expression. Use original-style refined dark anime/concept-art rendering consistently across face, hands, room and map.
+
+Map composition: preserve the compelling original's broad war-table scene: red and blue medieval army miniatures, a contested castle, hand-drawn red/blue routes, hills, river crossing, small hints of marching/supply and a sealed scroll. Selectively clarify the main strategic interaction and a few army silhouettes, while retaining some irregular engraved/painted map texture and atmospheric depth. Do not turn it into an immaculate bright toy diorama. No mechanical astrolabe, no gear apparatus. Keep the image's narrative interest larger than its typography.
+
+Add restrained but readable series lettering in the UPPER-LEFT shadowed area, composed around the candle/books, with subtle local tonal separation rather than a boxed panel:
+small “CK3”
+main title in ONE horizontal line “战争机器”, approximately 35–40% of canvas width, strong aged-ivory / softly burnished pale-bronze Chinese lettering, NOT sparkling huge 3D gold block type
+smaller subtitle “战争机制与AI解析”
+These are the ONLY words. Typography supports the original atmosphere instead of dominating it. No decorative starbursts, giant golden title, compass rings around letters or glossy logo plate.
+Exact landscape 16:9 canvas; retain the full meaningful map/character narrative and 5% safe margins.
+Avoid pasted giant avatar, smiling childlike face, generic gilded aristocrat, excessive gold chains, bright warm overall grading, heroic battlefield screaming, modern weapons/robots, fake GUI, watermark, tiny English HUD writing, extra people, distorted hands. One unified refined dark cover with the ORIGINAL'S distinctive personality.
