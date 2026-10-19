@@ -1,0 +1,76 @@
+{
+  "schema": "xar.SAVE6397-frontier-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:27:29.328043+00:00",
+  "machine_id_source": "tools/ck3_live_run_id.py machine, chunk01de0e",
+  "status": "SOURCE_FRONTIER_READY_NOT_RUNTIME_ADMITTED",
+  "source": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\checkpoint6397_saved_frontier_v1.py",
+    "bytes": 9598,
+    "sha256": "d844c5b0f6e399f039b48f58f852bbf65c159386a068da207a261bba8458df90"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_checkpoint6397_saved_frontier_v1.py",
+    "bytes": 3841,
+    "sha256": "f0d0f099639b3ad4fb34a67169a84bf7925973c23fe1902ce4d8150aad83980e"
+  },
+  "actual_cadence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_checkpoint_cadence.py",
+    "bytes": 7065,
+    "sha256": "a017eded18ca03733700fd61b10cace8981e5379e73dbe99b4d281fb97e4ae87"
+  },
+  "inputs": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "frontier": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c15-session-interruption90\\SAVE6397-FRONTIER-DRAFT.json",
+      "bytes": 4785,
+      "sha256": "bca6c74e62d01361882caa27e300ed3ec02c2d4126f7a2b1748e2a899ad1142a"
+    },
+    "historical_tail": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c15-session-interruption90\\POST-SAVE6397-HISTORICAL-TAIL234.json",
+      "bytes": 36135,
+      "sha256": "0f6acfccdbb27fcc999bd91148cddc5c9196edd9f503dadd9d9cca426a0b68a8"
+    },
+    "interruption": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c15-session-interruption90\\FROZEN.json",
+      "bytes": 13369,
+      "sha256": "e84e889772141a8b3e31bc1d5b9b27577eb830860429c2d8f48403339389d8bd"
+    }
+  },
+  "cases": [
+    "actual saved3039/directSAVE6397 source reconstruction + actual cadence PASS",
+    "future3273 current credit rejected",
+    "wrong CUM3039 identity pin rejected"
+  ],
+  "restored_current": {
+    "cycles": 3039,
+    "day": 2433,
+    "date_raw": 53202720,
+    "counted_cadence_saves": 35,
+    "maintenance_SAVE6397_adopted_separately": true,
+    "save_history_index": 2083
+  },
+  "historical_only": {
+    "cycles": 3273,
+    "day": 2504,
+    "tail_cycles": 234,
+    "tail_days": 71,
+    "unknown_AUTO6874_replay": false,
+    "tail_event6710_current_credit": false
+  },
+  "closure": {
+    "status": "EXACT_C15_INTERRUPTED_KERNEL_EXITS_SOURCE_BOUND",
+    "normal_Game_or_SDK_exit": false,
+    "Job_or_user_abort_cause_proven": false,
+    "publisher_child_numeric_exit_code": null,
+    "replay_unknown_AUTO6874": false,
+    "durable_new_owner_admitted": false
+  },
+  "scope": {
+    "new_Game_Native_RPC_calls": 0,
+    "Driver_or_SAVE_bodies_read": false,
+    "D_writes": 0,
+    "old_controller_or_contract_changed": false,
+    "sidecars_or_durable_owner_qualified": false
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "xar.c16.finite-control-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:48:02.702021+00:00",
+  "status": "SOURCE_COMPOSITION_PASS",
+  "input_sha256": {
+    "root_p37c15_sdk_queue.py": "30823cafc946b846fefd851b1ad65b9601fd8ba0d8d9cd388ecc1ae9867c236f",
+    "root_p37c15_mcp_entry.py": "b0a52546bd1639b75f5957dff8c81d7fec73df2d527f81ae93a549d138bb505f",
+    "root_native_build_binding_p37c15.py": "6bd0b40792dcbd37f67f692190e9317ec8c60a425f148795b50d5acc876c2fe2",
+    "root_p37c15_automatic_natural_succession_handoff.py": "a95e9f7d099db0ded85093b2237125d277a26d2fbbb1e94618437f3ad12d9073",
+    "p51_resident_successor_adoption_c15.py": "6381a99e2f5efe870d4527ea416b1204c8a3612b1625329e11a3c83e16ad6cba",
+    "launch_sdk_p37c15_owner.py": "60ba203510d312ab1f0276fab95192b7296008eb11d2a0c3ce297a5a3a819a94",
+    "root_p37c15_cold_resume.py": "2db2f72ada9e059156ca5a199d1ad846721946eaff6269f3a317cdb7b37d87dc",
+    "root_checkpoint_bootstrap_c15.py": "f30d09028c8c9f0284e45c6f27d78431e5c2bcb27ec97961f8633ca33c8a4dbc",
+    "root_native29_supervisor_c15.py": "fb1c665b49b82b1424400a04224961f91c4a68621c9a3a6232637ebc02836611",
+    "root_record_shutdown_c15.py": "5d2f399c056915133e8c7f78645388f089850e23630144e3ff664fae1f01c271",
+    "root_score_month_samples_c15.py": "80bf40298d70d7667e37748343b837e15c515cacdcdf5b0b3ecfbdfe5be7df73",
+    "root_c15_control_timing_adapter.py": "8de977bf27ff0f9c4dd325845daca5b60908d4ccebedd730a7048e1e10a5f3be",
+    "root_c15_queue_control_timing.py": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c",
+    "root_screen_bus_lease_c15.py": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+  },
+  "sources": {
+    "root_p37c16_sdk_queue.py": {
+      "bytes": 267956,
+      "sha256": "58f6ff2126793cb1c2f1d61f37ea8f9057c65fe1e53e84fdf921d33ab8ee9d83"
+    },
+    "root_p37c16_mcp_entry.py": {
+      "bytes": 12630,
+      "sha256": "e486fa1ccd3b10e290bcc96cfdf4c66c2b0a4a6f34f5fa78d1d85341d8d760fa"
+    },
+    "root_native_build_binding_p37c16.py": {
+      "bytes": 4090,
+      "sha256": "fee140b9bf9a2b98d4bdd6f40900cc3e440333a9a9d438e5321060f6f88fff69"
+    },
+    "root_p37c16_automatic_natural_succession_handoff.py": {
+      "bytes": 38624,
+      "sha256": "e2a63f5aa0e4e1b16a7ad3be7fbaf4950a2e6e287be2e32c2b034cf9df7083f1"
+    },
+    "p51_resident_successor_adoption_c16.py": {
+      "bytes": 24607,
+      "sha256": "2c5a6f5a3c7a9548030e8d098bb32af54bc20bd6a74b4f26a2d0022a239be1aa"
+    },
+    "launch_sdk_p37c16_owner.py": {
+      "bytes": 6108,
+      "sha256": "8302bee328111f411d5a5c33eb1a2a97a6aea06b7ca957d4bb0f20f702de20ea"
+    },
+    "root_p37c16_cold_resume.py": {
+      "bytes": 18991,
+      "sha256": "f7bc3c8216fa297b263ed18f88ed671cf01441a876662c516345cfa178d2798e"
+    },
+    "root_checkpoint_bootstrap_c16.py": {
+      "bytes": 10663,
+      "sha256": "7db736e1fe3db39c3c119c01bb18e06fc72bab8b67792ac3854b382f33bf520b"
+    },
+    "root_native29_supervisor_c16.py": {
+      "bytes": 33336,
+      "sha256": "2b470516f05f324440b0c23f3354109bbe67c2792339dc5a15f2166be5c3ae77"
+    },
+    "root_record_shutdown_c16.py": {
+      "bytes": 6913,
+      "sha256": "1333a21bff6e4131e3fe472221e279f137d751800eca5c86434736d9364599af"
+    },
+    "root_score_month_samples_c16.py": {
+      "bytes": 7991,
+      "sha256": "e536f8256dc8338193984a1bed22a04c5b7573b4ac05a423814a4ab621ad4a67"
+    },
+    "root_c16_control_timing_adapter.py": {
+      "bytes": 15044,
+      "sha256": "472e25a6473db8b4f177609e992bbc9c32e22de922bfccad4da9532d47bf6555"
+    },
+    "root_c16_queue_control_timing.py": {
+      "bytes": 8642,
+      "sha256": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+    },
+    "root_screen_bus_lease_c16.py": {
+      "bytes": 16526,
+      "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+    },
+    "root_checkpoint6397_cold_contract_c16.py": {
+      "bytes": 10481,
+      "sha256": "4df3ef85870a7f9580e1aa2b07c625b222e98d7607cfae4a39eeccd0d3e63e9a"
+    }
+  },
+  "source_bytes": 482602,
+  "adoption_copies": 1,
+  "D_writes": 0,
+  "Driver_SAVE_reads": 0,
+  "RPC_calls": 0,
+  "checks": [
+    "15 compile; namespace AST port; protected machine/episode; exact source pins",
+    "finite bootstrap/factory inverse bytes; original normal branch positive",
+    "actual F90 positive; wrong old Game birth rejected; actual factory finite branch"
+  ],
+  "current_frontier": {
+    "cycles": 3039,
+    "date_raw": 53202720,
+    "SAVE": 6397,
+    "historical_tail_cycles": 234,
+    "unknown_AUTO6874_replayed": false
+  },
+  "remaining": [
+    "sole runtime metadata cumulative budget",
+    "canonical Driver checkpoint validator",
+    "durable stage custody",
+    "fresh cold SEM/CAP and Root pixels"
+  ]
+}
