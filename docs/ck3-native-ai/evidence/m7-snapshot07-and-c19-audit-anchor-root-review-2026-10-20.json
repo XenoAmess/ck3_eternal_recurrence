@@ -1,0 +1,38 @@
+{
+  "schema": "xar.root.M7-snapshot-source-and-C19-anchor-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:39:55.885171+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; Root b67828",
+  "M7": {
+    "source_complete_bytes": 161036,
+    "cap": 163840,
+    "independent_review": "M3 final noBlock, all five fresh pins and old06/adapter/exporter checked. Root directly read complete proof aa07b1.",
+    "new_tests": 9,
+    "new_subtests": 26,
+    "result": "PASS1.80s/3d7087",
+    "scope": "Fixed07 metadata contract and bounded NoWork raw reader. Preserve old06/wholeclean. Actual07FAILED still rejects; no delivery/custody/H inferred;08 unsupported.",
+    "native_actual": "No continuous camera or idle full-realm runtime qualification yet."
+  },
+  "C19_audit_anchor": {
+    "commit": "20573da99df6d43f513c4220509e8ecd4a7307b1",
+    "parent": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+    "ref": "refs/heads/campaign/robert-v20261019-c19-same-speed-audit-01",
+    "fullrows_sha256": "443af4f80195dc413d5e7add1af7fbadcba65069b91675120226d182020f0abf",
+    "files": 1454,
+    "delta_from_parent": 1,
+    "unchanged_parent_rows": 1453,
+    "epoch": "3642 unchanged",
+    "independent_review": "performance_python final noBlock; Root actual release and exact capacity supplement ac3f42 read before writer.",
+    "failure_preserved": "First Root writer stopped on loose-tree compression estimate. Existing partial tree24,576B charged. Original source and first release preserved; separate failed receipt and exact RAM repair.",
+    "counter": "Final conservative new73,728 includes failed tree, no double charge; retained561,152/peak626,688 below same1MiB. Newreserve0.",
+    "boundaries": "Git objects/create-only ref only. Current master/index and old65f ref preserved by actual writer; no D export/Task/Native/Game or performance credit."
+  },
+  "active_campaign": "Same Game30852/Source15/Native29 paused F96 pending4749 after5427days. No query/action replay by this source commit.",
+  "next": "Source20 exact typed readonly retry and bounded diagnostics; Native08B source/build-only plan under independent review.",
+  "storage": {
+    "root_scope": "post186 independent128KiB/f03059a2958fd57748303733dc0e5a71eb1d12da2cbc1bec9ce81c1c478ca19a",
+    "oldRoot512_fullgross": "unknown; no capacity released",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "record_review_at_utc": "2027-04-17T20:43:00Z"
+  }
+}

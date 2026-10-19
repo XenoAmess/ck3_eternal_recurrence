@@ -1,0 +1,118 @@
+{
+  "D_exports_Task_Game_Native_calls": 0,
+  "actual": {
+    "D_Task_Game_writes": 0,
+    "commit": "20573da99df6d43f513c4220509e8ecd4a7307b1",
+    "complete_manifest": {
+      "access": "compose() returns all1454 rows in memory",
+      "canonical_rows_JSON": {
+        "bytes": 373692,
+        "sha256": "443af4f80195dc413d5e7add1af7fbadcba65069b91675120226d182020f0abf"
+      },
+      "file_count": 1454,
+      "source_bytes": 59177551
+    },
+    "new_Git_objects_only": true,
+    "parent": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+    "ref": "refs/heads/campaign/robert-v20261019-c19-same-speed-audit-01",
+    "source15_delta": 16,
+    "tree": "2ccef4152640419f3ac55c63760e210c0a090d90"
+  },
+  "actual_H": "unknown",
+  "capacity_card": {
+    "bytes": 4107,
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C19-SAME-SPEED-AUDIT-GIT1MiB-SAME16MiB-SUPPLEMENT01.json",
+    "sha256": "a3596cbb2fd5a06576194fed6ad0248392b9e9e4fbdfca86429b84983dfc089b"
+  },
+  "index_SHA_preserved": {
+    "bytes": 9884107,
+    "sha256": "5b37a04198f613321d018e7bb2b21d04138828fe82654becf9019f1e5cdb47db"
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_source": "tools/ck3_live_run_id.py machine; Root b67828",
+  "master_HEAD_preserved": "48ed81c4c8733f54651807b235bfb367b07254a2",
+  "new_object_ref_charge_upper": 73728,
+  "observed_at_utc": "2026-10-19T20:37:59.728550+00:00",
+  "old_ref_preserved": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+  "release": {
+    "bytes": 1969,
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-same-speed-audit-root-git-release02-2026-10-20.json",
+    "sha256": "19a539992f1a2ce181e690b313e9008a7d00234a9ff793af81169c848586be01"
+  },
+  "remaining": "New controls exact business commit/rows pins, actual Native qualification and explicit cold admission/transition.",
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "same_git_cap": 1048576,
+  "same_git_conservative_retained_upper": 561152,
+  "schema": "xar.root.C19-same-speed-audit-create-only-actual/v1",
+  "seconds_saved": null,
+  "simultaneous_peak_upper": 626688,
+  "status": "GIT_ANCHOR_CREATED_NOT_EXPORTED_NOT_ADOPTED",
+  "storage_scope": "post186 independent128KiB for Root source records; same C19 Git1MiB for object/ref allocation",
+  "verified_source_leaves": 1454,
+  "writer_calls": [
+    {
+      "already_present": true,
+      "command": "hash-object",
+      "conservative_new_charge": 0,
+      "predicted_oid": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+      "result": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+      "stdin_bytes": 4934
+    },
+    {
+      "already_present": true,
+      "command": "mktree",
+      "conservative_new_charge": 0,
+      "predicted_oid": "e3a13611b1616d923acd8c0c7a868b45c9f95a4e",
+      "result": "e3a13611b1616d923acd8c0c7a868b45c9f95a4e",
+      "stdin_bytes": 56735
+    },
+    {
+      "already_present": false,
+      "command": "mktree",
+      "conservative_new_charge": 16384,
+      "predicted_oid": "a8fa40c749a844320cab228a85e249c584b37d73",
+      "result": "a8fa40c749a844320cab228a85e249c584b37d73",
+      "stdin_bytes": 18355
+    },
+    {
+      "already_present": false,
+      "command": "mktree",
+      "conservative_new_charge": 4096,
+      "predicted_oid": "2d7afb07af151ee009273f6bea7b6380c0e1d6d4",
+      "result": "2d7afb07af151ee009273f6bea7b6380c0e1d6d4",
+      "stdin_bytes": 68
+    },
+    {
+      "already_present": false,
+      "command": "mktree",
+      "conservative_new_charge": 4096,
+      "predicted_oid": "cb544d89ece3d3fa05855a6f8d3127bacdfadc4a",
+      "result": "cb544d89ece3d3fa05855a6f8d3127bacdfadc4a",
+      "stdin_bytes": 1782
+    },
+    {
+      "already_present": false,
+      "command": "mktree",
+      "conservative_new_charge": 4096,
+      "predicted_oid": "2ccef4152640419f3ac55c63760e210c0a090d90",
+      "result": "2ccef4152640419f3ac55c63760e210c0a090d90",
+      "stdin_bytes": 2556
+    },
+    {
+      "already_present": false,
+      "command": "commit-tree",
+      "conservative_new_charge": 8192,
+      "predicted_oid": null,
+      "result": "20573da99df6d43f513c4220509e8ecd4a7307b1",
+      "stdin_bytes": 133
+    },
+    {
+      "already_present": false,
+      "command": "update-ref",
+      "conservative_new_charge": 12288,
+      "predicted_oid": null,
+      "result": "",
+      "stdin_bytes": 0
+    }
+  ]
+}

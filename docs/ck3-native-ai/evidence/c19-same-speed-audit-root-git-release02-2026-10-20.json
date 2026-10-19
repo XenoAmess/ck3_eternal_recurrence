@@ -1,0 +1,37 @@
+{
+  "D_export_Task_Game_Native_permissions": false,
+  "allowed": "Only existing exact helper blob, five ancestor trees, bounded commit and new ref with old value zero. Root callback rechecks deadline/free/counters per write.",
+  "capacity_card": {
+    "bytes": 4107,
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C19-SAME-SPEED-AUDIT-GIT1MiB-SAME16MiB-SUPPLEMENT01.json",
+    "sha256": "a3596cbb2fd5a06576194fed6ad0248392b9e9e4fbdfca86429b84983dfc089b"
+  },
+  "create_only_ref": "refs/heads/campaign/robert-v20261019-c19-same-speed-audit-01",
+  "limits": {
+    "new_objects_ref_upper": 98304,
+    "retained_prior": 487424,
+    "same_git_cap": 1048576,
+    "simultaneous_input_upper": 65536
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_source": "tools/ck3_live_run_id.py machine; Root b67828",
+  "observed_at_utc": "2026-10-19T20:37:57.748617+00:00",
+  "parent_commit": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+  "preserve": "Old65f ref, master HEAD, index, all runtime inputs and1453 sibling source leaves.",
+  "prior_failed_object_charge": 24576,
+  "prior_failure_record": "c19-same-speed-audit-root-git-attempt01-failed-2026-10-20.json",
+  "producer": {
+    "bytes": 18072,
+    "sha256": "a017871f08b831ec0d19c67267d6eca9a7395ec2bb88d6221e2b84c0bcf91b6d"
+  },
+  "review": "Root full producer/plan837b03/7421a8; independent performance_python final noBlock. Root release SHA is provenance, not self-validating authorization.",
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "schema": "xar.root.C19-same-speed-audit-create-only-release/v1",
+  "source_plan": {
+    "bytes": 9990,
+    "path": "docs/ck3-native-ai/evidence/c19-same-speed-audit-addon-source-plan-2026-10-20.json",
+    "sha256": "f2dc213adf8c6a6db8ee854dab37402d0b10bd3042d401db85251a6dafb4ea73"
+  },
+  "status": "RELEASED_GIT_OBJECTS_ONLY",
+  "storage_root_records": "post186 independent128KiB/f030; not charged as Git objects or oldRoot512"
+}
