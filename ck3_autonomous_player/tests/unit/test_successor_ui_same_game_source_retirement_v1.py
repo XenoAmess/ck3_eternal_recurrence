@@ -20,6 +20,7 @@ from xar_autoplayer.bridge.successor_ui_app_owner_v1 import SuccessorUIAppOwner
 def completed_warm_fixture(root):
     old = SourceDriver()
     game = identity(old)
+    game["creation_date"] = "20261019051054.525692+000"
     game["executable"] = os.path.normcase(os.path.abspath(game["executable"]))
     with patch("test_successor_ui_pending_ledger_v1.identity", return_value=game):
         ledger = retain(root, old)
@@ -67,6 +68,26 @@ def completed_warm_fixture(root):
 
 
 class SameGameSourceRetirementTests(unittest.TestCase):
+    def test_process_identity_equivalence_is_strict_and_keeps_raw_evidence(self):
+        game = {"pid": 123, "creation_date": "20261019051054.525692+000", "executable": "synthetic/ck3.exe"}
+        for birth in ("20261019051054.525692+000", "20261019131054.525692+480",
+                      "20261019001054.525692-300", "2026-10-19T05:10:54.5256920Z"):
+            with self.subTest(same_instant=birth):
+                self.assertTrue(leaf.same_game_identity_v1(game, {**game, "creation_date": birth}))
+        for birth in ("20261019051054.525692+480", "20261019051054.525693+000",
+                      "20261019051054.525691+000", "20261019051054.525692+999",
+                      "20261019051054.******+000", "20261019051054.525692+***",
+                      "20261032051054.525692+000", "2026-10-19T05:10:54.5256921Z",
+                      "2026-10-19T05:10:54.525692Z", "unknown", "synthetic-original-birth", "", None):
+            with self.subTest(different_or_unknown=birth):
+                self.assertFalse(leaf.same_game_identity_v1(game, {**game, "creation_date": birth}))
+        for bad in ({**game, "pid": 124}, {**game, "pid": True},
+                    {**game, "executable": "foreign/ck3.exe"}, {"pid": 123}, None):
+            with self.subTest(incomplete_or_foreign=bad):
+                self.assertFalse(leaf.same_game_identity_v1(game, bad))
+        unknown = {**game, "creation_date": "unknown"}
+        self.assertFalse(leaf.same_game_identity_v1(unknown, unknown))
+
     def test_actual_contract_archives_old_epoch_and_keeps_cold_gate(self):
         with tempfile.TemporaryDirectory(prefix="m7-warm-source-") as temp:
             app, ledger, anchor, frame = completed_warm_fixture(Path(temp))
@@ -75,8 +96,12 @@ class SameGameSourceRetirementTests(unittest.TestCase):
             def plan(item=anchor, snapshot=frame):
                 return leaf.plan_resolved_same_game_source_retirement_v1(app, anchor=item,
                     snapshot=snapshot, expected_executable=ledger.game["executable"])
-            with patch("xar_autoplayer.runtime._process_identity", return_value=deepcopy(ledger.game)):
+            actual_game = {**ledger.game, "creation_date": "20261019131054.525692+480"}
+            with patch("xar_autoplayer.runtime._process_identity", return_value=actual_game):
                 good = plan()
+                self.assertEqual(json.loads(good.evidence)["game_identity"], actual_game)
+                self.assertEqual(json.loads(good.evidence)["original_game_identity"], ledger.game)
+                self.assertNotEqual(actual_game["creation_date"], ledger.game["creation_date"])
                 self.assertEqual(json.loads(good.evidence)["kind"], "same_game_resolved_source_update")
                 self.assertFalse(json.loads(good.evidence)["cold_game_credit"])
                 self.assertEqual(good.ledger_sha256, hashlib.sha256(original).hexdigest())

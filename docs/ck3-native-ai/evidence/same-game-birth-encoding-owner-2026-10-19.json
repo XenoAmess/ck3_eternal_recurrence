@@ -1,0 +1,76 @@
+{
+  "schema": "xar.ck3.same-game-birth-encoding-owner-amendment/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:32:11.314600+00:00",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; tool chunk 689e9b",
+  "scope": "Software-only; zero live writes, Game/Native/desktop/process operations, or actual game RPC",
+  "actual_identity_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10b-save4230-failure83\\OS-IDENTITY-ONCE.json",
+    "bytes": 1641,
+    "sha256": "4d7e43d914a167e5dc1a7d6951686bca4d661dd5b37d8a143e0d3a1f5881f7eb"
+  },
+  "actual_failure_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10b-save4230-failure83\\FROZEN.json",
+    "bytes": 10549,
+    "sha256": "9b726cb9f3526597da17fe1ef25df52f747ab93b1ad89fafb3941550c14a4a9d"
+  },
+  "old_game": {
+    "pid": 153556,
+    "creation_date": "20261019051054.525692+000",
+    "source_sha256": "5834f7f742e31180d74b7716083455ad1dd19d58695d63a3c0bd83b8ac17e235"
+  },
+  "current_game": {
+    "pid": 153556,
+    "creation_date": "20261019131054.525692+480",
+    "executable_equal_after_normalization": true
+  },
+  "strict_comparison": {
+    "shared_parser": "environment.process_creation_utc / same_process_creation_time",
+    "both_utc": "2026-10-19T05:10:54.525692+00:00",
+    "integer_microseconds": true,
+    "float_or_current_timezone_used": false,
+    "same_wall_different_instant_rejected": true,
+    "source_tool_chunk": "267650"
+  },
+  "source_pins": {
+    "actual_C10B_owner": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src09\\xar_autoplayer\\bridge\\successor_ui_app_owner_v1.py",
+      "bytes": 19972,
+      "sha256": "c61ffbdc6afb762946d2e16839a9ac737739255f641d706ee85cc8fbc1d71481"
+    },
+    "new_owner": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\successor_ui_app_owner_v1.py",
+      "bytes": 20001,
+      "sha256": "9d0843acfceb997c46e623e30753c241b1a3f9855210ffdee664c3d4fb2005a0"
+    },
+    "new_test": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_successor_ui_checkpoint_warm_app_v1.py",
+      "bytes": 5827,
+      "sha256": "c9fece9324567267eac37ae4e5c5dc8ce3cf31104b315f44263c0ebbd004c5b7"
+    },
+    "paired_M7_lineage": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 31647,
+      "sha256": "bb1f6e93fd875dc1ca75163e8d34d293fab7c04c015f575d6d937947cd686d98"
+    }
+  },
+  "exact_byte_diff": "--- actual-C10B-src09-owner\n+++ candidate-owner\n@@ -86,7 +86,7 @@\n                     or previous.get(\"source_epoch\") != self.epoch)):\n                 from .. import successor_ui_checkpoint_lineage_v1 as lineage\n                 anchor, _ = journal._read(self.root / lineage.COMPLETION_FILE)\n-                if previous.get(\"game_identity\") == game:\n+                if lineage.same_game_identity_v1(previous.get(\"game_identity\"), game):\n                     plan = lineage.plan_resolved_same_game_source_retirement_v1(self,\n                         anchor=anchor, snapshot=snapshot, expected_executable=game[\"executable\"])\n                 else:\n",
+  "baseline": {
+    "tool_chunk": "db69e8",
+    "result": "new registered-App equivalent-CIM regression fails against original c61ffb/f050ca; poisoned cold observer called",
+    "previous_same_format_cases_insufficient": true
+  },
+  "final_qualification": {
+    "command": "python -B -m pytest -q ck3_autonomous_player/tests/unit/test_successor_ui_checkpoint_warm_app_v1.py ck3_autonomous_player/tests/unit/test_successor_ui_checkpoint_cold_app_v1.py",
+    "result": "3 passed in 6.52s",
+    "tool_chunk": "340f7e"
+  },
+  "proof_boundary": "Old ledger/Close/completed SAVE proof retains original raw identity and exact bytes; fresh identity is compared only for same-process qualification. One new SAVE is allowed only after complete original proof; no action replay.",
+  "actual_SAVE4230": {
+    "original_error_preserved": true,
+    "original_native_save_dispatch_reached": false,
+    "replayed": false,
+    "actual_recovery_claimed": false
+  },
+  "limitations": "Canonical process reader backend was not instrumented and remains unknown. Actual subsequent source adoption and SAVE belongs to the sole runtime owner."
+}

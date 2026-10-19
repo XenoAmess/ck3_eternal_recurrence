@@ -1,0 +1,125 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:37:53.914094+00:00",
+  "source_audit": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10b-save-lineage-warm82\\CURRENT-VIEW-SUFFIX-AUDIT.json",
+    "bytes": 3798,
+    "sha256": "4273e312d603dbd019a37fac3974520539b72bc7aa5edaf3c9a885b9c9076582"
+  },
+  "source_after_sha256": "ebfc27477cedb6bdc886f8de0fbbc5cbf1b3aa744065031a2b65e71476ca5f79",
+  "change": "Only two exact regex literals accept one alphabetic generation suffix; no runtime guard change. Existing numeric generation result and suffix positive/old generation/occupied output negative receipts retained.",
+  "actual_audit": {
+    "schema": "xar.C10B-two-regex-current-view-audit-adaptation/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "source_path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_sdk_current_views_v1.py",
+    "source_sha256": "b663d8c781dad758da393f1895de024fe4937005bae03984be14e96ed3e84f22",
+    "exact_regex_literals": [
+      {
+        "before": "(?:P37C\\d+|SDK-C\\d+|p37c\\d+-prewar)",
+        "after": "(?:P37C\\d+[A-Z]?|SDK-C\\d+[A-Z]?|p37c\\d+[a-z]?-prewar)"
+      },
+      {
+        "before": "(?:P37(C\\d+)|SDK-(C\\d+)|p37(c\\d+)-prewar)",
+        "after": "(?:P37(C\\d+[A-Z]?)|SDK-(C\\d+[A-Z]?)|p37(c\\d+[a-z]?)-prewar)"
+      }
+    ],
+    "inverse_AST_equal": true,
+    "numeric_generation_result_unchanged": true,
+    "suffix_positive": {
+      "explicit_writes": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": false
+        }
+      ],
+      "current_identity_writes": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": false
+        }
+      ],
+      "violations": [],
+      "existing_create_only_collisions": [],
+      "scope": "explicit statically resolvable path writes only; dynamic generated per-sequence artifacts and imported helper internals remain original contracts"
+    },
+    "old_generation_negative": {
+      "explicit_writes": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": false
+        }
+      ],
+      "current_identity_writes": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": false
+        }
+      ],
+      "violations": [
+        {
+          "reason": "foreign generation write target",
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": false
+        }
+      ],
+      "existing_create_only_collisions": [],
+      "scope": "explicit statically resolvable path writes only; dynamic generated per-sequence artifacts and imported helper internals remain original contracts"
+    },
+    "occupied_suffix_negative": {
+      "explicit_writes": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": true
+        }
+      ],
+      "current_identity_writes": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": true
+        }
+      ],
+      "violations": [],
+      "existing_create_only_collisions": [
+        {
+          "line": 1,
+          "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C10B.json",
+          "write": "atomic",
+          "replace": false,
+          "already_exists": true
+        }
+      ],
+      "scope": "explicit statically resolvable path writes only; dynamic generated per-sequence artifacts and imported helper internals remain original contracts"
+    },
+    "runtime_guard_changed": false,
+    "new_RPC_calls": 0
+  }
+}

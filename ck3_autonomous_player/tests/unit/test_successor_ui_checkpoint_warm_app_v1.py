@@ -21,12 +21,19 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
 
 class CompletedWarmAppTests(unittest.IsolatedAsyncioTestCase):
     async def test_resolved_same_Game_source_maintenance_allows_one_original_save(self):
+        await self._registered_warm_save("20261019051054.525692+000", "20261019051054.525692+000")
+
+    async def test_equivalent_CIM_birth_offsets_preserve_original_completed_evidence(self):
+        await self._registered_warm_save("20261019051054.525692+000", "20261019131054.525692+480")
+
+    async def _registered_warm_save(self, original_birth, current_birth):
         with tempfile.TemporaryDirectory(prefix="m7-warm-App-software-") as temp:
             root = Path(temp)
             epoch = ["e" * 64]
+            birth = [original_birth]
             executable = os.path.normcase(os.path.abspath("synthetic/ck3.exe"))
             def identity(pid):
-                return {"pid": pid, "creation_date": "synthetic-original-birth", "executable": executable}
+                return {"pid": pid, "creation_date": birth[0], "executable": executable}
             with patch.object(app_module, "_machine_id", return_value="synthetic-App-machine"), \
                     patch.object(journal, "owner_source_epoch_v1", side_effect=lambda: epoch[0]), \
                     patch("xar_autoplayer.runtime._process_identity", side_effect=identity), \
@@ -44,6 +51,7 @@ class CompletedWarmAppTests(unittest.IsolatedAsyncioTestCase):
                 close_path = next(root.glob("successor-ui-close-*.json"))
                 close_bytes = close_path.read_bytes()
                 epoch[0] = "f" * 64
+                birth[0] = current_birth
                 warm = NativeFixture(root)
                 warm.frame = deepcopy(old.frame)
                 warm.frame["diagnostics"]["connection_generation"] += 1

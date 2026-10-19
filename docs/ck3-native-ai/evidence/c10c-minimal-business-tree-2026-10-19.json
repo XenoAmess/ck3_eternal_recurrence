@@ -1,0 +1,28 @@
+{
+  "schema": "xar.C10C-minimal-business-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:32:55.570163+00:00",
+  "base": "154982126e5ff7d49f0a042c22246ba5af659f7a",
+  "canonical_commit": "4d9791c12019c4e86d745bee7d7ca3aaba4e415c",
+  "tree": "da2bcb405f45f3ca93d3c5dac34c33d477661768",
+  "ref": "refs/heads/runtime/robert-v20261019-c10c-birth-encoding",
+  "changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 20001,
+      "sha256": "9d0843acfceb997c46e623e30753c241b1a3f9855210ffdee664c3d4fb2005a0",
+      "git_blob": "9af8f5bee77c82907802e6c925dacc413120d24e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 31647,
+      "sha256": "bb1f6e93fd875dc1ca75163e8d34d293fab7c04c015f575d6d937947cd686d98",
+      "git_blob": "57174126ec66d97c324b0a2340e5ac245c373332"
+    }
+  ],
+  "scope": "Only canonical owner branch and lineage same-Game predicate; reuse existing strict process creation parser. Original raw journal and SAVE evidence remain unchanged. All C10B camera/timing/other leaves preserved.",
+  "actual_adoption_claimed": false,
+  "worktree_or_main_index_changed": false,
+  "Native29_changed_or_loaded": false,
+  "Game_MCP_Native_calls": 0
+}

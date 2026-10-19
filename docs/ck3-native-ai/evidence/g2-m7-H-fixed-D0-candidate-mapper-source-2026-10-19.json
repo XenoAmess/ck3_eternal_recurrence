@@ -1,0 +1,101 @@
+{
+  "schema": "xar.g2-m7.fixed-D0-candidate-mapper-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; tool output fa407a",
+  "status": "review_ready_source_only",
+  "API": "project_fixed_dynasty_candidate_v1(anchor,captured,current,current_core)",
+  "contract": {
+    "Native_DTO": "Field-for-field Observation from M3 independent native leaf; family_value reader not reimplemented.",
+    "outer_owner": "Future trusted query owner constructs exact machine/birth/PID/connection/EXE/provider/source/query/snapshot/public/native/capture/date/actor/episode/goal/origin/T0 binding; no client JSON route or registration added.",
+    "fixed_anchor": "Immutable D0=174/source summary pin retained across current actor/episode; exact Robert summary hash cannot carry replacement D0; scoring label is not goal campaign ID. Other campaign anchors still require the existing trusted baseline owner; this pure mapper does not authenticate their source.",
+    "positive": "Original getter source-bound non-fixture observed candidate, actual full-ID stable/alive/non-self, exact frame/bookends/query, available full dynasty == fixed D0; cadet House allowed; no age/sex proxy.",
+    "interval": "One witness: k1, b unknown, H[70,100]; otherwise k unknown, b unknown, H[0,100]; never k0/b0/point100.",
+    "unknown": "Null/dead/unavailable/default -1/cross-frame/stale or malformed has no positive credit; known-no-house differs from unavailable lineage.",
+    "generation": "Entire signed32 ID; only -1 sentinel; never low24 equality.",
+    "backup": "No cache roster/repeated selector/two-sons/duplicate backup credit."
+  },
+  "validation": {
+    "runner": "python -B -X utf8; sys.path src + tests/unit; unittest test_player_heir_fixed_dynasty_projection_v1",
+    "tests": 10,
+    "result": "PASS",
+    "execution_output_chunk": "60dcbc",
+    "fixture": "Pure synthetic DTO model of future normal-source responses; source_fixture=true explicitly rejected; no actual Native provider invoked.",
+    "planned_cases_covered": [
+      "same D0 cadet",
+      "different D0 incomplete domain",
+      "full generation not slot",
+      "unavailable lineage",
+      "known no house",
+      "title heir only",
+      "no additional adulthood condition",
+      "changed core/query frame",
+      "duplicates/exclusion not backup domain",
+      "new actor/episode original baseline"
+    ]
+  },
+  "runtime_and_M7": {
+    "actual_H": "unknown/interval unchanged",
+    "Native_provider_wiring_or_qualification": "not performed by this component",
+    "complete_backup_domain": false,
+    "M7": "in_progress: original multiple rulers/seeds/governments breadth still lacks evidence; natural transition subchain does not close it",
+    "Game_RPC_SAVE_activeDriver_desktop_build_calls": 0,
+    "sharedService_Driver_Native29_changes": 0
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+      "bytes": 11877,
+      "sha256": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_player_heir_fixed_dynasty_projection_v1.py",
+      "bytes": 11287,
+      "sha256": "4bec3da52c14c05962bfd88a50e5b0ce63938a278763c831d743a025656cd140"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-H-fixed-D0-candidate-wiring-plan-2026-10-19.json",
+      "bytes": 16228,
+      "sha256": "f25d4a316ad8c15bd3e6395f3d3c597997f4741016882e455d7e908dce806f4f"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m1-robert-v20261019-T0-summary.json",
+      "bytes": 12442,
+      "sha256": "bb5cb5593e6a4e1156dfbacf2d94aa13f10eb41735a5f215dbaad2eb2d89ada8"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/player-heir-h12004-source-closure-2026-10-19.json",
+      "bytes": 10898,
+      "sha256": "632f01555310ab57b65743a686d5653b87a08ada14ebcb7d849371027ae27660"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/gui-getplayerheir-mapjoin12004-20261019/source-index01.json",
+      "bytes": 4327,
+      "sha256": "a25c6ef0f48df21270cb8dfdea1247bf875593e25e8c40c0cc8bbd833281f835"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_player_heir_candidate_v1.hpp",
+      "bytes": 2813,
+      "sha256": "9b3ca53b8f951ce0db98598307931df8d55344bb661a655d1344b2fc339ded5f"
+    },
+    {
+      "path": "docs/ck3-native-ai/campaign-development-scoring-v1-design-2026-10-19.md",
+      "bytes": 40357,
+      "sha256": "9585b9eeb45d2c59eac2ac788e463a9074eb2e6c2f56ff18fd397ba30b40bb97"
+    }
+  ],
+  "observed_at_utc": "2026-10-19T10:19:53.182968+00:00",
+  "source_head": "6be5c92bb311a8305c8ba8f08305b5b31b4b90b0",
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "measured_path": "Z:/",
+    "measured_volume": "Z:",
+    "free_bytes": 178330439680,
+    "source": "shutil.disk_usage(Z:/) at observation UTC",
+    "purpose": "source/tests/small proof on Z only, no D admission claim",
+    "maximum_total_product_bytes": 49152,
+    "heavy_artifacts": false,
+    "deleted_files": 0
+  }
+}

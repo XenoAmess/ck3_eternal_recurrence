@@ -1,0 +1,78 @@
+{
+  "schema": "xar.m7-same-game-CIM-equivalence-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:32:27.324484+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10b-save4230-failure83\\OS-IDENTITY-ONCE.json",
+      "bytes": 1641,
+      "sha256": "4d7e43d914a167e5dc1a7d6951686bca4d661dd5b37d8a143e0d3a1f5881f7eb"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10-save4226-failure82\\LINEAGE-SIDECARS.json",
+      "bytes": 2334,
+      "sha256": "84ec36bf97331de43f4332b0b680e4599271451358f49c7de09b6c43800119eb"
+    }
+  ],
+  "files": [
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 31647,
+      "sha256": "bb1f6e93fd875dc1ca75163e8d34d293fab7c04c015f575d6d937947cd686d98"
+    },
+    {
+      "path": "ck3_autonomous_player\\tests\\unit\\test_successor_ui_same_game_source_retirement_v1.py",
+      "bytes": 9812,
+      "sha256": "7f15d7ada2333e035e1422db0bb4264d25c189efdc7b3b6f6bec7f62a46a1f95"
+    }
+  ],
+  "actual_closed_comparison": {
+    "original_pid": 153556,
+    "original_birth_raw": "20261019051054.525692+000",
+    "fresh_pid": 153556,
+    "fresh_birth_raw": "20261019131054.525692+480",
+    "both_UTC": "2026-10-19T05:10:54.525692+00:00",
+    "same_game_identity_v1": true,
+    "source_observation_UTC": "2026-10-19T10:30:06.010999+00:00",
+    "fresh_OS_reads_by_this_work": 0
+  },
+  "implementation": {
+    "predicate": "same_game_identity_v1; strict PID/canonical image + existing environment.same_process_creation_time; no parser/float/current-timezone fallback",
+    "helper": "fresh identity only proves qualification; original ledger constructed with anchor original raw game identity, old capture/checked unchanged; archive proof records both raw identities",
+    "owner": "M0 owns same predicate call and registered-App qualification; not modified by M7"
+  },
+  "validation": {
+    "runner": "unittest test_successor_ui_same_game_source_retirement_v1",
+    "tests": 2,
+    "result": "PASS",
+    "execution_output_chunk": "95a3e8",
+    "positive": [
+      "same CIM instant equal offset",
+      "same CIM instant different offsets",
+      "ISO seven digits ending zero",
+      "full original proof/SAVE archive preserves old raw identity"
+    ],
+    "negative": [
+      "same wall different instant",
+      "one microsecond difference",
+      "wildcards",
+      "unknown even identical strings",
+      "invalid date or UTC offset",
+      "ISO seventh digit nonzero",
+      "PID or executable mismatch",
+      "prior pending/UNKNOWN/source/checkpoint guards"
+    ],
+    "scope": "source/synthetic tests and closed OS/sidecar identity comparison; actual C10C adoption not_observed"
+  },
+  "original_failures": "SAVE4226/4230 errors preserved; no replay by this work",
+  "actions": {
+    "Game_RPC_SAVE_activeDriver_or_SAVEbody_reads": 0,
+    "cold_projection_or_checked_changes": 0,
+    "new_large_files": 0
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "purpose": "small source/test/evidence only on Z; not D admission",
+    "files_deleted": 0
+  }
+}

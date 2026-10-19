@@ -48,9 +48,9 @@ def audit_current_views_v1(source: str, *, generation: str, existing_basenames=(
         'ROOT-ACTUAL-SDK-PROCESSES-PINNED-','ROOT-ACTUAL-DRIVER-MODE-')
     for row in rows:
         name=row['basename']
-        if name.startswith(prefixes) or re.search(r'(?:P37C\d+|SDK-C\d+|p37c\d+-prewar)',name):
+        if name.startswith(prefixes) or re.search(r'(?:P37C\d+[A-Z]?|SDK-C\d+[A-Z]?|p37c\d+[a-z]?-prewar)',name):
             current.append(row)
-            markers=re.findall(r'(?:P37(C\d+)|SDK-(C\d+)|p37(c\d+)-prewar)',name)
+            markers=re.findall(r'(?:P37(C\d+[A-Z]?)|SDK-(C\d+[A-Z]?)|p37(c\d+[a-z]?)-prewar)',name)
             if any(next(s for s in parts if s).upper()!=generation for parts in markers):
                 bad.append({'reason':'foreign generation write target',**row})
             if row['replace']:bad.append({'reason':'current-generation identity must be create-only',**row})

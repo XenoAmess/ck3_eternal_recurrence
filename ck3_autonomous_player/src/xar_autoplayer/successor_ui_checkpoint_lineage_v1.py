@@ -354,6 +354,27 @@ def plan_resolved_checkpoint_retirement_v1(owner, *, anchor, cold):
         "successor-ui-resolved-" + pin + ".json", _json(evidence), _SEAL)
 
 
+def same_game_identity_v1(first, second):
+    """Compare exact PID/image and a strictly parsed process-creation instant.
+
+    WMI may encode one birth with different UTC offsets. Only the existing
+    strict process-time parser compares those instants; raw identity values
+    remain in their original evidence and ledger bindings. Unknown timestamps
+    cannot establish equality, even when their strings are identical.
+    """
+    from .environment import same_process_creation_time
+    if (not isinstance(first, Mapping) or not isinstance(second, Mapping)
+            or any(type(value.get("pid")) is not int or value["pid"] <= 0
+                   or not isinstance(value.get("executable"), str) or not value["executable"].strip()
+                   or not isinstance(value.get("creation_date"), str) or not value["creation_date"].strip()
+                   for value in (first, second))):
+        return False
+    return (first["pid"] == second["pid"]
+        and os.path.normcase(os.path.abspath(first["executable"]))
+            == os.path.normcase(os.path.abspath(second["executable"]))
+        and same_process_creation_time(first["creation_date"], second["creation_date"]))
+
+
 def plan_resolved_same_game_source_retirement_v1(owner, *, anchor, snapshot, expected_executable):
     """Archive a completed old-source record during a real same-Game SDK update.
 
@@ -374,11 +395,11 @@ def plan_resolved_same_game_source_retirement_v1(owner, *, anchor, snapshot, exp
     if (not isinstance(anchor, Mapping) or anchor.get("schema") != SCHEMA
             or anchor.get("action_replay_authorized") is not False
             or anchor.get("machine_id") != owner.machine
-            or anchor.get("game_identity") != game
+            or not same_game_identity_v1(anchor.get("game_identity"), game)
             or anchor.get("source_epoch") == owner.epoch):
         raise ValueError("same-Game source retirement lacks its original different-source SAVE anchor")
     ledger = journal.SuccessorUIPendingLedger(owner.root, machine_id=owner.machine,
-        source_epoch=anchor["source_epoch"], game_identity=game,
+        source_epoch=anchor["source_epoch"], game_identity=anchor["game_identity"],
         verify_transition=owner.validators._verify_natural_succession_transition,
         close_validator=owner.validators._ordinary_succession_close_issue,
         timeline_classifier=owner.validators._ordinary_succession_timeline_state)
@@ -417,6 +438,7 @@ def plan_resolved_same_game_source_retirement_v1(owner, *, anchor, snapshot, exp
             raise ValueError("same-Game source retirement lacks its actual warm driver/SAVE binding")
     evidence = {"kind": "same_game_resolved_source_update", "machine_id": owner.machine,
         "game_identity": game, "old_source_epoch": anchor["source_epoch"], "new_source_epoch": owner.epoch,
+        "original_game_identity": deepcopy(anchor["game_identity"]),
         "campaign_goal": goal, "original_checkpoint": checkpoint, "current_frame": current,
         "action_replay_authorized": False, "canonical_ledger_changed": False,
         "cold_game_credit": False}
