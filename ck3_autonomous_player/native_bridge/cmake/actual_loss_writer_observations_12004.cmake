@@ -87,7 +87,7 @@ endif()
 # New focused cold target; no CK3 loading/patching. Requires new owner code ON.
 if(BUILD_TESTING AND XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
   add_executable(xar_test_county_primary_direct_owner_v2_12004 EXCLUDE_FROM_ALL
-    src/county_primary_direct_owner_v2_12004_test.cpp src/county_primary_writer_fixture_entry_12004.asm)
+    src/county_primary_direct_owner_v2_12004_test.cpp src/county_primary_direct_writer_fixture_entry_12004.asm)
   target_link_libraries(xar_test_county_primary_direct_owner_v2_12004 PRIVATE xar_ck3_12002_runtime)
   target_include_directories(xar_test_county_primary_direct_owner_v2_12004 PRIVATE include)
   target_compile_features(xar_test_county_primary_direct_owner_v2_12004 PRIVATE cxx_std_20)

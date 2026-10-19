@@ -107,6 +107,13 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 ck3_autonomous_player/tests/unit/test_county_primary_direct_owner_12004.py --repo . --output "%RUNNER_TEMP%\native-decision-completion-ci\wire\county-primary-direct-owner-v2\PYTHON-COMPOUND.actual.json"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Retain focused county direct-owner cold wire
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: county-primary-direct-owner-cold-wire
+          path: ${{ runner.temp }}/native-decision-completion-ci/wire/county-primary-direct-owner-v2/*.json
+          if-no-files-found: ignore
       - name: Test terminal readonly route unavailable and exact strategy lease without CK3
         run: python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_*route*unavailable*.py"
       - name: Test ordinary Sway complete planner integration without CK3
