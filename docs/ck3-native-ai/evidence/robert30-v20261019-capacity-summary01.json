@@ -1,0 +1,124 @@
+{
+  "schema": "xar.storage.robert30-v20261019-small-summary.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T02:06:24.498514+00:00",
+  "status": "NEW64GiB_REGISTERED_METADATA_OBSERVER_PREPARED_NO_OLD_MEDIA_DELETION",
+  "policy_version": "1.0.0",
+  "admitted_at_utc": "2026-10-19T01:48:56.993837+00:00",
+  "quota_review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "new_first_stage_peak_bytes": 68719476736,
+  "new_first_stage_peak_GiB": 64,
+  "research_shared_max_bytes_within_stage": 268435456,
+  "other_unspent_reservations_bytes": 621808745452,
+  "retained_old_first30_OUT_bytes": 146027527160,
+  "all_other_reservations_including_old_OUT_bytes": 767836272612,
+  "system_growth_reserve_bytes": 21474836480,
+  "safety_margin_bytes": 21474836480,
+  "effective_project_quota_bytes": 13950000000000,
+  "admission_D_disk": {
+    "total": 14000483987456,
+    "used": 13108186902528,
+    "free": 892297084928
+  },
+  "admission_physical_margin_bytes": 12791662620,
+  "admission_quota_margin_bytes": 5257348124,
+  "existing_volume_guard_floor_bytes": 818320260068,
+  "current_small_observation": {
+    "at_utc": "2026-10-19T02:06:02.259706+00:00",
+    "D_disk": {
+      "total": 14000483987456,
+      "used": 13108343005184,
+      "free": 892140982272
+    },
+    "headroom_to_existing_guard_bytes": 73820722204,
+    "new_total_logical_bytes": null,
+    "new_total_allocated_bytes": null,
+    "new_unspent_bytes": null
+  },
+  "approved_new_workpackage_roots": [
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate",
+    "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01"
+  ],
+  "budget_split_status": "runtime_owner_to_confirm_subestimates; one_total64GiB_only",
+  "already_bound_subestimates": {
+    "sdk_source_freeze_bytes": 134217728,
+    "profile_bytes": 1073741824,
+    "small_runtime_COW_bytes_within_research": 16777216
+  },
+  "source_pins": {
+    "STORAGE-ADMISSION.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\STORAGE-ADMISSION.json",
+      "bytes": 5395,
+      "sha256": "e1b062f71a2d3099fb855373bec3b279a58583a76ce1764376a9d719a6fa1a24"
+    },
+    "RESERVATION-ACTUAL.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\RESERVATION-ACTUAL.json",
+      "bytes": 2663,
+      "sha256": "4a80d198f97dadac29e3baaa80635f1303631dbfe630fa6e551acf38d61de3bf"
+    },
+    "machine-profile.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\machine-profile.json",
+      "bytes": 4075,
+      "sha256": "42ea80c5086849567b9cb190facd15526ae4e31d5d953ffe6b9b6063f48f1b9e"
+    },
+    "asset-ledger.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\asset-ledger.json",
+      "bytes": 3410,
+      "sha256": "3ffbafd703bcb7681252173255a57b9fa602323bb84767878495124b9b6e3800"
+    },
+    "admit_first64.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\admit_first64.py",
+      "bytes": 10200,
+      "sha256": "39c03027fb8fdce1dbc5cb2294ce1d0ae99c7a75bc9c82cc3166185990437df2"
+    },
+    "observe_capacity_metadata.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\observe_capacity_metadata.py",
+      "bytes": 6390,
+      "sha256": "6085eb4aa37276a45334baf9becc176faf3c7b5b6d42abc7f86e7c7322fadacb"
+    },
+    "METADATA-OBSERVATION01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\METADATA-OBSERVATION01.json",
+      "bytes": 3099,
+      "sha256": "5d09a2d1874c18638ae8e8febaaa8a9fabced68e8bf590382bfe0dfacf4e2d33"
+    },
+    "EXACT-DERIVED-CANDIDATES01.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\EXACT-DERIVED-CANDIDATES01.json",
+      "bytes": 6481,
+      "sha256": "d5fdb8571e8bbaa720f792a00bcbe4cf208ccc619c348f0cca4438371b708398"
+    }
+  },
+  "inherited_guard_source_pins": {
+    "queue": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\candidate-runtime\\root_p37_sdk_queue.py",
+      "bytes": 259624,
+      "sha256": "509fc5eef9aa24d3fda54fc69da7240fe7798a6051dd6784551b47372211fa8c"
+    },
+    "capture": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\candidate-presentation\\ck3_obs_capture.py",
+      "bytes": 63605,
+      "sha256": "61267624e03c35785cd260f25b8f8c12ebe8adc62a7f3e08caf3d5d5c6024daf"
+    }
+  },
+  "monitor_contract": {
+    "mode": "single invocation, no daemon/scheduler installed",
+    "minimum_seconds_between_samples": 300,
+    "recommended_coordinator_sample_seconds": 900,
+    "inputs": "named newpackage manifests; existing recording-latest.json; exact Driver/checkpoint attributes",
+    "prior_outstanding_consumption_credit_bytes": 0,
+    "directory_walks": 0,
+    "large_body_reads": 0,
+    "controls_Game_or_recording": false,
+    "new_inventory_created": false,
+    "fresh_locked_capacity_admission_still_required_before_new_heavy_work": true,
+    "budget_boundary_response": "Report concrete deficit to Root before guard exhaustion; no invented session or recording duration cap."
+  },
+  "C_Z_heavy_admission": "BLOCKED unknown budget inputs; tiny mandatory C config and small source edits only",
+  "permanent_SAVE_and_final09_six_materials": "preserved; no deletion or modification",
+  "exact_three_derived_candidates": "PENDING, no deletion",
+  "old_five_minute_epoch_reused": false,
+  "old13_95TB_exception_reused": false,
+  "deletions": 0,
+  "automatic_gc": false
+}

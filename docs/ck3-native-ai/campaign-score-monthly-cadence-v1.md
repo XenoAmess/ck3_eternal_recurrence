@@ -23,3 +23,20 @@ py -B -m unittest ck3_autonomous_player.tests.unit.test_campaign_score_cadence_v
 ```
 
 2026-10-19实际软件验证：`machine_id: xenoamess-full-tower-eb9d2c1186`，由 `tools/ck3_live_run_id.py machine` 读回；同次上述定向命令执行6项通过、退出0。结果与文件身份登记时间 `2026-10-19T01:58:16.899662Z`；纯叶SHA-256为 `ae507020d789853bf7c7c849d590037bf69c2d039ce8b10e62e46946b5c7e929`，测试文件SHA-256为 `790cd18555e6506aeeb42acd372d0fc66e5eaa8b23283a5031e4328d7d238c79`。没有现场RPC、游戏推进、SAVE/Driver正文读取或媒体渲染；不授新Game、整局、月样本或G2信用。具体部署与实际月文件由runtime owner在新tuple的独立回执记录。
+
+2026-10-19 后继已实现实际Python组合，复用[固定Native25绝对截止证据](evidence/native25-absolute-date-deadline-source-review-2026-10-19.json)，不需要新DLL。原生 `ArmTacticalDailySentinelV1` 接受任意未来整日target；Native25实际链接的daily post RVA为 `0x2988FB0`、SetPaused RVA为 `0x383E3E0`。它仍是单slot；本次没有并行多Arm，也不把源码研究当作新tuple实机通过。
+
+- `NativeHeadlessGameplayDriver.configure_campaign_score_cadence_v1(campaign_id=..., start_date="1066.9.15", start_date_raw=53144328, months=360)`显式启用；`bridge/campaign_deadline_v1.py`保留固定T0和下个严格未来月界。未配置的driver保持原语义。
+- `GameplayBridgeService.plan_turn`的public返回前和真正共用的`_execute_planned_turn_without_unhandled_capture`入口调用幂等pure cap。AUTO本身调用public `plan_turn`；普通Sway的内部fresh plan绕过public方法，但仍经后者共用dispatch。cap在原before-submit显示、实际执行和记录前完成，不增加MCP查询。
+- battle decision、committed route、stationary objective hold使用原canonical builder，只缩短同一次Arm的target，保留actor/army/war/objective、mode、watch顺序、speed及A/B守卫。fixed cruise/epoch由driver按同一cap约束；没有擅自开放speed5或原资格未通过的scope。3日route窗口缩到2日时，只复用同帧已证明窗口的合法前缀；剩1日用现有`life-advance-one-day`窄收尾，其余时间不退化成全程逐日。
+- 普通`life-advance`保留原局面的horizon与速度选择，在`bridge/campaign_deadline_transport_v1.py`用**一个**date-only `terminal-a-0`原生sentinel推进至`min(原horizon, 下一月界, 终点)`。新scope名是`campaign_date_deadline`，不冒用旧exact-one-day资格。Arm/Status/Cancel、generation、target、实际ticks、pause、zero overshoot沿真实typed传输和原validator核对；正常路径不另发`pause-map`。早期真实modal按同generation cancel，未知cancel不重发。
+- Death Close原transport内部的`driver.execute_step("life-advance")`自然继承同一driver cap。终点处底层返回0日、0时钟动作且`calendar_progress_verified=false`；现行Close合同仍不授liveness，不改成假普通/继承成功，也不越终点推进。
+
+新增必要软件compound是 `test_campaign_deadline_transport_v1.py`：实际Driver `execute_step` → 原primitive executor → Protocol fake wire → 真实Arm/Stop validators。5项通过（含29日、5日和终点3日多日slice、同canonical active-battle target和watch、public/internal共用dispatch及A/B字段、过冲真实拒绝、endpoint零resume、未配置原语义）；末次执行退出0、0.042秒。测试构造的native packet明确为软件fake，不是Native25新局的真实paused或动作资格。首条测试导入曾因fixture的unit路径未入PYTHONPATH失败；设置以下完整测试路径后通过。
+
+```text
+set PYTHONPATH=ck3_autonomous_player\src;ck3_autonomous_player\tests\unit
+py -B -m unittest ck3_autonomous_player.tests.unit.test_campaign_deadline_transport_v1
+```
+
+后继仍由runtime owner在新tuple核真实capabilities、正式启用配置、采baseline和普通月样本、读取第一批native deadline回执。此包不声称30年已经推进、360月已经取得，E/M/H及其他未闭合数值仍为unknown。没有追加每AUTO的外部MCP请求；普通多日时钟内部用原生Arm/Status代替轮询后暂停，实际墙钟收益仍待同策略现场记录。

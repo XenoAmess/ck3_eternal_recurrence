@@ -1,0 +1,384 @@
+{
+  "schema": "xar.ck3.knight-json-streaming-cpp-qualification-seal/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T02:21:10.428536+00:00",
+  "status": "OFFLINE_CPP_BYTE_EQUIVALENT_NOT_RUNTIME_DEPLOYED",
+  "actual_successful_invocation": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\RESULT.json",
+    "bytes": 28797,
+    "sha256": "265a23d726c604e84726ed84ff0767ffc0ee629312d62cb8f07cb67ca5a1ff68"
+  },
+  "original_failed_invocation": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\RESULT.json",
+    "bytes": 18941,
+    "sha256": "54148f3ad9aca854e2619ad7f2f6d3b49db5d39b7127c68926901edbac6698ec"
+  },
+  "original_failure": "Fixture assigned int literal 0 to optional<uint16_t>; MSVC /W4 /WX rejected C4244. The fixture zero was explicitly typed and UTF-8 Chinese text coverage was added before fresh attempt02. Production serializer bodies unchanged. Original failure retained.",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\run_knight_json_streaming_fixture_12004.py",
+    "bytes": 15174,
+    "sha256": "1c8d8ba50368a984654fd076b0794bd76d7a4283aa4c4dc9bff73d0fe191187d"
+  },
+  "harness_template": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\tests\\knight_json_streaming_12004_fixture_main.cpp.in",
+    "bytes": 13895,
+    "sha256": "c2be1a2464a3f056248eb0a38fca34753710552c2e9b104ac44d9958800f65c1"
+  },
+  "baseline_commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+  "candidate_cpp_commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+  "source": {
+    "production_source_pins": [
+      {
+        "commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_person_six_stage_capture.cpp",
+        "whole_source_utf8_sha256": "59e44d189086900198405655c83ef9abc05f9f210b7258dca3592aeb0c94c21d"
+      },
+      {
+        "commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+        "path": "ck3_autonomous_player/native_bridge/src/person_callback_entry_inputs_12004.cpp",
+        "whole_source_utf8_sha256": "e161f9fff9e271a768bca0e9a58297dc8428ab5b2e6adbc3da31ddd19ef04a63"
+      },
+      {
+        "commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_knight_stat_consumption_serializer.cpp",
+        "whole_source_utf8_sha256": "624d1507fedc669323a0a981424d0d1915860e3a71c346186227c617a936f600"
+      },
+      {
+        "commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+        "path": "ck3_autonomous_player/native_bridge/src/person_current_input_outcome_binding_12004.cpp",
+        "whole_source_utf8_sha256": "7bb333d264547337dee063db35905c586bb071cc69f3829a4166a3b99c879c4b"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_person_six_stage_capture.cpp",
+        "whole_source_utf8_sha256": "7d29a6df2d30203cffa1d5a7f35e7736a7ebf430d3ca08cfcd7bdc9ac5837106"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "path": "ck3_autonomous_player/native_bridge/src/person_callback_entry_inputs_12004.cpp",
+        "whole_source_utf8_sha256": "f3b43777e80e3ce15dbbbc2d08f2985db5e6ed3f6c739f2e6e1063c134d114f0"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_knight_stat_consumption_serializer.cpp",
+        "whole_source_utf8_sha256": "8d2f3f8e05b9c0cb03936015e388a029f38e803faf6b782db7d05fa884b71a40"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "path": "ck3_autonomous_player/native_bridge/src/person_current_input_outcome_binding_12004.cpp",
+        "whole_source_utf8_sha256": "7bb333d264547337dee063db35905c586bb071cc69f3829a4166a3b99c879c4b"
+      }
+    ],
+    "typed_header_count": 19,
+    "typed_header_pins": [
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/knight_stat_consumption_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\knight_stat_consumption_12004.hpp",
+        "bytes": 6463,
+        "sha256": "b2e5eb80a6d6621ab594c12ed1522a61a522ce5764e8c3460014814679ee9288"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/person_current_input_outcome_binding_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\person_current_input_outcome_binding_12004.hpp",
+        "bytes": 1979,
+        "sha256": "668122375edffbd2374c63fa3064e688a5493f4011824ab2cbc9f0e538816df7"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/person_callback_entry_inputs_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\person_callback_entry_inputs_12004.hpp",
+        "bytes": 4413,
+        "sha256": "65d753f165de30e5128936ae37186b0a061d631e14d2f1a864ae64ec40fbe373"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/person_installed_transfer_stage_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\person_installed_transfer_stage_12004.hpp",
+        "bytes": 5260,
+        "sha256": "5f36df858b619fff32bfb4376f6ea6b78a5c1d565228310c48727090b42c4dfb"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_person_six_stage_capture.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\ck3_12004_person_six_stage_capture.hpp",
+        "bytes": 11292,
+        "sha256": "d288d1a1c4b796f972f31e7f1bff8ad86bcf90d784054291b757fedc7b96a611"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_person_following_2922680.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\ck3_12004_person_following_2922680.hpp",
+        "bytes": 8786,
+        "sha256": "61f393ca79042c6e0d5827286c8a13ff0e9d1ea8eee6a84aacec8acaa5282e27"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_person_carrier_direct.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\ck3_12004_person_carrier_direct.hpp",
+        "bytes": 4264,
+        "sha256": "dda067131c616b984879cdc543b6f49a149d221a088df0c59460dda3060d2883"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\ck3_12004_actual_loss_writer_journal.hpp",
+        "bytes": 5923,
+        "sha256": "bfbad1b26c661acdf97c987d636fc7539977751ca920a3d7e5833082771b898b"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_owner_at_writer_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\county_primary_owner_at_writer_12004.hpp",
+        "bytes": 1089,
+        "sha256": "479dc05fb91b41e4da46f24e17702e0e90cddbe0d1af600c15bc91ef9ab04210"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_natural_phase_scope_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_natural_phase_scope_12004.hpp",
+        "bytes": 7509,
+        "sha256": "6f68438d7424db19218737db1a24a1ba3d771de726dc03c1634d5c8579f60cce"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/person_natural_lineage_clock_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\person_natural_lineage_clock_12004.hpp",
+        "bytes": 451,
+        "sha256": "4848f3ddb0c2342f0eb905137aef6680faec4c42a60be1f6addcde2033c73e77"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_observer_research_sampling_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_observer_research_sampling_12004.hpp",
+        "bytes": 2880,
+        "sha256": "79b03692cc9d87f6f9c4cdcd74f0445db31929d0daed020d24f70f482909cf53"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_county_primary_owner_at_writer_v1.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_county_primary_owner_at_writer_v1.hpp",
+        "bytes": 2980,
+        "sha256": "cb0a585150d26e0ca2c6ed7e0cf996557563f3285f2dc34afaa8fa1196557e2e"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_actual_loss_writer_observations_v1.hpp",
+        "bytes": 10845,
+        "sha256": "9544f8d627fad833ac238d9b3e9233cd2c4b656b7ef4967e39299fd35f78b958"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_supply_parent_join_v1.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_actual_supply_parent_join_v1.hpp",
+        "bytes": 3014,
+        "sha256": "ff5ab39d80f79852298de1fafb290209b71d9a2b03b781a5791a6bf99d3b3af9"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_residual_parent_v1.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_actual_residual_parent_v1.hpp",
+        "bytes": 3054,
+        "sha256": "4b9138b8e483c0f4e9f3ef8874f8c514c69586fd4649c22f8c6db9a19ecc35b6"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_residual_siege_budget_v1.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_actual_residual_siege_budget_v1.hpp",
+        "bytes": 1170,
+        "sha256": "28e8cc8ff7736b3ed3437cd4cc1e3363128595fd1d0154a814ea347cce3b80a8"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_siege_budget_at_writer_v1.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\army_actual_siege_budget_at_writer_v1.hpp",
+        "bytes": 4248,
+        "sha256": "02439df2f725109f4ade1630dda2bdd764ac85dfe2713bed3b27a0af7ffca2fe"
+      },
+      {
+        "commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+        "original": "ck3_autonomous_player/native_bridge/include/xar_bridge/entry_selected_receiver_stage_12004.hpp",
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\include\\xar_bridge\\entry_selected_receiver_stage_12004.hpp",
+        "bytes": 3384,
+        "sha256": "b41b6cabe080ac10f72ce383da44100006c2368ac030faf3ee194de0af497c4d"
+      }
+    ],
+    "generated_source": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\knight-json-streaming-fixture.cpp",
+        "bytes": 13895,
+        "sha256": "c2be1a2464a3f056248eb0a38fca34753710552c2e9b104ac44d9958800f65c1"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\source\\serializer-spans.inc",
+        "bytes": 62118,
+        "sha256": "c881420a270aa497ea02d3c54517115f37d02b195dd2b1a9db498506f2e2c9e5"
+      }
+    ],
+    "extraction_boundary": "All selected production body/helper bytes unchanged; namespace imports and preprocessor symbol aliases outside bodies only"
+  },
+  "compiler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+    "bytes": 893288,
+    "sha256": "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640"
+  },
+  "linker": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+    "bytes": 3701128,
+    "sha256": "610aae3d74a66fa5ef54cac5df8ea8bcbb1fdd2a3db9087eb92088bd395eaf34"
+  },
+  "environment_producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\run_native_msvc.py",
+    "bytes": 13321,
+    "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e"
+  },
+  "compile_options": "/std:c++20 /EHsc /W4 /WX /O2 /MD /utf-8 /DNOMINMAX /DWIN32_LEAN_AND_MEAN; actual project DTO header closure frozen from candidate commit",
+  "compile_exit_codes": [
+    0,
+    0
+  ],
+  "link_exit_codes": [
+    0,
+    0
+  ],
+  "dll": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\build\\knight-json-streaming-fixture.dll",
+    "bytes": 125952,
+    "sha256": "a1c5e402bc6a12d2f0a328d3bf89abc1f487b3ab4ffb55e02099de2567b07850"
+  },
+  "dll_abi": "Windows x64 C export XarRunKnightJsonStreamingFixture12004(const char*); __cdecl; ctypes.CDLL argtypes=[c_char_p], restype=c_int",
+  "execution_kind": "ordinary_child_python_ctypes_isolated_dll_no_game_connection",
+  "python_loader": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\load_offline_fixture.py",
+    "bytes": 283,
+    "sha256": "90edbb31402d11974cc02e3383813c266c1ed184f6aff1015012aa62d1d46fe2"
+  },
+  "child_exit_code": 0,
+  "defender": {
+    "status": "settings_failed",
+    "error": "admin_required_for_verified_readback; no Add attempted and no UAC bypass",
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01\\attempt02\\build\\defender-exe-exclusions\\20261019T021903Z-b7de92da\\receipt.json",
+      "bytes": 1052,
+      "sha256": "f724267b6fb6df2e50c4e4e7bfdc73d4e6e7be539a628b6ebf2f0a79f10e2795"
+    },
+    "actual_setting_calls": 0,
+    "exe_executed": false,
+    "uac_requested": false,
+    "new_configuration_or_system_setting_change": false,
+    "qualification_boundary": "The new EXE was built but registration was unavailable. The allowed bounded DLL fallback ran in one independent ordinary Python child. No project EXE registration success is claimed; DLL was not excluded."
+  },
+  "byte_equivalence": {
+    "schema": "xar.ck3.knight-json-streaming-cpp-fixture/v1",
+    "status": "PASS",
+    "same_owned_dtos": true,
+    "byte_equality": true,
+    "cases": [
+      {
+        "name": "capture_empty_null",
+        "bytes": 6773,
+        "both_sha256": "36bed4a56e1f8f738559913b2d61417a0ad24c703302ba848f7fd44bfbaf118a"
+      },
+      {
+        "name": "entry_empty_null",
+        "bytes": 584,
+        "both_sha256": "d4dcdc9b355b5063e76becb5d1b47c4ed1c4c7c3ecc1793e38805c50464189fc"
+      },
+      {
+        "name": "knight_empty",
+        "bytes": 254,
+        "both_sha256": "b062e94abb0ecaceb1048deb6078991fe1850842dc9911ad42abc901cd17d14d"
+      },
+      {
+        "name": "capture_empty_arrays_extremes_escaping",
+        "bytes": 12654,
+        "both_sha256": "49a0e0c8671378de94eccb3575cd60eec17ead8ca5b12ffc212615c97a664705"
+      },
+      {
+        "name": "entry_nested_extremes_escaping",
+        "bytes": 13329,
+        "both_sha256": "56339ddf3d9ab52fb6a945108e3292f0e74e654d3392fa35e595c5c88ee62348"
+      },
+      {
+        "name": "knight_partial_nested_optionals",
+        "bytes": 219527,
+        "both_sha256": "28b4b06f32acdafb668fd281e99e15072e8a393f0d72ff2271487314fd337636"
+      },
+      {
+        "name": "capture_query_ordered_occurrences",
+        "bytes": 32765,
+        "both_sha256": "879aae9cc37cefeaca1a7892bf6ec7a759f252f48612710a46e623be55f1b4e5"
+      },
+      {
+        "name": "direct_writers_enclosing_default_stream",
+        "bytes": 26511,
+        "both_sha256": "87dd947f1e69e9e32fc34fd7eb3b42d57df68bb2269c7079be6cbb422c09d2e1"
+      },
+      {
+        "name": "knight_large_nested",
+        "bytes": 7727887,
+        "both_sha256": "dabaa3558be6fe2a139338b0eb22f55125dd3eb67da8e614dec47791da731d84"
+      }
+    ],
+    "timing": {
+      "scope": "serializer call and returned string only; DTO creation, comparison, SHA and destruction excluded",
+      "large_output_bytes": 7727887,
+      "order": "alternating baseline/candidate pairs; five samples each",
+      "baseline_ns": [
+        121621000,
+        105372300,
+        112682500,
+        108693300,
+        109276100
+      ],
+      "candidate_ns": [
+        108022700,
+        110413300,
+        107051300,
+        114155400,
+        105384100
+      ]
+    },
+    "native_game_mcp_calls": 0,
+    "runtime_deployment": false
+  },
+  "timing_assessment": {
+    "large_result_bytes": 7727887,
+    "baseline_median_ns": 109276100,
+    "candidate_median_ns": 108022700,
+    "candidate_to_baseline_median_ratio": 0.9885299713295039,
+    "median_reduction_percent": 1.147002867049611,
+    "sample_ranges_overlap": true,
+    "robust_speedup_claimed": false,
+    "interpretation": "Nine byte comparisons pass. Five alternating synthetic serializer samples give only about 1.15% lower median and overlap. This does not establish a reliable speed improvement or production throughput benefit; per-field stream formatting remains a grounded next profiling target.",
+    "new_benchmark_retries_to_seek_faster_results": 0
+  },
+  "runtime_boundary": {
+    "native_game_mcp_calls": 0,
+    "native25_dll_changes": 0,
+    "runtime_driver_service_changes": 0,
+    "full_native_builds": 0,
+    "production_query_or_campaign_speedup_claimed": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "child_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE-SERIALIZER-CHILD01.json",
+      "bytes": 2638,
+      "sha256": "20360f3874c1faae76126b4aeb3f8438e794429956de56bfd6b0b94c142f312e"
+    },
+    "approved_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native-json-equivalence01",
+    "estimated_peak_bytes": 67108864,
+    "hard_limit_bytes": 536870912,
+    "actual_file_count_at_close": 65,
+    "actual_logical_bytes_at_close_before_this_git_seal": 2914443,
+    "physical_allocated_bytes": null,
+    "pending_child_writes": false,
+    "active_compiler_or_fixture_processes": false,
+    "deletion_performed": false,
+    "old_failure_retained": true,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+  }
+}

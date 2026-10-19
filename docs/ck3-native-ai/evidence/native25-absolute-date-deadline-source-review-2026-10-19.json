@@ -1,0 +1,145 @@
+{
+  "schema": "xar.ck3.native25.absolute-date-deadline-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T02:06:33+00:00",
+  "identity_source": "tools/ck3_live_run_id.py machine, fresh readback",
+  "scope": "Read-only Native25 source/capability/lineage review; no source/runtime edits, compiler, Native/Game/MCP calls or new startup permission",
+  "conclusion": "Existing Native25 tactical daily sentinel already accepts an absolute future whole-day deadline. No Native rebuild is required for that primitive. Current Python ordinary/exact/modal advance compositions need coherent deadline integration and qualification; this review does not qualify a new composition.",
+  "native25_identity": {
+    "pin_path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-clean-campaign01/native25-cold-generation01/ROOT-NATIVE25-NATIVE-PIN.json",
+    "pin_sha256_from_prior_bound_record": "ed1ab7e7eb56fe30b4016eb0c4edd6ccdd2de1213c3f93f1100bb78ee1f47f0e",
+    "pin_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "pin_observed_at_utc": "2026-10-17T09:20:31.579599+00:00",
+    "dll_sha256_from_pin_no_new_dll_hash": "a1448baa860a88826cbb9ae50ab67c93506560f2772c0515e4ef51e934002f40",
+    "dll_bytes_from_pin": 18442240,
+    "source_freeze_path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p38-prewar-v2-mailbox-native25-01/final01/SOURCE-FREEZE.json",
+    "source_freeze_sha256_from_pin": "ce118d1a02aac19133daaf880e0570230dcf2111637c60b97763473cd4239c3e",
+    "source_freeze_original_status": "OFFLINE_LINKED_FOCUSED_PASS_NOT_GAME_QUALIFIED",
+    "identity_pin_is_not_live_qualification": true,
+    "live_capability_evidence_is_separate": true
+  },
+  "closed_actual_capability_response": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-clean-campaign01/native25-cold-generation01/p49-responses/0002-1-result.json",
+    "bytes": 61855,
+    "sha256_current_small_file_readback": "077eeee97493c97aa94fd2e6903140fcfde3b7559e178f02d9da8802a64b0f9c",
+    "machine_binding_prior_record": "docs/ck3-native-ai/evidence/p50-next-robert30-v20261018-start-plan.json",
+    "bridge_capabilities_observed": [
+      "game.command.research-arm-tactical-daily-sentinel-v1-N",
+      "game.command.research-query-tactical-daily-sentinel-v1",
+      "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+      "game.command.pause-map",
+      "game.command.resume-map",
+      "game.command.set-speed-1",
+      "game.command.set-speed-2",
+      "game.command.set-speed-3",
+      "game.command.set-speed-4",
+      "game.command.set-speed-5"
+    ],
+    "fresh_new_campaign_capability_readback_performed": false
+  },
+  "fixed_native_source_lineage": {
+    "native25_link_response": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p38-prewar-v2-mailbox-native25-01/build/native25.rsp",
+    "software_sentinel_link_response_line": 191,
+    "software_sentinel_object": "D:/codex-ck3-background-spill/g2-native89-production01/jobs/c0338/native-p0338.obj",
+    "software_sentinel_compile_receipt": "D:/codex-ck3-background-spill/g2-native89-production01/jobs/c0338/stage.verified.json",
+    "software_sentinel_object_sha256_from_receipt": "509b2ce18244d5e107a07cd0fd619643e5d085aff61e42338c2c2da4031eb734",
+    "software_sentinel_source": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/tactical_daily_sentinel_v1.cpp",
+    "software_sentinel_source_sha256_current_readback_matches_compile_receipt": "25f16c2d21bba1a040abff4bc2876366109dcfdcb70aa9307d7ecc9cbde889a5",
+    "native25_map": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p38-prewar-v2-mailbox-native25-01/build/native25.map",
+    "map_evidence": [
+      {"line": 4405, "symbol": "ArmTacticalDailySentinelV1", "object": "native-p0338.obj"},
+      {"line": 38477, "symbol": "ProcessTacticalDailySentinelAfterTickV1 lambda", "object": "native-p0338.obj"},
+      {"line": 9381, "symbol": "BindTacticalDailySentinelImage12004", "object": "runtime-native18:native-p0566.obj"},
+      {"line": 9382, "symbol": "InstallTacticalDailySentinel12004", "object": "runtime-native18:native-p0566.obj"}
+    ],
+    "binder_source": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12004_tactical_daily_sentinel.cpp",
+    "binder_source_sha256_from_existing_compile_receipt": "e7ed46c69742174053842556ebdb0c1c51039e894745126d6375bb759d78a2ba",
+    "binder_object_sha256_from_existing_compile_receipt": "8c25bcf9b37aa08dd8fdc8949fc115947e018c4e91b8dfe93ade3c4c9d667726",
+    "historical_compile_receipt_machine_id": "unknown",
+    "historical_compile_receipt_machine_note": "Compiler receipts lack machine_id; no original compiler-machine identity is inferred from drive/path. Current readback proves the retained source and receipt files are available on this review machine.",
+    "native25_bridge_source": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p26-all-lifestyle-frontier01/jobs/47f64e761c49/bridge.cpp",
+    "native25_bridge_sha256_from_source_freeze": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9",
+    "bridge_arm_dispatch_lines": [19338, 19341]
+  },
+  "native_contract": {
+    "arm_step_template": "research-arm-tactical-daily-sentinel-v1-<starting_date_raw>-to-<target_date_raw>-speed-<1..5>-mode-terminal-a-0",
+    "status_step": "research-query-tactical-daily-sentinel-v1",
+    "cancel_step_template": "research-cancel-tactical-daily-sentinel-v1-generation-<actual_generation>",
+    "request_type": "xar::ck3_11906::TacticalDailySentinelArmRequestV1",
+    "request_fields": ["starting_date_raw:int32", "target_date_raw:int32", "speed:int32", "mode", "army_count", "army_ids"],
+    "parser_function": "ParseTacticalDailySentinelArmStepV1",
+    "parser_source_lines": [556, 565, 566],
+    "arm_function": "ArmTacticalDailySentinelV1",
+    "arm_source_lines": [604, 607, 676, 693],
+    "date_admission": "target > actual bound starting date; positive int32; (target-start)%24==0; no one-day or multi-day maximum in Native",
+    "a0_admission": "zero watched armies accepted only in terminal mode; Army/Combat loops are empty",
+    "post_day_function": "ProcessTacticalDailySentinelAfterTickV1",
+    "post_day_source_lines": [795, 814, 873],
+    "post_day_behavior": "Original daily final-stage function returns once; evaluator checks exact previous_date+24, increments completed_daily_ticks and triggers when observed_date>=target. Other native interrupts can trigger earlier.",
+    "pause_function": "PauseAtStableBoundary",
+    "pause_source_lines": [354, 362, 371, 379],
+    "pause_behavior": "Uses native SetPaused on the same bound Jomini/player and reads actual paused byte back; ACK alone does not prove pause.",
+    "exact_12004_mapped_daily_post_rva": "0x2988FB0",
+    "exact_12004_mapped_set_paused_rva": "0x383E3E0",
+    "single_global_sentinel_slot": true,
+    "independent_date_sentinel_must_not_overwrite_watched_sentinel": true
+  },
+  "python_advance_family_map_current_public_source": [
+    {
+      "family": "ordinary life-advance polling",
+      "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "function": "_execute_life_advance",
+      "signature_line": 24694,
+      "native_deadline_parameter_present": false,
+      "observation": "Normal path selects existing horizon/speed, resumes, polls semantic/public changes, then pauses. Smaller polling horizon cannot guarantee exact monthly/end stop. Integrate existing terminal-a0 per slice rather than whole-campaign one-day loops."
+    },
+    {
+      "family": "stationary objective hold / committed route / battle decision epoch",
+      "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "function": "_execute_battle_sentinel_advance",
+      "target_selection_lines": [24259, 24288],
+      "absolute_target_present": true,
+      "target_sources": ["objective hold tuple[3]", "committed route tuple[2]", "battle requested decision target", "route window proof end", "existing bounded fallback"],
+      "observation": "Clamp the same canonical step/Arm/receipt target to an earlier score boundary, preserving mode/watch army order/scope/speed and horizon guards. A second Arm would replace the shared state and cannot be used as an independent deadline."
+    },
+    {
+      "family": "exact_one_day",
+      "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "function": "_advance_exact_day_with_sentinel",
+      "hardcoded_start_plus_24_line": 25138,
+      "observation": "+24 is a Python composite contract, not a Native parser/Arm limit. Preserve exact-day semantics; a new multi-day composition needs its own expected tick/date checks."
+    },
+    {
+      "family": "death/succession modal Close built-in advance",
+      "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/death_succession_modal_private_transport.py",
+      "call_line": 520,
+      "call": "driver.execute_step('life-advance', expected_revision=expected_revision)",
+      "observation": "Native reflected Close itself submits the close command. The Python transport independently observes clearance, then invokes ordinary life-advance as its date-liveness proof. Boundary state must reach this nested driver call; an outer FULL-only guard misses it. At the final date, avoid requiring extra calendar movement merely to award Close liveness."
+    }
+  ],
+  "integration_constraints": [
+    "Reuse qualified Native25 and actual capability checks. No new native ability, DLL swap or speed-readiness promotion follows from this review.",
+    "Use the earlier of the current ordinary policy deadline, next score month, and final goal. Do not enlarge tactical horizons or change military speed/watch/scope policies.",
+    "Ensure canonical step, Arm target, result target and validation all bind the same actual date/generation; editing only the Arm token invalidates existing receipts.",
+    "_resume_life_advance already accepts native_stop_target_date_raw for an actually armed transaction, allowing a newly observed paused progressed frame without a second resume.",
+    "For multi-day date deadlines verify actual generation/start/target, expected tick count=(target-start)/24, true native pause and zero overshoot; preserve lawful early event/native interruption handling and generation-bound cancellation.",
+    "If current date equals a monthly/terminal boundary, sample before any further resume. A missing/unknown action result must not be resubmitted to compensate.",
+    "This review supplies source and prior capability evidence only. The new Python full-family composition and actual new campaign stop/month sampling remain to be verified by their owners."
+  ],
+  "work_performed": {
+    "native_game_mcp_calls": 0,
+    "builds_or_new_exes": 0,
+    "runtime_driver_service_mutations": 0,
+    "new_large_payload_or_save_reads": 0,
+    "cpp_source_mutations": 0,
+    "research_output": "This small tracked JSON only",
+    "metadata_note": "A retained 21,542,561-byte build manifest was parsed once for its keys and searched for finite source/object locators. No manifest/body copy was written. Existing link-map symbol lines were inspected; no binary or SAVE body was read."
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-17T02:06:33+00:00",
+    "root_owns_full_capacity_and_reservation_checks": true,
+    "heavy_write_or_deletion": false
+  }
+}

@@ -76,7 +76,21 @@ class SuccessorUIAppOwner:
         return self.service.snapshot(include_native_command_history=False)
 
     def ensure(self, snapshot):
+        if getattr(self, "_completed_retirement_error_v1", None):
+            raise ValueError("completed successor retirement remains unverified: " + self._completed_retirement_error_v1)
         game = _game_identity(snapshot)
+        path = self.root / journal.FILE
+        if path.exists():
+            previous, _ = journal._read(path)
+            if (previous.get("status") == "resolved" and (previous.get("game_identity") != game
+                    or previous.get("source_epoch") != self.epoch)):
+                from .. import successor_ui_checkpoint_lineage_v1 as lineage
+                anchor, _ = journal._read(self.root / lineage.COMPLETION_FILE)
+                cold = lineage.observe_native_cold_checkpoint_v1(self, snapshot=snapshot,
+                    expected_executable=game["executable"])
+                plan = lineage.plan_resolved_checkpoint_retirement_v1(self, anchor=anchor, cold=cold)
+                self._completed_retirement_v1 = lineage.retire_completed_checkpoint_v1(self, plan)
+                self.ledger, self.transition = None, None
         if self.ledger is None:
             self.ledger = journal.SuccessorUIPendingLedger(self.root, machine_id=self.machine,
                 source_epoch=self.epoch, game_identity=game,
@@ -236,12 +250,34 @@ class SuccessorUIAppOwner:
     def require_save(self):
         if self.pending():
             # Do not perform a hidden Close or change a revision-bound SAVE.
-            self.ensure(self.snapshot()).require_resolved_before_save()
+            raise ValueError("successor UI obligation remains unresolved; no ordinary SAVE")
+        path = self.root / journal.FILE
+        if path.exists():
+            from ..successor_ui_checkpoint_lineage_v1 import _completion
+            record, _ = journal._read(path)
+            original = journal.SuccessorUIPendingLedger(self.root, machine_id=self.machine,
+                source_epoch=record["source_epoch"], game_identity=record["game_identity"],
+                verify_transition=self.validators._verify_natural_succession_transition,
+                close_validator=self.validators._ordinary_succession_close_issue,
+                timeline_classifier=self.validators._ordinary_succession_timeline_state)
+            # In particular a stale UNKNOWN Close cannot gain another SAVE or
+            # even the one optional resolved-SAVE observation.
+            _completion(original)
 
     def driver_step(self, step, *, expected_revision):
         with self.lock:
+            completed_save_frame = None
             if step == "save-checkpoint":
                 self.require_save()
+                path = self.root / journal.FILE
+                if path.exists():
+                    from .native_driver import NativeHeadlessGameplayDriver
+                    if isinstance(self.driver, NativeHeadlessGameplayDriver):
+                        # One rare resolved SAVE observation, never per AUTO.
+                        # Retain this actual pre-frame; do not fabricate it from
+                        # the already-applied SAVE's result or replace receipt.
+                        completed_save_frame = self.snapshot()
+                        self.ensure(completed_save_frame)
             if step == STEP:
                 if (self.ticket is None or self._auto_scope is None
                         or self._auto_thread != threading.get_ident()
@@ -250,7 +286,20 @@ class SuccessorUIAppOwner:
                 # Consume before entering the original driver, including its
                 # throw-before-dispatch and unknown-after-apply outcomes.
                 self._continue_dispatch_permit = None
-            return self.driver.execute_step(step, expected_revision=expected_revision)
+            original = self.driver.execute_step(step, expected_revision=expected_revision)
+            if completed_save_frame is not None and self.ledger is not None and self.ledger.path.exists():
+                try:
+                    from ..successor_ui_checkpoint_lineage_v1 import write_completed_checkpoint_v1
+                    diagnostic = write_completed_checkpoint_v1(self, ledger=self.ledger,
+                        save_result=original, snapshot=completed_save_frame)
+                except Exception as error:
+                    # The original SAVE has happened. Preserve its complete
+                    # receipt and never retry it because this evidence failed.
+                    diagnostic = {"status": "capture_failed", "error_type": type(error).__name__,
+                        "error": str(error), "extra_history_free_observations": 1,
+                        "action_replay_authorized": False}
+                return {**original, "successor_ui_completed_checkpoint_v1": diagnostic}
+            return original
 
     def public_close(self, arguments):
         if not self.pending():

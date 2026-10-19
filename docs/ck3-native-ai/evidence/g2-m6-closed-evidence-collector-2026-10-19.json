@@ -1,0 +1,60 @@
+{
+  "schema": "xar.ck3.g2-m6-closed-evidence-collector-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_identity_source": "python tools/ck3_live_run_id.py machine, tool chunk 5ea19f",
+  "observed_at_utc": "2026-10-19T02:14:06.334114Z",
+  "source_parent": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+  "production_retention_review": {
+    "result": "NO_NEW",
+    "scope": "first named gain provenance through same-value material refresh, source connection changes and previous_interventions archive/following",
+    "production_changes": 0,
+    "limit": "Source review only; no new runtime adoption, natural outcome or connection continuity inferred",
+    "reason": "resolved spreads retain first_named_gain; archive copies original episode fields; ordinary consumer and fastgate both visit current/previous and match the original full identity"
+  },
+  "pins": [
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/sway_material_consumer.py", "bytes": 10269, "sha256": "be8106b70cda7368e6646c65b3429526fe6fa97f03f3230c4624520a639d7b5d"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/sway_lifecycle_consumer.py", "bytes": 15067, "sha256": "64f77cbfa900168824b8f9f8d0aad98c40038de5822923d0eb98d10a2ba4b674"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py", "bytes": 27237, "sha256": "fa27a839036564f762d18969265c2baae33d5b8e517ee9d01d0ceb7393394dc8"},
+    {"path": "docs/ck3-native-ai/p55-g2-m6-m7-natural-coverage-2026-10-18.md", "bytes": 8987, "sha256": "43391a4a4c383277e8d63b5609fc60308ae401efbc051f9f6d6211743850b8ee"},
+    {"path": "tools/g2_saved_campaign/m6_closed_evidence_collector_v1.py", "bytes": 11855, "sha256": "1bd8872009ba67794e11c713ff4035a77a8f73d626d05a47fa7bd3e62cd64254"},
+    {"path": "tools/test_m6_closed_evidence_collector_v1.py", "bytes": 6337, "sha256": "28edafa4438dc58357769a6d19a4d759b3b592efb23f7c0931c70929ee4e343a"}
+  ],
+  "verification": {
+    "command": "python -B tools/test_m6_closed_evidence_collector_v1.py",
+    "tool_chunk": "b579b7",
+    "exit_code": 0,
+    "test_count": 1,
+    "unittest_seconds": 0.088,
+    "tool_wall_seconds": 0.1816915,
+    "finished_before_utc": "2026-10-19T02:13:48Z",
+    "inputs": "Synthetic temporary closed JSON only",
+    "coverage": ["immutable first gain dates and baseline retained through archive", "later ordinary consumer source kept separately", "same slot new complete ID/generation not merged", "inconsistent generation rejected", "same-size content rewrite rejected by SHA", "oversized body read forbidden by explicit mock"],
+    "old_matrix_reruns": 0,
+    "git_diff_check": {"tool_chunk": "d1d518", "exit_code": 0}
+  },
+  "runtime_delivery": {
+    "owner_notified": "/root/runtime_v20261019",
+    "installation_claimed": false,
+    "actual_new_campaign_sources_collected": 0,
+    "required_inputs": "Explicit owner-settled small JSON pins and non-root pointers only; active ledger/current large AUTO forbidden",
+    "G2_M6_credit_awarded": false,
+    "evidence_packet_ready": "not_evaluated",
+    "status": "G2 6/8; M6 in_progress"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "shared_budget": "Root's current parallel small-research allowance; no new capacity credit",
+    "max_source_bytes": 262144,
+    "max_sources": 64,
+    "max_output_bytes": 1048576,
+    "oversized_policy": "stat-only and oversized_source/not_observed; no body read or SHA recomputation",
+    "heavy_writes": 0,
+    "deletions": 0,
+    "derived_review_at_utc": "2026-10-21T02:14:06.334114Z",
+    "close_check": "Root shared storage closeout remains authoritative"
+  },
+  "new_Game_MCP_SDK_calls": 0,
+  "manual_Start_Stop_forced_events_native_compiles": 0,
+  "large_Driver_SAVE_media_reads": 0,
+  "open_kaishek": "not-applicable"
+}

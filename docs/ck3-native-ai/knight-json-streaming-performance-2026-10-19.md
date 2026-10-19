@@ -8,10 +8,12 @@ serializers remain available and delegate to the same writers. This candidate
 changes allocation/copy work; it does not reduce the result's JSON fields or
 encoded size.
 
-This is a **source-only candidate** for a later Native deployment. The new
-Robert v20261019 campaign can continue using its separately qualified Native25;
-this change does not require waiting for a build. No Native/Game/MCP operation,
-new EXE, build, or executable performance/equivalence test ran in this lane.
+The candidate is now **offline C++ byte-equivalent**, with no runtime deployment.
+The new Robert v20261019 campaign continues using its separately qualified
+Native25. A small isolated fixture ran through an ordinary Python/DLL child;
+no Native/Game/MCP operation or full bridge build occurred. The measured
+synthetic timing difference is small and overlapping, so no reliable speedup
+is claimed.
 
 ## Grounded scope
 
@@ -58,22 +60,67 @@ or overwriting the original receipt:
 python -B -X utf8 tools/g2_saved_campaign/audit_knight_json_streaming_12004.py
 ```
 
-`git diff --check` also passed. No test/build success or runtime deployment is
-claimed. The lane writes only small source and audit metadata under Root's
-16 MiB allowance, performs no deletion, and leaves heavy-write admission and
-full storage reservations with Root under policy 1.0.0. The record's retention
-review is due 2027-04-17; the source and recipe remain normal tracked inputs.
+`git diff --check` also passed. That initial audit was source-only and did not
+claim build or execution success. It remains unchanged as historical evidence.
+The record's retention review is due 2027-04-17; source and recipes remain normal
+tracked inputs.
+
+## Actual isolated C++ qualification
+
+Root subsequently authorized one bounded executable comparison inside the
+existing code/profile budget. The [qualification seal](evidence/knight-json-streaming-cpp-qualification-2026-10-19.json)
+records actual machine `xenoamess-full-tower-eb9d2c1186`, UTC observation, source,
+compiler/header/DLL pins, original failure, successful retry and storage child.
+The [producer](../../tools/run_knight_json_streaming_fixture_12004.py) extracts
+unchanged pure serializer/helper spans from baseline `652e873a` and candidate
+`d90d5e79`; namespace and preprocessor symbol isolation occur outside their
+function bodies. The [fixture template](../../ck3_autonomous_player/native_bridge/tests/knight_json_streaming_12004_fixture_main.cpp.in)
+supplies owned instances of the actual production DTO types, with their project
+header closure frozen from the same candidate commit. It implements no replacement
+serializer and links no hooks, Game readers or bridge runtime.
+
+Nine complete UTF-8 comparisons pass: null/empty objects, empty arrays, false
+and zero, signed/unsigned 64-bit extremes and full IDs, quotes/backslashes and
+control characters including NUL, UTF-8 Chinese text, partial optional nested
+PC properties, repeated ordered captures, direct writers inside a default-format
+parent stream, and a **7,727,887-byte** nested knight result. Old/new wire SHA-256
+pairs match in every case. No complete synthetic result was duplicated to disk.
+
+MSVC 14.51.36231 used C++20, `/W4 /WX /O2 /MD`. The original attempt is retained
+as RED because the fixture assigned an `int` zero to `optional<uint16_t>`;
+that fixture zero was explicitly typed and UTF-8 Chinese text coverage was
+added before the necessary fresh attempt02. Production serializer bodies did
+not change. Both successful
+EXE and fallback DLL compile/link stages returned zero.
+
+The existing exact-source EXE registration helper returned
+`settings_failed/admin_required_for_verified_readback`, with no setting calls,
+no UAC, and no new system configuration. The EXE was never executed. As explicitly
+authorized by Root, the same bounded fixture was compiled as a DLL with one C
+export and loaded only by an independent ordinary Python `ctypes` child. That
+child exited zero. No DLL exclusion or EXE registration success is claimed.
+
+The five alternating old/new serializer samples exclude DTO construction,
+comparison, hashing and result destruction. The old median is **109.2761 ms**;
+the candidate median is **108.0227 ms**, about **1.15%** lower. Their ranges overlap.
+This is useful byte-equivalence evidence and a small synthetic timing result;
+it does not establish a reliable performance improvement. Per-field stream
+formatting remains the next grounded profiling target. The benchmark was not
+repeated to obtain a more favorable result.
+
+At closure the isolated work root held 65 files and **2,914,443 logical bytes**,
+including the original RED attempt, compiled outputs and receipts. Physical
+allocation was not measured. This fits the approved 64 MiB estimate and
+512 MiB maximum inside the existing code/profile subbudget, without new global
+reservation or deletion. No compiler/fixture process or pending child write
+remained; the external child review is due 2026-10-20T01:48:56.993837Z.
 
 ## Next qualification and measurement
 
-At the next authorized Native build, first run one bounded offline C++
-comparison using fixed-baseline serializer bodies and these candidate writers
-against the same owned DTOs. Compare the complete UTF-8 bytes, not parsed JSON
-equality alone. Cover absent and present optional sidecars, partial captures,
-false/zero/null, maximum full IDs and 64-bit raw values, control-character and
-quote/backslash escaping, repeated ordered stages, and a large retained-PC
-array. Measure baseline/candidate elapsed time and allocations separately; a
-synthetic result is not campaign throughput.
+The bounded C++ comparison above closes executable byte equivalence for the
+covered DTOs and default-format stream contract. Do not rerun it merely for
+deployment paperwork. A later source change, failure or new unresolved case can
+justify additional focused validation. Allocation counts were not measured.
 
 For the next necessary real combat-input query, retain its actual machine ID,
 UTC observation, EXE/DLL/SDK source tuple, actor/episode/date/native revision,

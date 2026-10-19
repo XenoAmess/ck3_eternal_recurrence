@@ -1,0 +1,191 @@
+{
+  "schema": "xar.sealed-performance-window-projection.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T02:03:35.859086+00:00",
+  "scope": "new arithmetic from sealed historical small evidence; no new runtime timings",
+  "sources": [
+    {
+      "path": "docs/ck3-native-ai/evidence/p49-settled-performance.json",
+      "bytes": 10920,
+      "sha256": "5cabf32650b81db2adafe96d79edb81341ccacf7de91243b315ac4ddebe3de36"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p49-stage-slice.json",
+      "bytes": 7633,
+      "sha256": "1101ff3040b784ef8f540bbcd536c8b2c133b37da685b8283e47629796039b08"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p63-r6-performance-and-normal-sdk-close-2026-10-18.json",
+      "bytes": 13748,
+      "sha256": "d9567fc34f86649b9b682a67a2fba50894c4ea11bda9092f662a9cf63fc473fb"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p67-p68-combat-query-archive-performance-2026-10-18.json",
+      "bytes": 13952,
+      "sha256": "ea5fbc8d1630886fa0b9a4576115ffe3ca0a0aaa0c06e4e93ae1aac3f3f6b6f6"
+    }
+  ],
+  "historical_window": {
+    "source_machine_ids": {
+      "P49_settled": "unknown",
+      "P49_stages": "unknown",
+      "P63": "xenoamess-full-tower-eb9d2c1186"
+    },
+    "P63_same_as_executing_machine": true,
+    "stage_lower_source_clock": "2026-10-17T17:09:39.958552",
+    "stage_upper_source_clock": "2026-10-17T17:11:54.875243",
+    "P49_machine_identity_note": "small P49 source projections omit machine_id; ownership not inferred from paths or associated P63"
+  },
+  "P49_settled": {
+    "game_days": 118,
+    "wall_seconds": 134.92461,
+    "turns": 62,
+    "zero_date_turns": 43,
+    "zero_date_turn_fraction": 0.6935483870967742,
+    "zero_date_auto_seconds": 31.540901999920607,
+    "progress_auto_seconds": 93.28996070078574,
+    "zero_date_groups": {
+      "war_results_query": {
+        "count": 16,
+        "auto_seconds": 5.497350100195035,
+        "game_days": 0
+      },
+      "army_query": {
+        "count": 19,
+        "auto_seconds": 15.581499499967322,
+        "game_days": 0
+      },
+      "war_termination_query": {
+        "count": 5,
+        "auto_seconds": 5.694493799936026,
+        "game_days": 0
+      },
+      "other_query": {
+        "count": 2,
+        "auto_seconds": 3.361534900031984,
+        "game_days": 0
+      },
+      "select-event-option-2": {
+        "count": 1,
+        "auto_seconds": 1.4060236997902393,
+        "game_days": 0
+      }
+    },
+    "rpc_busy_union_seconds": 130.511249,
+    "unattributed_gap_seconds": 4.413361000000009,
+    "date_changed_wait_seconds": 69.960223,
+    "same_date_wait_seconds": 5.387076,
+    "plan_unique_wall_seconds": 29.275382,
+    "native_wait_within_plan_seconds": 1.001551,
+    "semantic_snapshot_within_plan_seconds": 2.611838,
+    "persistence": {
+      "count": 21,
+      "sum_seconds": 10.448259,
+      "max_seconds": 1.180751,
+      "stream_write_sum_seconds": 9.954374,
+      "stream_fraction_of_persistence": 0.9527304022612763,
+      "serialization_sum_seconds": 0.008741
+    }
+  },
+  "P63": {
+    "R6_window": {
+      "first": {
+        "sequence": 146,
+        "utc": "2026-10-17T23:17:36.380692+00:00",
+        "elapsed_seconds": 0.004410000052303076,
+        "date_raw": 53362416,
+        "native_revision": 10772,
+        "revision": 26,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "connection_generation": 17,
+        "driver_state_bytes": 13904541,
+        "army_strengths_query_sequence": 1219
+      },
+      "last": {
+        "sequence": 344,
+        "utc": "2026-10-17T23:18:30.768980+00:00",
+        "elapsed_seconds": 0.01219639996998012,
+        "date_raw": 53362728,
+        "native_revision": 10811,
+        "revision": 65,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "connection_generation": 17,
+        "driver_state_bytes": 14461191,
+        "army_strengths_query_sequence": 1232
+      },
+      "actual_days": 13.0,
+      "wall_seconds": 54.388288,
+      "actual_days_per_wall_second": 0.23902204827627593,
+      "wall_seconds_per_actual_day": 4.183714461538462,
+      "driver_growth_bytes": 556650,
+      "driver_growth_bytes_per_day": 42819.230769230766,
+      "response_bytes": 49488392,
+      "response_bytes_per_day": 3806799.3846153845
+    },
+    "R5_window": {
+      "first": {
+        "sequence": 626,
+        "utc": "2026-10-17T22:37:02.653438+00:00",
+        "elapsed_seconds": 0.010833899956196547,
+        "date_raw": 53360832,
+        "native_revision": 10569,
+        "revision": 242,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "driver_state_bytes": 99128356
+      },
+      "last": {
+        "sequence": 824,
+        "utc": "2026-10-17T22:44:28.905398+00:00",
+        "elapsed_seconds": 0.004994800081476569,
+        "date_raw": 53361576,
+        "native_revision": 10670,
+        "revision": 343,
+        "actor_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "driver_state_bytes": 141131731
+      },
+      "actual_days": 31.0,
+      "wall_seconds": 446.25196,
+      "actual_days_per_wall_second": 0.06946748200276812,
+      "wall_seconds_per_actual_day": 14.395224516129032,
+      "driver_growth_bytes": 42003375,
+      "driver_growth_bytes_per_day": 1354947.5806451612,
+      "response_bytes": 121816119,
+      "response_bytes_per_day": 3929552.2258064514,
+      "conditional_days_to_256MiB_driver": 93.95472328116492
+    },
+    "same_state_AB": false
+  },
+  "seconds_level_hotspot": "21 full-state writes total 10.448259s, 9.954374s in stream.write; JSON serialization is not this window's persistence bottleneck",
+  "source_candidate": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "functions": [
+      "_combat_simulation_inputs_cache_for_snapshot",
+      "_combat_simulation_inputs_v3_cache_for_snapshot"
+    ],
+    "issue": "existing frame equality rejection occurs after expensive full payload normalization",
+    "proposal": "reject the same stale frame before payload normalization; keep all current-frame normalization and result guards",
+    "predicted_seconds_saved": null,
+    "new_cache": false,
+    "live_accepted": false
+  },
+  "limits": [
+    "Nested stages are overlapping categories and must not be summed into wall time.",
+    "Zero-date queries can be necessary business observations; the fraction is not a removal target.",
+    "P63 R5/R6 are distinct states; their rates are not a controlled speedup ratio.",
+    "P67 87.814s query lacks native/normalization/clone/archive/MCP component timings; no seconds are assigned to a component.",
+    "Actual game's date wait cannot be eliminated by skipping legal observation or changing war policy."
+  ],
+  "new_game_or_native_calls": 0,
+  "runtime_bodies_read": 0,
+  "storage": {
+    "policy_version": "1.0.0",
+    "source_max_bytes": 1048576,
+    "output_limit_bytes": 1048576,
+    "deletions": 0,
+    "record_review_at_utc": "2027-04-17T02:03:35.859107+00:00"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "schema": "xar.stale-combat-frame-rejection-performance.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_started_utc": "2026-10-19T02:03:10.726275+00:00",
+  "observed_ended_utc": "2026-10-19T02:03:16.878071+00:00",
+  "baseline_commit": "d90d5e79",
+  "baseline_function_sha256": {
+    "_combat_simulation_inputs_cache_for_snapshot": "648bd51bd6e938242ddf9375cf03ed76ad12fedb1b99d75beb1eae5b6a0c0268",
+    "_combat_simulation_inputs_v3_cache_for_snapshot": "014ee3b1cdf700b265dd822ed27d9487628397c596514d02c7e1f9e43bf96da0"
+  },
+  "source": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "sha256": "b54e2cd07fad10d840f725521f0179c76eaf916923801ec0b24b7f8f097d2c69"
+  },
+  "equal_cases": [
+    {
+      "version": 2,
+      "case": "current-valid",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "unpaused",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "stale-native_revision",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "stale-snapshot_id",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "stale-revision",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "stale-connection_generation",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "stale-episode_run_id",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "bad-body",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "bad-sequence",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "wrong-status",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 2,
+      "case": "wrong-target",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "current-valid",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "unpaused",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "stale-native_revision",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "stale-snapshot_id",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "stale-revision",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "stale-connection_generation",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "stale-episode_run_id",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "bad-body",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "bad-sequence",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "wrong-status",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    },
+    {
+      "version": 3,
+      "case": "wrong-target",
+      "equal_result": true,
+      "equal_retained_cache": true,
+      "input_unchanged": true
+    }
+  ],
+  "focused_tests": {
+    "run": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  "bounded_synthetic_AB": {
+    "version": 2,
+    "body_json_bytes": 4010175,
+    "events": 32,
+    "contexts_per_event": 9,
+    "pc_properties_per_context": 2048,
+    "source": "test_knight_stat_consumption_stage_lineage_12004._wire expanded in memory; all values synthetic",
+    "alternating_groups": 3,
+    "iterations_per_group": 1,
+    "old_seconds": [
+      0.5215256,
+      0.5420177,
+      0.5332594
+    ],
+    "new_seconds": [
+      0.0019689,
+      0.0026399,
+      0.0018928
+    ],
+    "old_median_seconds": 0.5332594,
+    "new_median_seconds": 0.0019689
+  },
+  "same_frame_normalization_retained": true,
+  "shared_plan_cache_added": false,
+  "native_or_game_calls": 0,
+  "live_rpc": 0,
+  "large_runtime_bodies_read": 0,
+  "deployed": false,
+  "new_game_freeze": "d90d5e79; this candidate is a later batch and is not hot-patched",
+  "limits": [
+    "synthetic bounded stale V2 workload, not replay of P67",
+    "no actual games/day claim or attribution of P67 87.814s",
+    "current-frame paths still perform the full original normalization and copying"
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "memory_body_limit_bytes": 16777216,
+    "output_limit_bytes": 1048576,
+    "free_at_start_bytes": 178433810432,
+    "free_at_close_bytes": 178433798144,
+    "deletions": 0,
+    "record_review_at_utc": "2027-04-17T02:03:16.879578+00:00"
+  }
+}

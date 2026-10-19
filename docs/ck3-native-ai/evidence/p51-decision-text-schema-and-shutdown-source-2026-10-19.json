@@ -1,0 +1,63 @@
+{
+  "schema": "xar.p51-schema-and-publisher-close-source-ready.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T02:19:27.732253+00:00",
+  "status": "SOURCE_READY_RUNTIME_OWNER_APPLY_REQUIRED",
+  "source_files": [
+    {
+      "path": "tools/g2_saved_campaign/migrate_p51_decision_text_v20261019.py",
+      "bytes": 28929,
+      "sha256": "8c83e631db2e284b48de7c6dee680d38ac02b36cc66560d068b96f46b9065f1b"
+    },
+    {
+      "path": "tools/g2_saved_campaign/p51_decision_text_shutdown.py",
+      "bytes": 4525,
+      "sha256": "0da27a4b273480cbfcdb75405f872df425c4975a23fce21092403fdc627ae14d"
+    }
+  ],
+  "AST_checked_source_files": 2,
+  "qualification_records": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-decision-text-migration-review01\\COMBINED-SOURCE-QUALIFICATION.json",
+      "bytes": 779,
+      "sha256": "2c52a939b11d6dfabd38e28ace9a3c3779f57295f629fcd298b0a5a26742149f",
+      "status": "PASS_SYNTHETIC_SOURCE_ONLY",
+      "observed_at_utc": "2026-10-19T02:08:11.647237+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-decision-text-schema-amendment-review01\\ACTUAL-QUEUE-SCHEMA-QUALIFICATION.json",
+      "bytes": 1265,
+      "sha256": "e12f4341f4a6c452e2da79feb5001cafa7ebea30015e3e11e8ba7faecce516cd",
+      "status": "FAIL",
+      "observed_at_utc": "2026-10-19T02:16:04.912192+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-decision-text-schema-amendment-review01\\ACTUAL-QUEUE-SCHEMA-QUALIFICATION02.json",
+      "bytes": 1793,
+      "sha256": "41a46283ef3ec61789f726f0e613a538cf393f936a97e9623c9c3f168ad05f8b",
+      "status": "PASS_SOURCE_ACTUAL_QUEUE_PREFLIGHT_WITH_SUBSTITUTED_PROVIDER_GATE",
+      "observed_at_utc": "2026-10-19T02:16:18.607867+00:00"
+    }
+  ],
+  "schema_fix": "Actual CleanRobertMainMenuQueue preflight now requires exact xar.ck3.decision-text-first-frame/v1",
+  "additional_migration_seams": [
+    "new map-review decision_text_visible field/CLI",
+    "only consumed placement helper pin replaces unrelated legacy helper.PINS table"
+  ],
+  "actual_queue_test_scope": "New schema accepted by actual queue; old schema rejected before an explicitly substituted provider gate; MainMenu->new1066->SEM/CAP->map review->SAVE->zero-cycle state",
+  "actual_queue_test_final_result": "1 passed; 0 failures; 0 errors; actual imports bound to sdk-v20261019-candidate/src",
+  "strict_public_source_pixel_gate_in_actual_queue_test": "explicitly substituted; separate six-point source qualification not rerun",
+  "initial_queue_test_failure": "retained: review copy lacked explicit source-root freeze metadata; later attempt added marked synthetic qualification freeze",
+  "publisher_shutdown_scope": "source-only normal STOP followed by exact original PublisherOwner exit0 proof consumption, after actual OBS inputs unbound and before normal Game close",
+  "publisher_normal_stop_executed_by_this_agent": false,
+  "publisher_actual_exit0_observed_by_this_agent": false,
+  "runtime_Game_OBS_Desktop_Native_calls": 0,
+  "candidate_runtime_mutations_by_this_agent": 0,
+  "ready_apply_reviews": [
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-decision-text-schema-amendment-review01\\REVIEW.json",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-decision-text-closure-review01\\REVIEW.json"
+  ],
+  "storage_policy_version": "1.0.0",
+  "new_heavy_writes": 0,
+  "review_at_utc": "2027-04-17T00:00:00Z"
+}

@@ -1,0 +1,209 @@
+{
+  "schema": "xar.ck3.g2-m7-completed-checkpoint-lineage-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_evidence": "tools/ck3_live_run_id.py machine actual readback in this task",
+  "scope": "Source implementation and synthetic software only; no frozen runtime deployment or live credit",
+  "final_registered_MCP": {
+    "chunk_id": "16a94f",
+    "started_at_utc": "2026-10-19T02:16:54.690513+00:00",
+    "finished_at_utc": "2026-10-19T02:16:58.302941+00:00",
+    "outer_exit_code": 0,
+    "tests": 1,
+    "cold_rejection_subtests": 4,
+    "test_body_seconds": 1.798,
+    "actual_paths": [
+      "registered MCP Client and real App/Service dispatcher",
+      "original SAVE driver replace receipt and small synthetic Driver persistence",
+      "original NativeHeadlessGameplayDriver._bind_episode_from_playable_snapshot byte/actor/date checks",
+      "internal typed cold projection, exact completed archive, next original natural Continue"
+    ],
+    "synthetic": [
+      "native results and gameplay frames",
+      "OS Game process identities",
+      "small checkpoint bytes and fixture planner choice"
+    ],
+    "extra_history_free_snapshot_per_resolved_SAVE": 1,
+    "extra_ordinary_AUTO_snapshot_or_capability_calls": 0,
+    "pending_or_UNKNOWN_SAVE_extra_snapshot_calls": 0,
+    "capture_failure_original_SAVE_attempts": 1,
+    "capture_failure_resubmissions": 0,
+    "old_resolved_and_Close_bytes_preserved": true,
+    "original_goal_origin_preserved_progress": 2,
+    "negative_cases": [
+      "client JSON capsule",
+      "UNKNOWN Close",
+      "wrong paired checkpoint",
+      "exact archive move failure retains old canonical ledger"
+    ],
+    "diagnostic": "Synthetic ordinary camera lacked a planner observation; the nonfatal diagnostic is retained and does not qualify camera or Game behavior."
+  },
+  "leaf_validation": {
+    "final_after_capsule_change_chunk_id": "005755",
+    "leaf_tests": 1,
+    "leaf_subtests": 14,
+    "leaf_passed": true,
+    "outer_whole_run": 1,
+    "outer1_reason": "The second module initially imported unavailable fastmcp; changed to the repository actual mcp.Client. The leaf itself passed.",
+    "earlier_leaf_green_chunk_id": "f26cf9",
+    "earlier_leaf_outer_exit_code": 0,
+    "earlier_leaf_started_at_utc": "2026-10-19T02:04:05.674812+00:00",
+    "earlier_leaf_finished_at_utc": "2026-10-19T02:04:06.468268+00:00",
+    "negative_cases": [
+      "raw JSON token",
+      "other owner",
+      "checkpoint mismatch",
+      "pipe mismatch",
+      "unconfirmed write",
+      "old source mismatch",
+      "goal mismatch",
+      "pending",
+      "handoff_unverified",
+      "original full title mismatch",
+      "UNKNOWN Close",
+      "SDK-only hot reconnect",
+      "changed checkpoint token",
+      "old Game still alive"
+    ]
+  },
+  "earlier_attempts": [
+    {
+      "chunk_id": "74b038",
+      "exit_code": 1,
+      "reason": "The test expected ValueError for the original full title validator; it correctly raised AgentError. Only the test expectation was repaired."
+    },
+    {
+      "chunk_id": "c019f3",
+      "exit_code": 1,
+      "reason": "The synthetic test used read-only resume as if it submitted Close. Its fixture sequence now uses original AUTO Close."
+    },
+    {
+      "chunk_id": "48f540",
+      "exit_code": 1,
+      "reason": "The reused fixture's synthetic pact string was incompatible with the actual Driver loader. The fixture now uses the real ordinary no-pact contract."
+    },
+    {
+      "chunk_id": "35b3e7",
+      "exit_code": 0,
+      "reason": "The first complete registered cold path passed. A later source increment added explicit UNKNOWN-before-SAVE coverage."
+    },
+    {
+      "chunk_id": "ffae1f",
+      "exit_code": 0,
+      "reason": "UNKNOWN-before-SAVE increment passed; final test adds explicit archive move failure preservation."
+    }
+  ],
+  "source_delivery_boundaries": {
+    "new_public_MCP_tool": false,
+    "client_or_queue_JSON_authority": false,
+    "pending_or_UNKNOWN_migration": false,
+    "_checked_weakened": false,
+    "runtime_hot_patch": false,
+    "actual_Game_Native_Steam_desktop_media_real_SAVE_operations": 0,
+    "G2_completed": 6,
+    "G2_total": 8,
+    "M7": "in_progress"
+  },
+  "recorded_at_utc": "2026-10-19T02:17:47.671987+00:00",
+  "source_epoch": "7572c8f9ecb2fbd4a55d649317f931c7e311bcb8ec8673468ed7fea0d59e0ba2",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 22816,
+      "sha256": "b84b27c84e5643c320e71246b74ebccf10c4c3e4cb8d4d19463bc6a9a90328b6"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_pending_ledger_v1.py",
+      "bytes": 21433,
+      "sha256": "ee2daf37d3b988971ecf9dd7b9ccb801d0bda5bbb9fa551fea6419990627fbaf"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\successor_ui_app_owner_v1.py",
+      "bytes": 19696,
+      "sha256": "61d34deec81004116e87470e111d0f33afee479e8a035ad3efa1d02ab7980f3f"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1599268,
+      "sha256": "a86ffd80106552d6d71eda43d2e46776b2f4d960c7aaceb22a4f7ddfaf36e32b"
+    },
+    {
+      "path": "ck3_autonomous_player\\tests\\unit\\test_successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 10669,
+      "sha256": "e1cbbc7c702710194ebf7c18c24158260bb7b7aa7cb39611194c759b8191ec90"
+    },
+    {
+      "path": "ck3_autonomous_player\\tests\\unit\\test_successor_ui_checkpoint_cold_app_v1.py",
+      "bytes": 14216,
+      "sha256": "cc9b2a12051e05927e87c6d1df986adeaf7226232376f13158d4e8067d3ebfa0"
+    }
+  ],
+  "static_scope_check": {
+    "_checked_AST_same_as_HEAD": true,
+    "git_diff_check_exit_code": 0
+  },
+  "storage": {
+    "policy": "1.0.0",
+    "new_peak_bound_bytes": 16777216,
+    "heavy_write": false,
+    "deletion": false,
+    "close_volume": {
+      "total": 4096787476480,
+      "used": 3918364491776,
+      "free": 178422984704
+    },
+    "system_reserve_other_reservations_project_quota": null
+  },
+  "old_game_absence_repair": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "recorded_at_utc": "2026-10-19T02:25:55.183765+00:00",
+    "chunk_id": "082e77",
+    "outer_exit_code": 0,
+    "tests": 1,
+    "new_negative_subtests": 10,
+    "started_at_utc": "2026-10-19T02:25:06.604092+00:00",
+    "finished_at_utc": "2026-10-19T02:25:08.013884+00:00",
+    "old_37_or_14_tests_rerun": false,
+    "real_OS_Game_SAVE_Native_operations": 0,
+    "none_requires": "Existing complete successful Windows Toolhelp enumeration with old PID absent; API failure, partial identity and non-Windows are unavailable",
+    "source_epoch": "d9ce6abe2182df6c7c18b3cff8a1b1a10db50be59bc1c2b116cadaa92c141483",
+    "checked_AST_unchanged": true,
+    "diff_check_exit_code": 0,
+    "source_pins": [
+      {
+        "path": "ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_checkpoint_lineage_v1.py",
+        "bytes": 25383,
+        "sha256": "44fa2870a33723559551960a09c3d07bb848da0337bb9f18b9c9bfed77cbaa51"
+      },
+      {
+        "path": "ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_pending_ledger_v1.py",
+        "bytes": 21478,
+        "sha256": "c0efbfa6474aee2fde033953a7a0220aa5a74a4a9484b1daa4ed32d13fa8b0e4"
+      },
+      {
+        "path": "ck3_autonomous_player\\src\\xar_autoplayer\\runtime.py",
+        "bytes": 169403,
+        "sha256": "bfaadaaedf3d499339b5223d722930b20644fc090bc1b8a04f83e0eb8d5b2726"
+      },
+      {
+        "path": "ck3_autonomous_player\\src\\xar_autoplayer\\environment.py",
+        "bytes": 58031,
+        "sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582"
+      },
+      {
+        "path": "ck3_autonomous_player\\tests\\unit\\test_successor_ui_checkpoint_lineage_v1.py",
+        "bytes": 13156,
+        "sha256": "411a4d1df373ab082ea9c935728e8722d8399d6fd742dacd81332508a3b0df4c"
+      },
+      {
+        "path": "ck3_autonomous_player\\tests\\unit\\test_successor_ui_checkpoint_cold_app_v1.py",
+        "bytes": 14301,
+        "sha256": "689f09de0bb30031b7c7d871695afe871719cee022b72dcada37bdbd8519048c"
+      }
+    ],
+    "close_disk": {
+      "total": 4096787476480,
+      "used": 3918367272960,
+      "free": 178420203520
+    }
+  }
+}

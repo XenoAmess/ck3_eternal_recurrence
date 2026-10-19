@@ -5949,6 +5949,17 @@ class NativeHeadlessGameplayDriver:
             ):
                 self._combat_simulation_inputs_query = None
                 return None
+            # A stale frame cannot supply this snapshot. Reject its binding
+            # before normalizing the potentially large, already obsolete body.
+            if not (
+                binding.get("native_revision") == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("connection_generation") == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+            ):
+                self._combat_simulation_inputs_query = None
+                return None
             target_province_id = binding.get("target_province_id")
             attacker_entry_province_id = binding.get(
                 "attacker_entry_province_id"
@@ -5973,14 +5984,7 @@ class NativeHeadlessGameplayDriver:
                 self._combat_simulation_inputs_query = None
                 return None
             if not (
-                binding.get("native_revision")
-                == snapshot.get("native_revision")
-                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
-                and binding.get("revision") == snapshot.get("revision")
-                and binding.get("connection_generation")
-                == connection_generation
-                and binding.get("episode_run_id") == episode_run_id
-                and binding.get("target_province_id")
+                binding.get("target_province_id")
                 == normalized.get("target_province_id")
                 and binding.get("attacker_army_ids")
                 == encounter_scope.get("attacker_army_ids")
@@ -6054,6 +6058,17 @@ class NativeHeadlessGameplayDriver:
             ):
                 self._combat_simulation_inputs_v3_query = None
                 return None
+            # Keep current-frame validation complete; stale payloads only need
+            # the same binding rejection that formerly followed normalization.
+            if not (
+                binding.get("native_revision") == snapshot.get("native_revision")
+                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
+                and binding.get("revision") == snapshot.get("revision")
+                and binding.get("connection_generation") == connection_generation
+                and binding.get("episode_run_id") == episode_run_id
+            ):
+                self._combat_simulation_inputs_v3_query = None
+                return None
             target_province_id = binding.get("target_province_id")
             attacker_entry_province_id = binding.get(
                 "attacker_entry_province_id"
@@ -6078,14 +6093,7 @@ class NativeHeadlessGameplayDriver:
                 self._combat_simulation_inputs_v3_query = None
                 return None
             if not (
-                binding.get("native_revision")
-                == snapshot.get("native_revision")
-                and binding.get("snapshot_id") == snapshot.get("snapshot_id")
-                and binding.get("revision") == snapshot.get("revision")
-                and binding.get("connection_generation")
-                == connection_generation
-                and binding.get("episode_run_id") == episode_run_id
-                and binding.get("target_province_id")
+                binding.get("target_province_id")
                 == normalized["base_inputs"].get("target_province_id")
                 and binding.get("attacker_army_ids")
                 == encounter_scope.get("attacker_army_ids")
@@ -11873,6 +11881,17 @@ class NativeHeadlessGameplayDriver:
             self._pending_cold_candidate = None
             self._managed_restore_transaction = None
         self._persist_driver_state()
+
+        if rejection is None and self._succession_lifecycle.get("lifecycle") == "ordinary_campaign_succession":
+            try:
+                from ..successor_ui_checkpoint_lineage_v1 import capture_native_cold_projection_v1
+                self._successor_ui_cold_checkpoint_projection_v1 = capture_native_cold_projection_v1(self, snapshot=snapshot)
+            except Exception as error:
+                # Keep the original accepted restore. This small projection
+                # cannot turn an unknown/failed retirement into authority.
+                self._successor_ui_cold_checkpoint_projection_v1 = None
+                self._successor_ui_cold_checkpoint_projection_diagnostic_v1 = {
+                    "status": "unavailable", "error_type": type(error).__name__, "error": str(error)}
 
     def _read_driver_state(self) -> dict[str, object] | None:
         if self.state_dir is None:
@@ -23805,9 +23824,21 @@ class NativeHeadlessGameplayDriver:
         if expected_revision is not None and expected_revision != starting.get("revision"):
             raise PreSubmissionRevisionMismatchError("route window starting revision changed")
         with self._history_lock:
-            proof = _fresh_route_contact_window_advance_proofs(
-                starting, self._command_history
-            ).get(step)
+            proofs = _fresh_route_contact_window_advance_proofs(starting, self._command_history)
+            proof = proofs.get(step)
+            requested = parse_advance_route_contact_window_step(step)
+            if (proof is None and requested is not None
+                    and getattr(self, "_campaign_clock_deadline_v1", None) is not None):
+                # A proved three-day frozen route window also proves its
+                # two-day prefix. Keep every identity and current-source guard.
+                longer = next((value for key, value in proofs.items()
+                    if (parsed := parse_advance_route_contact_window_step(key)) is not None
+                    and parsed[:3] == requested[:3] and parsed[3] > requested[3]), None)
+                if longer is not None:
+                    window = project_route_contact_window_v1(longer["contact_horizon"], horizon_days=requested[3])
+                    if window.get("status") == "available" and window.get("contact_free_whole_days") == requested[3]:
+                        proof = {**longer, "contact_window": window, "horizon_days": requested[3],
+                                 "window_end_date_raw": window["window_end_date_raw"]}
         if proof is None:
             raise BridgeUnavailableError("route window complete same-frame inputs changed")
         result = self._execute_battle_sentinel_advance(
@@ -24014,6 +24045,25 @@ class NativeHeadlessGameplayDriver:
         if postcondition is not None and strict_endpoint_followup:
             result.pop("contact_followup", None)
         return {**result, "contact_transition": postcondition}
+
+    def configure_campaign_score_cadence_v1(
+        self, *, campaign_id: str, start_date: str, start_date_raw: int,
+        months: int = 360,
+    ) -> dict[str, object]:
+        """Enable this campaign's native monthly/end deadlines explicitly."""
+        from .campaign_deadline_v1 import configure_v1
+        return configure_v1(self, campaign_id=campaign_id, start_date=start_date,
+                            start_date_raw=start_date_raw, months=months)
+
+    def cap_campaign_advance_plan_v1(self, planned: dict[str, object]) -> dict[str, object]:
+        from .campaign_deadline_v1 import cap_plan_v1
+        return cap_plan_v1(self, planned)
+
+    def _campaign_advance_deadline_v1(
+        self, starting: dict[str, object], target_date_raw: int,
+    ) -> dict[str, object] | None:
+        from .campaign_deadline_v1 import deadline_v1
+        return deadline_v1(self, starting, target_date_raw)
 
     def _execute_battle_sentinel_advance(
         self,
@@ -24262,6 +24312,16 @@ class NativeHeadlessGameplayDriver:
             if requested_decision_target is not None
             else fallback_target_date_raw
         )
+        campaign_deadline = self._campaign_advance_deadline_v1(starting, target_date_raw)
+        if campaign_deadline is not None:
+            if campaign_deadline["status"] != "advance":
+                raise BridgeUnavailableError("campaign endpoint reached before tactical clock submission")
+            capped_target = int(campaign_deadline["target_date_raw"])
+            if (capped_target != target_date_raw and
+                    (requested_decision_target is not None or parsed_route_request is not None
+                     or parsed_objective_hold_request is not None or route_window_proof is not None)):
+                raise BridgeUnavailableError("typed tactical clock plan was not normalized to its campaign deadline")
+            target_date_raw = capped_target
         target_delta_raw = target_date_raw - starting_date_raw
         maximum_horizon_days = (
             3
@@ -24635,6 +24695,8 @@ class NativeHeadlessGameplayDriver:
                     watch_army_ids=watch_army_ids,
                 )
             result["progress_status"] = "postcondition"
+            if campaign_deadline is not None:
+                result["campaign_deadline_v1"] = campaign_deadline
             return result
         except Exception as error:
             try:
@@ -24817,6 +24879,10 @@ class NativeHeadlessGameplayDriver:
                     "lifecycle without observable same-SiegeID rich state"
                 )
         starting_date_raw = _date_raw(starting, "starting snapshot")
+        campaign_endpoint = self._campaign_advance_deadline_v1(starting, starting_date_raw + 24)
+        if campaign_endpoint is not None and campaign_endpoint["status"] != "advance":
+            from .campaign_deadline_v1 import endpoint_result_v1
+            return endpoint_result_v1(starting, result_step, campaign_endpoint)
         horizon_days = 1 if exact_one_day else _life_advance_horizon_days(starting)
         if QUERY_WAR_RESULTS_WINDOW_CAPABILITY in self.state.capabilities().get("bridge_capabilities", ()):
             # The six-day result-query lease may expire during this slice.
@@ -24879,7 +24945,21 @@ class NativeHeadlessGameplayDriver:
         actions: list[dict[str, object]] = []
 
         sentinel_receipt: dict[str, object] | None = None
-        if (exact_one_day and _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
+        campaign_clock_receipt: dict[str, object] | None = None
+        campaign_deadline = self._campaign_advance_deadline_v1(
+            starting, starting_date_raw + horizon_days * 24)
+        if campaign_deadline is not None and not exact_one_day:
+            required = _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES | {
+                _TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY}
+            if not required <= bridge_capabilities:
+                raise BridgeUnavailableError("campaign native date deadline requires actual Arm/Status/Cancel capabilities")
+            from .campaign_deadline_transport_v1 import advance_campaign_deadline_v1
+            effective_target = int(campaign_deadline["target_date_raw"])
+            horizon_days = (effective_target - starting_date_raw) // 24
+            current, campaign_clock_receipt = advance_campaign_deadline_v1(
+                self, starting, target_date_raw=effective_target, speed=timeline_speed, actions=actions)
+            reached_progress_postcondition = True
+        elif (exact_one_day and _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
                 <= bridge_capabilities):
             current, sentinel_receipt = self._advance_exact_day_with_sentinel(
                 starting, speed=timeline_speed, actions=actions
@@ -25116,6 +25196,10 @@ class NativeHeadlessGameplayDriver:
             )
         if sentinel_receipt is not None:
             result["exact_day_native_clock"] = sentinel_receipt
+        if campaign_deadline is not None:
+            result["campaign_deadline_v1"] = campaign_deadline
+        if campaign_clock_receipt is not None:
+            result["campaign_deadline_native_clock_v1"] = campaign_clock_receipt
         return result
 
     def _advance_exact_day_with_sentinel(
@@ -29083,7 +29167,7 @@ def _validate_tactical_daily_sentinel_arm(
             or sentinel_scope == "route_contact_window"
             or (
                 sentinel_scope
-                in {"committed_route", "stationary_objective_hold", "exact_one_day"}
+                in {"committed_route", "stationary_objective_hold", "exact_one_day", "campaign_date_deadline"}
                 and combat_count == 0
             )
         )

@@ -1,5 +1,7 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+2026-10-19新用户指令：复盘首局后从1066重开罗贝尔三十年v20261019，继续性能优化及高并发G2。当前[执行入口](../ck3-native-ai/robert30-v20261019-execution.md)截至02:07:20Z仍为准备：关键源d90d5e79已推送、新预算及离线准备已核，新Game尚未启动；G2仍6/8。后续评分片改15秒，旧片不改。以下旧R100/R101等状态保留其历史场次，不作为新局成绩或启动指针。
+
 **Current owner instruction: Z CK3 use is released after the owner's play (Oct12); continue parallel G2 work.**
 
 R100's final actual checkpoint is **6082/H10171/raw53290296**, original Robert29829/episode. Five ordinary days since6077 are saved. The fifth advance originally returned an error; a later independent same-PID snapshot proved its actual advanced paused day, which was saved without replaying Resume/life-advance. Original RED results remain.

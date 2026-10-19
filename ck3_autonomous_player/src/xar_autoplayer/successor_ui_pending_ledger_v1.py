@@ -41,7 +41,8 @@ def owner_source_epoch_v1():
              "successor_ui_owner_continuation_v1.py", "bridge/service.py",
              "bridge/verified_successor_ui_service_v1.py", "bridge/succession_ui_observation_v1.py",
              "bridge/successor_ui_app_owner_v1.py", "bridge/mcp_server.py", "ck3_live_run_identity_v1.py",
-             "bridge/native_driver.py", "strategy.py")
+             "bridge/native_driver.py", "strategy.py", "successor_ui_checkpoint_lineage_v1.py",
+             "runtime.py", "environment.py")
     return digest({name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in names})
 
 

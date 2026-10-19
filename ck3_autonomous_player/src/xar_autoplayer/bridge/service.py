@@ -1805,6 +1805,9 @@ class GameplayBridgeService:
                     )
                     planned = {**planned, "plan": {
                         **plan, "event_material_postcondition": material}}
+            cap_campaign = getattr(self.driver, "cap_campaign_advance_plan_v1", None)
+            if callable(cap_campaign):
+                planned = cap_campaign(planned)
             return copy.deepcopy(planned)
         finally:
             finish_army_timing(plan_timing, step="plan-turn")
@@ -5005,6 +5008,11 @@ class GameplayBridgeService:
         self, planned: dict[str, object], *,
         before_submit: Callable[[dict[str, object]], dict[str, object] | None] | None = None,
     ) -> dict[str, object]:
+        # Internal ordinary follow-up planners also use this dispatch path.
+        # Normalize before the existing display/submission hook and storage.
+        cap_campaign = getattr(self.driver, "cap_campaign_advance_plan_v1", None)
+        if callable(cap_campaign):
+            planned = cap_campaign(planned)
         plan = planned.get("plan")
         selected_step = plan.get("selected_step") if isinstance(plan, dict) else None
         if not isinstance(selected_step, str) or not selected_step:

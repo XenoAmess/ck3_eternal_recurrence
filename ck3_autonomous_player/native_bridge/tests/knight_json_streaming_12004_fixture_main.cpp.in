@@ -1,0 +1,274 @@
+#include "xar_bridge/knight_stat_consumption_12004.hpp"
+#include <algorithm>
+#include <chrono>
+#include <fstream>
+#include <iomanip>
+#include <limits>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+#include <windows.h>
+#include <bcrypt.h>
+
+// These includes contain exact source spans from the pinned production TUs.
+// Namespace/symbol isolation is applied outside each retained function body.
+#include "serializer-spans.inc"
+
+namespace fixture {
+using namespace xar::ck3_12004;
+constexpr char kEscaped[] = "quote\" slash\\ newline\n tab\t carriage\r back\b form\f nul\0 end 中文";
+const std::string kText(kEscaped, sizeof(kEscaped) - 1);
+
+std::string Sha256(const std::string &text) {
+  BCRYPT_ALG_HANDLE algorithm = nullptr;
+  BCRYPT_HASH_HANDLE hash = nullptr;
+  if (BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) < 0)
+    throw std::runtime_error("sha256_open_failed");
+  const auto close = [&]() { if (hash) BCryptDestroyHash(hash); BCryptCloseAlgorithmProvider(algorithm, 0); };
+  DWORD object_bytes = 0, received = 0;
+  if (BCryptGetProperty(algorithm, BCRYPT_OBJECT_LENGTH,
+      reinterpret_cast<PUCHAR>(&object_bytes), sizeof(object_bytes), &received, 0) < 0) {
+    close(); throw std::runtime_error("sha256_property_failed");
+  }
+  std::vector<unsigned char> object(object_bytes);
+  if (BCryptCreateHash(algorithm, &hash, object.data(), object_bytes, nullptr, 0, 0) < 0 ||
+      BCryptHashData(hash, reinterpret_cast<PUCHAR>(const_cast<char *>(text.data())),
+                     static_cast<ULONG>(text.size()), 0) < 0) {
+    close(); throw std::runtime_error("sha256_data_failed");
+  }
+  unsigned char result[32]{};
+  if (BCryptFinishHash(hash, result, sizeof(result), 0) < 0) {
+    close(); throw std::runtime_error("sha256_finish_failed");
+  }
+  close();
+  std::ostringstream out;
+  for (const auto value : result) out << std::hex << std::setw(2) << std::setfill('0') << +value;
+  return out.str();
+}
+
+PersonFollowing2922680Pc MakePc(std::size_t size, unsigned variant) {
+  PersonFollowing2922680Pc pc;
+  pc.ready = (variant & 1U) != 0;
+  pc.admitted = (variant & 2U) != 0;
+  pc.identity = std::numeric_limits<std::uintptr_t>::max();
+  pc.count_i32 = static_cast<std::int32_t>(size);
+  pc.weight_q100000 = std::numeric_limits<std::int64_t>::min();
+  pc.reason = kText;
+  pc.properties.emplace();
+  pc.properties->keys_u16.emplace();
+  pc.properties->values_q64.emplace();
+  for (std::size_t i = 0; i < size; ++i) {
+    pc.properties->keys_u16->push_back(static_cast<std::uint16_t>(i % 65536));
+    pc.properties->values_q64->push_back((i & 1U) ? std::numeric_limits<std::int64_t>::min()
+                                                : std::numeric_limits<std::int64_t>::max());
+  }
+  return pc;
+}
+
+PersonSixStageCapture12004DTO MakeCapture(std::size_t size) {
+  PersonSixStageCapture12004DTO value;
+  value.build_version = "1.20.0.4";
+  value.executable_sha256 = kText;
+  value.reason = kText;
+  value.configured = value.capture_observed = value.capture_complete = true;
+  value.ready = value.raw_counts_ready = true;
+  value.capture_sequence = std::numeric_limits<std::uint64_t>::max();
+  value.capture_date_raw = std::numeric_limits<std::int32_t>::min();
+  value.capture_thread_id = 0;
+  value.query_thread_id = std::numeric_limits<std::uint32_t>::max();
+  value.character_id = std::numeric_limits<std::uint32_t>::max();
+  value.character_identity = std::numeric_limits<std::uintptr_t>::max();
+  value.context_identity = 0;
+  value.source_return_rva = std::numeric_limits<std::uintptr_t>::max();
+  value.preparation_model = {true, false, kText, 0, 1, 0, false};
+  value.base_point_inputs.ready = true;
+  value.base_point_inputs.reason = kText;
+  for (std::size_t i = 0; i < value.stages.size(); ++i) {
+    auto &stage = value.stages[i];
+    stage.index = static_cast<std::uint32_t>(i);
+    stage.observed = true;
+    stage.raw_count_i32 = i & 1U ? std::numeric_limits<std::int32_t>::min() : 0;
+    stage.first_append_observed = true;
+    stage.second_append_observed = i & 1U;
+    stage.first_pc = MakePc(size, static_cast<unsigned>(i));
+    stage.second_pc = MakePc(size, static_cast<unsigned>(i + 1));
+    value.base_point_inputs.observed[i] = i & 1U;
+    value.base_point_inputs.values_i32[i] = static_cast<std::int32_t>(i);
+    auto &piety = value.piety_category_inputs[i];
+    piety.observed = true; piety.ready = i & 1U; piety.reason = kText;
+    piety.property_key_u16 = std::numeric_limits<std::uint16_t>::max();
+    piety.extension_identity = 0;
+    piety.score_q64 = std::numeric_limits<std::int64_t>::min();
+    piety.cap_i32 = 0; piety.threshold_count_i32 = 2;
+    piety.thresholds_used_q64 = {0, std::numeric_limits<std::int64_t>::max()};
+    piety.category_i32 = -1;
+    auto &classified = value.classified_piety_inputs[i];
+    classified.index = static_cast<std::uint32_t>(i); classified.observed = true;
+    classified.reason = kText; classified.property_key_u16 = std::uint16_t{0};
+    classified.row_count_i32 = 1; classified.row_array_identity = 0;
+    PersonSixStageClassifiedPietyRow12004 row;
+    row.reason = kText; row.lookup_selection = kText; row.pc_identity = 0;
+    row.pc_count_i32 = 0; row.selected_index_u32 = std::numeric_limits<std::uint32_t>::max();
+    row.raw_value_q64 = std::numeric_limits<std::int64_t>::max();
+    row.scale_q64 = std::numeric_limits<std::int64_t>::min();
+    classified.rows.push_back(row);
+  }
+  value.pre_six_aggregate = {true, MakePc(size, 0)};
+  value.post_six_aggregate = {false, MakePc(size, 3)};
+  value.aggregate_postimage_inputs_ready = true;
+  value.aggregate_postimage_comparison_ready = false;
+  value.actual_model_write_performed = false;
+  value.full_helper_ready = true;
+  return value;
+}
+
+PersonCallbackEntryInputs12004 MakeEntry(const PersonSixStageCapture12004DTO &capture) {
+  PersonCallbackEntryInputs12004 entry;
+  entry.selected_character_identity = std::numeric_limits<std::uintptr_t>::max();
+  entry.selected_character_id = std::numeric_limits<std::uint32_t>::max();
+  entry.getter_caller_return_rva = 0;
+  entry.getter_begin_event = {0, std::numeric_limits<std::uint64_t>::max(), 0};
+  entry.exact_image_bound = true;
+  entry.getter_site_observed = false;
+  entry.entry_event_observed = true;
+  entry.preparation_at_entry = capture;
+  entry.capture_identity_matches_selected = false;
+  entry.capture_thread_matches_entry = true;
+  entry.preparation_owner_matches_selected = false;
+  entry.reason = std::string_view(kEscaped, sizeof(kEscaped) - 1);
+  return entry;
+}
+
+KnightStatConsumptionQuery12004 MakeQuery(const PersonSixStageCapture12004DTO &capture,
+                                        unsigned events, unsigned contexts) {
+  KnightStatConsumptionQuery12004 query;
+  query.executable_sha256 = kText;
+  query.configured = true;
+  query.oldest_available_sequence = std::numeric_limits<std::uint64_t>::max();
+  query.latest_sequence = 0; query.overwritten_events = 1; query.reason = kText;
+  for (unsigned e = 0; e < events; ++e) {
+    KnightStatConsumptionEvent12004 event;
+    event.sequence = e; event.thread_id = 0;
+    event.observed_date_raw = std::numeric_limits<std::int32_t>::max();
+    event.linked_character_id = std::numeric_limits<std::uint32_t>::max();
+    event.origin = kText; event.capture_reason = kText;
+    for (unsigned c = 0; c < contexts; ++c) {
+      KnightConsumedContext12004 context;
+      context.property_key = static_cast<std::uint16_t>(0xC1U + c);
+      context.caller_return_rva = std::numeric_limits<std::uint64_t>::max();
+      context.selected_character_id = std::numeric_limits<std::uint32_t>::max();
+      context.operand_raw = std::numeric_limits<std::int64_t>::min();
+      context.consumed_pc = MakePc(2, c);
+      context.preparation_capture_at_consumption = capture;
+      context.preparation_entry_inputs = MakeEntry(capture);
+      context.current_input_outcome_binding.emplace();
+      context.current_input_outcome_binding->reason = std::string_view(kEscaped, sizeof(kEscaped) - 1);
+      context.reason = kText;
+      event.contexts.push_back(std::move(context));
+    }
+    query.events.push_back(std::move(event));
+  }
+  return query;
+}
+
+struct Comparison { std::string name, sha256; std::size_t bytes; };
+void Compare(std::vector<Comparison> &results, const char *name,
+             const std::string &before, const std::string &after) {
+  if (before != after) throw std::runtime_error(std::string("byte_mismatch:") + name);
+  results.push_back({name, Sha256(before), before.size()});
+}
+
+template <class Callable>
+std::int64_t Timed(Callable callable, std::size_t expected_bytes) {
+  const auto start = std::chrono::steady_clock::now();
+  const auto wire = callable();
+  const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::steady_clock::now() - start).count();
+  if (wire.size() != expected_bytes) throw std::runtime_error("timed_output_size_changed");
+  return elapsed;
+}
+
+int Run(const char *output_path) {
+  std::vector<Comparison> results;
+  PersonSixStageCapture12004DTO empty;
+  Compare(results, "capture_empty_null", baseline_capture::OldCapture(empty), candidate_capture::NewCapture(empty));
+  PersonCallbackEntryInputs12004 empty_entry;
+  Compare(results, "entry_empty_null", baseline_entry::OldEntry(empty_entry), candidate_entry::NewEntry(empty_entry));
+  KnightStatConsumptionQuery12004 empty_query;
+  Compare(results, "knight_empty", baseline_knight::OldKnight(empty_query), candidate_knight::NewKnight(empty_query));
+  auto populated = MakeCapture(0);
+  Compare(results, "capture_empty_arrays_extremes_escaping", baseline_capture::OldCapture(populated), candidate_capture::NewCapture(populated));
+  auto entry = MakeEntry(populated);
+  Compare(results, "entry_nested_extremes_escaping", baseline_entry::OldEntry(entry), candidate_entry::NewEntry(entry));
+  auto partial = MakeCapture(2);
+  partial.stages[0].first_pc.properties.reset();
+  partial.stages[1].first_pc.properties->keys_u16.reset();
+  partial.stages[2].first_pc.properties->values_q64.reset();
+  partial.stages[3].first_pc.identity.reset();
+  partial.stages[4].first_pc.admitted.reset();
+  partial.stages[5].raw_count_i32.reset();
+  auto mixed = MakeQuery(partial, 1, 9);
+  mixed.events[0].contexts[0].preparation_capture_at_consumption.reset();
+  mixed.events[0].contexts[1].preparation_entry_inputs.reset();
+  mixed.events[0].contexts[2].preparation_entry_inputs->preparation_at_entry.reset();
+  Compare(results, "knight_partial_nested_optionals", baseline_knight::OldKnight(mixed), candidate_knight::NewKnight(mixed));
+  PersonSixStageQuery12004DTO capture_query;
+  capture_query.snapshot_revision = std::numeric_limits<std::uint64_t>::max();
+  capture_query.observed_date_raw = std::numeric_limits<std::int64_t>::min();
+  capture_query.character_captures = {empty, populated, partial};
+  Compare(results, "capture_query_ordered_occurrences", baseline_capture::OldQuery(capture_query), candidate_capture::NewQuery(capture_query));
+  std::ostringstream baseline_parent, candidate_parent;
+  baseline_parent << "[123," << baseline_capture::OldCapture(partial) << ',' << baseline_entry::OldEntry(entry) << ",456]";
+  candidate_parent << "[123,";
+  candidate_capture::NewWriteCapture(candidate_parent, partial);
+  candidate_parent << ',';
+  candidate_entry::NewWriteEntry(candidate_parent, entry);
+  candidate_parent << ",456]";
+  Compare(results, "direct_writers_enclosing_default_stream", baseline_parent.str(), candidate_parent.str());
+  const auto large = MakeQuery(MakeCapture(256), 4, 9);
+  const auto before = baseline_knight::OldKnight(large);
+  const auto after = candidate_knight::NewKnight(large);
+  Compare(results, "knight_large_nested", before, after);
+  std::vector<std::int64_t> old_ns, new_ns;
+  for (unsigned i = 0; i < 5; ++i) {
+    if (i & 1U) {
+      new_ns.push_back(Timed([&]() { return candidate_knight::NewKnight(large); }, before.size()));
+      old_ns.push_back(Timed([&]() { return baseline_knight::OldKnight(large); }, before.size()));
+    } else {
+      old_ns.push_back(Timed([&]() { return baseline_knight::OldKnight(large); }, before.size()));
+      new_ns.push_back(Timed([&]() { return candidate_knight::NewKnight(large); }, before.size()));
+    }
+  }
+  std::ofstream out(output_path, std::ios::binary);
+  if (!out) throw std::runtime_error("output_open_failed");
+  out << "{\"schema\":\"xar.ck3.knight-json-streaming-cpp-fixture/v1\",\"status\":\"PASS\",\"same_owned_dtos\":true,\"byte_equality\":true,\"cases\":[";
+  for (std::size_t i = 0; i < results.size(); ++i) {
+    if (i) out << ',';
+    out << "{\"name\":\"" << results[i].name << "\",\"bytes\":" << results[i].bytes
+        << ",\"both_sha256\":\"" << results[i].sha256 << "\"}";
+  }
+  out << "],\"timing\":{\"scope\":\"serializer call and returned string only; DTO creation, comparison, SHA and destruction excluded\",\"large_output_bytes\":" << before.size()
+      << ",\"order\":\"alternating baseline/candidate pairs; five samples each\",\"baseline_ns\":[";
+  for (std::size_t i = 0; i < old_ns.size(); ++i) { if (i) out << ','; out << old_ns[i]; }
+  out << "],\"candidate_ns\":[";
+  for (std::size_t i = 0; i < new_ns.size(); ++i) { if (i) out << ','; out << new_ns[i]; }
+  out << "]},\"native_game_mcp_calls\":0,\"runtime_deployment\":false}\n";
+  out.close();
+  if (!out) throw std::runtime_error("output_write_failed");
+  return 0;
+}
+} // namespace fixture
+
+#if defined(XAR_SERIALIZER_FIXTURE_DLL)
+extern "C" __declspec(dllexport) int __cdecl XarRunKnightJsonStreamingFixture12004(const char *output_path) noexcept {
+  try { return fixture::Run(output_path); } catch (...) { return 1; }
+}
+#else
+int main(int argc, char **argv) {
+  if (argc != 2) return 2;
+  try { return fixture::Run(argv[1]); } catch (const std::exception &error) {
+    std::ofstream failure(std::string(argv[1]) + ".failure.txt"); failure << error.what() << '\n'; return 1;
+  }
+}
+#endif
