@@ -260,6 +260,9 @@ void *ResolveArmyUnit(const ArmyBindings &bindings,
                       std::int32_t unit_id) noexcept;
 void *ResolveInternalArmy(const ArmyBindings &bindings,
                           std::int32_t internal_army_id) noexcept;
+// Strict read-only wrappers over the same full-ID registry primitive.
+void *ResolveArmyRegimentStrict(const ArmyBindings &, std::int32_t) noexcept;
+void *ResolvePersistentRegimentStrict(const ArmyBindings &, std::int32_t) noexcept;
 bool ReadArmyGathering(const ArmyBindings &bindings, std::int32_t unit_id,
                        bool &gathering) noexcept;
 

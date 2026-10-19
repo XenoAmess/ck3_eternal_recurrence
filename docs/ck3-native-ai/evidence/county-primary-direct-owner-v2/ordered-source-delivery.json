@@ -1,0 +1,410 @@
+{
+  "schema": "xar.e04.r218.county-direct-owner-v2.ordered-delivery.v1",
+  "status": "SOURCE_CANDIDATE_READY_NATIVE_AND_LIVE_PENDING",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T02:19:36.973592+00:00",
+  "source_base": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "main_writes": 0,
+  "D_writes": 0,
+  "SDK_DR_game_calls": 0,
+  "new_EXE_reads": 0,
+  "lane_deliveries": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-native-v2-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 5313,
+      "sha256": "fdc2ff65477dd655035c0327be3882ba0125d1d40a1e8d8eb8ca796da1b188d5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-python-v2-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 4651,
+      "sha256": "81b7791939e98f9150cb78bfc47a9acc1bb6a0cdd6c47a9cfba56d6dc27a556b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-v2-contract-review-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 1097,
+      "sha256": "0990464c9bc2f88b6da5399869dbbb5a167c45dc2b606ca8c653c5a29ddf20ab"
+    }
+  ],
+  "ordered_steps": [
+    {
+      "id": "native-a02",
+      "patch": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-native-v2-a01\\native-v2-existing-paths-a02.patch",
+        "bytes": 18309,
+        "sha256": "6baf30d8002d8c610099f9d7406344013fcba50e37fbee18c01df6136106a017"
+      },
+      "existing_target_count": 9,
+      "create_only_count": 3,
+      "rule": "apply a02 once; never apply deleted superseded a01 draft"
+    },
+    {
+      "id": "python-v2",
+      "patch": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-python-v2-a01\\python-v2-existing-path.patch",
+        "bytes": 3518,
+        "sha256": "f7df0bac0aff1f2526db192000e495990c8abfb9766b3566457ce06167131037"
+      },
+      "existing_target_count": 1,
+      "create_only_count": 3
+    },
+    {
+      "id": "future-cold-wire-consumer",
+      "create_only_count": 1,
+      "checks": "AST parsed only; native wire does not yet exist"
+    }
+  ],
+  "explicit_copyplan": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-native-v2-a01\\county_primary_direct_owner_at_writer_v2.hpp",
+        "bytes": 4231,
+        "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb"
+      },
+      "destination": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_direct_owner_at_writer_v2.hpp",
+      "preimage": "absent"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-native-v2-a01\\county_primary_direct_owner_at_writer_12004.cpp",
+        "bytes": 15430,
+        "sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001"
+      },
+      "destination": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "preimage": "absent"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-native-v2-a01\\county_primary_direct_owner_v2_12004_test.cpp",
+        "bytes": 11576,
+        "sha256": "4a791b18184dc0916f01d5305189af05468ad702a462a7ffcc57e2dfbf7c27fd"
+      },
+      "destination": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_v2_12004_test.cpp",
+      "preimage": "absent"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-python-v2-a01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_county_primary_direct_owner_12004.py",
+        "bytes": 16172,
+        "sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c"
+      },
+      "destination": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "preimage": "absent"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-python-v2-a01\\candidate\\ck3_autonomous_player\\tests\\unit\\test_county_primary_direct_owner_12004.py",
+        "bytes": 15017,
+        "sha256": "f6670e1801b7bc0a8f302ffd0a072baf370508f31202040d70bab597e17166e6"
+      },
+      "destination": "ck3_autonomous_player/tests/unit/test_county_primary_direct_owner_12004.py",
+      "preimage": "absent"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-python-v2-a01\\candidate\\docs\\ck3-native-ai\\county-primary-direct-owner-v2.md",
+        "bytes": 3786,
+        "sha256": "f7a1fbafe14af1755dbb49d1c3a8fb3b7cef9a95f77176104c608923342248cf"
+      },
+      "destination": "docs/ck3-native-ai/county-primary-direct-owner-v2.md",
+      "preimage": "absent"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-direct-v2-coordination-a01\\consume_county_primary_direct_owner_native_wire_12004.py",
+        "bytes": 4990,
+        "sha256": "92ac1704fff4b30ac249cf7dadd99d224210d6a4abec1eea2e1069b7bde047f1"
+      },
+      "destination": "ck3_autonomous_player/tests/unit/consume_county_primary_direct_owner_native_wire_12004.py",
+      "preimage": "absent"
+    }
+  ],
+  "final_unique_target_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_owner_at_writer_12004.hpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 1089,
+        "sha256": "479dc05fb91b41e4da46f24e17702e0e90cddbe0d1af600c15bc91ef9ab04210",
+        "git_clean_blob": "546652abdb03b238ad3ddec5587e63a8661b104e"
+      },
+      "postimage": {
+        "bytes": 1140,
+        "sha256": "cc03587631765964221bbfe8d1ed640035e15dd0add180cfa0ef68de8e59dc20"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 10845,
+        "sha256": "9544f8d627fad833ac238d9b3e9233cd2c4b656b7ef4967e39299fd35f78b958",
+        "git_clean_blob": "9b128b938fd1fb2d0b01a63c9e62b54029b60f8f"
+      },
+      "postimage": {
+        "bytes": 12057,
+        "sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 5923,
+        "sha256": "bfbad1b26c661acdf97c987d636fc7539977751ca920a3d7e5833082771b898b",
+        "git_clean_blob": "f04c324bee06a8ae591e7611fc043ff7688c14d8"
+      },
+      "postimage": {
+        "bytes": 6226,
+        "sha256": "523dd15609b1e544c3cfbd8f7d7992fd84e0deaede5725a07319ed0485c3b04d"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_army.hpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 18184,
+        "sha256": "6fc49c745d9d3a9ddd9fc37d65fb35ec930779f34089fd280324d84af7545ed3",
+        "git_clean_blob": "a248d4cf58793813853af45c01bf5d9cc855d192"
+      },
+      "postimage": {
+        "bytes": 18417,
+        "sha256": "0ef0998f720dae812eb5306042bc916e41459580ec0689639941a39921fd7f81"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 93194,
+        "sha256": "850a41f8c7fe0278ea65d0021cf988cc7a47d1c8d70d6b7db06786fb829dbce1",
+        "git_clean_blob": "1200753e227f908023064d3868938047436fe6b5"
+      },
+      "postimage": {
+        "bytes": 93517,
+        "sha256": "6cb7c9d04fe0683a7a32cf9a6dbe5a78e843fae962c2519ddd439e3b880e058b"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_loss_writer_journal.cpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 28238,
+        "sha256": "9c6f38d50a5b07d12edce541ea8e89d22d4fab4a835e760013a43296c833e3d0",
+        "git_clean_blob": "adff842ab05a75f64abdfcca18d8f258ec798960"
+      },
+      "postimage": {
+        "bytes": 32977,
+        "sha256": "81d1b2ecc85711a00a3e63fdcb4887666cf3a3a84ae09c3123e42ad2f7d90f61"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 1601789,
+        "sha256": "60f743082383a9228679ed105ff984657f41d3fd6aca3df3caee762d803f1909",
+        "git_clean_blob": "92bf941bf221e9285b9be9f3742dd821f1d3689a"
+      },
+      "postimage": {
+        "bytes": 1602119,
+        "sha256": "28f5718db31c914ee1d4b0beb2fc24d2938a41ca4834a8aa26e6f6fcf44b82d9"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/cmake/actual_loss_writer_observations_12004.cmake",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 5783,
+        "sha256": "47992bb29f6edd6368653b41cde7d80ecd560fc20ac255d1b1b3360b06583eb4",
+        "git_clean_blob": "1f6f3ac6dd137434a062f1ce1433691a7de96c57"
+      },
+      "postimage": {
+        "bytes": 6807,
+        "sha256": "6b5f9ab1b05f1b6f58655f6279a0996d77e8d3f75346c07328f4eb1c9f10fa98"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_owner_12004_test.cpp",
+      "writer_step": "native-a02",
+      "preimage": {
+        "bytes": 5442,
+        "sha256": "d5aa48a0d33349ee0c1d31475690f3980ff858060bd30a04d2478a29dee381e4",
+        "git_clean_blob": "38ad6f4487822065b6c40c9359146097b33034be"
+      },
+      "postimage": {
+        "bytes": 5525,
+        "sha256": "48dca6c64d0dca57ab78061f1248e690a0f6ccb4c52eeb7370afe42f8dd099bd"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_direct_owner_at_writer_v2.hpp",
+      "writer_step": "native-a02",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 4231,
+        "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "writer_step": "native-a02",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 15430,
+        "sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_v2_12004_test.cpp",
+      "writer_step": "native-a02",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 11576,
+        "sha256": "4a791b18184dc0916f01d5305189af05468ad702a462a7ffcc57e2dfbf7c27fd"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_loss_writer_observations_contract.py",
+      "writer_step": "python-v2",
+      "preimage": {
+        "bytes": 10279,
+        "sha256": "83ad58f6428a5bf0669b95aa6fc2dcfd3d5e00269a6058dc92b0108ca62c447d"
+      },
+      "postimage": {
+        "bytes": 11926,
+        "sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "writer_step": "python-v2",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 16172,
+        "sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_county_primary_direct_owner_12004.py",
+      "writer_step": "python-v2",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 15017,
+        "sha256": "f6670e1801b7bc0a8f302ffd0a072baf370508f31202040d70bab597e17166e6"
+      }
+    },
+    {
+      "path": "docs/ck3-native-ai/county-primary-direct-owner-v2.md",
+      "writer_step": "python-v2",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 3786,
+        "sha256": "f7a1fbafe14af1755dbb49d1c3a8fb3b7cef9a95f77176104c608923342248cf"
+      }
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/consume_county_primary_direct_owner_native_wire_12004.py",
+      "writer_step": "future-cold-wire-consumer",
+      "preimage": "absent",
+      "postimage": {
+        "bytes": 4990,
+        "sha256": "92ac1704fff4b30ac249cf7dadd99d224210d6a4abec1eea2e1069b7bde047f1"
+      }
+    }
+  ],
+  "total_unique_targets": 17,
+  "tracked_payload_bytes": 93029,
+  "integration_guards": "Exact per-path preimages and Git clean identity. Use git hash-object --path for any worktree text conversion; no arbitrary newline stripping. No whole-HEAD override of a mismatching owned input.",
+  "preserved_v1": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_county_primary_owner_12004.py",
+    "bytes": 8164,
+    "sha256": "e9cca6b2155db75624e1b96d4b946e4c7701dd99e4cbd5b5cf7ca1503ecaf577"
+  },
+  "semantics": {
+    "new_child": "county_primary_direct_owner_at_writer_v2",
+    "old_v1_returned_phase": "UNCHANGED_STRICT",
+    "direct_owner": "registry and actual DATA physical relation guarded at exact writer invocation",
+    "phase": "diagnostic only; unknown stays unknown",
+    "unbound": "independent bounded 64-slot diagnostics, no selected Army membership or positive credit",
+    "county_total_debit": null,
+    "whole_window_history_inferred": false
+  },
+  "flag": {
+    "name": "XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004",
+    "existing_default": "OFF",
+    "required_future_experiment": "ON",
+    "new_BOOL_count": 0,
+    "old_a37_receives_v2": false
+  },
+  "validation": {
+    "python_compound": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-python-v2-a01\\COMPOUND-a03.actual.json",
+      "bytes": 1481,
+      "sha256": "13dd5532e813eef3bed7b812bfb423bfeca3b61d845212252b3e42709b4bf5fe"
+    },
+    "python_groups": 9,
+    "native_builds": 0,
+    "native_tests_run": 0,
+    "independent_review": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-v2-contract-review-a01\\REVIEW.actual.json",
+      "bytes": 12323,
+      "sha256": "161a4bf4d5ce28bd175f2add21044c38bdbda3376846646c55f4c8cec743b07e"
+    },
+    "unresolved_P0": 0,
+    "unresolved_P1": 0,
+    "owner_wire_helper_AST": "PASS",
+    "owner_wire_helper_executed_on_native_wire": false
+  },
+  "next_Root_qualification": {
+    "fresh_native_build_and_qualified_outputs_required": true,
+    "focused_targets": [
+      "xar_test_county_primary_direct_owner_v2_12004",
+      "xar_test_county_primary_owner_12004"
+    ],
+    "new_target_output_path": "Resolve actual CMake FileAPI artifact; do not assume Release subdirectory",
+    "SYSTEM_registration": "Register each new exact project EXE path before execution, then consume actual SYSTEM readback",
+    "native_wire": "New focused target writes xar.county-primary-direct-owner-v2.cold.v1 with 15 synthetic wire cases plus an independent TID assertion",
+    "wire_consumer_argv": [
+      "py",
+      "-B",
+      "-O",
+      "ck3_autonomous_player/tests/unit/consume_county_primary_direct_owner_native_wire_12004.py",
+      "--repo",
+      "<actual-repo>",
+      "--wire",
+      "<new-native-wire.json>",
+      "--wire-bytes",
+      "<actual-bytes>",
+      "--wire-sha256",
+      "<actual-sha256>",
+      "--output",
+      "<new-external-result.json>"
+    ],
+    "no_phase_not_only_preDate_fixture": true,
+    "proof_limits": "Synthetic cold facts and original-call/OFF assertions are not live ownership evidence. New Root-admitted live late-entry window is still required."
+  },
+  "R217_failure_unchanged": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r217-owner-absence-diagnosis-a01\\ROOT-DELIVERY.actual.json",
+    "bytes": 3988,
+    "sha256": "1c6131ed2b88902da2dc913d566052175781180219f8e7ea751999474c717831"
+  },
+  "design": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-direct-v2-coordination-a01\\DESIGN-AND-QUALIFICATION.actual.json",
+    "bytes": 4401,
+    "sha256": "4d5bc1d1b84cc091c324aa0f582aad55f23c3763d643da9a3b8a22b1c369ed17"
+  },
+  "R04_closed": false,
+  "storage": {
+    "shared_actual": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r217-public-a01\\R217-SHARED-SOURCE-POOL-CARRY.actual-root-a01.json",
+      "bytes": 1774,
+      "sha256": "126978f77e2f242c7469dfc1a1095d9820faaa1d0de4ee35dd33195f7da12824"
+    },
+    "new_pool_bytes": 0,
+    "each_lane_ceiling_bytes": 98304,
+    "combined_ceiling_bytes": 393216,
+    "category": "derived",
+    "review_at_utc": "2026-10-21T02:18:00Z",
+    "purpose": "Root source intake, new native build/cold and future live diagnosis"
+  }
+}

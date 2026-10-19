@@ -1,5 +1,8 @@
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+#include "xar_bridge/ck3_12002_army.hpp"
+#endif
 #include "xar_bridge/ck3_12004_supply_parent_join_context.hpp"
 #if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
 #include "xar_bridge/ck3_12004_residual_parent_context.hpp"
@@ -41,6 +44,10 @@ std::atomic<ActualLossWriterJournalDetourStateV1 *> g_active_state{nullptr};
 std::atomic<ActualLossWriterCompletionObserverV1> g_completion_observer{nullptr};
 #if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
 thread_local const CountyPrimaryWriterRegisters12004 *g_county_writer_registers=nullptr;
+ck3_12002::ArmyBindings g_county_registry_bindings{};
+std::array<game::ArmyCountyPrimaryDirectOwnerAtWriterV2,64> g_county_unbound_slots{};
+std::size_t g_county_unbound_count=0,g_county_unbound_next=0;
+std::uint64_t g_county_unbound_overwritten=0;
 struct RestoreCountyWriterRegisters {
   const CountyPrimaryWriterRegisters12004 *previous;
   ~RestoreCountyWriterRegisters(){g_county_writer_registers=previous;}
@@ -255,6 +262,16 @@ bool InitializeRuntime(const ActualLossWriterJournalBindingsV1 &bindings,
   {
     const std::lock_guard lock(g_journal_mutex);
     g_bindings = bindings;
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+    g_county_registry_bindings={};
+    g_county_registry_bindings.enabled=bindings.county_direct_source_qualified;
+    g_county_registry_bindings.internal_army_storage_slot=bindings.county_army_registry_slot;
+    g_county_registry_bindings.unit_storage_slot=bindings.county_unit_registry_slot;
+    g_county_registry_bindings.regiment_storage_slot=bindings.county_arrg_registry_slot;
+    g_county_registry_bindings.persistent_regiment_storage_slot=bindings.county_regi_registry_slot;
+    for(auto &slot:g_county_unbound_slots)slot={};
+    g_county_unbound_count=0;g_county_unbound_next=0;g_county_unbound_overwritten=0;
+#endif
     g_latest_sequence = 0;
     g_unattributed_failures = 0;
     for (auto &slot : g_slots) slot = {};
@@ -268,6 +285,17 @@ void Publish(Event &event) noexcept {
   const std::lock_guard lock(g_journal_mutex);
   if (event.army_regiment_id == -1) {
     ++g_unattributed_failures;
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+    if(event.county_primary_direct_owner_at_writer_v2){
+      auto diagnostic=*event.county_primary_direct_owner_at_writer_v2;
+      diagnostic.source_complete=false;
+      if(!diagnostic.capture_failure_flags)diagnostic.capture_failure_flags=county_direct_writer_identity;
+      g_county_unbound_slots[g_county_unbound_next]=diagnostic;
+      g_county_unbound_next=(g_county_unbound_next+1)%g_county_unbound_slots.size();
+      if(g_county_unbound_count<g_county_unbound_slots.size())++g_county_unbound_count;
+      else if(g_county_unbound_overwritten!=UINT64_MAX)++g_county_unbound_overwritten;
+    }
+#endif
     return;
   }
   event.sequence = ++g_latest_sequence;
@@ -355,6 +383,15 @@ ActualLossWriterJournalBindingsV1 BindActualLossWriterJournalImage12004(
   if (image_base == 0 || executable_sha256 != kExecutableSha256) return result;
   result.enabled = true;
   result.image_base = image_base;
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+  // Exact-.4 binder mapping, adopted from ck3_12004_army.cpp/support.
+  // This is build/source binding, never a claim of live business acceptance.
+  result.county_direct_source_qualified=true;
+  result.county_army_registry_slot=reinterpret_cast<void **>(image_base+0x5D1DE48);
+  result.county_unit_registry_slot=reinterpret_cast<void **>(image_base+0x5D1E380);
+  result.county_arrg_registry_slot=reinterpret_cast<void **>(image_base+0x5D1F340);
+  result.county_regi_registry_slot=reinterpret_cast<void **>(image_base+0x5D1EB68);
+#endif
   result.game_state_slot = reinterpret_cast<void **>(image_base + kGameStateSlotRva);
   result.select_physical_slot = reinterpret_cast<ActualLossWriterPhysicalSelectorV1>(
       image_base + kActualLossWriterDataSelectorRva12004);
@@ -497,6 +534,13 @@ ReadActualLossWriterObservations12004(
     result.overwritten_events = g_latest_sequence > g_slots.size()
         ? g_latest_sequence - g_slots.size() : 0;
     result.unattributed_capture_failures = g_unattributed_failures;
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+    result.unbound_county_primary_direct_diagnostics_overwritten_v2=g_county_unbound_overwritten;
+    const auto first=g_county_unbound_count<g_county_unbound_slots.size()?0:g_county_unbound_next;
+    for(std::size_t i=0;i<g_county_unbound_count;++i)
+      result.unbound_county_primary_direct_diagnostics_v2.push_back(
+          g_county_unbound_slots[(first+i)%g_county_unbound_slots.size()]);
+#endif
     for (auto sequence = result.oldest_available_sequence;
          sequence != 0 && sequence <= g_latest_sequence; ++sequence) {
       const auto &slot = g_slots[(sequence - 1) % g_slots.size()];
@@ -599,17 +643,40 @@ void InvokeActualLossWriterJournalWithCaller12004V1(
 #endif
 
 #if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
-  if(before_read&&g_county_writer_registers&&caller_return_rva==0x24E25EE&&
-     g_county_writer_registers->writer_receiver==regiment&&g_bindings.county_primary_phase_reader){
-    void *current_state=nullptr;
-    (void)ReadMemory(g_bindings.game_state_slot,&current_state,sizeof current_state);
+  if(caller_return_rva==0x24E25EE&&g_bindings.county_primary_phase_reader){
+    // Actual sampling is read before any owner registry/native-memory capture.
     const auto active=g_bindings.county_primary_phase_reader();
-    const auto reader=[](void *,const void *p,void *out,std::size_t n) noexcept {
-      return ReadMemory(p,out,n);
-    };
-    event.county_primary_owner_at_writer_v1=CaptureCountyPrimaryOwnerAtWriter12004(
-        reader,nullptr,*g_county_writer_registers,active,before.id,event.observed_date_raw,
-        reinterpret_cast<std::uintptr_t>(current_state));
+    if(active.sampling.enabled){
+      void *current_state=nullptr;
+      (void)ReadMemory(g_bindings.game_state_slot,&current_state,sizeof current_state);
+      const auto reader=[](void *,const void *p,void *out,std::size_t n) noexcept {
+        return ReadMemory(p,out,n);
+      };
+      const auto lookup=[](void *,CountyDirectRegistryKind12004 kind,std::int32_t id) noexcept -> const void * {
+        const void *result=nullptr;
+        (void)FaultBoundary([&]() noexcept {
+          switch(kind){
+          case CountyDirectRegistryKind12004::army:result=ck3_12002::ResolveInternalArmy(g_county_registry_bindings,id);break;
+          case CountyDirectRegistryKind12004::unit:result=ck3_12002::ResolveArmyUnit(g_county_registry_bindings,id);break;
+          case CountyDirectRegistryKind12004::army_regiment:result=ck3_12002::ResolveArmyRegimentStrict(g_county_registry_bindings,id);break;
+          case CountyDirectRegistryKind12004::persistent_regiment:result=ck3_12002::ResolvePersistentRegimentStrict(g_county_registry_bindings,id);break;
+          }
+          return true;
+        });
+        return result;
+      };
+      CountyDirectPhysicalInputs12004 inputs{};
+      for(std::size_t i=0;i<inputs.selected_slots.size();++i)inputs.selected_slots[i]=physical.slots[i];
+      event.county_primary_direct_owner_at_writer_v2=CaptureCountyPrimaryDirectOwnerAtWriter12004(
+          reader,nullptr,lookup,nullptr,g_county_writer_registers,active,event,inputs,regiment,
+          static_cast<std::uint32_t>(GetCurrentThreadId()),reinterpret_cast<std::uintptr_t>(current_state),
+          g_bindings.county_direct_source_qualified);
+      // The v1 producer and its strict pre-date/phase roster contract are intact.
+      if(before_read&&g_county_writer_registers&&g_county_writer_registers->writer_receiver==regiment)
+        event.county_primary_owner_at_writer_v1=CaptureCountyPrimaryOwnerAtWriter12004(
+            reader,nullptr,*g_county_writer_registers,active,before.id,event.observed_date_raw,
+            reinterpret_cast<std::uintptr_t>(current_state));
+    }
   }
 #endif
 
@@ -627,6 +694,13 @@ void InvokeActualLossWriterJournalWithCaller12004V1(
   if (!event.same_instance_after)
     event.capture_failure_flags |= game::army_actual_loss_capture_after;
   if (before_read) CapturePhysicalAfter(regiment, event, physical);
+#if defined(XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004)
+  if(event.county_primary_direct_owner_at_writer_v2){
+    const auto sampling=g_bindings.county_direct_sampling_reader
+        ?g_bindings.county_direct_sampling_reader():ArmyObserverResearchSamplingState12004{};
+    FinishCountyPrimaryDirectOwnerAtWriter12004(*event.county_primary_direct_owner_at_writer_v2,event,sampling);
+  }
+#endif
   Publish(event);
   if (const auto observer = g_completion_observer.load(std::memory_order_acquire))
     observer(regiment, event);

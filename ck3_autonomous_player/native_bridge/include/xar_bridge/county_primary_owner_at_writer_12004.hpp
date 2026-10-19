@@ -13,6 +13,7 @@ struct CountyPrimaryWriterRegisters12004 {
 struct CountyPrimaryPhaseCapture12004 {
   ArmyNaturalPhaseScope12004 scope;
   ArmyNaturalPhaseEvent12004 writer_event;
+  ArmyObserverResearchSamplingState12004 sampling;
 };
 using CountyPrimaryPhaseReader12004=CountyPrimaryPhaseCapture12004(*)() noexcept;
 using CountyPrimaryOwnerRead12004=bool(*)(void*,const void*,void*,std::size_t) noexcept;

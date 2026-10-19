@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from .army_actual_supply_parent_join_contract import normalize_supply_parent_writer_context_v1
 from .army_county_primary_owner_12004 import normalize_county_primary_owner_at_writer_v1
+from .army_county_primary_direct_owner_12004 import (
+    normalize_county_primary_direct_owner_at_writer_v2,
+    normalize_unbound_county_primary_direct_diagnostics_v2,
+)
 from .army_actual_residual_parent_contract import normalize_actual_residual_parent_v1
 from .army_actual_siege_budget_at_writer_contract import normalize_siege_budget_at_writer_v1
 
@@ -65,7 +69,12 @@ def normalize_actual_loss_writer_observations_v1(
     """Keep physical before/after and cache movement separate; allow empty history."""
     if value is None:
         return None
-    family = _object(value, _FAMILY_KEYS, "actual_loss_writer_observations_v1")
+    diagnostic_keys = {"unbound_county_primary_direct_diagnostics_v2",
+                       "unbound_county_primary_direct_diagnostics_overwritten_v2"}
+    family_keys = _FAMILY_KEYS
+    if isinstance(value, dict) and set(value) & diagnostic_keys:
+        family_keys = _FAMILY_KEYS | diagnostic_keys
+    family = _object(value, family_keys, "actual_loss_writer_observations_v1")
     if (family["status"] != "available"
             or family["source"] != "native_natural_writer_entry_return"
             or family["membership_basis"] != "membership_at_query"):
@@ -91,6 +100,8 @@ def normalize_actual_loss_writer_observations_v1(
             event_keys |= {"siege_budget_at_writer_v1"}
         if isinstance(raw_event,dict) and "county_primary_owner_at_writer_v1" in raw_event:
             event_keys.add("county_primary_owner_at_writer_v1")
+        if isinstance(raw_event, dict) and "county_primary_direct_owner_at_writer_v2" in raw_event:
+            event_keys.add("county_primary_direct_owner_at_writer_v2")
         event = _object(raw_event, event_keys, name)
         row: dict[str, object] = {}
         for key in ("sequence", "capture_failure_flags", "captured_data_record_count",
@@ -166,6 +177,18 @@ def normalize_actual_loss_writer_observations_v1(
             if (row["county_primary_owner_at_writer_v1"] is not None
                     and row["caller_return_rva"] != 0x24E25EE):
                 raise ValueError(name + " county primary owner requires exact direct writer caller")
+        if "county_primary_direct_owner_at_writer_v2" in event:
+            row["county_primary_direct_owner_at_writer_v2"] = normalize_county_primary_direct_owner_at_writer_v2(
+                event["county_primary_direct_owner_at_writer_v2"])
+            if (row["county_primary_direct_owner_at_writer_v2"] is not None
+                    and row["caller_return_rva"] != 0x24E25EE):
+                raise ValueError(name + " county direct owner requires exact direct writer caller")
         normalized.append(row)
     result["events"] = normalized
+    if "unbound_county_primary_direct_diagnostics_v2" in family:
+        result["unbound_county_primary_direct_diagnostics_v2"] = normalize_unbound_county_primary_direct_diagnostics_v2(
+            family["unbound_county_primary_direct_diagnostics_v2"])
+        result["unbound_county_primary_direct_diagnostics_overwritten_v2"] = _integer(
+            family["unbound_county_primary_direct_diagnostics_overwritten_v2"],
+            "unbound_county_primary_direct_diagnostics_overwritten_v2", bits=64, unsigned=True)
     return result

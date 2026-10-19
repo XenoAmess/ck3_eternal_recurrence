@@ -43,6 +43,10 @@ struct ActualLossWriterJournalBindingsV1 {
   ActualLossWriterReadMemoryV1 read_memory = nullptr;
   // Bridge owns the actual pre-date TLS and supplies this synchronous copy only.
   CountyPrimaryPhaseReader12004 county_primary_phase_reader = nullptr;
+  ArmyObserverResearchSamplingState12004 (*county_direct_sampling_reader)() noexcept = nullptr;
+  bool county_direct_source_qualified = false;
+  void **county_army_registry_slot=nullptr,**county_unit_registry_slot=nullptr;
+  void **county_arrg_registry_slot=nullptr,**county_regi_registry_slot=nullptr;
 };
 
 struct ActualLossWriterJournalInstallEnvironmentV1 {

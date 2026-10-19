@@ -36,6 +36,7 @@ bool Read(void*,const void *p,void *out,std::size_t size) noexcept {
  if(!p)return false;std::memcpy(out,p,size);return true;
 }
 void Setup(){
+ phase.sampling.available=true;phase.sampling.enabled=true;phase.sampling.epoch=1;
  Put(reg,0x10,rid);Put(reg,0x14,std::uint32_t{0x41725267});
  Put(reg,0x20,static_cast<void*>(data.data()));Put(reg,0x28,std::int32_t{1});
  Put(reg,0x2c,std::int32_t{1});Put(reg,0x38,std::int32_t{100});Put(reg,0x3c,std::int32_t{120});

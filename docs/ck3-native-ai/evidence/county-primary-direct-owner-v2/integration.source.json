@@ -1,0 +1,292 @@
+{
+  "schema": "xar.r04.direct-owner-v2.source-integration.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T02:49:07.071650+00:00",
+  "candidate_base": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "upstream_base": "9df6f13de628c9e320795f626bcda895ff8a5e75",
+  "status": "SOURCE_INTEGRATED_NATIVE_CI_BUILD_COLD_AND_LIVE_NOT_YET_QUALIFIED",
+  "ordered_source_sha256": "8c9b6b99dba807f24b7f44ebc35ea968f67f0de2183b31fc3e0c1222a20e2809",
+  "postpins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_owner_at_writer_12004.hpp",
+      "bytes": 1140,
+      "sha256": "cc03587631765964221bbfe8d1ed640035e15dd0add180cfa0ef68de8e59dc20",
+      "candidate_post_sha256": "cc03587631765964221bbfe8d1ed640035e15dd0add180cfa0ef68de8e59dc20",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
+      "bytes": 12057,
+      "sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9",
+      "candidate_post_sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp",
+      "bytes": 6226,
+      "sha256": "523dd15609b1e544c3cfbd8f7d7992fd84e0deaede5725a07319ed0485c3b04d",
+      "candidate_post_sha256": "523dd15609b1e544c3cfbd8f7d7992fd84e0deaede5725a07319ed0485c3b04d",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_army.hpp",
+      "bytes": 18417,
+      "sha256": "0ef0998f720dae812eb5306042bc916e41459580ec0689639941a39921fd7f81",
+      "candidate_post_sha256": "0ef0998f720dae812eb5306042bc916e41459580ec0689639941a39921fd7f81",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "bytes": 93517,
+      "sha256": "6cb7c9d04fe0683a7a32cf9a6dbe5a78e843fae962c2519ddd439e3b880e058b",
+      "candidate_post_sha256": "6cb7c9d04fe0683a7a32cf9a6dbe5a78e843fae962c2519ddd439e3b880e058b",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_loss_writer_journal.cpp",
+      "bytes": 32977,
+      "sha256": "81d1b2ecc85711a00a3e63fdcb4887666cf3a3a84ae09c3123e42ad2f7d90f61",
+      "candidate_post_sha256": "81d1b2ecc85711a00a3e63fdcb4887666cf3a3a84ae09c3123e42ad2f7d90f61",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1602801,
+      "sha256": "68ad29060e19a17727ab7b961a4efbe7f21f5f036ac252a9e6cd40b98ac833b1",
+      "candidate_post_sha256": "28f5718db31c914ee1d4b0beb2fc24d2938a41ca4834a8aa26e6f6fcf44b82d9",
+      "candidate_exact": false
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/cmake/actual_loss_writer_observations_12004.cmake",
+      "bytes": 6807,
+      "sha256": "6b5f9ab1b05f1b6f58655f6279a0996d77e8d3f75346c07328f4eb1c9f10fa98",
+      "candidate_post_sha256": "6b5f9ab1b05f1b6f58655f6279a0996d77e8d3f75346c07328f4eb1c9f10fa98",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_owner_12004_test.cpp",
+      "bytes": 5525,
+      "sha256": "48dca6c64d0dca57ab78061f1248e690a0f6ccb4c52eeb7370afe42f8dd099bd",
+      "candidate_post_sha256": "48dca6c64d0dca57ab78061f1248e690a0f6ccb4c52eeb7370afe42f8dd099bd",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_direct_owner_at_writer_v2.hpp",
+      "bytes": 4231,
+      "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb",
+      "candidate_post_sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "bytes": 15430,
+      "sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001",
+      "candidate_post_sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_v2_12004_test.cpp",
+      "bytes": 11576,
+      "sha256": "4a791b18184dc0916f01d5305189af05468ad702a462a7ffcc57e2dfbf7c27fd",
+      "candidate_post_sha256": "4a791b18184dc0916f01d5305189af05468ad702a462a7ffcc57e2dfbf7c27fd",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_loss_writer_observations_contract.py",
+      "bytes": 11926,
+      "sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2",
+      "candidate_post_sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "bytes": 16172,
+      "sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c",
+      "candidate_post_sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c",
+      "candidate_exact": true
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_county_primary_direct_owner_12004.py",
+      "bytes": 15017,
+      "sha256": "f6670e1801b7bc0a8f302ffd0a072baf370508f31202040d70bab597e17166e6",
+      "candidate_post_sha256": "f6670e1801b7bc0a8f302ffd0a072baf370508f31202040d70bab597e17166e6",
+      "candidate_exact": true
+    },
+    {
+      "path": "docs/ck3-native-ai/county-primary-direct-owner-v2.md",
+      "bytes": 6792,
+      "sha256": "01092d4c2b1a9c5024726534de36efd2076e6be23498c6f0f1285e6bdb5f32b7",
+      "candidate_post_sha256": "f7a1fbafe14af1755dbb49d1c3a8fb3b7cef9a95f77176104c608923342248cf",
+      "candidate_exact": false
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/consume_county_primary_direct_owner_native_wire_12004.py",
+      "bytes": 4990,
+      "sha256": "92ac1704fff4b30ac249cf7dadd99d224210d6a4abec1eea2e1069b7bde047f1",
+      "candidate_post_sha256": "92ac1704fff4b30ac249cf7dadd99d224210d6a4abec1eea2e1069b7bde047f1",
+      "candidate_exact": true
+    }
+  ],
+  "upstream_bridge_composition": "Preserve Faith tooltip include, connection lifetime and startup installation; apply only the county callback hunk.",
+  "unchanged": [
+    "existing MASM entry ABI",
+    "strict v1 Python ownership consumer",
+    "default-OFF flag",
+    "R217 absence evidence"
+  ],
+  "new_default_flags": 0,
+  "native_builds_run_by_this_integration": 0,
+  "SDK_game_DR_calls": 0,
+  "R04_live_closed": false,
+  "whole_county_total_qualified": false,
+  "CI": "New two-target native synthetic wire chain plus Python compound; actual CI outcome pending. It does not qualify a production DLL or live game.",
+  "initial_upstream_base": "b000c9a623eec88a48c95a2f8e2ad72eaf59198e",
+  "subsequent_upstream_advance": {
+    "changed_paths": [
+      "ck3_autonomous_player/experimental/driver_state_wal_v1/README.md",
+      "ck3_autonomous_player/src/xar_autoplayer/participating_war_threat_observation_v1.py",
+      "ck3_autonomous_player/tests/unit/test_participating_war_threat_observation_v1.py",
+      "ck3_autonomous_player/tools/verify_faction_alert_history_lookup_v1.py",
+      "docs/autonomous-agent-progress/daily/2026-10-19.md",
+      "docs/autonomous-agent-progress/goal-and-roadmap.md",
+      "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "docs/ck3-native-ai/evidence/driver-barrier-policy-audit-2026-10-19.json",
+      "docs/ck3-native-ai/evidence/g2-m1-monthly-observation-source-map-2026-10-19.json",
+      "docs/ck3-native-ai/evidence/g2-m5-participating-war-threats-2026-10-19.json",
+      "docs/ck3-native-ai/evidence/performance-verifier-explicit-guards-2026-10-19.json",
+      "docs/ck3-native-ai/g2-m1-monthly-observation-source-map-2026-10-19.md",
+      "docs/ck3-native-ai/g2-m5-participating-war-threats-2026-10-19.md",
+      "docs/ck3-native-ai/robert30-v20261019-execution.md",
+      "tools/g2_saved_campaign/audit_driver_barrier_policy_v1.py",
+      "tools/g2_saved_campaign/check_performance_verifier_guards_v1.py",
+      "tools/g2_saved_campaign/summarize_performance_windows_v1.py",
+      "tools/g2_saved_campaign/verify_driver_wal_qualification_v1.py",
+      "tools/g2_saved_campaign/verify_stale_combat_frame_v1.py"
+    ],
+    "owned_path_intersections": [],
+    "native_inputs_changed_since_initial_base": false,
+    "canonical_compound_repeated": false
+  },
+  "post_rebase_checkout_states": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_owner_at_writer_12004.hpp",
+      "bytes": 1140,
+      "sha256": "cc03587631765964221bbfe8d1ed640035e15dd0add180cfa0ef68de8e59dc20",
+      "git_clean_blob": "894fe0c404e9bd31b96f8691586ce2764ebb85f9",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
+      "bytes": 12057,
+      "sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9",
+      "git_clean_blob": "3d010eb51a24609cb9aa99a6364d64510c6766f7",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_actual_loss_writer_journal.hpp",
+      "bytes": 6226,
+      "sha256": "523dd15609b1e544c3cfbd8f7d7992fd84e0deaede5725a07319ed0485c3b04d",
+      "git_clean_blob": "f8530585f966fad93e8d595f2f5b4c4d66b48bf9",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_army.hpp",
+      "bytes": 18417,
+      "sha256": "0ef0998f720dae812eb5306042bc916e41459580ec0689639941a39921fd7f81",
+      "git_clean_blob": "10fe503c7a9025c818fe390f7baa4bc7af4f22dd",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "bytes": 93517,
+      "sha256": "6cb7c9d04fe0683a7a32cf9a6dbe5a78e843fae962c2519ddd439e3b880e058b",
+      "git_clean_blob": "570c248eb84acb01764dcd8e56092494cd86d87b",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_loss_writer_journal.cpp",
+      "bytes": 32977,
+      "sha256": "81d1b2ecc85711a00a3e63fdcb4887666cf3a3a84ae09c3123e42ad2f7d90f61",
+      "git_clean_blob": "c4f16131527274b14ee73e51ac091fd34a60978c",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1602801,
+      "sha256": "68ad29060e19a17727ab7b961a4efbe7f21f5f036ac252a9e6cd40b98ac833b1",
+      "git_clean_blob": "993201ee964cc87968150d4658e08997f68c0588",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/cmake/actual_loss_writer_observations_12004.cmake",
+      "bytes": 6807,
+      "sha256": "6b5f9ab1b05f1b6f58655f6279a0996d77e8d3f75346c07328f4eb1c9f10fa98",
+      "git_clean_blob": "68d8721fa250f24a0343497e2b137b026f968224",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_owner_12004_test.cpp",
+      "bytes": 5525,
+      "sha256": "48dca6c64d0dca57ab78061f1248e690a0f6ccb4c52eeb7370afe42f8dd099bd",
+      "git_clean_blob": "0d768016de49056bd0b8a15ea2154a94120800dc",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/county_primary_direct_owner_at_writer_v2.hpp",
+      "bytes": 4231,
+      "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb",
+      "git_clean_blob": "a78cba34b0a9fa3f4712285cf18bcf10374226ad",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "bytes": 15430,
+      "sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001",
+      "git_clean_blob": "52993d70cd89b20707683e43dc03b2a7cf4d3f96",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_v2_12004_test.cpp",
+      "bytes": 11576,
+      "sha256": "4a791b18184dc0916f01d5305189af05468ad702a462a7ffcc57e2dfbf7c27fd",
+      "git_clean_blob": "d1b240fe00256406ec29539b82f982094b437348",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_loss_writer_observations_contract.py",
+      "bytes": 11926,
+      "sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2",
+      "git_clean_blob": "bbd9a22b24c882ae952847733b8c333a510b6a95",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "bytes": 16172,
+      "sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c",
+      "git_clean_blob": "02b75a8f8a083e058062c8c4e382d9d47a9a00f5",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_county_primary_direct_owner_12004.py",
+      "bytes": 15017,
+      "sha256": "f6670e1801b7bc0a8f302ffd0a072baf370508f31202040d70bab597e17166e6",
+      "git_clean_blob": "54b0b3f7d191b2c3357ee8cd243bc22f98979b20",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "docs/ck3-native-ai/county-primary-direct-owner-v2.md",
+      "bytes": 6792,
+      "sha256": "01092d4c2b1a9c5024726534de36efd2076e6be23498c6f0f1285e6bdb5f32b7",
+      "git_clean_blob": "8897083634239a223130f413cbeded7a2d0283df",
+      "equals_reviewed_initial_commit_blob": true
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/consume_county_primary_direct_owner_native_wire_12004.py",
+      "bytes": 4990,
+      "sha256": "92ac1704fff4b30ac249cf7dadd99d224210d6a4abec1eea2e1069b7bde047f1",
+      "git_clean_blob": "195dec7e898823d830a65fe54bff399c6546cdd3",
+      "equals_reviewed_initial_commit_blob": true
+    }
+  ],
+  "checkout_note": "Git checkout uses repository attributes; raw EOL conversions are recorded separately and every clean blob remains exact to the reviewed initial commit. No arbitrary newline stripping."
+}

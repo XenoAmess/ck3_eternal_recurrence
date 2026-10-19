@@ -1,6 +1,7 @@
 #pragma once
 #include "xar_bridge/army_actual_siege_budget_at_writer_v1.hpp"
 #include "xar_bridge/army_county_primary_owner_at_writer_v1.hpp"
+#include "xar_bridge/county_primary_direct_owner_at_writer_v2.hpp"
 #include "xar_bridge/army_actual_residual_parent_v1.hpp"
 
 #include "xar_bridge/army_actual_supply_parent_join_v1.hpp"
@@ -75,6 +76,7 @@ struct ArmyActualLossWriterDataAliasV1 {
 struct ArmyActualLossWriterObservationV1 {
   std::uint64_t sequence = 0;
   std::optional<ArmyCountyPrimaryOwnerAtWriterV1> county_primary_owner_at_writer_v1;
+  std::optional<ArmyCountyPrimaryDirectOwnerAtWriterV2> county_primary_direct_owner_at_writer_v2;
   std::optional<ArmyActualSupplyParentWriterContextV1> supply_parent_context_v1;
   std::optional<ArmyActualSiegeBudgetAtWriterV1> siege_budget_at_writer_v1;
   std::optional<ArmyActualResidualParentV1> residual_parent_context_v1;
@@ -110,6 +112,9 @@ struct ArmyActualLossWriterObservationsV1 {
   std::uint64_t overwritten_events = 0;
   std::uint64_t unattributed_capture_failures = 0;
   std::vector<ArmyActualLossWriterObservationV1> events;
+  // Process-wide unbound diagnostics: never current-query Army membership.
+  std::vector<ArmyCountyPrimaryDirectOwnerAtWriterV2> unbound_county_primary_direct_diagnostics_v2;
+  std::uint64_t unbound_county_primary_direct_diagnostics_overwritten_v2=0;
 };
 
 namespace army_actual_loss_writer_json_v1 {
@@ -152,6 +157,15 @@ inline void AppendArmyActualLossWriterObservationsV1(
   Number(output, observations.overwritten_events);
   output += ",\"unattributed_capture_failures\":";
   Number(output, observations.unattributed_capture_failures);
+  output += ",\"unbound_county_primary_direct_diagnostics_overwritten_v2\":";
+  Number(output, observations.unbound_county_primary_direct_diagnostics_overwritten_v2);
+  output += ",\"unbound_county_primary_direct_diagnostics_v2\":[";
+  for(std::size_t i=0;i<observations.unbound_county_primary_direct_diagnostics_v2.size();++i){
+    if(i)output+=',';output+="{\"diagnostic_only\":true,\"ownership\":";
+    AppendArmyCountyPrimaryDirectOwnerAtWriterV2(output,observations.unbound_county_primary_direct_diagnostics_v2[i]);
+    output+='}';
+  }
+  output+=']';
   output += ",\"event_count\":";
   Number(output, observations.events.size());
   output += ",\"events\":[";
@@ -176,6 +190,10 @@ inline void AppendArmyActualLossWriterObservationsV1(
     if (event.county_primary_owner_at_writer_v1) {
       output += ",\"county_primary_owner_at_writer_v1\":";
       AppendArmyCountyPrimaryOwnerAtWriterV1(output,*event.county_primary_owner_at_writer_v1);
+    }
+    if (event.county_primary_direct_owner_at_writer_v2) {
+      output += ",\"county_primary_direct_owner_at_writer_v2\":";
+      AppendArmyCountyPrimaryDirectOwnerAtWriterV2(output,*event.county_primary_direct_owner_at_writer_v2);
     }
     output += ",\"army_regiment_id\":";
     Number(output, event.army_regiment_id);

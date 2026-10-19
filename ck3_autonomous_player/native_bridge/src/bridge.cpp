@@ -30227,12 +30227,16 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
 #endif
     loss_environment.bindings.county_primary_phase_reader=+[]() noexcept {
       xar::ck3_12004::CountyPrimaryPhaseCapture12004 out{};
-      if(!xar::ck3_12004::ReadArmyNaturalPhaseResearchSampling12004().enabled)
-        return out;
-      out.scope=xar::ck3_12004::CopyActiveArmyNaturalPhaseScope12004();
+      out.sampling=xar::ck3_12004::ReadArmyNaturalPhaseResearchSampling12004();
+      if(!out.sampling.enabled) return out;
+      out.scope=xar::ck3_12004::CopyActiveArmyNaturalPhaseMetadata12004();
+      if(out.scope.observed&&out.scope.phase==xar::ck3_12004::ArmyNaturalPhaseKind12004::pre_date)
+        out.scope=xar::ck3_12004::CopyActiveArmyNaturalPhaseScope12004();
       out.writer_event=xar::ck3_12004::NextArmyNaturalPhaseEvent12004();
       return out;
     };
+    loss_environment.bindings.county_direct_sampling_reader=
+        &xar::ck3_12004::ReadArmyNaturalPhaseResearchSampling12004;
 #endif
     loss_environment.bindings.game_state_slot = bindings.game_state_slot;
     loss_environment.primary_thread_suspended_proven = true;

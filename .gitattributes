@@ -1116,3 +1116,5 @@ docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/analysis/NAT
 docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/analysis/NATIVE-PHASE-LEAF.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/source-copyplan.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/index.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/ordered-source-delivery.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/integration.source.json -text whitespace=cr-at-eol

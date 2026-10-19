@@ -1289,6 +1289,14 @@ void *ResolveInternalArmy(const ArmyBindings &bindings,
              : nullptr;
 }
 
+void *ResolveArmyRegimentStrict(const ArmyBindings &b,std::int32_t id) noexcept {
+  return b.enabled ? Resolve(b.regiment_storage_slot,id) : nullptr;
+}
+void *ResolvePersistentRegimentStrict(const ArmyBindings &b,std::int32_t id) noexcept {
+  return b.enabled ? Resolve(b.persistent_regiment_storage_slot,id) : nullptr;
+}
+
+
 bool ReadArmyGathering(const ArmyBindings &bindings, std::int32_t unit_id,
                        bool &gathering) noexcept {
   gathering = false;
