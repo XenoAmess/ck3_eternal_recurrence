@@ -22,7 +22,7 @@ def camera_pre_advance_scope_v1(service, planned):
         return
     used = False
 
-    def before_resume(*, step, current):
+    def before_resume(*, step, current, tracking_scope=None):
         nonlocal used
         receipt = {"schema": "xar.ck3.auto-camera-pre-advance/v1",
                    "status": "skipped", "reason": "unverified_current_frame",
@@ -47,6 +47,8 @@ def camera_pre_advance_scope_v1(service, planned):
         # Project the actual already captured current snapshot. Never relabel
         # an old planning position with the newer frame/date.
         payload = service._auto_camera_hotspot_input(current, frame)
+        if isinstance(tracking_scope, dict):
+            payload["tracking_scope"] = dict(tracking_scope)
         if (payload.get("map_ready") is not True or payload.get("mandatory_choice") is True
                 or payload.get("has_active_event") is True
                 or payload.get("has_pending_interaction") is True):
@@ -59,8 +61,8 @@ def camera_pre_advance_scope_v1(service, planned):
         if not isinstance(index, LandedProvinceIndex):
             return {**receipt, "reason": "landed_index_not_already_bound"}
         hotspot = select_war_hotspot({"active_wars": payload["active_wars"]}, index)
-        if hotspot is None or hotspot.get("reason") not in {
-                "battle", "moving_player_army", "army_destination"}:
+        if tracking_scope is None and (hotspot is None or hotspot.get("reason") not in {
+                "battle", "moving_player_army", "army_destination"}):
             return {**receipt, "reason": "no_known_active_hotspot"}
         scheduled = service._auto_camera_worker.schedule(payload, urgent=True)
         return {**receipt, "status": scheduled.get("status", "unavailable"),

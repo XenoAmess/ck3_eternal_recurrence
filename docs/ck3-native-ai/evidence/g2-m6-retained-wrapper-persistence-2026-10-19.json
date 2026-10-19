@@ -1,0 +1,195 @@
+{
+  "schema": "xar.g2-m6-retained-wrapper-persistence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:05:12.190380+00:00",
+  "machine_identity_source": {
+    "command": "python tools/ck3_live_run_id.py machine",
+    "tool_chunk": "12174b"
+  },
+  "base_commit": "a45fa372b6c51cbf64ffc4400b6844333b6b626d",
+  "status": "SOURCE_AND_FOCUSED_SOFTWARE_PASS_RUNTIME_ADOPTION_PENDING",
+  "historical_original": {
+    "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+    "actor_character_id": 31254,
+    "target_character_id": 33946,
+    "scheme_instance_id": 2,
+    "scheme_instance_generation": 0,
+    "terminal": "historical_unknown",
+    "last_copied_observation": {
+      "native_revision": 2942,
+      "date_raw": 53186400,
+      "days_after_T0": 1753,
+      "native_status_raw": 0,
+      "native_status_key": "continue",
+      "active": true,
+      "terminal_observed": false
+    },
+    "first_gain": {
+      "native_revision": 872,
+      "date_raw": 53161680,
+      "scheme_sway_opinion": 25,
+      "following_native_revision": 881,
+      "following_date_raw": 53161848
+    },
+    "limits": "The ledger key terminal_intervention holding active/status0 is not terminal evidence. Following18 is Start-era provenance. The unobserved end window belonged to Native26; Native29 cold sessions cannot recover its lost session-only ring. Owner change/disappearance does not prove termination. No old record is rewritten."
+  },
+  "closed_sources": {
+    "ledger": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c14-war6356-warm88/clean/active-scheme-sway-formal-private-v1.json",
+      "bytes": 10285,
+      "sha256": "a2d8b030b1e3c559540581f5187f74da23d9c8168af3abba0098e6ce969da178",
+      "read_tool_chunk": "db5e73"
+    },
+    "schedule": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c14-war6356-warm88/clean/ordinary-sway-schedule-v1.json",
+      "bytes": 390,
+      "sha256": "4ad36f1d700806315259ecec91b80fdcb8b266e9198c5319cdd78df9bef6dab0",
+      "actor_character_id": 40526,
+      "last_check_date_raw": 53196912,
+      "last_job_kind": "query_selected_target"
+    },
+    "identity_binding": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-checkpoint6322-cold-source88/FINAL-C13-CLOSE-FOR6322-COLD.json",
+      "bytes": 4709,
+      "sha256": "c2c1e1ccfc2fd3d1d6f3abb07effc3a01eeecf017d64124fffbfd04be3723d72",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-19T14:14:59.708325+00:00",
+      "read_tool_chunk": "f0c8bf",
+      "join": "Both sidecar hashes match this machine-bound closed metadata. Referenced Driver/SAVE/Game files were not read."
+    },
+    "runtime_owner_report": "C15 remains Native29, not Native30; no new old-owner term read. execution-query OFF, completion/opinion/termination retained. This is not an observer-attachment/business pass."
+  },
+  "gap": {
+    "guards": "Ordinary schedule/observer, Native handler and Python normalizer require the original actor to be current living played actor. Current40526 does not read old31254. These restrictions remain.",
+    "defect": "Producer already emits retained_end_observation from the three exact.4 end wrappers independently of execution/common. Existing Service only calls the common-end staging function, which returned when retained_common_end_observation was None. A valid queried wrapper terminal could therefore remain absent from durable ledger when execution-query is OFF.",
+    "original_RED": {
+      "tool_chunk": "f99760",
+      "exit_code": 1,
+      "assertion": "Real Service composes a valid wrapper end but written ledger lacks terminal_intervention."
+    }
+  },
+  "candidate": {
+    "pins": [
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+        "bytes": 18986,
+        "sha256": "5c33c735f3e5b5a76b1f9498528cf10821d5ff30257aa9846c274cd557feb7f4",
+        "baseline_bytes": 18205,
+        "baseline_sha256": "1570cd2424b81927aa14649437375bb1b0acecea87a28d8d7d8ab54ab5371af4",
+        "net_new_bytes": 781
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/sway_lifecycle_consumer.py",
+        "bytes": 19194,
+        "sha256": "cfa0e5680ec4ca7a6c691c2388f85ce38d1ec9643aa060b244caed460c990353",
+        "baseline_bytes": 15067,
+        "baseline_sha256": "64f77cbfa900168824b8f9f8d0aad98c40038de5822923d0eb98d10a2ba4b674",
+        "net_new_bytes": 4127
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_sway_retained_wrapper_persistence_12004.py",
+        "bytes": 7161,
+        "sha256": "e5ee0e976f9b2448ce1ff3328f1d6dd1c2507e92c40af75d0891738d4f963de1",
+        "baseline_bytes": 0,
+        "baseline_sha256": null,
+        "net_new_bytes": 7161
+      }
+    ],
+    "producer": "Attach copied query stamp separately from native event dates. Require pre0/pre-owner original actor and true terminal transition in addition to existing post1/returned/fullID evidence. Keep complete copied invocation record.",
+    "consumer": "Existing staging entry still prefers common; when no retained common end exists, validate and persist the independent retained wrapper. Recheck applied receipt/full tuple/gen, exact.4 source, original-once invocation, pre/post state and positive query stamp.",
+    "durability": "Write existing ledger immediately on the already existing legal read. next_turn_consumed=false admits the real ordinary following consumer. Repeated event or empty/purged/new-session read cannot erase/rearm; prior qualified cause/following and original gain/material remain.",
+    "cause": "terminated_unattributed/cause unknown. Wrapper source may also be typed Stop; staging does not grant natural completion, gain or M6 credit.",
+    "scope": "Two independent Python leaves plus test. No M0 Service/shared bridge.cpp, Native registration, endpoint/ABI, RPC or timer changes. Concurrent shared-tree changes belong to other owners."
+  },
+  "native_dependencies": {
+    "build": "1.20.0.4 / 98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "slots": [
+      "0x476EB88",
+      "0x4852280",
+      "0x4852C38"
+    ],
+    "originals": [
+      "0x299C320 command secondary-this",
+      "0x2D11B30 authored false effect+context",
+      "0x2D11AD0 authored true effect+context"
+    ],
+    "state": "Existing BindSwayEndInvocationImage12004/state bindings. Scheme fullID+0x10, status+0x28, owner+0x2C, target kind+0x30, target+0x34; generation high byte. Native originals remain forwarded once unchanged.",
+    "common": "Independent callsite0x2A48877→0x2A4ADF0, continuation0x2A4887C. Missing/unattached/empty common is not terminal evidence.",
+    "query": "Existing current-alive HandleSwayCompletionTerminationV1, MainThread owning mailbox/executor/serializer and prior Native27 registration. Current player/revision/paused/map identity guards stay intact.",
+    "pins": [
+      {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/sway_end_invocation_12004.hpp",
+        "bytes": 5648,
+        "sha256": "1b91c435ce4a5ae849a28a5d90a46ef37bcf04b8d729e25e106bbfb1d5e3a859"
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/sway_common_termination_observation_12004.hpp",
+        "bytes": 3402,
+        "sha256": "08e133cca61338644a79714dfa1fdd8f91ed1ae04401719f31e7231a4beae800"
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_handler.cpp",
+        "bytes": 4364,
+        "sha256": "2889a007fc96dcc36220aa3190ec36b7d1538dca0a33fbdff7eef339e2efab6e"
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination.cpp",
+        "bytes": 42917,
+        "sha256": "3c6047070ea7671510859663daa3acbb3ce0c61bde99419e067c7abd31b525f4"
+      }
+    ],
+    "limits": "No Native code compiled/executed, no .2 native binder/RVA invoked. Actual current observer_attached and a new natural positive were not observed here."
+  },
+  "validation": {
+    "final": {
+      "tool_chunk": "4a3cfa",
+      "exit_code": 0,
+      "result": "16 passed in 4.32s",
+      "nodes": [
+        "test_sway_retained_wrapper_persistence_12004.py (15 cases)",
+        "test_sway_service_lifecycle_12004.py (1 existing case)"
+      ]
+    },
+    "coverage": [
+      "gen0/nonzero full identities",
+      "execution OFF/common absent: actual Service→producer→durable ledger→following",
+      "repeat/empty/unavailable/gap do not invent or rearm",
+      "foreign actor/fullID/gen, pre/post/owner, unreturned, no transition/query stamp reject without writes",
+      "existing actual causal writer proof and following preserved; first gain/material unchanged"
+    ],
+    "shared_Service": {
+      "tool_chunk": "013926",
+      "four_Sway_query_attach_methods_AST_equal_to_base": true
+    },
+    "diff_check": {
+      "tool_chunk": "4fd2a6",
+      "exit_code": 0
+    },
+    "fixture_boundary": "Synthetic fresh_source_frames identities are never relabeled old2/gen0 or current40526 Start. FakeDriver supplies copied reads; real Service/composer/writer/following execute. No game credit."
+  },
+  "next": {
+    "adoption": "After Root composes these leaves at a necessary SDK maintenance, an ordinary applied Sway of the current living actor can durably retain an existing legal wrapper query even if current row is purged and execution unsupported. Camera Native30 need not wait.",
+    "remaining": "If no legal read occurred before owner death/session replacement/ring overwrite, evidence still cannot be recovered. No drain RPC/cadence or forced Start/Stop added. Current40526 cannot inherit old31254 gains.",
+    "dual_identity_separate": "A future Native retained read needs distinct current live viewer-frame and bounded original owner/action/fullID/gen/target authorized by actual campaign/episode lineage, plus owning session/thread. Never relabel old actor as40526 or open arbitrary-actor queries. Existing following also requires original actor; successor archival acknowledgment must be modeled separately, not counted as original actor following.",
+    "M6": "in_progress; old2/gen0 historical terminal unknown; no new natural terminal/G2 credit."
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "MCP": 0,
+    "screen": 0,
+    "OBS": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads": 0,
+    "Native_compile": 0,
+    "runtime_edits": 0,
+    "shared_Service_edits": 0,
+    "shared_bridge_cpp_edits": 0,
+    "stage_or_commit": false,
+    "external_heavy_assets": 0,
+    "volume_scans": 0,
+    "deleted_assets": 0,
+    "future_reserved_bytes": 0,
+    "physical_credit_bytes": 0,
+    "storage": "code3 hard24KiB; original expiry2026-10-20T01:48:56.993837Z. FINITE-SOURCE-HOLDS-ANNOTATION-FEEDER-M6-ROOT01.json730B SHA35324f6fb1d34c5cf69ad32278f181d7d35863716589453f3b064dc627b4368c; no retention extension."
+  }
+}

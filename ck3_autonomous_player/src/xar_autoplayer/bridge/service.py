@@ -752,10 +752,11 @@ class GameplayBridgeService:
             if not isinstance(war, dict):
                 continue
             armies = [
-                {key: army.get(key) for key in (
+                {key: (list(army[key]) if isinstance(army.get(key), list) else None)
+                      if key == "route_province_ids" else army.get(key) for key in (
                     "army_id", "current_province_id", "in_combat", "controllable",
                     "army_state", "siege_days_left", "retreating",
-                    "move_target_province_id",
+                    "move_target_province_id", "route_province_ids",
                 )}
                 for army in war.get("allied_armies") or []
                 if isinstance(army, dict)
@@ -845,6 +846,11 @@ class GameplayBridgeService:
         # an applied camera result or a failed hotspot observation.
         if context["mode"] == "cancel" and actual.get("status") == "cancelled":
             return actual
+        if context["mode"] == "tracked_hotspot":
+            date = actual.get("date_raw")
+            return actual if (actual.get("actor_character_id") == context["owner"][0]
+                and type(date) is int and context["frame"]["date_raw"] <= date <= context["max_date_raw"]
+                and actual.get("camera_postcondition_verified") is False) else None
         date = actual.get("date_raw")
         submitted_date = context["frame"]["date_raw"]
         if (actual.get("actor_character_id") != context["owner"][0]
@@ -903,6 +909,15 @@ class GameplayBridgeService:
             frame = payload.get("source_frame") or {}
             date = frame.get("date_raw")
             self._sync_camera_presentation_owner(frame)
+            if "tracking_scope" in payload:
+                from .camera_tracking_v1 import tracking_intent_v1
+                tracking_intent = tracking_intent_v1(payload, self._war_hotspot_camera_index)
+                if tracking_intent is None:
+                    return {"status": "unavailable", "reason": "tracking_scope_or_route_unverified",
+                            "native_command_submitted": False, "same_frame_with_gameplay_claim": False}
+                return {**self._publish_camera_presentation_v1(tracking_intent, payload),
+                        "source_frame": dict(frame), "hotspot": hotspot,
+                        "continuous_frame_coverage_verified": False}
             actual = self._bound_camera_presentation_actual(frame)
             context = self._camera_presentation_request_context
             if (actual is not None and
@@ -918,7 +933,8 @@ class GameplayBridgeService:
             if intent["mode"] == "hold":
                 if intent.get("title_key"):
                     desired = {**intent, "mode": "hotspot"}
-                elif self._peace_realm_camera_policy.mode == "realm":
+                elif (self._peace_realm_camera_policy.mode == "realm"
+                      and intent["reason"] != "awaiting_fresh_payload"):
                     desired = {**intent, "mode": "realm"}
                 else:
                     desired = None
@@ -941,8 +957,10 @@ class GameplayBridgeService:
                 # No bound result is unknown, rather than success/failure.
                 # Keep its retry bounded without remembering an unsent target forever.
                 rows.pop(key, None)
-                self._peace_realm_camera_policy.retry_after_failure()
-                intent = self._peace_realm_camera_policy.observe(payload, hotspot)
+                # Retry the intent already evaluated against this observation.
+                # A second policy pass would consume the same fresh-frame key.
+                if desired is not None:
+                    intent = desired
             elif (intent["mode"] == "hold" and desired is not None
                     and (not context or context["key"] != key)):
                 # A new battle at the same title, or an explicit query, must
@@ -993,6 +1011,7 @@ class GameplayBridgeService:
             "sequence": sequence, "owner": owner, "frame": dict(frame),
             "key": self._camera_presentation_target_key(frame, intent),
             "mode": intent["mode"], "title_key": intent.get("title_key"),
+            "max_date_raw": intent.get("max_date_raw"),
         }
         return result
 
@@ -2080,8 +2099,21 @@ class GameplayBridgeService:
     def _plan_turn_internal(
         self, *, allow_prewar_force_query: bool = True,
         allow_war_overview_query: bool = True,
+        _planner_remainder_v1=None,
     ) -> dict[str, object]:
         from .readonly_planning_retry_v1 import retry_readonly_planning_once_v1
+        if _planner_remainder_v1 is not None:
+            return retry_readonly_planning_once_v1(
+                lambda: self._plan_turn_internal_without_readonly_retry_v1(
+                    allow_prewar_force_query=allow_prewar_force_query, allow_war_overview_query=allow_war_overview_query, _planner_remainder_v1=_planner_remainder_v1))
+        if getattr(self, "_planner_remainder_timing_enabled_v1", False) is True:
+            remainder_observer = getattr(self, "_planner_remainder_observer_v1", None)
+            if callable(remainder_observer):
+                from .planner_remainder_counters_v1 import observe_planner_call_v1
+                return observe_planner_call_v1(
+                    lambda counter: self._plan_turn_internal(
+                        allow_prewar_force_query=allow_prewar_force_query, allow_war_overview_query=allow_war_overview_query, _planner_remainder_v1=counter),
+                    enabled=True, observer=remainder_observer)
         return retry_readonly_planning_once_v1(
             lambda: self._plan_turn_internal_without_readonly_retry_v1(
                 allow_prewar_force_query=allow_prewar_force_query,
@@ -2090,7 +2122,10 @@ class GameplayBridgeService:
     def _plan_turn_internal_without_readonly_retry_v1(
         self, *, allow_prewar_force_query: bool = True,
         allow_war_overview_query: bool = True,
+        _planner_remainder_v1=None,
     ) -> dict[str, object]:
+        if _planner_remainder_v1 is not None:
+            _planner_remainder_v1.note_attempt()
         internal_snapshot = getattr(
             self.driver, "take_internal_semantic_snapshot", None
         )
@@ -2240,7 +2275,19 @@ class GameplayBridgeService:
                 # Another action won ordinary arbitration. Restore the normal
                 # initial expectation read, then plan its resulting frame.
                 try:
-                    self._prepare_succession_transition_v1(snapshot, available_steps)
+                    (
+                        _planner_remainder_v1.measure(
+                            'deferred_succession_preflight',
+                            self._prepare_succession_transition_v1,
+                            snapshot,
+                            available_steps,
+                        )
+                        if _planner_remainder_v1 is not None
+                        else self._prepare_succession_transition_v1(
+                            snapshot,
+                            available_steps,
+                        )
+                    )
                 except Exception as error:
                     error.prisoner_release_arbitration = {
                         "plan": copy.deepcopy(plan),
@@ -2251,9 +2298,18 @@ class GameplayBridgeService:
                         "initial_expectation_root_deferred": True,
                     }
                     raise
-                return self._plan_turn_internal(
-                    allow_prewar_force_query=allow_prewar_force_query,
-                    allow_war_overview_query=allow_war_overview_query)
+                return (
+                    self._plan_turn_internal(
+                        allow_prewar_force_query=allow_prewar_force_query,
+                        allow_war_overview_query=allow_war_overview_query,
+                        _planner_remainder_v1=_planner_remainder_v1,
+                    )
+                    if _planner_remainder_v1 is not None
+                    else self._plan_turn_internal(
+                        allow_prewar_force_query=allow_prewar_force_query,
+                        allow_war_overview_query=allow_war_overview_query,
+                    )
+                )
             if deferred_release_root and isinstance(plan, dict):
                 planned = {**planned, "plan": {**plan,
                     "prisoner_release_initial_expectation_root_deferred": True}}
@@ -2720,7 +2776,21 @@ class GameplayBridgeService:
                 and baseline.get("selected_step") in {
                     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, "query-declarable-wars",
                     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP}):
-            release = plan_release_formal(self.driver, planned, snapshot)
+            release = (
+                _planner_remainder_v1.measure(
+                    'release',
+                    plan_release_formal,
+                    self.driver,
+                    planned,
+                    snapshot,
+                )
+                if _planner_remainder_v1 is not None
+                else plan_release_formal(
+                    self.driver,
+                    planned,
+                    snapshot,
+                )
+            )
             if release["plan"].get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP:
                 for key in list(release):
                     if key.startswith("_private_"):
@@ -2728,13 +2798,39 @@ class GameplayBridgeService:
                 return finish_release_root_arbitration(release)
         from ..holy_order_siege_reinforcement_v1 import plan_holy_order_siege_reinforcement_v1
 
-        planned = plan_holy_order_siege_reinforcement_v1(
-            self.driver, planned=planned, snapshot=snapshot,
-            bridge_capabilities=bridge_capabilities,
+        planned = (
+            _planner_remainder_v1.measure(
+                'holy_order_reinforcement',
+                plan_holy_order_siege_reinforcement_v1,
+                self.driver,
+                planned=planned,
+                snapshot=snapshot,
+                bridge_capabilities=bridge_capabilities,
+            )
+            if _planner_remainder_v1 is not None
+            else plan_holy_order_siege_reinforcement_v1(
+                self.driver,
+                planned=planned,
+                snapshot=snapshot,
+                bridge_capabilities=bridge_capabilities,
+            )
         )
-        planned = plan_commander_quality_formal_v1(
-            self, planned=planned, snapshot=snapshot,
-            bridge_capabilities=bridge_capabilities,
+        planned = (
+            _planner_remainder_v1.measure(
+                'commander_quality',
+                plan_commander_quality_formal_v1,
+                self,
+                planned=planned,
+                snapshot=snapshot,
+                bridge_capabilities=bridge_capabilities,
+            )
+            if _planner_remainder_v1 is not None
+            else plan_commander_quality_formal_v1(
+                self,
+                planned=planned,
+                snapshot=snapshot,
+                bridge_capabilities=bridge_capabilities,
+            )
         )
         m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
         m5_history = planned.pop("_private_m5_history_v1", None)
@@ -2767,9 +2863,24 @@ class GameplayBridgeService:
                         "missing": ["formal_planning_history"],
                         "formal_action_ready": False}}}
             try:
-                return plan_m5_wartime_query_only(
-                    self.driver, current, snapshot=m5_snapshot,
-                    history=m5_history, available_steps=available_steps,
+                return (
+                    _planner_remainder_v1.measure(
+                        'm5_wartime',
+                        plan_m5_wartime_query_only,
+                        self.driver,
+                        current,
+                        snapshot=m5_snapshot,
+                        history=m5_history,
+                        available_steps=available_steps,
+                    )
+                    if _planner_remainder_v1 is not None
+                    else plan_m5_wartime_query_only(
+                        self.driver,
+                        current,
+                        snapshot=m5_snapshot,
+                        history=m5_history,
+                        available_steps=available_steps,
+                    )
                 )
             except ValueError as error:
                 plan = current.get("plan")
@@ -2832,12 +2943,24 @@ class GameplayBridgeService:
                     )
                 )
             family_snapshot = planned.get("_private_family_marriage_snapshot_v1")
-            joint = plan_m5_formal_query_only(
-                self.driver,
-                planned,
-                snapshot=m5_snapshot,
-                history=m5_history,
-                available_steps=available_steps,
+            joint = (
+                _planner_remainder_v1.measure(
+                    'm5_formal',
+                    plan_m5_formal_query_only,
+                    self.driver,
+                    planned,
+                    snapshot=m5_snapshot,
+                    history=m5_history,
+                    available_steps=available_steps,
+                )
+                if _planner_remainder_v1 is not None
+                else plan_m5_formal_query_only(
+                    self.driver,
+                    planned,
+                    snapshot=m5_snapshot,
+                    history=m5_history,
+                    available_steps=available_steps,
+                )
             )
             joint_plan = joint.get("plan")
             if not (
@@ -2849,8 +2972,21 @@ class GameplayBridgeService:
                 and isinstance(family_snapshot, dict)
             ):
                 return (
-                    plan_child_default_private(
-                        self.driver, joint, snapshot)
+                    (
+                        _planner_remainder_v1.measure(
+                            'child_default',
+                            plan_child_default_private,
+                            self.driver,
+                            joint,
+                            snapshot,
+                        )
+                        if _planner_remainder_v1 is not None
+                        else plan_child_default_private(
+                            self.driver,
+                            joint,
+                            snapshot,
+                        )
+                    )
                     if getattr(self.driver,
                                "allow_private_guy_default_formal_trial",
                                False) is True else joint
@@ -2893,7 +3029,21 @@ class GameplayBridgeService:
                 }
             family = {**family, "plan": family_plan}
             return finish_release_root_arbitration(
-                plan_child_default_private(self.driver, family, snapshot)
+                (
+                    _planner_remainder_v1.measure(
+                        'child_default',
+                        plan_child_default_private,
+                        self.driver,
+                        family,
+                        snapshot,
+                    )
+                    if _planner_remainder_v1 is not None
+                    else plan_child_default_private(
+                        self.driver,
+                        family,
+                        snapshot,
+                    )
+                )
                 if getattr(self.driver,
                            "allow_private_guy_default_formal_trial",
                            False) is True else family
@@ -3008,10 +3158,24 @@ class GameplayBridgeService:
                     and current_plan.get("selected_step") == before_lifestyle_step
                     and isinstance(read_child_matrilineal_ledger(
                         child_state_dir).get("pending"), dict)):
-                pending_read = plan_child_matrilineal_private(
-                    self.driver, planned, snapshot,
-                    subject_character_id=target[0],
-                    candidate_character_id=target[1],
+                pending_read = (
+                    _planner_remainder_v1.measure(
+                        'child_matrilineal',
+                        plan_child_matrilineal_private,
+                        self.driver,
+                        planned,
+                        snapshot,
+                        subject_character_id=target[0],
+                        candidate_character_id=target[1],
+                    )
+                    if _planner_remainder_v1 is not None
+                    else plan_child_matrilineal_private(
+                        self.driver,
+                        planned,
+                        snapshot,
+                        subject_character_id=target[0],
+                        candidate_character_id=target[1],
+                    )
                 )
                 pending_plan = pending_read.get("plan")
                 if (isinstance(pending_plan, dict)
@@ -3033,12 +3197,40 @@ class GameplayBridgeService:
                         }}
                     planned = pending_read
             if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
-                planned = plan_child_default_private(self.driver, planned, snapshot)
+                planned = (
+                    _planner_remainder_v1.measure(
+                        'child_default',
+                        plan_child_default_private,
+                        self.driver,
+                        planned,
+                        snapshot,
+                    )
+                    if _planner_remainder_v1 is not None
+                    else plan_child_default_private(
+                        self.driver,
+                        planned,
+                        snapshot,
+                    )
+                )
             planned.pop("_private_faction_snapshot_v1", None)
             planned.pop("_private_faction_history_v1", None)
             planned.pop("_private_construction_snapshot_v1", None)
             planned.pop("_private_construction_history_v1", None)
-            planned = plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
+            planned = (
+                _planner_remainder_v1.measure(
+                    'release',
+                    plan_release_formal,
+                    self.driver,
+                    observe_m5_wartime(planned),
+                    snapshot,
+                )
+                if _planner_remainder_v1 is not None
+                else plan_release_formal(
+                    self.driver,
+                    observe_m5_wartime(planned),
+                    snapshot,
+                )
+            )
             return _timed_planning_call_v1(
                 "service.planner_governance_tail",
                 lambda: finish_release_root_arbitration(
@@ -3058,9 +3250,24 @@ class GameplayBridgeService:
                 isinstance(faction_snapshot, dict)
                 and isinstance(faction_history, list)
             ):
-                planned = plan_faction_gift_private_v1(
-                    self.driver, planned, faction_snapshot,
-                    faction_history, available_steps,
+                planned = (
+                    _planner_remainder_v1.measure(
+                        'faction_gift',
+                        plan_faction_gift_private_v1,
+                        self.driver,
+                        planned,
+                        faction_snapshot,
+                        faction_history,
+                        available_steps,
+                    )
+                    if _planner_remainder_v1 is not None
+                    else plan_faction_gift_private_v1(
+                        self.driver,
+                        planned,
+                        faction_snapshot,
+                        faction_history,
+                        available_steps,
+                    )
                 )
         planned.pop("_private_faction_snapshot_v1", None)
         planned.pop("_private_faction_history_v1", None)
@@ -3107,12 +3314,41 @@ class GameplayBridgeService:
         target = getattr(self.driver, "child_matrilineal_target_v1", None)
         if (getattr(self.driver, "allow_private_player_child_matrilineal_action", False) is True
                 and isinstance(target, tuple) and len(target) == 2):
-            planned = plan_child_matrilineal_private(
-                self.driver, planned, snapshot,
-                subject_character_id=target[0], candidate_character_id=target[1],
+            planned = (
+                _planner_remainder_v1.measure(
+                    'child_matrilineal',
+                    plan_child_matrilineal_private,
+                    self.driver,
+                    planned,
+                    snapshot,
+                    subject_character_id=target[0],
+                    candidate_character_id=target[1],
+                )
+                if _planner_remainder_v1 is not None
+                else plan_child_matrilineal_private(
+                    self.driver,
+                    planned,
+                    snapshot,
+                    subject_character_id=target[0],
+                    candidate_character_id=target[1],
+                )
             )
         if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
-            planned = plan_child_default_private(self.driver, planned, snapshot)
+            planned = (
+                _planner_remainder_v1.measure(
+                    'child_default',
+                    plan_child_default_private,
+                    self.driver,
+                    planned,
+                    snapshot,
+                )
+                if _planner_remainder_v1 is not None
+                else plan_child_default_private(
+                    self.driver,
+                    planned,
+                    snapshot,
+                )
+            )
         if (construction_red_plan is not None
                 and isinstance(planned.get("plan"), dict)
                 and planned["plan"].get("selected_step") == plan["selected_step"]):
@@ -3121,8 +3357,36 @@ class GameplayBridgeService:
                 "reason": construction_red_plan["reason"]}}
         planned = observe_m5_wartime(planned)
         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
-            planned = plan_ransom_private(self.driver, planned, snapshot)
-        planned = plan_release_formal(self.driver, planned, snapshot)
+            planned = (
+                _planner_remainder_v1.measure(
+                    'ransom',
+                    plan_ransom_private,
+                    self.driver,
+                    planned,
+                    snapshot,
+                )
+                if _planner_remainder_v1 is not None
+                else plan_ransom_private(
+                    self.driver,
+                    planned,
+                    snapshot,
+                )
+            )
+        planned = (
+            _planner_remainder_v1.measure(
+                'release',
+                plan_release_formal,
+                self.driver,
+                planned,
+                snapshot,
+            )
+            if _planner_remainder_v1 is not None
+            else plan_release_formal(
+                self.driver,
+                planned,
+                snapshot,
+            )
+        )
         return _timed_planning_call_v1(
             "service.planner_governance_tail",
             lambda: finish_release_root_arbitration(

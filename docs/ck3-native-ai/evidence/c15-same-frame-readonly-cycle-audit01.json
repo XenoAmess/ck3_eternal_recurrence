@@ -1,0 +1,737 @@
+{
+  "schema": "xar.c15-same-frame-readonly-cycle-source-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:32:14Z",
+  "status": "SOURCE_AUDIT_COMPLETE_NO_PRODUCTION_PATCH_NO_SPEEDUP_QUALIFICATION",
+  "scope": {
+    "historical_FULL": 6398,
+    "source_commit": "d804be64838b25c234ef1f805d8e641e4f677450",
+    "new_Game_RPC": 0,
+    "active_Driver_or_SAVE_reads": 0,
+    "AUTO_body_reads": 0,
+    "benchmarks": 0,
+    "production_or_frozen_SDK_edits": 0,
+    "prior_planner_counter_package": "Frozen and absent from actual src13; no counter activation or change.",
+    "interruption_boundary": "This is historical day2433->2442. Current recovery frontier, later runtime progress and historical day2504 are not credited."
+  },
+  "sources": {
+    "index": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-queue/C15-FULL-6398-CLOSED-INDEX.json",
+      "bytes": 53791,
+      "sha256": "ef939d19b7a4e1d94019b15fb6fe389a12fc59797a5cf0d646eb99d6132dd29d",
+      "observed_at_utc": "2026-10-19T15:08:16.150727+00:00",
+      "extent": "All30 projected cycles. Original index binds each CUMULATIVE-TURN SHA and exact AUTO response path; response bodies were not read."
+    },
+    "frozen_sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 877777,
+        "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8",
+        "methods": [
+          {
+            "name": "plan_turn",
+            "start": 1895,
+            "end": 1933,
+            "ast_sha256": "f97de5ed123b14d578b6d1362885cb53d359ea423a27ac2bb01c49aa2dff1dd8"
+          },
+          {
+            "name": "_finish_prewar_force_coalition_plan_v2",
+            "start": 1935,
+            "end": 1994,
+            "ast_sha256": "7c591019e45eb973e68505b80dcee0db3ccc7c698ec884d20cb15bac773fc76c"
+          },
+          {
+            "name": "_plan_turn_internal",
+            "start": 2050,
+            "end": 2058,
+            "ast_sha256": "b87b3e7fd2111cf5299494c0c4e3ea4d2f0a3a3dadbb62926407fecb19a29b34"
+          },
+          {
+            "name": "auto_turn",
+            "start": 4920,
+            "end": 4996,
+            "ast_sha256": "73657ff01056ab9a9f646ab43c49e1dbd7a933449f93757421ac8194149c6d99"
+          },
+          {
+            "name": "_execute_planned_turn_without_unhandled_capture",
+            "start": 5194,
+            "end": 5805,
+            "ast_sha256": "476120aab5c2b06ea3d809e32c2f8c00f96ee85244619848b938b95f2dac5078"
+          }
+        ]
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13\\xar_autoplayer\\strategy.py",
+        "bytes": 1047320,
+        "sha256": "45c164297b90b32203e7860b4a7735cfa65c5ca1db7141e898d15395d2e47e78",
+        "methods": [
+          {
+            "name": "_stationary_excluded_siege_one_day_watch_plan",
+            "start": 21764,
+            "end": 21869,
+            "ast_sha256": "4dba625d8f97ca5a29211736c0106dceb4f0a15cc6f6af7b5ed6ee346b9af945"
+          }
+        ]
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13\\xar_autoplayer\\bridge\\readonly_planning_retry_v1.py",
+        "bytes": 13443,
+        "sha256": "69ff7e9dc23dc6d06c2703e8c0f4a7475589cb91475b12f4e11e569234194414",
+        "methods": [
+          {
+            "name": "retry_readonly_planning_once_v1",
+            "start": 193,
+            "end": 221,
+            "ast_sha256": "72145d29a8a24f58859288e518091880c9d5c3a8bcc5069102612f0e92c77f08"
+          }
+        ]
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 21416,
+        "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e",
+        "methods": [
+          {
+            "name": "_context_with_reference",
+            "start": 49,
+            "end": 72,
+            "ast_sha256": "0614909bfb7a2b4afef48198ec0a3832431b9e23bc2d83e0db27af96c42c5b96"
+          },
+          {
+            "name": "_plan_war_mercenary_turn_v1",
+            "start": 79,
+            "end": 212,
+            "ast_sha256": "a92a71faaea4c79ca9209121b5c82d44032deead8b4ebe83ebd700975cfc3923"
+          }
+        ]
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13\\xar_autoplayer\\bridge\\ordinary_sway_service_v1.py",
+        "bytes": 9219,
+        "sha256": "3f45b4c07dd79a8279605c438a57fa7cdc819a7900a642953f9c3e0fd93d8321",
+        "methods": [
+          {
+            "name": "_ordinary_fallback",
+            "start": 116,
+            "end": 122,
+            "ast_sha256": "cbca13170040250158242fc931b61c497a7c5caf91cf5545882cc17781c1f5b9"
+          }
+        ]
+      }
+    ],
+    "sole_owner_timing_reply": {
+      "owner": "/root/runtime_v20261019",
+      "content": "No sealed wholeAUTO timing-header aggregate exists; treat as unknown, do not add research reads/sampling/RPC or delay recovery."
+    }
+  },
+  "batch": {
+    "complete_cycles": 30,
+    "cycle_before": 3039,
+    "cycle_after": 3069,
+    "actual_day_before": 2433,
+    "actual_day_after": 2442,
+    "actual_game_days": 9,
+    "date_raw_before": 53202720,
+    "date_raw_after": 53202936,
+    "date_delta_raw": 216,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-1bec95182886",
+    "steps": {
+      "query-army-strengths-v1": 10,
+      "query-player-mercenary-context-v1": 10,
+      "life-advance-one-day": 9,
+      "query-war-results-window-v1": 1
+    },
+    "whole_AUTO_elapsed_seconds": null,
+    "outer_FULL_elapsed_seconds": null,
+    "closed_RPC_extent_seconds": null,
+    "control_gap_seconds": null,
+    "planner_CPU_seconds": null,
+    "Native_wait_seconds": null,
+    "persistence_seconds": null,
+    "seconds_per_game_day": null,
+    "estimated_seconds_saved": null,
+    "cumulative_wall": {
+      "original_AUTO9_started_at_utc": "2026-10-19T03:26:49.420926Z",
+      "elapsed_through_batch_seconds": null,
+      "reason": "This index has no batch endpoint timestamp. Preserve all maintenance/SAVE/failure gaps; index creation time is not a runtime endpoint."
+    },
+    "qualification": "Executed/primitive_accepted index projections do not establish full Native DTO validity or military/market business effects."
+  },
+  "transcript": {
+    "columns": [
+      "turn",
+      "AUTO",
+      "step",
+      "date_before",
+      "date_after",
+      "native_before",
+      "native_after",
+      "public_before",
+      "public_after"
+    ],
+    "rows": [
+      [
+        3040,
+        6399,
+        "query-army-strengths-v1",
+        53202720,
+        53202720,
+        25,
+        26,
+        26,
+        27
+      ],
+      [
+        3041,
+        6401,
+        "query-player-mercenary-context-v1",
+        53202720,
+        53202720,
+        26,
+        26,
+        27,
+        27
+      ],
+      [
+        3042,
+        6403,
+        "life-advance-one-day",
+        53202720,
+        53202744,
+        26,
+        29,
+        27,
+        30
+      ],
+      [
+        3043,
+        6405,
+        "query-army-strengths-v1",
+        53202744,
+        53202744,
+        29,
+        29,
+        30,
+        30
+      ],
+      [
+        3044,
+        6407,
+        "query-player-mercenary-context-v1",
+        53202744,
+        53202744,
+        29,
+        29,
+        30,
+        30
+      ],
+      [
+        3045,
+        6409,
+        "life-advance-one-day",
+        53202744,
+        53202768,
+        29,
+        32,
+        30,
+        33
+      ],
+      [
+        3046,
+        6411,
+        "query-army-strengths-v1",
+        53202768,
+        53202768,
+        32,
+        32,
+        33,
+        33
+      ],
+      [
+        3047,
+        6413,
+        "query-player-mercenary-context-v1",
+        53202768,
+        53202768,
+        32,
+        32,
+        33,
+        33
+      ],
+      [
+        3048,
+        6415,
+        "life-advance-one-day",
+        53202768,
+        53202792,
+        32,
+        35,
+        33,
+        36
+      ],
+      [
+        3049,
+        6417,
+        "query-army-strengths-v1",
+        53202792,
+        53202792,
+        35,
+        35,
+        36,
+        36
+      ],
+      [
+        3050,
+        6419,
+        "query-player-mercenary-context-v1",
+        53202792,
+        53202792,
+        35,
+        35,
+        36,
+        36
+      ],
+      [
+        3051,
+        6421,
+        "life-advance-one-day",
+        53202792,
+        53202816,
+        35,
+        38,
+        36,
+        39
+      ],
+      [
+        3052,
+        6423,
+        "query-army-strengths-v1",
+        53202816,
+        53202816,
+        38,
+        38,
+        39,
+        39
+      ],
+      [
+        3053,
+        6425,
+        "query-player-mercenary-context-v1",
+        53202816,
+        53202816,
+        38,
+        38,
+        39,
+        39
+      ],
+      [
+        3054,
+        6427,
+        "life-advance-one-day",
+        53202816,
+        53202840,
+        38,
+        41,
+        39,
+        42
+      ],
+      [
+        3055,
+        6429,
+        "query-war-results-window-v1",
+        53202840,
+        53202840,
+        41,
+        41,
+        42,
+        42
+      ],
+      [
+        3056,
+        6431,
+        "query-army-strengths-v1",
+        53202840,
+        53202840,
+        41,
+        41,
+        42,
+        42
+      ],
+      [
+        3057,
+        6433,
+        "query-player-mercenary-context-v1",
+        53202840,
+        53202840,
+        41,
+        41,
+        42,
+        42
+      ],
+      [
+        3058,
+        6435,
+        "life-advance-one-day",
+        53202840,
+        53202864,
+        41,
+        44,
+        42,
+        45
+      ],
+      [
+        3059,
+        6437,
+        "query-army-strengths-v1",
+        53202864,
+        53202864,
+        44,
+        44,
+        45,
+        45
+      ],
+      [
+        3060,
+        6439,
+        "query-player-mercenary-context-v1",
+        53202864,
+        53202864,
+        44,
+        44,
+        45,
+        45
+      ],
+      [
+        3061,
+        6441,
+        "life-advance-one-day",
+        53202864,
+        53202888,
+        44,
+        47,
+        45,
+        48
+      ],
+      [
+        3062,
+        6443,
+        "query-army-strengths-v1",
+        53202888,
+        53202888,
+        47,
+        47,
+        48,
+        48
+      ],
+      [
+        3063,
+        6445,
+        "query-player-mercenary-context-v1",
+        53202888,
+        53202888,
+        47,
+        47,
+        48,
+        48
+      ],
+      [
+        3064,
+        6447,
+        "life-advance-one-day",
+        53202888,
+        53202912,
+        47,
+        50,
+        48,
+        51
+      ],
+      [
+        3065,
+        6449,
+        "query-army-strengths-v1",
+        53202912,
+        53202912,
+        50,
+        50,
+        51,
+        51
+      ],
+      [
+        3066,
+        6451,
+        "query-player-mercenary-context-v1",
+        53202912,
+        53202912,
+        50,
+        50,
+        51,
+        51
+      ],
+      [
+        3067,
+        6453,
+        "life-advance-one-day",
+        53202912,
+        53202936,
+        50,
+        53,
+        51,
+        54
+      ],
+      [
+        3068,
+        6455,
+        "query-army-strengths-v1",
+        53202936,
+        53202936,
+        53,
+        53,
+        54,
+        54
+      ],
+      [
+        3069,
+        6457,
+        "query-player-mercenary-context-v1",
+        53202936,
+        53202936,
+        53,
+        53,
+        54,
+        54
+      ]
+    ],
+    "pair_columns": [
+      "army_turn",
+      "market_turn",
+      "army_auto",
+      "market_auto",
+      "date_raw",
+      "native_revision",
+      "public_revision"
+    ],
+    "pairs": [
+      [
+        3040,
+        3041,
+        6399,
+        6401,
+        53202720,
+        26,
+        27
+      ],
+      [
+        3043,
+        3044,
+        6405,
+        6407,
+        53202744,
+        29,
+        30
+      ],
+      [
+        3046,
+        3047,
+        6411,
+        6413,
+        53202768,
+        32,
+        33
+      ],
+      [
+        3049,
+        3050,
+        6417,
+        6419,
+        53202792,
+        35,
+        36
+      ],
+      [
+        3052,
+        3053,
+        6423,
+        6425,
+        53202816,
+        38,
+        39
+      ],
+      [
+        3056,
+        3057,
+        6431,
+        6433,
+        53202840,
+        41,
+        42
+      ],
+      [
+        3059,
+        3060,
+        6437,
+        6439,
+        53202864,
+        44,
+        45
+      ],
+      [
+        3062,
+        3063,
+        6443,
+        6445,
+        53202888,
+        47,
+        48
+      ],
+      [
+        3065,
+        3066,
+        6449,
+        6451,
+        53202912,
+        50,
+        51
+      ],
+      [
+        3068,
+        3069,
+        6455,
+        6457,
+        53202936,
+        53,
+        54
+      ]
+    ],
+    "checks": {
+      "pairs": 10,
+      "equal_boundary_fields": [
+        "snapshot_id",
+        "revision",
+        "native_revision",
+        "date_raw",
+        "episode_run_id",
+        "actor_character_id"
+      ],
+      "Army_after_equals_market_before": 10,
+      "Army_six_fields_unchanged": 9,
+      "first_Army_native_change": [
+        25,
+        26
+      ],
+      "market_six_fields_unchanged": 10,
+      "watch_count": 9,
+      "watch_date_increment_each": 24,
+      "watch_native_increment_each": 3,
+      "watch_public_increment_each": 3
+    },
+    "limit": "Only six projected fields match. Owner/build/connection, paused readiness and complete Army/market DTOs are not projected; no full same-frame sharing qualification is inferred."
+  },
+  "source_findings": [
+    {
+      "range": "strategy.py:10556-10597",
+      "fact": "Army is selected when bound tactical war threat/refill needs strength, balance/query status are absent, paused frame and query capability are present, and controlled armies are outside combat/retreat/gathering. Player/enemy Army IDs scope the read.",
+      "consequence": "The10 reads are on10 actual dates. A read that does not publish a new revision can still obtain necessary fresh native strength/refill inputs. Daily watch invalidates the preceding date-bound observation."
+    },
+    {
+      "range": "service.py:2378-2410; war_mercenary_consumer_v1.py:79-156",
+      "fact": "Full ordinary choose and retreat arbitration precede market arbitration. Market is inserted only at an otherwise quiet life/route advance, preserving foreground/paused/map, durable construction/hire state, war-spending priority, model purpose and capability guards.",
+      "consequence": "Army->market is a planning dependency. Blindly fetching both first can add a market query when a concrete army order or mandatory action would win after the Army read."
+    },
+    {
+      "range": "war_mercenary_consumer_v1.py:49-72,148-156",
+      "fact": "History reuse requires exact observed_frame, native revision, positive query sequence, completed/read_only/accepted envelope and normalized market DTO. Pending employment needs a later capture epoch. A failed same-frame attempt is not looped.",
+      "consequence": "A valid current-frame market input already prevents requery. No unbounded same-frame latch is proved by this index; complete market eligibility remains unknown."
+    },
+    {
+      "range": "strategy.py:21764-21869; caller13736",
+      "fact": "Excluded-siege watch requires a current paused living actor, exactly one idle regular controlled army, no route/combat/retreat, exact exclusion from another army's siege, complete hostile evidence without current stationary threat, required Native sentinel capabilities and a one-day date stop. Next paused frame must reevaluate the full war and financing plan.",
+      "consequence": "No longer horizon, speed change, skipped military/market input, weakened war willingness or defense guard is proposed."
+    },
+    {
+      "range": "service.py:1895-1933,4920-4996",
+      "fact": "Each AUTO enters full plan_turn, executes one selected action, then performs normal after-turn consumers/cadences and camera scheduling. plan_turn includes internal planning, Sway staging, campaign cap and public-plan copy.",
+      "consequence": "There are at least30 outer planning entries. A transport-envelope merge by itself does not eliminate them; additional internal recursive planning is unobserved."
+    },
+    {
+      "range": "service.py:5240-5259,5635-5652,5791-5805",
+      "fact": "Display interception precedes the selected executor. Army preserves its core-only AUTO route. The returned contract is one selected_step/plan/result.",
+      "consequence": "A multi-read response must preserve every child display hook, full actual outcome, durable history and unknown/no-replay status; it cannot overwrite the first read's outcome with the second."
+    },
+    {
+      "range": "readonly_planning_retry_v1.py:193-221; service.py:2050-2058",
+      "fact": "The existing loop retries whole planning once only after a narrowly classified readonly precondition/race failure. Successful planning returns immediately. The callback never executes a plan; recursive retry budget is shared by ContextVar.",
+      "consequence": "This is failure recovery, not successful-query batching. Do not reuse its exception budget to execute Army/market actions."
+    },
+    {
+      "range": "service.py:1985-1989,2044-2048; ordinary_sway_service_v1.py:116-126,179-183",
+      "fact": "Specialized existing paths perform a successful read, then fresh whole planning. Optional Sway retains its receipt and forwards before_submit to its following action without reentering its optional job.",
+      "consequence": "Fresh-replan mechanics exist, but no generic two-child Army/market after-hook, logical-cycle, Queue-once or result-settlement contract exists in these methods."
+    }
+  ],
+  "candidate": {
+    "name": "Bounded successful-read continuation at the normal AUTO/Queue boundary",
+    "status": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_BEHAVIOR_QUALIFIED",
+    "minimum_intent": "Retain an executed Army prerequisite, take the next ordinary plan from the actual resulting frame, and preserve its separately selected market read within one transport envelope. Leave choose_one_life_turn, freshness rules and readonly error-retry budget unchanged.",
+    "required_flow": [
+      "Complete the first normal read with its original typed route, before_submit, after-hooks and retained result/history.",
+      "Run the next complete ordinary planning pass from the actual current snapshot; never continue the pre-read plan or blind-prefetch market.",
+      "Before a second child, require complete Native/owner/build/connection/actor/episode/date binding and the original guard/display path. Stop on unknown/pending/interception without retrying completed children.",
+      "Keep per-child outcomes and original logical-turn accounting; charge two logical turns to the existing batch budget. Preserve history and persistence boundaries.",
+      "Preserve every original child after-hook and presentation boundary. A second-child error must expose the first completed child and must not replay the whole envelope."
+    ],
+    "specific_seams": [
+      "A separate future opt-in successful-read continuation leaf and narrow normal-AUTO seam; this report edits no Service method.",
+      "Harness-owned singleton response/once/classifier adaptation, reviewed with the owner before source adoption."
+    ],
+    "hard_gaps": [
+      "The current singleton selected_step response and index cannot establish two-child once ownership, partial-child interruption recovery, or cumulative settlement.",
+      "Trying an additional plan only to discover whether market wins can itself invoke provider reads. If it then falls back and replans later, zero-added-RPC equivalence is not established. A following ordinary iteration must be retained rather than speculatively discarded.",
+      "Successful replanning templates are reusable mechanics, not a complete Army/market protocol. Moving execute_step into planning alone can omit display and after-turn consumers.",
+      "Keeping the same30 full planning entries,30 business/history records,20 Army/market Native observations and9 one-day watches limits savings to measured outer-envelope/control work. No timing attribution for that work exists in this index.",
+      "Full DTO readiness, Native/owner/build/connection binding and actual per-child persistence are not available in this projection. Six-field equality cannot substitute for them."
+    ],
+    "historical_grouping_bound": {
+      "observed_adjacent_Army_market_pairs": 10,
+      "counterfactual_envelopes_if_all_ten_pairs_qualified": 20,
+      "original_and_preserved_logical_steps": 30,
+      "preserved_Army_reads": 10,
+      "preserved_market_reads": 10,
+      "preserved_one_day_steps": 9,
+      "preserved_war_results_reads": 1,
+      "preserved_outer_planning_entries_lower_bound": 30,
+      "qualification": "Deterministic grouping of this fixed transcript only. Not implementation equivalence, full DTO eligibility, MET/file-write reduction, elapsed saving, throughput or a future-run prediction."
+    },
+    "decision": "No safe minimal production patch follows from this index alone. The existing readonly retry helper cannot merge successful cycles. Continue with the already-delivered optional natural control-timing probe on the next normally adopted SDK; do not force a restart/sample. If envelope cost justifies it, review the narrow two-child result/once/display contract before implementation, retaining all fresh military and market inputs."
+  },
+  "verification": {
+    "levels": {
+      "closed_observation": "One immutable30-cycle index; no raw AUTO bodies.",
+      "source": "Five exact frozen src13 leaves with method spans/AST fingerprints; no master-to-live inference.",
+      "deterministic_projection": "One pass of explicit pin/count/pair/day guards, not a business-equivalence test.",
+      "software_behavior": "No new implementation/tests and no composite-API qualification.",
+      "runtime": "No new runtime/performance qualification."
+    },
+    "passed_once": [
+      "Index size53791 and SHA match before parsing.",
+      "Exactly30 rows and10 adjacent Army-market pairs required via explicit errors, no assert.",
+      "Army-after and market-before compare equal for all6 named fields in10 pairs.",
+      "Date increments sum216raw=9days.",
+      "Source hashes and method AST pins read back. Actual readonly planner wrapper equals the original no-counter baseline."
+    ],
+    "not_run": [
+      "No microbenchmarks, retreat/WAL rematrix, Game/clock RPC, activeDriver/SAVE/AUTO body reads, currentSDK changes or current-source adoption."
+    ]
+  },
+  "storage": {
+    "allocation": "Original code3 96KiB source-only child; previous net54668B plus this hard24576B <=79244B, inside98304B. Not the other128 research pool.",
+    "hard_new_bytes": 24576,
+    "new_files": 1,
+    "producer_closed": true,
+    "future_write_bytes": 0,
+    "external_write_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  }
+}

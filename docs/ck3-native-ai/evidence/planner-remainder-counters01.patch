@@ -1,0 +1,440 @@
+diff --git a/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py b/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py
+--- a/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py
+@@ -2080,8 +2080,21 @@
+     def _plan_turn_internal(
+         self, *, allow_prewar_force_query: bool = True,
+         allow_war_overview_query: bool = True,
++        _planner_remainder_v1=None,
+     ) -> dict[str, object]:
+         from .readonly_planning_retry_v1 import retry_readonly_planning_once_v1
++        if _planner_remainder_v1 is not None:
++            return retry_readonly_planning_once_v1(
++                lambda: self._plan_turn_internal_without_readonly_retry_v1(
++                    allow_prewar_force_query=allow_prewar_force_query, allow_war_overview_query=allow_war_overview_query, _planner_remainder_v1=_planner_remainder_v1))
++        if getattr(self, "_planner_remainder_timing_enabled_v1", False) is True:
++            remainder_observer = getattr(self, "_planner_remainder_observer_v1", None)
++            if callable(remainder_observer):
++                from .planner_remainder_counters_v1 import observe_planner_call_v1
++                return observe_planner_call_v1(
++                    lambda counter: self._plan_turn_internal(
++                        allow_prewar_force_query=allow_prewar_force_query, allow_war_overview_query=allow_war_overview_query, _planner_remainder_v1=counter),
++                    enabled=True, observer=remainder_observer)
+         return retry_readonly_planning_once_v1(
+             lambda: self._plan_turn_internal_without_readonly_retry_v1(
+                 allow_prewar_force_query=allow_prewar_force_query,
+@@ -2090,7 +2103,10 @@
+     def _plan_turn_internal_without_readonly_retry_v1(
+         self, *, allow_prewar_force_query: bool = True,
+         allow_war_overview_query: bool = True,
++        _planner_remainder_v1=None,
+     ) -> dict[str, object]:
++        if _planner_remainder_v1 is not None:
++            _planner_remainder_v1.note_attempt()
+         internal_snapshot = getattr(
+             self.driver, "take_internal_semantic_snapshot", None
+         )
+@@ -2240,7 +2256,19 @@
+                 # Another action won ordinary arbitration. Restore the normal
+                 # initial expectation read, then plan its resulting frame.
+                 try:
+-                    self._prepare_succession_transition_v1(snapshot, available_steps)
++                    (
++                        _planner_remainder_v1.measure(
++                            'deferred_succession_preflight',
++                            self._prepare_succession_transition_v1,
++                            snapshot,
++                            available_steps,
++                        )
++                        if _planner_remainder_v1 is not None
++                        else self._prepare_succession_transition_v1(
++                            snapshot,
++                            available_steps,
++                        )
++                    )
+                 except Exception as error:
+                     error.prisoner_release_arbitration = {
+                         "plan": copy.deepcopy(plan),
+@@ -2251,9 +2279,18 @@
+                         "initial_expectation_root_deferred": True,
+                     }
+                     raise
+-                return self._plan_turn_internal(
+-                    allow_prewar_force_query=allow_prewar_force_query,
+-                    allow_war_overview_query=allow_war_overview_query)
++                return (
++                    self._plan_turn_internal(
++                        allow_prewar_force_query=allow_prewar_force_query,
++                        allow_war_overview_query=allow_war_overview_query,
++                        _planner_remainder_v1=_planner_remainder_v1,
++                    )
++                    if _planner_remainder_v1 is not None
++                    else self._plan_turn_internal(
++                        allow_prewar_force_query=allow_prewar_force_query,
++                        allow_war_overview_query=allow_war_overview_query,
++                    )
++                )
+             if deferred_release_root and isinstance(plan, dict):
+                 planned = {**planned, "plan": {**plan,
+                     "prisoner_release_initial_expectation_root_deferred": True}}
+@@ -2720,7 +2757,21 @@
+                 and baseline.get("selected_step") in {
+                     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP, "query-declarable-wars",
+                     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP}):
+-            release = plan_release_formal(self.driver, planned, snapshot)
++            release = (
++                _planner_remainder_v1.measure(
++                    'release',
++                    plan_release_formal,
++                    self.driver,
++                    planned,
++                    snapshot,
++                )
++                if _planner_remainder_v1 is not None
++                else plan_release_formal(
++                    self.driver,
++                    planned,
++                    snapshot,
++                )
++            )
+             if release["plan"].get("selected_step") == PRISONER_RELEASE_SUBMIT_STEP:
+                 for key in list(release):
+                     if key.startswith("_private_"):
+@@ -2728,13 +2779,39 @@
+                 return finish_release_root_arbitration(release)
+         from ..holy_order_siege_reinforcement_v1 import plan_holy_order_siege_reinforcement_v1
+ 
+-        planned = plan_holy_order_siege_reinforcement_v1(
+-            self.driver, planned=planned, snapshot=snapshot,
+-            bridge_capabilities=bridge_capabilities,
+-        )
+-        planned = plan_commander_quality_formal_v1(
+-            self, planned=planned, snapshot=snapshot,
+-            bridge_capabilities=bridge_capabilities,
++        planned = (
++            _planner_remainder_v1.measure(
++                'holy_order_reinforcement',
++                plan_holy_order_siege_reinforcement_v1,
++                self.driver,
++                planned=planned,
++                snapshot=snapshot,
++                bridge_capabilities=bridge_capabilities,
++            )
++            if _planner_remainder_v1 is not None
++            else plan_holy_order_siege_reinforcement_v1(
++                self.driver,
++                planned=planned,
++                snapshot=snapshot,
++                bridge_capabilities=bridge_capabilities,
++            )
++        )
++        planned = (
++            _planner_remainder_v1.measure(
++                'commander_quality',
++                plan_commander_quality_formal_v1,
++                self,
++                planned=planned,
++                snapshot=snapshot,
++                bridge_capabilities=bridge_capabilities,
++            )
++            if _planner_remainder_v1 is not None
++            else plan_commander_quality_formal_v1(
++                self,
++                planned=planned,
++                snapshot=snapshot,
++                bridge_capabilities=bridge_capabilities,
++            )
+         )
+         m5_snapshot = planned.pop("_private_m5_snapshot_v1", None)
+         m5_history = planned.pop("_private_m5_history_v1", None)
+@@ -2767,9 +2844,24 @@
+                         "missing": ["formal_planning_history"],
+                         "formal_action_ready": False}}}
+             try:
+-                return plan_m5_wartime_query_only(
+-                    self.driver, current, snapshot=m5_snapshot,
+-                    history=m5_history, available_steps=available_steps,
++                return (
++                    _planner_remainder_v1.measure(
++                        'm5_wartime',
++                        plan_m5_wartime_query_only,
++                        self.driver,
++                        current,
++                        snapshot=m5_snapshot,
++                        history=m5_history,
++                        available_steps=available_steps,
++                    )
++                    if _planner_remainder_v1 is not None
++                    else plan_m5_wartime_query_only(
++                        self.driver,
++                        current,
++                        snapshot=m5_snapshot,
++                        history=m5_history,
++                        available_steps=available_steps,
++                    )
+                 )
+             except ValueError as error:
+                 plan = current.get("plan")
+@@ -2832,12 +2924,24 @@
+                     )
+                 )
+             family_snapshot = planned.get("_private_family_marriage_snapshot_v1")
+-            joint = plan_m5_formal_query_only(
+-                self.driver,
+-                planned,
+-                snapshot=m5_snapshot,
+-                history=m5_history,
+-                available_steps=available_steps,
++            joint = (
++                _planner_remainder_v1.measure(
++                    'm5_formal',
++                    plan_m5_formal_query_only,
++                    self.driver,
++                    planned,
++                    snapshot=m5_snapshot,
++                    history=m5_history,
++                    available_steps=available_steps,
++                )
++                if _planner_remainder_v1 is not None
++                else plan_m5_formal_query_only(
++                    self.driver,
++                    planned,
++                    snapshot=m5_snapshot,
++                    history=m5_history,
++                    available_steps=available_steps,
++                )
+             )
+             joint_plan = joint.get("plan")
+             if not (
+@@ -2849,8 +2953,21 @@
+                 and isinstance(family_snapshot, dict)
+             ):
+                 return (
+-                    plan_child_default_private(
+-                        self.driver, joint, snapshot)
++                    (
++                        _planner_remainder_v1.measure(
++                            'child_default',
++                            plan_child_default_private,
++                            self.driver,
++                            joint,
++                            snapshot,
++                        )
++                        if _planner_remainder_v1 is not None
++                        else plan_child_default_private(
++                            self.driver,
++                            joint,
++                            snapshot,
++                        )
++                    )
+                     if getattr(self.driver,
+                                "allow_private_guy_default_formal_trial",
+                                False) is True else joint
+@@ -2893,7 +3010,21 @@
+                 }
+             family = {**family, "plan": family_plan}
+             return finish_release_root_arbitration(
+-                plan_child_default_private(self.driver, family, snapshot)
++                (
++                    _planner_remainder_v1.measure(
++                        'child_default',
++                        plan_child_default_private,
++                        self.driver,
++                        family,
++                        snapshot,
++                    )
++                    if _planner_remainder_v1 is not None
++                    else plan_child_default_private(
++                        self.driver,
++                        family,
++                        snapshot,
++                    )
++                )
+                 if getattr(self.driver,
+                            "allow_private_guy_default_formal_trial",
+                            False) is True else family
+@@ -3008,10 +3139,24 @@
+                     and current_plan.get("selected_step") == before_lifestyle_step
+                     and isinstance(read_child_matrilineal_ledger(
+                         child_state_dir).get("pending"), dict)):
+-                pending_read = plan_child_matrilineal_private(
+-                    self.driver, planned, snapshot,
+-                    subject_character_id=target[0],
+-                    candidate_character_id=target[1],
++                pending_read = (
++                    _planner_remainder_v1.measure(
++                        'child_matrilineal',
++                        plan_child_matrilineal_private,
++                        self.driver,
++                        planned,
++                        snapshot,
++                        subject_character_id=target[0],
++                        candidate_character_id=target[1],
++                    )
++                    if _planner_remainder_v1 is not None
++                    else plan_child_matrilineal_private(
++                        self.driver,
++                        planned,
++                        snapshot,
++                        subject_character_id=target[0],
++                        candidate_character_id=target[1],
++                    )
+                 )
+                 pending_plan = pending_read.get("plan")
+                 if (isinstance(pending_plan, dict)
+@@ -3033,12 +3178,40 @@
+                         }}
+                     planned = pending_read
+             if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
+-                planned = plan_child_default_private(self.driver, planned, snapshot)
++                planned = (
++                    _planner_remainder_v1.measure(
++                        'child_default',
++                        plan_child_default_private,
++                        self.driver,
++                        planned,
++                        snapshot,
++                    )
++                    if _planner_remainder_v1 is not None
++                    else plan_child_default_private(
++                        self.driver,
++                        planned,
++                        snapshot,
++                    )
++                )
+             planned.pop("_private_faction_snapshot_v1", None)
+             planned.pop("_private_faction_history_v1", None)
+             planned.pop("_private_construction_snapshot_v1", None)
+             planned.pop("_private_construction_history_v1", None)
+-            planned = plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
++            planned = (
++                _planner_remainder_v1.measure(
++                    'release',
++                    plan_release_formal,
++                    self.driver,
++                    observe_m5_wartime(planned),
++                    snapshot,
++                )
++                if _planner_remainder_v1 is not None
++                else plan_release_formal(
++                    self.driver,
++                    observe_m5_wartime(planned),
++                    snapshot,
++                )
++            )
+             return _timed_planning_call_v1(
+                 "service.planner_governance_tail",
+                 lambda: finish_release_root_arbitration(
+@@ -3058,9 +3231,24 @@
+                 isinstance(faction_snapshot, dict)
+                 and isinstance(faction_history, list)
+             ):
+-                planned = plan_faction_gift_private_v1(
+-                    self.driver, planned, faction_snapshot,
+-                    faction_history, available_steps,
++                planned = (
++                    _planner_remainder_v1.measure(
++                        'faction_gift',
++                        plan_faction_gift_private_v1,
++                        self.driver,
++                        planned,
++                        faction_snapshot,
++                        faction_history,
++                        available_steps,
++                    )
++                    if _planner_remainder_v1 is not None
++                    else plan_faction_gift_private_v1(
++                        self.driver,
++                        planned,
++                        faction_snapshot,
++                        faction_history,
++                        available_steps,
++                    )
+                 )
+         planned.pop("_private_faction_snapshot_v1", None)
+         planned.pop("_private_faction_history_v1", None)
+@@ -3107,12 +3295,41 @@
+         target = getattr(self.driver, "child_matrilineal_target_v1", None)
+         if (getattr(self.driver, "allow_private_player_child_matrilineal_action", False) is True
+                 and isinstance(target, tuple) and len(target) == 2):
+-            planned = plan_child_matrilineal_private(
+-                self.driver, planned, snapshot,
+-                subject_character_id=target[0], candidate_character_id=target[1],
++            planned = (
++                _planner_remainder_v1.measure(
++                    'child_matrilineal',
++                    plan_child_matrilineal_private,
++                    self.driver,
++                    planned,
++                    snapshot,
++                    subject_character_id=target[0],
++                    candidate_character_id=target[1],
++                )
++                if _planner_remainder_v1 is not None
++                else plan_child_matrilineal_private(
++                    self.driver,
++                    planned,
++                    snapshot,
++                    subject_character_id=target[0],
++                    candidate_character_id=target[1],
++                )
+             )
+         if getattr(self.driver, "allow_private_guy_default_formal_trial", False) is True:
+-            planned = plan_child_default_private(self.driver, planned, snapshot)
++            planned = (
++                _planner_remainder_v1.measure(
++                    'child_default',
++                    plan_child_default_private,
++                    self.driver,
++                    planned,
++                    snapshot,
++                )
++                if _planner_remainder_v1 is not None
++                else plan_child_default_private(
++                    self.driver,
++                    planned,
++                    snapshot,
++                )
++            )
+         if (construction_red_plan is not None
+                 and isinstance(planned.get("plan"), dict)
+                 and planned["plan"].get("selected_step") == plan["selected_step"]):
+@@ -3121,8 +3338,36 @@
+                 "reason": construction_red_plan["reason"]}}
+         planned = observe_m5_wartime(planned)
+         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
+-            planned = plan_ransom_private(self.driver, planned, snapshot)
+-        planned = plan_release_formal(self.driver, planned, snapshot)
++            planned = (
++                _planner_remainder_v1.measure(
++                    'ransom',
++                    plan_ransom_private,
++                    self.driver,
++                    planned,
++                    snapshot,
++                )
++                if _planner_remainder_v1 is not None
++                else plan_ransom_private(
++                    self.driver,
++                    planned,
++                    snapshot,
++                )
++            )
++        planned = (
++            _planner_remainder_v1.measure(
++                'release',
++                plan_release_formal,
++                self.driver,
++                planned,
++                snapshot,
++            )
++            if _planner_remainder_v1 is not None
++            else plan_release_formal(
++                self.driver,
++                planned,
++                snapshot,
++            )
++        )
+         return _timed_planning_call_v1(
+             "service.planner_governance_tail",
+             lambda: finish_release_root_arbitration(

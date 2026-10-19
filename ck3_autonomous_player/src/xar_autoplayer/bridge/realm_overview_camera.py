@@ -2,12 +2,17 @@
 from __future__ import annotations
 
 import ctypes
+import math
 import os
 import platform
 import threading
+import time
 import uuid
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Callable, Mapping
+from .camera_settle_diagnostics_v1 import (
+    DIAGNOSTICS_BYTES, DIAGNOSTICS_OFFSET, decode_camera_settle_diagnostics_v1,
+)
 
 MAGIC = 0x43524158
 MAPPING_BYTES = 131072
@@ -58,25 +63,55 @@ class _Shared(ctypes.Structure):
 
 @dataclass
 class PeaceRealmCameraPolicy:
-    quiet_days: int = 30
+    quiet_seconds: float = 10.0
     refresh_days: int = 30
+    clock: Callable[[], float] = time.monotonic
     identity: tuple | None = None
-    quiet_since: int | None = None
+    quiet_since: float | None = None
     last_realm_date: int | None = None
     last_hotspot: str | None = None
     mode: str = "idle"
+    last_date: int | None = None
+    last_observation: tuple | None = None
+    last_monotonic: float | None = None
+
+    def __post_init__(self):
+        if (isinstance(self.quiet_seconds, bool)
+                or not isinstance(self.quiet_seconds, (int, float))
+                or not math.isfinite(self.quiet_seconds) or self.quiet_seconds <= 0
+                or type(self.refresh_days) is not int or self.refresh_days <= 0
+                or not callable(self.clock)):
+            raise ValueError("camera quiet interval and clock must be valid")
 
     def observe(self, payload: Mapping, hotspot: Mapping | None) -> dict:
-        """Use only the already captured planner frame, with independent timers."""
+        """After real idle time, use the next fresh legal frame, never old geometry.
+
+        This does not create a timer thread or query the game while paused. An
+        unchanged cached frame cannot initiate an overview after time passes.
+        """
         frame = payload.get("source_frame") or {}
         date = frame.get("date_raw")
         identity = tuple(frame.get(k) for k in (
             "actor_character_id", "episode_run_id", "bridge_pid", "connection_generation"))
-        if type(date) is not int or type(identity[0]) is not int or identity[0] <= 0:
+        now = self.clock()
+        if not isinstance(now, (int, float)) or isinstance(now, bool) or not math.isfinite(now):
+            raise ValueError("camera monotonic clock is unavailable")
+        if (type(date) is not int or type(identity[0]) is not int or identity[0] <= 0
+                or frame.get("status", "complete") != "complete"):
+            self.quiet_since = None
             return {"mode": "cancel", "reason": "incomplete_frame"}
-        if identity != self.identity or (self.quiet_since is not None and date < self.quiet_since):
+        if (identity != self.identity or (self.last_date is not None and date < self.last_date)
+                or (self.last_monotonic is not None and now < self.last_monotonic)):
             self.identity, self.quiet_since = identity, None
             self.last_realm_date, self.last_hotspot, self.mode = None, None, "idle"
+            self.last_observation = None
+        self.last_date, self.last_monotonic = date, now
+        marker = (frame.get("snapshot_id"), frame.get("revision"), frame.get("native_revision"), date)
+        fresh = (isinstance(marker[0], str) and bool(marker[0])
+                 and all(type(v) is int and v >= 0 for v in marker[1:3])
+                 and marker != self.last_observation)
+        if fresh:
+            self.last_observation = marker
         blocked = (payload.get("map_ready") is not True or
                    payload.get("mandatory_choice") is True or
                    payload.get("has_active_event") is True or
@@ -97,15 +132,21 @@ class PeaceRealmCameraPolicy:
             return {"mode": "hotspot" if changed else "hold", "title_key": key,
                     "reason": str(hotspot.get("reason", "observed_war_hotspot"))}
         if self.quiet_since is None:
-            self.quiet_since = date
-        if date - self.quiet_since < self.quiet_days * 24:
+            if not fresh:
+                return {"mode": "hold", "reason": "awaiting_fresh_payload"}
+            self.quiet_since = now
+        quiet = now - self.quiet_since
+        if quiet < self.quiet_seconds:
             return {"mode": "hold", "reason": "no_hotspot_quiet_period",
-                    "quiet_days_observed": (date - self.quiet_since) / 24}
+                    "quiet_seconds_observed": quiet}
+        if not fresh:
+            return {"mode": "hold", "reason": "awaiting_fresh_payload",
+                    "quiet_seconds_observed": quiet}
         if self.last_realm_date is not None and date - self.last_realm_date < self.refresh_days * 24:
             return {"mode": "hold", "reason": "holding_realm_overview"}
         self.mode, self.last_realm_date = "realm", date
         return {"mode": "realm", "reason": "no_hotspot_realm_overview",
-                "quiet_days_observed": (date - self.quiet_since) / 24}
+                "quiet_seconds_observed": quiet}
 
     def retry_after_failure(self) -> None:
         self.last_realm_date, self.last_hotspot, self.mode = None, None, "idle"
@@ -151,6 +192,8 @@ class NativeCameraPresentationClient:
             raise ValueError("camera presentation needs an exact Windows CK3 PID")
         self.pid, self._handle, self._view, self._hwnd = pid, None, None, None
         self._last_result_sequence, self._latest = -1, None
+        self._diagnostic_request_binding = None
+        self._tracking_binding = None
         self._lock = threading.Lock()
         self._kernel = ctypes.WinDLL("kernel32", use_last_error=True)
         self._kernel.OpenFileMappingW.argtypes = [ctypes.c_uint32, ctypes.c_int, ctypes.c_wchar_p]
@@ -196,19 +239,44 @@ class NativeCameraPresentationClient:
         with self._lock:
             self._open()
             self._hwnd = desktop1_game_window(self.pid, self._hwnd)
-            modes = {"cancel": 0, "realm": 1, "hotspot": 2, "query": 3}
+            modes = {"cancel": 0, "realm": 1, "hotspot": 2, "query": 3, "tracked_hotspot": 4}
+            tracking_request = None
+            if intent["mode"] == "tracked_hotspot":
+                from .camera_tracking_v1 import read_capability_v1
+                epoch = read_capability_v1(self._view, self.pid)
+                if epoch is None:
+                    return {"status": "unavailable", "reason": "native_tracking_capability_unavailable",
+                            "camera_postcondition_verified": False, "native_command_pipe_used": False}
             request = _Request(mode=modes[intent["mode"]], actor=frame["actor_character_id"],
                                date_raw=frame["date_raw"],
-                               expires_uptime_ms=self._kernel.GetTickCount64() + 10000,
+                               expires_uptime_ms=self._kernel.GetTickCount64() + (
+                                   120000 if intent["mode"] == "tracked_hotspot" else 10000),
                                hwnd=self._hwnd, padding=.32 if intent["mode"] == "realm" else .15)
             key = str(intent.get("title_key", "")).encode("ascii")
             if len(key) >= 128:
                 raise ValueError("hotspot title key exceeds presentation channel limit")
             request.title_key = key
             sequence = (self._sequence("request_sequence") + 2) & 0xFFFFFFFE
+            if intent["mode"] == "tracked_hotspot":
+                from .camera_tracking_v1 import make_request_v1, OFFSET, Shared as TrackingShared
+                tracking_request = make_request_v1(intent, frame, sequence, epoch)
             self._set_sequence(sequence - 1)
             ctypes.memmove(self._view + _Shared.request.offset, ctypes.byref(request), ctypes.sizeof(request))
+            if tracking_request is not None:
+                ctypes.memmove(self._view + OFFSET + TrackingShared.request.offset,
+                               ctypes.byref(tracking_request), ctypes.sizeof(tracking_request))
             self._set_sequence(sequence)
+            self._tracking_binding = ({key: getattr(tracking_request, key) for key in (
+                "request_sequence", "owner_epoch", "scope_generation", "actor", "fullarmy_id")}
+                if tracking_request is not None else None)
+            # One latest request only. A new client/cold connection cannot bind
+            # an old tail without its own matching submission context.
+            self._diagnostic_request_binding = {
+                "request_sequence": sequence,
+                "source_frame": {key: frame.get(key) for key in (
+                    "actor_character_id", "date_raw", "bridge_pid",
+                    "connection_generation", "episode_run_id")},
+            }
             return {"status": "queued_native_presentation", "request_sequence": sequence,
                     "mode": intent["mode"], "reason": intent.get("reason"),
                     "native_command_pipe_used": False, "desktop": 1,
@@ -218,11 +286,18 @@ class NativeCameraPresentationClient:
         with self._lock:
             if not self._view:
                 return None
+            if self._tracking_binding is not None:
+                from .camera_tracking_v1 import latest_tracking_v1
+                return latest_tracking_v1(self._view, self._tracking_binding)
             sequence = self._sequence("result_sequence")
             if sequence & 1 or sequence == self._last_result_sequence:
                 return self._latest
             result = _Result.from_buffer_copy(ctypes.string_at(
                 self._view + _Shared.result.offset, ctypes.sizeof(_Result)))
+            # Copy the fixed tail before the SAME trailing seqlock read.
+            tail = ctypes.string_at(self._view + DIAGNOSTICS_OFFSET, DIAGNOSTICS_BYTES)
+            header = _Shared.from_address(self._view)
+            identity = (header.magic, header.version, header.pid)
             if sequence != self._sequence("result_sequence"):
                 return self._latest
             if result.county_count > COUNTY_CAPACITY or result.status not in STATUS:
@@ -243,9 +318,15 @@ class NativeCameraPresentationClient:
                 "fit_model": "native_bucket_with_viewport_padding",
                 "same_frame_with_gameplay_claim": False,
             }
+            self._latest["settle_diagnostics"] = decode_camera_settle_diagnostics_v1(
+                tail, result=self._latest, mapping_identity=identity,
+                result_region_end=_Shared.result.offset + ctypes.sizeof(_Result),
+                request_binding=getattr(self, "_diagnostic_request_binding", None))
             return self._latest
 
     def close(self):
+        self._diagnostic_request_binding = None
+        self._tracking_binding = None
         if self._view:
             self._kernel.UnmapViewOfFile(self._view)
             self._view = None

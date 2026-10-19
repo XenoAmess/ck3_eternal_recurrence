@@ -12520,7 +12520,8 @@ class NativeHeadlessGameplayDriver:
                 if callable(presentation):
                     try:
                         _tactical_camera_before_resume_v1["receipt"] = presentation(
-                            step=_tactical_camera_before_resume_v1["step"], current=snapshot)
+                            step=_tactical_camera_before_resume_v1["step"], current=snapshot,
+                            tracking_scope=_tactical_camera_before_resume_v1.get("tracking_scope"))
                     except Exception as error:
                         _tactical_camera_before_resume_v1["receipt"] = {
                             "status": "unavailable",
@@ -24570,6 +24571,9 @@ class NativeHeadlessGameplayDriver:
                 watch_army_ids=watch_army_ids,
                 sentinel_scope=sentinel_scope,
             )
+
+            camera_pre_advance["tracking_scope"] = {
+                **arm_status, "watch_army_ids": list(watch_army_ids)}
 
             resume_result = self._execute_primitive_step(
                 "resume-map",

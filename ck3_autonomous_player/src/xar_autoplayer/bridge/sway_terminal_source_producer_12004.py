@@ -182,9 +182,13 @@ def _retained_end(read: Mapping[str, object] | None, original: Mapping[str, obje
             continue
         invocation = normalize_sway_end_invocation_12004(record["native_invocation"], record)
         if (invocation["post_frame_observed"] is not True
+                or type(record.get("pre_status")) is not int or record["pre_status"] != 0
+                or type(record.get("pre_owner")) is not int
+                or record["pre_owner"] != original["actor_character_id"]
                 or any(record.get(field) is not True for field in (
                     "executing_source_observed", "post_read_succeeded", "post_instance_present",
-                    "post_exact_instance_join_ready", "post_status_observed", "native_terminal_state_observed"))
+                    "post_exact_instance_join_ready", "post_status_observed", "native_terminal_state_observed",
+                    "native_terminal_transition_observed"))
                 or record.get("post_storage_slot_reused") is not False
                 or type(record.get("post_status")) is not int or record["post_status"] != 1
                 or type(record.get("post_owner")) is not int
@@ -192,7 +196,14 @@ def _retained_end(read: Mapping[str, object] | None, original: Mapping[str, obje
             continue
         return {"native_status_raw": 1, "native_status_key": "terminated_unattributed",
                 "native_terminal_state_observed": True, "terminal_cause_observed": False,
-                "copied_termination_record": deepcopy(record)}
+                "source_kind": "copied_retained_end_original_return",
+                "copied_termination_record": deepcopy(record),
+                "source_read": {
+                    "snapshot_revision": read.get("source_snapshot_revision", read.get("snapshot_revision")),
+                    "date_raw": read.get("source_date_raw", read.get("date_raw")),
+                    "exact_ck3_build": read.get("build_version", read.get("exact_ck3_build")),
+                    "exe_sha256": read.get("executable_sha256", read.get("exe_sha256")),
+                }}
     return None
 
 

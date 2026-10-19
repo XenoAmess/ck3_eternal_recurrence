@@ -15,63 +15,93 @@ from xar_autoplayer.bridge.realm_overview_camera import (
 )
 
 
-def payload(day=0, actor=29829, **extra):
+class Clock:
+    def __init__(self):
+        self.now = 100.0
+
+    def __call__(self):
+        return self.now
+
+
+def payload(day=0, actor=29829, frame_revision=None, **extra):
+    revision = day + 1 if frame_revision is None else frame_revision
     return {"source_frame": {"date_raw": 53144328 + day * 24,
                              "actor_character_id": actor, "episode_run_id": "episode",
-                             "bridge_pid": 123, "connection_generation": 1},
+                              "bridge_pid": 123, "connection_generation": 1,
+                              "status": "complete", "snapshot_id": f"native:{revision}",
+                              "revision": revision, "native_revision": revision},
             "map_ready": True, "active_wars": [], "has_active_event": False,
             "has_pending_interaction": False, "mandatory_choice": False,
             "source_build": {"game_version": "1.20.0.4", "executable_sha256": EXACT_SHA},
             "has_player_armies": False, **extra}
 
 
-def test_peace_requires_thirty_game_days_and_refreshes_monthly():
-    policy = PeaceRealmCameraPolicy()
+def test_peace_requires_ten_real_seconds_fresh_payload_and_refreshes_monthly():
+    clock = Clock()
+    policy = PeaceRealmCameraPolicy(clock=clock)
     assert policy.observe(payload(), None)["mode"] == "hold"
-    assert policy.observe(payload(29), None)["mode"] == "hold"
-    assert policy.observe(payload(30), None)["mode"] == "realm"
-    assert policy.observe(payload(59), None)["reason"] == "holding_realm_overview"
-    assert policy.observe(payload(60), None)["mode"] == "realm"
+    clock.now += 9.99
+    assert policy.observe(payload(frame_revision=2), None)["mode"] == "hold"
+    clock.now += .01
+    assert policy.observe(payload(frame_revision=2), None)["reason"] == "awaiting_fresh_payload"
+    assert policy.observe(payload(frame_revision=3), None)["mode"] == "realm"
+    assert policy.observe(payload(29, frame_revision=4), None)["reason"] == "holding_realm_overview"
+    assert policy.observe(payload(30, frame_revision=5), None)["mode"] == "realm"
 
 
 def test_hotspot_preempts_realm_and_restarts_peace_timer():
-    policy = PeaceRealmCameraPolicy()
+    clock = Clock()
+    policy = PeaceRealmCameraPolicy(clock=clock)
     policy.observe(payload(), None)
+    clock.now += 10
     policy.observe(payload(30), None)
     hotspot = {"title_key": "b_bari", "reason": "battle"}
     assert policy.observe(payload(31), hotspot)["mode"] == "hotspot"
     assert policy.observe(payload(32), hotspot)["mode"] == "hold"
     assert policy.observe(payload(33), {**hotspot, "title_key": "b_napoli"})["mode"] == "hotspot"
     assert policy.observe(payload(34), None)["mode"] == "hold"
+    clock.now += 9
+    assert policy.observe(payload(63), None)["mode"] == "hold"
+    clock.now += 1
     assert policy.observe(payload(64), None)["mode"] == "realm"
 
 
 def test_forced_choice_and_succession_reset_timer():
     for block in ({"mandatory_choice": True}, {"has_active_event": True},
                   {"has_pending_interaction": True}):
-        policy = PeaceRealmCameraPolicy()
+        clock = Clock()
+        policy = PeaceRealmCameraPolicy(clock=clock)
         policy.observe(payload(), None)
+        clock.now += 10
         policy.observe(payload(30), None)
         assert policy.observe(payload(31, **block), None)["mode"] == "cancel"
         assert policy.observe(payload(32), None)["mode"] == "hold"
+        clock.now += 9
         assert policy.observe(payload(61), None)["mode"] == "hold"
+        clock.now += 1
         assert policy.observe(payload(62), None)["mode"] == "realm"
-    policy = PeaceRealmCameraPolicy()
+    clock = Clock()
+    policy = PeaceRealmCameraPolicy(clock=clock)
     policy.observe(payload(), None)
+    clock.now += 10
     policy.observe(payload(30), None)
     assert policy.observe(payload(31, actor=40526), None)["mode"] == "hold"
+    clock.now += 10
     assert policy.observe(payload(61, actor=40526), None)["mode"] == "realm"
 
 
 @pytest.mark.parametrize("anchor", [None, {"title_key": "b_bari", "reason": "war_objective"},
                                     {"title_key": "b_bari", "reason": "player_army"}])
 def test_war_without_activity_reaches_overview_without_refreshing_quiet_timer(anchor):
-    policy = PeaceRealmCameraPolicy()
-    for day in range(30):
+    clock = Clock()
+    policy = PeaceRealmCameraPolicy(clock=clock)
+    for day in range(10):
+        clock.now = 100 + day
         result = policy.observe(payload(day, active_wars=[{"war_id": 1}],
                                         has_player_armies=True), anchor)
         assert result["mode"] == "hold"
-        assert policy.quiet_since == payload()["source_frame"]["date_raw"]
+        assert policy.quiet_since == 100
+    clock.now = 110
     assert policy.observe(payload(30, active_wars=[{"war_id": 1}],
                                   has_player_armies=True), anchor)["mode"] == "realm"
 
@@ -79,16 +109,41 @@ def test_war_without_activity_reaches_overview_without_refreshing_quiet_timer(an
 @pytest.mark.parametrize("reason", ["battle", "siege", "objective_siege",
                                    "moving_player_army", "army_destination"])
 def test_activity_preempts_overview_and_restarts_quiet_period(reason):
-    policy = PeaceRealmCameraPolicy()
+    clock = Clock()
+    policy = PeaceRealmCameraPolicy(clock=clock)
     policy.observe(payload(), None)
+    clock.now += 10
     policy.observe(payload(30), None)
     hotspot = {"title_key": "b_bari", "reason": reason}
     assert policy.observe(payload(31), hotspot)["mode"] == "hotspot"
     assert policy.observe(payload(32), hotspot)["mode"] == "hold"
     assert policy.quiet_since is None
     assert policy.observe(payload(33, active_wars=[{}]), None)["mode"] == "hold"
+    clock.now += 9
     assert policy.observe(payload(62, active_wars=[{}]), None)["mode"] == "hold"
+    clock.now += 1
     assert policy.observe(payload(63, active_wars=[{}]), None)["mode"] == "realm"
+
+
+def test_clock_rollback_date_rollback_and_new_hotspot_restart_real_quiet():
+    clock = Clock()
+    policy = PeaceRealmCameraPolicy(quiet_seconds=2, clock=clock)
+    policy.observe(payload(5), None)
+    clock.now += 2
+    assert policy.observe(payload(4), None)["mode"] == "hold"
+    assert policy.quiet_since == 102
+    clock.now = 101
+    assert policy.observe(payload(4, frame_revision=9), None)["mode"] == "hold"
+    assert policy.quiet_since == 101
+    clock.now += 2
+    hotspot = {"title_key": "b_bari", "reason": "battle"}
+    assert policy.observe(payload(4, frame_revision=10), hotspot)["mode"] == "hotspot"
+    assert policy.quiet_since is None
+    assert policy.observe(payload(4, frame_revision=11), None)["mode"] == "hold"
+    clock.now += 2
+    blocked = payload(4, frame_revision=12, mandatory_choice=True)
+    assert policy.observe(blocked, None)["mode"] == "cancel"
+    assert policy.quiet_since is None
 
 
 def window_fixture(monkeypatch, *, handles=(4242,), client=(0, 0, 1920, 1080),
@@ -199,11 +254,14 @@ class FakeKernel:
 
 def client_fixture():
     client = object.__new__(NativeCameraPresentationClient)
-    shared = _Shared(magic=MAGIC, version=1, pid=123)
+    client._test_memory = ctypes.create_string_buffer(131072)
+    shared = _Shared.from_buffer(client._test_memory)
+    shared.magic, shared.version, shared.pid = MAGIC, 1, 123
     client.pid, client._handle, client._hwnd = 123, None, None
     client._view = ctypes.addressof(shared)
     client._kernel, client._lock = FakeKernel(), threading.Lock()
     client._last_result_sequence, client._latest = -1, None
+    client._tracking_binding, client._diagnostic_request_binding = None, None
     return client, shared
 
 
@@ -297,7 +355,8 @@ def test_service_selects_and_publishes_without_gameplay_snapshot_or_pipe():
             self.intents = []
         def submit(self, intent, frame, source):
             self.intents.append(dict(intent))
-            return {"status": "queued_native_presentation", "mode": intent["mode"]}
+            return {"status": "queued_native_presentation", "mode": intent["mode"],
+                    "request_sequence": len(self.intents) * 2}
         def latest(self):
             return {"status": "submitted", "coverage_verified": False}
 
@@ -305,10 +364,13 @@ def test_service_selects_and_publishes_without_gameplay_snapshot_or_pipe():
     service.bind_war_hotspot_camera_index(LandedProvinceIndex({}, {}, ()))
     client = Client()
     service._camera_presentation_client = client
+    clock = Clock()
+    service._peace_realm_camera_policy = PeaceRealmCameraPolicy(clock=clock)
     service._select_auto_camera_hotspot(payload())
+    clock.now += 10
     result = service._select_auto_camera_hotspot(payload(30))
     assert client.intents == [{"mode": "realm", "reason": "no_hotspot_realm_overview",
-                               "quiet_days_observed": 30.0}]
+                                "quiet_seconds_observed": 10.0}]
     assert result["display_mode"] == "realm"
     assert result["same_frame_with_gameplay_claim"] is False
     service._auto_camera_worker.close_without_wait()
@@ -336,9 +398,12 @@ def test_service_wartime_static_anchor_falls_back_and_battle_preempts_without_dr
     service.bind_war_hotspot_camera_index(LandedProvinceIndex({4242: "b_bari"}, {4242: "c_bari"}, ()))
     client = Client()
     service._camera_presentation_client = client
+    clock = Clock()
+    service._peace_realm_camera_policy = PeaceRealmCameraPolicy(clock=clock)
     try:
         static = {"war_id": 1, "war_objective_province_ids": [4242]}
         service._select_auto_camera_hotspot(payload(0, active_wars=[static]))
+        clock.now += 10
         realm = service._select_auto_camera_hotspot(payload(30, active_wars=[static]))
         battle = {**static, "allied_armies": [{"army_id": 7, "current_province_id": 4242,
                                              "in_combat": True, "controllable": True}]}

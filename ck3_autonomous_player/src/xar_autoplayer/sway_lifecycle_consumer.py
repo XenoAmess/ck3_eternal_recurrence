@@ -111,14 +111,82 @@ def record_sway_terminal_observation(
     return observation
 
 
+def _record_sway_retained_wrapper_end(
+    state_dir: Path, composition: Mapping[str, object],
+) -> dict[str, object] | None:
+    """Persist an independently copied original end when no common end exists."""
+    original, end = composition.get("original_instance"), composition.get("retained_end_observation")
+    if (not isinstance(original, Mapping) or not isinstance(end, Mapping)
+            or end.get("source_kind") != "copied_retained_end_original_return"
+            or end.get("native_terminal_state_observed") is not True
+            or end.get("native_status_raw") != 1 or end.get("terminal_cause_observed") is not False):
+        return None
+    matched = _resolved_for_read(state_dir, original)
+    if matched is None:
+        return None
+    ledger, resolved, _ = matched
+    from .bridge.sway_terminal_source_producer_12004 import _original
+    from .bridge.sway_completion_causal_private_12004 import normalize_sway_end_invocation_12004
+    from .bridge.version_identity import CK3_12004, require_exact_native_build
+
+    record, source = end.get("copied_termination_record"), end.get("source_read")
+    if not isinstance(record, Mapping) or not isinstance(source, Mapping):
+        return None
+    try:
+        if (dict(original) != _original(resolved)
+                or require_exact_native_build(source.get("exact_ck3_build"), source.get("exe_sha256")) != CK3_12004):
+            return None
+        invocation = normalize_sway_end_invocation_12004(record.get("native_invocation"), record)
+    except ValueError:
+        return None
+    if (any(type(record.get(k)) is not int or record[k] != original[k] for k in (
+                "actor_character_id", "target_character_id", "scheme_instance_id", "scheme_instance_generation"))
+            or type(record.get("pre_status")) is not int or record["pre_status"] != 0
+            or record.get("pre_owner") != original["actor_character_id"]
+            or type(record.get("post_status")) is not int or record["post_status"] != 1
+            or record.get("post_owner") not in (original["actor_character_id"], 0xFFFFFFFF)
+            or record.get("post_storage_slot_reused") is not False
+            or invocation["post_frame_observed"] is not True
+            or any(record.get(k) is not True for k in (
+                "executing_source_observed", "post_read_succeeded", "post_instance_present",
+                "post_exact_instance_join_ready", "post_status_observed", "native_terminal_state_observed",
+                "native_terminal_transition_observed"))):
+        return None
+    revision, date = source.get("snapshot_revision"), source.get("date_raw")
+    if (type(revision) is not int or not 0 < revision < 1 << 64
+            or type(date) is not int or not -(1 << 31) <= date < 1 << 31):
+        return None
+    terminal = {
+        **{k: original[k] for k in ("action_id", "actor_character_id", "target_character_id",
+                                    "scheme_instance_id", "scheme_instance_generation")},
+        "exact_ck3_build": source["exact_ck3_build"], "exe_sha256": source["exe_sha256"],
+        "source_native_revision": revision, "source_date_raw": date,
+        "source_provenance_kind": "retained_end_read_receipt",
+        "event_date_raw": invocation["post_date_raw"],
+        "tracked_instance_active": False, "instance_terminal_outcome_observed": True,
+        "native_status_key": "terminated_unattributed", "terminal_cause_observed": False,
+        "terminal_cause": "unknown", "native_observation": deepcopy(dict(record)),
+        "retained_end_observation": deepcopy(dict(end)), "next_turn_consumed": False,
+    }
+    previous = resolved.get("terminal_intervention")
+    if (_same_sway_terminal_identity(previous, terminal)
+            and previous.get("instance_terminal_outcome_observed") is True):
+        terminal = dict(previous)
+        terminal.setdefault("retained_end_observation", deepcopy(dict(end)))
+    _write(state_dir, {**ledger, "resolved": {**resolved, "terminal_intervention": terminal}})
+    return terminal
+
+
 def record_sway_common_native_end_observation(
     state_dir: Path, *, composition: Mapping[str, object],
 ) -> dict[str, object] | None:
-    """Stage a copied normal return, independently of current storage and cause."""
+    """Stage a copied normal return, preferring common then retained wrapper end."""
     if composition.get("schema") != "xar.ck3.sway-terminal-source-composition.12004.v1":
         return None
     original = composition.get("original_instance")
     common = composition.get("retained_common_end_observation")
+    if common is None:
+        return _record_sway_retained_wrapper_end(state_dir, composition)
     if (not isinstance(original, Mapping) or not isinstance(common, Mapping)
             or common.get("original_instance") != original
             or common.get("source_kind") != "copied_common_native_end_original_return"

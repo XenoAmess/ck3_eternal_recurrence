@@ -70,7 +70,8 @@ def camera(monkeypatch):
     obj._camera_presentation_owner_key = None
     obj._camera_presentation_request_context = None
     obj._camera_presentation_target_backoffs = {}
-    obj._peace_realm_camera_policy = PeaceRealmCameraPolicy()
+    obj._camera_test_clock = [100.0]
+    obj._peace_realm_camera_policy = PeaceRealmCameraPolicy(clock=lambda: obj._camera_test_clock[0])
     obj._war_hotspot_camera_index = LandedProvinceIndex(
         {1: "b_first", 2: "b_second"}, {}, ())
     obj._war_hotspot_camera_index_error = None
@@ -203,12 +204,14 @@ def test_mandatory_cancel_bypasses_failed_target_backoff_and_resets_quiet(camera
     clients[0].result("cancelled", actor_character_id=-1, date_raw=0)
     assert obj.realm_camera_status_v1()["native_actual"]["status"] == "cancelled"
     obj._select_auto_camera_hotspot(payload(31, kind=None))
-    assert obj._peace_realm_camera_policy.quiet_since == payload(31)["source_frame"]["date_raw"]
+    assert obj._peace_realm_camera_policy.quiet_since == 100
+    obj._camera_test_clock[0] += 9
     assert obj._select_auto_camera_hotspot(payload(60, kind=None))["intent"]["mode"] == "hold"
+    obj._camera_test_clock[0] += 1
     assert obj._select_auto_camera_hotspot(payload(61, kind=None))["intent"]["mode"] == "realm"
 
 
-def test_blocked_activity_resets_quiet_and_quiet30_failure_expiry_keeps_anchor(camera):
+def test_blocked_activity_resets_real_quiet_and_failure_expiry_keeps_anchor(camera):
     obj, clients = camera
     obj._select_auto_camera_hotspot(payload())
     clients[0].result()
@@ -218,8 +221,10 @@ def test_blocked_activity_resets_quiet_and_quiet30_failure_expiry_keeps_anchor(c
     obj._select_auto_camera_hotspot(payload(29))
     assert obj._peace_realm_camera_policy.quiet_since is None
     obj._select_auto_camera_hotspot(payload(30, kind=None))
-    anchor = payload(30)["source_frame"]["date_raw"]
+    anchor = obj._camera_test_clock[0]
+    obj._camera_test_clock[0] += 9
     assert obj._select_auto_camera_hotspot(payload(59, kind=None))["intent"]["mode"] == "hold"
+    obj._camera_test_clock[0] += 1
     assert obj._select_auto_camera_hotspot(payload(60, kind=None))["intent"]["mode"] == "realm"
     clients[0].result()
     assert obj._select_auto_camera_hotspot(payload(61, kind=None))["reason"] == "camera_retry_cooldown"
