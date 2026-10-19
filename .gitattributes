@@ -1133,3 +1133,8 @@ docs/ck3-native-ai/evidence/c3-clean160-actual-adoption-readback01.json -text wh
 docs/ck3-native-ai/evidence/native26-performance-build-qualification-2026-10-19.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/p51-auto143-subdecisions-2026-10-19.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/declaration-actor-next-families-source-2026-10-19.json -text whitespace=cr-at-eol
+
+# Exact finite AUTO194 and next-bootstrap source qualification.
+docs/ck3-native-ai/evidence/c3-partial194-readonly-recovery-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/settled-readonly-dispatch-source-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-partial194-dispatch-ready-manifest01.json -text whitespace=cr-at-eol

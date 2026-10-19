@@ -1,0 +1,51 @@
+{
+  "schema": "xar.partial194-dispatch-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:47:46.910090+00:00",
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/partial_sway_194_readonly_recovery_v1.py",
+      "bytes": 11422,
+      "sha256": "4be60650cdab92507bebc2c88027c0086c5b50630bad50fdd0d04463950e1731"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_partial_sway_194_readonly_recovery_v1.py",
+      "bytes": 9147,
+      "sha256": "42878236f019355c214fd279c063365e927aebd9cd7d28cce51105336161aeb5"
+    },
+    {
+      "path": "tools/g2_saved_campaign/settled_readonly_dispatch_source_v1.py",
+      "bytes": 3405,
+      "sha256": "0c0ed6d9d31d19deaa07b72c3848ad23003f7fe5ae304afbbb0babb96b1ec272"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_settled_readonly_dispatch_source_v1.py",
+      "bytes": 8342,
+      "sha256": "7a6cb71a96b3f033acb40342dc3d09c9df64767d3ce94de9bb56bfdb6e757ab5"
+    },
+    {
+      "path": "docs/ck3-native-ai/c3-partial194-readonly-and-next-bootstrap-2026-10-19.md",
+      "bytes": 4026,
+      "sha256": "e88fcc6faf8b1979f92b49ccb7d7aaf553dd54cf1baffc3ed1eb89b7344c3cd8"
+    },
+    {
+      "path": "docs/ck3-native-ai/settled-readonly-local-control-attribution-2026-10-19.md",
+      "bytes": 2310,
+      "sha256": "61ad6d5f522425c971553d30b5bd8668e3274b9d662b0563aa8e178b4aaca5b7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-partial194-readonly-recovery-qualification01.json",
+      "bytes": 5632,
+      "sha256": "a95435e62f0fa251f7b74deb93e6556479adad89c3e60efebf69b9566dba84a5"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/settled-readonly-dispatch-source-qualification01.json",
+      "bytes": 3706,
+      "sha256": "41a0ad8982cdbecf35136a1742a541bb7b6c089cd38dec065c98d436b2d55956"
+    }
+  ],
+  "total_bytes": 47990,
+  "status": "FROZEN_SOFTWARE_QUALIFIED",
+  "prior26_files_changed": false,
+  "staged_or_committed_by_subagent": false
+}

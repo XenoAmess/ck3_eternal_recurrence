@@ -1,0 +1,81 @@
+{
+  "schema": "xar.settled-readonly-dispatch-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:46:00.584075+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_sdk_queue.py",
+      "bytes": 263414,
+      "sha256": "18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\met153-metadata-clear-review01\\INPUTS\\p37-responses\\0153-1-result.json",
+      "bytes": 1371,
+      "sha256": "b144a3ad7e27c4413e59f05601f9e2eb36be38dfe77bf11dff706c8f3aabda32"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\met153-metadata-clear-review01\\INPUTS\\p37-responses\\0154-1-result.json",
+      "bytes": 905,
+      "sha256": "bb904b1550f94aa24210f4aac577f01b6dfa711556fd7881a560f3c2d42f6012"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\met153-metadata-clear-review01\\INPUTS\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "bytes": 3357,
+      "sha256": "cf67a0c6f5d266e0bc49800a7242e59fd14ef0071eab89a8f788f1f9d17b5140"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\met153-metadata-clear-review01\\INPUTS\\p37-responses\\0148-1-result.json",
+      "bytes": 825,
+      "sha256": "80c9de3c0227bd03dedf14417684856b8d8365a0fa24efc2ef4437060b1b0833"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_clean_classifier_install.py",
+      "bytes": 6346,
+      "sha256": "66886d41d07e374b038051d7eee85a0fdb364eddc3292a1a5fd407997e4dceca"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C3-CLEAN-CLASSIFIER-05-PROOF.json",
+      "bytes": 3507,
+      "sha256": "4aa786fb2bb6a995e5e1c2e4214a89e7dea81f1e1b7fcc210da078520c08ccd0"
+    }
+  ],
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\settled-readonly-dispatch-review01\\root_p37_sdk_queue_settled_readonly_candidate.py",
+    "bytes": 264841,
+    "sha256": "633dee176ad0a182179793b09d1da0b137dca61dfeeacf36338bb90df9bc0b5e"
+  },
+  "original_AST_plus_one_guard_only": true,
+  "actual154_full_dispatch": {
+    "old": {
+      "halted_sequence": 153,
+      "halt_cause": {
+        "error_type": "ValueError",
+        "message": "classifier install is not a current clean settled boundary"
+      },
+      "next_sequence": 155,
+      "full_state_unchanged": true,
+      "new_RPC_calls": 0,
+      "local_writes": 4
+    },
+    "candidate": {
+      "halted_sequence": 154,
+      "halt_cause": {
+        "error_type": "ValueError",
+        "message": "classifier install is not a current clean settled boundary"
+      },
+      "next_sequence": 155,
+      "full_state_unchanged": true,
+      "new_RPC_calls": 0,
+      "local_writes": 4
+    }
+  },
+  "unknown_pending_halted_original_preserved": [
+    "unknown",
+    "pending",
+    "halted"
+  ],
+  "new_Game_Native_MCP_calls": 0,
+  "runtime_mutations": 0,
+  "live_adopted": false,
+  "scope": "Next owner bootstrap source only; no local-control admission expansion or automatic recovery."
+}

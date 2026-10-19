@@ -1,0 +1,40 @@
+{
+  "schema": "xar.robert-v20261019-longterm-source-integration/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:45:43.672518+00:00",
+  "canonical_commit_pushed": "3ee916c4dfab25ed702020ffe927b09621623f7f",
+  "source_files": 84,
+  "gitattributes_changed": true,
+  "exact_receipt_byte_preservation": {
+    "CRLF_receipts_kept_without_normalization": 13,
+    "all_84_index_blobs_equal_reviewed_working_bytes": true,
+    "tool_chunk": "bbbe8c"
+  },
+  "qualification": {
+    "integrated_pytest": {"passed": 26, "seconds": 4.03, "tool_chunk": "e28463", "scope": "deadline transport, monthly MET, succession operating facts, actual Driver/Service estate invalidation, Crown material publication"},
+    "publisher_focused": {"passed": 2, "seconds": 0.055, "tool_chunk": "dd1bf7", "exit_code": 0},
+    "first_publisher_test_invocation": {"tool_chunk": "e28463", "status": "import_failed_before_tests", "reason": "package unittest invocation lacked direct tools/g2_saved_campaign module path", "correction": "run the existing unittest file directly; no source or test changes"},
+    "recovery_manifest_file_hashes_checked": 24,
+    "JSON_AST_and_tool_verifier_explicit_guard_checks": "passed",
+    "staged_diff_check": "passed",
+    "push": {"tool_chunk": "faef14", "exit_code": 0}
+  },
+  "CI_observation": {"source": "gh run list", "tool_chunk": "0b76c5", "current_run_id": 39201062561, "status": "in_progress", "prior_d74afbf3_official_and_linear_history": "success"},
+  "actual_runtime_at_this_observation": {
+    "business_SDK_commit": "063531c4b2bc64f52b80a78b8a2b8e9f55112964",
+    "Native": 25,
+    "Game_pid": 214568,
+    "Game_birth_filetime": 134368503807325674,
+    "actual_days": 61,
+    "settled_cycles": 74,
+    "pending_cycle": 75,
+    "error_sequence": 194,
+    "new_source_adopted": false,
+    "Native26_loaded": false
+  },
+  "limits": [
+    "Software qualification is not current runtime adoption, long-term throughput, territory retention, natural Sway gain, or natural succession.",
+    "The first AUTO wall-clock anchor remains unchanged; repairs and maintenance stay in cumulative throughput.",
+    "WAL remains disabled. New timing work must not encode, hash or copy history just for counters."
+  ]
+}
