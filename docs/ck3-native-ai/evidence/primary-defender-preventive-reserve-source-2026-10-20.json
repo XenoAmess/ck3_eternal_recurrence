@@ -1,0 +1,49 @@
+{
+  "schema": "xar.primary-defender-preventive-reserve-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T20:49:50Z",
+  "machine_id_source": "Actual tools/ck3_live_run_id.py machine result, tool1a17ce, followed immediately by UTC clock read",
+  "scope": "Future SDK source only; no current SDK adoption, Game, MCP, Driver/SAVE body read, Git or Task action",
+  "storage_cards_sha256": ["fb9de12089c1907fba0e466c9baf4b81fdc969847430860f7c3d70e396cc5647", "d9b20cfa9776647c068c544c78a29d79ce21cc8086dc4657f2ace3c9403c662c"],
+  "change": "Only a primary defender with complete observed current player/enemy raised roster counts and an actual count deficit gains primary_defence_observed_raised_force_outnumbered, without waiting for negative war score. Original rosters must contain only mappings; unknown counts, missing roster rows, offensive and nonprimary wars do not gain this reason. Existing count helper is unchanged: current semantic soldiers or same-frame bound Army-query values are observations, never a claim of a complete physical world inventory or a complete Army query.",
+  "preserved": "Concrete war actions, unresolved hire, native quote legality/completeness, current finance, local conditional-count comparison, cash package limits and once-only submission remain existing gates. Planning may select a readonly market query; it submits no hire. Arrival, combat power and victory remain unverified. Refund quote/receiver and complete legal loan terms/debt/attributed funding are not qualified by this change.",
+  "old_fixture_correction": "The old tradeoff test expected no protected cash at score +12 despite its implicit own800/enemy1500 deficit. Its nonthreatened winning fixture now explicitly uses own2000. The old wartime-cash common fixture likewise had score+40/own800/enemy1500 but expected the unfocused conservative maximum quote. It now uses own2000; its two negative-score deficit cases explicitly restore800. The old positive-score-deficit expectation is superseded as policy, not rewritten as historical live evidence; at +40 the new reason also applies if the current observed deficit remains.",
+  "original_files": [
+    ["war_reinforcement_tradeoff_v1.py",19588,"c27266b60a80e7b18a38c22bdc8a076a79f351eb0b3b976c367ddc3dc90299ac"],
+    ["test_war_reinforcement_tradeoff_v1.py",28900,"84d563b03b9696f7e6a470350937e794c23c1db7ee0c545d79a2eebf4f382db9"],
+    ["test_wartime_construction_cash_v1.py",11338,"d6ee4d890a785c3b644427abd524db65a79d73a6d6ef220de793887bf3042602"]
+  ],
+  "files": [
+    ["ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py",20067,"4e22f96567f30b1b6101ea29e33ec485b417cea8f23ba0c2851070bbc91a767a"],
+    ["ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",29003,"e6b3fef5fab4a8e7382604f843b00f09ac2c37272b40d0448a32cea01860bd41"],
+    ["ck3_autonomous_player/tests/unit/test_wartime_construction_cash_v1.py",11551,"91492626547424f955a71439b7be737f76c6b9f89ca54e74521d1ce8734b0082"],
+    ["ck3_autonomous_player/tests/unit/test_primary_defender_preventive_reserve_v1.py",5594,"abe12c5d2a4506f53fc430ba344e6c49c6da6300a3954e1c51a3529bd4fae828"]
+  ],
+  "verification": {
+    "interpreter": "tools/.venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider -o tmp_path_retention_policy=none",
+    "prior_source_sha256": "9d270d37316ecde8e23332c857c1471cb6eb63d573669f56ce54d35480da535e",
+    "prior_affected_three_modules": "test_war_reinforcement_tradeoff_v1.py test_wartime_construction_cash_v1.py test_primary_defender_preventive_reserve_v1.py: 53 PASS in4.53s, tool e1ea02",
+    "final_source_test": "After narrowing only the new branch against malformed roster rows, final focused module: 15 PASS in2.06s, tool 7d9cfe. Earlier53 are not claimed at the final source pin. No broader repeat.",
+    "synthetic_only": true,
+    "current_war134217814_deficit_observed": false,
+    "live_credit": 0
+  },
+  "storage": {
+    "hard_cap_bytes":81920,
+    "initial_source_four_bytes":65837,
+    "initial_retained_scratch_bytes":58364,
+    "initial_closed_gross_bytes":124201,
+    "initial_attempt_compliant":false,
+    "peak_bytes":null,
+    "cause":"Test scratch was not adequately reserved; pytest retention option did not remove nine ledger leaves. Cleaning later does not retroactively make the first attempt compliant.",
+    "first_cleanup":["_runtime/primary-defender-scratch-cleanup01.json",1915,"195d357cff19d0c8efed8b0e456c678059a31340aa0ab0a741fe8ad39eb29f67"],
+    "first_cleanup_detail":"Exact nine generated leaves have pre-delete size/SHA inventory in the receipt. Python verified resolved self-created root and rejected reparse nodes; only listed files and empty directories removed. Root absent, tool7f118e. A prior cmd recursive-delete request was rejected by automatic review before execution.",
+    "second_cleanup":"Final focused run retained one417B ledger, SHA19c665a45f5641cc77e3d4fa3fd3993c6d00c8e6b2443eec08c7959b296af500. Exact second root verified and removed with the same no-reparse scope; root absent, tool877a71.",
+    "retained_scratch_bytes_after":0,
+    "permanent_source_bytes_excluding_this_proof":66215,
+    "participating_cleanup_helpers_and_receipt_bytes":6151,
+    "final_participating_bytes_excluding_this_proof":72366,
+    "future_written_bytes":0,
+    "other_assets_deleted":false
+  }
+}

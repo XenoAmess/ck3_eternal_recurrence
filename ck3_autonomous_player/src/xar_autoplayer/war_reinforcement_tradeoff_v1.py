@@ -111,6 +111,12 @@ def observe_war_spending_priority_v1(
             reasons.append("losing_primary_rebel_war_exposes_political_survival")
         if primary and losing and exposed:
             reasons.append("losing_primary_defence_exposes_target_titles")
+        if (primary and war.get("player_side") == "defender" and deficit
+                and all(isinstance(row, Mapping) for row in snapshot["player_armies"])
+                and all(isinstance(row, Mapping) for row in war["enemy_armies"])):
+            # Compare a preventive reserve before the score turns negative.
+            # These complete observed counts are neither battle power nor odds.
+            reasons.append("primary_defence_observed_raised_force_outnumbered")
         if primary and losing and deficit:
             reasons.append("losing_own_war_and_observed_raised_force_outnumbered")
         if primary and losing and len(primary_wars) > 1 and aggregate_deficit is True:
