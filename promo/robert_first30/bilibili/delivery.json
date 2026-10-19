@@ -1,0 +1,188 @@
+{
+  "schema": "robert-first30-bilibili-covers-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T01:29:51.000077+00:00",
+  "observation_sources": [
+    "tools/ck3_live_run_id.py machine",
+    "Python shutil.disk_usage",
+    "Pillow file inspection",
+    "FFmpeg actual export exit codes",
+    "SHA-256 of these small assets"
+  ],
+  "tool_mode": "built-in image_gen",
+  "input_handoff": "docs/handover/2026-10-19-robert-first30-scoring-vacation-handoff.md",
+  "prompt_set": "README.md",
+  "creative_review": {
+    "reviewer": "Codex",
+    "scope": "Direct visual inspection of both generated images: exact title copy, face visibility, county-loss hook, and framing; final export inspected separately.",
+    "not_a_gameplay_acceptance": true
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "task_start_observed_at_utc": "2026-10-19T01:23:19.850070+00:00",
+    "task_start_volume_bytes": {
+      "C:/": {
+        "total_bytes": 998748684288,
+        "free_bytes": 17588371456
+      },
+      "Z:/": {
+        "total_bytes": 4096787476480,
+        "free_bytes": 178425159680
+      }
+    },
+    "before_export_observed_at_utc": "2026-10-19T01:29:50.224739+00:00",
+    "before_export_volume_bytes": {
+      "C:/": {
+        "total_bytes": 998748684288,
+        "used_bytes": 981203300352,
+        "free_bytes": 17545383936
+      },
+      "Z:/": {
+        "total_bytes": 4096787476480,
+        "used_bytes": 3918364438528,
+        "free_bytes": 178423037952
+      }
+    },
+    "task_close_volume_bytes": {
+      "C:/": {
+        "total_bytes": 998748684288,
+        "used_bytes": 981203562496,
+        "free_bytes": 17545121792
+      },
+      "Z:/": {
+        "total_bytes": 4096787476480,
+        "used_bytes": 3918365990912,
+        "free_bytes": 178421485568
+      }
+    },
+    "estimated_small_asset_peak_bytes": 67108864,
+    "heavy_write": false,
+    "heavy_write_admission": "NOT_GRANTED_OR_REQUIRED_FOR_THIS_SMALL_IMAGE_PACKAGE",
+    "scope": "Only two new images and compact provenance records. Existing large media and other work packages not inventoried or deleted. Existing historical film reservation is not reused.",
+    "default_media_review_at_utc": "2026-11-18T01:29:51.000077+00:00",
+    "record_review_at_utc": "2027-04-17T01:29:51.000077+00:00",
+    "tracked_assets_policy": "Review expiry is not automatic Git file deletion or published-history rewrite."
+  },
+  "assets": [
+    {
+      "asset_id": "robert-first30-bilibili-cover-16x9-20261019",
+      "replica_id": "xenoamess-full-tower-eb9d2c1186--16x9",
+      "owner_task": "robert-first30-bilibili-covers-20261019",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "root_id": "repository",
+      "relative_path": "promo/robert_first30/bilibili/robert-first30-cover-16x9.jpg",
+      "category": "delivered_media",
+      "state": "closed",
+      "logical_bytes": 817660,
+      "allocated_bytes_or_null": null,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "aspect_ratio": "16:9",
+      "sha256": "f3caacba68db5c71fdbfb7183760258721973e671da567f52af88f8381e5b95e",
+      "source": {
+        "path": "C:\\Users\\xenoa\\.codex\\generated_images\\01a151c0-541c-7972-942f-64b5c6b96021\\exec-0dc78425-066c-452e-a9ac-480e9733f706.png",
+        "dimensions": [
+          1672,
+          941
+        ],
+        "logical_bytes": 2947276,
+        "sha256": "0f3fd92208fff79e99b3c6df94b1d15c2323b64b1660dfdf0dfa7ee1f281d21e",
+        "availability": "readable_at_observation"
+      },
+      "export_argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.1.1-full_build\\bin\\ffmpeg.EXE",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-n",
+        "-i",
+        "C:\\Users\\xenoa\\.codex\\generated_images\\01a151c0-541c-7972-942f-64b5c6b96021\\exec-0dc78425-066c-452e-a9ac-480e9733f706.png",
+        "-vf",
+        "scale=1920:1080:flags=lanczos,setsar=1",
+        "-frames:v",
+        "1",
+        "-q:v",
+        "2",
+        "-pix_fmt",
+        "yuvj444p",
+        "Z:\\ck3_mod_rewrite\\promo\\robert_first30\\bilibili\\robert-first30-cover-16x9.jpg"
+      ],
+      "export_exit_code": 0,
+      "active_references": [
+        "User-requested Bilibili cover delivery"
+      ],
+      "protected_until_utc_or_null": null,
+      "protection_reason_or_null": null,
+      "availability": "readable",
+      "source_pins_or_recipe": "README.md: exact built-in image_gen prompts; 4:3 references the 16:9 original",
+      "closed_at_utc_or_null": "2026-10-19T01:29:51.000077+00:00",
+      "last_used_at_utc": "2026-10-19T01:29:51.000077+00:00",
+      "expires_at_utc": "2026-11-18T01:29:51.000077+00:00"
+    },
+    {
+      "asset_id": "robert-first30-bilibili-cover-4x3-20261019",
+      "replica_id": "xenoamess-full-tower-eb9d2c1186--4x3",
+      "owner_task": "robert-first30-bilibili-covers-20261019",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "root_id": "repository",
+      "relative_path": "promo/robert_first30/bilibili/robert-first30-cover-4x3.jpg",
+      "category": "delivered_media",
+      "state": "closed",
+      "logical_bytes": 730080,
+      "allocated_bytes_or_null": null,
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "aspect_ratio": "4:3",
+      "sha256": "1661e3d13e8ee72913480502c5896badab2152d64835fc1bdca15bbbbaedcc44",
+      "source": {
+        "path": "C:\\Users\\xenoa\\.codex\\generated_images\\01a151c0-541c-7972-942f-64b5c6b96021\\exec-6bf5ee57-36b2-4716-b3b1-cfbf9fbe6798.png",
+        "dimensions": [
+          1448,
+          1086
+        ],
+        "logical_bytes": 2926579,
+        "sha256": "20ca69f440e82782aa87c2c23e0ec1129caff7501fe85d6010ece6e7dc07294a",
+        "availability": "readable_at_observation"
+      },
+      "export_argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.1.1-full_build\\bin\\ffmpeg.EXE",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-n",
+        "-i",
+        "C:\\Users\\xenoa\\.codex\\generated_images\\01a151c0-541c-7972-942f-64b5c6b96021\\exec-6bf5ee57-36b2-4716-b3b1-cfbf9fbe6798.png",
+        "-vf",
+        "scale=1440:1080:flags=lanczos,setsar=1",
+        "-frames:v",
+        "1",
+        "-q:v",
+        "2",
+        "-pix_fmt",
+        "yuvj444p",
+        "Z:\\ck3_mod_rewrite\\promo\\robert_first30\\bilibili\\robert-first30-cover-4x3.jpg"
+      ],
+      "export_exit_code": 0,
+      "active_references": [
+        "User-requested Bilibili cover delivery"
+      ],
+      "protected_until_utc_or_null": null,
+      "protection_reason_or_null": null,
+      "availability": "readable",
+      "source_pins_or_recipe": "README.md: exact built-in image_gen prompts; 4:3 references the 16:9 original",
+      "closed_at_utc_or_null": "2026-10-19T01:29:51.000077+00:00",
+      "last_used_at_utc": "2026-10-19T01:29:51.000077+00:00",
+      "expires_at_utc": "2026-11-18T01:29:51.000077+00:00"
+    }
+  ],
+  "publication": {
+    "bilibili_uploaded": false
+  },
+  "game_or_video_modified": false
+}
