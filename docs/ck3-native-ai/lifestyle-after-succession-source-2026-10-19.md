@@ -63,3 +63,13 @@ Root 条件授权的4107唯一只读调用于 UTC `2026-10-19T09:18:16.562237Z` 
 生产冻结：新 scope叶4332B/SHA256 `28db68a630239803c14908e72e571aa7cbedd8f56429abc1f1d8a42864157476`；private transport42857B/SHA256 `dafc1c198928b3f68fa88976f1431bf29c5abb00e20a6c437a1b7792f3f6a47b`；consumer14386B/SHA256 `d971e1737acd5654a6fdd9c7219a3982a6bce3de44b0c95bc0fac735922b7df2`。源码通过不代表C8运行中的src06已经采用；后继实际采用由Root/runtime另记。
 
 仅复制必要实际输入的小投影 `tests/unit/fixtures/lifestyle_after_succession_4106_4107_v1.json` 2702B/SHA256 `75f01d2699f1306c8f2b8c9b93edfb8f773b32020a19258831e8cbf21563b425`，含机器、UTC及两原行SHA，清楚标明离线重放不授实机修复资格。15个新回归与7个错误保留回归、48个原消费者回归一次执行70pass/2.57s，命令为 `python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_lifestyle_education_focus_scope_v1.py','ck3_autonomous_player/tests/unit/test_lifestyle_native_negative_binding_v1.py','ck3_autonomous_player/tests/unit/test_lifestyle_formal_private_consumer.py']))`。测试覆盖实际闭件投影、target missing与当前focus独立性、旧actor/Native/date/episode/public、未知focus、其它原生错误、前后frame变化和来源review漂移。
+
+## C9 暴露独立 opening 消费漏口
+
+同机器，C9在 UTC `2026-10-19T09:36:26.484951Z` 的实际4113行13866B/SHA256 `7221d70fb28946fa0515f04b005b3a50ba4c623bdf9e172397d536e91eced177` 再次 blocked。其前后 Native3137/public2/date53188032/actor40526/episode相同，stock已由新代码返回 `education_focus_not_applicable`，但独立 opening gate仍要求 formal.available 与成人stock状态，记录的失败谓词仅 `formal_status_unavailable`、`stock_status_unavailable`。第一轮普通战争只读成功并不资格第二轮opening，此失败不能被前述70项纯消费/回归通过覆盖。
+
+最窄C10补丁只接 Service的初始LIFE专用段：重验原 formal/state的exact错误、完整教育proof、前后同帧与无LIFE pending后，仅结束该episode的初始成人focus prerequisite；保留 `completion_kind=education_focus_not_applicable`，不授焦点写或checkpoint信用，然后调用原完整 `_plan_turn_internal()` 一次，重新处理普通候选。未知、旧帧或pending仍RED。summary同时保存教育原DTO，避免再次丢内因；4113旧summary未保完整教育proof，因此测试复用未改写的4106/4107 Native3136原事实，不把它重写成3137冒实测。
+
+精确两hunk在 [C9→C10来源包](evidence/lifestyle-opening-education-scope-C9-to-C10-2026-10-19.json)，6072B/SHA256 `a36c8fe7c08dc9ed35a888cef304279647a72081629a926c01af00141b5a3a8e`。从实际C9 Service867972B/SHA256 `5b46e116e7a65c753eac099a82f79fcb8a3a25112a5dcf5e55e534a521f239d1` 只替换两唯一片段，候选870245B/SHA256 `7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf`；不能复制含其它M1变更的整份master Service。
+
+UTC `2026-10-19T09:48:53Z` 汇总：以该准确C9+hunk候选在内存中加载真实Service，三个相关测试文件一次72pass/1.33s。新集成用真实 `Service.auto_turn` 穿opening、完整普通规划入口及合法受支持root-query派发；ordinary选择/Driver为明确合成fixture，未提交LIFE动作。未知focus、跨frame、pending均无ordinary选择/派发。全部combined调用点已核：Driver透传、普通consumer、共享opening入口，以及最终selected-focus的严格写守卫；后者的保守RED不因本修复放宽。此时已交harness/runtime准备，尚不将C10源码资格写成实际推进通过。

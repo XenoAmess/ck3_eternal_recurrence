@@ -1,0 +1,66 @@
+{
+  "schema": "xar.C10-normal-warm-exact-six-filenames/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:48:21.125485+00:00",
+  "base": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\normal_source_warm_queue_v1.py",
+    "bytes": 14614,
+    "sha256": "24bc6c9cc732344152c2b6a1bacab34be9678ed06618b7b871888ae29d5fb209"
+  },
+  "candidate": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\c10-normal-source-warm-review.py",
+    "bytes": 14620,
+    "sha256": "1358766965bdad65ae1c21aad69acd8069da474140e9f5a330b90b48e8bcd73e"
+  },
+  "exact_filename_mapping": {
+    "root_p37c9_sdk_queue.py": "root_p37c10_sdk_queue.py",
+    "root_p37c9_mcp_entry.py": "root_p37c10_mcp_entry.py",
+    "root_native_build_binding_p37c9.py": "root_native_build_binding_p37c10.py",
+    "ROOT-FINAL-SDK-FREEZE-P37C9.json": "ROOT-FINAL-SDK-FREEZE-P37C10.json",
+    "ROOT-CAMPAIGN-MAP-ADMITTED-C9.json": "ROOT-CAMPAIGN-MAP-ADMITTED-C10.json",
+    "ROOT-C9-NORMAL-SOURCE-WARM-BOUND.json": "ROOT-C10-NORMAL-SOURCE-WARM-BOUND.json"
+  },
+  "all_other_AST_identical": true,
+  "actual_clean_and_dual0_postclose_inputs_pass": true,
+  "actual_inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10-normal-opening81\\CLEAN-SEED.json",
+      "bytes": 7583,
+      "sha256": "f8e23e88662616a92c6070a927cc221cf4ca7efbe81491668bab31b753f5c367"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10-normal-opening81\\POST-C9-CLOSE.json",
+      "bytes": 10397,
+      "sha256": "87c1da914a2887ceee564a1f6422a136cbd49858094c376d00ec93071d82ea86"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C9-OWNER-CLOSED.json",
+      "bytes": 865,
+      "sha256": "9b2dff6be3c5aeed3812ba8e608cd7b2526abd2d29dee478d72463f1b4b09668"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C9.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c10-normal-opening81\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C9.json",
+      "bytes": 657,
+      "sha256": "b113735783d426a97638e9203e294906df00ec39da75fd53ef1f7e7dbb60d989"
+    }
+  ],
+  "boundary": {
+    "Game_pid": 153556,
+    "Game_creation_filetime": 134368602545256920,
+    "completed_cycles": 1957,
+    "date_raw": 53188032,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-1bec95182886",
+    "min_native_revision": 3137,
+    "next_sequence": 4115,
+    "start_date_raw": 53144328
+  },
+  "original_C9_startup_call_order_qualification_reused": true,
+  "C10_constructor_and_fresh_SEM_CAP_claimed": false,
+  "source_or_runtime_mutation": false,
+  "Game_MCP_Native_calls": 0,
+  "canonical_business": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+  "ordinary_credit": 0,
+  "old4113_replayed": false
+}

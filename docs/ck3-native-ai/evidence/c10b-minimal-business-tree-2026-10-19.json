@@ -1,0 +1,41 @@
+{
+  "schema": "xar.C10B-minimal-business-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:17:44.471196+00:00",
+  "base": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+  "canonical_commit": "154982126e5ff7d49f0a042c22246ba5af659f7a",
+  "tree": "2073eb225c6a1a53bd5b74b3b15ec819cc567c29",
+  "ref": "refs/heads/runtime/robert-v20261019-c10b-camera-lineage-timing",
+  "changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 870575,
+      "sha256": "a5f45d9ed9308038ef213e891fe882cc8cba8ecfd7a5045e8444cfcd5b53a0dd",
+      "git_blob": "cb667df720d41ab7dc3e21639c01d2db153a8eed"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_current_payload_v1.py",
+      "bytes": 2302,
+      "sha256": "3ff60d7a3c96eadf31a62cb4e625ebf917e0bf690ac8ce39d0a213ab69333f2c",
+      "git_blob": "eb70a935d1845b15c5cf43ddc8c142f0b81bc775"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 19972,
+      "sha256": "c61ffbdc6afb762946d2e16839a9ac737739255f641d706ee85cc8fbc1d71481",
+      "git_blob": "41aa376fc2a55045763bfc9f03317ba5e7345383"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 30348,
+      "sha256": "f050caf7dd7634e34c095e89269f9ea0523a241e2533bca7671296dd5b14c89c",
+      "git_blob": "d538cf9425cf980e0641b405880994cb3928350f"
+    }
+  ],
+  "Service_delta_bytes": 330,
+  "scope": "C10 plus four timing calls, one complete current-cache camera projection, and exact resolved same-Game source-retirement owner/lineage leaves. No whole-master Service/M1 adoption.",
+  "actual_adoption_claimed": false,
+  "worktree_or_main_index_changed": false,
+  "Native29_changed_or_loaded": false,
+  "Game_MCP_Native_calls": 0
+}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import sys
 import unittest
 from unittest import mock
@@ -328,6 +329,90 @@ class _Driver:
 
 
 class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
+    def _closed_education_opening(self):
+        # Actual4106/4107 inputs reproduce the independent opening consumer
+        # rejected in4113. We retain Native3136; no fabricated3137 raw proof.
+        inputs = json.loads((Path(__file__).with_name("fixtures") /
+            "lifestyle_after_succession_4106_4107_v1.json").read_text(encoding="utf-8"))
+        driver = _Driver()
+        frame = inputs["frame"]
+        driver.frame.update({key: value for key, value in frame.items()
+                             if key not in {"player_character_id", "actor_alive"}})
+        driver.frame["played_character"] = {
+            "character_id": frame["player_character_id"], "alive": frame["actor_alive"],
+        }
+        driver.require_initial_lifestyle_focus_before_date_advance = True
+        driver.initial_lifestyle_focus_gate_stage = "await_submit"
+        history = _scope_root()
+        root = history[0]["result"]["campaign_root_context"]
+        root.update(snapshot_revision=frame["native_revision"], date_raw=frame["date_raw"],
+                    player_character_id=frame["player_character_id"])
+        driver.history.extend(history)
+        driver.query_player_lifestyle_current_state_private_v1 = mock.Mock(return_value=inputs["state_query"])
+        driver.query_player_lifestyle_formal_private_v1 = mock.Mock(return_value=inputs["state_query"])
+        driver.query_child_education_focus_private_v1 = mock.Mock(return_value=inputs["education_query"])
+        driver.execute_step = mock.Mock(return_value={
+            "step": ROOT_QUERY_STEP, "accepted": True, "campaign_root_context": root,
+        })
+        return driver, inputs
+
+    def test_closed_education_focus_passes_auto_opening_into_complete_ordinary_dispatch(self):
+        driver, inputs = self._closed_education_opening()
+        service = GameplayBridgeService(driver)
+        with (
+            mock.patch("xar_autoplayer.bridge.player_lifestyle_private_transport_v1.query_player_lifestyle_private_v1",
+                       return_value=inputs["state_query"]),
+            mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn", return_value={
+                "policy": "ordinary-fixture", "phase": "native_war_root_query",
+                "selected_step": ROOT_QUERY_STEP, "reason": "ordinary legal candidate",
+            }) as ordinary,
+        ):
+            outcome = service.auto_turn()
+        self.assertEqual(outcome["status"], "executed")
+        self.assertEqual(outcome["selected_step"], ROOT_QUERY_STEP)
+        self.assertEqual(outcome["plan"]["policy"], "ordinary-fixture")
+        ordinary.assert_called_once()
+        driver.execute_step.assert_called_once_with(ROOT_QUERY_STEP, expected_revision=2)
+        self.assertFalse(driver.require_initial_lifestyle_focus_before_date_advance)
+        gate = service._initial_lifestyle_focus_gate_v1
+        self.assertEqual(gate["completion_kind"], "education_focus_not_applicable")
+        self.assertFalse(gate["checkpoint_saved"])
+        proof = outcome["plan"]["opening_lifestyle_readback_diagnostic"]["stock"]
+        self.assertEqual(proof["education_focus_query"], inputs["education_query"])
+        self.assertEqual(outcome["plan"]["opening_lifestyle_education_scope"]["current_focus_key"],
+                         "education_intrigue")
+        self.assertFalse(any(row["command"] in {FOCUS_SUBMIT_STEP, PERK_SUBMIT_STEP}
+                             for row in driver.history))
+
+    def test_opening_education_unknown_and_drifting_inputs_still_block_auto_without_dispatch(self):
+        for case in ("unknown_focus", "frame_drift", "pending"):
+            with self.subTest(case=case):
+                driver, inputs = self._closed_education_opening()
+                if case == "unknown_focus":
+                    inputs["education_query"]["current_focus"]["key"] = "unknown_focus"
+                original = driver.query_player_lifestyle_stock_focus_combined_private_v1
+                if case == "frame_drift":
+                    def drifting(*, expected_revision):
+                        value = original(expected_revision=expected_revision)
+                        driver.frame["revision"] += 1
+                        return value
+                    driver.query_player_lifestyle_stock_focus_combined_private_v1 = drifting
+                service = GameplayBridgeService(driver)
+                with (
+                    mock.patch("xar_autoplayer.bridge.player_lifestyle_private_transport_v1.query_player_lifestyle_private_v1",
+                               return_value=inputs["state_query"]),
+                    mock.patch("xar_autoplayer.bridge.service.choose_one_life_turn") as ordinary,
+                    mock.patch("xar_autoplayer.bridge.service.unresolved_lifestyle_perk_action",
+                               return_value={"kind": "perk", "status": "action_state_unknown"}
+                               if case == "pending" else None),
+                ):
+                    outcome = service.auto_turn()
+                self.assertEqual(outcome["status"], "blocked")
+                self.assertIsNone(outcome.get("selected_step"))
+                self.assertTrue(driver.require_initial_lifestyle_focus_before_date_advance)
+                driver.execute_step.assert_not_called()
+                ordinary.assert_not_called()
+
     def test_blocked_war_keeps_red_but_spends_native_legal_diplomacy_point(self) -> None:
         driver = _Driver()
         driver.frame["active_wars"] = [{"war_id": 16777250}]

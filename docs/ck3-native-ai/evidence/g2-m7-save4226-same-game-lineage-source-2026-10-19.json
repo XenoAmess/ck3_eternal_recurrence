@@ -1,0 +1,68 @@
+{
+  "schema": "xar.m7-same-game-resolved-source-retirement/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:13:56.509595+00:00",
+  "scope": "source_only_synthetic_qualification",
+  "source_head": "6be5c92bb311a8305c8ba8f08305b5b31b4b90b0",
+  "input_failure": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c10-save4226-failure82/FROZEN.json",
+    "bytes": 13433,
+    "sha256": "b4879f4e9c499efe48798013553eaf6a19a17cdd597cb5ec2b6896f7b1011c0f"
+  },
+  "finding": "owner.driver_step pre-SAVE ensure routes same-Game changed source epoch to cold-only projection; original driver.execute_step line289 is not reached on this stack",
+  "implementation": {
+    "api": "plan_resolved_same_game_source_retirement_v1",
+    "new_game_path": "unchanged canonical cold projection",
+    "same_game_path": "canonical owner/native driver; actual OS birth/image; original complete resolved proof and exact original SAVE capture; actual same_pid_hot resumed driver/checkpoint/lifecycle/goal/pipe; current stable living frame/episode/date; existing typed exact-byte archive/readback before new epoch ledger",
+    "pending_UNKNOWN": "reject; no re-sign or migration",
+    "action_replay_authorized": false
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 30348,
+      "sha256": "f050caf7dd7634e34c095e89269f9ea0523a241e2533bca7671296dd5b14c89c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_same_game_source_retirement_v1.py",
+      "bytes": 7895,
+      "sha256": "fd1973a5bb0c5a214d82acdbb89caa4ea128a752c31ee4ad32caff41c87a5aac"
+    }
+  ],
+  "test": {
+    "runner": "python -B; sys.path src + tests/unit; unittest test_successor_ui_same_game_source_retirement_v1",
+    "result": "PASS",
+    "tests": 1,
+    "negative_subcases": [
+      "foreign birth",
+      "same epoch",
+      "different SAVE",
+      "unconfirmed receipt",
+      "wrong driver state",
+      "stale current date",
+      "pending",
+      "handoff_unverified",
+      "UNKNOWN Close",
+      "same-pid-hot has no cold projection"
+    ],
+    "fixture": "synthetic Game/OS/material SAVE and native flags; original Continue/Close/ledger validators real",
+    "initial_fixture_failure": "relative synthetic EXE path differed from canonical OS path; fixture normalized, production guard retained"
+  },
+  "runtime_credit": {
+    "new_Game_RPC": 0,
+    "SAVE_calls": 0,
+    "active_Driver_or_SAVE_reads": 0,
+    "actual_warm_adoption": "not_observed",
+    "M7_whole": "in_progress"
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "new_large_artifact": false,
+    "free_bytes": 178351280128,
+    "source": "shutil.disk_usage(Z:/) at observation UTC",
+    "measured_path": "Z:/",
+    "measured_volume": "Z:",
+    "purpose": "small source/test/evidence writes on Z only; not D child admission",
+    "D_capacity_or_admission_claimed": false
+  }
+}

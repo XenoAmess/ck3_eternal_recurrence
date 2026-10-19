@@ -1997,13 +1997,16 @@ class GameplayBridgeService:
         use_internal_view = callable(internal_snapshot) and callable(
             internal_planning_view
         )
-        snapshot = (
-            internal_snapshot() if use_internal_view else self.snapshot()
+        snapshot = _timed_planning_call_v1(
+            "service.planner_snapshot_prepare",
+            internal_snapshot if use_internal_view else self.snapshot,
         )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
         deferred_release_root: list[bool] = []
-        snapshot = self._prepare_succession_transition_v1(
+        snapshot = _timed_planning_call_v1(
+            "service.planner_succession_preflight",
+            self._prepare_succession_transition_v1,
             snapshot, available_steps, deferred_release_root=deferred_release_root,
         )
         unavailable = snapshot.get("_succession_preflight_unavailable_v1")
@@ -2576,7 +2579,9 @@ class GameplayBridgeService:
             return planned
 
         if use_internal_view:
-            planned = internal_planning_view(snapshot, plan_from_view)
+            planned = _timed_planning_call_v1(
+                "service.planner_internal_view", internal_planning_view,
+                snapshot, plan_from_view)
             planned.update(private_history_views)
         else:
             public_native_history = snapshot.get("native_command_history")
@@ -2794,18 +2799,16 @@ class GameplayBridgeService:
             if isinstance(before_lifestyle, dict) else None
         )
         if lifestyle_trial:
-            planned = (
-                self._plan_initial_lifestyle_focus_first_v1(
-                    planned, available_steps
-                )
+            planned = _timed_planning_call_v1(
+                "service.planner_lifestyle_consumer",
+                self._plan_initial_lifestyle_focus_first_v1
                 if getattr(
                     self.driver,
                     "require_initial_lifestyle_focus_before_date_advance",
                     False,
                 ) is True
-                else self._plan_private_lifestyle_trial_v1(
-                    planned, available_steps
-                )
+                else self._plan_private_lifestyle_trial_v1,
+                planned, available_steps,
             )
         plan = planned.get("plan")
         prewar_arbitration = (
@@ -3996,6 +3999,9 @@ class GameplayBridgeService:
             for key in ("state", "focus", "focus_query"):
                 if key in value:
                     summary[key] = summarize_readback(value[key])
+            for key in ("education_focus_scope", "education_focus_source_frame", "education_focus_query"):
+                if key in value:
+                    summary[key] = copy.deepcopy(value[key])
             return summary
 
         def blocked(reason: str) -> dict[str, object]:
@@ -4223,6 +4229,38 @@ class GameplayBridgeService:
         readback_diagnostic["after_formal_stock"] = {
             key: after.get(key) for key in binding
         }
+        from ..lifestyle_education_focus_scope_v1 import (
+            LIFESTYLE_BINDING_ERRORS, education_focus_frame,
+            qualify_current_education_focus,
+        )
+        education = (
+            qualify_current_education_focus(
+                stock.get("education_focus_query"), education_focus_frame(before),
+                expected_revision=revision,
+            ) if isinstance(stock, dict) and stock.get("status") == "education_focus_not_applicable" else None
+        )
+        state = stock.get("state") if isinstance(stock, dict) else None
+        if (education is not None and stock.get("education_focus_scope") == education
+                and stock.get("education_focus_source_frame") == education_focus_frame(before)
+                and isinstance(formal, dict) and formal.get("status") == "native_query_unavailable"
+                and isinstance(state, dict) and state.get("status") == "native_query_unavailable"
+                and isinstance(formal.get("native_error"), str)
+                and formal["native_error"] in LIFESTYLE_BINDING_ERRORS
+                and formal["native_error"] == state.get("native_error")
+                and pending is None
+                and education_focus_frame(after) == education_focus_frame(before)):
+            # This episode has an observed education focus, rather than an
+            # adult opening focus to submit/receipt. Retain the failure/proof
+            # and return through the complete ordinary planner exactly once.
+            gate.update(stage="complete", completion_kind="education_focus_not_applicable",
+                        education_focus_scope=education)
+            self.driver.initial_lifestyle_focus_gate_stage = "complete"
+            self.driver.require_initial_lifestyle_focus_before_date_advance = False
+            ordinary = self._plan_turn_internal()
+            return {**ordinary, "plan": {
+                **ordinary["plan"], "opening_lifestyle_education_scope": education,
+                "opening_lifestyle_readback_diagnostic": readback_diagnostic,
+            }}
         formal_source = (
             formal.get("source_frame") if isinstance(formal, dict) else None
         )
@@ -4856,8 +4894,9 @@ class GameplayBridgeService:
         # Presentation is best effort and starts only after the business turn
         # has completed. Its later receipt never attests this gameplay frame.
         try:
+            from .auto_camera_current_payload_v1 import current_camera_payload_v1
             camera_schedule = self._auto_camera_worker.schedule(
-                planned.get("_auto_camera_hotspot_input")
+                current_camera_payload_v1(self, planned, outcome)
             )
         except Exception as error:
             # The gameplay command has already run. Even a scheduler bug must

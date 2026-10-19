@@ -1,0 +1,31 @@
+{
+  "schema": "xar.C10-one-Service-opening-business-git-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:47:26.292573+00:00",
+  "base": "43496c90249a2cae3b089f93360f905941c8f86e",
+  "canonical_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+  "tree": "089b16744b54be115f26e7789b777e67af5f9c65",
+  "ref": "refs/heads/runtime/robert-v20261019-c10-opening",
+  "hunk_descriptor": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\lifestyle-opening-education-scope-C9-to-C10-2026-10-19.json",
+    "bytes": 6072,
+    "sha256": "a36c8fe7c08dc9ed35a888cef304279647a72081629a926c01af00141b5a3a8e"
+  },
+  "changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 870245,
+      "sha256": "7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf",
+      "git_blob": "e5f9493676f0ef5e2eb9736c4e027742b02fc0ff"
+    }
+  ],
+  "exactly_one_file_two_authorized_hunks": true,
+  "all_other_C9_tree_bytes_preserved": true,
+  "AST_parse": true,
+  "M5_existing_72_pipeline_cases_reused": true,
+  "whole_master_adopted": false,
+  "worktree_or_index_changed": false,
+  "external_source_trees_created": 0,
+  "Game_MCP_Native_calls": 0,
+  "actual_C10_adoption_claimed": false
+}

@@ -1,0 +1,140 @@
+{
+  "schema": "xar.m4.camera-post-business-current-cache-implementation.v1",
+  "status": "source_test_ready_minimal_C10_patch_ready_runtime_pending",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:06:42.909612+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "source_audit": {
+    "path": "docs/ck3-native-ai/evidence/m4-camera-post-business-date-source-audit-2026-10-19.json",
+    "bytes": 8032,
+    "sha256": "409390b14aa34fe97d55cfa9604f659ec94c330acaa6f306ac80260961c500e3"
+  },
+  "canonical_before": {
+    "service": {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 873140,
+      "sha256": "a520bcb6279622e65ac2914583f9a915d4d3ae56e506d34e7e272639ed33131f"
+    },
+    "async_test": {
+      "commit": "6be5c92bb311a8305c8ba8f08305b5b31b4b90b0",
+      "bytes": 6620,
+      "sha256": "867c1d132c73e8404b45bf2b5d61c7daca320d8c0ead77cd774d21e7eb455154"
+    }
+  },
+  "canonical_after": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 873230,
+      "sha256": "9ca6fd77278e89017d214a93a4b07e420188466ce60d1558e7a21dae6ae3da40"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_current_payload_v1.py",
+      "bytes": 2302,
+      "sha256": "3ff60d7a3c96eadf31a62cb4e625ebf917e0bf690ac8ce39d0a213ab69333f2c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py",
+      "bytes": 8116,
+      "sha256": "239da3bb0b06ba9e8bd541068c596e9c46e3405673a7284787f32f6e473e3b58"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_async.py",
+      "bytes": 6957,
+      "sha256": "486cdf877c394cc35e22c6716c478a284ede9a9453db0b314d4e3ed75a162611"
+    }
+  ],
+  "ownership": "M4 changes only the existing Service camera schedule hunk, new auto_camera_current_payload_v1 helper/new focused test, and the existing async test's synthetic current-cache fixture. Pre-existing M1/M5 Service edits preserved; old three camera leaves, Native29, NativeDriver and current frozen SDK untouched.",
+  "behavior": {
+    "cache_path": "Business completes first. The existing schedule try-block calls current_camera_payload_v1(self,planned,outcome); it invokes callable driver.take_internal_semantic_snapshot exactly once, then projects both frame and camera fields from that returned snapshot.",
+    "complete_projection": "Existing _observed_planning_source_frame and _auto_camera_hotspot_input copy current date, public/native revisions, actor/episode/Game/connection, army positions, objectives, mandatory/event/interaction flags and build binding together. Planning payload and business planning_source_frame are not rewritten.",
+    "guards": "Require complete planning/current frames and same actor, episode, Game PID and connection; positive actual Game PID; no backward date/public/native revision; no date older than a known business ending_date_raw; map_ready and played actor alive.",
+    "degradation": "Missing reader/cache, cache exception, partial/regressed or changed-owner frame raises inside the existing presentation-only try. Its existing catch reports camera unavailable and retains the completed/pending business outcome; no business replay or new Game action.",
+    "zero_day": "A same-frame zero-day action remains eligible; public/native revision numbers are preserved separately, never forced equal.",
+    "source_semantics": "The returned current publication is a new presentation source, independent from the action's original planning proof. It is not a new semantic Native observation.",
+    "limitations": "One cache copy, no second bookend. Normal asynchronous scheduling remains; later Native actor/date/window/target guards still apply. This does not claim same-frame camera/gameplay proof or applied pixels."
+  },
+  "exact_C10_minimal_package": {
+    "immutable_base": {
+      "root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src08",
+      "leaf": "xar_autoplayer/bridge/service.py",
+      "bytes": 870245,
+      "sha256": "7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf",
+      "business_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c"
+    },
+    "replacement": {
+      "old": "        try:\n            camera_schedule = self._auto_camera_worker.schedule(\n                planned.get(\"_auto_camera_hotspot_input\")\n            )",
+      "new": "        try:\n            from .auto_camera_current_payload_v1 import current_camera_payload_v1\n            camera_schedule = self._auto_camera_worker.schedule(\n                current_camera_payload_v1(self, planned, outcome)\n            )",
+      "matches": 1,
+      "synthetic_result_bytes": 870335,
+      "synthetic_result_sha256": "529857e4b8d256da58f3423bd048270a137a8d3c0570d31012e98920c978215f",
+      "result_written": false
+    },
+    "required_added_helper": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_current_payload_v1.py",
+      "bytes": 2302,
+      "sha256": "3ff60d7a3c96eadf31a62cb4e625ebf917e0bf690ac8ce39d0a213ab69333f2c"
+    },
+    "application": "After validating immutable C10 base, apply this unique text replacement and copy the exact helper to the matching bridge package. The recorded synthetic result is an in-memory preview only; M4 wrote no frozen SDK tree.",
+    "isolation": "Canonical Service currently contains other pre-existing dirty edits; copying its whole file is not this minimal C10 package. The camera-only inverse must restore canonical before SHA. Native29 and old camera STATUS/source pins do not change."
+  },
+  "cache_read_contract": {
+    "actual_source": "C9/C10 frozen native_driver.py1612139B SHAe19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f; take_internal_semantic_snapshot3001-3014 -> state.semantic_snapshot1306-1353.",
+    "Game_pipe_calls_added": 0,
+    "local_cache_reads_added_per_reached_schedule": 1,
+    "bookend_reads_added": 0,
+    "force_refresh_added": 0,
+    "honesty": "state.semantic_snapshot reads existing _semantic_snapshot under _condition; absent publication can wait/throw without issuing a Game request. The existing wrapper also does episode/cache projections and metadata observers; this is not claimed as zero CPU or zero persistence side effects.",
+    "performance": "No source-only performance improvement claimed. Natural adopted samples must measure the added local projection and actual camera outcome."
+  },
+  "focused_verification": {
+    "argv": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_async.py::test_auto_turn_business_first_and_source_binding",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "environment_overrides": {
+      "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 2.587557600112632,
+    "stdout": "..................                                                       [100%]\n18 passed in 2.08s\n",
+    "stderr": "",
+    "tool": {
+      "chunk_id": "f504e9",
+      "exit_code": 0,
+      "wall_time_seconds": 2.5604357
+    },
+    "test_utc": null,
+    "test_utc_reason": "Runner captured exact argv/elapsed/stdout/exit, not UTC; source metadata time is not a test timestamp.",
+    "cases": "17 synthetic new-file cases plus one existing real Service async binding node: actual8-day before/after coordinates and build; same-frame0-day; unavailable/throwing/partial/backward/date-before-end cache; changed actor/episode/connection/Game; dead/non-map; absent reader; current mandatory/resolved battle.",
+    "instrumentation": "Actual GameplayBridgeService.auto_turn executes one synthetic business action, then its real new helper. CacheDriver counts exactly one local read (zero if reader absent); snapshot/request methods fail if invoked. Worker captures complete payload in memory. Original planned payload and business result are checked unchanged; pending unknown result is not reissued.",
+    "compatibility_fixture": "test_auto_camera_async now supplies an existing same-frame semantic publication with alive/map-ready actor and same observed battle, instead of object() with no cache reader. Its original async schedule/postcondition assertions remain.",
+    "scope": "First focused run18passed, no test failures or broad old camera matrix rerun. Old33+2+1 historical receipts unchanged. No live8-day sample or actual Native/pixel pass inferred."
+  },
+  "remaining_acceptance": [
+    "Root/harness builds the next SDK from the explicit C10 hunk/helper or reviewed canonical batch; verify actual imported hashes.",
+    "At required Native29 cold continuation, retain correct minimized owned HWND/real viewport and bind actual process/episode/generation.",
+    "Observe a natural baseline advance then queued->matching Native settled/postcondition, and original recorded full-realm/hotspot frames. Source/fake tests do not replace applied or coverage evidence.",
+    "If cached source or Native outcome unavailable, preserve business progress and record the reason; do not loosen the7-day Native guard or relabel old army positions."
+  ],
+  "storage": {
+    "source_test_net_growth_bytes": 10845,
+    "evidence_max_by_total_budget_bytes": 13731,
+    "total_net_limit_bytes": 24576,
+    "external_written_bytes": 0,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "producer_processes": 0,
+    "future_write_bytes": 0,
+    "physical_credit_bytes": 0,
+    "budget": "original other-research128MiB / original review unchanged"
+  }
+}

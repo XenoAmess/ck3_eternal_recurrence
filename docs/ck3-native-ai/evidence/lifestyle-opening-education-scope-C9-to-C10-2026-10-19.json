@@ -1,0 +1,54 @@
+{
+  "schema": "xar.exact-C9-Service-opening-education-hunks.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:45:21Z",
+  "base": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src07\\xar_autoplayer\\bridge\\service.py",
+    "bytes": 867972,
+    "sha256": "5b46e116e7a65c753eac099a82f79fcb8a3a25112a5dcf5e55e534a521f239d1"
+  },
+  "candidate": {
+    "module": "xar_autoplayer/bridge/service.py",
+    "bytes": 870245,
+    "sha256": "7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf"
+  },
+  "scope": "Only the initial-LIFE function: retain education proof, qualify exact known current education focus, finish episode opening prerequisite without write/checkpoint credit, then one complete ordinary replan. Do not copy the whole master Service (unrelated M1 private code).",
+  "hunks": [
+    {
+      "old": "            for key in (\"state\", \"focus\", \"focus_query\"):\n                if key in value:\n                    summary[key] = summarize_readback(value[key])\n            return summary\n",
+      "new": "            for key in (\"state\", \"focus\", \"focus_query\"):\n                if key in value:\n                    summary[key] = summarize_readback(value[key])\n            for key in (\"education_focus_scope\", \"education_focus_source_frame\", \"education_focus_query\"):\n                if key in value:\n                    summary[key] = copy.deepcopy(value[key])\n            return summary\n"
+    },
+    {
+      "old": "        readback_diagnostic[\"after_formal_stock\"] = {\n            key: after.get(key) for key in binding\n        }\n        formal_source = (\n",
+      "new": "        readback_diagnostic[\"after_formal_stock\"] = {\n            key: after.get(key) for key in binding\n        }\n        from ..lifestyle_education_focus_scope_v1 import (\n            LIFESTYLE_BINDING_ERRORS, education_focus_frame,\n            qualify_current_education_focus,\n        )\n        education = (\n            qualify_current_education_focus(\n                stock.get(\"education_focus_query\"), education_focus_frame(before),\n                expected_revision=revision,\n            ) if isinstance(stock, dict) and stock.get(\"status\") == \"education_focus_not_applicable\" else None\n        )\n        state = stock.get(\"state\") if isinstance(stock, dict) else None\n        if (education is not None and stock.get(\"education_focus_scope\") == education\n                and stock.get(\"education_focus_source_frame\") == education_focus_frame(before)\n                and isinstance(formal, dict) and formal.get(\"status\") == \"native_query_unavailable\"\n                and isinstance(state, dict) and state.get(\"status\") == \"native_query_unavailable\"\n                and isinstance(formal.get(\"native_error\"), str)\n                and formal[\"native_error\"] in LIFESTYLE_BINDING_ERRORS\n                and formal[\"native_error\"] == state.get(\"native_error\")\n                and pending is None\n                and education_focus_frame(after) == education_focus_frame(before)):\n            # This episode has an observed education focus, rather than an\n            # adult opening focus to submit/receipt. Retain the failure/proof\n            # and return through the complete ordinary planner exactly once.\n            gate.update(stage=\"complete\", completion_kind=\"education_focus_not_applicable\",\n                        education_focus_scope=education)\n            self.driver.initial_lifestyle_focus_gate_stage = \"complete\"\n            self.driver.require_initial_lifestyle_focus_before_date_advance = False\n            ordinary = self._plan_turn_internal()\n            return {**ordinary, \"plan\": {\n                **ordinary[\"plan\"], \"opening_lifestyle_education_scope\": education,\n                \"opening_lifestyle_readback_diagnostic\": readback_diagnostic,\n            }}\n        formal_source = (\n"
+    }
+  ],
+  "tests": {
+    "source": "actual C9 Service+only these hunks compiled in memory, production consumers and complete Service.auto_turn integration",
+    "result": "72 passed in 1.33s",
+    "files": [
+      "tests/unit/test_lifestyle_formal_private_consumer.py",
+      "tests/unit/test_lifestyle_education_focus_scope_v1.py",
+      "tests/unit/test_lifestyle_native_negative_binding_v1.py"
+    ],
+    "new_cases": [
+      "closed4106/4107 actual inputs through opening -> complete ordinary planner -> existing legal root-query dispatch, no LIFE submit",
+      "unknown focus / cross-frame / pending: blocked, no ordinary planner or dispatch"
+    ],
+    "live_qualification": false
+  },
+  "actual_failure": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/4113-1-result.json",
+    "bytes": 13866,
+    "sha256": "7221d70fb28946fa0515f04b005b3a50ba4c623bdf9e172397d536e91eced177",
+    "full_education_proof_serialized_in_old_row": false,
+    "replay_boundary": "Uses unchanged closed4106/4107 full Native3136 facts to exercise the same opening rejection; never labels a Native3137 reconstruction as observed."
+  },
+  "caller_audit": {
+    "NativeDriver.query_player_lifestyle_stock_focus_combined_private_v1": "transparent wrapper, no status rejection",
+    "Service._plan_initial_lifestyle_focus_first_v1.initial_read": "fixed by these exact hunks",
+    "Service._plan_initial_lifestyle_focus_first_v1.final_selected_focus_read": "keeps stock_focus_available-only action guard; current education case returns before selecting an adult focus. A later drift stays RED and reevaluates next plan.",
+    "Service._plan_private_lifestyle_trial_v1": "existing C9 consumer handles strictly qualified education scope; preserves original deferrable war query",
+    "ordinary/nonwar/M5 initial dispatchers": "all route to this single initial-LIFE method; no alternate opening implementation found"
+  }
+}

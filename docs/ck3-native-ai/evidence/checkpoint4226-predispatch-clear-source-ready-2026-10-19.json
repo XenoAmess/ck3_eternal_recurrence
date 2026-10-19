@@ -1,0 +1,74 @@
+{
+  "schema": "xar.checkpoint4226-predispatch-clear-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:15:47.714411+00:00",
+  "status": "SOFTWARE_READY_ACTUAL_CONTROL_NOT_CLAIMED",
+  "sources": {
+    "helper": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\checkpoint4226_predispatch_clear_v1.py",
+      "bytes": 7170,
+      "sha256": "9e2c197159a34965e77c70eb9a5e3b0711106ce13c8dccd9716c106871055a7a"
+    },
+    "qualifier": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_checkpoint4227_outer_v1.py",
+      "bytes": 9929,
+      "sha256": "e588d895f6c4c7f147ca03097e37e51ea4a74277cdab71f9a34567802f380d70"
+    },
+    "candidate_dispatcher": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\checkpoint4227-review01\\root_saved_campaign_preflight.py",
+      "bytes": 19462,
+      "sha256": "9c18bd121786f1ecf6aaeae5c83d4f922a3b5bf1e99236f4be4b1b816043b6a5"
+    },
+    "qualification": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\checkpoint4227-review01\\QUALIFICATION.json",
+      "bytes": 2665,
+      "sha256": "276cd25846bf47f551f432fb1bf83521fd0eb895bd3eb0205fdc85d1bc236b9b"
+    }
+  },
+  "actual_source_boundary": {
+    "business": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+    "owner_sha256": "61d34deec81004116e87470e111d0f33afee479e8a035ad3efa1d02ab7980f3f",
+    "lineage_sha256": "44fa2870a33723559551960a09c3d07bb848da0337bb9f18b9c9bfed77cbaa51",
+    "flow": "owner.driver_step require_save271/snapshot279/ensure280 -> observe89 -> lineage281; execute_step289 not reached",
+    "SAVE4226_native_dispatch": false,
+    "completed_cycles": 2010,
+    "date_raw": 53189040,
+    "next_sequence_before_control": 4227
+  },
+  "request": {
+    "sequence": 4227,
+    "command": "clear_zero_rpc_preflight_rejection",
+    "arguments": {
+      "repair_kind": "checkpoint4226_source_bound_before_native_save"
+    }
+  },
+  "qualification": {
+    "actual_original_run_request_loop": true,
+    "original_consume_persist_halt": true,
+    "cases": [
+      "actual frozen positive",
+      "foreign pending checkpoint rejected",
+      "foreign current actor rejected"
+    ],
+    "result": "3 PASS",
+    "fixture_scope": "Process/storage guard is fixture-only; source-bound file checks use original frozen82 and actual immutable source bytes",
+    "Game_SDK_Native_process_calls": 0,
+    "live_runtime_writes": 0
+  },
+  "successful_control_contract": {
+    "status": "source_bound_predispatch_checkpoint_cleared",
+    "next_sequence": 4228,
+    "state_only_change": "pending_checkpoint becomes null",
+    "ordinary_credit": 0,
+    "original_SAVE_replayed": false,
+    "retained": [
+      "original4226 error/firstexception/frozen82",
+      "2010/T0/end/current40526 episode",
+      "dirty/due/cache3862/checkpoint_saved26",
+      "all governance including existing prisoner receipt_pending"
+    ],
+    "subsequent_SAVE": "Only after necessary C10B normal SDK warm adopts permanent App/lineage source fix; original current App still refuses SAVE",
+    "marker": "Q/CHECKPOINT4226-PREDISPATCH-CLEARED.json"
+  },
+  "actual_execution": "runtime sole owner; not claimed by software qualification"
+}

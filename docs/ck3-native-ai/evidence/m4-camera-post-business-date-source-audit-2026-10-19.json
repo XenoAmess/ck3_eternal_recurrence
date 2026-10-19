@@ -1,0 +1,156 @@
+{
+ "schema": "xar.m4.camera-post-business-date-source-audit.v1",
+ "status": "source_defect_confirmed_patch_proposed_no_runtime_reproduction",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T09:54:07.513263+00:00",
+ "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+ "source_roots": {
+  "N": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep",
+  "runtime_relative": "robert30-v20261019-campaign01/runtime",
+  "C9_relative": "sdk-v20261019-candidate/src07/xar_autoplayer/bridge",
+  "C10_relative": "sdk-v20261019-candidate/src08/xar_autoplayer/bridge",
+  "Native29": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native29-camera01"
+ },
+ "C9": {
+  "freeze": {
+   "leaf": "ROOT-FINAL-SDK-FREEZE-P37C9.json",
+   "bytes": 403698,
+   "sha256": "a5f4c7257bef179ef83b07aa2459542776e83969cd6ee6bf9e6de1af2252bfc7"
+  },
+  "sources": [
+   {
+    "leaf": "service.py",
+    "bytes": 867972,
+    "sha256": "5b46e116e7a65c753eac099a82f79fcb8a3a25112a5dcf5e55e534a521f239d1"
+   },
+   {
+    "leaf": "native_driver.py",
+    "bytes": 1612139,
+    "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"
+   },
+   {
+    "leaf": "realm_overview_camera.py",
+    "bytes": 13511,
+    "sha256": "5878650d997058411b6d73b2ad531147a8441632339c18957890b28b5d4cd037"
+   }
+  ]
+ },
+ "C10": {
+  "freeze": {
+   "leaf": "ROOT-FINAL-SDK-FREEZE-P37C10.json",
+   "bytes": 403701,
+   "sha256": "7dc34b4f33d5db3f1744259add9fa369497fc28deab698c59db36ebbe849b559"
+  },
+  "sources": [
+   {
+    "leaf": "service.py",
+    "bytes": 870245,
+    "sha256": "7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf"
+   },
+   {
+    "leaf": "native_driver.py",
+    "bytes": 1612139,
+    "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"
+   }
+  ],
+  "business_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+  "adoption": "runtime owner reports warm3138/public2/connection8; no live reads by M4"
+ },
+ "Native29": {
+  "qualification": {
+   "leaf": "QUALIFICATION.json",
+   "bytes": 6115,
+   "sha256": "364acdd870faa7fd21e5f5ce5806d98fc22fe64416064dd015c0eb65647bebe5"
+  },
+  "source": {
+   "relative": "source/src/camera_presentation_v1.cpp",
+   "leaf": "camera_presentation_v1.cpp",
+   "bytes": 15775,
+   "sha256": "656055437114c216f8703197cc010f4443025969d16cece5fd63333bce3c6abf"
+  },
+  "scope": "Closed qualified candidate source; no current DLL adoption or live camera qualification claimed"
+ },
+ "camera_functions_identical_C9_C10": {
+  "_auto_camera_hotspot_input": true,
+  "auto_turn": true
+ },
+ "closed_sample": {
+  "relative": "p37-responses/4113-1-result.json",
+  "bytes": 13866,
+  "sha256": "7221d70fb28946fa0515f04b005b3a50ba4c623bdf9e172397d536e91eced177",
+  "planning_source_frame": {
+   "schema": "xar.ck3.planning-source-frame/v1",
+   "status": "complete",
+   "snapshot_id": "native:3137",
+   "revision": 2,
+   "native_revision": 3137,
+   "date_raw": 53188032,
+   "actor_character_id": 40526,
+   "episode_run_id": "native-40526-1bec95182886",
+   "connection_generation": 7,
+   "bridge_pid": 153556
+  },
+  "camera": {
+   "scheduled": "auto-camera-ead90c39ca57-2",
+   "latest": "auto-camera-ead90c39ca57-1",
+   "status": "pending",
+   "work_status": "queued_native_presentation",
+   "reason": "battle",
+   "title_key": "b_lanciano"
+  },
+  "limit": "Opening-blocked response, not 8-day advance. Queue is not applied/coverage. Runtime confirms no closed 8-day ordinary life in C9/C10 at review: 4111 was zero-day war-window, 4113 blocked, C10 just warm. Old3103 is 7-day hold, not 8-day proof."
+ },
+ "causal_source_chain": [
+  "C9 Service2391-2403 freezes _auto_camera_hotspot_input from planning_snapshot/planning_source_frame before business.",
+  "Service4781 executes business. 4790-4794 replaces planned only for an optional following_plan; baseline life-advance does not rebuild camera input. 4811-4816 schedules the original payload after business. Actual C10 camera functions are source-identical.",
+  "NativeCameraPresentationClient.submit copies frame.date_raw into Request. A fresh wall-clock expiry does not renew its old game date.",
+  "Native29 Advance rejects actor mismatch, request date in future or snapshot.date_raw-request.date_raw>7*24 as stale_actor. Native29 retained this guard.",
+  "Driver829 baseline horizon30 days; 25017-25022 clamps to min(horizon,8) with war-results-window capability. Interruptions can shorten actual elapsed time; requested8 alone is not elapsed8.",
+  "Conditional proof: if actual business advance is8 days and a realm intent is emitted afterwards, request still has predate; delta=8*24=192>168, so Native must reject it. Holds/cancels or a different newer-payload path do not establish this failure.",
+  "Zero/one-day war camera may pass the same date guard; its queued receipt does not qualify baseline full-realm operation."
+ ],
+ "existing_end_sources": {
+  "life_result": "Driver25292-25321 returns start/end dates, elapsed_days, current snapshot_id/revision, paused/event flags and war-progress summaries; no complete end identity plus current army/objective positions.",
+  "action_frame": "No complete generic end action_frame sufficient for camera projection was found. Date/revision-only facts cannot redate pre-action military locations.",
+  "cached_reader": "take_internal_semantic_snapshot3001-3014 already projects episode/cache data from state.semantic_snapshot1306-1353. The latter reads an existing publication under _condition (or waits/throws if absent), with no command/request.",
+  "cost": "One cached projection avoids a new Game pipe call, not all CPU or side effects: the existing wrapper runs metadata observers and can persist an actually changed marriage outcome. No performance benefit is claimed."
+ },
+ "minimal_patch_proposal": {
+  "scope": "One narrow Service camera-schedule block, optional small pure helper plus focused memory test. No Native29/Driver/strategy/action-policy change; old camera leaves stay frozen.",
+  "steps": [
+   "Before existing schedule, invoke existing callable take_internal_semantic_snapshot once; never snapshot/force-refresh/query for camera.",
+   "Build observed source frame and _auto_camera_hotspot_input entirely from that returned current snapshot: date/actor/episode/Game/connection, positions, objectives, mandatory flags, build binding.",
+   "Keep new presentation source independent of original gameplay planning_source_frame. Do not force public/native revisions equal or overwrite business evidence.",
+   "Unavailable/incomplete/regressed current publication yields unavailable/skipped camera receipt and preserves completed business result. Never put an end date on old army data.",
+   "On actor/episode change, use only the new complete snapshot; existing policy resets identity, no old/new data merge."
+  ],
+  "tests": [
+   "Actual Service scheduling path: synthetic before day0/after day8 with moved army emits after date and after coordinates; one cached read, zero query/pipe.",
+   "Native date fixture: rebuilt frame delta0; original predate192>168. Retain Native7-day guard.",
+   "Absent/incomplete/regressed current source skips camera and retains business result; no old data relabel.",
+   "Post-action mandatory/resolved or moved battle replaces old state; existing Native29/ABI and33+2+1 test history unchanged."
+  ]
+ },
+ "limits": {
+  "verification": "Read-only source/AST comparison, byte/SHA checks against freezes and pinned closed JSON; no test or live reproduction.",
+  "sources_changed": 0,
+  "tests_run": 0,
+  "Native_builds": 0,
+  "new_Game_RPC": 0,
+  "Desktop_calls": 0,
+  "live_Driver_reads": 0,
+  "SAVE_reads_or_exports": 0,
+  "patch_applied": false,
+  "actual_8day_stale_actor_observed": false,
+  "storage": {
+   "limit_bytes": 8192,
+   "external_written_bytes": 0,
+   "allocated_bytes": null,
+   "producer_closed": true,
+   "producer_processes": 0,
+   "future_write_bytes": 0,
+   "physical_credit_bytes": 0,
+   "budget": "original other-research128MiB / original review unchanged"
+  }
+ }
+}

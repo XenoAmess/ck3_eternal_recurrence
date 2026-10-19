@@ -73,7 +73,8 @@ def test_auto_turn_business_first_and_source_binding() -> None:
     frame = {
         "snapshot_id": "native:9", "revision": 4, "native_revision": 9,
         "date_raw": 53144328, "episode_run_id": "episode-1",
-        "played_character": {"character_id": 31254},
+        "played_character": {"character_id": 31254, "alive": True},
+        "map_ready": True,
         "diagnostics": {"connection_generation": 2, "bridge_pid": 127268},
     }
     observed = service.GameplayBridgeService._observed_planning_source_frame(frame)
@@ -94,7 +95,13 @@ def test_auto_turn_business_first_and_source_binding() -> None:
         assert release.wait(2)
         return service.GameplayBridgeService._select_auto_camera_hotspot(obj, payload)
 
-    obj = service.GameplayBridgeService(object())
+    class Driver:
+        def take_internal_semantic_snapshot(self):
+            return {**frame, "active_wars": [{"war_id": 16777224,
+                "allied_armies": [{"army_id": 1, "current_province_id": 2640,
+                                    "in_combat": True, "controllable": True}]}]}
+
+    obj = service.GameplayBridgeService(Driver())
     obj._publish_camera_presentation_v1 = lambda intent, payload: {
         "status": "queued_native_presentation", "mode": intent["mode"],
         "native_command_pipe_used": False,

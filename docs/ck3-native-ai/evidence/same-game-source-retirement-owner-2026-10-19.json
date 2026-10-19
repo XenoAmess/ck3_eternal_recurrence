@@ -1,0 +1,53 @@
+{
+  "schema": "xar.ck3.same-game-source-retirement-owner/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:16:55.123672+00:00",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; tool chunk 689e9b",
+  "scope": "software-only; no live runtime writes, Game/Native/desktop/process operations, or actual game RPC",
+  "sources": {
+    "actual_C10": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src08\\xar_autoplayer\\bridge\\successor_ui_app_owner_v1.py",
+      "bytes": 19696,
+      "sha256": "61d34deec81004116e87470e111d0f33afee479e8a035ad3efa1d02ab7980f3f"
+    },
+    "candidate_owner": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\successor_ui_app_owner_v1.py",
+      "bytes": 19972,
+      "sha256": "c61ffbdc6afb762946d2e16839a9ac737739255f641d706ee85cc8fbc1d71481"
+    },
+    "required_M7_helper": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 30348,
+      "sha256": "f050caf7dd7634e34c095e89269f9ea0523a241e2533bca7671296dd5b14c89c"
+    },
+    "new_registered_App_test": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_successor_ui_checkpoint_warm_app_v1.py",
+      "bytes": 5401,
+      "sha256": "37b782496a73fd997c552de8fab223d3653738df0b6baa167f95646aca90c5fa"
+    }
+  },
+  "exact_byte_transform": {
+    "single_match": true,
+    "only_replaced_block": true,
+    "unified_diff": "--- actual-C10-src08-owner\n+++ candidate-owner\n@@ -86,9 +86,13 @@\n                     or previous.get(\"source_epoch\") != self.epoch)):\n                 from .. import successor_ui_checkpoint_lineage_v1 as lineage\n                 anchor, _ = journal._read(self.root / lineage.COMPLETION_FILE)\n-                cold = lineage.observe_native_cold_checkpoint_v1(self, snapshot=snapshot,\n-                    expected_executable=game[\"executable\"])\n-                plan = lineage.plan_resolved_checkpoint_retirement_v1(self, anchor=anchor, cold=cold)\n+                if previous.get(\"game_identity\") == game:\n+                    plan = lineage.plan_resolved_same_game_source_retirement_v1(self,\n+                        anchor=anchor, snapshot=snapshot, expected_executable=game[\"executable\"])\n+                else:\n+                    cold = lineage.observe_native_cold_checkpoint_v1(self, snapshot=snapshot,\n+                        expected_executable=game[\"executable\"])\n+                    plan = lineage.plan_resolved_checkpoint_retirement_v1(self, anchor=anchor, cold=cold)\n                 self._completed_retirement_v1 = lineage.retire_completed_checkpoint_v1(self, plan)\n                 self.ledger, self.transition = None, None\n         if self.ledger is None:\n"
+  },
+  "focused": {
+    "command": "python -B -m pytest -q ck3_autonomous_player/tests/unit/test_successor_ui_checkpoint_warm_app_v1.py ck3_autonomous_player/tests/unit/test_successor_ui_checkpoint_cold_app_v1.py",
+    "result": "2 passed in 5.89s",
+    "tool_chunk": "49dc73",
+    "assertions": [
+      "actual warm Native adoption -> same_pid_hot without cold capsule",
+      "full original Continue/Close/completed SAVE required",
+      "UNKNOWN Close refuses before SAVE; no ledger mutation",
+      "same exact Game + new source epoch: one original SAVE, no repeated Continue/Close, exact old journal archive",
+      "same Game cold observer poisoned; cross-Game cold registered App case still passes"
+    ]
+  },
+  "actual_4226": {
+    "frozen_receipt": "p51-fresh1066-v20261019-prepare01/c10-save4226-failure82/FROZEN.json",
+    "sha256": "b4879f4e9c499efe48798013553eaf6a19a17cdd597cb5ec2b6896f7b1011c0f",
+    "call_boundary": "require_save271 -> snapshot279 -> ensure280 -> cold token guard throws; original Driver.execute_step289 not reached",
+    "replayed": false
+  },
+  "limitation": "Source and software qualification only; actual adoption/recovery belongs to runtime owner. Different Game retains sealed cold route; pending/UNKNOWN are not bypassed."
+}

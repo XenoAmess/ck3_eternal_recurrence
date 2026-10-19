@@ -1,0 +1,107 @@
+{
+  "schema": "xar.g2-m1-official-ctest-adoption.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T10:07:15.380601+00:00",
+  "machine_role": "Observer, downloader and evidence adopter only; not the Official CI execution host",
+  "observer_identity_source": {
+    "command": "python -B tools/ck3_live_run_id.py machine",
+    "actual_readback": "xenoamess-full-tower-eb9d2c1186",
+    "query_started_utc": "2026-10-19T10:07:15.094833+00:00",
+    "observed_utc": "2026-10-19T10:07:15.380601+00:00"
+  },
+  "official_execution_machine": {
+    "machine_id": "unknown",
+    "identity_not_verified": true,
+    "path_runner_label_or_local_machine_identity_used_to_infer_host": false
+  },
+  "source_commit": "96e24dd6c6a4ee34b4888bb3b4bac32dda8b6ab8",
+  "official": {
+    "run_id": 39229555333,
+    "job_id": 117983933133,
+    "run_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39229555333",
+    "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39229555333/job/117983933133",
+    "status": "completed",
+    "conclusion": "success",
+    "terminal_api_observed_utc": "2026-10-19T09:54:50.849709+00:00"
+  },
+  "linear": {
+    "run_id": 39229555334,
+    "status": "completed",
+    "conclusion": "success",
+    "terminal_api_observed_utc": "2026-10-19T09:25:07.304298+00:00"
+  },
+  "step19_actual_api_scope": {
+    "number": 19,
+    "name": "Test county direct-owner native wire and strict v1 boundary without CK3",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-10-19T09:37:10Z",
+    "completed_at": "2026-10-19T09:37:13Z"
+  },
+  "actual_portable_fixture": {
+    "node": "xar_ck3_realm_camera_subrealm_v1",
+    "test_number": 527,
+    "ordinal": 3,
+    "total_from_passed_node_line": 3,
+    "result": "PASS",
+    "result_basis": "Actual matching Start 527 and 3/3 Test #527 Passed lines; not inferred from step success or source membership",
+    "log_download_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "log_download_started_utc": "2026-10-19T09:54:54.484248+00:00",
+    "log_download_completed_utc": "2026-10-19T09:54:58.281891+00:00",
+    "actual_lines": [
+      "2026-10-19T09:37:10.1390894Z ##[group]Run ctest --test-dir \"%RUNNER_TEMP%\\native-decision-completion-ci\" -C Release -R \"^(xar_test_county_primary_(direct_owner_v2_12004|owner_12004)|xar_ck3_realm_camera_subrealm_v1)$\" --output-on-failure",
+      "2026-10-19T09:37:10.8116295Z     Start 527: xar_ck3_realm_camera_subrealm_v1",
+      "2026-10-19T09:37:10.8201444Z 3/3 Test #527: xar_ck3_realm_camera_subrealm_v1 ................   Passed    0.01 sec"
+    ]
+  },
+  "original_parser_result_preserved": {
+    "original_qualified_flag": false,
+    "original_actual_ctest_count": null,
+    "reason": "The first parser required a separate 100-percent summary line. That summary was not retained, so the original strict composite flag remains false and count remains null.",
+    "correction_basis": "Only the already retained actual Passed node line was parsed as ordinal 3 / total 3 and matched to Start 527; the original receipt was not edited.",
+    "global_percent_or_failed_count_summary_independently_read": false
+  },
+  "qualification_boundaries": {
+    "qualified": "Portable M1 realm/subrealm fixture execution for exact source 96e on an unidentified Official CI runner",
+    "step19_whole_command_api_result": "success; the command also runs county wire/consumer checks, whose individual output was not adopted here",
+    "actual_ck3_business_or_live_loading_qualified": false,
+    "actual_native26_adopted_this_m1_abi": false,
+    "actual_native29_adopted_this_m1_abi": false,
+    "ci_success_extrapolated_to_this_tower_or_actual_runtime": false
+  },
+  "source_receipts": {
+    "api_terminal_card": {
+      "path": "_runtime/official-ci-96e24dd6-final-status01.json",
+      "bytes": 17720,
+      "sha256": "65d5f06f1bd6d7aa050bd933b34fc542a88a3179d8a485b7804281b6161d3db7"
+    },
+    "actual_node_log": {
+      "path": "_runtime/ci-job-117983933133-realm-ctest-success-once01.json",
+      "bytes": 2147,
+      "sha256": "17f3f62e8a938d1e8df5986b4819961b35a9329249b51b9012e3f1616018693f"
+    },
+    "ordinal_correction": {
+      "path": "_runtime/ci-job-117983933133-realm-ctest-ordinal-note01.json",
+      "bytes": 1321,
+      "sha256": "037c9d9b28199ebe765e4ae973f75ce8c7ef0f5e09d84306670e1016a4fb0259"
+    }
+  },
+  "actions": {
+    "successful_log_fetch_calls": 1,
+    "additional_fetches_for_this_adoption": 0,
+    "closed_96e_api_queries_for_this_adoption": 0,
+    "full_successful_log_files_written": 0,
+    "other_success_step_output_retained": 0,
+    "new_local_tests_or_game_rpc_calls": 0,
+    "historical_source_closure_cards_modified": 0
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "category": "record",
+    "existing_shared_budget": "other-research 128MiB",
+    "new_reservation_bytes": 0,
+    "physical_reclamation_credit_bytes": 0,
+    "review_at_utc": "2027-04-17T10:06:34.279495+00:00"
+  }
+}

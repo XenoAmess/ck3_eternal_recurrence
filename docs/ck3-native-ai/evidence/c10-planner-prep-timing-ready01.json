@@ -1,0 +1,169 @@
+{
+  "schema": "xar.ck3.c10-planner-preparation-timing-source-ready.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:16:16Z",
+  "evidence_layer": "Actual C10 closed profile plus exact frozen caller source; source-only four-call timer overlay with focused software equivalence tests. No new runtime adoption, cache optimization or throughput qualification.",
+  "actual_C10_source": {
+    "business_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+    "root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src08/xar_autoplayer/bridge",
+    "service": {
+      "bytes": 870245,
+      "sha256": "7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf"
+    },
+    "native_driver": {
+      "bytes": 1612139,
+      "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"
+    }
+  },
+  "actual_profile": {
+    "pack": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01",
+    "compact": {
+      "name": "C10-BATCH4117-75-COMPACT.json",
+      "bytes": 136396,
+      "sha256": "9dcd5226046d53e2674f0d7fa2275a71c6f9a08d424e3ec4f671a92013f28a3f"
+    },
+    "stage_parts_manifest": {
+      "name": "C10-BATCH4117-75-STAGE-TRACE-PARTS.json",
+      "bytes": 1747,
+      "sha256": "e564c74d25872ebacb0de9f1cc9bc78662e96d616238aa7c1252b1e5bf43d1a6"
+    },
+    "stage_parts": [
+      {
+        "bytes": 245029,
+        "sha256": "86a1e8c890475bac5cc515e575ad30c0bf584a7c36300061c445defa3b4e1bee"
+      },
+      {
+        "bytes": 97885,
+        "sha256": "516dbdb6f74dd8ffceb538acf9549f1de6ed002f4302a09279aa0b0e44a9f2ed"
+      }
+    ],
+    "rows": 979,
+    "cycles": 30,
+    "days": 23,
+    "wall_seconds": 73.63661,
+    "original_AUTO9_wall_seconds": 23829.969721,
+    "original_AUTO9_days": 1844,
+    "normal_plan_seconds": 9.9868414,
+    "planner_internal_seconds": 9.8966625,
+    "planner_sway_staging_seconds": 0.00057,
+    "capabilities_seconds": 0.1922945,
+    "history_seconds": 0.014489,
+    "choose_seconds": 0.1182338,
+    "scope": "All totals are nested wall stages; do not add them. The original AUTO9 anchor and all maintenance/P0 gaps remain in campaign accounting. Outer FULL tail remains unknown."
+  },
+  "source_audit": {
+    "findings": [
+      "Service calls capabilities twice, but even all125 capability rows total only0.1922945s; removing that read is not an evidenced seconds-scale fix.",
+      "Succession preparation1451-1643 already reuses a same-frame root/history view and limits rejected-read retries. Mandatory binding, current-root, unknown and reconciliation guards must remain.",
+      "NativeDriver take_internal_semantic_snapshot3001-3014 includes episode/outcome observations; _with_internal_planning_view3016-3043 holds the owned-history lock and returns an isolated deepcopy. No evidence qualifies a shared full-plan cache or shallow-copy replacement.",
+      "The current30-row internal timer includes initial snapshot, succession preflight, Driver view/callback/copy and private followups. Existing capability/history/choose/sway phases cannot assign the9.9s residual to a cache or one mandatory read."
+    ],
+    "decision": "Four exact child timers are necessary to isolate the missing scope before a meaningful cache/repeated-read change. No speculative read removal, new RPC, speed change or strategy relaxation."
+  },
+  "timer_scopes": [
+    {
+      "stage": "service.planner_snapshot_prepare",
+      "C10_call_line": 1971,
+      "scope": "Exactly the original internal_snapshot() or fallback self.snapshot(); callable selection and invocation preserved."
+    },
+    {
+      "stage": "service.planner_succession_preflight",
+      "C10_call_line": 1976,
+      "scope": "Exactly _prepare_succession_transition_v1 with original snapshot, action steps and deferred-release list; includes mandatory work and its existing internal retries."
+    },
+    {
+      "stage": "service.planner_internal_view",
+      "C10_call_line": 2544,
+      "scope": "Only the existing use_internal_view branch: Driver lock, callback/history/choose/risk projection, then detached return deepcopy. Fallback public planning has no such stage."
+    },
+    {
+      "stage": "service.planner_lifestyle_consumer",
+      "C10_call_line": 2763,
+      "scope": "Only the regular lifestyle_trial branch after baseline arbitration. Original opening-focus flag selects the same initial-focus or private-lifestyle method with original arguments. Earlier priority/M5 returns remain outside this timer."
+    }
+  ],
+  "nesting": "All four are inside service.planner_internal and service.normal_plan_turn. internal_view contains existing history/choose; other nested capability/private calls may recur. A scope may be absent after an early return. Do not sum parent/child totals or treat unmeasured remainder as CPU.",
+  "overlay": {
+    "base_service_bytes": 870245,
+    "base_service_sha256": "7d83d149c842642fec321aeec06a4b4a21af5ec0f91c2c656b7af72ae22efabf",
+    "target_service_bytes": 870485,
+    "target_service_sha256": "af22f808b6e683b5b18c0511d854a6f47ffc29c337cc51a1addedb4e8ce0b47e",
+    "call_sites": 4,
+    "unified_hunks": 3,
+    "reason": "Adjacent snapshot/preflight changes share one unified hunk.",
+    "patches": [
+      {
+        "path": "docs\\ck3-native-ai\\evidence\\c10-planner-prep-timing01.patch",
+        "bytes": 2436,
+        "sha256": "92bf3e1b6f74812d4a61c231e4e73982fdb91e31ba5d48a7875cdb9f85823d82",
+        "hunks": 3
+      },
+      {
+        "path": "docs\\ck3-native-ai\\evidence\\c10-planner-prep-timing01.reverse.patch",
+        "bytes": 2436,
+        "sha256": "ad2ad29022ccf1816d18eb9203837b4c83873690b5cac00d9536485d24b4410c",
+        "hunks": 3
+      }
+    ],
+    "reverse_restores_exact_C10_bytes": true,
+    "canonical_before": {
+      "bytes": 873230,
+      "sha256": "9ca6fd77278e89017d214a93a4b07e420188466ce60d1558e7a21dae6ae3da40"
+    },
+    "canonical_after": {
+      "bytes": 873470,
+      "sha256": "bb1960b2f0eb2bf943f90100c8fe966ebb5adcd3409a157c3db863dbcb846b0f"
+    },
+    "canonical_inverse_restores_before_exactly": true,
+    "canonical_owned_delta_bytes": 240,
+    "scope": "Only four owned call sites; preserve M4 camera and M5 opening changes. Do not replace a whole frozen/current Service with canonical master. Apply the bounded overlay to Root's exact candidate and retain its other admitted hunks."
+  },
+  "qualification": {
+    "new_test": {
+      "path": "ck3_autonomous_player/tests/unit/test_planner_prep_timing_v1.py",
+      "bytes": 3781,
+      "sha256": "e8b5f4f738e6fd8d4f11b960f35057a2b5226138b3f0db74a8417ca34aee2e00",
+      "command": "python -B -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_planner_prep_timing_v1.py",
+      "result": "5 passed in2.19s",
+      "coverage": "Real Service.plan_turn orchestration with pure memory Driver and fixed chooser; enabled/disabled outputs and snapshot/preflight/view/lifestyle call counts equal. Four individual RuntimeError paths retain exact original exception identity and finally-stage receipt. No persistence/temp/Game/SDK calls.",
+      "initial_failure": "First collection lacked xar_autoplayer src path; added the same explicit source-root import setup used by existing unit tests, then all5passed."
+    },
+    "existing_stage_test": {
+      "path": "ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py",
+      "bytes": 4612,
+      "sha256": "902f495ef8ecb1cf014b5e393e6e586af711bb3e3de4fdb2f7bc9defebe1d406",
+      "change": "Expected stage set gains only snapshot_prepare and succession_preflight; its fallback Driver has no internal view/lifestyle flag.",
+      "result": "...                                                                      [100%]\r\n3 passed in 1.95s",
+      "scratch_observed_peak_bytes": 4620,
+      "scratch_final_bytes": 4620,
+      "scratch_private_root_removed": true,
+      "allocated_bytes": null
+    },
+    "checks": [
+      "In-memory compile of modified Service and both tests PASS",
+      "git apply --check --directory=ck3_autonomous_player/src c10-planner-prep-timing01.reverse.patch PASS against canonical",
+      "Canonical reverse4spans reconstructs the preexisting M4 camera source9ca6 exactly",
+      "In-memory C10 overlay reverse reconstructs original7d83 bytes exactly"
+    ],
+    "no_current_C11_or_runtime_qualification": true,
+    "next": "Root/harness integrates the exact C10 overlay together with existing frozen M4/M5/P0 changes in a necessary maintenance. Consume the next natural closed batch to select an actual internal hotspot; do not issue measurement RPCs."
+  },
+  "limits": {
+    "new_Game_RPC_calls": 0,
+    "active_Driver_state_or_SAVE_reads": 0,
+    "frozen_src08_writes": 0,
+    "current_runtime_writes": 0,
+    "new_cache_or_read_policy_changes": 0,
+    "benchmark_calls": 0
+  },
+  "storage": {
+    "pool": "Original MICROPOOL01/other128MiB; final new/owned-source delta<=24KiB",
+    "external_writes_bytes": 0,
+    "scratch_admitted_private_root": "Z:/ck3_mod_rewrite/.task-tmp/performance-prep-timers-20261019-compat01",
+    "scratch_removed": true,
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}

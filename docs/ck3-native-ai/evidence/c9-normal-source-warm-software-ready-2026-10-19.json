@@ -1,0 +1,60 @@
+{
+  "schema": "xar.C9-normal-source-warm-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:35:07.192088+00:00",
+  "status": "SOURCE_AND_SOFTWARE_READY",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\normal_source_warm_queue_v1.py",
+    "bytes": 14614,
+    "sha256": "24bc6c9cc732344152c2b6a1bacab34be9678ed06618b7b871888ae29d5fb209"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_normal_source_warm_v1.py",
+    "bytes": 14373,
+    "sha256": "03e8ab092fb5dacd4fba483a547323ee7ab5bd79f30e66c2210011f9aca85953"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\c9-normal-warm-qual02\\QUALIFICATION.json",
+    "bytes": 6460,
+    "sha256": "b3b04338f53ef4413b8494c7fe019dd49e52fa4ec86e601bb2f6efd45d986656"
+  },
+  "business_canonical": "43496c90249a2cae3b089f93360f905941c8f86e",
+  "business_proof": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c9-minimal-business-tree-2026-10-19.json",
+    "bytes": 3361,
+    "sha256": "6a248fed036a4788885cdb778239c9438332c409894ae8e223b1c2366c2a8308"
+  },
+  "controls": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c9-control-connection-review-2026-10-19.json",
+    "bytes": 2462,
+    "sha256": "e13580b344ec243b0657a97cb828feed5c236d2e4a9253355c877662c7edf625"
+  },
+  "software": {
+    "actual_C9_original_call_full_loop_generated_AST_used": true,
+    "actual_startup_check_after_consume_publish_C6_relay_CAP_order_used": true,
+    "future_SEM4108_CAP4109_are_explicit_software_fixtures": true,
+    "constructor_physical_recording_guards_qualified": false,
+    "actual_postclose_inputs_qualified": true,
+    "no_completed_result_supply_or_old_action_replay": true,
+    "restored1956_counts_and_loop_SAVE1773_cache_preserved": true,
+    "current_source_and_classifier_opening_are_same_fresh_SEM4108": true,
+    "original_Clean_map_gate_executed": true,
+    "first_new_AUTO_sequence": 4111,
+    "negative_cases_rejected": [
+      "wrong_Game",
+      "date_drift",
+      "cold_CAP"
+    ],
+    "actual_Game_Native_MCP_calls": 0
+  },
+  "startup_scope": "original actualcce583 C9 call+oldReady MRO and original startup_readiness_v1; exact temporary READINESS row exists at check_after before consume/canonical publish; real observer interface uses that temporary source.",
+  "counter_scope": "closed clean1956/day1821/40526/native3136/NEXT4108 source; boundary params tied to exact seed/postclose; no blocked clear, no MET once, no ordinary credit.",
+  "source_scope": "same Game/Native26/C6 display, business8-leaf minimal tree only. Correct isolated C9 M0 binders/imports and cooperative MET are separately source-reviewed.",
+  "limits": [
+    "Physical constructor recording/process/binder guards execute only under runtime sole owner.",
+    "Fake session generated SEM4108/CAP4109 then reached original FULL4110 nextAUTO4111; no real tools were invoked.",
+    "This fixture does not claim AUTO4111 complete or business success; explicit BaseException stops at its original dispatch boundary.",
+    "Control timing3950b3 leaf remains source-ready, not installed in actual C9 cce583 Queue; no timing-span adoption claimed."
+  ],
+  "review_after_utc": "2026-10-26T00:00:00+00:00"
+}

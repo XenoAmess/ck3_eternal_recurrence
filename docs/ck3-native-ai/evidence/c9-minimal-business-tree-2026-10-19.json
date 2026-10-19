@@ -1,0 +1,77 @@
+{
+  "schema": "xar.C9-minimal-eight-leaf-business-git-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:30:53.631846+00:00",
+  "base": "8e1e59f073f239d266f5b59f57c65b5645658512",
+  "canonical_commit": "43496c90249a2cae3b089f93360f905941c8f86e",
+  "tree": "a30dea446dd290f292a4d2a229f971c6b051f319",
+  "ref": "refs/heads/runtime/robert-v20261019-c9-long-run",
+  "leaf_source_commit": "69cfb792308da2b05cf422b238def83a45623a4c",
+  "existing_performance_event_source_commit": "d192b7bade022fe1c51e7e0c92e9c25e685ae2cf",
+  "changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1612139,
+      "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f",
+      "git_blob": "7e7182811d2e98244f91fa17845859e5a848b34c"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_lifestyle_private_transport_v1.py",
+      "bytes": 42857,
+      "sha256": "dafc1c198928b3f68fa88976f1431bf29c5abb00e20a6c437a1b7792f3f6a47b",
+      "git_blob": "75d8e833b6a3442c5b0f8256774bf25c913a5b06"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 13511,
+      "sha256": "5878650d997058411b6d73b2ad531147a8441632339c18957890b28b5d4cd037",
+      "git_blob": "bc214a286273e580d1d6fa747d5a45ab74896664"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 867972,
+      "sha256": "5b46e116e7a65c753eac099a82f79fcb8a3a25112a5dcf5e55e534a521f239d1",
+      "git_blob": "48ba3aa23609149bbf0891eee081775ed69869a7"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/lifestyle_education_focus_scope_v1.py",
+      "bytes": 4332,
+      "sha256": "28db68a630239803c14908e72e571aa7cbedd8f56429abc1f1d8a42864157476",
+      "git_blob": "b9e594209ddd784e0e1e9099ff06e52b1677e55c"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/lifestyle_formal_consumer.py",
+      "bytes": 14386,
+      "sha256": "d971e1737acd5654a6fdd9c7219a3982a6bce3de44b0c95bc0fac735922b7df2",
+      "git_blob": "34a6c5ba3ff4629f1df95f63bf64c07059d01496"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "bytes": 28072,
+      "sha256": "929802ce55f9626a16ded0c59177cae3048ffe6ca5007b60165aac629b9b8a6a",
+      "git_blob": "9041c52e994892539cd11b04682d048f4b2138dd"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+      "bytes": 10292,
+      "sha256": "6d88bf7d5be9aabf12fa4126268b6857a47dda422fcda3498e03bf5c8ba99b91",
+      "git_blob": "73784d715e4564f2bb623608f9bb16d186eaef02"
+    }
+  ],
+  "full_diff_exactly_authorized_eight_files": true,
+  "all_eight_AST_parse": true,
+  "original_four_composition_qualifications_reused": true,
+  "worktree_or_index_changed": false,
+  "external_source_trees_created": 0,
+  "Game_MCP_Native_calls": 0,
+  "Native_changed": false,
+  "actual_C9_adoption_claimed": false,
+  "excluded": [
+    "M1/M4 resource ABI",
+    "route-only5 trial",
+    "other-machine GUI",
+    "whole master/69cf tree",
+    "Native28"
+  ],
+  "storage": "runtime freeze must bind this exact commit to existing C9 132MiB aggregate capacity card before writing sources"
+}

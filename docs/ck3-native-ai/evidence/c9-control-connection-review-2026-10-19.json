@@ -1,0 +1,59 @@
+{
+ "schema": "xar.C9-control-connection-source-review/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T09:30:55.890393+00:00",
+ "machine_identity_source": "tools/ck3_live_run_id.py machine fresh reviewer readback",
+ "runtime_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime",
+ "inputs": [
+  {
+   "path": "root_p37c9_sdk_queue.py",
+   "bytes": 265284,
+   "sha256": "cce5832c6f29c9a220a08723c60554c4bae13eca630bfa12e201a069e2b7542f"
+  },
+  {
+   "path": "root_p37c9_automatic_natural_succession_handoff.py",
+   "bytes": 38623,
+   "sha256": "f7b56b96fff1c5ba2c7c4acff78c85c826d052824cbf3baf32d42f619da240d6"
+  },
+  {
+   "path": "p51_resident_successor_adoption_c9.py",
+   "bytes": 24606,
+   "sha256": "48e5e92faaed6c3104439db50f708f669425e198f65b19ecda7096e723c4f07b"
+  },
+  {
+   "path": "root_p37c9_mcp_entry.py",
+   "bytes": 12616,
+   "sha256": "3b80184e410e9e69cf8ba491c1d00825a097e95f73e1c72a38a96b3acb4a5b7f"
+  }
+ ],
+ "checks": {
+  "all_exact_hashes_and_compile": true,
+  "actual_namespace_import_counts": {
+   "queue_handoff": 2,
+   "queue_resident": 2,
+   "handoff_resident": 1,
+   "resident_handoff": 1
+  },
+  "full_loop_two_current_C9_callers_with_required_relay_keywords": true,
+  "both_callers_bind_retained_C6_relay": true,
+  "handoff_equals_af114b_once_binder_plus_namespace_literals": true,
+  "resident_equals_ff6bc8_with_only_one_namespace_import_change": true,
+  "UI_AUTO_exactly_once_and_no_direct_Close": true,
+  "full_loop_AST_equals_original_once_binder_plus_namespace_literals": true,
+  "Clean_afterhook_AST_equals_original_once_MET_hook_and_C9_classifier_pin_name": true,
+  "entry_retains_C6_feed": true,
+  "no_legacy_actual_imports": true
+ },
+ "source_lineage": {
+  "C7_queue": "fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30",
+  "C7_handoff": "af114b3088ca847fdd14affe40f1c942f191fc0c2cac81e45d431eda64e070e1",
+  "public_resident": "ff6bc8e4403e6e26c48d1c3d81226aac90d4fdd935a410a0135a3b2d9a2cf0e8"
+ },
+ "scope": "One final exact-hash/AST connection review. C7 classifier-pin filename is advanced to C9. No original stage transform or eight-case matrix rerun. Other queue global metadata/factory, constructor, startup, pixels and business outcomes are outside this review.",
+ "limits": {
+  "source_only": true,
+  "Game_Native_RPC": 0,
+  "runtime_source_edits": 0,
+  "runtime_started_or_adopted_claimed": false
+ }
+}

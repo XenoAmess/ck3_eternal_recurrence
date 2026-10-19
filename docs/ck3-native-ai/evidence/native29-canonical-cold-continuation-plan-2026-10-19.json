@@ -1,0 +1,212 @@
+{
+ "schema": "xar.Native29-canonical-cold-checkpoint-continuation-plan/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T09:51:39.064598+00:00",
+ "status": "SOURCE_PLAN_ONLY_NO_LIVE_STOP_OR_LAUNCH",
+ "owner": "runtime_v20261019 is sole process/Game/OBS/operator; Root selects actual cold window",
+ "candidate": {
+  "label": "Native29",
+  "fixture_and_DLL_pin": null,
+  "adoption_ready": false,
+  "Native28": "fixture RED; preserve failure and never deploy",
+  "scope": "Native26 ABI baseline + already reviewed termination/camera changes + geometry legitimate -1 sentinel; candidate producer/fixtures owned by performance_native, no whole master ABI"
+ },
+ "current_campaign_context": {
+  "source": "C10 warm preparation after original4114 zero-RPC clear; this is context, not the future cold SAVE",
+  "Game_pid": 153556,
+  "Game_birth": 134368602545256920,
+  "Native": "26",
+  "expected_current_actor": 40526,
+  "episode": "native-40526-1bec95182886",
+  "settled_cycles": 1957,
+  "date_raw": 53188032,
+  "T0_date_raw": 53144328,
+  "end_date_raw": 53407128,
+  "ordinary_goal": "original Robert campaign lineage; current ruler is legal successor",
+  "actual_new_SAVE": null,
+  "future_boundary": "read actual latest normal settled SAVE/SEM at chosen maintenance time; never hardcode1957/day1821 or lastSAVE1773"
+ },
+ "existing_source_reuse": {
+  "canonical_native_session": {
+   "commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+   "bytes": 76078,
+   "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8"
+  },
+  "cold_validator": {
+   "commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/cold_checkpoint_validator.py",
+   "bytes": 4766,
+   "sha256": "d89180d9abbcffcd71a33387826b751e31ecd7709683576e35cbb5358d4509a3"
+  },
+  "Driver": {
+   "commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+   "bytes": 1612139,
+   "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"
+  },
+  "supervisor_template": {
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_native26_c4_supervisor.py",
+   "bytes": 33673,
+   "sha256": "fb7a9d25e1a00604b7e03471633224aae683f8625e923035426e6cdd4b6f340b"
+  },
+  "checkpoint_bootstrap_template": {
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_checkpoint_bootstrap_c4.py",
+   "bytes": 3149,
+   "sha256": "e1ced067ef3f74bf50d10e2ece7c6a5427a9135448c071e97c029c91bd42a8eb"
+  },
+  "cold_Queue_template": {
+   "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\saved61_cold_queue_v1.py",
+   "bytes": 18230,
+   "sha256": "0a42eedf8e677a7dc47ce93c0de274285f237de344ce450e1ad4122485d7fdbf"
+  },
+  "startup": {
+   "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\startup_readiness_v1.py",
+   "bytes": 5937,
+   "sha256": "c9b1bfa0efd002d2fd9f05298ba1d2ba218fa5dded335b30de18ced7d5f7b2c3"
+  },
+  "text_identity_template": {
+   "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_p51_c4_text_v1.py",
+   "bytes": 15739,
+   "sha256": "d4e214667c0a402fe2b11e02d67012d74b75c6a9f2caaccc1b80f7ee5b226511"
+  },
+  "text_api_relay_segment_templates": {
+   "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\migrate_p51_decision_text_v20261019.py",
+   "bytes": 31358,
+   "sha256": "107209e67ff0f947c5fae8cd661f1064caffad29148536cd27da9c854f90b0f7"
+  },
+  "current_text_robust_package": "N/p51-c6-text-review02/FINAL-READY.json f351bd8b472d4a0cfc8f9a68908037e4e7347297f828fac9481cc6fe95af5c22; preserve current I/O fixes, never regress to legacy single-slot publisher",
+  "current_score_observer": {
+   "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_score_month_samples_c4.py",
+   "bytes": 7989,
+   "sha256": "395d6179f2fe598ca7eda7616a4fbe2b6ea63dd80a9fab0a4b2ab629b9e0d29b"
+  },
+  "current_view_audit": {
+   "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_sdk_current_views_v1.py",
+   "bytes": 7467,
+   "sha256": "b663d8c781dad758da393f1895de024fe4937005bae03984be14e96ed3e84f22"
+  }
+ },
+ "producer_reuse_limits": [
+  "Do not invoke saved61_cold_queue factory or C4 text producer unchanged: their seed/SAVE61/player31254/C4/PID literals are historical authority only.",
+  "Reuse generic cold bind_opening/project_opening and canonical Driver/validator logic; create one finite new SAVE-bound admission and isolated generation. No warm helper and no Native>=old epoch guard.",
+  "Supervisor/checkpoint bootstrap are source templates: replace only finite manifest paths/Native identity and actual new SAVE refs. Keep existing keeper/custody/deadline/unknown guards.",
+  "C4 text producer emit expects legacy single-slot feed. Do not run it over current C6/C9 feed; reuse current robust multi-callback/shared-I/O templates with new identity namespace.",
+  "Preserve explicit relay_compact/error_projection injection and permanent UI AUTO route; do not run resident-stage transforms twice.",
+  "New cold epoch uses latest qualified business source (currently planned e1e3007), not whole master; distinct Native source/SDK/control source pins remain explicit."
+ ],
+ "phases": [
+  {
+   "id": "A_READY_WHILE_CURRENT_GAME_RUNS",
+   "actions": [
+    "Wait for actual Native29 linked source/objects/toolchain/fixture PASS and exact DLL/injector pins. Native28 RED remains excluded.",
+    "Prepare only bounded new-generation source/admission templates and storage estimate. Current C9/C10 campaign continues; no live replacement or early shutdown."
+   ]
+  },
+  {
+   "id": "B_NEW_NORMAL_SAVE",
+   "actions": [
+    "At a real settled paused map with no queue pending/terminal/natural handoff or unresolved Native in-flight action, use the existing normal SAVE command once at its actual current public revision.",
+    "Freeze real SAVE response/checkpoint material: path/name/size/SHA/date/current actor/episode/history_index/succession_lifecycle, fresh semantic/goal/loop/governance and retained gift/Sway refs.",
+    "If direct SAVE does not update loop actual_saved_checkpoint cache, keep old cache separately. Build a documented cold seed projection from this actual SAVE; adjust checkpoint calendar/dirty/counts only according to the established SAVE receipt, no fabricated ordinary cycle.",
+    "Unknown business action/pending is retained and resolved by its existing legal contract before choosing cold boundary; no action resend."
+   ]
+  },
+  {
+   "id": "C_ORDERLY_OLD_CLOSURE",
+   "actions": [
+    "Stop OBS recording using the original owner, wait for the actual recorder unbound proof and closed output. Keep video/stream identity and all maintenance wall time.",
+    "Close old SDK normally through retained handles; freeze final Driver and sidecars after actual close, pair PID/birth/exit observations and SAVE/Driver checkpoint equality. Expected dual0; report any actual nonzero/unknown honestly.",
+    "Stop old publisher with original owner after OBS unbound; retain its STOP/exit/binding receipts. Do not transparently attach old API to a new publisher.",
+    "Close Game through existing owned supervisor normal path, kernel-observe exit/gone; report any forced cleanup truthfully. No fresh Game while old Game/native process or unknown SDK remains live."
+   ]
+  },
+  {
+   "id": "D_CANONICAL_PRELAUNCH",
+   "actions": [
+    "One existing canonical loader invokes xar_autoplayer.native_session.validate_cold_start_checkpoint_for_pipe(spec, checkpoint_original_pipe). This is the authorized Driver/SAVE reader; planning agents consume only its small receipt.",
+    "Bind actual final Driver byte/SHA/history and sidecars to the same new SAVE and prelaunch validation. Require validator returned size/SHA/history/date/lifecycle/path/load_save_name match actual SAVE; naked validation dict or oldSAVE61 proof is insufficient.",
+    "Honor canonical checkpoint pipe binding. Do not rewrite Driver payload, episode seed, command history, raw source receipts or pipe to manufacture admission. Use P51 launch_prepared/verify_cold_profile logic with new finite pins.",
+    "Under owned screen lease obtain fresh reviewed Steam offline pixels after old Game/OBS closure using existing recovery/fresh-frame tools if needed; no online switch. Historical pixels/user-attestation branch are not claimed as this fresh observation."
+   ]
+  },
+  {
+   "id": "E_FRESH_GAME_NATIVE29",
+   "actions": [
+    "Create new launch config/freeze/binder with exact Native29 DLL, EXE build/SHA, injector, profile, original canonical checkpoint and source receipts. Reuse existing P51 supervisor/keeper/custody launch rather than new connection or hot injection.",
+    "Canonical launch_prepared uses runtime.launch(... continue_last_save=False, load_save_name=xar_checkpoint, ...). Actual spec/pipe are validator-bound. Record new Game PID/kernel birth/EXE/Native handshake/process and actual load evidence.",
+    "A minimized loading launch is permissible only as existing loading behavior: restore/place the actual Game to visible nonzero client rectangle on admitted desktop before Native camera evaluation/capture. No stale/minimized viewport counts as camera success.",
+    "Fresh no-mod environment proof must bind new PID/birth and verified lifecycle. Old C4 absence proof cannot qualify the new Game."
+   ]
+  },
+  {
+   "id": "F_NEW_DISPLAY_AND_RECORDING",
+   "actions": [
+    "Allocate new cold generation only when actual boundary is ready (e.g. C11 if unused; never assume current C10 is free). Generate isolated API/relay/feed/segment/presentation/provider/publisher owner manifests bound to new Game PID/birth/HWND/desktop/pipe.",
+    "New publisher state dir/text/config/STARTED/BINDING are create-only; keep C6 originals unchanged. Do not copy old CURRENT-INPUT, ACK or cached publisher to new state. First new projection comes from actual new-generation request.",
+    "Create new OBS profile/request/current-requested recording generation and new UUID/STARTED Game capture target. New saved-map first-frame admission and current map Root review must bind the new Game and pixels.",
+    "New score observer derives only physical launch binding from score_c4 source; retain original campaign ID/T0/end/month cursor/historical samples. Both Queue and entry must import new observer, not old C4 physical alias."
+   ]
+  },
+  {
+   "id": "G_NEW_COLD_SEM_CAP",
+   "actions": [
+    "Use original startup_readiness_call with explicitly injected NEW relay. Require current_attempt.request.sequence as source authority; real READINESS temp row exists at check_after, canonical response is published only after consume.",
+    "Actual cold SEM must match new launch PID/hello/pipe/connection/build, actual SAVE date/current actor/episode and campaign goal; paused/alive/map ready. Native revision is new positive epoch and may reset to1; never compare it as >=old3137.",
+    "CAP must driver_state_restored=true, restore_kind=cold_checkpoint and active_resumed, with no driver_error/cold rejection. Canonical Driver _adopt_bridge_session and _bind_episode_from_playable_snapshot own candidate binding; no reconstructed episode/history.",
+    "Project only current before/source and session opening to actual new SEM. Preserve ordinary counts/T0/end/goal/succession lineage, real new saved checkpoint and dirty/calendar source, historical old Native/public frames and all gift/Sway ledgers. No old RPC/MET supply is pending at this normal cold boundary."
+   ]
+  },
+  {
+   "id": "H_ROOT_PIXELS_AND_ORDINARY_CAMERA",
+   "actions": [
+    "Freeze actual newly recorded post-load map pair; Root directly reviews actual new Game/actor/realm visibility and decision text, then create exact current map admission matching new opening frame. No delegated-role relabel or old pixel reuse.",
+    "Execute one legal new ordinary AUTO through full planner, paired MET and original full_loop settlement. Save exact returned camera/hotspot source and source-frame/Native29 readback where available plus actual visible map before/after.",
+    "Compact Army AUTO intentionally drops camera fields; absent compact fields are not worker-disabled evidence. Use existing full camera receipt/capture source or the already registered qualified diagnostic path if Root specifically authorizes it; never invent an unadvertised MCP tool.",
+    "Assess actual viewport/played-realm bounds/selected hotspot and settled source/frame/readback with M4 contract. ACK alone, candidate fixture PASS, minimized stale map or mere actor portrait does not close camera acceptance. Negative/partial result remains real.",
+    "Resume normal batches only after legitimate camera/map/source gates, preserving event-first handling and warfare policy. All SAVE/closure/offline/load/record/repair wall stays in campaign accounting; no T0 reset."
+   ]
+  }
+ ],
+ "new_generation_bindings": {
+  "replace": [
+   "Game launch/placement/no-mod/Native binder",
+   "provider manifest and API module/cache namespace",
+   "publisher config/state/text/STARTED/BINDING/owner",
+   "relay/feed/segment/presentation imports and SourcePins",
+   "OBS profile/request/current requested/jobUUID/first-frame/map pixels",
+   "Queue/entry/MODE/SDKgen/pair/owner/current identity views",
+   "score observer physicalGame launch binding"
+  ],
+  "retain_as_history_or_campaign": [
+   "originalT0/end/goal/current ruler lineage",
+   "monotonic p37 request/result/ACK history",
+   "counts/governance/cadence and real SAVE chain",
+   "gift/Sway unknown-action ledgers and original failed results",
+   "C6 publisher/OBS footage/proofs and C4 Game proofs as old generation, never rewritten"
+  ],
+  "shared_views": "CURRENT-REQUEST-P37 and NEXT sequence stay monotonic by original contract; new publisher has fresh private input state. New processes never claim old generation identity."
+ },
+ "minimum_software_qualification": [
+  "One real-shape original startup->READINESS postcheck->consume->publish/newrelay->coldCAP->original ordinary boundary fake-session composition.",
+  "Wrong SAVE actor/date/history or wrong new Game rejects; cold_checkpoint required, same_pid_hot rejects; reuse existing focused validators rather than broad matrix.",
+  "AST current-view write set must name new generation and create-only targets absent. Audit explicit read refs separately; no old C4/C6 writes by new identity.",
+  "Reuse already qualified M0 relay/UI/MET binders and actual original full_loop algorithm; do not reapply stage transforms."
+ ],
+ "storage": {
+  "no_new_heavy_outputs_in_plan": true,
+  "cold_budget_admitted": false,
+  "SDK": "reuse latest immutable src08/ref-c10 inventory if business source unchanged; fresh small Native29 binding/freeze/generation metadata, no automatic two further source-tree copies",
+  "SAVE_Driver": "actual profile/cold input protection and any necessary retained copy need fresh exact reservation from real sizes; no assumed copy/deletion credit",
+  "Native29": "separate owner384MiB candidate reservation; never borrowed for SDK or recording",
+  "new_recording": "fresh storage admission/expiry/capacity for new OBS job; cumulative video wall retained"
+ },
+ "actual_actions_by_this_plan": {
+  "Game": 0,
+  "MCP": 0,
+  "Native_load_or_build": 0,
+  "process_stop": 0,
+  "SDK_freeze": 0,
+  "OBS_or_Steam": 0
+ }
+}

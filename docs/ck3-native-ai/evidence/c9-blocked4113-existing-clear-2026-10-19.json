@@ -1,0 +1,64 @@
+{
+  "schema": "xar.C9-blocked4113-existing-clear-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:42:58.497815+00:00",
+  "source_packet": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c9-opening4113-blocked81\\FROZEN.json",
+    "bytes": 15684,
+    "sha256": "d8e7466bc3f044269a5ba44d9bf98f14c859ef1689c89ee57a3a104e60021492"
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c9_sdk_queue.py",
+      "bytes": 265284,
+      "sha256": "cce5832c6f29c9a220a08723c60554c4bae13eca630bfa12e201a069e2b7542f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_reinforcement_recovery.py",
+      "bytes": 8520,
+      "sha256": "3ae23f9188eef22b7dbc2124e6fc2db2506fb3eeb98d7c127f895845ed269fb1"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4112-1-result.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4112-1-result.json",
+      "bytes": 1785,
+      "sha256": "ce360dfa98d560dfbad6b59bb585c60d5229808ce6690832e4fe56b15212d351",
+      "closed_immutable_original_retained_in_place": true
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4113-1-result.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4113-1-result.json",
+      "bytes": 13866,
+      "sha256": "7221d70fb28946fa0515f04b005b3a50ba4c623bdf9e172397d536e91eced177",
+      "closed_immutable_original_retained_in_place": true
+    }
+  ],
+  "actual_C9_afterhook_MRO_used": true,
+  "actual_normal_wrapper_ready_MET_delegation_used": true,
+  "actual_MET4112_reconstructs_current_reinforcement_frame": true,
+  "actual_live_in_memory_was_not_read": true,
+  "cases": [
+    {
+      "case": "actual_blocked4113",
+      "status": "PASS",
+      "business_credit": 0,
+      "Game_MCP_calls": 0,
+      "preserved1957": true
+    },
+    {
+      "case": "selected_action_negative",
+      "rejected_before_consume": true
+    }
+  ],
+  "existing_command": {
+    "sequence": 4114,
+    "command": "clear_blocked_no_action",
+    "arguments": {}
+  },
+  "scope": "existing original guard, no new recovery leaf; one original pure-MRO MET callback fixture and one pure clear positive/selected-action negative",
+  "original4113_replayed": false,
+  "source_or_runtime_files_changed": false,
+  "Game_MCP_Native_calls": 0,
+  "actual4114_run_claimed": false,
+  "next_normal_warm_after_actual_clear": "SEM4115/CAP4116 if NEXT unchanged; sole runtime must read actual response first"
+}

@@ -1,0 +1,121 @@
+{
+  "schema": "xar.C10-initial-opening-actual-adoption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:07:52Z",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C10-BATCH4117-81-SUMMARY.json",
+    "bytes": 2123,
+    "sha256": "65d525813074d4bd7a72f394ffb89d453a8aedbf79d35fe6285d481bdf78e8c5"
+  },
+  "qualification": "Ordinary full planner crossed initial LIFE prerequisite and settled a real 30-cycle batch; camera execution remains unqualified",
+  "business_source_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+  "Game": {
+    "pid": 153556,
+    "creation_filetime": "134368602545256920",
+    "native_generation": "Native26"
+  },
+  "warm": {
+    "SEM": 4115,
+    "CAP": 4116,
+    "native_frame": 3138,
+    "connection_epoch": 8,
+    "public_revision": 2,
+    "same_pid_hot": true
+  },
+  "primary_pixel_review": "c10-current1821-root-pixel-review-2026-10-19.json",
+  "closed_batch": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T10:05:51.264338+00:00",
+    "business_source_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c",
+    "compact": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C10-BATCH4117-75-COMPACT.json",
+      "bytes": 136396,
+      "sha256": "9dcd5226046d53e2674f0d7fa2275a71c6f9a08d424e3ec4f671a92013f28a3f"
+    },
+    "range": [
+      4117,
+      4177
+    ],
+    "actual_turns": 30,
+    "completed_cycles": 1987,
+    "elapsed_campaign_days": 1844.0,
+    "end_frame": {
+      "snapshot_id": "native:3204",
+      "revision": 68,
+      "native_revision": 3204,
+      "date_raw": 53188584,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "first_rpc_started_at_utc": "2026-10-19T10:02:45.754037+00:00",
+    "last_rpc_ended_at_utc": "2026-10-19T10:03:59.390647+00:00",
+    "closed_rpc_extent_seconds": 73.63661,
+    "first_MET_date_raw": 53188032,
+    "dates": [
+      53188032,
+      53188056,
+      53188128,
+      53188176,
+      53188200,
+      53188224,
+      53188248,
+      53188272,
+      53188296,
+      53188320,
+      53188344,
+      53188368,
+      53188392,
+      53188416,
+      53188440,
+      53188464,
+      53188488,
+      53188512,
+      53188536,
+      53188560,
+      53188584
+    ],
+    "selected_counts": {
+      "query-war-results-window-v1": 4,
+      "query-battle-control-snapshot-v1-33554800": 3,
+      "query-war-termination-options-16777278": 2,
+      "submit-player-prisoner-release-v1": 1,
+      "life-advance": 1,
+      "battle-decision-epoch-advance-to-53188128": 1,
+      "battle-decision-epoch-advance-to-53188848": 1,
+      "life-advance-one-day": 17
+    },
+    "oversized_AUTOs_not_observed": [],
+    "cumulative_wall_anchor_utc": "2026-10-19T03:26:49.420926+00:00",
+    "cumulative_wall_seconds": 23829.969721,
+    "cumulative_seconds_per_campaign_day": 12.922977072125814,
+    "full_control_elapsed_seconds": null,
+    "new_RPC_calls": 0,
+    "active_Driver_SAVE_reads": 0,
+    "first_planning_date_raw": 53188032,
+    "closed_rpc_extent_calendar_days": 23.0,
+    "closed_rpc_extent_seconds_per_day": 3.201591739130435
+  },
+  "unchanged_goal": {
+    "origin_actor": 31254,
+    "current_actor": 40526,
+    "D0_dynasty_id": 174,
+    "start_date_raw": 53144328,
+    "end_date_raw": 53407128,
+    "actual_day_target": 10950
+  },
+  "performance": {
+    "phase_target_seconds_per_actual_day": 1,
+    "phase_target_achieved": false,
+    "closed_RPC_extent_excludes_outer_tail": true,
+    "original_cumulative_anchor_retained": true
+  },
+  "camera": {
+    "actual_hotspot_follow_qualified": false,
+    "actual_full_realm_coverage_qualified": false,
+    "Native29_offline_fixture_checks_passed": 43,
+    "Native29_loaded": false,
+    "old_result106": "unavailable; no precise stage encoded",
+    "post_business_cached_frame_fix": "source implementation in progress; not current C10"
+  },
+  "new_Game_RPC_or_SAVE_reads_by_this_receipt": 0
+}
