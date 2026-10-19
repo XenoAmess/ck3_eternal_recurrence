@@ -1,0 +1,39 @@
+{
+  "schema": "native30-artifact10-readonly-source-preflight-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "READONLY_PRECHECK_RETURNED_PE_PASS_THEN_SOURCE_SEAL_CAP_RED",
+  "control_flow_evidence": {
+    "exec": "71f8c6",
+    "duration_seconds": 9.7715523,
+    "reached": "seal main115 write(PROOF,proof), after p.preflight and inspect_pe_exports returned",
+    "exception": "RuntimeError complete source48K",
+    "PLAN_written": true,
+    "PROOF_READY_written": false,
+    "actual_full_structured_preflight_payload": null,
+    "payload_limit": "The read process ended before persisting its dict; do not invent actual counter values or timestamps from that lost RAM.",
+    "tests_preserved": "a32fad six PASS/0.001s; not rerun"
+  },
+  "validated_by_returned_function_contract": [
+    "same5355/995/12/219+2globs/983 and9originalEXE guards",
+    "09 exactly bound nine closed argv/exit0/Job0/layout/noWork and failed outer Task absence",
+    "actual existing DLL PE64 five code exports plus exact DATA RVA/2752/raw64 header/readable-nonEXEC"
+  ],
+  "source_corrections": {
+    "source_probe_original_RED": "00cb3d: unchanged Q.preflight currentMetadata+16MiB exceeds old128 after09 closed inventory; 0R writes, docs absent.",
+    "source_path_probe_RED": "78808a: explicit Git-relative DATA leaf appended to the Native-only source root; corrected to frozen ROOT/source/Git-relative, no R writes.",
+    "new_independent_glue": "Same prior-plan hash/helperpin/prior_pins/seed_pins/Q.Q.preflight/verify_seed/protected07/08seed/buildclosed/9identities, own reserve8 within private160 then old F09 private160 guard. Old Q/09/global state untouched."
+  },
+  "execution_admission": false,
+  "preflight_or_matrix_repeated_after_cap_supplement": false,
+  "R_writes": 0,
+  "Task_calls": 0,
+  "project_EXE_calls": 0,
+  "UAC_calls": 0,
+  "Game_calls": 0,
+  "deferred": [
+    "fresh NoWork command",
+    "map/data-source and archive unique payload final checks",
+    "final immutable/9identities",
+    "new owner closure"
+  ]
+}

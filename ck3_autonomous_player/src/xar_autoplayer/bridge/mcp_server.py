@@ -2939,8 +2939,13 @@ def create_server(
         except BridgeUnavailableError as error:
             from .domain_construction_private_transport_v1 import construction_transport_diagnostic
 
-            diagnostic = construction_transport_diagnostic(error)
-            diagnostic_key = "construction_transport_v1"
+            from .exact_clock_failure_diagnostic_v1 import exact_clock_failure_diagnostic_v1
+
+            diagnostic = exact_clock_failure_diagnostic_v1(error)
+            diagnostic_key = "exact_day_clock_failure_v1"
+            if diagnostic is None:
+                diagnostic = construction_transport_diagnostic(error)
+                diagnostic_key = "construction_transport_v1"
             if diagnostic is None:
                 diagnostic = _native_command_rejection_diagnostic(error)
                 diagnostic_key = "native_command_rejection"

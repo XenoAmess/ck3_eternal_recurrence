@@ -1,0 +1,79 @@
+{
+  "schema": "xar.a0-exact-clock-diagnostic-source-ready/v1",
+  "status": "SOURCE_READY_NOT_ADOPTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:57:40.950180+00:00",
+  "base_business_commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\PLAN.json",
+    "bytes": 4490,
+    "sha256": "dd266aaad8a89225f60e3666ee0e7db4079cf1d75d7fb9a602eee4e585b0f5f7"
+  },
+  "source_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE-A0-CLOCK-BOUNDED-DIAGNOSTIC-COMPLETE2MiB-SOURCE-COMMITMENT01.json",
+    "bytes": 2248,
+    "sha256": "8813e186bcf63a6e1b89ca55903d90bdd46a51b348a03dd8dc0f38e436c1937a"
+  },
+  "tests": {
+    "command": "py -B tools/g2_saved_campaign/candidates/a0_clock_diagnostic_20261020/test_candidate.py",
+    "final_count": 10,
+    "final_pass": 10,
+    "final_fail": 0,
+    "duration_seconds": 13.424,
+    "actual_output_source": "exec session90579 output383e7a and completion12b474",
+    "earlier_count_before_helper_safety_refinement": 9,
+    "tests_not_reexecuted_by_sealer": true
+  },
+  "source_checks": {
+    "full_input_pins": true,
+    "full_inverse": true,
+    "full_candidate_syntax": true,
+    "only_two_named_AST_spans": true
+  },
+  "files_excluding_this_proof": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\PLAN.json",
+      "bytes": 4490,
+      "sha256": "dd266aaad8a89225f60e3666ee0e7db4079cf1d75d7fb9a602eee4e585b0f5f7"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\prepare_candidate.py",
+      "bytes": 7579,
+      "sha256": "c243f2184f04fe484d3a7cc72fd12e0d1b4d057bed5afdac99474d1864853287"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\seal_source.py",
+      "bytes": 8257,
+      "sha256": "0cda1b47c89084e1dbaebeeb239fcc0a05be0fcf5de9ed1f8e4ec48d394cd957"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\test_candidate.py",
+      "bytes": 14884,
+      "sha256": "1201b6cf7231eb409576616ec89cde675fd486f8d261cb0fde409cd4bcff848c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\xar_autoplayer\\bridge\\exact_clock_failure_diagnostic_v1.py",
+      "bytes": 5944,
+      "sha256": "9c8ec21df11d25fba56bd108a73da1df379f1851b9c5809e4bc947f081f6ce7a"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 264620,
+      "sha256": "75e01e9b117fd6a64de10b7971a65a0571ffe3923e93aa7065f166987ab05de5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1638219,
+      "sha256": "b26db9389bb5e015e5607122c3d0eb8cf66fe828df0e2036419683e3cd6f8eb1"
+    }
+  ],
+  "proof_self_pin": "returned separately by sealer stdout",
+  "full_logical_bytes_including_this_proof": 1947472,
+  "hard_bytes": 2097152,
+  "allocated_bytes": null,
+  "future_writes": 0,
+  "owned_children_after_close": 0,
+  "external_outputs": 0,
+  "Game_RPC_CPP_EXE_SDK_adoption": "NOTRUN",
+  "physical_credit_bytes": 0
+}

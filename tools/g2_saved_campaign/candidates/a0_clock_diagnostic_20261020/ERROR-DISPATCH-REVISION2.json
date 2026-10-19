@@ -1,0 +1,61 @@
+{
+  "schema": "xar.a0-exact-clock-error-dispatch-correction/v2",
+  "status": "SOURCE_READY_NOT_ADOPTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:13:22.390334+00:00",
+  "prior_ready": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\SOURCE-READY.json",
+    "bytes": 3479,
+    "sha256": "affe69fa98e1fed78e793f61f7c556d5930f0c6d5381a8111f27f54070b7fe29"
+  },
+  "prior_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\PLAN.json",
+    "bytes": 4490,
+    "sha256": "dd266aaad8a89225f60e3666ee0e7db4079cf1d75d7fb9a602eee4e585b0f5f7"
+  },
+  "reason": "Root/performance_python found schema/message matching did not explicitly require the actual StepPostconditionError and selected step.",
+  "change": "Extractor now requires actual .driver.StepPostconditionError, selected_step life-advance-one-day and exactly the fixed DTO top-level keys; only that allowlist is isolated for MCP.",
+  "unchanged": "Driver/MCP candidate bytes, original text/cause, call order, cleanup and every normal/other error route; current SDK/Queue not adopted or modified.",
+  "updated_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\xar_autoplayer\\bridge\\exact_clock_failure_diagnostic_v1.py",
+      "bytes": 6624,
+      "sha256": "8bf4dc3413fae7634999e3bd1b3509c2b9f2b9a58e0a13ee1abb7a477c52276f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\test_candidate.py",
+      "bytes": 15114,
+      "sha256": "2c35d6b53794c3a01c190ce3f4ee753dcfc0c08ad2f652ff5f8ffeb46fcb4dba"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\test_error_dispatch_revision2.py",
+      "bytes": 1943,
+      "sha256": "5e8557f792dec00c989e855c464ff7908d36850722ea55b50c6210b745b89ac9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\seal_dispatch_revision2.py",
+      "bytes": 2846,
+      "sha256": "82fabab84b9f4b7cd2d527137621d3ebcc67fe0dfe94ea69685229b4c30c2cbb"
+    }
+  ],
+  "tests": {
+    "command": "py -B tools/g2_saved_campaign/candidates/a0_clock_diagnostic_20261020/test_error_dispatch_revision2.py",
+    "passed": 2,
+    "failed": 0,
+    "unittest_duration_seconds": 0.0,
+    "actual_output": "exec fee2e9; command wall0.1241189s",
+    "cases": [
+      "foreign actual BridgeUnavailableError rejected without mutation",
+      "wrong selected step rejected; expected typed object accepted/isolated; extra DTO key rejected"
+    ],
+    "prior_10_not_rerun": true
+  },
+  "original_10_pass_only_applies_to_prior_helper": true,
+  "full_logical_bytes_including_this_addendum": 1956218,
+  "hard_bytes": 2097152,
+  "allocated_bytes": null,
+  "future_writes": 0,
+  "owned_children": 0,
+  "Native_RPC_Game_SDK_adoption": "NOTRUN",
+  "physical_credit_bytes": 0
+}

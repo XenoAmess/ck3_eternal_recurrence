@@ -671,6 +671,30 @@ def _wait_for_start_signal(job, check, screenshots, ready_frame):
         time.sleep(.5)
 
 
+def advance_growth_deadline_v1(previous, changed, was_paused, *, current, now,
+                               output_active, output_paused, error_message):
+    import math
+    if (type(previous) is not int or previous < 0 or type(current) is not int
+            or current < 0 or type(was_paused) is not bool
+            or type(changed) not in (int, float) or type(now) not in (int, float)
+            or not math.isfinite(changed) or not math.isfinite(now) or now < changed):
+        raise ValueError('owned recording growth observation is incomplete')
+    if output_active is not True:
+        raise RuntimeError('owned recording ended before its bound')
+    if current > previous:
+        previous, changed = current, now
+    if current == previous and output_paused is True:
+        # A legal pause stops file growth. A regressed/disappeared file does
+        # not gain this exemption and retains the original deadline.
+        changed, was_paused = now, True
+    elif current >= previous and output_paused is False and was_paused:
+        # Resume is a fresh observation, not backdated to an assumed time.
+        changed, was_paused = now, False
+    if now - changed > 30:
+        raise RuntimeError(error_message)
+    return previous, changed, was_paused
+
+
 class FileGrowthWatch:
     """Independent file polling and one stop attempt on a separate WS socket."""
     def __init__(self, engine, seconds, start_monotonic):
@@ -696,6 +720,7 @@ class FileGrowthWatch:
         continuous = job.get("continuous") is True
         end = None if continuous else self.start_monotonic + max(.25, self.seconds - min(10, self.seconds * .05))
         previous, changed = 0, time.monotonic()
+        was_paused, peer = False, None
         try:
             while not self.requested.is_set():
                 try:
@@ -710,6 +735,13 @@ class FileGrowthWatch:
                     else:
                         _, _, _, deadline_check = _generation_helpers()
                         deadline_check(job["deadline_utc"])
+                    if peer is None:
+                        peer = OwnedEngine(self.engine.profile, job)
+                        peer.process, peer.generation = self.engine.process, self.engine.generation
+                        peer.connect()
+                    _output_binding(peer)
+                    growth_status = peer.client.get_record_status()
+                    peer.check()
                     video, total = _job_bytes(job)
                     self.peak = max(self.peak, total)
                     _append_sample(self.samples, self.sample_summary,
@@ -717,10 +749,11 @@ class FileGrowthWatch:
                          "file_bytes": video, "output_logical_bytes": total}, continuous)
                     if not continuous and total >= job["max_output_bytes"] - 96 * 1024**2:
                         raise RuntimeError("actual output reached the reserved stop margin")
-                    if video > previous:
-                        previous, changed = video, time.monotonic()
-                    elif time.monotonic() - changed > 30:
-                        raise RuntimeError("actual video file did not grow for over 30 seconds")
+                    previous, changed, was_paused = advance_growth_deadline_v1(
+                        previous, changed, was_paused, current=video, now=time.monotonic(),
+                        output_active=growth_status.output_active,
+                        output_paused=getattr(growth_status, "output_paused", None),
+                        error_message="actual video file did not grow for over 30 seconds")
                     if end is not None and time.monotonic() >= end:
                         self.request_stop("duration_reached")
                         break
@@ -730,10 +763,12 @@ class FileGrowthWatch:
                     break
                 self.requested.wait(.5)
             # Never share a ReqClient socket or change the main engine.client.
-            peer = OwnedEngine(self.engine.profile, job)
-            peer.process, peer.generation = self.engine.process, self.engine.generation
+            if peer is None:
+                peer = OwnedEngine(self.engine.profile, job)
+                peer.process, peer.generation = self.engine.process, self.engine.generation
             try:
-                peer.connect()
+                if peer.client is None:
+                    peer.connect()
                 self.output = _stop_owned(peer)  # Single original stop, no retry.
                 self.stop_confirmed = True
             finally:
@@ -1109,6 +1144,7 @@ def run_worker(path):
             end = None if continuous else start_monotonic + job["duration_seconds"]
             reconnect_at, screenshot_at = time.monotonic() + 20, time.monotonic() + 30
             last_bytes, last_growth, peak = 0, time.monotonic(), 0
+            was_paused = False
             while end is None or time.monotonic() < end:
                 time.sleep(1 if end is None else min(1, max(0, end - time.monotonic())))
                 guard()
@@ -1120,6 +1156,7 @@ def run_worker(path):
                 if watch.requested.is_set():
                     break
                 status = client.get_record_status()
+                engine.check()
                 if not status.output_active and watch.reason == "duration_reached":
                     break
                 if not status.output_active:
@@ -1135,10 +1172,11 @@ def run_worker(path):
                 peak = max(peak, total)
                 if not continuous and total >= job["max_output_bytes"] - 96 * 1024**2:
                     raise RuntimeError("recording allocation nearing hard byte cap")
-                if current_bytes > last_bytes:
-                    last_bytes, last_growth = current_bytes, time.monotonic()
-                elif time.monotonic() - last_growth > 30:
-                    raise RuntimeError("actual recording file did not grow for over 30 seconds")
+                last_bytes, last_growth, was_paused = advance_growth_deadline_v1(
+                    last_bytes, last_growth, was_paused, current=current_bytes, now=time.monotonic(),
+                    output_active=status.output_active,
+                    output_paused=getattr(status, "output_paused", None),
+                    error_message="actual recording file did not grow for over 30 seconds")
                 _append_sample(samples, sample_summary,
                     {"elapsed_seconds": time.monotonic() - start_monotonic,
                      "file_bytes": current_bytes, "output_logical_bytes": total}, continuous)

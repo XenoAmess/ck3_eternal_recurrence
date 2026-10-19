@@ -1,0 +1,30 @@
+{
+  "schema": "xar.obs-pause-aware-canonical-adoption.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:35:32.278121+00:00",
+  "canonical": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\ck3_obs_capture.py",
+    "bytes": 71770,
+    "sha256": "9af7bf7e2faa757ff07f759990cb10a1425852bde001554e924b228598515a0c"
+  },
+  "source_plan": "docs/ck3-native-ai/evidence/obs-pause-aware-canonical-source-plan-2026-10-20.json",
+  "readback_addendum": "docs/ck3-native-ai/evidence/obs-pause-aware-exact-candidate-readback-addendum-2026-10-20.json",
+  "storage_card": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/INTEGRATION16MiB-CAPTURE128KiB-INTERNAL-SOURCE-CLOSURES01.json",
+    "sha256": "5018795025ccfb7029586ba40d47444983950b7c57f3d0425ef34d57c426a3a8"
+  },
+  "adoption_tool": "355935",
+  "test_command": "python -B -X utf8 -m unittest discover -s tools -p test_ck3_obs_pause_growth_v1.py",
+  "actual_result": "2 passed, 0.040s, b6c76b",
+  "temp_removed": true,
+  "new_runtime_companion_dependency": false,
+  "frozen_C16_worker": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\presentation-c16\\ck3_obs_capture_png_retry_c16.py",
+    "bytes": 71575,
+    "sha256": "20e40e58137ee40ee002e3e6b3cfb670addf12b62c6e2f7f666a4252601759b8",
+    "unchanged": true
+  },
+  "current_Game_SDK_OBS_Task_calls": 0,
+  "actual_managed_pause_resume_acceptance": "NOT_RUN",
+  "future_writes": 0
+}

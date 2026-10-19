@@ -1,0 +1,57 @@
+{
+  "schema": "xar.OBS-pause-aware-canonical-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:26:23.795379+00:00",
+  "status": "RAM_CANDIDATE_ONLY_NO_LIVE_ADOPTION",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\ck3_obs_pause_growth_v1.py",
+      "bytes": 1566,
+      "sha256": "b3a645480af6840c3a784336ab03538d918efec6df0faf6134c09fe9440a030c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_obs_pause_aware_capture_v1.py",
+      "bytes": 5600,
+      "sha256": "bf8aeb85be52985f3078ba5abf4676e8f1bb2457154d6070e8acd085b368a204"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\test_ck3_obs_pause_growth_v1.py",
+      "bytes": 13173,
+      "sha256": "1c0180fee4917aab3123c4f5da98d32f57e41db57b581fcb9494534f3619496d"
+    }
+  ],
+  "proof": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\obs-pause-aware-two-growth-gates-source-qualification-2026-10-20.json",
+    "bytes": 2425,
+    "sha256": "3b46081fbd125c6f918e4ee787539081923d94cf8b5adefed5bb9868e9244fea"
+  },
+  "entry": "prepare_obs_pause_aware_capture_v1.compose() -> standalone full canonical capture bytes in RAM; never writes it",
+  "base": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\ck3_obs_capture.py",
+    "bytes": 69656,
+    "sha256": "f0e66034173353c37ba3626e423a2e8139f815e3f8dfa938c4219bc41a16b4e2"
+  },
+  "candidate": {
+    "bytes": 71770,
+    "sha256": "9af7bf7e2faa757ff07f759990cb10a1425852bde001554e924b228598515a0c"
+  },
+  "pure_helper_delivery": "exact pinned FunctionDef is embedded in capture; local math import; no companion file needed in worker copy",
+  "future_canonical_adoption": "Root separately applies qualified RAM bytes to tools/ck3_obs_capture.py and freezes full source SHA",
+  "future_managed_worker": "use that newly frozen standalone leaf through original capture producer/profile/sourcepin rules; do not patch or overwrite old C16 worker",
+  "controlled_status_path": "OwnedEngine.check -> own profile/output binding -> own ReqClient.GetRecordStatus -> generation check; wire outputPaused maps to output_paused in obsws-python1.8.0",
+  "pause_rule": "only strict owned active/paused with non-regressed bytes suspends growth deadline; real resume starts new grace; unknown keeps original timeout",
+  "ownership": "watch owns its WS connection only; never shares main ReqClient or closes borrowed process generation",
+  "STOP_disk_deadline": "original checks remain outside pause exemption; _stop_owned remains one original attempt",
+  "runtime_permission": "none; not a clock recovery gate; Task pause/resume protocol and real OBS acceptance are separate",
+  "storage": {
+    "new_source_hard_bytes": 32768,
+    "old_reference_bytes": 69656,
+    "scratch_bytes": 0,
+    "old_plus_new_upper": 102424,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "source_card_sha256": "a5c7214d00556f97d3f3ae6bfde5fc081877e1d5c4d9624bd823b9bb4e9ebfe0"
+  },
+  "record_review_at_utc": "2027-04-17T22:26:23.795379+00:00",
+  "future_writes_after_freeze": 0
+}

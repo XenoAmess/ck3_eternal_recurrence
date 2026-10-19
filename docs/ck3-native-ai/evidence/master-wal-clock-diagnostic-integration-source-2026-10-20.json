@@ -1,0 +1,103 @@
+{
+  "schema": "xar.master-wal-clock-diagnostic-production-wiring-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:30:51.761065+00:00",
+  "status": "SOURCE_QUALIFIED_NOT_DEPLOYED",
+  "base_master_label": "c249 source bytes retained through Root f184 extras; no Git read/write",
+  "before": {
+    "native_driver.py": {
+      "bytes": 1642268,
+      "sha256": "1b87bf888a6d323d3101a45376b26491aeefa9501dcaa0f3da72d04f9d975ea9"
+    },
+    "mcp_server.py": {
+      "bytes": 268839,
+      "sha256": "1955e0ac452b7ea4c38da48e2010366b19423712d0e8b0877fb9c536d23bd472"
+    }
+  },
+  "after": {
+    "native_driver.py": {
+      "bytes": 1645555,
+      "sha256": "d61248aefb548175c5ee823c44e31b79ef0114165417aee55ab502654503b699"
+    },
+    "mcp_server.py": {
+      "bytes": 269100,
+      "sha256": "f273241c62f06602e36e9d0ec322c9e4b633639b0908fba6c72d2892ed9841a3"
+    }
+  },
+  "source_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\INTEGRATION16MiB-MASTER2MiB-SOURCE-SOURCE22-GIT-EXPORT-BUDGET01.json",
+    "bytes": 3506,
+    "sha256": "e8726e7cdd6fa93d80c7d283afca9c3bd1115dd3be30270c51c39535bb807e25"
+  },
+  "whole_inverse": true,
+  "driver_WAL_a0_commute": true,
+  "outside_owned_AST_equal": true,
+  "Driver_changed_methods": [
+    "__init__",
+    "_advance_exact_day_with_sentinel",
+    "_persist_driver_state",
+    "_try_persist_driver_state_wal_append_v1",
+    "retain_succession_expectation_v1"
+  ],
+  "MCP_changed_function": "ck3_auto_turn",
+  "tests": {
+    "run": 2,
+    "failures": 0,
+    "errors": 0,
+    "passed": true,
+    "transcript": "test_real_query_record_retain_run_replays_identically_and_reads_once (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_real_query_record_retain_run_replays_identically_and_reads_once) ... ok\ntest_actual_method_normal_parity_and_typed_MCP_error_dispatch (__main__.MasterClockWiring.test_actual_method_normal_parity_and_typed_MCP_error_dispatch) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 2.096s\n\nOK\n"
+  },
+  "scope": "one existing synthetic WAL retain/append/replay case on canonical production imports; actual canonical sentinel normal A/B plus typed failure and actual MCP AST dispatch",
+  "previous_matrices_repeated": false,
+  "diagnostic_is_clock_fix": false,
+  "current_SDK_Game_RPC_Native_Task_Git_changes": 0,
+  "runtime_speedup_seconds": null,
+  "scratch": {
+    "root": "Z:\\ck3_mod_rewrite\\.task-tmp\\master-wal-a0-integration-20261020-qualification01",
+    "hard_bytes": 32768,
+    "synthetic_writes": 5,
+    "scratch_conservative_prewrite_bound": 6185,
+    "removed": true,
+    "physical_peak": null,
+    "allocated_bytes": null
+  },
+  "outputs": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1645555,
+      "sha256": "d61248aefb548175c5ee823c44e31b79ef0114165417aee55ab502654503b699"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 269100,
+      "sha256": "f273241c62f06602e36e9d0ec322c9e4b633639b0908fba6c72d2892ed9841a3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_clock_failure_diagnostic_v1.py",
+      "bytes": 6624,
+      "sha256": "8bf4dc3413fae7634999e3bd1b3509c2b9f2b9a58e0a13ee1abb7a477c52276f"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_master_wal_clock_diagnostic_integration_v1.py",
+      "bytes": 8674,
+      "sha256": "f8602676d7b7c22d82557557b4c1375de812ae578e9f8b3f5fb440867039087d"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_master_wal_clock_diagnostic_integration_v1.py",
+      "bytes": 14962,
+      "sha256": "8232d53c834ca5e51e9b801baede386a9c6e97baf48a652f86aec802f50e3df1"
+    }
+  ],
+  "unchanged_WAL_helper_input": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_binding_refresh_wal_v1.py",
+    "bytes": 10331,
+    "sha256": "2323491006b60bee56f96a8b18e4458b1e702fb8982cdf7213ef7234e30ba690"
+  },
+  "patch": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\master-wal-clock-diagnostic-integration-v1.patch",
+    "bytes": 9388,
+    "sha256": "9c57e1a96139634b6fe5630ec4eaa108a152009d52037d012c27a8316aed2321"
+  },
+  "future_writes": 0,
+  "physical_credit_bytes": 0
+}

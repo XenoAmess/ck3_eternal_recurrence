@@ -1,0 +1,61 @@
+{
+  "schema": "native30-artifact-postcheck10-source-ready-v1",
+  "status": "SOURCE_READY_NOT_EXECUTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:48:03.451546+00:00",
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-revision2-2026-10-20.json",
+    "bytes": 2895,
+    "sha256": "f305087ccb481960ebce8c7c13b8179b48629979787515e006077a428d97045d"
+  },
+  "proof": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-readonly-preflight-2026-10-20.json",
+    "bytes": 2035,
+    "sha256": "362c920f119378592966a77590b298a9f2650ded74762fcf635be8dd4ec79227"
+  },
+  "tests": {
+    "passed": 6,
+    "failed": 0,
+    "unittest_seconds": 0.001,
+    "actual_output": "a32fad",
+    "new_CPP_credit": false
+  },
+  "files_excluding_this_ready": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_artifact_postcheck10_20261020.py",
+      "bytes": 23736,
+      "sha256": "a6cad40bf6975b93b70f4b8789e827be7f96c2e26705aa34a463ece1dbe41368"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_native30_artifact_postcheck10_20261020.py",
+      "bytes": 5361,
+      "sha256": "b68b6760e87a981dada79285ba050ed95577f6a0c5da92f7dde475877cbb96ce"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\seal_native30_artifact_postcheck10_20261020.py",
+      "bytes": 13586,
+      "sha256": "d31bee6297da1d385b6bedd3fe466a36b4693d76ae595a6783dd2ee5a9b5acf5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-2026-10-20.json",
+      "bytes": 7612,
+      "sha256": "5e37b8010b556d85dd248be40198be25047d46591642450ee67a24f5b551edb3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-readonly-preflight-2026-10-20.json",
+      "bytes": 2035,
+      "sha256": "362c920f119378592966a77590b298a9f2650ded74762fcf635be8dd4ec79227"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-revision2-2026-10-20.json",
+      "bytes": 2895,
+      "sha256": "f305087ccb481960ebce8c7c13b8179b48629979787515e006077a428d97045d"
+    }
+  ],
+  "full_logical_bytes": 57685,
+  "hard_bytes": 65536,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "owned_children": 0,
+  "physical_credit_bytes": 0
+}

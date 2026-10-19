@@ -1,0 +1,120 @@
+{
+  "schema": "xar.source22.canonical-git-anchor/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T22:37:43.718208+00:00",
+  "status": "CANONICAL_REF_CREATED_NOT_DEPLOYED",
+  "execution_owner": "Root",
+  "root_direct_execution_release": true,
+  "capacity_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\INTEGRATION16MiB-MASTER2MiB-SOURCE-SOURCE22-GIT-EXPORT-BUDGET01.json",
+    "bytes": 3506,
+    "sha256": "e8726e7cdd6fa93d80c7d283afca9c3bd1115dd3be30270c51c39535bb807e25"
+  },
+  "writer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\write_source22_canonical_ref_v1.py",
+    "bytes": 12267,
+    "sha256": "1a1c40584ff4e3e10341e83535d82fc48fdf1e91b991277dedd8c7952fdf7bb7"
+  },
+  "composer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source22_wal_clock_diagnostic_v1.py",
+    "bytes": 31334,
+    "sha256": "27141b999abd41e752323cc74831e9ea1c33389366da8630c2002ac2c8e4b24a"
+  },
+  "source_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-wal-clock-diagnostic-source-plan-2026-10-20.json",
+    "bytes": 11133,
+    "sha256": "48ecb6b2e5c8162d965efd30ed925838b92b2fb519870ceba6131d265905ac89"
+  },
+  "ref": "refs/heads/campaign/robert-v20261019-c22-wal-clock-diag-warm-01",
+  "parent": "f19864de1cc073eed62617faad2307c57ad45a97",
+  "runtime_calls": 0,
+  "SDK_export_calls": 0,
+  "Native_Game_Task_calls": 0,
+  "push_calls": 0,
+  "index_or_tracked_worktree_mutations": 0,
+  "commit": "0722bef48d412ed5e49d0109177493846d988745",
+  "tree": "fd5e2d942f214effc56dd67aa30f4a6d4d011763",
+  "nine_output_pins": [
+    {
+      "relative": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+      "bytes": 8276,
+      "sha256": "6e3e389fce8ecb6f92c579384d5a02afaa2f2cf9efc2fb62c924d057b46b3e5c",
+      "git_blob_sha1": "2f3e9cecfd62cc65dc166a77ca7346f043d2ecb5",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/exact_clock_failure_diagnostic_v1.py",
+      "bytes": 6624,
+      "sha256": "8bf4dc3413fae7634999e3bd1b3509c2b9f2b9a58e0a13ee1abb7a477c52276f",
+      "git_blob_sha1": "0854e5cc9537a091f43ac102d7b636cd04c56184",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 264620,
+      "sha256": "75e01e9b117fd6a64de10b7971a65a0571ffe3923e93aa7065f166987ab05de5",
+      "git_blob_sha1": "f0110da9be2531d13d1be0ae31a5e1580eac97b6",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1640335,
+      "sha256": "e15fdf47aca82572ff0663d33511e566e9ed6e19a46d22500722058b387f34e2",
+      "git_blob_sha1": "cc8e0c10d4d8d31f4cc7dd4f903d8a6c79b4223e",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/succession_binding_refresh_wal_v1.py",
+      "bytes": 10331,
+      "sha256": "2323491006b60bee56f96a8b18e4458b1e702fb8982cdf7213ef7234e30ba690",
+      "git_blob_sha1": "c6e063d06f82b0b6496e484b4bf64b34b21b1902",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/turn_bundle_contract.py",
+      "bytes": 27974,
+      "sha256": "d02a8e56a83494a9643d9ded350e125ad96d6d6922eef75132e37d711ed91acc",
+      "git_blob_sha1": "25470751ad42fc870ed052f3ffaef5c1c599a7a6",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/m5_formal_proposal_collector.py",
+      "bytes": 36154,
+      "sha256": "6488c6f3ab6d930e37d8f9730285214ebbc700a8a6ec968124826b81b1c8172e",
+      "git_blob_sha1": "c817e3d2676e526f8a337fe3c0965a18e7fbb451",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/sway_formal_consumer.py",
+      "bytes": 34660,
+      "sha256": "02ff455d7ae350ba10b4c2cbcd042350499a04d5bd69b3ec3525af408c959ec7",
+      "git_blob_sha1": "593490eca7d83f9637949f5edb84ee27ab6b7cee",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "bytes": 20067,
+      "sha256": "4e22f96567f30b1b6101ea29e33ec485b417cea8f23ba0c2851070bbc91a767a",
+      "git_blob_sha1": "089308f5e3dcd0a18331dd6eda0c67f8980b6163",
+      "git_mode": "100644"
+    }
+  ],
+  "end_utc": "2026-10-19T22:37:51.318452+00:00",
+  "future_writes": 0,
+  "source_file_count": 1449,
+  "source_bytes": 59095358,
+  "complete_rows_JSON": {
+    "bytes": 372481,
+    "sha256": "7290b3370b64335b27ff375713dd92de331b0ca114bf99440014d40404593a85"
+  },
+  "nine_SHA256_body_readbacks": true,
+  "all1449_SHA256_bodies_reread": false,
+  "all1449_Git_mode_blob_size_verified": true,
+  "Git_peak_quote": 3919872,
+  "Git_hard_bytes": 3932160,
+  "compression_or_existing_object_dedup_credit": 0,
+  "Source21_anchor_created": false,
+  "clock_root_cause": "UNKNOWN; diagnostic only",
+  "Native30_bound": false,
+  "record_review_at_utc": "2027-04-17T22:37:51.318635+00:00"
+}

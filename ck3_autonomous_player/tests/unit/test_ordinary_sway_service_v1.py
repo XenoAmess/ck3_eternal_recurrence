@@ -15,6 +15,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 from xar_autoplayer.bridge import service as production
 from xar_autoplayer.bridge import ordinary_sway_service_v1 as adapter
+from xar_autoplayer.bridge import active_scheme_sway_formal_private_transport as receipt_transport
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge import domain_construction_private_transport_v1 as identity_boundary
 from xar_autoplayer.bridge import declaration_opportunity_cooldown_v1 as declaration_cd
@@ -244,9 +245,18 @@ class NamedBaselineDriver(ClosedShapeDriver):
     def query_active_scheme_sway_receipt_private_v1(self,**arguments):
         # Explicit synthetic endpoint upgrade to the complete .4 source pair;
         # the older fixture receipt lacks build fields needed by common-end.
+        # Native's receipt callback advances capture beyond the submitted read.
+        # Project the fixture's existing frame through the production mapper;
+        # Native/OS values here remain synthetic, including this source sidecar.
+        before=receipt_transport._receipt_source_frame(self.frame())
+        self.capture+=1
+        assert self.capture>arguments["pre_capture_epoch"]
         return {**super().query_active_scheme_sway_receipt_private_v1(**arguments),
                 "exact_ck3_build":"1.20.0.4","exe_sha256":EXE,
-                "post_capture_epoch":self.capture,"post_date_raw":self.date}
+                "post_capture_epoch":self.capture,"post_date_raw":self.date,
+                receipt_transport.RECEIPT_SOURCE_KEY:{
+                    "schema":"xar.ck3.sway-receipt-source-frame.v1","before":before,
+                    "after":receipt_transport._receipt_source_frame(self.frame())}}
     def query_active_scheme_sway_completion_private_v1(self,**arguments):
         result={**super().query_active_scheme_sway_completion_private_v1(**arguments),
                 "native_status_key":"continue","owner_cleared":False,"terminal_cause":"unknown"}

@@ -1,0 +1,60 @@
+{
+  "schema": "xar.OBS-pause-aware-two-growth-gates-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:26:23.795379+00:00",
+  "status": "SOURCE_QUALIFIED_NOT_ADOPTED",
+  "tests_passed": 2,
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\ck3_obs_pause_growth_v1.py",
+      "bytes": 1566,
+      "sha256": "b3a645480af6840c3a784336ab03538d918efec6df0faf6134c09fe9440a030c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_obs_pause_aware_capture_v1.py",
+      "bytes": 5600,
+      "sha256": "bf8aeb85be52985f3078ba5abf4676e8f1bb2457154d6070e8acd085b368a204"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\test_ck3_obs_pause_growth_v1.py",
+      "bytes": 13173,
+      "sha256": "1c0180fee4917aab3123c4f5da98d32f57e41db57b581fcb9494534f3619496d"
+    }
+  ],
+  "canonical_immutable_input": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\ck3_obs_capture.py",
+    "bytes": 69656,
+    "sha256": "f0e66034173353c37ba3626e423a2e8139f815e3f8dfa938c4219bc41a16b4e2"
+  },
+  "candidate_RAM_only": {
+    "bytes": 71770,
+    "sha256": "9af7bf7e2faa757ff07f759990cb10a1425852bde001554e924b228598515a0c"
+  },
+  "exact_inverse_restores_original_bytes": true,
+  "actual_two_gate_AST_statements_tested": true,
+  "actual_FileGrowthWatch_run_AST_tested": true,
+  "test_environment": "pure RAM clock/filesystem/owned-OBS/WS doubles; zero real OBS",
+  "long_pause_resume_then_real_stall": true,
+  "unknown_pause_no_exemption": true,
+  "paused_STOP_single_original_owned_stop": true,
+  "owner_loss_not_hidden": true,
+  "independent_watch_socket_main_socket_unchanged": true,
+  "borrowed_generation_closed": false,
+  "helper_inlined_no_runtime_companion_import": true,
+  "original_stop_disk_deadline_order_retained": true,
+  "canonical_or_C16_actual_worker_modified": false,
+  "actual_C16_worker_reference": {
+    "bytes": 71575,
+    "sha256": "20e40e58137ee40ee002e3e6b3cfb670addf12b62c6e2f7f666a4252601759b8"
+  },
+  "Game_OBS_SDK_Task_RPC_Git_D_operations": 0,
+  "old_test_matrices_repeated": false,
+  "new_source_cap_bytes": 32768,
+  "old_canonical_reference_bytes": 69656,
+  "scratch_bytes": 0,
+  "actual_allocated_bytes": null,
+  "physical_credit_bytes": 0,
+  "source_card_sha256": "a5c7214d00556f97d3f3ae6bfde5fc081877e1d5c4d9624bd823b9bb4e9ebfe0",
+  "record_review_at_utc": "2027-04-17T22:26:23.795379+00:00",
+  "future_writes_after_freeze": 0
+}

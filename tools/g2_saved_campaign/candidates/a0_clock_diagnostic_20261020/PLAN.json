@@ -1,0 +1,86 @@
+{
+  "schema": "xar.a0-exact-clock-diagnostic-source-plan/v1",
+  "status": "SOURCE_ONLY",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:57:40.950180+00:00",
+  "root": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020",
+  "base_business_commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+  "source_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE-A0-CLOCK-BOUNDED-DIAGNOSTIC-COMPLETE2MiB-SOURCE-COMMITMENT01.json",
+    "bytes": 2248,
+    "sha256": "8813e186bcf63a6e1b89ca55903d90bdd46a51b348a03dd8dc0f38e436c1937a"
+  },
+  "hard_source_bytes": 2097152,
+  "participating_full_blobs": [
+    {
+      "file": "native_driver.py",
+      "base_git_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "before_bytes": 1637048,
+      "before_sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab",
+      "candidate": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1638219,
+        "sha256": "b26db9389bb5e015e5607122c3d0eb8cf66fe828df0e2036419683e3cd6f8eb1"
+      },
+      "inverse_full_blob_equal": true,
+      "only_changed_function": "_advance_exact_day_with_sentinel",
+      "other_ast_equal": true
+    },
+    {
+      "file": "mcp_server.py",
+      "base_git_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "before_bytes": 264359,
+      "before_sha256": "8b1c260f779dbd3e25770af75ed87de0cfd39200454c7662f611accfce92688f",
+      "candidate": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\a0_clock_diagnostic_20261020\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 264620,
+        "sha256": "75e01e9b117fd6a64de10b7971a65a0571ffe3923e93aa7065f166987ab05de5"
+      },
+      "inverse_full_blob_equal": true,
+      "only_changed_function": "ck3_auto_turn",
+      "other_ast_equal": true
+    }
+  ],
+  "production_intent": "Root-reviewed narrow AST composition into the same f198 baseline; these candidate files are not an adopted SDK.",
+  "driver_scope": "Only the local map-not-paused error before normal sentinel query; a dedicated local flag prevents matching unrelated exceptions by message.",
+  "behavior": {
+    "original_error_text_and_cause_retained": true,
+    "normal_calls_actions_and_result_unchanged": true,
+    "other_errors_same_object_reraised": true,
+    "war_daily_watch_existing_error_branch_unchanged": true,
+    "cleanup_calls_and_order_unchanged": true,
+    "new_native_queries": 0,
+    "diagnostic_max_utf8_bytes": 8192,
+    "is_error": true,
+    "credit": 0,
+    "never_replay": true,
+    "normal_status_query_attempted": false,
+    "stop_validation_attempted": false,
+    "stored_frames": "starting and last wait frame plus fresh cleanup frame BEFORE pause/cancel; scalar allowlists only; owner/observer fields explicitly cached",
+    "stored_actions": "at most4 rows before cleanup and4 cleanup rows from this invocation only; selected scalar ACK fields, no history/snapshot/action-body copy",
+    "ack_missing_or_malformed_accepted": null,
+    "diagnostic_generation_failure": "rethrow original error, no replacement error"
+  },
+  "mcp_scope": "The existing ck3_auto_turn BridgeUnavailableError handler projects exact typed schema as is_error; construction/native rejection/typed ROOT retry handling remains in order for other errors.",
+  "wal_composition": {
+    "other_owner": "/root/performance_python",
+    "other_methods": [
+      "__init__",
+      "retain_succession_expectation_v1",
+      "_try_persist_driver_state_wal_append_v1",
+      "_persist_driver_state"
+    ],
+    "overlap_with_this_method": false,
+    "combined_future_sdk_authored": false
+  },
+  "qualification_limits": [
+    "Mocked I/O boundaries, actual candidate/baseline method AST and actual f198 exception class AST; installed mcp.types exercised.",
+    "No Game/RPC/current Queue/src17 mutation, no new status query, no Native compilation or new DLL/EXE.",
+    "No actual sentinel stop, timeout recovery, speedup or SDK adoption qualification.",
+    "Structured diagnostic is an error receipt and grants no replay or progress credit.",
+    "The F97 original missing Arm/cleanup/stop receipts remain missing; current status cannot backfill them."
+  ],
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

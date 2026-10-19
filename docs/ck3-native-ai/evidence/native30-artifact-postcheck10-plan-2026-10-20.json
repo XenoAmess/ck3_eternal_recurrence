@@ -1,0 +1,167 @@
+{
+  "schema": "native30-artifact-postcheck10-plan-v1",
+  "status": "SOURCE_ONLY_NOT_EXECUTION_ADMISSION",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:45:52.932641+00:00",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_artifact_postcheck10_20261020.py",
+    "bytes": 23736,
+    "sha256": "a6cad40bf6975b93b70f4b8789e827be7f96c2e26705aa34a463ece1dbe41368"
+  },
+  "source_files": [
+    "tools/g2_saved_campaign/native30_artifact_postcheck10_20261020.py",
+    "tools/g2_saved_campaign/test_native30_artifact_postcheck10_20261020.py",
+    "tools/g2_saved_campaign/seal_native30_artifact_postcheck10_20261020.py",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-plan-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-readonly-preflight-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-source-ready-2026-10-20.json"
+  ],
+  "source_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE10-SOURCE48KiB-M6-SCRATCH-RETIRED01.json",
+    "bytes": 2698,
+    "sha256": "672f7aa70c94a83843e15ce9327c09d82f89fbc51aa30f37a69e91dd86a37a9c"
+  },
+  "borrowed_refs_not_copied": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_functional09_20261020.py",
+      "bytes": 23801,
+      "sha256": "64f9e45fda32e82c7b723ce5aa3948c207be3de6b58d4f8036a48511c1c554d2"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_two_stage_qualification_20261020.py",
+      "bytes": 25416,
+      "sha256": "8fff948b9f119a3341b9afc5fa69e094c8a8bea7868812dd20b0579da63a8fef"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-functional09-plan-2026-10-20.json",
+      "bytes": 10735,
+      "sha256": "3b7a69e787f12c491dff5285d0cef1e509e1f149757b9dfe6ac832e780523aac"
+    }
+  ],
+  "roots": {
+    "aggregate": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+    "postcheck": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt10-artifact-postcheck",
+    "owner": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner10-artifact\\owner-spec"
+  },
+  "phase": "artifact_postcheck_only",
+  "future_stage_args": [
+    "--plan",
+    "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-2026-10-20.json",
+    "--admission",
+    "<new exact card>",
+    "--admission-sha256",
+    "<fullSHA>",
+    "--execute"
+  ],
+  "caps": {
+    "source_complete": 49152,
+    "aggregate": 1610612736,
+    "sourceR": 100663296,
+    "metadata": 167772160,
+    "TEMP": 402653184,
+    "new_metadata_including_owner": 8388608,
+    "owner": 65536
+  },
+  "metadata_quote": {
+    "old08_full": 131238080,
+    "old08_admin_future_writes": null,
+    "old09_full": 16777216,
+    "new10_full": 8388608,
+    "combined": 156403904
+  },
+  "new_output_quote": {
+    "inventory": 2097152,
+    "tool_logs_and_summaries": 1048576,
+    "TEMP": 1048576,
+    "owner_included": 65536,
+    "hard": 8388608,
+    "no_binary_map_snapshot_command_log_copies": true
+  },
+  "reuse_authority": {
+    "failed09_stays_FAILED": true,
+    "exact_records": {
+      "result": [
+        "attempt09-functional/RESULT.json",
+        44290,
+        "1459f738ea8961abc98249043c75d2c28eac51bd052d3bd94d247792c3207ab1"
+      ],
+      "summary": [
+        "owner09-functional/FINAL-CLOSED-SUMMARY.json",
+        7610,
+        "a613819afd6e632bd097e21a703ed52d4bb4c56ee29eb390fcca972904c88bc1"
+      ],
+      "spec": [
+        "owner09-functional/owner-spec/SPEC.json",
+        2042,
+        "51e859df3a884904a0b0fdda66275d0065e2d07b744b6a151a725c6de673e4e4"
+      ],
+      "exports": [
+        "attempt09-functional/exports.log",
+        951,
+        "bab03b66414f42178267be01dc6ce562b121b80cc7416bb4d3611ec298f6f260"
+      ]
+    },
+    "only_reused_facts": "Nine exact original argv/exit0/Job0 + actual layout postchecker0 + NoWork + same build/9EXE bindings; new root1/bootstrap1/Job0 and Task absent confirmed.",
+    "not_reused_as_PASS": "09 delivery/archive/map/source-final/last-EXE checks were not reached. New postcheck executes them independently."
+  },
+  "initial_reserve_correction": {
+    "source_probe_original_RED": "00cb3d: unchanged Q.preflight currentMetadata+16MiB exceeds old128 after09 closed inventory; 0R writes, docs absent.",
+    "source_path_probe_RED": "78808a: explicit Git-relative DATA leaf appended to the Native-only source root; corrected to frozen ROOT/source/Git-relative, no R writes.",
+    "new_independent_glue": "Same prior-plan hash/helperpin/prior_pins/seed_pins/Q.Q.preflight/verify_seed/protected07/08seed/buildclosed/9identities, own reserve8 within private160 then old F09 private160 guard. Old Q/09/global state untouched."
+  },
+  "exports_contract": {
+    "five_code_functions": [
+      "XarCk3BridgeIdentity",
+      "XarCk3BridgePrepareStartup",
+      "XarCk3BridgeStart",
+      "XarCk3BridgeStartWithPipe",
+      "XarCk3BridgeStop"
+    ],
+    "one_DATA": "XarRefillCoreCarrier12004",
+    "DATA_ordinal_for_this_artifact": 6,
+    "DATA_RVA_for_this_artifact": 18062160,
+    "Directory_bytes": 2752,
+    "alignment": 8,
+    "raw_header": [
+      3553956065564574040,
+      1,
+      20261018,
+      16,
+      21,
+      8,
+      10984331755091643874,
+      0
+    ],
+    "DATA_flags": "READ required, EXEC forbidden, WRITE permitted",
+    "forwarders_ordinal_only_duplicates": "reject",
+    "source_pins": {
+      "ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp": "b039f1576e1277cb869003a48e454a6023fbf342ae5b24a6c3f7f5934a972dc3",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/refill_core_carrier_12004.hpp": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60",
+      "ck3_autonomous_player/native_bridge/cmake/army_natural_connected_phase_12004.cmake": "053000ad9eb6f5688cc217cbbb91a318b1ed028813bcf79afa410b3144f7edd6"
+    },
+    "map_sha256": "0574064d032790d51099b79fcabc14b83db5ddcee16446a73a39a6a07d711e35",
+    "no_callable_ability_or_installer_credit": true
+  },
+  "sequence": [
+    "Exact Root-committed source/plan + fresh same-parent admission + new c0 SPEC direct Root release.",
+    "Reacquire original09/08 closed refs, full5355/995/12/219+2globs/983 production leases and9EXE FileID+SHA. No continuous cross-Task custody claim.",
+    "Fresh snapshot Ninja -n -d explain exactNoWork only; never build or execute project tests.",
+    "PE64 AMD64 DLL six named exports, original5 executable functions, one exact nonEXEC DATA2752/header; stream map once for source/address/required symbols.",
+    "Pinned MSVC lib /LIST, three unique exact clean runtime COFF payloads; noPDB/ILK; all production/source/prior evidence intact; final9EXE SHA/FileID and09 closed facts unchanged.",
+    "New delivery and RESULT. Actual own Job0, new outer child/bootstrap0/Job0+Task absent separately reviewed before artifact qualification."
+  ],
+  "contract": {
+    "success_status": "OFFLINE_ARTIFACT_QUALIFIED_NOT_DEPLOYED",
+    "fixture_exec_this_phase": 0,
+    "fixture_build_this_phase": 0,
+    "only_external_tools": "Pinned Ninja dry-run and lib /LIST; no CMake/compiler or project EXE",
+    "Defender_registration_pending": true,
+    "OS_qualification": "UNKNOWN",
+    "Game_camera_H": "NOTRUN",
+    "prior_failures_requalified": false,
+    "deployed": false
+  },
+  "future_writes": "source only; execution needs separate admission",
+  "physical_credit_bytes": 0
+}

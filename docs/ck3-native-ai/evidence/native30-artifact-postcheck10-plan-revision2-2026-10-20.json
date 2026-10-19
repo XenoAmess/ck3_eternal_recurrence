@@ -1,0 +1,65 @@
+{
+  "schema": "native30-artifact-postcheck10-plan-v1",
+  "revision": 2,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "status": "SOURCE_ONLY_NOT_EXECUTION_ADMISSION",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_artifact_postcheck10_20261020.py",
+    "bytes": 23736,
+    "sha256": "a6cad40bf6975b93b70f4b8789e827be7f96c2e26705aa34a463ece1dbe41368"
+  },
+  "source_files": [
+    "tools/g2_saved_campaign/native30_artifact_postcheck10_20261020.py",
+    "tools/g2_saved_campaign/test_native30_artifact_postcheck10_20261020.py",
+    "tools/g2_saved_campaign/seal_native30_artifact_postcheck10_20261020.py",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-plan-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-readonly-preflight-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-source-ready-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck10-plan-revision2-2026-10-20.json"
+  ],
+  "original_partial_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-2026-10-20.json",
+    "bytes": 7612,
+    "sha256": "5e37b8010b556d85dd248be40198be25047d46591642450ee67a24f5b551edb3"
+  },
+  "source64_supplement": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE10-SOURCE64KiB-SUPPLEMENT01.json",
+    "bytes": 1092,
+    "sha256": "698f9e9115a8f627dd767b3375029733dc8faca016a11d203b00767fa4eb666b"
+  },
+  "full_source_cap_bytes": 65536,
+  "roots": {
+    "aggregate": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+    "postcheck": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt10-artifact-postcheck",
+    "owner": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner10-artifact\\owner-spec"
+  },
+  "phase": "artifact_postcheck_only",
+  "future_stage_args": [
+    "--plan",
+    "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-revision2-2026-10-20.json",
+    "--admission",
+    "<new exact card>",
+    "--admission-sha256",
+    "<fullSHA>",
+    "--execute"
+  ],
+  "caps": {
+    "source_complete": 65536,
+    "aggregate": 1610612736,
+    "sourceR": 100663296,
+    "metadata": 167772160,
+    "TEMP": 402653184,
+    "new_metadata_including_owner": 8388608,
+    "owner": 65536
+  },
+  "metadata_quote": {
+    "old08_full": 131238080,
+    "old08_admin_future_writes": null,
+    "old09_full": 16777216,
+    "new10_full": 8388608,
+    "combined": 156403904
+  },
+  "protocol_contract": "All original partial-plan artifact/reuse/exports/sequence requirements remain. Only source cap/plan entrypoint corrected. Old Q/09 and71f8c6 stay unchanged.",
+  "observed_at_utc": "2026-10-19T22:48:03.449031+00:00"
+}

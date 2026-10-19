@@ -2140,6 +2140,7 @@ class NativeHeadlessGameplayDriver:
         self._driver_state_wal_base_version = None
         self._driver_state_wal_barrier_required = True
         self._driver_state_wal_barrier_generation = 0
+        self._succession_binding_wal_anchor_v1 = None
         self._rollback_war_failures: list[dict[str, object]] = []
         self._rollback_war_failures_migration_required = False
         self._managed_restore_transaction: dict[str, object] | None = None
@@ -4979,6 +4980,10 @@ class NativeHeadlessGameplayDriver:
                 raise PreSubmissionRevisionMismatchError(
                     f"succession expectation crossed the current {key}"
                 )
+        refresh_enabled = getattr(self, "allow_driver_state_wal_v1", False)
+        refresh_proof = None
+        if refresh_enabled:
+            from .succession_binding_refresh_wal_v1 import begin_refresh, finish_refresh
         with self._driver_state_lock:
             if (
                 self._episode_character_id != episode_character_id
@@ -4987,10 +4992,25 @@ class NativeHeadlessGameplayDriver:
                 raise PreSubmissionRevisionMismatchError(
                     "succession expectation crossed the active episode"
                 )
+            if refresh_enabled:
+                refresh_before = self._driver_state_wal_scalar_fields_locked_v1()
+                refresh_generation = self._driver_state_wal_barrier_generation
+                refresh_reconciliation = self._succession_reconciliation
             self._succession_expectation = copy.deepcopy(expectation)
             self._succession_reconciliation = None
             self._driver_state_dirty = True
-        self._persist_driver_state(persistence_reason='succession_expectation')
+            if refresh_enabled:
+                refresh_fields = self._driver_state_wal_scalar_fields_locked_v1()
+                if refresh_reconciliation is None:
+                    refresh_proof = begin_refresh(self, snapshot, refresh_before, refresh_fields)
+        if refresh_enabled:
+            self._persist_driver_state(
+                persistence_reason='succession_expectation', journal_append=refresh_proof is not None,
+                succession_binding_refresh=refresh_proof)
+            with self._driver_state_lock:
+                finish_refresh(self, snapshot, refresh_fields, refresh_generation)
+        else:
+            self._persist_driver_state(persistence_reason='succession_expectation')
         return copy.deepcopy(expectation)
 
     def reconcile_retained_succession_transition_v1(
@@ -12167,7 +12187,7 @@ class NativeHeadlessGameplayDriver:
             fields["rollback_war_failures"] = rollback
         return fields
 
-    def _try_persist_driver_state_wal_append_v1(self) -> bool:
+    def _try_persist_driver_state_wal_append_v1(self, *, succession_binding_refresh=None) -> bool:
         """Return True only after handling one eligible append, including RED."""
         from .driver_state_wal_v1 import (
             FILENAME, JournalCapacity, JournalInvalid, append_delta,
@@ -12228,6 +12248,14 @@ class NativeHeadlessGameplayDriver:
                 if fields != prior_fields:
                     # Scope, checkpoint and lifecycle mutations are barriers;
                     # they never hitchhike on a subsequent daily result.
+                    if succession_binding_refresh is None:
+                        return False
+                    from .succession_binding_refresh_wal_v1 import consume_refresh
+                    with self._driver_state_lock:
+                        if not consume_refresh(self, succession_binding_refresh, prior_fields,
+                                               fields, rows, _is_deferred_read_only_history_step):
+                            return False
+                elif succession_binding_refresh is not None:
                     return False
                 next_document = append_delta(document, rows, fields)
                 if activation_bytes is not None:
@@ -12250,6 +12278,7 @@ class NativeHeadlessGameplayDriver:
                 return False
             except (OSError, TypeError, ValueError) as error:
                 with self._driver_state_lock:
+                    self._succession_binding_wal_anchor_v1 = None
                     self._driver_state_wal_barrier_required = True
                     self._driver_state_dirty = True
                     self._driver_state_error = f"{type(error).__name__}: {error}"
@@ -12266,6 +12295,7 @@ class NativeHeadlessGameplayDriver:
         persistence_reason: str = "unspecified",
         timeline_append_candidate: bool = False,
         journal_append: bool = False,
+        succession_binding_refresh=None,
     ) -> dict[str, object] | None:
         save_receipt: dict[str, object] | None = (
             {
@@ -12282,11 +12312,15 @@ class NativeHeadlessGameplayDriver:
             return save_receipt
         if (journal_append and save_request is None and not capture_failure_diagnostic
                 and getattr(self, "allow_driver_state_wal_v1", False)
-                and self._try_persist_driver_state_wal_append_v1()):
+                and (self._try_persist_driver_state_wal_append_v1()
+                     if succession_binding_refresh is None else
+                     self._try_persist_driver_state_wal_append_v1(
+                         succession_binding_refresh=succession_binding_refresh))):
             return save_receipt
         # Sticky until a full replace succeeds, including metadata/history
         # mutations whose failed barrier is followed by a daily tick.
         with self._driver_state_lock:
+            self._succession_binding_wal_anchor_v1 = None
             self._driver_state_wal_barrier_required = True
             self._driver_state_wal_barrier_generation = getattr(
                 self, "_driver_state_wal_barrier_generation", 0) + 1
@@ -25762,6 +25796,8 @@ class NativeHeadlessGameplayDriver:
         current = starting
         arm_status: dict[str, object] | None = None
         cancel_attempted = False
+        clock_stop_not_observed = False
+        diagnostic_action_start = len(actions)
         try:
             from .exact_day_speed_configuration_v1 import prepare_exact_day_speed_v1
             current = prepare_exact_day_speed_v1(
@@ -25837,6 +25873,7 @@ class NativeHeadlessGameplayDriver:
                     and current.get("paused") is not True):
                 current = self._pause_life_advance(current, actions)
             if current.get("paused") is not True:
+                clock_stop_not_observed = True
                 raise BridgeUnavailableError("exact-day native clock did not stop the map")
             modal = _life_advance_new_modal_hint(current, starting)
             if (war_daily_watch is None and modal is not None and _date_raw(current, "exact-day modal interrupt")
@@ -25891,6 +25928,8 @@ class NativeHeadlessGameplayDriver:
             )
             return current, {"armed": arm_status, "stopped": status}
         except Exception as original_error:
+            cleanup_frame = None
+            diagnostic_cleanup_start = len(actions)
             try:
                 cleanup_frame = self.take_internal_semantic_snapshot()
                 if war_daily_watch is not None and not war_daily_watch.same_connection(cleanup_frame):
@@ -25924,6 +25963,23 @@ class NativeHeadlessGameplayDriver:
                         "original_error": str(original_error),
                         "native_request_id": getattr(original_error, "request_id", None),
                     }) from original_error
+            if clock_stop_not_observed:
+                try:
+                    from .exact_clock_failure_diagnostic_v1 import build_exact_clock_failure_v1
+
+                    diagnostic = build_exact_clock_failure_v1(
+                        original_error=original_error, starting_date_raw=starting_date_raw,
+                        target_date_raw=target_date_raw, speed=speed, arm_status=arm_status,
+                        starting=starting, last_frame=current, cleanup_before_frame=cleanup_frame,
+                        actions=actions, action_start=diagnostic_action_start,
+                        cleanup_start=diagnostic_cleanup_start,
+                    )
+                except Exception:
+                    raise original_error
+                raise StepPostconditionError(
+                    str(original_error), selected_step="life-advance-one-day",
+                    step_result=diagnostic,
+                ) from original_error
             raise
 
     def _resume_life_advance(
