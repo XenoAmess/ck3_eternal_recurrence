@@ -1,0 +1,570 @@
+{
+  "schema": "xar.ck3.c13-defensive-operating-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:41:19Z",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; chunk cbd865",
+  "runtime_observed_at_utc": "2026-10-19T13:34:24.399709+00:00",
+  "sdk_commit": "d789ece0cb15a7e45a251fec266aa409d22e5286",
+  "closed_inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\FROZEN.json",
+      "bytes": 5288,
+      "sha256": "8fb9e2e0d78eee29bc961e79e10db2e965d395104b7f9bb203340fa577a828b1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\CLOSED-PREFIX-INDEX.json",
+      "bytes": 4118,
+      "sha256": "8bf98e6df7cef9663f212451233a9beb0b29710097a41b731f57d8432e7c1ee4"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6347-1-result.json",
+      "bytes": 397,
+      "sha256": "c5b24c5ad08bf18da79cdced1c9b763e72a68866723e73b4e432a719fd10db49"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6348-1-result.json",
+      "bytes": 15444,
+      "sha256": "8571b8edfbdc2d0d3789e5bcdac1274487c7fb3b9a389f98f0e9d6ab537df108"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6350-1-result.json",
+      "bytes": 48795,
+      "sha256": "c50f9261f81d9fa708f84d7eb84a305382c976f51c910b85bd61296ea64d4b41"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6352-1-result.json",
+      "bytes": 52556,
+      "sha256": "cb8873a27fa235a3670932de3783364ac6f6c5665308a956ec1592029d84afdd"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6354-1-result.json",
+      "bytes": 4815,
+      "sha256": "ac53578b1e27841c582ad323c10f73578ae3a1fc2cfb7e9a667361abdbb3fe88"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6355-1-result.json",
+      "bytes": 15108,
+      "sha256": "b8ec4914517a5c403b2340746df008f224d11414e44b5d6256ac2abd823ed763"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\6356-1-result.json",
+      "bytes": 86326,
+      "sha256": "110c2500666d4aa0a48f8dca67c5466f30bf90f04287bc502fbd407b9520d124"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "bytes": 6204,
+      "sha256": "cacc61d2629b3b414fad9b0ea970adcf2eb7c89017aa120c3d4519570bef3161"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\ROOT-C13-NORMAL-SOURCE-WARM-BOUND.json",
+      "bytes": 1519,
+      "sha256": "6aae34b9ee77a809de3776d3ff98e978c8f6b1c514ce55bf0e5e5f9ae8bc7d5c"
+    }
+  ],
+  "frozen_source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src12\\xar_autoplayer\\strategy.py",
+      "bytes": 1047103,
+      "sha256": "552713a0057cb57e1fc8207c3363ff43b907a88f6ece3bc0e8905d63141e5f11"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src12\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 21416,
+      "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src12\\xar_autoplayer\\war_emergency_budget_v1.py",
+      "bytes": 17356,
+      "sha256": "e85888d3167c8069c78812a1fad644b9d9f7400e349b191453f3cc16714b8614"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src12\\xar_autoplayer\\siege_subject_contribution_v1.py",
+      "bytes": 2183,
+      "sha256": "f3dc587c1cca9fd5d1c6c1835531f91614a2f09c7368e3a0720ed6a8693412ec"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src12\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 877777,
+      "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8"
+    }
+  ],
+  "frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:1280",
+    "revision": 2,
+    "native_revision": 1280,
+    "date_raw": 53202696,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-1bec95182886",
+    "connection_generation": 3,
+    "bridge_pid": 15512
+  },
+  "current": {
+    "date": "1073.5.15",
+    "day": 2432,
+    "completed_cycles": 3037,
+    "wallet": {
+      "value": "193.02034",
+      "unit": "gold",
+      "availability": "observed",
+      "source_ref": "ordinary_frame"
+    },
+    "phase": "native_war_no_safe_exact_route",
+    "selected_step": null,
+    "route_rejections": [
+      {
+        "target_province_id": 2633,
+        "status": "current_exact_siege_rejected",
+        "siege_status": "not_player_besieging"
+      }
+    ]
+  },
+  "readonly_actions": [
+    {
+      "sequence": 6348,
+      "status": "executed",
+      "step": "query-war-results-window-v1",
+      "phase": "war_results_window",
+      "query_sequence": null
+    },
+    {
+      "sequence": 6350,
+      "status": "executed",
+      "step": "query-war-termination-options-16777269",
+      "phase": "native_war_termination_query",
+      "query_sequence": 51
+    },
+    {
+      "sequence": 6352,
+      "status": "executed",
+      "step": "query-war-termination-options-16777278",
+      "phase": "native_war_termination_query",
+      "query_sequence": 52
+    },
+    {
+      "sequence": 6354,
+      "status": "executed",
+      "step": "query-army-strengths-v1",
+      "phase": "native_war_army_strength_query",
+      "query_sequence": 80
+    }
+  ],
+  "war_priority": {
+    "schema": "xar.war-spending-priority.v1",
+    "read_only": true,
+    "defer_new_economic_construction": true,
+    "wars": [
+      {
+        "war_id": 16777269,
+        "primary_player_war": true,
+        "player_side": "defender",
+        "player_relative_war_score": -26,
+        "political_survival_stakes_v1": {
+          "status": "unavailable",
+          "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+          "reason": "current_primary_rebel_attacker_identity_unavailable"
+        },
+        "possible_defensive_target_title_ids": [
+          2196
+        ],
+        "target_stakes_v1": {
+          "current_root_available": true,
+          "primary_title_targeted": false,
+          "directly_held_target_title_ids": [],
+          "source": "same-native-frame root title identities; CB defeat transfer remains unverified"
+        },
+        "major_direct_title_targeted": false,
+        "defeat_title_transfer_verified": false,
+        "active_war_observed": true,
+        "war_resolution_verified": false,
+        "new_procurement_suppressed_by_score_policy": false,
+        "observed_hostile_siege_in_player_subrealm_army_ids": [],
+        "observed_primary_opponent_objective_occupation_province_ids": [],
+        "objective_control_projection_available": true,
+        "all_observed_own_raised_armies_currently_retreating": false,
+        "observed_player_raised_soldiers": 986,
+        "observed_enemy_raised_soldiers": 531,
+        "raised_force_deficit": false,
+        "existing_operational_strength_balance_v1": {
+          "status": "available",
+          "war_id": 16777269,
+          "friendly_army_ids": [
+            33554800
+          ],
+          "enemy_army_ids": [
+            117440755
+          ],
+          "friendly_current_soldiers": 986,
+          "enemy_current_soldiers": 531,
+          "friendly_maximum_soldiers": 1420,
+          "enemy_maximum_soldiers": 541,
+          "friendly_ai_base_power_raw": 3209500000,
+          "enemy_ai_base_power_raw": 1524000000,
+          "hostile_operational_overmatch": false,
+          "interpretation": "operational_routing_risk_not_battle_win_odds"
+        },
+        "protect_cash_reasons": [
+          "losing_primary_defence_exposes_target_titles",
+          "losing_own_war_and_shared_raised_force_below_unique_primary_hostiles"
+        ]
+      },
+      {
+        "war_id": 16777278,
+        "primary_player_war": true,
+        "player_side": "defender",
+        "player_relative_war_score": -90,
+        "political_survival_stakes_v1": {
+          "status": "unavailable",
+          "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+          "reason": "current_primary_rebel_attacker_identity_unavailable"
+        },
+        "possible_defensive_target_title_ids": [
+          2488
+        ],
+        "target_stakes_v1": {
+          "current_root_available": true,
+          "primary_title_targeted": false,
+          "directly_held_target_title_ids": [],
+          "source": "same-native-frame root title identities; CB defeat transfer remains unverified"
+        },
+        "major_direct_title_targeted": false,
+        "defeat_title_transfer_verified": false,
+        "active_war_observed": true,
+        "war_resolution_verified": false,
+        "new_procurement_suppressed_by_score_policy": false,
+        "observed_hostile_siege_in_player_subrealm_army_ids": [],
+        "observed_primary_opponent_objective_occupation_province_ids": [],
+        "objective_control_projection_available": true,
+        "all_observed_own_raised_armies_currently_retreating": false,
+        "observed_player_raised_soldiers": 986,
+        "observed_enemy_raised_soldiers": 2468,
+        "raised_force_deficit": true,
+        "existing_operational_strength_balance_v1": {
+          "status": "available",
+          "war_id": 16777278,
+          "friendly_army_ids": [
+            33554800
+          ],
+          "enemy_army_ids": [
+            393,
+            33554439
+          ],
+          "friendly_current_soldiers": 986,
+          "enemy_current_soldiers": 2468,
+          "friendly_maximum_soldiers": 1420,
+          "enemy_maximum_soldiers": 3500,
+          "friendly_ai_base_power_raw": 3209500000,
+          "enemy_ai_base_power_raw": 8008400000,
+          "hostile_operational_overmatch": true,
+          "interpretation": "operational_routing_risk_not_battle_win_odds"
+        },
+        "protect_cash_reasons": [
+          "losing_primary_defence_exposes_target_titles",
+          "losing_own_war_and_observed_raised_force_outnumbered",
+          "losing_own_war_and_shared_raised_force_below_unique_primary_hostiles"
+        ]
+      }
+    ],
+    "count_scope": "observed raised armies; no unraised reserves or promised allies",
+    "cash_protection_priority_war_ids": [
+      16777278,
+      16777269
+    ],
+    "cash_priority_does_not_assign_armies": true,
+    "primary_war_hostile_union_v1": {
+      "war_ids": [
+        16777269,
+        16777278
+      ],
+      "unique_army_ids": [
+        393,
+        33554439,
+        117440755
+      ],
+      "observed_current_soldiers": 2999,
+      "shared_player_raised_soldiers": 986,
+      "shared_force_deficit": true,
+      "future_or_unraised_reinforcements_bounded": false
+    },
+    "war_win_probability": null
+  },
+  "wars": [
+    {
+      "war_id": 16777269,
+      "player_side": "defender",
+      "primary_opponent_character_id": 65597,
+      "player_relative_war_score": -26,
+      "native_end_conditions": {
+        "schema_version": 1,
+        "war_id": 16777269,
+        "player_side": "defender",
+        "player_relative_war_score": -26,
+        "status": "current_native_conditions_observed",
+        "native_options": {
+          "surrender": {
+            "outcome": "attacker_victory",
+            "context_constructed": true,
+            "native_validator_passed": true,
+            "available": true,
+            "ai_acceptance": {
+              "raw": -7300000,
+              "scale": 100000
+            },
+            "auto_accept": true,
+            "recipient_response_status": "unavailable",
+            "recipient_would_accept_now": null
+          },
+          "white_peace": {
+            "outcome": "white_peace",
+            "context_constructed": true,
+            "native_validator_passed": false,
+            "available": false,
+            "ai_acceptance": {
+              "raw": -5600000,
+              "scale": 100000
+            },
+            "auto_accept": false,
+            "recipient_response_status": "unavailable",
+            "recipient_would_accept_now": null
+          },
+          "victory": {
+            "outcome": "attacker_defeat",
+            "context_constructed": true,
+            "native_validator_passed": false,
+            "available": false,
+            "ai_acceptance": {
+              "raw": -12500000,
+              "scale": 100000
+            },
+            "auto_accept": false,
+            "recipient_response_status": "unavailable",
+            "recipient_would_accept_now": null
+          }
+        },
+        "native_nonloss_exit_available": false,
+        "ordinary_war_input": "continue_war",
+        "existing_score_victory_candidate": false,
+        "required_native_input": null,
+        "war_duration_days": 296,
+        "active_casus_belli_identity": {
+          "database_index": 12,
+          "canonical_key": "county_conquest_cb"
+        },
+        "cb_allows_white_peace": true
+      },
+      "exit_material_inputs": {
+        "cb": {
+          "database_index": 12,
+          "canonical_key": "county_conquest_cb"
+        },
+        "duration_days": 296,
+        "breakdown": {
+          "battles": 0,
+          "imprisonment": 0,
+          "occupation": 26,
+          "ticking": 0
+        },
+        "structured_exit_terms": null,
+        "surrender_terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "surrender_terms_observable": false,
+        "surrender_recipient_response": {
+          "status": "unavailable",
+          "decision_status_raw": null,
+          "would_accept_now": null
+        }
+      }
+    },
+    {
+      "war_id": 16777278,
+      "player_side": "defender",
+      "primary_opponent_character_id": 69057,
+      "player_relative_war_score": -90,
+      "native_end_conditions": {
+        "schema_version": 1,
+        "war_id": 16777278,
+        "player_side": "defender",
+        "player_relative_war_score": -90,
+        "status": "current_native_conditions_observed",
+        "native_options": {
+          "surrender": {
+            "outcome": "attacker_victory",
+            "context_constructed": true,
+            "native_validator_passed": true,
+            "available": true,
+            "ai_acceptance": {
+              "raw": -900000,
+              "scale": 100000
+            },
+            "auto_accept": true,
+            "recipient_response_status": "unavailable",
+            "recipient_would_accept_now": null
+          },
+          "white_peace": {
+            "outcome": "white_peace",
+            "context_constructed": true,
+            "native_validator_passed": false,
+            "available": false,
+            "ai_acceptance": {
+              "raw": -10576924,
+              "scale": 100000
+            },
+            "auto_accept": false,
+            "recipient_response_status": "unavailable",
+            "recipient_would_accept_now": null
+          },
+          "victory": {
+            "outcome": "attacker_defeat",
+            "context_constructed": true,
+            "native_validator_passed": false,
+            "available": false,
+            "ai_acceptance": {
+              "raw": -18900000,
+              "scale": 100000
+            },
+            "auto_accept": false,
+            "recipient_response_status": "unavailable",
+            "recipient_would_accept_now": null
+          }
+        },
+        "native_nonloss_exit_available": false,
+        "ordinary_war_input": "continue_war",
+        "existing_score_victory_candidate": false,
+        "required_native_input": null,
+        "war_duration_days": 1295,
+        "active_casus_belli_identity": {
+          "database_index": 17,
+          "canonical_key": "individual_county_de_jure_cb"
+        },
+        "cb_allows_white_peace": true
+      },
+      "exit_material_inputs": {
+        "cb": {
+          "database_index": 17,
+          "canonical_key": "individual_county_de_jure_cb"
+        },
+        "duration_days": 1295,
+        "breakdown": {
+          "battles": 33,
+          "imprisonment": 0,
+          "occupation": 31,
+          "ticking": 26
+        },
+        "structured_exit_terms": null,
+        "surrender_terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        },
+        "surrender_terms_observable": false,
+        "surrender_recipient_response": {
+          "status": "unavailable",
+          "decision_status_raw": null,
+          "would_accept_now": null
+        }
+      }
+    }
+  ],
+  "restrictions": {
+    "new_RPC_calls": 0,
+    "active_driver_reads": 0,
+    "SAVE_reads": 0,
+    "desktop_or_media_reads": 0,
+    "runtime_changes": 0,
+    "strategy_edits": 0,
+    "future_reserved_bytes": 0
+  },
+  "retention": {
+    "review_by": "2027-04-17",
+    "reason": "Small C13 decision audit and immutable source pins; closed raw package retention remains owner-managed."
+  },
+  "pure_probes": {
+    "command_chunk": "a68baa",
+    "method": "Execute only unchanged frozen AST function priority_emergency_level_v1 against closed6356 wars; no module initialization, Driver, mock facts, I/O, or game calls.",
+    "emergency_levels": [
+      {
+        "war_id": 16777269,
+        "level": 0
+      },
+      {
+        "war_id": 16777278,
+        "level": 0
+      }
+    ]
+  },
+  "real_dto_schema": {
+    "fixture_pin": {
+      "path": "ck3_autonomous_player\\tests\\unit\\fixtures\\war6356_current_army_dto_v1.json",
+      "bytes": 30873,
+      "sha256": "ec57db02c2ae1bea15bba24aae526a851a51d38f1528a0937748f7807fff118c"
+    },
+    "fixture_qualification": "Actual6345 current snapshot and6350/6352/6354 native result DTOs. Army tuple unchanged: native_carmy_id absent. Diagnostics hello/heartbeat omitted; exact hello caps retained separately. Command wrappers/indexes reconstructed from closed AUTO responses, not live Driver. No strength field borrowed into Army.",
+    "player_army": {
+      "army_id": 33554800,
+      "owner_character_id": 40526,
+      "soldiers": null,
+      "current_province_id": 2633,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    "matching_occurrences": [
+      {
+        "occurrence_index": 0,
+        "public_unit_id": 33554800,
+        "native_carmy_id": 33554783,
+        "eligible": false,
+        "qualified_regiment_ids": []
+      }
+    ],
+    "selected_besieger": {
+      "native_carmy_id": 50331789,
+      "public_unit_id": 67109009,
+      "controllable": false
+    },
+    "old_required_army_native_id_present": false,
+    "old_equality_gate": false,
+    "native_id_source_contract": "siege_subject_contribution_v1.py:17-43 joins current province occurrences on public_unit_id==subject.army_id; Army DTO is not its native pointer source."
+  },
+  "source_findings": {
+    "strategy": "Frozen src12 helper at21764-21866 requires Army.native_carmy_id at21813-21814; actual DTO lacks that field, deterministically rejecting one-day observation before any command.",
+    "finance_consumer": "src12 war_mercenary_consumer_v1.py:94-112 returns on selected_step=null before construction ledger, finance capability-gap observation, mercenary ledger or current market evaluation. bridge/service.py:2399-2410 calls this normal consumer after ordinary strategy/retreat planning.",
+    "cash_scope": "src12 war_emergency_budget_v1.py:17-39 is restricted to identified primary/major-direct-title defence or qualified rebel political-survival stakes plus deterioration. Both current rows return0; this does not prove native mercenary affordability or a lawful current loan is impossible.",
+    "no_new_finance": "Closed6356 has no war_mercenary_status, market, or financing evaluation; no current quote/refund/loan receipt is supplied. Historic6337 raw53202552 differs from current53202696 by6 days."
+  },
+  "lesson_refs": [
+    {
+      "path": "tools/g2_saved_campaign/war_observation_dto_lessons_20261019.json",
+      "bytes": 2907,
+      "sha256": "ef6d5f55c0dc4076ca42da1351406ef24a6b7db08f3dd3bf416834f6509fa729"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/war6356-army-dto-schema-correction-2026-10-19.json",
+      "bytes": 8688,
+      "sha256": "a316ea6d55457c8bbc386ef51ea2a51fd8f3427a3fdd868d910b186228b507e5"
+    }
+  ],
+  "live_qualification_claimed": false,
+  "observed_finance_fields_present": [],
+  "verification": {
+    "pins_rechecked": true,
+    "closed_fact_assertions": "PASS",
+    "relative_links_exist": true,
+    "production_tests_repeated": 0,
+    "new_rpc": 0
+  }
+}

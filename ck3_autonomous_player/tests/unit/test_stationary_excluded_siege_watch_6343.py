@@ -25,11 +25,11 @@ def reconstructed_adapter():
         "war6343_excluded_siege_closed_v1.json").read_bytes())
     post = f["post_frame"]
     army = copy.deepcopy(f["war_progress_after"]["wars"][0]["player_armies"][0])
-    # Current6337 post-stop proves controllability/idle stationarity. Current6341
-    # supplies the typed CArmy ID. Owner/static schema fields below are explicit
+    # Current6337 post-stop proves controllability/idle stationarity. The ordinary
+    # Army DTO does not publish native_carmy_id: the existing province occurrence
+    # consumer binds that ID by public_unit_id. Owner/static fields are explicit
     # synthetic adapter assumptions, not a re-dated6321 SEM or native readback.
     army.update(controllable=f["hold_post_stop"]["subject_controllable"],
-        native_carmy_id=f["current_army_strengths"][0]["native_carmy_id"],
         owner_character_id=40526, route_read_status="complete_empty")
     wars = []
     for current, static in zip(f["war_progress_after"]["wars"], f["older_static_war_metadata"]):
@@ -72,6 +72,7 @@ def watch(s, *, siege=None, controls=None, caps=None, steps=None, assaults=None,
 
 def test_closed_native_occurrence_excludes_subject_without_siege_credit():
     s = reconstructed_adapter()
+    assert "native_carmy_id" not in s["player_armies"][0]
     r = rejection(s)
     assert r["status"] == "not_player_besieging"
     assert r["subject_contribution"]["status"] == "excluded"
@@ -168,3 +169,71 @@ def test_pending_assault_other_controlled_army_clock_gap_and_unqualified_siege_r
         r = rejection(s)
         r["status"] = status
         assert watch(s, siege=r) is None
+
+
+def current6356():
+    from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+
+    f = json.loads((Path(__file__).parent / "fixtures" /
+        "war6356_current_army_dto_v1.json").read_bytes())
+    s = f["snapshot"]
+    original_army = copy.deepcopy(s["player_armies"][0])
+    query = f["command_rows"][-1]["result"]
+    assert query["source"] == {"revision": s["revision"], "native_revision": s["native_revision"]}
+    # Reconstruct only the already-observed6354 query cache via its real pure
+    # producer; it publishes separate snapshot.army_strengths, not Army fields.
+    s.update(NativeHeadlessGameplayDriver._army_strength_snapshot_fields({
+        "army_strengths": query["armies"], "status": query["status"],
+        "query_sequence": query["query_sequence"], "queried_snapshot_id": s["snapshot_id"],
+        "queried_revision": query["source"]["revision"],
+        "army_strengths_profile": query["army_strengths_profile"],
+        "army_observed_phase_coverage": query["army_observed_phase_coverage"],
+    }))
+    assert s["player_armies"][0] == original_army
+    assert "native_carmy_id" not in original_army
+    return f
+
+
+def choose6356(f):
+    steps = STEPS | {r["command"] for r in f["command_rows"]}
+    # Closed6348 passed the results window. The external SEM does not carry
+    # that later private cache; reconstruct those completed read-only handoffs.
+    with patch.object(strategy, "plan_ordinary_war_declared_overview_v1", return_value=None), \
+         patch.object(strategy, "plan_ordinary_war_results_window_v1", return_value=None):
+        return strategy.choose_one_life_turn(f["command_rows"], snapshot=f["snapshot"],
+            action_steps=steps, bridge_capabilities=f["capabilities"])
+
+
+def test_actual6356_army_tuple_without_native_id_reaches_full_ordinary_observation():
+    f = current6356()
+    with patch.object(strategy, "_stationary_excluded_siege_one_day_watch_plan", return_value=None):
+        old = choose6356(f)
+    assert old["phase"] == f["blocked_plan"]["phase"] == "native_war_no_safe_exact_route"
+    assert old["selected_step"] is None
+    new = choose6356(f)
+    assert new["selected_step"] == "life-advance-one-day"
+    assert new["phase"] == "native_war_stationary_excluded_siege_one_day_observation"
+    assert new["route_rejections"] == old["route_rejections"] == f["blocked_plan"]["route_rejections"]
+    assert new["excluded_siege_watch"]["siege_rejection"]["subject_contribution"]["native_carmy_id"] == 33554783
+    assert new["excluded_siege_watch"]["siege_contribution_credit"] is False
+
+
+@pytest.mark.parametrize("broken", ["native_missing", "native_zero", "wrong_public", "unknown_eligibility", "current_selection_unknown"])
+def test_actual6356_unknown_occurrence_never_inherits_identity_from_strength_or_army(broken):
+    s = current6356()["snapshot"]
+    state = s["active_wars"][0]["objective_province_states"][0]
+    row = state["active_siege"]["province_unit_occurrences"][0]
+    if broken == "native_missing":
+        row.pop("native_carmy_id")
+    elif broken == "native_zero":
+        row["native_carmy_id"] = 0
+    elif broken == "wrong_public":
+        row["public_unit_id"] = 99
+    elif broken == "unknown_eligibility":
+        row["eligible"] = None
+    else:
+        state["current_besieging_army_selection"]["native_carmy_id"] = None
+    # Neither an independent strength row nor a fabricated Army field repairs
+    # an unknown current province occurrence contract.
+    s["player_armies"][0]["native_carmy_id"] = 33554783
+    assert watch(s) is None

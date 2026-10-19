@@ -1,0 +1,60 @@
+{
+  "schema": "xar.recording-recovery.primary-current-map-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:29:00.697672+00:00",
+  "machine_evidence": "tools/ck3_live_run_id.py machine: xenoamess-full-tower-eb9d2c1186 (root direct read this turn)",
+  "status": "PASS_PRIMARY_CURRENT_MAP_AND_DECISION_SCENE_PIXELS",
+  "reviewer": "/root",
+  "source": {
+    "c13-recording02-first01-FROZEN-PAIR.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\156dabc8-0304-4482-8d92-19570ada6426\\c13-recording02-first01-FROZEN-PAIR.json",
+      "bytes": 2822,
+      "sha256": "de9b79d3937ec8640204238e458d4d0ef9b5afd2c5801f3a7a716545ffce8787"
+    },
+    "c13-recording02-first01-game.png": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\156dabc8-0304-4482-8d92-19570ada6426\\c13-recording02-first01-game.png",
+      "bytes": 1583696,
+      "sha256": "11e8cf1bdb7a5d5bc8753234a710ff9622e321178ba1b02892f022778805f354"
+    },
+    "c13-recording02-first01-scene.png": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\156dabc8-0304-4482-8d92-19570ada6426\\c13-recording02-first01-scene.png",
+      "bytes": 1487560,
+      "sha256": "621c2b2b83362c880292b7b60d3c60dec2c2a47c239dce362c3cae3f086cac79"
+    }
+  },
+  "inspection": "Root called view_image for each immutable PNG and directly inspected both rendered images; no OCR or desktop input.",
+  "recording_session_id": "156dabc8-0304-4482-8d92-19570ada6426",
+  "source_frame_at_utc": "2026-10-19T13:27:33.177931+00:00",
+  "physical_game_pid": 15512,
+  "physical_game_creation_filetime": 134368811928524228,
+  "visible": {
+    "game_date": "1073-05-15",
+    "paused": true,
+    "map": "Sicily, Strait of Messina and southern Calabria; terrain, province borders, own army marker 986 and HUD visible.",
+    "wallet_display": 193,
+    "war_score_displays": [
+      -90,
+      -26
+    ],
+    "decision_scene": "Right gray transparent panel displays current observation decision, reason and not-yet-executed result.",
+    "legacy_blue_panel_present": false,
+    "film_or_campaign_title_on_screen": false,
+    "menu_loading_or_black_frame": false
+  },
+  "campaign_owner_reported_frontier": {
+    "settled_cycles": 3033,
+    "actual_days": 2432,
+    "date_raw": 53202696,
+    "actor_id": 40526
+  },
+  "accepted": "Primary current-map/decision-pixels review for new recording first-frame admission only. Runtime must still perform exact live recording, source and same-Game guards before normal C13 SEM/CAP/FULL.",
+  "not_accepted": [
+    "No full-realm visible coverage; this remains a close map view.",
+    "No natural battle, moving-target continuity or pre-advance timing verification.",
+    "No retroactive success for C12 Native request50 target_changed.",
+    "No C13 SDK adoption, new game-day, performance or H/G2 completion credit from these images.",
+    "No reclassification of old 211ac failed capture as completed."
+  ],
+  "new_Game_MCP_OBS_Desktop_calls_by_root": 0,
+  "retention": "Retain this small review while current recording and camera verification remain active; review by 2026-11-18. PNG originals remain in their admitted external recording scope."
+}

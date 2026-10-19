@@ -1,0 +1,30 @@
+{
+  "schema": "xar.saved-campaign.C14-minimal-business-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:42:07.283412+00:00",
+  "status": "CANONICAL_SOURCE_READY_NO_RUNTIME_ADOPTION_CREDIT",
+  "base_actual_C13": "d789ece0cb15a7e45a251fec266aa409d22e5286",
+  "commit": "d804be64838b25c234ef1f805d8e641e4f677450",
+  "tree": "750611434bc64e8bb3b2fbf79ee7782b30e8e725",
+  "branch": "runtime/robert-v20261019-c14-war6356-schema",
+  "production_changed_leaves": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1047320,
+      "sha256": "45c164297b90b32203e7860b4a7735cfa65c5ca1db7141e898d15395d2e47e78",
+      "blob": "000b0ec364dcf6bfef17db2d0d51fc426aa21b02"
+    }
+  ],
+  "all_other_tree_entries_equal_to_actual_C13": true,
+  "purpose": "Use existing native province siege contribution binding; ordinary Army DTO has no native_carmy_id field. All other stationary observation guards remain.",
+  "qualification": "M5 reports32 focused checks passed, including actual closed6345/6356 ordinary Army tuple, previous blocked behavior and unknown-occurrence refusals; exact source/test proof follows separately.",
+  "pending_boundary": "C13 FULL6347 only4 settled,0 actualdays;3037/day2432/raw53202696. Original6357 finite clear and normal SDK close are sole runtime owner actions, not source preparation credit.",
+  "not_included": [
+    "future Native30 continuous tracking or diagnostics",
+    "unadopted master provider/ABI changes",
+    "any Game/MCP/OBS/desktop call",
+    "a new game or campaign date reset"
+  ],
+  "Game_MCP_OBS_Desktop_calls": 0,
+  "retention": "Keep while this actual-source candidate or its adoption remains referenced; review by2026-11-18. Private index is small construction evidence only."
+}

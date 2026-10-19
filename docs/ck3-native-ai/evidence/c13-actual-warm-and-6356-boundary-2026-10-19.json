@@ -1,0 +1,112 @@
+{
+  "schema": "xar.saved-campaign.C13-actual-warm-and-subsequent-P0/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:44:05.542773+00:00",
+  "status": "ACTUAL_NORMAL_WARM_PASS_THEN_FOUR_ZERO_DAY_CYCLES_AND_6356_BLOCKED",
+  "opening_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-war6343-warm87\\ACTUAL-WARM-READY.json",
+    "bytes": 3949,
+    "sha256": "eb9d9210f356cf8f8c1572149253f7094c6b157e29676c4d8a1d5adc06ec3777"
+  },
+  "actual_opening": {
+    "schema": "xar.C13B-actual-normal-warm-ready/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T13:32:41.934709+00:00",
+    "status": "ACTUAL_SEM_CAP_NORMAL_WARM_READY",
+    "business_source_commit": "d789ece0cb15a7e45a251fec266aa409d22e5286",
+    "source_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C13.json",
+      "bytes": 446717,
+      "sha256": "7030e42011ad0f63723cf6934cd52fa464d3b6ac66f526562418ff4ae754b4f5"
+    },
+    "source_binding": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-war6343-warm87\\SOURCE-BINDING-QUALIFIED.json",
+      "bytes": 2694,
+      "sha256": "cf96aae5bd5f102ca1f1d436960a1fbb8cca74462e50f13ab2c7a30b28ec95ab"
+    },
+    "controls": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-war6343-warm87\\FINAL-CONTROL-SOURCES-C13.json",
+      "bytes": 2929,
+      "sha256": "ef2e504aa722190fc7c01cf1bed4a3a38854b63ed2ed22ed046d9af3055f3f94"
+    },
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C13-SOURCE-RESUME-ADMISSION.json",
+      "bytes": 4288,
+      "sha256": "10226f2fd9ee78dc6bc0e968ce074a0bbdae7d451aa80c40e32c977f130d07a2"
+    },
+    "pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C13.json",
+      "bytes": 658,
+      "sha256": "3e7d72d2b7aa215c5ef2198b3d0f1f83144a87ce8ad91ba40810e81bcc69887a"
+    },
+    "semantic": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\6345-1-result.json",
+      "bytes": 69492,
+      "sha256": "26f5351019cb2cd826fc93ef6f7694f77e28dbb26717100ca414ed5d44109e6f"
+    },
+    "capabilities": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\6346-1-result.json",
+      "bytes": 62271,
+      "sha256": "6395904f4a9aa2fde424a866e964879a815ea368b6157d3b361dcd14bccb8638"
+    },
+    "warm_bound": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-C13-NORMAL-SOURCE-WARM-BOUND.json",
+      "bytes": 1519,
+      "sha256": "6aae34b9ee77a809de3776d3ff98e978c8f6b1c514ce55bf0e5e5f9ae8bc7d5c"
+    },
+    "current_map_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C13.json",
+      "bytes": 2894,
+      "sha256": "fd4648d46a47e3792c8dc0144ee0853a2b4034092d33e040426b4291e43d94a8"
+    },
+    "recording_recovery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c12-auto6343-failure87\\C13-RECORDING-RECOVERED.json",
+      "bytes": 3871,
+      "sha256": "5e7b9cff5da035fe7de93614f4e0de9ac3d643f53bea1af2ea2c132e0c3a63a0"
+    },
+    "frame": {
+      "snapshot_id": "native:1280",
+      "revision": 2,
+      "native_revision": 1280,
+      "date_raw": 53202696,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "completed_cycles": 3033,
+    "actual_game_days": 2432,
+    "ordinary_cycle_credit": 0,
+    "business_action_credit": 0,
+    "pending_cycle": null,
+    "T0_date_raw": 53144328,
+    "endpoint_date_raw": 53407128,
+    "Game_pid": 15512,
+    "Game_creation_filetime": 134368811928524228,
+    "Native29_retained": true,
+    "trial_speed_OFF": true,
+    "war_daily_watch_OFF": true,
+    "sway_execution_query_masked_OFF": true,
+    "next_sequence": 6347,
+    "original6343_replayed": false,
+    "actual_WMI_or_Game_queries_added_for_research": 0
+  },
+  "subsequent_failure_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\FROZEN.json",
+    "bytes": 5288,
+    "sha256": "8fb9e2e0d78eee29bc961e79e10db2e965d395104b7f9bb203340fa577a828b1"
+  },
+  "subsequent_owner_report": {
+    "FULL_sequence": 6347,
+    "settled_cycles_in_partial": 4,
+    "actual_days_in_partial": 0,
+    "settled_cycles_total": 3037,
+    "actual_days_total": 2432,
+    "blocked_AUTO": 6356,
+    "pending_cycle": 3038
+  },
+  "root_review_scope": "Root directly read the immutable actual opening and closed halt bundle and directly reviewed the new recording PNG pair in the separately pinned primary receipt. No active Driver, SAVE or media body was read.",
+  "correction": "The stationary observation helper incorrectly required native_carmy_id on ordinary Army. M5 established the actual field is in the existing native province contribution; C14 d804be64838b25c234ef1f805d8e641e4f677450 changes only that strategy guard. Source qualification is distinct from actual C14 adoption.",
+  "camera_boundary": "C13 adopts target-bound backoff and known pre-advance hotspot queuing. Native29 still uses a fixed camera target and cannot discover a new battle mid-action. Quiet-realm request50 remains target_changed; full coverage is unverified.",
+  "subsequent_clear_or_close_credit": "Original6357 finite clear/normal SDK close are separate runtime receipts; they are not credited by this opening review.",
+  "Game_MCP_OBS_Desktop_calls_by_root": 0,
+  "retention": "Keep while campaign continuation/current camera verification reference this adoption; review by2026-11-18. Large sources remain under the common admitted external scope."
+}

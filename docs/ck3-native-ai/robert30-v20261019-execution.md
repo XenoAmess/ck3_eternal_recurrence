@@ -1,8 +1,16 @@
 # 罗贝尔三十年 v20261019：新局执行记录
 
+2026-10-19T13:49:11.311811+00:00当前指针：`machine_id: xenoamess-full-tower-eb9d2c1186`。C13实际暖接、SEM6345/CAP6346通过，同Game15512/Native29，恢复后的156d续录像素由Root直审通过；原211ac因Win5失败且OBS正常0/解绑，失败前后无新增游戏日缺口，不追认成片完成。FULL6347只完成4次只读查询、0新日，6356再次阻断；3037已结周期/2432实际日/raw53202696、40526及原T0/10950日终点保留。根因是上一版夹具误给真实Army不存在的字段，M5改回既有省内单位贡献合同，32项定向通过；最小C14 d804be64仅一生产叶，实际采用另记。
+
+用户要求的持续热点跟踪目前未实现：Native29的50ms检查只等固定target插值结束，不会发现长动作中途的新战斗；现C13修复只含target-bound冷却/回执绑定和已知热点pre-resume排队。quiet30游戏日全境请求曾实触发但Native50 target_changed，覆盖未验收。M0/M1正并行编制真正Native跟踪和失败几何诊断，候选、夹具或整DLL构建计划均不算实机通过。
+
+完整C12批次仍为61.050369秒/28日=2.180370秒/日；原AUTO9维护墙钟不清零，≤1秒目标未达。M4同调用关系复用已随C13源采用但实际收益待测；补计时默认OFF、仅内存observer。G2仍6/8，M7真实owned四级传递6项通过只证明机械原型，生产接线/H仍unknown。master c5a228c9已推，旧2fb Official60夹具RED保留，新exact CI仍待终态。
+
+来源：[续录像素](evidence/c13-primary-recording-recovery-review-2026-10-19.json)、[实际C13与6356边界](evidence/c13-actual-warm-and-6356-boundary-2026-10-19.json)、[真实DTO修复](evidence/war6356-army-dto-schema-correction-2026-10-19.json)、[持久经验](../../tools/g2_saved_campaign/war_observation_dto_lessons_20261019.json)、[当前防守审计](c13-defensive-operating-audit-2026-10-19.md)、[最小C14](evidence/c14-minimal-business-tree-2026-10-19.json)。
+
 用户在2026-10-19明确要求：后续评分结算片改为15秒，旧片不改；复盘首局并写入智能体；随后从1066重开罗贝尔三十年v20261019；继续性能优化及高并发G2研究。这一指令解除旧交接的“暂不开下一局”。
 
-**当前指针（2026-10-19T12:59:01Z；C13B源码就绪，正常维护）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，当前3033已结周期/2432实际日/raw53202696，当前40526；原31254/D0174、T0及10950日/raw53407128终点保留。FULL6308实际partial16后，6343在动作前因当前2633他军围城而合法排除我方围城，旧策略缺后继观察分支；原blocked与两防御战−26/−90、己986/敌union2999的operational比较保留，不作胜率或擅投降。6344原有限clear实际0RPC/0信用完成，C12 SDK/App正常双0退出；同Game15512/Native29/录制211ac保持，闭Driver仅stat16,560,525B。最终最小C13B d789ece0/tree5fcdf8d3已组合8叶、尚未实际采用；先前prepared7485从未采用并保留。
+**历史指针（2026-10-19T12:59:01Z；C13B源码就绪，正常维护）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，当前3033已结周期/2432实际日/raw53202696，当前40526；原31254/D0174、T0及10950日/raw53407128终点保留。FULL6308实际partial16后，6343在动作前因当前2633他军围城而合法排除我方围城，旧策略缺后继观察分支；原blocked与两防御战−26/−90、己986/敌union2999的operational比较保留，不作胜率或擅投降。6344原有限clear实际0RPC/0信用完成，C12 SDK/App正常双0退出；同Game15512/Native29/录制211ac保持，闭Driver仅stat16,560,525B。最终最小C13B d789ece0/tree5fcdf8d3已组合8叶、尚未实际采用；先前prepared7485从未采用并保留。
 
 用户指出的镜头缺陷已精确复现：全局30日失败冷却会挡新battle并漏清quiet锚，且多日battle动作结束后才排队。新target-bound backoff33项及合法SDK pre-resume urgent28项软件检查通过，旧业务算法剥hook后AST等值；只术前已知热点+事后刷新，不能冒称动作途中持续跟踪。C12已自然出现 moving b_cosenza/request32 settled，Root原图证卡拉布里亚定位；自然quietrealm request50确枚举9县/zoom15并到写入，随后target_changed失败。该状态合并读失败/非finite/目标差异，缺失败时actualtarget，不能唯一归因UI或几何；实际全境覆盖与battle像素仍待验收。
 

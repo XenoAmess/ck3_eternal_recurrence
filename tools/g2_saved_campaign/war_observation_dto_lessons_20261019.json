@@ -1,0 +1,28 @@
+{
+  "schema": "xar.robert-first30-source-lessons/v1",
+  "lesson_version": "20261019-c13-army-schema",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 13:41:54 UTC",
+  "source_comparison": "Exact closed DTO field sets and source contracts; no fields borrowed across native query types.",
+  "lessons": [
+    {
+      "id": "qualify_real_consumer_schema_before_promoting_synthetic_regression",
+      "observed_failure": "AUTO6343 was blocked. The first fix tested a synthetic Army enriched with native_carmy_id copied from the independent army-strengths DTO, then required that field in production. Ordinary Army DTOs do not publish it. Actual C13 AUTO6356 remained blocked after four read-only cycles and zero game days.",
+      "required_behavior": "Use the actual producer-to-consumer DTO contract. Preserve original field absence in fixtures. The existing province contribution consumer binds native CArmy by same-province occurrence.public_unit_id matching subject.army_id; use that measured binding, retain excluded/known-selection and all route/lifecycle guards. Never add an unpublished sibling DTO field to make a regression green.",
+      "sources": [
+        "ck3_autonomous_player/src/xar_autoplayer/siege_subject_contribution_v1.py",
+        "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+        "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py:_army_strength_snapshot_fields",
+        "ck3_autonomous_player/tests/unit/fixtures/war6356_current_army_dto_v1.json"
+      ],
+      "required_offline_qualification": "Actual Army tuple remains unchanged with native_carmy_id absent; real pure cache producer may project strength rows only into separate snapshot.army_strengths. Run full ordinary core and known read-only handoffs; malformed/missing occurrence identity, eligibility or current selection must still reject, even if a fabricated Army field or independent strength row exists.",
+      "regression_test": "ck3_autonomous_player/tests/unit/test_stationary_excluded_siege_watch_6343.py",
+      "failure_preservation": "Keep6343 and6356 frozen packets and original source pins; the former synthetic24-pass result was real software evidence but did not qualify live DTO compatibility. New tests correct that limitation rather than rewriting history.",
+      "live_result_still_required": "Later source-qualified normal SDK adoption, actual selected step and independent date/army/event readback. Source or tests grant no contact-free, siege contribution, payment, victory or game-day credit."
+    }
+  ],
+  "gameplay_claims_granted_by_source_audit": false,
+  "live_followup_adds_no_per_turn_rpc": true,
+  "runtime_auto_load_claimed": false,
+  "historical_machine_identity": "This persistent engineering lesson is bound to the actual machine via closed6356 source proof. It does not establish installation or deployment elsewhere."
+}

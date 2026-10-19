@@ -1,0 +1,135 @@
+{
+  "schema": "xar.war6356-ordinary-army-schema-correction.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 13:43:09 UTC",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; matches frozen C13 failure",
+  "scope": "Existing closed responses and frozen src12 source only, plus hermetic offline tests. No Game/RPC/live Driver/SAVE, original6356 replay, queue mutation, Native build, stage or commit.",
+  "failure_packet": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c13-auto6356-failure88/FROZEN.json",
+    "bytes": 5288,
+    "sha256": "8fb9e2e0d78eee29bc961e79e10db2e965d395104b7f9bb203340fa577a828b1",
+    "observed_at_utc": "2026-10-19T13:34:24.399709+00:00"
+  },
+  "actual_source": {
+    "business_commit": "d789ece0cb15a7e45a251fec266aa409d22e5286",
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src12",
+    "old_strategy_sha256": "552713a0057cb57e1fc8207c3363ff43b907a88f6ece3bc0e8905d63141e5f11"
+  },
+  "actual_failure": {
+    "AUTO": 6356,
+    "original_bytes": 86326,
+    "original_sha256": "110c2500666d4aa0a48f8dca67c5466f30bf90f04287bc502fbd407b9520d124",
+    "status": "blocked",
+    "selected_step": null,
+    "phase": "native_war_no_safe_exact_route",
+    "completed_cycles": 3037,
+    "pending_cycle": 3038,
+    "game_days": 2432,
+    "NEXT": 6357,
+    "full6347_completed_readonly_cycles": 4,
+    "full6347_game_days": 0,
+    "before_business_dispatch": true,
+    "planning_frame": {
+      "snapshot_id": "native:1280",
+      "native_revision": 1280,
+      "revision": 2,
+      "date_raw": 53202696,
+      "actor": 40526,
+      "episode": "native-40526-1bec95182886",
+      "connection_generation": 3
+    }
+  },
+  "confirmed_schema": {
+    "actual_sem6345": "The complete ordinary Army33554800 tuple has no native_carmy_id. Its public army_id/owner/current2633/regular1/route[]/controllable fields are present.",
+    "province_occurrence": "Current active_siege.province_unit_occurrences[0] has public_unit_id33554800, native_carmy_id33554783, eligiblefalse. Existing observe_siege_subject_contribution filters by the selected public ID and yields excluded/known different current selection.",
+    "separate_strength_result": "Current6354 army-strengths result contains native_carmy_id separately. That field is never projected into ordinary Army by the real snapshot producer.",
+    "producer_consumer_contract": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/siege_subject_contribution_v1.py",
+      "bytes": 2183,
+      "sha256": "f3dc587c1cca9fd5d1c6c1835531f91614a2f09c7368e3a0720ed6a8693412ec",
+      "frozen_src12_byte_identical": true
+    }
+  },
+  "mistake": "The previous M5 test adapter copied native_carmy_id from the separate strength DTO into ordinary Army. The new production helper then required that nonexistent Army field. The prior24 tests passed on that synthetic schema but did not qualify the live consumer contract; actual C13 remained blocked. This was a fixture/design error, not a Native read failure or a newly unsafe route.",
+  "correction": {
+    "strategy": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1047320,
+      "sha256": "45c164297b90b32203e7860b4a7735cfa65c5ca1db7141e898d15395d2e47e78"
+    },
+    "function": {
+      "name": "_stationary_excluded_siege_one_day_watch_plan",
+      "line": 21764,
+      "end_line": 21869,
+      "ast_sha256": "4dba625d8f97ca5a29211736c0106dceb4f0a15cc6f6af7b5ed6ee346b9af945"
+    },
+    "change": "Remove only the two comparisons against Army.native_carmy_id. Require a positive native CArmy on the existing measured contribution and matches_current_selection is False. Public subject ID, current province, excluded/native reason, foreign siege, route completeness/threat, actor/lifecycle and clock guards all remain.",
+    "selected_proposal": "life-advance-one-day",
+    "native_clock_scope": "exact_one_day_date_only_a0",
+    "speed": 1,
+    "maximum_days": 1,
+    "native_watch_army_ids": [],
+    "claims_not_granted": [
+      "contact-free",
+      "in-day Army/event/actor strong watch",
+      "subject siege contribution",
+      "new Move/Halt/Assault",
+      "payment or mercenary army usability",
+      "surrender value",
+      "war victory",
+      "actual game-day advancement"
+    ],
+    "other_production_files_changed_by_M5": []
+  },
+  "fixture": {
+    "path": "ck3_autonomous_player/tests/unit/fixtures/war6356_current_army_dto_v1.json",
+    "bytes": 30873,
+    "sha256": "ec57db02c2ae1bea15bba24aae526a851a51d38f1528a0937748f7807fff118c",
+    "boundary": "Actual6345 snapshot and6350/6352/6354 native result DTOs are retained. Exact original pins are inside sources. Only diagnostic hello/heartbeat omitted, exact caps retained separately; wrappers/indexes reconstructed from closed AUTO sequence. No Army field added, removed or re-dated."
+  },
+  "tests": {
+    "file": {
+      "path": "ck3_autonomous_player/tests/unit/test_stationary_excluded_siege_watch_6343.py",
+      "bytes": 12839,
+      "sha256": "cec8fda17821bebfd6d2941d93ff8a72d142abbab7bbb363d6f67090b87937ea"
+    },
+    "command": "python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_stationary_excluded_siege_watch_6343.py','ck3_autonomous_player/tests/unit/test_land_edge_date_only_clock_packet_v1.py']))",
+    "result": "32 passed in2.00s",
+    "red_then_green": "First removed fabricated Army field from prior adapter: existing positive test failed because helper returnedNone. After contract repair the unchanged prior24 tests passed. Then actual DTO/core and five unknown-occurrence negative cases were added; final32 include unchanged a0 packet2.",
+    "current_cache_reconstruction": "The real pure NativeHeadlessGameplayDriver._army_strength_snapshot_fields maps6354 rows to separate snapshot.army_strengths after exact source revision/native match. Assert full player_armies tuple unchanged and native_carmy_id absent. No native cache property is invented on Army.",
+    "ordinary_integration": "Run full public ordinary core with exact current termination query results; reconstruct only already-completed declared-overview/results read-only handoffs, not unknown windows or native visibility. Without observation helper it reproduces original blocked phase/rejections; corrected helper produces one-day proposal with identical rejection and zero siege credit.",
+    "negatives": "Missing/zero native occurrence ID, wrong public occurrence ID, unknown native eligibility or unknown current selection all reject despite fabricated Army nativeID and independent strength row. Original24 preserve event/modal/actor/movement/route/hostile/assault/clock exclusions."
+  },
+  "current_terminal_observations": {
+    "source": "Current6350 and6352 native result DTOs inside fixture, same paused frame1280/date53202696.",
+    "war_scores": {
+      "16777269": -26,
+      "16777278": -90
+    },
+    "white_peace": {
+      "available": false,
+      "native_validator_passed": false
+    },
+    "victory": {
+      "available": false,
+      "native_validator_passed": false
+    },
+    "surrender": {
+      "available": true,
+      "native_validator_passed": true,
+      "auto_accept": true,
+      "terms_observable": false
+    },
+    "interpretation": "Old C12 three-day defer has already been consumed by fresh C13 queries; it is not a current missing query. Surrender legality/autoaccept still does not identify actual CB losses or justify submission. Normal financing and market consumers may preempt one-day proposal."
+  },
+  "persistent_lesson": {
+    "path": "tools/g2_saved_campaign/war_observation_dto_lessons_20261019.json",
+    "bytes": 2907,
+    "sha256": "ef6d5f55c0dc4076ca42da1351406ef24a6b7db08f3dd3bf416834f6509fa729",
+    "runtime_auto_load_claimed": false,
+    "engineering_knowledge_saved": true
+  },
+  "historical_failure_preservation": "6343 and6356 original packets, old source hashes and prior war6343 proof remain unchanged. The earlier synthetic-pass limitation is corrected here, not rewritten as real DTO qualification.",
+  "adoption": "Ready for Root/runtime/harness minimal SDK-only C14 normal warm. No current SDK edit, original action replay, successful live step/day or best-strategy claim; actual outcome must be read independently.",
+  "storage": "New current fixture, modified focused test, lesson, evidence and tiny source correction remain below64KiB; no full EXE/SAVE/Driver or response tree copied."
+}
