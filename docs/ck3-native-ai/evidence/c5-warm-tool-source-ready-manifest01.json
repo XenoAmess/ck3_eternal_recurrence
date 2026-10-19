@@ -1,0 +1,43 @@
+{
+  "schema": "xar.c5-warm-tools-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:55:14.898603+00:00",
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\publisher251_warm_queue_v1.py",
+      "bytes": 15231,
+      "sha256": "e10ff257e00ca94ef598d1d2218a52175d82bfdae831e81d9345b6f3b9fb38f4"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_publisher251_warm_v1.py",
+      "bytes": 12816,
+      "sha256": "2c6fd056dfe05cc43e9f5c4a2487fb3abad3d067987892c5f2ecd24354971137"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c4_readonly_registry_pin_v1.py",
+      "bytes": 4138,
+      "sha256": "6b007f6958e6b212f79e6bbe743a6bfddd9f3408fe94a72fa56bee60814a1a9f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\c5-publisher251-warm-bootstrap-2026-10-19.md",
+      "bytes": 4012,
+      "sha256": "827253e14312b8c4125c5707edb0123bf4b08469329e35db051e0f33c4415d06"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c5-publisher251-warm-software01.json",
+      "bytes": 5340,
+      "sha256": "b2022fff870d909d2d5266b6d3f9e3c35b3c4fe723ea5972e1a9edb352edb9d5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c4-readonly-registry-two-pins01.json",
+      "bytes": 5433,
+      "sha256": "5cdcb68639457457c7938b463c0d0944bf41059a172ad58d1d74df7a66358491"
+    }
+  ],
+  "frozen": true,
+  "live_C5_pass_claimed": false,
+  "actual_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "old252_dynamic_control_candidate": "abandoned before software qualification or adoption; no live control sent",
+  "ready_for_parent_commit": true
+}

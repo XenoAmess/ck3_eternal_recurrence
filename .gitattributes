@@ -1214,3 +1214,6 @@ docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/next-
 docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/source-index.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/verify_portable.py -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c5-publisher251-warm-software01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c4-readonly-registry-two-pins01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c5-warm-tool-source-ready-manifest01.json -text whitespace=cr-at-eol

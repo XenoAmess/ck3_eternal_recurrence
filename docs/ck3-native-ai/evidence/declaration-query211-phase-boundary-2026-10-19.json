@@ -1,0 +1,159 @@
+{
+  "schema": "xar.ck3.closed-declaration211-phase-boundary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:00:45.362891+00:00",
+  "status": "RPC_OBSERVED_NATIVE_PHASES_NOT_OBSERVED",
+  "sequence": 211,
+  "step": "query-declarable-wars",
+  "actor_four_family_gate": "OFF per Root/runtime; unchanged",
+  "header": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-0211-TIMING-HEADER62.json",
+    "bytes": 2317,
+    "sha256": "0bae2fc33eec254a3f44106547297c3e6f839fcd218cce47ec4c98930e8b40b7"
+  },
+  "RPC_timing": {
+    "started_at_utc": "2026-10-19T05:40:43.801654+00:00",
+    "ended_at_utc": "2026-10-19T05:40:48.099850+00:00",
+    "elapsed_seconds": 4.298203199869022
+  },
+  "context_receipts": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\0211-before-action.json",
+      "bytes": 284,
+      "sha256": "06dc75a06902fd141b28f1e10b2184d314026a52bd18985c61343969411e4847"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\0211-after-result.json",
+      "bytes": 478,
+      "sha256": "7a6b7fe181f5f89b03784703ef66f31cc8729887a92c2734c2d129a32937bfc4"
+    }
+  ],
+  "production_sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+      "bytes": 1600530,
+      "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\cb-candidates-native18-02\\jobs\\025af24bfa47\\ck3_12002_semantic_adapter.cpp",
+      "bytes": 43953,
+      "sha256": "18709b3951893eaa08b7934f59cbd02b0afec5b376505ab03f0735bcbd465dc2"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\cb-candidates-native18-02\\jobs\\e2610533a068\\ck3_12002_adapter.cpp",
+      "bytes": 39858,
+      "sha256": "2504e68f412dec9077e3a6f854cd9b19877c0a28792c583c4bf9d6c7c96b925d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native26-performance01\\source\\src\\ck3_12002_declarations.cpp",
+      "bytes": 46294,
+      "sha256": "e1553e3a30a88625da13118c75283a268e3de8ef3e1ed95b1df8806815cffd94"
+    }
+  ],
+  "response_extent_read": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0211-1-result.json",
+    "bytes": 614470,
+    "whole_file_sha256": null,
+    "total_body_read_bytes": 32768,
+    "arrays_traversed": false,
+    "stat_before_after_equal": true,
+    "stat_bytes": 614470,
+    "stat_mtime_ns": 1792388448101853300,
+    "extents": [
+      {
+        "offset": 0,
+        "bytes": 16384,
+        "sha256": "d75543e627261ac473540ba516b97a18d4474936d71d44f1f8f02eb291379822"
+      },
+      {
+        "offset": 598086,
+        "bytes": 16384,
+        "sha256": "030543768ba24b9f2cb8f186a11eb1abbb9329842fbf3dbd2d6df2f983dd6ea7"
+      }
+    ],
+    "tail_scalar_fragments": {
+      "native_revision": 11,
+      "date_raw": 53145984,
+      "actor_character_id": 31254
+    },
+    "limit": "Scalar fragments are not a profiler row or qualified evaluator-frame tuple. Escaped content and unread middle not decoded; no whole-file absence claim."
+  },
+  "trace": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C4-CLOSED-STAGE-TRACE62.jsonl",
+    "bytes": 111191,
+    "sha256": "0ae1031c5ca707d0332e31d2b751cab943f54f65e5e88849c915eb9221abc312",
+    "rows": 417,
+    "native_request_force_or_native_phase_rows": 0,
+    "request_id_correlation": false,
+    "overlapping_planner_spans": [
+      {
+        "row_1based": 83,
+        "content": {
+          "schema": "xar.ck3.army-query-timing.v1",
+          "stage": "service.normal_plan_turn",
+          "step": "plan-turn",
+          "elapsed_ns": 400678200,
+          "finished_at_utc": "2026-10-19T05:40:44.204088+00:00",
+          "native_request_id": null
+        }
+      }
+    ],
+    "limit": "Overlapping/nested spans are not additive. No residual gap is labelled Native, force, disk or JSON."
+  },
+  "source_chain": [
+    "bridge.cpp:25926-25938 ReadDeclarableWars -> DeclarableWarsResultFrame ->write_frame",
+    "semantic_adapter.cpp:382-418 pre-snapshot/submit/mailbox wait/reclaim/frame-stable;467 native.read_declarable_wars;639-642 move output",
+    "12002_adapter.cpp:344-346 ReadDeclarableWars(bindings.declarations)",
+    "declarations.cpp:495-514 policy;517-680 candidate/full/shadow enumeration and unchanged stock false,false evaluation/materialization",
+    "bridge.cpp:9058-9077 response contains query_sequence and declarable_wars, no per-CB profiler fields"
+  ],
+  "actual211_native_metrics": {
+    "query_ns": null,
+    "mailbox_wait_ns": null,
+    "evaluator_calls": null,
+    "evaluate_ns": null,
+    "materialize_and_clear_ns": null,
+    "candidate_index_ns": null,
+    "force_refresh_ns": null,
+    "Native_wire_JSON_ns": null,
+    "Python_JSON_ns": null,
+    "candidate_variant": null
+  },
+  "existing_observation_seam": {
+    "source": "declarations.cpp:173-235,238-280,287-310",
+    "environment": "XAR_CK3_DECLARATIONS_PROFILE_JSONL",
+    "C4_path": "Requested from runtime immutable launch receipt; not yet provided, not inferred unset",
+    "query_fields": [
+      "recorded_unix_ns",
+      "actor_character_id",
+      "date_raw",
+      "success",
+      "total_ns",
+      "targets",
+      "enabled_cb_count"
+    ],
+    "per_CB_fields": [
+      "evaluations",
+      "evaluate_ns",
+      "materialize_and_clear_ns",
+      "rows"
+    ],
+    "actor_fields": [
+      "actor_precheck_qualified",
+      "actor_precheck",
+      "actor_precheck_ns",
+      "qualified_actor_source_manifest_sha256"
+    ],
+    "boundary": "total_ns starts after core/storage/database setup and is captured before profile append; excludes WorkerAdapter/queue/reclaim, wire JSON/pipe, Python planning/force and outerRPC. Per-evaluation clocks add overhead.",
+    "only_next_action": "Join an existing naturally produced profile row to211 by time/actor/date if immutable C4 launch already binds its exact path. No newRPC or environment changes. Missing row/path staysunknown; reuse same logger only at a separately necessary future cold configuration."
+  },
+  "conclusion": "4.298203199869022s is whole ck3_auto_turn RPC wall. Actual211 Native count/cost split remainsunknown. Do not copy historical2.529M/4.496s or infer JSON cost from614470B. No algorithm/force/serialization hotspot proven by this sample.",
+  "actions": {
+    "Game": 0,
+    "RPC": 0,
+    "compile": 0,
+    "source_changes": 0,
+    "src04_changes": 0,
+    "closed_build_writes": 0
+  }
+}

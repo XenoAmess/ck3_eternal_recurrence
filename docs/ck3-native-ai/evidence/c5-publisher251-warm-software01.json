@@ -1,0 +1,156 @@
+{
+  "schema": "xar.publisher251-warm-call-order-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:53:40.187177+00:00",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\publisher251_warm_queue_v1.py",
+      "bytes": 15231,
+      "sha256": "e10ff257e00ca94ef598d1d2218a52175d82bfdae831e81d9345b6f3b9fb38f4"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\startup_readiness_v1.py",
+      "bytes": 5937,
+      "sha256": "c9b1bfa0efd002d2fd9f05298ba1d2ba218fa5dded335b30de18ced7d5f7b2c3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c5-same-game-warm63\\POST-C4-CLOSE.json",
+      "bytes": 5824,
+      "sha256": "fd2a83b0fffbdf8c98551306a91463a9ab76ea08db202448f89cb87c94a4a4f7"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-c4-child-text-retry-review01\\META.json",
+      "bytes": 15547,
+      "sha256": "dfe9834d06efecba05681f18746108b8de8891c535db2702a3f7c7736774de33"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c5_sdk_queue.py",
+      "bytes": 264837,
+      "sha256": "0752acc6993c1fd92df133c8a4078fc5722a99bc5160ade0395e07c3443bff95"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C4.json",
+      "bytes": 402606,
+      "sha256": "d99b9b0ef92a82529a198c67cb5bb2170aa1e7456ecf31548d58c72b9466ed19"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "bytes": 48771,
+      "sha256": "900303320147c02c96f257de6caf75ae6f400523e5010b48b459babaa063a16f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0199-1-result.json",
+      "bytes": 57813,
+      "sha256": "a0e4603f08ceb65d4fcbf03da71f0429f91e2777d63d0a2fae001b876fe27cc1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_result_classifier.py",
+      "bytes": 260311,
+      "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991"
+    }
+  ],
+  "future_SEM252_CAP253_are_explicit_software_fixtures": true,
+  "actual_readiness_check_after_consume_publish_and_ordinary_CAP_flow": true,
+  "source_pointer252_offset": 0,
+  "observed": [
+    {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c5-publisher251-warm-review02\\fixture\\queue\\READINESS-0252-000001-result.json",
+      "next_sequence": 252,
+      "canonical252_exists": false
+    }
+  ],
+  "events": [
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0252.json"
+    },
+    {
+      "event": "persist",
+      "file": "READINESS-0252-000001-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "0252-1-result.json"
+    },
+    {
+      "event": "explicit_C5_relay",
+      "file": "0252-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0252-after-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0253.json"
+    },
+    {
+      "event": "persist",
+      "file": "0253-before-action.json"
+    },
+    {
+      "event": "persist",
+      "file": "0253-1-result.json"
+    },
+    {
+      "event": "explicit_C5_relay",
+      "file": "0253-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-PUBLISHER251-WARM-BOUND.json"
+    },
+    {
+      "event": "persist",
+      "file": "0253-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0253-after-result.json"
+    }
+  ],
+  "negative_cases_rejected": [
+    "wrong_actor",
+    "wrong_Game",
+    "date_drift",
+    "Native_regressed",
+    "cold_CAP"
+  ],
+  "old_C4_exit1_App0_normalfalse_preserved": true,
+  "same_Game_153556_no_cold_SAVE_load": true,
+  "counts98_T0_lastSaved61_dirtytrue_preserved": true,
+  "pending99_cleared_only_after_fresh_SEM_CAP": true,
+  "query_or_AUTO99_completion_credit": 0,
+  "actual_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "actual_C5_preflight_or_warm_pass_claimed": false,
+  "leaf": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\publisher251_warm_queue_v1.py",
+    "bytes": 15231,
+    "sha256": "e10ff257e00ca94ef598d1d2218a52175d82bfdae831e81d9345b6f3b9fb38f4"
+  }
+}

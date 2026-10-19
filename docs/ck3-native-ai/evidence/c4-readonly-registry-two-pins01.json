@@ -1,0 +1,99 @@
+{
+  "schema": "xar.c4-readonly-registry-two-source-digests/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:46:18.616496+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37-READONLY-RECOVERY-ALLOWLIST.json",
+      "bytes": 6215,
+      "sha256": "0e8dbea8affc1b3aa2ea530e751fed2815449b4f7385d57ab63db09076f96741"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_readonly_recovery_registry.py",
+      "bytes": 2279,
+      "sha256": "9e175be1c57c87f700b4541753ec4221566cfd6120798124e450cd12c73a40dc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0251-1-result.json",
+      "bytes": 576,
+      "sha256": "c3ac06a1400157f969cd16fc04120b1f0a27d4548b8694fd64af934ac8fd9597"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_readonly_known_failures.py",
+      "bytes": 3317,
+      "sha256": "bbfb707c67e0ee8b66c6aa3c4d5aa7c1197b24dd72fbd9d1a8183db00fc505f1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_campaign_root_not_entered_readonly.py",
+      "bytes": 1766,
+      "sha256": "d0eddeaf10901ba43e19bc50746bd684086d2ccca00e0e14b0fd951c8495aa4d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_campaign_root_revision_changed_readonly.py",
+      "bytes": 3359,
+      "sha256": "2312b5d0a9196acbe3e11b56a90e15af3a83c26b2ae163dce98b89516656b21f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_campaign_root_local_revision_readonly.py",
+      "bytes": 7121,
+      "sha256": "e79975d3645f9a64627d8ebac6a7ec37879afc01731c1dbdbca2924bf78d1f8c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_council_planning_readonly.py",
+      "bytes": 5272,
+      "sha256": "5eccd58615eb2b5f1a2a0a844059004a0c9774cbd95d5a069597a78e71a5808b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_campaign_root_preflight_unreadable_readonly.py",
+      "bytes": 4321,
+      "sha256": "c441e12b64a69ecbf7828b144132352c3534c57bf65ed16df7e4754c36158a8a"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_native_revision_readonly_v2.py",
+      "bytes": 4255,
+      "sha256": "93756fe07f1be858e606b707ba2099ea7256e8c85477917dd901002af390255b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_campaign_root_paused_boundary_readonly.py",
+      "bytes": 2825,
+      "sha256": "0b1cb6943922ab301082e7c162e0a4d5ee6bea8142ad13e7a2ebd3c92fa2ee09"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_construction_paused_frame_readonly_v1.py",
+      "bytes": 3914,
+      "sha256": "7f261b96e6d425501c059c0ff0246a53afb248fe8b5e31d0b24a9d4b0a6755fd"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_first_heir_preread_readonly_v1.py",
+      "bytes": 5900,
+      "sha256": "65cbf697ef9678cbb48055badddcd289a68df560e86615dd6d7809176c6ebaaa"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_faction_pending_publication_readonly_v1.py",
+      "bytes": 1905,
+      "sha256": "0e6b2272c0f48a32a09bbcad24c4d8e25b3dd9fb0cc4d71f540be704199924dc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_faction_submit_admission_rejected_v1.py",
+      "bytes": 1914,
+      "sha256": "f3d3fc7c6d32aa0212d1bfa40d0045dcfa2db2bcdfbf718cdf9e0cb36ec00979"
+    }
+  ],
+  "changed_JSON_fields": [
+    "handlers[3].sha256",
+    "handlers[6].sha256"
+  ],
+  "original251_result": "ValueError: reviewed read-only handler SHA differs",
+  "corrected251_result": null,
+  "handlers_business_bytes_unchanged": true,
+  "old_src02_MODE_generation_guards_preserved": true,
+  "C4_business_qualification_migrated": false,
+  "new251_classification_added": false,
+  "runtime_files_mutated": 0,
+  "actual_Game_Native_MCP_calls": 0,
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c4-readonly-registry-review01\\ROOT-P37-READONLY-RECOVERY-ALLOWLIST.json",
+    "bytes": 6354,
+    "sha256": "4c3a5c1429c608198de7055032a1a1d649f7393241ef5e2e21d2c1c49c780886"
+  }
+}

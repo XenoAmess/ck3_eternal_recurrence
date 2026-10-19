@@ -1,0 +1,239 @@
+{
+  "schema": "xar.holy-order-loan-war-cash-collector-source-contract.v1",
+  "status": "SOURCE_IMPLEMENTED_NOT_COMPILED_LINKED_REGISTERED_OR_EXECUTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "identity_source": "tools/ck3_live_run_id.py machine",
+  "observed_at_utc": "2026-10-19T05:52:27.165891+00:00",
+  "target_source": {
+    "version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "current_game_install_or_runtime_read": false
+  },
+  "implementation": {
+    "factory": "BindHolyOrderLoanWarCashAttachImage12004",
+    "reader": "ReadHolyOrderLoanWarCashAttach12004",
+    "query_step_reused_for_future_attach": "query-war-cash-current-resources-v1",
+    "new_query_step_permission_or_public_tool": false,
+    "source_calls": [
+      "ReadPlayerHolyOrderLoanDecisionCosts12004 once with existing owner pump_epoch",
+      "ReadPlayerHolyOrderLoanPrincipal12004 once with the same owner pump_epoch"
+    ],
+    "native_scope_and_scratch_owner": "the two original providers, never the collector",
+    "no_retry_after_unavailable_or_unknown": true,
+    "whole_snapshot_copies_or_extra_snapshot_reads": 0,
+    "partial_semantics": "completed means ordinary collection, including independently unavailable fields; no complete-loan or action qualification",
+    "direct_typed_reuse": [
+      "optional loan_decision_costs::Observation, preserving borrow/repay final is_shown/can_take/affordable and every signed native resource slot",
+      "optional loan_principal::Observation, preserving signed prospective_principal_raw and native zero"
+    ],
+    "available_provider_value_admission": "read returned true, original available=true, actor/date/pump epoch exactly match the owner; principal additionally confirms owned_temporaries_released",
+    "unbound_or_failed_value": "optional remains disengaged and its real unavailable reason is retained; no invented empty debt, gate, quote or owner identity",
+    "owner_changed": "return false before publishing either provider value; keep both optional values disengaged"
+  },
+  "current_source_frame": {
+    "native_owner": "the existing entered QueryMailboxEnvelope, still owning its complete expected_snapshot",
+    "native_checks": [
+      "existing IsQueryOwningThread, exact .4 descriptor and full_snapshot comparison",
+      "paused living map-ready actual played character; snapshot date equals execution stamp date",
+      "same expected native revision, mailbox ticket, complete execution stamp, local PlayerID, full played CharacterID and date before/after both reads"
+    ],
+    "copied_native_fields": [
+      "snapshot_revision",
+      "ticket_sequence",
+      "complete execution_stamp",
+      "local_player_id",
+      "played_character_id",
+      "date_raw"
+    ],
+    "full_snapshot_owner_retained_is_final_same_frame_claim": false,
+    "publication_still_requires": [
+      "original FinishQueryMailbox succeeds with its complete expected_snapshot",
+      "original worker post-snapshot equality and reclaim succeed",
+      "existing transport caller retains and checks the complete current planning-source-frame; no reconstruction from actor/date alone"
+    ],
+    "python_frame_source": "bridge/service.py Service._observed_planning_source_frame at 689; retain actual snapshot_id/revision/native_revision/date_raw/actor_character_id/episode_run_id/bridge_pid/connection_generation",
+    "python_frame_requirement": "all original fields must match the current paused snapshot and diagnostics, including actual nonempty episode and valid PID/generation; a complete label alone is not sufficient",
+    "existing_transport_limit": "g2_private_query_transport uses timeline _binding plus query metadata; _binding does not include episode/PID/connection, so that transport alone is not the complete planner-frame proof",
+    "python_owned_ids_manufactured_by_collector": false
+  },
+  "funding_semantics": {
+    "existing_debt_principal_raw": null,
+    "complete_loan_terms": false,
+    "typed_debt_readback_verified": false,
+    "independently_attributed_received_funds_verified": false,
+    "submit_planned": false,
+    "funding_credit_raw": 0,
+    "eligible_or_costs_or_quote_are_wallet_funds": false,
+    "current_war_construction_or_mercenary_budget_changes": 0,
+    "preserve_same_procurement_epoch_and_unknown_submission_no_replay": true
+  },
+  "future_shared_chain_root_owned_not_edited": [
+    {
+      "path": "native_bridge/include/xar_bridge/ck3_12003_war_cash_current_reader.hpp",
+      "change": "append one optional collector observation to existing ActorResources; no parallel current-cash DTO/query"
+    },
+    {
+      "path": "native_bridge/src/bridge.cpp",
+      "change": "only existing ExecuteWarCashCurrentResources12004 callback after ReadActor and before existing Finish; use its entered envelope; worker serialisation remains existing cash path"
+    },
+    {
+      "path": "native_bridge/src/ck3_12003_war_cash_current_serializer.cpp",
+      "change": "optional exact .4 loan leaf inside current cash packet, published only under original same_frame_ready; wallet/income/current status semantics unchanged"
+    },
+    {
+      "path": "src/xar_autoplayer/bridge/war_cash_private_transport_v1.py",
+      "change": "validate optional copied leaf in existing normalizer; retain independent availability, native ten-slot costs and zero funds"
+    },
+    {
+      "path": "src/xar_autoplayer/war_mercenary_consumer_v1.py",
+      "change": "already obtained same-full-frame cash DTO may fill existing plan.war_financing_capability_gap_v1.legal_debt.principal_quote_raw; no new loan action or funding allocation"
+    }
+  ],
+  "planner_input_location": {
+    "existing_default": "wartime_construction_cash_v1.py observe_war_financing_capability_gap_v1 legal_debt.principal_quote_raw",
+    "existing_consumer_call": "war_mercenary_consumer_v1.py 108",
+    "cash_dto_handoff_exists_today": false,
+    "handoff_rule": "coordinate the existing query owner's copied cash DTO and source-frame; absent or stale DTO continues existing war action without cash credit, never an invented cache or extra parallel query",
+    "additional_service_handoff_or_build_target_change": "Root coordination only; no Service, adapter, CMake, SDK or Native26 edits in this increment",
+    "legacy_loan_route_not_widened": "player_holy_order_loan_context_private_transport is exact .3 and assumes full debt/four named costs; do not retag it as .4 or fill unknown debt as absent"
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_war_cash_attach_12004.hpp",
+      "bytes": 2935,
+      "sha256": "60c612eda4e0e0942dbb715828510542ec584fcf275dad8d2b0b4de756cba431"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_war_cash_attach_12004.cpp",
+      "bytes": 5374,
+      "sha256": "4b2aafac682d41fa773df7521542d6cd32575b698968ead7fcba223d2dd1a92b"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_decision_costs_12004.hpp",
+      "bytes": 2091,
+      "sha256": "529539d86c67fa611a6ac26b268dfec45fe4602a12b2357c6e6f56eb53a23819"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_decision_costs_12004.cpp",
+      "bytes": 9450,
+      "sha256": "dad56980b7713c0e6ea03394e6ae1c216bd5b73c52fcacf716d052ead6787262"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_principal_12004.hpp",
+      "bytes": 1661,
+      "sha256": "2388e5b7b1b2a62c453e5a0aac715e613d792051c14caa4a78ed05be24f78a3d"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_principal_12004.cpp",
+      "bytes": 10532,
+      "sha256": "660d8d94651634e933999009d0d82c8120e1914e4d47192a0f8f8e56e995dd53"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_query_mailbox.hpp",
+      "bytes": 1739,
+      "sha256": "ec9daa105d421b7b3720c84e56ff34746b8fb33a2a4adf1b1f9550b751ea4f55"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\src\\ck3_12002_query_mailbox.cpp",
+      "bytes": 7274,
+      "sha256": "81f5fd3f73808720226b6721aea95f3fea9c69c1557f611334c97067fc9ca641"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\main_thread_query_mailbox_v1.hpp",
+      "bytes": 44898,
+      "sha256": "cc28ec3ec5ae12160d440c7ccb04b6ff650956b585bb178bce54edf656cb722c"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_adapter.hpp",
+      "bytes": 1050,
+      "sha256": "f61edfa91c4f9137d7dc7d7cd8e340147774bfdb912c6628fc167923f3323c4a"
+    }
+  ],
+  "prerequisite_qualification_record_pins": [
+    {
+      "path": "docs\\ck3-native-ai\\evidence\\g2-m4-provider-compile-2026-10-19.json",
+      "bytes": 192290,
+      "sha256": "c5f9cb56cfc2908ad00e8c38c93ae6b282c5b6bcc362c9a8f35d6d5241d69284"
+    },
+    {
+      "path": "docs\\ck3-native-ai\\evidence\\holy-order-loan-principal-object-compile-2026-10-19.json",
+      "bytes": 203065,
+      "sha256": "01c02db7e27e2d8ddf31f2a5d561069125a1ed555a1a3da3691ee41fab13203b"
+    },
+    {
+      "path": "docs\\ck3-native-ai\\evidence\\holy-order-loan-principal-synthetic-fixture-2026-10-19.json",
+      "bytes": 209547,
+      "sha256": "d5b716ffb05f1e9d9739cb39f134d9bbf494f3f5ddc97c5c67ac77278ffd08cc"
+    }
+  ],
+  "shared_source_readonly_pins": [
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_war_cash_current_reader.hpp",
+      "bytes": 4570,
+      "sha256": "655a22a9c7707cb50634abf9a4bb4c9b9ddd17ba502918c81bfa3ef71e316a69"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+      "bytes": 1602801,
+      "sha256": "68ad29060e19a17727ab7b961a4efbe7f21f5f036ac252a9e6cd40b98ac833b1"
+    },
+    {
+      "path": "ck3_autonomous_player\\native_bridge\\src\\ck3_12003_war_cash_current_serializer.cpp",
+      "bytes": 9999,
+      "sha256": "280a1bdf15b096a115f758d1f50b74b5dd46113fa972dbcc75aea99476c8b1d3"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+      "bytes": 11901,
+      "sha256": "e33f43c54fe4fa0960383065931a1b2179b8b40b706393f628a94dbb6b6d4249"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 21416,
+      "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\wartime_construction_cash_v1.py",
+      "bytes": 16639,
+      "sha256": "9eb2f93a573e2c6f467e6ff478c50d9856350cb4c436b5403fd0dd70351b772e"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867830,
+      "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\timeline_blocker_private_transport.py",
+      "bytes": 5649,
+      "sha256": "9a97a8f7b88bc6e2c4d26ce7fc9799900cc00d8fcc6868350bc4791b3f6429d7"
+    }
+  ],
+  "deterministic_source_check": {
+    "status": "PASS_TEXT_CONTRACT_ONLY",
+    "original_provider_source_sha_unchanged": true,
+    "getter_call_sites": 2,
+    "shared_leaves_read_only": true,
+    "checked": "fixed one-call sites, full_snapshot owner/ticket/stamp, typed optionals, cleanup predicate, zero credit and no extra query/snapshot/submit or debt assignment",
+    "does_not_prove": "new collector C++ compilation, mock execution, actual ABI/current amount or final transport/planner wiring"
+  },
+  "qualification": {
+    "collector_compiler_or_link_invocations": 0,
+    "collector_fixture_or_native_executions": 0,
+    "old_getter_compile_or_fake_qualification_automatically_qualifies_collector": false,
+    "actual_game_rva_or_amount_qualification_added": false,
+    "game_rpc_desktop_driver_save_access": 0,
+    "native26_c4_environment_or_shared_leaves_modified": 0,
+    "new_runtime_permission_or_action": 0
+  },
+  "storage": {
+    "repo_three_leaf_hard_limit_bytes": 32768,
+    "component": "existing other research 128MiB",
+    "new_external_package": false,
+    "new_global_reservation_bytes": 0,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "future_write_bytes": 0,
+    "active_processes_after_close": 0,
+    "record_review_days": 180
+  }
+}
