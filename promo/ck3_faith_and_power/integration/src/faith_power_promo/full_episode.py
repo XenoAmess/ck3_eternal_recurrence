@@ -824,7 +824,7 @@ def build(args,doc,inspection,inputs,admission):
             if abs(float(probe['format']['duration'])-d)>.04:raise ValueError('Narrated segment truncated or exceeded its clock')
             files=[(key+'.subtitle','subtitle',ass,'text/x-ass'),(key+'.segment','rendered-segment',target,'video/mp4')]
             if retiring:
-                receipt=retire_prepared(visual,target,probe,d,out/'audit/prepared-retirement'/key,doc['machine_id'])
+                receipt=retire_prepared(visual,target,probe,d,run.parent/'derived/receipts/prepared-retirement'/key,doc['machine_id'])
                 files.append((key+'.prepared-retirement','exact-prepared-retirement',receipt,'application/json'))
             else:files.insert(0,(key+'.visual','prepared-visual',visual,'video/mp4'))
             return row,target,files,float(probe['format']['duration'])

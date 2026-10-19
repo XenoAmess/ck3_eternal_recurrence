@@ -30,6 +30,7 @@ struct NonwarMailboxExecutorsV1 {
   ck3_11906::MainThreadQueryExecutorV1 feast_stage2_confirm = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_start = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 pilgrimage_identities = nullptr;
+  ck3_11906::MainThreadQueryExecutorV1 pilgrimage_execution = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_guest = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_guest_rules = nullptr;
   ck3_11906::MainThreadQueryExecutorV1 feast_guest_opinion = nullptr;

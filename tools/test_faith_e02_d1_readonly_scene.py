@@ -48,7 +48,7 @@ def context():
             "opt_in_read_only_mcp_tools": sorted(A.READONLY_TOOLS),
             **{key: False for key in A.ACTION_OPT_INS}}
     return {"product": A.PRODUCT, "case": A.CASE, "case_contract": c, "case_spec": spec,
-            "run_id": "offline-synthetic-d1-scene"}
+            "run_id": "offline-synthetic-d1-scene", "shared_source_root": str(REPO)}
 
 
 def frame(actor=31254, date=53144352, revision=5):

@@ -2659,6 +2659,35 @@ def create_server(
                 pending=pending, expected_revision=expected_revision,
             )
 
+    if getattr(driver, "allow_private_player_pilgrimage_execution", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_pilgrimage_planner_v1(
+            expected_revision: int, operation: Literal["read", "can_select", "quote", "post"] = "read",
+            province_id: int = 0, read_stage: int = 0, timeout_seconds: float = 30.0,
+        ) -> dict[str, object]:
+            """Read the default-OFF current-player ordinary pilgrimage planner."""
+            return driver.query_player_pilgrimage_planner_private_v1(
+                expected_revision=expected_revision, operation=operation, province_id=province_id,
+                read_stage=read_stage, timeout_seconds=timeout_seconds,
+            )
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_submit_player_pilgrimage_planner_v1(
+            expected_revision: int, operation: Literal["open", "confirm", "select", "start"],
+            province_id: int = 0, policy_positive: bool = False, reserve_gold_raw: int = 0,
+            reserve_treasury_raw: int = 0, reserve_piety_raw: int = 0,
+            reserve_barter_goods_raw: int = 0, timeout_seconds: float = 30.0,
+        ) -> dict[str, object]:
+            """Submit once; native ledger/independent postread still decide the outcome."""
+            return driver.submit_player_pilgrimage_planner_private_v1(
+                expected_revision=expected_revision, operation=operation, province_id=province_id,
+                policy_positive=policy_positive, reserve_gold_raw=reserve_gold_raw,
+                reserve_treasury_raw=reserve_treasury_raw, reserve_piety_raw=reserve_piety_raw,
+                reserve_barter_goods_raw=reserve_barter_goods_raw, timeout_seconds=timeout_seconds,
+            )
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_pilgrimage_planner_v1")
+        _forbid_unknown_tool_arguments_v1(server, "ck3_submit_player_pilgrimage_planner_v1")
+
     if (getattr(driver, "allow_private_player_pilgrimage_activities_query", False) is True
             or "ck3_query_player_pilgrimage_activities_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
         @server.tool(annotations=read_only_tool)
@@ -5314,6 +5343,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable ordinary stock Feast configuration, Start and lifecycle observation",
     )
     result.add_argument(
+        "--allow-private-player-pilgrimage-execution", action="store_true",
+        help="explicitly enable private native ordinary pilgrimage planner queries and submissions",
+    )
+    result.add_argument(
         "--private-war-cash-queries", action="store_true",
         help="enable actual current military expenses and termination send-fee reads",
     )
@@ -5521,6 +5554,10 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    if args.allow_private_player_pilgrimage_execution and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError("private pilgrimage execution requires native-headless stdio")
     if args.private_war_daily_watch_speed2_trial and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -5710,6 +5747,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_activity_feast_stage5_start_query = True
         driver.allow_private_activity_feast_lifecycle_observation = True
         driver.allow_private_activity_feast_stage5_start_action = True
+    if args.allow_private_player_pilgrimage_execution:
+        driver.allow_private_player_pilgrimage_execution = True
     if args.private_war_cash_queries:
         driver.allow_private_war_cash_query = True
     if args.private_family_obligations_query:

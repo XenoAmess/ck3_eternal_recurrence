@@ -65,6 +65,25 @@ bool IsFeastType(const ActivityCostSlot12EnvironmentV1 &environment,
          std::memcmp(copied.data(), key.data(), key.size()) == 0;
 }
 
+// This new branch never changes historical Feast admission. It is enabled
+// only by a caller-created exact ordinary-pilgrimage contract at installation.
+bool IsBoundActivityType(
+    const ActivityCostSlot12EnvironmentV1 &environment,
+    std::uintptr_t type) noexcept {
+  if (environment.typed_contract == nullptr) return IsFeastType(environment, type);
+  ActivityPlannerDiagEnvironmentV1 diagnostic{};
+  diagnostic.enabled = environment.enabled;
+  diagnostic.admitted_executable_sha256 = environment.executable_sha256;
+  diagnostic.module_base = environment.module_base;
+  diagnostic.context = environment.context;
+  diagnostic.read_memory = environment.read_memory;
+  const auto *layout = ActivityFeastCostLayoutForBuildV1(
+      environment.executable_sha256);
+  return layout != nullptr &&
+         MatchesActivityTypedPlannerTypeV1(diagnostic, type,
+             layout->type_vtable_rva, *environment.typed_contract);
+}
+
 bool FingerprintConfiguration(
     const ActivityCostSlot12EnvironmentV1 &environment,
     std::uintptr_t planner, std::uint64_t &output) noexcept {
@@ -145,6 +164,10 @@ bool VerifyActivityCostSlot12ExactAbiV1(
       environment.module_base == 0 || environment.read_memory == nullptr ||
       environment.read_frame == nullptr)
     return false;
+  if (environment.typed_contract != nullptr &&
+      (!IsActivity12004BuildV1(environment.executable_sha256) ||
+       !IsOrdinaryPilgrimagePiousContractV1(*environment.typed_contract)))
+    return false;
   std::array<std::uint8_t, kActivityCostPatchBytesV1> prologue{};
   std::array<std::uint8_t, 5> call{};
   const std::array<std::uint8_t, 5> expected_call =
@@ -178,6 +201,9 @@ bool RecordActivityCostSlot12NormalReturnV1(
       candidate.frame.thread_id != GetCurrentThreadId())
     return false;
   candidate.planner = planner;
+  candidate.typed_contract_bound = environment.typed_contract != nullptr;
+  if (candidate.typed_contract_bound)
+    candidate.typed_kind = environment.typed_contract->kind;
   std::uintptr_t vtable = 0;
   if (!ReadAt(environment, planner, 0, vtable) ||
       vtable != environment.module_base + layout->planner_vtable_rva ||
@@ -185,7 +211,7 @@ bool RecordActivityCostSlot12NormalReturnV1(
       candidate.owner == 0 ||
       !ReadAt(environment, planner, layout->type_offset, candidate.activity_type) ||
       candidate.activity_type == 0 ||
-      !IsFeastType(environment, candidate.activity_type) ||
+      !IsBoundActivityType(environment, candidate.activity_type) ||
       !ReadAt(environment, planner, layout->stage_offset, candidate.planning_stage) ||
       candidate.planning_stage < 0 || candidate.planning_stage > 5 ||
       !FingerprintConfiguration(environment, planner,
@@ -231,6 +257,10 @@ ActivityCostSlot12ReadStatusV1 ReadActivityCostSlot12PassiveV1(
       output.frame.thread_id != expected.thread_id || !output.frame.paused ||
       !expected.paused)
     return ActivityCostSlot12ReadStatusV1::frame_changed;
+  const bool typed = observer.environment.typed_contract != nullptr;
+  if (output.typed_contract_bound != typed ||
+      (typed && output.typed_kind != observer.environment.typed_contract->kind))
+    return ActivityCostSlot12ReadStatusV1::configuration_changed;
   std::uintptr_t owner = 0, type = 0, vtable = 0;
   std::int32_t stage = -1;
   std::uint64_t fingerprint = 0;
@@ -240,7 +270,7 @@ ActivityCostSlot12ReadStatusV1 ReadActivityCostSlot12PassiveV1(
       !ReadAt(environment, output.planner, layout->owner_offset, owner) ||
       owner != output.owner ||
       !ReadAt(environment, output.planner, layout->type_offset, type) ||
-      type != output.activity_type || !IsFeastType(environment, type) ||
+      type != output.activity_type || !IsBoundActivityType(environment, type) ||
       !ReadAt(environment, output.planner, layout->stage_offset, stage) ||
       stage != output.planning_stage ||
       !FingerprintConfiguration(environment, output.planner, fingerprint) ||

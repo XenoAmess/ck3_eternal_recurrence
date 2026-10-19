@@ -290,6 +290,13 @@
 #include "xar_bridge/activity_completion_effect_counter_observer_12004.hpp"
 #include "xar_bridge/activity_completion_effect_counter_observations_12004.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
+#error "Pilgrimage execution and legacy Feast passive cost require separate cold profiles"
+#endif
+#include "xar_bridge/activity_pilgrimage_cost_lifecycle_v1.hpp"
+#include "ck3_12004_player_pilgrimage_execution_private_v1.hpp"
+#endif
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_reinforcement_assignment_v1_mailbox.hpp"
 #include "xar_bridge/battle_terminal_journal_v1.hpp"
@@ -828,6 +835,46 @@ bool ReadActivityCostSlot12FrameV1(
   output.thread_id = g_main_thread_query_mailbox_v1.owner_thread_id.load(
       std::memory_order_acquire);
   return output.thread_id != 0;
+}
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+// Separate process-life owner: no old Feast observer or capture is repurposed.
+static xar::bridge::ActivityPilgrimageCostLifecycleV1
+    g_activity_pilgrimage_cost_lifecycle_v1{};
+static xar::ck3_12004::CoreBindings g_activity_pilgrimage_cost_bindings12004{};
+bool IsActivityPilgrimageExecutionAdmittedV1(
+    void *, const xar::bridge::ActivityCostSlot12ObserverV1 *observer) noexcept {
+  return observer != nullptr && g_stop_event != nullptr &&
+      WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT &&
+      xar::bridge::GetActivityPilgrimageCostObserverForQueriesV1(
+          g_activity_pilgrimage_cost_lifecycle_v1) == observer;
+}
+bool ReadActivityPilgrimageCostMemoryV1(void *, std::uintptr_t address,
+                                       void *output, std::size_t bytes) noexcept {
+  SIZE_T copied = 0;
+  return address != 0 && output != nullptr && bytes != 0 &&
+      ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<const void *>(address),
+          output, bytes, &copied) != FALSE && copied == bytes;
+}
+bool ReadActivityPilgrimageCostFrameV1(
+    void *, xar::bridge::ActivityCostSlot12FrameV1 &output) noexcept {
+  output = {};
+  const auto owner = g_main_thread_query_mailbox_v1.owner_thread_id.load(
+      std::memory_order_acquire);
+  if (!g_activity_pilgrimage_cost_bindings12004.enabled || owner == 0 ||
+      GetCurrentThreadId() != owner) return false;
+  xar::ck3_12004::CoreSnapshotPrefix prefix{};
+  __try {
+    if (!xar::ck3_12004::ReadCoreSnapshot(
+            g_activity_pilgrimage_cost_bindings12004, prefix)) return false;
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+  if (!prefix.map_ready || !prefix.has_played_character ||
+      !prefix.played_character_alive ||
+      g_main_thread_query_mailbox_v1.owner_thread_id.load(
+          std::memory_order_acquire) != owner) return false;
+  output = {prefix.clock.date_raw, prefix.played_character_id, owner,
+            prefix.clock.paused};
+  return true;
 }
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
@@ -16047,6 +16094,9 @@ void RunConnectedSession(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1)
             provenance = &g_activity_guest_rule_provenance_observer_v1;
 #endif
+#elif defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+            cost = xar::bridge::GetActivityPilgrimageCostObserverForQueriesV1(
+                g_activity_pilgrimage_cost_lifecycle_v1);
 #endif
             xar::ck3_12002::HandleNonwarPrivate12002(
                 game, g_main_thread_query_mailbox_v1, current, state_revision,
@@ -30115,6 +30165,25 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
 #endif
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+    g_activity_pilgrimage_cost_bindings12004 =
+        xar::ck3_12004::BindCoreImage(base, sha);
+    xar::bridge::ActivityCostSlot12EnvironmentV1 pilgrimage_cost_environment{};
+    pilgrimage_cost_environment.enabled =
+        g_activity_pilgrimage_cost_bindings12004.enabled;
+    pilgrimage_cost_environment.primary_thread_suspended = true;
+    pilgrimage_cost_environment.executable_sha256 = sha;
+    pilgrimage_cost_environment.module_base = base;
+    pilgrimage_cost_environment.read_memory = &ReadActivityPilgrimageCostMemoryV1;
+    pilgrimage_cost_environment.read_frame = &ReadActivityPilgrimageCostFrameV1;
+    if (xar::bridge::InstallActivityPilgrimageCostColdV1(
+            g_activity_pilgrimage_cost_lifecycle_v1, pilgrimage_cost_environment,
+            true, false) !=
+        xar::bridge::ActivityPilgrimageCostLifecycleStatusV1::installed)
+      return FALSE;
+    if (!xar::ck3_12002::ConfigurePilgrimageExecutionAdmission12004V1(
+            &IsActivityPilgrimageExecutionAdmittedV1, nullptr)) return FALSE;
+#endif
     // PrepareStartup is invoked while the managed primary thread is suspended.
     // Journal capture needs the owned roots, so no stack province callback is
     // retained after this startup call returns.
@@ -31024,6 +31093,10 @@ XarCk3BridgeStartWithPipe(const wchar_t *pipe_name) noexcept {
 
 extern "C" __declspec(dllexport) void WINAPI XarCk3BridgeStop() noexcept {
   SignalStop();
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+  xar::bridge::StopActivityPilgrimageCostQueriesV1(
+      g_activity_pilgrimage_cost_lifecycle_v1);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
   // Ordinary Stop cannot restore native code without a suspended-primary
   // proof. Detach future journal appends and retain the fixed route/backing.

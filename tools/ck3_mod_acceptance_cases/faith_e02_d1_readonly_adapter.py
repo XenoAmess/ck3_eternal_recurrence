@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import hashlib
+import importlib
+import sys
 import json
 from pathlib import Path
 
@@ -143,19 +145,46 @@ def prepare_case(context):
             "runtime_status": "NOT_RUN", "business_pass": False, "product_release_pass": False}
 
 
-def initial_scene_binding(frame, contract):
+def shared_opening_binding(context):
+    """Read the selected host source without assuming its subprocess import path."""
+    source = Path(context["shared_source_root"]).expanduser().resolve()
+    if (source / "ck3_autonomous_player/src/xar_autoplayer").is_dir():
+        source = source / "ck3_autonomous_player/src"
+    bridge = source / "xar_autoplayer/bridge"
+    expected = bridge / "ingame_decisions_open_contract.py"
+    identity = bridge / "version_identity.py"
+    require(expected.is_file() and identity.is_file(), "D1 selected shared binding source is absent")
+    previous_path = list(sys.path)
+    try:
+        sys.path.insert(0, str(source))
+        module = importlib.import_module("xar_autoplayer.bridge.ingame_decisions_open_contract")
+        require(Path(module.__file__).resolve() == expected.resolve(),
+                "D1 opening binding import escaped the selected shared source")
+        dependency = importlib.import_module("xar_autoplayer.bridge.version_identity")
+        require(Path(dependency.__file__).resolve() == identity.resolve(),
+                "D1 opening binding import escaped the selected shared source")
+        return module.opening_binding, {"opening_contract": pin(expected), "version_identity": pin(identity)}
+    finally:
+        sys.path[:] = previous_path
+
+
+def initial_scene_binding(frame, contract, *, binding_reader=None):
     """The paused scene date comes from this actual native frame, never the old date."""
-    from xar_autoplayer.bridge.ingame_decisions_open_contract import opening_binding
-    binding = opening_binding(frame)
+    if binding_reader is None:
+        from xar_autoplayer.bridge.ingame_decisions_open_contract import opening_binding
+        binding_reader = opening_binding
+    binding = binding_reader(frame)
     require(binding["played_character_id"] == contract["historical_identity_expectation"]["player_id"],
             "D1 actual native player differs from explicit expected actor")
     require(frame.get("active_event") is None, "D1 initial scene has a real event to resolve")
     return binding
 
 
-def validate_capture_frame(frame, binding):
-    from xar_autoplayer.bridge.ingame_decisions_open_contract import opening_binding
-    current = opening_binding(frame)
+def validate_capture_frame(frame, binding, *, binding_reader=None):
+    if binding_reader is None:
+        from xar_autoplayer.bridge.ingame_decisions_open_contract import opening_binding
+        binding_reader = opening_binding
+    current = binding_reader(frame)
     # UI observations may publish a new revision. Actor/date/PID/generation may not drift.
     for key in ("date_raw", "played_character_id", "game_pid", "connection_generation", "episode_run_id"):
         require(current[key] == binding[key], "D1 actual readonly scene changed " + key)
@@ -177,8 +206,10 @@ def run_case(context, client):
         "business_pass": False, "world_confirmation_allowed": False,
     }
     try:
-        binding = initial_scene_binding(before, c)
-    except (ValueError, KeyError) as error:
+        binding_reader, binding_sources = shared_opening_binding(context)
+        observed["opening_binding_sources"] = binding_sources
+        binding = initial_scene_binding(before, c, binding_reader=binding_reader)
+    except (ValueError, KeyError, ImportError) as error:
         observed["rejection_reason"] = str(error)
         write_once(Path(context["output"]) / "faith-e02-d1-first-native-identity.json", observed)
         raise
@@ -198,7 +229,7 @@ def run_case(context, client):
             and finish.get("reviewer") == client.operator_reviewer
             and finish.get("status") == "complete", "D1 readonly finish is foreign or incomplete")
     after = client.snapshot()
-    validate_capture_frame(after, binding)
+    validate_capture_frame(after, binding, binding_reader=binding_reader)
     client.checkpoint("faith-e02-d1-readonly-after", after)
     result = {
         "schema": "faith-e02-D1-readonly-holder-result-v1", "machine_id": c["machine_id"],

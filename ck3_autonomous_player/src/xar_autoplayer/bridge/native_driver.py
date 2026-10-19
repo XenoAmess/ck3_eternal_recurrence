@@ -1918,6 +1918,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_confucian_challenger_queries: bool = False,
         allow_private_actor_cached_succession_queries: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
+        allow_private_player_pilgrimage_execution: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
         allow_private_player_child_marriage_subject_query: bool = False,
@@ -2053,6 +2054,9 @@ class NativeHeadlessGameplayDriver:
         self.allow_private_activity_planner_diag_query = (
             allow_private_activity_planner_diag_query is True
         )
+        if type(allow_private_player_pilgrimage_execution) is not bool:
+            raise ValueError("pilgrimage execution permission must be an explicit boolean")
+        self.allow_private_player_pilgrimage_execution = allow_private_player_pilgrimage_execution
         self.allow_private_prisoner_ransom_action = (
             allow_private_prisoner_ransom_action is True
         )
@@ -4253,6 +4257,32 @@ class NativeHeadlessGameplayDriver:
         return query_activity_stage5_feast_full_cost_private_v1(
             self, expected_revision=expected_revision,
             timeout_seconds=self.command_timeout_seconds,
+        )
+
+    def query_player_pilgrimage_planner_private_v1(
+        self, *, expected_revision: int, operation: str = "read", province_id: int = 0,
+        read_stage: int = 0, timeout_seconds: float = 30.0,
+    ) -> dict[str, object]:
+        """Read the explicitly gated ordinary pilgrimage planner; never submit."""
+        from .player_pilgrimage_planner_private_transport import query_player_pilgrimage_planner_private_v1
+        return query_player_pilgrimage_planner_private_v1(
+            self, expected_revision=expected_revision, operation=operation,
+            province_id=province_id, read_stage=read_stage, timeout_seconds=timeout_seconds,
+        )
+
+    def submit_player_pilgrimage_planner_private_v1(
+        self, *, expected_revision: int, operation: str, province_id: int = 0,
+        policy_positive: bool = False, reserve_gold_raw: int = 0,
+        reserve_treasury_raw: int = 0, reserve_piety_raw: int = 0,
+        reserve_barter_goods_raw: int = 0, timeout_seconds: float = 30.0,
+    ) -> dict[str, object]:
+        """Send one gated original planner operation; ACK is not a world result."""
+        from .player_pilgrimage_planner_private_transport import submit_player_pilgrimage_planner_private_v1
+        return submit_player_pilgrimage_planner_private_v1(
+            self, expected_revision=expected_revision, operation=operation, province_id=province_id,
+            policy_positive=policy_positive, reserve_gold_raw=reserve_gold_raw,
+            reserve_treasury_raw=reserve_treasury_raw, reserve_piety_raw=reserve_piety_raw,
+            reserve_barter_goods_raw=reserve_barter_goods_raw, timeout_seconds=timeout_seconds,
         )
 
     def query_player_pilgrimage_activities_private_v1(

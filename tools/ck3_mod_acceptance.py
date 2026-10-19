@@ -38,6 +38,9 @@ CASE_RITE_CREATION_ACTION_MCP_TOOLS = frozenset({
     "ck3_query_player_rite_creation_action_context_v1", "ck3_execute_player_rite_creation_action_v1",
     "ck3_collect_player_rite_creation_action_result_v1",
 })
+CASE_PLAYER_PILGRIMAGE_EXECUTION_MCP_TOOLS = frozenset({
+    "ck3_query_player_pilgrimage_planner_v1", "ck3_submit_player_pilgrimage_planner_v1",
+})
 CASE_HOLY_SITE_CREATION_UI_MCP_TOOLS = frozenset({
     "ck3_open_holy_site_creation_window_v1", "ck3_select_holy_site_creation_type_v1",
     "ck3_select_holy_site_creation_barony_v1", "ck3_set_holy_site_creation_artifact_selection_v1",
@@ -173,6 +176,13 @@ class Selection:
             raise ValueError("Rite action opt-in must declare query, finite action and retained collect tools as required")
         if not self.opt_in_player_rite_creation_actions and CASE_RITE_CREATION_ACTION_MCP_TOOLS & set(self.case.get("required_mcp_tools", [])):
             raise ValueError("Rite action tools require their explicit case opt-in")
+        self.opt_in_player_pilgrimage_execution = self.case.get("opt_in_player_pilgrimage_execution", False)
+        if type(self.opt_in_player_pilgrimage_execution) is not bool:
+            raise ValueError("opt_in_player_pilgrimage_execution must be an explicit Boolean")
+        if self.opt_in_player_pilgrimage_execution and not CASE_PLAYER_PILGRIMAGE_EXECUTION_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Pilgrimage execution opt-in must declare both planner query and submit tools as required")
+        if not self.opt_in_player_pilgrimage_execution and CASE_PLAYER_PILGRIMAGE_EXECUTION_MCP_TOOLS & set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Pilgrimage planner tools require their explicit execution case opt-in")
         self.opt_in_holy_site_creation_ui = self.case.get("opt_in_holy_site_creation_ui", False)
         if type(self.opt_in_holy_site_creation_ui) is not bool:
             raise ValueError("opt_in_holy_site_creation_ui must be an explicit Boolean")
@@ -398,6 +408,8 @@ class Selection:
             self.saved = saved
         else:
             raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
+        if self.opt_in_player_pilgrimage_execution:
+            argv.append("--allow-private-player-pilgrimage-execution")
         if self.opt_in_player_rite_creation_actions:
             argv.append("--private-player-rite-creation-actions")
         if self.opt_in_holy_site_relic_actions:
@@ -418,6 +430,7 @@ class Selection:
                 "opt_in_read_only_mcp_tools": self.opt_in_read_only_mcp_tools,
                 "opt_in_holy_site_relic_actions": self.opt_in_holy_site_relic_actions,
                 "opt_in_player_rite_creation_actions": self.opt_in_player_rite_creation_actions,
+                "opt_in_player_pilgrimage_execution": self.opt_in_player_pilgrimage_execution,
                 "rite_confirmation_expected_state_writes": ["native-session/rite-creation-actions/*.claim.json",
                     "native-session/rite-creation-actions/*.native-result.json"] if self.opt_in_player_rite_creation_actions else [],
                 "opt_in_holy_site_creation_ui": self.opt_in_holy_site_creation_ui,
@@ -607,7 +620,8 @@ class Selection:
             'product_spec':self.product,'canonical_products_path':str(self.case_path(self.products['product_inventory'])),
             'case_inputs':case_inputs,'saved_campaign':self.prepared.get('startup',{}).get('saved_campaign',{}) if self.prepared else self.context.get('saved_campaign',{}),
             'runtime_manifest':pin(self.manifest_path),'readiness_policy':self.readiness_policy,
-            'opt_in_holy_site_creation_ui':self.opt_in_holy_site_creation_ui}
+            'opt_in_holy_site_creation_ui':self.opt_in_holy_site_creation_ui,
+            'opt_in_player_pilgrimage_execution':self.opt_in_player_pilgrimage_execution}
 
     def prepare(self, inputs_path, output):
         if self.context:

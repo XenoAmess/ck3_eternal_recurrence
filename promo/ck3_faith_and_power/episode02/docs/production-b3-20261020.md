@@ -52,3 +52,11 @@ D1母档用于只读筛选：先取得fresh玩家、日期、Faith／Rite／head
 B1、B2均已闭新写入。B3于 `20:35:35Z` 取得合计1,408MiB有限准入，其中native768MiB、sample640MiB，互不借用，至 `2026-10-20T00:35:35Z` 到期；没有自动容量预留部署声明。native闭环时约488MB，所有原构建／测试进程均结束；小型后继源码候选仍计入其子额。样片TTS阶段约3.43MB，小于48MiB阶段上限；渲染仍须用实际peak再准入。
 
 统一沿[存储策略](../../../../docs/storage-retention-policy.md)和版本化参数执行；当前DLL、原片和配音是活跃输入，七天内复核用途，派生prepared可按精确配方提前回收。未完成全片或业务的证据不能被标作永久保护，闭场与后继场次须另记实际容量和资源释放。
+
+## 21:25Z后继交付：样片已生成
+
+以上是原20:56截点。`machine_id: 4-8e1c2f1861`，截至 `2026-10-19T21:25:12Z`，[前四章实际MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)已完成，28,707,032 B，SHA `a865a8a9cc8900cb6918860fc51975d86566892a112ccabf6aa351bfb680448a`。容器565.888021秒、16,976视频帧跨度565.866667秒；2560×1440／30fps、CRF21／3M和192K音频保持。双语／中／英SRT和配套剧本入口见[二期README](../README.md)。严格全片AV解码退出0，真实PTS、字幕布局及五窗音乐检查通过，仍待人工正常速度听看片与签收。
+
+原a02在媒体和审计生成后，因prepared回收回执路径位于run外而在direct_register失败，实际退出1保留。后继通过公共preserve_artifact保全29份小JSON，再由现有direct_register登记63份已生成对象，实际退出0；MP4前后SHA相同，没有重编码。原a01的CRLF嵌入source检查拒绝也保留。未来生成回执改入 `run.parent/derived/receipts/prepared-retirement`，当前仓库58项integration测试通过，原失败不追认为初次成功。
+
+最终[样片闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/CLOSURE.actual.json)为4,564 B，SHA `6bbbbd494134ace4f5548719af367e7c026a439ec19afc0e09594250164278d5`。样片实际占用约80.2MB，640MiB未来媒体预留已闭、未来媒体写入0；小型文档余量单列。B2／B3重建派生对象的精确回收和B4真实诊断／正常关场见[后继拍摄记录](filming-b4-and-pilgrimage-execution-20261020.md)，不再把已回收对象描述为仍可读取的完整构建树。

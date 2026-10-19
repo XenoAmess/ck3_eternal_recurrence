@@ -1,5 +1,22 @@
 # 第二期执行进度
 
+## 10月20日06:15：新执行资格与七章声音已齐
+
+截至 `2026-10-19T22:15:00Z`，`machine_id: 4-8e1c2f1861`：B5新生产DLL完成19项原生与37项Python／MCP验证，普通朝圣执行和精神领袖两条公共拍摄case已入源码并完成定向回归。B7后36段固定声音完成，七章65段展示长度实测23:32.267；800—1600字符真实案例仍待补入，完整首版目标约27—30分钟。全片作者骨架已被现有消费者读取，但后36段视觉和24项必需结果槽仍待补，不能把固定配音齐备当作成片完成。
+
+详见[生产资格、声音与容量闭账](production-b5-and-voices-20261020.md)。B5可重建obj／lib及B1／B4重复恢复档和shadercache已按精确清单回收，旧原件现不可读，原始失败、母档、DLL、原片与源证据保留。B6新增1,408MiB有限准入，正在冻结新HEAD并准备下一场；本截点没有新增朝圣或领袖建制实机通过。
+
+## 10月20日前四章样片已生成
+
+前四章29段已经形成[9分25.888秒可审阅视频](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)，含实际画面、旁白、配乐和双语字幕。配套交付为[双语SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02.bilingual.srt)、[中文SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02.zh.srt)、[英文SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02.en.srt)与[配套剧本](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02-script.md)。视频为2560×1440／30fps，严格全片音视频解码通过；这不代替完整观看与听审，当前尚未记录用户验收。
+
+这次实测只覆盖前四章。七章连续初稿约23.69分钟、补入真实案例后约26.8—29.9分钟，仍是按一期节奏推算的作者预算；后三章尚未完成配音与成片。第五章还缺普通朝圣从出发、抵达、活动结束到归返的完整案例；第六章还缺合资格精神信仰领袖建制的两次报价、一次确认及独立受领后态，第七章据实际结果收束。前四章的装备、供奉取舍与人物净增益也仍需相应实证；现有样片用历史实机、只读创建预览和规则算例明确区分，不把讲解完成当作业务结果完成。
+
+B4另录得[27.9秒诊断原片](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b4-a01/captures/d1-existing-head-context-a01/raw-gameplay.mkv)：该起点已有信仰领袖，当前决议列表未提供创建行，没有取得建制报价或执行确认；当前无朝圣活动也不等于完成过旅程。它用于定位后续案例与通道缺口，不计作后三章已拍完成。研究、原生通道完善、后续案例拍摄与样片审阅继续并行。
+
+本节本地事实属于 `machine_id: 4-8e1c2f1861`。来源为[样片闭场回执](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/CLOSURE.actual.json)（2026-10-19T21:25:12.337983Z）、[样片完成记录](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/completed-review.json)与[B4诊断摘要](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b4-a01/media-review-a01/SUMMARY.actual.json)（2026-10-19T21:36:57.873055Z）。9分25.888秒取MP4容器实际时长565.888021秒，视频帧跨度另为565.866667秒；不能将570秒profile上限当成实际片长。
+
+
 ## 10月20日生产通路与样片配音
 
 截至 `2026-10-19T20:56:00Z`，`machine_id: 4-8e1c2f1861`：[B3生产DLL](production-b3-20261020.md)已实际构建通过，独立朝圣Read ON／Start OFF，9项原生执行与6项当前Python／MCP接缝通过，尚未部署游戏。前四章29段声音已完成，实际对齐9分25.87秒；画面、字幕与正式样片渲染继续并行。新增样片profile／精确派生回收／共享容量adapter通过58项离线integration测试，没有降低画质。完整朝圣的planner、完整费用和一次出发三包已外置并行，初估另需8—14代理工时及串行实机；只读身份通过不能代替完整旅程。原B1／B2失败与历史状态保持，下述更早截点不代表现在仍未配音。

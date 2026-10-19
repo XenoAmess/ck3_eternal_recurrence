@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/activity_typed_planner_v1.hpp"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -34,6 +36,8 @@ struct ActivityCostSlot12EnvironmentV1 {
   void *context = nullptr;
   ActivityCostReadMemoryV1 read_memory = nullptr;
   ActivityCostReadFrameV1 read_frame = nullptr;
+  // Opt-in only. nullptr retains the historical Feast-only observer.
+  const ActivityTypedPlannerContractV1 *typed_contract = nullptr;
 };
 
 struct ActivityCostSlot12CaptureV1 {
@@ -45,6 +49,8 @@ struct ActivityCostSlot12CaptureV1 {
   std::int32_t planning_stage = -1;
   std::uint64_t configuration_fingerprint = 0;
   std::array<std::int64_t, 10> raw_aggregate{};
+  bool typed_contract_bound = false;
+  ActivityTypedPlannerKindV1 typed_kind{};
 };
 
 enum class ActivityCostSlot12ReadStatusV1 {

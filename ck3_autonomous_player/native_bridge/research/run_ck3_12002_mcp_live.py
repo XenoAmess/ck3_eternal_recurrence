@@ -1083,6 +1083,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_war_cash_query = bool(getattr(args, "private_war_cash_queries", False))
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
     driver.allow_private_player_rite_creation_actions = args.private_player_rite_creation_actions
+    bind_player_pilgrimage_execution_permission(driver, getattr(args, "allow_private_player_pilgrimage_execution", False))
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_creation_context_query = "ck3_query_player_holy_site_creation_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_action_context_query = "ck3_query_player_holy_site_relic_action_context_v1" in driver.case_declared_read_only_mcp_tools
@@ -4186,6 +4187,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     if getattr(args, "normal_exit_managed_profile", None) is not None:
         child_args += ["--normal-exit-managed-profile", str(args.normal_exit_managed_profile),
                        "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
+    if getattr(args, "allow_private_player_pilgrimage_execution", False) is True:
+        child_args.append("--allow-private-player-pilgrimage-execution")
     if getattr(args, "private_player_rite_creation_actions", False):
         child_args.append("--private-player-rite-creation-actions")
     if getattr(args, "private_holy_site_relic_actions", False):
@@ -4483,6 +4486,13 @@ def bind_stock_grant_title_picker_permission(driver, enabled: bool) -> None:
     setattr(driver, PERMISSION, enabled)
 
 
+def bind_player_pilgrimage_execution_permission(driver, enabled: bool) -> None:
+    """Bind only the independent execution opt-in; identity reads do not grant it."""
+    if type(enabled) is not bool:
+        raise ValueError("pilgrimage execution admission requires an explicit boolean")
+    driver.allow_private_player_pilgrimage_execution = enabled
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--agent-source-root", type=Path, help="clean worktree root or package src directory")
@@ -4506,6 +4516,8 @@ def parser() -> argparse.ArgumentParser:
         help="explicit once-only creation callback; requires independent creation UI opt-in")
     result.add_argument("--private-player-holy-site-creation-ui", action="store_true",
         help="enable four exact4 creation UI selectors, independently of read-only tools")
+    result.add_argument("--allow-private-player-pilgrimage-execution", action="store_true",
+        help="explicit opt-in for ordinary private pilgrimage planner query and submit tools; default off")
     result.add_argument("--private-player-rite-creation-actions", action="store_true",
         help="explicit exact4 original Rite draft and final confirmation; default off")
     result.add_argument("--private-holy-site-relic-actions", action="store_true",

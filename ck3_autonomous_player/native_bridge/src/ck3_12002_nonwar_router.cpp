@@ -15,6 +15,7 @@
 #endif
 #include "ck3_12002_activity_feast_router.hpp"
 #include "ck3_12004_player_pilgrimage_activities_private_v1.hpp"
+#include "ck3_12004_player_pilgrimage_execution_private_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_faction_mailbox.hpp"
 #endif
@@ -372,6 +373,9 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1)
   out.pilgrimage_identities = &ExecutePlayerPilgrimageActivitiesPrivate12004V1;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+  out.pilgrimage_execution = &ExecutePlayerPilgrimageExecutionPrivate12004V1;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
   out.feast_start = &ExecuteActivityFeastStage5Private12002V1;
 #endif
@@ -401,6 +405,9 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
                              std::string_view step) noexcept {
   if (!adapter.enabled() ||
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+  if (IsPlayerPilgrimageExecutionPrivate12004V1(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
   if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step)) return true;
   if (ck3_12004::IsActorCachedSuccessionPrivateStepV1(step)) return true;
@@ -694,6 +701,11 @@ bool HandleNonwarPrivate12002(
         failure = "exact-build nonwar published revision unavailable";
         return false;
       }
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+      if (IsPlayerPilgrimageExecutionPrivate12004V1(step))
+        return HandlePlayerPilgrimageExecutionPrivate12004V1(native, mailbox, published,
+            revision, step, payload, request_id, cost, serialized, failure);
+#endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1)
       if (ck3_12004::IsRealmLawPrivateActionStep12004(step))
         return ck3_12004::HandleRealmLawPrivate12004(

@@ -1,0 +1,298 @@
+﻿"""Portable authored-state tests; no native output, process or game is created."""
+from __future__ import annotations
+
+from copy import deepcopy
+import importlib.util
+from pathlib import Path
+from types import SimpleNamespace
+import unittest
+
+
+def module(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    result = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(result)
+    return result
+
+
+TOOLS = Path(__file__).resolve().parent
+ADAPTER = module("_ordinary_adapter_under_test", TOOLS / "ck3_mod_acceptance_cases/faith_e02_pilgrimage_adapter.py")
+QUEUE = module("_ordinary_queue_under_test", TOOLS / "faith_e02_pilgrimage_queue.py")
+
+
+def frame():
+    return {"revision": 9, "native_revision": 7, "date_raw": 53144328, "paused": True, "map_ready": True,
+        "source": "injected-dll-named-pipe", "backend_id": "native-headless", "episode_projection": "native_campaign",
+        "played_character": {"character_id": 31254, "alive": True, "source": "native"},
+        "played_character_gold": 243, "active_event": None, "pending_character_interaction": None,
+        "diagnostics": {"bridge_pid": 123, "connection_generation": 2, "hello": {"pid": 123,
+            "connection_generation": 2, "ck3_build_match": True,
+            "game_adapter_id": "ck3-1.20.0.4-msvc-x64", "expected_ck3_sha256": ADAPTER.EXE_SHA256}}}
+
+
+def offers():
+    common = {"played_character_id": 31254, "date_raw": 53144328, "capture_epoch": 7}
+    candidates, routes = [], []
+    for province, arrival, cost in ((100, 53144712, 11000000), (200, 53144520, 7000000)):
+        candidates.append({"province_id": province, "can_select": True, "location_predicate": {"value": True},
+            "same_province_cap_allows": True, "total_cap_allows": True,
+            "default_activity_quote": {"affordable": True, "journey_cost_included": False,
+                                       "activity_gold_cost_raw": cost}})
+        routes.append({**common, "candidate_province_id": province, "available": True,
+            "route_valid": True, "outbound_arrival_date_raw": arrival})
+    return {"player_pilgrimage_activity_type_terms": {**common, "available": True, "can_plan": True},
+        "player_pilgrimage_headless_activity_terms": {**common, "available": True, "faith_id": 13, "rite_id": 0,
+            "single_location": True, "configured_phase_count": 1, "journey_cost_included": False,
+            "candidates": candidates}, "player_pilgrimage_candidate_routes": routes}
+
+
+def context():
+    return {"case": ADAPTER.CASE, "product": "faith-engine", "run_id": "authored-fixture-only",
+        "case_contract": {"schema": "faith-engine-e02-d1-ordinary-pilgrimage-case-v1",
+            "case": ADAPTER.CASE, "product": "faith-engine", "machine_id": "fixture-machine",
+            "profile": {"enabled_mods": [], "product_files": []}, "expected_actor_character_id": 31254,
+            "policy": {"reserve_gold_raw": 10000000, "max_journey_days": 240, "max_day_requests": 480,
+                "max_public_requests": 480,
+                "max_events": 128, "one_day_timeout": 60, "quit_reserve_seconds": 120}},
+        "case_spec": {"opt_in_player_pilgrimage_execution": True,
+            "required_mcp_tools": [ADAPTER.QUERY, ADAPTER.SUBMIT],
+            "opt_in_read_only_mcp_tools": [ADAPTER.RELIGION, ADAPTER.IDENTITIES]}}
+
+
+class Client:
+    def __init__(self):
+        self.calls, self.evidence = [], {}
+        self.capture_points = []
+        self.operator_reviewer = "/root-authored-fixture"
+        self.started = False
+        self.stage = 0
+        self.start_timeout = False
+        self.start_timeout_effective = False
+        self.unknown_positive = False
+        self.can_start = True
+        self.can_select = True
+        self.existing_identity = False
+        self.post_pending = False
+        self.hosted_missing_after_start = False
+
+    def snapshot(self, **kwargs):
+        return frame()
+
+    def guard(self, reserve):
+        assert reserve >= 90
+
+    def checkpoint(self, name, value):
+        if name in self.evidence:
+            raise AssertionError("Duplicate evidence: " + name)
+        self.evidence[name] = deepcopy(value)
+
+    def root_checkpoint(self, name, request, reserve):
+        assert reserve == 120
+        self.capture_points.append((name, deepcopy(request)))
+        if "before-planner" in name:
+            assert not any(row["tool"] == ADAPTER.SUBMIT for row in self.calls)
+        if "before-start" in name:
+            assert not any(row["args"].get("operation") == "start" for row in self.calls)
+        return {"run_id": request["run_id"], "reviewer": self.operator_reviewer, "status": "complete"}
+
+    def identity(self):
+        return {"activity_id": 0x12340001, "host_character_id": 31254, "type_key": "activity_pilgrimage",
+            "terminal_flags_observed": True, "native_completed": False, "native_invalidated": False,
+            "native_completion_stamp_observed": False, "native_completion_stamp_raw": None}
+
+    def execute_plan(self, steps, name):
+        step = steps[0]
+        self.calls.append(deepcopy(step))
+        tool, args = step["tool"], step["args"]
+        if tool == ADAPTER.RELIGION:
+            value = offers()
+        elif tool == ADAPTER.IDENTITIES:
+            rows = [self.identity()] if (self.started and not self.hosted_missing_after_start) or self.existing_identity else []
+            value = {"activity_count": len(rows), "activities": rows}
+        else:
+            op = args["operation"]
+            if op == "start" and self.start_timeout:
+                if self.start_timeout_effective:
+                    self.started = True
+                raise TimeoutError("authored lost ACK")
+            if op == "open":
+                self.stage = 1
+            elif op == "confirm":
+                self.stage = 2
+            elif op == "select":
+                self.stage = 5
+            elif op == "start":
+                self.started = True
+            value = {"operation_status": "observed", "needs_recovery": False, "ledger_state": "idle",
+                "invoked": tool == ADAPTER.SUBMIT, "planner": {"stage": self.stage, "selected_pious": True,
+                    "destination_province_id": 200 if self.stage == 5 else 0, "can_select": self.can_select}}
+            if op == "quote":
+                value["quote"] = {"observed": True, "planning_stage": 5, "final_can_start_observed": True,
+                    "final_can_start": self.can_start, "unknown_positive_configured_cost": self.unknown_positive,
+                    "selected_option": {"key": "pilgrimage_type_pious"}}
+            elif op == "post":
+                pending = self.post_pending or not self.started
+                value.update(operation_status="post_pending" if pending else "identity_observed",
+                             new_identity=None if pending else self.identity())
+        return [{"id": name, "ok": True, "result": value}]
+
+
+class WorkflowTests(unittest.TestCase):
+    def setUp(self):
+        self.original_sibling = ADAPTER.sibling
+        ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else
+            SimpleNamespace(run_journey=lambda *args: {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False}))
+        self.addCleanup(setattr, ADAPTER, "sibling", self.original_sibling)
+
+    def starts(self, client):
+        return [s for s in client.calls if s["tool"] == ADAPTER.SUBMIT and s["args"]["operation"] == "start"]
+
+    def test_successful_finite_plan_has_single_start_intent_independent_identity_and_journey(self):
+        client = Client()
+        value = ADAPTER.run_case(context(), client)
+        self.assertEqual(value["status"], "AUTHORED_JOURNEY_RESULT")
+        self.assertTrue(value["hosted_identity_observed"])
+        self.assertEqual(len(self.starts(client)), 1)
+        self.assertEqual(self.starts(client)[0]["args"]["reserve_gold_raw"], 10000000)
+        self.assertIn("ordinary-pilgrimage-start-once-intent", client.evidence)
+        self.assertFalse(value["payment_total_proven"])
+        self.assertFalse(value["business_pass"])
+        self.assertEqual([row[0] for row in client.capture_points], [
+            "ordinary-pilgrimage-record-before-planner", "ordinary-pilgrimage-record-quote-before-start",
+            "ordinary-pilgrimage-start-observed-take"])
+
+    def test_start_timeout_never_resends_or_advances_journey(self):
+        client = Client(); client.start_timeout = True
+        value = ADAPTER.run_case(context(), client)
+        self.assertEqual(len(self.starts(client)), 1)
+        self.assertTrue(value["needs_recovery"])
+        self.assertEqual(value["status"], "start_outcome_unknown")
+        self.assertIsNone(value["journey"])
+
+    def test_lost_start_ack_after_effect_continues_readonly_post_and_journey_without_retry(self):
+        client = Client(); client.start_timeout = True; client.start_timeout_effective = True
+        value = ADAPTER.run_case(context(), client)
+        self.assertEqual(len(self.starts(client)), 1)
+        self.assertTrue(value["start_acknowledgement_missing"])
+        self.assertTrue(value["hosted_identity_observed"])
+        self.assertTrue(value["native_ledger_state_reconciled"])
+        self.assertEqual(value["status"], "AUTHORED_JOURNEY_RESULT")
+        self.assertFalse(value["needs_recovery"])
+        self.assertIn("ordinary-pilgrimage-post-start-wallet-observation", client.evidence)
+
+    def test_root_capture_response_is_bound_to_run_reviewer_and_complete_status(self):
+        for field, value in (("run_id", "foreign"), ("reviewer", "foreign"), ("status", "pending")):
+            client = Client(); ctx = context()
+            response = {"run_id": ctx["run_id"], "reviewer": client.operator_reviewer, "status": "complete"}
+            response[field] = value
+            client.root_checkpoint = lambda *args, **kwargs: response
+            with self.assertRaisesRegex(ValueError, "foreign or incomplete"):
+                ADAPTER.capture_checkpoint(ctx, client, "test", {})
+
+    def test_initial_native_interruption_is_drained_before_planner_actions(self):
+        client = Client()
+        calls = []
+        snapshot_count = [0]
+        def snapshot(**kwargs):
+            snapshot_count[0] += 1
+            current = frame()
+            if snapshot_count[0] == 1:
+                current["active_event"] = {"instance_id": 99}
+            return current
+        def drain(*args):
+            calls.append("drain")
+            self.assertEqual(client.calls, [])
+            return {"status": "INTERRUPTIONS_DRAINED", "last_frame": frame()}
+        client.snapshot = snapshot
+        ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else SimpleNamespace(
+            drain_interruptions=drain,
+            run_journey=lambda *args: {"status": "AUTHORED_JOURNEY_RESULT"}))
+        result = ADAPTER.run_case(context(), client)
+        self.assertEqual(calls, ["drain"])
+        self.assertEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+        self.assertEqual(len(self.starts(client)), 1)
+
+    def test_unknown_positive_resource_prevents_start(self):
+        client = Client(); client.unknown_positive = True
+        value = ADAPTER.run_case(context(), client)
+        self.assertEqual(self.starts(client), [])
+        self.assertFalse(value["start_intent_written"])
+
+    def test_final_canstart_false_prevents_start(self):
+        client = Client(); client.can_start = False
+        ADAPTER.run_case(context(), client)
+        self.assertEqual(self.starts(client), [])
+
+    def test_current_native_canselect_false_prevents_selection_and_start(self):
+        client = Client(); client.can_select = False
+        ADAPTER.run_case(context(), client)
+        self.assertEqual(self.starts(client), [])
+        self.assertFalse(any(s["args"].get("operation") == "select" for s in client.calls))
+
+    def test_existing_hosted_identity_prevents_planner_actions(self):
+        client = Client(); client.existing_identity = True
+        ADAPTER.run_case(context(), client)
+        self.assertEqual(len(client.calls), 1)
+
+    def test_pending_post_is_bounded_and_never_advances_journey(self):
+        client = Client(); client.post_pending = True; client.hosted_missing_after_start = True
+        value = ADAPTER.run_case(context(), client)
+        self.assertEqual(len(self.starts(client)), 1)
+        self.assertEqual(sum(s["args"].get("operation") == "post" for s in client.calls), 4)
+        self.assertTrue(value["needs_recovery"])
+        self.assertIsNone(value["journey"])
+
+    def test_fresh_candidates_are_ranked_without_treating_activity_quote_as_journey_total(self):
+        result = ADAPTER.choose_destination(offers(), 31254, 53144328)
+        self.assertEqual(result["province_id"], 200)
+        self.assertFalse(result["journey_cost_known"])
+        self.assertFalse(result["can_start_inferred"])
+
+    def test_stale_or_wrong_rite_offers_are_rejected(self):
+        for field, value in (("date_raw", 1), ("rite_id", 5)):
+            data = offers(); data["player_pilgrimage_headless_activity_terms"][field] = value
+            with self.assertRaises(ValueError):
+                ADAPTER.choose_destination(data, 31254, 53144328)
+
+    def test_same_actor_with_changed_process_is_rejected(self):
+        c = context(); before = frame(); after = frame()
+        binding = ADAPTER.frame_binding(before, c, 31254)
+        after["diagnostics"]["hello"]["pid"] = 999
+        with self.assertRaises(ValueError):
+            ADAPTER.frame_binding(after, c, 31254)
+        self.assertEqual(binding["bridge_pid"], 123)
+
+    def test_queue_rejects_raw_actions_duplicate_start_and_unlisted_arguments(self):
+        step = {"id": "start", "tool": ADAPTER.SUBMIT, "args": {
+            "operation": "start", "province_id": 200, "policy_positive": True},
+            "fresh_revision": True, "continue_on_error": True}
+        self.assertEqual(QUEUE.validate({"steps": [step]})["start_requests"], 1)
+        with self.assertRaises(ValueError):
+            QUEUE.validate({"steps": [step, {**step, "id": "start2"}]})
+        with self.assertRaises(ValueError):
+            QUEUE.validate({"steps": [{**step, "args": {**step["args"], "raw_pointer": 1}}]})
+        with self.assertRaises(ValueError):
+            QUEUE.validate({"steps": [{**step, "kind": "advance_day"}]})
+
+    def test_public_request_budget_counts_snapshots_and_all_plan_tools(self):
+        client = Client()
+        budget = ADAPTER.BudgetedClient(client, 3)
+        budget.snapshot()
+        step = {"id": "one", "tool": ADAPTER.IDENTITIES, "args": {}}
+        budget.execute_plan([step, {**step, "id": "two"}], "two-controls")
+        self.assertEqual(budget.public_requests_used, 3)
+        with self.assertRaisesRegex(ValueError, "public request cap"):
+            budget.snapshot()
+        self.assertEqual(budget.public_requests_used, 3)
+
+    def test_low_total_public_request_cap_stops_before_start_with_original_evidence(self):
+        client = Client(); ctx = context()
+        ctx["case_contract"]["policy"]["max_public_requests"] = 5
+        value = ADAPTER.run_case(ctx, client)
+        self.assertEqual(self.starts(client), [])
+        self.assertEqual(value["public_requests_used"], 5)
+        self.assertIn("public request cap", value["failure"])
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

@@ -10084,3 +10084,6 @@ include(cmake/holy_site_relic_typed_ui12004.cmake)
 
 # Optional header-only companion; inherits production compile properties.
 include(cmake/native_layout_report_v1.cmake)
+
+# Independent, default-OFF ordinary pilgrimage execution.
+include(cmake/pilgrimage_execution_private_v1.cmake)

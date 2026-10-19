@@ -1,4 +1,7 @@
 #include "xar_bridge/ck3_12002_feast_planner_native.hpp"
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+#include "xar_bridge/activity_pilgrimage_planner_native_v1.hpp"
+#endif
 #include "xar_bridge/ck3_12002_province.hpp"
 
 #include <windows.h>
@@ -440,5 +443,143 @@ bridge::ActivityStage2ConfirmEnvironmentV1 BuildActivityPlanner12002ConfirmEnvir
   return {BuildActivityPlanner12002OptionEnvironmentV1(context),
           &SetStageFive, &ReadGoldRaw};
 }
+
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
+namespace {
+
+bool CanPlanPilgrimagePious(void *opaque, std::uintptr_t type,
+                           bool &output) noexcept {
+  auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
+  const auto diagnostic = BuildActivityPlanner12002DiagEnvironmentV1(context);
+  bridge::ActivityPlannerDiagFrameV1 frame{};
+  bridge::ActivityPlannerIdentityV1 identity{};
+  if (!IsOwner(context) ||
+      !bridge::IsActivity12004BuildV1(context.executable_sha256) ||
+      !ReadFrame(opaque, frame) ||
+      !bridge::ResolveActivityPlannerIdentityV1(diagnostic, frame, identity) ||
+      !bridge::MatchesActivityTypedPlannerTypeV1(
+          diagnostic, type,
+          bridge::Activity12004RvaV1(context.executable_sha256, 0x48BFE50),
+          bridge::kOrdinaryPilgrimagePiousContractV1))
+    return false;
+  // Same producer/RVA as current .4 religion addon pilgrimage.can_plan.
+  // This is not final CanStart and does not grant its qualification.
+  const auto can_plan = reinterpret_cast<bool (*)(const void *, void *)>(
+      context.module_base + 0x9DC990);
+  __try {
+    output = can_plan(reinterpret_cast<const void *>(type),
+                      reinterpret_cast<void *>(identity.actor));
+    return true;
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    return false;
+  }
+}
+
+} // namespace
+
+bridge::ActivityPilgrimagePlannerOpenEnvironmentV1
+BuildActivityPlanner12004PilgrimageOpenEnvironmentV1(
+    ActivityPlanner12002NativeV1 &context) noexcept {
+  return {BuildActivityPlanner12002DiagEnvironmentV1(context),
+          &DispatchFeast, &CanPlanPilgrimagePious};
+}
+
+bridge::ActivityPilgrimageStage1OptionEnvironmentV1
+BuildActivityPlanner12004PilgrimageOptionEnvironmentV1(
+    ActivityPlanner12002NativeV1 &context) noexcept {
+  return {BuildActivityPlanner12002DiagEnvironmentV1(context), &ResolveKey,
+          &SelectedOption, &OptionPredicate, &CanProgress,
+          &SetStageTwo, &FindAutoRow, &ProgressNonzero};
+}
+
+bool ReadActivityPlanner12004PilgrimageSelectedOptionV1(
+    void *opaque, const bridge::ActivityPlannerDiagFrameV1 &expected,
+    std::int32_t required_stage,
+    bridge::ActivityTypedPlannerSelectionV1 &output) noexcept {
+  output = {};
+  if (opaque == nullptr) return false;
+  auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
+  if (!IsOwner(context) ||
+      !bridge::IsActivity12004BuildV1(context.executable_sha256)) return false;
+  return bridge::ReadActivityPilgrimageSelectedOptionV1(
+      BuildActivityPlanner12004PilgrimageOptionEnvironmentV1(context),
+      expected, required_stage, output);
+}
+
+bool ReadActivityPlanner12004PilgrimageDestinationStateV1(
+    void *opaque, bridge::ActivityPilgrimageDestinationStateV1 &output) noexcept {
+  output = {};
+  if (opaque == nullptr) return false;
+  auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
+  if (!IsOwner(context) ||
+      !bridge::IsActivity12004BuildV1(context.executable_sha256) ||
+      !ReadFrame(opaque, output.frame)) return false;
+  const auto diagnostic = BuildActivityPlanner12002DiagEnvironmentV1(context);
+  bridge::ActivityPlannerIdentityV1 first{}, second{};
+  game::Snapshot snapshot{};
+  if (!bridge::ResolveActivityPlannerIdentityV1(diagnostic, output.frame, first) ||
+      first.stage < 2 || first.stage > 5 ||
+      !ReadSnapshot(context, snapshot) ||
+      snapshot.date_raw != output.frame.date_raw ||
+      snapshot.played_character_id != output.frame.actor_character_id ||
+      !bridge::MatchesActivityTypedPlannerTypeV1(
+          diagnostic, first.activity_type,
+          bridge::Activity12004RvaV1(context.executable_sha256, 0x48BFE50),
+          bridge::kOrdinaryPilgrimagePiousContractV1)) return false;
+  output.planner = first.planner;
+  output.activity_type = first.activity_type;
+  output.stage = first.stage;
+  output.gold_raw = snapshot.played_character_gold.raw;
+  if (!ReadAt(context, output.planner, 0x1AEC, output.previous_stage) ||
+      !ReadAt(context, output.planner, 0x15B0, output.configuration_rows) ||
+      output.configuration_rows == 0 ||
+      !ReadAt(context, output.planner, 0x15BC, output.configuration_row_count) ||
+      output.configuration_row_count !=
+          bridge::kOrdinaryPilgrimagePiousContractV1.predefined_phase_count ||
+      !ReadAt(context, output.planner, 0x1AF8, output.active_row) ||
+      !ReadAt(context, output.activity_type, 0x3BED, output.single_location_flag) ||
+      output.single_location_flag != 1 ||
+      !ReadAt(context, output.configuration_rows, 0, output.phase) ||
+      output.phase == 0 ||
+      !ReadAt(context, output.configuration_rows, 8, output.province_id) ||
+      !ReadAt(context, output.phase, 0x1160, output.phase_kind) ||
+      !ReadAt(context, output.phase, 0x69C, output.phase_auto_raw) ||
+      !ReadActivityPlanner12004PilgrimageSelectedOptionV1(
+          opaque, output.frame, output.stage, output.selection)) return false;
+  // Bracket all observed fields with identical native planner and frame.
+  bridge::ActivityPlannerDiagFrameV1 final_frame{};
+  game::Snapshot final_snapshot{};
+  std::uintptr_t final_rows = 0, final_phase = 0, final_active = 0;
+  std::int32_t final_count = 0, final_previous = -1;
+  std::uint32_t final_province = 0;
+  if (!bridge::ResolveActivityPlannerIdentityV1(diagnostic, output.frame, second) ||
+      first.actor != second.actor || first.handler != second.handler ||
+      first.planner != second.planner || first.activity_type != second.activity_type ||
+      first.stage != second.stage ||
+      !ReadAt(context, output.planner, 0x15B0, final_rows) ||
+      final_rows != output.configuration_rows ||
+      !ReadAt(context, output.planner, 0x15BC, final_count) ||
+      final_count != output.configuration_row_count ||
+      !ReadAt(context, output.planner, 0x1AEC, final_previous) ||
+      final_previous != output.previous_stage ||
+      !ReadAt(context, output.planner, 0x1AF8, final_active) ||
+      final_active != output.active_row ||
+      !ReadAt(context, final_rows, 0, final_phase) || final_phase != output.phase ||
+      !ReadAt(context, final_rows, 8, final_province) ||
+      final_province != output.province_id ||
+      !ReadSnapshot(context, final_snapshot) || final_snapshot != snapshot ||
+      !ReadFrame(opaque, final_frame) || final_frame != output.frame) return false;
+  return true;
+}
+
+bridge::ActivityPilgrimageDestinationEnvironmentV1
+BuildActivityPlanner12004PilgrimageDestinationEnvironmentV1(
+    ActivityPlanner12002NativeV1 &context) noexcept {
+  return {BuildActivityPlanner12002DiagEnvironmentV1(context),
+          &ReadActivityPlanner12004PilgrimageDestinationStateV1,
+          &ResolveProvince, &CanSelect, &SelectOnce};
+}
+
+#endif
 
 } // namespace xar::ck3_12002
