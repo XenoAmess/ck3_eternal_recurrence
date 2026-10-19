@@ -86,9 +86,13 @@ class SuccessorUIAppOwner:
                     or previous.get("source_epoch") != self.epoch)):
                 from .. import successor_ui_checkpoint_lineage_v1 as lineage
                 anchor, _ = journal._read(self.root / lineage.COMPLETION_FILE)
-                cold = lineage.observe_native_cold_checkpoint_v1(self, snapshot=snapshot,
-                    expected_executable=game["executable"])
-                plan = lineage.plan_resolved_checkpoint_retirement_v1(self, anchor=anchor, cold=cold)
+                if previous.get("game_identity") == game:
+                    plan = lineage.plan_resolved_same_game_source_retirement_v1(self,
+                        anchor=anchor, snapshot=snapshot, expected_executable=game["executable"])
+                else:
+                    cold = lineage.observe_native_cold_checkpoint_v1(self, snapshot=snapshot,
+                        expected_executable=game["executable"])
+                    plan = lineage.plan_resolved_checkpoint_retirement_v1(self, anchor=anchor, cold=cold)
                 self._completed_retirement_v1 = lineage.retire_completed_checkpoint_v1(self, plan)
                 self.ledger, self.transition = None, None
         if self.ledger is None:

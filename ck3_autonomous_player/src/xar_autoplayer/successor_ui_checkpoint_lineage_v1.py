@@ -354,6 +354,76 @@ def plan_resolved_checkpoint_retirement_v1(owner, *, anchor, cold):
         "successor-ui-resolved-" + pin + ".json", _json(evidence), _SEAL)
 
 
+def plan_resolved_same_game_source_retirement_v1(owner, *, anchor, snapshot, expected_executable):
+    """Archive a completed old-source record during a real same-Game SDK update.
+
+    This is not a cold projection or a pending-state rebind. The original SAVE
+    anchor and complete Continue/Close proof remain under their original epoch;
+    the existing exact-byte archive consumer must finish before a new ledger is
+    created. No Game observation or command is reconstructed or replayed here.
+    """
+    from .bridge.native_driver import NativeHeadlessGameplayDriver
+    from .bridge.successor_ui_app_owner_v1 import SuccessorUIAppOwner
+    driver = owner.driver
+    if (not isinstance(owner, SuccessorUIAppOwner)
+            or not isinstance(driver, NativeHeadlessGameplayDriver)
+            or owner.service.driver is not driver
+            or getattr(owner.service, "_successor_ui_app_owner_v1", None) is not owner):
+        raise TypeError("same-Game source retirement requires the canonical App and actual native driver")
+    game = journal.observe_game_identity_v1(snapshot, expected_executable)
+    if (not isinstance(anchor, Mapping) or anchor.get("schema") != SCHEMA
+            or anchor.get("action_replay_authorized") is not False
+            or anchor.get("machine_id") != owner.machine
+            or anchor.get("game_identity") != game
+            or anchor.get("source_epoch") == owner.epoch):
+        raise ValueError("same-Game source retirement lacks its original different-source SAVE anchor")
+    ledger = journal.SuccessorUIPendingLedger(owner.root, machine_id=owner.machine,
+        source_epoch=anchor["source_epoch"], game_identity=game,
+        verify_transition=owner.validators._verify_natural_succession_transition,
+        close_validator=owner.validators._ordinary_succession_close_issue,
+        timeline_classifier=owner.validators._ordinary_succession_timeline_state)
+    value, pin, intent_pin = _completion(ledger)
+    if (pin != anchor.get("ledger_sha256") or intent_pin != anchor.get("close_intent_sha256")
+            or value["transition_sha256"] != anchor.get("transition_sha256")):
+        raise ValueError("same-Game source retirement differs from its original resolved proof")
+    receipt = anchor.get("driver_state_replace_receipt", {})
+    result = {"step": "save-checkpoint", "accepted": True,
+        "materialization": {"available": True}, "checkpoint": anchor.get("checkpoint"),
+        "driver_state_replace_receipt": receipt}
+    if capture_completed_checkpoint_v1(ledger, save_result=result, snapshot=anchor["save_observation"]) != anchor:
+        raise ValueError("same-Game source retirement differs from its actual original SAVE capture")
+    current = journal.frame(snapshot)
+    goal = normalize_ordinary_campaign_goal_v1(snapshot.get("campaign_goal"))
+    checkpoint = anchor["checkpoint"]
+    if (goal != anchor["campaign_goal"]
+            or current["actor_character_id"] != checkpoint["episode_character_id"]
+            or current["episode_run_id"] != checkpoint["episode_run_id"]
+            or current["native_revision"] < value["resolved_frame"]["native_revision"]
+            or current["date_raw"] < checkpoint["date_raw"]
+            or snapshot.get("active_event") is not None
+            or snapshot.get("pending_character_interaction") is not None):
+        raise ValueError("same-Game source retirement changed its retained successor/goal/frame")
+    with driver._driver_state_lock:
+        if (driver._driver_state_restored is not True or driver._driver_state_restore_kind != "same_pid_hot"
+                or driver._episode_binding_state != "active_resumed"
+                or driver._driver_state_error is not None or driver._cold_candidate_rejection is not None
+                or driver._pending_cold_candidate is not None or driver._last_checkpoint != checkpoint
+                or driver._session_bridge_pid != game["pid"]
+                or driver._episode_character_id != current["actor_character_id"]
+                or driver._episode_run_id != current["episode_run_id"]
+                or normalize_ordinary_campaign_goal_v1(driver._campaign_goal) != goal
+                or driver._succession_lifecycle != checkpoint["succession_lifecycle"]
+                or driver.pipe_name != receipt["attempt_binding"]["pipe_name"]):
+            raise ValueError("same-Game source retirement lacks its actual warm driver/SAVE binding")
+    evidence = {"kind": "same_game_resolved_source_update", "machine_id": owner.machine,
+        "game_identity": game, "old_source_epoch": anchor["source_epoch"], "new_source_epoch": owner.epoch,
+        "campaign_goal": goal, "original_checkpoint": checkpoint, "current_frame": current,
+        "action_replay_authorized": False, "canonical_ledger_changed": False,
+        "cold_game_credit": False}
+    return ResolvedCheckpointRetirementV1(owner, ledger.path, pin,
+        "successor-ui-resolved-" + pin + ".json", _json(evidence), _SEAL)
+
+
 def write_completed_checkpoint_v1(owner, *, ledger, save_result, snapshot):
     """Persist the completed proof only after the original SAVE actually returns."""
     body = capture_completed_checkpoint_v1(ledger, save_result=save_result, snapshot=snapshot)

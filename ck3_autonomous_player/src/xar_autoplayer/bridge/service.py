@@ -1967,13 +1967,16 @@ class GameplayBridgeService:
         use_internal_view = callable(internal_snapshot) and callable(
             internal_planning_view
         )
-        snapshot = (
-            internal_snapshot() if use_internal_view else self.snapshot()
+        snapshot = _timed_planning_call_v1(
+            "service.planner_snapshot_prepare",
+            internal_snapshot if use_internal_view else self.snapshot,
         )
         capabilities = self.capabilities()
         available_steps = action_step_set(capabilities)
         deferred_release_root: list[bool] = []
-        snapshot = self._prepare_succession_transition_v1(
+        snapshot = _timed_planning_call_v1(
+            "service.planner_succession_preflight",
+            self._prepare_succession_transition_v1,
             snapshot, available_steps, deferred_release_root=deferred_release_root,
         )
         unavailable = snapshot.get("_succession_preflight_unavailable_v1")
@@ -2541,7 +2544,9 @@ class GameplayBridgeService:
             return planned
 
         if use_internal_view:
-            planned = internal_planning_view(snapshot, plan_from_view)
+            planned = _timed_planning_call_v1(
+                "service.planner_internal_view", internal_planning_view,
+                snapshot, plan_from_view)
             planned.update(private_history_views)
         else:
             public_native_history = snapshot.get("native_command_history")
@@ -2759,18 +2764,16 @@ class GameplayBridgeService:
             if isinstance(before_lifestyle, dict) else None
         )
         if lifestyle_trial:
-            planned = (
-                self._plan_initial_lifestyle_focus_first_v1(
-                    planned, available_steps
-                )
+            planned = _timed_planning_call_v1(
+                "service.planner_lifestyle_consumer",
+                self._plan_initial_lifestyle_focus_first_v1
                 if getattr(
                     self.driver,
                     "require_initial_lifestyle_focus_before_date_advance",
                     False,
                 ) is True
-                else self._plan_private_lifestyle_trial_v1(
-                    planned, available_steps
-                )
+                else self._plan_private_lifestyle_trial_v1,
+                planned, available_steps,
             )
         plan = planned.get("plan")
         prewar_arbitration = (
@@ -4846,8 +4849,9 @@ class GameplayBridgeService:
         # Presentation is best effort and starts only after the business turn
         # has completed. Its later receipt never attests this gameplay frame.
         try:
+            from .auto_camera_current_payload_v1 import current_camera_payload_v1
             camera_schedule = self._auto_camera_worker.schedule(
-                planned.get("_auto_camera_hotspot_input")
+                current_camera_payload_v1(self, planned, outcome)
             )
         except Exception as error:
             # The gameplay command has already run. Even a scheduler bug must
