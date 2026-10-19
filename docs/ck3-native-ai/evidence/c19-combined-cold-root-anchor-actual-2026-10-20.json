@@ -1,0 +1,26 @@
+{
+  "schema": "xar.c19-combined-cold-root-anchor-actual/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:28:42.334101+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine Root8f725e",
+  "root_release": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-combined-cold-root-release-2026-10-20.json",
+    "bytes": 2025,
+    "sha256": "40ac2032ef8356788f3e614f275f4ea47e020e1a6f3f4d71b45ce92f6f35f44e"
+  },
+  "business_source_commit": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+  "business_source_ref": "refs/heads/campaign/robert-v20261019-c19-combined-cold-01",
+  "parent": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+  "full_rows_sha256": "a91c8952d863eafbf433b1aa4fedec5ad42f8edfe0da4f14a3b29de972649b10",
+  "source_files": 1454,
+  "source_bytes": 59176029,
+  "Git_conservative_cluster_charge_bytes": 487424,
+  "Git_one_temp_plus_retained_upper_bytes": 495616,
+  "loose_objects_conservatively_charged": 31,
+  "commands_count": 32,
+  "master_index_checkout_changed": false,
+  "D_writes": 0,
+  "Native_qualification": false,
+  "actual_H": "unknown",
+  "MFT_charge": "Covered by existing stageMFT262144 reserve; no zero-MFT claim."
+}

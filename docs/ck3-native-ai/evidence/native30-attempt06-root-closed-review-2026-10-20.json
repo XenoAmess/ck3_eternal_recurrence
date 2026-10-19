@@ -1,0 +1,47 @@
+{
+  "schema": "xar.native30-actual-failed-closed-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:43:19.903628+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; Root actual receipt8f725e; same ongoing execution machine",
+  "spec_sha256": "edda31d526af07ba41edc81c3b3a8542d0f6929f367953ef545bae974b9e9ff8",
+  "root_actual_spec_release": [
+    "4c432e full SPEC",
+    "3a77e6 independent SPEC/bootstrap/stage hashes"
+  ],
+  "task": "XARG2ManagedOwner-99e74a2e88ec4152997fb9706fd1a3bd",
+  "registered_at_utc": "2026-10-19T19:30:31.219157Z",
+  "started_at_utc": "2026-10-19T19:30:31.700618Z",
+  "result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt06\\RESULT.json",
+    "bytes": 4880,
+    "sha256": "469220b30bc68fe74d3b7075bf4ef9907bca7bbd9b782575a3df9c84e2da3923"
+  },
+  "closed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner06\\owner-spec\\CLOSED.json",
+    "bytes": 744,
+    "sha256": "2f7c46d59eec8bd855e8cc587dc593e425ab7f6b49d5551108c8f8797641c0fc"
+  },
+  "actual_status": "FAILED",
+  "actual_fixtures_built": 0,
+  "actual_fixtures_run": 0,
+  "Game_calls": 0,
+  "DLL_loaded": false,
+  "original_error_preserved": {
+    "type": "RuntimeError",
+    "text": "successful production would be rebuilt; stop before fixtures"
+  },
+  "root_interpretation": "The dry-run returned0/Job0 but only printed VerifyGlobs and CMake regeneration. The producer rejected the missing literal NoWork. This trace does not evaluate production targets and proves neither production dirtiness nor production cleanliness. No actual configuration/compiler/link ran in this attempt.",
+  "stage_exit": 1,
+  "bootstrap_exit": 1,
+  "Job_active_after": 0,
+  "forced": false,
+  "exact_task_unregistered_utc": "2026-10-19T19:32:23.407552Z",
+  "unregister_tool": "897054",
+  "closed_aggregate": {
+    "EOF": 656115548,
+    "allocation": 670742624,
+    "future_writes": 0
+  },
+  "budget": "Original1.5GiB remains fully held; no refund or reopening of owner06 metadata allowance.",
+  "next": "Explicit new07 metadata-evaluation contract and independent review. Do not edit06 FAILED or treat source tests as Native qualification."
+}

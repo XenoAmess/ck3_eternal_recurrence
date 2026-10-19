@@ -1,0 +1,128 @@
+{
+  "Game_MCP_RPC_calls": 0,
+  "actual_health_trait_readback": "unavailable: DTO covers only lifestyle_poet/journaller; lovers_pox/rakish and healthModifier are not observed",
+  "actual_loader": "exact",
+  "analysis": "All3 source options preserved; only native0/render0 was shown. Native0 is a conditional-name acknowledgement with no disease/treatment action. Native1 conditionally cancels an owned cancellable travel plan, respecting tour/required-special-guest guards; native2 continues travel and has no direct effect. Immediate calls contract_disease_effect(DISEASE=lovers_pox,TREATMENT_EVENT=no). The complete current callee is preserved: it rechecks can_contract_disease_trigger, sets sick_character/disease_type, adds lovers_pox, schedules contagion health1200 after60..1000days and partner warnings, but does not queue health3100 for TREATMENT_EVENT=no and contains no lovers_pox recovery branch. Nested telemetry/health predicates and scheduled events are not evaluated. Current root/sick_character40526 are typed; actual disease_type/new_faith/sex_positive_rite payload identities remain unknown. ACKtrue/49->null and unchanged gold/prestige/stress89 are observed; no disease-trait, health-modifier, contagion, cure or infection-source readback exists. Earlier stress1011 relief is not proof of causation or confirmed rakish.",
+  "before_after": {
+    "after": {
+      "bytes": 3542,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\386950bf90a847d094dd1b4ccef6f7f7.after.json",
+      "sha256": "e42d371f4b05d6271bc72f8e80572b1c3455dbd60e7dcf65dbd8793c0d382e91"
+    },
+    "before": {
+      "bytes": 6492,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\386950bf90a847d094dd1b4ccef6f7f7.before.json",
+      "sha256": "3f76d51069df7bfe3a9e3577f8431503ca0d07140cb4f5be784e136bd4fe3120"
+    },
+    "command_acknowledged": true,
+    "event_instance_advanced_verified": true,
+    "incident_id": "386950bf90a847d094dd1b4ccef6f7f7",
+    "replay_allowed": false
+  },
+  "binding": {
+    "actor_character_id": 40526,
+    "bridge_pid": 30852,
+    "connection_generation": 3,
+    "date_raw": 53271288,
+    "episode_run_id": "native-40526-1bec95182886",
+    "map_ready": true,
+    "native_revision": 4150,
+    "paused": true,
+    "revision": 1483,
+    "snapshot_id": "native:4150"
+  },
+  "canonical": [
+    {
+      "bytes": 24110,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\6bea6903c3760377246c7afb78a80403e3224530cb45fff5fbb072160b17c6fd.json",
+      "sha256": "5ab584fdbdfa6da13b28a60e693810dc9cec938fcd10472796a7a13394940f40"
+    },
+    {
+      "bytes": 1284,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\6bea6903c3760377246c7afb78a80403e3224530cb45fff5fbb072160b17c6fd.json",
+      "sha256": "d0b4c18f408a19ccf523694ec887ced2e1116e27577c3cbe1400b543a82c0a7c"
+    }
+  ],
+  "current_typed_role_ids": {
+    "courtier": 36311,
+    "root": 40526,
+    "sick_character": 40526,
+    "stress_character": 40526
+  },
+  "definition_sha256": "d040a277efe666e8e39fb47f0ba0cc94e1118c0422f5cb504464e181cbcab6c7",
+  "future_loader": "source_rebound",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "material_effects_verified": false,
+  "observed_at_utc": "2026-10-19T19:38:58.305138+00:00",
+  "observed_resource_deltas": {
+    "gold": {
+      "after_raw": 16530652,
+      "before_raw": 16530652,
+      "delta": 0.0,
+      "scale": 100000
+    },
+    "prestige": {
+      "after_raw": -10218410,
+      "before_raw": -10218410,
+      "delta": 0.0,
+      "scale": 100000
+    }
+  },
+  "observed_stress": [
+    89,
+    89
+  ],
+  "offline_future_calculated_id": 4991008,
+  "opaque_scope_identity_gaps": [
+    "disease_type:flag",
+    "sex_positive_rite:flag",
+    "new_faith:rite"
+  ],
+  "projection": {
+    "bytes": 23639,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C18-EVENT-10278-CLOSED.json",
+    "sha256": "646acaec98e14778d88254b1b7f80b246eb3d95f0b2495b9669455e083795860"
+  },
+  "provenance": "Only named closed event/incident and exact stock health definition+contract_disease_effect; current Game/SDK/Native/strategy unchanged.",
+  "registry_contract_accepted": false,
+  "schema": "xar.m2-c18-event10278-health1008-source-closure/v1",
+  "selection": {
+    "ACK": true,
+    "actually_shown_native_indices": [
+      0
+    ],
+    "instance_transition": [
+      49,
+      null
+    ],
+    "native_option_index": 0,
+    "postcondition_verified": true,
+    "public_option_number": 1,
+    "rendered_index": 0,
+    "source_native_option_count": 3
+  },
+  "source_SDK_changes": 0,
+  "source_binding": {
+    "calculated_event_id": 3991008,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "health.1008",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 3,
+    "option_catalogue_sha256": "6626da75ecf26f2b92240818f79aecbcb39a82077d153ff4056fe3b484b6acba",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+  },
+  "source_lookup": "Named health source absent from index; existing parser used an exact in-memory path+SHA record, with no source-index/loader edits.",
+  "storage": {
+    "allocated_bytes": null,
+    "future_bytes": 0,
+    "new_gross_bytes": 31457,
+    "physical_credit_bytes": 0,
+    "pool_bytes": 308835,
+    "pool_fingerprints": 12,
+    "prior_pool_bytes": 277378,
+    "prior_pool_fingerprints": 11,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  },
+  "synthetic_id_is_actual_observation": false
+}

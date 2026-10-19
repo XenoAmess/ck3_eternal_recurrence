@@ -1,0 +1,55 @@
+{
+  "schema": "xar.ci-exact-head-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:43:19.903628+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; Root actual receipt8f725e; same ongoing execution machine",
+  "runner_machine_id": "unknown",
+  "runner_machine_scope": "GitHub-hosted job results; collector identity does not identify the runner",
+  "source_head": "1ab7c742223a65464967798b6a264b6a82b28fa2",
+  "official": {
+    "run_id": 39305844512,
+    "job_id": 118242585057,
+    "conclusion": "failure",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39305844512",
+    "failed_step": 96,
+    "failed_step_name": "Enforce Python-only Windows automation"
+  },
+  "linear": {
+    "run_id": 39305844415,
+    "job_id": 118242584066,
+    "conclusion": "success"
+  },
+  "actual_success_steps": [
+    21,
+    54,
+    57,
+    58,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65
+  ],
+  "diagnosis": "The sole reported violation is a literal forbidden shell-name mention in the prohibition sentence at handover source line169. This is a documentation scan failure, not evidence of an actual invocation.",
+  "fix": "Preserve the Python/cmd requirement and point to root AGENTS.md Python-only rules without repeating the forbidden token. No source rules relaxed.",
+  "local_validation": {
+    "command": "python tools/validate_python_only.py",
+    "tool_receipt": "8551b0",
+    "exit_code": 0,
+    "result": "PYTHON-ONLY GREEN",
+    "scope": "current working tree including untracked source at this observation; not a future official CI result"
+  },
+  "raw_status": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\official-ci-1ab7c742-final-status01.json",
+    "bytes": 23303,
+    "sha256": "4859425344dfc0d73705bd8db056ef6b5cd22f80fa919278cc43891b49c4c079"
+  },
+  "bounded_log_tail": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\ci-job-118242585057-step96-bounded-tail01.json",
+    "bytes": 2248,
+    "sha256": "224660f8bb488630a32d86769cb18e1dba2dae63c5950a87971747c19a534635"
+  },
+  "raw_evidence_retention": "Small local evidence under original Root512KiB and original retention deadline; not copied into this repository. No full log retained.",
+  "new_official_result": "pending after next push"
+}

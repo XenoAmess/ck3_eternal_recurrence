@@ -168,7 +168,7 @@
 
 本交接没有切换Steam、启动游戏或更改系统权限。下一场实机先重新读机器ID、核实际EXE/build/加载来源，按[Steam离线恢复](../ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md)及[新鲜画面规则](../ck3-native-ai/steam-offline-frame-freshness.md)取得当次离线证据；原生身份、场次、存档和观察绑定后再操作。别的机器的离线、安装、Defender或资格不能外推。
 
-Windows操作使用Python与`cmd.exe`，禁止PowerShell。新录制不得出现退役的旧蓝色决策面板；保留现有原生决策与新显示链。自动游玩使用完整规划器，处理真实战争，不能恢复nonwar-only路由。陌生事件按根规则采集、合法续行、批后离线补知识；原生通道能用时不以OCR或鼠标替代。
+Windows操作使用Python与`cmd.exe`，遵守根 AGENTS.md 的 Python-only 规则。新录制不得出现退役的旧蓝色决策面板；保留现有原生决策与新显示链。自动游玩使用完整规划器，处理真实战争，不能恢复nonwar-only路由。陌生事件按根规则采集、合法续行、批后离线补知识；原生通道能用时不以OCR或鼠标替代。
 
 后续存储遵守[统一策略](../storage-retention-policy.md)与[参数](../storage-retention-policy.json)，不继承旧“全部永久保留”或“完结就整树删除”。最终视频、当前必要来源、D正式封面和用户要求的四方案存根分别分类；可重建过程件与已替代导出另作精确评估。先读用户永久保留索引，按身份、用途、替代证据和期限处理，不按目录名删除。
 
