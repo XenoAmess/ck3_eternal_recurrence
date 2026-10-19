@@ -43,4 +43,3 @@ small footer: "1066—1096"
 Typography must be clean, bold, beautifully typeset, white and antique gold; the "2县" red. Keep text clear of the face. Main words 三十年 must remain very prominent. Preserve the exact narrative: AI played CK3 across thirty years from 1066 to 1096; ruled counties fell from 10 to 2. This is conceptual cover artwork, not an actual screenshot.
 No extra text, no watermarks, no interface or blue decision window, no robot, no imperial crown. Deliver only one professionally recomposed 4:3 finished cover.
 ```
-
