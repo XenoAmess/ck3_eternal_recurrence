@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 
@@ -184,6 +185,30 @@ def capture_checkpoint(context, client, name, request):
     return response
 
 
+
+def visual_observation_sha256(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=True,
+        separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def require_root_visual_review(response, observation, approval_key):
+    # A complete capture response alone cannot authorize a game mutation.
+    require(response.get("original_image_directly_reviewed") is True
+            and response.get(approval_key) is True
+            and response.get("reviewed_native_observation_sha256") == visual_observation_sha256(observation),
+            "Root must directly review this native observation and explicitly authorize " + approval_key)
+    image = response.get("original_image")
+    require(isinstance(image, dict) and isinstance(image.get("path"), str),
+            "Root original PNG evidence is absent")
+    path = Path(image["path"])
+    require(path.is_absolute() and path.is_file() and not path.is_symlink(),
+            "Root original PNG must be an actual absolute regular file")
+    raw = path.read_bytes()
+    require(raw.startswith(b"\x89PNG\r\n\x1a\n") and len(raw) == image.get("bytes")
+            and hashlib.sha256(raw).hexdigest() == image.get("sha256"),
+            "Root original PNG evidence changed or is not a PNG")
+
+
 def drain_if_needed(context, client, binding, frame):
     if frame.get("active_event") is None and frame.get("pending_character_interaction") is None:
         return frame
@@ -280,7 +305,24 @@ def run_case(context, client):
         require(initial.get("ledger_state") == "idle" and initial.get("needs_recovery") is False,
                 "Existing native submission ledger cannot be reset")
         opened = planner.submit("open")
-        require_planner(opened, 1)
+        # Open's action DTO does not report selected_pious. A separate native
+        # stage1 read below must independently observe the current selection.
+        require(opened.get("operation_status") == "observed" and opened.get("invoked") is True
+                and opened.get("needs_recovery") is False
+                and isinstance(opened.get("planner"), dict)
+                and opened["planner"].get("stage") == 1
+                and opened["planner"].get("can_progress") is True,
+                "Original Open was not observed at ready stage1")
+        stage1 = planner.query(read_stage=1)
+        require_planner(stage1, 1)
+        reviewed_stage1 = capture_checkpoint(context, client, "ordinary-pilgrimage-review-stage1-before-confirm", {
+            "binding": binding, "native_observation": stage1,
+            "native_observation_sha256": visual_observation_sha256(stage1),
+            "prepare_original_image": True, "approval_key": "confirm_once_authorized",
+            "review_contract": "Root directly reviews original PNG and actual selected_pious=true at stage1; only explicit current-observation approval permits Confirm",
+            "next_action": "Fresh native stage1 read, then one original pious Confirm"})
+        require_root_visual_review(reviewed_stage1, stage1, "confirm_once_authorized")
+        # The scene stayed paused for Root; reject changed selection after review.
         require_planner(planner.query(read_stage=1), 1)
         confirmed = planner.submit("confirm")
         require(confirmed.get("operation_status") == "observed" and not confirmed.get("needs_recovery"),
@@ -305,10 +347,14 @@ def run_case(context, client):
             "quote": quote, "journey_inclusion_proven": False,
             "native_final_canstart_required": True, "reserve_gold_raw": c["policy"]["reserve_gold_raw"],
             "policy": "retain explicit gold reserve; never present activity-only offer as all journey cost"})
-        capture_checkpoint(context, client, "ordinary-pilgrimage-record-quote-before-start", {
+        reviewed_quote = capture_checkpoint(context, client, "ordinary-pilgrimage-record-quote-before-start", {
             "binding": binding, "province_id": province, "quote": quote,
+            "native_observation": quoted, "native_observation_sha256": visual_observation_sha256(quoted),
+            "prepare_original_image": True, "approval_key": "start_once_authorized",
+            "review_contract": "Root directly reviews original PNG and actual final configured price/CanStart/reserve; this quote is not a proven total journey cost",
             "reserve_gold_raw": c["policy"]["reserve_gold_raw"], "journey_cost_inclusion_proven": False,
-            "next_action": "One original Start after this final-price take is ready"})
+            "next_action": "One original Start only after explicit Root review of this final native price"})
+        require_root_visual_review(reviewed_quote, quoted, "start_once_authorized")
         # The scene remains paused during capture coordination. Re-read the
         # actual destination and priced configuration before the one submission.
         require_planner(planner.query(), 5, province)

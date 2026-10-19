@@ -456,7 +456,10 @@ class Focused(unittest.TestCase):
                 return SimpleNamespace(stdout=json.dumps({'task':{'last_sequence':10}}).encode(),stderr=b'',returncode=0)
             class Child:
                 pid=1234
-                def poll(self):return None
+                polls=0
+                def poll(self):
+                    self.polls+=1
+                    return None if self.polls==1 else 0
                 def wait(self):sequence.append('WAIT_REAL_CHILD');return 0
             def popen(argv,**kwargs):
                 sequence.append('KEEPER_POPEN');args.keeper_output.mkdir()

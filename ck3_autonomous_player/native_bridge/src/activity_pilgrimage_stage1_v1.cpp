@@ -602,10 +602,13 @@ bool ReadActivityPilgrimageSelectedOptionV1(
   const auto diag = ReadActivityPlannerDiagV1(env.diagnostic, expected);
   if (diag.status != ActivityPlannerDiagStatusV1::observed ||
       !diag.value.widget_attached || !diag.value.widget_visible ||
-      diag.value.stage != required_stage ||
-      !MatchesActivityTypedPlannerHostKeyV1(
-          diag.value, kOrdinaryPilgrimagePiousContractV1))
+      diag.value.stage != required_stage)
     return false;
+  // The HostView describes a hosted/previous activity; Open can leave it
+  // unbound or owned by a different character. It is not this planner's type.
+  // ResolveNative below binds the current planner's exact type/key, selected
+  // category and actual selected-option getter. Those identities and the key
+  // are independently read again before publishing the typed selection.
   NativeIdentity first{}, second{};
   if (!ResolveNative(env, expected, first, required_stage)) return false;
   ActivityTypedPlannerSelectionV1 candidate{};

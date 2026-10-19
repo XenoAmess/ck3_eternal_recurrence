@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import base64
+import hashlib
+import tempfile
 import importlib.util
 from pathlib import Path
 from types import SimpleNamespace
@@ -74,6 +77,11 @@ class Client:
         self.existing_identity = False
         self.post_pending = False
         self.hosted_missing_after_start = False
+        self.review_overrides = {}
+        self.stage1_selected = True
+        self.stage1_rejected = False
+        self.change_selection_after_review = False
+        self.open_invoked = True
 
     def snapshot(self, **kwargs):
         return frame()
@@ -93,7 +101,22 @@ class Client:
             assert not any(row["tool"] == ADAPTER.SUBMIT for row in self.calls)
         if "before-start" in name:
             assert not any(row["args"].get("operation") == "start" for row in self.calls)
-        return {"run_id": request["run_id"], "reviewer": self.operator_reviewer, "status": "complete"}
+        response = {"run_id": request["run_id"], "reviewer": self.operator_reviewer, "status": "complete"}
+        if "native_observation" in request:
+            image = Path(self.review_image).read_bytes()
+            response.update(original_image_directly_reviewed=True,
+                original_image={"path": str(self.review_image), "bytes": len(image),
+                    "sha256": hashlib.sha256(image).hexdigest()},
+                reviewed_native_observation_sha256=ADAPTER.visual_observation_sha256(request["native_observation"]))
+            response[request["approval_key"]] = True
+            response.update(self.review_overrides.get(request["approval_key"], {}))
+        if "stage1-before-confirm" in name:
+            assert self.stage == 1
+            assert request["native_observation"]["planner"]["selected_pious"] is True
+            assert not any(row["args"].get("operation") == "confirm" for row in self.calls)
+            if self.change_selection_after_review:
+                self.stage1_selected = False
+        return response
 
     def identity(self):
         return {"activity_id": 0x12340001, "host_character_id": 31254, "type_key": "activity_pilgrimage",
@@ -125,7 +148,16 @@ class Client:
                 self.started = True
             value = {"operation_status": "observed", "needs_recovery": False, "ledger_state": "idle",
                 "invoked": tool == ADAPTER.SUBMIT, "planner": {"stage": self.stage, "selected_pious": True,
-                    "destination_province_id": 200 if self.stage == 5 else 0, "can_select": self.can_select}}
+                    "destination_province_id": 200 if self.stage == 5 else 0, "can_select": self.can_select,
+                    "can_progress": True}}
+            if op == "open":
+                # Actual Open reports invocation/stage/readiness, not selection.
+                value["planner"]["selected_pious"] = None
+                value["invoked"] = self.open_invoked
+            if op == "read" and args.get("read_stage") == 1:
+                value["planner"]["selected_pious"] = self.stage1_selected
+                if self.stage1_rejected:
+                    value["operation_status"] = "rejected"
             if op == "quote":
                 value["quote"] = {"observed": True, "planning_stage": 5, "final_can_start_observed": True,
                     "final_can_start": self.can_start, "unknown_positive_configured_cost": self.unknown_positive,
@@ -138,6 +170,17 @@ class Client:
 
 
 class WorkflowTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.images = tempfile.TemporaryDirectory(prefix="authored-root-review-")
+        Client.review_image = Path(cls.images.name) / "authored-synthetic-not-game.png"
+        Client.review_image.write_bytes(base64.b64decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII="))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.images.cleanup()
+
     def setUp(self):
         self.original_sibling = ADAPTER.sibling
         ADAPTER.sibling = lambda path, name: (QUEUE if path.name.endswith("queue.py") else
@@ -158,7 +201,8 @@ class WorkflowTests(unittest.TestCase):
         self.assertFalse(value["payment_total_proven"])
         self.assertFalse(value["business_pass"])
         self.assertEqual([row[0] for row in client.capture_points], [
-            "ordinary-pilgrimage-record-before-planner", "ordinary-pilgrimage-record-quote-before-start",
+            "ordinary-pilgrimage-record-before-planner", "ordinary-pilgrimage-review-stage1-before-confirm",
+            "ordinary-pilgrimage-record-quote-before-start",
             "ordinary-pilgrimage-start-observed-take"])
 
     def test_start_timeout_never_resends_or_advances_journey(self):
@@ -292,6 +336,65 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(self.starts(client), [])
         self.assertEqual(value["public_requests_used"], 5)
         self.assertIn("public request cap", value["failure"])
+
+
+
+    def test_stage1_has_fresh_native_read_both_before_and_after_root_visual_review(self):
+        client = Client()
+        result = ADAPTER.run_case(context(), client)
+        self.assertEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+        reads = [row for row in client.calls if row["args"].get("operation") == "read"
+                 and row["args"].get("read_stage") == 1]
+        self.assertEqual(len(reads), 2)
+        self.assertEqual(sum(row["args"].get("operation") == "confirm" for row in client.calls), 1)
+
+    def test_stage1_rejected_or_unselected_never_reaches_review_confirm_or_start(self):
+        for field, value in (("stage1_rejected", True), ("stage1_selected", False)):
+            with self.subTest(field=field):
+                client = Client(); setattr(client, field, value)
+                ADAPTER.run_case(context(), client)
+                self.assertFalse(any("stage1-before-confirm" in name for name, _ in client.capture_points))
+                self.assertFalse(any(row["args"].get("operation") in {"confirm", "start"} for row in client.calls))
+
+    def test_complete_alone_wrong_observation_missing_review_or_bad_image_blocks_each_mutation(self):
+        failures = [{"original_image_directly_reviewed": False},
+            {"reviewed_native_observation_sha256": "0" * 64},
+            {"original_image": None}]
+        for approval, forbidden in (("confirm_once_authorized", "confirm"), ("start_once_authorized", "start")):
+            for override in failures + [{approval: False}]:
+                with self.subTest(approval=approval, override=override):
+                    client = Client(); client.review_overrides[approval] = override
+                    result = ADAPTER.run_case(context(), client)
+                    self.assertFalse(any(row["args"].get("operation") == forbidden for row in client.calls))
+                    self.assertFalse(result["start_invoked"])
+
+    def test_selection_change_after_root_review_blocks_confirm_and_start(self):
+        client = Client(); client.change_selection_after_review = True
+        ADAPTER.run_case(context(), client)
+        self.assertFalse(any(row["args"].get("operation") in {"confirm", "start"} for row in client.calls))
+
+    def test_original_open_requires_actual_true_invocation_before_fresh_read_or_confirm(self):
+        for invoked in (False, None):
+            with self.subTest(invoked=invoked):
+                client = Client(); client.open_invoked = invoked
+                ADAPTER.run_case(context(), client)
+                self.assertFalse(any(row["args"].get("read_stage") == 1 for row in client.calls))
+                self.assertFalse(any(row["args"].get("operation") in {"confirm", "start"} for row in client.calls))
+
+    def test_null_selected_pious_in_fresh_stage1_read_is_rejected(self):
+        client = Client(); client.stage1_selected = None
+        ADAPTER.run_case(context(), client)
+        self.assertFalse(any("stage1-before-confirm" in name for name, _ in client.capture_points))
+        self.assertFalse(any(row["args"].get("operation") in {"confirm", "start"} for row in client.calls))
+
+    def test_original_image_hash_is_actually_verified(self):
+        client = Client()
+        image = {"path": str(client.review_image), "bytes": client.review_image.stat().st_size,
+                 "sha256": "0" * 64}
+        client.review_overrides["confirm_once_authorized"] = {"original_image": image}
+        result = ADAPTER.run_case(context(), client)
+        self.assertIn("PNG evidence changed", result["failure"])
+        self.assertFalse(any(row["args"].get("operation") == "confirm" for row in client.calls))
 
 
 if __name__ == "__main__":

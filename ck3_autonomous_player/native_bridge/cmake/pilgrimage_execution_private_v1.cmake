@@ -70,6 +70,11 @@ if(XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1)
         XAR_CK3_ENABLE_PILGRIMAGE_PIOUS_PLANNER_PRIVATE_V1=1)
     endforeach()
 
+    _pilgrimage_fixture(xar_ck3_12004_pilgrimage_stage1_selection_fixture
+      tests/activity_pilgrimage_stage1_selection_v1_test.cpp)
+    target_compile_definitions(xar_ck3_12004_pilgrimage_stage1_selection_fixture PRIVATE
+      XAR_CK3_ENABLE_PILGRIMAGE_PIOUS_PLANNER_PRIVATE_V1=1)
+
     # Real production TUs are recompiled per registration/classifier mode.
     # OFF is undefined; wrapper TUs avoid the original SOURCE flag properties.
     foreach(_mode IN ITEMS off on)

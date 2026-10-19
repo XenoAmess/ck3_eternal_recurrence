@@ -1391,7 +1391,11 @@ def keeper_command(python,keeper,lease_repo,keeper_root,task,sequence,bus_dir,bu
     return argv
 
 def wait_for_keeper_ready(child,keeper_root,live,started,stdout,stderr):
-    while not (keeper_root/'ready.json').exists():
+    # write_new creates READY before dump/flush/fsync has finished. Existence
+    # alone is not a published JSON object; keep the original process/deadline.
+    ready_path=keeper_root/'ready.json'
+    last_parse_error=None
+    while True:
         polled=child.poll()
         if polled is not None:
             waited=child.wait();stdout.close();stderr.close()
@@ -1399,11 +1403,21 @@ def wait_for_keeper_ready(child,keeper_root,live,started,stdout,stderr):
                 'schema':'ck3-keeper-pre-ready-original-parent-exit-v1','run_id':live.name,
                 'pid':child.pid,'actual_original_popen_wait':True,
                 'actual_poll_exit_code':polled,'keeper_actual_exit_code':waited,
-                'ready_absent':not (keeper_root/'ready.json').exists(),
+                'ready_absent':not ready_path.exists(),
                 'at_utc':datetime.now(timezone.utc).isoformat(),'game_started':False,'business_pass':False})
-            raise ValueError('Original keeper failed before READY; preserve actual stderr')
-        require(time.monotonic()-started<30,'Original keeper did not become READY within existing bound')
+            raise ValueError('Original keeper failed before READY; preserve actual stderr') from last_parse_error
+        if time.monotonic()-started>=30:
+            # A persistent malformed file is still an error, never READY. Keep
+            # its actual decoder failure rather than hiding it as a timeout.
+            raise ValueError('Original keeper did not become READY within existing bound') from last_parse_error
+        try:
+            return read_json(ready_path)
+        except FileNotFoundError:
+            pass
+        except (json.JSONDecodeError,UnicodeDecodeError) as error:
+            last_parse_error=error
         time.sleep(.02)
+
 
 def allocate_and_keep(selection,args):
     require(selection.prepared_path and not selection.context,'One prepared unused case and no allocated context required')
@@ -1612,8 +1626,7 @@ def allocate_and_keep(selection,args):
     stdout=(live/'keeper-stdout.log').open('xb');stderr=(live/'keeper-stderr.log').open('xb')
     child=subprocess.Popen(keeper_argv,cwd=root,stdout=stdout,stderr=stderr)
     write_json(live/'keeper-process.json',{'pid':child.pid,'create_time':psutil.Process(child.pid).create_time(),'argv':keeper_argv})
-    wait_for_keeper_ready(child,args.keeper_output,live,started,stdout,stderr)
-    ready=read_json(args.keeper_output/'ready.json')
+    ready=wait_for_keeper_ready(child,args.keeper_output,live,started,stdout,stderr)
     context['frozen_argv']=pin(live/'frozen-argv.json')
     write_json(live/'ready-context.json',context)
     allocated={'status':'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN','live':str(live),'task':task,'sequence':sequence,

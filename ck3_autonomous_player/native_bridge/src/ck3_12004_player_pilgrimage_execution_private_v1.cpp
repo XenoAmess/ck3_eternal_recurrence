@@ -350,8 +350,36 @@ std::string SerializePlayerPilgrimageExecutionPrivate12004V1(
           q.start.state == bridge::ActivityPilgrimageStartStateV1::submission_outcome_unknown ||
           q.ledger_state == bridge::ActivityPilgrimageStartStateV1::submission_outcome_unknown);
   out += ",\"ledger_state\":"; AppendString(out, LedgerName(q.ledger_state));
-  out += ",\"failure\":"; AppendString(out, q.failure); out += ",\"planner\":";
   const auto &p = q.planner;
+  auto failure = q.failure;
+  // Preserve the strict public DTO schema. Describe observed reader state in
+  // the existing failure string; never promote UI appearance into selection.
+  if (failure.empty() && !p.selection_observed &&
+      (q.operation == Op::read || q.operation == Op::open)) {
+    failure = "typed_selection_unobserved;diag=";
+    failure += bridge::ActivityPlannerDiagStatusKeyV1(p.diagnostic.status);
+    failure += ";host_key_known=";
+    failure += p.diagnostic.value.host_view_activity_key_known ? "true" : "false";
+    if (p.diagnostic.value.host_view_activity_key_known &&
+        p.diagnostic.value.host_view_activity_key_size <
+            p.diagnostic.value.host_view_activity_key.size()) {
+      failure += ";host_key=";
+      failure.append(p.diagnostic.value.host_view_activity_key.data(),
+                     p.diagnostic.value.host_view_activity_key_size);
+    }
+    if (p.diagnostic.value.stage == 1) {
+      failure += ";stage1=";
+      failure += bridge::ActivityPilgrimageStage1OptionReadStatusKeyV1(p.stage1.status);
+      if (p.stage1.status == bridge::ActivityPilgrimageStage1OptionReadStatusV1::observed &&
+          p.stage1.option_key_size < p.stage1.option_key.size()) {
+        failure += ";stage1_option=";
+        failure.append(p.stage1.option_key.data(), p.stage1.option_key_size);
+        failure += ";stage1_confirm_ready=";
+        failure += p.stage1.pious_pilgrimage_confirm_ready ? "true" : "false";
+      }
+    }
+  }
+  out += ",\"failure\":"; AppendString(out, failure); out += ",\"planner\":";
   if (p.diagnostic.status != bridge::ActivityPlannerDiagStatusV1::observed ||
       p.diagnostic.value.stage < 0 || p.diagnostic.value.stage > 5) out += "null";
   else {

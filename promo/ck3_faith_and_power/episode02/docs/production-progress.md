@@ -1,5 +1,17 @@
 # 第二期执行进度
 
+## 10月20日07:16：朝圣规划器预览已录制并正常闭场
+
+`machine_id: 4-8e1c2f1861`，截至`2026-10-19T23:16:45Z`。B8普通朝圣Open已返回`observed / invoked=true`、stage1；后继read仍为`rejected`，`selected_pious=null`。本场录得46.033秒2560×1440、无音轨原片，按VFR管理，只作stage1规划器预览与诊断候选。没有朝圣Confirm/Start、完整旅费、实际付款、抵达或归返结果，业务仍未通过。原件、局部进展及缺口见[本轮导演进度](director-progress-and-schedule-20261020.md)。
+
+B8现已正常闭场：CK3 PID7560独立观察OS0、cleanup完成，原host实际Popen.wait0、公共run0；原keeper经独立保留OS handle观察退出0，不能写成原allocator Popen.wait，原allocator退出2保留。恢复ready-context的BOM原件已保全，仅移除BOM后JSON语义及settings／DLC字节未变；后续native退出guard新读回通过才正常退出。闭场Steam新图经位移新鲜度和直接审阅确认离线，桌面实读恢复1024×768，screen CAS为[done／sequence12468](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b8-a01/SCREEN-RELEASE.actual.json)。这些闭场资格不授朝圣业务成功；详见新专题内逐份证据。
+
+[前四章9分25.888秒样片](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)已可审阅，含实际画面、旁白、配乐和双语字幕；尚无整段听看或用户验收记录。七章65条固定讲解已有实测展示长度**23:32.267**，51/65条有视觉绑定，14条仍缺原版实拍位，24项必需结果槽仍未闭合，正式全片`content_ready=false`。51条包含规则/历史素材绑定，不是51条新增业务实证，也没有生成23分32秒的完整影片。来源：[七章固定声音闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b7-a01/CLOSURE.actual.json)、[51/65视觉与24必需槽检查](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/full-review-visual-bindings-a01/VALIDATION.actual.json)。
+
+[25槽案例插入提纲](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/case-inserts-budget-a01/README.md)把25槽编成19个可接入cue的插入块：24必需槽预算800–1540字，可选特殊槽0–60字，合计800–1600字。按260字/分钟只作作者预算，加入现有固定声音约为26:36.882–29:41.497，制作仍以**约27–30分钟**为目标；案例声轨尚未生成，完整影片长度尚未测得。B6的70/100金币只是不含旅费的默认活动费，不能充作完整行程或实际扣款。
+
+当前关键路径是**原生读回修复与构建 → 在同一已核输入上取真实案例后态 → 案例口播、字幕与全片审计**。来源研究、有限接口方案和画面编排继续并行；游戏和屏幕始终单一所有者。装备动作、两名人物的属性来源归因，以及大圣战当前状态的部分字段仍有能力缺口，不能只靠增加录制时间解决。新的相对节点与剩余工作量见[本轮导演进度与节点更新](director-progress-and-schedule-20261020.md)。
+
 ## 10月20日06:37：朝圣第二场已诊断，继续补拍
 
 `machine_id: 4-8e1c2f1861`，实际截至 `2026-10-19T22:37:21Z`：[B6原场与修复](filming-b6-and-request-seam-20261020.md)已落档。本场两个合法地点默认活动费70／100金，明确不含全程旅行。一次open被原生请求解析拒绝，缺失read_stage的SDK原因已由实包和23项真实解析检查闭合，没有planner／Start／付款成功。公共run0、原host1／native RED与正常关场OS0、keeper0分别保留，CAS已释放。当前Root医疗专用策略10项和完整prepared回收34项回归通过，下一场验证实际打开与旅程。
