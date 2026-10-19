@@ -61,8 +61,39 @@ def _allocator_argv(bundle, machine, keeper_stamps):
          'Actual original allocator command differs')
     return argv
 
+def _release_stages(keeper,cas,done,cas_source,done_source,release,task):
+    from ck3_mod_acceptance_allocate import closed_lease
+    for value in (cas,done):
+        need(value['event']['task_id']==task and value['event']['resources']==[],
+             'Wrong allocated-unrun CAS task/resources')
+    separate=(cas['event']['kind']=='status' and done['event']['kind']=='completed'
+              and cas['event']['sequence']<done['event']['sequence'])
+    # A direct CAS completion is one original event. The two proof files must
+    # preserve the same canonical bytes/offset/task, rather than mix releases.
+    direct=(cas['event']['kind']==done['event']['kind']=='completed'
+            and cas['event']['sequence']==done['event']['sequence']
+            and cas['event']==done['event'] and cas['task']==done['task']
+            and cas_source.get('schema')=='xar-screen-release-canonical-reconstruction-v1'
+            and cas_source==done_source)
+    need((separate or direct) and keeper['last_sequence']<cas['event']['sequence']
+         and done['task']['last_sequence']==done['event']['sequence'] and done['task']['state']=='done'
+         and release==done and closed_lease(keeper,done,task),
+         'Actual allocated-unrun CAS then admin DONE differs')
+    return 'direct-completed' if direct else 'status-then-completed'
+
+def _journal_events(raw,start,release_sequence,done_sequence):
+    requested={release_sequence,done_sequence};lines={};offset=start
+    for line in raw.splitlines(keepends=True):
+        row=json.loads(line)
+        if row.get('sequence') in requested:
+            need(row['sequence'] not in lines,'Duplicate original CAS/DONE sequence in bounded journal tail')
+            lines[row['sequence']]=(offset,line,row)
+        offset+=len(line)
+    need(len(lines)==len(requested),'Exact original CAS/DONE events absent from bounded journal tail')
+    return lines
+
 def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release, bus_packet):
-    from ck3_mod_acceptance_allocate import closed_lease, read_failed_runtime_release, runtime_process_inventory
+    from ck3_mod_acceptance_allocate import read_failed_runtime_release, runtime_process_inventory
     import ck3_live_run_id as ids
     previous,keeper_root=Path(previous).resolve(),Path(keeper_root).resolve()
     bundle=_read(close_path);machine=ids.current_machine_id();run=freeze['run_id'];task=freeze['screen_task']
@@ -130,13 +161,10 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
          'Allocated-unrun run is not the latest actual machine/product counter')
     cas=read_failed_runtime_release(Path(bundle['CAS_release']['path']))
     done=read_failed_runtime_release(Path(bundle['admin_done']['path']))
-    for key,value in (('CAS_release',cas),('admin_done',done)):
+    for key in ('CAS_release','admin_done'):
         check_pin(Path(bundle[key]['path']),bundle[key])
-        need(value['event']['task_id']==task and value['event']['resources']==[], 'Wrong allocated-unrun CAS task/resources')
-    need(cas['event']['kind']=='status' and done['event']['kind']=='completed'
-         and keeper['last_sequence']<cas['event']['sequence']<done['event']['sequence']
-         and done['task']['last_sequence']==done['event']['sequence'] and done['task']['state']=='done'
-         and release==done and closed_lease(keeper,done,task),'Actual allocated-unrun CAS then admin DONE differs')
+    _release_stages(keeper,cas,done,_read(bundle['CAS_release']['path']),
+        _read(bundle['admin_done']['path']),release,task)
     current=[x for x in bus_packet.get('tasks',[]) if x.get('task_id')==task]
     # The canonical list command adds only age_seconds/stale to raw task files.
     # Keep every original field exact, and reject undeclared or invalid extras.
@@ -171,12 +199,7 @@ def build_bundle(args):
     with journal.open('rb') as f:f.seek(start);raw=f.read(65536)
     if start:
         first=raw.index(b'\n')+1;start+=first;raw=raw[first:]
-    lines={};offset=start
-    for line in raw.splitlines(keepends=True):
-        row=json.loads(line)
-        if row.get('sequence') in (args.release_sequence,args.done_sequence):lines[row['sequence']]=(offset,line,row)
-        offset+=len(line)
-    need(len(lines)==2,'Exact original CAS/DONE events absent from bounded journal tail')
+    lines=_journal_events(raw,start,args.release_sequence,args.done_sequence)
     output=args.output.resolve();need(not output.exists(),'New C metadata output required');output.mkdir(parents=True)
     proofs={}
     for label,sequence in (('CAS_release',args.release_sequence),('admin_done',args.done_sequence)):

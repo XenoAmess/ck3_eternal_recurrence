@@ -1,7 +1,6 @@
 """One focused compound over actual allocated-only metadata, without game/SDK."""
 from pathlib import Path
 from copy import deepcopy
-from tempfile import TemporaryDirectory
 from unittest.mock import patch
 from datetime import datetime,timezone
 import argparse,hashlib,json
@@ -40,6 +39,65 @@ def allocator_original_checks(bundle,machine,keeper_stamps):
     return {'allocator_evidence_form':'original-intent-process-popen-wait',
         'pid_argv_time_mismatch_rejected':True,'combined_receipt_compatibility':True}
 
+def release_stage_checks():
+    """Synthetic contract branches only; the main consumer reads real originals."""
+    task='unrun-release-fixture';seq=12
+    keeper={'task_id':task,'thread_exited':True,'last_sequence':10}
+    done={'ok':True,'event':{'task_id':task,'resources':[],'sequence':seq,'kind':'completed'},
+          'task':{'task_id':task,'state':'done','resources':[],'last_sequence':seq}}
+    direct_source={'schema':'xar-screen-release-canonical-reconstruction-v1',
+        'source_event_stream':'synthetic-only','source_event_byte_offset':100,
+        'source_event_raw_sha256':'a'*64,'event':deepcopy(done['event']),'task':deepcopy(done['task'])}
+    status=deepcopy(done);status['event'].update(kind='status',sequence=11)
+    def invoke(cas=done,final=done,first=direct_source,last=direct_source,stop=keeper,release=done):
+        return subject._release_stages(stop,cas,final,first,last,release,task)
+    need(invoke()=='direct-completed','Single canonical completed branch rejected')
+    need(invoke(cas=status)=='status-then-completed','Original strict two-stage branch rejected')
+    rejected=0
+    def refuses(expected,**kwargs):
+        nonlocal rejected
+        try:invoke(**kwargs)
+        except ValueError as error:need(expected in str(error),(expected,str(error)));rejected+=1
+        else:raise AssertionError('Invalid release stage admitted: '+repr(kwargs))
+    for event_key,bad in (('task_id','other-task'),('resources',['ck3-screen:acquired'])):
+        for key in ('cas','final'):
+            wrong=deepcopy(done);wrong['event'][event_key]=bad
+            refuses('CAS task/resources',**{key:wrong})
+    for badseq in (10,11,13):
+        wrong=deepcopy(done);wrong['event']['sequence']=badseq
+        refuses('CAS then admin DONE',cas=wrong)
+    wrong=deepcopy(status);wrong['event']['sequence']=seq
+    refuses('CAS then admin DONE',cas=wrong)
+    for key,bad in (('source_event_byte_offset',101),('source_event_raw_sha256','b'*64),
+                    ('source_event_stream','different-original'),('schema','other-schema')):
+        wrong=deepcopy(direct_source);wrong[key]=bad
+        refuses('CAS then admin DONE',first=wrong)
+    wrong=deepcopy(done);wrong['event']['different_original_event']=True
+    refuses('CAS then admin DONE',cas=wrong)
+    wrong=deepcopy(done);wrong['task']['different_original_task']=True
+    refuses('CAS then admin DONE',cas=wrong)
+    for key,bad in (('state','waiting'),('resources',['ck3-screen:acquired']),('last_sequence',13)):
+        wrong=deepcopy(done);wrong['task'][key]=bad
+        refuses('CAS then admin DONE',cas=wrong,final=wrong,release=wrong)
+    refuses('CAS then admin DONE',stop={**keeper,'last_sequence':seq})
+    refuses('CAS then admin DONE',release={**done,'different_release':True})
+    line=lambda value:(json.dumps(value,separators=(',',':'))+'\n').encode()
+    one=line(done['event']);two=line(status['event'])+one
+    direct=subject._journal_events(one,100,seq,seq)
+    need(len(direct)==1 and direct[seq]==(100,one,done['event']),
+         'One original journal event/offset/bytes not preserved')
+    separate=subject._journal_events(two,100,11,seq)
+    need(len(separate)==2 and separate[seq][0]==100+len(line(status['event'])),
+         'Two-stage journal event offsets differ')
+    for raw,release_seq,done_seq,expected in ((one+one,seq,seq,'Duplicate original'),
+            (one,11,seq,'Exact original'),(one,seq,13,'Exact original')):
+        try:subject._journal_events(raw,100,release_seq,done_seq)
+        except ValueError as error:need(expected in str(error),(expected,str(error)));rejected+=1
+        else:raise AssertionError('Missing/duplicate journal event admitted')
+    return {'synthetic_two_stage_and_direct_completed_branches_passed':True,
+        'synthetic_mixed_original_wrong_sequence_task_resources_and_lease_rejections':rejected,
+        'one_or_two_exact_journal_event_offsets_preserved':True}
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True)
     p.add_argument('--task-bus-root',type=Path,required=True);p.add_argument('--receipt',type=Path);a=p.parse_args()
@@ -76,12 +134,7 @@ def main():
         if Path(path).resolve()==Path(bundle['keeper']['path']).resolve():value={**value,'thread_exited':False}
         return value
     with patch.object(subject,'_read',side_effect=alive):refuses('keeper STOP/wait0',invoke)
-    # Both pins are genuine. Substituting the administrative DONE for the CAS
-    # must still be rejected; a later closed task alone is not the CAS sequence.
-    with TemporaryDirectory(prefix='unrun-compound-') as td:
-        wrong=deepcopy(bundle);wrong['CAS_release']=wrong['admin_done'];path=Path(td)/'wrong-cas.json'
-        path.write_text(json.dumps(wrong),encoding='utf-8')
-        refuses('CAS then admin DONE',lambda:invoke(path))
+    release_checks=release_stage_checks()
     result={'test':'actual_canonical_list_allocated_unrun_and_unsafe_state_resources_sequence_rejected',
         'passed':1,'machine_id':bundle['machine_id'],'run_id':bundle['run_id'],
         'observed_at_utc':datetime.now(timezone.utc).isoformat(),
@@ -92,7 +145,7 @@ def main():
         'original_task_fields_all_exact':True,'only_declared_derived_extras':['age_seconds','stale'],
         'unsafe_state_resources_last_sequence_rejected':True,
         'SDK_or_game':False,'normal_exit_credit':False,'actual_process_inventory_scanned_once':True,
-        **allocator_checks}
+        **allocator_checks,**release_checks}
     if a.receipt:
         with a.receipt.open('x',encoding='utf-8',newline='\n') as f:json.dump(result,f,ensure_ascii=False,indent=2);f.write('\n')
         print(json.dumps({'receipt':subject.pin(a.receipt),'passed':1,'actual_canonical_list':True}))
