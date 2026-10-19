@@ -97,6 +97,8 @@
 
 继续使用已有中文参考声与IndexTTS链，沿[制作经验](../../promo/ck3_faith_and_power/docs/production-experience.md)及原V7配音/增量输入定位，不另换TTS音色。未改句和片段可按精确身份复用；改了语音或总声钟，字幕、章节、图层映射与最终检查必须随真实新时间轴生成。
 
+**2026-10-20声音来源更正：** 上段IndexTTS表述与一期最终实际请求不符，原文保留以便追溯。`machine_id: 4-8e1c2f1861`，`2026-10-19T18:53:36Z—18:55:05Z`，二期媒体分组沿`formal-input.final-a04.json`逐一读取136份最终原请求，voice全部为`zh-CN-XiaoxiaoNeural`；rate仅抽查首句为`-5%`，不据此追认全部参数。后续应继承实际成片声音，并从正式配方冻结provider/rate，不能根据本交接的旧表述改换声音链。出处与范围见[二期研究计划的同机素材观察](../../promo/ck3_faith_and_power/episode02/docs/research-and-production-plan.md#6-当前机器与素材观察)及该节引用的本机外置小回执。
+
 主题音乐沿用战争系列 **`promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav`**。第一期实际设置为旁白0dB、音乐−17dB，循环铺底、淡入2秒/淡出8秒，不做自动normalize、ducking或侧链；后续沿用这一静态设计，若改混音参数须记录并听实际输出。
 
 双语字幕以同一语义单元成对安排。完整拼接正确不等于中英文与听到的词句同步；使用正式字体检查实际裁切和合成像素、行宽、阅读量与当前概念，不能只查关键词或文本长度。
