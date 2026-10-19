@@ -1460,12 +1460,13 @@ def allocate_and_keep(selection,args):
         report_reference=None;report_projection=None
         failure_schema=read_json(failure_path).get('schema') if failure_path else None
         allocated_unused=failure_schema=='ck3-public-cell-pre-consumption-close-v1'
+        allocated_unrun=failure_schema=='ck3-mod-acceptance-allocated-unrun-closure-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
         prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
-        if allocated_unused or never_launched or prelaunch_host or pre_ready or failed_resource or failed_live:
+        if allocated_unused or allocated_unrun or never_launched or prelaunch_host or pre_ready or failed_resource or failed_live:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
@@ -1475,7 +1476,11 @@ def allocate_and_keep(selection,args):
         # The canonical bus event/task reconstruction is valid for a successful
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
-        if allocated_unused:
+        if allocated_unrun:
+            from ck3_mod_acceptance_unrun import validate_allocated_unrun
+            session_closure=validate_allocated_unrun(previous,freeze,failure_path,
+                            args.previous_keeper,release,bus_packet)
+        elif allocated_unused:
             session_closure=previous_allocated_unused_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
         elif failed_live:
