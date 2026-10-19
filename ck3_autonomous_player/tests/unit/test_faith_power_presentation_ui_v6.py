@@ -85,6 +85,21 @@ class Driver(NativeHeadlessGameplayDriver):
 
 
 class PresentationContracts(unittest.TestCase):
+    def test_personal_close_is_finite_ack_and_hidden_observation_are_separate(self):
+        op='close_presentation_window';actor=29829
+        self.assertEqual(request_fields(op,'personal_beliefs',actor),{})
+        for kind,subject,fields in [('holding',1503,{}),('faith',50,{}),('personal_beliefs',0,{}),
+                ('personal_beliefs',actor,{'presentation_tab':''}),('personal_beliefs',actor,{'presentation_index':0})]:
+            with self.assertRaises(ValueError):request_fields(op,kind,subject,**fields)
+        ack=raw('personal_beliefs',op,actor);ack['presentation_ui'].update(post_window_visible=None,action_owner_epoch=12)
+        result=normalize(ack,operation=op,kind='personal_beliefs',subject=actor)
+        self.assertTrue(result['verification_pending']);self.assertIsNone(result['presentation_ui']['post_window_visible'])
+        wrong=copy.deepcopy(ack);wrong['presentation_ui']['post_window_visible']=False
+        with self.assertRaises(ValueError):normalize(wrong,operation=op,kind='personal_beliefs',subject=actor)
+        driver=Driver(ack)
+        with self.assertRaises(BridgeUnavailableError):driver.present_faith_power_ui_v1(op,'personal_beliefs',actor+1,expected_revision=4)
+        self.assertFalse(driver.calls)
+
     def test_public_explicit_readonly_allowlists_match_tools_without_default_enable(self):
         overrides=globals().get('_CANDIDATE_SOURCES',{})
         root=Path(__file__).resolve().parents[3]
@@ -311,3 +326,26 @@ class McpProtocol(unittest.IsolatedAsyncioTestCase):
                 'operation':'open_rite_core_picker','window_kind':'rite_creation','subject_id':0,
                 'expected_revision':4,'presentation_index':128})
             self.assertTrue(invalid.is_error);self.assertEqual(len(driver.calls),count)
+
+    async def test_real_mcp_personal_close_then_independent_hidden_window_query(self):
+        from mcp import Client
+        from xar_autoplayer.bridge.mcp_server import create_server
+        def response(fields):
+            operation=fields.get('operation','query');value=raw('personal_beliefs',operation,29829)
+            if operation=='close_presentation_window':value['presentation_ui'].update(post_window_visible=None,action_owner_epoch=12)
+            else:
+                value['effective_visible']=False
+                for row in value['tree']['widgets']:row['effective_visible']=False
+                value['presentation_ui'].update(source_bound=False,post_window_visible=False)
+            return value
+        driver=Driver(response)
+        async with Client(create_server(driver)) as client:
+            for tool,args in [('ck3_present_faith_power_ui_v1',{'operation':'close_presentation_window','window_kind':'personal_beliefs','subject_id':29829,'expected_revision':4}),
+                    ('ck3_query_faith_power_ui_v1',{'window_kind':'personal_beliefs','subject_id':29829,'expected_revision':4})]:
+                result=await client.call_tool(tool,args);self.assertFalse(result.is_error)
+                value=result.structured_content;self.assertTrue(value['window_exists'])
+                MCP_OBSERVATIONS.append({'tool':tool,'arguments':args,'available':value['available'],
+                    'status':value['status'],'post_window_visible':value['presentation_ui']['post_window_visible'],
+                    'source_bound':value['presentation_ui']['source_bound'],'transport_snapshot_synthetic':True,'native_cpp_executed':False})
+            self.assertFalse(value['effective_visible']);self.assertFalse(value['presentation_ui']['post_window_visible'])
+        self.assertEqual([call[0] for call in driver.calls],['navigate-ingame-ui-v1','query-ingame-ui-window-v1'])

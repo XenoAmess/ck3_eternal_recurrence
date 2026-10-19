@@ -45,6 +45,14 @@ void FaithPowerPresentationContractFixture12004() {
     {R"({"window_kind":"faith","subject_id":0,"operation":"leave_presentation_tooltip","presentation_target":"faith_core_tenet","presentation_receipt":"0123456789abcdef0123456789abcdef"})",205},
     {R"({"window_kind":"holding","subject_id":1,"operation":"show_building_details","presentation_target":"holding_building_preview"})",206}}};
   for(const auto&[json,op]:operations){assert(ParseIngameUiRequestV1(json,false,r));assert(static_cast<std::uint32_t>(r.operation)==op);}
+  assert(ParseIngameUiRequestV1(R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window"})",false,r));
+  assert(static_cast<std::uint32_t>(r.operation)==208);
+  for(const auto invalid:std::array<std::string_view,4>{{
+      R"({"window_kind":"holding","subject_id":15893,"operation":"close_presentation_window"})",
+      R"({"window_kind":"personal_beliefs","subject_id":0,"operation":"close_presentation_window"})",
+      R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window","presentation_tab":""})",
+      R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window","presentation_index":0})"}})
+    assert(!ParseIngameUiRequestV1(invalid,false,r));
   PresentationPanel12004 p{};p.tree.root_available=true;
   const auto row=[&](std::string path,std::string name,bool visible=true,bool enabled=true){
     NamedGuiWidgetInspectionV1 x{};x.child_path=path;x.runtime_name=name;x.effective_visible=visible;x.enabled=enabled;p.tree.widgets.push_back(x);p.tree.widget_count=p.tree.widgets.size();};
@@ -195,6 +203,28 @@ void FaithPowerBuildingReceiverFixture12004(){
  assert(!read(true));assert(ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
  construct_callbacks=1;put(widgetp,0x404,construct_callbacks);assert(!ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
  fn=image+0x12B3260;put(cbp,0x48,fn);
+  // Exact loaded TypeDescriptor needs its relocated VA, all suffix pins stay exact.
+ for(const auto&pin:kPresentationDetailPins12004)for(std::size_t i=0;i<std::strlen(pin.hex)/2;++i)image[pin.rva+i]=static_cast<unsigned char>((digit(pin.hex[2*i])<<4)|digit(pin.hex[2*i+1]));
+ std::uintptr_t relocated_type_info=base+0x44210A0;put(image,0x5769298,relocated_type_info);assert(PresentationDetailSourcePins12004(e));
+ std::uintptr_t wrong_type_info=relocated_type_info+8;put(image,0x5769298,wrong_type_info);assert(!PresentationDetailSourcePins12004(e));put(image,0x5769298,relocated_type_info);
+ image[0x5769298+16]^=1;assert(!PresentationDetailSourcePins12004(e));image[0x5769298+16]^=1;assert(PresentationDetailSourcePins12004(e));
+ // Original rect consumer never reads a root's cumulative114. Zero/NaN in
+ // that unused field must not reject otherwise valid source geometry.
+ std::array<unsigned char,0x140>geometry_source{},geometry_root{};void*geometry_rootp=geometry_root.data();float scale=1,zero_scale=0;
+ put(geometry_source.data(),0xD8,guip);put(geometry_source.data(),0xE8,geometry_rootp);put(geometry_source.data(),0x110,scale);put(geometry_source.data(),0x114,scale);
+ put(geometry_rootp,0xD8,guip);put(geometry_rootp,0x110,scale);std::vector<PresentationPositionAncestor12004>ancestors;std::string geometry_why;
+ assert(ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));
+ put(geometry_source.data(),0x114,zero_scale);assert(!ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));put(geometry_source.data(),0x114,scale);
+ auto unused_nan=(std::numeric_limits<float>::quiet_NaN)();put(geometry_rootp,0x114,unused_nan);assert(ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));
+  // Test the actual loaded-method admission without calling an engine function.
+ for(const auto&p:kPresentationPersonalClosePins12004)for(std::size_t i=0;i<std::strlen(p.hex)/2;++i)image[p.rva+i]=static_cast<unsigned char>((digit(p.hex[2*i])<<4)|digit(p.hex[2*i+1]));
+ std::array<unsigned char,8>close_window{};void*personal_vt=image+0x4592C08;
+ put(close_window.data(),0,personal_vt);
+ for(const auto&pair:std::array<std::pair<std::size_t,std::uintptr_t>,4>{{{0x88,0x17E1130},{0x20,0x110B0E0},{0x38,0x2160380},{0x50,0xAED360}}}){void*fn=image+pair.second;put(personal_vt,pair.first,fn);}
+ assert(PresentationPersonalCloseSlots12004(base,close_window.data()));
+ void*wrong_close=image+0x17E1110;put(personal_vt,0x88,wrong_close);assert(!PresentationPersonalCloseSlots12004(base,close_window.data()));
+ void*normal_close=image+0x17E1130;put(personal_vt,0x88,normal_close);
+ image[0x17E1130]^=1;assert(!PresentationPersonalCloseSlots12004(base,close_window.data()));image[0x17E1130]^=1;
   // Installed-row ownership is array membership; row[0] is its group, not view.
  rowp=slot.data();void*owned=slot.data(),*groupowner=static_cast<unsigned char*>(viewp)+0x100;
  put(viewp,0x100,owned);put(viewp,0x108,one);put(viewp,0x10C,one);put(rowp,0,groupowner);put(rowp,8,building);put(entryp,0,rowp);

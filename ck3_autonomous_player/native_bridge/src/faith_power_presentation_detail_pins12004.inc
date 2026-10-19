@@ -1,7 +1,6 @@
 // Exact4 bounded ShowDetails loaded-code pins.
-bool PresentationDetailSourcePins12004(const ZhongguoScoreboardNativeEnvironmentV1&env) {
-struct Pin{std::uintptr_t rva;const char*hex;};
-static constexpr Pin pins[]{
+struct PresentationDetailPin12004{std::uintptr_t rva;const char*hex;};
+static constexpr PresentationDetailPin12004 kPresentationDetailPins12004[]{
 {0x1a2340U,"4c8bdc4881ec88000000498d43b84989430833c0498943c0498943b8498943c8"},
 {0x12b3260U,"4883ec384885c97428488b4108448b41104c8bc8488b09c7442420010000008b"},
 {0x12be718U,"8b041f39053f81a9040f8f040300008b1d3781a904899da8000000803d3c1aa8"},
@@ -18,9 +17,18 @@ static constexpr Pin pins[]{
 {0x4b348a8U,"01000000000000000000000098927605b831b304a848b304"},
 {0x5769298U,"a01042440100000000000000000000002e3f4156434275696c64696e67547261"},
 };
+bool PresentationDetailSourcePins12004(const ZhongguoScoreboardNativeEnvironmentV1&env) {
 std::array<unsigned char,32>raw{};
 const auto digit=[](char c)->unsigned{return c<='9'?unsigned(c-'0'):unsigned(c-'a'+10);};
-for(const auto&p:pins){const auto n=std::strlen(p.hex)/2;if(n>raw.size()||!Read(reinterpret_cast<const void*>(env.module_base+p.rva),raw.data(),n))return false;
-for(std::size_t i=0;i<n;++i)if(raw[i]!=((digit(p.hex[2*i])<<4)|digit(p.hex[2*i+1])))return false;}
+for(const auto&p:kPresentationDetailPins12004){const auto n=std::strlen(p.hex)/2;if(n>raw.size()||!Read(reinterpret_cast<const void*>(env.module_base+p.rva),raw.data(),n))return false;
+std::size_t first=0;
+if(p.rva==0x5769298U){
+  // This TypeDescriptor's first qword is a loader-relocated type_info vftable
+  // VA, not immutable file bytes. Keep exact vftable RVA and all suffix pins.
+  std::uintptr_t actual=0;std::memcpy(&actual,raw.data(),sizeof(actual));
+  if(env.module_base>(std::numeric_limits<std::uintptr_t>::max)()-0x44210A0U||actual!=env.module_base+0x44210A0U)return false;
+  first=sizeof(actual);
+}
+for(std::size_t i=first;i<n;++i)if(raw[i]!=((digit(p.hex[2*i])<<4)|digit(p.hex[2*i+1])))return false;}
 return true;
 }

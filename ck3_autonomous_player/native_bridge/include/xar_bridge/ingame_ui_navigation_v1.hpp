@@ -36,7 +36,7 @@ enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, sele
   select_holy_site_creation_barony=16, set_holy_site_creation_artifact_selection=17, create_holy_site_once=18,
   select_relic_artifact=100, set_relic_slot=101, enshrine_relic=102, remove_relic=103,
   open_holding=200, open_personal_beliefs=201, select_presentation_tab=202,
-  open_rite_core_picker=203, hover_presentation_tooltip=204, leave_presentation_tooltip=205, show_building_details=206, open_building_track=207 };
+  open_rite_core_picker=203, hover_presentation_tooltip=204, leave_presentation_tooltip=205, show_building_details=206, open_building_track=207, close_presentation_window=208 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
 struct CombatUiGeometryV1 {

@@ -15,7 +15,7 @@ PresentationTarget = Literal["faith_core_tenet", "faith_doctrine", "personal_ten
 PresentationTab = Literal["", "beliefs", "holy_sites", "tenets", "doctrines"]
 PresentationOperation = Literal["query", "open_holding", "open_personal_beliefs",
     "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip",
-    "leave_presentation_tooltip", "show_building_details", "open_building_track"]
+    "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window"]
 
 WINDOW_ROOTS = {"faith": "faith_window", "holding": "holding_view",
     "personal_beliefs": "window_personal_beliefs", "rite_creation": "rite_creation_window"}
@@ -27,7 +27,7 @@ RESPONSE_TARGET_KIND = {**TARGET_KIND, "rite_core_tenet_slot": "rite_creation"}
 TABS = {"faith": {"beliefs", "holy_sites"}, "personal_beliefs": {"tenets", "doctrines"}}
 NEW_OPERATIONS = {"open_holding", "open_personal_beliefs", "select_presentation_tab",
     "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip",
-    "show_building_details", "open_building_track"}
+    "show_building_details", "open_building_track", "close_presentation_window"}
 _RECEIPT = re.compile(r"[0-9a-f]{32}\Z")
 
 
@@ -96,6 +96,9 @@ def request_fields(operation: str, kind: str, subject_id: int, *, presentation_t
     elif operation == "show_building_details":
         if kind != "holding" or target != "holding_building_preview" or presentation_index is None or tab or presentation_receipt is not None:
             raise ValueError("ShowDetails requires an original potential-building preview; installed-slot clicks are not admitted")
+    elif operation == "close_presentation_window":
+        if kind != "personal_beliefs" or any(v is not None for v in values.values()):
+            raise ValueError("closing admits only the current player personal beliefs window, without selector fields")
     else:
         expected = {"open_holding": "holding", "open_personal_beliefs": "personal_beliefs"}[operation]
         if kind != expected or any(v is not None for v in values.values()):
@@ -207,6 +210,9 @@ def normalize_presentation_result(value: dict, *, operation: str, kind: str, sub
                 "show_building_details": "holding_building_preview", "open_building_track": "holding_building"}[operation]
             if leaf["target_kind"] != expected_kind or leaf["target_index"] != presentation_index:
                 raise ValueError("presentation ACK lost the current original GUI container row identity")
+    if operation == "close_presentation_window" and leaf["available"]:
+        if leaf["post_window_visible"] is not None or leaf["action_owner_epoch"] is None:
+            raise ValueError("close ACK must retain unknown postvisibility until an independent window query")
     if operation == "hover_presentation_tooltip" and leaf["available"]:
         if receipt is None or leaf["action_owner_epoch"] is None or not leaf["source_bound"]:
             raise ValueError("tooltip hover ACK lacks a minted source-bound receipt")

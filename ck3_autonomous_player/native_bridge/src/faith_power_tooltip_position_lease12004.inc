@@ -37,17 +37,22 @@ bool PresentationPositionTls12004(MainThreadTlsContextGetterV1 getter,std::uintp
 #endif
 }
 bool ReadPresentationPositionFrame12004(const ZhongguoScoreboardNativeEnvironmentV1&e,
-    PresentationPositionFrame12004&out) noexcept {
- out={};auto*m=presentation_position_mailbox12004;
- if(!m||m->module_base!=e.module_base||m->stop_requested.load(std::memory_order_acquire)||
-     m->owner_thread_id.load(std::memory_order_acquire)!=GetCurrentThreadId())return false;
- return Slot(m->jomini_state_slot,out.jomini)&&out.jomini&&Slot(m->game_state_slot,out.game)&&out.game&&
-     Slot(m->tls_initialized_flag,out.initialized)&&out.initialized==1&&
-     PresentationPositionTls12004(m->tls_context_getter,out.tls)&&
-     Value(reinterpret_cast<void*>(out.tls),kMainThreadTlsMarkerOffset,out.main)&&out.main==1&&
-     Value(reinterpret_cast<void*>(out.jomini),kJominiPausedOffset,out.paused)&&out.paused!=0&&
-     Value(reinterpret_cast<void*>(out.game),kGameStateDateRawOffset,out.date)&&
-     Slot(e.module_base+0x54DBC00,out.actor)&&out.actor!=0&&out.actor!=0xFFFFFFFFU;
+    PresentationPositionFrame12004&out,std::string*why=nullptr) {
+ out={};const auto fail=[&](const char*reason){if(why)*why=reason;return false;};
+ auto*m=presentation_position_mailbox12004;
+ if(!m)return fail("presentation_position_mailbox_missing");
+ if(m->module_base!=e.module_base)return fail("presentation_position_mailbox_module_differs");
+ if(m->stop_requested.load(std::memory_order_acquire))return fail("presentation_position_owner_stopped");
+ if(m->owner_thread_id.load(std::memory_order_acquire)!=GetCurrentThreadId())return fail("presentation_position_owner_thread_differs");
+ if(!Slot(m->jomini_state_slot,out.jomini)||!out.jomini)return fail("presentation_position_jomini_slot_unreadable_or_null");
+ if(!Slot(m->game_state_slot,out.game)||!out.game)return fail("presentation_position_game_slot_unreadable_or_null");
+ if(!Slot(m->tls_initialized_flag,out.initialized)||out.initialized!=1)return fail("presentation_position_tls_flag_unverified");
+ if(!PresentationPositionTls12004(m->tls_context_getter,out.tls))return fail("presentation_position_original_tls_getter_failed");
+ if(!Value(reinterpret_cast<void*>(out.tls),kMainThreadTlsMarkerOffset,out.main)||out.main!=1)return fail("presentation_position_tls_main_marker_unverified");
+ if(!Value(reinterpret_cast<void*>(out.jomini),kJominiPausedOffset,out.paused)||!out.paused)return fail("presentation_position_actual_pause_unverified");
+ if(!Value(reinterpret_cast<void*>(out.game),kGameStateDateRawOffset,out.date))return fail("presentation_position_actual_date_unreadable");
+ if(!Slot(e.module_base+0x54DBC00,out.actor)||!out.actor||out.actor==0xFFFFFFFFU)return fail("presentation_position_actual_actor_unreadable_or_invalid");
+ return true;
 }
 bool ReadPresentationPositionSource12004(const PresentationPositionLease12004&lease,
     PresentationPositionSource12004&out) {
@@ -106,59 +111,81 @@ struct PresentationPositionAncestor12004 {
  bool operator==(const PresentationPositionAncestor12004&)const=default;
 };
 bool ReadPresentationPositionAncestors12004(void*source,void*context,
-    std::vector<PresentationPositionAncestor12004>&out) {
+    std::vector<PresentationPositionAncestor12004>&out,std::string*why=nullptr) {
  out.clear();void*at=source;
+ const auto fail=[&](const char*reason){if(why)*why=std::string(reason)+";depth="+std::to_string(out.size());return false;};
  while(at){
-   if(out.size()>=64||std::any_of(out.begin(),out.end(),[&](const auto&r){return r.widget==at;}))return false;
+   if(out.size()>=64||std::any_of(out.begin(),out.end(),[&](const auto&r){return r.widget==at;}))return fail("presentation_geometry_parent_cycle_or_bound");
    PresentationPositionAncestor12004 r{};r.widget=at;
-   if(!Value(at,0xD8,r.context)||r.context!=context||!Value(at,0xE8,r.parent)||
-       !Value(at,0x110,r.scale)||!Value(at,0x114,r.cumulative)||
-       !std::isfinite(r.scale)||r.scale<=0||r.scale>64||!std::isfinite(r.cumulative)||r.cumulative<=0||r.cumulative>4096)return false;
+   if(!Value(at,0xD8,r.context)||!Value(at,0xE8,r.parent)||!Value(at,0x110,r.scale))return fail("presentation_geometry_ancestor_fields_unreadable");
+   if(r.context!=context)return fail("presentation_geometry_ancestor_context_differs");
+   if(!std::isfinite(r.scale)||r.scale<=0||r.scale>64)return fail("presentation_geometry_ancestor_scale_invalid");
+   // Original3A75EA0 uses +114 only on the source when it has a parent.
+   // Root/other ancestors' unused fields are neither gated nor bookended.
+   if(at==source&&r.parent){
+     if(!Value(at,0x114,r.cumulative))return fail("presentation_geometry_source_cumulative_unreadable");
+     if(!std::isfinite(r.cumulative)||r.cumulative<=0||r.cumulative>4096)return fail("presentation_geometry_source_cumulative_invalid");
+   }
    out.push_back(r);at=r.parent;
  }
- return !out.empty();
+ return !out.empty()||fail("presentation_geometry_source_null");
 }
-bool InvokePresentationPositionRect12004(std::uintptr_t base,void*source,const UiRectV1&local,UiRectV1&rect) noexcept {
+bool InvokePresentationPositionRect12004(std::uintptr_t base,void*source,const UiRectV1&local,UiRectV1&rect,const char*&why) noexcept {
 #if defined(_MSC_VER)
- __try{return reinterpret_cast<GuiRectGetter>(base+0x3A75EA0)(source,&rect,&local)==&rect;}
- __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+ __try{if(reinterpret_cast<GuiRectGetter>(base+0x3A75EA0)(source,&rect,&local)!=&rect){why="presentation_geometry_original_transform_unexpected_return";return false;}return true;}
+ __except(EXCEPTION_EXECUTE_HANDLER){why="presentation_geometry_original_transform_fault";return false;}
 #else
  return false;
 #endif
 }
-bool PresentationPositionPoint12004(const PresentationPositionLease12004&lease,std::uint64_t&point) {
+bool PresentationPositionPoint12004(const PresentationPositionLease12004&lease,std::uint64_t&point,std::string*why=nullptr) {
  const auto&e=lease.environment;void*source=lease.source.source;
+ const auto fail=[&](const std::string&reason){if(why)*why=reason;return false;};
  // Original exact4 3A77D60 tests local [0,width128)x[0,height12C).
  // Exact4 3A75EA0 is its original local-rect to input-point-space transform.
  constexpr std::array<unsigned char,16>pin{0x48,0x89,0x5C,0x24,0x18,0x55,0x56,0x57,0x48,0x83,0xEC,0x40,0x0F,0x29,0x74,0x24};
  std::array<unsigned char,16>actual{};
- if(!Read(reinterpret_cast<void*>(e.module_base+0x3A75EA0),actual.data(),actual.size())||actual!=pin)return false;
+ if(!Read(reinterpret_cast<void*>(e.module_base+0x3A75EA0),actual.data(),actual.size())||actual!=pin)return fail("presentation_geometry_loaded_rect_transform_prefix_mismatch");
  std::vector<PresentationPositionAncestor12004>first,last;
  UiRectV1 local{},again{},rect{};
- if(!ReadPresentationPositionAncestors12004(source,lease.binding.gui.context,first)||
-     !Value(source,0x128,local.width)||!Value(source,0x12C,local.height)||!FiniteRect(local,true)||
-     !InvokePresentationPositionRect12004(e.module_base,source,local,rect)||!FiniteRect(rect,true)||
-     !Value(source,0x128,again.width)||!Value(source,0x12C,again.height)||local.width!=again.width||local.height!=again.height||
-     !ReadPresentationPositionAncestors12004(source,lease.binding.gui.context,last)||last!=first)return false;
+ if(!ReadPresentationPositionAncestors12004(source,lease.binding.gui.context,first,why))return false;
+ if(!Value(source,0x128,local.width)||!Value(source,0x12C,local.height))return fail("presentation_geometry_source_extent_unreadable");
+ if(!FiniteRect(local,true))return fail("presentation_geometry_source_extent_invalid;w="+std::to_string(local.width)+";h="+std::to_string(local.height));
+ const char*call_failure="presentation_geometry_original_transform_not_available";
+ if(!InvokePresentationPositionRect12004(e.module_base,source,local,rect,call_failure))return fail(call_failure);
+ if(!FiniteRect(rect,true))return fail("presentation_geometry_original_rect_invalid;w="+std::to_string(rect.width)+";h="+std::to_string(rect.height));
+ if(!Value(source,0x128,again.width)||!Value(source,0x12C,again.height))return fail("presentation_geometry_extent_bookend_unreadable");
+ if(local.width!=again.width||local.height!=again.height)return fail("presentation_geometry_extent_bookend_changed");
+ if(!ReadPresentationPositionAncestors12004(source,lease.binding.gui.context,last,why))return false;
+ if(last!=first)return fail("presentation_geometry_ancestor_bookend_changed");
  const UiFloat2V1 xy{rect.x+rect.width/2,rect.y+rect.height/2};
- if(!std::isfinite(xy.x)||!std::isfinite(xy.y)||std::abs(xy.x)>1048576||std::abs(xy.y)>1048576)return false;
+ if(!std::isfinite(xy.x)||!std::isfinite(xy.y)||std::abs(xy.x)>1048576||std::abs(xy.y)>1048576)return fail("presentation_geometry_final_native_point_invalid");
  static_assert(sizeof(xy)==sizeof(point));std::memcpy(&point,&xy,sizeof(point));return true;
 }
 bool PreparePresentationTooltipPosition12004(const ZhongguoScoreboardNativeEnvironmentV1&e,
     const IngameUiRequestV1&r,const game::Snapshot&snapshot,const MainThreadExecutionStampV1&stamp,
-    const PresentationTargetBinding12004&binding,void*handler,std::string_view nonce) {
+    const PresentationTargetBinding12004&binding,void*handler,std::string_view nonce,std::string&why) {
  CancelPresentationTooltipPosition12004();
- if(!PresentationTooltipPositionHooksReady12004()||!presentation_position_mailbox12004||
-     !r.connection_generation||presentation_position_connection12004.load(std::memory_order_acquire)!=r.connection_generation)return false;
+ why.clear();const auto fail=[&](const char*reason){why=reason;return false;};
+ if(!PresentationTooltipPositionHooksReady12004())return fail("presentation_position_fixed_hooks_not_ready");
+ if(!presentation_position_mailbox12004)return fail("presentation_position_mailbox_not_bound");
+ if(!r.connection_generation||presentation_position_connection12004.load(std::memory_order_acquire)!=r.connection_generation)return fail("presentation_position_active_connection_differs");
  PresentationPositionLease12004 next{};next.environment=e;next.binding=binding;next.handler=handler;
  next.window_kind=static_cast<std::uint32_t>(r.window_kind);next.origin_epoch=stamp.pump_epoch;
  next.generation=r.connection_generation;next.nonce=nonce;
  PresentationPositionFrame12004 last{};PresentationPositionSource12004 source2{};std::uint64_t point=0;
- if(!ReadPresentationPositionFrame12004(e,next.frame)||next.frame.jomini!=stamp.jomini_state||
-     next.frame.game!=stamp.game_state||next.frame.tls!=stamp.tls_context||next.frame.actor!=static_cast<std::uint32_t>(snapshot.played_character_id)||
-     next.frame.date!=snapshot.date_raw||!ReadPresentationPositionSource12004(next,next.source)||
-     !PresentationPositionPoint12004(next,point)||!ReadPresentationPositionSource12004(next,source2)||source2!=next.source||
-     !ReadPresentationPositionFrame12004(e,last)||last!=next.frame)return false;
+ if(!ReadPresentationPositionFrame12004(e,next.frame,&why))return false;
+ if(next.frame.jomini!=stamp.jomini_state)return fail("presentation_position_stamp_jomini_differs");
+ if(next.frame.game!=stamp.game_state)return fail("presentation_position_stamp_game_differs");
+ if(next.frame.tls!=stamp.tls_context)return fail("presentation_position_stamp_tls_differs");
+ if(next.frame.actor!=static_cast<std::uint32_t>(snapshot.played_character_id))return fail("presentation_position_snapshot_actor_differs");
+ if(next.frame.date!=snapshot.date_raw)return fail("presentation_position_snapshot_date_differs");
+ if(!ReadPresentationPositionSource12004(next,next.source))return fail("presentation_position_current_source_binding_unverified");
+ if(!PresentationPositionPoint12004(next,point,&why))return false;
+ if(!ReadPresentationPositionSource12004(next,source2))return fail("presentation_position_source_bookend_unreadable");
+ if(source2!=next.source)return fail("presentation_position_source_bookend_changed");
+ if(!ReadPresentationPositionFrame12004(e,last,&why))return false;
+ if(last!=next.frame)return fail("presentation_position_actual_frame_bookend_changed");
  next.failure="presentation_tooltip_position_waiting_original_update";
  presentation_position_lease12004=std::move(next);return true;
 }

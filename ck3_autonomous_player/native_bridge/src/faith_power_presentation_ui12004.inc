@@ -290,6 +290,39 @@ std::optional<std::string>PresentationCoreClickPath12004(const PresentationPanel
   }
   if(index>=rows.size())return std::nullopt;return rows[index];
 }
+constexpr PresentationOpeningPin12004 kPresentationPersonalClosePins12004[] = {
+  {0x17E1130U,"c6817001000000488b0582e5530448898178010000488b0148ff6020"},
+  {0x110B0E0U,"40534883ec30488b01488bd9ff503884c0745b488b4b604885c9740a4533c033d2e87ab49602488b03488bcbff50503d00080000752b488b0d3bf2b5044c8d0d2c8940044c8d054d894004c74424200000000033d2e83a5d1503c6803912000001488bcb4883c4305be9820100004883c4305bc3"},
+  {0x2160380U,"48895c2408574883ec20488b59604885db7470ba01000000488bcbe8406397014863f883ffff741ae8c335aa014c69c708030000488b004180bc0000030000007541f683d000000008742b33d2488bcbe80b6397014863d883fbff7426e88e35aa014869d308030000488b0080bc020003000000740db001488b5c24304883c4205fc3488b5c243032c04883c4205fc3"},
+  {0xAED360U,"b880000000c3"},
+  {0x110B2D0U,"48895c241848896c2420564883ec20488ba9a0000000488db1a80000000fb60633db2401754f4533c98d4b010f1f40004e8b04ce4d85c074210f1f8000000000ba0100000048d3e2488bc24923c0483bc27450ffc183f94072e649ffc133c94983f90372cb41c1e106bbad000000443bcb410f4cd948897c2438660f1f44000081fbad0000000f84b200000081fbac00000077238bd3488bcde8723ea0ff488bf8eb1641c1e106bbad000000418d04093bc30f4cd8ebbe33ff488b07488bcfff503884c0740c488b07488bcfff908800000081fbad0000007dac4c63c383e33fffc349c1e8064983f803733b0f1f40004e8b0cc64d85c9742383fb40731e66908bcbba0100000048d3e2488bc24923c1483bc27412ffc383fb4072e449ffc033db4983f80372c941c1e006418d0418bbad0000003bc30f4cd8e942ffffff488b7c2438488b5c2440488b6c24484883c4205ec3"},
+  {0x3A76580U,"48896c2410488974241848897c242041564883ec20488bf1450fb6f00fb6ca0fb6fa80f101c0e1040fb686d000000024ef0ac80fb6e9888ed000000040c0ed044080e50184d27439488b86e80000004885c0742df680d0000000087521488b90e80000004885d274100fb682d0000000c0e803f6d0a80174054032edeb0340b501f6c1087520488b86e80000004885c074100fb680d0000000c0e803f6d0a801740432c0eb02b00148895c24304084ed0f849700000084c0745c33d2488bcee89c0006004863d883fbff7419e81fd318004869d308030000488b0080bc0200030000007531488bce4084ff741333d2e86c0006008bc8e8b5fc0500e9e1000000ba01000000e8560006008bc8e89ffc0500e9cb00000033d2488bce4584f67425e83b0006008bc8e8e4fa0500ba01000000488bcee8270006008bc8e870fc0500e99c00000041be01000000eb6884c0752eba01000000488bcee8020006004863d883fbff747be885d218004869d308030000488b0080bc0200030000007462488bce4584f67424ba01000000e8cfff05008bc8e878fa050033d2488bcee8beff05008bc8e807fc0500eb3633d2448bf2ba01000000488bdee8a3ff0500418bd6488bcb8bf8e896ff05008bcf8bd8e83dfa05000f28c88bcbe863f7050084c0750c400fb6d5488bcee823000000488b5c2430488b6c2438488b742440488b7c24484883c420415ec3"},
+  {0x3A76790U,"48895c241048896c2418488974242057415641574883ec400fb6da488bf90fb689d0000000f6c110750984d275054532ffeb0341b7010fb6c1c0e8032401413ac70f847b01000080e1f7410fb6c7c0e0030ac8888fd0000000488b87d800000033f6c64424340189742428f6c1087427c74424300a000000488d0dc1e3ee0048894c24204c8d442420488bd7488bc8e8dcf1020090eb25c744243009000000488d0d8ae3ee0048894c24204c8d442420488bd7488bc8e8b5f1020090488b8fc80000004885c9740c488b0180f3010fb6d3ff50488977408b473489474485c07e448bc60f1f4000660f1f84000000000048897c24604898488d0cc0488b4728488b4cc8404885c90f84ce000000488b01488d542460ff50108b4740ffc08947403b47447ccb48c74740000000004c63b7fc0000004d85f67e5f0f1f8000000000488b87f0000000488b2cf00fb69dd0000000c0eb0380e301410fb6d7488bcde89cfeffff0fb685d0000000c0e80324013ac3741c488bcd84c0740433d2eb05ba01000000e8c7fd05008bc8e870f8050048ffc6493bf67ca8f687d0000000087521f687d100000002741841b9060000004533c0488bd7488b8fd8000000e8de010300488b5c2468488b6c2470488b7424784883c440415f415e5fc3e8889e7a00"},
+};
+bool PresentationPersonalCloseSlots12004(std::uintptr_t base,void*window) noexcept {
+  if(!base||!window)return false;
+  for(const auto&p:kPresentationPersonalClosePins12004){
+    const std::string_view hex=p.hex;
+    for(std::size_t at=0;at<hex.size();at+=784)
+      if(!PtpHexMatches12004(base+p.rva+at/2,hex.substr(at,784)))return false;
+  }
+  std::uintptr_t vt=0,close=0,hide=0,is_open=0,flags=0;
+  return Value(window,0,vt)&&vt==base+0x4592C08&&
+      Value(reinterpret_cast<void*>(vt),0x88,close)&&close==base+0x17E1130&&
+      Value(reinterpret_cast<void*>(vt),0x20,hide)&&hide==base+0x110B0E0&&
+      Value(reinterpret_cast<void*>(vt),0x38,is_open)&&is_open==base+0x2160380&&
+      Value(reinterpret_cast<void*>(vt),0x50,flags)&&flags==base+0xAED360;
+}
+// Original class normal Close/Hide, not an asserted GUI reflection binding.
+// Keep its original associated-view closure and GUI hide callbacks intact.
+bool InvokePresentationPersonalClose12004(std::uintptr_t base,void*window,bool&attempted) noexcept {
+#if defined(_MSC_VER)
+  __try{attempted=true;reinterpret_cast<void(__fastcall*)(void*)>(base+0x17E1130)(window);return true;}
+  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+#else
+  (void)base;(void)window;(void)attempted;return false;
+#endif
+}
 bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,const IngameUiRequestV1&r,
     const game::Snapshot&snapshot,const MainThreadExecutionStampV1&stamp,
     const IngameUiGuiOwnerBindingV1&gui,void*handler,IngameUiResultV1&out) {
@@ -341,6 +374,27 @@ bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
     }
     if(!panel.present||!panel.visible||!panel.enabled||!panel.subject_available||panel.subject!=r.subject_id||
         (r.window_kind==IngameUiWindowKindV1::personal_beliefs&&panel.subject!=static_cast<std::uint32_t>(snapshot.played_character_id)))return fail("presentation_action_current_subject_not_bound");
+    if(operation==208){
+      if(r.window_kind!=IngameUiWindowKindV1::personal_beliefs||
+          stamp.tls_initialized!=1||stamp.tls_main_thread_marker!=1||!stamp.tls_context||
+          !ReadModalNavigationAdmission(gui.context,out.modal_admission))return fail("presentation_personal_close_owner_or_modal_admission_failed");
+      if(!PresentationPersonalCloseSlots12004(env.module_base,panel.window))return fail("presentation_personal_close_loaded_method_or_slots_unverified");
+      PresentationPanel12004 last{};std::uint32_t actor=0xFFFFFFFFU;
+      if(!ReadPresentationPanel12004(env,r,snapshot,stamp.pump_epoch,gui,handler,last,why)||
+          last.window!=panel.window||last.root!=panel.root||!last.present||!last.visible||!last.enabled||
+          !last.subject_available||last.subject!=panel.subject||last.subject!=r.subject_id||
+          !Slot(env.module_base+0x54DBC00,actor)||actor!=r.subject_id||
+          !PresentationPersonalCloseSlots12004(env.module_base,last.window))return fail("presentation_personal_close_binding_changed_before_original_method");
+      if(!InvokePresentationPersonalClose12004(env.module_base,last.window,out.native_dispatch_attempted)){
+        out.verification_pending=out.native_dispatch_attempted;
+        return fail("presentation_personal_close_result_unknown_do_not_retry_if_attempted");
+      }
+      out.dispatch_invoked=true;out.verification_pending=true;
+      v.action_owner_epoch=stamp.pump_epoch;v.observation_owner_epoch.reset();v.post_window_visible.reset();
+      v.active_tab.reset();v.tab_observed=false;v.picker_observed=false;v.preview_observed=false;
+      v.available=true;v.status="acknowledged_verification_pending";v.unavailable_reason.clear();
+      out.available=true;out.status=v.status;out.unavailable_reason.clear();return true;
+    }
     std::optional<std::string>path;
     if(operation==202)path=PresentationTabClickPath12004(r,panel);
     if(operation==203)path=PresentationCoreClickPath12004(panel,r.presentation_index);

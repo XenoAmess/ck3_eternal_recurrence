@@ -934,6 +934,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
     else if(operation=="leave_presentation_tooltip")r.operation=IngameUiOperationV1::leave_presentation_tooltip;
     else if(operation=="show_building_details")r.operation=IngameUiOperationV1::show_building_details;
     else if(operation=="open_building_track")r.operation=IngameUiOperationV1::open_building_track;
+    else if(operation=="close_presentation_window")r.operation=IngameUiOperationV1::close_presentation_window;
     else return false;
   }
   if(ck3_12004::religion::relic_actions::IsOperation(static_cast<std::uint32_t>(r.operation))){

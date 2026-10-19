@@ -1,0 +1,84 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "collected_at_utc": "2026-10-19T00:18:47.345168+00:00",
+  "source_commit_at_R25": "8e1205135b6d7d675e6dbe76e4e9be47960db6f2",
+  "sources": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a14-tooltip\\qualification-a01.json",
+      "bytes": 59389,
+      "sha256": "064aa7fde17366b6ea14a308923637e1780b0f9a6efdf85a67d4e4356c28f1ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0025\\ORIGINAL-GUI-CAPTURE-INDEX-a01.json",
+      "bytes": 12062,
+      "sha256": "4d2817aa33c38e996387d795ae8f6f5b399c164c5948c1db96cc8782aba19dfd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0025\\r25-preparation-guard-probe-a02.json",
+      "bytes": 8807,
+      "sha256": "13544ee75eb8aac7eeb5f9ea54701d0148b0d92a80af75faf124be8c163d4d64"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0025\\root-keeper-stop-proof-a01.json",
+      "bytes": 2273,
+      "sha256": "8f5a9d331aaa73b7089487666f7346a9eddd4d683b965af0eef3e19ffc4d0b00"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0025\\root-screen-release-a01.json",
+      "bytes": 1435,
+      "sha256": "afa2bacb2306fefe9e1acc4a9db3c8bc6dfcbc69687c89fc8766205b19336e3e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0025\\COMPLETED-CAPACITY-a01.json",
+      "bytes": 6704,
+      "sha256": "70632a2974d362f330992f8327767ba3ededa5294e45950b44ca1c9417074c6a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\runtime\\r25-raw-qa-a01\\DELIVERY.json",
+      "bytes": 6868,
+      "sha256": "1d6cbef9335a26171f547cf84e180322b51e67d1a1c9725643ac537bb3a821cb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\runtime\\r25-raw-qa-a01\\CLOSED.json",
+      "bytes": 1281,
+      "sha256": "772ac4dc990b54f5e17c07a1caae6d490ea2a0471c5641428d57cc199f57dd7b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\continuous-lessons-a04\\APPEND-CANDIDATE-a02.md",
+      "bytes": 5654,
+      "sha256": "1b4ac4452be77baa369e02a93f63f4223c555b93d6babacd79c21d7ab6c02001"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-a15-independent-review-a01\\REVIEW.md",
+      "bytes": 3863,
+      "sha256": "baba578bf333197d55c6c5e12eb6ade7ca1c0b1cca622a2117f6d70ec2354baa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\native-a15-independent-review-a01\\CLOSE-REVIEW.md",
+      "bytes": 4967,
+      "sha256": "ec3a95a8c5f745dcf65c9ad4e03e475126c0d47747dfb2b02f7cf435760285db"
+    }
+  ],
+  "Root_direct_original_pixel_reviews": [
+    "operator-frame-20261018T232913Z.png",
+    "operator-frame-20261018T234206Z.png",
+    "operator-frame-20261018T234332Z.png",
+    "operator-frame-20261018T235442Z.png"
+  ],
+  "original_images_rehashed_by_this_collector": false,
+  "direct_review_scope": "Only named original stills and SC11 composite a09; not whole raw or final video",
+  "raw_QA": "Each raw exactly one strict decode and one all-frame PTS check, actual exit0; no re-encoding or new frame extraction",
+  "two_focused_Python_tests": {
+    "actual_root_tool_chunk": "b55d29",
+    "exit_code": 0,
+    "count": 2,
+    "scope": "Current production MCP-Service-Driver and finite close/independent-query contract; transport/snapshot synthetic; no native/live qualification"
+  },
+  "new_native_close_and_guard_code_compiled": false,
+  "new_native_close_live_verified": false,
+  "after_load_injection_not_cold_startup": true,
+  "world_Confirm_or_new_checkpoint": false,
+  "capture_stage_retained_upper_bytes": 570839752,
+  "new_project_aggregate_upper_bytes": 45550848906,
+  "review_at_utc": "2026-10-26T00:15:25Z"
+}

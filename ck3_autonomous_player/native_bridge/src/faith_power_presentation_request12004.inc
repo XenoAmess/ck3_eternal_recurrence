@@ -37,6 +37,7 @@ bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
   if(o==205)return !t.empty()&&ArmyTooltipNonceValid(r.presentation_receipt);
   if(o==206)return k==9&&t=="holding_building_preview"&&tab.empty()&&r.presentation_receipt.empty();
   if(o==207)return k==9&&t=="holding_building"&&tab.empty()&&r.presentation_receipt.empty();
+  if(o==208)return k==10&&r.subject_id>0&&!r.presentation_requested; // No selector fields, including explicit empty/zero markers.
   return false;
 }
 // This route's explicit empty tab is a presence marker. The shared

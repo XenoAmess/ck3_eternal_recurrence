@@ -17,7 +17,7 @@ bool ResolvePresentationTarget12004(const ZhongguoScoreboardNativeEnvironmentV1 
 
 void CancelPresentationTooltipPosition12004() noexcept;
 bool PreparePresentationTooltipPosition12004(const ZhongguoScoreboardNativeEnvironmentV1&,const IngameUiRequestV1&,
-    const game::Snapshot&,const MainThreadExecutionStampV1&,const PresentationTargetBinding12004&,void*,std::string_view);
+    const game::Snapshot&,const MainThreadExecutionStampV1&,const PresentationTargetBinding12004&,void*,std::string_view,std::string&);
 void ActivatePresentationTooltipPosition12004() noexcept;
 bool PresentationTooltipPositionReceipt12004(std::string_view,std::string&);
 
@@ -308,8 +308,9 @@ bool PresentationTooltipExecuteImpl12004(const ZhongguoScoreboardNativeEnvironme
     next.window_kind=static_cast<std::uint32_t>(request.window_kind);next.tls_context=stamp.tls_context;
     next.jomini_state=stamp.jomini_state;next.game_state=stamp.game_state;
     next.leave=leave;next.observed_root=previous;
-    if(hover&&!PreparePresentationTooltipPosition12004(env,request,snapshot,stamp,binding,handler,next.nonce))
-      return reject("presentation_tooltip_original_position_binding_or_geometry_unverified");
+    std::string position_failure;
+    if(hover&&!PreparePresentationTooltipPosition12004(env,request,snapshot,stamp,binding,handler,next.nonce,position_failure))
+      return reject(position_failure.empty()?"presentation_tooltip_original_position_binding_or_geometry_unverified":position_failure);
     out.native_dispatch_attempted=true;
     if(!ArmyTooltipInvokeHover(env,gui.context,leave?nullptr:binding.source)) {
       CancelPresentationTooltipPosition12004();receipt={};return reject("presentation_tooltip_original_setter_fault_do_not_retry_if_attempted");

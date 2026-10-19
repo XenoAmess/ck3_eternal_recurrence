@@ -131,3 +131,7 @@ R24的原游戏、public、host和keeper均实际正常退出，CAS11953已释�
 `machine_id: 4-8e1c2f1861`；观察 `2026-10-18T23:00:52.443544+00:00`。a14原configure实际退出0；原build实际退出1，未执行新fixture、封新DLL资格或启动新游戏。原退出证据`C:\workspace\ck3-faith-and-power-20261017\episode01\runtime\religion-candidate-a14-tooltip\build-original-exit.json`，188B，SHA-256 `8eb746c20a4c33e39ef91c54ce58d8d7c3fbb81ff575ae8b500c5bee3e803b24`，原日志保留在同目录`evidence-build-a01/msvc-build.log`。
 
 失败是global fixture函数中的兄弟命名空间引用：`ck3_12004::kUiIdlerRootSlotRva12004V1`未限定`xar::`；所需header已由生产TU包含。后继只补全命名空间，并合入已审的有限Construct提示与tracks-root修正。当前仍是冷修源码，须沿同两目标做必要增量构建及现有navigation fixture，不能以Python投影检查代替C++或实机。
+
+## R25实际边界与后继冷修
+
+机器 `4-8e1c2f1861` 的P14编译/导航夹具通过没有覆盖恢复后延迟挂载路径的定位hook安装。R25实际保留个人页成功、地产source pin拒绝及提示未派发等分别结果；加载态ASLR语义、实际启动分支和有限个人正常关闭来源见[R25冷修专题](faith-power-r25-cold-corrections12004-v6.md)。后继op208源码已接既有MCP/owner通路，Python合同通过；新DLL、独立hidden后验及提示像素仍待实机。规划应按当次可用性选择路线，不能把历史成功或源码存在当作当前Can。

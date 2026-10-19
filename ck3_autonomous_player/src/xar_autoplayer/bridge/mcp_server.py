@@ -3708,7 +3708,7 @@ def create_server(
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
     def ck3_present_faith_power_ui_v1(
-        operation: Literal["open_holding", "open_personal_beliefs", "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip", "show_building_details", "open_building_track"],
+        operation: Literal["open_holding", "open_personal_beliefs", "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window"],
         window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
         subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
         expected_revision: IngameUiRevisionV1,
