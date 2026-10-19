@@ -1,0 +1,276 @@
+{
+  "schema": "xar.driver-barrier-policy-source-audit.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T02:48:49.863659+00:00",
+  "source_commit": "b000c9a623eec88a48c95a2f8e2ad72eaf59198e",
+  "scope": "source and existing sealed small JSON only; no benchmark, test matrix, runtime tuple, Driver, SAVE or live RPC",
+  "conclusion": "Keep existing deferred successful query rows; do not add a per-query flush. Reuse the existing generic WAL append primitive, and qualify/narrow the timeline policy and failed-full-barrier boundary before any future adoption.",
+  "historical_basis": {
+    "P49_machine_id": "unknown",
+    "stage_machine_id": "unknown",
+    "machine_note": "small source projections omit machine identity; no path-based local qualification is inferred",
+    "settled_window": "5104-5165",
+    "turns": 62,
+    "zero_date_turns": 43,
+    "zero_date_groups": {
+      "war_results_query": {
+        "count": 16,
+        "auto_seconds": 5.497350100195035,
+        "game_days": 0
+      },
+      "army_query": {
+        "count": 19,
+        "auto_seconds": 15.581499499967322,
+        "game_days": 0
+      },
+      "war_termination_query": {
+        "count": 5,
+        "auto_seconds": 5.694493799936026,
+        "game_days": 0
+      },
+      "other_query": {
+        "count": 2,
+        "auto_seconds": 3.361534900031984,
+        "game_days": 0
+      },
+      "select-event-option-2": {
+        "count": 1,
+        "auto_seconds": 1.4060236997902393,
+        "game_days": 0
+      }
+    },
+    "full_persistence": {
+      "stage": "driver.full_state_persistence",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 10.448259,
+      "max_seconds": 1.180751
+    },
+    "stream_write": {
+      "stage": "driver.full_state_temp_stream_write",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 9.954374,
+      "max_seconds": 1.158594
+    },
+    "exact_write_trigger_join_available": false,
+    "limit": "43 zero-day turns and 21 full-state writes are different aggregate counts. Current source classification cannot establish which deployed historical turn caused a write."
+  },
+  "current_query_policy": {
+    "predicate_line": 25934,
+    "predicate_source": "def _is_deferred_read_only_history_step(step: object) -> bool:\n    \"\"\"Return commands whose successful result may wait for a durable barrier.\"\"\"\n    return bool(\n        isinstance(step, str)\n        and (\n            step.startswith(\"query-\")\n            or parse_preview_move_army_step(step) is not None\n            or parse_preview_active_combat_retreat_v1_step(step) is not None\n        )\n    )",
+    "successful_query_effect": "append full index/command/ok/result-or-sidecar-reference/error history row, mark dirty; no immediate full-state write",
+    "historical_named_query_groups_current_source": "army_query, war_results_query, war_termination_query are ordinary query-* families; the successful current source path defers them",
+    "private_queries": "no blanket private-query exemption: several pure private readers do not record a Driver row; private-query-player-lifestyle-receipt-v1 explicitly records an applied once-action receipt and remains a full barrier",
+    "why_not_flush_each_query": "would add I/O to the existing deferred path, without evidence that it removes any of the observed 21 writes"
+  },
+  "current_direct_barriers": [
+    {
+      "method": "retain_succession_expectation_v1",
+      "line": 4826,
+      "call": "self._persist_driver_state()",
+      "role": "same-frame succession expectation scalar capture; persists even without a newly appended row"
+    },
+    {
+      "method": "_with_one_life_episode",
+      "line": 5001,
+      "call": "self._persist_driver_state()",
+      "role": "observed episode identity changed; identity/lineage barrier"
+    },
+    {
+      "method": "_migrate_legacy_rollback_war_failures",
+      "line": 6322,
+      "call": "self._persist_driver_state()",
+      "role": "one-time rollback schema/material migration"
+    },
+    {
+      "method": "set_player_character_v1",
+      "line": 6702,
+      "call": "self._persist_driver_state()",
+      "role": "explicit operator identity rebind after independently observed native result"
+    },
+    {
+      "method": "_record_command",
+      "line": 11045,
+      "call": "self._persist_driver_state(\n                capture_failure_diagnostic=(\n                    ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP),\n                save_request=save_request,\n            )",
+      "role": "all failures and successful commands outside deferred readonly predicate; includes SAVE capture binding"
+    },
+    {
+      "method": "_observe_arrange_marriage_outcome",
+      "line": 11116,
+      "call": "self._persist_driver_state()",
+      "role": "supported in-place edit of an older history row, invalidates JSON cache; cannot be represented by append-only suffix"
+    },
+    {
+      "method": "_bind_new_episode_from_seed_snapshot",
+      "line": 11197,
+      "call": "self._persist_driver_state()",
+      "role": "new episode replaces history and episode identity"
+    },
+    {
+      "method": "_adopt_bridge_session",
+      "line": 11639,
+      "call": "self._persist_driver_state()",
+      "role": "physical bridge adoption/recovery identity and possible history replacement"
+    },
+    {
+      "method": "_bind_episode_from_playable_snapshot",
+      "line": 11883,
+      "call": "self._persist_driver_state()",
+      "role": "accept/reject cold checkpoint branch, history and identity replacement"
+    },
+    {
+      "method": "_restore_phase2_registered_checkpoint_v1",
+      "line": 22789,
+      "call": "self._persist_driver_state()",
+      "role": "register source checkpoint plus history anchor before restore"
+    },
+    {
+      "method": "_execute_restore_checkpoint",
+      "line": 22937,
+      "call": "self._persist_driver_state()",
+      "role": "managed restore marker must be published before native-session replaces CK3"
+    },
+    {
+      "method": "close",
+      "line": 25760,
+      "call": "self._persist_driver_state()",
+      "role": "flush pending history before endpoint closes; experimental WAL additionally consolidates committed entries"
+    }
+  ],
+  "preserved_state": {
+    "history": "all ordered contiguous rows, complete values and original success/error evidence; valid Army sidecar reference and its independently preserved body remain required",
+    "scalars": [
+      "format_version",
+      "pipe_name",
+      "bridge_pid",
+      "episode_character_id",
+      "episode_run_id",
+      "last_checkpoint",
+      "rollback_war_failure",
+      "managed_restore_transaction",
+      "succession_expectation",
+      "succession_lifecycle",
+      "campaign_goal",
+      "rollback_war_failures when present"
+    ],
+    "excluded_from_deferred_optimization": [
+      "SAVE and checkpoint anchors",
+      "restore and cross-process identity",
+      "actions/once intent, pending and applied receipt transitions",
+      "failed or unknown commands",
+      "old-prefix history edits",
+      "normal close"
+    ]
+  },
+  "existing_WAL_generalization": {
+    "append_delta_source": "def append_delta(journal: dict[str, object], rows: list[dict[str, object]],\n                 state_fields: dict[str, object]) -> dict[str, object]:\n    if journal.get(\"consolidated_sha256\") is not None:\n        raise JournalInvalid(\"consolidation marker forbids a later delta\")\n    _, previous, last_index = _validated_entries(journal)\n    if not rows or any(type(r.get(\"index\")) is not int or r[\"index\"] != last_index + i + 1\n                       for i, r in enumerate(rows)):\n        raise JournalInvalid(\"new rows must extend the committed history contiguously\")\n    _meta({**state_fields, \"command_history\": []})\n    if state_fields.get(\"format_version\") != FULL_VERSION:\n        raise JournalInvalid(\"delta scalar state must use the original full schema\")\n    body = {\"sequence\": len(journal[\"entries\"]) + 1,\n            \"previous_sha256\": previous, \"history_rows\": rows,\n            \"state_fields\": state_fields}\n    encoded_delta = _canonical(body)\n    if len(encoded_delta) > MAX_DELTA_BYTES:\n        raise JournalCapacity(\"delta exceeds bounded journal eligibility\")\n    entry = {**body, \"sha256\": _sha(encoded_delta)}\n    next_journal = {**journal, \"entries\": [*journal[\"entries\"], entry]}\n    if len(_canonical(next_journal)) > MAX_JOURNAL_BYTES:\n        raise JournalCapacity(\"journal exceeds bounded consolidation threshold\")\n    return next_journal",
+    "already_generic": true,
+    "backlog": "the integration copies history[committed_rows:] plus every scalar field, so successful deferred queries already travel with the next eligible timeline append",
+    "capacity": {
+      "max_delta_bytes": 262144,
+      "max_journal_bytes": 8388608,
+      "over_limit": "JournalCapacity requests the unchanged full-state barrier; no field truncation or silent omission"
+    },
+    "large_payload_limit": "a pending full combat result can exceed the delta cap and force full consolidation; no qualified lossless-reference contract is added here"
+  },
+  "multi_day_policy_gap": {
+    "old_source_is_not_exact_day_only": true,
+    "old_source_gate": "ok and (step in {\"life-advance\", \"life-advance-one-day\"} or parsed committed-route or strict route-horizon eligibility)",
+    "new_generic_step": "life-advance",
+    "new_clock_leaf": "campaign_deadline_native_clock_v1",
+    "observation": "new multi-day generic results reach the old unconditional membership branch if WAL is enabled; old one-day tests do not qualify them",
+    "minimum_reviewable_change": "replace the unconditional generic membership by an explicit timeline-result predicate; reuse append_delta and its current base/journal/restore protocol",
+    "required_complete_campaign_deadline_case": [
+      "exact known step/result step and successful ordinary composite",
+      "clock schema xar.ck3.campaign-native-date-clock/v1 and campaign_date_deadline scope",
+      "whole-day start < end == target, 1..45 days, elapsed_days == requested_horizon_days == delta/24",
+      "campaign ID/calendar/start/target/boundary/endpoint metadata agrees with the configured campaign cap",
+      "armed/stopped generation, mode, speed and dates agree; watch army count 0 and combat count 0",
+      "stopped triggered solely by date_deadline, flags 1, signed delta 0, overshoot 0, ticks == elapsed days",
+      "pause observed, wrapper ownership valid, no terminal/abnormal/early-boundary cancellation",
+      "final paused map, no active/pending/ordinary events, event_resolution none, no top-modal hint or identity materialization",
+      "no effect-bearing action in the recorded actions list; every row and scalar is retained"
+    ],
+    "fallback": "any missing/unknown/interrupted/modal/effect-bearing path retains the full barrier; no action is resent",
+    "still_needed": [
+      "29-day, 5-day and month-clipped software eligibility cases using the current result contract",
+      "early-modal/zero-day/cancel/overshoot/wrong-generation negative cases",
+      "actual future source tuple adoption and natural timing; no present-game credit"
+    ]
+  },
+  "failed_full_barrier_boundary": {
+    "existing_guard": "after successful consolidation-marker publication, document.consolidated_sha256 already prevents a later append",
+    "remaining_pre_marker_case": "if an older history row was edited and full persistence fails before that marker is installed, or while only the v2 in-memory header exists, a later suffix-only append cannot encode the edited old prefix",
+    "minimum_reviewable_change": "an experimental requires_full_barrier flag is set before any requested full barrier; only a successful full base replacement clears it; _try refuses append while it is set",
+    "effect": "retrying storage on a later permitted barrier preserves current state without resubmitting the original native action",
+    "qualification": "source-risk audit only, not reproduced in this no-test work package"
+  },
+  "proposal_scope": {
+    "production_or_frozen_source_modified": false,
+    "WAL_enabled": false,
+    "new_generic_storage_layer": false,
+    "query_flush_added": false,
+    "implementation_target": "future review of the existing experimental bridge-native_driver.py.patch policy and barrier guard only"
+  },
+  "validation": {
+    "explicit_source_checks": 7,
+    "direct_persist_calls_classified": 12,
+    "benchmarks": 0,
+    "new_fault_tests": 0,
+    "game_or_native_or_RPC_calls": 0
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1603757,
+      "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+      "bytes": 14432,
+      "sha256": "318612ca06da970f5d090ba92702056dac89c670be473faf34a37952db806be4"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/driver_state_wal_v1.py",
+      "bytes": 20272,
+      "sha256": "fdca7355377e957bbbcffcef509988e3f34f488ef3340256dfdf7214534303c1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_deadline_transport_v1.py",
+      "bytes": 6213,
+      "sha256": "5d08142a84ec3ee9b65b716b77a0dd417262be5c85218c4c7890a7bb2ecdb88e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_deadline_v1.py",
+      "bytes": 7316,
+      "sha256": "c5c7449f9183f3b36205e9f449f629af3fe978f3601a1e81103e4b0f92783833"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_lifestyle_private_transport_v1.py",
+      "bytes": 41204,
+      "sha256": "8f4e8346a3f55468dc4654d8fb188196ea358fec4062fd4c736e7b41010535ac"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p49-settled-performance.json",
+      "bytes": 10920,
+      "sha256": "5cabf32650b81db2adafe96d79edb81341ccacf7de91243b315ac4ddebe3de36"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p49-stage-slice.json",
+      "bytes": 7633,
+      "sha256": "1101ff3040b784ef8f540bbcd536c8b2c133b37da685b8283e47629796039b08"
+    },
+    {
+      "path": "tools/g2_saved_campaign/audit_driver_barrier_policy_v1.py",
+      "bytes": 14008,
+      "sha256": "eaa799852e6aee61f433172b349804379ada0dda8bc6f7ea9646956c2ab8e64d"
+    }
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "shared_research_remaining_pool_bytes": 134217728,
+    "output_limit_bytes": 65536,
+    "record_review_at_utc": "2027-04-17T02:48:49.913627+00:00",
+    "large_or_runtime_inputs_read": false,
+    "deletions": 0
+  }
+}

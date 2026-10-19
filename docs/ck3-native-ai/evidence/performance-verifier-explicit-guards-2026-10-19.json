@@ -1,0 +1,67 @@
+{
+  "schema": "xar.performance-verifier-explicit-guards.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T02:48:21.144646+00:00",
+  "baseline_commit": "b000c9a6",
+  "evidence_layer": "AST condition/message equivalence, source compilation, and one -O false-guard rejection only",
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/verify_driver_wal_qualification_v1.py",
+      "bytes": 19782,
+      "sha256": "cf1fb93e16069fc2fcb55b47b79333ecbffc5b9181b79eb693ef81cc86676a35",
+      "ast_assert_nodes": 0,
+      "compile": "PASS",
+      "conditions_and_messages_equal": true,
+      "checks": 22
+    },
+    {
+      "path": "tools/g2_saved_campaign/verify_stale_combat_frame_v1.py",
+      "bytes": 8860,
+      "sha256": "7bf649d55c571fbb86bf8f55f645d2ca683eef861e836a438815ac89faf4b6a5",
+      "ast_assert_nodes": 0,
+      "compile": "PASS",
+      "conditions_and_messages_equal": true,
+      "checks": 7
+    },
+    {
+      "path": "tools/g2_saved_campaign/summarize_performance_windows_v1.py",
+      "bytes": 7714,
+      "sha256": "911ec426156340de682b5b8b5e943e0c3632d5d1bf898a2994a31d65af642fe9",
+      "ast_assert_nodes": 0,
+      "compile": "PASS",
+      "conditions_and_messages_equal": true,
+      "checks": 2
+    },
+    {
+      "path": "ck3_autonomous_player/tools/verify_faction_alert_history_lookup_v1.py",
+      "bytes": 8736,
+      "sha256": "7ea81286cff5d6d69ccec3922300e3b7b0baad9df5ec58bf0bab9d2a8063bf7c",
+      "ast_assert_nodes": 0,
+      "compile": "PASS",
+      "conditions_and_messages_equal": true,
+      "checks": 5
+    },
+    {
+      "path": "tools/g2_saved_campaign/audit_driver_barrier_policy_v1.py",
+      "bytes": 14010,
+      "sha256": "f6970ee7db12b71c752e01777c96ef763e74f9c7244fd22aaeaa13bb75d8d591",
+      "ast_assert_nodes": 0,
+      "compile": "PASS",
+      "evidence_layer": "source-only audit; fixed original 13-vs-12 call-count mistake before its first successful report"
+    }
+  ],
+  "mechanical_checks_replaced": 36,
+  "optimized_negative_case": {
+    "python_optimization": "-O",
+    "exit_code": 1,
+    "guard_rejected": true
+  },
+  "historical_results": {
+    "overwritten": false,
+    "WAL_successful_old_producer_reconstruction": "git show b000c9a6:tools/g2_saved_campaign/verify_driver_wal_qualification_v1.py"
+  },
+  "performance_benchmarks_repeated": 0,
+  "WAL_writes_or_fault_matrix_repeated": 0,
+  "game_or_native_or_RPC_calls": 0,
+  "production_or_freeze_modified": false
+}

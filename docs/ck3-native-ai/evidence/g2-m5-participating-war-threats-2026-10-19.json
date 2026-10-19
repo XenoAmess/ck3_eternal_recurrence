@@ -1,0 +1,128 @@
+{
+  "schema": "xar.g2-m5-participating-war-threats-research.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T02:43:38.005780+00:00",
+  "evidence_kind": "offline_source_chain_and_synthetic_python_tests",
+  "source_head_at_closeout": "b000c9a623eec88a48c95a2f8e2ad72eaf59198e",
+  "sources": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_world.cpp",
+      "sha256": "e4aca2fa0c1c0adf1f451155a2671e3bbb75d0298579df91466f348fc712bfd4",
+      "use": "ReadActiveWars12004 and ReadWorldSnapshot12004 delegate to shared reader after exact .4 binding"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_world.cpp",
+      "sha256": "9eee1914c4bbdb6cdbbb3e8771ab947f7371dd57f476d835b7518d21327226d0",
+      "use": "ReadActiveWars enumerates native player-participant wars; no primary filter"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_adapter.cpp",
+      "sha256": "38faf84e616608b49c3c4d39698c884229347cc630f612a6af0b371ceb33b972",
+      "use": "ReadCk3_12004Snapshot rejects non-available world reads"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "sha256": "7c98b5c17625b31bb9ad04fa6a8530231040431ef0700c73a717c2e2f1edc96e",
+      "use": "active_wars serialization includes all rows"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "sha256": "c2e500e5bf923a6618004d8cdd027c5826a119d33c9bbc58846030b63917eb6a",
+      "use": "normalize_active_wars, enemy_armies_from_wars and army_strength_scope"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de",
+      "use": "_semantic_snapshot_from_frame; _army_strength_cache_for_snapshot; _war_termination_cache_for_snapshot"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "sha256": "fa6c9de0e9ef63c3931a1899c1d3150ebaec0a2eb4310841310cb8caec46fa32",
+      "use": "all-war route_threat_enemies and existing nonleader hold/regroup consumers"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_diplomacy.cpp",
+      "sha256": "72aac813a82dbb6d094aee1f2ddc2e362f4576023b05d3ce993c8eed2bd4d476",
+      "use": "ReadWarTerminationOptions reads CB before primary-only validators"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_diplomacy.cpp",
+      "sha256": "93823b0cdbbfa484304e13f207816ac93bc3e3ac4a07450e22bdd8a64df99859",
+      "use": "exact .4 diplomacy bindings"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_occupation_targets_contract.py",
+      "sha256": "e368085cf6c26d6431730c2ad5251553048c26752f77e0158544f86e1883c158",
+      "use": "participant scope and both primary character IDs in existing DTO"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_exit_terms_contract.py",
+      "sha256": "3da7a5ce3871920c91c5568374491c30b32c8d19366ee32cc32884c376817ed9",
+      "use": "generic claim-CB supported slice is restricted"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "sha256": "c27266b60a80e7b18a38c22bdc8a076a79f351eb0b3b976c367ddc3dc90299ac",
+      "use": "primary-only spending union remains unchanged"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/participating_war_threat_observation_v1.py",
+      "sha256": "7ace0975a34fe0c729c82d691620fca6a636aee5c48645d47f4d461e71fdbb19",
+      "use": "unwired pure fact candidate"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_participating_war_threat_observation_v1.py",
+      "sha256": "0abbb12c588bd4da63777c8c39e7bc59990e30b9ed33760a5c105d973e2f8539",
+      "use": "nine targeted tests only"
+    }
+  ],
+  "test_runs": [
+    {
+      "tool_receipt": "8ac6cc",
+      "exit_code": 2,
+      "result": "collection_failed_package_not_installed",
+      "failure": "ModuleNotFoundError: No module named xar_autoplayer",
+      "source_semantics_changed_to_fix": false
+    },
+    {
+      "tool_receipt": "7f5568",
+      "exit_code": 0,
+      "result": "9 passed in 0.56s",
+      "test_count": 9,
+      "wall_time_seconds": 0.9173441,
+      "runner_fix": "prepend ck3_autonomous_player/src to sys.path",
+      "command": "python -B -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_participating_war_threat_observation_v1.py']))"
+    }
+  ],
+  "candidate_state": {
+    "production_consumer_imports_added": false,
+    "production_action_permissions_changed": false,
+    "current_runtime_or_frozen_sdk_changed": false,
+    "native25_changed": false,
+    "rpc_calls": 0,
+    "game_or_desktop_calls": 0,
+    "g2_credit_added": false,
+    "stage_or_commit": false
+  },
+  "boundary": {
+    "published_participant_army_membership_can_be_aggregated": true,
+    "ordinary_route_scope_already_includes_non_primary_enemies": true,
+    "snapshot_has_cb_and_own_leader": false,
+    "existing_termination_query_has_cb_for_non_primary_participant": true,
+    "existing_occupation_query_dto_has_both_primary_ids": true,
+    "unpublished_liege_wars_covered": false,
+    "generic_cb_defeat_material_consumer_complete": false,
+    "candidate_reuses_positive_int32_war_id_qualification": true,
+    "raw_world_war_id_zero_supported_by_candidate": false,
+    "raw_world_war_id_zero_handling": "conservative unavailable; unify existing snapshot/query ID contracts before any consumer adoption"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "shared_remaining_research_budget_bytes": 134217728,
+    "heavy_writes": 0,
+    "deleted_files": 0,
+    "volume_total_bytes": 4096787476480,
+    "volume_free_bytes": 178416078848,
+    "source": "Python shutil.disk_usage of current Z mapping; not an atomic capacity reservation"
+  }
+}

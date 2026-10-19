@@ -27,6 +27,14 @@ sys.path.insert(0, str(PROJECT / "src"))
 MAX_PEAK = 64 * 1024 * 1024
 
 
+def require(condition, message=None):
+    """Keep offline software acceptance checks active under Python -O."""
+    if not condition:
+        if message is None:
+            raise AssertionError
+        raise AssertionError(message)
+
+
 def load(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
@@ -136,12 +144,12 @@ def main():
                             outcome = "returned_none" if returned is None else "returned_state"
                         except helper.JournalInvalid:
                             outcome = "JournalInvalid"
-                assert outcome == ("returned_none" if label == "original" else "JournalInvalid")
-                assert journal_sha == sha(journal.read_bytes()) and obj._command_history == initial_history
+                require(outcome == ("returned_none" if label == "original" else "JournalInvalid"))
+                require(journal_sha == sha(journal.read_bytes()) and obj._command_history == initial_history)
                 cases.append({"source": label, "fault": fault, "observed": outcome,
                               "journal_unchanged": True, "history_unchanged": True})
     empty = make_driver(candidate, args.work_root / "empty-fresh")
-    assert empty._read_driver_state() is None
+    require(empty._read_driver_state() is None)
     cases.append({"source": "candidate", "case": "neither-base-nor-journal", "observed": "legal_fresh_none"})
     full = make_driver(candidate, args.work_root / "full", enabled=False)
     journaled = make_driver(candidate, args.work_root / "journaled", enabled=True)
@@ -170,32 +178,32 @@ def main():
             with patch.object(candidate, "write_bytes_atomic", counted):
                 obj._persist_driver_state(journal_append=True)
             samples[label].append((time.perf_counter_ns() - tick) / 1e9)
-            assert obj._driver_state_error is None
+            require(obj._driver_state_error is None)
     full_path, pair_path = full._native_driver_state_path(), journaled._native_driver_state_path()
     recovered, status = wal.load_pair(pair_path)
-    assert status == "replayed"
+    require(status == "replayed")
     full_bytes = full_path.read_bytes()
     recovered_bytes = wal.full_state_bytes(recovered)
     full_payload = json.loads(full_bytes)
     canonical = lambda value: json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
-    assert canonical(recovered) == canonical(full_payload)
-    assert recovered["command_history"] == full_payload["command_history"]
+    require(canonical(recovered) == canonical(full_payload))
+    require(recovered["command_history"] == full_payload["command_history"])
     key_order_differences = [index for index, (left, right) in enumerate(zip(full_payload["command_history"], recovered["command_history"]), 1)
                              if list(left) != list(right)]
     strict_resume = journaled._read_driver_state()
-    assert strict_resume["command_history"] == journaled._command_history
+    require(strict_resume["command_history"] == journaled._command_history)
     try:
         cold.validate_cold_start_checkpoint_for_pipe(SimpleNamespace(state_dir=journaled.state_dir), journaled.pipe_name)
         raise AssertionError("active pair accepted as a cold checkpoint")
     except cold.AgentError as error:
-        assert "committed daily journal" in str(error)
+        require("committed daily journal" in str(error))
     materialized = wal.materialize_closed_directory(journaled.state_dir, args.work_root / "materialized",
         owner_closed=True, expected_base_sha256=sha(pair_path.read_bytes()),
         expected_journal_sha256=sha(pair_path.with_name(wal.FILENAME).read_bytes()))
     materialized_path = Path(materialized["output_path"])
-    assert canonical(json.loads(materialized_path.read_bytes())) == canonical(full_payload)
+    require(canonical(json.loads(materialized_path.read_bytes())) == canonical(full_payload))
     strict_cold = candidate.load_native_driver_state_for_resume(materialized_path, journaled.pipe_name)
-    assert strict_cold["command_history"] == journaled._command_history
+    require(strict_cold["command_history"] == journaled._command_history)
     # A failed publish keeps the one existing history row; no action is sent or repeated.
     row = {"index": len(journaled._command_history) + 1, "command": "life-advance-one-day", "ok": True,
            "result": {"step": "life-advance-one-day", "synthetic_failed_publish": True}}
@@ -203,34 +211,34 @@ def main():
     before_failed_history = copy.deepcopy(journaled._command_history)
     with patch.object(candidate, "write_bytes_atomic", side_effect=OSError("synthetic WAL publish denied")):
         journaled._persist_driver_state(journal_append=True)
-    assert journaled._driver_state_dirty and "synthetic WAL publish denied" in journaled._driver_state_error
-    assert journaled._command_history == before_failed_history
-    assert len(wal.load_pair(pair_path)[0]["command_history"]) == len(seed_rows) + 16
+    require(journaled._driver_state_dirty and "synthetic WAL publish denied" in journaled._driver_state_error)
+    require(journaled._command_history == before_failed_history)
+    require(len(wal.load_pair(pair_path)[0]["command_history"]) == len(seed_rows) + 16)
     checkpoint = {"history_index": len(journaled._command_history) + 1,
                   "pipe_name": journaled.pipe_name, "bridge_pid": journaled._session_bridge_pid,
                   "episode_character_id": journaled._episode_character_id, "episode_run_id": journaled._episode_run_id}
     journaled._last_checkpoint = copy.deepcopy(checkpoint)
     save_receipt = journaled._record_command("save-checkpoint", ok=True, result={"checkpoint": checkpoint})
-    assert save_receipt["status"] == "replaced" and save_receipt["save_binding_verified"]
+    require(save_receipt["status"] == "replaced" and save_receipt["save_binding_verified"])
     saved, saved_status = wal.load_pair(pair_path)
-    assert saved_status == "base_only" and not pair_path.with_name(wal.FILENAME).exists()
-    assert saved["command_history"] == journaled._command_history
-    assert [row["index"] for row in saved["command_history"]] == list(range(1, len(saved["command_history"]) + 1))
-    assert sum(row["command"] == "save-checkpoint" for row in saved["command_history"]) == 1
+    require(saved_status == "base_only" and not pair_path.with_name(wal.FILENAME).exists())
+    require(saved["command_history"] == journaled._command_history)
+    require([row["index"] for row in saved["command_history"]] == list(range(1, len(saved["command_history"]) + 1)))
+    require(sum(row["command"] == "save-checkpoint" for row in saved["command_history"]) == 1)
     # Normal close must consolidate an otherwise clean committed journal first.
     journaled._record_command("life-advance-one-day", ok=True, result={"step": "life-advance-one-day"})
     observed_close = []
     journaled.endpoint = SimpleNamespace(close=lambda: observed_close.append(wal.load_pair(pair_path)[1]))
     with patch("xar_autoplayer.bridge.normal_exit_pending_observer_v1.dispose_normal_exit_observer_v1"):
         journaled.close()
-    assert observed_close == ["base_only"]
+    require(observed_close == ["base_only"])
     manifest = []
     for path in sorted(args.work_root.rglob("*")):
         if path.is_file():
             manifest.append({"relative_path": path.relative_to(args.work_root).as_posix(),
                              "bytes": path.stat().st_size, "sha256": sha(path.read_bytes())})
     logical_bytes = sum(item["bytes"] for item in manifest)
-    assert logical_bytes <= MAX_PEAK
+    require(logical_bytes <= MAX_PEAK)
     receipt = {"schema": "xar.driver-wal-offline-qualification.v1", "machine_id": machine,
         "observed_started_utc": started.isoformat(), "observed_ended_utc": datetime.now(timezone.utc).isoformat(),
         "status": "EXPERIMENTAL_SOFTWARE_QUALIFIED_NOT_LIVE_ADOPTED", "baseline_commit": args.baseline,
@@ -276,7 +284,7 @@ def main():
                     "synthetic_exact_deletions": ["original-missing-base/native-session/driver-state.json", "candidate-missing-base/native-session/driver-state.json"],
                     "manifest": manifest}}
     encoded = (json.dumps(receipt, ensure_ascii=False, indent=2) + "\n").encode()
-    assert len(encoded) <= 1024 * 1024
+    require(len(encoded) <= 1024 * 1024)
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
     args.receipt.write_bytes(encoded)
     (args.work_root / "QUALIFICATION.json").write_bytes(encoded)

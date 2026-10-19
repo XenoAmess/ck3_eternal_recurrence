@@ -58,3 +58,13 @@ M7后继源码已补完成resolved台账与精确checkpoint的新Game谱系：�
 专用portable OBS配置范围已获得实际存储追加准入，计入原64GiB而非新增预算；个人OBS及二进制不写。来源 `D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/STORAGE-ADMISSION-OBS-SCOPE01.json`（7,573 B，SHA `e951f2eeba0afdb153a613290f70c876c147a951ac9cd4c654d9139a7cda4179`）。02:33:26Z小型容量观察为D可用891,818,803,200 B，距既有guard 73,498,543,132 B；不是新的全卷预算。
 
 录制首attempt的自有OBS PID181812抢焦点，实际foreground由Steam HWND52505028变成该OBS HWND83305260，触发原守卫；worker随后正常OBS exit0并确认inputs_unbound，失败MKV仅约13KB。Game与decision-text publisher保留，未恢复或操作用户窗口。此刻仍为MainMenu、App/Queue未启动；修正仅在唯一runtime owner处进行，尚无1066角色、基线SAVE或新游戏日信用。
+
+## 02:47后继：录制阻点与并行后继
+
+同一 `machine_id: xenoamess-full-tower-eb9d2c1186`。第二次录制启动 `a30b0a91-c277-49ca-a984-1269e809166b` 的自有OBS PID2396仍触发原foreground守卫，已正常OBS0/unbound；新增诊断将变化定位到 `Qt653QWindowIcon` 隐藏主窗，而非首次向导。显式tray/SW_SHOWMINNOACTIVE没有解决实际故障。AGENTS.md:503明确要求最小化且不抢焦点，因此未采用隐藏自有窗占foreground的放宽方案。下一候选复用已有AppView路径，将retained-generation唯一自有OBS主窗移至Game所在Desktop1，不激活、不切桌面、不恢复用户窗口；原最终foreground守卫继续执行。来源为runtime的失败attempt与 `p51-obs-owned-desktop-review01` 四项合成资格，后者不代表实际移动成功。Game与publisher保持，仍MainMenu/App未起。
+
+首失败worker的原请求实际有PID250672/birth134368507483354329；08诊断曾误读为未留birth，后继已更正。其当前进程不存在不等于历史exit0，历史exitcode保持unknown。存储追加范围仅按精确request tuple、当前absence/空端口/未armed未started/OBS正常退出及无写占用核验许可专用配置归档和新profile，不扩大64GiB或删除媒体。
+
+[M1月度来源映射](g2-m1-monthly-observation-source-map-2026-10-19.md)确认当前普通月度数值仍只有gold；已有cash-v2尚未进入同帧MET，不能把AUTO前态财务移到动作后月点。[M5参与战争事实后继](g2-m5-participating-war-threats-2026-10-19.md)确认普通战术已有all-participant敌军覆盖，并给出未接消费者的去重关系投影；CB及双方主将已有query DTO，剩余重点是后果消费者与未发布宗主战争范围，不新增采购/投降权限。
+
+WAL实验恢复修复及98项知识实际迁入观察已在 `b000c9a623eec88a48c95a2f8e2ad72eaf59198e` 推送。[隔离资格](evidence/driver-wal-qualification-2026-10-19.json)保全144行全部字段，JSON键顺序差异及首失败不隐去，计时缺失保null。实验仍default-off，不修改当前src02；后继性能源审计发现只读query本已有延后持久化，不能将所有零日回合都归因于完整写入。研究与现场并行，不把未采用候选、软件测试或等待自然证据计为G2完成；仍6/8。

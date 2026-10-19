@@ -1,0 +1,74 @@
+{
+  "schema": "xar-g2-m1-month-observation-source-map/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "py tools/ck3_live_run_id.py machine; actual task output",
+  "observed_at_utc": "2026-10-19T02:39:32.076684+00:00",
+  "public_source_commit": "dc4b7d56",
+  "milestone": {"M1_status": "complete", "G2_progress": "6/8", "credit_added": 0},
+  "runtime_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+  "runtime_source_pins": [
+    {"path": "root_p37_mcp_entry.py", "sha256": "65cc0962930b93027f2a07621d1a20382e5fd40998fad3b37eb71997caa546cc", "reviewed_span": "root_current_runtime_metrics:130-138"},
+    {"path": "root_score_month_samples.py", "sha256": "80d04bf507ad7f7a96d2c81bb14f7cac884ea3a37f2f951a32e9122d71bfe183", "reviewed_span": "establish_anchor/candidate/persist/observe_semantic"},
+    {"path": "root_p37_sdk_queue.py", "sha256": "a08bda6c17f01d9a6152215157a051b5f8ed8b408ac57ccfd8b3b9c67aaa3672", "reviewed_span": "full_loop paired-MET sample persistence and CleanRobertMainMenuQueue SEM/CAP gates", "subsequent_owner_edits_expected": true}
+  ],
+  "source_contracts_at_public_commit": [
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/campaign_score_cadence_v1.py", "symbols": ["ordinary_sample_candidate", "month_boundaries"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/campaign_development_score_v1.py", "symbols": ["UNITS", "quality_power", "state_intervals"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py", "symbols": ["take_internal_semantic_snapshot", "_semantic_snapshot_from_frame", "_played_character", "_army_strength_cache_for_snapshot", "_army_strength_snapshot_fields"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_private_transport_v1.py", "symbols": ["MONTHLY_FLOW_SEMANTICS_12004", "_monthly_flow", "normalize_war_cash_current_resources_v1"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/construction_monthly_budget_v1.py", "symbols": ["project_construction_monthly_budget_v1"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/g2_private_query_transport.py", "symbols": ["private_g2_query_metadata_v1"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py", "symbols": ["CK3_FIXED_POINT_SCALE", "army_strength_scope", "_normalize_army_strength_row"]},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/marriage_candidate_alliance_private_transport.py", "symbols": ["query_first_heir_candidate_alliance_projection_private_v1", "played_house_id", "played_dynasty_id"]},
+    {"path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_reader.cpp", "symbols": ["MonthlyFlow", "ReadActor"]},
+    {"path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_serializer.cpp", "symbols": ["monthly_income_semantics", "military_expenses"]}
+  ],
+  "minimum_current_zero_rpc_projection": {
+    "observed_scoring_metrics": ["gold"],
+    "gold_source": "same ordinary snapshot played_character_gold.raw / 100000",
+    "gold_scope": "current played-character personal wallet; signed gold",
+    "diagnostics_only": ["exact month slot", "current actor/frame", "observed_player_wars"],
+    "capabilities_are_metric_values": false,
+    "score_complete": false
+  },
+  "conditional_cash_v2_mapping": [
+    {"source": "player_monthly_gross_income", "target": "gross_income", "unit": "gold/month", "scale": 100000},
+    {"source": "player_monthly_total_expenses", "target": "total_expenses", "unit": "gold/month", "scale": 100000, "includes_military": true},
+    {"source": "military_expenses.current.gold_raw", "target": "military_current", "unit": "gold/month", "scale": 100000},
+    {"source": "military_expenses.all_raised.gold_raw", "target": "military_all_raised", "unit": "gold/month", "scale": 100000}
+  ],
+  "conditional_cash_admission": {
+    "implemented_in_this_package": false,
+    "current_month_MET_publishes_packet": false,
+    "requires_same_actor_date_snapshot_public_native_revision": true,
+    "requires_source_Game_creation_and_generation_context": true,
+    "requires_exact_build_v2_semantics": true,
+    "requires_actor_global_military_once_across_all_wars": true,
+    "pre_action_cash_can_fill_after_MET": false,
+    "missing_packet_may_trigger_extra_RPC": false,
+    "due_commitments_zero_proven_by_budget_argument": false
+  },
+  "territory_scopes": {
+    "domain": "native occupied/limit count; not full county land",
+    "direct_titles": "personally held county+ title projection; must exclude higher-tier duplication and nongeographic family counties",
+    "realm": "requires complete player-subrealm county closure plus county quality; not current ordinary SEM",
+    "dynasty": "requires fixed founding D0/H0 and branch/holder/all-county closure including outside realm; not current ordinary SEM"
+  },
+  "military_scope_boundary": {
+    "army_strength_scope_roles": ["player", "active_war_ally", "active_war_enemy"],
+    "current_soldiers_unit": "soldier count in observed public CUnit",
+    "maximum_soldiers_is_available_current_men": false,
+    "ai_base_power_scale": 100000,
+    "ai_base_power_is_P_quality": false,
+    "unraised_owned_permanent_roster_complete": false,
+    "effective_damage_toughness_reference_complete": false
+  },
+  "unknown_scoring_inputs": [
+    "Q_realm", "realm_county_count", "K_dynasty", "dynasty_county_count", "legacy_ranks",
+    "control_average", "rebel_share", "gross_income", "total_expenses", "military_current",
+    "military_all_raised", "due_commitments", "P_quality", "continuation_legal", "backup_heirs",
+    "u_discretionary", "house_anchor_id", "dynasty_anchor_id", "active_family_branches"
+  ],
+  "operations": {"production_or_frozen_SDK_edits": 0, "live_calls": 0, "driver_state_SAVE_media_body_reads": 0, "compiles": 0, "business_tests": 0, "staging_or_commits": 0},
+  "storage": {"policy_version": "1.0.0", "parent_shared_remaining_research_bytes": 134217728, "output_upper_bound_bytes": 32768, "heavy_writes": 0, "deletions": 0, "Z_total_bytes": 4096787476480, "Z_free_bytes": 178416340992, "source": "actual Python shutil.disk_usage('Z:/') at task observation", "heavy_write_admission_claimed": false, "record_review_days": 180}
+}

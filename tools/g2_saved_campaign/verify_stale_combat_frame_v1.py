@@ -23,6 +23,14 @@ from test_stale_combat_frame_rejection_v1 import inputs, names, harness
 from test_knight_stat_consumption_stage_lineage_12004 import _wire
 
 
+def require(condition, message=None):
+    """Keep bounded synthetic software checks active under Python -O."""
+    if not condition:
+        if message is None:
+            raise AssertionError
+        raise AssertionError(message)
+
+
 def expanded_consumption():
     """Synthetic valid 32-event ring; never a claim about observed CK3 values."""
     wire = _wire()
@@ -83,13 +91,13 @@ def main():
             field, method, _ = names(version)
             expected = old[version](old_driver, snap, episode_run_id="offline-episode")
             actual = getattr(new_driver, method)(snap, episode_run_id="offline-episode")
-            assert expected == actual, (version, label)
-            assert getattr(old_driver, field) == getattr(new_driver, field), (version, label, "cache")
-            assert (snap, cached) == before, (version, label, "input mutated")
+            require(expected == actual, (version, label))
+            require(getattr(old_driver, field) == getattr(new_driver, field), (version, label, "cache"))
+            require((snap, cached) == before, (version, label, "input mutated"))
             results.append({"version": version, "case": label, "equal_result": True,
                             "equal_retained_cache": True, "input_unchanged": True})
     checked = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromName("test_stale_combat_frame_rejection_v1"))
-    assert checked.wasSuccessful(), "focused regression failed"
+    require(checked.wasSuccessful(), "focused regression failed")
     snapshot, cache = inputs(2)
     cache["combat_simulation_inputs"]["knight_stat_consumption_v1"] = expanded_consumption()
     # Validate and detach the full synthetic body once before timing either path.
@@ -98,7 +106,7 @@ def main():
             expected_attacker_entry_province_id=800, expected_encounter_scope=scope)
     cache["combat_simulation_inputs"] = normalized
     body_bytes = len(json.dumps(normalized, separators=(",", ":")).encode())
-    assert body_bytes <= 16 * 1024 * 1024
+    require(body_bytes <= 16 * 1024 * 1024)
     cache["cache_binding"]["native_revision"] = -1
     field, method, _ = names(2)
     samples = {"old": [], "new": []}
@@ -108,7 +116,7 @@ def main():
             tick = time.perf_counter_ns()
             actual = old[2](driver, snapshot, episode_run_id="offline-episode") if label == "old" else getattr(driver, method)(snapshot, episode_run_id="offline-episode")
             samples[label].append((time.perf_counter_ns() - tick) / 1e9)
-            assert actual is None and getattr(driver, field) is None
+            require(actual is None and getattr(driver, field) is None)
     receipt = {"schema": "xar.stale-combat-frame-rejection-performance.v1",
                "machine_id": machine, "observed_started_utc": started,
                "observed_ended_utc": datetime.now(timezone.utc).isoformat(),
@@ -130,7 +138,7 @@ def main():
                            "free_at_start_bytes": disk_before.free, "free_at_close_bytes": shutil.disk_usage(ROOT).free,
                            "deletions": 0, "record_review_at_utc": datetime.fromtimestamp(datetime.now(timezone.utc).timestamp() + 4320 * 3600, timezone.utc).isoformat()}}
     encoded = (json.dumps(receipt, ensure_ascii=False, indent=2) + "\n").encode()
-    assert len(encoded) <= 1048576
+    require(len(encoded) <= 1048576)
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
     args.receipt.write_bytes(encoded)
     print(json.dumps({"receipt": str(args.receipt), "equal_cases": len(results), "tests": checked.testsRun,

@@ -14,6 +14,14 @@ EVIDENCE = ROOT / "docs/ck3-native-ai/evidence"
 MAX_SOURCE_BYTES = 1024 * 1024
 
 
+def require(condition, message=None):
+    """Reject inconsistent sealed-metric arithmetic even under Python -O."""
+    if not condition:
+        if message is None:
+            raise AssertionError
+        raise AssertionError(message)
+
+
 def read(name):
     path = EVIDENCE / name
     size = path.stat().st_size
@@ -38,8 +46,8 @@ def main():
     zero_groups = {key: value for key, value in settled["auto_by_group"].items() if value["game_days"] == 0}
     zero_seconds = sum(row["auto_seconds"] for row in zero_groups.values())
     progress_seconds = sum(row["auto_seconds"] for row in settled["auto_by_group"].values() if row["game_days"] > 0)
-    assert sum(row["count"] for row in zero_groups.values()) == settled["zero_date_turns"]
-    assert abs(zero_seconds + progress_seconds - settled["rpc_elapsed_by_tool_seconds"]["ck3_auto_turn"]) < 1e-7
+    require(sum(row["count"] for row in zero_groups.values()) == settled["zero_date_turns"])
+    require(abs(zero_seconds + progress_seconds - settled["rpc_elapsed_by_tool_seconds"]["ck3_auto_turn"]) < 1e-7)
     persistence = stage["driver.full_state_persistence"]
     stream = stage["driver.full_state_temp_stream_write"]
     serialize = stage["driver.full_state_json_serialization"]

@@ -29,6 +29,14 @@ from test_faction_alert_history_lookup_v1 import fixture_inputs, query_row
 from test_war_entry_faction_watch_scope_12003 import _synthetic_candidate_on_actual_frame
 
 
+def require(condition, message=None):
+    """Keep offline source-equivalence checks active under Python -O."""
+    if not condition:
+        if message is None:
+            raise AssertionError
+        raise AssertionError(message)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--baseline", required=True)
@@ -75,8 +83,8 @@ def main():
     for name, rows, snap in cases:
         before = copy.deepcopy((rows, snap))
         expected, actual = old(rows, snap), new(rows, snap)
-        assert actual == expected, name
-        assert (rows, snap) == before, name
+        require(actual == expected, name)
+        require((rows, snap) == before, name)
         equality.append({"case": name, "equal": True, "input_unchanged": True,
                          "result_bytes": len(json.dumps(actual, ensure_ascii=False).encode("utf-8"))})
     suite = unittest.TestSuite()
@@ -84,7 +92,7 @@ def main():
     for module in ("test_faction_alert_history_lookup_v1",):
         suite.addTests(loader.loadTestsFromName(module))
     checked = unittest.TextTestRunner(verbosity=2).run(suite)
-    assert checked.wasSuccessful(), "focused checks failed"
+    require(checked.wasSuccessful(), "focused checks failed")
     fixture = PROJECT / "tests/fixtures/faction_watch_current_673_674.json"
     plan_snapshot = _synthetic_candidate_on_actual_frame(json.loads(fixture.read_text()))
     plan_rows = [{"index": 1, "command": "save-checkpoint", "ok": True}, auto]
@@ -92,7 +100,7 @@ def main():
     with mock.patch.object(strategy, "_same_frame_player_faction_alerts", old):
         old_plan = strategy.choose_one_life_turn(plan_rows, snapshot=plan_snapshot, action_steps=steps)
     new_plan = strategy.choose_one_life_turn(plan_rows, snapshot=plan_snapshot, action_steps=steps)
-    assert old_plan == new_plan, "complete existing faction watch plan changed"
+    require(old_plan == new_plan, "complete existing faction watch plan changed")
     timings = []
     for name, rows, snap in (cases[2], cases[3], cases[4]):
         samples = {"old": [], "new": []}
@@ -138,7 +146,7 @@ def main():
     }
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
     encoded = json.dumps(receipt, ensure_ascii=False, indent=2) + "\n"
-    assert len(encoded.encode()) <= 1048576
+    require(len(encoded.encode()) <= 1048576)
     args.receipt.write_text(encoded, encoding="utf-8")
     print(json.dumps({"receipt": str(args.receipt), "tests": checked.testsRun, "equal_cases": len(equality), "timings": timings}, ensure_ascii=False))
 

@@ -21,8 +21,12 @@ materializer can create a v2 cold input at a new path after checking both source
 hashes; it never edits the source directory. Missing, truncated, reordered,
 duplicated, foreign-base, or uncommitted rows provide no action credit.
 
-Only successful daily advances are candidates. The route-contact-horizon
-literal uses its existing strict parser and requires the same result step,
+The prior qualified scope was successful daily advances. The patch's generic
+`life-advance` membership is broader than that qualification and also admits
+the new multi-day result name; those results have not been qualified for WAL.
+The [current source audit](../../../docs/ck3-native-ai/evidence/driver-barrier-policy-audit-2026-10-19.json)
+records this policy gap and the existing deferred read-only query behavior.
+The route-contact-horizon literal uses its existing strict parser and requires the same result step,
 one day and exactly 24 raw units, paused postcondition, no event/interaction,
 and a native sentinel stopped solely at the date deadline with one tick and
 zero overshoot. Early contact, event, or ambiguous clock falls back to full
