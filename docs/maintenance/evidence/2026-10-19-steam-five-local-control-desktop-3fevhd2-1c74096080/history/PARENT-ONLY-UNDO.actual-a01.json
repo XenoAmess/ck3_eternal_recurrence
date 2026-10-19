@@ -1,0 +1,101 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:47:28.482667+00:00",
+  "kind": "parent-only-restore-delete-actual",
+  "steam_paths_changed": false,
+  "preserved_source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\local_acl_block.before-undo-fix-a01.py",
+  "preserved_source_sha256": "a2f1b73bc522157489547f8b1976e101a4f8a5a6751d0f601630e0a47cc7c128",
+  "tests": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\content\\2291024373",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\content\\2993056101",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\content\\2962333032",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\content\\3192256710",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\content\\2224124758",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\downloads\\2291024373",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\downloads\\2993056101",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\downloads\\2962333032",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\downloads\\3192256710",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\downloads\\2224124758",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\temp\\2291024373",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\temp\\2993056101",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\temp\\2962333032",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\temp\\3192256710",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\parent-delete-child-owned-a01\\temp\\2224124758",
+      "still_exact_deny_acl_before_delete": true,
+      "delete_success": false,
+      "error": "PermissionError(13, '拒绝访问。')"
+    }
+  ],
+  "all_deleted_with_parent_delete_child": false
+}

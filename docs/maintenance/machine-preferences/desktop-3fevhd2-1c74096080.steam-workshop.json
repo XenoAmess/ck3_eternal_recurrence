@@ -1,0 +1,52 @@
+{
+  "schema": "xar.machine.steam-workshop-preferences.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "preference_recorded_on": "2026-10-19",
+  "authority": {
+    "kind": "explicit_user_instruction",
+    "recorded_via": "Root task: delete these five local Mods, prevent automatic local reinstallation, preserve account subscriptions and other machines"
+  },
+  "app_id": "1158310",
+  "blocked_automatic_local_install_item_ids": [
+    "2291024373",
+    "2993056101",
+    "2962333032",
+    "3192256710",
+    "2224124758"
+  ],
+  "preserve_account_subscriptions": true,
+  "apply_to_other_machines": false,
+  "user_preference_until_explicit_revocation": true,
+  "no_autoexpiry": true,
+  "expires_at_utc": null,
+  "enforcement_state_is_separate_from_preference": true,
+  "automatic_deployment_on_clone_or_CI": false,
+  "library_paths_from_current_machine_observation_only": true,
+  "limits": [
+    "No account-wide unsubscribe",
+    "No broad Steam-parent ACL changes",
+    "No automatic permission rollback when audit evidence expires",
+    "No claim that a source preference proves current OS enforcement"
+  ],
+  "current_verified_enforcement": {
+    "observed_at_utc": "2026-10-19T04:59:17.110869+00:00",
+    "library_workshop_root": "C:/SteamLibrary/steamapps/workshop",
+    "roots": [
+      "content/1158310",
+      "downloads/1158310",
+      "temp/1158310"
+    ],
+    "item_object_kind": "protected ordinary zero-byte file",
+    "item_object_count": 15,
+    "evidence": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/ROOT-FINAL.actual.json"
+  },
+  "rollback_backup": {
+    "repo_path": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/LOCAL-ACL-ORIGINAL-DACL-BACKUP.actual.json",
+    "bytes": 3328,
+    "sha256": "10f2e7fc79a21a5cb246e51f92ff43f0dbda28930636baebea36e2028cc53f37",
+    "retention_basis": "current necessary recovery input while the local ban is active",
+    "use_and_recoverability_review_at_utc": "2027-10-19T05:00:00Z",
+    "review_authorizes_deletion": false,
+    "automatic_deletion_of_only_recoverable_copy_while_ban_active": false
+  }
+}

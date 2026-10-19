@@ -1,0 +1,976 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:58:21.181754+00:00",
+  "installed": true,
+  "all_blocked_and_siblings_ok": true,
+  "parents": [
+    "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+    "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310",
+    "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310"
+  ],
+  "item_ids": [
+    "2291024373",
+    "2993056101",
+    "2962333032",
+    "3192256710",
+    "2224124758"
+  ],
+  "tests": [
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "set_parent_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "normal_sibling_create_write_rename_delete",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+      "success": true
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "set_parent_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "normal_sibling_create_write_rename_delete",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310",
+      "success": true
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "CreateDirectory",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 183,
+      "errno": 17
+    },
+    {
+      "test": "mkdir_descendant",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758\\payload",
+      "blocked": true,
+      "winerror": 3,
+      "errno": 2
+    },
+    {
+      "test": "write_truncate",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "write_alternate_stream",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": null,
+      "errno": 13
+    },
+    {
+      "test": "delete_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "rename_file",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "replace_target",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": 13
+    },
+    {
+      "test": "set_file_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "set_parent_DACL",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310",
+      "blocked": true,
+      "winerror": 5,
+      "errno": null
+    },
+    {
+      "test": "normal_sibling_create_write_rename_delete",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310",
+      "success": true
+    }
+  ],
+  "filesystem_only": true,
+  "subscription_changes": false,
+  "network_tested": false,
+  "restore_requires_elevated_SeRestorePrivilege": true,
+  "parent_sd": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(D;;DTWDWO;;;WD)(D;;WDWO;;;OW)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(D;;DTWDWO;;;WD)(D;;WDWO;;;OW)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(D;;DTWDWO;;;WD)(D;;WDWO;;;OW)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    }
+  ],
+  "placeholder_sd": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    }
+  ]
+}

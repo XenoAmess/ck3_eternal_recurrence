@@ -1,0 +1,89 @@
+{
+  "schema": "ck3-local-workshop-block-dacl-backup-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:58:11.321773+00:00",
+  "item_ids": [
+    "2291024373",
+    "2993056101",
+    "2962333032",
+    "3192256710",
+    "2224124758"
+  ],
+  "parents": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+      "original_sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310",
+      "original_sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310",
+      "original_sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    }
+  ],
+  "tombstones": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "originally_absent": true
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "originally_absent": true
+    }
+  ],
+  "undo_policy": "Enable SeBackupPrivilege and SeRestorePrivilege; open all parent/child WRITE_DAC handles with BACKUP_SEMANTICS before mutation; grant each exact zero-byte tombstone recovery ACL; restore original parent DACL; close handles and unlink tombstones."
+}

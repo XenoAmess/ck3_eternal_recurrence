@@ -1,0 +1,158 @@
+{
+  "schema": "xar.steam-five-local-control.source-index.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T05:05:05.707037+00:00",
+  "state": "ACTUAL_LOCAL_REMOVAL_AND_PERSISTENT_FILESYSTEM_BLOCK_VERIFIED",
+  "sources": [
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\ROOT-FINAL.actual.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/ROOT-FINAL.actual.json",
+      "bytes": 30762,
+      "sha256": "84d610ea3bd6fb13f2505d924df292a5aaaaf4f0b2e2be6bb7048e5e400e1c6d",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-APPLY.actual.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/LOCAL-ACL-APPLY.actual.json",
+      "bytes": 29186,
+      "sha256": "9c15c8767981b5a4c14b0a700f0f869496576943f79cfb9cc223a75c97655395",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-VERIFY.actual.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/LOCAL-ACL-VERIFY.actual.json",
+      "bytes": 24662,
+      "sha256": "1db294e35ad7d0a26362380a0f27aaf4078edb812c6eaca6ade49f4968b1425f",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-ORIGINAL-DACL-BACKUP.actual.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/LOCAL-ACL-ORIGINAL-DACL-BACKUP.actual.json",
+      "bytes": 3328,
+      "sha256": "10f2e7fc79a21a5cb246e51f92ff43f0dbda28930636baebea36e2028cc53f37",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\ROOT-CLOSE-OFFLINE-REVIEW.actual.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/ROOT-CLOSE-OFFLINE-REVIEW.actual.json",
+      "bytes": 601,
+      "sha256": "d9cbc37047d44f659383a5969e250f5a6800515f62e74ed8ac2cbd5fef91c937",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\SCREEN-RELEASE.actual.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/SCREEN-RELEASE.actual.json",
+      "bytes": 2592,
+      "sha256": "b0753b78fb676d65672f97390925a972bc61cbfbb05368f5e4f73900d73fae7f",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\ROOT-DELIVERY.actual-a03.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/ROOT-DELIVERY.actual-a03.json",
+      "bytes": 3593,
+      "sha256": "ea943cf6bd0f6a047d1fc2c3eeab3ed20b34ef7807306a8dfd5aea6c3b778726",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\steam-local-mod-block-a01\\POSTAPPLY-READONLY.actual-a01.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/POSTAPPLY-READONLY.actual-a01.json",
+      "bytes": 30658,
+      "sha256": "2d4ae9b697f735dc6c43f50e859309a1d0da7c567011effbcf97ee449ee5a976",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\steam-local-mod-block-a01\\ROOT-DELIVERY.actual-a04.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/ROOT-DELIVERY.actual-a04.json",
+      "bytes": 1518,
+      "sha256": "9dd7bc0e3bf028ed643c0dc72f0d618f9c3f32ba78034b67fc4ec1020f11c40f",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\PARENT-ONLY-UNDO.actual-a01.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/history/PARENT-ONLY-UNDO.actual-a01.json",
+      "bytes": 5104,
+      "sha256": "4c6c96bd3ca18013d4c630932b68d4298fd29afe294399267a0152d2154f33db",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\UNDO-RECOVERY.actual-a02.json",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/history/UNDO-RECOVERY.actual-a02.json",
+      "bytes": 1639,
+      "sha256": "1d4303bd5d7e212734219c23e170f1a73a0dbf14de448156931de68a978d22b4",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-local-mod-block-owned-test-a05\\local_acl_block.before-undo-fix-a01.py",
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/history/local_acl_block.before-undo-fix-a01.py.txt",
+      "bytes": 14468,
+      "sha256": "a2f1b73bc522157489547f8b1976e101a4f8a5a6751d0f601630e0a47cc7c128",
+      "availability_at_observation": "readable",
+      "copy_readback_exact": true
+    },
+    {
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/STATIC-LAYOUT-PROOF.actual.json",
+      "bytes": 3487,
+      "sha256": "e59cf2b5de141fe5d00c6f5b8f403df3f45c41a5f783194c2c59f34a70913cd8",
+      "source": "previous exact staged source in COPYPLAN.prepared-a02.json"
+    },
+    {
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/STATIC-LAYOUT.zh-CN.md",
+      "bytes": 477,
+      "sha256": "6b08ad14a3500de9da012e39c9b1b8b3d306cd8385e6546b01c90c39c8df4efc",
+      "source": "previous exact staged source in COPYPLAN.prepared-a02.json"
+    },
+    {
+      "target": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/LOCAL-ACL-PLAN.three-roots.actual.json",
+      "bytes": 302,
+      "sha256": "f5ecbdb91088e7e30775619e3b2d8fdb302b087a777f5c1b2d20a47e01333457",
+      "source": "previous exact staged source in COPYPLAN.prepared-a02.json"
+    }
+  ],
+  "large_objects_reference_only": {
+    "exact_delete_plan": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\FIVE-MODS.exact-plan.json.gz",
+      "bytes": 1542836,
+      "sha256": "4edb855235b92156da3d887179a71e063c5794f5bfa47194f96e5f30ab2e69d4"
+    },
+    "96_batch_receipts": "exact pins retained inside ROOT-FINAL.actual.json; not recopied or replayed",
+    "third_party_Mod_payloads": "deleted; no same-name substitute",
+    "Steam_client_DLL": "static source SHA/version only, not copied",
+    "source_screenshots": "small reviewed-image pins only, not copied"
+  },
+  "boundaries": {
+    "online_download_or_CDN_tested": false,
+    "zero_CDN_traffic_guaranteed": false,
+    "shared_state_patch_writable": true,
+    "current_zero_byte_blockers_are_not_Mod_payloads": true,
+    "other_machine_state_not_claimed": true,
+    "fresh_admin_privileged_handle_reopen_tested": false,
+    "portable_source_postimage_ACL_tests_repeated": false
+  },
+  "rollback_backup": {
+    "repo_path": "docs/maintenance/evidence/2026-10-19-steam-five-local-control-desktop-3fevhd2-1c74096080/LOCAL-ACL-ORIGINAL-DACL-BACKUP.actual.json",
+    "bytes": 3328,
+    "sha256": "10f2e7fc79a21a5cb246e51f92ff43f0dbda28930636baebea36e2028cc53f37",
+    "retention_basis": "current necessary recovery input while the local ban is active",
+    "use_and_recoverability_review_at_utc": "2027-10-19T05:00:00Z",
+    "review_authorizes_deletion": false,
+    "automatic_deletion_of_only_recoverable_copy_while_ban_active": false
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "preference": "until explicit user revocation; no automatic expiry",
+    "backup": "current necessary rollback input, one-year use/recoverability review; not user-permanent asset registry",
+    "other_small_records": "normal version-controlled record review; not a blanket permanent exemption"
+  }
+}

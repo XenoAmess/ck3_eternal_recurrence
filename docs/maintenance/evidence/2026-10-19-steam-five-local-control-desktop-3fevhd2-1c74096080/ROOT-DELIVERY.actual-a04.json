@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:49:00.676430+00:00",
+  "supersedes": "a01/a02/a03 source pins; retained unchanged",
+  "tool": {"path":"C:/ck3-e04-resume-20261015-a01/steam-local-mod-block-a01/local_acl_block.py","bytes":16350,"sha256":"714bfd035afeafd6b61c73b3bd7acaa66ff81d0037c62361f91f3a8dda08b278"},
+  "prior_source_preserved": "D:/workspace/ck3_native_war_ai_promo_work/steam-local-mod-block-owned-test-a05/local_acl_block.before-undo-fix-a01.py",
+  "prior_undo_defect_confirmed": "PARENT-ONLY-UNDO.actual-a01.json: 15/15 DeleteFile failed after only parent DACL restoration",
+  "fixed_undo_actual": "D:/workspace/ck3_native_war_ai_promo_work/steam-local-mod-block-owned-test-a05/UNDO-RECOVERY.actual-a02.json",
+  "actual_undo_primitive_result": {"all_15_child_denies_removed_and_files_deleted":true,"parent_sddl_exact_restored":true,"preopened_WRITE_DAC_handles_used":true,"ordinary_token_undo_zero_mutations_rejection":true},
+  "admin_privileged_handle_reopen_actually_tested": false,
+  "admin_privileged_handle_reopen_contract": "Enable SeBackupPrivilege + SeRestorePrivilege, then CreateFile WRITE_DAC|READ_CONTROL with FILE_FLAG_BACKUP_SEMANTICS; collect all handles before mutation",
+  "authority": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+  "backup_durability": "exclusive-create, flush, os.fsync, exact byte readback before mutation",
+  "steam_paths_changed_by_this_agent": false,
+  "uac_requested": false
+}

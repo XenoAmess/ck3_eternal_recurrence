@@ -1,0 +1,1017 @@
+{
+  "schema": "ck3-five-local-mod-readonly-postapply-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:59:18.591635+00:00",
+  "filesystem_mutations": false,
+  "Steam_API_or_network_calls": false,
+  "siblings": [
+    {
+      "item_or_backup": "2216659254",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2216659254",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2216746850",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2216746850",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2217087037",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2217087037",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2225737157",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2225737157",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2227658180",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2227658180",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2243652060",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2243652060",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2273832430",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2273832430",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2278836312",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2278836312",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2471250202",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2471250202",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2490560487",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2490560487",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2498061031",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2498061031",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2510421095",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2510421095",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2687006388",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2687006388",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2689410555",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2689410555",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2694172949",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2694172949",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2729685999",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2729685999",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2730101159",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2730101159",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2730456007",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2730456007",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2752613114",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2752613114",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2753176859",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2753176859",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2774914093",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2774914093",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2781955325",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2781955325",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2783698793",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2783698793",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2783699591",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2783699591",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2789211038",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2789211038",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2823178539",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2823178539",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2863937956",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2863937956",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2867217469",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2867217469",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2878664285",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2878664285",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2893793966",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2893793966",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2904268802",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2904268802",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2939268227",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2939268227",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2973143830",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2973143830",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2975079361",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2975079361",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2975613539",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2975613539",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2984126808",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2984126808",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "2996114659",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2996114659",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3000513923",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3000513923",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3009113176",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3009113176",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3013259695",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3013259695",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3090564070",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3090564070",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3093425816",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3093425816",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3097295474",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3097295474",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3114064450",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3114064450",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3165212409",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3165212409",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3166519110",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3166519110",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3182367229",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3182367229",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3182385109",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3182385109",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3196591057",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3196591057",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3256079840",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3256079840",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3262197468",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3262197468",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3269202078",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3269202078",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3279899722",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3279899722",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3317422072",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3317422072",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3318376151",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3318376151",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3319931178",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3319931178",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3338512129",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3338512129",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3351194009",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3351194009",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3365342206",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3365342206",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3365464893",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3365464893",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3392147704",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3392147704",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3394034138",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3394034138",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3461830805",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3461830805",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3470037631",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3470037631",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3473706726",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3473706726",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3475614211",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3475614211",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3596580780",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3596580780",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3629538361",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3629538361",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3665830902",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3665830902",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3784706360",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3784706360",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3797711947",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3797711947",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3800124956.before-description-update-20260912-1755",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3800124956.before-description-update-20260912-1755",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3800124956.before-v2.0.0-20260912-223342",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3800124956.before-v2.0.0-20260912-223342",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3812510217",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510217",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3812510834",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812510834",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3812991990",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    },
+    {
+      "item_or_backup": "3817934804",
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3817934804",
+      "rights": [
+        "DELETE",
+        "FILE_ADD_FILE",
+        "FILE_ADD_SUBDIRECTORY"
+      ],
+      "all_rights_granted": true
+    }
+  ],
+  "tombstones": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "size_bytes": 0,
+      "is_regular_file": true,
+      "is_directory": false,
+      "is_reparse": false,
+      "file_attributes": 32,
+      "protected_dacl": true,
+      "exact_dacl_match": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:PAI(D;;DCLCRPCRSDWDWO;;;WD)(D;;WDWO;;;OW)(A;;FR;;;WD)"
+    }
+  ],
+  "parents": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+      "dacl_matches_exact_original_plus_this_folder_denies": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(D;;DTWDWO;;;WD)(D;;WDWO;;;OW)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310",
+      "dacl_matches_exact_original_plus_this_folder_denies": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(D;;DTWDWO;;;WD)(D;;WDWO;;;OW)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310",
+      "dacl_matches_exact_original_plus_this_folder_denies": true,
+      "sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001D:AI(D;;DTWDWO;;;WD)(D;;WDWO;;;OW)(A;OICIID;FA;;;BA)(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)(A;OICIIOID;SDGXGWGR;;;AU)"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\steam-local-mod-block-a01\\SIBLING-ACCESS.actual-a01.json",
+      "bytes": 2047,
+      "sha256": "a78b9fe8edcf9919118ef36d7e2289277908fd6483cead5270c2b34bb9e78435"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-ORIGINAL-DACL-BACKUP.actual.json",
+      "bytes": 3328,
+      "sha256": "10f2e7fc79a21a5cb246e51f92ff43f0dbda28930636baebea36e2028cc53f37"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-APPLY.actual.json",
+      "bytes": 29186,
+      "sha256": "9c15c8767981b5a4c14b0a700f0f869496576943f79cfb9cc223a75c97655395"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-VERIFY.actual.json",
+      "bytes": 24662,
+      "sha256": "1db294e35ad7d0a26362380a0f27aaf4078edb812c6eaca6ade49f4968b1425f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\steam-local-mod-block-a01\\local_acl_block.py",
+      "bytes": 16350,
+      "sha256": "714bfd035afeafd6b61c73b3bd7acaa66ff81d0037c62361f91f3a8dda08b278"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\steam-local-mod-block-a01\\readonly_after_apply_a01.py",
+      "bytes": 4371,
+      "sha256": "3d0be3ef98c6bd4797fe9de59f68db873482b1309aba8676e30c04f62c213cf7"
+    }
+  ],
+  "LOCAL-ACL-APPLY.actual.json": {
+    "machine_matches": true,
+    "all_blocked_and_siblings_ok": true,
+    "tests": 126,
+    "subscription_changes": false,
+    "network_tested": false
+  },
+  "LOCAL-ACL-VERIFY.actual.json": {
+    "machine_matches": true,
+    "all_blocked_and_siblings_ok": true,
+    "tests": 126,
+    "subscription_changes": false,
+    "network_tested": false
+  },
+  "siblings_names": {
+    "before_count": 77,
+    "current_directory_count": 77,
+    "missing": [],
+    "unexpected": []
+  },
+  "all_passed": true,
+  "ended_at_utc": "2026-10-19T04:59:18.620895+00:00"
+}

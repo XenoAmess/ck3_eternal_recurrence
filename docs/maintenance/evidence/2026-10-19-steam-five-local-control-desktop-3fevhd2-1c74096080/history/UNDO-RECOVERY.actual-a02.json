@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:49:00.383675+00:00",
+  "steam_paths_changed": false,
+  "admin_or_UAC_used": false,
+  "actual_admin_privileged_reopen_tested": false,
+  "recovery_uses_preopened_WRITE_DAC_handles": true,
+  "ordinary_token_new_WRITE_DAC_handles_all_rejected": true,
+  "ordinary_token_undo": {
+    "exitcode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\ck3-e04-resume-20261015-a01/steam-local-mod-block-a01\\local_acl_block.py\", line 274, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\ck3-e04-resume-20261015-a01/steam-local-mod-block-a01\\local_acl_block.py\", line 166, in main\n    if args.command=='undo':return undo(args.backup,args.receipt)\n                                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ck3-e04-resume-20261015-a01/steam-local-mod-block-a01\\local_acl_block.py\", line 204, in undo\n    if not any(priv==luid and attr&s.SE_PRIVILEGE_ENABLED for priv,attr in s.GetTokenInformation(token,s.TokenPrivileges)):raise RuntimeError('Administrator '+name+' required')\n                                                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Administrator SeBackupPrivilege required\n",
+    "no_receipt": true
+  },
+  "ordinary_token_undo_left_all_blocks_intact": true,
+  "exact_original_parent_sddl_restored": true,
+  "all_child_deny_acls_removed": true,
+  "all_15_tombstones_deleted": true,
+  "ended_at_utc": "2026-10-19T04:49:00.676430+00:00"
+}

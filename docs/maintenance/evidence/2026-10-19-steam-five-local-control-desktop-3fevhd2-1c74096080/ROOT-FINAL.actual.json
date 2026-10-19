@@ -1,0 +1,622 @@
+{
+  "schema": "xar.steam-five-local-removal-final.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:59:17.110869+00:00",
+  "ids": [
+    "2291024373",
+    "2993056101",
+    "2962333032",
+    "3192256710",
+    "2224124758"
+  ],
+  "manual_deleted_files": 86062,
+  "manual_allocated_bytes_reclaimed": 56401892912,
+  "manual_GiB_reclaimed": 52.52835611999035,
+  "empty_directories_removed": 8459,
+  "delete_batch_count": 87,
+  "prune_batch_count": 9,
+  "Root_independently_checked_all_96_receipts": true,
+  "payload_absent_before_acl_time": "2026-10-19T04:57:48.530129+00:00",
+  "blocked_destinations": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2291024373",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2993056101",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2962333032",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3192256710",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\2224124758",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2291024373",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2993056101",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2962333032",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\3192256710",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\downloads\\1158310\\2224124758",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2291024373",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2993056101",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2962333032",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\3192256710",
+      "file": true,
+      "logical_bytes": 0
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\temp\\1158310\\2224124758",
+      "file": true,
+      "logical_bytes": 0
+    }
+  ],
+  "ACL_apply": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-APPLY.actual.json",
+    "bytes": 29186,
+    "sha256": "9c15c8767981b5a4c14b0a700f0f869496576943f79cfb9cc223a75c97655395"
+  },
+  "independent_verify": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-VERIFY.actual.json",
+    "bytes": 24662,
+    "sha256": "1db294e35ad7d0a26362380a0f27aaf4078edb812c6eaca6ade49f4968b1425f"
+  },
+  "original_dacl_backup": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\steam-five-local-control-20261019-a02\\LOCAL-ACL-ORIGINAL-DACL-BACKUP.actual.json",
+    "bytes": 3328,
+    "sha256": "10f2e7fc79a21a5cb246e51f92ff43f0dbda28930636baebea36e2028cc53f37"
+  },
+  "negative_assertions_passed": 123,
+  "normal_sibling_suites_passed": 3,
+  "local_workshop_manifests_unchanged": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\workshop\\appworkshop_1158310.acf",
+      "bytes": 28041,
+      "sha256": "9c3b40ebe14f79c08a4d014a475a3e1f7a6be8d64df42b05543b7cc8b92f0d09"
+    }
+  ],
+  "subscriptions_modified": false,
+  "Steam_API_Init_calls": 0,
+  "unsubscribes": 0,
+  "online_test_performed": false,
+  "Steam_online_mode_changes": 0,
+  "other_machines_modified": false,
+  "local_only_persistent_ACL": true,
+  "streaming_CDN_bytes_guarantee": false,
+  "unblocked_shared_state_patch_scope": "workshop/downloads/state_1158310_*.patch is shared app metadata, kept writable; monitor first naturally needed online session",
+  "free_after": {
+    "C:/": 93545037824,
+    "D:/": 23783276544
+  },
+  "free_delta_not_exclusive_attribution": true,
+  "plan": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\FIVE-MODS.exact-plan.json.gz",
+    "bytes": 1542836,
+    "sha256": "4edb855235b92156da3d887179a71e063c5794f5bfa47194f96e5f30ab2e69d4"
+  },
+  "delete_receipts": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-000.execute.actual.json.gz",
+      "bytes": 1153,
+      "sha256": "d0e4e4133a3349641627220df600de652b73b4e842fe3e85023abc39840cba8a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-001.execute.actual.json.gz",
+      "bytes": 1148,
+      "sha256": "ed18e8a1dff1ec655ec6bc07b03ebc48a2bfdbde349b0edee6cf10f9aa58ac7d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-002.execute.actual.json.gz",
+      "bytes": 1155,
+      "sha256": "cca98ebab76971a2483d7d71df9fd3f1ad0d41554ff08cf5589c5fd14ab19472"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-003.execute.actual.json.gz",
+      "bytes": 1154,
+      "sha256": "3a29d40f3318e718ed02c3b9ac25f9b3eaeb94828380856b33d492cd7d67d582"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-004.execute.actual.json.gz",
+      "bytes": 1150,
+      "sha256": "c17f5f8f049436161eeceef6ad2c859489e3c59dccfaf21b88133f6a0aed6483"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-005.execute.actual.json.gz",
+      "bytes": 1155,
+      "sha256": "064c08ecd8a2796157e451cd7f83b536d7d238b52ec4269c3a9f6e3870cebab1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-006.execute.actual.json.gz",
+      "bytes": 1146,
+      "sha256": "58a39d375bffdd108bcdcd2ecda0ca68a4b845687764a679de1de2679abce22c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-007.execute.actual.json.gz",
+      "bytes": 1156,
+      "sha256": "1633088d860fceafaf09f67dab8615e5bd569c1d678da14d3011787bd5a024fb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-008.execute.actual.json.gz",
+      "bytes": 1154,
+      "sha256": "47371b4c678802287cb09fd3927565187708a763ec48d751cbc9a8fc44bd2b43"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-009.execute.actual.json.gz",
+      "bytes": 1155,
+      "sha256": "2d2ea6ae7c2d99cdcbfbd9d5f71a0bc41122c6ecb6c45ae2988c53a60b66472f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-010.execute.actual.json.gz",
+      "bytes": 1157,
+      "sha256": "b7ddc4ac0f258b93eecab5581157ac26727d7533e75945a093aeb633bf9ea426"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-011.execute.actual.json.gz",
+      "bytes": 1153,
+      "sha256": "3433639d17e2a8848a2a976fd452a674839c05c009a4a9bf0c163fa37a7f4656"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-012.execute.actual.json.gz",
+      "bytes": 1146,
+      "sha256": "cd6d7b18f69a4c4faabd37837d9c72c2fa8c1c1de6abbeb56de39ea7d4cfcad4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-013.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "bcd958bd6519b138cc59545d62ef27ad4957c3da60b1e733e2e9dece910d7650"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-014.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "b82a2b4374de366645c6aee4db8cc78cb74399792e3de02a8795cc221806e49b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-015.execute.actual.json.gz",
+      "bytes": 1272,
+      "sha256": "484185d1696e94c422b372fe4c8dd2539dbd11a188b03f556375d6daa03fd34b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-016.execute.actual.json.gz",
+      "bytes": 1276,
+      "sha256": "d29d37ed21bc0e952364c69fd415496ea9efc5aad7908dc2cf890b77a36f000b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-017.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "fc60ec9fd31ba8d74fa22b611bce7be773602dbb33aebd516e601c084d3c76d9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-018.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "14a5fd72c87b670e7cd769b2e5cd53134fd27dfef5c588510271e76904c99138"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-019.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "303ffabaadb1650542e2bc6efa9eb8ea9802334d9660d9862c3c17a3838e063a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-020.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "cdfb4e730224c76f68cb1b7b00d7174601543ae9230d4e33d1ba58c7ba7a28a9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-021.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "1c190e0fb8a550398435f41ffdd784432510d055386b813f0f3b8e88f03cec91"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-022.execute.actual.json.gz",
+      "bytes": 1280,
+      "sha256": "6374bcb5f5ca7aaa342fd072a69c5b6785f8c7ad773630758318fa6b9783ecd8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-023.execute.actual.json.gz",
+      "bytes": 1282,
+      "sha256": "2a99958d768a7fed70d9765562fee1b23278cf4047f725abb3363a4f701e1a74"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-024.execute.actual.json.gz",
+      "bytes": 1281,
+      "sha256": "241379759b7e9da83c834a3164ae92077f2934198a158c073237880b9dd1e271"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-025.execute.actual.json.gz",
+      "bytes": 1272,
+      "sha256": "e99ffa5755baa1428c7391506c9d24b9512bec3e10442b4737d76245222439f2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-026.execute.actual.json.gz",
+      "bytes": 1273,
+      "sha256": "f03261621d62f4f59c60bf3109379d5324002d8986c5476e0d37e5abc3d5b88e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-027.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "2467db3a0ff080638c25971bc8e6a068673e7abd29fc6e7d60bd827d64f6b74a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-028.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "3e1759725f72d8229ea8c2af8e2d14e686bbb680cd4a2da9956c26c871462f67"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-029.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "fc560b258a6ad368d15f06bd67a4c40a4ed175cfc8b8ae6f3191803cb3d2dd0f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-030.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "8fc07e3ee8944f6758e3641787e68b193adbc46b367b18f533c563430a2860a3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-031.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "c9ef0add6d74eea9ca626932b2bcc514628c3cb736ae2217b4bb9f2aa0df55ed"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-032.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "e98c8d582e573fa67826c3055cc784b2893561a4d386b897ec68f7dd50495489"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-033.execute.actual.json.gz",
+      "bytes": 1272,
+      "sha256": "ccac6054041f4e8a2d7cfd8f8a6362e6171184a379ee5790508e1cecc527332d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-034.execute.actual.json.gz",
+      "bytes": 1273,
+      "sha256": "e8bfa8abdd462366484124be92a7f196fd5f2441f06e633e3c1292108331e8f6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-035.execute.actual.json.gz",
+      "bytes": 1276,
+      "sha256": "c06d0d452fdd11c4334aba5ca802fb3fb1a03b1ca69753af2a1b094f7965ff18"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-036.execute.actual.json.gz",
+      "bytes": 1279,
+      "sha256": "345d924673a2e5459c5e5100896d983bfa6725aea46b7f4ec9fa6f44c6247789"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-037.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "2d291fa1f8d30771920ee44b4dfbe3ba0b7e09e2bacd5397709428cfd1890a73"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-038.execute.actual.json.gz",
+      "bytes": 1272,
+      "sha256": "f485ad424a2bceca6a8c56de76b95e0a5e2d49f0e953fa9b51f79c4db7b8c19d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-039.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "89cf7306cfebc7888c57fd8fd51a9d9634dea7ce2ddd386b95dae0150ee6ecf3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-040.execute.actual.json.gz",
+      "bytes": 1271,
+      "sha256": "2395eb06adb7b706fe0d05e4593835f8620452f194e4fdd7ac9f100baee7c79a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-041.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "df7baa5fb056563bf7b33e2ff813009878506114c1c3c96c61be11d52e7a9822"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-042.execute.actual.json.gz",
+      "bytes": 1273,
+      "sha256": "a0bc504f041d15631458084ab40801f8f4ee7ba7bdaed0ceee9366f6f0492b3b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-043.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "e308365ec25b5150892fe723b3e9a461e92dba31518c9a368f0109d700bd9cd5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-044.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "910c54d0c539a9b39224131effc24b40630bc0d92da465d11d881f98d6d674a8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-045.execute.actual.json.gz",
+      "bytes": 1270,
+      "sha256": "8d8ff00fa766343f7dfb19d5854982902c849d3b0d0ea04bc0b704ce0cc3ad7e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-046.execute.actual.json.gz",
+      "bytes": 1268,
+      "sha256": "99d6f18a1be7a9dfe050385b9bdb28fafcdc25a1a9a0b94d9302783f938b6e1a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-047.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "f1d782ca7a68094562e22e2c5734a5183b52a154a24bb2a0e6fe3b573774c67c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-048.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "3f355046b6caff32bb29115d10d8a928b5e0ef1df0008db1778a71f78de678ec"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-049.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "3674c89faf848bb0fe41ccfcd513395dab09e5200476a9a63504274dcc7b7081"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-050.execute.actual.json.gz",
+      "bytes": 1273,
+      "sha256": "0f0b247a26a7b7633d22b63196414e287dd4aee84dbed72d72294a1347e5a98b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-051.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "01ce113c25b1aeb17e13e610cdb86c4a85bd9919edeba7e044c235361d7115e3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-052.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "7c86c8ce0bb89c9c9cfa90952c62ea723a802ec60f9925534cca10f413c1f047"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-053.execute.actual.json.gz",
+      "bytes": 1277,
+      "sha256": "64ab524c09c1501d37b354203f583610d84eae33a3ed1a9668f7e23191875f5d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-054.execute.actual.json.gz",
+      "bytes": 1276,
+      "sha256": "57dd6ff2e56e1dac0890d27fe4ee03cde24744959b9e070e6d62878460a6f966"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-055.execute.actual.json.gz",
+      "bytes": 1272,
+      "sha256": "bef35a53450349c3640935da80b230f3b635fd25a0476e7a8bda3bd6e5371bb1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-056.execute.actual.json.gz",
+      "bytes": 1272,
+      "sha256": "afb0a62b73209bf007887614cb2cdbf9bb17646655b39a8529782704caf6b4cb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-057.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "a3abff59f5bd05d6db00b3cb9b80508cf73ffb9cc07716695e2f0d188f1d7c19"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-058.execute.actual.json.gz",
+      "bytes": 1278,
+      "sha256": "34e27ef317b95ce0fc40f5c29b9fcd10382fa118d1475572568032c2b34f18cb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-059.execute.actual.json.gz",
+      "bytes": 1276,
+      "sha256": "06e87bee8bf4e97140cf775aa4ffc0d39dab97b4126e1142712888b6f7d165da"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-060.execute.actual.json.gz",
+      "bytes": 1269,
+      "sha256": "ccf52a8090a6329aaca1793ba21293734d2466ef03e33c83f067dd15413dc62b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-061.execute.actual.json.gz",
+      "bytes": 1269,
+      "sha256": "5fed60aef43e17b74eb61f47bf17ed0c90274a7c1ce9ec31327e490e459b6a41"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-062.execute.actual.json.gz",
+      "bytes": 1274,
+      "sha256": "d2da1b2ef6bd0faab7edc2ea0c775bd85794854f33d32579afec421c36c725dc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-063.execute.actual.json.gz",
+      "bytes": 1270,
+      "sha256": "7b19d9816de876f6492b97ddd9f73ddeb0811806176a15e653da0425dc723059"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-064.execute.actual.json.gz",
+      "bytes": 1270,
+      "sha256": "df0d6049d4af21d7c4de071af3d408600349dc4f7bf495d69fc672a2ea5cf947"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-065.execute.actual.json.gz",
+      "bytes": 1271,
+      "sha256": "16abcb1143744a343dd75df8090f4d2995560796b061160073730752452c9808"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-066.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "6c7e3cc9880e1802af2974546b33f48e1c62ea7ab59d1de40511ee5cf2e19137"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-067.execute.actual.json.gz",
+      "bytes": 1275,
+      "sha256": "8a78795a6a5e8d342d1b959cfddcc6ea7fc5e7042140f2b750ccafc329928591"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-068.execute.actual.json.gz",
+      "bytes": 1270,
+      "sha256": "518dc97318729f981edb6ab7d84d68a3763b529d50bf8ae72761ec550d4197f0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-069.execute.actual.json.gz",
+      "bytes": 1269,
+      "sha256": "1040d30a50cbe428cb4c8076b4c74fb5d4194dcd82cf973886078b83fbbbf63e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-070.execute.actual.json.gz",
+      "bytes": 1269,
+      "sha256": "72dbb62124f1921e3fc6cc23721c37ad3183bf25bcb991b994f2e35f00f9eba8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-071.execute.actual.json.gz",
+      "bytes": 1270,
+      "sha256": "0956b34bf93d7579718eb2449d17b41b605991338b938781b328ae8db01ef053"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-072.execute.actual.json.gz",
+      "bytes": 1269,
+      "sha256": "32e96c657af519b00bf6e80955db07d744385a8fa1aa4c425637d30e99de62fb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-073.execute.actual.json.gz",
+      "bytes": 1268,
+      "sha256": "cdefb3d5e71d0dff42f521a9114fc83fa457c7df92468112c51d17e7cb2f78f4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-074.execute.actual.json.gz",
+      "bytes": 1271,
+      "sha256": "81660d8a2d3e839cffeac4046d44ac3c8109476ecb8ec680e410241f072d9cea"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-075.execute.actual.json.gz",
+      "bytes": 1271,
+      "sha256": "704342fa2ec0b1930e331e986491b99e4130707330ac0740aa4850d7e8f4c457"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-076.execute.actual.json.gz",
+      "bytes": 1271,
+      "sha256": "28306ca6c01a5ce3d4a99afed3f9717602831f7a3bf96f5635f1d58a6d165bb5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-077.execute.actual.json.gz",
+      "bytes": 1268,
+      "sha256": "316791f9184da3441ac5bf8f485c41dacfec739f40151fea1ad5c675367f3ad5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-078.execute.actual.json.gz",
+      "bytes": 1266,
+      "sha256": "c1cee142de2531025e6fe0bb53595f563a4117b3175725c3822477c3bd263a07"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-079.execute.actual.json.gz",
+      "bytes": 1273,
+      "sha256": "078f2a415714e0131757534a9c8899362496d4a38d9ad2b2c5ed15ec38387b91"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-080.execute.actual.json.gz",
+      "bytes": 1267,
+      "sha256": "a3777212acb72105c1f68fbd723fcf383c845e1fc7114cbdcd23c20c6288df14"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-081.execute.actual.json.gz",
+      "bytes": 1266,
+      "sha256": "e063d373b674a34d852ae364579f81c64692009f9bdbd6e44cf2a8f047bfc416"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-082.execute.actual.json.gz",
+      "bytes": 1269,
+      "sha256": "c755880b0243694b0917541d4312d85e476351b60e606e4f76cbdda8f2ce77e2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-083.execute.actual.json.gz",
+      "bytes": 1273,
+      "sha256": "da6c0f5ced8fd2f2d5e92cb50397115a83f367f0c8a99f388743876a45bc7502"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-084.execute.actual.json.gz",
+      "bytes": 1267,
+      "sha256": "985e672476fcd6562fefa9250872cb844bd413c29f58351126bd038b3db08919"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-085.execute.actual.json.gz",
+      "bytes": 1271,
+      "sha256": "4337a0cb7a3ecbba418d7dab3e4c248f33c8708630cd050b8041df432c33c981"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\BATCH-086.execute.actual.json.gz",
+      "bytes": 1229,
+      "sha256": "09ba479f9373650e6ad2d5796d1d66376be155e4aae4dd8094b53bb7a021867f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-000.prune.actual.json.gz",
+      "bytes": 3107,
+      "sha256": "34b8451524bcbca167ffa237178b9d686c18cedbc1b219b897a494559cdf44f9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-001.prune.actual.json.gz",
+      "bytes": 3095,
+      "sha256": "f03f7056068cc6defc7347d525c8f1b01ce6704012de01fba430bbdbe1f8da2f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-002.prune.actual.json.gz",
+      "bytes": 3097,
+      "sha256": "ae344bc48ab846a0c9e3e3283f6a60fbc3052106ce5652d7a8ff6fe9c683f187"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-003.prune.actual.json.gz",
+      "bytes": 3113,
+      "sha256": "04f7f3bfe64b1d3e29a8d47ffd49cf8c61f4466f9316e339ecb793b61460f308"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-004.prune.actual.json.gz",
+      "bytes": 3077,
+      "sha256": "b405154d77ae6159f409d9a922c669ad5c7a132dbb832480bd97d15f74fa17be"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-005.prune.actual.json.gz",
+      "bytes": 3158,
+      "sha256": "26b06882dab39dcfe9e9b355ef430d9fd2b111252a5af045c0a960e168e478e9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-006.prune.actual.json.gz",
+      "bytes": 3095,
+      "sha256": "b68ef652b6174e804a4215e22e857c5cab6519467eae644376dbd2f55ba0c0a1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-007.prune.actual.json.gz",
+      "bytes": 3097,
+      "sha256": "0767dc9119d8be5a50cc5d49dfea18a9905c27078f618e21ddf39390f23bb5e7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-steam-five-mod-retirement-20261019-a01\\a02\\DIRS-008.prune.actual.json.gz",
+      "bytes": 2726,
+      "sha256": "052b3034ae32717fbf1c9e914114e0d9389982bde2c819019a664327d7deb7fb"
+    }
+  ]
+}
