@@ -1,0 +1,57 @@
+{
+  "schema": "xar.C7-map520-local521-actual-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:27:53.368217+00:00",
+  "sources": {
+    "actual521": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0521-1-result.json",
+      "bytes": 1441,
+      "sha256": "abb23193442b656c7eb52f7a4e73717b413059b1b32bdfbd8e5f626471764bd1"
+    },
+    "actual_local_audit": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\MAP520-PREFLIGHT-CLEARED-0521.json",
+      "bytes": 1217,
+      "sha256": "96a56b7f991b4605426fd1d35750dcae418accafd12e27c6a679ef4582566333"
+    },
+    "actual_Root_primary_review": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c7-current381-root-pixel-review-2026-10-19.json",
+      "bytes": 2352,
+      "sha256": "17e3cb081b1065102127513c3a650464d66227b7e64cfa537642f956d2f185b6"
+    },
+    "corrected_map": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C7.json",
+      "bytes": 3462,
+      "sha256": "7c00ba6454f7997a564bd1b2d0ba6e45a2e7a4eda1ed51994f17b16367f10678"
+    },
+    "original520_frozen_packet": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c7-map520-rejection75\\FROZEN.json",
+      "bytes": 5639,
+      "sha256": "ba5c98d373ef20dc14358ebcebe895f142ca28b3ad31c3a17febd5d2a739c3b6"
+    },
+    "original_wrong_map_retained": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c7-map520-rejection75\\ROOT-CAMPAIGN-MAP-ADMITTED-C7.json",
+      "bytes": 2733,
+      "sha256": "8b492b5948eddd5ad28966373de86afd20e1aead47634db238d94dd22d7e374f"
+    },
+    "original520_response": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0520-1-result.json",
+      "bytes": 262,
+      "sha256": "1bba6e5143d6dc28680efc9c99a3662bfee59c35a00b95281cde0e1b2b6cee4e"
+    }
+  },
+  "actual521_status": "map520_local_preflight_cleared",
+  "actual_control_time_utc": "2026-10-19T07:22:57.512142+00:00",
+  "new_RPC_calls": 0,
+  "boundary_completed_cycles": 219,
+  "boundary_game_days": 381,
+  "boundary_next_sequence": 522,
+  "ordinary_cycle_or_business_credit": 0,
+  "state_gift_Driver_changes_by_control": false,
+  "original520_or_other_action_replay": false,
+  "original_camera_guard_revalidated": true,
+  "original_wrong_map_and520_retained": true,
+  "Root_primary_and_runtime_pixel_reviews_both_retained": true,
+  "research_runtime_files_mutated": 0,
+  "research_Game_Native_MCP_calls": 0,
+  "subsequent_FULL_success_claimed": false
+}

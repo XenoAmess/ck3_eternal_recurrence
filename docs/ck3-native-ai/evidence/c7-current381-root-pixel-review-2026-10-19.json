@@ -1,0 +1,50 @@
+{
+  "schema": "xar.C7-current381-primary-pixel-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:20:10.434825+00:00",
+  "reviewer": "/root",
+  "status": "GREEN",
+  "review_method": "Primary agent directly viewed both frozen PNGs with view_image(original)",
+  "frozen_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\c7-current381-map01-FROZEN-PAIR.json",
+    "bytes": 2811,
+    "sha256": "2e14a1e928fc1d599fe42332c28c5c478b2e795a3ed22d184e7b87d49569c169"
+  },
+  "images": {
+    "game_frame": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\c7-current381-map01-game.png",
+      "sha256": "fd702494e6cd4f8f762b0481a50adfd027beb4b44f1d6a787f25f5415751672c",
+      "bytes": 1645215,
+      "width": 1280,
+      "height": 720
+    },
+    "scene_frame": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\c7-current381-map01-scene.png",
+      "sha256": "57d63ead5dfe99732da4a21a6cfffd815719d5e1708cdf6c3c81f092c830a7f4",
+      "bytes": 1514281,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "game_pid": 153556,
+  "game_creation_filetime": "134368602545256920",
+  "game_creation_date": "20261019051054.525692+000",
+  "recording_session_id": "e6f643ea-3404-446b-ae18-6b75cb9d682a",
+  "original_frame_at_utc": "2026-10-19T07:11:30.013827+00:00",
+  "pixel_observations": {
+    "game_map_visible": true,
+    "paused_indicator_visible": true,
+    "displayed_date": "1067-10-01",
+    "player_portrait_visible": true,
+    "event_option_modal_visible": false,
+    "scene_preserves_game_map_and_portrait": true,
+    "right_current_decision_text_visible": true,
+    "old_blue_decision_panel_visible": false,
+    "film_or_session_title_visible": false
+  },
+  "previous_runtime_review_retained": true,
+  "original_wrong_reviewer_attempt_must_be_preserved": true,
+  "business_result_or_faction_gift_success_inferred": false,
+  "Game_MCP_OBS_or_desktop_input_calls": 0,
+  "screenshot_or_recording_files_mutated": false
+}

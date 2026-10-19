@@ -1,0 +1,36 @@
+{
+  "schema": "xar.C7-source-only-warm-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:11:49.192404+00:00",
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/source_only381_warm_queue_v1.py",
+      "bytes": 16689,
+      "sha256": "5b9c9ee94bb753dca0bab838523519baabfd5d588c2459a32d3ca2a1e0403ea3"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_source_only381_warm_v1.py",
+      "bytes": 13203,
+      "sha256": "025f0660b7fe3859ddb0b2f874bf08650a84d4fcc878c4984d92d1960d4c42de"
+    },
+    {
+      "path": "docs/ck3-native-ai/c7-source-only-warm-maintenance-2026-10-19.md",
+      "bytes": 3549,
+      "sha256": "0173e085b4363d4576266703be98f4114c9767cc739b938dc65f6d0c1fac8b5e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c7-source-only-warm-software01.json",
+      "bytes": 6272,
+      "sha256": "304f4702362806a7f5db88982fc9fb8a31745a7cbc8f67aa1455c37a7744df10"
+    }
+  ],
+  "software_status": "PASS",
+  "actual_warm_adoption": "pending sole runtime owner receipts",
+  "new_actual_RPC_calls": 0,
+  "research_runtime_files_mutated": 0,
+  "actual_input_custody_check": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-source-only-warm-review01\\ACTUAL-INPUTS01.json",
+    "bytes": 826,
+    "sha256": "76d831a7ba935d4dfa145ab987f936b4a85581ed0633c77a73b9c279836b9b0b"
+  }
+}

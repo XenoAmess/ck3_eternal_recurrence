@@ -1224,3 +1224,6 @@ docs/ck3-native-ai/evidence/p51-c6-shared-io-2026-10-19.json -text whitespace=cr
 ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/faction-pending-paused-replan-2026-10-19.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c6-faction515-predispatch-software01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c7-source-only-warm-software01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c7-map520-clear-software01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/faction-gift513-actual-outcome-2026-10-19.json -text whitespace=cr-at-eol

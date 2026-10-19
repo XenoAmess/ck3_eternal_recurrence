@@ -1,0 +1,31 @@
+{
+  "schema": "xar.C7-map520-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:23:36.241419+00:00",
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/c7_map520_preflight_clear_v1.py",
+      "bytes": 6138,
+      "sha256": "011e1d41a2719090f16b3d0da8dbbcefa382a6d18c0c865ae1c7cd9c248ac45c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_c7_map520_clear_v1.py",
+      "bytes": 10457,
+      "sha256": "6f4a580e5f59a0e8a864956d38a314853122abbb427d35556b07b4f731948080"
+    },
+    {
+      "path": "docs/ck3-native-ai/c7-map520-local-preflight-recovery-2026-10-19.md",
+      "bytes": 3074,
+      "sha256": "3bce5e0fc4d5d6bfe554839b60b1c96a4e6d98f9f5fa5f414e17550758c68ae8"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c7-map520-clear-software01.json",
+      "bytes": 3498,
+      "sha256": "33c3673f94820a711b663d8c49a1ef0c1d92ed05a1b0bdcc84e4befbc7fa0cc5"
+    }
+  ],
+  "software_status": "PASS",
+  "actual521_status": "pending sole runtime owner receipt",
+  "new_actual_RPC_calls": 0,
+  "runtime_files_mutated": 0
+}

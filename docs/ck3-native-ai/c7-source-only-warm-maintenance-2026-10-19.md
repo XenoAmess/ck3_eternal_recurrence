@@ -1,0 +1,17 @@
+# C7 same-Game source maintenance
+
+Machine: `xenoamess-full-tower-eb9d2c1186`. UTC and exact source pins are recorded in the [software qualification](evidence/c7-source-only-warm-software01.json). This document freezes source preparation; actual adoption needs the sole runtime owner's receipts.
+
+C6 stopped after219 settled cycles at381 days. AUTO515's planning-time frame interruption was cleared by the source-bound local516 control without replay or credit. PLAN517 then selected a cold-recovery route despite the retained physical Game. The old gift remains unresolved and is preserved. C7 adopts canonical `8e1e59f073f239d266f5b59f57c65b5645658512`, whose parent is13eb and whose only three SDK differences are the faction route, read-only planning retry and Sway lifecycle observer. Native26, Game153556, the C6 text provider and the existing OBS session remain in place.
+
+The [thin warm helper](../../tools/g2_saved_campaign/source_only381_warm_queue_v1.py) verifies the exact clean219 seed, actual normal C6 dual0 closure, closed Driver provenance, gift ledger and Sway sidecars. It does not read the large Driver body. The loop's cached SAVE334 and the Driver's actual gift-preparation SAVE381 are independently bound; neither is substituted for the other. The old gift request and raw process creation string remain unchanged.
+
+Fresh SEM518 must prove the same Game birth, actor, episode, date381, Native revision at least419, lifecycle and goal. The canonical startup helper receives the retained C6 relay explicitly. CAP519 must confirm `same_pid_hot` and recheck all three sidecar hashes. The helper restores the clean state and changes only its current frame/source to actual SEM518, with the same frame serving as the classifier's App-opening anchor. T0 and the original counts/checkpoint fields remain intact. There is no completed-MET supplier, old action replay or settlement override; ordinary `generated` and `full_loop` remain inherited.
+
+The [qualifier](../../tools/g2_saved_campaign/qualify_source_only381_warm_v1.py) executes actual C7 Queue AST `fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30`: startup check-after before consumption, canonical publication, retained C6 relay, ordinary CAP and the original Clean map gate/full-loop first-new-AUTO path. Future SEM/CAP are labeled software fixtures. Wrong Game, date drift and cold CAP reject. No live RPC or runtime file is changed. Constructor process/recording checks remain actual preflight work, and the software result does not claim successful live C7 recovery.
+
+```text
+py tools/g2_saved_campaign/qualify_source_only381_warm_v1.py --runtime-root D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime --queue-sha256 fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30 --clean-seed D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-source-only-warm74/CLEAN-SEED.json --output-root D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/c7-source-only-warm-review01
+```
+
+Owner arguments must point to the existing C6 recording job and first-frame admission. The C7 map admission binds actual SEM518 to that same recording session. The new marker is `ROOT-C7-SOURCE-ONLY-WARM-BOUND.json`; it records219/no queue pending, zero new credit, the unresolved gift request and retained C6 publisher/session. A plan is not a receipt, and no gift success is inferred by this maintenance helper.

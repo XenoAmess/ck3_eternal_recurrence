@@ -1,0 +1,71 @@
+{
+  "schema": "xar.C7-map520-exact521-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:22:18.031458+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c7-map520-rejection75\\FROZEN.json",
+      "bytes": 5639,
+      "sha256": "ba5c98d373ef20dc14358ebcebe895f142ca28b3ad31c3a17febd5d2a739c3b6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c7-current381-root-pixel-review-2026-10-19.json",
+      "bytes": 2352,
+      "sha256": "17e3cb081b1065102127513c3a650464d66227b7e64cfa537642f956d2f185b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C7.json",
+      "bytes": 3462,
+      "sha256": "7c00ba6454f7997a564bd1b2d0ba6e45a2e7a4eda1ed51994f17b16367f10678"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_saved_campaign_preflight.py",
+      "bytes": 16899,
+      "sha256": "24a2dd46a69a206cccca9dab5a63a1bb2f1fe4f9693778a0e954e49165639500"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c7_map520_preflight_clear_v1.py",
+      "bytes": 6138,
+      "sha256": "011e1d41a2719090f16b3d0da8dbbcefa382a6d18c0c865ae1c7cd9c248ac45c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c7_sdk_queue.py",
+      "bytes": 264849,
+      "sha256": "fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-map520-clear-review01\\root_saved_campaign_preflight.py",
+      "bytes": 18688,
+      "sha256": "244bdb96be41b08c6441bb250d6aad8fad935f5e7a79a2f12e530202fe48c17b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-map520-clear-review01\\root_c7_map520_preflight_clear.py",
+      "bytes": 6138,
+      "sha256": "011e1d41a2719090f16b3d0da8dbbcefa382a6d18c0c865ae1c7cd9c248ac45c"
+    }
+  ],
+  "control": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-map520-clear-review01\\root_saved_campaign_preflight.py",
+    "bytes": 18688,
+    "sha256": "244bdb96be41b08c6441bb250d6aad8fad935f5e7a79a2f12e530202fe48c17b"
+  },
+  "leaf": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-map520-clear-review01\\root_c7_map520_preflight_clear.py",
+    "bytes": 6138,
+    "sha256": "011e1d41a2719090f16b3d0da8dbbcefa382a6d18c0c865ae1c7cd9c248ac45c"
+  },
+  "actual_original_FULL520_gate_and_halt_order_reproduced": true,
+  "original_Root_camera_guard_revalidated": true,
+  "actual_outer521_calls": 0,
+  "219_day381_state_unchanged_by_clear": true,
+  "first_fresh_AUTO_after_next_FULL": 523,
+  "previous_recovery_ASTs_preserved": true,
+  "negative_cases_rejected": [
+    "unknown_original_response",
+    "pending_work",
+    "uncorrected_map"
+  ],
+  "runtime_files_mutated": 0,
+  "actual_Game_Native_MCP_calls": 0,
+  "actual521_success_claimed": false
+}

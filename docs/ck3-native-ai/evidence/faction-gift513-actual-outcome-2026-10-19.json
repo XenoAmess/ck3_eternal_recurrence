@@ -1,0 +1,288 @@
+{
+  "schema": "xar.faction-gift513-actual-effect/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:31:16.254499+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; 2026-10-19T07:00:44Z stable machine readback",
+  "closed_source_pins": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c6-faction515-failure73/context/0513-1-result.json",
+      "bytes": 97897,
+      "sha256": "08cd9dd3d4054d5d1a6e4beec192ad66dbe6518a440cd955336049be624dadb0"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0523-1-result.json",
+      "bytes": 69739,
+      "sha256": "b65b225469883a2fbaaefc462fa084ce66671587e28caa7ed937c6d4f385d3a1"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0527-1-result.json",
+      "bytes": 79438,
+      "sha256": "cd1b192ff8babc3a51e442c92e105a96d685f8a779ca9b532f181333d81d37c2"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-natural-sidecars75/FROZEN.json",
+      "bytes": 1772,
+      "sha256": "6cb79a68b92f69cf5453675c732366788c6b49eee24edaca6078f350a7ee21cd"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-natural-sidecars75/faction-gift-pending-v1.json",
+      "bytes": 193,
+      "sha256": "d2dce9b361e1b864892d4cd8681d709cc7b3d586af1b57ab9295900967af90d8"
+    }
+  ],
+  "request_id": "faction-gift-d29a273508614be4aa0fdfaba560667c",
+  "actual513": {
+    "started_at_utc": "2026-10-19T06:40:56.848842+00:00",
+    "ended_at_utc": "2026-10-19T06:40:59.716160+00:00",
+    "selected_step": "private-submit-faction-gift-member-v1",
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:418",
+      "revision": 351,
+      "native_revision": 418,
+      "date_raw": 53153472,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "connection_generation": 3,
+      "bridge_pid": 153556
+    },
+    "decision_reason": "submit one native-legal budgeted faction mitigation gift",
+    "gift_choice": {
+      "source_faction_id": 52,
+      "recipient_character_id": 34973,
+      "membership_role": "leader",
+      "snapshot_revision": 418,
+      "native_snapshot_revision": 418,
+      "date_raw": 53153472,
+      "player_character_id": 31254,
+      "definition_stable_hash": 2003662901,
+      "gold_cost_raw": 10000000,
+      "opinion_delta": 15,
+      "minimum_gold_reserve_raw": 10000000
+    },
+    "stock_threat": {
+      "status": "observed",
+      "observer_step": "query-player-faction-alerts-v1",
+      "same_frame_history_reused": false,
+      "source_faction_id": 52,
+      "recipient_character_id": 34973,
+      "snapshot_revision": 418,
+      "date_raw": 53153472,
+      "player_character_id": 31254,
+      "dangerous_response_ready": true,
+      "native_row": {
+        "faction_id": 52,
+        "faction_type_key": "liberty_faction",
+        "target_character_id": 31254,
+        "leader_character_id": 34973,
+        "leader_is_human": false,
+        "special_character_id": null,
+        "special_title_id": null,
+        "faction_at_war": false,
+        "faction_war_id": null,
+        "power": {
+          "raw": 10848200,
+          "scale": 100000
+        },
+        "power_threshold": {
+          "raw": 8000000,
+          "scale": 100000
+        },
+        "discontent": {
+          "raw": 0,
+          "scale": 100000
+        },
+        "discontent_per_month": {
+          "raw": 700000,
+          "scale": 100000
+        },
+        "months_until_max_discontent": 15,
+        "character_member_ids": [
+          34973,
+          35899,
+          36445
+        ],
+        "county_member_title_ids": [],
+        "dangerous_by_stock_rule": true,
+        "danger_reason": "non_peasant_discontent_increasing"
+      },
+      "exact_ultimatum_timing_ready": false,
+      "faction_departure_or_threat_resolution": "not_inferred"
+    },
+    "ack_status": "submitted_verification_pending",
+    "executor_invocations": 1,
+    "pre_observation": {
+      "player_gold_raw": 22270113,
+      "player_gold_scale": 100000,
+      "recipient_character_id": 34973,
+      "recipient_opinion_of_player": 7,
+      "gift_opinion_present": false,
+      "gift_opinion_modifier_value": null,
+      "queried_source_faction_id": 52,
+      "source_faction_present": true,
+      "source_faction_targeting_player": true,
+      "source_faction_at_war": false,
+      "source_faction_leader_character_id": 34973,
+      "source_faction_member_character_ids": [
+        34973,
+        35899,
+        36445
+      ],
+      "source_faction_power_raw": 10848200,
+      "source_faction_discontent_raw": 0,
+      "source_faction_metric_scale": 100000
+    }
+  },
+  "actual523": {
+    "selected_step": "query-war-results-window-v1",
+    "is_gift_receipt": false
+  },
+  "actual527": {
+    "started_at_utc": "2026-10-19T07:23:59.928081+00:00",
+    "ended_at_utc": "2026-10-19T07:24:03.493828+00:00",
+    "elapsed_seconds": 3.565746800042689,
+    "status": "executed",
+    "selected_step": "private-query-faction-gift-receipt-v1",
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:420",
+      "revision": 2,
+      "native_revision": 420,
+      "date_raw": 53153472,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "connection_generation": 4,
+      "bridge_pid": 153556
+    },
+    "post_observation": {
+      "player_gold_raw": 12270113,
+      "player_gold_scale": 100000,
+      "recipient_character_id": 34973,
+      "recipient_opinion_of_player": 22,
+      "gift_opinion_present": true,
+      "gift_opinion_modifier_value": 15,
+      "queried_source_faction_id": 52,
+      "source_faction_present": true,
+      "source_faction_targeting_player": true,
+      "source_faction_at_war": false,
+      "source_faction_leader_character_id": 34973,
+      "source_faction_member_character_ids": [
+        34973,
+        35899,
+        36445
+      ],
+      "source_faction_power_raw": 10848200,
+      "source_faction_discontent_raw": 0,
+      "source_faction_metric_scale": 100000
+    },
+    "receipt": {
+      "schema_version": 1,
+      "status": "mitigated",
+      "request_id": "faction-gift-d29a273508614be4aa0fdfaba560667c",
+      "reason": null,
+      "post_snapshot_revision": 420,
+      "post_native_snapshot_revision": 420,
+      "post_observed_date_raw": 53153472,
+      "player_character_id": 31254,
+      "source_faction_id": 52,
+      "recipient_character_id": 34973,
+      "post_player_gold_raw": 12270113,
+      "post_recipient_opinion_of_player": 22,
+      "post_gift_opinion_present": true,
+      "post_gift_opinion_modifier_value": 15,
+      "source_faction_present": true,
+      "recipient_still_in_source_faction": true,
+      "faction_dissolved": false,
+      "recipient_left": false,
+      "mitigation_applied": true,
+      "threat_resolved": false,
+      "postcondition_verified": true
+    },
+    "pending_ledger_from_actual_response": {
+      "schema": "xar.ck3.faction_gift_pending_v1",
+      "format_version": 1,
+      "pending": null,
+      "resolved_request_outcomes": {
+        "faction-gift-d29a273508614be4aa0fdfaba560667c": "applied"
+      }
+    },
+    "provider_executor_invocations": 1
+  },
+  "later_closed_ledger": {
+    "captured_at_utc": "2026-10-19T07:27:37.500703+00:00",
+    "value": {
+      "schema": "xar.ck3.faction_gift_pending_v1",
+      "format_version": 1,
+      "pending": null,
+      "resolved_request_outcomes": {
+        "faction-gift-d29a273508614be4aa0fdfaba560667c": "applied"
+      }
+    },
+    "boundary": "Later copy is not relabelled as the earlier527 frame."
+  },
+  "arithmetic": {
+    "gold_delta_raw": -10000000,
+    "gold_scale": 100000,
+    "total_opinion_delta": 15,
+    "gold_after_above_policy_reserve_raw": 2270113,
+    "cost_fraction_of_pre_treasury": 0.4490322972317204
+  },
+  "findings": {
+    "payment_and_opinion_independently_applied": true,
+    "membership_leader_power_discontent_unchanged_in_same_date_receipt": true,
+    "immediate_faction_threat_resolution_observed": false,
+    "post_stock_danger_predicate_and_monthly_growth_recomputed": false,
+    "cost_benefit_policy": "Existing native legality+100gold reserve+matched stock danger; no observed marginal exit/join-score/relative benefit comparison.",
+    "longer_term_waste_or_optimality_proven": false,
+    "native_bad_input_proven": false,
+    "new_policy_or_native_edits": 0
+  },
+  "source_boundaries": {
+    "stock_pins": [
+      {
+        "relative_path": "common/factions/00_factions.txt",
+        "bytes": 34351,
+        "sha256": "c604b3fcf3fe315516483a9da45fe8c0e38db2031dc683ba6edd569c120b377b"
+      },
+      {
+        "relative_path": "common/scripted_modifiers/00_faction_modifiers.txt",
+        "bytes": 122596,
+        "sha256": "f0bd9d7aa6493823448f1a2d90eb8c435a7bb4315d046e6a5848a6020f6e7bbb"
+      }
+    ],
+    "liberty_join": "00_factions759-793 calls common_faction_modifiers(multiplier=-1,max=0) plus liberty modifiers; not a proof that raw positive opinion is clamped to0.",
+    "blocker": "00_faction_modifiers906-910 gives -1000 when temporary target opinion>=80; current7->22 does not cross this particular blocker.",
+    "liberty_law": "00_faction_modifiers2108-2137 contains law and dynasty terms; comments tie +10/+20/+40 to authority bases. Current complete join score/law and later leave result not observed.",
+    "native_receipt": "faction_gift_mitigation_action_v1.cpp339-401 proves payment/gift modifier first, then permits status=mitigated while recipient still present. threat_resolved is not a full current stock-danger evaluation.",
+    "native_receipt_source_pin": {
+      "path": "ck3_autonomous_player/native_bridge/src/faction_gift_mitigation_action_v1.cpp",
+      "bytes": 22732,
+      "sha256": "c512dbb69fe5b4e1b751e12a1b1bb51d74eed0894a2d5a065075230c2d3fb80e",
+      "scope": "Current preserved source interpretation, not a new Native26 binary qualification."
+    }
+  },
+  "qualification_boundaries": {
+    "same_process_receipt_and_original_ID_actual": true,
+    "native418_to420_actual": true,
+    "new_App_public_revision2_actual": true,
+    "current_raw_birth_format_returned_in527": false,
+    "UTC_format_equivalence_branch_live_exercised": null,
+    "typed_wait_replan_race_live_exercised_in527": false,
+    "other_actual_political_benefit_or_territorial_loss_avoided": null,
+    "runtime_reported_C7_source_prefix": "8e1e; this response alone does not hash the SDK source tree"
+  },
+  "work_scope": {
+    "new_RPC_or_native_calls": 0,
+    "live_Driver_or_SAVE_reads": 0,
+    "replayed513_or515_or517": false,
+    "current_SDK_or_strategy_edits": 0,
+    "new_tests_or_builds": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "maximum_package_bytes": 16384,
+    "record_review_at_utc": "2027-04-17T07:30:00Z"
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "schema": "xar.C7-source-only-warm-software-composition/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:08:46.906460+00:00",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\source_only381_warm_queue_v1.py",
+      "bytes": 16689,
+      "sha256": "5b9c9ee94bb753dca0bab838523519baabfd5d588c2459a32d3ca2a1e0403ea3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\startup_readiness_v1.py",
+      "bytes": 5937,
+      "sha256": "c9b1bfa0efd002d2fd9f05298ba1d2ba218fa5dded335b30de18ced7d5f7b2c3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c7_sdk_queue.py",
+      "bytes": 264849,
+      "sha256": "fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c7-source-only-warm74\\CLEAN-SEED.json",
+      "bytes": 6871,
+      "sha256": "391ed071e1603917b4bab11d3653109b4a7cb9b1e33afa0a15cdd4cc8ce793ca"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0287-1-result.json",
+      "bytes": 50836,
+      "sha256": "3e3c6fb28c743ddbd74323f59f42b6feccb897feb7174a5909d41ad6b2c7104d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0288-1-result.json",
+      "bytes": 57857,
+      "sha256": "65140b06abbb1f242e69d00c0889360405a91f733cf69c0913507c52e6e79abd"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c4_result_classifier.py",
+      "bytes": 260311,
+      "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-source-only-warm-review01\\fixture\\classifier-pin.json",
+      "bytes": 236,
+      "sha256": "84551d3d6722e46d6d5bd54f15f01ecefe11a487ae053fe8d7530a2613d4a115"
+    }
+  ],
+  "leaf": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\source_only381_warm_queue_v1.py",
+    "bytes": 16689,
+    "sha256": "5b9c9ee94bb753dca0bab838523519baabfd5d588c2459a32d3ca2a1e0403ea3"
+  },
+  "actual_C7_original_call_full_loop_generated_AST_used": true,
+  "actual_startup_check_after_consume_publish_C6_relay_CAP_order_used": true,
+  "future_SEM518_CAP519_are_explicit_software_fixtures": true,
+  "constructor_and_postclose_inputs_qualified": false,
+  "no_completed_result_supply_or_old_action_replay": true,
+  "restored219_counts_and_loop_SAVE334_cache_preserved": true,
+  "current_source_and_classifier_opening_are_same_fresh_SEM518": true,
+  "original_Clean_map_gate_executed": true,
+  "first_new_AUTO_sequence": 521,
+  "observed": [
+    {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c7-source-only-warm-review01\\fixture\\queue\\READINESS-0518-000001-result.json",
+      "next_sequence": 518,
+      "canonical518_exists": false
+    }
+  ],
+  "events": [
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0518.json"
+    },
+    {
+      "event": "persist",
+      "file": "READINESS-0518-000001-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "0518-1-result.json"
+    },
+    {
+      "event": "retained_C6_relay",
+      "file": "0518-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0518-after-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0519.json"
+    },
+    {
+      "event": "persist",
+      "file": "0519-before-action.json"
+    },
+    {
+      "event": "persist",
+      "file": "0519-1-result.json"
+    },
+    {
+      "event": "retained_C6_relay",
+      "file": "0519-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-C7-SOURCE-ONLY-WARM-BOUND.json"
+    },
+    {
+      "event": "persist",
+      "file": "0519-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "0519-after-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CAMPAIGN-MAP-ADMITTED-C7.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0520.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-GOVERNANCE-RESULT-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "ROOT-CUMULATIVE-LOOP-STATE.json"
+    },
+    {
+      "event": "persist",
+      "file": "0521-1-result.json"
+    },
+    {
+      "event": "persist",
+      "file": "NEXT-SEQUENCE-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "CURRENT-REQUEST-P37.json"
+    },
+    {
+      "event": "persist",
+      "file": "INFLIGHT-0521.json"
+    },
+    {
+      "event": "persist",
+      "file": "0521-before-action.json"
+    }
+  ],
+  "software_calls": [
+    {
+      "tool": "ck3_take_semantic_snapshot_private_v1",
+      "sequence": 518
+    },
+    {
+      "tool": "ck3_get_capabilities",
+      "sequence": 519
+    },
+    {
+      "tool": "ck3_auto_turn",
+      "new_sequence": 521
+    }
+  ],
+  "negative_cases_rejected": [
+    "wrong_Game",
+    "date_drift",
+    "cold_CAP"
+  ],
+  "actual_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "actual_C7_warm_pass_claimed": false
+}

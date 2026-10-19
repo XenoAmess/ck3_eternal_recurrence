@@ -1,0 +1,79 @@
+{
+  "schema": "xar.player-heir12004.cached-token-record-alignment.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; actual chunk438f0a",
+  "observed_at_utc": "2026-10-19T07:28:30.506665+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_EXE_reads": 0,
+  "new_process_Game_RPC_Native_operations": 0,
+  "source_receipts": [
+    {
+      "path": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-22/m6-token-name-3f4f8e0-source01/SOURCE-TOKEN-NAME-CONTRACT.json",
+      "bytes": 4817,
+      "sha256": "d128f37b7ef4893113ab2aee7afcb5a3931de13e2d5cb2c00bb7ebb0f13ca67e",
+      "original_machine_id": "unknown",
+      "current_read_machine_id": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "path": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-22/background-g2-source-round-20261011-0907/m6-registry-init-3f4eae0/SOURCE-REGISTRY-INITIALIZER-CONTRACT.json",
+      "bytes": 7182,
+      "sha256": "b0d83bc16c619a84b1e84edf522d881b35e856cd45f89cc43eb7e8a72a9b3026",
+      "original_machine_id": "unknown",
+      "current_read_machine_id": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "path": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-15/background-g2-source-round-20261011-0907/m6-token-id-collision-29cecb0/SOURCE-CONTRACT.json",
+      "bytes": 3960,
+      "sha256": "67e3cc228b136b53321d017c5fbafba1753a7d43297e9934277dfee7be00e72f",
+      "original_machine_id": "unknown",
+      "current_read_machine_id": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "path": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-26/background-g2-source-round-20261011-0907/m6-token-registration-3f523b0-source/ACTUAL-03F523B0-SOURCE.json",
+      "bytes": 37268,
+      "sha256": "fa5af8152d10cdfcc9efec09db5ec492f8cad4d3acda9918cbaf22faba235405",
+      "original_machine_id": "unknown",
+      "current_read_machine_id": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "path": "D:/codex-ck3-background-spill/native71-continuation-20261010/continuation-21/background-g2-source-round-20261011-0907/m6-token-id-growth-3f52b60/ID-EFFECTS.json",
+      "bytes": 4234,
+      "sha256": "4d1d3500a67742977f909eb95f7743c558c06ba964916bcb4d4d169c51824b7d",
+      "original_machine_id": "unknown",
+      "current_read_machine_id": "xenoamess-full-tower-eb9d2c1186"
+    }
+  ],
+  "current_window": {
+    "path": "docs/ck3-native-ai/research-plans/player-heir-h12004-20261019/data-and-script-refs02.json",
+    "bytes": 2016,
+    "sha256": "f01510c3ed0ad0e301e413ce57fbb709cd29c8e94aa93744a7d00d292b18b887",
+    "window_rva": "0x46f0638",
+    "window_bytes": 96,
+    "window_sha256": "fe3d9a78d5016c8d222d6a909af11bd63e8d9ca2e834574635ef2f3ca73a800c"
+  },
+  "source_defined_record": {
+    "table2_begin_rva": "0x46e0d60",
+    "table2_end_rva_exclusive": "0x4703120",
+    "stride_bytes": 16,
+    "record_rva": "0x46f0650",
+    "zero_based_record_index": 3983,
+    "hex": "a63100000000000080ee494401000000",
+    "signed_DWORD_plus0_initial_token": 12710,
+    "QWORD_plus8_name_pointer": "0x14449ee80",
+    "name": "player_heir",
+    "next_record_DWORD_plus0": "0x31a7"
+  },
+  "correction": "The earlier preserved adjacent DWORD0x31A7 is the next record ID. No subtraction or token normalization is needed: the source-defined current record starts8 bytes before the name-pointer cell and its own ID is0x31A6.",
+  "name_chain": [
+    "3F4EAE0 table2 ID load3F4F017/name load3F4F01E",
+    "3F523B0 registration with mutable ID pointer; existing collision/growth effect contracts preserve exact ID in their ordinary nonalias/finite normal-return domain",
+    "3F4F1C9 re-read same ID;3F4F1E4 store namearray[ID]",
+    "3F4F8E0 sign-extends input ECX; signed0<=ID<=registry+54; returns QWORD[registry+48+ID*8]"
+  ],
+  "qualification_boundary": "Canonical token/name association is source-closed in the stated ordinary source domain. It does not locate a compiled scope/property callback, living player-heir selector, player-continuation qualifier or complete eligible-backup producer. No numeric .text scan performed.",
+  "retention": {
+    "review_at_utc": "2027-04-17T07:27:35Z",
+    "automatic_renewal": false,
+    "purpose": "Small source connection avoids repeated EXE/name-table discovery; raw96B source window retained once in prior receipt"
+  }
+}

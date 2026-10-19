@@ -1,0 +1,21 @@
+{
+  "schema": "xar.player-heir12004.one-literal-xref.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:14:20.047409+00:00",
+  "target_literal": "GetPlayerHeir",
+  "target_rva": 72495568,
+  "literal_va": 5441204688,
+  "rdata_pointer_ref_rvas": [],
+  "text_fixed_rip_fallback_used": true,
+  "hits": [],
+  "max_hits": 10,
+  "plan_sha256": "bbadc416ed56ddc1422322cdeba793cf53aa8f2742b3a686b31700c24c324f43",
+  "actual_file_identity_sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+  "script_sha256": "5076c5023255605478f16ba94431b2d741904ab20220f268ec6d3519146d96ae",
+  "exact_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "process_memory_reads": 0,
+  "Game_RPC_calls": 0,
+  "whole_executable_copies": 0,
+  "AI_tree_traversal": false,
+  "callback_semantics_verified": false
+}

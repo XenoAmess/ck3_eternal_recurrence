@@ -1,0 +1,162 @@
+{
+  "schema": "xar.player-heir-h12004.source-anchors.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; actual chunk438f0a",
+  "source_observation_window_utc": {
+    "start": "2026-10-19T06:59:28Z",
+    "latest_locator": "2026-10-19T07:17:41.538124Z",
+    "latest_cached_source_join": "2026-10-19T07:28:30.506665+00:00"
+  },
+  "build": {
+    "version": "1.20.0.4",
+    "expected_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "actual_file_hash_matched": true,
+    "identity_receipt": "../research-plans/player-heir-h12004-20261019/exact-file-identity01.json",
+    "identity_receipt_sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844"
+  },
+  "scope": {
+    "source_only": true,
+    "Game_RPC_calls": 0,
+    "process_memory_reads": 0,
+    "live_Driver_SAVE_reads": 0,
+    "Native_builds": 0,
+    "new_dependencies": 0,
+    "whole_EXE_copies": 0,
+    "full_EXE_hash_passes": 1,
+    "shared_source_edits": 0,
+    "H_provider_implemented": false,
+    "runtime_adoption_or_H_score_credit": false
+  },
+  "ready_reusable_inputs": {
+    "alive": {
+      "source": "ck3_12004.hpp:22,38; first_heir_descendants.hpp:77-86",
+      "chain": "ResolveCoreCharacter full ID, verify character+0x18; checked deathData pointer at+0x1D0 is null",
+      "does_not_prove": "native player continuation eligibility"
+    },
+    "fixed_D0": {
+      "source": "ck3_12004_family.cpp:106-128 -> shared ck3_12002_family_value.cpp:52-72, independently bound actual4 stores",
+      "chain": "Character+0x158 full house ID -> House+0x2C full dynasty ID; component slot index=id&0x00FFFFFF, native capacity at+0x2C/data+0x20, row stride0x10+8; own component ID+0x10 must match",
+      "actual4_slots": {
+        "house_store": "0x5D1DAF0",
+        "house_fallback": "0x5D1DAE8",
+        "dynasty_store": "0x5D1DE78",
+        "dynasty_fallback": "0x5D1DE28"
+      },
+      "minus_one": "observed no house/dynasty, distinct from unavailable read",
+      "anchor_rule": "compare candidate full dynasty ID to original T0 D0 with its original baseline source; never replace D0 with the current ruler's dynasty"
+    },
+    "raw_roster": {
+      "source": "actor_cached_succession12004_v1.hpp:16-29 and reader.cpp:136-202",
+      "chain": "actor+0x1C0 -> LandState+0x3A0; data+0, signed count+0xC, DWORD full-ID stride4; two complete passes and final owner/header checks",
+      "known_consumer_span": "0x2C0B4B0..0x2C0B7D2",
+      "original_consumer_blob_comment": {
+        "name": "ACTUAL4-CACHED-CANDIDATE-CONSUMER.actual.json",
+        "bytes": 73146,
+        "sha256": "3821768e9beb831332b81715dbc30d5a7939e4e4c10c90057fd316f7bc011820",
+        "original_machine_id": "unknown",
+        "original_blob_relocated_by_this_task": false
+      },
+      "completeness_means": "all occurrences in that exact cached array, retaining self/duplicates/high-generation IDs",
+      "does_not_prove": "complete current native player-eligible backup domain"
+    }
+  },
+  "bounded_discovery": {
+    "GetPlayerHeir": {
+      "literal_rva": "0x45231D0",
+      "rdata_exact_ASCII_NUL_hits": 1,
+      "rdata_VA8_refs": 0,
+      "data_VA8_refs": 0,
+      "data_RVA4_refs": 0,
+      "rdata_RVA4_refs": 0,
+      "text_fixed_RIP_LEA_MOV_refs": 0,
+      "full_string_left_NUL_verified_from_existing_window": true,
+      "context_sha256": "764b870333f2ca3f4844070d5354c8424c7c87b56d93541be5be55adc07db478"
+    },
+    "IsPlayerHeir_and_CanContinue": "zero exact ASCII NUL hits in declared .rdata; no absence-of-function or eligibility inference",
+    "player_heir": {
+      "standalone_literal_rva": "0x449EE80",
+      "previous_player_heir_suffix_rva_excluded": "0x449EEB9",
+      "raw_adjacent_DWORD": "0x31A7",
+      "raw_adjacent_decimal": 12711,
+      "window_bytes": 96,
+      "window_sha256": "fe3d9a78d5016c8d222d6a909af11bd63e8d9ca2e834574635ef2f3ca73a800c",
+      "second_text_scan_performed": false,
+      "pointer_cell_rva": "0x46F0658",
+      "source_defined_record_rva": "0x46f0650",
+      "source_defined_initial_token": "0x31a6",
+      "raw_adjacent_DWORD_is_next_record_ID": true
+    },
+    "index_convention_boundary": "The earlier preserved adjacent DWORD0x31A7 is the next record ID. No subtraction or token normalization is needed: the source-defined current record starts8 bytes before the name-pointer cell and its own ID is0x31A6. Canonical name-ID registration and indexed getter are closed from existing exact.4 contracts, not player-continuation qualification.",
+    "locators": [
+      {
+        "path": "../research-plans/player-heir-h12004-20261019/fixed-literal-locator01.json",
+        "bytes": 2490,
+        "sha256": "52646d9af5bd518c284ed1155d990c2a11e15a37f9d7b04835153214158d2ce2"
+      },
+      {
+        "path": "../research-plans/player-heir-h12004-20261019/get-player-heir-xrefs01.json",
+        "bytes": 879,
+        "sha256": "5cae4f7cb1dc478b68cec006b2bc3bf0e50cf3b1621d6740fc3832cf2946050c"
+      },
+      {
+        "path": "../research-plans/player-heir-h12004-20261019/data-and-script-refs02.json",
+        "bytes": 2016,
+        "sha256": "f01510c3ed0ad0e301e413ce57fbb709cd29c8e94aa93744a7d00d292b18b887"
+      },
+      {
+        "path": "../research-plans/player-heir-h12004-20261019/token-record-alignment03.json",
+        "bytes": 4468,
+        "sha256": "43d666f6e32f0ac2889cfb04f7cf653f92b977d2332dec0b507904b921d5e0fc"
+      }
+    ]
+  },
+  "two_remaining_semantic_anchors": [
+    {
+      "id": "living-player-heir-selector",
+      "known_entry": "canonical token0x31A6/name player_heir; actual record0x46F0650 and getter3F4F8E0; separate GUI name0x45231D0",
+      "missing_exact_chain": "actual compiled script scope/property registration/callback -> living current-player selector or its cache producer -> original current-rule continuation qualification caller",
+      "must_exclude": [
+        "title primary heir",
+        "succession-law order enum named player_heir",
+        "dead-character SuccessionEventWindow.GetPlayerHeir",
+        "historical1.19 GUI visibility rule"
+      ],
+      "next_specific_source": "A source-bound compiled scope/property registration for canonical token0x31A6, with explicit player/current-rule receiver and original qualification edge. Existing law enum is a distinct consumer and does not provide this callback."
+    },
+    {
+      "id": "complete-player-eligible-backups",
+      "known_entry": "actor LandState+0x3A0 copied by cached consumer0x2C0B4B0..0x2C0B7D2",
+      "missing_exact_chain": "actual cache writer/update caller and generation boundary -> complete candidate-domain enumerator -> per-candidate original player-continuation eligibility filter on the same living frame",
+      "must_exclude": [
+        "roster_complete renamed as eligibility_complete",
+        "two sons inferred as two backups",
+        "first raw cached ID assumed legal",
+        "unavailable interpreted as zero"
+      ],
+      "next_specific_source": "the writer/refresh edge supplying this exact+0x3A0 cache or the qualified selector's explicitly complete native candidate pool; no replacement pool assembled from title heirs"
+    }
+  ],
+  "smallest_valid_future_consumer": {
+    "reuse": "original same-frame app-main ownership, full-generation identity, alive and lineage readers",
+    "positive_only_until_backup_anchor": "a separately native-qualified living candidate observed in fixed D0 can establish k=1; unknown backup domain keeps b unknown and H an interval",
+    "no_negative_shortcut": "missing getter or incomplete eligible domain is not k=0 or b=0",
+    "no_policy": "no Crown bias, succession-law guess, counter-policy, extra per-AUTO query or claimed land-retention benefit"
+  },
+  "plan_checks": {
+    "ordinary_check": "source-discovery-plan02.json fbac25eabae12fdfe92636c0bcf56f13cbe62d1e415f7747c6b5a62312d5fb09; chunk193d26 exit0; record/file integrity only",
+    "for_observation": "chunkce502c exit2: offline-only/no live window and unknown runtime producer; retained literally, no relabel as paused live observation",
+    "semantic_correctness_verified_by_plan_tool": false
+  },
+  "related_topics": [
+    "../ordinary-succession-posttransition-input-audit-2026-10-19.md",
+    "../ordinary-succession-operations-feedback-2026-10-19.md",
+    "../campaign-development-scoring-v1-design-2026-10-19.md"
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "each_new_record_below_bytes": 16384,
+    "heavy_writes": false,
+    "files_deleted": 0,
+    "record_review_at_utc": "2027-04-17T07:27:35Z"
+  }
+}

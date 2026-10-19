@@ -1,0 +1,75 @@
+{
+  "schema": "xar.player-heir12004.bounded-data-ref-discovery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:17:41.538124+00:00",
+  "exact_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "target1": {
+    "name": "GetPlayerHeir",
+    "rva": 72495568,
+    "groups": [
+      {
+        "section": ".data",
+        "width": 8,
+        "rows": [],
+        "more_than_cap": false
+      },
+      {
+        "section": ".data",
+        "width": 4,
+        "rows": [],
+        "more_than_cap": false
+      },
+      {
+        "section": ".rdata",
+        "width": 4,
+        "rows": [],
+        "more_than_cap": false
+      }
+    ]
+  },
+  "target2": {
+    "name": "player_heir",
+    "rva": 71954048,
+    "previous_suffix_excluded": true,
+    "groups": [
+      {
+        "section": ".data",
+        "width": 8,
+        "rows": [],
+        "more_than_cap": false
+      },
+      {
+        "section": ".data",
+        "width": 4,
+        "rows": [],
+        "more_than_cap": false
+      },
+      {
+        "section": ".rdata",
+        "width": 8,
+        "rows": [
+          {
+            "rva": 74384984,
+            "window_rva": 74384952,
+            "bytes": 96,
+            "hex": "88916c4401000000a531000000000000a0916c4401000000a63100000000000080ee494401000000a73100000000000078936c4401000000a83100000000000090936c4401000000a93100000000000038936c4401000000aa31000000000000",
+            "sha256": "fe3d9a78d5016c8d222d6a909af11bd63e8d9ca2e834574635ef2f3ca73a800c"
+          }
+        ],
+        "more_than_cap": false
+      },
+      {
+        "section": ".rdata",
+        "width": 4,
+        "rows": [],
+        "more_than_cap": false
+      }
+    ],
+    "text_rip_hits": []
+  },
+  "plan_sha256": "fbac25eabae12fdfe92636c0bcf56f13cbe62d1e415f7747c6b5a62312d5fb09",
+  "script_sha256": "0d25200ea302466651624b2cfd7e929c18cbe2adc27a2df2a0e8fda360e683ee",
+  "process_memory_reads": 0,
+  "Game_RPC_calls": 0,
+  "callback_semantics_verified": false
+}

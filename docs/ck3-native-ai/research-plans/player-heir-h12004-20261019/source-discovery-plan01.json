@@ -1,0 +1,46 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "player-heir-h12004-literal-source",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Locate exact.4 pre-death player-heir registration and the eligibility/complete-backup producer; no title or raw-cache substitution.",
+  "purpose": "player-legality",
+  "build": {"version": "1.20.0.4", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"},
+  "observation": {
+    "mode": "offline-only", "actor_kind": "engine", "identity_kind": "definition-key",
+    "owner_scope": "fixed PE literals and explicitly reached registration/callback windows only, no game process",
+    "identity_lifetime": "exact frozen file build only; no historical RVA migration",
+    "producer_trigger": "not-applicable",
+    "producer": "this phase locates compiled registration names; actual engine cache producer and trigger remain the two declared source questions",
+    "caller": "explicit offline mmap fixed-string locator, no engine callback invocation",
+    "consumer": "human source review; no runtime or H score consumer",
+    "cache_lifetime": "locator bound to file identity and frozen plan; no pointers retained",
+    "expected_signal": "exact NUL-terminated literals in .rdata, then uniquely identified registration/callback windows each at most256B",
+    "zero_sample_meaning": "no fixed literal in this declared section, not absence of a player heir or eligible backups",
+    "stop_condition": "at most10hits per fixed name; no .text scan or AI tree; report exact missing source before expanding",
+    "runtime_window_ref": null
+  },
+  "pe_discovery": {
+    "exe_path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "sections": [".rdata"],
+    "literals": ["GetPlayerHeir", "IsPlayerHeir", "CanContinue", "player_heir"],
+    "max_hits_per_name": 10,
+    "subsequent_window_max_bytes": 256,
+    "authorized_xref_extension": {"target_literal_rva": 72495568, "data_pointer_refs": ".rdata exact VA8 refs, maximum10", "text_fallback": "only if no data refs; fixed RIP LEA/MOV exact single target, maximum10", "function_envelope": ".pdata binary search only for matching PCs", "registration_and_callback_windows_max_bytes_each": 256, "AI_or_nonliteral_callee_traversal": false, "Root_authorization_received_utc": "2026-10-19T07:12Z"},
+    "whole_file_hash_recomputed": false,
+    "launch_proof_path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/ROOT-ACTUAL-GAME-LAUNCH-C4.json",
+    "launch_proof_sha256": "c394af10b70fd06ed08c8703af3ff838d6d443e093030bcf2271ff14c5ad6cc5",
+    "launch_observed_at_utc": "2026-10-19T05:10:58.551063Z",
+    "launch_has_no_CK3_file_hash": true,
+    "existing_direct_CK3_hash_proof": {"path": "exact-file-identity01.json", "bytes": 1080, "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844", "source": "Root-authorized single streamed current file hash; no process read or file copy"}
+  },
+  "evidence": [
+    {"id": "exact4-contract", "layer": "exact-build", "path": "../../../../ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004.hpp", "sha256": "03f3487d485c75996a9f1bd022f2454cae04ea1f2293aa6d62441ed294e203e6", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "frozen .4 source identity only; not a getter proof"},
+    {"id": "actual-file", "layer": "exact-build", "path": "exact-file-identity01.json", "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "one current streamed file hash and stable pre/post stat; not gameplay or getter semantics"}
+  ],
+  "nodes": [{"id": "names", "label": "Exact compiled names"}, {"id": "player", "label": "Pre-death player-heir selector"}, {"id": "backups", "label": "Complete player-eligible backup domain"}],
+  "edges": [
+    {"id": "player-getter", "from": "names", "to": "player", "label": "Character.GetPlayerHeir registration, callback and actual producer/caller", "status": "unknown", "evidence": [], "open_question": "Which exact.4 callback supplies the living player's continuation-qualified candidate rather than a title heir?"},
+    {"id": "backup-filter", "from": "player", "to": "backups", "label": "LandState+3A0 writer/update and per-candidate continuation qualification", "status": "unknown", "evidence": [], "open_question": "Does the raw successor cache cover the current native eligible backup domain, and which original caller filters it?"}
+  ],
+  "cases": []
+}

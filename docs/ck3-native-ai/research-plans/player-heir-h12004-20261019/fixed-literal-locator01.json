@@ -1,0 +1,74 @@
+{
+  "schema": "xar.player-heir12004.fixed-literal-locator.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:11:28.830121+00:00",
+  "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "exe_sha256_from_frozen_prior_proof": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "whole_file_hash_recomputed": false,
+  "file_stat": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "pe_timestamp": 1791204405,
+  "image_base": 5368709120,
+  "sections_searched": [
+    {
+      "name": ".rdata",
+      "rva": 71147520,
+      "file_offset": 71142912,
+      "raw_bytes": 17124352
+    }
+  ],
+  "hits": {
+    "GetPlayerHeir": {
+      "exact_ascii_nul_hits": [
+        {
+          "rva": 72495568,
+          "file_offset": 72490960,
+          "va": 5441204688,
+          "context_file_offset": 72490952,
+          "context_hex": "69746c6573000000476574506c6179657248656972000000476574507269",
+          "context_sha256": "764b870333f2ca3f4844070d5354c8424c7c87b56d93541be5be55adc07db478"
+        }
+      ],
+      "more_than_hit_cap": false
+    },
+    "IsPlayerHeir": {
+      "exact_ascii_nul_hits": [],
+      "more_than_hit_cap": false
+    },
+    "CanContinue": {
+      "exact_ascii_nul_hits": [],
+      "more_than_hit_cap": false
+    },
+    "player_heir": {
+      "exact_ascii_nul_hits": [
+        {
+          "rva": 71954048,
+          "file_offset": 71949440,
+          "va": 5440663168,
+          "context_file_offset": 71949432,
+          "context_hex": "6163746572000000706c617965725f6865697200000000006861735f",
+          "context_sha256": "a44afb740e469cd042d057b3b841a495599909c75fee9a2449b2dfc8223a4315"
+        },
+        {
+          "rva": 71954105,
+          "file_offset": 71949497,
+          "va": 5440663225,
+          "context_file_offset": 71949489,
+          "context_hex": "726576696f75735f706c617965725f68656972000000007072657669",
+          "context_sha256": "a3440deb2701419a30634858cb62d2e45c4470ef4db3b18b8a84c22e12178e83"
+        }
+      ],
+      "more_than_hit_cap": false
+    }
+  },
+  "proof_layer": "locator_only",
+  "registration_or_callback_semantics_verified": false,
+  "code_section_scans": 0,
+  "process_memory_reads": 0,
+  "Game_RPC_calls": 0,
+  "plan_sha256": "6f77e350adbcf75be8e5faeb5aad2f3f214639d3b16e4deb8bfbfb40d2aef5db",
+  "locator_sha256": "1d1aa6d10c9affc630393db37ebddf53a9db9aefa79c24463a698c0dfc98edb8"
+}

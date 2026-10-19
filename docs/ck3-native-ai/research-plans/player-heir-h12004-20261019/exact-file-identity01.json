@@ -1,0 +1,28 @@
+{
+  "schema": "xar.player-heir12004.exact-file-identity.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T07:10:59.597978+00:00",
+  "ended_at_utc": "2026-10-19T07:10:59.674438+00:00",
+  "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "expected_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "actual_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "MATCH",
+  "bytes_streamed": 101040248,
+  "chunk_bytes": 1048576,
+  "stat_stable": true,
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "whole_file_copied": false,
+  "process_memory_reads": 0,
+  "Game_RPC_calls": 0,
+  "plan_sha256": "020877a1642df3797a81c61437662c0be55ad6cdd829cf2945f546afaca9c8c3",
+  "locator_sha256": "1d1aa6d10c9affc630393db37ebddf53a9db9aefa79c24463a698c0dfc98edb8"
+}
