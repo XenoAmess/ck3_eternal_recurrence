@@ -1,5 +1,13 @@
 # 第二期执行进度
 
+## 10月20日07:43：B9构建与接口资格完成，后继实拍待准入
+
+`machine_id: 4-8e1c2f1861`。截至`2026-10-19T23:41:02Z`，B9以`88bdeaa`为原编译输入完成847步冷构建，原wait0；新DLL15,235,584 B，8个相关原生夹具实际wait0。Defender为管理员／WMI实际verified，不宣称SYSTEM。旧allocator／adapter66项回归按原件复用，当前SDK消费新serializer包38项PASS、0skip，三类资格分别记录，未启动CK3或取得完整朝圣结果。
+
+公共runtime生产器、下一场once／审图准备、observer有限执行及人物工厂并行。observer原TryCompile配置RED已纠正，五组67场景后补独立default-OFF的1场景，截至`23:43:41Z`现为6目标／68 owned场景、全部build/test0，175来源匹配；19份可重建obj已精确回收，6EXE保留，当前约2.27MiB。Actor17和实机原生工厂仍待验。B6/B8另已精确回收7,482项、分配路径和448,628,320 B，母档／原片／日志保留，所删原件不可读。新runtime、B10额度、prepare及实拍仍须按实际gate取得；原native编译commit与后继Python源码分开绑定。
+
+公共builder/freezer已合入Root，本轮33项消费者实际原wait0、无skip；与复用66项分记，不能称新跑99项。9份真实GHW body到SDK的9/9测试及27个consumer组合另通过，但outer明确模拟，无TLS／loaded／factory或游戏资格。证据见[B9生产与并行后继](production-b9-and-parallel-20261020.md)。固定声音23:32.267、51/65视觉和24必需结果仍待闭合，全片未完成。
+
 ## 10月20日07:16：朝圣规划器预览已录制并正常闭场
 
 `machine_id: 4-8e1c2f1861`，截至`2026-10-19T23:16:45Z`。B8普通朝圣Open已返回`observed / invoked=true`、stage1；后继read仍为`rejected`，`selected_pious=null`。本场录得46.033秒2560×1440、无音轨原片，按VFR管理，只作stage1规划器预览与诊断候选。没有朝圣Confirm/Start、完整旅费、实际付款、抵达或归返结果，业务仍未通过。原件、局部进展及缺口见[本轮导演进度](director-progress-and-schedule-20261020.md)。

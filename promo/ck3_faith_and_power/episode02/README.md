@@ -15,6 +15,7 @@
 - [朝圣第二场诊断与修复](docs/filming-b6-and-request-seam-20261020.md)：本场70／100金默认活动费、open请求字段缺失、真实解析验证、专用事件策略与正常关场。
 - 机制研究：[圣物与类型效果](docs/research-artifacts-and-site-effects.md)、[普通朝圣](docs/research-pilgrimage.md)、[精神领袖与大圣战](docs/research-spiritual-head-and-ghw.md)。
 - [最新导演进度与相对节点](docs/director-progress-and-schedule-20261020.md)：实测固定声音23:32.267、51/65视觉绑定、24必需结果缺口，以及原生修复、串行现场与完整首版的证据gate。
+- [B9生产构建、接口资格与并行后继](docs/production-b9-and-parallel-20261020.md)：新DLL与8个原生夹具、复用66项控制层／当前38项SDK及Root33项资格分别记账；observer原RED、后继6目标68 owned场景、GHW body 9项消费者及B6/B8精确回收；朝圣完整结果仍待实拍。
 
 前四章29段已经形成[9分25.888秒可审阅视频](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)，尚待完整观看与听审；七章65条固定声音展示长度实测23:32.267，51/65条已有视觉绑定，14条实拍位和24项必需结果仍待补。800–1600字真实案例按作者预算补入后，完整首版仍以约27–30分钟为目标；这个预测不是完整影片已生成或已测时长。B8录得46.033秒原片，仅作stage1规划器预览候选，现已正常闭场；后继read仍被拒绝，未取得朝圣Confirm/Start、付款或旅程结果。接下来先修复原生读回并构建，再并行研究和作者准备、串行独占现场拍摄，按实证闭合后滚动配音和全片审计。本地事实属于`machine_id: 4-8e1c2f1861`，闭场截点为`2026-10-19T23:16:45Z`；来源与剩余工作量见[最新导演进度](docs/director-progress-and-schedule-20261020.md)。
 
