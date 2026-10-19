@@ -249,9 +249,10 @@ class FunctionalParentGuard160(Q.Q.SnapshotGuard):
 
 
 def verify_owner_spec(spec, plan, args, producer_sha):
+    nonce = spec["nonce"]  # c0 prepare_spec generates this Task identity independently.
     require(spec["machine_id"] == plan["machine_id"] and spec["role"] == "native_build"
-            and spec["nonce"] == plan["functional_nonce"]
-            and spec["task_name"] == "XARG2ManagedOwner-" + plan["functional_nonce"]
+            and type(nonce) is str and len(nonce) == 32 and all(c in "0123456789abcdef" for c in nonce)
+            and nonce != OLD_NONCE and spec["task_name"] == "XARG2ManagedOwner-" + nonce
             and spec["sid"] == Q.OWNER_SID, "new functional Task identity differs")
     require(Path(spec["root"]).resolve() == OWNER.resolve() and Path(spec["cwd"]).resolve() == REPO
             and Path(spec["stage"]).resolve() == Path(__file__).resolve() and spec["stage_sha256"] == producer_sha

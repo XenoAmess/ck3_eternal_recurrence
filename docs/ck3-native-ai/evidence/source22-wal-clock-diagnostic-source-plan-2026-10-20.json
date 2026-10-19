@@ -1,0 +1,227 @@
+{
+  "schema": "xar.source22.wal-clock-diagnostic-frozen-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T22:19:31.636268+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; recorded actual108b44",
+  "status": "SOURCE22_CANDIDATE_FROZEN_NOT_ADOPTED",
+  "actual_SDK": "C20 / Source20 per Root; no Source21/22 deployment is claimed",
+  "producer_all_inline_helpers": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source22_wal_clock_diagnostic_v1.py",
+    "bytes": 31334,
+    "sha256": "27141b999abd41e752323cc74831e9ea1c33389366da8630c2002ac2c8e4b24a"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-wal-clock-diagnostic-source-qualification-2026-10-20.json",
+    "bytes": 36426,
+    "sha256": "2287159ad30cf9a394d1e3f791199e21236e93fe55ce263560e43ff5747915eb"
+  },
+  "entry": "prepare_source22_wal_clock_diagnostic_v1.compose() -> nine exact RAM output refs, complete1449 rows, proof. No project code imports/tests or production output writer.",
+  "actual_canonical_base": {
+    "commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+    "files": 1447,
+    "bytes": 59065188,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935"
+    },
+    "all1447_Git_metadata_checked": true
+  },
+  "logical_Source21_base": {
+    "plan": {
+      "path": "docs/ck3-native-ai/evidence/source21-longterm-sdk-source-plan-2026-10-20.json",
+      "bytes": 9446,
+      "sha256": "9fdb39ffa6d1eb92ef47733f943477ad40110238d1b378209d71c5aa6f286ed2"
+    },
+    "files": 1447,
+    "bytes": 59074855,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "c4b506600cca3f78b90b41e9daf8475bf337c350d9dff6eebc661ea273f602ba"
+    },
+    "not_a_separate_canonical_commit_or_tree": true
+  },
+  "output": {
+    "file_count": 1449,
+    "source_bytes": 59095358,
+    "canonical_rows_JSON": {
+      "bytes": 372481,
+      "sha256": "7290b3370b64335b27ff375713dd92de331b0ca114bf99440014d40404593a85"
+    },
+    "access": "compose() returns full1449 rows and nine participating outputs in RAM only"
+  },
+  "delta": {
+    "from_Source21": "2 changed existing+2 new helpers; all1445 other rows preserved",
+    "from_actual_Source20_f198": {
+      "changed_existing": 7,
+      "new_helpers": 2,
+      "output_rows": 9
+    },
+    "exact_rows_and_two_order_inverse_in": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-wal-clock-diagnostic-source-qualification-2026-10-20.json",
+      "bytes": 36426,
+      "sha256": "2287159ad30cf9a394d1e3f791199e21236e93fe55ce263560e43ff5747915eb"
+    }
+  },
+  "participating_complete_output_pins": [
+    {
+      "relative": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+      "bytes": 8276,
+      "sha256": "6e3e389fce8ecb6f92c579384d5a02afaa2f2cf9efc2fb62c924d057b46b3e5c",
+      "git_blob_sha1": "2f3e9cecfd62cc65dc166a77ca7346f043d2ecb5",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/exact_clock_failure_diagnostic_v1.py",
+      "bytes": 6624,
+      "sha256": "8bf4dc3413fae7634999e3bd1b3509c2b9f2b9a58e0a13ee1abb7a477c52276f",
+      "git_blob_sha1": "0854e5cc9537a091f43ac102d7b636cd04c56184",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 264620,
+      "sha256": "75e01e9b117fd6a64de10b7971a65a0571ffe3923e93aa7065f166987ab05de5",
+      "git_blob_sha1": "f0110da9be2531d13d1be0ae31a5e1580eac97b6",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1640335,
+      "sha256": "e15fdf47aca82572ff0663d33511e566e9ed6e19a46d22500722058b387f34e2",
+      "git_blob_sha1": "cc8e0c10d4d8d31f4cc7dd4f903d8a6c79b4223e",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/succession_binding_refresh_wal_v1.py",
+      "bytes": 10331,
+      "sha256": "2323491006b60bee56f96a8b18e4458b1e702fb8982cdf7213ef7234e30ba690",
+      "git_blob_sha1": "c6e063d06f82b0b6496e484b4bf64b34b21b1902",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/turn_bundle_contract.py",
+      "bytes": 27974,
+      "sha256": "d02a8e56a83494a9643d9ded350e125ad96d6d6922eef75132e37d711ed91acc",
+      "git_blob_sha1": "25470751ad42fc870ed052f3ffaef5c1c599a7a6",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/m5_formal_proposal_collector.py",
+      "bytes": 36154,
+      "sha256": "6488c6f3ab6d930e37d8f9730285214ebbc700a8a6ec968124826b81b1c8172e",
+      "git_blob_sha1": "c817e3d2676e526f8a337fe3c0965a18e7fbb451",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/sway_formal_consumer.py",
+      "bytes": 34660,
+      "sha256": "02ff455d7ae350ba10b4c2cbcd042350499a04d5bd69b3ec3525af408c959ec7",
+      "git_blob_sha1": "593490eca7d83f9637949f5edb84ee27ab6b7cee",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "bytes": 20067,
+      "sha256": "4e22f96567f30b1b6101ea29e33ec485b417cea8f23ba0c2851070bbc91a767a",
+      "git_blob_sha1": "089308f5e3dcd0a18331dd6eda0c67f8980b6163",
+      "storage": "existing held refs/RAM output only; no new production copy"
+    }
+  ],
+  "Driver_function_domains": {
+    "WAL": [
+      "__init__",
+      "_persist_driver_state",
+      "_try_persist_driver_state_wal_append_v1",
+      "retain_succession_expectation_v1"
+    ],
+    "a0": [
+      "_advance_exact_day_with_sentinel"
+    ],
+    "disjoint": true,
+    "two_orders_entire_bytes_equal": true,
+    "either_inverse_preserves_other": true,
+    "cc60_full_inverse": true
+  },
+  "MCP_scope": "Only ck3_auto_turn exact typed exception DTO; original ROOT retry diagnostic and other branches retained.",
+  "qualification_inheritance": {
+    "Source21": "Five frozen leaves/source provenance retained exactly; no original matrices repeated.",
+    "WAL": "581459 proof: portable3 and actual f198 RAM integration7 passed separately, synthetic filesystem only. No old16/144 matrix repeated.",
+    "a0": "affe69 SOURCE-READY original10 passed only with earlier helper9c8e. Final helper8bf4 has revision16ccd9 two targeted actual-type/selected-step cases; the ten were NOT rerun at new helper.",
+    "independent_source_review": "performance_python final a0 NoBlock and M3 WAL source NoBlock reported to Root; those are source review, not this composition or runtime credit."
+  },
+  "new_qualification_scope": {
+    "kind": "RAM full-source pins, exact two-order hunks/inverses, AST domains, manifest and provenance closure only",
+    "full_SDK_imports": 0,
+    "functional_tests_or_owner_matrices_repeated": 0,
+    "source_tree_outputs": 0
+  },
+  "WAL_enablement_boundary": "Existing constructor/default/env guard retained; source qualification cannot prove actual App writer enabled or claim WAL speedup. Format reader, once/barrier/dirty/cold/save/close guards remain.",
+  "clock_boundary": "Diagnostic only. No clock root cause repair; M5 investigation remains UNKNOWN. No new query or timeout/sampling change. Arm is not a stop receipt; error DTO grants zero credit and never replay.",
+  "Native_boundary": "No DLL/ABI/CPP/EXE or capability change and no unqualified Native30 binding. Later cold config and actual loaded feature qualification are Root-owned.",
+  "future_separate_phase_quotes": {
+    "status": "QUOTATION_ONLY_SEPARATE_PHASE_ADMISSION_REQUIRED",
+    "Git_uncompressed_retained_upper": 2207744,
+    "Git_extra_largest_temp_upper": 1646592,
+    "Git_refs_dirs_locks_reserve": 65536,
+    "Git_peak_upper": 3919872,
+    "Git_proposed_envelope": 3932160,
+    "compression_or_existing_object_dedup_credit": 0,
+    "Git_writer_conditions": "RAM stdin, no extra full disk payload alias, commit<=8192; add any other writer peak before admission",
+    "dual_changed_view4096_data_from_actual_Source20": 4128768,
+    "rich_ATTEMPT_COMPLETE_MFT_FS_envelope": 4194304,
+    "compact_inventory_envelope": 524288,
+    "immutable_business_views_export_metadata_quote": 8847360,
+    "control_Task_feeder_atomic_Native_Game_profile_SAVE_recording_Driver_budgets": "Not included and not zero; later actual cold configuration is Root-owned.",
+    "physical_allocated_bytes": null,
+    "source_or_runtime_admission": false
+  },
+  "Git_object_quote_metadata_in": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-wal-clock-diagnostic-source-qualification-2026-10-20.json",
+    "bytes": 36426,
+    "sha256": "2287159ad30cf9a394d1e3f791199e21236e93fe55ce263560e43ff5747915eb"
+  },
+  "future": {
+    "branch": "not created",
+    "ref": "not created",
+    "export": "not executed",
+    "cold_Task": "Root later config",
+    "Native30": "not bound/qualified",
+    "clock_root_cause": "UNKNOWN, diagnosis does not solve it",
+    "permission": "This source-only card grants no Git/view/export/SDK/Task/Game/Native operation"
+  },
+  "storage": {
+    "source_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE22-NEW96KiB-FULL-GROSS2p25MiB-COMMITMENT01.json",
+      "bytes": 2965,
+      "sha256": "0c3e6a0c94837bf41f9ee62688d662924758e6931ab48abbca428c759debf446"
+    },
+    "new_three_files_hard": 98304,
+    "full_participating_gross_hard": 2359296,
+    "participating_output_bytes": 2049041,
+    "participating_Output_refs": 9,
+    "new_named_files_excluding_this_plan": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source22_wal_clock_diagnostic_v1.py",
+        "bytes": 31334,
+        "sha256": "27141b999abd41e752323cc74831e9ea1c33389366da8630c2002ac2c8e4b24a"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-wal-clock-diagnostic-source-qualification-2026-10-20.json",
+        "bytes": 36426,
+        "sha256": "2287159ad30cf9a394d1e3f791199e21236e93fe55ce263560e43ff5747915eb"
+      }
+    ],
+    "new_named_files_bytes_including_this_plan": 78893,
+    "complete_gross_including_participating_outputs": 2127934,
+    "existing_holds": "Source21 192KiB, A0 2MiB, WALthin192KiB remain retained; source refs are in-place deduplicated, no second full candidate tree",
+    "all_helper_code": "self-contained producer; external producer files are read as pinned evidence only, never imported/executed",
+    "new_tests": 0,
+    "scratch_bytes": 0,
+    "new_full_Driver_MCP_or_source_tree_copies": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "future_writes_after_freeze": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "record_review_at_utc": "2027-04-17T22:19:31.636268+00:00"
+  }
+}

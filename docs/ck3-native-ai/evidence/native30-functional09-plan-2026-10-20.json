@@ -8,8 +8,8 @@
   "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
   "producer": {
     "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_functional09_20261020.py",
-    "bytes": 23662,
-    "sha256": "7fcd4596056aea3503f700899d07a3366722e0768afe785e72f3d2653dc9c261"
+    "bytes": 23801,
+    "sha256": "64f9e45fda32e82c7b723ce5aa3948c207be3de6b58d4f8036a48511c1c554d2"
   },
   "source_files": [
     "tools/g2_saved_campaign/native30_functional09_20261020.py",
@@ -18,7 +18,8 @@
     "docs/ck3-native-ai/evidence/native30-functional09-plan-2026-10-20.json",
     "docs/ck3-native-ai/evidence/native30-functional09-readonly-preflight-2026-10-20.json",
     "docs/ck3-native-ai/evidence/native30-functional09-source-ready-2026-10-20.json",
-    "docs/ck3-native-ai/evidence/native30-functional09-metadata160-revision2-2026-10-20.json"
+    "docs/ck3-native-ai/evidence/native30-functional09-metadata160-revision2-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-functional09-task-nonce-revision3-2026-10-20.json"
   ],
   "source_card": {
     "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FUNCTIONAL09-COMPLETE64KiB-SOURCE-COMMITMENT01.json",
@@ -142,7 +143,7 @@
     "DLL_loaded": false,
     "owned_active_after": 0,
     "future_writes": 0,
-    "outer_bundle": "Bind this RESULT and original build records to new owner SPEC/CLOSED/UNREGISTER exact refs and matching nonce. Outer child/bootstrap/Job0 and Task absent_after required; RESULT alone does not award closure.",
+    "outer_bundle": "Task CLOSED/UNREGISTER nonce matches actual c0 SPEC.nonce. functional_nonce is only plan/card run identity. Root exact SPEC release and read lease remain required.",
     "M7_scope": "Independent functional-only audit. Existing08B export/NativeTransitionV1 remains unchanged; no automatic export, loaded-provider or H credit."
   },
   "execution_card_contract": {
@@ -184,7 +185,7 @@
     "<SHA>",
     "--execute"
   ],
-  "source_cap_bytes": 73728,
+  "source_cap_bytes": 77824,
   "scratch_bytes": 0,
   "physical_release_credit_bytes": 0,
   "open_kaishek": "not-applicable: Python orchestration/source pins; existing deterministic C++ fixtures are deferred, no Paradox script semantics.",
@@ -202,5 +203,6 @@
     "new09_complete_metadata_quote": 16777216,
     "combined_metadata_quote": 148015296,
     "phase_metadata_limit": 167772160
-  }
+  },
+  "nonce_revision": 3
 }
