@@ -1,0 +1,117 @@
+{
+  "schema": "xar.C21-WAL-env-forward-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:51:01.247592+00:00",
+  "status": "SOURCE_QUALIFIED_NOT_ADOPTED",
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c21_normal_warm_controls_v1.py",
+      "bytes": 8570,
+      "sha256": "8f2adeb492396af1c62f990b0cc958b3e0beb4ac972a41fac87320bb02fdfe48"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c21_normal_warm_controls_v1.py",
+      "bytes": 11957,
+      "sha256": "25f8c68ca85ad5c92a2672b76fcad203a7a38f6ad55fcba49c056c1015e264ac"
+    }
+  ],
+  "tests_passed": 3,
+  "harmless_children": [
+    {
+      "input": null,
+      "stdout": {
+        "value": null,
+        "driver_predicate": false
+      },
+      "exit_code": 0,
+      "SDK_or_Game_process": false
+    },
+    {
+      "input": "0",
+      "stdout": {
+        "value": "0",
+        "driver_predicate": false
+      },
+      "exit_code": 0,
+      "SDK_or_Game_process": false
+    },
+    {
+      "input": "1",
+      "stdout": {
+        "value": "1",
+        "driver_predicate": true
+      },
+      "exit_code": 0,
+      "SDK_or_Game_process": false
+    }
+  ],
+  "real_dependency": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Lib\\site-packages\\mcp\\client\\stdio.py",
+    "bytes": 13827,
+    "sha256": "bc987925a3da72f4ca59ccd627a6fc6ba258582d50515a532503abe6d1b9dbab"
+  },
+  "original_Driver_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src17\\xar_autoplayer\\bridge\\native_driver.py",
+    "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab"
+  },
+  "actual_candidate_env_statements_compiled": true,
+  "actual_MCP_parameter_and_spawn_env_expression": true,
+  "non_WAL_bootstrap_values_in_fixture": "dependency root/path and timing scalars only; no SDK main executed",
+  "business_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source21-longterm-sdk-source-plan-2026-10-20.json",
+    "bytes": 9446,
+    "sha256": "9fdb39ffa6d1eb92ef47733f943477ad40110238d1b378209d71c5aa6f286ed2",
+    "file_count": 1447,
+    "source_bytes": 59074855,
+    "rows_sha256": "c4b506600cca3f78b90b41e9daf8475bf337c350d9dff6eebc661ea273f602ba",
+    "parent": "f19864de1cc073eed62617faad2307c57ad45a97"
+  },
+  "actual_new_Git_anchor_observed": false,
+  "anchor_positive": "synthetic Root-record-shaped RAM input only, not actual Git or runtime authority",
+  "public_missing_anchor_and_placeholder_rejected": true,
+  "old_matrices_repeated": false,
+  "seven_sources_RAM_bytes": 368435,
+  "sources": {
+    "root_p37c21_sdk_queue.py": {
+      "bytes": 268270,
+      "sha256": "51d1b7b4b63e046c6b779dcc3024c22145e896b9b56ce4f475d518507c3d7407"
+    },
+    "root_p37c21_mcp_entry.py": {
+      "bytes": 12630,
+      "sha256": "06c7a48e8e62b4d82d69886d4766c566f97f8a7f9fa1f29460da0250c1d53249"
+    },
+    "root_native_build_binding_p37c21.py": {
+      "bytes": 4090,
+      "sha256": "2a87a29dd412f11b9a8c0ce14c66cf44c97697fc3facd5c9fe141befcf395d8f"
+    },
+    "root_p37c21_automatic_natural_succession_handoff.py": {
+      "bytes": 38624,
+      "sha256": "e8bc6b1caff74dc69fac2ae07079c4ca33022c3c86e0663c1902c3b6c97d0fee"
+    },
+    "p51_resident_successor_adoption_c21.py": {
+      "bytes": 24607,
+      "sha256": "d9cfd9acc9577454cea076f4b90835b716952fb8e97a4136f4d5daa2e4296585"
+    },
+    "launch_sdk_p37c21_owner.py": {
+      "bytes": 5462,
+      "sha256": "5257c6d4d0592bd4050b1c85954356ca58ecb8cdc381f3ebac7774ccd056507c"
+    },
+    "root_p37c21_warm_resume.py": {
+      "bytes": 14752,
+      "sha256": "16cf22b57670edf9776070bfac2d8a2509a2ed1a4b53a6864460eacc2cd44fd7"
+    }
+  },
+  "namespace_inverse_bytes_AST_and_only_WAL_hunk": true,
+  "protected_constants": 45,
+  "unrelated_environment_forwarded": false,
+  "Taskrole_whitelist_changed": false,
+  "WAL_missing_or_zero_remains_optout": true,
+  "illegal_values_explicitly_rejected": true,
+  "current_C20_or_actual_writer_ON_claimed": false,
+  "Game_Native_SDK_Task_RPC_Git_D_operations": 0,
+  "scratch_bytes": 0,
+  "source_card_sha256": "09caeac85c2f92bf80f0cfcd5e903b9fdca9d7ffb43ca6b6562e5b3046abd77a",
+  "complete_source_cap_bytes": 32768,
+  "record_review_at_utc": "2027-04-17T21:51:01.247592+00:00",
+  "future_writes_after_freeze": 0
+}

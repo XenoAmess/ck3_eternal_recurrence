@@ -1,0 +1,105 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
+@@ -2136,6 +2136,7 @@
+         self._driver_state_wal_base_version = None
+         self._driver_state_wal_barrier_required = True
+         self._driver_state_wal_barrier_generation = 0
++        self._succession_binding_wal_anchor_v1 = None
+         self._rollback_war_failures: list[dict[str, object]] = []
+         self._rollback_war_failures_migration_required = False
+         self._managed_restore_transaction: dict[str, object] | None = None
+@@ -4925,6 +4926,10 @@
+                 raise PreSubmissionRevisionMismatchError(
+                     f"succession expectation crossed the current {key}"
+                 )
++        refresh_enabled = getattr(self, "allow_driver_state_wal_v1", False)
++        refresh_proof = None
++        if refresh_enabled:
++            from .succession_binding_refresh_wal_v1 import begin_refresh, finish_refresh
+         with self._driver_state_lock:
+             if (
+                 self._episode_character_id != episode_character_id
+@@ -4933,10 +4938,25 @@
+                 raise PreSubmissionRevisionMismatchError(
+                     "succession expectation crossed the active episode"
+                 )
++            if refresh_enabled:
++                refresh_before = self._driver_state_wal_scalar_fields_locked_v1()
++                refresh_generation = self._driver_state_wal_barrier_generation
++                refresh_reconciliation = self._succession_reconciliation
+             self._succession_expectation = copy.deepcopy(expectation)
+             self._succession_reconciliation = None
+             self._driver_state_dirty = True
+-        self._persist_driver_state(persistence_reason='succession_expectation')
++            if refresh_enabled:
++                refresh_fields = self._driver_state_wal_scalar_fields_locked_v1()
++                if refresh_reconciliation is None:
++                    refresh_proof = begin_refresh(self, snapshot, refresh_before, refresh_fields)
++        if refresh_enabled:
++            self._persist_driver_state(
++                persistence_reason='succession_expectation', journal_append=refresh_proof is not None,
++                succession_binding_refresh=refresh_proof)
++            with self._driver_state_lock:
++                finish_refresh(self, snapshot, refresh_fields, refresh_generation)
++        else:
++            self._persist_driver_state(persistence_reason='succession_expectation')
+         return copy.deepcopy(expectation)
+ 
+     def reconcile_retained_succession_transition_v1(
+@@ -12112,7 +12132,7 @@
+             fields["rollback_war_failures"] = rollback
+         return fields
+ 
+-    def _try_persist_driver_state_wal_append_v1(self) -> bool:
++    def _try_persist_driver_state_wal_append_v1(self, *, succession_binding_refresh=None) -> bool:
+         """Return True only after handling one eligible append, including RED."""
+         from .driver_state_wal_v1 import (
+             FILENAME, JournalCapacity, JournalInvalid, append_delta,
+@@ -12173,6 +12193,14 @@
+                 if fields != prior_fields:
+                     # Scope, checkpoint and lifecycle mutations are barriers;
+                     # they never hitchhike on a subsequent daily result.
++                    if succession_binding_refresh is None:
++                        return False
++                    from .succession_binding_refresh_wal_v1 import consume_refresh
++                    with self._driver_state_lock:
++                        if not consume_refresh(self, succession_binding_refresh, prior_fields,
++                                               fields, rows, _is_deferred_read_only_history_step):
++                            return False
++                elif succession_binding_refresh is not None:
+                     return False
+                 next_document = append_delta(document, rows, fields)
+                 if activation_bytes is not None:
+@@ -12195,6 +12223,7 @@
+                 return False
+             except (OSError, TypeError, ValueError) as error:
+                 with self._driver_state_lock:
++                    self._succession_binding_wal_anchor_v1 = None
+                     self._driver_state_wal_barrier_required = True
+                     self._driver_state_dirty = True
+                     self._driver_state_error = f"{type(error).__name__}: {error}"
+@@ -12211,6 +12240,7 @@
+         persistence_reason: str = "unspecified",
+         timeline_append_candidate: bool = False,
+         journal_append: bool = False,
++        succession_binding_refresh=None,
+     ) -> dict[str, object] | None:
+         save_receipt: dict[str, object] | None = (
+             {
+@@ -12227,11 +12257,15 @@
+             return save_receipt
+         if (journal_append and save_request is None and not capture_failure_diagnostic
+                 and getattr(self, "allow_driver_state_wal_v1", False)
+-                and self._try_persist_driver_state_wal_append_v1()):
++                and (self._try_persist_driver_state_wal_append_v1()
++                     if succession_binding_refresh is None else
++                     self._try_persist_driver_state_wal_append_v1(
++                         succession_binding_refresh=succession_binding_refresh))):
+             return save_receipt
+         # Sticky until a full replace succeeds, including metadata/history
+         # mutations whose failed barrier is followed by a daily tick.
+         with self._driver_state_lock:
++            self._succession_binding_wal_anchor_v1 = None
+             self._driver_state_wal_barrier_required = True
+             self._driver_state_wal_barrier_generation = getattr(
+                 self, "_driver_state_wal_barrier_generation", 0) + 1

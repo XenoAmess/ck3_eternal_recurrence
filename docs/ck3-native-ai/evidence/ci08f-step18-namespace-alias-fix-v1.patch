@@ -1,0 +1,12 @@
+diff --git a/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp b/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp
+index 0408a6b1..f180cd0b 100644
+--- a/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp
++++ b/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp
+@@ -8,6 +8,7 @@
+ #include <string>
+ #include <vector>
+ using namespace xar::ck3_11906;
++namespace ck3_12004 = xar::ck3_12004;
+ namespace {
+ void Need(bool value,const char *why){if(!value)throw std::runtime_error(why);}
+ namespace frozen_source11 {

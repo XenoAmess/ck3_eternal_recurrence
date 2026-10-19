@@ -1,0 +1,66 @@
+{
+  "schema": "xar.bounded-ci08f-step18-log/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T21:44:52.546024+00:00",
+  "head": "08f4757b47a4c11863a6c85b5d2cff4fbccaa0f6",
+  "run_id": 39326816982,
+  "job_id": 118314695824,
+  "step_number": 18,
+  "step_title": "Test keyed query completion diagnostics without CK3",
+  "redirect_hosts": [
+    "results-receiver.actions.githubusercontent.com"
+  ],
+  "status": "EXCERPT_RETAINED_CPP_STAGE_NOT_YET_CLASSIFIED",
+  "limits": {
+    "compressed_RAM": 524288,
+    "selected_entry_RAM": 524288,
+    "excerpt_disk": 65536,
+    "proof_disk": 8192,
+    "aggregate_disk": 98304
+  },
+  "helper": {
+    "path": "tools/g2_saved_campaign/fetch_ci08f_step18_bounded_v1.py",
+    "bytes": 12086,
+    "sha256": "1d27cdff3b8a4de8e104780ddfaf933a25ea575628ec0e35bf68ddb08c4a9dca"
+  },
+  "credential_or_signed_URL_retained": false,
+  "storage_parent_sha256": "82cc455baee311d2b426718b144e908797dd4834c7c1a89ebd90151de9279df1",
+  "storage_internal_sha256": "b511eab54787134cf0e4fadeb2a9a37e25264735a85a162e2c436f724c111c6b",
+  "other_entries_inflated": 0,
+  "whole_archive_written": false,
+  "Native_Game_Task_CPP_calls": 0,
+  "step_observation": {
+    "number": 18,
+    "name": "Test keyed query completion diagnostics without CK3",
+    "status": "completed",
+    "conclusion": "failure",
+    "started_at": "2026-10-19T21:26:25Z",
+    "completed_at": "2026-10-19T21:35:20Z"
+  },
+  "archive_bytes": 69222,
+  "archive_sha256": "8bfb396f2ed0146fb000497275278290cf829b0ecf11d5ed3ba4d734fba2c9ad",
+  "selected_entry": {
+    "basename": "18_Test keyed query completion diagnostics without CK3.txt",
+    "bytes": 79612,
+    "compressed_bytes": 13221,
+    "sha256": "31728dbd466e4111ed178645f3d0d2cf7fdde2a255bd88cc79ca896281cdcfa0",
+    "archive_entry_count": 24
+  },
+  "window": {
+    "source_start_byte": 14189,
+    "source_end_byte": 79612,
+    "first_source_line": 104,
+    "last_source_line": 559,
+    "redactions": 0,
+    "selection": "last specific failure or final lines"
+  },
+  "excerpt": {
+    "path": "_runtime/ci08f-step18-failed-excerpt01.txt",
+    "bytes": 65423,
+    "sha256": "496641ae6b0b85495a386b71ea72477b46e27a5209ffbededba836279144c38c"
+  },
+  "end_utc": "2026-10-19T21:44:57.887528+00:00",
+  "producer_closed": true,
+  "future_writes": 0,
+  "allocated_bytes": null
+}

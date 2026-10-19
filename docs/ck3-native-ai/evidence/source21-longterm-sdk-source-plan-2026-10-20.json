@@ -1,0 +1,173 @@
+{
+  "schema": "xar.source21.longterm-five-leaf-frozen-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:33:51.489963+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; actual f31f1c",
+  "status": "SOURCE21_CANDIDATE_FROZEN_NOT_ADOPTED",
+  "actual_SDK": "C20 / Source20, unchanged; Source21 is not installed",
+  "producer_and_inline_qualification_helpers": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source21_longterm_sdk_v1.py",
+    "bytes": 27324,
+    "sha256": "2b893f66b5dcd7e7ceda7da5a86a812c26fd1476c73c7cf2fb4425c7dc4b4117"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source21-longterm-sdk-source-qualification-2026-10-20.json",
+    "bytes": 20520,
+    "sha256": "2b95564293a2c4af7a168f1f3cb239b136cffda415d7b6ecbfc42110c1d1073f"
+  },
+  "entry": "prepare_source21_longterm_sdk_v1.compose() -> five RAM byte leaves, full1447 rows, proof. No SDK imports/tests or source tree output.",
+  "base": {
+    "business_commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+    "files": 1447,
+    "source_bytes": 59065188,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935"
+    },
+    "full1447_mode_blob_size_checked_against_actual_commit": true,
+    "full_inventory_recipe": {
+      "old_inventory": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+        "bytes": 375083,
+        "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b"
+      },
+      "six_Source20_delta_inventory": {
+        "path": "docs/ck3-native-ai/evidence/source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+        "bytes": 17222,
+        "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+      },
+      "only_reconstructs_current_Source20_not_an_old_baseline_overlay": true
+    }
+  },
+  "output": {
+    "file_count": 1447,
+    "source_bytes": 59074855,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "c4b506600cca3f78b90b41e9daf8475bf337c350d9dff6eebc661ea273f602ba"
+    },
+    "access": "compose() returns full1447 rows and exact five outputs only in RAM"
+  },
+  "delta": {
+    "existing": 5,
+    "new": 0,
+    "unchanged": 1442,
+    "net_bytes": 9667,
+    "exact_operations_and_inverse_guards_in": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source21-longterm-sdk-source-qualification-2026-10-20.json",
+      "bytes": 20520,
+      "sha256": "2b95564293a2c4af7a168f1f3cb239b136cffda415d7b6ecbfc42110c1d1073f"
+    }
+  },
+  "participating_complete_output_leaves": [
+    {
+      "relative": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+      "bytes": 8276,
+      "sha256": "6e3e389fce8ecb6f92c579384d5a02afaa2f2cf9efc2fb62c924d057b46b3e5c",
+      "git_blob_sha1": "2f3e9cecfd62cc65dc166a77ca7346f043d2ecb5",
+      "storage": "existing owner/master Git blob; RAM only, no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/turn_bundle_contract.py",
+      "bytes": 27974,
+      "sha256": "d02a8e56a83494a9643d9ded350e125ad96d6d6922eef75132e37d711ed91acc",
+      "git_blob_sha1": "25470751ad42fc870ed052f3ffaef5c1c599a7a6",
+      "storage": "existing owner/master Git blob; RAM only, no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/m5_formal_proposal_collector.py",
+      "bytes": 36154,
+      "sha256": "6488c6f3ab6d930e37d8f9730285214ebbc700a8a6ec968124826b81b1c8172e",
+      "git_blob_sha1": "c817e3d2676e526f8a337fe3c0965a18e7fbb451",
+      "storage": "existing owner/master Git blob; RAM only, no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/sway_formal_consumer.py",
+      "bytes": 34660,
+      "sha256": "02ff455d7ae350ba10b4c2cbcd042350499a04d5bd69b3ec3525af408c959ec7",
+      "git_blob_sha1": "593490eca7d83f9637949f5edb84ee27ab6b7cee",
+      "storage": "existing owner/master Git blob; RAM only, no new production copy"
+    },
+    {
+      "relative": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "bytes": 20067,
+      "sha256": "4e22f96567f30b1b6101ea29e33ec485b417cea8f23ba0c2851070bbc91a767a",
+      "git_blob_sha1": "089308f5e3dcd0a18331dd6eda0c67f8980b6163",
+      "storage": "existing owner/master Git blob; RAM only, no new production copy"
+    }
+  ],
+  "source_qualification_inheritance": {
+    "filter": "Frozen3PASS; private fields filtered before deepcopy; public detached aliases preserved. Private deepcopy side effects are outside its contract.",
+    "owned_partition": "Frozen3PASS; three input branch clones/default component/final public succession deepcopy preserved. Commit0b5eb records M1 readonly noBlock; pending status in original proof remains historical.",
+    "M6": "Final34PASS incl real atomic writer/fresh-process reopen, not power-loss/fsync or CK3 SAVE. Two extra small ledger saves with sidecar, one without; no query/endpoint/snapshot added.",
+    "preventive_reserve": "Final15PASS narrowed roster guard; earlier53 at another source pin remain separate. Only complete observed primary-defender force deficit adds reason at nonnegative score; no arrival/odds/hire/loan/refund claim."
+  },
+  "all_Source20_typedROOT_sharedbudget_boundeddiag_audit_family_bindings": "byte rows unchanged",
+  "performance_boundary": "Avoid discarded private-view copies and one owned partition pass only on their existing paths. No timing benchmark or game-day rate measured. M6 adds durable IO and reliability; no speed benefit fabricated.",
+  "Native_ABI_feature_boundary": "Five Python leaves only. Existing exact1.20.0.4/EXE and private capability/receipt guards remain. No new request fields, exported endpoint or Native DLL. No unqualified Native30 binding. Root separately decides future cold Native/config/loaded feature qualification.",
+  "world_evidence_boundary": "Current Sway Start/fullID/benefit/terminal and current war roster deficit are not read or inferred. Historical receipt dates remain separate from fresh recovery evidence.",
+  "prospective_separate_phase_quotes": {
+    "status": "FUTURE_PHASE_QUOTES_ONLY_NO_GIT_VIEW_EXPORT_COLD_PERMISSION",
+    "Git_retained_upper": 262144,
+    "Git_extra_largest_temp_upper": 45056,
+    "Git_refs_dirs_locks_reserve": 65536,
+    "Git_peak_upper": 372736,
+    "Git_proposed_envelope": 524288,
+    "compression_credit": 0,
+    "Git_conditions": "RAM stdin/no extra disk payload alias; per-object serialized bytes+4096 aligned4K; future commit payload<=8192. Existing Git-object dedup is not credited.",
+    "immutable_business_view_changed_dual4096_data": 270336,
+    "rich_inventory_ATTEMPT_COMPLETE_MFT_FS_envelope": 4194304,
+    "compact_final_inventory_envelope": 524288,
+    "immutable_views_and_export_metadata_quote": 4988928,
+    "unmodified_source_rows_for_future_verified_hardlinks": 1442,
+    "future_control_Task_feeder_atomic_Native_Game_profile_SAVE_recording_Driver_budgets": "Not included or treated as zero; Root defines the later cold configuration and each separate card.",
+    "physical_allocated_bytes": null,
+    "actual_seconds_saved": null
+  },
+  "full_Git_quote_object_metadata_in": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source21-longterm-sdk-source-qualification-2026-10-20.json",
+    "bytes": 20520,
+    "sha256": "2b95564293a2c4af7a168f1f3cb239b136cffda415d7b6ecbfc42110c1d1073f"
+  },
+  "future": {
+    "branch": "not created",
+    "ref": "not created",
+    "export": "not executed",
+    "cold_Task": "not configured or admitted",
+    "Native30": "not bound; qualification not inferred",
+    "current_C20_Source20": "unchanged",
+    "permission": "This192K card is source-only; future Git/view/export/control/cold cards are independent"
+  },
+  "storage": {
+    "source_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\COMPOSER-FUTURE-SOURCE20-FIVE-LEAF-PERFORMANCE192KiB-SOURCE-COMMITMENT01.json",
+      "bytes": 1480,
+      "sha256": "c7653cbac85546869399a111f6000331f8a2f07ba7b1567129c5c92c5367c8c8"
+    },
+    "hard_complete_bytes": 196608,
+    "five_in_place_participating_source_bytes": 127131,
+    "five_existing_owner_packages": "referenced in place and not duplicated or silently recharged as new copies",
+    "new_named_files_excluding_this_plan": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source21_longterm_sdk_v1.py",
+        "bytes": 27324,
+        "sha256": "2b893f66b5dcd7e7ceda7da5a86a812c26fd1476c73c7cf2fb4425c7dc4b4117"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source21-longterm-sdk-source-qualification-2026-10-20.json",
+        "bytes": 20520,
+        "sha256": "2b95564293a2c4af7a168f1f3cb239b136cffda415d7b6ecbfc42110c1d1073f"
+      }
+    ],
+    "new_named_files_bytes_including_this_plan": 57290,
+    "complete_gross_including_five_participating_leaves": 184421,
+    "new_tests": 0,
+    "scratch_bytes": 0,
+    "all_helpers": "self-contained standard-library producer; no uncounted project code helper imported",
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "future_writes_after_freeze": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "record_review_at_utc": "2027-04-17T21:33:51.489963+00:00"
+  }
+}

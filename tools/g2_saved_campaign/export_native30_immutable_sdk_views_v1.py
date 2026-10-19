@@ -52,10 +52,32 @@ def read_native_transition_v1(*, base_freeze_ref, base_native_ref, capacity_ref,
     capacity = _read_document(capacity_ref)
     transition = capacity.value.get("native_transition")
     require(isinstance(transition, dict), "capacity lacks admitted Native30 transition evidence")
-    evidence = {name: (_read_fixture07_no_work_log if name == "fixture07_no_work_log" else _read_document)(transition.get(name))
+    reader = _read_document
+    if transition.get("build_chain") == "resume02_snapshot07_two_stage08B":
+        from g2_saved_campaign.native30_two_stage_export_contract_v1 import RAW_NAMES
+        def reader_for(name):
+            if name in RAW_NAMES: return _read_fixture07_no_work_log
+            return _read_08_admin_result if name == "admin_result" else _read_document
+    else:
+        def reader_for(name):
+            return _read_fixture07_no_work_log if name == "fixture07_no_work_log" else reader
+    evidence = {name: reader_for(name)(transition.get(name))
                 for name in native_transition_evidence_names_v1(capacity.value)}
     return validate_native_transition_v1(base_freeze=base, base_native_pin=native,
         evidence=evidence, capacity=capacity, machine_id=machine_id, source_fixture=source_fixture)
+
+
+def _read_08_admin_result(reference):
+    """Only the finite08 admin RESULT receives the producer's 4MiB bound."""
+    from g2_saved_campaign.native30_two_stage_export_contract_v1 import (
+        ADMIN_JSON_LIMIT, parse_native08_admin_document_v1)
+    _ref(reference)
+    require(reference["bytes"] <= ADMIN_JSON_LIMIT, "08 admin JSON bound exceeded")
+    path = Path(reference["path"])
+    require(path.is_absolute() and path.name == "RESULT.json", "only exact08 admin RESULT can be read")
+    with path.open("rb") as stream:
+        raw = stream.read(ADMIN_JSON_LIMIT + 1)
+    return parse_native08_admin_document_v1(raw, reference)
 
 
 def export_native30_views_v1(args, *, execute=False):

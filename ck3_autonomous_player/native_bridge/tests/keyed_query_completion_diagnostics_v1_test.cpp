@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 using namespace xar::ck3_11906;
+namespace ck3_12004 = xar::ck3_12004;
 namespace {
 void Need(bool value,const char *why){if(!value)throw std::runtime_error(why);}
 namespace frozen_source11 {

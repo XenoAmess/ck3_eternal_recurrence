@@ -1,0 +1,133 @@
+{
+  "schema": "xar.ck3.native30-two-stage08B-consumer-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:40:04.211545+00:00",
+  "machine_source": {
+    "command": "python -B tools/ck3_live_run_id.py machine",
+    "tool_chunk": "5d6a47",
+    "observed_at_utc": "2026-10-19T21:35:26Z"
+  },
+  "status": "SOURCE_READY_SYNTHETIC_SOFTWARE_ONLY_NOT_NATIVE_QUALIFICATION",
+  "scope": "Independent fixed 08B protocol consumer; no current runtime or artifact operation.",
+  "build_chain": "resume02_snapshot07_two_stage08B",
+  "source_files": [
+    {
+      "path": "tools/g2_saved_campaign/native30_two_stage_export_contract_v1.py",
+      "bytes": 31929,
+      "sha256": "a854db9bf02ac98f5b1eb0b1b498cc4c93ca4e0a48597bc09c22b05e7c5d5c17"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_two_stage_export_contract_v1.py",
+      "bytes": 27859,
+      "sha256": "d528a0ca108f2f170009912e255e9d15ca186501a15a2cce8b3ce5e432a65616"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native29_to30_export_contract_v1.py",
+      "bytes": 17562,
+      "sha256": "d348b59cdf68a2da0928ccfc4034006c0c42618fe341ad0ca1c7dac1bbfa7554"
+    },
+    {
+      "path": "tools/g2_saved_campaign/export_native30_immutable_sdk_views_v1.py",
+      "bytes": 5624,
+      "sha256": "90ccd7a5c12d90101217391857d793715fdaebcb98a3e374e6a5d4b3776f9369"
+    }
+  ],
+  "upstream_frozen_protocol": {
+    "producer": {
+      "path": "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+      "bytes": 25416,
+      "sha256": "8fff948b9f119a3341b9afc5fa69e094c8a8bea7868812dd20b0579da63a8fef"
+    },
+    "admin_producer": {
+      "path": "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+      "bytes": 10911,
+      "sha256": "52561e0d2ae7e3116953168d29154f7c8b1a7cad2a01a6d67058d3eaa4dfae9b"
+    },
+    "plan": {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision3-2026-10-20.json",
+      "bytes": 12089,
+      "sha256": "6043fd5240c9adbaa90ff3c1d61dd3832550a668382d75af1bf59019a2aa150a"
+    },
+    "original_source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+    "metadata_description": "Native30 continuous hotspot tracking and idle realm overview",
+    "description_is_compiled_DLL_field": false,
+    "source_review_inputs": "Exact repository producer/admin/plan bytes were read; no Native R result, graph, DLL, EXE or SAVE body was opened."
+  },
+  "implemented": [
+    "Reuse the existing NativeTransitionV1 metadata recipe, original exact Native29 base/card and compatibility guards. The original exporter, adapter, 06 and 07 consumers retain exact bytes.",
+    "Fixed new dispatch only: build_only BUILD_READY_FOR_ADMIN, actual same-owner administrator registration plus successful parent LAUNCH and create-only STARTED, then new run_only OFFLINE_QUALIFIED_NOT_DEPLOYED. Build-only or a prior FAILED result never supplies final qualification.",
+    "Production branch pins exact rev3 plan6043, producer8fff/admin52561 and the specified failed07 RESULT7191. Source fixtures explicitly remain synthetic and cannot pass the existing adapter deployment gate.",
+    "Preserve original02 FAILED plus successful production phase/source704/overlays/COPY04/978 compile rows/983 retained outputs through the existing finite pure provenance helper. Reuse exact07 snapshot/219 inputs/two physical globs/12 expanded command targets as provenance only.",
+    "Read all three exact NoWork text sources using the existing 8192-byte typed log parser; require actual NoWork literal, correct phase backlink and exact stage path. Root0 by itself is insufficient.",
+    "Compare nine actual manifest EXE paths, target names, sizes, SHA and FileID across build, admin and run. Verify same-client complete before/after Path/Extension/Process arrays, prior path preservation and exact nine verified requested paths.",
+    "Require admin RESULT verified plus LAUNCH VERIFIED/settings_success/UAC1/actual_exit0/future0 and exact build/admin refs. A late verified child does not repair cancelled, timed-out or unknown LAUNCH.",
+    "Bind owner SPEC schema, exact source/bootstrap digests, role, roots/cwd, phase arguments, admission and nonce to original CLOSED. Require distinct build/run Task names/nonces/process births and top-level actual child/bootstrap exits0/Job0 with no forced cleanup.",
+    "Preserve canonical decimal-string 100ns creation FILETIME and original image FileID. Spawn-time child.wait0/exit_code remain spawn observations; they do not prove terminal status.",
+    "Validate build11 commands and separated run NoWork/nine executions/layout postcheck/deps/exports/members, original -f snapshot and cwd arguments, owned frozen MSVC initializer and expected log paths. Shared final fixture argument/UTC, layout, EXE/build/wire/source/card guards still run.",
+    "Only the named admin RESULT gets a separate strict duplicate/nonfinite-rejecting 4MiB metadata parser. The original common 2MiB JSON parser remains unchanged. Bounds are checked before open.",
+    "All qualifications precede the original exporter's first mkdir. Public four-reference loader API remains unchanged; disabled export performs no I/O. No production issuer or custody token is created."
+  ],
+  "honest_limits": [
+    "input-summary serializes 5355/995/12/978/983/219 scalar counts and source refs. It does not serialize a second per-stage 983 FileID table. The consumer does not claim to compare such a table or continuous leases across Tasks.",
+    "Cwd evidence is snapshot same_cwd/inputs.cwd plus exact argv -C and frozen producer run(cwd=build). No independent OS cwd observation is claimed.",
+    "Task association is source-pinned SPEC plus nonce/SHA and original CLOSED child identity/terminal fields. This source test does not operate the scheduler or independently observe Task unregister.",
+    "No Game, loaded Native provider, camera result, H/D0 candidate observation, extra ruler/seed/government or actual cold adoption credit is granted. M7 breadth and actual H remain unknown."
+  ],
+  "software_validation": {
+    "new_command": "tools/.venv/Scripts/python.exe -B -X utf8 -m pytest tools/g2_saved_campaign/test_native30_two_stage_export_contract_v1.py -q -p no:cacheprovider",
+    "new_result": "8 passed, 37 subtests passed in 2.53s",
+    "new_tool_chunk": "53e7e9",
+    "new_cases": "Complete RAM protocol; cancelled/late/unknown administrator launch; complete settings; nine EXE drift; new owned Task generations and actual terminal0; NoWork/-f/build/run/count/environment boundaries; four-ref loader and 4MiB-only admin bound; exact source vocabulary; inverse-preservation of old routes.",
+    "fixtures": "Generated in RAM only. source_fixture=True is present and propagated to the original metadata type; public production mode and original adapter deployment both reject them. No generated fixture files or real children.",
+    "fixture_100ns_birth": "134368909000000009",
+    "old_route_smoke_result": "3 passed in 0.53s",
+    "old_route_smoke_tool_chunk": "57bc79",
+    "old_route_smoke_scope": "Only existing wholeclean/06/07 positive pure metadata nodes after dispatcher edits; old 13/40 matrices not rerun.",
+    "inverse_main_sha256": "d8b624eaba54b355c4fe7c199e33ff21b818b9d1dcc2def9f5a8398c4cea8090",
+    "inverse_loader_sha256": "f65bd5a175caa37a3ae78cd8cb12565488baa249aae5d78ca08d014fa15ed4a7",
+    "original_exporter_sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432",
+    "inverse_method": "Remove only fixed08B dispatch/type/reader hunks in memory, then compare exact SHA/byte count to frozen predecessor. No old file or global module is patched."
+  },
+  "independent_review": {
+    "reviewer": "/root/g2_m3_succession",
+    "scope": "Source-only review of three-stage shape, snapshot lease, 9 EXE identity, same-admin arrays, LAUNCH cancellation and STARTED image/FILETIME fields. No concrete blocker reported; final pin readback remains separate from actual Native qualification.",
+    "SPEC_field_provenance": "Native owner read its already-held actual build SPEC: schema xar.interactive-task-owner/v1; root owner08-build/owner-spec; cwd Z:/ck3_mod_rewrite; env only PYTHONDONTWRITEBYTECODE=1; stop_path null. Frozen c0 current() source contains image/image_file_id/session and preserves FILETIME string. No admin STARTED existed after the reported cancellation."
+  },
+  "current_actual_not_admitted": {
+    "provenance": "Native owner message only; not independently opened by this consumer work package.",
+    "reported_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "reported_admin_launch": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/attempt08-admin/LAUNCH-RESULT.json",
+      "bytes": 1817,
+      "sha256": "73cae6d2f7e52ccf2c3d0a60b8d367eac443e3b58580ad7a0f4c53ea970ce0a5"
+    },
+    "reported_status": "FAILED_OR_UNKNOWN; UAC1 cancelled1223; settings_success false; future_writes null; no actual_exit_code/STARTED/admin RESULT/run stage",
+    "disposition": "Rejected. Nine successful builds and closed build Task alone cannot qualify Native30. No actual transition or output manifest was generated."
+  },
+  "storage": {
+    "initial_64KiB_quote_corrected": true,
+    "correction": "The earlier 64KiB quote omitted full existing common files. Root explicitly raised this independent package to 96KiB and required their full bytes to be counted; old160KiB retained without refund.",
+    "source_only_card": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M7-08B-COMPLETE64to96KiB-SOURCE-SUPPLEMENT01.json",
+      "bytes": 1395,
+      "sha256": "062a5dec32752f2ffb110341b97a6f2ab73e4ede20912774979544cdac4bf0c3"
+    },
+    "hard_bytes": 98304,
+    "accounting": "Full current main+loader+new helper+test+this proof; no net-diff accounting and no reused unknown slack. Shared frozen 06/07/exporter dependencies remain separately retained history, not rewritten or copied.",
+    "source_bytes": 82974,
+    "proof_bytes": 10442,
+    "complete_gross_bytes": 93416,
+    "scratch_bytes": 0,
+    "D_or_R_asset_writes": 0,
+    "free_capacity_claimed": false
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "Task_or_UAC_or_settings_calls": 0,
+    "DLL_EXE_SAVE_Driver_body_reads": 0,
+    "builds_or_owned_children": 0,
+    "Git_commands_stage_commit_push": 0,
+    "actual_export_or_runtime_deploy": 0,
+    "future_writes_after_freeze": 0
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schema": "xar.C21-WAL-env-forward-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:51:01.247592+00:00",
+  "status": "FUTURE_SOURCE_ONLY_NOT_EXPORTED",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c21_normal_warm_controls_v1.py",
+    "bytes": 8570,
+    "sha256": "8f2adeb492396af1c62f990b0cc958b3e0beb4ac972a41fac87320bb02fdfe48"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c21_normal_warm_controls_v1.py",
+    "bytes": 11957,
+    "sha256": "25f8c68ca85ad5c92a2672b76fcad203a7a38f6ad55fcba49c056c1015e264ac"
+  },
+  "proof": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c21-normal-warm-wal-forward-source-qualification-2026-10-20.json",
+    "bytes": 4391,
+    "sha256": "1927cd60c3b0d7df229b72b72c89a586de7c114e87716afc6bebbb1e5f26389f"
+  },
+  "entry": "prepare_c21_normal_warm_controls_v1.compose(anchor_raw=actual Root JSON bytes,anchor_ref={path,bytes,sha256}) -> seven RAM bytes and bindings",
+  "actual_anchor_required_shape": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "actual": {
+      "commit": "THEN_ACTUAL_NEW_COMMIT_NOT_A_PLACEHOLDER",
+      "parent": "f19864de1cc073eed62617faad2307c57ad45a97",
+      "tree": "THEN_ACTUAL_TREE",
+      "ref": "refs/heads/campaign/THEN_ACTUAL_REF",
+      "complete_manifest": {
+        "file_count": 1447,
+        "source_bytes": 59074855,
+        "canonical_rows_JSON": {
+          "sha256": "c4b506600cca3f78b90b41e9daf8475bf337c350d9dff6eebc661ea273f602ba"
+        }
+      }
+    }
+  },
+  "business_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source21-longterm-sdk-source-plan-2026-10-20.json",
+    "bytes": 9446,
+    "sha256": "9fdb39ffa6d1eb92ef47733f943477ad40110238d1b378209d71c5aa6f286ed2",
+    "file_count": 1447,
+    "source_bytes": 59074855,
+    "rows_sha256": "c4b506600cca3f78b90b41e9daf8475bf337c350d9dff6eebc661ea273f602ba",
+    "parent": "f19864de1cc073eed62617faad2307c57ad45a97"
+  },
+  "retained_physical_generation": "C16",
+  "Native": "retained qualified Native29; no Native30 admission",
+  "WAL_policy": "strict absent/0/1; only this key forwarded; no implicit opt-in",
+  "execution_query_mask": false,
+  "classifier_sha256": "0bff8fae24c072d5f05285ba62c503dfed408f8095690fb8dffec16fe72ec28b",
+  "complete_planner_and_stop_record_once_T0": "unchanged except currentview namespace",
+  "output_sources": {
+    "root_p37c21_sdk_queue.py": {
+      "bytes": 268270,
+      "sha256": "51d1b7b4b63e046c6b779dcc3024c22145e896b9b56ce4f475d518507c3d7407"
+    },
+    "root_p37c21_mcp_entry.py": {
+      "bytes": 12630,
+      "sha256": "06c7a48e8e62b4d82d69886d4766c566f97f8a7f9fa1f29460da0250c1d53249"
+    },
+    "root_native_build_binding_p37c21.py": {
+      "bytes": 4090,
+      "sha256": "2a87a29dd412f11b9a8c0ce14c66cf44c97697fc3facd5c9fe141befcf395d8f"
+    },
+    "root_p37c21_automatic_natural_succession_handoff.py": {
+      "bytes": 38624,
+      "sha256": "e8bc6b1caff74dc69fac2ae07079c4ca33022c3c86e0663c1902c3b6c97d0fee"
+    },
+    "p51_resident_successor_adoption_c21.py": {
+      "bytes": 24607,
+      "sha256": "d9cfd9acc9577454cea076f4b90835b716952fb8e97a4136f4d5daa2e4296585"
+    },
+    "launch_sdk_p37c21_owner.py": {
+      "bytes": 5462,
+      "sha256": "5257c6d4d0592bd4050b1c85954356ca58ecb8cdc381f3ebac7774ccd056507c"
+    },
+    "root_p37c21_warm_resume.py": {
+      "bytes": 14752,
+      "sha256": "16cf22b57670edf9776070bfac2d8a2509a2ed1a4b53a6864460eacc2cd44fd7"
+    }
+  },
+  "all_outputs_only_RAM": true,
+  "then_actual_App_env_and_wal_writer_append_required_for_runtime_ON_claim": true,
+  "future_export_and_Task_and_Runtime_authority": "not granted by this source package",
+  "storage": {
+    "complete_hard_bytes": 32768,
+    "scratch_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "source_card_sha256": "09caeac85c2f92bf80f0cfcd5e903b9fdca9d7ffb43ca6b6562e5b3046abd77a"
+  },
+  "record_review_at_utc": "2027-04-17T21:51:01.247592+00:00",
+  "future_writes_after_freeze": 0
+}

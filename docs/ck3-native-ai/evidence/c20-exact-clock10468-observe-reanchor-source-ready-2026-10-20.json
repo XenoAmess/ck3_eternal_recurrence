@@ -1,0 +1,109 @@
+{
+  "schema": "xar.C20-exact-clock10468-recovery-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:50:20.209337+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; actual tool 9dc5d6",
+  "status": "SOFTWARE_QUALIFIED_NOT_INSTALLED_OR_RUN",
+  "source": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\exact_clock10468_observe_reanchor_v1.py",
+    "bytes": 18468,
+    "sha256": "005147969edf0c6ad35f694c9630b70b82c0d096f1673d9ec74397834b76c1b2"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_exact_clock10468_observe_reanchor_v1.py",
+    "bytes": 13469,
+    "sha256": "db459120a024a04daabfa1261566d1922a5a6cd07f52970114b728db7d4532e1"
+  },
+  "tests": {
+    "command": "python -B tools/g2_saved_campaign/test_exact_clock10468_observe_reanchor_v1.py",
+    "passed": 5,
+    "negative_variants": 6,
+    "seconds": 10.583,
+    "output_tools": [
+      "e23f5d",
+      "24950f"
+    ],
+    "actual_shape": "C20 Queue ed5f inherited recover method, consume_sequence, persist_loop_state and patched dispatcher AST; frame/decoded unchanged",
+    "boundary": "closed actual F97 bytes, synthetic successful bodies, RAM filesystem/session/kernel-birth reader; no real Game calls",
+    "first_failed_attempt": "cb9475: fixture did not intercept actual env.sha256 Path.read_bytes; fixture fixed, production unchanged",
+    "coverage": [
+      "status then unique SEM before clearing halt",
+      "current slot is not original Arm proof",
+      "new event/modal/war/army fields retained",
+      "source drift before zero reads",
+      "wrong actor/date/goal/connection/running or SEM exception keeps pending/halt",
+      "status guard refusal retained without retry",
+      "two-file persistence failure honestly retained RED",
+      "completed4752/counts/SAVE/business sidecars preserved; no failed4753 credit; no second control"
+    ]
+  },
+  "input_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c20-exact-clock10468-failure97\\FROZEN.json",
+    "bytes": 8600,
+    "sha256": "1149fcb9f3f5a86cba384c10fcd733179ec87bea8e631167f48258152a087281"
+  },
+  "timing_excerpt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c20-exact-clock10468-failure97\\EXISTING-CLOCK-TIMING-10468.json",
+    "bytes": 5944,
+    "sha256": "2d17044ba8c6f17288d5c66e1bb9de7e475c130e94958979829ae18db91a76c6"
+  },
+  "timing_limit": "30.0376487s cached n4364/date53274576/unpaused precedes late RPA date53274600/paused; no sentinel-stop or cancel credit",
+  "runtime_install": {
+    "helper_target": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c20_exact_clock10468_reconcile.py",
+    "helper_same_bytes_as_source": true,
+    "dispatcher_original": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_known_pause_recovery_control.py",
+      "bytes": 19333,
+      "sha256": "d507d3295a035a631f28ed1961be6f80b8a0609dc20ef230cf1f313acb3eb2e0"
+    },
+    "dispatcher_projected": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_known_pause_recovery_control.py",
+      "bytes": 19608,
+      "sha256": "156ce88d23edbeb7ec519056d2c840f962807373ca47206e54657229f27bcd06"
+    },
+    "operation": "sole runtime preserves old dispatcher by exact same-FileID rename; install new bytes only while original module remains unimported; do not edit loaded Queue/SDK",
+    "control": {
+      "sequence": 10469,
+      "command": "recover_partial_life_advance",
+      "arguments": {
+        "recovery_kind": "c20_exact_clock10468_observe_reanchor"
+      }
+    },
+    "calls": [
+      {
+        "sequence": 10470,
+        "tool": "ck3_execute_step",
+        "arguments": {
+          "step": "research-query-tactical-daily-sentinel-v1"
+        }
+      },
+      {
+        "sequence": 10471,
+        "tool": "ck3_take_semantic_snapshot_private_v1",
+        "arguments": {}
+      }
+    ],
+    "next_sequence_after_both": 10472
+  },
+  "credit": {
+    "failed_cycle": 0,
+    "failed_day": 0,
+    "business": 0,
+    "original_AUTO_replayed": false,
+    "original_generation": "unknown",
+    "sentinel_stop_validation": "not_reached",
+    "cleanup_cancel": "unknown"
+  },
+  "budgets": {
+    "complete_source_tests_copies_scratch_limit": 98304,
+    "runtime_metadata_limit": 524288,
+    "combined_status_and_SEM_rows_limit": 196608,
+    "metadata_upper_bound_reason": "rows<=192KiB plus largest same-byte pending<=192KiB, all other recovery metadata/scratch reserved<=96KiB; <=480KiB",
+    "card_sha256": "b511eab54787134cf0e4fadeb2a9a37e25264735a85a162e2c436f724c111c6b",
+    "runtime_source_copy_bytes": 38076,
+    "software_scratch_bytes": 0,
+    "complete_projected_source_gross_bytes": 80233
+  },
+  "actual_runtime_new_RPC_Game_SDK_Task_OBS_or_Driver_SAVE_operations": 0,
+  "future_scope": "explicit Root release and sole-runtime exact apply/run; no old failed result reclassification or business history modification"
+}

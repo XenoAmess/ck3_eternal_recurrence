@@ -1,0 +1,479 @@
+{
+  "schema": "xar.source21.longterm-five-leaf-source-composition/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:33:53.477880+00:00",
+  "status": "SOURCE21_CANDIDATE_SOURCE_ONLY",
+  "actual_SDK": "C20 / Source20, unchanged; Source21 is not installed",
+  "base": {
+    "business_commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+    "files": 1447,
+    "source_bytes": 59065188,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935"
+    },
+    "full1447_mode_blob_size_checked_against_actual_commit": true,
+    "full_inventory_recipe": {
+      "old_inventory": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+        "bytes": 375083,
+        "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b"
+      },
+      "six_Source20_delta_inventory": {
+        "path": "docs/ck3-native-ai/evidence/source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+        "bytes": 17222,
+        "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+      },
+      "only_reconstructs_current_Source20_not_an_old_baseline_overlay": true
+    }
+  },
+  "observed_master_commit": "08f4757b47a4c11863a6c85b5d2cff4fbccaa0f6",
+  "complete_manifest": {
+    "file_count": 1447,
+    "source_bytes": 59074855,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "c4b506600cca3f78b90b41e9daf8475bf337c350d9dff6eebc661ea273f602ba"
+    },
+    "access": "compose() returns full1447 rows and exact five outputs only in RAM"
+  },
+  "delta": [
+    {
+      "relative": "xar_autoplayer/m5_formal_proposal_collector.py",
+      "donor": "368f702355a5eae9a70e67127d9d4fa78f800e5a",
+      "donor_parent": "9ffc48a534900f2210146a1d8b89783ff10bb10f",
+      "entire_Source20_preimage_equals_donor_parent": true,
+      "before": {
+        "relative": "xar_autoplayer/m5_formal_proposal_collector.py",
+        "bytes": 36095,
+        "sha256": "27e24743ebe5a5b33e049a88406a683ec3b8201208970d35c8664f7d9693c5cf",
+        "git_blob_sha1": "f0d8df40f571b73bf753aa9c431d9f3644d6f560",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/m5_formal_proposal_collector.py",
+        "bytes": 36154,
+        "sha256": "6488c6f3ab6d930e37d8f9730285214ebbc700a8a6ec968124826b81b1c8172e",
+        "git_blob_sha1": "c817e3d2676e526f8a337fe3c0965a18e7fbb451",
+        "git_mode": "100644"
+      },
+      "net_bytes": 59,
+      "patch": {
+        "bytes": 1174,
+        "sha256": "bc564e000ec1c9e26fb9526ea87c7b778f445ce70ff34256c3adae065ebbaf99"
+      },
+      "hunk_count": 1,
+      "inverse_restores_complete_Source20_blob": true,
+      "changed_or_added_function_ASTs": [
+        "plan_m5_formal_query_only"
+      ],
+      "source_qualification": {
+        "path": "docs/ck3-native-ai/evidence/m5-private-copy-boundary-source-2026-10-19.json",
+        "bytes": 3377,
+        "sha256": "7bef78c61a15d0ba7198c29d36dc3a9449d78d3ed8b9e8b7d0bb7f2ae181eeda"
+      }
+    },
+    {
+      "relative": "xar_autoplayer/bridge/turn_bundle_contract.py",
+      "donor": "0b5ebd7e40cba44ac940bc84b3479a73eb25d3fe",
+      "donor_parent": "a7a0edef6f0910606c9546f5d795d200455a1cda",
+      "entire_Source20_preimage_equals_donor_parent": true,
+      "before": {
+        "relative": "xar_autoplayer/bridge/turn_bundle_contract.py",
+        "bytes": 27516,
+        "sha256": "0119ea8a1d41a0ab84ac6dd33f865b022f54595c8097bb6e55a70ba7bcff356a",
+        "git_blob_sha1": "532a01ccdbd4027f272ee7432d795f9be02d7c74",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/turn_bundle_contract.py",
+        "bytes": 27974,
+        "sha256": "d02a8e56a83494a9643d9ded350e125ad96d6d6922eef75132e37d711ed91acc",
+        "git_blob_sha1": "25470751ad42fc870ed052f3ffaef5c1c599a7a6",
+        "git_mode": "100644"
+      },
+      "net_bytes": 458,
+      "patch": {
+        "bytes": 1404,
+        "sha256": "0e4440326e159e9d00d1831d0c394cc28e1018ae0082c1a57c47fe58ddca8ce4"
+      },
+      "hunk_count": 2,
+      "inverse_restores_complete_Source20_blob": true,
+      "changed_or_added_function_ASTs": [
+        "_owned_partition_component",
+        "build_turn_bundle_v1"
+      ],
+      "source_qualification": {
+        "path": "docs/ck3-native-ai/evidence/turn-bundle-owned-partition-source-ready-2026-10-20.json",
+        "bytes": 10325,
+        "sha256": "398857e02ccc9672ae40daef0bc64235831323724647189250657d9b27b25d3e"
+      }
+    },
+    {
+      "relative": "xar_autoplayer/sway_formal_consumer.py",
+      "donor": "23cdb469ce57b247de6263913a6c7cdd02f89809",
+      "donor_parent": "e38edd02cf8345b782b74ec06d02638899a35005",
+      "entire_Source20_preimage_equals_donor_parent": true,
+      "before": {
+        "relative": "xar_autoplayer/sway_formal_consumer.py",
+        "bytes": 27237,
+        "sha256": "fa27a839036564f762d18969265c2baae33d5b8e517ee9d01d0ceb7393394dc8",
+        "git_blob_sha1": "2f380f00056afeb8ac5dd232cd6e6f31d7e201f3",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/sway_formal_consumer.py",
+        "bytes": 34660,
+        "sha256": "02ff455d7ae350ba10b4c2cbcd042350499a04d5bd69b3ec3525af408c959ec7",
+        "git_blob_sha1": "593490eca7d83f9637949f5edb84ee27ab6b7cee",
+        "git_mode": "100644"
+      },
+      "net_bytes": 7423,
+      "patch": {
+        "bytes": 11727,
+        "sha256": "67bde8a4b5ba1f96170e9fe0df46b0f28ad3f5dec2aeed4d783955c505956d2d"
+      },
+      "hunk_count": 7,
+      "inverse_restores_complete_Source20_blob": true,
+      "changed_or_added_function_ASTs": [
+        "_receipt_source_matches_snapshot",
+        "_resolved",
+        "_retained_receipt_matches_active",
+        "consume_sway_private_once"
+      ],
+      "source_qualification": {
+        "path": "docs/ck3-native-ai/evidence/g2-m6-durable-receipt-recovery-source-2026-10-20.json",
+        "bytes": 5408,
+        "sha256": "65999738032c972df747676a07cc2cbb54a19f87afd55e06310d26dfe9ad1ad7"
+      }
+    },
+    {
+      "relative": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+      "donor": "23cdb469ce57b247de6263913a6c7cdd02f89809",
+      "donor_parent": "e38edd02cf8345b782b74ec06d02638899a35005",
+      "entire_Source20_preimage_equals_donor_parent": true,
+      "before": {
+        "relative": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+        "bytes": 7028,
+        "sha256": "5b1c3fc2d2a9235496799b72e1c0018a92faadf3a24aa5c55a7da5b6bedfb63c",
+        "git_blob_sha1": "4d42240c2c237258f01327cd6a40044749bd0cc0",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+        "bytes": 8276,
+        "sha256": "6e3e389fce8ecb6f92c579384d5a02afaa2f2cf9efc2fb62c924d057b46b3e5c",
+        "git_blob_sha1": "2f3e9cecfd62cc65dc166a77ca7346f043d2ecb5",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1248,
+      "patch": {
+        "bytes": 2715,
+        "sha256": "0c62ef3529c3de57e575bb11e8fc36fff9971004e194417a9db7ffecf06be70d"
+      },
+      "hunk_count": 3,
+      "inverse_restores_complete_Source20_blob": true,
+      "changed_or_added_function_ASTs": [
+        "_receipt_source_frame",
+        "_send"
+      ],
+      "source_qualification": {
+        "path": "docs/ck3-native-ai/evidence/g2-m6-durable-receipt-recovery-source-2026-10-20.json",
+        "bytes": 5408,
+        "sha256": "65999738032c972df747676a07cc2cbb54a19f87afd55e06310d26dfe9ad1ad7"
+      }
+    },
+    {
+      "relative": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "donor": "ee15c1eefba13448d38a9854507a699a00e41ee7",
+      "donor_parent": "23cdb469ce57b247de6263913a6c7cdd02f89809",
+      "entire_Source20_preimage_equals_donor_parent": true,
+      "before": {
+        "relative": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+        "bytes": 19588,
+        "sha256": "c27266b60a80e7b18a38c22bdc8a076a79f351eb0b3b976c367ddc3dc90299ac",
+        "git_blob_sha1": "c37a3fb39c05ae780c66c67e297981971439831f",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+        "bytes": 20067,
+        "sha256": "4e22f96567f30b1b6101ea29e33ec485b417cea8f23ba0c2851070bbc91a767a",
+        "git_blob_sha1": "089308f5e3dcd0a18331dd6eda0c67f8980b6163",
+        "git_mode": "100644"
+      },
+      "net_bytes": 479,
+      "patch": {
+        "bytes": 1318,
+        "sha256": "8f0c0b2a127b2485c7cf22a9bdf7dced90440a7d38843a00b7249eb1ad372216"
+      },
+      "hunk_count": 1,
+      "inverse_restores_complete_Source20_blob": true,
+      "changed_or_added_function_ASTs": [
+        "observe_war_spending_priority_v1"
+      ],
+      "source_qualification": {
+        "path": "docs/ck3-native-ai/evidence/primary-defender-preventive-reserve-source-2026-10-20.json",
+        "bytes": 5363,
+        "sha256": "8fc0c78b8310624237d53768653ab6ef19490e95905e5a643e477f5d65e15086"
+      }
+    }
+  ],
+  "changed_existing_leaves": 5,
+  "new_leaves": 0,
+  "unchanged_base_leaves": 1442,
+  "net_source_bytes": 9667,
+  "full_participating_output_bytes": 127131,
+  "all_original_Source20_unmodified_rows_preserved": true,
+  "protected_Source20_bindings": [
+    {
+      "relative": "xar_autoplayer/bridge/service.py",
+      "bytes": 878063,
+      "sha256": "642e62f20b49ceed796b7dcb106b19cb94043db0593cceabeca0f0746d7aabb9",
+      "git_blob_sha1": "e671892c6124fa7bcce6870b938770916cff9717",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+      "bytes": 14139,
+      "sha256": "a761179ca74f576950cdeda76649af9f39d8f1c831af21941753b622696cb24f",
+      "git_blob_sha1": "48b80df41ffbc3b0c13fe17662a258b39d020660",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_terminal_retry_v1.py",
+      "bytes": 3566,
+      "sha256": "c7187d98c791148686369636848a5209b4323c25618c050f81b840da8ce9641c",
+      "git_blob_sha1": "3302c965a28f25784e462971f8cdd5944851101c",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+      "bytes": 6111,
+      "sha256": "9c2a85ba1b00efd0a68ca3c92bb195dd15938223a91ad3abfdc794ebec41f4e9",
+      "git_blob_sha1": "167109e4b32867be9ef53fbfd3ec3588abdf7a63",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 264359,
+      "sha256": "8b1c260f779dbd3e25770af75ed87de0cfd39200454c7662f611accfce92688f",
+      "git_blob_sha1": "b32f26eb23a210a830cf50b908eb83d353738ac9",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "bytes": 4934,
+      "sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+      "git_blob_sha1": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 61273,
+      "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+      "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1637048,
+      "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab",
+      "git_blob_sha1": "6418873e0ffbf1a8fe29ba4e73065d196f92d4a0",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "bytes": 23998,
+      "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d",
+      "git_blob_sha1": "165c6711feb372f6b0693c3e2862d33a32a6f011",
+      "git_mode": "100644"
+    }
+  ],
+  "static_internal_dependency_closure": {
+    "xar_autoplayer/m5_formal_proposal_collector.py": [
+      "xar_autoplayer/bridge/domain_construction_private_transport_v1.py",
+      "xar_autoplayer/bridge/driver.py",
+      "xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "xar_autoplayer/bridge/observed_heir_marriage_private_action_v1.py",
+      "xar_autoplayer/construction_formal_consumer.py",
+      "xar_autoplayer/current_betrothal_fulfillment_proposal.py",
+      "xar_autoplayer/faction_gift_formal_candidate_v1.py",
+      "xar_autoplayer/faction_gift_pending_v1.py",
+      "xar_autoplayer/family_marriage_formal_consumer.py",
+      "xar_autoplayer/lifestyle_formal_consumer.py",
+      "xar_autoplayer/m5_joint_dispatch.py",
+      "xar_autoplayer/m5_observed_opportunity_selector.py",
+      "xar_autoplayer/m5_war_cash_resource_v1.py"
+    ],
+    "xar_autoplayer/bridge/turn_bundle_contract.py": [
+      "xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "xar_autoplayer/bridge/player_vitals_contract.py"
+    ],
+    "xar_autoplayer/sway_formal_consumer.py": [
+      "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+      "xar_autoplayer/bridge/driver.py",
+      "xar_autoplayer/bridge/version_identity.py",
+      "xar_autoplayer/environment.py",
+      "xar_autoplayer/sway_material_consumer.py"
+    ],
+    "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py": [
+      "xar_autoplayer/bridge/driver.py",
+      "xar_autoplayer/bridge/nonwar_private_build.py"
+    ],
+    "xar_autoplayer/war_reinforcement_tradeoff_v1.py": [
+      "xar_autoplayer/bridge/domain_construction_private_transport_v1.py",
+      "xar_autoplayer/strategy.py",
+      "xar_autoplayer/war_political_survival_stakes_v1.py",
+      "xar_autoplayer/war_reinforcement_finance_v1.py"
+    ]
+  },
+  "qualification_inheritance": {
+    "filter": "Frozen3PASS; private fields filtered before deepcopy; public detached aliases preserved. Private deepcopy side effects are outside its contract.",
+    "owned_partition": "Frozen3PASS; three input branch clones/default component/final public succession deepcopy preserved. Commit0b5eb records M1 readonly noBlock; pending status in original proof remains historical.",
+    "M6": "Final34PASS incl real atomic writer/fresh-process reopen, not power-loss/fsync or CK3 SAVE. Two extra small ledger saves with sidecar, one without; no query/endpoint/snapshot added.",
+    "preventive_reserve": "Final15PASS narrowed roster guard; earlier53 at another source pin remain separate. Only complete observed primary-defender force deficit adds reason at nonnegative score; no arrival/odds/hire/loan/refund claim."
+  },
+  "new_qualification_this_run": {
+    "kind": "Whole raw blob equality, unique exact hunk inverse, AST scope, full manifest and source-proof mapping only",
+    "functional_tests_or_old_matrices_repeated": 0,
+    "SDK_module_imports": 0,
+    "source_tree_outputs": 0
+  },
+  "frozen_input_records": [
+    {
+      "path": "docs/ck3-native-ai/evidence/source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+      "bytes": 17222,
+      "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/source20-root-git-actual-2026-10-20.json",
+      "bytes": 4622,
+      "sha256": "8836237f119acb3e7d59d8a179bd954711f46397d8f9097b14ad2ec92264649d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/m5-private-copy-boundary-source-2026-10-19.json",
+      "bytes": 3377,
+      "sha256": "7bef78c61a15d0ba7198c29d36dc3a9449d78d3ed8b9e8b7d0bb7f2ae181eeda"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/turn-bundle-owned-partition-source-ready-2026-10-20.json",
+      "bytes": 10325,
+      "sha256": "398857e02ccc9672ae40daef0bc64235831323724647189250657d9b27b25d3e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m6-durable-receipt-recovery-source-2026-10-20.json",
+      "bytes": 5408,
+      "sha256": "65999738032c972df747676a07cc2cbb54a19f87afd55e06310d26dfe9ad1ad7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/m6-receipt-durable-source-root-review-2026-10-20.json",
+      "bytes": 1712,
+      "sha256": "0ed6995dcfb06dfc86e9a1e66f188f3d7878f93cfed3d416b7b2e740228ec9f7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/primary-defender-preventive-reserve-source-2026-10-20.json",
+      "bytes": 5363,
+      "sha256": "8fc0c78b8310624237d53768653ab6ef19490e95905e5a643e477f5d65e15086"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/primary-defender-reserve-root-review-2026-10-20.json",
+      "bytes": 1907,
+      "sha256": "671725df8fc527038e1cbf81609d75014d2695980cfc98cd1c7b20becd1a040e"
+    }
+  ],
+  "prospective_separate_phase_quotes": {
+    "status": "FUTURE_PHASE_QUOTES_ONLY_NO_GIT_VIEW_EXPORT_COLD_PERMISSION",
+    "Git_uncompressed_object_inventory": [
+      {
+        "kind": "blob",
+        "path": "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+        "payload_bytes": 8276,
+        "upper": 16384
+      },
+      {
+        "kind": "blob",
+        "path": "xar_autoplayer/bridge/turn_bundle_contract.py",
+        "payload_bytes": 27974,
+        "upper": 32768
+      },
+      {
+        "kind": "blob",
+        "path": "xar_autoplayer/m5_formal_proposal_collector.py",
+        "payload_bytes": 36154,
+        "upper": 40960
+      },
+      {
+        "kind": "blob",
+        "path": "xar_autoplayer/sway_formal_consumer.py",
+        "payload_bytes": 34660,
+        "upper": 40960
+      },
+      {
+        "kind": "blob",
+        "path": "xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+        "payload_bytes": 20067,
+        "upper": 24576
+      },
+      {
+        "kind": "tree",
+        "path": "<root>",
+        "payload_bytes": 1565,
+        "upper": 8192
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player",
+        "payload_bytes": 1122,
+        "upper": 8192
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player/src",
+        "payload_bytes": 41,
+        "upper": 8192
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player/src/xar_autoplayer",
+        "payload_bytes": 12584,
+        "upper": 20480
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge",
+        "payload_bytes": 40560,
+        "upper": 45056
+      },
+      {
+        "kind": "commit",
+        "path": "<future Root commit>",
+        "payload_cap": 8192,
+        "upper": 16384
+      }
+    ],
+    "Git_retained_upper": 262144,
+    "Git_extra_largest_temp_upper": 45056,
+    "Git_refs_dirs_locks_reserve": 65536,
+    "Git_peak_upper": 372736,
+    "Git_proposed_envelope": 524288,
+    "compression_credit": 0,
+    "Git_conditions": "RAM stdin/no extra disk payload alias; per-object serialized bytes+4096 aligned4K; future commit payload<=8192. Existing Git-object dedup is not credited.",
+    "immutable_business_view_changed_dual4096_data": 270336,
+    "rich_inventory_ATTEMPT_COMPLETE_MFT_FS_envelope": 4194304,
+    "compact_final_inventory_envelope": 524288,
+    "immutable_views_and_export_metadata_quote": 4988928,
+    "unmodified_source_rows_for_future_verified_hardlinks": 1442,
+    "future_control_Task_feeder_atomic_Native_Game_profile_SAVE_recording_Driver_budgets": "Not included or treated as zero; Root defines the later cold configuration and each separate card.",
+    "physical_allocated_bytes": null,
+    "actual_seconds_saved": null
+  },
+  "Native_ABI_feature_boundary": "Five Python leaves only. Existing exact1.20.0.4/EXE and private capability/receipt guards remain. No new request fields, exported endpoint or Native DLL. No unqualified Native30 binding. Root separately decides future cold Native/config/loaded feature qualification.",
+  "performance_boundary": "Avoid discarded private-view copies and one owned partition pass only on their existing paths. No timing benchmark or game-day rate measured. M6 adds durable IO and reliability; no speed benefit fabricated.",
+  "world_evidence_boundary": "Current Sway Start/fullID/benefit/terminal and current war roster deficit are not read or inferred. Historical receipt dates remain separate from fresh recovery evidence.",
+  "future_branch_ref_export_cold_Task": "Not created/not executed/not admitted; Root later defines separate configuration and capacity",
+  "runtime_Driver_SAVE_body_reads": 0,
+  "Game_RPC_Native_Task_Git_mutations_D_outputs": 0,
+  "actual_runtime_adoption_or_seconds_saved": null,
+  "scratch_bytes": 0
+}

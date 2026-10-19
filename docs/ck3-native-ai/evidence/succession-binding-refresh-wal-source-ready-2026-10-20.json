@@ -1,0 +1,142 @@
+{
+  "schema": "xar.succession-binding-refresh-wal-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:47:35.206996+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine actual readback891a22, 2026-10-19T21:32:16Z",
+  "status": "SOURCE_QUALIFIED_NOT_DEPLOYED",
+  "base_commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+  "base_source": {
+    "bytes": 1637048,
+    "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab"
+  },
+  "candidate_RAM_only": {
+    "bytes": 1639164,
+    "sha256": "15defa9d4a7c2ea778b78720afb65db556a59c0fe071f703c53cce3eceb5705d"
+  },
+  "thin_patch": {
+    "bytes": 5800,
+    "sha256": "23a15c97291a18706fc453347151eda9259204dd3a6ad97d502a3e27410d319c"
+  },
+  "source_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\PERFORMANCE-SUCCESSION-BINDING-WAL-THIN192KiB-SOURCE-SCRATCH-COMMITMENT01.json",
+    "bytes": 1837,
+    "sha256": "51661f419dda8df8c839e2a17601becd4017ca4404e1a45285848e8ac7a19c81"
+  },
+  "groups": [
+    {
+      "group": "portable",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "success": true,
+      "transcript": "test_explicit_leaf_allowlist_rejects_business_type_shape_and_owner_drift (test_succession_binding_refresh_wal_v1.PortableProofAndReplay.test_explicit_leaf_allowlist_rejects_business_type_shape_and_owner_drift) ... ok\ntest_single_use_owner_proof_and_cross_direction_aliases (test_succession_binding_refresh_wal_v1.PortableProofAndReplay.test_single_use_owner_proof_and_cross_direction_aliases) ... ok\ntest_unchanged_real_wal_replays_entire_refreshed_state_fields (test_succession_binding_refresh_wal_v1.PortableProofAndReplay.test_unchanged_real_wal_replays_entire_refreshed_state_fields) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.029s\n\nOK\n",
+      "inverse": null,
+      "loaded_count": null,
+      "loaded_rows_sha256": null,
+      "critical_imports": [],
+      "scratch_conservative_prewrite_peak_bound": 0,
+      "synthetic_atomic_writes": 0,
+      "scratch_after": 0,
+      "Game_RPC_or_Native_commands": 0,
+      "current_runtime_outputs": 0
+    },
+    {
+      "group": "source20",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "success": true,
+      "transcript": "test_actual_write_after_publication_failure_recovers_new_suffix_once (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_actual_write_after_publication_failure_recovers_new_suffix_once) ... ok\ntest_actual_write_before_publication_failure_recovers_old_commit (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_actual_write_before_publication_failure_recovers_old_commit) ... ok\ntest_dirty_race_consumes_proof_and_falls_back_to_full (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_dirty_race_consumes_proof_and_falls_back_to_full) ... ok\ntest_no_row_and_reconciliation_drift_keep_full_barriers (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_no_row_and_reconciliation_drift_keep_full_barriers) ... ok\ntest_real_query_record_retain_run_replays_identically_and_reads_once (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_real_query_record_retain_run_replays_identically_and_reads_once) ... ok\ntest_save_close_cold_replay_and_unresolved_once_remain_strict (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_save_close_cold_replay_and_unresolved_once_remain_strict) ... ok\ntest_unknown_row_failed_barrier_and_prefix_edit_cannot_hitchhike (test_succession_binding_refresh_wal_v1.Source20DriverIntegration.test_unknown_row_failed_barrier_and_prefix_edit_cannot_hitchhike) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.346s\n\nOK\n",
+      "inverse": {
+        "base": {
+          "bytes": 1637048,
+          "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab"
+        },
+        "candidate": {
+          "bytes": 1639164,
+          "sha256": "15defa9d4a7c2ea778b78720afb65db556a59c0fe071f703c53cce3eceb5705d"
+        },
+        "patch": {
+          "bytes": 5800,
+          "sha256": "23a15c97291a18706fc453347151eda9259204dd3a6ad97d502a3e27410d319c"
+        },
+        "entire_inverse": true,
+        "changed_methods": [
+          "__init__",
+          "_persist_driver_state",
+          "_try_persist_driver_state_wal_append_v1",
+          "retain_succession_expectation_v1"
+        ],
+        "full_Driver_output": false
+      },
+      "loaded_count": 239,
+      "loaded_rows_sha256": "73a9144d23172c4751dea3a8f2cf63e9ecc2f4b551a0549ca63a6271e0f1f1a4",
+      "critical_imports": [
+        {
+          "relative": "xar_autoplayer/bridge/succession_transition_contract.py",
+          "bytes": 29634,
+          "sha256": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e"
+        },
+        {
+          "relative": "xar_autoplayer/bridge/native_driver.py",
+          "bytes": 1639164,
+          "sha256": "15defa9d4a7c2ea778b78720afb65db556a59c0fe071f703c53cce3eceb5705d"
+        },
+        {
+          "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+          "bytes": 23998,
+          "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d"
+        },
+        {
+          "relative": "xar_autoplayer/bridge/succession_binding_refresh_wal_v1.py",
+          "bytes": 10331,
+          "sha256": "2323491006b60bee56f96a8b18e4458b1e702fb8982cdf7213ef7234e30ba690"
+        }
+      ],
+      "scratch_conservative_prewrite_peak_bound": 9587,
+      "synthetic_atomic_writes": 53,
+      "scratch_after": 0,
+      "Game_RPC_or_Native_commands": 0,
+      "current_runtime_outputs": 0
+    }
+  ],
+  "existing_16_or_144_matrix_repeated": false,
+  "benchmark": false,
+  "actual_runtime_benefit_seconds": null,
+  "actual_C20_WAL_writer_enabled": "NOT_CLAIMED; App environment missing WAL variable is under separate readonly audit",
+  "current_SDK_Task_Game_Driver_state_SAVE_outputs": 0,
+  "format_reader_once_and_Service_modified": false,
+  "outputs": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_binding_refresh_wal_v1.py",
+      "bytes": 10331,
+      "sha256": "2323491006b60bee56f96a8b18e4458b1e702fb8982cdf7213ef7234e30ba690"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_succession_binding_refresh_wal_v1.py",
+      "bytes": 7340,
+      "sha256": "a4a40ee6c7426aae5579320f9426af29017e4cd2bdde56b2a090798b5377ac43"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_succession_binding_refresh_wal_v1.py",
+      "bytes": 19543,
+      "sha256": "d1ba7dd2acc8d93814747e12e929ed46f5e1faa0beca4b2db553c4278852ba3b"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_succession_binding_refresh_wal_v1.py",
+      "bytes": 11283,
+      "sha256": "74d75ea68188affe59e92d1d5d4a374e3ee6768c42037992ff36fc8d6026df63"
+    }
+  ],
+  "scratch": {
+    "root": "Z:\\ck3_mod_rewrite\\.task-tmp\\succession-binding-wal-20261020-qualification01",
+    "hard_bytes": 65536,
+    "removed": true,
+    "allocated_bytes": null,
+    "observed_physical_peak": null,
+    "future_writes": 0
+  },
+  "old_and_new_functional_scope": "portable helper+unchanged real WAL replay; separate complete f198 RAM imports and candidate actual methods; synthetic filesystem only",
+  "record_review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "future_writes_after_freeze": 0
+}

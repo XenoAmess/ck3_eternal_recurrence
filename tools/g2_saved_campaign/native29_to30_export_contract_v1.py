@@ -38,6 +38,9 @@ def native_transition_evidence_names_v1(capacity_value):
     if chain == "resume02_fixture07_snapshot":
         from g2_saved_campaign.native30_resume_fixture07_snapshot_chain_v1 import EXTRA_EVIDENCE
         return EVIDENCE_NAMES + EXTRA_EVIDENCE
+    if chain == "resume02_snapshot07_two_stage08B":
+        from g2_saved_campaign.native30_two_stage_export_contract_v1 import EXTRA_EVIDENCE
+        return EVIDENCE_NAMES + EXTRA_EVIDENCE
     require(chain == "resume02_fixture06", "unsupported Native build chain")
     from g2_saved_campaign.native30_resume_fixture_chain_v1 import EXTRA_EVIDENCE
     return EVIDENCE_NAMES + EXTRA_EVIDENCE
@@ -152,8 +155,17 @@ def validate_native_transition_v1(*, base_freeze, base_native_pin, evidence, cap
     require(isinstance(evidence, dict) and set(evidence) == set(evidence_names), "complete fixed evidence set required")
     # The new07 branch has exactly one bounded original text log. All other
     # evidence retains the original pinned-JSON type and parser unchanged.
-    raw_name = "fixture07_no_work_log" if card.get("native_transition", {}).get("build_chain") == "resume02_fixture07_snapshot" else None
-    docs = {name: _doc(evidence[name]) for name in evidence_names if name != raw_name}
+    chain = card.get("native_transition", {}).get("build_chain")
+    raw_names = {"fixture07_no_work_log"} if chain == "resume02_fixture07_snapshot" else set()
+    if chain == "resume02_snapshot07_two_stage08B":
+        from g2_saved_campaign.native30_two_stage_export_contract_v1 import (
+            RAW_NAMES, Native08AdminDocumentV1, parse_native08_admin_document_v1)
+        raw_names = set(RAW_NAMES) | {"admin_result"}
+    docs = {name: _doc(evidence[name]) for name in evidence_names if name not in raw_names}
+    if chain == "resume02_snapshot07_two_stage08B":
+        value = evidence["admin_result"]
+        require(type(value) is Native08AdminDocumentV1, "08 typed bounded admin result required")
+        docs["admin_result"] = parse_native08_admin_document_v1(value.raw, value.reference).value
     all_docs = [base, old, card, *docs.values()]
     for value in all_docs:
         if "machine_id" in value:
@@ -200,10 +212,14 @@ def validate_native_transition_v1(*, base_freeze, base_native_pin, evidence, cap
         from g2_saved_campaign.native30_resume_fixture_chain_v1 import validate_resume_fixture_chain_v1
         chain_audit = validate_resume_fixture_chain_v1(docs=docs, evidence=evidence,
             transition=transition, machine_id=machine_id, now=now)
-    else:
+    elif transition.get("build_chain") == "resume02_fixture07_snapshot":
         from g2_saved_campaign.native30_resume_fixture07_snapshot_chain_v1 import validate_resume_fixture07_snapshot_chain_v1
         chain_audit = validate_resume_fixture07_snapshot_chain_v1(docs=docs, evidence=evidence,
             transition=transition, machine_id=machine_id, now=now)
+    else:
+        from g2_saved_campaign.native30_two_stage_export_contract_v1 import validate_two_stage_export_chain_v1
+        chain_audit = validate_two_stage_export_chain_v1(docs=docs, evidence=evidence,
+            transition=transition, machine_id=machine_id, now=now, source_fixture=source_fixture)
     require(plan.get("schema") == "native30-wholeclean-plan-v1", "actual frozen Native30 plan required")
     commit = delivery.get("source_commit")
     require(_sha(commit, 40) and freeze.get("commit") == commit
