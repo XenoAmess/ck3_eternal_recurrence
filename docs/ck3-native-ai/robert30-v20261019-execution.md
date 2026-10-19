@@ -48,3 +48,13 @@ Native [四条临时JSON字符串边优化](knight-json-streaming-performance-20
 日期截止公共实际driver/executor/Protocol软件组合已完成5项，覆盖单Arm多日、Plan/target一致、Sway内部规划旁路、route窄收尾和终点不再resume；新Native25运行tuple真实采用仍待首批结果。后继combat过期帧优化22种等价与4项回归通过，4MB合成输入0.5333→0.0020秒，不能外推整局。原生JSON优化现有9组C++字节/SHA一致验证；109.28→108.02毫秒的计时区间重叠，不认定可靠提速。EXE登记不可用已保真实回执，实际采用经授权的独立Python/DLL离线备选，没有更改Native25/系统设置。
 
 M7后继源码已补完成resolved台账与精确checkpoint的新Game谱系：原证明精确保全后才能退役，pending/UNKNOWN不迁移，原 `_checked` 不放宽；普通AUTO零新增查询，仅resolved SAVE多一次真实小帧。软件消费者组合及旧进程不可观察分支分别定向验证，当前不计新实机/G2完成信用。全部后继源码将一次合批冻结后再启动App/Queue，不热换正在运行的App。
+
+## 02:36后继：最终业务冻结完成，录制首试正常清理
+
+同一 `machine_id: xenoamess-full-tower-eb9d2c1186`，观察时间2026-10-19T02:36:06Z。后继源码已实际推送为 `dc4b7d56787ac769c809d1ab0d7b6057be2377e6`，业务SDK采用src02共1423个Python文件、58,769,189 B；保留Host/Game的d90d5e79身份。实际采用目录与独立Git对象reference进行经验资格attempt03，PASS，回执22,718 B，SHA `5eefe8e98d70908d80edaa77493ea0396b728ab7c367116aa9f89e3458720743`。此前失败和通过回执均保留。
+
+来源固定在同一外置根 `D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep`：`robert30-v20261019-campaign01/runtime/ROOT-FINAL-SDK-FREEZE-P37.json`（399,506 B，SHA `db68e72afa3ef6e562af656ad0b341471e4ee63f52e011405ff3ba3b22912c95`）、`p51-fresh1066-v20261019-prepare01/PRE-APP-SOURCE-ADOPTED05.json`（3,398 B，SHA `3d00b102c9389f49fc23484b5368d823a444f8cd700f4723792a5ee7dbe16ee5`）及该准备目录的 `LESSONS-QUALIFICATION03.json`。M7只提取小型相关pins，未复制完整inventory或读取活Driver。
+
+专用portable OBS配置范围已获得实际存储追加准入，计入原64GiB而非新增预算；个人OBS及二进制不写。来源 `D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/STORAGE-ADMISSION-OBS-SCOPE01.json`（7,573 B，SHA `e951f2eeba0afdb153a613290f70c876c147a951ac9cd4c654d9139a7cda4179`）。02:33:26Z小型容量观察为D可用891,818,803,200 B，距既有guard 73,498,543,132 B；不是新的全卷预算。
+
+录制首attempt的自有OBS PID181812抢焦点，实际foreground由Steam HWND52505028变成该OBS HWND83305260，触发原守卫；worker随后正常OBS exit0并确认inputs_unbound，失败MKV仅约13KB。Game与decision-text publisher保留，未恢复或操作用户窗口。此刻仍为MainMenu、App/Queue未启动；修正仅在唯一runtime owner处进行，尚无1066角色、基线SAVE或新游戏日信用。

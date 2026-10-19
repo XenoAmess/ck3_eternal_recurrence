@@ -263,7 +263,17 @@ def replay(base_bytes: bytes, journal_bytes: bytes | None) -> tuple[dict[str, ob
 
 def load_pair(base_path: Path) -> tuple[dict[str, object], str]:
     journal_path = base_path.with_name(FILENAME)
-    return replay(base_path.read_bytes(), journal_path.read_bytes() if journal_path.exists() else None)
+    journal_present = journal_path.exists()
+    try:
+        base_bytes = base_path.read_bytes()
+        journal_bytes = journal_path.read_bytes() if journal_present else None
+    except OSError as error:
+        # Once a journal exists, unreadable pair bytes cannot become a fresh
+        # state through the Driver's ordinary missing/full-file fallback.
+        if journal_present:
+            raise JournalInvalid(f"journal pair is unreadable: {error}") from error
+        raise
+    return replay(base_bytes, journal_bytes)
 
 
 def publish_journal(path: Path, journal: dict[str, object],

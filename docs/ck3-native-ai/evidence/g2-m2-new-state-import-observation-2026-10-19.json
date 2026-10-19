@@ -1,0 +1,93 @@
+{
+  "schema": "xar.g2.m2.new-state-source-import-observation/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T02:36:16.012678+00:00",
+  "sources": {
+    "prior_manifest": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\g2-m2-research-2026-10-19.json",
+      "bytes": 181565,
+      "sha256": "e838e0be04df903ab1bb0482b846b0d8a8667ccc8d451b1d0b7b0728d741b483"
+    },
+    "actual_runtime_import_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\SOURCE-KNOWLEDGE-IMPORTED.json",
+      "bytes": 155127,
+      "sha256": "e0ccdfdbe79a8c7b1a2785e7e083291d1e90939d4b656344a8ed7444d6479d21"
+    },
+    "actual_runtime_lessons_qualification": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\LESSONS-QUALIFICATION03.json",
+      "bytes": 22718,
+      "sha256": "5eefe8e98d70908d80edaa77493ea0396b728ab7c367116aa9f89e3458720743"
+    },
+    "actual_cold_id_qualifier_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\LESSONS-QUALIFICATION03-populist-source.json",
+      "bytes": 4063,
+      "sha256": "c72d054ed11bf62fc247b41a0528c2b7b5b4a01ed094c75055c2aa79d019d9b9"
+    }
+  },
+  "status": "OBSERVED_98_IMPORT_RECEIPT_MATCHES_MANIFEST",
+  "checks": {
+    "all_98_and_only_expected_fingerprints_imported": true,
+    "origin_entry_and_facts_bytes_sha_match_precise_manifest": true,
+    "target_entry_and_facts_paths_within_new_state": true,
+    "source_knowledge_only_receipt": true,
+    "runtime_qualifier_receipt_sha_matches_parent_qualification": true,
+    "actual_new_state_selected": true,
+    "cold_id_source_rebound_and_API4_PASS": true,
+    "cold_id_is_explicitly_synthetic_not_live": true
+  },
+  "runtime_receipt_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "runtime_import_observed_at_utc": "2026-10-19T02:19:53.127301+00:00",
+  "qualification_fields": [
+    {
+      "field": "status",
+      "value": "PASS"
+    },
+    {
+      "field": "carried_source_knowledge.status",
+      "value": "PASS"
+    },
+    {
+      "field": "carried_source_knowledge.receipt.sha256",
+      "value": "c72d054ed11bf62fc247b41a0528c2b7b5b4a01ed094c75055c2aa79d019d9b9"
+    },
+    {
+      "field": "carried_source_knowledge.receipt.utf8_lf_sha256",
+      "value": "c72d054ed11bf62fc247b41a0528c2b7b5b4a01ed094c75055c2aa79d019d9b9"
+    },
+    {
+      "field": "carried_source_knowledge.reported_status",
+      "value": "PASS"
+    }
+  ],
+  "boundaries": {
+    "live_RPC": 0,
+    "SAVE_Driver_or_media_body_reads": 0,
+    "frozen_SDK_changes": 0,
+    "new_event_observed": false,
+    "game_state_inferred_from_receipt": false,
+    "business_credit_added": 0,
+    "G2_credit_added": 0,
+    "source_knowledge_importer_rerun": false,
+    "98_entry_validation_rerun": false
+  },
+  "cold_qualifier_receipt_observed_at_utc": "2026-10-19T02:36:55.866818+00:00",
+  "cold_id_qualification_summary": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T02:30:40.937860+00:00",
+    "package_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src02",
+    "state_dir": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state",
+    "status": "PASS",
+    "selected_step": "select-event-option-4",
+    "phase": "active_event_source_reviewed_populist_refusal",
+    "cold_id_rebind_required": true,
+    "calculated_event_id_mutation_is_synthetic": true,
+    "Game_MCP_OBS_calls": 0,
+    "gameplay_commands_submitted": 0,
+    "current_game_observed": false,
+    "new_live_evidence": false,
+    "business_success_inferred": false,
+    "title_retention_verified": false,
+    "binding_mode": "populist1001_source_rebound",
+    "entry_fingerprint": "14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f"
+  }
+}

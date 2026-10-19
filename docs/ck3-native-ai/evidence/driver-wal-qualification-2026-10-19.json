@@ -1,0 +1,272 @@
+{
+  "schema": "xar.driver-wal-offline-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_started_utc": "2026-10-19T02:37:38.292896+00:00",
+  "observed_ended_utc": "2026-10-19T02:37:39.210812+00:00",
+  "status": "EXPERIMENTAL_SOFTWARE_QUALIFIED_NOT_LIVE_ADOPTED",
+  "baseline_commit": "dc4b7d56",
+  "negative_and_candidate_cases": [
+    {
+      "source": "candidate",
+      "case": "neither-base-nor-journal",
+      "observed": "legal_fresh_none"
+    }
+  ],
+  "resumed_existing_pair": true,
+  "first_attempt": {
+    "exit_code": 1,
+    "failed_assertion": "wal.full_state_bytes(recovered) == full_bytes",
+    "reason": "canonical journal sorts history object keys; raw textual byte identity is not preserved",
+    "preserved_producer": "PRODUCER-ATTEMPT01.py",
+    "prior_negative_controls": "original missing-base and journal-read-OSError returned None; candidate raised JournalInvalid; these assertions completed before first raw-byte assertion",
+    "prior_writes": "16 exact synthetic rows written in full and WAL branches before first assertion; not repeated",
+    "prior_timing_samples": null
+  },
+  "preservation": {
+    "full_vs_replay_bytes_equal": false,
+    "full_vs_replay_canonical_bytes_equal": true,
+    "full_vs_replay_all_history_values_equal": true,
+    "history_object_key_order_differences": [
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144
+    ],
+    "full_json_sha256": "38c91674a20a4aacff276499436ab6798080fafcec54c3f0166efba0bf1c11ca",
+    "recovered_json_sha256": "4c92c533ee61e9a56a030e9f051342f4fb88a14a22dfff09a46a112420537a5f",
+    "canonical_full_and_recovered_sha256": "527205d96dd7b8906e4585fbb053a3e535ab79caf53287ea4c00bcc29a4a5559",
+    "preserved_history_rows_before_save": 144,
+    "strict_driver_resume_history_equal": true,
+    "active_pair_cold_start_rejected": true,
+    "materialized_v2_raw_bytes_equal": false,
+    "materialized_v2_all_values_equal": true,
+    "strict_materialized_resume_history_equal": true,
+    "failed_publish_row_not_resent_or_duplicated": true,
+    "synthetic_save_bookkeeping_barrier": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "replaced",
+      "write_replace_returned": true,
+      "save_binding_verified": true,
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\xar-wal-test",
+        "bridge_pid": 12345,
+        "episode_character_id": 7,
+        "episode_run_id": "native-7-wal-test",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "rogue_one_life",
+          "xar_enabled": "xar_on",
+          "pact_contract": "terminal_settlement_required",
+          "source": "legacy-driver-default",
+          "environment_sha256": null
+        },
+        "campaign_goal": null
+      },
+      "binding_contract": "one_life_episode_identity_v1",
+      "checkpoint_episode_projection": null,
+      "missing_checkpoint_binding_fields": [],
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\xar-wal-test",
+        "bridge_pid": 12345,
+        "episode_character_id": 7,
+        "episode_run_id": "native-7-wal-test"
+      },
+      "save_history_index": 146,
+      "checkpoint": {
+        "history_index": 146,
+        "pipe_name": "\\\\.\\pipe\\xar-wal-test",
+        "bridge_pid": 12345,
+        "episode_character_id": 7,
+        "episode_run_id": "native-7-wal-test"
+      },
+      "encoded_history_rows": 146,
+      "driver_state_path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-performance-wal01\\journaled\\native-session\\driver-state.json"
+    },
+    "save_row_count": 1,
+    "save_history_contiguous": true,
+    "normal_close_observed_pair_status": [
+      "base_only"
+    ]
+  },
+  "bounded_synthetic_write_comparison": {
+    "baseline_json_bytes": 4210731,
+    "append_count": 16,
+    "logical_write_bytes": null,
+    "write_calls": null,
+    "elapsed_seconds": null,
+    "total_seconds": null,
+    "first_wal_sample_includes_activation": true,
+    "same_history_rows_and_state": true
+  },
+  "source_pins": {
+    "ck3_autonomous_player/experimental/driver_state_wal_v1/driver_state_wal_v1.py": {
+      "bytes": 20272,
+      "sha256": "fdca7355377e957bbbcffcef509988e3f34f488ef3340256dfdf7214534303c1"
+    },
+    "ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch": {
+      "bytes": 14432,
+      "sha256": "318612ca06da970f5d090ba92702056dac89c670be473faf34a37952db806be4"
+    },
+    "ck3_autonomous_player/experimental/driver_state_wal_v1/native_session.py.patch": {
+      "bytes": 1265,
+      "sha256": "553029dd5acbc1f641cef3e409738b188e67abb9dab0571fc6ceba170bf54e29"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {
+      "bytes": 1603757,
+      "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/native_session.py": {
+      "bytes": 76078,
+      "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8"
+    },
+    "tools/g2_saved_campaign/verify_driver_wal_qualification_v1.py": {
+      "bytes": 19503,
+      "sha256": "6e6848d878322f491e4020200f471239f543ba72896c8e472f1fec57eb16d9de"
+    }
+  },
+  "historical_SOURCE_PINS_and_DELIVERY": "unchanged historical qualification; this receipt supersedes current helper/patch identities only",
+  "game_calls": 0,
+  "native_calls": 0,
+  "rpc": 0,
+  "runtime_or_SAVE_bodies_read": 0,
+  "production_modified": false,
+  "WAL_enabled_for_runtime": false,
+  "limits": [
+    "synthetic small state and bookkeeping SAVE; no actual CK3 SAVE or game acceptance",
+    "write-and-replace returned, not power-loss/fsync durability",
+    "relative local timing cannot predict old 8GB or current runtime throughput",
+    "old direct readers require full v2 materialization; no active pair can be used as a cold checkpoint"
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "admission_path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\WAL-RESEARCH-CHILD01.json",
+    "admission_sha256": "fd8f22cc51801eeec76c97483dec50e2e87a739ee064aed853667b9fce4fa8b3",
+    "work_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-performance-wal01",
+    "peak_budget_bytes": 67108864,
+    "retained_logical_bytes": 18943629,
+    "free_at_start_bytes": 891803160576,
+    "free_at_close_bytes": 891798958080,
+    "derived_review_at_utc": "2026-10-21T02:32:53Z",
+    "producer_closed": true,
+    "unconsumed_planned_writes_bytes": 0,
+    "unrelated_deletions": 0,
+    "synthetic_exact_deletions": [
+      "original-missing-base/native-session/driver-state.json",
+      "candidate-missing-base/native-session/driver-state.json"
+    ],
+    "manifest": [
+      {
+        "relative_path": "__pycache__/original-helper.cpython-313.pyc",
+        "bytes": 26419,
+        "sha256": "c06d9d687aebe39686b198057900a791f6d0a4a9749c013f4035ad67733d6887"
+      },
+      {
+        "relative_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/__pycache__/native_session.cpython-313.pyc",
+        "bytes": 67169,
+        "sha256": "fd19c3296063b78bb68c5e3108d8cfd00f1f835bf2244fca8ad1ddc60bbf64b1"
+      },
+      {
+        "relative_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/__pycache__/native_driver.cpython-313.pyc",
+        "bytes": 1383557,
+        "sha256": "6d8d5e201ff78dc273a3b792e09eaec62fa78060bb5a8e35fa3078d00c5c209a"
+      },
+      {
+        "relative_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1650892,
+        "sha256": "f8d335060729c54d115e54c79533db09da8dfbc336f6955ba623bc5376640382"
+      },
+      {
+        "relative_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+        "bytes": 78619,
+        "sha256": "0d0f1f8ff5f00505930b0427efe183c3d3a624bf2f72665c8c49123f51d38ce3"
+      },
+      {
+        "relative_path": "candidate/driver.patch",
+        "bytes": 14432,
+        "sha256": "318612ca06da970f5d090ba92702056dac89c670be473faf34a37952db806be4"
+      },
+      {
+        "relative_path": "candidate-journal-read-oserror/native-session/driver-state.json",
+        "bytes": 649,
+        "sha256": "b1b20b731ac2c039bc842c8fa063dd3bd53fbbd8768fd1fde9da5997d8464060"
+      },
+      {
+        "relative_path": "candidate-journal-read-oserror/native-session/driver-state.wal-v1.json",
+        "bytes": 1026,
+        "sha256": "45e154feecd1714c57ef535711c6a0206ff34e2ac6d6396c67ef1ee8eb4dab90"
+      },
+      {
+        "relative_path": "candidate-missing-base/native-session/driver-state.wal-v1.json",
+        "bytes": 1026,
+        "sha256": "45e154feecd1714c57ef535711c6a0206ff34e2ac6d6396c67ef1ee8eb4dab90"
+      },
+      {
+        "relative_path": "full/native-session/driver-state.json",
+        "bytes": 4210731,
+        "sha256": "38c91674a20a4aacff276499436ab6798080fafcec54c3f0166efba0bf1c11ca"
+      },
+      {
+        "relative_path": "journaled/native-session/driver-state.json",
+        "bytes": 4211316,
+        "sha256": "f1bae8abc244853611568c72eee27ce00aebfd5ec826fd3d7d66718236d3dbcc"
+      },
+      {
+        "relative_path": "materialized/native-session/driver-state.json",
+        "bytes": 4210731,
+        "sha256": "4c92c533ee61e9a56a030e9f051342f4fb88a14a22dfff09a46a112420537a5f"
+      },
+      {
+        "relative_path": "original/ck3_autonomous_player/src/xar_autoplayer/bridge/__pycache__/native_driver.cpython-313.pyc",
+        "bytes": 1383346,
+        "sha256": "84c75d46d933da0f1679bd5cef9f60d4f3f9c141279a7e251bfe4b312914e9de"
+      },
+      {
+        "relative_path": "original/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1650681,
+        "sha256": "626aafede3aa158a22148596ae600dbce2095c53edcf08d69ebfc19c9c3e20b7"
+      },
+      {
+        "relative_path": "original/driver.patch",
+        "bytes": 14221,
+        "sha256": "4141eff7aa42c1e5f8c57f3a45ab6c411bc596cf9e73f138d57eddab5a1f02e6"
+      },
+      {
+        "relative_path": "original-helper.py",
+        "bytes": 19849,
+        "sha256": "e60f70c36a16b92589979bb842b8064788de1c7839785bc474058875a0d1ab32"
+      },
+      {
+        "relative_path": "original-journal-read-oserror/native-session/driver-state.json",
+        "bytes": 649,
+        "sha256": "b1b20b731ac2c039bc842c8fa063dd3bd53fbbd8768fd1fde9da5997d8464060"
+      },
+      {
+        "relative_path": "original-journal-read-oserror/native-session/driver-state.wal-v1.json",
+        "bytes": 1026,
+        "sha256": "45e154feecd1714c57ef535711c6a0206ff34e2ac6d6396c67ef1ee8eb4dab90"
+      },
+      {
+        "relative_path": "original-missing-base/native-session/driver-state.wal-v1.json",
+        "bytes": 1026,
+        "sha256": "45e154feecd1714c57ef535711c6a0206ff34e2ac6d6396c67ef1ee8eb4dab90"
+      },
+      {
+        "relative_path": "PRODUCER-ATTEMPT01.py",
+        "bytes": 16264,
+        "sha256": "e404c7496bbfd106a0e0f3975661d2869f4d55111be4c5e6bc42821d4b4e1b64"
+      }
+    ]
+  }
+}

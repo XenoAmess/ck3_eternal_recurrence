@@ -42,8 +42,11 @@
              if isinstance(restored, dict):
                  lifecycle_migration_required = bool(
                      restored.get(
-@@ -11596,17 +11617,140 @@
+@@ -11596,17 +11617,143 @@
          if not path.is_file():
++            from .driver_state_wal_v1 import FILENAME, JournalInvalid
++            if path.with_name(FILENAME).exists():
++                raise JournalInvalid("journaled Driver state is missing its base file")
              return None
          try:
 -            return load_native_driver_state_for_resume(path, self.pipe_name)

@@ -42,3 +42,16 @@ normal close, materialization, and journal corruption. It does not contact CK3.
 The actual-route microfixture records its immutable source file and SHA but
 contains no machine path or process binding. The larger prior fault suite and
 closed 33.5 MB benchmark remain in the external development packet.
+
+The [2026-10-19 bounded qualification](../../../docs/ck3-native-ai/evidence/driver-wal-qualification-2026-10-19.json)
+records the current helper and patch hashes against `dc4b7d56`; `SOURCE-PINS.json`
+and `DELIVERY.json` retain their earlier historical identities. On
+`machine_id: xenoamess-full-tower-eb9d2c1186`, the successor experiment completed
+at `2026-10-19T02:37:39.210812Z`. A present journal with a missing base, or a
+known journal read failure, now rejects recovery instead of returning fresh
+state. All 144 synthetic history rows and field values survived replay,
+materialization, strict reading, SAVE bookkeeping and normal close. JSON object
+key order changed, so raw bytes did not match; the original failed assertion
+was retained and the same pair was used for the remaining checks. Timing
+samples were not retained and no speed improvement is claimed. This remains
+default-off and was not installed into the current game SDK.
