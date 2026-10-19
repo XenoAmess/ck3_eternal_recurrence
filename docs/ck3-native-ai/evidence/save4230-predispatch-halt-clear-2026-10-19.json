@@ -1,0 +1,39 @@
+{
+  "schema": "xar.c10b.SAVE4230-predispatch-clear-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:53:29.444703+00:00",
+  "helper": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\save4230_predispatch_halt_clear_v1.py",
+    "bytes": 5097,
+    "sha256": "8ed8cc3a0c7a7143ffd7223d2271f796873da50419eb990253636fd4d2abdcab"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_save4230_outer_v1.py",
+    "bytes": 6639,
+    "sha256": "f3dae85bd3a618472f3d198691369b83c4b7d2c9fb04269477f9f234451476e7"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\save4231-review01\\QUALIFICATION.json",
+    "bytes": 1821,
+    "sha256": "18286b8ab02e9547b03775f0c014549d487285f9c7376396c9ff8024e519fa3d"
+  },
+  "source_boundary": "Actual source owner driver_step snapshot/ensure rejects before Driver.execute_step. Direct SAVE4230 created no queue pending_checkpoint; no action or SAVE replay permitted.",
+  "software": "Original C10B run_request_loop with consume_sequence/halt_request: exact positive and foreign-pending rejection PASS; zero RPC; state/governance bytes unchanged.",
+  "actual_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4231-1-result.json",
+    "bytes": 797,
+    "sha256": "8bf20f17c3d70a7b447a06fc523c7392dff0e190e44f368b858bcaf078c1d92f"
+  },
+  "actual_result_observed_utc": "2026-10-19T10:36:06.240692+00:00",
+  "actual_status": "source_bound_direct_SAVE_predispatch_halt_cleared",
+  "next_sequence": 4232,
+  "completed_cycles": 2010,
+  "date_raw": 53189040,
+  "actual_preserved": [
+    "original SAVE4230 rejection",
+    "state/governance bytes",
+    "dirty/due and old SAVE1773 cache",
+    "zero pending_cycle/pending_checkpoint"
+  ],
+  "actual_SCOPE": "Only metadatahalt/current_attempt cleared; no Native/Driver/SAVE/old ledger mutation, no checkpoint or ordinary credit. Later C10C warm/new SAVE4234 are separate receipts."
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "xar.C11-primary-Steam-offline-pixel-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:58:49.704739+00:00",
+  "reviewer": "/root",
+  "review_method": "Root directly viewed the frozen PNG with view_image; no desktop input",
+  "Steam_offline_visible": true,
+  "visible_evidence": "Center explicitly states Steam currently in offline mode; bottom bar also states offline mode; online button is available.",
+  "image": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\steam-offline-C11-84\\probe-1\\steam-moved.png",
+    "bytes": 750877,
+    "sha256": "f0327747b9d6b44ce717cc88f67180672ba65fbc5e6f645560936f49850dcb41",
+    "dimensions": [
+      2560,
+      1440
+    ]
+  },
+  "freshness_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\steam-offline-C11-84\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1362,
+    "sha256": "90518926a52b6e94495b98cbaf2c8c02ff9539e55c171fd084a64da98947ec0a"
+  },
+  "scope": "Fresh offline-screen admission for the current machine before C11 Native29 cold start; no inference of actual new Game or Native29 loading",
+  "Steam_mode_changed_by_Root": false,
+  "Game_desktop_input_calls": 0
+}
