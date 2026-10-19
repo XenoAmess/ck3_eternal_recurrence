@@ -1,0 +1,136 @@
+{
+  "schema": "xar.c17.canonical-outer-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "utc": "2026-10-19T17:16:35.238829+00:00",
+  "status": "OUTER_SOURCE_SEAMS_QUALIFIED_NOT_DEPLOYED",
+  "D_writes": 0,
+  "Task_registrations": 0,
+  "Game_RPC": 0,
+  "Driver_SAVE_body_reads": 0,
+  "source_inputs": {
+    "root_native29_supervisor_c16.py": "2b470516f05f324440b0c23f3354109bbe67c2792339dc5a15f2166be5c3ae77",
+    "root_checkpoint_bootstrap_c16.py": "7db736e1fe3db39c3c119c01bb18e06fc72bab8b67792ac3854b382f33bf520b",
+    "launch_sdk_p37c16_owner.py": "8302bee328111f411d5a5c33eb1a2a97a6aea06b7ca957d4bb0f20f702de20ea",
+    "root_p37c16_sdk_queue.py": "58f6ff2126793cb1c2f1d61f37ea8f9057c65fe1e53e84fdf921d33ab8ee9d83",
+    "root_p37c16_mcp_entry.py": "e486fa1ccd3b10e290bcc96cfdf4c66c2b0a4a6f34f5fa78d1d85341d8d760fa"
+  },
+  "new_repo_sources": {
+    "canonical_c17_outer_binding_v1.py": {
+      "bytes": 12780,
+      "sha256": "e4d45ed0e48f8ed9d30269592bcde5cc64948e983b194320a286316e20a1300a"
+    },
+    "c17_normal_checkpoint_inputs_v1.py": {
+      "bytes": 6180,
+      "sha256": "bb1ea3b4ec49a96b62d90883477c21d5124214caff030d36198606b8adb03154"
+    },
+    "prepare_canonical_c17_outer_sources_v1.py": {
+      "bytes": 11933,
+      "sha256": "e0713f8a56e3a2be280d140d4f3246d35af84222990bc353d6b268a7d1049ffe"
+    },
+    "qualify_canonical_c17_outer_sources_v1.py": {
+      "bytes": 16473,
+      "sha256": "469df5b3e602414b8ebff772fe50a22a52e5ecf6bfe0769a9a1e0968f92ba3b3"
+    }
+  },
+  "changed_repo_bytes": 47366,
+  "outputs_in_memory_only": {
+    "root_p37c17_sdk_queue.py": {
+      "bytes": 268424,
+      "sha256": "0cbb70e994f59f4bfce0d62130502b315c689bb88353f29a845bfc4eb0effcfe"
+    },
+    "root_p37c17_mcp_entry.py": {
+      "bytes": 12896,
+      "sha256": "9d01fb3f971829d370b4f8a5dc841d7ddcde3ea5861c6ab56a2ba5d85bb53093"
+    },
+    "root_native_build_binding_p37c17.py": {
+      "bytes": 4090,
+      "sha256": "7168914fae28df1d8b63696fff2213a046c22d85341898d3f9e271ac465821f6"
+    },
+    "root_p37c17_automatic_natural_succession_handoff.py": {
+      "bytes": 38624,
+      "sha256": "ccdc8f84aad4fce5bc3c83b0c8bfd6226dd347191fe2ba3a2d530d783f6ad771"
+    },
+    "p51_resident_successor_adoption_c17.py": {
+      "bytes": 24607,
+      "sha256": "300ea3a78b98d4920327f91e64787d1ea334ae7845abbe4ed248a36f1ece4e05"
+    },
+    "launch_sdk_p37c17_owner.py": {
+      "bytes": 6420,
+      "sha256": "880b9e5fe5cd96d5d4b9f8fd922a7756c70e328df5206e9e6a347cf7c9c72cc1"
+    },
+    "root_p37c17_cold_resume.py": {
+      "bytes": 19302,
+      "sha256": "cb0bda5e7c8ac7b509ee8e9961e8fa8389e6b7b2f20dd50f5460f480ee684f7e"
+    },
+    "root_checkpoint_bootstrap_c17.py": {
+      "bytes": 11023,
+      "sha256": "73b5f0b677b28f938b47c4590548195459eef94f83e20463b34b67efed307b85"
+    },
+    "root_native30_supervisor_c17.py": {
+      "bytes": 34773,
+      "sha256": "c71536a805cec366619cf61751181d8050eba38e2d1e72ee6834f98409a70532"
+    },
+    "root_record_shutdown_c17.py": {
+      "bytes": 6913,
+      "sha256": "1d384f7ec673da09d491dbb575660142aa96d44b024058387f7a51e2a467126c"
+    },
+    "root_score_month_samples_c17.py": {
+      "bytes": 7991,
+      "sha256": "1f7f9a8a5861d9e7876903ed481c2a73a8dc7671b3bfdfc6efd49b24518fbf37"
+    },
+    "root_c17_control_timing_adapter.py": {
+      "bytes": 15044,
+      "sha256": "2f10318b89f2816c8c1269cd56954e8f36a7785eebfd71dc61bde9b7319c7180"
+    },
+    "root_c17_queue_control_timing.py": {
+      "bytes": 8642,
+      "sha256": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+    },
+    "root_screen_bus_lease_c17.py": {
+      "bytes": 16526,
+      "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+    },
+    "root_checkpoint6397_cold_contract_c17.py": {
+      "bytes": 10481,
+      "sha256": "4df3ef85870a7f9580e1aa2b07c625b222e98d7607cfae4a39eeccd0d3e63e9a"
+    },
+    "root_c17_canonical_outer.py": {
+      "bytes": 12780,
+      "sha256": "e4d45ed0e48f8ed9d30269592bcde5cc64948e983b194320a286316e20a1300a"
+    },
+    "root_c17_normal_checkpoint_inputs.py": {
+      "bytes": 6180,
+      "sha256": "bb1ea3b4ec49a96b62d90883477c21d5124214caff030d36198606b8adb03154"
+    }
+  },
+  "output_logical_bytes": 504716,
+  "exact_inverse_hunks": {
+    "root_checkpoint_bootstrap_c17.py": 4,
+    "root_p37c17_cold_resume.py": 2,
+    "root_native30_supervisor_c17.py": 10,
+    "launch_sdk_p37c17_owner.py": 3,
+    "root_p37c17_sdk_queue.py": 5,
+    "root_p37c17_mcp_entry.py": 3
+  },
+  "checks": [
+    "actual bootstrap: absent hook preserves original kwargs; enabled same callback identity",
+    "original stock contexts/exception identity preserved; App chain exported before original pair wait",
+    "actual outer method uses true direct base Queue command, original args and dependency root",
+    "actual supervisor hook/creator, post-original Service install and revoke-before-stop source seams",
+    "normal closure positive/foreign Game/failed publisher/non-normal SDK rejects; actual original SAVE projector increments only SAVE count"
+  ],
+  "topology": [
+    "durable Task: canonical supervisor -> actual SDKowner -> Queue -> stock MCP App",
+    "durable Task: original decision display/OBS owner",
+    "durable Task: original feeder"
+  ],
+  "remaining_before_any_freeze_or_adoption": [
+    "Root complete new canonical SDK closure: phase M7 eleven files alone are insufficient",
+    "Native30 actual qualification/DLL identity, current normal SAVE/clean closure and metadata budget",
+    "Supply actual future normal maintenance SAVE/current clean state and exact normal C16 closure receipts; the finite F90 path remains isolated",
+    "Freeze creator three tools and all entry sources/policy/direct base Python/dependency file pins",
+    "Actual harmless complete source-enabled creator chain / Native30 optional component not exercised by these detached tests",
+    "Only sole runtime may create the three durable Tasks, new Game and actual cold SEM/CAP/pixel admission"
+  ],
+  "H_state": "unknown; no actual provider adoption or qualification RPC is claimed"
+}

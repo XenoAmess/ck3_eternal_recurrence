@@ -1,0 +1,227 @@
+{
+  "schema": "xar.g2-m2-c16-sway1003-finite-source-rebind/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:18:00.188634+00:00",
+  "provenance": "tools/ck3_live_run_id.py machine; closed C16 projections; offline current stock source and existing loader; no Game queries",
+  "runtime_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+  "actual_game_pid": 30852,
+  "actor_character_id": 40526,
+  "episode_run_id": "native-40526-1bec95182886",
+  "historical_sway_31254_full2_gen0_credit": false,
+  "stock_source": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\scheme_events\\sway_scheme\\sway_ongoing_events.txt",
+    "bytes": 67299,
+    "sha256": "cac2328a721aae13c5c60dbe81eccdf83cd8bf06eca1f51f247a098c0f435adc"
+  },
+  "definition_sha256": "e3446738b3d835048bbcecf8bc8791fdc0bd96fdf4952d984314ee963c7c6295",
+  "option_catalogue_sha256": "cb16650d3b41b5c0ff0fe3365712fa89aaf1ccf70f5a165c253f34d3f824d8a8",
+  "all_source_options_reviewed": 1,
+  "old_and_current_definition_options_byte_equal": true,
+  "source_effects": "The sole 1003 button only names sway_ongoing.1003.a. Conditional immediate gives living compliment_receiver respect_opinion +10 toward root, and an existing owned scheme symbolic scheme_progress_gain. These occur before the acknowledgement; no target opinion, scheme identity/phase/progress or whole-scheme terminal result was read back.",
+  "baseline_old_loader": {
+    "status": "unknown",
+    "rejected_entries": [
+      {
+        "entry": "f7d69490e0b397f306a410473c5d0efe6836ec1afeb180f0318948c09804d3c3.json",
+        "reason": "source-declared event root differs"
+      }
+    ]
+  },
+  "new_loader_before_exact_publish": {
+    "binding_mode": "reviewed_letter_source_rebound",
+    "adapted_from": {
+      "fingerprint": "f7d69490e0b397f306a410473c5d0efe6836ec1afeb180f0318948c09804d3c3",
+      "calculated_event_id": 1441003,
+      "entry_sha256": "f3254c719bd7f80b93b8f92b4a5ea1ee46ebf53a7009f038776456d443e388ad"
+    },
+    "fresh_binding": {
+      "ck3_build": "1.20.0.4",
+      "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+      "event_definition_key": "sway_ongoing.1003",
+      "calculated_event_id": 3631003,
+      "native_option_count": 1,
+      "source_sha256": "cac2328a721aae13c5c60dbe81eccdf83cd8bf06eca1f51f247a098c0f435adc",
+      "option_catalogue_sha256": "cb16650d3b41b5c0ff0fe3365712fa89aaf1ccf70f5a165c253f34d3f824d8a8"
+    }
+  },
+  "new_loader_after_exact_publish": {
+    "status": "offline-source-reviewed",
+    "binding_mode": "exact",
+    "fingerprint": "dd4ca2150b5b784ed5295f0a20280eeb374f7a6a6a42fa44f4fc865c4a7685c8",
+    "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\dd4ca2150b5b784ed5295f0a20280eeb374f7a6a6a42fa44f4fc865c4a7685c8.json",
+    "entry_sha256": "400242d4ef7af24c55997694dd5651982006c79431d055589bbc37eadffe337c",
+    "material_effects_verified": false,
+    "registry_contract_accepted": false
+  },
+  "synthetic_future_ID": {
+    "calculated_event_id": 4631003,
+    "binding_mode": "reviewed_letter_source_rebound",
+    "actual_game_observation": false
+  },
+  "current_role_identities": {
+    "owner_character_id": 40526,
+    "target_character_id": 34973,
+    "compliment_receiver_character_id": 34973,
+    "friend_character_id": 40695
+  },
+  "scope_identity_gaps": [
+    {
+      "role": "scheme",
+      "type_key": "scheme",
+      "typed_identity_verified": false
+    },
+    {
+      "role": "artifact",
+      "type_key": "artifact",
+      "typed_identity_verified": false
+    },
+    {
+      "role": "evaluated_compliment_type",
+      "type_key": "flag",
+      "typed_identity_verified": false
+    },
+    {
+      "role": "compliment_outcome",
+      "type_key": "flag",
+      "typed_identity_verified": false
+    }
+  ],
+  "gui_source_sha256": {
+    "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+    "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+  },
+  "execution_contract_qualified": false,
+  "registry_contract_accepted": false,
+  "material_effects_verified": false,
+  "semantic_decision_ready": false,
+  "loaded_gui_bytes_verified": false,
+  "closed_events": [
+    {
+      "auto": 8574,
+      "key": "sway_ongoing.1002",
+      "projection": "p37-queue/C16-EVENT-8574-CLOSED.json",
+      "bytes": 29706,
+      "sha256": "c375bc7da9674c58787a2ff2fa987bfb9bbf3b54bb5ed5be8ac208667f2c2eb0",
+      "native_option_index": 8,
+      "public_option_number": 9,
+      "rendered_index": 0,
+      "ACK": true,
+      "instance_transition": [
+        23,
+        24
+      ],
+      "postcondition_verified": true,
+      "registry_known": true,
+      "reused_fingerprint": "1006f90038b01f36ef2659483ef8bd62f9bd7a0ba310dcecb0b0c31894382a8c",
+      "facts_rewritten": false
+    },
+    {
+      "auto": 8578,
+      "key": "sway_ongoing.1003",
+      "projection": "p37-queue/C16-EVENT-8578-CLOSED.json",
+      "bytes": 25726,
+      "sha256": "87f82baa99db93bd5d9b217ca1d24937665dda0192151de20c8b71abcf3f445c",
+      "native_option_index": 0,
+      "public_option_number": 1,
+      "rendered_index": 0,
+      "ACK": true,
+      "instance_transition": [
+        24,
+        null
+      ],
+      "postcondition_verified": true,
+      "registry_known_at_selection": false,
+      "incident_id": "059d7661ba484d5989e1a7e87fbf6fda",
+      "before_sha256": "6af7ad6645770f2d105a460f804cbe0092074880feb4aa17a60083d5ea8fe1c4",
+      "after_sha256": "b78c21cfea2e830de72faab2970824902985148bace97b8e07435f8240ccd8b4"
+    }
+  ],
+  "production_adoption": "Normal subsequent SDK freeze/warm includes the two pinned source leaves; current C16 SDK is unchanged. Canonical exact knowledge is already readable without hot code changes.",
+  "source_and_tests": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "bytes": 28093,
+      "sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f",
+      "added_line_bytes": 98,
+      "net_bytes": 21,
+      "patch_sha256": "76685d404e6495cf51b05b50428f072e43fbda64ce230197d818c6a6f005e01e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+      "bytes": 12122,
+      "sha256": "24d7937aa3d6be34adb1da9fb67eb5536e9494c4615dac810f98f6fae10c98f9",
+      "added_line_bytes": 2227,
+      "net_bytes": 1830,
+      "patch_sha256": "9ce1997a455b5e1e20c95464ed467b6579553481fac8759d9dfce37d22da1f24"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_reviewed_letter_source_rebind_v1.py",
+      "bytes": 12282,
+      "sha256": "0793f1afc156adf9257648c77995a402493b3f97dbe6f6de7c01ef708dfc73aa",
+      "added_line_bytes": 4097,
+      "net_bytes": 3980,
+      "patch_sha256": "cda45ba9662e5d6635d6c15bbe49b9b0d87c5a09f9bb9d12bd3938e7c74c269c"
+    }
+  ],
+  "canonical": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\dd4ca2150b5b784ed5295f0a20280eeb374f7a6a6a42fa44f4fc865c4a7685c8.json",
+      "bytes": 3792,
+      "sha256": "6563fcfee9fa496894b815fe5c95fa224714d925a9540760fc28412de48a35f5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\dd4ca2150b5b784ed5295f0a20280eeb374f7a6a6a42fa44f4fc865c4a7685c8.json",
+      "bytes": 1412,
+      "sha256": "400242d4ef7af24c55997694dd5651982006c79431d055589bbc37eadffe337c"
+    }
+  ],
+  "tests": {
+    "command": "python -B -X utf8 -c exec(__import__('base64').b64decode('aW1wb3J0IHN5cwpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKc3lzLnBhdGguaW5zZXJ0KDAsc3RyKFBhdGgoJ2NrM19hdXRvbm9tb3VzX3BsYXllci9zcmMnKS5yZXNvbHZlKCkpKQppbXBvcnQgcHl0ZXN0CnJhaXNlIFN5c3RlbUV4aXQocHl0ZXN0Lm1haW4oWyctcScsJy1wJywnbm86Y2FjaGVwcm92aWRlcicsJy0tYmFzZXRlbXA9LnRhc2stdG1wL2cyLW0yLXN3YXkxMDAzLXRlc3RzLTIwMjYxMDIwJywnY2szX2F1dG9ub21vdXNfcGxheWVyL3Rlc3RzL3VuaXQvdGVzdF9yZXZpZXdlZF9sZXR0ZXJfc291cmNlX3JlYmluZF92MS5weScsJy1rJywnc3dheV9vbmdvaW5nLjEwMDMgb3IgY29sZF9JRCddKSkK'))",
+    "argv": [
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=.task-tmp/g2-m2-sway1003-tests-20261020",
+      "ck3_autonomous_player/tests/unit/test_reviewed_letter_source_rebind_v1.py",
+      "-k",
+      "sway_ongoing.1003 or cold_ID"
+    ],
+    "python_path": "ck3_autonomous_player/src",
+    "result": "14 passed, 22 deselected in 0.88s",
+    "scope": "All new 1003 cases plus both existing-letter positive paths; synthetic sources/GUI/frames, zero Game RPC.",
+    "diff_check": "PASS"
+  },
+  "storage": {
+    "pool_card": "M2-C16-OFFLINE-EVENT-POOL1MiB-32FP-COMMITMENT01.json",
+    "pool_card_sha256": "dff45050b2286048f95de5f27bb1ed8023fdcd55d27751223bb0f28a5d9c4e8d",
+    "subscope_card": "M2-C16-SWAY1003-COMPLETE64KiB-SUBSCOPE-SUPPLEMENT01.json",
+    "subscope_sha256": "139ef4207303f99d4479ad0ab14930823fc65d65c4a9dd2d2ee8d521686d11e5",
+    "subscope_limit_bytes": 65536,
+    "pool_limit_bytes": 1048576,
+    "pool_limit_fingerprints": 32,
+    "new_binding_fingerprints": 1,
+    "new_stock_source_SHA_count": 0,
+    "new_source_added_line_bytes": 6422,
+    "source_net_increment_bytes": 5831,
+    "canonical_bytes": 5204,
+    "test_temp": {
+      "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-sway1003-tests-20261020",
+      "files": 70,
+      "logical_bytes": 36509
+    },
+    "proof_bytes": 10465,
+    "new_gross_bytes_including_test_temp": 58600,
+    "net_retained_increment_bytes": 58009,
+    "future_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "derived_test_temp_retention_hours": 48,
+    "small_record_retention_days": 180,
+    "accounting": "Pre-existing source file bytes are not charged again. New gross conservatively includes all added diff lines, both canonical files, this proof and all new test temp bytes; closed input projections and old facts were read without copies."
+  },
+  "Game_MCP_RPC_calls": 0,
+  "Native_builds": 0,
+  "current_SDK_mutations": 0
+}

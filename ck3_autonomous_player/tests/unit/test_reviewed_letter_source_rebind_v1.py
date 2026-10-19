@@ -53,6 +53,11 @@ def case(request, tmp_path, monkeypatch):
         scope("ec_council", "activity", 6), scope("ec_council_faith", "faith", 13),
         scope("ec_letter_tenet_1", "tenet", 40), scope("ec_letter_tenet_2", "tenet", 40),
         scope("ec_letter_doctrine_1", "doctrine", 39)])
+    if key == "sway_ongoing.1003":
+        roles = [scope("owner", "character", 4, 101), scope("target", "character", 4, 201),
+                 scope("compliment_receiver", "character", 4, 201), scope("friend", "character", 4, 301),
+                 scope("scheme", "scheme", 9), scope("artifact", "artifact", 31),
+                 scope("evaluated_compliment_type", "flag", 3), scope("compliment_outcome", "flag", 3)]
     shown = [0, 2] if count == 3 else [0]
     context = {"schema": "current-event-window-context-v1", "schema_version": 1,
         "status": "available", "window_match_count": 1, "event_definition_key": key,
@@ -93,7 +98,12 @@ def test_cold_ID_reuses_only_source_knowledge_with_current_roles(case):
     assert audit["loaded_gui_bytes_verified"] is False
     assert known["binding"]["calculated_event_id"] == 10001
     assert audit["fresh_binding"]["calculated_event_id"] == 20001
-    if facts["binding"]["native_option_count"] == 1:
+    if facts["binding"]["event_definition_key"] == "sway_ongoing.1003":
+        assert len(audit["scope_identity_gaps"]) == 4
+        assert audit["current_role_identities"] == {"owner_character_id": 101, "target_character_id": 201,
+                "compliment_receiver_character_id": 201, "friend_character_id": 301}
+        assert audit["source_rebind_policy"] == letters.SWAY_POLICY
+    elif facts["binding"]["native_option_count"] == 1:
         assert len(audit["scope_identity_gaps"]) == 8
         assert audit["current_role_identities"]["ec_reporter_character_id"] == 401
     else:
@@ -117,7 +127,7 @@ def test_source_GUI_frame_or_role_drift_remains_unknown(case, change):
         capture["window_context"]["saved_scopes"][0]["scope"]["raw_type_index"] = 99
     elif change == "role_identity":
         roles = {v["name"]: v for v in capture["window_context"]["saved_scopes"]}
-        target = roles.get("faction_target", roles.get("host"))
+        target = roles.get("faction_target", roles.get("host", roles.get("owner")))
         target["scope"]["typed_identity"]["character_id"] = 999
     elif change == "frame":
         capture["binding"]["native_revision"] += 1
@@ -138,3 +148,55 @@ def test_review_checks_definition_catalogue_and_keeps_other_letters_closed(case)
     current["event_definition_key"] = "another_letter.0001"
     with pytest.raises(ValueError):
         letters.reviewed_letter_source_rebind_shape_v1(capture, facts, current)
+
+
+def test_sway_current_roles_are_fresh_and_opaque_payloads_stay_unknown(case):
+    capture, _, state, _, _ = case
+    if capture["event_definition_key"] != "sway_ongoing.1003":
+        pytest.skip("sway-specific role semantics")
+    roles = {row["name"]: row for row in capture["window_context"]["saved_scopes"]}
+    roles["target"]["scope"]["typed_identity"]["character_id"] = 501
+    roles["compliment_receiver"]["scope"]["typed_identity"]["character_id"] = 601
+    _, audit = offline.load_source_reviewed_event_v1(state, capture)
+    assert audit["current_role_identities"]["target_character_id"] == 501
+    assert audit["current_role_identities"]["compliment_receiver_character_id"] == 601
+    assert {v["role"] for v in audit["scope_identity_gaps"]} == {
+        "scheme", "artifact", "evaluated_compliment_type", "compliment_outcome"}
+    assert all(v["typed_identity_verified"] is False for v in audit["scope_identity_gaps"])
+    assert audit["execution_contract_qualified"] is False
+
+
+def test_sway_required_roles_and_native_build_remain_strict(case):
+    capture, facts, state, _, _ = case
+    if capture["event_definition_key"] != "sway_ongoing.1003":
+        pytest.skip("sway-specific negative shapes")
+    for change in ("missing_target", "unknown_role", "receiver_untyped", "receiver_self", "scheme_type",
+                   "fabricated_scheme", "flag_type", "fabricated_flag", "build", "backend", "exe", "option"):
+        changed = copy.deepcopy(capture)
+        context = changed["window_context"]
+        roles = {row["name"]: row for row in context["saved_scopes"]}
+        if change == "missing_target":
+            context["saved_scopes"].remove(roles["target"])
+        elif change == "unknown_role":
+            context["saved_scopes"].append(scope("unknown", "character", 4, 1))
+        elif change == "receiver_untyped":
+            roles["compliment_receiver"]["scope"]["typed_identity"] = {"status": "unavailable"}
+        elif change == "receiver_self":
+            roles["compliment_receiver"]["scope"]["typed_identity"]["character_id"] = 101
+        elif change in ("scheme_type", "flag_type"):
+            roles["scheme" if change == "scheme_type" else "compliment_outcome"]["scope"]["raw_type_index"] = 99
+        elif change in ("fabricated_scheme", "fabricated_flag"):
+            name = "scheme" if change == "fabricated_scheme" else "compliment_outcome"
+            roles[name]["scope"]["typed_identity"] = {"status": "available", "kind": "scheme", "scheme_id": 99}
+        elif change == "backend":
+            context["provenance"]["backend_id"] = "other"
+        elif change == "option":
+            context["options"][0]["native_option_index"] = 1
+        else:
+            current = offline._native_binding(changed)
+            current["ck3_build" if change == "build" else "required_ck3_exe_sha256"] = "other"
+            with pytest.raises(ValueError):
+                letters.reviewed_letter_source_rebind_shape_v1(changed, facts, current)
+            continue
+        known, audit = offline.load_source_reviewed_event_v1(state, changed)
+        assert known is None and audit["status"] == "unknown", change
