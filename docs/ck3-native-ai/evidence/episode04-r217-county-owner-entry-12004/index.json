@@ -1,0 +1,138 @@
+{
+  "schema": "xar.e04.r217-final-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T02:14:45.138893+00:00",
+  "source_runtime_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "compiled_native_source": "bc4604bed4eb8558b3f4e0e554a642aa69a4ba2f",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0213",
+  "status": "ACTUAL_NORMAL_CLOSED_AND_ROOT_RELEASED_OWNER_JOIN_UNQUALIFIED",
+  "facts": {
+    "actor_terminal": "Move1, 7 exact days, arrival1513/date53147544, OFF/Save true",
+    "window": "195 new global writer calls within 512, continuous",
+    "owner": "23 physical county-primary retained: 17 positive, 6 zero, debit236; native q3 owner child absent 23/23; positive owner joins0, R04 false",
+    "close": "normal game OS0, public original wait0, host original wait0, keeper thread exited last6802, allocator original wait0, Root bus completed seq6803/resources[]",
+    "media": "179.033s H264 1280x720 30fps; three sparse frames Jan26/6746 to Jan27/6510, prior Jan20 reading corrected; full decode, continuous clean and human 1x not proven",
+    "B": "land stock headroom only; current total rate negative, future callback/positive stock growth unobserved; B sites0/2",
+    "counts": "research10/14, business7/11, formal_dynamic0/11, ABC0/3"
+  },
+  "credit": {
+    "R04_closed": false,
+    "research": "10/14",
+    "business": "7/11",
+    "formal_dynamic": "0/11",
+    "ABC": "0/3",
+    "B_qualified_sites": 0
+  },
+  "scope": "Source records lacking machine_id retain unknown identity; this observer index does not retroactively add fields or OS proof to historical originals. Per-run records, source analysis and media facts are separate.",
+  "files": [
+    {
+      "path": "close/normal-close-result.json",
+      "bytes": 10159,
+      "sha256": "d658cb15606281b67f53d622c5a4ff3457f613bb5750a163f2a63617eff0cfdf",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a37/runs/desktop-3fevhd2-1c74096080--vanilla--R0213/case-output/normal-close-result.json",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "close/host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "7ba0b72342f78b6319684ab8d13e5c45e3a83a82d9350eff7075f673b8155ac2",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a37/runs/desktop-3fevhd2-1c74096080--vanilla--R0213/host-original-process-exit.json",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "close/keeper-report.json",
+      "bytes": 477,
+      "sha256": "f75a512c10045746125bacfb3948a12f4771b9875d15a8072c679d97d47e67e9",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-owner-entry-a01/resume-a02/keeper-a01/report.json",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "close/public-original-wait.json",
+      "bytes": 204,
+      "sha256": "decd4cecf70b7cde4d5485bdb71158b4289fb64c5ff192100948eb207f2ccbb3",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-normal-close-owner-a01/actual/PUBLIC-ORIGINAL-WAIT.actual.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "close/allocator-original-wait.json",
+      "bytes": 217,
+      "sha256": "d461c6dcca51a1932369ef79acfad22b7e4a3c5f10d3befa41bdcc37ae59b958",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-normal-close-owner-a01/actual/ALLOCATOR-ORIGINAL-WAIT.actual.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "close/screen-release.json",
+      "bytes": 2374,
+      "sha256": "b2efaa7f43cfa96ec862f6a24c4947c7b41653bf0d38d05dc44ad0bda436d324",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-normal-close-owner-a01/actual/SCREEN-RELEASE.actual.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "media/media-qa.json",
+      "bytes": 3180,
+      "sha256": "c83155c7cdca5dadf103c9001e540c3b91ce1e778eb2d4cffeaab2674fa6e980",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-owner-entry-a01/resume-a02/media-qa-take01-a01/MEDIA-QA.actual.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "analysis/owner-absence-diagnosis.json",
+      "bytes": 3988,
+      "sha256": "1c6131ed2b88902da2dc913d566052175781180219f8e7ea751999474c717831",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-owner-absence-diagnosis-a01/ROOT-DELIVERY.actual.json",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "analysis/b-stock-opportunity.json",
+      "bytes": 5437,
+      "sha256": "ba8d5cf1964ecdf20be15e43d9b8eebd80d2d0ddc714315b72d7deb1fbe666a3",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-b-stock-opportunity-extract-a01/ARMY0-STOCK-OPPORTUNITY.actual-a01.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "actor/index.partial.json",
+      "bytes": 1706,
+      "sha256": "d02d66473683cb67118e2536a67d9278de46d0178c1c5f6381977ee230650936",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-county-owner-portable-prep-a01/actor-partial-candidate/index.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "actor/originals.zip",
+      "bytes": 3081,
+      "sha256": "dc23617e96166c3c76c28536e158f4d207cdd7375cb21901efe95148d1486f46",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-county-owner-portable-prep-a01/actor-partial-candidate/actor-partial-originals.zip",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "analysis/NATIVE-CORE-SAVED-FIRST.actual.json",
+      "bytes": 984,
+      "sha256": "80417602fa6d5abca6818789776696fb9d8b8340114c6ef7d19a91b58075ca07",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-owner-absence-diagnosis-a01/NATIVE-CORE-SAVED-FIRST.actual.json",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "analysis/NATIVE-PHASE-LEAF.actual.json",
+      "bytes": 1477,
+      "sha256": "7e82e4ab3a34e93ee6a9131af59018148263155e5232b6aa80b036b85ee93981",
+      "source": "C:/ck3-e04-resume-20261015-a01/r217-owner-absence-diagnosis-a01/NATIVE-PHASE-LEAF.actual.json",
+      "source_record_machine_id": "unknown"
+    },
+    {
+      "path": "source-copyplan.json",
+      "bytes": 4873,
+      "sha256": "b4a37dcf365b2abf87a279d74d393d3c96245993de97fa313a8d42b8da61b26a",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r217-county-owner-portable-prep-a01\\FINAL-COPYPLAN.candidate-a01.json",
+      "source_record_machine_id": "desktop-3fevhd2-1c74096080"
+    }
+  ],
+  "archive": {
+    "path": "actor/originals.zip",
+    "index": "actor/index.partial.json"
+  },
+  "excluded": [
+    "raw video",
+    "PNG/JPEG frames",
+    "save bodies",
+    "large native or normalized wire",
+    "SYSTEM or EXE payloads"
+  ]
+}

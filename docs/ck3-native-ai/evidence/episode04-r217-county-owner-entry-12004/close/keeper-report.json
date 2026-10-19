@@ -1,0 +1,13 @@
+{
+  "schema": "xar.promo.screen-lease-keeper/v1",
+  "task_id": "e04-common-12004-a218",
+  "last_sequence": 6802,
+  "failure": null,
+  "thread_exited": true,
+  "journal": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-owner-entry-a01\\resume-a02\\keeper-a01\\journal.jsonl",
+  "at_utc": "2026-10-19T02:05:55.904233+00:00",
+  "entry_error": null,
+  "checkout_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "screen_released": false,
+  "game_actions": false
+}

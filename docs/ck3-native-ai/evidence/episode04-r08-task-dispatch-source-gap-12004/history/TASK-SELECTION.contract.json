@@ -1,0 +1,187 @@
+{
+  "schema": "xar.e04.r08-task-selection-source-gap.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T01:52:26.404308+00:00",
+  "source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "historical_source_machine_id": "desktop-3fevhd2-1c74096080",
+  "historical_game": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "new_exe_bytes": 0,
+  "SDK_game_GUI_build_D_or_main_writes": 0,
+  "tests_rerun": 0,
+  "sources": [
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/SOURCE-SPANS.actual.json",
+      "bytes": 27108,
+      "sha256": "7edca9f87e438aaefa9ffc468fe68b0911e37d9f4171f19b94645f69a2ff89c3"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/INDEPENDENT-PARENT-STACK.actual.json",
+      "bytes": 6436,
+      "sha256": "dd4936cc00bfe5258833b6e026bb5989624e826b2d945cf1b9db683db6461023"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/scheduler.complete.asm",
+      "bytes": 7663,
+      "sha256": "8c8ac4d221abe022eaae29d91d2d6bdbdf1e964e655059773feb29058d61af4f"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/upstream-job.complete.asm",
+      "bytes": 4119,
+      "sha256": "1fe3b696b32325091ab09fa309d8b992917d55f227cf5e95082427e11b1cb2ff"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/PARENT-HOOK-SOURCE-ANCHOR.contract-a01.json",
+      "bytes": 3047,
+      "sha256": "291fb0c13237a6545459db9be5a0eeb376f0f2e04eb806ad0bf1def28a83bea1"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/NEXT-PRODUCER-OBSERVATION.contract.json",
+      "bytes": 2762,
+      "sha256": "a84da295b72d697f0810f346f8f644cc109f986240ac9066be430c2bc3361bc2"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/SOURCE-ATTEMPTS-ARCHIVE-INDEX.json",
+      "bytes": 15106,
+      "sha256": "b345f417def46b47eba33765fa14ade98ad17d3e50a32ecab8ba4a9b23f01383"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-r0174-actual-parent-source-12004.md",
+      "bytes": 10316,
+      "sha256": "7fd28bb624141009e50cfad34238961aa169ff6de4359add07dd094a4eccd179"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-settlement-parent-order-12004.md",
+      "bytes": 6565,
+      "sha256": "80de73df38f65fdb1ffe61333200e8d3bd5affd0c3fe6a5f130b3570f0f11ae3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/war_payment_passive_12004.hpp",
+      "bytes": 8884,
+      "sha256": "88c283360852ec5100a4cbd10de998ae4f7835eb91346b6d5042228f79a5a697"
+    }
+  ],
+  "source_instructions_reused": [
+    "0290DC1C  4c 8b f9                         mov r15, rcx",
+    "0290DC1F  44 8b 69 14                      mov r13d, dword ptr [rcx + 0x14]",
+    "0290DC2B  8b 49 1c                         mov ecx, dword ptr [rcx + 0x1c]",
+    "0290DC37  f0 41 0f c1 1f                   lock xadd dword ptr [r15], ebx",
+    "0290DC45  48 8d 15 d4 20 00 00             lea rdx, [rip + 0x20d4]",
+    "0290DC64  4d 8d 6f 70                      lea r13, [r15 + 0x70]",
+    "0290DC80  4d 8b 67 68                      mov r12, qword ptr [r15 + 0x68]",
+    "0290DD21  4c 89 64 24 78                   mov qword ptr [rsp + 0x78], r12",
+    "0290DD41  e8 ba ae 06 01                   call 0x3978c00",
+    "03F90A5E  48 8b 4b 38                      mov rcx, qword ptr [rbx + 0x38]",
+    "03F90A6C  48 8b 01                         mov rax, qword ptr [rcx]",
+    "03F90A6F  ff 50 10                         call qword ptr [rax + 0x10]"
+  ],
+  "held_graph": [
+    {
+      "node": "3F909F0..3F90AED",
+      "bytes": 253,
+      "role": "execute-side job wrapper",
+      "proved": "3F90A5E RCX=*(job+38); 3F90A6C RAX=*RCX; 3F90A6F CALL[RAX+10], return3F90A72",
+      "not_proved": "runtime vptr/slot value, task construction, enqueue producer, calendar selection"
+    },
+    {
+      "node": "290DC00..290DDD5",
+      "bytes": 469,
+      "role": "claimed index/chunk dispatch",
+      "proved": "task=entryRCX; signed count+14/chunk+1C; atomic indexclaim; read descriptor=*(task+68); inline context=task+70; explicit closure290FD20",
+      "not_proved": "who stores task+68 or selects its array, array ownership/lifetime, date predicate"
+    },
+    {
+      "node": "290FD20..290FD3D",
+      "bytes": 29,
+      "role": "index-to-Character tail closure",
+      "proved": "select array[index] from captured descriptor; pass Character in RDX, task+70 in RCX, selected index in R8D; JMP28F7840",
+      "not_proved": "constructor or enqueue site"
+    },
+    {
+      "node": "28F7840..28F7C9E",
+      "bytes": 1118,
+      "role": "selected Character settlement",
+      "proved": "every normal local path executes CALL28A6D10 at28F7934 once",
+      "not_proved": "which days this Character is selected; no-wallet branches remain possible"
+    }
+  ],
+  "outer_actual_unwind_candidates": [
+    {
+      "historical_frame_index": 11,
+      "raw_return_rva": "0x3f921cf",
+      "metadata_pc_candidate": "0x3f921ce",
+      "status": "ACTUAL_RETURN_ONLY; directcall/functionbody/constructor/calendar relation NOTHELD"
+    },
+    {
+      "historical_frame_index": 12,
+      "raw_return_rva": "0x3f90b4a",
+      "metadata_pc_candidate": "0x3f90b49",
+      "status": "ACTUAL_RETURN_ONLY; directcall/functionbody/constructor/calendar relation NOTHELD"
+    },
+    {
+      "historical_frame_index": 13,
+      "raw_return_rva": "0x3fbcf01",
+      "metadata_pc_candidate": "0x3fbcf00",
+      "status": "ACTUAL_RETURN_ONLY; directcall/functionbody/constructor/calendar relation NOTHELD"
+    },
+    {
+      "historical_frame_index": 14,
+      "raw_return_rva": "0x3fbd0da",
+      "metadata_pc_candidate": "0x3fbd0d9",
+      "status": "ACTUAL_RETURN_ONLY; directcall/functionbody/constructor/calendar relation NOTHELD"
+    },
+    {
+      "historical_frame_index": 15,
+      "raw_return_rva": "0x4244f90",
+      "metadata_pc_candidate": "0x4244f8f",
+      "status": "ACTUAL_RETURN_ONLY; directcall/functionbody/constructor/calendar relation NOTHELD"
+    }
+  ],
+  "no_existing_typed_query_for": [
+    "scheduler task identity",
+    "task+68 descriptor and actual slot",
+    "runtime dispatch vptr/slot",
+    "selection/construction/enqueue PC",
+    "next-settlement date or calendar predicate"
+  ],
+  "smallest_missing_observation": {
+    "status": "FUTURE_SOURCE_ONLY_CONTRACT_NOT_IMPLEMENTED_NOT_REQUESTED_ON_LIVE",
+    "anchor": "existing source-only 28F7840 parent-entry proposal; native raw return3978BF8 on this chain",
+    "capture": [
+      "unmodified entry RCX/RDX/R8D and native raw return",
+      "same owned PID/create/gen/epoch/window/date/thread/clock/parent-local token",
+      "Character fullID and magic; do not reject valid zero IDs",
+      "derive candidate task=RCX-70 only under this source chain; actual task+14/+1C, descriptor=*(task+68), task vptr and slot+10 with same-image qualification",
+      "bounded overflow-safe single actual descriptor slot at indexR8D; prove it equals actual RDX before/after and preserve failed/null/changed cases"
+    ],
+    "positive_result": "gives an actual task/descriptor/vptr source anchor to locate a bounded constructor/xref later; not the producer or cadence itself",
+    "then_required": "source-qualified constructor/assignment or enqueue record that binds the same task/descriptor instance to its producer PC and calendar inputs; PC currently NOTHELD",
+    "cannot_do": [
+      "a write-watch first installed after selection cannot recover a past constructor store",
+      "a worker execution stack does not by itself identify the producer/enqueuer; do not assume both are the same thread",
+      "do not follow 3F921CF et al automatically just because they are older worker-stack returns",
+      "do not add arbitrary-address current-cash query or infer cadence from elapsed QPC/walletcallback dates"
+    ]
+  },
+  "decision": "NO_NEW_PRODUCER_ENTRY_IN_HELD_SOURCE. Stop source expansion; existing public current-cash/payment DTO cannot answer task selection. No code/native hook added.",
+  "business_boundary": {
+    "military_paid": null,
+    "military_payer": null,
+    "cadence": null,
+    "new_R08_credit": 0
+  },
+  "budget": {
+    "previous_own_root_bytes": 88377,
+    "new_purpose_cap_bytes": 32768,
+    "pool_proof": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r217-source-latest-amend-a06\\R217-PUBLIC-COUNTY-CAPACITY.actual-root-a06.json",
+      "bytes": 31374,
+      "sha256": "7f28c3d653c9f6d074bb7119841d569cef7f3d0d368e535800728d5f241cbdb4"
+    },
+    "pool_window_end_utc": "2026-10-19T04:00:00Z",
+    "no_global_remaining_claim": true
+  }
+}

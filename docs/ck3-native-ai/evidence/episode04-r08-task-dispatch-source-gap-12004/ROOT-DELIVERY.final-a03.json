@@ -1,0 +1,21 @@
+{
+  "schema": "xar.e04.r08-task-selection-final-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T01:53:29.639285+00:00",
+  "source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "authoritative_correction": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-task-selection-cadence-a02\\SOURCE-CORRECTION.final-a03.json",
+    "bytes": 3567,
+    "sha256": "52ebd5f4dd628f6f2ee4c4b9328a120c03cc04cd0becd76361883d121ba50cec"
+  },
+  "historical_a02_delivery": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-task-selection-cadence-a02\\ROOT-DELIVERY.actual.json",
+    "bytes": 1003,
+    "sha256": "5ce5c3a4bc319c7bb0ae78575b7f5c8c8393bbb93654fecb10a2f38f39b4b8c2"
+  },
+  "source_pins_in": "TASK-SELECTION.contract.json",
+  "no_repo_patch": "Research stop point only; no producer body or implementation found",
+  "new_purpose_cap_bytes": 32768,
+  "new_SDK_game_GUI_EXE_build_D_main_actions": 0,
+  "tests_rerun": 0
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "xar.r217.owner-absence.final-review.v1",
+  "status": "NATIVE_OWNER_CHILD_ABSENT_NOT_NORMALIZER_LOSS",
+  "observed_at_utc": "2026-10-19T02:00:35.627016+00:00",
+  "small_evidence": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0213\\county-actor-a01\\R04-ENTRY-WINDOW-EVIDENCE.json",
+    "bytes": 17919,
+    "sha256": "b797e0ed4f75fae09a94233da2d475435c0a0ff2e8a6a8388b648d2d2c920e98"
+  },
+  "native_core": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r217-owner-absence-diagnosis-a01\\NATIVE-CORE-SAVED-FIRST.actual.json",
+    "bytes": 984,
+    "sha256": "80417602fa6d5abca6818789776696fb9d8b8340114c6ef7d19a91b58075ca07"
+  },
+  "native_phase_leaf": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r217-owner-absence-diagnosis-a01\\NATIVE-PHASE-LEAF.actual.json",
+    "bytes": 1477,
+    "sha256": "7e82e4ab3a34e93ee6a9131af59018148263155e5232b6aa80b036b85ee93981"
+  },
+  "initial": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r217-owner-absence-diagnosis-a01\\INITIAL.actual.json",
+    "bytes": 2296,
+    "sha256": "6bf4656f012d3df7b8d0189bc9cc33b967acc90c16cfb150fbc885ac1676a19c"
+  },
+  "static": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r217-owner-absence-diagnosis-a01\\STATIC-GATE-REVIEW.actual.json",
+    "bytes": 1453,
+    "sha256": "8f56dab08e25579354ef5f6146e2020ac8f72df2c3aae911c3f87938f5cfcbd8"
+  },
+  "first_projection_failure": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r217-owner-absence-diagnosis-a01\\READ-FAILURE.actual.json",
+    "bytes": 365,
+    "sha256": "44db6a1aed9f5a2aa66fb16080de3c87c197847da03724f7c8eb99490adf425d"
+  },
+  "facts": {
+    "event_count": 23,
+    "native_child_key_present_count": 0,
+    "native_child_nonnull_count": 0,
+    "all_normalized_exclusions": [
+      "invocation_owner_not_captured"
+    ],
+    "global_window_continuous": true,
+    "global_writer_delta": 195,
+    "legacy_status": "available",
+    "physical_qualified_count": 23,
+    "positive_count": 17,
+    "zero_count": 6,
+    "retained_physical_debit_sum": 236,
+    "all_writer_observed_date_raw": [
+      53147544
+    ],
+    "pre_date_entry_and_return_date_low32": 53147520,
+    "pre_date_prefix_low32": 53147544,
+    "post_date_entry_and_return_low32": 53147544,
+    "actual_writer_TID_missing": true,
+    "pre_date_TID": 30600,
+    "post_date_TID": 7896
+  },
+  "conclusion": {
+    "same_host_new_query_cannot_recover_past_registers": true,
+    "offline_consumer_cannot_fill_missing_native_child": true,
+    "R04_closed": false,
+    "net_equality_used_as_ownership": false,
+    "proven_exact_native_gate_reason": "Not distinguishable: new producer omitted all skip diagnostics",
+    "consistent_but_unproved_hypothesis": "County source runs outside active permitted pre-date TLS; must not associate by equal date/Army0 roster alone"
+  },
+  "next_source_design": "Keep family default gate; publish capture_enabled separately from active_phase. When ON and actual24E25EE, read/register-bind R13/RCX/GS/date/TID and preserve native failure reasons even without pre_date. New independent direct-call ownership schema may be evaluated separately; existing v1 returned-phase contract remains strict. New DLL/cold required. No new detour is needed for these writer-entry register facts.",
+  "focused_future_cases": [
+    "actual Bridge callback enabled but no active TLS publishes precise missing phase diagnostic",
+    "enabled post_date scope is not relabeled pre_date",
+    "actual source R13 Army0/RCX identity and original exactly once still checked"
+  ],
+  "reads": {
+    "normalized_full": 1,
+    "normalized_bytes": 15238361,
+    "native_range_reads": 2,
+    "native_bytes_per_read": 9503387,
+    "total_body_bytes": 34245135,
+    "large_body_hashes": 0,
+    "full_copies": 0,
+    "first_failed_projection_bytes": 9232,
+    "second_read_explicit_Root_authorization": true
+  },
+  "SDK_calls": 0,
+  "new_source_tests": 0,
+  "game_GUI_calls": 0,
+  "source_edits": 0
+}

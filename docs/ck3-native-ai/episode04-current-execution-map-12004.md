@@ -148,3 +148,10 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## 2026-10-18 R211：R05 受控低库存自然回调研究核心闭合
 
 `machine_id: desktop-3fevhd2-1c74096080`；实际运行源 `ec51712ca18103a76a4153aeecaf0bd66dd0e5f8`，公共 R0005。Root 采纳受控初始化至库存 raw0 后的自然日研究正例：16 个精确日 `53147376→53147760`，callback93、thread2464/46严格连接，供给来源物理扣兵337；另有围城/劫掠合计67，须分列，不能并为补给扣兵。它不证明自然库存耗尽、死亡、全军净损或完整供给周期。原自动入口 camera Start 等待超时/exit2 的失败仍有效；后续既有进程 observe-only 的实际正例不改写它。[本机小监视原件](C:/ck3-e04-resume-20261015-a01/r211-r05-owner-recheck-prep-a01/R211-R05-MONITOR-RESULT.actual-a13.json)绑定正常 Save、OFF/clear、CK3和host实际0及 Root 单独任务总线释放。当前研究 **10/14（71.43%）**，按既有业务基本项口径 **7/11（63.64%）**；合格动态 **0/11**、正式ABC **0/3**。窗口片虽全解码通过，尚无完整clean/人工1×/签核，不能以技术媒体PASS补动态分子。R207/R208/R209的旧失败与旧分子保持原历史时点。
+
+
+### R217 normal close; owner and media limits (2026-10-19 UTC)
+
+`machine_id: desktop-3fevhd2-1c74096080`; actual runtime `ba3528fc04621529ed528930623b5d34826a46a4`, compiled a37 source `bc4604`. One Move and seven exact days reached1513; OFF/Save, independent GUI/OS/native/host/public/allocator zero and Root bus6803/resources[] are retained separately. The continuous global window has195 calls, but all23 retained county records lack the native owner child; 236 endpoint/debit equality cannot supply Army ownership. R04 remains open. The179.033s1280x720/30fps take has sparse Jan26-to-Jan27 samples; the earlier Jan20 reading is corrected, with no full decode, continuous clean, human1x or formal shot approval. B is opportunity-only, sites0/2. Research10/14, business7/11, formal dynamic0/11 and ABC0/3 remain unchanged.
+
+[R217 portable evidence](episode04-r217-county-owner-entry-12004.md); [R08 corrected task/dispatch source boundary](episode04-r08-task-dispatch-source-gap-12004.md). Task+0 is an atomic cursor; actual dispatch vtarget/thunk and calendar producer remain unknown. No a03 R04 follow-up or future result is pre-awarded.

@@ -1,0 +1,30 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T02:07:29.081523+00:00",
+  "exit_code": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"research/e04-r217-runtime-8faa99b\",\n      \"dirty_entries\": 0,\n      \"head\": \"ba3528fc04621529ed528930623b5d34826a46a4\"\n    },\n    \"last_sequence\": 6803,\n    \"next_step\": \"\",\n    \"pid\": 36220,\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"R217_R0213_normal_game_native_host_public_keeper_allocator_zero_Root_release\",\n    \"task_id\": \"e04-common-12004-a218\",\n    \"updated_at_utc\": \"2026-10-19T02:07:28.995927+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 6803,\n    \"event_id\": \"59570660663e4580a2c4838178ba0372\",\n    \"timestamp_utc\": \"2026-10-19T02:07:28.997409+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"e04-common-12004-a218\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"R217_R0213_normal_game_native_host_public_keeper_allocator_zero_Root_release\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"branch\": \"research/e04-r217-runtime-8faa99b\",\n      \"dirty_entries\": 0,\n      \"head\": \"ba3528fc04621529ed528930623b5d34826a46a4\"\n    }\n  }\n}\n",
+  "stderr": "",
+  "task_readback": {
+    "git": {
+      "branch": "research/e04-r217-runtime-8faa99b",
+      "dirty_entries": 0,
+      "head": "ba3528fc04621529ed528930623b5d34826a46a4"
+    },
+    "last_sequence": 6803,
+    "next_step": "",
+    "pid": 36220,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R217_R0213_normal_game_native_host_public_keeper_allocator_zero_Root_release",
+    "task_id": "e04-common-12004-a218",
+    "updated_at_utc": "2026-10-19T02:07:28.995927+00:00"
+  },
+  "task_pin": {
+    "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-common-12004-a218.json",
+    "bytes": 535,
+    "sha256": "409763ae23fd9b84ec60779f8319eb397d616d57444a25b60e7a1ef1dcd10cad"
+  },
+  "released_confirmed": true
+}

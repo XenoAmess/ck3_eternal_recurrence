@@ -403,3 +403,10 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ## 2026-10-18 R211 采纳补记
 
 `machine_id: desktop-3fevhd2-1c74096080`。Root 采纳 R05 受控库存 raw0 后的自然 callback 正例，16 精确日、callback93/thread2464/46严格连接、供给物理扣兵337；围城/劫掠67为另一来源。研究 **10/14=71.43%**，既有业务基本项 **7/11=63.64%**；动态 **0/11**、ABC **0/3**。证据入口为 `C:/ck3-e04-resume-20261015-a01/r211-r05-owner-recheck-prep-a01/R211-R05-MONITOR-RESULT.actual-a13.json`（machine-bound）及后续便携小包。受控预置库存归零不等于自然耗尽；未证明死亡、整周期、全军净损。原自动 camera Start 超时/exit2 的 RED 不追改。正常 Save、OFF/clear、CK3/host OS0 及屏幕/任务总线释放与媒体门槛分别审；影片只技术解码通过，clean/1×/人审待验。
+
+
+### R217 normal close; owner and media limits (2026-10-19 UTC)
+
+`machine_id: desktop-3fevhd2-1c74096080`; actual runtime `ba3528fc04621529ed528930623b5d34826a46a4`, compiled a37 source `bc4604`. One Move and seven exact days reached1513; OFF/Save, independent GUI/OS/native/host/public/allocator zero and Root bus6803/resources[] are retained separately. The continuous global window has195 calls, but all23 retained county records lack the native owner child; 236 endpoint/debit equality cannot supply Army ownership. R04 remains open. The179.033s1280x720/30fps take has sparse Jan26-to-Jan27 samples; the earlier Jan20 reading is corrected, with no full decode, continuous clean, human1x or formal shot approval. B is opportunity-only, sites0/2. Research10/14, business7/11, formal dynamic0/11 and ABC0/3 remain unchanged.
+
+[R217 portable evidence](../../../docs/ck3-native-ai/episode04-r217-county-owner-entry-12004.md); [R08 corrected task/dispatch source boundary](../../../docs/ck3-native-ai/episode04-r08-task-dispatch-source-gap-12004.md). Task+0 is an atomic cursor; actual dispatch vtarget/thunk and calendar producer remain unknown. No a03 R04 follow-up or future result is pre-awarded.

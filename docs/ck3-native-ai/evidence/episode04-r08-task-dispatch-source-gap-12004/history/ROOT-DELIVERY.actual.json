@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.r08-task-selection-readonly-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T01:52:26.404308+00:00",
+  "source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "contract": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-task-selection-cadence-a02\\TASK-SELECTION.contract.json",
+    "bytes": 9024,
+    "sha256": "d95eff0a2848fe34d08f4cb187e947ead8d6ffbc000beb583f46d8434057902c"
+  },
+  "findings": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-task-selection-cadence-a02\\FINDINGS.md",
+    "bytes": 2657,
+    "sha256": "9c103753afc65f8ac8510cd7dae44bb4f77aeda490f466c65c2cde947fa5b894"
+  },
+  "status": "NO_HELD_CONSTRUCTOR_ENQUEUE_ENTRY; NECESSARY_OBSERVATION_SPECIFIED",
+  "no_new_tests_or_live_actions": true,
+  "copyplan": null,
+  "reason_no_repo_patch": "No new source producer body or implementation; external source-gap report only",
+  "purpose_cap": 32768,
+  "bytes_before_delivery": 22761
+}

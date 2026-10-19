@@ -1,0 +1,37 @@
+{
+  "schema": "xar.e04.r08-task-dispatch-object-distinction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "status": "AUTHORITATIVE_SOURCE_CORRECTION_TO_A02_SPEC; NO_NEW_NATIVE_SOURCE",
+  "supersedes_in_a02": [
+    "TASK-SELECTION.contract.json smallest_missing_observation.capture clause requesting actual task vptr/slot+10",
+    "TASK-SELECTION.contract.json positive_result calling task/descriptor/vptr a single anchor",
+    "FINDINGS.md paragraph proposing task=RCX-70 vptr/slot read"
+  ],
+  "reason": "The dispatch object and index task must remain separate typed unknowns. Reading task+0 as a vptr would interpret a mutable index as a pointer.",
+  "exact_held_instructions": [
+    "290DC1C: mov r15,rcx",
+    "290DC37: lock xadd dword ptr [r15],ebx",
+    "290DC80: mov r12,qword ptr [r15+68]",
+    "3F90A5E: mov rcx,qword ptr [rbx+38]",
+    "3F90A6C: mov rax,qword ptr [rcx]",
+    "3F90A6F: call qword ptr [rax+10]"
+  ],
+  "proved": {
+    "task_entry_RCX": "At290DC00 it is an index/chunk descriptor holder with atomic cursor at+0; +68 is the Character-array descriptor pointer and +70 inline context.",
+    "worker_dispatch_RCX": "At3F90A6F it is *(job+38), whose first qword is used as a virtual table pointer for slot+10.",
+    "relationship": "Actual saved unwind places the index-dispatch body below the worker virtual call. No retained runtime virtual target or complete connecting body establishes the object/argument adjustment. Tail thunks need not add unwind return frames.",
+    "unproved": "Do not assert pointer equality, static directcall3F90A6F->290DC00, or identify an intervening thunk/address without source."
+  },
+  "minimal_next_source_contract": {
+    "existing_public_query": "NONE for these execution objects; repeated cash/payment queries cannot supply them.",
+    "first_useful_dynamic_anchor": "A future explicitly admitted source-qualified record at the already-held worker virtual call: original job identity, *(job+38) dispatch object, its actual vptr and slot+10 target, same-image RVA qualification, original arguments and same thread/clock/session. Link to a nested290DC00 task or28F7840 selectedCharacter only by actual same-instance/token evidence, not adjacency or matching date.",
+    "future_source_read": "Only after the true slot target is captured, inspect its unique bounded body for actual argument adjustment/constructor relationship. This task authorizes no new EXE read, hook, SDK action or actor.",
+    "selected_task_capture": "The old28F7840 proposal may capture unmodifiedRCX/RDX/R8D, source-return3978BF8, derive candidate task=RCX-70 on that proved chain, and validate descriptor/index->sameCharacter with bounded safe reads. Keep task+0 as raw atomic cursor, never vptr.",
+    "constructor_and_calendar_stop": "Neither capture alone names a constructor/enqueuer. A genuine same-instance assignment/enqueue producer PC and calendar inputs remain NOTHELD. A post-selection write watch cannot recover a prior constructor store.",
+    "do_not_expand": "Older worker-stack returns3F921CF/3F90B4A/3FBCF01/3FBD0DA/4244F90 are actual candidates but not producer proof; do not follow them automatically or scan the image."
+  },
+  "conclusion": "No held selection/constructor/enqueue source entry. The precisely missing ABI edge is actual virtual target/object adjustment before index dispatch; the calendar-producing edge remains independently unknown.",
+  "new_tests_SDK_GUI_game_EXE_build_D_main_actions": 0,
+  "business_paid_payer_cadence": null
+}

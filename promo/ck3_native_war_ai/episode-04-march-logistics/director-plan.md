@@ -386,3 +386,10 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ### R215 21s insert package (2026-10-18 21:38:42 UTC; machine_id: desktop-3fevhd2-1c74096080)
 
 [The portable 21s review insert](review02/r215-r06-month-insert-21s-a01/README.md) now retains its exact 83,376-byte Chinese speech, bilingual timing, source composer/configuration and small QA records. The MP4/raw/PNG remain machine-bound references. It shows the March-to-April label increase of ten and states that Core physical closure is incomplete; it does not establish instruction ADD or formal dynamic credit. Existing 69-cue output, human 1x review and signoff remain unchanged.
+
+
+### R217 normal close; owner and media limits (2026-10-19 UTC)
+
+`machine_id: desktop-3fevhd2-1c74096080`; actual runtime `ba3528fc04621529ed528930623b5d34826a46a4`, compiled a37 source `bc4604`. One Move and seven exact days reached1513; OFF/Save, independent GUI/OS/native/host/public/allocator zero and Root bus6803/resources[] are retained separately. The continuous global window has195 calls, but all23 retained county records lack the native owner child; 236 endpoint/debit equality cannot supply Army ownership. R04 remains open. The179.033s1280x720/30fps take has sparse Jan26-to-Jan27 samples; the earlier Jan20 reading is corrected, with no full decode, continuous clean, human1x or formal shot approval. B is opportunity-only, sites0/2. Research10/14, business7/11, formal dynamic0/11 and ABC0/3 remain unchanged.
+
+[R217 portable evidence](../../../docs/ck3-native-ai/episode04-r217-county-owner-entry-12004.md); [R08 corrected task/dispatch source boundary](../../../docs/ck3-native-ai/episode04-r08-task-dispatch-source-gap-12004.md). Task+0 is an atomic cursor; actual dispatch vtarget/thunk and calendar producer remain unknown. No a03 R04 follow-up or future result is pre-awarded.

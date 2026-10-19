@@ -1,0 +1,36 @@
+{
+  "schema": "xar.e04.r217-actor-partial-originals.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T01:57:14Z",
+  "status": "ACTOR_TERMINAL_OBSERVED_HOST_NORMAL_CLOSE_PENDING",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0213",
+  "originals": {
+    "actor-terminal.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0213\\county-actor-a01\\R04-BAYEUX-TERMINAL.json",
+      "bytes": 445,
+      "sha256": "90197e527d03eed9bceeba6b6414512890bd952732872c7a855d429ecddb6ee9"
+    },
+    "entry-window-evidence.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0213\\county-actor-a01\\R04-ENTRY-WINDOW-EVIDENCE.json",
+      "bytes": 17919,
+      "sha256": "b797e0ed4f75fae09a94233da2d475435c0a0ff2e8a6a8388b648d2d2c920e98"
+    },
+    "full-original-range-proof.json": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0213\\county-actor-a01\\r217-county-entry-a01-r05obs-0058-entry-window-after-full-full-wire-proof.json",
+      "bytes": 1850,
+      "sha256": "1c1b4289b199c7bcf65809fb630481d9c2e86343fc178d4344f1eb855cf6aade"
+    }
+  },
+  "zip": {
+    "bytes": 3081,
+    "sha256": "dc23617e96166c3c76c28536e158f4d207cdd7375cb21901efe95148d1486f46"
+  },
+  "credit": {
+    "individual_county_owner_positive": false,
+    "R04_closed": false,
+    "research_count": "10/14",
+    "business_count": "7/11",
+    "formal_dynamic_count": "0/11",
+    "ABC_count": "0/3"
+  }
+}

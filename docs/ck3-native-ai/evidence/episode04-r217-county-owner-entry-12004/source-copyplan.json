@@ -1,0 +1,40 @@
+{
+  "schema": "xar.e04.r217-normalclose-portable-copyplan-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-19T02:12:36Z",
+  "status": "EXTERNAL_EXACT_COPYPLAN_NORMAL_CLOSED_NOT_IN_MAIN",
+  "source_runtime_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0213",
+  "canonical_topic": "docs/ck3-native-ai/episode04-r217-county-owner-entry-12004.md",
+  "canonical_evidence_root": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/",
+  "actor_partial_historical_candidate": {
+    "index": "C:/ck3-e04-resume-20261015-a01/r217-county-owner-portable-prep-a01/actor-partial-candidate/index.json",
+    "index_bytes": 1706,
+    "index_sha256": "d02d66473683cb67118e2536a67d9278de46d0178c1c5f6381977ee230650936",
+    "zip": "C:/ck3-e04-resume-20261015-a01/r217-county-owner-portable-prep-a01/actor-partial-candidate/actor-partial-originals.zip",
+    "zip_bytes": 3081,
+    "zip_sha256": "dc23617e96166c3c76c28536e158f4d207cdd7375cb21901efe95148d1486f46",
+    "note": "Actor-stage index says host close pending at its own observation time; retain that history and publish a separate final index. Its py -O verifier passed."
+  },
+  "additional_exact_originals": [
+    {"target": "close/normal-close-result.json", "source": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a37/runs/desktop-3fevhd2-1c74096080--vanilla--R0213/case-output/normal-close-result.json", "bytes": 10159, "sha256": "d658cb15606281b67f53d622c5a4ff3457f613bb5750a163f2a63617eff0cfdf"},
+    {"target": "close/host-original-process-exit.json", "source": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a37/runs/desktop-3fevhd2-1c74096080--vanilla--R0213/host-original-process-exit.json", "bytes": 245, "sha256": "7ba0b72342f78b6319684ab8d13e5c45e3a83a82d9350eff7075f673b8155ac2"},
+    {"target": "close/keeper-report.json", "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-owner-entry-a01/resume-a02/keeper-a01/report.json", "bytes": 477, "sha256": "f75a512c10045746125bacfb3948a12f4771b9875d15a8072c679d97d47e67e9"},
+    {"target": "close/public-original-wait.json", "source": "C:/ck3-e04-resume-20261015-a01/r217-normal-close-owner-a01/actual/PUBLIC-ORIGINAL-WAIT.actual.json", "bytes": 204, "sha256": "decd4cecf70b7cde4d5485bdb71158b4289fb64c5ff192100948eb207f2ccbb3"},
+    {"target": "close/allocator-original-wait.json", "source": "C:/ck3-e04-resume-20261015-a01/r217-normal-close-owner-a01/actual/ALLOCATOR-ORIGINAL-WAIT.actual.json", "bytes": 217, "sha256": "d461c6dcca51a1932369ef79acfad22b7e4a3c5f10d3befa41bdcc37ae59b958"},
+    {"target": "close/screen-release.json", "source": "C:/ck3-e04-resume-20261015-a01/r217-normal-close-owner-a01/actual/SCREEN-RELEASE.actual.json", "bytes": 2374, "sha256": "b2efaa7f43cfa96ec862f6a24c4947c7b41653bf0d38d05dc44ad0bda436d324"},
+    {"target": "media/media-qa.json", "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-owner-entry-a01/resume-a02/media-qa-take01-a01/MEDIA-QA.actual.json", "bytes": 3180, "sha256": "c83155c7cdca5dadf103c9001e540c3b91ce1e778eb2d4cffeaab2674fa6e980"},
+    {"target": "analysis/owner-absence-diagnosis.json", "source": "C:/ck3-e04-resume-20261015-a01/r217-owner-absence-diagnosis-a01/ROOT-DELIVERY.actual.json", "bytes": 3988, "sha256": "1c6131ed2b88902da2dc913d566052175781180219f8e7ea751999474c717831"},
+    {"target": "analysis/b-stock-opportunity.json", "source": "C:/ck3-e04-resume-20261015-a01/r217-b-stock-opportunity-extract-a01/ARMY0-STOCK-OPPORTUNITY.actual-a01.json", "bytes": 5437, "sha256": "ba8d5cf1964ecdf20be15e43d9b8eebd80d2d0ddc714315b72d7deb1fbe666a3"}
+  ],
+  "canonical_final_index_must_state": {
+    "actor_terminal": "Move1, 7 exact days, arrival1513/date53147544, OFF/Save true",
+    "window": "195 new global writer calls within 512, continuous",
+    "owner": "23 physical county-primary retained: 17 positive, 6 zero, debit236; native q3 owner child absent 23/23; positive owner joins0, R04 false",
+    "close": "normal game OS0, public original wait0, host original wait0, keeper thread exited last6802, allocator original wait0, Root bus completed seq6803/resources[]",
+    "media": "179.033s H264 1280x720 30fps; three sparse frames Jan26/6746 to Jan27/6510, prior Jan20 reading corrected; full decode, continuous clean and human 1x not proven",
+    "B": "land stock headroom only; current total rate negative, future callback/positive stock growth unobserved; B sites0/2",
+    "counts": "research10/14, business7/11, formal_dynamic0/11, ABC0/3"
+  },
+  "copy_instructions": "Copy exact small bytes and recheck every size/SHA; preserve actor partial historical index; generate final portable index and verifier with normal-close additions; no large wire, raw film, frames, saves, SYSTEM receipt or binary. Do not mark R04 or B positive."
+}
