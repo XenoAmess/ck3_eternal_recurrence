@@ -29,6 +29,10 @@ struct Fixture{
  std::array<std::int64_t,10>costs{0,0,100000000,0,0,0,0,0,0,0};
  bool fail_requirements=false,mutate_detail_context=false,affordable=true,bad_lookup=false,change_clock=false,wrong_context_getter=false;unsigned lookups=0;
  bool legal=false;unsigned confirms=0,reasons=0,destroys=0;
+ unsigned evaluations=0,affordability_reads=0,can_reads=0;
+ bool selected_change_quote=false,selected_change_affordability=false;
+ bool selected_change_e0=false,selected_change_current=false,selected_change_definition=false,selected_change_bypass=false;
+ bool selected_change_can=false;
  Fixture(){
   Put(owner,0x10,gfx.data());Put(gfx,0x88,handler.data());Put(handler,0x1B8,detail.data());
   Put(detail,0,base+0x455D4F8);Put(detail,0xA0,handler.data());Put(detail,0x60,site.data());
@@ -55,6 +59,13 @@ struct Fixture{
   for(std::size_t i=0;i<3;++i){Put(cols[i],0,std::uint32_t{1});Put(cols[i],12,td[i]);Put(cols[i],20,static_cast<std::uint32_t>(0x1000+i*0x100));}
  }
  void Decision(h::DecisionAction action){key=std::string(h::DecisionKey(action));Put(definition,0x18,key.c_str());Put(definition,0x28,static_cast<std::uint64_t>(key.size()));}
+ void SelectedDecision(std::string_view selected="create_hof_decision"){
+  key=std::string(selected);Put(definition,0x18,key.c_str());Put(definition,0x28,static_cast<std::uint64_t>(key.size()));
+  // The actual E0 dictionary is empty. The unrelated HolySite selector remains
+  // populated, proving that the generic leaf does not invent selected_item.
+  Put(detail,0xF8,static_cast<void*>(nullptr));Put(detail,0x100,std::int32_t{0});
+  Put(detail,0x104,std::int32_t{0});Put(detail,0x108,static_cast<void*>(nullptr));
+ }
  template<class B>static void Scope(B&b,std::size_t o,std::uint32_t id){Put(b,o,std::uint16_t{23});Put(b,o+2,std::uint16_t{0});Put(b,o+8,static_cast<std::uint64_t>(id));}
 };
 Fixture*f=nullptr;
@@ -94,7 +105,8 @@ bool Copy(void*,const void*p,void*out,std::size_t n)noexcept{
  }
  if(!p)return false;std::memcpy(out,p,n);return true;
 }
-bool __fastcall Can(void*p){Check(p==f->detail.data(),"CanConfirm receives actual fixture-owned detail");return f->legal;}
+bool __fastcall Can(void*p){Check(p==f->detail.data(),"CanConfirm receives actual fixture-owned detail");
+ ++f->can_reads;return f->selected_change_can&&f->can_reads>1?!f->legal:f->legal;}
 void __fastcall Confirm(void*p){Check(p==f->detail.data(),"Confirm receives actual fixture-owned detail");++f->confirms;}
 void*__fastcall Settings(){return f->settings.data();}
 void*String(void*p,void*out,const std::string&value){Check(p==f->detail.data(),"text receives actual detail");++f->reasons;
@@ -106,10 +118,17 @@ void*__fastcall CostDescription(void*p,void*out){return String(p,out,f->cost_des
 const void*__fastcall Cost(const void*definition){Check(definition==f->definition.data(),"actual definition used for costs");return f->costs.data();}
 void __fastcall Evaluate(const void*cost,const void*context,std::int64_t*out){
  Check(cost==f->costs.data()&&context==f->detail.data()+0xE0,"cost evaluation borrows actual detail context");
+ ++f->evaluations;
  std::memcpy(out,f->costs.data(),80);if(f->mutate_detail_context)Fixture::Scope(f->detail_dict,32,Fixture::site_id+1);
+ if(f->selected_change_quote)++f->costs[2];
+ if(f->selected_change_e0)Put(f->detail,0xE8,static_cast<std::uint64_t>(Fixture::actor)+1);
+ if(f->selected_change_current)f->actual_actor=Fixture::actor+1;
+ if(f->selected_change_definition)f->SelectedDecision("other_decision");
+ if(f->selected_change_bypass)f->settings[0x10]=std::byte{1};
 }
 bool __fastcall Affordable(const void*cost,const void*context,const void*actor,void*reason){
- Check(cost==f->costs.data()&&context==f->detail.data()+0xE0&&actor==f->character.data()&&!reason,"affordability binds actual actor/context");return f->affordable;
+ Check(cost==f->costs.data()&&context==f->detail.data()+0xE0&&actor==f->character.data()&&!reason,"affordability binds actual actor/context");
+ ++f->affordability_reads;return f->selected_change_affordability&&f->affordability_reads>1?!f->affordable:f->affordable;
 }
 const std::int32_t*__fastcall CooldownLookup(const void*map,const void*definition){
  Check(map==f->character_state.data()+0x430&&definition==f->definition.data(),"cooldown key is definition pointer value");++f->lookups;
@@ -125,6 +144,140 @@ h::AdoptionDetailBindings Bind(Fixture&v){f=&v;h::AdoptionDetailBindings b{};b.e
  b.decision_cost=&Cost;b.evaluate_cost=&Evaluate;b.affordable_cost=&Affordable;b.cooldown_lookup=&CooldownLookup;return b;}
 xar::ck3_12002::religion::Context Frame(){xar::ck3_12002::religion::Context c{};c.available=true;c.capture_epoch=17;c.date_raw=53175816;c.played_character_id=Fixture::actor;return c;}
 void Save(const std::filesystem::path&d,const char*name,const h::AdoptionDetailSnapshot&s){std::ofstream out(d/name);out<<h::SerializeHolySiteAdoptionDetailCommand12004(s,"g2-read-adoption-fixture",701,s.date_raw)<<'\n';Check(bool(out),"whole native command_result written");}
+void SaveSelected(const std::filesystem::path&d,const char*name,const h::SelectedDecisionTermsSnapshot12004&s){
+ const auto text=h::SerializeSelectedDecisionTerms12004(s);
+ Check(text.find("\"schema\":\"ck3-selected-decision-terms-v1\"")!=std::string::npos&&
+  text.find("\"read_only\":true")!=std::string::npos&&text.find("\"action_ready\":false")!=std::string::npos&&
+  text.find("\"decision_confirm_invoked\":false")!=std::string::npos,"actual selected-terms serializer retains readonly proof layer");
+ Check(f&&f->confirms==0,"selected-terms reader never calls Confirm");
+ const auto path=d/name;Check(!std::filesystem::exists(path),"selected-terms output requires a fresh fixture directory");
+ std::ofstream out(path);out<<text<<'\n';Check(bool(out),"production selected-terms serializer packet written");
+}
+void SelectedTermsOnly(const std::filesystem::path&d){
+ const auto frame=Frame();unsigned cases=0;
+ const auto read=[&](Fixture&v,h::AdoptionDetailBindings&b,h::SelectedDecisionTermsSnapshot12004&out,
+                     std::string_view expected="create_hof_decision"){
+  return h::ReadSelectedDecisionTerms12004(b,frame,v.detail.data(),v.definition.data(),expected,out);
+ };
+ {
+  Fixture v;v.SelectedDecision();v.legal=true;auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&out.context_verified&&out.parameter_count==0&&
+   out.played_character_id==static_cast<std::int32_t>(Fixture::actor)&&out.decision_key=="create_hof_decision",
+   "empty actual E0 scope binds requested definition and full player ID without a HolySite parameter");
+  Check(out.native.native_can_confirm&&out.native.bypass_requirements_observed&&out.native.bypass_requirements_raw==0&&
+   out.native.native_resource_quote_available&&out.native.native_resource_vector_raw==v.costs&&out.native.native_affordable,
+   "production generic reader preserves known native legal gate, raw10 quote and affordability");
+  Check(v.evaluations==2&&v.affordability_reads==2&&v.can_reads==2&&v.reasons==v.destroys&&v.confirms==0,
+   "actual getter seams are reevaluated and native strings destroyed without Confirm");
+  Check(out.native.native_decision_cooldown_observed&&!out.native.native_decision_cooldown_present,
+   "actual empty cooldown map is observed absent, not unavailable");
+  SaveSelected(d,"selected-empty-native-true.json",out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();v.affordable=false;auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&!out.native.native_can_confirm&&out.native.native_resource_quote_available&&
+   !out.native.native_affordable,"native false legality and affordability remain valid observations");
+  SaveSelected(d,"selected-native-false.json",out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();v.legal=true;v.costs={0,-250001,0,0,0,0,1234567,0,0,0};
+  auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.native.native_resource_vector_raw==v.costs,"known getter signed values and legitimate zeros remain exact");
+  const auto text=h::SerializeSelectedDecisionTerms12004(out);
+  Check(text.find("[0,-250001,0,0,0,0,1234567,0,0,0]")!=std::string::npos,"production serializer preserves raw vector order, signs and zeros");
+  SaveSelected(d,"selected-signed-zero-vector.json",out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();v.legal=true;v.settings[0x10]=std::byte{1};
+  auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&out.native.native_can_confirm&&out.native.bypass_requirements_raw==1,
+   "known native true with bypass is observed independently");
+  const auto text=h::SerializeSelectedDecisionTerms12004(out);
+  Check(text.find("\"ordinary_legality_observed\":false")!=std::string::npos&&
+   text.find("\"ordinary_can_confirm\":null")!=std::string::npos,"bypass never becomes ordinary legal permission");
+  SaveSelected(d,"selected-bypass-nonzero.json",out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();v.legal=true;auto b=Bind(v);b.requirements_settings=nullptr;
+  h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&!out.native.bypass_requirements_observed,"missing bypass getter remains unknown");
+  const auto text=h::SerializeSelectedDecisionTerms12004(out);
+  Check(text.find("\"requirements_bypass_raw\":null")!=std::string::npos&&
+   text.find("\"ordinary_can_confirm\":null")!=std::string::npos,"unknown bypass has no invented normal permission");
+  SaveSelected(d,"selected-bypass-unavailable.json",out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();auto b=Bind(v);b.evaluate_cost=nullptr;h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&!out.native.native_resource_quote_available&&
+   out.native.native_requirements_description_available,"unavailable cost getter preserves independent real requirements");
+  Check(h::SerializeSelectedDecisionTerms12004(out).find("\"resource_quote\":null")!=std::string::npos,
+   "unavailable quote is not a zero vector");
+  SaveSelected(d,"selected-quote-unavailable.json",out);++cases;
+ }
+ for(const bool missing_cost:{false,true}){
+  Fixture v;v.SelectedDecision();auto b=Bind(v);
+  if(missing_cost)b.cost_description=nullptr;else b.requirements_description=nullptr;
+  h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&out.native.confirm_tooltip_available&&out.native.native_resource_quote_available,
+   "missing specialized text getter does not erase other native components");
+  Check(missing_cost?!out.native.native_cost_description_available:!out.native.native_requirements_description_available,
+   "missing specialized getter must not fall back to a different native confirm tooltip");
+  SaveSelected(d,missing_cost?"selected-cost-text-getter-absent.json":"selected-requirements-getter-absent.json",out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();v.fail_requirements=true;auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  Check(read(v,b,out)&&out.available&&!out.native.native_requirements_description_available&&
+   out.native.native_cost_description_available,"known requirements callback returning no string stays independently unknown");
+  SaveSelected(d,"selected-requirements-return-unavailable.json",out);++cases;
+ }
+ // Invalid entry identities must reject before any native legality/cost/text
+ // getter. These are actual production-reader inputs, not a mirrored evaluator.
+ for(unsigned variant=0;variant<8;++variant){
+  Fixture v;v.SelectedDecision();auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  std::string_view expected="create_hof_decision";
+  if(variant==0)Put(v.detail,0xE0,std::uint16_t{23});
+  else if(variant==1)Put(v.detail,0xE2,std::uint16_t{1});
+  else if(variant==2)Put(v.detail,0xE8,static_cast<std::uint64_t>(Fixture::actor)+(1ULL<<32));
+  else if(variant==3)v.actual_actor=Fixture::actor+1;
+  else if(variant==4)Put(v.detail,0xD8,Fixture::actor+1);
+  else if(variant==5)expected="other_decision";
+  else if(variant==6)Put(v.character,xar::ck3_12004::kCharacterFullIdOffset,Fixture::actor+1);
+  else{Put(v.detail,0xF8,v.detail_dict.data());Put(v.detail,0x100,std::int32_t{2});Put(v.detail,0x104,std::int32_t{2});}
+  Check(!read(v,b,out,expected)&&!out.available&&!out.context_verified&&
+   v.can_reads==0&&v.evaluations==0&&v.affordability_reads==0&&v.reasons==0,
+   "wrong E0/current/detail/request/full generation or nonempty dictionary rejects before getters");
+  const auto name=std::string("selected-entry-rejected-")+std::to_string(variant)+".json";
+  SaveSelected(d,name.c_str(),out);++cases;
+ }
+ {
+  Fixture v;v.SelectedDecision();auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};Bytes<8>other_definition{};
+  Check(!h::ReadSelectedDecisionTerms12004(b,frame,v.detail.data(),other_definition.data(),"create_hof_decision",out)&&
+   !out.available&&v.can_reads==0&&v.evaluations==0,"different selected definition pointer rejects before evaluation");
+  SaveSelected(d,"selected-definition-pointer-rejected.json",out);++cases;
+ }
+ // Getter seams can change their output/context between actual production
+ // calls; no expected result is precomputed by the fixture.
+ for(unsigned variant=0;variant<7;++variant){
+  Fixture v;v.SelectedDecision();v.legal=true;auto b=Bind(v);h::SelectedDecisionTermsSnapshot12004 out{};
+  if(variant==0)v.selected_change_quote=true;
+  else if(variant==1)v.selected_change_affordability=true;
+  else if(variant==2)v.selected_change_e0=true;
+  else if(variant==3)v.selected_change_current=true;
+  else if(variant==4)v.selected_change_definition=true;
+  else if(variant==5)v.selected_change_bypass=true;
+  else v.selected_change_can=true;
+  Check(!read(v,b,out)&&!out.available&&!out.context_verified&&!out.native.native_resource_quote_available&&
+   !out.unavailable_reason.empty()&&v.evaluations==2&&v.affordability_reads==2&&v.confirms==0,
+   "changing quote, affordability, actor/E0/definition, bypass or final CanConfirm invalidates generic observation");
+  const auto text=h::SerializeSelectedDecisionTerms12004(out);
+  Check(text.find("\"resource_quote\":null")!=std::string::npos&&text.find("\"can_confirm\":null")!=std::string::npos,
+   "rejected freshness packet cannot publish retained permission or price");
+  const auto name=std::string("selected-freshness-rejected-")+std::to_string(variant)+".json";
+  SaveSelected(d,name.c_str(),out);++cases;
+ }
+ std::cout<<"PASS selected_terms_cases="<<cases<<" checks="<<checks
+  <<" actual_reader=true actual_serializer=true synthetic_storage=true synthetic_callbacks=true confirm_calls=0 live=false\n";
+}
 void ManagementOnly(const std::filesystem::path&d){
  h::DecisionAction parsed=h::DecisionAction::adopt;
  Check(h::ParseDecisionAction("promote",parsed)&&parsed==h::DecisionAction::promote&&h::DecisionKey(parsed)=="elevate_holy_site_decision","public promote maps only to original elevate definition");
@@ -170,7 +323,10 @@ void ManagementOnly(const std::filesystem::path&d){
 }
 int main(int argc,char**argv){try{
  Check(argc==2||argc==3,"output directory required");const std::filesystem::path d(argv[1]);std::filesystem::create_directories(d);
- if(argc==3){Check(std::string_view(argv[2])=="--management-only","unknown fixture mode");ManagementOnly(d);return 0;}
+ if(argc==3){
+  if(std::string_view(argv[2])=="--management-only"){ManagementOnly(d);return 0;}
+  Check(std::string_view(argv[2])=="--selected-terms-only","unknown fixture mode");SelectedTermsOnly(d);return 0;
+ }
  Fixture v;auto b=Bind(v);const auto c=Frame();h::AdoptionDetailSnapshot s{};
  Check(h::ReadHolySiteAdoptionDetail12004(b,v.owner.data(),c,Fixture::site_id,s)&&s.available&&!s.native_can_confirm&&
   s.parameter_and_selection_match&&s.selected_index==1&&s.parameter_holy_site_id==Fixture::site_id,"native observed false, second actual entry and padding-independent parameter identity");
@@ -223,5 +379,6 @@ int main(int argc,char**argv){try{
  Check(h::ReadHolySiteAdoptionDetail12004(b,v.owner.data(),c,Fixture::site_id,s)&&!s.native_decision_cooldown_observed,"changing original counter cannot publish a stable cooldown");Save(d,"cooldown-clock-changed.json",s);v.change_clock=false;
  b.decision_clock=nullptr;
  Check(h::ReadHolySiteAdoptionDetail12004(b,v.owner.data(),c,Fixture::site_id,s)&&s.native_resource_quote_available&&!s.native_decision_cooldown_observed,"unreadable clock stays unknown independently");Save(d,"cooldown-unavailable.json",s);
+ SelectedTermsOnly(d);
  std::cout<<"PASS checks="<<checks<<" actual_reader=true actual_serializer=true synthetic_storage=true synthetic_callbacks=true live=false\n";return 0;
  }catch(const std::exception&e){std::cerr<<"FAIL "<<e.what()<<'\n';return 1;}}

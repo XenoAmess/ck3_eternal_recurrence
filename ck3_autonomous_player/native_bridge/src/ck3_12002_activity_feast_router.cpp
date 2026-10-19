@@ -270,6 +270,7 @@ bool IsActivityFeastPrivateStep12002(std::string_view step) noexcept {
   if (step == kActivityStage5FeastFullCostPrivateStepV1) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+  if (step == kPlayerPilgrimageActivitiesPrivate12004StepV1) return true;
   if (step == ck3_11906::kActivityFeastStage5InputsPrivateStepV1 ||
       step == ck3_11906::kActivityFeastStage5StartPrivateStepV1 ||
       step == ck3_11906::kActivityFeastHostedPostPrivateStepV1) return true;
@@ -743,6 +744,24 @@ bool HandleActivityFeastPrivate12002(
     }
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+    if (step == kPlayerPilgrimageActivitiesPrivate12004StepV1) {
+      std::string activity_key;
+      if (!bridge::IsActivity12004BuildV1(ActivityAbiSha(adapter)) ||
+          !ParseActorDate(payload, current) ||
+          !bridge::JsonStringField(payload, "expected_activity_key", activity_key, 96) ||
+          activity_key != "activity_pilgrimage") {
+        failure = "player pilgrimage identity request invalid";
+        return false;
+      }
+      ActivityFeastStage5Private12002QueryV1 query{};
+      BindQuery(query, adapter, mailbox, current, revision);
+      query.pilgrimage_identities_only = true;
+      if (!RunQuery(query, &ExecuteActivityFeastStage5Private12002V1, failure))
+        return false;
+      return FinishRead(query, &SerializePlayerPilgrimageActivitiesPrivate12004V1,
+          adapter, current, request_id, step, "player_pilgrimage_activities",
+          serialized, failure);
+    }
     if (step == ck3_11906::kActivityFeastStage5InputsPrivateStepV1 ||
         step == ck3_11906::kActivityFeastStage5StartPrivateStepV1 ||
         step == ck3_11906::kActivityFeastHostedPostPrivateStepV1) {

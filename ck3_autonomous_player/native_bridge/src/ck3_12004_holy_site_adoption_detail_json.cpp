@@ -33,6 +33,44 @@ std::string PlanningFields(const AdoptionDetailSnapshot&v){
  out+=",\"native_planning_unavailable_reason\":"+(v.available&&!v.native_planning_unavailable_reason.empty()?Q(v.native_planning_unavailable_reason):"null");return out;
 }
 }
+
+std::string SerializeSelectedDecisionTerms12004(const SelectedDecisionTermsSnapshot12004&v){
+ const auto&n=v.native;const bool ok=v.available&&v.context_verified;
+ const auto flag=[&](bool value){return std::string(B(value));};
+ const auto text=[&](bool available,const std::string&value){return available?Q(value):std::string("null");};
+ const bool bypass=ok&&n.bypass_requirements_observed,normal=bypass&&n.bypass_requirements_raw==0;
+ std::string out="{\"schema\":\"ck3-selected-decision-terms-v1\",\"read_only\":true,\"available\":"+flag(ok)+
+  ",\"unavailable_reason\":"+(ok?"null":Q(v.unavailable_reason))+
+  ",\"game_version\":\"1.20.0.4\",\"executable_sha256\":"+Q(ck3_12004::kExecutableSha256)+
+  ",\"decision_key\":"+Q(v.decision_key)+",\"capture_epoch\":"+std::to_string(v.capture_epoch)+
+  ",\"date_raw\":"+std::to_string(v.date_raw)+",\"played_character_id\":"+std::to_string(v.played_character_id)+
+  ",\"context_verified\":"+flag(ok)+",\"named_parameter_count\":"+std::to_string(v.parameter_count)+
+  ",\"context_adapter\":\"actual_empty_named_parameters_only\",\"can_confirm\":"+(ok?flag(n.native_can_confirm):"null")+
+  ",\"requirements_bypass_observed\":"+flag(bypass)+",\"requirements_bypass_raw\":"+
+  (bypass?std::to_string(n.bypass_requirements_raw):"null")+
+  ",\"ordinary_legality_observed\":"+flag(normal)+",\"ordinary_can_confirm\":"+
+  (normal?flag(n.native_can_confirm):"null");
+ const auto add_text=[&](const char*name,bool available,const std::string&value){
+  out+=",\"";out+=name;out+="_available\":"+flag(ok&&available)+",\"";out+=name;out+="\":"+text(ok&&available,value);
+ };
+ add_text("confirm_tooltip",n.confirm_tooltip_available,n.confirm_tooltip);
+ add_text("requirements_description",n.native_requirements_description_available,n.native_requirements_description);
+ add_text("cost_description",n.native_cost_description_available,n.native_cost_description);
+ const bool quote=ok&&n.native_resource_quote_available;
+ out+=",\"resource_quote_available\":"+flag(quote)+",\"resource_quote\":";
+ if(quote){out+="{\"raw_scale\":100000,\"resource_vector_raw\":[";
+  for(std::size_t i=0;i<n.native_resource_vector_raw.size();++i){if(i)out+=',';out+=std::to_string(n.native_resource_vector_raw[i]);}
+  out+="],\"native_affordable\":"+flag(n.native_affordable)+"}";}else out+="null";
+ const bool clock=ok&&n.native_decision_cooldown_observed;
+ out+=",\"cooldown_observed\":"+flag(clock)+",\"cooldown\":";
+ if(clock)out+="{\"present\":"+flag(n.native_decision_cooldown_present)+",\"current_counter_raw\":"+
+  std::to_string(n.native_decision_clock_raw)+",\"expiry_raw\":"+
+  (n.native_decision_cooldown_present?std::to_string(n.native_decision_expiry_raw):"null")+
+  ",\"active\":"+flag(n.native_decision_cooldown_active)+",\"counter_unit\":\"native_decision_clock_counter\"}";
+ else out+="null";
+ return out+",\"action_ready\":false,\"decision_confirm_invoked\":false}";
+}
+
 std::string SerializeHolySiteAdoptionDetail12004(const AdoptionDetailSnapshot&v){
  const bool normal=v.available&&v.bypass_requirements_observed&&v.bypass_requirements_raw==0;
  return "{\"schema\":"+Q(v.general_decision_contract?"ck3_12004_holy_site_decision_detail_v1":"ck3_12004_holy_site_adoption_detail_v1")+

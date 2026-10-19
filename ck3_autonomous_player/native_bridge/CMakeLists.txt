@@ -2936,6 +2936,18 @@ if(BUILD_TESTING)
     endif()
   endforeach()
 
+  # Whole production reader/serializer packets for the Python strict consumer.
+  # Owned memory only; this fixture never starts CK3 or submits gameplay actions.
+  add_executable(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture EXCLUDE_FROM_ALL
+    src/ck3_12004_player_pilgrimage_serializer_whole_fixture.cpp)
+  target_include_directories(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture PRIVATE src)
+  target_link_libraries(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture PRIVATE
+    xar_ck3_12002_runtime xar_ck3_12002_feast_fixture_support xar_bridge_protocol)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_player_pilgrimage_serializer_whole_fixture PRIVATE
+      /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+  endif()
+
   add_executable(xar_ck3_12003_pending_self_ransom_quote_test
     src/ck3_12003_pending_self_ransom_quote_test.cpp
     src/current_first_heir_relationship_v1.cpp

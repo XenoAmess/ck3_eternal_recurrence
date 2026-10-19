@@ -67,6 +67,25 @@ struct AdoptionDetailSnapshot {
   const void *owner=nullptr,*detail=nullptr,*root=nullptr,*controller=nullptr,*context=nullptr;
   std::string unavailable_reason;
 };
+
+// Shared read-only selected-decision terms. This first bounded adapter admits
+// actual empty-parameter contexts; non-empty contexts stay unavailable.
+// Private pointers are supplied only by the already verified keyed GUI model.
+struct SelectedDecisionTermsSnapshot12004 {
+  bool available=false,context_verified=false;
+  std::uint64_t capture_epoch=0;
+  std::int32_t date_raw=0,played_character_id=-1;
+  std::string decision_key,unavailable_reason="selected_detail_not_qualified";
+  std::uint32_t parameter_count=0;
+  AdoptionDetailSnapshot native{};
+};
+bool ReadSelectedDecisionTerms12004(const AdoptionDetailBindings &,
+    const ck3_12002::religion::Context &,const void *actual_detail,
+    const void *actual_definition,std::string_view expected_key,
+    SelectedDecisionTermsSnapshot12004 &) noexcept;
+std::string SerializeSelectedDecisionTerms12004(
+    const SelectedDecisionTermsSnapshot12004 &);
+
 struct DecisionCooldownObservation {
   bool present=false;
   std::int32_t current_counter_raw=0,expiry_raw=0;

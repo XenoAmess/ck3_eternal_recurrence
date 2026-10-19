@@ -899,6 +899,7 @@ bool ExecuteFrontendGuiRouteMailboxV1(
         query->environment, query->dispatch_environment);
   }
   if (query->operation == FrontendGuiRouteOperationV1::query_ingame_decision_item) {
+    query->ingame_decision_item.include_selected_terms=true;
     return ExecuteIngameDecisionItemQueryV1(query->ingame_decision_item, *query->mailbox, stamp, query->environment);
   }
   if (query->operation == FrontendGuiRouteOperationV1::action_ingame_decision_item) {

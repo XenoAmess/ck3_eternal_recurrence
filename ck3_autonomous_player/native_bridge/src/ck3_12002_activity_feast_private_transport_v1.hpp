@@ -5,6 +5,9 @@
 
 namespace xar::ck3_12002 {
 
+inline constexpr std::string_view kPlayerPilgrimageActivitiesPrivate12004StepV1 =
+    "query-player-pilgrimage-activities-v1-private";
+
 using FeastReadSnapshotV1 = bool (*)(void *, game::Snapshot &) noexcept;
 using FeastResolveScriptIdentifierV1 = bool (*)(
     void *, std::int32_t, std::string_view &) noexcept;
@@ -15,6 +18,8 @@ using FeastResolveScriptIdentifierV1 = bool (*)(
 struct ActivityFeastStage5Private12002QueryV1
     : ck3_11906::ActivityFeastStage5PrivateQueryV1 {
   bool enabled = false;
+  bool pilgrimage_identities_only = false;
+  bridge::ActivityHostedIdentityResultV1 pilgrimage_identities{};
   std::uintptr_t module_base = 0;
   std::string_view executable_sha256{};
   void *native_context = nullptr;
@@ -29,6 +34,9 @@ bool ExecuteActivityFeastStage5Private12002V1(
     void *context,
     const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept;
 std::string SerializeActivityFeastStage5Private12002V1(
+    const ActivityFeastStage5Private12002QueryV1 &query);
+
+std::string SerializePlayerPilgrimageActivitiesPrivate12004V1(
     const ActivityFeastStage5Private12002QueryV1 &query);
 
 } // namespace xar::ck3_12002
