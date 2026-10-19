@@ -1,0 +1,140 @@
+{
+  "schema": "xar.C22-normal-warm-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 22:53:00 UTC",
+  "status": "SOURCE_QUALIFIED_NOT_DEPLOYED",
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/prepare_c22_normal_warm_controls_v1.py",
+    "bytes": 13769,
+    "sha256": "8314a789be4f30a75bdaa51d90200e94ff39399786a29a8e19563fe75ae3e6cf"
+  },
+  "qualifier": {
+    "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/qualify_c22_normal_warm_controls_v1.py",
+    "bytes": 10149,
+    "sha256": "027613e2ed4098b9d2c78ed5bc4b0ab70b8166e5740465ac6448eb14214ff0bd"
+  },
+  "actual_Source22_binding": {
+    "anchor": {
+      "path": "Z:/ck3_mod_rewrite/_runtime/source22-integration16/SOURCE22-CANONICAL-ANCHOR.json",
+      "bytes": 4874,
+      "sha256": "dc5dc51909fa5f93635d8d63cbea5f7b71c5a9e38af6bcae51c55eb523a997c9"
+    },
+    "plan": {
+      "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/source22-wal-clock-diagnostic-source-plan-2026-10-20.json",
+      "bytes": 11133,
+      "sha256": "48ecb6b2e5c8162d965efd30ed925838b92b2fb519870ceba6131d265905ac89"
+    },
+    "commit": "0722bef48d412ed5e49d0109177493846d988745",
+    "file_count": 1449,
+    "source_bytes": 59095358,
+    "rows_sha256": "7290b3370b64335b27ff375713dd92de331b0ca114bf99440014d40404593a85",
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src18",
+    "reference_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/reference-c22/src",
+    "output_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c22-source22-warm99/immutable-source-export",
+    "Native30_bound": false,
+    "clock_root_cause": "UNKNOWN; diagnostic only"
+  },
+  "actual_compact": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/ROOT-FINAL-SDK-FREEZE-P37C22.json",
+    "bytes": 449181,
+    "sha256": "07fe7edd6bf76cf7a3c2c438de9d13178ced61c00f1d701b748745f4bc33e443",
+    "clean_campaign": false,
+    "prior_campaign_state_or_credits_inherited": true
+  },
+  "qualification_history": [
+    {
+      "command": "python -B tools/g2_saved_campaign/qualify_c22_normal_warm_controls_v1.py",
+      "exit_code": 1,
+      "tests_run": 3,
+      "passed": [
+        "02_recording_pairing",
+        "03_public_source_chain"
+      ],
+      "failed": "01_inverse_AST_test_reducer",
+      "unittest_wall_seconds": 3.917,
+      "reason": "Test inverse omitted Name(P37C22oldReadyQueue) and compared Module versus FunctionDef. No production source failure observed."
+    },
+    {
+      "command": "python -B tools/g2_saved_campaign/qualify_c22_normal_warm_controls_v1.py C22Source.test_01_actual_Source22_and_unchanged_five_controls",
+      "exit_code": 0,
+      "tests_run": 1,
+      "unittest_wall_seconds": 2.363,
+      "correction": "Test inverse restores matching Name and selects Module.body[0] for a function comparison.",
+      "other_two_tests_repeated": false
+    }
+  ],
+  "coverage": [
+    "Real pinned Source22 anchor/plan plus actual compact 1449/59095358/0722/7290, reference-c22/src and inherited-campaign fields.",
+    "Seven RAM modules compile; five inverse namespace AST equal C21; owner input verifier and factory normal-input/call/check_before preserved.",
+    "Original 313-byte optional WAL child_env hunk unchanged. C21 actual Stdio and harmless-child tests reused, not rerun. No actual App/WAL writer claim.",
+    "Explicit recording metadata accepts synthetic RAM tuple; old UUID/foreign machine/Game birth/closed started/old firstgate/abnormal old closure reject.",
+    "Public chain executes actual anchor, namespace port and factory reducer; only new recording JSON read is injected.",
+    "Original verify_segment call, C16 API/relay/score algorithms, Native29 mask, full Queue planner/callback/publish/once/T0 and 0bff four-row classifier retained."
+  ],
+  "old_45_protected_constants_verified_before_recording_exceptions": 45,
+  "explicit_exceptions": [
+    "owner old CURRENT-REQUESTED C16 literal replaced by admission.recording_binding",
+    "owner old C16 firstgate literal replaced by actual new firstgate",
+    "factory retained C16 recording metadata replaced by new tuple; Source22 freeze exact0722/count/bytes"
+  ],
+  "old_capture_closed": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/2b8912a6-757d-46a4-a8ae-b7702a730a90/capture_closed.json",
+    "bytes": 1647,
+    "sha256": "b9acd97fe0278ae77058c860563a8f27977ca6904c129e20cbfce36d2adbe9f3"
+  },
+  "RAM_outputs": [
+    {
+      "basename": "root_p37c22_sdk_queue.py",
+      "bytes": 268270,
+      "sha256": "20f435477beda8868c608897cfa51d459b192024e317599613613d7565c0b0cf"
+    },
+    {
+      "basename": "root_p37c22_mcp_entry.py",
+      "bytes": 12630,
+      "sha256": "39c0e63c0fbf10b188f50f3512557f013eff3a1327d4f41591f6dbf59e1a45ff"
+    },
+    {
+      "basename": "root_native_build_binding_p37c22.py",
+      "bytes": 4090,
+      "sha256": "0812ec8246be577dfeeb589c67952a54d17a3ddc956951346d10895d2c27c5ce"
+    },
+    {
+      "basename": "root_p37c22_automatic_natural_succession_handoff.py",
+      "bytes": 38624,
+      "sha256": "1b8c0112b786866d0aea3af72e7f7135ca79e6ebc26c00ef49834d203eeb33da"
+    },
+    {
+      "basename": "p51_resident_successor_adoption_c22.py",
+      "bytes": 24607,
+      "sha256": "7648c41ae2ff6a580e43fee994fee5ec32a0bedea02f3157c6e6ae263ef6586f"
+    },
+    {
+      "basename": "launch_sdk_p37c22_owner.py",
+      "bytes": 5568,
+      "sha256": "85261d683cb903709224ae75bf86418bc79c1cc7f51552de4a3fc6c0461b95d2"
+    },
+    {
+      "basename": "root_p37c22_warm_resume.py",
+      "bytes": 18444,
+      "sha256": "1b4b1082074ecbdb4c4e3dd1ce6851820d7eca16d28908d3fceaba4e59838c77"
+    }
+  ],
+  "RAM_output_logical_bytes": 372233,
+  "actual_new_recording_observed": false,
+  "original_runtime_verify_segment_executed": false,
+  "old_matrices_repeated": false,
+  "source_card": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/HARNESS-C22-NORMAL-WARM-SOURCE64KiB-COMMITMENT01.json",
+    "bytes": 1887,
+    "sha256": "44d07bdb711a1f1f0d57df39a26748b93861f32e2050dcc5ee4a7d772e41ae55"
+  },
+  "D_source_writes": 0,
+  "Game_Native_Service_RPC": 0,
+  "SDK_Task_OBS_operations": 0,
+  "Git_writes": 0,
+  "full_control_files_written_to_repo": 0,
+  "scratch_bytes": 0,
+  "failed_scratch_command": "One oversized cmd.exe command was rejected before Python started; no file was written.",
+  "runtime_admitted": false,
+  "future_source_work_remaining": 0
+}

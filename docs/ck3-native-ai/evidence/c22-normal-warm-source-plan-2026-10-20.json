@@ -1,0 +1,164 @@
+{
+  "schema": "xar.C22-normal-warm-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 22:53:00 UTC",
+  "status": "SOURCE_READY_ACTUAL_RECORDING_BINDING_REQUIRED",
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/prepare_c22_normal_warm_controls_v1.py",
+    "bytes": 13769,
+    "sha256": "8314a789be4f30a75bdaa51d90200e94ff39399786a29a8e19563fe75ae3e6cf"
+  },
+  "qualification": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/c22-normal-warm-source-qualification-2026-10-20.json",
+    "bytes": 6739,
+    "sha256": "b1eb8e549424f6582e4dae85bb1d62acbc0d15672fe58b79308a9aca15a1928b"
+  },
+  "entry": "prepare_c22_normal_warm_controls_v1.compose(*, recording_binding_ref, boundary) -> (seven RAM bytes, report)",
+  "business": {
+    "anchor": {
+      "path": "Z:/ck3_mod_rewrite/_runtime/source22-integration16/SOURCE22-CANONICAL-ANCHOR.json",
+      "bytes": 4874,
+      "sha256": "dc5dc51909fa5f93635d8d63cbea5f7b71c5a9e38af6bcae51c55eb523a997c9"
+    },
+    "plan": {
+      "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/source22-wal-clock-diagnostic-source-plan-2026-10-20.json",
+      "bytes": 11133,
+      "sha256": "48ecb6b2e5c8162d965efd30ed925838b92b2fb519870ceba6131d265905ac89"
+    },
+    "commit": "0722bef48d412ed5e49d0109177493846d988745",
+    "file_count": 1449,
+    "source_bytes": 59095358,
+    "rows_sha256": "7290b3370b64335b27ff375713dd92de331b0ca114bf99440014d40404593a85",
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src18",
+    "reference_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/reference-c22/src",
+    "output_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c22-source22-warm99/immutable-source-export",
+    "Native30_bound": false,
+    "clock_root_cause": "UNKNOWN; diagnostic only"
+  },
+  "RAM_outputs": [
+    {
+      "basename": "root_p37c22_sdk_queue.py",
+      "bytes": 268270,
+      "sha256": "20f435477beda8868c608897cfa51d459b192024e317599613613d7565c0b0cf"
+    },
+    {
+      "basename": "root_p37c22_mcp_entry.py",
+      "bytes": 12630,
+      "sha256": "39c0e63c0fbf10b188f50f3512557f013eff3a1327d4f41591f6dbf59e1a45ff"
+    },
+    {
+      "basename": "root_native_build_binding_p37c22.py",
+      "bytes": 4090,
+      "sha256": "0812ec8246be577dfeeb589c67952a54d17a3ddc956951346d10895d2c27c5ce"
+    },
+    {
+      "basename": "root_p37c22_automatic_natural_succession_handoff.py",
+      "bytes": 38624,
+      "sha256": "1b8c0112b786866d0aea3af72e7f7135ca79e6ebc26c00ef49834d203eeb33da"
+    },
+    {
+      "basename": "p51_resident_successor_adoption_c22.py",
+      "bytes": 24607,
+      "sha256": "7648c41ae2ff6a580e43fee994fee5ec32a0bedea02f3157c6e6ae263ef6586f"
+    },
+    {
+      "basename": "launch_sdk_p37c22_owner.py",
+      "bytes": 5568,
+      "sha256": "85261d683cb903709224ae75bf86418bc79c1cc7f51552de4a3fc6c0461b95d2"
+    },
+    {
+      "basename": "root_p37c22_warm_resume.py",
+      "bytes": 18444,
+      "sha256": "1b4b1082074ecbdb4c4e3dd1ce6851820d7eca16d28908d3fceaba4e59838c77"
+    }
+  ],
+  "RAM_output_logical_bytes": 372233,
+  "source_inputs": [
+    {
+      "path": "Z:/ck3_mod_rewrite/tools/g2_saved_campaign/prepare_c21_normal_warm_controls_v1.py",
+      "bytes": 8570,
+      "sha256": "8f2adeb492396af1c62f990b0cc958b3e0beb4ac972a41fac87320bb02fdfe48"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/_runtime/compose_C18_warm_controls93.py",
+      "bytes": 6120,
+      "sha256": "2bbdee3dc30521aca2b4f774d75b8f1df9e73b5816be3d3d6d880dac20e63fa6"
+    }
+  ],
+  "same_Game": {
+    "pid": 30852,
+    "creation_filetime": 134368995759027619,
+    "rollback": false
+  },
+  "recording_input": {
+    "field_in_normal_warm_admission": "recording_binding",
+    "schema": "xar.C22-actual-recording-binding/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "status": "ACTUAL_NEW_RECORDING_READY",
+    "Game_pid": 30852,
+    "Game_creation_filetime": 134368995759027619,
+    "session_id": "then-actual-new-canonical-UUID; never old2b",
+    "bounded_pin_fields": [
+      "request",
+      "job",
+      "started",
+      "first_frame_admission",
+      "publisher_started",
+      "previous_capture_closed"
+    ],
+    "pin_shape": {
+      "path": "absolute actual JSON path",
+      "bytes": "strict bounded positive integer",
+      "sha256": "actual raw JSON SHA256"
+    },
+    "request_fields": [
+      "session_id",
+      "receipt_root",
+      "worker_pid",
+      "worker_creation_filetime"
+    ],
+    "job_path": "T/recordings/<newUUID>/job.json",
+    "started_path": "T/recordings/<newUUID>/started.json",
+    "firstgate_path": "explicit actual new Root GREEN receipt under T; cannot old ROOT-SAVED-MAP-RECORDING-ADMITTED-C16.json",
+    "publisher": "Actual C16 publisher source and STARTED ref shared exactly by job and new firstgate; existing live started_reference and verify_segment remain mandatory.",
+    "previous_capture_closed": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/2b8912a6-757d-46a4-a8ae-b7702a730a90/capture_closed.json",
+      "bytes": 1647,
+      "sha256": "b9acd97fe0278ae77058c860563a8f27977ca6904c129e20cbfce36d2adbe9f3"
+    },
+    "refs_absent": "Public compose rejects absent/unknown refs; RAM fixture GREEN is not actual admission."
+  },
+  "factory_admission_change": {
+    "added": "recording_binding exact ref",
+    "replaced": "retained_C16_publisher_started/retained_recording_job/retained_first_frame_admission facts replaced by verified new recording tuple",
+    "retained": "normal_warm_inputs clean/postclose/normal SDK0/0; live verify_segment; fresh SEM -> CAP same_pid_hot; original sequence/source/callback/stop guards",
+    "Source22_runtime_freeze_guard": "exact business_source_commit0722; source_file_count and files1449; source_bytes59095358; previous campaign credits remain inherited",
+    "physical_C16": "Same Game/API/score/publisher algorithm source only. New recording has its actual UUID/worker/OBS/Root firstgate and is not claimed C16."
+  },
+  "WAL": {
+    "0": "forward 0",
+    "1": "forward 1",
+    "hunk_bytes": 313,
+    "absent": "preserve opt-out",
+    "invalid": "ValueError",
+    "forward_scope": "Only approved WAL key, owner -> Queue -> StdioServerParameters -> App; no Task whitelist extension",
+    "reuse": "C21 actual Stdio expression/harmless-child qualification; no claim of actual App env1 or WAL writer/append"
+  },
+  "classifier_sha256": "0bff8fae24c072d5f05285ba62c503dfed408f8095690fb8dffec16fe72ec28b",
+  "private_execution_mask": "Existing Native29 unsupported completion query remains filtered; all other flags and full planner unchanged.",
+  "clock": "Diagnostic source only; root cause UNKNOWN. No Native30 binding.",
+  "actual_stage": "Independently admitted export/install/Task/new-recording facts required; this source card performs none.",
+  "future_stage_logical_quote": {
+    "seven_controls": 372233,
+    "largest_atomic_candidate": 268270,
+    "feeder_bootstrap_metadata": "Not created/credited here. Sole runtime must include actual named payload and atomic peak under future C22 stage card."
+  },
+  "scope": {
+    "new_source_hard_bytes": 65536,
+    "scratch_bytes": 0,
+    "D_writes": 0,
+    "Game_SDK_Task_OBS_calls": 0,
+    "Git_writes": 0
+  },
+  "freeze": "Four source/qualification/plan files are final after compile/diff check. Old C21 producer and old proofs remain unchanged."
+}
