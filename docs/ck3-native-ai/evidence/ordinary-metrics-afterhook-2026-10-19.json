@@ -1,0 +1,26 @@
+{
+ "schema":"xar.ordinary-metrics-afterhook-software-review/v1",
+ "machine_id":"xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc":"2026-10-19T09:03:09.902678+00:00",
+ "recorded_at_utc":"2026-10-19T09:04:53+00:00",
+ "machine_source":"python tools/ck3_live_run_id.py machine; fresh readback tool chunk6b660f",
+ "qualification_source":"qualify_ordinary_metrics_afterhook_v1.py stdout; tool chunk34c992; exit0/PASS",
+ "runtime_root":"D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+ "frozen_root":"D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-lifestyle4102-blocked79",
+ "inputs":[
+  {"root":"runtime_root","path":"root_p37c7_sdk_queue.py","bytes":264849,"sha256":"fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30"},
+  {"root":"runtime_root","path":"root_p37_reinforcement_recovery.py","bytes":8520,"sha256":"3ae23f9188eef22b7dbc2124e6fc2db2506fb3eeb98d7c127f895845ed269fb1"},
+  {"root":"frozen_root","path":"p37-responses/4101-1-result.json","bytes":1791,"sha256":"8ff7f47a5d01b488dd43795ed3abff244e96e3713c1690f15f949b9b2dc499f5"},
+  {"root":"frozen_root","path":"p37-responses/4102-1-result.json","bytes":52237,"sha256":"896f6c4aa7658a7bfc9bf1f4c2380c445faf94cd8284ccb5081cde46ced4a484"}
+ ],
+ "ready":[
+  {"path":"tools/g2_saved_campaign/ordinary_metrics_afterhook_v1.py","bytes":2768,"sha256":"9fc2920edcff64e55dd75e39563f4077a34357cf7d4153f8dc2a5a97d58f0f04"},
+  {"path":"tools/g2_saved_campaign/qualify_ordinary_metrics_afterhook_v1.py","bytes":9494,"sha256":"eb74719ed06c456ede1da6f6d2e7a12dd0e5cecd8c2f189ed4504ce874bd26a2"}
+ ],
+ "qualified_memory_only_output":{"bytes":264939,"sha256":"ee04d3843ca22de89a39f336dac4c266a82ee99137ec5fbac8a4381963343d48"},
+ "cases_passed":["baseline_stale_rejected","fresh_clear","wrong_date","wrong_actor","non_null_step","unknown_original","invalid_MET","non_MET_original_path"],
+ "method":"Actual frame/decoded, class afterhooks, alias/MRO and existing Reinforcement clear guard; SourceOnly381 ready wrapper. No constructors or preflight executed. Only ordinary MET delegates through super; every other source byte is preserved. Repeated/changed source shape is rejected.",
+ "baseline":"Software queue state uses completed_cycles7 and a deliberately stale cached date=4101.date-24. Original Clean static Cold delegation leaves it stale; the unchanged clear guard rejects. This is not a readback of the historic live cache.",
+ "fixed_result":"Existing parent frame validation precedes Reinforcement cache refresh. Fresh same-date/actor/episode unexecuted blocked AUTO may be discarded for replanning; completed_cycles stays7, no business credit. Wrong date/actor, selected action and unknown original still reject. Invalid MET keeps old cache; non-MET follows original path.",
+ "limits":{"software_only":true,"Game_Native_RPC":0,"runtime_writes":0,"test_rerun_for_this_record":false,"constructor_preflight_qualified":false,"actual_C8_adoption_claimed":false,"blocked_counted_as_settled":false,"clear_guard_changed":false}
+}

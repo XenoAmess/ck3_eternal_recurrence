@@ -1,0 +1,205 @@
+{
+  "schema": "xar.C8-current-view-create-only-qualified/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:13:49.060498+00:00",
+  "status": "SOURCE_ONLY_CORRECTED_AUDIENCE_CANDIDATE_QUALIFIED",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_sdk_current_views_v1.py",
+    "bytes": 7467,
+    "sha256": "b663d8c781dad758da393f1895de024fe4937005bae03984be14e96ed3e84f22"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\life4102-currentviews03.json",
+    "bytes": 26317,
+    "sha256": "390150ce66dfd46db3d6aa47d52c9790baab0d84dd7cc7659c61ad8eadc05e22"
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c8_sdk_queue.py",
+      "bytes": 264990,
+      "sha256": "4057cb39cd296c5db9b37bd66b068827d77d19dfb9d73063324d2fb3fded863f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c8_mcp_entry.py",
+      "bytes": 13469,
+      "sha256": "69dfda17b701e32e8abd25b3d2914f009fd3dac07703d1b345e7c079935225e0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\launch_sdk_p37c8_owner.py",
+      "bytes": 5485,
+      "sha256": "138fd7117d3643528b2d66ced9616a359304436b41e5cc42e526cc0aaba1fbac"
+    }
+  ],
+  "actual_original_wrong_output": "Queue4057 line3524 writes ROOT-AUDIENCE-ACTIVE-SDK-C7.json create-only",
+  "correction": "only literal C7 to C8; original actual source retains its historical failure pin",
+  "corrected_queue_identity_writes": [
+    {
+      "line": 275,
+      "path_expression": "{N}/ROOT-FIRST-QUEUE-EXCEPTION-P37C8.json",
+      "basename": "ROOT-FIRST-QUEUE-EXCEPTION-P37C8.json",
+      "write": "atomic",
+      "replace": false,
+      "already_exists": false
+    },
+    {
+      "line": 3518,
+      "path_expression": "{N}/ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C8.json",
+      "basename": "ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C8.json",
+      "write": "atomic",
+      "replace": false,
+      "already_exists": false
+    },
+    {
+      "line": 3524,
+      "path_expression": "{N}/ROOT-AUDIENCE-ACTIVE-SDK-C8.json",
+      "basename": "ROOT-AUDIENCE-ACTIVE-SDK-C8.json",
+      "write": "atomic",
+      "replace": false,
+      "already_exists": false
+    }
+  ],
+  "entry_and_owner_identity_writes": [
+    [
+      {
+        "line": 87,
+        "path_expression": "{N}/p37c8-prewar",
+        "basename": "p37c8-prewar",
+        "write": "mkdir",
+        "replace": false,
+        "already_exists": false
+      },
+      {
+        "line": 113,
+        "path_expression": "{N}/ROOT-ACTUAL-DRIVER-MODE-P37C8.json",
+        "basename": "ROOT-ACTUAL-DRIVER-MODE-P37C8.json",
+        "write": "open:x",
+        "replace": false,
+        "already_exists": false
+      }
+    ],
+    [
+      {
+        "line": 47,
+        "path_expression": "{N}/ROOT-P37C8-OWNER-STARTED.json",
+        "basename": "ROOT-P37C8-OWNER-STARTED.json",
+        "write": "write",
+        "replace": false,
+        "already_exists": false
+      },
+      {
+        "line": 49,
+        "path_expression": "{N}/P37C8-OWNER-CHILD-ATTEMPT01.stdout.log",
+        "basename": "P37C8-OWNER-CHILD-ATTEMPT01.stdout.log",
+        "write": "open:xb",
+        "replace": false,
+        "already_exists": false
+      },
+      {
+        "line": 49,
+        "path_expression": "{N}/P37C8-OWNER-CHILD-ATTEMPT01.stderr.log",
+        "basename": "P37C8-OWNER-CHILD-ATTEMPT01.stderr.log",
+        "write": "open:xb",
+        "replace": false,
+        "already_exists": false
+      },
+      {
+        "line": 63,
+        "path_expression": "{N}/ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C8.json",
+        "basename": "ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C8.json",
+        "write": "write",
+        "replace": false,
+        "already_exists": false
+      },
+      {
+        "line": 73,
+        "path_expression": "{N}/ROOT-P37C8-OWNER-CLOSED.json",
+        "basename": "ROOT-P37C8-OWNER-CLOSED.json",
+        "write": "write",
+        "replace": false,
+        "already_exists": false
+      }
+    ]
+  ],
+  "all_explicit_write_basenames": {
+    "root_p37c8_sdk_queue.py": [
+      "CURRENT-REQUEST-P37.json",
+      "NEXT-SEQUENCE-P37.json",
+      "ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C8.json",
+      "ROOT-AUDIENCE-ACTIVE-SDK-C7.json",
+      "ROOT-CLEAN-CAMPAIGN-VERIFIED.json",
+      "ROOT-COLD-CAMPAIGN-VERIFIED.json",
+      "ROOT-COLD-READINESS-VERIFIED.json",
+      "ROOT-COMMANDER-RECOVERY-VERIFIED.json",
+      "ROOT-CUMULATIVE-LOOP-STATE.json",
+      "ROOT-CURRENT-EVENT-PAUSED-VERIFIED.json",
+      "ROOT-CURRENT-HALT-P37.json",
+      "ROOT-CURRENT-OBS-RECORDING-REQUESTED-C6.json",
+      "ROOT-FIRST-QUEUE-EXCEPTION-P37C8.json",
+      "ROOT-FRESH-SDK-ARGV.json",
+      "ROOT-FRESH-SDK-INITIALIZED.json",
+      "ROOT-GOVERNANCE-RESULT-STATE.json",
+      "ROOT-GUARD-FAILURE-P37.json",
+      "ROOT-HALT-PENDING-READBACK-LATEST.json",
+      "ROOT-HOT-CAMPAIGN-VERIFIED.json",
+      "ROOT-P37-CAMPAIGN-VERIFIED.json",
+      "ROOT-QUEUE-CLOSED.json",
+      "ROOT-QUEUE-EXCEPTION-TREE.json",
+      "ROOT-QUEUE-HALTED.json",
+      "ROOT-RECORDING-PAUSED.json",
+      "ROOT-REQUEST-ADMISSION-CLOSED-C8.json",
+      "ROOT-WARM-CAMPAIGN-VERIFIED.json",
+      "ROOT-WARM03-CAMPAIGN-VERIFIED.json",
+      "p37-queue",
+      "sdk-stderr.log"
+    ],
+    "root_p37c8_mcp_entry.py": [
+      "ROOT-ACTUAL-DRIVER-MODE-P37C8.json",
+      "ROOT-FRONTEND-START-TIME-BUDGET.json",
+      "p37c8-prewar"
+    ],
+    "launch_sdk_p37c8_owner.py": [
+      "P37C8-OWNER-CHILD-ATTEMPT01.stderr.log",
+      "P37C8-OWNER-CHILD-ATTEMPT01.stdout.log",
+      "ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C8.json",
+      "ROOT-P37C8-OWNER-CLOSED.json",
+      "ROOT-P37C8-OWNER-STARTED.json"
+    ]
+  },
+  "preserved_inputs": {
+    "C7": [
+      "ROOT-FINAL-SDK-FREEZE-P37C7.json",
+      "ROOT-CLEAN-SOURCE-FROZEN-C7.json",
+      "root_native_build_binding_p37c7"
+    ],
+    "C6": [
+      "retained publisher/API/relay/segment",
+      "original recording requested and firstframe admission"
+    ],
+    "C4": [
+      "samephysicalGame launch and placement",
+      "score observer"
+    ],
+    "historical_P36": "only read under unused recovery branch, not a startup write target"
+  },
+  "shared_mutable_outputs": "NEXT-SEQUENCE-P37/CURRENT-REQUEST-P37/currentHALT/state persistence and C6 current recording request retain original replace contracts; not new SDK identity receipts",
+  "create_only_existing_output_policy": "require_unoccupied_current_views_v1 rejects old-generation identity writes and occupied current-generation create-only identity outputs. Sole runtime must retain failed attempt outputs before creating attempt02; no overwrite/archive performed by qualifier.",
+  "attempt01_outputs_to_account": [
+    "Q directory and Q startup receipts/logs",
+    "p37c8-prewar directory",
+    "MODE-P37C8",
+    "generation-P37C8",
+    "pairPinned-P37C8",
+    "OWNER-STARTED/CLOSED-P37C8",
+    "owner child ATTEMPT01 stdout/stderr"
+  ],
+  "optional_diagnostic_outputs": "C8-LIFE2-ONCE.json and .started.json; C8-CHILD-FOCUS-ONCE.json and .started.json are reserved only by real registered App handlers. Not invoked in attempt01.",
+  "checks": {
+    "positive_corrected_namespace": true,
+    "old_C7_existing_create_only_rejected": true,
+    "occupied_C8_create_only_rejected": true,
+    "runtime_source_writes": 0,
+    "Game_MCP_queries": 0
+  },
+  "limits": "Pure AST audit covers explicit statically resolvable paths, mkdir/open/atomic/write plus local aliases. Imported helper internals and dynamic per-sequence paths keep original contracts; this is not actual startup success.",
+  "normal_successor_preflight": "same pure audit/absence check is mandatory for normal next generation before owner launch, including source output names/admission references; C8 diagnostics do not qualify normal SDK."
+}

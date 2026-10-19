@@ -1,0 +1,279 @@
+{
+  "schema": "xar.ck3.g2-m1-realm-source-implementation/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:09:27.394321+00:00",
+  "machine_identity_source": "fresh tools/ck3_live_run_id.py machine at external closure",
+  "status": "FROZEN_SOURCE_PORTABLE_COMPILE_PASS_LOCAL_CTEST_NOT_RUN",
+  "credit": {
+    "M1": "historical_complete_unchanged",
+    "G2": "6/8_unchanged",
+    "new_Game_observation_or_business_credit": false,
+    "Native26_or_Native27_adoption": false
+  },
+  "implementation": {
+    "native_reader": "ck3_12002_faction_alerts.cpp::ReadSubrealmCountyIds/ReadCountyExposures retains the actor/vassal county set across the existing two ReadSample calls; no new address binding or RPC",
+    "scope": "played_character_own_subrealm_including_vassals; geographical counties, distinct from directly-held domain counties",
+    "component": "optional player_subrealm_geographic_counties_v1: complete, owner fullID/native revision/date, sorted unique county fullIDs, source; only complete after all branches and county identity checks",
+    "validity": "existing actual title holder/immediate-liege operands and resolver fullID checks; parent/conflict/cycle/work bounds; failure clears partial vector; county identity uses existing typed helper",
+    "compatibility": "old producer may omit component; old alerts accepted unchanged. Missing/incomplete remains unknown, never 0.",
+    "ordinary_after_query": "one private epoch slot references original planning snapshot; bind final actual public deepcopy, then consume once after ordinary existing faction query. New plan/failure/priority override/changed frame/concurrent or late completion invalidate old slot. Raw snapshot never public.",
+    "feedback": "current count only on exact original frame; otherwise dated historical summary. Difference requires two complete sets with same actor/episode/bridge PID/generation and strictly earlier revisions/query sequence; causal attribution remains unknown.",
+    "monthly": "optional pure mapper consumes already-obtained faction DTO and source frame only. Different after-action MET frame stays unknown; same_native_capture_with_MET=false/native_capture_epoch=null.",
+    "new_RPC_calls": 0,
+    "new_SAVE_exports": 0,
+    "live_Driver_or_SAVE_reads": 0,
+    "new_per_cycle_snapshot_reads": 0,
+    "Game_or_runtime_COW_mutations": 0
+  },
+  "ownership": {
+    "source_owner": "/root/g2_m1_entities",
+    "shared_Service_owner": "/root; applied the two frozen exact patches",
+    "Service_base_sha256": "0adead831ceec7d2c2de779171de6e1b02bbd5c5d9fb236cdea12bc46a3d555c",
+    "Service_applied_pin": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 870867,
+      "sha256": "93da7f116bb07904b518045b66b385ebf16a5ea5c6787751a01535f24311717f",
+      "before_bytes": 869078,
+      "net_bytes": 1789
+    },
+    "CI_owner": "/root reports named target, exact CTest and new Python tests added to next CI batch; remote result not observed here",
+    "M1_stage_or_commit": false
+  },
+  "python_tests": [
+    {
+      "command": "py -B -m unittest test_realm_membership_feedback_v1 test_realm_membership_after_query_v1 -v",
+      "cwd": "ck3_autonomous_player/tests/unit",
+      "passed": 17,
+      "failed": 0,
+      "test_seconds": 0.011,
+      "outer_wall_seconds": 0.8657464,
+      "scope": "pure mapper + guarded single slot, actual ordinary NativeDriver queried_* DTO included"
+    },
+    {
+      "command": "py -B -m unittest test_player_faction_alerts_v1_bridge.PlayerFactionAlertsContractTests test_campaign_score_existing_inputs_v1.ExistingMonthInputsTests -v",
+      "cwd": "ck3_autonomous_player/tests/unit",
+      "passed": 19,
+      "failed": 0,
+      "test_seconds": 0.006,
+      "outer_wall_seconds": 1.3740764,
+      "scope": "existing optional-absence alerts/monthly compatibility"
+    },
+    {
+      "command": "py -B -m unittest test_realm_membership_service_v1 -v",
+      "cwd": "ck3_autonomous_player/tests/unit",
+      "passed": 6,
+      "failed": 0,
+      "test_seconds": 0.025,
+      "outer_wall_seconds": 1.3978134,
+      "scope": "actual Service internal planning reader -> public deepcopy -> ordinary dispatch -> execute_step -> synthetic Driver -> afterhook; only strategic choice fixed. Fresh/current/vassal loss, old epoch, planning/dispatch exception, cross-actor/missing material, new plan during query, nonquery zero extra read."
+    }
+  ],
+  "native_fixture": {
+    "target": "xar_ck3_realm_camera_subrealm_v1_test",
+    "CTest_name": "xar_ck3_realm_camera_subrealm_v1",
+    "configuration": "Release",
+    "jobs": 2,
+    "translation_units": 5,
+    "compile_and_link_succeeded": true,
+    "flags": "existing /W4 /WX /Gy /permissive- /EHsc /utf-8",
+    "started_at_utc": "2026-10-19T09:06:28.181796+00:00",
+    "closed_at_utc": "2026-10-19T09:07:00.330619+00:00",
+    "outer_wall_seconds": 32.1483248998411,
+    "authored_cases": 14,
+    "local_CTest_executed": false,
+    "blocker": "new exact EXE Defender settings_failed/admin_required_for_verified_readback; 0Add/0UAC. Root directs no broker install/desktop UAC; exact CTest delegated to next CI.",
+    "qualification": "COMPILED_NOT_RUN_NOT_ADOPTED_NOT_GAME_QUALIFIED",
+    "external_closure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\CLOSE01.json",
+      "bytes": 3791,
+      "sha256": "f7e836ea1cd3c09d28edc079b336555fb69c54f09e1f30178156f35c238d50f9"
+    },
+    "artifacts": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\INPUT-PINS.json",
+        "bytes": 2755,
+        "sha256": "3891ccdd32ba60220fdab97b1b316e143f1d7606859703ed3f7c9fa8e68cb444"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\BUILD-INVOKE.json",
+        "bytes": 706,
+        "sha256": "4c88c4c65e37adf245366aefd2c82487fbd2d5bddf5d04cc9df8cc37a58c1c6e"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\native-msvc-result.json",
+        "bytes": 1843,
+        "sha256": "f2fcae074d1e234d0acce080d4143b658a71b8ecb16fcbb93485d9ddee2d9c2f"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\msvc-configure.log",
+        "bytes": 753,
+        "sha256": "faff0d6c81fa2a8a6ef86cbfc86c588859d13cc23013187580d365ae0becd42b"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\msvc-build.log",
+        "bytes": 717,
+        "sha256": "2ec47793715671379e4c368dc6a9b219582f815b9ca3935e2cd2a17755e662f9"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\PRODUCER-STDOUT.txt",
+        "bytes": 4594,
+        "sha256": "2c0f4b408202f91897e6cf7bd00b47e98010ea9780cd860c37eca10161e860ba"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\PRODUCER-STDERR.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\xar_ck3_realm_camera_subrealm_v1_test.exe",
+        "bytes": 168960,
+        "sha256": "7cea254fb53a0eb847a1c42f79f99886d7884b2237d4e272902c6e1008826248"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\defender-exe-exclusions\\20261019T090700Z-fb8ec0dc\\manifest.json",
+        "bytes": 1854,
+        "sha256": "b197d5c6ea0506ebe7cdfbbfa60a98d902fdc0182d0575f3bf79767857d9ba80"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-m1-realm-fixture01\\defender-exe-exclusions\\20261019T090700Z-fb8ec0dc\\receipt.json",
+        "bytes": 1177,
+        "sha256": "5856d150f18934c85e88be2423ae846c9cf578c86ebb49d59b9915fbf1e4c6ec"
+      }
+    ],
+    "manifest_hash_note": "receipt.manifest_sha256=8eb7b6af1c7fc97b1b0661ecd26707c4b59508fbb2b986f121e3cef404d3cce6 is the receipt identity field, separate from raw disk manifest.json pin in artifacts",
+    "Native_DLL_built_loaded_or_deployed": false,
+    "Native27_closed_child_changed": false
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_faction_alerts_v1.hpp",
+      "before_bytes": 13366,
+      "after_bytes": 14279,
+      "net_bytes": 913,
+      "sha256": "9fa5509813ea5276490ec4ec2fe4bc76db9eb8aa38e0fab9d23a4f03c5ddb5d4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_faction_alerts.cpp",
+      "before_bytes": 45652,
+      "after_bytes": 47550,
+      "net_bytes": 1898,
+      "sha256": "4c9864749fa4e8d887b3ca8d8ec2dae55a4431f184439ee2188b1c68e8f82236"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/player_faction_alerts_v1.cpp",
+      "before_bytes": 15991,
+      "after_bytes": 16816,
+      "net_bytes": 825,
+      "sha256": "dc4c7a7cd6165afc013c59eff49b472b5c2edf695d636b00b1a702b301c524e0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/player_faction_alerts_v1_serializer.cpp",
+      "before_bytes": 27352,
+      "after_bytes": 29125,
+      "net_bytes": 1773,
+      "sha256": "367eefddd41e7758df28350f1783f53cb24ad06fda1869b6e166d3d957066481"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/realm_camera_subrealm_v1_test.cpp",
+      "before_bytes": 2795,
+      "after_bytes": 7035,
+      "net_bytes": 4240,
+      "sha256": "b89af7b8faf1c628dd4c6da4287ef6e4d7974002483ebc9144a34e874708c881"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_faction_alerts_contract.py",
+      "before_bytes": 34495,
+      "after_bytes": 37236,
+      "net_bytes": 2741,
+      "sha256": "14aeddc4c4ac978f617e9498a295e9d13b00cf499665be57bbcce7bc6049877e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/campaign_score_existing_inputs_v1.py",
+      "before_bytes": 8951,
+      "after_bytes": 10112,
+      "net_bytes": 1161,
+      "sha256": "3d7fabb8181da6b8ae3a5e554e5a291c3b11d4e69a85100da219a8ccead72fb2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_membership_after_query_v1.py",
+      "before_bytes": 0,
+      "after_bytes": 7988,
+      "net_bytes": 7988,
+      "sha256": "875d97c5139a2a10ca7bee86159c151a3f95e437a2350ab381d1cf5223b3fab2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/realm_membership_feedback_v1.py",
+      "before_bytes": 0,
+      "after_bytes": 9104,
+      "net_bytes": 9104,
+      "sha256": "d865ab4061d750c6e9174fa8e585705b5a44a11a990d160a6c1db14d0ba67a64"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_realm_membership_feedback_v1.py",
+      "before_bytes": 0,
+      "after_bytes": 10033,
+      "net_bytes": 10033,
+      "sha256": "a2b4abecb3dd24ccc33e1822544e1fa06551a50de3d51be6ff2a35224821abf5"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_realm_membership_after_query_v1.py",
+      "before_bytes": 0,
+      "after_bytes": 7630,
+      "net_bytes": 7630,
+      "sha256": "acda29a2296fc677052f8c77d09a5cfc67e4cac8440ddc444d2bb3b04e8b5780"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py",
+      "before_bytes": 0,
+      "after_bytes": 7806,
+      "net_bytes": 7806,
+      "sha256": "965eb36d88e56c20c5d791af09b4623da92e89ad2bc1acb58e0e464083c98d5b"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m1-realm-service-plan-2026-10-19.patch",
+      "before_bytes": 0,
+      "after_bytes": 2716,
+      "net_bytes": 2716,
+      "sha256": "27452b789e3ae8de9902d4c13474e372446aabce201e3e652d054bf9cb74c0e7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m1-realm-service-after-query-2026-10-19.patch",
+      "before_bytes": 0,
+      "after_bytes": 1292,
+      "net_bytes": 1292,
+      "sha256": "7805c74a642202851159bab86b0f95a5fc9c3cb0a30228b87cd32ba033a7e476"
+    }
+  ],
+  "unchanged_frozen_artifacts": [
+    {
+      "path": "docs/ck3-native-ai/g2-m1-research-2026-10-19.md",
+      "bytes": 15379,
+      "sha256": "977c575e231ef0169e81eff89253a0cbb6be995ad1f9638141a244d394248006"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m1-c7-month007-042-long-window-2026-10-19.json",
+      "bytes": 11581,
+      "sha256": "d2168f06c1d2bb53ca95982611a219ba4209e0c74a3c002c0df32f9bfd3b5a6c"
+    }
+  ],
+  "storage": {
+    "source_admission": "storage01/RESEARCH-FOLLOWUPS-ACCOUNT12-01.json; original other128MiB/review unchanged",
+    "source_hard_net_limit_bytes": 98304,
+    "source_before_bytes": 1017680,
+    "source_after_bytes_excluding_this_receipt": 1079589,
+    "source_net_bytes_excluding_this_receipt": 61909,
+    "child_admission": "storage01/M1-REALM-FIXTURE-CHILD01.json 3791B SHA27f959d29118e86b56d7037f72d84ba79b42ae9b94f72a2f87c0b8dd11729c28",
+    "external_child_hard_limit_bytes": 134217728,
+    "external_child_logical_retained_bytes": 18617801,
+    "allocated_bytes": null,
+    "peak_bytes": null,
+    "inputs_and_EXE_retained": true,
+    "external_child_review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "producer_closed": true,
+    "future_write_bytes": 0,
+    "physical_release_credit_bytes": 0,
+    "deletions": 0,
+    "this_receipt_bytes": 13368,
+    "source_net_bytes_including_this_receipt": 75277
+  }
+}

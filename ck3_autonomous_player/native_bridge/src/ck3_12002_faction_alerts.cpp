@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstring>
 #include <limits>
+#include <unordered_map>
 #include <utility>
 
 #if defined(_WIN32)
@@ -423,7 +424,14 @@ bool ReadSubrealmCountyIds(
     const PlayerFactionAlertsAccessV1 &access, std::int32_t actor_id,
     std::vector<std::int32_t> &output) {
   output.clear();
+  // All writes remain local until the complete traversal succeeds. These
+  // holder/contract operands and the immediate-liege getter are already used
+  // by the exact-build faction/title-holder readers; no new address is bound.
+  std::vector<std::int32_t> counties;
   std::vector<std::int32_t> characters{actor_id};
+  std::vector<std::int32_t> parents{-1};
+  std::unordered_map<std::int32_t, std::size_t> indices{{actor_id, 0}};
+  std::size_t title_visits = 0, contract_visits = 0;
   for (std::size_t cursor = 0; cursor < characters.size(); ++cursor) {
     if (characters.size() > 16'384) return false;
     void *character = nullptr;
@@ -432,10 +440,13 @@ bool ReadSubrealmCountyIds(
                  environment.character_fallback_slot, characters[cursor], 0x18,
                  character) || !character ||
         !Read(access, character, 0x1C0, land)) return false;
-    if (!land) continue;
+    // A missing land state does not prove an empty geographical realm.
+    if (!land) return false;
     std::vector<std::int32_t> ids;
     if (!ReadIdSpan(access, land, 0x1E0, ids)) return false;
     for (const auto title_id : ids) {
+      // Explicit work limits, not a claim about a native maximum realm size.
+      if (++title_visits > 65'536) return false;
       void *title = nullptr;
       void *definition = nullptr;
       std::int32_t tier = -1;
@@ -449,10 +460,17 @@ bool ReadSubrealmCountyIds(
       // branch accepts a title iff its de-jure child count is nonzero.
       if (!Read(access, title, 0x11C, de_jure_children) || de_jure_children < 0)
         return false;
-      if (de_jure_children) output.push_back(title_id);
+      if (de_jure_children) {
+        std::int32_t holder_id = -1;
+        if (!Read(access, title, 0x128, holder_id) ||
+            holder_id != characters[cursor]) return false;
+        counties.push_back(title_id);
+        if (counties.size() > kMaximumMembers) return false;
+      }
     }
     if (!ReadIdSpan(access, land, 0x218, ids)) return false;
     for (const auto contract_id : ids) {
+      if (++contract_visits > kMaximumMembers) return false;
       void *contract = nullptr;
       void *vassal = nullptr;
       void *round_trip = nullptr;
@@ -464,12 +482,33 @@ bool ReadSubrealmCountyIds(
           !Resolve(access, environment.character_storage_slot,
                    environment.character_fallback_slot, vassal_id, 0x18,
                    round_trip) || round_trip != vassal) return false;
-      if (std::find(characters.begin(), characters.end(), vassal_id) == characters.end())
+      void *actual_liege = nullptr;
+      if (!InvokeLiege(environment.immediate_liege, vassal, actual_liege) ||
+          actual_liege != character || vassal_id == actor_id) return false;
+      const auto seen = indices.find(vassal_id);
+      if (seen == indices.end()) {
+        if (characters.size() >= kMaximumMembers) return false;
+        indices.emplace(vassal_id, characters.size());
         characters.push_back(vassal_id);
+        parents.push_back(characters[cursor]);
+      } else {
+        // Repeated same-parent references may be deduplicated. A second parent
+        // or an ancestor back-edge is not a complete tree observation.
+        const auto index = seen->second;
+        if (parents[index] != characters[cursor]) return false;
+        auto ancestor = characters[cursor];
+        for (std::size_t depth = 0; ancestor != -1; ++depth) {
+          if (depth >= kMaximumMembers || ancestor == vassal_id) return false;
+          const auto parent = indices.find(ancestor);
+          if (parent == indices.end()) return false;
+          ancestor = parents[parent->second];
+        }
+      }
     }
   }
-  std::sort(output.begin(), output.end());
-  output.erase(std::unique(output.begin(), output.end()), output.end());
+  std::sort(counties.begin(), counties.end());
+  counties.erase(std::unique(counties.begin(), counties.end()), counties.end());
+  output = std::move(counties);
   return true;
 }
 
@@ -707,16 +746,10 @@ bool ReadCountyExposures(
   std::vector<std::int32_t> county_ids;
   if (!ReadSubrealmCountyIds(environment, access, actor_id, county_ids)) return false;
   for (const auto title_id : county_ids) {
-    void *title = nullptr;
-    if (!Resolve(access, environment.landed_title_storage_slot,
-                 environment.landed_title_fallback_slot, title_id, 0x10,
-                 title) || !title) return false;
-    void *province = nullptr;
-    std::uint32_t province_type = 0;
-    void *county = nullptr;
-    if (!InvokeLiege(environment.title_province, title, province) || !province ||
-        !Read(access, province, 0x85C, province_type) || province_type != 0x50726F76U ||
-        !Read(access, province, 0x848, county) || !county) return false;
+    void *title = nullptr, *county = nullptr;
+    FactionCountyOpinionMaterial12003 identity;
+    if (!ReadCountyIdentityMaterial12003(environment, access, title_id,
+                                        identity, title, county)) return false;
     void *joined = nullptr;
     std::int32_t count = 0;
     if (!Read(access, county, 0x3B0, joined) ||
@@ -755,6 +788,9 @@ bool ReadCountyExposures(
       break;
     }
   }
+  // Retain the actual complete list, even when no county has an exposure and
+  // there are no populist factions. Included in the existing two-sample check.
+  output.complete_subrealm_county_title_ids = std::move(county_ids);
   return true;
 }
 

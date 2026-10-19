@@ -1,0 +1,72 @@
+{
+  "schema": "xar.C8-LIFE4102-warm-source-and-software-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:08:11.456492+00:00",
+  "machine_source": "py tools/ck3_live_run_id.py machine, toolchunk0e8b5d",
+  "status": "SOFTWARE_READY_ACTUAL_CONSTRUCTOR_AND_DIAGNOSTICS_PENDING",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\life4102_diag_warm_queue_v1.py",
+    "bytes": 20002,
+    "sha256": "550e9c10d3d2faefbcd4a73c344f218d02563ead2013d279d947215660dfbbd9"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_life4102_diag_warm_v1.py",
+    "bytes": 17173,
+    "sha256": "78fdfeec21d830357e2488e8efbbb9e029b5ed6c8138d7b2af33ff03891c019d"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\life4102-warm-qual03\\QUALIFICATION.json",
+    "bytes": 7822,
+    "sha256": "343204e3c87cc2fd1622f1e5c7cf844d26c52b9f6287efc17a0ca6f3e356e358"
+  },
+  "software_qualification": {
+    "actual_C8_original_call_full_loop_generated_AST_loaded": true,
+    "actual_startup_check_after_consume_publish_C6_relay_CAP_order_used": true,
+    "future_SEM4104_CAP4105_are_explicit_software_fixtures": true,
+    "actual_postclose_inputs_checked": true,
+    "conditional_child_focus_original_call_exercised": true,
+    "negative_cases_rejected": [
+      "wrong_Game",
+      "date_drift",
+      "cold_CAP",
+      "child_before_first_diagnostic",
+      "diagnostic_replay",
+      "child_diagnostic_replay"
+    ],
+    "blocked4102_zero_credit_only": true,
+    "diagnostic_nested_native_error_preserved": true,
+    "actual_Game_Native_MCP_calls": 0,
+    "runtime_files_mutated": 0
+  },
+  "actual_original_inputs": {
+    "blocked4102": "896f6c4aa7658a7bfc9bf1f4c2380c445faf94cd8284ccb5081cde46ced4a484",
+    "failed_clear4103": "0154c97b2060a96558161e5cdefbc05c9735f8d85b47eeb62ea1a5993d43a5a4",
+    "postclose": "11a0de1e994f597abdce3d7c2a8c5c3b810bcc576a7a872e4a3de7148e32738d",
+    "Queue1_App0": "actual both kernel signaled; normalfalse retained, not converted to dual0",
+    "closedDriver": "metadata pin only; body not read"
+  },
+  "scope": {
+    "completed_cycles": 1956,
+    "date_raw": 53188032,
+    "game_days": 1821,
+    "actor": 40526,
+    "episode": "native-40526-1bec95182886",
+    "business_source": "8e1e59f073f239d266f5b59f57c65b5645658512",
+    "Game": "153556/134368602545256920",
+    "Native": "26 unchanged",
+    "display_OBS": "C6 retained",
+    "pending1957": "only exact blocked4102/no selected dispatch discarded after real samePidHot freshSEM/CAP;0credit",
+    "onceLIFE2": "App create_server original Driver method, actual nested native_error retained; no separate connection",
+    "conditional_child": "one allowed only after same-frame getter/key error; App handler independent Native26 qualification required"
+  },
+  "command": "py tools/g2_saved_campaign/qualify_life4102_diag_warm_v1.py --runtime-root D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime --queue-sha256 4057cb39cd296c5db9b37bd66b068827d77d19dfb9d73063324d2fb3fded863f --clean-seed D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c8-life-diagnostic79/POST-C7-CLOSE.json --output-root _runtime/life4102-warm-qual03",
+  "qualification_output_created_once": true,
+  "rerun_requires_new_output_root": true,
+  "limits": [
+    "Software SEM/CAP and diagnostic return bodies are explicit fixtures, not actual diagnostic results.",
+    "Original C8 call method and original startup readiness order executed; no actual App/Game/MCP RPC performed.",
+    "Original full_loop/generated loaded and inherited without overrides; this fixture does not execute a new full_loop.",
+    "Actual constructor runs recording/process guards only under runtime sole owner. This record does not claim them passed."
+  ],
+  "review_after_utc": "2026-10-26T00:00:00+00:00"
+}

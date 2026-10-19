@@ -68,6 +68,9 @@ _FIELDS: Final = {
     "unavailable_reason",
     "provenance",
 }
+SUBREALM_COUNTIES_COMPONENT_V1: Final = "player_subrealm_geographic_counties_v1"
+SUBREALM_COUNTIES_SCOPE_V1: Final = "played_character_own_subrealm_including_vassals"
+SUBREALM_COUNTIES_SOURCE_V1: Final = "native_actor_vassal_held_counties_double_sample_v1"
 _TARGETING_FACTION_FIELDS: Final = {
     "faction_id",
     "faction_type_key",
@@ -641,6 +644,34 @@ def _planner_projection(value: object) -> dict[str, object]:
     return projection
 
 
+def _subrealm_counties_component(value, *, actor, native_revision, date_raw):
+    """Qualify an optional complete county set, not a surrender prediction."""
+    fields = {"status", "complete", "scope", "source", "snapshot_revision",
+              "date_raw", "actor_character_id", "county_title_ids", "unavailable_reason"}
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError("subrealm county component fields are invalid")
+    if (value["scope"] != SUBREALM_COUNTIES_SCOPE_V1
+            or value["source"] != SUBREALM_COUNTIES_SOURCE_V1
+            or _positive_int32(value["actor_character_id"], "subrealm.actor") != actor
+            or _positive_uint64(value["snapshot_revision"], "subrealm.revision") != native_revision
+            or _int(value["date_raw"], "subrealm.date", minimum=-(2**31), maximum=2**31-1) != date_raw):
+        raise ValueError("subrealm county source does not match the owner frame")
+    complete = _bool(value["complete"], "subrealm.complete")
+    if complete:
+        if value["status"] != "available" or value["unavailable_reason"] is not None:
+            raise ValueError("complete subrealm county component has contradictory status")
+        ids = _sorted_unique_ids(value["county_title_ids"], "subrealm.county_title_ids")
+        if len(ids) > 16_384:
+            raise ValueError("subrealm county set exceeds its source bound")
+    else:
+        if (value["status"] != "unavailable" or value["county_title_ids"] is not None
+                or not isinstance(value["unavailable_reason"], str)
+                or not value["unavailable_reason"] or len(value["unavailable_reason"]) > 256):
+            raise ValueError("incomplete subrealm county component cannot expose a partial set")
+        ids = None
+    return {**value, "complete": complete, "county_title_ids": ids}
+
+
 def normalize_player_faction_alerts_v1(
     value: object,
     *,
@@ -660,7 +691,8 @@ def normalize_player_faction_alerts_v1(
     expected_snapshot_revision = _positive_uint64(
         expected_snapshot_revision, "expected_snapshot_revision"
     )
-    if not isinstance(value, dict) or set(value) != _FIELDS:
+    if not isinstance(value, dict) or set(value) not in (
+            _FIELDS, _FIELDS | {SUBREALM_COUNTIES_COMPONENT_V1}):
         raise ValueError("player faction alerts must contain exactly the v1 fields")
     if value.get("schema_version") != 1:
         raise ValueError("schema_version must be 1")
@@ -690,6 +722,8 @@ def normalize_player_faction_alerts_v1(
 
     status = value.get("status")
     if status == "unavailable":
+        if SUBREALM_COUNTIES_COMPONENT_V1 in value:
+            raise ValueError("unavailable faction frame cannot expose a county component")
         if value.get("unavailable_reason") not in _UNAVAILABLE_REASONS:
             raise ValueError("unavailable_reason is invalid")
         if (
@@ -726,6 +760,11 @@ def normalize_player_faction_alerts_v1(
     player_character_id = _positive_int32(
         value.get("player_character_id"), "player_character_id"
     )
+    optional = {}
+    if SUBREALM_COUNTIES_COMPONENT_V1 in value:
+        optional[SUBREALM_COUNTIES_COMPONENT_V1] = _subrealm_counties_component(
+            value[SUBREALM_COUNTIES_COMPONENT_V1], actor=player_character_id,
+            native_revision=expected_snapshot_revision, date_raw=expected_date_raw)
     targeting_count = _int(
         value.get("targeting_faction_count"),
         "targeting_faction_count",
@@ -835,6 +874,7 @@ def normalize_player_faction_alerts_v1(
 
     return {
         **value,
+        **optional,
         "player_character_id": player_character_id,
         "targeting_faction_count": targeting_count,
         "targeting_factions": targeting,
@@ -881,6 +921,9 @@ def validate_player_faction_war_handoffs_v1(
 
 
 __all__ = [
+    "SUBREALM_COUNTIES_COMPONENT_V1",
+    "SUBREALM_COUNTIES_SCOPE_V1",
+    "SUBREALM_COUNTIES_SOURCE_V1",
     "PLAYER_FACTION_ALERTS_V1_BACKEND_ID",
     "PLAYER_FACTION_ALERTS_V1_12002_BACKEND_ID",
     "PLAYER_FACTION_ALERTS_V1_EXECUTABLE_SHA256",

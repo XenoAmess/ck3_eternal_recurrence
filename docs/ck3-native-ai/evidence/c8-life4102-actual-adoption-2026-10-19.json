@@ -1,0 +1,131 @@
+{
+  "schema": "xar.C8-LIFE4102-diagnostic-actual-adoption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:20:47.548745+00:00",
+  "source_observed_at_utc": "2026-10-19T09:19:21.339197+00:00",
+  "status": "ACTUAL_WARM_AND_TWO_CONDITIONAL_READS_CLOSED",
+  "source_packet": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\ACTUAL-DIAGNOSTIC.json",
+    "bytes": 10782,
+    "sha256": "e0bd28c7c945e6c185003642e15d0fec0ae06fabeb4097ab2d635f099c123a37"
+  },
+  "independently_read_closed_small_sources": [
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4104-1-result.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\4104-1-result.json",
+      "bytes": 59324,
+      "sha256": "0788ba35b79ee0ce6a0aa344a9c1a17b3b297a3c8ea46afebbfbe959ef0d5df5"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4105-1-result.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\4105-1-result.json",
+      "bytes": 61986,
+      "sha256": "bb6a13486faf5bbe41223bc4a76d97c091a0755c18c6cbb4e0fb17c340621d49"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4106-1-result.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\4106-1-result.json",
+      "bytes": 3899,
+      "sha256": "6813b0fc6929f2c5b174630c66019430de324804afed1a4e7415e24bacf4407d"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4107-1-result.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\4107-1-result.json",
+      "bytes": 5488,
+      "sha256": "4ae9cc87100123704eea156f31541f8e8355cc583e9efd7814f42d4607d94e6b"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\C8-LIFE2-ONCE.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\C8-LIFE2-ONCE.json",
+      "bytes": 1810,
+      "sha256": "4bfca30e32fb43f5a3e1b0c7b10a4fc5555e1043921ec070ef8070cd5f3b7d3a"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\C8-CHILD-FOCUS-ONCE.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\C8-CHILD-FOCUS-ONCE.json",
+      "bytes": 2669,
+      "sha256": "518aa4892c011946ecc6bb355590a7e54a65a69378b02df1018046a4ee94f984"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-C8-LIFE-DIAG-WARM-BOUND.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\ROOT-C8-LIFE-DIAG-WARM-BOUND.json",
+      "bytes": 1893,
+      "sha256": "77d0c31ac4eaba0a5d19bfbf6958300f5b920cb375828e4b7bb761c6b543a471"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "bytes": 5748,
+      "sha256": "e99e44ed07a35c45ee7a4968bb3efdf59c2f3ece36d5da042140215ebfb5c6df"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\NEXT-SEQUENCE-P37.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\NEXT-SEQUENCE-P37.json",
+      "bytes": 66,
+      "sha256": "3404b8cc962558171fcff601b2a7e6aae4840db8298d56ac727cb394bb8d2427"
+    },
+    {
+      "original_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-AUDIENCE-ACTIVE-SDK-C8.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c8-life-diagnostic79\\actual-diagnostic\\ROOT-AUDIENCE-ACTIVE-SDK-C8.json",
+      "bytes": 431,
+      "sha256": "998ed78e7073f0dfdba05e4dfcbbf6649a9ef7b11af529f46aebfb29309c203e"
+    }
+  ],
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\life4102_diag_warm_queue_v1.py",
+    "bytes": 20002,
+    "sha256": "550e9c10d3d2faefbcd4a73c344f218d02563ead2013d279d947215660dfbbd9"
+  },
+  "actual": {
+    "firstSEM": 4104,
+    "CAP": 4105,
+    "onceLIFE2": 4106,
+    "conditional_child_once": 4107,
+    "NEXT": 4108,
+    "same_pid_hot": true,
+    "Game_pid": 153556,
+    "Game_creation_filetime": 134368602545256920,
+    "Native": "26 retained",
+    "publisher_OBS": "C6 retained",
+    "business_source": "8e1e59f073f239d266f5b59f57c65b5645658512",
+    "completed_cycles": 1956,
+    "game_days": 1821,
+    "pending_cycle": null,
+    "ordinary_cycle_credit": 0,
+    "business_action_credit": 0,
+    "AUTO4102_replayed": false,
+    "exact_state_delta": "only pending_cycle cleared and current before/source rebound to actualSEM4104; every other loop field identical under decoded JSON comparison",
+    "same_exact_frame": {
+      "snapshot_id": "native:3136",
+      "revision": 2,
+      "native_revision": 3136,
+      "date_raw": 53188032,
+      "episode_run_id": "native-40526-1bec95182886",
+      "paused": true,
+      "map_ready": true,
+      "player_character_id": 40526,
+      "actor_alive": true,
+      "bridge_pid": 153556,
+      "hello_pid": 153556,
+      "connection_generation": 6
+    },
+    "LIFE2_native_error": "native_lifestyle_current_state_current_lifestyle_key_read_failed",
+    "child_current_focus": {
+      "available": true,
+      "unavailable_reason": null,
+      "presence": "present",
+      "key": "education_intrigue"
+    },
+    "requested_target_key": "education_stewardship",
+    "target_validation_unavailable_reason": "education_definition_missing",
+    "focus_change_or_business_submit_calls": 0
+  },
+  "history": "4102 blocked/4103 original refused clear and attempt01 audience-C7 collision retained; corrected audience is a new C8 current-view receipt, not retroactive original success.",
+  "limits": [
+    "App method raw Native command result not separately exposed; exact original Driver return retained.",
+    "Current education_intrigue is observed independently of requested education_stewardship target validation failure.",
+    "No full-loop progress or performance target success is granted by these diagnostic reads.",
+    "No Driver/SAVE body or Game/Native/MCP query was read/executed by this independent recorder."
+  ],
+  "review_after_utc": "2026-10-26T00:00:00+00:00"
+}

@@ -187,6 +187,19 @@ struct PlayerFactionAlertsComponentUnavailableReasonsV1 {
       const PlayerFactionAlertsComponentUnavailableReasonsV1 &) = default;
 };
 
+// Optional additive observation. Its source frame is the containing paused
+// double-sampled faction query, independent of any populist surrender branch.
+struct PlayerSubrealmGeographicCountiesV1 {
+  bool complete = false;
+  std::uint64_t snapshot_revision = 0;
+  std::int32_t date_raw = 0;
+  std::int32_t actor_character_id = -1;
+  std::vector<std::int32_t> county_title_ids;
+  std::optional<std::string> unavailable_reason;
+  friend bool operator==(const PlayerSubrealmGeographicCountiesV1 &,
+                         const PlayerSubrealmGeographicCountiesV1 &) = default;
+};
+
 struct PlayerFactionAlertsV1 {
   PlayerFactionAlertsStatusV1 status =
       PlayerFactionAlertsStatusV1::unavailable;
@@ -202,6 +215,8 @@ struct PlayerFactionAlertsV1 {
       component_unavailable_reasons;
   PlayerFactionAlertsFailureReasonV1 unavailable_reason =
       PlayerFactionAlertsFailureReasonV1::none;
+  std::optional<PlayerSubrealmGeographicCountiesV1>
+      player_subrealm_geographic_counties_v1;
 
   friend bool operator==(const PlayerFactionAlertsV1 &,
                          const PlayerFactionAlertsV1 &) = default;
@@ -284,6 +299,9 @@ struct PlayerFactionAlertsSourceSampleV1 {
   std::int32_t targeting_faction_count = -1;
   std::vector<PlayerTargetingFactionSourceRowV1> targeting_factions;
   std::vector<PlayerFactionCountyExposureSourceRowV1> county_exposures;
+  // Absence preserves old/count-only producers. Empty is known only after a
+  // complete actor+vassal enumeration; partial vectors must never reach here.
+  std::optional<std::vector<std::int32_t>> complete_subrealm_county_title_ids;
 
   friend bool operator==(const PlayerFactionAlertsSourceSampleV1 &,
                          const PlayerFactionAlertsSourceSampleV1 &) = default;

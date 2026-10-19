@@ -114,6 +114,7 @@ def _realm_diagnostics(snapshot, result):
 def project_existing_month_inputs_v1(
     snapshot: Mapping, *, cash_packet=None, cash_source_frame=None,
     campaign_root_result=None, root_source_frame=None,
+    faction_result=None, faction_source_frame=None, previous_realm_observation=None,
 ) -> dict:
     """Return four typed metric rows and realm diagnostics for the same MET frame.
 
@@ -151,4 +152,19 @@ def project_existing_month_inputs_v1(
                 result["raw_metrics"] = {name: _unknown(name, reason) for name, _, _ in _CASH_FIELDS}
             else:
                 result["realm_diagnostics"] = {"status": "unavailable", "unavailable_reason": reason}
+    if faction_result is not None or faction_source_frame is not None or previous_realm_observation is not None:
+        # Optional consumption only. The monthly collector does not add a query
+        # to obtain this component, and old callers keep their exact shape.
+        from .realm_membership_feedback_v1 import project_realm_membership_feedback_v1
+        feedback = project_realm_membership_feedback_v1(snapshot,
+            faction_result=faction_result, source_frame=faction_source_frame,
+            previous=previous_realm_observation)
+        result["realm_membership_feedback"] = feedback
+        result["raw_metrics"].update(feedback["raw_metrics"])
+        if feedback["status"] == "available":
+            result["sources"].append({"id": "existing_player_faction_alerts",
+                "kind": "already_obtained_ordinary_query", "binding": deepcopy(dict(faction_source_frame)),
+                "query_sequence": feedback["observation"]["query_sequence"]})
+        else:
+            result["input_gaps"]["realm_membership"] = feedback["unavailable_reason"]
     return result

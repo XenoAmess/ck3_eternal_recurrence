@@ -1,0 +1,21 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py
+@@ -4794,7 +4794,17 @@
+                     "snapshot_id": planned["snapshot_id"], "revision": planned["revision"],
+                     "planning_source_frame": planned["planning_source_frame"],
+                     "plan": planned["plan"], "result": unavailable}
+-        outcome = self._execute_planned_turn(planned, before_submit=before_submit)
++        from .realm_membership_after_query_v1 import (
++            cancel_realm_membership_plan_v1, observe_realm_membership_after_query_v1,
++        )
++        try:
++            outcome = self._execute_planned_turn(planned, before_submit=before_submit)
++        except BaseException:
++            cancel_realm_membership_plan_v1(self, planned)
++            raise
++        if (outcome.get("selected_step") == QUERY_PLAYER_FACTION_ALERTS_V1_STEP
++                or getattr(self, "_realm_membership_query_slot_v1", None) is not None):
++            outcome = observe_realm_membership_after_query_v1(self, planned, outcome)
+         successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
+         if successor_owner is not None:
+             outcome = successor_owner.after_continue(planned, outcome)

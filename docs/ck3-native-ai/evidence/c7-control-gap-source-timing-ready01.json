@@ -1,0 +1,168 @@
+{
+  "schema": "xar.ck3.c7-control-gap-source-audit.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:05:13Z",
+  "evidence_layer": "Sealed natural FULL3864 timing and exact original caller source; new helper has isolated software qualification only. No current Queue/provider adoption or measured gain.",
+  "baseline": {
+    "ledger": "docs/ck3-native-ai/evidence/c7-post-succession-closed-performance01.json",
+    "bytes": 11513,
+    "sha256": "c8aa60bfee9dc82499feca23b2bf38055bbc80523eda855774e9519d6fcb8862",
+    "local_cycles": 30,
+    "actual_days": 7,
+    "wall_seconds": 28.016996,
+    "timed_RPC_seconds": 17.680280500557274,
+    "unassigned_control_gap_seconds": 10.336715499442725,
+    "AUTO_to_MET_seconds": 4.333968,
+    "MET_to_AUTO_seconds": 6.002749,
+    "original_AUTO9_start_utc": "2026-10-19T03:26:49.420926Z",
+    "cumulative_wall_seconds": 18698.777254,
+    "cumulative_days": 1780
+  },
+  "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+  "sourcepins": [
+    {
+      "relative_path": "root_p37c7_sdk_queue.py",
+      "bytes": 264849,
+      "sha256": "fd579859a384ba94a059a38701719918ef763a15d7df21f86c5b347dc6ff0a30",
+      "ranges": "125-155,1378-1387,1476-1567,1803-1874,2004-2013,2148-2362,3357-3457"
+    },
+    {
+      "relative_path": "root_p37_pending_requests.py",
+      "bytes": 1071,
+      "sha256": "126e8698b7c0305c69a08ce7607c5cc2749ba21d4e489f20118b8b5481a05da5",
+      "ranges": "6-24"
+    },
+    {
+      "relative_path": "root_p37c6_overlay_relay.py",
+      "bytes": 3030,
+      "sha256": "d8281c0cdbd81226f7982cdbd092164dcd2e559cc577de4a226a6409ebf8747b",
+      "ranges": "10-39"
+    },
+    {
+      "relative_path": "root_decision_text_api_c6.py",
+      "bytes": 4267,
+      "sha256": "74eb121afa70953626c64ac043bb3f21b90b2f93380896cc0da40c6a60ded7d5",
+      "ranges": "53-83"
+    },
+    {
+      "relative_path": "presentation-c6/g2_saved_campaign/decision_text_publisher.py",
+      "bytes": 29409,
+      "sha256": "38438b9b50896e8050f6c864c78a11291750a33bd7d0f73a5e0bde0130008bbe",
+      "ranges": "135-170,244-281,341-386"
+    }
+  ],
+  "source_findings": [
+    {
+      "component": "outer polling",
+      "facts": "run_request_loop awaits full_loop at3425. Its .25s sleep at3440 runs after the held FULL returns, not between generated AUTO/MET calls.",
+      "observed_cost_seconds": null
+    },
+    {
+      "component": "pending request scan",
+      "facts": "generated1868 calls pending_request_paths each RPC. Helper uses scandir once, validates names, then skips sequence<next_sequence before is_file/outbox.exists. Historical names are enumerated, but historical per-file stats are already avoided.",
+      "growth": "O(all inbox names) per generated call; candidate metadata only.",
+      "observed_cost_seconds": null
+    },
+    {
+      "component": "artifact guard",
+      "facts": "consume_sequence1563 freshly guards each request; full_loop2189 also guards each settled-loop iteration. artifact_bytes1378-1387 scans four flat roots and uses each existing entry.is_file/stat; no recursive rglob or retained byte cache.",
+      "growth": "O(all entries in4flat roots) per guard. Dynamic executed guard/entry/stat counts are not in the old trace.",
+      "observed_cost_seconds": null
+    },
+    {
+      "component": "Queue persistence",
+      "facts": "call prepares immutable response, then relays, classifies, writes credit/display/after-result receipts. persist_loop_state2004 writes governance sidecar and cumulative state at original milestones. atomic_payload flushes then rename/replace; only PermissionError retry sleeps25ms.",
+      "observed_cost_seconds": null
+    },
+    {
+      "component": "actual display ACK",
+      "facts": "relay_compact load_api/started_reference revalidate exact provider/binding; wait_text_published validates/enqueues exact source and blocks for this publisher ACK. Client wait sleeps20ms only while ACK absent. Publisher run polls CURRENT-INPUT with20ms sleep after each pass. Four-second shared I/O budget and five-second caller setting are retained.",
+      "observed_cost_seconds": null,
+      "limitation": "20ms requested sleeps are not measured actual elapsed or proof of10.3367s causality. TEXT_PUBLISHED is not OBS-drawn or business success."
+    }
+  ],
+  "decision": "Add one default-off bounded control probe before choosing a performance change. Do not remove guard/ACK/poll or weaken sequence, Native, horizon, display or unknown-action checks without natural evidence.",
+  "new_helper": {
+    "path": "tools/g2_saved_campaign/queue_control_timing_v1.py",
+    "API": [
+      "QueueControlTimingV1(machine_id=...,enabled=False)",
+      "arm_batch(control_sequence,cycle_budget<=30)",
+      "span(known_phase)",
+      "boundary(sequence,known_point,at_utc=originalUTC,monotonic_ns=existing_value)",
+      "record_artifact_scan(same_pass_counters_and_times)",
+      "settled_cycle()",
+      "finish_batch(at_utc=...,reason=...)"
+    ],
+    "contract": "One explicitly enabled batch; aggregate memory only, no I/O/RPC/scan/encoding. Off or cycle budget reached means no clock calls. <=128 request boundary rows; fixed phase names bound aggregates. Open spans crossing exhaustion are counted as dropped, not silently completed. Owner persists one final snapshot using existing admitted writer."
+  },
+  "minimal_future_source_contacts": [
+    {
+      "where": "owner normal Queue setup/full_loop, after C8 diagnosis only",
+      "proposal": "Construct disabled helper by default. Reviewed admission may arm exactly one <=30cycle batch. Settle probe only after every last-cycle span exits; finish once on batch exit/error. No scheduler, warm factory or current C7 mutation."
+    },
+    {
+      "where": "generated1868 and consume_sequence1563",
+      "proposal": "Wrap the original pending_request_paths and self.guard calls in pending_paths/consume_guard. Keep their invocation order, exact arguments, full safety checks and failure propagation."
+    },
+    {
+      "where": "artifact_bytes1378-1387",
+      "proposal": "Enabled branch instruments the SAME original four-root pass. Count roots/entries/is_file/stat attempts locally. Measure each existing is_file/stat block with monotonic_ns and finally, then submit elapsed_ns/metadata_ns and counters once to record_artifact_scan. Do not also span that scan. Disabled path retains its original loop.",
+      "cost_limit": "Two clock reads per existing entry plus scan boundaries only in the armed window. Counts/overhead must be disclosed; do not present instrumented-window elapsed as a speedup."
+    },
+    {
+      "where": "call1803-1865",
+      "proposal": "Record call_enter, original rpc_start/rpc_end, and call_return boundaries. Mark rpc_recorded_interval over the original await+model_dump through existing elapsed boundary, then response_prepare/response_write/result_decode/classifier/display_projection around original operations. Preserve the existing row timestamps; never move rpc_end after JSON write."
+    },
+    {
+      "where": "atomic_payload_v1 and persist_loop_state",
+      "proposal": "Wrap original atomic_write and loop_state_persist operations; record count/failure and inclusive/exclusive wall. Keep payload, flush, rename/replace/retry and exact paths unchanged. No additional dump/hash/write."
+    },
+    {
+      "where": "relay_compact10-39, future paired provider only",
+      "proposal": "relay_total contains relay_provider_validate then relay_ack_wait. Capture existing ACK.at_utc as text_published boundary and local return as text_ack_consumed without rereading a file. Do not change source identity, ACK matching, wait/deadline or before-submit barrier."
+    },
+    {
+      "where": "wait_text_published264-281, future paired provider only",
+      "proposal": "Optional nested ack_enqueue_validate, ack_read_validate and ack_poll_sleep around existing setup, ACK verification and identical time.sleep(.02). This separates actual client polling sleep from provider validation and scheduling; no new polls or missing ACK acceptance."
+    },
+    {
+      "where": "full_loop original loop step/persist milestones",
+      "proposal": "Optional loop_step outer span; it includes RPC and nested control work. Use nonoverlapping exclusive phases only when nesting/coverage is complete. All unmatched time remains unknown; retain campaign AUTO9 total wall and final snapshot write."
+    }
+  ],
+  "qualification": {
+    "commands": [
+      "python -B -m unittest discover -s tools/g2_saved_campaign -p test_queue_control_timing_v1.py -v",
+      "in-memory compile of helper/test; production AST has no Assert",
+      "python -B -O explicit cycle_budget31 rejection",
+      "git diff --check for3new leaves"
+    ],
+    "test_paths": "2focused software tests: disabled/exhausted zero-clock+one-batch cap; nested/exclusive scan partition+original exception identity+existing boundary reuse. builtins.open blocked; no Queue/Game/SDK file read or write.",
+    "result": "PASS; tests ran0.001s, not a performance benchmark.",
+    "runtime_phase_coverage_qualified": false,
+    "performance_gain_qualified": false,
+    "current_C7_adoption": false,
+    "next_natural_validation": "After Root/harness integrates an exact newly frozen normal Queue/provider, consume one natural <=30cycle closed compact+single control snapshot. Reconcile boundary gaps and counts; check dropped/open spans, errors, nesting and final write. No extra Game/RPC for this validation."
+  },
+  "coordination": {
+    "harness": "Owns current C8 diagnosis/warm factory; these new independent leaves do not edit it.",
+    "M0": "Shared I/O provider stays unchanged. Optional paired-provider timing contacts require Root's later exact-source adoption.",
+    "source_mutations_now": 0
+  },
+  "limits": {
+    "game_RPC_calls": 0,
+    "active_Driver_SAVE_reads": 0,
+    "large_raw_response_reads": 0,
+    "current_runtime_source_writes": 0,
+    "external_writes_bytes": 0,
+    "benchmark_calls": 0,
+    "old_ledgers_modified": false
+  },
+  "storage": {
+    "pool": "existing MICROPOOL01/other128MiB;3new repo leaves<=24KiB",
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}

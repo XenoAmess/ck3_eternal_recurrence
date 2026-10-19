@@ -55,6 +55,13 @@ Failure ValidateSample(const PlayerFactionAlertsSourceSampleV1 &sample,
       sample.county_exposures.size() > kMaximumRows) {
     return Failure::schema_invariant_failed;
   }
+  if (sample.complete_subrealm_county_title_ids &&
+      (sample.complete_subrealm_county_title_ids->size() > kMaximumRows ||
+       !PositiveUnique(*sample.complete_subrealm_county_title_ids) ||
+       !std::is_sorted(sample.complete_subrealm_county_title_ids->begin(),
+                       sample.complete_subrealm_county_title_ids->end()))) {
+    return Failure::schema_invariant_failed;
+  }
   std::unordered_set<std::int32_t> faction_ids;
   for (const auto &source : sample.targeting_factions) {
     const auto &row = source.row;
@@ -149,6 +156,15 @@ void MaterializeFull(const PlayerFactionAlertsSourceSampleV1 &sample,
   output.date_raw = frame.date_raw;
   output.player_character_id = sample.player_character_id;
   output.targeting_faction_count = sample.targeting_faction_count;
+  if (sample.complete_subrealm_county_title_ids) {
+    game::PlayerSubrealmGeographicCountiesV1 realm;
+    realm.complete = true;
+    realm.snapshot_revision = frame.snapshot_revision;
+    realm.date_raw = frame.date_raw;
+    realm.actor_character_id = sample.player_character_id;
+    realm.county_title_ids = *sample.complete_subrealm_county_title_ids;
+    output.player_subrealm_geographic_counties_v1 = std::move(realm);
+  }
   output.targeting_factions.clear();
   output.targeting_factions.reserve(sample.targeting_factions.size());
   for (const auto &source : sample.targeting_factions) {

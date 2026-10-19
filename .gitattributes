@@ -1227,3 +1227,5 @@ docs/ck3-native-ai/evidence/c6-faction515-predispatch-software01.json -text whit
 docs/ck3-native-ai/evidence/c7-source-only-warm-software01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c7-map520-clear-software01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/faction-gift513-actual-outcome-2026-10-19.json -text whitespace=cr-at-eol
+tools/g2_saved_campaign/qualify_life4102_diag_warm_v1.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/g2-m1-realm-service-plan-2026-10-19.patch -text whitespace=-blank-at-eol

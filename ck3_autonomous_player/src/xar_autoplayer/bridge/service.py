@@ -1809,8 +1809,14 @@ class GameplayBridgeService:
 
     def plan_turn(self) -> dict[str, object]:
         """Return a detached public plan after its private readers finish."""
-        plan_timing = start_army_timing("service.normal_plan_turn")
+        from .realm_membership_after_query_v1 import (
+            enter_realm_membership_planning_v1, leave_realm_membership_planning_v1,
+            cancel_realm_membership_plan_v1, finalize_realm_membership_plan_v1,
+        )
+        realm_epoch, realm_token = enter_realm_membership_planning_v1(self)
+        plan_timing = None
         try:
+            plan_timing = start_army_timing("service.normal_plan_turn")
             planned = _timed_planning_call_v1(
                 "service.planner_internal", self._plan_turn_internal)
             from .ordinary_sway_service_v1 import stage_ordinary_sway_v1
@@ -1842,9 +1848,15 @@ class GameplayBridgeService:
             cap_campaign = getattr(getattr(self, "driver", None), "cap_campaign_advance_plan_v1", None)
             if callable(cap_campaign):
                 planned = cap_campaign(planned)
-            return _timed_planning_call_v1(
+            public_planned = _timed_planning_call_v1(
                 "service.planner_public_plan_copy", copy.deepcopy, planned)
+            finalize_realm_membership_plan_v1(self, realm_epoch, public_planned)
+            return public_planned
+        except BaseException:
+            cancel_realm_membership_plan_v1(self, epoch=realm_epoch)
+            raise
         finally:
+            leave_realm_membership_planning_v1(realm_token)
             finish_army_timing(plan_timing, step="plan-turn")
 
     def _finish_prewar_force_coalition_plan_v2(
@@ -2554,6 +2566,13 @@ class GameplayBridgeService:
             from .ordinary_sway_service_v1 import project_ordinary_sway_input_v1
             planned["_ordinary_sway_input_v1"] = project_ordinary_sway_input_v1(
                 planning_snapshot, risk_root)
+            if planned["plan"].get("selected_step") == QUERY_PLAYER_FACTION_ALERTS_V1_STEP:
+                from .realm_membership_after_query_v1 import bind_current_realm_membership_plan_v1
+                bind_current_realm_membership_plan_v1(self, planned, planning_snapshot)
+            if getattr(self, "_realm_membership_feedback_v1", None) is not None:
+                from .realm_membership_after_query_v1 import realm_membership_summary_for_plan_v1
+                planned["plan"]["realm_membership_feedback_v1"] = realm_membership_summary_for_plan_v1(
+                    self, planned["planning_source_frame"])
             return planned
 
         if use_internal_view:
@@ -4794,7 +4813,17 @@ class GameplayBridgeService:
                     "snapshot_id": planned["snapshot_id"], "revision": planned["revision"],
                     "planning_source_frame": planned["planning_source_frame"],
                     "plan": planned["plan"], "result": unavailable}
-        outcome = self._execute_planned_turn(planned, before_submit=before_submit)
+        from .realm_membership_after_query_v1 import (
+            cancel_realm_membership_plan_v1, observe_realm_membership_after_query_v1,
+        )
+        try:
+            outcome = self._execute_planned_turn(planned, before_submit=before_submit)
+        except BaseException:
+            cancel_realm_membership_plan_v1(self, planned)
+            raise
+        if (outcome.get("selected_step") == QUERY_PLAYER_FACTION_ALERTS_V1_STEP
+                or getattr(self, "_realm_membership_query_slot_v1", None) is not None):
+            outcome = observe_realm_membership_after_query_v1(self, planned, outcome)
         successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
         if successor_owner is not None:
             outcome = successor_owner.after_continue(planned, outcome)

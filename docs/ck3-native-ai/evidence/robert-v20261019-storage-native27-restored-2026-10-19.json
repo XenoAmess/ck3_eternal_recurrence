@@ -1,0 +1,98 @@
+{
+  "schema": "xar.ck3.robert-v20261019-storage-restored-seal.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "sealed_at_utc": "2026-10-19T08:57:02.672226+00:00",
+  "machine_source": "Fresh tools/ck3_live_run_id.py machine; same bus-locked seal.",
+  "status": "NATIVE27_CHILD_CLOSED_STAGE64_CODE3_RESTORED",
+  "reservation_id": "robert30-v20261019-first64gib",
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "review_renewed": false,
+  "effective_stage_peak_bytes": 68719476736,
+  "code_profile_bytes": 3221225472,
+  "SAVE_bytes": 8589934592,
+  "other_components_unchanged": true,
+  "quota_bytes": 13950000000000,
+  "retained_other_reservations_bytes": 621808745452,
+  "retained_old_OUT_bytes": 146027527160,
+  "other_unspent_reservations_bytes": 767836272612,
+  "system_growth_bytes": 21474836480,
+  "safety_bytes": 21474836480,
+  "live_guard_bytes_unchanged": 818320260068,
+  "Native27_closed": {
+    "files": 42,
+    "logical_bytes": 45859113,
+    "allocated_bytes": 45928984,
+    "future_writes_bytes": 0,
+    "reopen_retry_or_Game_load_granted_by_storage": false
+  },
+  "postclose_code_need_including_retained_forecasts_bytes": 2327330432,
+  "code3_forecast_margin_bytes": 893895040,
+  "retired_unconsumed_temporary_stage_peak_bytes": 268435456,
+  "temporary64p25_revision_and_child_admission_preserved": true,
+  "capacity_snapshot": {
+    "observed_at_utc": "2026-10-19T08:57:01.869111+00:00",
+    "closed_exact_files": 78,
+    "active_recording_uuid": "e6f643ea-3404-446b-ae18-6b75cb9d682a",
+    "active_closed": false,
+    "closed_allocated_lower_bytes": 5158203928,
+    "active_current_allocated_bytes": 5339152384,
+    "remaining_peak_upper_bytes": 58222120424,
+    "quota_margin_bytes": 3041211956,
+    "physical_margin_bytes": 10575526452
+  },
+  "source_pins": {
+    "original_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\STORAGE-ADMISSION.json",
+      "bytes": 5395,
+      "sha256": "e1b062f71a2d3099fb855373bec3b279a58583a76ce1764376a9d719a6fa1a24"
+    },
+    "temporary64p25_revision": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\STAGE64P25-CODE3P25-SUPPLEMENT04.json",
+      "bytes": 9342,
+      "sha256": "61f25a1f8a9f1cbb5c94759fffe528a1b91fb634eadad3e98a557080fe21cfc6"
+    },
+    "Native27_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE27-TERMINATION-CHILD01.json",
+      "bytes": 3601,
+      "sha256": "8e5b6d23c97a7599eaa6dd31fc287d1da7d271675ade3900c64b9a4f38779ea7"
+    },
+    "Native27_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE27-TERMINATION-CLOSED01.json",
+      "bytes": 39172,
+      "sha256": "0033b49509db075cc59369e52ce6521c3a65b80507c81a2869e90b2cef0a553b"
+    },
+    "Native27_closed_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\FILES-CLOSED.json",
+      "bytes": 12954,
+      "sha256": "ffec55d7a3299dc8f000cb6b8fc2dc23917ef2c84939c475b169dc36ae030861"
+    },
+    "restored05": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\STAGE64-CODE3-RESTORED-SUPPLEMENT05.json",
+      "bytes": 3668,
+      "sha256": "2c8e2c1ff13307e9ea06aa0c92e272d62eb7e47dcdccef458b232e7530602247"
+    },
+    "capacity_account": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\REMAINING-PEAK-ACCOUNT14.json",
+      "bytes": 13406,
+      "sha256": "48934379741aaeca975ccaa414ad9d12853955bd0af859ca709a66e27da63c35"
+    },
+    "code_named_account": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\CODEPROFILE-COMBINED-NAMED-METADATA04.json",
+      "bytes": 21084,
+      "sha256": "5bcba639408f59f8fcedbb1996b4f21800975f8c92d4668d05f34c74760be253"
+    },
+    "observer_v8": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\observe_remaining_account_v8.py",
+      "bytes": 21335,
+      "sha256": "a977993d09b34f0456ee5decb548c4ced223c3711534c47f4f9e5385d622bcd7"
+    }
+  },
+  "whole_stage_actual_allocated_bytes": null,
+  "unscanned_code_allocation_bytes": null,
+  "future_SAVE_upper_bytes": null,
+  "research_remaining_bytes": null,
+  "deletions": 0,
+  "physical_release_credit_bytes": 0,
+  "automatic_service": false,
+  "scope": "Fresh exact78 closed files plus one current active MKV; revalidate each use. Measured current allocation corrects duplicate future reservation, not physical recovery. Native27 peak was retired after closed/future0; no unused budget reassigned. Existing TARGET/job/profile/guard/loaded sources were not changed by storage."
+}

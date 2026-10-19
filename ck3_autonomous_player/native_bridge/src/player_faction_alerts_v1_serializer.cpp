@@ -207,6 +207,19 @@ bool ValidAvailable(const game::PlayerFactionAlertsV1 &value) {
       value.planner_projection.exact_ultimatum_timing_ready) {
     return false;
   }
+  if (value.player_subrealm_geographic_counties_v1) {
+    const auto &realm = *value.player_subrealm_geographic_counties_v1;
+    if (realm.snapshot_revision != value.snapshot_revision ||
+        realm.date_raw != *value.date_raw ||
+        realm.actor_character_id != *value.player_character_id ||
+        (realm.complete
+             ? (realm.unavailable_reason.has_value() ||
+                realm.county_title_ids.size() > 16'384 ||
+                !StrictlyIncreasing(realm.county_title_ids))
+             : (!realm.county_title_ids.empty() ||
+                !realm.unavailable_reason.has_value() ||
+                realm.unavailable_reason->empty()))) return false;
+  }
   if (value.readiness.targeting_rows_ready) {
     if (!value.readiness.stock_dangerous_predicate_ready ||
         value.component_unavailable_reasons.targeting_rows.has_value() ||
@@ -293,6 +306,7 @@ bool ValidAvailable(const game::PlayerFactionAlertsV1 &value) {
 
 bool ValidUnavailable(const game::PlayerFactionAlertsV1 &value) {
   return value.snapshot_revision > 0 &&
+         !value.player_subrealm_geographic_counties_v1.has_value() &&
          !WireUnavailableReason(value.unavailable_reason).empty() &&
          !value.player_character_id.has_value() &&
          !value.targeting_faction_count.has_value() &&
@@ -593,8 +607,27 @@ std::string SerializePlayerFactionAlertsWithProvenanceV1(
     if (index != 0) output.push_back(',');
     AppendCountyExposure(output, value.county_exposures[index]);
   }
+  output.push_back(']');
+  if (value.player_subrealm_geographic_counties_v1) {
+    const auto &realm = *value.player_subrealm_geographic_counties_v1;
+    output += ",\"player_subrealm_geographic_counties_v1\":{\"status\":";
+    AppendJsonString(output, realm.complete ? "available" : "unavailable");
+    output += ",\"complete\":";
+    output += realm.complete ? "true" : "false";
+    output += ",\"scope\":\"played_character_own_subrealm_including_vassals\"";
+    output += ",\"source\":\"native_actor_vassal_held_counties_double_sample_v1\"";
+    output += ",\"snapshot_revision\":" + Number(realm.snapshot_revision);
+    output += ",\"date_raw\":" + Number(realm.date_raw);
+    output += ",\"actor_character_id\":" + Number(realm.actor_character_id);
+    output += ",\"county_title_ids\":";
+    if (realm.complete) AppendInt32Array(output, realm.county_title_ids);
+    else output += "null";
+    output += ",\"unavailable_reason\":";
+    AppendOptionalString(output, realm.unavailable_reason);
+    output.push_back('}');
+  }
   const auto &planner = value.planner_projection;
-  output += "],\"planner_projection\":{\"status\":";
+  output += ",\"planner_projection\":{\"status\":";
   AppendJsonString(
       output,
       planner.status == game::PlayerFactionPlannerProjectionStatusV1::available
