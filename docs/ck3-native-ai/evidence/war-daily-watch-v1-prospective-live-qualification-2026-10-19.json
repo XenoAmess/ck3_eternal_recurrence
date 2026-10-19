@@ -1,0 +1,62 @@
+{
+  "schema": "xar.war-daily-watch-prospective-live-qualification.v1",
+  "status": "PLAN_ONLY_NOT_AUTHORIZED_TO_ENABLE",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:19:04+00:00",
+  "identity_source": "Actual tools/ck3_live_run_id.py machine and clock tool readback; no Game query.",
+  "owner": "Root approves; sole runtime executes later at a normal clean boundary.",
+  "source_binding": {
+    "repo_integration": "36c8348f",
+    "actual_C12_business_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+    "actual_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src11",
+    "actual_adoption_record": "docs/ck3-native-ai/evidence/c12-actual-warm-adoption-2026-10-19.json",
+    "expected_Driver": {"relative_path": "xar_autoplayer/bridge/native_driver.py", "bytes": 1621076, "sha256": "a7c09a146cef8973f6a04919dfccba702475542f47fa53e7aa9038699014ff73"},
+    "expected_helper": {"relative_path": "xar_autoplayer/bridge/war_daily_watch_v1.py", "bytes": 10115, "sha256": "22d3406c346d753d11550ce1610f0b77c13bccec61d5d92345a09a50efcf0bdb"},
+    "software": "46 PASS; OFF-restoration RED then 3 PASS; final eight files 47 PASS/5.57s. Earlier seals remain historical.",
+    "Native": "Retain Native29/Game, verify adopted tuple; no DLL/build/restart."
+  },
+  "factory_precondition": {
+    "current": "C12 uses --driver native-headless; mcp_entry create_with_observation gets an already constructed Driver. No war-watch CLI/env/private factory exists.",
+    "existing_route": "xar_autoplayer.bridge.mcp_server.load_driver: module:callable branch invokes candidate() and checks GameplayBridgeDriver.",
+    "future_small_input": "Root/harness must first pin a thin factory constructing the SAME Driver with retained C12 kwargs/paths/flags and explicit allow_war_daily_watch_v1=True/False. No subclass, attribute flip or AB override.",
+    "review": "Pin factory/config/argv; only this bool differs ON/OFF. Normal SDK warm reuses src11, no 132MiB copy. Factory is not authored or installed here.",
+    "normal_contract": "normal_source_warm_queue_v1 clean seed/post-close, same_pid_hot identity/sidecars/goal checks stay mandatory. Unknown action is not clean. Future warm outputs need their own budget."
+  },
+  "when_worth_trying": [
+    "Recurring natural speed1 war waits dominate a stable no-combat period, with no P0/unknown action/owner transition/unhandled UI.",
+    "Prefer already-needed SDK maintenance; an isolated day or generic speed5 window cannot repay it.",
+    "No manufacturing march/retreat/siege, changing orders, delaying an event or shrinking a horizon just to obtain samples. If no suitable natural turn appears, defer with zero trial credit."
+  ],
+  "hard_trial_bounds": {
+    "speed": 2,
+    "maximum_candidate_attempts": 3,
+    "maximum_ordinary_cycles_in_trial_batch": 30,
+    "count": "Every selected war_daily_watch_v1 attempt counts, including zero-day boundary interruption. Any unknown/failure ends the trial immediately.",
+    "feeder": "Sole runtime admits AUTO one cycle at a time and counts its closed result before the next. Never admit a fourth candidate attempt; no concurrent feeder or benchmark RPC.",
+    "end": "At three attempts, 30 ordinary cycles, ineligibility becoming persistent or any exit condition, stop this trial batch at the next verified normal paused boundary and normally warm OFF. Do not toggle a live private attribute."
+  },
+  "procedure": [
+    "1. Keep OFF. Collect up to three natural original speed1 exact-day waits, with actor/episode/connection, war/army states, date delta and actual speed. Do not force fast-reader/contact-free routes to speed1.",
+    "2. At a clean boundary Root authorizes pinned factory and SDK-only ON warm. Retain Game/Native29, recording/publisher identity, source pair, sidecars and guards; record maintenance start/end and startup outcomes.",
+    "3. Full planner selects life-advance-one-day. Helper requires exact .4 hello, paused ready living actor, stable episode/connection/revisions, no UI/assault and all published player/war allied/enemy rows. Known regular/moving/retreating/sieging states, no combat, valid ID/province/target/ownership; 1..64 union, no trim. Missing/contradictory/embarked/gathering/unknown rejects candidate, preserving the old legal path.",
+    "4. set-speed-2 then actual semantic speed=2; arm research-arm-tactical-daily-sentinel-v1-{start}-to-{start+24}-speed-2-mode-terminal-a-{N}-{sorted IDs}; verify positive generation, count=N, combat_count=0 and idle fields. aN equals the full admitted published union.",
+    "5. Submit resume once. At target date wait for the Native paused publication, including date-before-pause/event race. Independently require actual paused=true and end-start=24 plus the same Native generation/start/target/speed/count, one completed tick, zero overshoot and verified native pause. Keep actor/episode/Game PID/connection stable in the ordinary before/after evidence. Missing identity/stop evidence is UNKNOWN, never PASS.",
+    "6. Pre-target same-owner event/interaction/modal: verify pause and same-generation cancel; elapsed_days=0, no day/speed credit. Actor/episode/connection/invalid frame aborts. Unknown arm/resume/cancel or failed stop retains never_replay history even OFF/after reconstruction. Use existing incident handling; never clear marker/reissue resume.",
+    "7. Normally warm OFF from a clean boundary; retain queue/result checks. Root reviews closed evidence before wider use. No speed3/4/5 or route/battle admission."
+  ],
+  "observation_and_accounting": {
+    "reuse_only": "Existing ordinary AUTO/action receipts, semantic frames, exact-clock/army stage sink, Native arm/status/cancel fields and closed batch timing. No extra timing/army/Game RPC or process/environment probe.",
+    "minimum_row": "source/factory/recording pins; AUTO; owner/episode/connection; start/end frame/date/speed/paused; sorted IDs/count; sentinel generation/flags/ticks/pause/overshoot; boundary; RPC/batch wall; actual days.",
+    "recording": "No Game/OBS restart or user-desktop disturbance. Preserve decision text/first-frame guards, no blue panel. Record gaps/failures; failed recording guard ends admission.",
+    "wall": "Match natural speed1/speed2 windows with count/context. Include planning/query/pause/persistence; maintenance gets a separate row AND all-in elapsed total. Do not double-count nested waits or call wall CPU.",
+    "interpretation": "Natural windows are observational, not same-frame causal A/B. Nominal speed1=2s/day, speed2=1s/day do not guarantee end-to-end <=1s/day. Separate zero days/interruptions."
+  },
+  "risk_and_exit": [
+    "All-published roster is not physical-world completeness or contact-free proof. New/unpublished hostile units can appear; no route forecast or combat win is certified.",
+    "Native29 fingerprints these armies only after the daily callback. SDK event/actor checks act on published boundaries; strong native intra-day event/actor watch is absent. Faster intra-day reaction is not promised.",
+    "Any contact/combat, mandatory UI, actor/episode/connection/world change, unknown roster, active assault, date overshoot, missing native pause, speed mismatch, unknown ACK/cancel, recording guard failure or planner incident stops further trial admission. Preserve original lawful battle/event handling; no guard weakening to complete three samples.",
+    "Only three exact successful native-paused days plus complete source/owner/recording evidence can support a narrow speed2 qualification. It cannot authorize speed3, active battle acceleration or missing native intra-day guarantees; stability outranks one quicker sample."
+  ],
+  "this_record_actions": {"Game_RPC": 0, "flags_enabled": 0, "source_changes": 0, "builds": 0, "external_writes": 0},
+  "storage": {"category": "record", "scope": "independent repo-only 8KiB plan, original other128", "hard_bytes": 8192, "review_at_utc": "2026-10-20T01:48:56.993837+00:00", "future_writes": 0, "allocated_bytes": null, "physical_credit": 0}
+}

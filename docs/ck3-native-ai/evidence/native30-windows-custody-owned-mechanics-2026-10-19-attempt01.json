@@ -1,0 +1,106 @@
+{
+  "schema": "xar.native30.windows-custody-owned-mechanics/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_utc": "2026-10-19T12:26:01.819819Z",
+  "machine_id_source": "tools/ck3_live_run_id.py machine, same tool process invocation",
+  "tool": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_native_custody_windows_v1.py",
+    "bytes": 12885,
+    "sha256": "048ff30fdebac1fb1c96c706ce8523d8529e0fbacbe55735a6b8bfa81ca9b41f"
+  },
+  "adapter": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_loaded_provider_windows_v1.py",
+    "bytes": 18425,
+    "sha256": "34ed125fd8325f785846c6be4a139ac0e1270db5dbdd0f35f6a2b36b2a1fcfaf"
+  },
+  "scope": "OWN_PYTHON_TINY_FILE_RANDOM_PRIVATE_PIPE_ONLY",
+  "observations": {
+    "fixed_held_file": {
+      "final_path": "c:\\users\\xenoa\\appdata\\local\\temp\\xar-own-custody-z4tb45ns\\owned-lease.bin",
+      "volume_serial": 5669105749829453645,
+      "file_id": "28e40e000000b2000000000000000000",
+      "sha256": "9580db767334a5d1e86b8e633e75127863a86f63480604830c9205c3a3756d86",
+      "size": 31,
+      "observed_utc": "2026-10-19T12:26:01.833667Z",
+      "fixture_bytes": 31
+    },
+    "lease_denials": {
+      "write_open_success": false,
+      "write_winerror": 32,
+      "DeleteFile_success": false,
+      "delete_winerror": 32,
+      "file_still_exists": true,
+      "observed_utc": "2026-10-19T12:26:01.833902Z"
+    },
+    "own_process": {
+      "pid": 15676,
+      "creation_filetime": "134368863604700829",
+      "creation_date": "2026-10-19T12:26:00.4700829Z",
+      "executable": "c:\\users\\xenoa\\appdata\\local\\programs\\python\\python313\\python.exe",
+      "alive": true,
+      "FILETIME_encoding": "decimal exact integer string, never JSON floating point",
+      "WaitForSingleObject_zero_result": 258,
+      "original_pseudo_handle_closed": false,
+      "observed_utc": "2026-10-19T12:26:01.834147Z",
+      "owned_duplicate_closed_readback": {
+        "GetHandleInformation_success": false,
+        "winerror": 6
+      }
+    },
+    "file_handle_closed_readback": {
+      "GetHandleInformation_success": false,
+      "winerror": 6
+    },
+    "writer_after_lease_release": {
+      "opened": true,
+      "bytes_written": 0
+    },
+    "private_pipe": {
+      "name": "\\\\.\\pipe\\xar-own-custody-9e1fc67469384931abb16184607986a3",
+      "kernel_client_pid": 15676,
+      "expected_own_pid": 15676,
+      "ConnectNamedPipe_success": false,
+      "ConnectNamedPipe_winerror": 535,
+      "client_end_negative": "handle is not the server end",
+      "closed_owned_ends": 2,
+      "WaitNamedPipe_after_close_success": false,
+      "WaitNamedPipe_after_close_winerror": 2,
+      "observed_utc": "2026-10-19T12:26:01.834441Z"
+    }
+  },
+  "cleanup": {
+    "adapter": {
+      "owned_handles_remaining": 0,
+      "release_errors": [],
+      "temporary_mappings_remaining": 0,
+      "borrowed_handles_closed": 0,
+      "target_process_control_calls": 0
+    },
+    "tool_owned_handles_remaining": 0,
+    "temporary_file": "C:\\Users\\xenoa\\AppData\\Local\\Temp\\xar-own-custody-z4tb45ns\\owned-lease.bin",
+    "temporary_file_absent": true,
+    "temporary_directory_absent": true,
+    "errors": []
+  },
+  "status": "PASS_OWNED_WIN32_MECHANICS_ONLY",
+  "ck3_loaded_custody_qualified": false,
+  "provider_dto_issued": false,
+  "controller_sdk_private_transfer": "unknown: adapter method remains NotImplemented",
+  "limits": {
+    "CK3_Game_Native_calls": 0,
+    "existing_pipe_access": 0,
+    "desktop_screen_OBS_calls": 0,
+    "new_EXE_builds": 0,
+    "Defender_changes": 0,
+    "live_Driver_SAVE_reads": 0
+  },
+  "api_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info",
+    "https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject",
+    "https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-connectnamedpipe",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeclientprocessid",
+    "https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-gethandleinformation"
+  ],
+  "ended_utc": "2026-10-19T12:26:01.835221Z"
+}

@@ -472,8 +472,13 @@ def load_driver(
     private_faction_round_id: str | None = None,
     allow_private_lifestyle_formal_trial: bool = False,
     require_initial_lifestyle_focus_before_date_advance: bool = False,
+    allow_war_daily_watch_v1: bool = False,
 ) -> GameplayBridgeDriver:
     """Load a daemon driver without coupling MCP to a concrete game bridge."""
+    if type(allow_war_daily_watch_v1) is not bool:
+        raise ValueError("war daily watch trial permission must be an explicit boolean")
+    if allow_war_daily_watch_v1 and factory != "native-headless":
+        raise ValueError("war daily watch trial requires the native-headless driver")
     if (require_initial_lifestyle_focus_before_date_advance
             and not allow_private_lifestyle_formal_trial):
         raise ValueError("initial lifestyle focus requires the private lifestyle formal trial")
@@ -506,6 +511,7 @@ def load_driver(
             save_dir=selected_save_dir(),
             route_contact_timeline_speed=route_contact_timeline_speed,
             allow_route_contact_high_speed_ab=allow_route_contact_high_speed_ab,
+            allow_war_daily_watch_v1=allow_war_daily_watch_v1,
             war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
             succession_lifecycle_binding=succession_lifecycle_binding,
             allow_private_faction_gift_formal_trial=(
@@ -5205,6 +5211,10 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument(
         "--transport", choices=("stdio", "streamable-http"), default="stdio"
     )
+    result.add_argument(
+        "--private-war-daily-watch-speed2-trial", action="store_true",
+        help="opt in to the local stdio-only, separately qualified war daily watch at speed 2",
+    )
     result.add_argument("--host", default="127.0.0.1")
     result.add_argument("--port", type=int, default=8765)
     result.add_argument(
@@ -5491,6 +5501,10 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    if args.private_war_daily_watch_speed2_trial and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError("private war daily watch speed2 trial requires native-headless stdio")
     explicit_lifecycle = (
         args.environment_manifest,
         args.succession_lifecycle,
@@ -5623,6 +5637,7 @@ def main(argv: list[str] | None = None) -> int:
         pipe_name=args.pipe_name,
         route_contact_timeline_speed=args.route_contact_speed,
         allow_route_contact_high_speed_ab=args.allow_route_contact_high_speed_ab,
+        allow_war_daily_watch_v1=args.private_war_daily_watch_speed2_trial,
         war31_one_shot_surrender_gate=war31_gate,
         succession_lifecycle_binding=succession_lifecycle_binding,
         allow_private_faction_gift_formal_trial=(

@@ -22,6 +22,9 @@ def data():
         'native_revision': actual['native_revision'], 'date_raw': actual['date_raw'],
         'episode_run_id': actual['episode_run_id'], 'paused': True, 'map_ready': True,
         'played_character': {'character_id': actual['actor_character_id'], 'alive': True},
+        # This planner fixture explicitly supplies a synthetic peaceful scope;
+        # the retained historical Native projection itself is unchanged.
+        'active_wars': [],
     }
     # Root/readiness envelopes are explicitly synthetic, populated by actual
     # source-Faction/recipient/frame/metrics; no original Native packet is forged.

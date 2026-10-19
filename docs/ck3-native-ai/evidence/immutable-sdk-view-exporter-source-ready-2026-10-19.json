@@ -1,0 +1,37 @@
+{
+  "schema": "xar.ck3.immutable-sdk-view-exporter-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-19T12:39:09Z",
+  "status": "SOURCE_READY_NOT_PRODUCTION_ADMITTED",
+  "sources": [
+    {"path": "tools/g2_saved_campaign/export_immutable_sdk_views_v1.py", "bytes": 22964, "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"},
+    {"path": "tools/g2_saved_campaign/test_export_immutable_sdk_views_v1.py", "bytes": 8678, "sha256": "779d2f6e5f1d7b30b7a0c61433aafebddb9c48289c8401bce08c5fa8bfc7943b"}
+  ],
+  "qualification": {
+    "command": "py -B -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_export_immutable_sdk_views_v1.py --basetemp=_runtime/immutable-sdk-exporter-qualification02",
+    "result": "4 passed in 3.18s",
+    "tool_chunk": "c03b80",
+    "scope": "Actual Z-volume NTFS file identity and allocation, unchanged hardlinks, independently created changed leaves, exact canonical manifests, existing target/foreign card/insufficient budget rejection, bad old SHA and link collision with attempts retained; no copy fallback or old writes.",
+    "post_test_change": "Only the docstring corrected 'process launch' to 'Game/SDK/OBS launch'; Git subprocesses are used. Reversing this exact phrase recovers tested tool SHA55b0d2bfedf8ca24da82639f6025ba4b3ec8b673a2a2070f49d346cb31fba03a. Final AST compiles and production has no assert guards. No repeated matrix.",
+    "inventory_command": "py -B _runtime/inspect_immutable_source_fixture87.py _runtime/immutable-sdk-exporter-qualification01 _runtime/immutable-sdk-exporter-qualification02",
+    "attempt01": {"files": 58, "logical_bytes": 26331, "unique_file_allocation_bytes": 64928},
+    "attempt02": {"files": 58, "logical_bytes": 26699, "unique_file_allocation_bytes": 64984},
+    "aggregate_logical_bytes": 53030,
+    "aggregate_unique_file_allocation_bytes": 129912,
+    "filesystem_directory_MFT_allocation_bytes": null,
+    "bytecode_files": 0,
+    "fixture_file_allocation_cap_bytes": 163840,
+    "failed_attempts_retained": true
+  },
+  "capacity_card_contract": {
+    "schema": "xar.ck3.immutable-sdk-view-capacity/v1",
+    "required_exact_bindings": ["status=ADMITTED", "machine_id", "review_at_utc", "business_source_commit", "runtime_source_commit", "base_freeze_sha256", "native_pin_sha256", "sdk_generation", "base_source_root", "source_destination", "reference_destination", "output_root", "approved_output_roots"],
+    "required_limits": ["new_allocation_limit_bytes", "metadata_reserve_bytes", "filesystem_metadata_reserve_bytes>=65536", "disk_reserve_bytes"],
+    "checks": "Original fixed clean Host, canonical Git blobs/modes, machine, native identity, old full manifest, expiry and destination guards remain. New views must be absent/disjoint, on the same actual NTFS volume, with no reparse paths. Each phase checks remaining capacity/expiry. Changed file data is forecast separately from JSON allocation and reserved unknown filesystem metadata. Linked existing allocation is reported without new physical credit.",
+    "outputs_under_new_output_root": ["ATTEMPT.json", "SOURCE-FREEZE.json", "REFERENCE-FREEZE.json", "COMPLETE.json or FAILED.json"],
+    "cli": "py -B tools/g2_saved_campaign/export_immutable_sdk_views_v1.py --help",
+    "production_card_and_roots": null
+  },
+  "boundaries": "No D source view/root/link, Game/SDK/OBS action, Native connection, Driver/SAVE body or active C12 modification. Both reference/source manifests are byte-complete; unchanged linked references are not independent physical replicas. Old frozen inputs remain immutable and must not receive bytecode, attribute, ACL or content writes. Parent still owns the minimal canonical tree and storage must separately admit actual roots/peak. Future normalwarm and actual trial/pixels are not qualified here.",
+  "storage": "Repo tool/test/proof <=64KiB; separate plan6983B <=8KiB. Two exact Z fixture attempts retain <=64KiB logical data and <=160KiB file AllocationSize under original other128/review. No 132MiB source-pair or proposed20MiB production allowance was consumed."
+}

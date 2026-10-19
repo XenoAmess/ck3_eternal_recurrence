@@ -53,7 +53,7 @@ class McpFactionGiftFormalConfig12004Test(unittest.TestCase):
                     self.assertEqual(driver.private_faction_round_id, round_id)
                     self.assertEqual(getattr(driver, "allow_private_faction_gift_query", False), query)
                     self.assertEqual(getattr(driver, "allow_private_faction_gift_action", False), action)
-                    self.assertIs(driver.nonwar_only, False)
+                    self.assertIs(driver.allow_route_contact_high_speed_ab, False)
                     self.assertEqual(driver.state_dir, Path(tmp))
                     service = GameplayBridgeService(driver)
                     self.assertIs(service.driver, driver)

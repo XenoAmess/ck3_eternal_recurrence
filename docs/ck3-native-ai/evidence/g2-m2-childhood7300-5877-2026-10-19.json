@@ -1,0 +1,18 @@
+{
+  "schema": "xar.g2-m2-natural-event-source-closure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:35:09+00:00",
+  "event_definition_key": "childhood.7300",
+  "incident_id": "7c03879054e44eb49840074399bebed5",
+  "closure": {"path": ".task-tmp/g2-m2-event5877-20261019/CLOSURE.json", "bytes": 11408, "sha256": "91e87989ae512ded07214e746a7e53d4c3c76fe1c1d1682836835293df393189"},
+  "source": {"relative_path": "events/education_and_childhood/childhood_events_oltner.txt", "bytes": 53522, "sha256": "184ad1d01c75f30e59c7db6ab1a02d2e23336d565b622aa301943a3317b4ab84", "option_catalogue_sha256": "346a85e323aa729b29d0c34d5a6525da8ca54a53031ec280914c699756797971"},
+  "persistent_knowledge": {"state_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/state", "fingerprint": "d1d6eec2b5c10c7b8ef6f7fc5562215a19697ea276031c9aaf01fe766db71047", "entry_bytes": 1302, "entry_sha256": "1af22547df1356680b2b3687d3cce4749a6f0d5f822bf3b5edefe42b03a290f4", "facts_bytes": 29058, "facts_sha256": "abd9ff7c11c3a12f6142220168f210faa5c92da4b46b88241fe7bdbe7b6098cb"},
+  "source_analysis": {
+    "native0_1_2": "Challenge beating_target_1/2/3 by prowess. Success adds threat_hook against that target, with a 10-percent source chance to increase target wounds. Failure adds miniscule_stress_impact_gain and a 10-percent source chance to increase root wounds. Both duel branches start with weight50, modified from duel_value by +3.5/-3.5 and min-49. These are branch weights, not an observed 50-percent win probability. Honest/forgiving/just/compassionate add trait-dependent stress/fulfillment impacts. Targets2/3 choices require the corresponding saved scope.",
+    "native3": "Do not try: no duel; sadistic/wrathful use minor stress/fulfillment impact, rowdy/bossy use miniscule impact. No unconditional best-action claim follows without current traits/prowess and priorities.",
+    "actual_scopes": "root40526; beating_target_1=40507, target2=40670, target3=40843. Immediate target selection already occurred. Full definition, all four options, triggers and callee calls are preserved in source facts; callee bodies are not recursively evaluated."
+  },
+  "actual_result": {"selected_native_index": 0, "command_acknowledged": true, "event_instance_transition": "18 -> null", "event_instance_advanced_verified": true, "stress": "44 -> 44", "gold_raw": "19299618 -> 19299618", "prestige_raw": "7038560 -> 7038560", "material_gaps": "Actual prowess values, chosen duel branch, new threat hook and either character wounds were not observed. Unchanged player stress does not prove victory. No combat/material credit from ACK."},
+  "verification": {"actual_calculated_id": 3357300, "loader_after": "offline-source-reviewed/exact", "synthetic_cold_id": 4357300, "synthetic_loader_after": "offline-source-reviewed/source_rebound", "registry_contract_accepted": false, "material_effects_verified": false, "Game_RPC_calls": 0, "active_Driver_SAVE_reads": 0, "SDK_Native_strategy_changes": 0},
+  "storage": {"new_ordinary_log_evidence_bytes": 74071, "codeprep_helper_bytes": 3442, "codeprep_limit_bytes": 32768, "allocated_remaining": null, "physical_credit_bytes": 0, "future_growth_bytes": 0, "old_closed_packages_reused": false, "derived_retention_hours": 48, "record_retention_days": 180}
+}

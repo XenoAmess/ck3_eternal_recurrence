@@ -22,6 +22,9 @@ def snapshot(*, revision: int = 10, native_revision: int = 12) -> dict[str, obje
         "native_revision": native_revision, "date_raw": DATE,
         "paused": True, "map_ready": True,
         "played_character": {"character_id": 32904, "alive": True},
+        # Checkpoint/submit tests model an observed peaceful turn. An omitted
+        # war vector is unknown and must not obtain the same spending permit.
+        "active_wars": [],
         "episode_run_id": "native-32904-a", "active_event": None,
         "pending_character_interaction": None, "one_life_terminal_reason": None,
         "diagnostics": {"bridge_pid": 12345, "connection_generation": 2},

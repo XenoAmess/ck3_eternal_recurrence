@@ -1,0 +1,37 @@
+{
+  "schema": "xar.war-daily-watch-prospective-source-correction.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:21:58+00:00",
+  "machine_evidence": "Actual tools/ck3_live_run_id.py machine and clock readback; no Game query.",
+  "status": "ORIGINAL_EXECUTION_PREMISES_CORRECTED_CURRENT_OFF_LIVE_QUALIFICATION_UNKNOWN",
+  "original_retained": {
+    "path": "docs/ck3-native-ai/evidence/war-daily-watch-v1-prospective-live-qualification-2026-10-19.json",
+    "bytes": 8100,
+    "sha256": "d635b46e71fbe1987c8d30543428b96cc67df66dfbdb024a779f556b630476a7",
+    "disposition": "Preserved unchanged as historical plan. Its whole-Driver source pin and direct module:callable execution premise must not be used for adoption."
+  },
+  "source_correction": {
+    "source": "Root independent source review delivered to performance_native on 2026-10-19; not a new local whole-file hash in this task.",
+    "actual_C12_business_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+    "actual_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src11",
+    "actual_minimal_Driver": {
+      "relative_path": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1619371,
+      "sha256": "65888f480a9cc8187f37ad2c44d8592fbf2df0e1843090f47e277ec1b7d8b5f1"
+    },
+    "misapplied_master_Driver": {
+      "bytes": 1621076,
+      "sha256": "a7c09a146cef8973f6a04919dfccba702475542f47fa53e7aa9038699014ff73"
+    },
+    "scope": "Root verified the four assigned war-watch functions AST-equal to a7c09. Unadopted M1/M7 differences explain the different whole leaf; AST equivalence does not make the whole-file hashes equal. Future qualification must bind the actual minimal leaf and its reviewed composition."
+  },
+  "entry_correction": {
+    "error": "I treated the downstream load_driver module:callable branch as sufficient without closing mcp.main admission.",
+    "actual_guard": "Direct --driver module:callable is rejected by existing private-flag and lifecycle guards before that branch. candidate() also receives no constructor kwargs; it does not automatically preserve C12 arguments.",
+    "pending_owner_work": "Root assigned harness source-only design of an exact normal constructor injection retaining args.driver=native-headless and all original flags/kwargs, or a separately reviewed private source flag. Neither mechanism is implemented or qualified by this correction.",
+    "requirement": "Do not change argv/flags, bypass main guards or enable the bool using the old card. Obtain the new exact constructor/source-pair plan and its software qualification before Root can authorize a normal warm trial."
+  },
+  "unchanged_boundaries": "Current C12 remains OFF; no live speed2 acceptance or measured benefit. Published roster is not physical completeness/contact-free proof. Native watch remains daily-boundary only; stronger intra-day event/actor watch is absent. Unknown-result never-replay and default original guards remain mandatory.",
+  "actions": {"Game_RPC": 0, "flags_enabled": 0, "production_source_changes": 0, "builds": 0, "external_writes": 0},
+  "storage": {"independent_record_limit_bytes": 4096, "scope": "original other128", "review_at_utc": "2026-10-20T01:48:56.993837+00:00", "future_writes": 0, "allocated_bytes": null, "physical_credit": 0}
+}

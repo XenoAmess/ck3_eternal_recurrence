@@ -13733,6 +13733,17 @@ def _choose_one_life_turn_core(
                     )
                     if land_edge_watch is not None:
                         return land_edge_watch
+                    excluded_siege_watch = _stationary_excluded_siege_one_day_watch_plan(
+                        snapshot, pursuit_army, exact_siege_rejection,
+                        controlled_armies=controlled_armies,
+                        active_assaults=active_assaults, unsafe_armies=unsafe_armies,
+                        route_rejections=route_rejections,
+                        available_steps=available_steps,
+                        available_capabilities=available_capabilities,
+                        war_summary=war_summary,
+                    )
+                    if excluded_siege_watch is not None:
+                        return excluded_siege_watch
                     defensive_risk_day = _stationary_timeline_unavailable_defensive_one_day_plan(
                         rows, snapshot, pursuit_army,
                         current_province_id=current_province_id,
@@ -21745,6 +21756,111 @@ def _land_retained_unsafe_edge_one_day_watch_plan(
             "native_watch_army_ids": [],
             "in_day_army_event_actor_watch": False,
             "next_paused_frame_army_event_actor_read_required": True,
+        },
+        "route_rejections": route_rejections, "active_wars": war_summary,
+    }
+
+
+def _stationary_excluded_siege_one_day_watch_plan(
+    snapshot: dict[str, object], army: object, siege_rejection: object, *,
+    controlled_armies: list[dict[str, object]], active_assaults: list[dict[str, object]],
+    unsafe_armies: list[dict[str, object]], route_rejections: list[dict[str, object]],
+    available_steps: set[str], available_capabilities: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Reobserve an idle objective after native exclusion from another army's siege."""
+    if not isinstance(snapshot, dict) or not isinstance(army, dict) or not isinstance(siege_rejection, dict):
+        return None
+    player = snapshot.get("played_character")
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    wars = snapshot.get("active_wars")
+    army_id = _public_cunit_int(army.get("army_id"))
+    province_id = _native_int(army.get("current_province_id"))
+    contribution = siege_rejection.get("subject_contribution")
+    required_caps = {
+        "game.command.research-arm-tactical-daily-sentinel-v1-N",
+        "game.command.research-query-tactical-daily-sentinel-v1",
+        "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+    }
+    if not (
+        snapshot.get("paused") is True and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and snapshot.get("one_life_terminal") is not True
+        and snapshot.get("episode_identity_pending") is not True
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and isinstance(player, dict) and player.get("alive") is True
+        and isinstance(controlled_armies, list) and len(controlled_armies) == 1
+        and controlled_armies[0] is army
+        and army_id is not None and army.get("controllable") is True
+        and army.get("owner_character_id") == player.get("character_id")
+        and province_id is not None and province_id > 0
+        and army.get("army_state") == "regular" and army.get("army_state_code") == 1
+        and army.get("in_combat") is False and army.get("retreating") is False
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+        and army.get("route_read_status") == "complete_empty"
+        and isinstance(wars, list) and bool(wars)
+        and not active_assaults and not unsafe_armies
+        and required_caps <= available_capabilities
+        and {"life-advance-one-day", "set-speed-1", "resume-map", "pause-map"} <= available_steps
+        and siege_rejection.get("status") == "not_player_besieging"
+        and siege_rejection.get("province_id") == province_id
+        and siege_rejection.get("player_army_besieging") is False
+        and _public_cunit_int(siege_rejection.get("besieging_army_id")) not in {None, army_id}
+        and isinstance(contribution, dict) and contribution.get("status") == "excluded"
+        and contribution.get("public_unit_id") == army_id
+        and contribution.get("native_carmy_id") == army.get("native_carmy_id")
+        and _native_int(army.get("native_carmy_id")) is not None
+        and contribution.get("reason") == "measured_native_province_qualification"
+        and route_rejections == [{"target_province_id": province_id,
+            "status": "current_exact_siege_rejected", "siege_status": "not_player_besieging"}]
+    ):
+        return None
+    enemies: list[dict[str, object]] = []
+    for war in wars:
+        if not isinstance(war, dict) or not isinstance(war.get("enemy_armies"), list):
+            return None
+        for enemy in war["enemy_armies"]:
+            if not isinstance(enemy, dict):
+                return None
+            if enemy.get("retreating") is True:
+                continue
+            if (_public_cunit_int(enemy.get("army_id")) is None
+                    or _native_int(enemy.get("current_province_id")) is None
+                    or _native_int(enemy.get("current_province_id")) <= 0
+                    or "move_target_province_id" not in enemy
+                    or enemy.get("route_read_status") not in {"complete_empty", "complete_nonempty"}
+                    or _normalized_remaining_route(enemy) is None
+                    or _army_tactical_state(enemy) is None):
+                return None
+            if not enemy["route_province_ids"] and (
+                    enemy.get("move_target_province_id") is not None
+                    or enemy.get("route_read_status") != "complete_empty"):
+                return None
+            enemies.append(enemy)
+    if (not enemies or _route_evidence_issues(wars, controlled_armies)
+            or _stationary_province_threats(province_id, enemies)):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_stationary_excluded_siege_one_day_observation",
+        "selected_step": "life-advance-one-day",
+        "reason": "the only exact objective is the current idle province, but native regiment qualification excludes this army from another army's siege; make no move or assault, observe one date-stopped day, then re-evaluate the complete war and financing plan",
+        "excluded_siege_watch": {
+            "army_id": army_id, "current_province_id": province_id,
+            "hostile_army_ids": sorted({enemy["army_id"] for enemy in enemies}),
+            "siege_rejection": siege_rejection, "siege_contribution_credit": False,
+            "source_snapshot_id": snapshot.get("snapshot_id"),
+            "source_public_revision": snapshot.get("revision"),
+            "source_native_revision": snapshot.get("native_revision"),
+            "source_date_raw": snapshot.get("date_raw"),
+            "native_clock_scope": "exact_one_day_date_only_a0", "native_watch_army_ids": [],
+            "in_day_army_event_actor_watch": False, "maximum_observation_days": 1,
+            "next_paused_frame_complete_planner_required": True,
+            "contact_free_proven": False, "in_day_contact_or_defeat_possible": True,
+            "movement_or_assault_submitted": False, "offensive_combat_permission": False,
+            "war_or_material_credit": False,
         },
         "route_rejections": route_rejections, "active_wars": war_summary,
     }

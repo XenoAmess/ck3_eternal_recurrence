@@ -68,10 +68,12 @@ def test_peace_and_complete_ample_war_cash_can_still_gift():
     assert result["arrival_or_victory_verified"] is False
 
 
-@pytest.mark.parametrize("damage", ["root", "spending", "market", "old_market", "unknown_hire", "incomplete_cost", "not_affordable"])
+@pytest.mark.parametrize("damage", ["war_scope", "root", "spending", "market", "old_market", "unknown_hire", "incomplete_cost", "not_affordable"])
 def test_missing_current_inputs_defer_only_the_new_gift(damage):
     snapshot, candidate, kwargs = inputs()
-    if damage in {"root", "spending", "market"}:
+    if damage == "war_scope":
+        snapshot.pop("active_wars")
+    elif damage in {"root", "spending", "market"}:
         kwargs[damage] = None
     elif damage == "old_market":
         kwargs["market_source_frame"] = {**kwargs["market_source_frame"], "native_revision": 1}
@@ -84,6 +86,8 @@ def test_missing_current_inputs_defer_only_the_new_gift(damage):
     result = cash.assess_faction_gift_wartime_cash_v1(snapshot, candidate, **kwargs)
     assert result["status"] == "defer_new_gift"
     assert result["new_gift_spending_allowed"] is False
+    if damage == "war_scope":
+        assert result["reason"] == "current_war_scope_unobserved"
 
 
 def test_emergency_quote_and_unpaid_commitments_are_reserved_after_gift():

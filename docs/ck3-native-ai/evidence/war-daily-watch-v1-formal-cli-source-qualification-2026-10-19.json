@@ -1,0 +1,77 @@
+{
+  "schema": "xar.war-daily-watch-formal-cli-source-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:32:13.300695+00:00",
+  "machine_evidence": "tools/ck3_live_run_id.py machine actual subprocess readback",
+  "status": "SOURCE_WIRING_READY_DEFAULT_OFF_ACTUAL_C12_UNCHANGED",
+  "master_baseline": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+    "bytes": 264083,
+    "sha256": "a857d7267a58979da7a81d7bf25b277c1cfa6b5d48fc75b5094013f0faa20720"
+  },
+  "candidate": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+    "bytes": 264984,
+    "sha256": "c34e7d5454d0a877c83fd4969c734437208bc756fc5d2d3fdcbfae5e50462722"
+  },
+  "test": {
+    "path": "ck3_autonomous_player/tests/unit/test_mcp_war_daily_watch_config_v1.py",
+    "bytes": 9437,
+    "sha256": "129cc6d9f006d62b533063832874555a4a69768da03c18dddb9aadab5074e9a1"
+  },
+  "producer": {
+    "path": "tools/g2_saved_campaign/qualify_war_daily_watch_cli_20261019.py",
+    "bytes": 7117,
+    "sha256": "329ad822a8034aeffef64867167bf2e673187e0f68bbd6bacb2c947eb90192aa"
+  },
+  "actual_C12_baseline_from_root_harness_review": {
+    "bytes": 263022,
+    "sha256": "1980c01abb14b2cb579bf3dba3bc1a58f9d4b89d7b8181db356a4b216b37e2b7",
+    "Driver_bytes": 1619371,
+    "Driver_sha256": "65888f480a9cc8187f37ad2c44d8592fbf2df0e1843090f47e277ec1b7d8b5f1"
+  },
+  "composition": [
+    "Root must compose only these additions onto actual C12 mcp_server; do not adopt this whole master leaf or replace whole main/parser bodies.",
+    "load_driver: add allow_war_daily_watch_v1:bool=False; exact-bool check; True requires factory=native-headless; add one keyword to original native constructor.",
+    "parser: add --private-war-daily-watch-speed2-trial store_true (default False); no environment alias or route-speed change.",
+    "main: require native-headless and stdio for that flag, then forward the bool into load_driver.",
+    "Preserve every other argument, private/lifecycle guard, original type, route AB/hold readiness and startup order. Driver/Service/war helper are unchanged.",
+    "No constructor import hook, monkeypatch or module:callable runtime replacement. Current C12 remains OFF."
+  ],
+  "offline_tests": {
+    "command": "python -B -m pytest -q -p no:cacheprovider --tb=short test_mcp_war_daily_watch_config_v1.py test_mcp_route_contact_speed_config.py test_m4_lifestyle_mcp_formal_config_12004.py test_m4_faction_gift_mcp_formal_config_12004.py (under ck3_autonomous_player/tests/unit)",
+    "actual_result": "11 passed, 1 failed in 7.12s, exit_code=1",
+    "new_targeted_tests": "7 PASS: CLI default/ON; exact constructor kwargs; strict bool; non-native refusal; real main->constructor->Service with private flags; non-stdio refusal; existing lifecycle/initial-focus/route AB guards",
+    "related_pass": "route configuration 3 PASS; lifestyle formal configuration 1 PASS",
+    "legacy_failure": {
+      "file": "test_m4_faction_gift_mcp_formal_config_12004.py:56",
+      "error": "'NativeHeadlessGameplayDriver' object has no attribute 'nonwar_only'",
+      "baseline_reproduced": true,
+      "method": "Execute only original git-HEAD load_driver/parser/main AST definitions in a copied module namespace; temporarily patch test entry main in memory; original fixture uses no-Game endpoint. No source file restore or Game call.",
+      "disposition": "Preserve failure. AGENTS retires nonwar_only; do not resurrect it or repair unrelated fixture in this task."
+    },
+    "diff_check": 0,
+    "only_three_functions_changed_AST": true
+  },
+  "live": {
+    "Game_RPC": 0,
+    "Native_build": "NOTRUN",
+    "current_SDK_or_flags_changed": false,
+    "speed2_qualified": false,
+    "next": "Root narrow composition, exact new freeze/normal warm qualification; actual trial only after separate authorization."
+  },
+  "storage": {
+    "source_budget_bytes": 32768,
+    "new_files": [
+      "ck3_autonomous_player/tests/unit/test_mcp_war_daily_watch_config_v1.py",
+      "tools/g2_saved_campaign/qualify_war_daily_watch_cli_20261019.py",
+      "docs/ck3-native-ai/evidence/war-daily-watch-v1-formal-cli-source-qualification-2026-10-19.json"
+    ],
+    "source_net_growth_bytes": 901,
+    "new_files_logical_bytes": 20975,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "future_writes": 0,
+    "external_outputs_retained": 0
+  }
+}

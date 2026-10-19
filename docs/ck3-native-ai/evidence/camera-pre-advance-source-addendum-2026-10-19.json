@@ -1,0 +1,198 @@
+{
+  "schema": "xar.camera-pre-advance-source-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:50:54.766339+00:00",
+  "machine_identity_source": {
+    "command": "python tools/ck3_live_run_id.py machine",
+    "tool_chunk": "5d7ea0"
+  },
+  "status": "SOURCE_AND_FOCUSED_SOFTWARE_PASS_NOT_CURRENT_C12_ADOPTED",
+  "worktree_head_at_freeze": "36c8348f0e70c495ef134aca549b462d81b79fce",
+  "prior_backoff_record": {
+    "path": "docs/ck3-native-ai/evidence/camera-target-backoff-source-fix-2026-10-19.json",
+    "bytes": 10315,
+    "sha256": "3bca3dc6da6c7e6d8305594f9dfa43a946b6ac5f63a2ba73d01218ebde2f3fc2",
+    "unchanged": true,
+    "eight_method_fingerprints_unchanged": true
+  },
+  "problem": "Actual C12 queues camera only after a synchronous ordinary business action completes. A known battle epoch can advance multiple days before its first new camera intent. A preceding AUTO may already have centered it; source timing alone does not prove every live battle was missed.",
+  "original_actual_source": {
+    "native_driver.py": {
+      "frozen_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src11\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1619371,
+      "sha256": "65888f480a9cc8187f37ad2c44d8592fbf2df0e1843090f47e277ec1b7d8b5f1",
+      "methods": {
+        "_execute_battle_sentinel_advance": {
+          "actual_C12_equal_to_pre_addendum_HEAD_AST": true,
+          "frozen_line": 24207
+        },
+        "_execute_primitive_step": {
+          "actual_C12_equal_to_pre_addendum_HEAD_AST": true,
+          "frozen_line": 12355
+        }
+      }
+    },
+    "service.py": {
+      "frozen_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src11\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 871839,
+      "sha256": "b6e078c2397b355aac9bed24834ad4921c7083b477234d2d66438fd32933a3af",
+      "methods": {
+        "auto_turn": {
+          "actual_C12_equal_to_pre_addendum_HEAD_AST": false,
+          "frozen_line": 4815
+        }
+      }
+    }
+  },
+  "original_boundaries": {
+    "service_planning_payload_line": 2408,
+    "service_execute_line": 4835,
+    "service_post_schedule_line": 4869,
+    "semantics": "Before advancing, the actual planning snapshot already contains allied current province and in_combat. Existing tactical composite arms and validates the sentinel, submits resume-map, waits for its native stop, then returns to AUTO; no camera request during that original interval."
+  },
+  "candidate": {
+    "leaves": {
+      "auto_camera_pre_advance_v1.py": {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_pre_advance_v1.py",
+        "bytes": 3914,
+        "sha256": "8e0a7d85c1f1664c5e7c0b99c554f00e2e894931cfe03fade183814442301aa7"
+      },
+      "auto_camera_follow.py": {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_follow.py",
+        "bytes": 10283,
+        "sha256": "95917980a363295ad4fcaa1f26c27b7b85a6afa7aff5eca90e2a2c7aaa8d8fca"
+      },
+      "test_auto_camera_pre_advance_v1.py": {
+        "path": "ck3_autonomous_player/tests/unit/test_auto_camera_pre_advance_v1.py",
+        "bytes": 18043,
+        "sha256": "3e3555dee6392f9f0c92bf7997fe65c96cfd62613ea6371cb5f201720dd22242"
+      }
+    },
+    "source_methods": {
+      "native_driver.py": {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1622303,
+        "sha256": "c74a21ab7d7d9c556e3eb355a3e3134ab94e15e3a11eeca57141cc424f999fa7",
+        "methods": {
+          "_execute_battle_sentinel_advance": {
+            "line": 24245,
+            "end_line": 24927,
+            "bytes_lf": 30960,
+            "sha256_lf": "bc303b988f3f8c35a9d46028d05524df3a8fc3395a4ccf6675fe0354036974ca",
+            "new_nodes_removed_original_AST_equal": true
+          },
+          "_execute_primitive_step": {
+            "line": 12355,
+            "end_line": 12612,
+            "bytes_lf": 13281,
+            "sha256_lf": "1fc729d965d54c5711f6c3ed74e696ef812752503f19bb9abd2669e0f57e2882",
+            "new_nodes_removed_original_AST_equal": true
+          }
+        }
+      },
+      "service.py": {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+        "bytes": 880676,
+        "sha256": "33943062c4acda4d686ccf4d5e07d10029f9826e8b5f60c62d88e68c365bc2e1",
+        "methods": {
+          "auto_turn": {
+            "line": 4955,
+            "end_line": 5041,
+            "bytes_lf": 5146,
+            "sha256_lf": "c0591fd82e4478aaf3e7249537d748c52eb13ff4014aad43fef781e772725c0d",
+            "new_nodes_removed_original_AST_equal": true
+          }
+        }
+      },
+      "backoff_eight_frozen_methods_unchanged": true
+    },
+    "composition_recipe": [
+      "Add auto_camera_pre_advance_v1.py unchanged.",
+      "Service.auto_turn: add the one relative import, wrap only the existing _execute_planned_turn call in camera_pre_advance_scope_v1. Do not copy the whole method from master: existing M7 successor-owner changes differ from actual C12 and are not this package.",
+      "NativeDriver._execute_primitive_step: one default-None private keyword; only the tactical internal resume supplies context. Invoke the scoped callback using this primitive's already acquired snapshot after all existing SDK guards/deadline checks, immediately before endpoint.send.",
+      "NativeDriver._execute_battle_sentinel_advance: initialize a private per-resume capture, pass it only to resume-map after the original arm validator returns, and expose an optional camera_pre_advance_v1 receipt on the final result. Original algorithm/clock/control code remains unchanged.",
+      "Worker: add urgent=False plus one bounded urgent pending slot; keep ordinary post scheduling and its quiet/coalescing behavior. Never replace an urgent pending item with ordinary post work."
+    ],
+    "whole_Service_and_Driver_replacement_forbidden": true,
+    "source_frozen_tree_edits": 0
+  },
+  "safety_boundary": {
+    "before_submit": "Original callback order, exceptions and mapping interception are unchanged. Return None only means no interception; the camera callback is not triggered there.",
+    "SDK_guards": "No pre camera enqueue for a rejected existing SDK guard. Even an H3937 hold activated after valid sentinel arm is checked by the existing resume primitive before camera dispatch.",
+    "location": "The callback sees the exact existing resume submission snapshot, not the earlier speed snapshot and not a planning position relabeled with a new date. Require complete same actor/episode/PID/connection owner, same planning date, monotonic revisions, paused alive map and no known mandatory/event/interaction.",
+    "eligible": "Only already mapped battle or moving_player_army/army_destination at this verified tactical point. Static siege/objective/idle, unknown build, unavailable mapping or changed frame are skipped. Unsupported/nonadvancing/guard-rejected paths never reach the point.",
+    "build": "Require actual cached 1.20.0.4 executable identity before scheduling; no capability discovery.",
+    "scope": "Only the real exact NativeHeadlessGameplayDriver during this ordinary AUTO dispatch. Callback is one-shot and removed/restored in finally even on display/guard/business errors. The Driver defaults to no hook outside this scope.",
+    "exception": "Callback/scheduling errors become optional presentation diagnostics. They cannot authorize resume, replay a command or hide the original business/guard result.",
+    "atomicity": "Presentation mailbox and gameplay pipe are asynchronous. An already SDK-validated request can still be rejected by Native after camera enqueue. No atomic Native-rejection/zero-camera guarantee is claimed; no handshake, new read or settled wait is added.",
+    "cost": "Zero added Game snapshot/capability/MCP/Native query RPC. Reuse the existing guarded primitive snapshot. Additional asynchronous camera work/publications may occur before a legal advance; camera availability grants no Game credit."
+  },
+  "worker_contract": {
+    "default": "Without urgent requests, one latest ordinary pending item, original quiet_seconds=.25, preserved pending eligible_at and failure isolation remain.",
+    "urgent": "Only this pre-hook requests urgent=True. It is eligible immediately; ordinary post work occupies a separate single bounded slot. New urgent intent may coalesce an older urgent intent and discards an older ordinary frame to avoid backwards presentation.",
+    "post": "The existing post-turn current-cache refresh remains. It cannot overwrite a not-yet-executed urgent pre item; one worker executes pre first and then the latest post.",
+    "limits": "No settled wait, no second worker, no unbounded queue. Work cannot interrupt an already running camera operation. Urgent scheduling does not prove when Native pixels settle."
+  },
+  "qualification": {
+    "final": {
+      "tool_chunk": "8a7306",
+      "result": "28 passed in 2.49s",
+      "exit_code": 0,
+      "nodes": [
+        "tests/unit/test_auto_camera_pre_advance_v1.py (25 cases)",
+        "tests/unit/test_auto_camera_async.py (3 existing business-first/coalescing/failure cases)"
+      ]
+    },
+    "preserved_intermediate_pass": {
+      "tool_chunk": "a2aa59",
+      "result": "27 passed in 2.44s",
+      "scope": "Arm-validated point before final primitive hold review; retained historical check, superseded by final endpoint point plus late-hold negative."
+    },
+    "development_fixture_corrections": [
+      {
+        "tool_chunk": "f97087",
+        "reason": "Synthetic stop incorrectly used phase-change at the exact deadline; fixture now stops at day2 before requested day15."
+      },
+      {
+        "tool_chunk": "a20de2",
+        "reason": "Two independent synthetic Drivers mint distinct episode IDs; equality normalizes only that known per-instance field."
+      }
+    ],
+    "tests": "Actual production Service.auto_turn and Driver.execute_step with the existing FakeEndpoint only; actual policy/selector/worker. Checks display intercept/error, arm rejection, late SDK hold, owner/episode/PID/conn/date/mandatory/build/index rejection, actual new current position versus old planned position, one-shot/restoration, presentation exception equivalence, urgent/post coalescing and real AUTO async camera work before the native action returns.",
+    "algorithm_equivalence": {
+      "tool_chunk": "5a0cf9",
+      "result": "PASS",
+      "description": "Remove only new private context/receipt statements and optional keyword, and unwrap the new Service context scope: both Driver methods and Service.auto_turn are AST-identical to HEAD. Existing original backoff eight method hashes unchanged."
+    },
+    "actual_baseline_equivalence": {
+      "tool_chunk": "27912e",
+      "result": "Driver both methods equal actual C12 before this package; Service auto_turn contains earlier independent HEAD changes, so transplant only the import/with hunk."
+    },
+    "diff_check": {
+      "tool_chunk": "fd0cec",
+      "exit_code": 0
+    },
+    "scope": "Pure software. No actual battle playback, camera pixel pass, Native deploy or current-source adoption is inferred."
+  },
+  "remaining": {
+    "fresh_Service_initial_index": "If the landed index has not yet been bound by existing camera initialization, the first pre-hook skips with landed_index_not_already_bound; it does not introduce filesystem/Game reads at the guarded point. Existing ordinary post work can bind it, after which a later tactical pre-hook is eligible.",
+    "unobserved_mid_action_hotspots": "Only the known pre-resume hotspot and the existing post cache refresh are covered. A new mid-action position/battle without a new observation is not invented; continuous during-action tracking remains pending.",
+    "actual_battle_pixels": "pending",
+    "actual_C13B_composition_and_runtime_adoption": "Root-owned future immutable composition; current src11 and prepared C13 are not modified."
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "MCP": 0,
+    "OBS": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads": 0,
+    "Native_compile": 0,
+    "current_scene_changes": 0,
+    "new_external_assets": 0,
+    "deleted_bytes": 0,
+    "volume_scans": 0,
+    "future_reserved_bytes": 0,
+    "physical_credit_bytes": 0,
+    "storage_pool": "original repo micro/other128; original review2026-10-20T01:48:56.993837Z; <=48KiB successor package; prior backoff source protection not extended"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "xar.war-daily-watch-formal-cli-fixture-addendum.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:33:50.728247+00:00",
+  "status": "SOURCE_READY_DEFAULT_OFF_LIVE_NOTRUN",
+  "previous_immutable": {
+    "path": "docs/ck3-native-ai/evidence/war-daily-watch-v1-formal-cli-source-qualification-2026-10-19.json",
+    "bytes": 4421,
+    "sha256": "f9561f6297ae56edc5f07de00f0b452b4fa56b6b2db340fdd5061c4f3a7da686"
+  },
+  "candidate": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+    "bytes": 264984,
+    "sha256": "c34e7d5454d0a877c83fd4969c734437208bc756fc5d2d3fdcbfae5e50462722"
+  },
+  "test": {
+    "path": "ck3_autonomous_player/tests/unit/test_m4_faction_gift_mcp_formal_config_12004.py",
+    "bytes": 4967,
+    "sha256": "31897160836030a1665ebd3a863d5e8cfd39d5c7d48b6cfa5ea825479e55dbe2"
+  },
+  "producer": {
+    "path": "tools/g2_saved_campaign/qualify_war_daily_watch_cli_fixture_fix_20261019.py",
+    "bytes": 4541,
+    "sha256": "a5a0493a3b83f77b9bd336ceb6578719e49452467f8df9da0341657ff7a4048a"
+  },
+  "authorized_delta": {
+    "line": 56,
+    "before": "self.assertIs(driver.nonwar_only, False)",
+    "after": "self.assertIs(driver.allow_route_contact_high_speed_ab, False)",
+    "whole_test_other_bytes_equal": true,
+    "reason": "Independent obsolete attribute conflicts with AGENTS retirement. Preserve prior RED/baseline record; no production compatibility field restored.",
+    "preserved": "Original native class/formal flag/round/query/action/state/Service identity/stdout/endpoint assertions unchanged."
+  },
+  "single_node": {
+    "node": "ck3_autonomous_player/tests/unit/test_m4_faction_gift_mcp_formal_config_12004.py::McpFactionGiftFormalConfig12004Test::test_public_argv_reaches_native_constructor_and_normal_service",
+    "passed": 1,
+    "exit_code": 0,
+    "pytest_call_wall_ns": 5241515500,
+    "preliminary_standalone_launch": "collection-only ModuleNotFoundError without PYTHONPATH; this runner supplies the source path, without further test edits"
+  },
+  "other_evidence": "Previous seven new CLI plus route3/LIFE1 PASS unchanged; no repeat broad matrix. Prior unrelated fixture failure now corrected by this one-node qualification.",
+  "actions": {
+    "Game_RPC": 0,
+    "speed_changed": false,
+    "current_C12_changed": false,
+    "Driver_Service_war_helper_changes": 0,
+    "builds": 0
+  },
+  "storage": {
+    "limit_bytes": 32768,
+    "previous_new_files_bytes": 20975,
+    "production_net_bytes": 901,
+    "existing_test_net_bytes": 22,
+    "final_package_bytes": 29155,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit": 0,
+    "external_outputs_retained": 0
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "xar.c12.primary_moving_hotspot_review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewed_at_utc": "2026-10-19T12:26:16.317973+00:00",
+  "frame_captured_at_utc": "2026-10-19T12:24:21.708070Z",
+  "reviewer": "root, direct view_image of both original PNG files",
+  "source_files": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c12-natural-moving01-game.png",
+      "size_bytes": 1505327,
+      "sha256": "94fb0dac605f12befaebfd1e48cf3759f90dafd517ff45971c0381f533f8b47d"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c12-natural-moving01-scene.png",
+      "size_bytes": 1413889,
+      "sha256": "2af134f271d3f275a828ed283ee8cfc8400b9b2b1ce088000979b2bd4567a82c"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c12-natural-moving01-FROZEN-PAIR.json",
+      "size_bytes": 2813,
+      "sha256": "4c927de311926c2958ab52080061dbbff72c3cac3e8884099fe0b3a32a566d77"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/C12-CLOSED-CAMERA-AFTER-5203-86.json",
+      "size_bytes": 43572,
+      "sha256": "9892f4a3c6b5f90eb213ed009899c48f2498000295f22de2c728686ef3f56ba6"
+    }
+  ],
+  "visible_observations": [
+    "Both originals show a rendered map of Calabria, with the visible date 26 June 1072.",
+    "Army labels 853, 471 and 204 are visible around the middle of the peninsula.",
+    "The framed region is farther south than the 29 March C12 current-map pair; the successor portrait remains visible.",
+    "The scene includes the current-decision panel and a pause indication; the game-only capture is not claimed simultaneous with it.",
+    "There is no open battle window, retired blue decision panel or film title."
+  ],
+  "closed_native_summary_reported_by_runtime": {
+    "source_AUTO_rows": [
+      5258,
+      5260
+    ],
+    "hotspot_reason": "moving_player_army",
+    "title_key": "b_cosenza",
+    "province_id": 2628,
+    "native_request_sequence": 32,
+    "status": "settled",
+    "camera_postcondition_verified": true,
+    "coverage_verified": false,
+    "same_frame_with_gameplay_claim": false
+  },
+  "result": "PASS: a natural moving-army hotspot placement and primary map pixels; no continuous tracking claim",
+  "battle_qualified": false,
+  "continuous_moving_follow_qualified": false,
+  "quiet_realm_overview_qualified": false,
+  "current_provider": "C12 d35b5932 / Native29; new target-scoped backoff fix not adopted",
+  "Game_Native_OBS_Desktop_calls": 0
+}

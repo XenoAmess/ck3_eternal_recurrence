@@ -1,0 +1,199 @@
+{
+  "schema": "xar.camera-target-backoff-source-fix/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:32:21.222700+00:00",
+  "machine_identity_source": {
+    "command": "python tools/ck3_live_run_id.py machine",
+    "tool_chunk": "5d7ea0"
+  },
+  "status": "SOURCE_AND_FOCUSED_SOFTWARE_PASS_NOT_CURRENT_C12_ADOPTED",
+  "worktree_head_at_freeze": "36c8348f0e70c495ef134aca549b462d81b79fce",
+  "actual_c12": {
+    "business_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src11",
+    "composition": {
+      "path": "_runtime/c12-actual-composition86.json",
+      "bytes": 2071,
+      "sha256": "05a457bb822dd72d45baa17f95c288e9c4b239ffa687b23cef0cf73439875c9f"
+    },
+    "service_sha256": "b6e078c2397b355aac9bed24834ad4921c7083b477234d2d66438fd32933a3af",
+    "not_modified": true
+  },
+  "original_red": {
+    "tool_chunk": "d01a11",
+    "observed_at_utc": "2026-10-19T12:17:47Z",
+    "kind": "production_Service_and_policy_with_only_Native_OS_boundary_faked",
+    "production_camera_method_ast_equal_to_d35": true,
+    "sequence": [
+      "siege failure seq10 at raw1000 establishes global retry1720",
+      "different-title priority0 battle at raw1024 is correctly selected",
+      "old Service emits zero new requests until raw1720"
+    ],
+    "result": "PASS_REPRODUCED_CROSS_TARGET_BATTLE_SUPPRESSION",
+    "limits": "Software reproduction of a real source defect; not a live battle placement test."
+  },
+  "defect": "Global 30-game-day return before policy.observe suppressed different targets, same-title siege-to-battle escalation, owner reset, mandatory cancel and quiet anchor resets. Scalar seq matching lacked original submission owner/target/date binding; explicit center/query shares that publication path.",
+  "candidate": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+    "bytes": 880535,
+    "sha256": "27aade453b29945ab854792a4295253fb0e793834ab8f0963c020c4882f9ee66",
+    "methods": {
+      "_camera_presentation_owner": {
+        "line": 798,
+        "bytes_lf": 202,
+        "sha256_lf": "125a306a9c8b33c5869a9b2fb682a14d355941a763e970d0577c6ba4b5af785b"
+      },
+      "_sync_camera_presentation_owner": {
+        "line": 803,
+        "bytes_lf": 507,
+        "sha256_lf": "eea82de4c9a419848da21e3150007f26303df7c80734f559882dae83e3425762"
+      },
+      "_camera_presentation_target_key": {
+        "line": 813,
+        "bytes_lf": 318,
+        "sha256_lf": "afc30eeeb6edbdae2c2a09b6289c19dd7906fd3c059b1fcdcf06ef71733b9aa9"
+      },
+      "_camera_presentation_backoff": {
+        "line": 820,
+        "bytes_lf": 298,
+        "sha256_lf": "64d7babf075818234404344b9d24e1a3d215b88f9be564babb42bfe190b5b9a3"
+      },
+      "_bound_camera_presentation_actual": {
+        "line": 828,
+        "bytes_lf": 2170,
+        "sha256_lf": "01170093fe3b645ee285ba6fb523ffc51406a113f9d2308e99bce29697e06f6b"
+      },
+      "_select_auto_camera_hotspot": {
+        "line": 869,
+        "bytes_lf": 6678,
+        "sha256_lf": "594047e2cc9830ecf05c4380f8d8f4bebeb76dd0259d33b9656e4aedc0df678b"
+      },
+      "_publish_camera_presentation_v1": {
+        "line": 976,
+        "bytes_lf": 1187,
+        "sha256_lf": "d73cda2de18a6e74b8558675707c71c9703744b608c52af3930d1a3612ba833c"
+      },
+      "realm_camera_status_v1": {
+        "line": 1012,
+        "bytes_lf": 575,
+        "sha256_lf": "9e0044886463557bcaccdc672d9ea273cf57fbf4d8755ec0f959c32c591d9174"
+      }
+    },
+    "whole_file_contains_concurrent_M4_family_method": true,
+    "do_not_replace_whole_actual_C12_service": true,
+    "initializer_recipe": {
+      "remove": "self._camera_presentation_retry_after_raw = None",
+      "add": [
+        "self._camera_presentation_owner_key = None",
+        "self._camera_presentation_request_context = None",
+        "self._camera_presentation_target_backoffs = {}"
+      ],
+      "preserve_existing": [
+        "self._camera_presentation_client = None",
+        "self._camera_presentation_requested_sequence = None",
+        "self._camera_presentation_failure_sequence = None"
+      ]
+    },
+    "constructor": "__init__(self, driver: GameplayBridgeDriver)",
+    "existing_camera_constructor_DI": false,
+    "composition": "Copy only the listed camera method definitions, preserving decorators, plus the three initializer fields. Preserve unrelated public Service methods and actual C12 source closures. M4 owns _plan_private_family_opportunity_v1 separately."
+  },
+  "behavior": {
+    "key": [
+      "actor_character_id",
+      "episode_run_id",
+      "bridge_pid",
+      "connection_generation",
+      "mode",
+      "hotspot title_key",
+      "hotspot reason"
+    ],
+    "same_target": "A qualified failure creates only its original target's 30-day backoff, once per original sequence. New title or siege-to-battle reason does not inherit it. Owner change clears contexts, sequences and bounded map (max16 entries).",
+    "priority": "Observe policy before backoff: mandatory/event cancel bypasses cooldown and activity resets quiet even while target blocked. After expiry reset remembered target and observe again so an unsent target cannot hold forever.",
+    "binding": "Every automatic or explicit publication retains original sequence, complete submitted source_frame, owner, mode and title. Native actual requires same retained sequence/current owner and actor, plus legal Native processing date range; first numerical target is retained and later submitted/settled target changes rejected. Settled requires current==target and postcondition true. A different current target/quiet static objective cannot inherit old settled.",
+    "unknown": "No qualified reply, early Native unavailable actor=-1/date0, or still-submitted is unknown. It gets no failure/success credit and no failure backoff. Original same-target request may retry after submitted_date+30d; no per-AUTO resubmission.",
+    "explicit": "Query failures never enter automatic target backoffs. Explicit realm remains its own realm mode; automatic battle uses hotspot+title+reason. Cancel ACK can lack game-frame fields and is never camera application.",
+    "cost": "Existing asynchronous worker and shared-memory Native camera mailbox only. No added Game/MCP/capabilities/snapshot RPC, no synchronous settled wait, no gameplay replay. Later actual camera requests may increase versus the buggy suppressed path; business-first and one cached semantic read remain."
+  },
+  "native_contract": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native29-camera01/source/src/camera_presentation_v1.cpp",
+    "bytes": 15775,
+    "sha256": "656055437114c216f8703197cc010f4443025969d16cece5fd63333bce3c6abf",
+    "lines": {
+      "result_live_frame": 202,
+      "legal_age": 203,
+      "cancel_before_snapshot": 190,
+      "pump_interval_ms": 50,
+      "settling_check": 171
+    },
+    "legal_result_date": "submitted_date <= live Result.date_raw <= submitted_date + 7*24, not exact equality; may exceed still-cached payload date",
+    "movement": "Native uses title bounds, not moving army tracking. New current land province must arrive in a later SDK payload and new title must publish. Once settled, Native does not continuously re-observe a moving army.",
+    "coverage": "coverage_verified remains false; target/current match and zoom are not pixel coverage."
+  },
+  "checks": {
+    "test": {
+      "path": "ck3_autonomous_player/tests/unit/test_camera_target_backoff_v1.py",
+      "bytes": 12483,
+      "sha256": "7dacdeed10375f75d7c16c5a9a5b2a37488c90d4bea096605e6a5a108a2160fe"
+    },
+    "final": {
+      "tool_chunk": "9027b6",
+      "result": "33 passed in 2.30s",
+      "exit_code": 0,
+      "nodes": [
+        "tests/unit/test_camera_target_backoff_v1.py (32 cases)",
+        "tests/unit/test_auto_camera_async.py::test_auto_turn_business_first_and_source_binding"
+      ]
+    },
+    "diff_check": {
+      "tool_chunk": "075f4a",
+      "exit_code": 0
+    },
+    "scope": "Actual production Service selector, PeaceRealmCameraPolicy and publication/explicit entry methods. Fake only Native/OS boundary. No Native compile, game connection or desktop operation.",
+    "earlier_passes": [
+      "e2d7b8:29 passed before unknown retry boundary was added",
+      "f56c53:original business-first/source-binding node passed"
+    ]
+  },
+  "closed_actual": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/C12-CLOSED-CAMERA-AFTER-5203-86.json",
+    "bytes": 43572,
+    "sha256": "9892f4a3c6b5f90eb213ed009899c48f2498000295f22de2c728686ef3f56ba6",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "captured_at_utc": "2026-10-19T12:24:34.089429+00:00",
+    "read_tool_chunk": "1dd70d",
+    "pointers": [
+      "/camera/0",
+      "/camera/17",
+      "/camera/19",
+      "/camera/20"
+    ],
+    "facts": [
+      "5204..5250 repeat old target_changed seq30 cooldown while moving hotspot is present",
+      "5252 retains prior request174 pending, AUTO schedule is request175",
+      "5258 carries latest request177 settled seq32 at b_cosenza2628; current AUTO schedule is request178",
+      "5260 carries latest request178 settled seq32; current AUTO schedule is request179; coverage false, same_frame false"
+    ],
+    "limits": "Only moving-army Native settled source; no battle pixel evidence, no newly fixed source adoption, no fresh MET same-frame camera proof. Historical siege pixel review is separately retained."
+  },
+  "remaining": {
+    "actual_battle_placement": "pending",
+    "continuous_battle_follow": "pending",
+    "quiet30_realm_pixels": "pending",
+    "full_subrealm_county_pixel_coverage": "pending",
+    "next_adoption": "Root may compose this leaf into a new immutable source view at a normal finite warm boundary; frozen current C12 is untouched."
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "MCP": 0,
+    "OBS": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads": 0,
+    "Native_compile": 0,
+    "source_frozen_tree_edits": 0,
+    "deleted_bytes": 0,
+    "future_reserved_bytes": 0,
+    "physical_credit_bytes": 0,
+    "storage_pool": "original other128/repo micro; review2026-10-20T01:48:56.993837Z; no source retention extension"
+  }
+}

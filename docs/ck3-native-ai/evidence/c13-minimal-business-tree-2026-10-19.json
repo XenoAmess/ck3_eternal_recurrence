@@ -1,0 +1,56 @@
+{
+  "schema": "xar.C13-minimal-business-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:35:36.801760+00:00",
+  "base_actual_C12": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+  "master_patch_base": "36c8348f0e70c495ef134aca549b462d81b79fce",
+  "canonical_commit": "7485b26c8c0c7aa7a973129c87778bd8bd5b17ea",
+  "tree": "a0babbca4ea4d52659842fe077ed142da088f781",
+  "ref": "refs/heads/runtime/robert-v20261019-c13-target-camera",
+  "source_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/current_first_heir_relationship_private_transport.py",
+      "bytes": 29925,
+      "sha256": "62695bddf2344cb824514c036306fa0ba2a0d07b7216b7a412ba322870cd338a",
+      "whole_leaf_equal_to_master_worktree": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 263923,
+      "sha256": "b4d2fab30a5c8cd8a0291c3759d9a0518b31df55698002d8ea6e7e64ad3bfb4a",
+      "whole_leaf_equal_to_master_worktree": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 877640,
+      "sha256": "fb65872e41cd0475198947e65f416119a7f607d93f13ffed03977205e6c67445",
+      "whole_leaf_equal_to_master_worktree": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 59889,
+      "sha256": "1e8f19eafca8b83601de84c74fb30f40b173932570587cacd15be590d72f357c",
+      "whole_leaf_equal_to_master_worktree": true
+    }
+  ],
+  "changed_Service_methods": [
+    "__init__",
+    "_bound_camera_presentation_actual",
+    "_camera_presentation_backoff",
+    "_camera_presentation_owner",
+    "_camera_presentation_target_key",
+    "_plan_private_family_opportunity_v1",
+    "_publish_camera_presentation_v1",
+    "_select_auto_camera_hotspot",
+    "_sync_camera_presentation_owner",
+    "realm_camera_status_v1"
+  ],
+  "qualified_noninitializer_Service_methods_AST_equal": true,
+  "initializer": "Only camera fields from the qualified narrow diff; unrelated actual C12 initialization preserved.",
+  "patch_sha256": "ae4d12c797605a52329f857eeb51ffe3ebb195769dcbcb2cc8670fda4d0cf250",
+  "scope": "Only the four qualified source leaves on actual C12. No Native/Game/recording changes. No whole master Service/MCP adoption; existing actual Driver and its default-OFF war_daily_watch remain unchanged.",
+  "speed_trial_flag": "--private-war-daily-watch-speed2-trial; default False; no actual enabling or qualification by this tree",
+  "source_view_or_hardlinks_created": false,
+  "main_index_changed": false,
+  "Game_MCP_Native_calls": 0
+}

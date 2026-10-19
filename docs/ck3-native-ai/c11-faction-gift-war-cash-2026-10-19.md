@@ -32,3 +32,7 @@
 最终定向 **13 passed / 1.40s / exit0**（`ea733d`），覆盖真实4276下界拒绝、和平/充裕战时允许、缺/过期报价与承诺、完整合同留款、原helper输入复用零RPC、重复延期仍推进及已有pending receipt优先。首次collection因误从`war_strategic_reserve_v1`导入`observed_frame`失败（`f42a9c`），已改用原实际owner `m5_observed_opportunity_selector`；中间12项和最终13项各按当时来源保留。不重跑P83/build/merc矩阵，软件通过不等于当前C11已经采用。
 
 本包新增源码/测试/精简记录按统一存储策略1.0.0，预算不超过Root追加授权的64KiB；单件输入不超过64KiB，无重型写入/新预留/删除，不刷新旧存档或素材期限。Root统一commit/push及后继合批freeze，实际采用另记。
+
+## 后续CI：明确旧和平夹具的战争范围
+
+Official39250756069/job118053671488出现三项真实RED；本地精确复现为两套旧合成snapshot都省略`active_wars`，新门按未知范围延期，candidate读取仍各一次。修正只给这两个意图为和平的夹具显式`active_wars=[]`，不改原save/submit期望、历史Native投影或生产保护；另加缺scope仍延期的负例。相关三文件实际 **54 passed / 3.26s / exit0**（`4b17fa`）；原三RED、精确pins及机器时间见[小证据](evidence/faction-gift-cash-ci-fixture-correction-2026-10-19.json)。未改生产gift源码或当前运行树，远端CI后继结果待新提交实际观察。

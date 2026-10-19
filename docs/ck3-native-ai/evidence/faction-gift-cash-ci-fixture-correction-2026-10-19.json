@@ -1,0 +1,92 @@
+{
+  "schema": "xar.gift-war-cash-ci-fixture-correction/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:44:07.943557+00:00",
+  "github_runner_machine_id": "unknown",
+  "upstream_failure": {
+    "workflow_run": 39250756069,
+    "job": 118053671488,
+    "step": 54,
+    "failed": 3,
+    "passed": 145,
+    "subtests_passed": 113,
+    "excerpt": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\ci-job-118053671488-failure-excerpt.json",
+      "bytes": 14250,
+      "sha256": "7fd2546ee371bfe5b30a965970eb4e8957afdf09b37acda700ff9879834fccc0"
+    }
+  },
+  "local_exact_reproduction": {
+    "tool_chunk": "418928",
+    "exit_code": 1,
+    "failed": 3,
+    "pytest_seconds": 2.24,
+    "urgency_checkpoint_true": {
+      "candidate_reads": 1,
+      "selected_step": "life-advance",
+      "reason": "current_war_scope_unobserved"
+    },
+    "urgency_checkpoint_false": {
+      "candidate_reads": 1,
+      "selected_step": "life-advance",
+      "reason": "current_war_scope_unobserved"
+    }
+  },
+  "cause": "Both older synthetic snapshot factories omitted active_wars entirely. Unknown scope correctly deferred the optional gift; the positive checkpoint/submit cases had not supplied observed peace.",
+  "correction": "Only add explicit synthetic active_wars=[] to those two fixture factories. Keep original expected steps, checkpoint requirements, candidate_reads=1 and historical Native projection/history bytes. Add a negative case that missing active_wars still defers.",
+  "final_test": {
+    "files": [
+      "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+      "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+      "ck3_autonomous_player/tests/unit/test_faction_gift_wartime_cash_v1.py"
+    ],
+    "tool_chunk": "4b17fa",
+    "exit_code": 0,
+    "passed": 54,
+    "pytest_seconds": 3.26
+  },
+  "test_source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_faction_gift_spending_urgency.py",
+      "bytes": 9617,
+      "sha256": "3309ca325667648aaad0725476b4504af1e6f6a2dd788e1e39f1265567cb00b6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_faction_gift_formal_route_v1.py",
+      "bytes": 29846,
+      "sha256": "fcb3268419f3549f33548c9245c0b35e50b7c522e257cd7c895355d87f7333fb"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_faction_gift_wartime_cash_v1.py",
+      "bytes": 8973,
+      "sha256": "a08a93f70d747bf120203af722235020f8567b3aaf1fb6e1c4e0ee1c65a7c97b"
+    }
+  ],
+  "unchanged_production_source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\faction_gift_wartime_cash_v1.py",
+      "bytes": 9293,
+      "sha256": "911ef2f256cf597137f6b48692f6b2b64f19eebfb67732f3af6c75dc5076147a"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\faction_gift_formal_route_v1.py",
+      "bytes": 25674,
+      "sha256": "90d80bc2602095cfbf81e58e737089df20cde5d4eddb1af3f4d7f2544b7e4310"
+    }
+  ],
+  "historical_fixture_pin": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\fixtures\\faction_gift_actual_0515_0531_projection.json",
+    "bytes": 7296,
+    "sha256": "3795e720d535cdf3de74efc1a700942b8dfa47269b81fe391fa3861fee90c4c7"
+  },
+  "production_source_modified": false,
+  "military_cash_floor_raw_preserved": 20000000,
+  "missing_scope_defaults_to_peace": false,
+  "new_war_budget_sources_invented": false,
+  "Game_MCP_OBS_calls": 0,
+  "live_Driver_SAVE_media_reads": 0,
+  "C12_C13_runtime_modified": false,
+  "remote_CI_after_this_fix_observed": false,
+  "proof_budget_bytes": 32768,
+  "storage_policy_version": "1.0.0"
+}

@@ -1,0 +1,153 @@
+{
+ "schema": "xar.native30.exact-birth-private-transfer-plan/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "source_observed_utc": "2026-10-19T12:35:35.694919Z",
+ "machine_id_source": "Existing same-machine tools/ck3_live_run_id.py machine result in owned-mechanics attempt01; launch receipt machine independently matches. No new OS process probe.",
+ "status": "READ_ONLY_PLAN_NOT_WIRED_NOT_QUALIFIED",
+ "roots": {
+  "R": "Z:\\ck3_mod_rewrite",
+  "T": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime"
+ },
+ "sources": [
+  {
+   "scope": "R",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+   "bytes": 169403,
+   "sha256": "bfaadaaedf3d499339b5223d722930b20644fc090bc1b8a04f83e0eb8d5b2726"
+  },
+  {
+   "scope": "R",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/environment.py",
+   "bytes": 58031,
+   "sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582"
+  },
+  {
+   "scope": "R",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/windows_injector_job.py",
+   "bytes": 21062,
+   "sha256": "82c379bb59fb3b7631179ad3d4128dc3433133efabfc5d36ef89a907b2adb7b6"
+  },
+  {
+   "scope": "R",
+   "path": "tools/g2_saved_campaign/sdk_process_custody.py",
+   "bytes": 14743,
+   "sha256": "55e4409b2b0920085d432cd4a7ef9eef316a49762856db33e07d802128c274cc"
+  },
+  {
+   "scope": "R",
+   "path": "tools/g2_saved_campaign/managed_desktop1_placement.py",
+   "bytes": 15778,
+   "sha256": "2f40965ea2af7b010a25750fccaecebb0964d1381d975a8bf4403bdbbae3f493"
+  },
+  {
+   "scope": "R",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+   "bytes": 19991,
+   "sha256": "5540d39a166b709479260a0665fcdd97be5cf27ce5043bcd6d637de55fbba799"
+  },
+  {
+   "scope": "R",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+   "bytes": 18425,
+   "sha256": "34ed125fd8325f785846c6be4a139ac0e1270db5dbdd0f35f6a2b36b2a1fcfaf"
+  },
+  {
+   "scope": "R",
+   "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+   "bytes": 12223,
+   "sha256": "16b02ac78192d6811493914b020d2271b590513515c667973612928b0606a556"
+  },
+  {
+   "scope": "T",
+   "path": "root_native29_supervisor_c11.py",
+   "bytes": 33415,
+   "sha256": "dea80eef7ffc346a3d6cc36c3e1711461df3fc84db6f2eba79e1bbadcb99d19a"
+  },
+  {
+   "scope": "T",
+   "path": "launch_sdk_p37c12_owner.py",
+   "bytes": 5462,
+   "sha256": "2419addd2869c4fd41cd23d4f5e253604a9282e85c7b9f57ba9855d1797750ee"
+  },
+  {
+   "scope": "T",
+   "path": "root_p37c12_sdk_queue.py",
+   "bytes": 267956,
+   "sha256": "f219a63c8e12b7a45b1e73dacf6f1cf932975ed8365f1ff6f53e5f2b78b04e9f"
+  },
+  {
+   "scope": "T",
+   "path": "root_p37c12_mcp_entry.py",
+   "bytes": 12630,
+   "sha256": "dd9ed8d5c606425488009ea7af39af1258ddcaa23f5a6273e6bca8d104999b8b"
+  }
+ ],
+ "existing_launch_fact": {
+  "source": {
+   "scope": "T",
+   "path": "ROOT-ACTUAL-GAME-LAUNCH-C11.json",
+   "bytes": 6243,
+   "sha256": "95bcef7453b60f3dd7e7f5abe6a3af132aa21871c72fe4ad6acc8cc41fa020e8"
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "original_observed_utc": "2026-10-19T10:59:56.666908+00:00",
+  "pid": 15512,
+  "creation_filetime_decimal": "134368811928524228",
+  "creation_date_raw": "20261019105952.852422+000",
+  "integer_derived_full_utc": "2026-10-19T10:59:52.8524228Z",
+  "kernel_remainder_100ns": 8,
+  "precision_conclusion": "The CIM field lacks the final 800ns; it cannot certify this exact kernel birth. This projection reads existing closed metadata, not the current Game.",
+  "producer": "Actual supervisor448 launch_prepared returns canonical handle;449-450 retains handle.ck3_creation_date.456 placement.game_generation(launch) opens a retained ProcessGeneration;457 copies integer GetProcessTimes value,458 writes receipt.",
+  "source_boundary": "The integer is genuine retained-handle metadata in this historical receipt, but this public JSON is not an authority to mint a DTO and was produced after launch. Future pre-load custody must read the original canonical retained target handle before DLL load."
+ },
+ "current_precision_block": {
+  "custody": "native_loaded_provider_custody_v1._process126-138 converts creation_date through environment.process_creation_utc then reconstructs microsecond ticks. The exact ...228 birth rejects already during prepare; changing only the final consumer cannot solve it.",
+  "consumer": "M7 source review: DTO39-55 has only game_birth:str; project_existing_root_player_heir_v1 first identity cache182-191 calls owner._game_identity then same_game_identity_v1. Owner returns pid/CIM/image; global parser103-150 rejects nonzero seventh ISO digit.",
+  "preserve": "Current rejection/unknown is correct. No rounding, float FILETIME, CIM floor/interval matching or source/JSON attestation may fill the last digit."
+ },
+ "exact_birth_minimum_future_change": [
+  "Before original canonical DLL load, use the existing adapter.observe_process on the OWN read duplicate of _SuspendedWindowsProcess._process_handle. Preserve integer FILETIME, PID, image and live status in the sealed custody holder. Record full seven-digit UTC only as an exact integer-derived representation; preserve original CIM separately as diagnostic evidence.",
+  "Limit the change to this custody path: validate exact integer birth against the deterministic full-precision representation; compare original held target and received held target by exact PID+FILETIME+image. Do not route the authority check through the global microsecond parser.",
+  "Keep the existing M7 DTO/seal as the only qualification token. Future issuer/consumer needs one typed exact creation_filetime field (or a bound same internal custody reference) so the candidate consumer validates the held exact tuple plus actual owner/driver/connection/pipe. Merely adding a JSON field or trusting game_birth text is insufficient.",
+  "CandidateQueryBindingV1.game_birth can remain the full ISO7 string as a binding label; its mapper contract does not require a global process timestamp precision change. Existing ordinary identity helpers, ledger timestamps, cold SAVE and same_game_identity rules remain untouched. Missing exact custody stays Hunknown."
+ ],
+ "ordinary_spawn_receiver_audit": {
+  "actual_chain": "Canonical Game supervisor is separate from SDKowner. SDKowner50 Popen starts Queue with stdout/stderr and CREATE_NO_WINDOW; no provider handles/startup handle_list. Queue3499 creates App argv,3524-3526 uses actual MCP stdio creator under retain_mcp_stdio_process. Entry68-102 retains canonical driver/Service after original_create.",
+  "reusable_exact_child_boundary": "sdk_process_custody.retain_mcp_stdio_process294-309 wraps exactly the returned MCP creator child and retains actual child PID/birth/image. It is an existing creation/ownership boundary, not a preload resource receiver: it does not import handles or preserve the source DLL lease.",
+  "reusable_inheritance_primitive": "windows_injector_job187-190 _inheritable_copy and291-304 STARTUPINFOEX lpAttributeList.handle_list prove a project pattern for explicit handle inheritance. Current list is ONLY stdin/stdout/stderr and scoped to the injector child, whose Job is then reaped; no provider resource survives into SDK through it.",
+  "searched": "rg in ck3_autonomous_player/src and tools/g2_saved_campaign for handle_list/pass_fds/send_handle/recv_handle/multiprocessing found only that injector handle_list. Combined with actual owner/Queue callsites, no existing private controller-to-SDK custody receiver was found.",
+  "not_reusable_as_proof": "RetainedProcessGeneration.capture preserves exact integer birth from a held process object, but opens a PID for liveness/custody and does not prove pre-load DLL continuity. managed_desktop1_placement uses integer FILETIME but a floating CIM tolerance for placement; that tolerance must not become candidate qualification."
+ },
+ "minimum_private_transfer_boundary_not_implemented": {
+  "single_local_seam_not_enough": "Source controller and actual App are different processes. Frozen issuer requires object identities (custody.facade is os_facade, source_resource is custody, original suspended target object). These cannot be transported as Python identity or reconstructed from public JSON. Filling transfer_readback alone is insufficient.",
+  "recommended_existing_mechanism_to_reuse": "For a future normal cold producer, make the canonical controller explicitly own the SDK child creation chain, then carry only the owned read-target duplicate and continuously held fixed-share DLL lease through selective STARTUPINFOEX.handle_list. The current independently invoked owner is not its child; this is an explicit future producer change, not a current channel. Preserve each returned actual child handle and restrict each hop. No broad bInheritHandles or inherited Game/job/control handles.",
+  "remaining_caller_spans": [
+   "canonical cold runtime pre-load holder + controller SDKowner spawn",
+   "SDKowner Queue Popen selective inheritance",
+   "actual MCP App creator selective inheritance under existing capture hook",
+   "App internal receiver before candidate issuance"
+  ],
+  "receiver_requirement": "Add one internal receiver/adopt-preload function at actual App bootstrap. It may construct a local sealed resource holder only from the actual inherited/duplicated kernel resources under that canonical chain; it must independently re-read target PID/exact FILETIME/image/live state and held DLL FileID/volume/hash/size. Numeric handle argv/env hints can locate inherited resources but cannot authorize them; JSON/source SHA/CLI status cannot establish source continuity. This receiver and continuity verification do not currently exist.",
+  "then_existing_guard": "After actual Native pipe adoption and canonical owner construction, bind actual driver.endpoint and verify server-end kernel peer PID/full module identity/no basename ambiguity plus same connection generation. Only then may existing issuer mint the existing DTO. Missing any hop/holder/peer evidence must remain unknown.",
+  "no_new_framework": "This document does not add an IPC service, query/RPC, receiver, token, build or runtime hook. If the future producer cannot supply the explicit real creation chain, stop at the missing private-channel boundary rather than importing a self-signed public receipt."
+ },
+ "owned_resource_lifetime_order": [
+  "Keep original runtime Game/job handles borrowed. Controller owns only its read-target duplicate and fixed DLL file lease. Retain original preload custody until SDK receiver adoption is proved; failure closes only owned resources, retaining unknown cleanup handles.",
+  "At each selective-inheritance hop create only required owned copies; remove inheritability/close redundant sender copies only after the real receiver has verified them. Never release the last DLL lease before the next holder exists. Preserve failures as unqualified, not transfer success.",
+  "SDK owner strongly holds received custody for the issued DTO lifetime. On disconnect, connection replacement, close or failed revalidation: clear DTO and identity cache FIRST, then release only its own received duplicates/mappings/file lease. Unknown close stays retained for retry; borrowed pipe and runtime originals are never closed by this observer.",
+  "When actually wired, add custody issuer and adapter/receiver guard dependencies to owner_source_epoch_v1.names; do not retrofit current C12 or historical source epochs."
+ ],
+ "m7_coordination": "M7 independently confirmed no current exact kernel field in consumer and the prepare-stage microsecond blocker. Frozen parser/DTO/owner/source semantics were not changed.",
+ "execution": {
+  "new_Game_Native_RPC": 0,
+  "new_launches": 0,
+  "new_Win32_trials": 0,
+  "screen_OBS_calls": 0,
+  "live_Driver_SAVE_reads": 0,
+  "current_runtime_or_frozen_source_edits": 0,
+  "new_tests_or_matrix_reruns": 0,
+  "provider_DTOs_issued": 0,
+  "stage_or_commit": false
+ },
+ "retention": "Active Native30 wiring proposal; review when implementing the next canonical custody receiver or by2026-11-18. No raw source/receipt copies or binaries added."
+}

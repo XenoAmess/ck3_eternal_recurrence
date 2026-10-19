@@ -1,0 +1,65 @@
+{
+  "schema": "xar.ck3.immutable-successor-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:28:30Z",
+  "status": "SOURCE_PLAN_ONLY_NOT_ADMITTED_OR_BUILT",
+  "scope": "Next necessary normal warm only; C12 remains running. No new generation, external source view, Game/RPC/process or Driver/SAVE reads.",
+  "basis": {
+    "machine_reader": "py -B tools/ck3_live_run_id.py machine",
+    "actual_business_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+    "actual_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src11",
+    "actual_runtime_host_commit": "d90d5e79ac7d22b3376ca70f3fccebd3faef516f",
+    "actual_freeze": {"basename": "ROOT-FINAL-SDK-FREEZE-P37C12.json", "bytes": 404818, "sha256": "5dbf04c175d0764026bada5565f2fda3364093f7fb502f82c72cccedfb67aa83"},
+    "native_driver": {"relative": "xar_autoplayer/bridge/native_driver.py", "bytes": 1619371, "sha256": "65888f480a9cc8187f37ad2c44d8592fbf2df0e1843090f47e277ec1b7d8b5f1"},
+    "mcp_server": {"relative": "xar_autoplayer/bridge/mcp_server.py", "bytes": 263022, "sha256": "1980c01abb14b2cb579bf3dba3bc1a58f9d4b89d7b8181db356a4b216b37e2b7"},
+    "entry": {"basename": "root_p37c12_mcp_entry.py", "bytes": 12630, "sha256": "dd9ed8d5c606425488009ea7af39af1258ddcaa23f5a6273e6bca8d104999b8b"},
+    "source_labels": "Actual d35b/src11 differs from master36c8348; exclude master Driver a7c09. Retain Native29/physical C11 display and score."
+  },
+  "legal_driver_seam": {
+    "current": "load_driver460 has no war-daily parameter; constructor503 forwards all original kwargs. Driver1927 already accepts strict-bool allow_war_daily_watch_v1=False. Entry68 receives a constructed Driver.",
+    "rejected_shortcut": "Keep native-headless/stdio and main5496,5527-5607 guards. module:callable calls candidate() without kwargs at552. No name masking, second runner, guard bypass, Native connection or runtime monkeypatch.",
+    "minimal_canonical_patch": "performance_native owns the default-OFF CLI/main/load_driver/ctor parameter chain. Preserve all original kwargs/private/lifecycle guards; reject ON outside headless stdio, retain hybrid OFF behavior. No Driver replacement. Await exact pins.",
+    "speed_scope": "Existing route-contact-speed5188 accepts1..5/default3 and passes5615 to route_contact_timeline_speed. Speed2 is route/contact scope, not war-only. C12 remains OFF/unchanged.",
+    "trial_boundary": "Separate future card: explicit ON/source/frame/capability, three cases/one batch<=30cycles, then normal warm OFF. Preserve unsupported sway execution-query mask/other flag order. No current trial."
+  },
+  "camera_composition": {
+    "owner": "/root/g2_m6_lifecycle",
+    "status": "WAITING_FOR_FINAL_FROZEN_METHOD_DESCRIPTOR_AND_SHA",
+    "finding": "M6 confirms no camera-policy constructor DI. Exact camera methods/three init fields need a new immutable view; tests alone do not qualify that SDK.",
+    "composition": "Parent d35b; only final M6 descriptor/helper, approved M4 family hunk and MCP parameter chain. Enumerate changed blobs; exclude other master changes. Await frozen pins."
+  },
+  "immutable_export": {
+    "existing_tools": [
+      {"path": "_runtime/freeze_C12_source86.py", "bytes": 2024, "sha256": "c40e59732a84c7505b9678eca0c947c9ec397bb516eede6dda4de59003c6ba74"},
+      {"pack_basename": "freeze_c9_source80.py", "bytes": 3030, "sha256": "a411b927a8b7dd99a476a649f8de0d3f6557a150c66603f2e0be9e982122b55e"},
+      {"pack_basename": "freeze_business_source.py", "bytes": 6373, "sha256": "6588a361fe65cc484f58dec683a89f22415c81436f1e2917f35bb948bbffab51"}
+    ],
+    "gap": "Writer69 creates every canonical blob with xb; no hardlink mode/provenance guard. A new exporter is needed; smaller capacity does not admit full-copy output.",
+    "new_export_contract": [
+      "Require absent src/ref roots, full canonical commit/card; keep Host/native/machine/expiry/destination/manifest guards. Reject escaped/reparse/symlink paths and non-regular Git modes.",
+      "Unchanged blobs require old manifest membership, same Git ID/bytes/actual SHA256, same NTFS volume and regular file. Record volume/FileID/nlink/freeze; create-only link and verify. Link failure stops; no copy fallback.",
+      "Changed blobs: validate Git bytes, independently xb-create in src/ref; FileIDs differ from old and each other. Never write/truncate old/linked aliases or modify shared attributes/ACL.",
+      "Complete both manifests: business/Host commits, blob/SHA/logical bytes/provenance/allocation-or-null. Original freeze/binder/normalwarm guards apply. Linked references prove bytes, not independent physical replicas.",
+      "Use -B/PYTHONDONTWRITEBYTECODE=1; any cache/temp uses separate budgeted root. Only sole runtime adopts at a clean boundary; no active C12 mutation."
+    ]
+  },
+  "namespace_audit": {
+    "observed_defect": "Global c11->c12 changed entry104 machine1186 to1286. Actual reader1186; runtime preserved source/Mode and appended correction, no hot edit/second machine.",
+    "prior_qualification_limit": "Prior critical-method AST comparison missed protected machine literals. Bounded entry/Queue hex-literal search showed unchanged SHA literals; no whole-program claim.",
+    "future_rule": "Exact AST imports/enumerated generation-path constants only. Compare protected machine/hash/episode/date/actor/physical bindings; keep write-target collision audit. No substring replacement."
+  },
+  "minimum_future_qualification": [
+    "One pinned MCP composition: OFF/ON forwards original kwargs; invalid bool/driver/transport rejects before ctor. Reuse existing guards tests.",
+    "Disposable exporter fixture: unchanged identity, changed independent files, existing-target/bad-hash rejection, old bytes preserved, full canonical manifests. No Game fixture.",
+    "Reuse M6 focused tests; later real normalwarm uses clean seed/postclose/fresh SEM/CAP/original loop and current campaign/display anchors. Trial/pixels need actual acceptance."
+  ],
+  "budget_proposal": {
+    "current_repo_plan_hard_limit_bytes": 8192,
+    "external_writes_now": 0,
+    "future_new_physical_peak_ceiling_bytes": 20971520,
+    "future_components_must_fit": "Changed Service/MCP/helper materializations in both views <=3MiB; both manifests/link provenance/control/proof <=2MiB; one named postclose Driver copy <=10MiB; metadata/temporary headroom <=5MiB. If actual closedDriver or descriptor exceeds these caps, stop before writing and re-budget. No new DLL, media, SAVE body or 132MiB pair copy in this proposal.",
+    "logical_bytes": null,
+    "allocated_bytes": null,
+    "accounting": "Count shared old data once physically; report complete logical bytes for each new view separately. Hardlinks do not reclaim old space or give physical credit. Future card requires fresh same-volume capacity, concurrent reservations and file/metadata allocation; this 20MiB estimate is not admission."
+  }
+}

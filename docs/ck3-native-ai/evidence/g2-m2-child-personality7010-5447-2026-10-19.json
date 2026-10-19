@@ -1,0 +1,19 @@
+{
+  "schema": "xar.g2-m2-natural-event-source-closure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:28:53.994556+00:00",
+  "event_definition_key": "child_personality.7010",
+  "incident_id": "d3db24f23ac9421482cf3fed4ddcd6c9",
+  "closure": {"path": ".task-tmp/g2-m2-event5447-20261019/CLOSURE.json", "bytes": 8992, "sha256": "b2996106b50ce46b359fd30379959c11e06f80ebf4917b9172bc1e0384e7236b"},
+  "source": {"relative_path": "events/education_and_childhood/child_personality_events_2.txt", "bytes": 132868, "sha256": "49398bcb261b728f2fbeb1b2a8dfcda1426af2e63fc48039f4e0ac6db87366bf", "option_catalogue_sha256": "c2283e94c138e3f98717f146f2d8584b1d18a8ff6636351b6aee57eb313174f2"},
+  "persistent_knowledge": {"state_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/state", "fingerprint": "64a5aeb012591ae8f169eec97585169214faf7fa4b2d3c1a66b0fb2f10bf71d3", "entry_bytes": 1313, "entry_sha256": "9a90c764c1ee2dee6a30ce930dfff186827fbcc349f27cc7298e77eb02419d51", "facts_bytes": 17994, "facts_sha256": "8dd5cf00248a5f1671c3b68b6e15821726f26242d3875fe5792bff47568fc47a"},
+  "source_analysis": {
+    "native0": "child_personality.7010.a: root gains zealous; if sermon_priest is not cynical, call progress_towards_friend_effect with OPINION=50/REASON=friend_child_sermon. This is a conditional callee argument, not an observed immediate +50 opinion or confirmed friend.",
+    "native1": "child_personality.7010.b: root gains ambitious; priest traits/personality and legal friend trigger select friendship plus clever_child_opinion or disappointed -10 branches.",
+    "native2": "child_personality.7010.c: root gains sadistic; priest traits/personality and legal friend trigger select friendship plus delightfully_devilish_opinion or worried_opinion branches.",
+    "scope_and_AI": "Current child=root40526, sermon_priest39348. Immediate already selected priest. All three AI-only branches add the matching flag and notify guardian/tutor via .7011; source conditions are preserved, not inferred executed. All option bodies, triggers, immediate and callee calls remain verbatim in facts. Callee bodies are not recursively evaluated."
+  },
+  "actual_result": {"selected_native_index": 0, "command_acknowledged": true, "event_instance_transition": "17 -> null", "event_instance_advanced_verified": true, "stress": "44 -> 44", "gold_raw": "19249586 -> 19249586", "prestige_raw": "5503520 -> 5503520", "material_gaps": "Closed trait DTO only samples lifestyle_poet/journaller; zealous membership, priest opinion/friend progress and AI-branch effects were not observed. Do not credit trait/friend/material outcome from ACK."},
+  "verification": {"actual_calculated_id": 4457010, "loader_after": "offline-source-reviewed/exact", "synthetic_cold_id": 5457010, "synthetic_loader_after": "offline-source-reviewed/source_rebound", "registry_contract_accepted": false, "material_effects_verified": false, "Game_RPC_calls": 0, "active_Driver_SAVE_reads": 0, "SDK_Native_strategy_changes": 0},
+  "storage": {"new_ordinary_log_evidence_bytes": 49557, "codeprep_helper_bytes": 3559, "codeprep_limit_bytes": 32768, "allocated_remaining": null, "physical_credit_bytes": 0, "future_growth_bytes": 0, "old_96KiB_package_reused": false, "derived_retention_hours": 48, "record_retention_days": 180}
+}

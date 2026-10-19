@@ -1,0 +1,195 @@
+{
+  "schema": "xar.war6343-excluded-siege-observation-source-proof.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 12:53:45 UTC",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; matches linked C12 closed packet",
+  "scope": "Frozen source/closed responses and hermetic software tests only. No Game/RPC/active Driver/SAVE, Native build, original6343 replay, queue ledger mutation, stage or commit.",
+  "frozen_packet": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c12-auto6343-failure87/FROZEN.json",
+    "bytes": 4491,
+    "sha256": "b28580cb1a4614a47f3279c1dc3748deee7f36f8f18712b487754c34b1b62c25",
+    "observed_at_utc": "2026-10-19T12:39:09.622484+00:00"
+  },
+  "actual_source": {
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src11",
+    "business_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+    "strategy_sha256": "d59098e6e61357f0b63a2540db7511f4cba60db1813fd69df161d25c573b9d13",
+    "Game_pid": 15512,
+    "Game_creation_filetime": 134368811928524220,
+    "Native": "Native29"
+  },
+  "actual_failure": {
+    "AUTO": 6343,
+    "original_bytes": 60620,
+    "original_sha256": "318fcf0019b270e59b6e4a5768e6bab139d4df26aa2c78aea4edac3f4f9a343b",
+    "status": "blocked",
+    "selected_step": null,
+    "phase": "native_war_no_safe_exact_route",
+    "completed_cycles": 3033,
+    "game_days": 2432,
+    "pending_cycle": 3034,
+    "NEXT": 6344,
+    "before_business_dispatch": true,
+    "source_frame": {
+      "snapshot_id": "native:1279",
+      "native_revision": 1279,
+      "revision": 929,
+      "date_raw": 53202696,
+      "actor": 40526,
+      "episode": "native-40526-1bec95182886",
+      "connection_generation": 2
+    },
+    "route_rejections": [
+      {
+        "target_province_id": 2633,
+        "status": "current_exact_siege_rejected",
+        "siege_status": "not_player_besieging"
+      }
+    ]
+  },
+  "same_frame_closed_observation": {
+    "source": "M5-6337-1-result.json/result/war_progress_after and war_objective_hold_post_stop, plus6341 native CArmy ID",
+    "current_frame_does_not_come_from_old6321": true,
+    "subject": {
+      "army_id": 33554800,
+      "native_carmy_id": 33554783,
+      "current_province_id": 2633,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "move_target_province_id": null,
+      "route_province_ids": [],
+      "in_combat": false,
+      "retreating": false,
+      "post_stop_status": "matched",
+      "complete_controllable_watch": true,
+      "all_player_armies_regular_idle_stationary": true
+    },
+    "siege": {
+      "siege_id": 184549422,
+      "besieging_army_id": 67109009,
+      "player_army_besieging": false,
+      "subject_occurrence_index": 0,
+      "subject_native_regiment_qualification_eligible": false,
+      "subject_qualified_regiment_ids": [],
+      "other_army_occurrence_eligible": true
+    },
+    "enemy_ids": [
+      393,
+      33554439,
+      117440755
+    ],
+    "enemy_current_provinces": [
+      2619,
+      2604
+    ],
+    "enemy_route_province_ids": "all empty in this frame; none at or targeting2633",
+    "interpretation": "Native exclusion from siege is valid and retained. It gives no subject siege contribution, assault or victory permission. The army is stationary here, unlike moving7 in4892."
+  },
+  "gap": "The sole exact current objective is excluded from siege. Existing defensive hold additionally requires tactical-war hostile operational overmatch; first war986vs531 fails although other war is losing90. No remaining strategy branch observes this idle noncontributing objective, causing a global stop.",
+  "implementation": {
+    "strategy": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1047103,
+      "sha256": "552713a0057cb57e1fc8207c3363ff43b907a88f6ece3bc0e8905d63141e5f11"
+    },
+    "function": {
+      "name": "_stationary_excluded_siege_one_day_watch_plan",
+      "line": 21764,
+      "end_line": 21866,
+      "ast_sha256": "c0b949b9cde09145eb633fbb011ae138282cb30e65333cb01280735b9a576c65"
+    },
+    "callsite": "After existing defender proposal/embarked/land retained-edge paths, before old timeline-unavailable fallback and final blocked return. No previous unsafe or surrender guard removed.",
+    "guards": [
+      "Exactly one current owned controllable regular1 army, complete_empty route, no move target/combat/retreat; paused map/alive actor and no event, interaction, modal, terminal, identity transition, assault or unsafe controlled route.",
+      "Only rejection is current_exact_siege_rejected/not_player_besieging. Same-snapshot native subject contribution must be explicitly excluded with measured_native_province_qualification, matching public/native IDs and a different besieging army.",
+      "Every active-war non-retreating enemy has current ID/province, explicit target field, complete route status and valid route/state. Reject missing information, any current/target/route threat to the stationary province, or active route evidence issue.",
+      "Existing native daily Arm/Status/Cancel and all four ordinary one-day execution steps must already be advertised."
+    ],
+    "phase": "native_war_stationary_excluded_siege_one_day_observation",
+    "selected_step": "life-advance-one-day",
+    "native_clock_scope": "exact_one_day_date_only_a0",
+    "speed": 1,
+    "maximum_observation_days": 1,
+    "native_watch_army_ids": [],
+    "in_day_army_event_actor_watch": false,
+    "risk": "No fresh Move/Halt/Assault. In-day contact or defeat remains possible; no contact-free claim, subject siege contribution, war result or material credit. At the next paused frame the entire ordinary planner re-evaluates war, events, financing and routes.",
+    "Driver_or_Service_edits_by_M5": false
+  },
+  "tests": {
+    "new_test_file": {
+      "path": "ck3_autonomous_player/tests/unit/test_stationary_excluded_siege_watch_6343.py",
+      "bytes": 9218,
+      "sha256": "01d0249ae08a545fd0dfde7cf3f0f916c4d36d46c68e004b6c15257e4e5f9645"
+    },
+    "fixture": {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/war6343_excluded_siege_closed_v1.json",
+      "bytes": 13802,
+      "sha256": "75c9747b4d5e159669687c9f7515371808b0de9507c21ef5cba12a3b280d1298"
+    },
+    "fixture_boundary": "Fixture sources contain all original input pins.6337 current post frame/army/war/native siege occurrence and6341 CArmy ID are untouched. Older6321 owner/static war metadata remains explicitly old. Tests construct synthetic adapter schema/owner/route-status fields, not a raw current SEM or live Driver replay. Only already-passed overview and historical termination-query cadence handoffs are modeled; full ordinary core runs unchanged. No old root re-dated.",
+    "focused_command": "python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_stationary_excluded_siege_watch_6343.py']))",
+    "focused_result": "24 passed in1.63s",
+    "regression_command_files": [
+      "test_stationary_excluded_siege_watch_6343.py",
+      "test_land_retained_unsafe_edge_watch_4892.py",
+      "test_land_edge_date_only_clock_packet_v1.py",
+      "test_unsafe_embarked_route_halt.py",
+      "test_unsafe_committed_route_halt.py"
+    ],
+    "regression_result_before_final_additive_test": "43 passed in3.23s: new23 + unchanged prior20. Final added financing-consumer integration test then new file24 passed; no production change afterward.",
+    "checks": "Full ordinary old blocked -> new one-day with identical siege rejection; native excluded occurrence; helper rejects actor/owner/lifecycle/modal/event, combat/retreat/movement, route incompleteness, missing enemy/target/status, incoming enemy, assault/multiple controlled armies, clock gap, unknown or unqualified siege. Existing mercenary consumer receives new step as quiet, selects market query before clock, retaining zero siege credit. No Native method exists on that test owner.",
+    "git_diff_check_exit_code": 0,
+    "original_a0_packet_qualification": "Existing war4892-retained-land-edge-fallback-2026-10-19.json and test_land_edge_date_only_clock_packet_v1.py remain unchanged; exact one-day public dispatch None proof/speed1, Native arm a-0, same-generation+24 pause and wrong-generation rejection."
+  },
+  "war_and_finance": {
+    "current6343": {
+      "primary_defender_war_scores": {
+        "16777269": -26,
+        "16777278": -90
+      },
+      "unique_primary_enemy_soldiers": 2999,
+      "player_raised_soldiers": 986,
+      "interpretation": "operational counts, not battle win odds",
+      "protected_title_ids": [
+        2196,
+        2488
+      ],
+      "directly_held_target_ids": [],
+      "CB_defeat_transfer_verified": false,
+      "optional_new_construction_deferred": true
+    },
+    "termination": "Current options/terms not published. Last negative queries raw53202048 and53201328 are historical; no current surrender/white-peace authority is inferred. Actual cadence expires at53202768 (3days after current), so full ordinary termination query resumes; no cached terms promoted.",
+    "actual_src11_service": {
+      "bytes": 871839,
+      "sha256": "b6e078c2397b355aac9bed24834ad4921c7083b477234d2d66438fd32933a3af",
+      "lines": "2296-2307 still passes ordinary plan to existing war_mercenary consumer"
+    },
+    "actual_src11_mercenary_consumer": {
+      "bytes": 21416,
+      "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e",
+      "lines": "95-100 accepts life-one-day as quiet; context/root gaps can select normal market/finance query"
+    },
+    "actual_src11_cadence": {
+      "bytes": 9560,
+      "sha256": "0020a1a2187b7d2e394d888d811b20fcb87820790377609973b1cb65b89570fa",
+      "line": 209
+    },
+    "older6337_decision": {
+      "source_frame_native": 1269,
+      "date_raw": 53202552,
+      "days_before_current": 6,
+      "treasury_raw": 19302034,
+      "ordinary_military_buffer_raw": 20000000,
+      "company_count": 558,
+      "eligible_count": 0,
+      "selected_company_id": null,
+      "reasons": "all native hire/affordability rejected; retained same-frame complete terms/military allocation not ready. No arrival or win probability.",
+      "cancel_project": "refund/native receiver unqualified in this frozen decision",
+      "loan": "full .4 terms/typed debt/attributed received funds unqualified in this frozen decision",
+      "current1279_quote_or_received_cash": false
+    },
+    "full_flow": "New observation is a proposal to existing full pipeline. Normal financing/market/pending receipt may replace it before any clock. Newer C13 cash capability adoption belongs to its owner, not inferred from old6337. No forced hire, loan, surrender or construction."
+  },
+  "adoption": "Source/software ready only. Root/runtime/harness own C13B normal warm and queue clear; original6343 untouched, no live successful observation/day/battle/financing result claimed.",
+  "storage": "New source delta + fixture/test + this evidence fit48KiB; original packets referenced without large copies."
+}

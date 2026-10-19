@@ -1,0 +1,246 @@
+{
+  "schema": "xar.m4.family-same-call-relationship-reuse.v1",
+  "status": "source_and_focused_software_ready_not_current_c12_adopted",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:30:00.431683+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py current_machine_id via metadata-only Python; no Game/process/environment probe",
+  "problem": {
+    "source_profile": {
+      "path": "docs/ck3-native-ai/evidence/c12-first-complete-consumer-performance01.json",
+      "bytes": 26362,
+      "sha256": "afd79f35299ab8e15eeff4b4c2020915278f40224f5a8e764db8feb6bb791e7b"
+    },
+    "source_facts": "Actual C12 Service obtains a current relationship in its fixed-betrothal consumer, retains it for education, but originally does not pass it to subsequent ordinary marriage consumer. The latter performs another relationship read.",
+    "causal_limit": "C12 family aggregate 4.0408221s covers multiple methods and inputs. It neither proves both optional queries ran on every family call nor measures this optimization's saving. No live speedup or performance acceptance is claimed."
+  },
+  "actual_source_evidence": {
+    "actual_c12_sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src11\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 871839,
+        "sha256": "b6e078c2397b355aac9bed24834ad4921c7083b477234d2d66438fd32933a3af"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src11\\xar_autoplayer\\bridge\\current_first_heir_relationship_private_transport.py",
+        "bytes": 27390,
+        "sha256": "0d7f1bbd38f75dea00ffd61492031942b82a432f44d19c27f7433ecba4e6c5c5"
+      }
+    ],
+    "service_handoff_before_anchor": {
+      "bytes": 229,
+      "sha256": "1489358f4b5b615cf1847b207344d2e8fb580ad851da2ed993424d95c59d1456",
+      "actual_c12_same_bytes": true
+    },
+    "note": "No current SDK source was changed.",
+    "profile_source_manifest": {
+      "file": "SDK-FREEZE21-C12.json",
+      "bytes": 403783,
+      "sha256": "7b97dc1c9a0cc99b3f372c51bbd7fef735b6dc5f200a8dd3a8cc940ba19bf966",
+      "source": "Frozen C12 profile source_audit; cited manifest pin, not a new runtime observation"
+    },
+    "original_consumer": {
+      "path": "xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 58216,
+      "sha256": "49f96c1d2e60dbfa56a6c2dff731612583408b876a3e4a8085b1a7cf363c530d"
+    },
+    "original_betrothal_consumer": {
+      "path": "xar_autoplayer/current_first_heir_betrothal_formal_consumer.py",
+      "bytes": 18384,
+      "sha256": "2e7691fde8c4a1928c289b52661fd527e27a3b693baa76910f331c35457c4681"
+    },
+    "historical_missing_proof": "Original normalized relationship DTO has build/native revision/root sequence but lacks complete actor, episode, Game PID, connection and public frame binding. This historical deficiency is retained; a caller dict plus equal native revision alone does not qualify reuse."
+  },
+  "implementation": [
+    {
+      "leaf": "ck3_autonomous_player/src/xar_autoplayer/bridge/current_first_heir_relationship_private_transport.py",
+      "scope": "Optional source_frame on available normalized relation only",
+      "mechanism": "Project observed native_revision/date/actor/episode/bridge_pid(Game PID)/connection_generation/build from the existing before and after snapshots. Both must be complete, paused, map-ready and living-player, with identical Native/owner/build frame. Retain actual public_before and public_after snapshot_id/revision separately; require valid wrappers and nonregressing public revision.",
+      "failure": "Missing or conflicting extra owner/build/public information only omits source_frame; all original query normalization, exceptions and response fields remain on their original path.",
+      "reads": "No additional snapshot/cache/endpoint read. Uses the query's original three local snapshot calls and original wire request."
+    },
+    {
+      "leaf": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "scope": "Only _plan_private_family_opportunity_v1 call to plan_family_marriage_private",
+      "mechanism": "Pass the current method-local education_relationship as optional relationship input only when present. The variable is obtained solely from this invocation's current betrothal result, including the existing fresh-read retry branch. No driver field, cross-turn cache or history record is introduced.",
+      "net_added_bytes": 119
+    },
+    {
+      "leaf": "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py",
+      "scope": "Optional relationship input to marriage planner and _current_first_heir_relation",
+      "mechanism": "Query opt-in/native revision checks still run first. Only available relation with matching complete current Native/owner/build frame, exact observed public_before wrapper, nonregressing well-formed public_after, matching native build and the original schema/read_only/advertised/bilateral/ID validator is reused. Return a deep owned copy. Missing, malformed, unavailable, stale or mismatched input falls back to the original provider call.",
+      "original_legality": "Pending-ledger priority and all five-candidate generation/ranking, legality/heir identity, projection relationship, lineage and selected-action checks are unchanged."
+    }
+  ],
+  "source_frame_semantics": {
+    "binding_scope": "query_before_after_native_frame",
+    "public_revision_may_change_on_query_publication": true,
+    "public_after_never_copied_into_public_before": true,
+    "old_relation_never_relabelled_as_new_frame": true,
+    "reuse_snapshot_must_equal_actual_public_before": true,
+    "native_or_owner_change_denies_reuse": true,
+    "no_new_freshness_query": true,
+    "no_cross_call_storage": true,
+    "optional_api_scope": "Internal same-Service-invocation handoff, not a public arbitrary DTO acceptance tool"
+  },
+  "final_sources": {
+    "files": [
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+        "bytes": 880535,
+        "sha256": "27aade453b29945ab854792a4295253fb0e793834ab8f0963c020c4882f9ee66",
+        "baseline_head_bytes": 874734,
+        "baseline_head_sha256": "4b420c22c3277cda843e5b4a290b543f3e63a765a49140d480f12cc8073b63b0",
+        "net_bytes_vs_head": 5801,
+        "family_method_bytes": 8809,
+        "family_method_sha256": "a17841980d7b52e7e7dfd5b11de6e9289b3af775cd82d4a3a7adaf7ce091071c"
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py",
+        "bytes": 59889,
+        "sha256": "1e8f19eafca8b83601de84c74fb30f40b173932570587cacd15be590d72f357c",
+        "baseline_head_bytes": 58216,
+        "baseline_head_sha256": "49f96c1d2e60dbfa56a6c2dff731612583408b876a3e4a8085b1a7cf363c530d",
+        "net_bytes_vs_head": 1673
+      },
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/current_first_heir_relationship_private_transport.py",
+        "bytes": 29925,
+        "sha256": "62695bddf2344cb824514c036306fa0ba2a0d07b7216b7a412ba322870cd338a",
+        "baseline_head_bytes": 27390,
+        "baseline_head_sha256": "0d7f1bbd38f75dea00ffd61492031942b82a432f44d19c27f7433ecba4e6c5c5",
+        "net_bytes_vs_head": 2535
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_family_same_call_relationship_v1.py",
+        "bytes": 10236,
+        "sha256": "42ab224765706a0969693ca3c48ffb15cf0fd628cfb4d388c59da21f8e5d979b",
+        "baseline_head_bytes": 0,
+        "baseline_head_sha256": null,
+        "net_bytes_vs_head": 10236
+      }
+    ],
+    "service_ownership": {
+      "whole_file_pin_is_observed_snapshot_only": true,
+      "other_m6_init_camera_hunks_are_not_owned_or_charged_here": true,
+      "before_observed_bytes": 879856,
+      "before_observed_sha256": "2398b27293a9cf243e09100d863cffbb3ee42b4dffdf283d19e5a2b2db36eb8d",
+      "authoritative_method_before_bytes": 8690,
+      "authoritative_method_before_sha256": "b35efb6e53a356889ab651dce7fd364a43a340187d4fa0037b83948353d3188f",
+      "authoritative_method_after_bytes": 8809,
+      "authoritative_method_after_sha256": "a17841980d7b52e7e7dfd5b11de6e9289b3af775cd82d4a3a7adaf7ce091071c",
+      "reversing_only_119_byte_handoff_restores_exact_original_method": true,
+      "other_methods_not_rewritten": true,
+      "root_must_bind_final_shared_service_at_batch_freeze": true
+    }
+  },
+  "static_verification": {
+    "ast_parse_all_four_python_files": "passed",
+    "git_diff_check": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "original_validator_ast_identical": {
+      "chunk": "d574b4",
+      "original_validator_ast_identical": true
+    },
+    "existing_transport_schema_and_relation_checks_removed": 0
+  },
+  "software_validation": {
+    "runs": [
+      {
+        "scope": "first_25_case_file",
+        "at_utc": "2026-10-19T12:28:50.562374+00:00",
+        "argv": [
+          "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "ck3_autonomous_player/tests/unit/test_family_same_call_relationship_v1.py",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider"
+        ],
+        "environment_overrides": {
+          "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 2.531072499928996,
+        "stdout": ".........................                                                [100%]\n25 passed in 2.01s\n",
+        "stderr": "",
+        "stdout_truncated": false,
+        "tool_receipt": {
+          "chunk_id": "6f5c06",
+          "exit_code": 0,
+          "wall_time_seconds": 2.5029524
+        }
+      },
+      {
+        "scope": "necessary_readonly_rejection_node",
+        "at_utc": "2026-10-19T12:29:33.305819+00:00",
+        "argv": [
+          "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "ck3_autonomous_player/tests/unit/test_family_same_call_relationship_v1.py::test_rejected_readonly_fallback_preserves_original_error_without_retry",
+          "-q",
+          "--tb=short",
+          "-p",
+          "no:cacheprovider"
+        ],
+        "environment_overrides": {
+          "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+          "PYTHONDONTWRITEBYTECODE": "1",
+          "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+        },
+        "exit_code": 0,
+        "elapsed_seconds": 2.7071080000605434,
+        "stdout": ".                                                                        [100%]\n1 passed in 2.23s\n",
+        "stderr": "",
+        "stdout_truncated": false,
+        "tool_receipt": {
+          "chunk_id": "b7bf53",
+          "exit_code": 0,
+          "wall_time_seconds": 2.6810977
+        }
+      }
+    ],
+    "history": "First whole focused file 25 PASS, then only the newly added readonly-rejection node 1 PASS. No final whole 26-case rerun is claimed.",
+    "source_test_failures": 0,
+    "fixture_boundary": "Completely synthetic inputs; no Native DLL, CK3 process, real RPC or actual relationship is exercised.",
+    "end_to_end": "Tests execute real transport normalization, fixed-betrothal consumer, Service handoff and ordinary marriage consumer. Only ledger/process identity/education surroundings are in-memory mocks; a synthetic Path is never opened.",
+    "positive": "Fresh complete same-call source changes relationship provider calls 2 -> 1, existing query snapshot calls 6 -> 3, preserves five projected/valued candidates, chosen action, legality and diagnostic values.",
+    "negative": "15 optional-input mutations cover actor/episode/connection/Game PID/native/date/build/public-before/missing source/read-only/advertised/schema/bilateral/heir/status. Each restores original fetch. Six transport after-bookend missing/conflicting owner/build/public cases omit source proof without changing available business response. Disabled query does not run; original legality mismatch and fetched-schema failure still reject; readonly fallback exception object propagates once without retry.",
+    "query_wrapper_case": "Public before fixture:7/rev7 and after publication:8/rev8 are retained separately while Native revision remains7; reuse never rewrites old wrappers.",
+    "full_matrix_run": false,
+    "benchmark": false
+  },
+  "adoption": {
+    "current_c12_or_frozen_src11_modified": false,
+    "current_game_or_native_modified": false,
+    "current_sdk_hot_swap": false,
+    "build_or_native_compile": false,
+    "real_relationship_acceptance": false,
+    "next": "Root may batch source for later normal SDK maintenance. Only later naturally qualified actual observations can establish adoption and measured saving.",
+    "funding_or_action_credit": 0
+  },
+  "storage": {
+    "scope": "repo-only original other research128MiB",
+    "hard_limit_bytes": 65536,
+    "source_test_own_net_bytes": 14563,
+    "proof_bytes": 13567,
+    "total_own_net_bytes": 28130,
+    "service_unrelated_net_not_double_counted": true,
+    "external_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "producer_closed": true,
+    "future_write_bytes": 0,
+    "active_processes": 0,
+    "original_review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+  }
+}

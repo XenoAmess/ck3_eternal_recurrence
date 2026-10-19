@@ -53,6 +53,7 @@ def _positive(value: object) -> bool:
 def _current_first_heir_relation(
     driver: object, snapshot: Mapping[str, object], *,
     campaign_root_result: dict[str, object] | None = None,
+    relationship: object = None,
 ) -> dict[str, object] | None:
     """Bind the opted-in current heir read to this formal planning frame."""
     if getattr(driver, "allow_private_current_first_heir_relationship_query", False) is not True:
@@ -60,10 +61,37 @@ def _current_first_heir_relation(
     revision = snapshot.get("native_revision")
     if not _positive(revision):
         raise ValueError("current first-heir relation lacks a native revision")
+    if isinstance(relationship, dict) and relationship.get("status") == "available":
+        from .bridge.current_first_heir_relationship_private_transport import (
+            _relationship_native_frame_v1, _relationship_public_frame_v1,
+        )
+        source = relationship.get("source_frame")
+        native_frame = _relationship_native_frame_v1(snapshot)
+        public_frame = _relationship_public_frame_v1(snapshot)
+        if (isinstance(source, dict) and native_frame is not None and public_frame is not None
+                and source.get("binding_scope") == "query_before_after_native_frame"
+                and source.get("native_frame") == native_frame
+                and source.get("public_before") == public_frame
+                and isinstance(source.get("public_after"), dict)
+                and _relationship_public_frame_v1(source["public_after"]) == source["public_after"]
+                and source["public_after"]["revision"] >= public_frame["revision"]
+                and private_native_readback_matches(snapshot, relationship)):
+            try:
+                return deepcopy(_validate_current_first_heir_relation(relationship, revision))
+            except ValueError:
+                # An optional reuse input never weakens the original fetch path.
+                pass
     result = driver.query_current_first_heir_relationship_private_v1(
         expected_native_revision=revision,
         **({"campaign_root_result": campaign_root_result}
            if campaign_root_result is not None else {}))
+    return _validate_current_first_heir_relation(result, revision)
+
+
+def _validate_current_first_heir_relation(
+    result: object, revision: int,
+) -> dict[str, object]:
+    """Keep the original schema, frame and bilateral relationship checks."""
     if (not isinstance(result, dict)
             or result.get("schema") != "xar.ck3.current-first-heir-relationship.v1"
             or result.get("status") not in {"available", "unavailable"}
@@ -516,7 +544,8 @@ def choose_first_heir_marriage_candidate(
 def plan_family_marriage_private(driver: object, planned: dict[str, object],
                                  snapshot: Mapping[str, object], *,
                                  prewar_arbitration: bool = False,
-                                 wartime_arbitration: bool = False) -> dict[str, object]:
+                                 wartime_arbitration: bool = False,
+                                 relationship: object = None) -> dict[str, object]:
     """Consider marriage at a peaceful opportunity or a deferrable war read.
 
     The normal turn keeps its life-advance boundary. A pre-war caller must
@@ -576,7 +605,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
             "reason": "await later paused frame for marriage result without resubmitting"}}
     resolved = ledger["resolved"]
     rejected_candidate_ids: frozenset[int] = frozenset()
-    relation = (_current_first_heir_relation(driver, snapshot)
+    relation = (_current_first_heir_relation(driver, snapshot, relationship=relationship)
                 if snapshot.get("paused") is True
                 and snapshot.get("map_ready") is True
                 and _positive(snapshot.get("native_revision")) else None)

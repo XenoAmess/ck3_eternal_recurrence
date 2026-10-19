@@ -1,0 +1,124 @@
+{
+  "schema": "xar.native30.loaded-provider-windows-adapter-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T12:21:46.550827Z",
+  "machine_id_source": "tools/ck3_live_run_id.py machine, invoked by this receipt writer",
+  "status": "DEFAULT_OFF_SOURCE_AND_INJECTED_API_TESTS_ONLY",
+  "production_provider_issued": false,
+  "new_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+      "bytes": 18425,
+      "sha256": "34ed125fd8325f785846c6be4a139ac0e1270db5dbdd0f35f6a2b36b2a1fcfaf"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_loaded_provider_windows_v1.py",
+      "bytes": 12379,
+      "sha256": "648aa834e24cb660e85f1c7402f54f71ce5468f2b196342b24f666193fe2a58d"
+    }
+  ],
+  "previously_frozen_inputs_unchanged": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "bytes": 19991,
+      "sha256": "5540d39a166b709479260a0665fcdd97be5cf27ce5043bcd6d637de55fbba799"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_loaded_provider_custody_v1.py",
+      "bytes": 13432,
+      "sha256": "308d8192461df92dc7988abea86539f1188da1e8802c0885a7a3859ab56354f2"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-loaded-provider-issuer-contract-2026-10-19.json",
+      "bytes": 6194,
+      "sha256": "847d3dfd373be02e9433a0429027d792d52da82c8c35d46e3a5947c1cc216ca8"
+    }
+  ],
+  "implemented_source": {
+    "lazy_default_off": "Import/disabled construction does not load WinDLL or probe targets. Future reads require this adapter explicitly enabled; enabling it cannot implement the missing transfer.",
+    "fixed_preload_opener": "CreateFileW GENERIC_READ / FILE_SHARE_READ / OPEN_EXISTING, no caller share flags. Own handle is retained; final DOS and NT names, 64-bit volume and 128-bit FileID and size are rechecked. No post-hoc arbitrary handle adoption.",
+    "same_handle_hash": "Read-only mapping hashes the continuously held file itself, without reopening a path or changing a shared file pointer. Unknown unmap/close remains retained for explicit retry.",
+    "process": "Read-only owned duplicate: QUERY_INFORMATION | VM_READ | SYNCHRONIZE, no write/terminate rights. Kernel PID/GetProcessTimes integer FILETIME/full image plus WaitForSingleObject(handle,0). Only WAIT_TIMEOUT is alive; signaled is dead; other states reject. All seven FILETIME fraction digits are retained; frozen issuer refuses nonrepresentable precision rather than truncating.",
+    "module": "Complete bounded module roster is read before/after, including same-basename foreign modules. FileID is associated only with a continuous preload lease matching both full loader DOS and kernel mapped NT paths; unrelated modules retain unknown IDs. No module path reopen or basename-only selection supplies file identity.",
+    "pipe": "bind_server_endpoint borrows the actual canonical NativeNamedPipeServer current instance and validated pipe_name. Kernel reader requires server end via GetNamedPipeInfo, then GetNamedPipeClientProcessId. Instance and name are checked before/after peer observation.",
+    "cleanup": "Only own target read duplicate, fixed DLL file and temporary mapping/view handles are released. Runtime original target/job and actual SDK server pipe remain borrowed. Unknown release retains ownership for retry. The facade close methods are for pre-adoption abort or release after custody has already cleared its DTO; they are not installed owner invalidators.",
+    "token": "No new qualification token, JSON proof, public RPC or owner/parser/driver mutation. Existing guarded issuer remains the only branch that could mint the existing M7 private DTO/seal."
+  },
+  "necessary_test_execution": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_utc_basis": "Execution precedes this freeze; exact test UTC was not separately captured.",
+    "tool_result": "functions.exec / exec_command chunk 1d384c",
+    "cwd": "Z:/ck3_mod_rewrite/ck3_autonomous_player",
+    "command": "python -B -m pytest -q -o pythonpath=src tests/unit/test_native_loaded_provider_windows_v1.py",
+    "result": "12 passed in 1.33s",
+    "tested_source_sha256": "d1fdabd0625a5ac9455c75d799b476b212ff96123a25afcbab17128c02712080",
+    "test_file_sha256": "648aa834e24cb660e85f1c7402f54f71ce5468f2b196342b24f666193fe2a58d",
+    "post_test_source_edits": [
+      "Cleanup pre-adoption/invalidation docstrings only.",
+      "Diagnostic field renamed Game_process_calls to target_process_control_calls; no OS or qualification path changed."
+    ],
+    "coverage": [
+      "disabled no-probe/lazy",
+      "fixed held-file hash/FileID/no reopen",
+      "module requires DOS+NT+live lease",
+      "full roster and change rejection",
+      "integer FILETIME precision",
+      "bound current server/handle/name race",
+      "owned-only release and unknown close retention",
+      "transfer always unimplemented",
+      "concrete fake CreateFile/DuplicateHandle argument rights",
+      "concrete fake same-handle map/hash and retry cleanup",
+      "concrete fake client-end reject before peer read",
+      "concrete fake zero-timeout process wait alive/dead"
+    ],
+    "injection_boundary": "Fake low-level API/function pointers and self-owned ctypes memory only. _Win32ReadsV1 constructor was not run. No real Win32 API, DLL opener, target process or pipe was exercised.",
+    "unchanged_prior_matrix_rerun": false
+  },
+  "independent_review": {
+    "reviewer": "/root/g2_m7_lineage",
+    "source_sha256": "34ed125fd8325f785846c6be4a139ac0e1270db5dbdd0f35f6a2b36b2a1fcfaf",
+    "test_sha256": "648aa834e24cb660e85f1c7402f54f71ce5468f2b196342b24f666193fe2a58d",
+    "result": "Final narrow source readback: no additional concrete facade/issuer mismatch. Existing DTO/seal/parser unchanged; no review OS calls or source writes.",
+    "scope": "Facade contract only, not Windows mechanical or production qualification."
+  },
+  "explicit_remaining_production_gap": {
+    "exact_missing_method": "WindowsNativeCustodyFacadeV1.transfer_readback(resource, transfer, owner) unconditionally raises NotImplementedError, even enabled=True.",
+    "controller_to_sdk": "Canonical preload holder/deny-write-delete file continuity and owned read duplicates must be privately transferred into the actual SDK process while original custody remains alive. Numeric handles, JSON tuples, source-contract hashes, post-load reopen and injector exit0 cannot substitute. Current adapter has no receiver registration or actual transfer implementation.",
+    "future_minimum_hook": "At canonical cold pre-load retain fixed holder; implement actual private transfer/receiver custody; at actual SDK pipe adoption bind_server_endpoint(driver.endpoint), then existing issuer. Missing any handle, peer, module or continuity evidence must remain unknown.",
+    "lifecycle": "Before production issuance install existing custody invalidation on actual disconnect/close/connection replacement. Clear DTO first, then close own resources. Do not call facade close_all_owned directly after adoption.",
+    "source_epoch": [
+      "bridge/native_loaded_provider_custody_v1.py",
+      "bridge/native_loaded_provider_windows_v1.py"
+    ],
+    "source_epoch_note": "When actually connected, add both guard dependencies to owner_source_epoch_v1.names. Current ledger/source epoch was not changed.",
+    "real_win32_mechanical": "not_observed; no actual reader/file/process/pipe qualification claimed",
+    "current_c12": "not_connected; current flags, owner, driver, parser and runtime controls untouched"
+  },
+  "execution_limits": {
+    "game_rpc": 0,
+    "game_native_calls": 0,
+    "current_game_pipe_dll_reads": 0,
+    "screen_desktop_obs_operations": 0,
+    "native_builds": 0,
+    "live_driver_save_reads": 0,
+    "live_runtime_writes": 0,
+    "actual_win32_mechanical_calls": 0,
+    "staged_or_committed": false
+  },
+  "primary_api_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyhandleex",
+    "https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex",
+    "https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmappedfilenamew",
+    "https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-getnamedpipeinfo",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeclientprocessid",
+    "https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject",
+    "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess"
+  ],
+  "storage": {
+    "scope": "Root-authorized independent adapter source/test/proof <=64KiB",
+    "large_inputs_or_binaries_copied": false,
+    "retention": "Keep as active future Native30 source provenance while referenced; review at Native30 production wiring or 2026-11-18, whichever occurs first."
+  }
+}

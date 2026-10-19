@@ -1,0 +1,71 @@
+{
+  "schema": "xar.C13B-minimal-business-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:56:27.800123+00:00",
+  "base_actual_C12": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+  "prepared_C13_parent_never_adopted": "7485b26c8c0c7aa7a973129c87778bd8bd5b17ea",
+  "master_patch_base": "36c8348f0e70c495ef134aca549b462d81b79fce",
+  "canonical_commit": "d789ece0cb15a7e45a251fec266aa409d22e5286",
+  "tree": "5fcdf8d303456abc78de73a8d1a06e2d294bdc44",
+  "ref": "refs/heads/runtime/robert-v20261019-c13b-camera-war6343",
+  "changed_source_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_follow.py",
+      "bytes": 10283,
+      "sha256": "95917980a363295ad4fcaa1f26c27b7b85a6afa7aff5eca90e2a2c7aaa8d8fca",
+      "whole_leaf_equal_to_master_worktree": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_pre_advance_v1.py",
+      "bytes": 3914,
+      "sha256": "8e0a7d85c1f1664c5e7c0b99c554f00e2e894931cfe03fade183814442301aa7",
+      "whole_leaf_equal_to_master_worktree": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/current_first_heir_relationship_private_transport.py",
+      "bytes": 29925,
+      "sha256": "62695bddf2344cb824514c036306fa0ba2a0d07b7216b7a412ba322870cd338a",
+      "whole_leaf_equal_to_master_worktree": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 263923,
+      "sha256": "b4d2fab30a5c8cd8a0291c3759d9a0518b31df55698002d8ea6e7e64ad3bfb4a",
+      "whole_leaf_equal_to_master_worktree": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1620598,
+      "sha256": "db9f8fb05483146abe1bea7c00d5ec4c53e5fc6a9c370133ba7e8ff7ebedb3da",
+      "whole_leaf_equal_to_master_worktree": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 877777,
+      "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8",
+      "whole_leaf_equal_to_master_worktree": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 59889,
+      "sha256": "1e8f19eafca8b83601de84c74fb30f40b173932570587cacd15be590d72f357c",
+      "whole_leaf_equal_to_master_worktree": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1047103,
+      "sha256": "552713a0057cb57e1fc8207c3363ff43b907a88f6ece3bc0e8905d63141e5f11",
+      "whole_leaf_equal_to_master_worktree": true
+    }
+  ],
+  "actual_C12_auto_turn_original_algorithm_equal_after_unwrapping_only_camera_scope": true,
+  "qualified_Driver_and_relevant_Service_methods_AST_equal": true,
+  "patch_sha256": "8ff0180f855e92a6b53241f396e96fdc5be25a853372cc45cc17378b94868f35",
+  "scope": "Eight narrow qualified leaves on actual C12. Default-OFF explicit speed2 CLI, same-call relation reuse, excluded-siege one-day observation, target-bound camera retry and tactical pre-resume urgent camera. No whole master Service/Driver/MCP adoption; Native29/Game/recording unchanged.",
+  "speed_trial_enabled": false,
+  "Native_build": false,
+  "actual_runtime_adoption": false,
+  "source_view_or_hardlink_created": false,
+  "main_index_changed": false,
+  "Game_MCP_Native_calls": 0
+}
