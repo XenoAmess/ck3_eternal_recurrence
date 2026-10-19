@@ -1,0 +1,121 @@
+{
+  "schema": "ck3-series-cover-artifacts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T16:18:19.018712+00:00",
+  "series_title": "CK3:信仰引擎",
+  "version": "v2",
+  "artwork_method": "built-in image_gen",
+  "fallback_CLI_used": false,
+  "requested_date_local": "2026-10-20",
+  "request_source": "用户要求重新构图设计并生成16:9和4:3两张封面，具有宗教氛围的肃穆感和诡谲感。",
+  "scene": "幽暗高耸圣堂中的信仰中枢：人物在祭台旁操作宗教典籍与圣物环，青色连线连接圣地、信仰与悬浮王冠。烛火、香烟和高拱营造肃穆，悬浮与异常冷光营造诡谲。",
+  "character_direction": "人物形象为参考，动作、行为、身体与场景重新绘制；白发红瞳、黑衣、红色旋纹徽记及青色数据幽灵保持识别。",
+  "references": [
+    {
+      "role": "character identity only",
+      "file": "reference.png",
+      "bytes": 2397795,
+      "sha256": "373703e74dc9beff48c72669d8f752f8a5fd28f1c920b3de44aada22865f6e15"
+    },
+    {
+      "role": "approved dark/cyan mood and cool calculating presence",
+      "file": "war-machine-16x9.jpg",
+      "bytes": 683494,
+      "sha256": "e2788cb8968846011cb1a8ab310798d9bdb6fecdd43f2c7696691fa1920a1e5b"
+    }
+  ],
+  "second_composition_basis": "4:3以新16:9场景和人物原参考重新生成，调整祭台、人物、标题和圣物环的空间关系；不是从16:9裁成4:3。",
+  "records": [
+    {
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "png": {
+        "file": "faith-engine-16x9.png",
+        "bytes": 2629862,
+        "sha256": "f273823e1af6d2809cb33aefcb38f2d86c16ee28497b797c86c2067a4f864295"
+      },
+      "jpg": {
+        "file": "faith-engine-16x9.jpg",
+        "bytes": 680884,
+        "sha256": "c6189020beb87246b834d0eace86cf0ea5271b6e7c20658df24b3d88ebb06a86"
+      },
+      "prompt": {
+        "file": "prompts/16x9.txt",
+        "bytes": 3656,
+        "sha256": "b5a59676e16497fe900ca268794a4c2242de89592150dc5121238a408cc78073"
+      },
+      "native_generated_art": {
+        "file": "exec-432acef0-0879-41a6-bbff-dcc3946fb9be.png",
+        "bytes": 2688788,
+        "sha256": "24b8f72c3ebf73d18d5c9944c26a050358dd1fd284c5ba46c2fcc167accbb6a7"
+      },
+      "technical_edge_crop": {
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936,
+        "source_width": 1672,
+        "source_height": 941
+      },
+      "technical_export": "FFmpeg only aligns the outer edge to the exact aspect ratio and encodes JPEG; no stretching or manual creative compositing."
+    },
+    {
+      "ratio": "4x3",
+      "width": 1448,
+      "height": 1086,
+      "png": {
+        "file": "faith-engine-4x3.png",
+        "bytes": 2684360,
+        "sha256": "afee7879a72b460063cce7dae66a1565f983f009f9d36015a2d306e22cffce2a"
+      },
+      "jpg": {
+        "file": "faith-engine-4x3.jpg",
+        "bytes": 735640,
+        "sha256": "d652bcf9f31aede0162525def840bae85d99c1dd8ad158feb02a3b334c40a6aa"
+      },
+      "prompt": {
+        "file": "prompts/4x3.txt",
+        "bytes": 3320,
+        "sha256": "f01905b5fa09d8d11ae749d7bb355d00af830e181026bb7309cda48cd4596288"
+      },
+      "native_generated_art": {
+        "file": "exec-95b56af5-fac5-48c4-ac74-c9b648d63464.png",
+        "bytes": 2684360,
+        "sha256": "afee7879a72b460063cce7dae66a1565f983f009f9d36015a2d306e22cffce2a"
+      },
+      "technical_edge_crop": null,
+      "technical_export": "FFmpeg only aligns the outer edge to the exact aspect ratio and encodes JPEG; no stretching or manual creative compositing.",
+      "refinements": [
+        {
+          "reason": "Initial 4:3 title first character touched/crossed the left image edge; imagegen repair keeps title comfortably inside canvas.",
+          "prompt": {
+            "file": "prompts/4x3-title-margin.txt",
+            "bytes": 1088,
+            "sha256": "361f823853d62ed7ba63e84486c40395bdf38e38827b00ae586e600b85a8870b"
+          },
+          "input_art": {
+            "file": "exec-d824a955-dfe8-476f-a8cc-1a079e57efb1.png",
+            "bytes": 2901834,
+            "sha256": "6f8ed02a7b4eae9f2096e3be4eb750f4c72077293bcc14c07d376a71bee0c6ad"
+          }
+        }
+      ]
+    }
+  ],
+  "review_scope": "生成图已直接查看；最终PNG/JPG画幅和SHA逐项核对，最终导出像素另直接复核。",
+  "user_approved": false,
+  "upload_performed": false,
+  "retention": {
+    "category": "delivered_media",
+    "state": "new_series_cover_delivery",
+    "active_references": [
+      "../../../docs/cover-design.md",
+      "../../../README.md"
+    ],
+    "protected_until_utc": "2026-10-26T16:18:19.018712+00:00",
+    "protection_reason": "本次重新构图交付，供用户审阅和后续Bilibili使用；到期复核当前用途。",
+    "expires_at_utc": "2026-11-18T16:18:19.018712+00:00",
+    "expiry_means_review_not_unconditional_delete": true
+  }
+}
