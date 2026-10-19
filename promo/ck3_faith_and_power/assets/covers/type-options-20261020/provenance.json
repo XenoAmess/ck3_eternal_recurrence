@@ -1,0 +1,160 @@
+{
+  "schema": "ck3-title-design-options-v1",
+  "owner_task": "faith-engine-type-options-20261020-a01",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T17:30:41.200903+00:00",
+  "series_title": "CK3:信仰引擎",
+  "artwork_method": "built-in image_gen edit, one independent call per option",
+  "fallback_CLI_used": false,
+  "request_source": "用户指出v3过于朴素，缺少神圣、神秘、诡谲感，要求重新设计几个选型并逐个出图。",
+  "comparison_basis": "四种独立定制标题方案统一使用既有16:9封面，保持人物和圣堂题材，重点比较字形、工艺装饰与冷暖光关系。",
+  "edit_target": {
+    "repository_file": "promo/ck3_faith_and_power/assets/covers/faith-engine-v3/faith-engine-16x9.png",
+    "file": "faith-engine-16x9.png",
+    "bytes": 2417030,
+    "sha256": "40c3acca2bf74b946aac173202537066aa461d282845ce3615657037a9f35277"
+  },
+  "records": [
+    {
+      "option": "A",
+      "name": "圣典泥金",
+      "direction": "泥金、蓝珐琅与经书花饰，偏华丽神圣。",
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "jpg": {
+        "file": "a-illuminated-manuscript-16x9.jpg",
+        "bytes": 672485,
+        "sha256": "a84ca0b801358e6bb761901d3f32a47421640bf09928901494c8cb7bb92fc926"
+      },
+      "prompt": {
+        "file": "prompts/A.txt",
+        "bytes": 2491,
+        "sha256": "747d3df3a72abe1367fe357e174d35e2c2e7a7bf318a7a094b31ea1bbb311ec0"
+      },
+      "native_generated_art": {
+        "file": "exec-e9b89b5d-a2c7-4f2c-b329-251f57fb4e62.png",
+        "bytes": 2553932,
+        "sha256": "3e04561daa7931975c4bae149be7ecb0c8a6cc3e4487a775392ed567ad205a5d"
+      },
+      "technical_edge_crop": {
+        "source_width": 1672,
+        "source_height": 941,
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936
+      }
+    },
+    {
+      "option": "B",
+      "name": "圣堂碑铭",
+      "direction": "浅色石刻、拱窗与建筑式笔画，偏庄严圣堂。",
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "jpg": {
+        "file": "b-cathedral-inscription-16x9.jpg",
+        "bytes": 636940,
+        "sha256": "103d2b1b74419030360e4f04589afbcb10163e76fd5d08b5ecf11ff371f450a7"
+      },
+      "prompt": {
+        "file": "prompts/B.txt",
+        "bytes": 2372,
+        "sha256": "42cddf6dd9b77d3ca31cc41f78a4a32bd5cc88be68cd79d29d25624df432f0cd"
+      },
+      "native_generated_art": {
+        "file": "exec-31d7f7f1-006d-4e13-ba21-da808c453580.png",
+        "bytes": 2541260,
+        "sha256": "ca54ff0306c670d1413c430f85b72b59b29b671a1bd1cfe423b00ffcc6c351c7"
+      },
+      "technical_edge_crop": {
+        "source_width": 1672,
+        "source_height": 941,
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936
+      }
+    },
+    {
+      "option": "C",
+      "name": "圣物银饰",
+      "direction": "银饰、细雕、宝石与圣物框架，偏仪式和珍贵感。",
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "jpg": {
+        "file": "c-silver-reliquary-16x9.jpg",
+        "bytes": 718471,
+        "sha256": "b7a3063c4b74368d12f211f695254ed273e4ab816ad0e343a5ac71080fec1bb2"
+      },
+      "prompt": {
+        "file": "prompts/C.txt",
+        "bytes": 2406,
+        "sha256": "93cc7cb239669e3105f326f125f08b2c06f9e928328a98149a276b54a60e482b"
+      },
+      "native_generated_art": {
+        "file": "exec-232ebdd3-7967-4630-947f-465ef2950b14.png",
+        "bytes": 2648604,
+        "sha256": "4587ed348719b7f806fc0ca894680d0edf3b643505fdd347a21e6c8ca3a6acda"
+      },
+      "technical_edge_crop": {
+        "source_width": 1672,
+        "source_height": 941,
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936
+      }
+    },
+    {
+      "option": "D",
+      "name": "秘仪符刻",
+      "direction": "冷银符刻、不完整仪轨圆环和幽青细光，偏神秘诡谲。",
+      "ratio": "16x9",
+      "width": 1664,
+      "height": 936,
+      "jpg": {
+        "file": "d-ritual-inscription-16x9.jpg",
+        "bytes": 621421,
+        "sha256": "3bbfca07601d7b84f3fe87a73a9f601443de0749ee5cc3a5c3a399e0d2dedc94"
+      },
+      "prompt": {
+        "file": "prompts/D.txt",
+        "bytes": 2537,
+        "sha256": "116dafaf705674891132e9f8bfd780706010f84d3a1f0696fa3dd37895d1ecc7"
+      },
+      "native_generated_art": {
+        "file": "exec-33edabec-d9f7-4d49-a382-a5f707cf02dc.png",
+        "bytes": 2516052,
+        "sha256": "f8e3328cdd2c1323afcaa62a0f0689fdb783ab37efb4c5b545a38f03abc12ab1"
+      },
+      "technical_edge_crop": {
+        "source_width": 1672,
+        "source_height": 941,
+        "x": 4,
+        "y": 2,
+        "width": 1664,
+        "height": 936
+      }
+    }
+  ],
+  "selected_option": null,
+  "user_approved": false,
+  "upload_performed": false,
+  "review_scope": "四张生成原图分别直接审阅文字、标题边距、方案差异和人物场景延续；最终JPG核对精确比例、尺寸与文件身份。",
+  "native_sources_location": "Built-in generated_images directory; originals remain available with hashes recorded, not duplicated into Git.",
+  "technical_export": "FFmpeg only aligns a sub1% outer edge crop to exact16:9 and encodes high-quality4:4:4 JPEG; no manual letter compositing.",
+  "retention": {
+    "category": "derived",
+    "state": "active_typography_selection_mockups",
+    "active_references": [
+      "../../../docs/type-options-20261020.md"
+    ],
+    "protected_until_utc": "2026-10-21T17:30:41.200903+00:00",
+    "protection_reason": "本次用户请求的四方案选型比较输入，48小时后复核当前用途。",
+    "expires_at_utc": "2026-10-21T17:30:41.200903+00:00",
+    "expiry_means_review_not_unconditional_delete": true
+  }
+}
