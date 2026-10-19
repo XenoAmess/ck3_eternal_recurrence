@@ -2893,6 +2893,23 @@ def require_screen_process_provider() -> None:
         raise AgentError("native-session process and warmup gates are unavailable")
 
 
+def _apply_pre_native_resume_v1(process, config, callback):
+    """Private optional custody seam; no effect unless explicitly supplied."""
+    if callback is None:
+        return None
+    if config is None or process.resumed is not False:
+        raise AgentError("pre-native custody requires the actual suspended native launch")
+    resource = callback(process, config)
+    if resource is not None:
+        from .bridge.native_loaded_provider_custody_v1 import _PreloadCustodyV1, _RESOURCE_SEAL, _path
+        if (type(resource) is not _PreloadCustodyV1 or resource.seal is not _RESOURCE_SEAL
+                or resource.target is not process or resource.source_role != "controller" or resource.closed
+                or _path(resource.dll.final_path) != _path(str(config.dll_path))):
+            raise AgentError("pre-native callback did not retain its original typed controller custody")
+        process._native_preload_custody_v1 = resource
+    return resource
+
+
 def launch(
     spec: EnvironmentSpec,
     *,
@@ -2909,6 +2926,7 @@ def launch(
     native_bridge_after_saved_load: bool = False,
     native_bridge_injection_deadline: float | None = None,
     native_bridge_stop_requested: Callable[[], bool] | None = None,
+    pre_native_resume: Callable[[object, NativeBridgeLaunchConfig], object] | None = None,
 ) -> SessionHandle:
     if type(debug_mode) is not bool:
         raise AgentError("debug_mode requires an explicit boolean")
@@ -3135,6 +3153,7 @@ def launch(
                 "pre-resume global CK3 inventory is not the exact suspended process: "
                 f"{visible!r}"
             )
+        _apply_pre_native_resume_v1(process, native_bridge, pre_native_resume)
         if native_bridge_after_saved_load:
             process.saved_campaign_load_observation = _resume_then_inject_after_saved_load(
                 process, native_bridge, profile_dir=spec.profile_dir, log_epoch_ns=log_epoch_ns,
@@ -3154,6 +3173,9 @@ def launch(
     except Exception as error:
         # A process that has not resumed cannot have spawned descendants. Once
         # resumed, assignment to the kill-on-close Job has already succeeded.
+        preload = getattr(process, "_native_preload_custody_v1", None)
+        if preload is not None:
+            preload.close()  # producer also retains any unverified release
         if process is not None:
             try:
                 process.terminate_exact()

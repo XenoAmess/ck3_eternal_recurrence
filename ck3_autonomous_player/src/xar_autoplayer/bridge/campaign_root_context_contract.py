@@ -1066,6 +1066,19 @@ def normalize_campaign_root_context_v1(
 ) -> dict[str, object]:
     """Normalize one atomic campaign root frame without inventing absences."""
 
+    if isinstance(value, dict) and "player_heir_candidate_v1" in value:
+        from copy import deepcopy
+        from .player_heir_candidate_component_v1 import parse_optional_player_heir_component_v1
+        component = value["player_heir_candidate_v1"]
+        normalized = normalize_campaign_root_context_v1(
+            {key: item for key, item in value.items() if key != "player_heir_candidate_v1"},
+            expected_date_raw=expected_date_raw, expected_snapshot_revision=expected_snapshot_revision)
+        parsed = parse_optional_player_heir_component_v1(component, root=normalized)
+        normalized["player_heir_candidate_v1"] = (
+            deepcopy(component) if parsed.observation is not None or component is None
+            else {"SDK_parse_status": "unknown", "unavailable_reason": parsed.reason})
+        return normalized
+
     if is_baseline_campaign_root_context_12002(value):
         return _normalize_baseline_12002(
             value,

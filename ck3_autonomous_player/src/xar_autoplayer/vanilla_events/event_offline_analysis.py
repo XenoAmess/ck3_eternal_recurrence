@@ -406,7 +406,12 @@ def load_source_reviewed_event_v1(state_dir, capture):
                 populist_letter = current["event_definition_key"] == "faction_demand.1001"
                 reviewed_letter = current["event_definition_key"] in {
                     "faction_demand.0101", "ecumenical_council_events.0082", "sway_ongoing.1003"}
-                if reviewed_letter:
+                finite_c19 = current["event_definition_key"] in {
+                    "coming_of_age.0004", "pam_decision_events.0018"}
+                if finite_c19:
+                    from .c19_finite_source_rebind_v1 import c19_finite_source_rebind_shape_v1
+                    shape = c19_finite_source_rebind_shape_v1(capture, facts, current)
+                elif reviewed_letter:
                     from .reviewed_letter_source_rebind_v1 import reviewed_letter_source_rebind_shape_v1
                     shape = reviewed_letter_source_rebind_shape_v1(capture, facts, current)
                 else:
@@ -417,7 +422,8 @@ def load_source_reviewed_event_v1(state_dir, capture):
                                  "source_sha256": old_binding["source_sha256"],
                                  "option_catalogue_sha256": old_binding["option_catalogue_sha256"]}
                 return known, {"status": "offline-source-reviewed",
-                    "binding_mode": ("reviewed_letter_source_rebound" if reviewed_letter else
+                    "binding_mode": ("c19_finite_source_rebound" if finite_c19 else
+                                     "reviewed_letter_source_rebound" if reviewed_letter else
                                      "populist1001_source_rebound" if populist_letter else "source_rebound"),
                     "fingerprint": path.stem,
                     "entry_path": str(path), "entry_sha256": _sha(raw),
@@ -432,7 +438,7 @@ def load_source_reviewed_event_v1(state_dir, capture):
                     **({key: shape[key] for key in ("source_rebind_policy", "knowledge_scope",
                         "scope_identity_gaps", "current_role_identities", "gui_source_sha256",
                         "loaded_gui_bytes_verified", "execution_contract_qualified",
-                        "semantic_decision_ready")} if reviewed_letter else {}),
+                        "semantic_decision_ready")} if reviewed_letter or finite_c19 else {}),
                     "material_effects_verified": False, "registry_contract_accepted": False}
             except (OSError, ValueError, KeyError, TypeError) as error:
                 rejected.append({"entry": path.name, "reason": str(error)})
