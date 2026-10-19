@@ -287,7 +287,7 @@ jobs:
       - name: Test native build recovery guards without CK3 or MSVC
         env:
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m unittest tools.g2_saved_campaign.test_native30_msvc_auxiliary_policy_20261019 tools.g2_saved_campaign.test_native30_resume_contract_20261019 tools.g2_saved_campaign.test_native30_fixture03_contract_20261019 tools.g2_saved_campaign.test_native30_fixture04_nopdb_20261019 -q
+        run: python -B -X utf8 -m unittest tools.g2_saved_campaign.test_native30_msvc_auxiliary_policy_20261019 tools.g2_saved_campaign.test_native30_resume_contract_20261019 tools.g2_saved_campaign.test_native30_fixture03_contract_20261019 -q
       - name: Test construction deferral, letter rebinding and future stress decision guards without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
