@@ -210,3 +210,11 @@ R25 已有原版信仰总览与个人信念静帧。原小索引记录，个人�
 **素材封存、进入作者输入、成片验收继续分别记录。** [R32最终index-a02](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/ORIGINAL-GUI-CAPTURE-INDEX-a02.json)27,497 B／SHA `635e5d7ae96e29c8aa650116d6be85e98bdc75c0d4af2945a3a267f7c35bfb30`记录八图及operator／Root直接审阅，本次文档整合未新增审图。[a35交付](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/authoring/r32-final-lineage-a35/DELIVERY-a35.json)把八个wrapper、12句增量绑定到最终索引；后继[a36交付](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/authoring/SC28-canonical-holder-a36/DELIVERY-a36.json)只纠正SC28地产持有者与伯爵领持有者的称谓，重产这一张样板，其余像素规格相同。Root直接审阅后封a08，最终合并选择为a17＋a29＋a36，不重复加入a33/a34/a35相同行。原声和声钟未变，未授完整编码或人工1倍速听看；不能把已有源图和成功的薄封装算成最终影片已完成。
 
 **正常退出和任务结果分开闭账，派生回收只记实际删除。** R32已经原生GUI正常退出并由retained HANDLE读到OS0，public原wait0；host原wait1/report RED保持，keeper／allocator原wait0，09:32:39Z原CAS12208为DONE/resources=[]。实际[容量闭账](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/CAPTURE-CAPACITY-CLOSED-a01.json)记录628,764,672 B/future0，无新save、world Confirm、日期推进或录制。此前经逐文件来源、当前引用、保护和配方复核，六组旧review派生1,034个MP4已分两批精确unlink，实际AllocationSize下限1,038,503,936 B仅扣账一次；原raw/audio/stills及small manifests/audits/ASS/concat与V5比较基线保留。旧精确MP4已不可读取，不继续借历史local-delivery入口声称其可读；保留原件和配方允许按依赖重建，也不承诺逐字节复现。来源为[实际回收闭账](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/RECLAIM-a10-CLOSED.actual.json)，SHA `07c8ba1d3ef260e03ad2fc9dcd7be310253a2d1e1f8c07bf394cb6fe66612f08`。卷free、未用预留取消和真实删除是不同量，不能互相替代。
+
+## 2026-10-19 V7：先核身份范围，再审最终画面
+
+`machine_id: 4-8e1c2f1861`；归纳`2026-10-19T13:44:30.945025+00:00`，来源为[V7交付与精确回执](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)。
+
+信仰领袖与礼仪领袖须沿实际对象和权限消费者分别核实。同一个人可以兼任两职，不能因词语相近而混称，也不能因为担心混称就删掉真实兼任事实。界面上的总主教另核来源。全文审校要连续读中英旁白、标题、图注和条件，保证前提及指代随章节延续；开场钩子之后口播游戏范围与精确研究版本。
+
+元数据通过后仍须直接审最终像素。本轮先看到两处大片留白，再把真实界面的相关部分并列；其中奇数目标高度导致编码pad失败，改成槽内偶数高度后在新输出重制。后续同类构图先核原图、裁区、目标框、像素格式和模板边界，保持声音与时钟不变。精确复用按完整消费内容证明，新增的字幕、章节与全片PTS仍重新生成核验。失败、容量闭场、技术检查和完整人工听看分别记录，不能互相追认。

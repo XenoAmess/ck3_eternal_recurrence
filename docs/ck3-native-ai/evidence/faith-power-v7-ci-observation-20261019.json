@@ -1,0 +1,164 @@
+{
+  "schema": "faith-power-v7-final-CI-observation-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observer_machine_id": "4-8e1c2f1861",
+  "ci_worker_machine_id": "unknown",
+  "observed_at_utc": "2026-10-19T13:33:37.030293+00:00",
+  "sealed_at_utc": "2026-10-19T13:34:54.928769+00:00",
+  "runs": [
+    {
+      "databaseId": 39258825026,
+      "headSha": "3ac3533eac4d9d94bad301e28f21d17204e9aaee",
+      "name": "Official Runner CI",
+      "status": "in_progress",
+      "conclusion": "",
+      "createdAt": "2026-10-19T13:17:02Z",
+      "updatedAt": "2026-10-19T13:17:05Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39258825026",
+      "ci_worker_machine_id": "unknown",
+      "observed_at_utc": "2026-10-19T13:33:37.030293+00:00",
+      "failed_nodeids": null,
+      "active_or_failed_step_names": [
+        "Test keyed query completion diagnostics without CK3"
+      ]
+    },
+    {
+      "databaseId": 39258824934,
+      "headSha": "3ac3533eac4d9d94bad301e28f21d17204e9aaee",
+      "name": "Linear history",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-19T13:17:01Z",
+      "updatedAt": "2026-10-19T13:17:51Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39258824934",
+      "ci_worker_machine_id": "unknown",
+      "observed_at_utc": "2026-10-19T13:33:37.030293+00:00",
+      "failed_nodeids": [],
+      "active_or_failed_step_names": []
+    },
+    {
+      "databaseId": 39257182027,
+      "headSha": "00a9aa256f289905ca80eb9d65e06b49a21f3b11",
+      "name": "Official Runner CI",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-19T13:05:17Z",
+      "updatedAt": "2026-10-19T13:29:38Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39257182027",
+      "ci_worker_machine_id": "unknown",
+      "observed_at_utc": "2026-10-19T13:33:37.030293+00:00",
+      "failed_nodeids": [
+        "ck3_autonomous_player\\tests\\unit\\test_auto_camera_receipt_status.py::CameraStatusTests::test_failed_same_hotspot_retries_once_after_thirty_days",
+        "ck3_autonomous_player\\tests\\unit\\test_auto_camera_receipt_status.py::CameraStatusTests::test_mapping_exception_cooldown_does_not_remember_unsent_hotspot",
+        "ck3_autonomous_player\\tests\\unit\\test_auto_camera_receipt_status.py::CameraStatusTests::test_wrong_sequence_does_not_reset_policy_or_start_cooldown"
+      ],
+      "failed_log": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-final-observation-a05\\39257182027.failed-step.actual.log",
+        "bytes": 40780,
+        "sha256": "9e10545e868cbd5b8c14c249f9b599033d319a5e382bf30ef562afb9b9364ef6"
+      },
+      "active_or_failed_step_names": [
+        "Test route clocks, uncertain move ACK and optional war UI reads without CK3"
+      ]
+    },
+    {
+      "databaseId": 39257182387,
+      "headSha": "00a9aa256f289905ca80eb9d65e06b49a21f3b11",
+      "name": "Linear history",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-19T13:05:17Z",
+      "updatedAt": "2026-10-19T13:06:07Z",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39257182387",
+      "ci_worker_machine_id": "unknown",
+      "observed_at_utc": "2026-10-19T13:33:37.030293+00:00",
+      "failed_nodeids": [],
+      "active_or_failed_step_names": []
+    }
+  ],
+  "all_runs_terminal": false,
+  "observation_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-final-observation-a05\\CI-OBSERVATION.latest.actual.json",
+    "bytes": 8407,
+    "sha256": "6048b98be3a190cdd3a58b4e7e2a3023a8cf90894a8a3a86c33eb2cd8a9c05d4"
+  },
+  "original_failed_batch": {
+    "run_id": 39257182027,
+    "failed": 3,
+    "passed": 410,
+    "subtests_passed": 254,
+    "error": "AttributeError: 'ServiceProbe' object has no attribute '_sync_camera_presentation_owner'",
+    "production_trace_location": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:905"
+  },
+  "focused_checks_remain_separate": [
+    {
+      "scope": "Only two existing synthetic faction-gift fixture files, explicit known-peace active_wars=[]; original guards/assertions retained",
+      "actual_result": "40 passed in5.58s; original test wait0, one local run",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-observation-a03\\focused-tests.actual.json",
+        "bytes": 2975,
+        "sha256": "c36dfd1981af9c588e3f9d0d6406d196698490924a728aaf18820529228cdc60"
+      },
+      "worker_machine_id": "4-8e1c2f1861"
+    },
+    {
+      "scope": "Official latest-release transport and retained installed tag/wheel/URL/SHA guards, mocked network/CLI only",
+      "actual_result": "8 passed,15subtests passed in0.30s; original test wait0, one local run",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\release-transport-a04\\focused-tests.actual.json",
+        "bytes": 3080,
+        "sha256": "3b6cb16b2c6b69ec316ea58d36ea5f6177893a8dab2a8df3fd4c4251246f6d8c"
+      },
+      "worker_machine_id": "4-8e1c2f1861"
+    }
+  ],
+  "camera_readonly_gap": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-final-observation-a05\\CAMERA-FIXTURE-CONTRACT.readonly.actual.json",
+      "bytes": 46831,
+      "sha256": "2054a64bc8c2e92fda1280166e89836caab7aab8bfe2bf14f22dbd80b9cc3990"
+    },
+    "source_files": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_auto_camera_receipt_status.py",
+        "bytes": 7513,
+        "sha256": "f59702c9f6c270443017ae61050fe2d99eb92f4169188dfeddc5a7fbbe1679b2"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 880676,
+        "sha256": "33943062c4acda4d686ccf4d5e07d10029f9826e8b5f60c62d88e68c365bc2e1"
+      }
+    ],
+    "call": "service.py905 -> _sync_camera_presentation_owner; then bound actual/request context/target backoff",
+    "finding": "Legacy ServiceProbe borrows only _select_auto_camera_hotspot, fake publish retains sequence but no current owner/request context; synthetic native receipt lacks current actor/date; assertions reference an obsolete global retry field while production uses target-specific backoffs. Adding a single method alias is insufficient.",
+    "scope_decision": "No camera production, policy, fixture, assertion or compatibility-view changes; no tests run. Full fixture adaptation is a separate maintenance task.",
+    "owner_check": {
+      "observed_at_utc": "2026-10-19T13:32:11.155075+00:00",
+      "exact_fixture_owners": [],
+      "fresh_camera_mentions": [],
+      "definite_owner_found": false,
+      "notification_sent": false,
+      "boundary": "Fresh local task bus only; no cross-machine ownership/delivery inferred."
+    },
+    "next_maintenance_entry": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py:16; align synthetic owner/request context, actor/date/sequence and target backoff with real service.py798–867/976–997 under separate ownership and authorization. Preserve production policy and assertion strength; do not add compatibility views to conceal stale expectations."
+  },
+  "actual_release_transport": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-final-observation-a05\\A03-FRESH-RUNTIME-TRANSPORT.actual.json",
+    "bytes": 984,
+    "sha256": "30ca6a39bde0727fab72dfbbac65e31dfab4b0745a60d49cb142239093db8564"
+  },
+  "release_transport_wording": "a02 original wait1/anonymous403 retained. a03 fresh-runtime actually used urllib/anonymous200. Authenticated gh fallback was not executed in a03; only mock-focused tests cover it.",
+  "document_entry_advice": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\ci-final-observation-a05\\DOCUMENT-ENTRY-ADVICE.zh.json",
+    "bytes": 4109,
+    "sha256": "dfbca208f74e4d338f7e5d77c8253b10c2db9921e0eb9be7182c3058df72c8e8"
+  },
+  "workflows_triggered_or_rerun": 0,
+  "focused_tests_repeated": false,
+  "production_or_camera_source_changes_during_observation": false,
+  "full_CI_GREEN_claimed": false,
+  "media_or_human_review_credit_from_CI": false,
+  "boundary": "3ac pending stays pending at the observation time; no future conclusion inferred. Original667678c/father CI failures remain historical RED. Repository CI, focused checks, media checks, native business and human1x review are distinct.",
+  "followup": "Parent may read the existing3ac run later; this observer stops without rerun or repair. Camera fixture is the next separate real maintenance entry."
+}

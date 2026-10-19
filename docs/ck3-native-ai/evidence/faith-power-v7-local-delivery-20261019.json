@@ -1,0 +1,79 @@
+{
+  "schema": "faith-power-v7-repository-delivery-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T13:44:30.945025+00:00",
+  "evidence_source": "Actual existing a04 local delivery, original wait0, completed encode, selected pixel CLOSED and capacity closure; no new media processing",
+  "status": "LOCAL_ENCODED_REVIEW_PENDING_HUMAN",
+  "video": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\episode01-review.mp4",
+    "bytes": 149978004,
+    "sha256": "befe1a2293741c76dd5fcbbf64cd58a5889c9da4f63c88a5007551fdc89cabad"
+  },
+  "format": {
+    "width": 2560,
+    "height": 1440,
+    "fps": 30,
+    "total_frames": 79024,
+    "duration_seconds": 2634.133333333333,
+    "voice_cues": 136,
+    "subtitle_groups": 467,
+    "chapters": 17
+  },
+  "actual_container_seconds": 2634.154687,
+  "actual_first_video_pts": 0.021354,
+  "source_pins": {
+    "local_delivery": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\LOCAL-DELIVERY-a04.json",
+      "bytes": 15538,
+      "sha256": "39de6c439df94998e88f2078a2da845aae1f34f3c918e4e14f3316b3bd838e03"
+    },
+    "capacity_closed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\FULL-RENDER-CAPACITY-CLOSED-a04.json",
+      "bytes": 8023,
+      "sha256": "b2b279c774dd9ef7bb2f675792d124dd6a6d8f88e76c18693632a493168c8677"
+    },
+    "completed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\completed-review.json",
+      "bytes": 6602,
+      "sha256": "a72b7dad66fabff55f413b847d56479bbb5548cf33c72b42e34ac035a9a50824"
+    },
+    "selected_pixel_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\audit\\v7-pixel-review-a04\\PIXEL-REVIEW-CLOSED-a04.json",
+      "bytes": 27704,
+      "sha256": "53478c25df65dc0dc42143727fbbb562ef6f2d8f83b230613b78cdf88f166566"
+    },
+    "original_build_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a03\\original-build-exit.json",
+      "bytes": 726,
+      "sha256": "4cd667399e38596bc44603fe0ab9aa75fee862775df722f26cfebdc5bafbb8e8"
+    },
+    "formal_input": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a03\\formal-input.final-a04.json",
+      "bytes": 1808670,
+      "sha256": "66af0549a1344e4604a4e447947c45f1898af5accfe968c5115516353d02550f"
+    },
+    "text_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\text-freeze-a01\\NARRATION-FROZEN-a01.json",
+      "bytes": 2477,
+      "sha256": "0d5ae80eab2866d6f5ef9245e9233dca8c7862762676ca96938f51a7e4a707fc"
+    }
+  },
+  "human_full_1x_review_performed": false,
+  "human_listening_performed": false,
+  "human_signoff_granted": false,
+  "upload_performed": false,
+  "failed_attempts_preserved": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\FULL-RENDER-CAPACITY-CLOSED-a02.json",
+      "bytes": 4936,
+      "sha256": "0a7d7cd07645918fd2f88b169b2f903600ec3662dfdf4943049d3db603495ab2"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\FULL-RENDER-CAPACITY-CLOSED-a03.json",
+      "bytes": 6425,
+      "sha256": "578c7bf94411f4c40d5ec084d6160a68093c0a028f613abc3cd430b5ef510264"
+    }
+  ],
+  "old_future_reactivated": false,
+  "new_media_hash_or_decode": false
+}
