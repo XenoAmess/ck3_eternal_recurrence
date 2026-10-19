@@ -1,0 +1,135 @@
+{
+  "schema": "xar.ck3.native29-to30-resume06-transition-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T19:29:51Z",
+  "evidence_source": {
+    "kind": "local source reads and in-memory validation",
+    "machine_identity": "tools/ck3_live_run_id.py machine; earlier observation278d24",
+    "latest_source_read": "419a93",
+    "test_result": "ba80e1"
+  },
+  "status": "SOURCE_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "historical_record": {
+    "path": "docs/ck3-native-ai/evidence/g2-m7-native29-to30-export-transition-source-ready-2026-10-20.json",
+    "bytes": 11928,
+    "sha256": "1f2aca090f08b5778970288dd30e3dca523e00edf605af92d9ee1f97cb987ca2",
+    "treatment": "Unchanged wholeclean-only source proof and original9-test/24-subtest history; it does not qualify this new resume06 source."
+  },
+  "reason": "Original contract accepted only wholeclean-result-v1/plan. Actual02 uses resume-result-v1/repair_plan/source_commit and remains FAILED after a fixture failure. Actual06 reuses configured04 and successful02 production; this finite chain binds those separate facts.",
+  "storage": {
+    "source_budget_bytes": 98304,
+    "admission": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M5-A48KiB-M7-TRANSITION96KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2192,
+      "sha256": "761185e7a3bc992cfe77f832692b64b3502110f27e28715213794b18a122fcca",
+      "scope": "M7_Native29_to30_exporter_transition"
+    },
+    "provenance": "Storage owner supplied registered total96KiB receipt; this task did not read D. Increase32768 over original65536, not another96KiB.",
+    "classification": "Small source/proof only; no DLL/SDK stage."
+  },
+  "source_files": [
+    {
+      "path": "tools/g2_saved_campaign/native29_to30_export_contract_v1.py",
+      "bytes": 15497,
+      "sha256": "129e3e07afc397b27d20b85df6c671bf78d61756d1976cada0aa9bb31f97e466"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_export_adapter_v1.py",
+      "bytes": 8824,
+      "sha256": "2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298"
+    },
+    {
+      "path": "tools/g2_saved_campaign/export_native30_immutable_sdk_views_v1.py",
+      "bytes": 3824,
+      "sha256": "edbe75a62f80d17a0e74998b96834844bcbf75f1caab7ea5468b3caa32dbb709"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_export_transition_v1.py",
+      "bytes": 21247,
+      "sha256": "eb369a930b96570df2baa781f9a5895e888d51404b400ed74dff27aeb6cbfe9c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_resume_fixture_chain_v1.py",
+      "bytes": 13571,
+      "sha256": "d9e5dc3c22f3b1fc58f1ab7b93de4f7ccb480c3ed938fdc6b2375d11a814f555"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_resume_fixture_chain_v1.py",
+      "bytes": 13852,
+      "sha256": "9f47c142ef469834a675b71310e1eba3993e19bb2c909995c0b8ca3f745c35cb"
+    }
+  ],
+  "producer_sources": [
+    {
+      "path": "tools/g2_saved_campaign/build_native30_resume_20261019.py",
+      "bytes": 23704,
+      "sha256": "d4298f56dba6eabd8ccd0b95ba15eea090be55f51917149a4b3e279b177ee968",
+      "schema": "native30-resume-result-v1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+      "bytes": 30698,
+      "sha256": "7908118294206e46c1c0ca29503f772e5011e5b2bf53253ec94dd9125561ce7c",
+      "schema": "native30-fixture06-result-v1"
+    }
+  ],
+  "actual_schema_contract": {
+    "build_chain": "resume02_fixture06",
+    "additional_evidence": [
+      "attempt02_result",
+      "attempt02_repair_plan",
+      "attempt02_closed",
+      "reused_production",
+      "fixture06_plan",
+      "fixture_graph_delta"
+    ],
+    "prior": "Exact FAILED/error, repair_plan/source_commit remain. One successful three-target production phase binds matching argv/PID journal root0/Job0. Later failed command is retained, all prior Jobs/inventory closed.",
+    "final": "Exact06 OFFLINE_QUALIFIED_NOT_DEPLOYED/configuration_reused_from_attempt04=true/production_recompiled=false. Every phase matches its argv/PID journal and has root0/Job0; future_writes0. Nine original fixture executable/argument/UTC and layout-postcheck receipts required.",
+    "trace": "Actual production Ninja -n for original three targets required. Final06 may not configure replacement graph or rebuild those production targets, even if booleans claim reuse.",
+    "source": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747 freeze, overlay02, fixedCOPY04 and fixture-overlay04 remain distinct exact pins. Delivery has no invented source_freeze field; finite adapter checks original02 source and plan prior_pins.",
+    "graph": "Small delta binds fullcurrentgraph ref,995 selected/12 links and production_compile_rows equal retained rows. Synthetic corpus models978 rows/983 held outputs, not verbal977. No fullgraph body read. Retained EOF/FileID/read-share plus source/argv/output binding checked against closed02.",
+    "failures": "Prior failures never requalified. Actual04/05 FAILED are not accepted or relabeled06 success."
+  },
+  "frozen_exporter": {
+    "path": "tools/g2_saved_campaign/export_immutable_sdk_views_v1.py",
+    "bytes": 22964,
+    "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432",
+    "unchanged": true,
+    "guard": "Original Native29/base/card/native/NTFS guards remain. Private compiled core keeps original validator and exact AST inverse for output metadata seams. No full disk copy/global monkeypatch."
+  },
+  "api": {
+    "loader": "read_native_transition_v1(base_freeze_ref,base_native_ref,capacity_ref,machine_id,source_fixture=False)",
+    "return": "Same NativeTransitionV1; target_native has native_build_label/native_dll_sha256, manifest_metadata fresh dict, source_fixture bool.",
+    "dependency": "New helper only canonical g2_saved_campaign.native30_resume_fixture_chain_v1. Consumer must recheck lazy module __file__ after loader returns; wholeclean may leave helper unloaded.",
+    "admission": "execute defaultFalse=0IO. All receipt/original admission/immutable args-context/one-use checks before original firstmkdir. Production refuses source_fixture=true."
+  },
+  "validation": {
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_native30_export_transition_v1.py tools/g2_saved_campaign/test_native30_resume_fixture_chain_v1.py",
+    "tool_result": "ba80e1",
+    "tests_passed": 13,
+    "subtests_passed": 40,
+    "elapsed_seconds": 1.42,
+    "observed_before_utc": "2026-10-19T19:29:25.421601Z",
+    "fixture_boundary": "All receipts/successful Native phases are invented fixtures with actual producer field names. Full exporter runs only in private MemoryFS/Git/NTFS facades. Production-semantics tests create no real admission/output.",
+    "negatives": "Prior FAILED erased; production nonzero/unknown Job; final FAILED/schema05/config04false; command nonzero/futureunknown; requalified failures/source drift; lost share/EOF mismatch; argv drift; missing NoWork; configure/recompile despite reuse booleans. Existing wholeclean deep negatives remain."
+  },
+  "limits": {
+    "actual_native06_receipts_read": false,
+    "actual_native06_qualification": "not_observed",
+    "DLL_body_read": false,
+    "SDK_or_manifest_output_written": false,
+    "D_IO": false,
+    "Git_operations": false,
+    "Task_or_Game_RPC": 0,
+    "child_processes_created": 0,
+    "source_only": true,
+    "runtime_admitted": false,
+    "actual_loaded_provider_issued": false,
+    "H": "unknown",
+    "current_C18_unchanged": true
+  },
+  "retention": {
+    "review_at_utc": "2027-04-17T19:29:51Z",
+    "reason": "Source/proof needed for future normalcold transition; review current use and successor evidence under source-policy180-day rule."
+  }
+}

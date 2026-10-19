@@ -1,0 +1,56 @@
+{
+  "schema": "native30-fixture07-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:56:43.251128+00:00",
+  "status": "SOURCE_READY_CPP_NOTRUN",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture07-snapshot-plan-2026-10-20.json",
+    "bytes": 14086,
+    "sha256": "b4af9fa48d48b9c5a982b5bf392a7d6e367de1385fe425f941e389590ad7c006"
+  },
+  "readonly_preflight": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture07-readonly-preflight-2026-10-20.json",
+    "bytes": 3623,
+    "sha256": "d36ecfefcc1afef74046d9c10132831329bf747c55b3921ec1eea45bdcbdea06"
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture07_20261020.py",
+      "bytes": 37100,
+      "sha256": "b22eb598dbfdc01359dd1e15c65132b0fbb37bab23840df3b15b2e8ce32df4ae"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_ninja_snapshot_contract_20261020.py",
+      "bytes": 5568,
+      "sha256": "5aead409ffebb876f5ac08e50a9131ff3ddc6ef46bc8e011793f9d735b05f1d4"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_capture_msvc_environment_20261020.py",
+      "bytes": 2349,
+      "sha256": "b26d675482b7b5aa5cf398f8d08cc381d31c7bd6d9e2db43502986ec4cd42900"
+    },
+    {
+      "path": "tools/g2_saved_campaign/preview_native30_fixture07_absolute_manifest_20261020.py",
+      "bytes": 2935,
+      "sha256": "4bcdb1caf9e4bac4aed14fc6be17ac1749e7027a2ecd0129d7630463a917d678"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_fixture07_snapshot_20261020.py",
+      "bytes": 9122,
+      "sha256": "385c42960f0183b295558ce634b6d28e70e9cb4beae04e8ed5133750c5ae0237"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_fixture07_source_20261020.py",
+      "bytes": 19663,
+      "sha256": "0c90c71dfcd0895193e609c8260f5c0ecb0dd46fedea5b814999f728f1d7cb05"
+    }
+  ],
+  "tests": {
+    "actual": "\"16"
+  },
+  "source_cap_bytes": 98304,
+  "R_Task_CPP_Game_writes": 0,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

@@ -1,0 +1,37 @@
+{
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T19:40:30.212236+00:00",
+ "files": {
+  "prepare_c19_canonical_controls_v1.py": [
+   13761,
+   "e26b95f124a9fb4504c4769de178ec2444c7a4638b5166f418eef33bd1d2b42e"
+  ],
+  "qualify_c19_native_dependency_refresh_v1.py": [
+   6295,
+   "1fce538393ec741e5c4f13ccfb367c31f1087e6ea4ddc3ec90831e382a0760f3"
+  ]
+ },
+ "producer_inverse_sha256": "349b801e093454fcb5cf69c5ed06df162e0d88d5af3c45263a7518175d90f237",
+ "contract_sha256": "129e3e07afc397b27d20b85df6c671bf78d61756d1976cada0aa9bb31f97e466",
+ "new_label_crosscase_passed": 1,
+ "contract_expression_extracted": true,
+ "syntactic_positive_label": "native30-contract-crosscase",
+ "syntactic_label_is_actual_qualification": false,
+ "placeholder_and_fixture_rejected": true,
+ "old_5_57_12_and_2_cases_repeated": false,
+ "graph_regenerated": false,
+ "actual_Native06_qualified": false,
+ "D_Task_Game_Native_calls": 0,
+ "schema": "xar.C19-contract-label-crosscase/v1",
+ "machine_id_source": "tools/ck3_live_run_id.py machine; current task readback",
+ "prior_dependency_proof": {
+  "path": "docs/ck3-native-ai/evidence/c19-native-dependency-binding-addendum-2026-10-20.json",
+  "sha256": "19c25b90be56ed02b8a6fef92930d7b47b2af160f2b8a0e26fb323103d883df3",
+  "prior_boundary_cases_passed": 2
+ },
+ "defect": "Old controls required a space after Native30 while the pinned contract allowed only an identifier; their accepted label sets were disjoint.",
+ "change": "Use the contract identifier grammar and Native30 token boundary; retain previous source-only/unqualified exclusions and source_fixture=False.",
+ "source_capacity_card_sha256": "f358072dc519e03eacf1998bcfa84972f81c6e3c33c3976ab62517a19f26d054",
+ "retained_history_bytes": 32029,
+ "complete_package_bytes": 53880
+}
