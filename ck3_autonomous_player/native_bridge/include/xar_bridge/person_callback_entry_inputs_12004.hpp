@@ -4,6 +4,7 @@
 #include "xar_bridge/person_installed_transfer_stage_12004.hpp"
 
 #include <array>
+#include <iosfwd>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -82,5 +83,9 @@ PersonCallbackEntryInputs12004 CapturePersonCallbackEntryInputs12004(
 // Pure retained sidecar; no history lookup or current-query fallback.
 std::string SerializePersonCallbackEntryInputs12004(
     const PersonCallbackEntryInputs12004 &inputs);
+// The enclosing serializer supplies its default-format JSON stream. The
+// retained preparation is emitted directly, with no temporary JSON string.
+void WritePersonCallbackEntryInputs12004(
+    std::ostream &out, const PersonCallbackEntryInputs12004 &inputs);
 
 } // namespace xar::ck3_12004

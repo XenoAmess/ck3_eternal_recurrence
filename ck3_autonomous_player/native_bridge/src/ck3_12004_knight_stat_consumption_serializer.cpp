@@ -180,12 +180,12 @@ void Context(std::ostream &out, const KnightConsumedContext12004 &context) {
     PreparationStageLineage(out, *context.preparation_stage_lineage);
   }
   if (context.preparation_capture_at_consumption) {
-    out << ",\"preparation_capture_at_consumption\":"
-        << SerializePersonSixStageCapture12004(*context.preparation_capture_at_consumption);
+    out << ",\"preparation_capture_at_consumption\":";
+    WritePersonSixStageCapture12004(out, *context.preparation_capture_at_consumption);
   }
   if (context.preparation_entry_inputs) {
-    out << ",\"preparation_entry_inputs\":"
-        << SerializePersonCallbackEntryInputs12004(*context.preparation_entry_inputs);
+    out << ",\"preparation_entry_inputs\":";
+    WritePersonCallbackEntryInputs12004(out, *context.preparation_entry_inputs);
   }
   if (context.current_input_outcome_binding) {
     out << ",\"current_input_outcome_binding\":"

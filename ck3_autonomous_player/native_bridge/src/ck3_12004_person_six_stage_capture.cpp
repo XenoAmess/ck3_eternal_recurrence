@@ -968,9 +968,8 @@ bool UninstallPersonSixStageCapture12004(
   return count_freed && append_freed;
 }
 
-std::string SerializePersonSixStageCapture12004(
-    const PersonSixStageCapture12004DTO &dto) {
-  std::ostringstream out;
+void WritePersonSixStageCapture12004(
+    std::ostream &out, const PersonSixStageCapture12004DTO &dto) {
   out << "{\"schema\":"; String(out, kPersonSixStageCaptureSchema12004);
   out << ",\"build_version\":"; String(out, dto.build_version);
   out << ",\"executable_sha256\":"; String(out, dto.executable_sha256);
@@ -1108,6 +1107,12 @@ std::string SerializePersonSixStageCapture12004(
   out << ",\"full_helper_ready\":" << (dto.full_helper_ready ? "true" : "false");
   out << ",\"source_stage\":\"ordered_six_attribute_native_calls\"";
   out << ",\"historical_capture\":" << (dto.historical_capture ? "true" : "false") << '}';
+}
+
+std::string SerializePersonSixStageCapture12004(
+    const PersonSixStageCapture12004DTO &dto) {
+  std::ostringstream out;
+  WritePersonSixStageCapture12004(out, dto);
   return out.str();
 }
 
@@ -1168,7 +1173,7 @@ std::string SerializePersonSixStageQuery12004(
   for (const auto &capture : dto.character_captures) {
     if (!first) out << ',';
     first = false;
-    out << SerializePersonSixStageCapture12004(capture);
+    WritePersonSixStageCapture12004(out, capture);
   }
   out << "]}";
   return out.str();

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render an existing campaign score JSON as a silent PNG and/or 60-second MP4."""
+"""Render an existing campaign score JSON as a silent PNG and/or 15-second MP4."""
 from __future__ import annotations
 
 import argparse
@@ -48,7 +48,7 @@ def new_path(path: Path | None, suffix: str) -> Path | None:
 def command(ffmpeg: str, output: Path) -> list[str]:
     return [ffmpeg, "-hide_banner", "-nostdin", "-loglevel", "error", "-nostats", "-n",
             "-f", "rawvideo", "-pix_fmt", "rgb24", "-video_size", "2560x1440",
-            "-framerate", "30", "-i", "pipe:0", "-an", "-sn", "-dn", "-map_metadata", "-1",
+            "-framerate", str(presentation.FPS), "-i", "pipe:0", "-an", "-sn", "-dn", "-map_metadata", "-1",
             "-vf", "scale=in_range=full:out_range=tv:out_color_matrix=bt709,format=yuv420p",
             "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-threads:v", "2",
             "-maxrate", "16M", "-bufsize", "32M", "-color_primaries", "bt709",
@@ -127,7 +127,7 @@ def render_video(report: dict, args, output: Path) -> dict:
     progress = dict(line.split("=", 1) for line in stdout.decode("utf-8").splitlines() if "=" in line)
     need(sent_frames == presentation.FRAMES and progress.get("progress") == "end"
          and int(progress.get("frame", -1)) == presentation.FRAMES,
-         "FFmpeg did not acknowledge all 1800 frames")
+         f"FFmpeg did not acknowledge all {presentation.FRAMES} frames")
     need(output.stat().st_size <= VIDEO_CAP, "Score video exceeded its final cap")
     return {"argv": argv, "actual_exit_code": child.returncode, "forced_own_child": forced,
             "frames_sent": sent_frames, "progress": progress,
@@ -139,7 +139,18 @@ def render_video(report: dict, args, output: Path) -> dict:
 def check() -> None:
     report = presentation.synthetic_report()
     presentation.validate_report(report)
-    need(presentation.storyboard(report)[-1]["end_frame"] == 1800, "Finite storyboard")
+    chapters = presentation.storyboard(report)
+    need(presentation.FRAMES == presentation.FPS * 15, "Future score videos must last exactly 15 seconds")
+    need([c["id"] for c in chapters] == ["scope", *presentation.KEYS, "aggregate", "facts"],
+         "The short video must retain scope, all six domains, aggregate, facts and unknowns")
+    need(chapters[0]["start_frame"] == 0 and chapters[-1]["end_frame"] == presentation.FRAMES
+         and all(c["start_frame"] < c["end_frame"] for c in chapters)
+         and all(a["end_frame"] == b["start_frame"] for a, b in zip(chapters, chapters[1:])),
+         "Storyboard must cover the entire video without gaps or overlaps")
+    argv = command("ffmpeg", Path("score-check.mp4"))
+    need(argv[argv.index("-frames:v") + 1] == str(presentation.FRAMES)
+         and argv[argv.index("-framerate") + 1] == str(presentation.FPS),
+         "FFmpeg duration must use the complete short storyboard")
     need(presentation.format_interval({"lower": "1.234", "upper": "9.876", "value": None}) == "1.2–9.9",
          "Intervals must round outward")
     need(presentation.format_number("1.25") == "≈1.3", "Rounded exact values must be marked")
@@ -150,14 +161,16 @@ def check() -> None:
         pass
     else:
         raise AssertionError("An invented midpoint was accepted")
-    print(json.dumps({"status": "PASS_PURE_PRESENTATION_CHECK", "media_or_output_calls": 0}))
+    print(json.dumps({"status": "PASS_PURE_PRESENTATION_CHECK", "media_or_output_calls": 0,
+                      "duration_seconds": presentation.DURATION_SECONDS, "frames": presentation.FRAMES,
+                      "fps": presentation.FPS, "chapters": chapters}))
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, help="Existing campaign-development-score/v1 JSON")
     parser.add_argument("--image", type=Path, help="New PNG, 2560x1440")
-    parser.add_argument("--video", type=Path, help="New silent MP4, 60 seconds, 30 fps")
+    parser.add_argument("--video", type=Path, help="New silent MP4, 15 seconds, 30 fps")
     parser.add_argument("--ffmpeg", help="FFmpeg executable; required with --video")
     parser.add_argument("--font", type=Path, help="Regular font containing the report's Chinese glyphs")
     parser.add_argument("--bold-font", type=Path, help="Bold Chinese font")
@@ -196,7 +209,7 @@ def main() -> None:
             from PIL.PngImagePlugin import PngInfo
         except ImportError as exc:
             raise RuntimeError("Pillow is required for score images; install it in the selected Python environment") from exc
-        image = presentation.draw_score_frame(report, 1799, args.font, args.bold_font,
+        image = presentation.draw_score_frame(report, presentation.FRAMES - 1, args.font, args.bold_font,
                                              summary=True, campaign_title=args.title)
         metadata = PngInfo()
         metadata.add_text("machine_id", machine_id)

@@ -1,0 +1,55 @@
+{
+  "schema": "xar.g2.m3.research-source-and-software.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; actual stdout read in this task",
+  "final_observed_at_utc": "2026-10-19T01:58:13Z",
+  "authority": "docs/autonomous-agent-progress/g2-requirements-v1.json",
+  "status": {"G2_M3": "complete_retained", "G2_complete": 6, "G2_total": 8, "new_runtime_credit": false, "M7_coverage_credit": false},
+  "operations": {"game_native_desktop_steam_calls": 0, "live_driver_save_media_body_reads": 0, "runtime_mutations": 0, "staged_files": 0, "commits_or_pushes": 0, "forced_death": false, "new_per_AUTO_RPC": false},
+  "source_pins": {
+    "tools/g2_saved_campaign/p51_resident_successor_adoption_v1.py": {"bytes": 20154, "sha256": "df3aed4f239bf5aac107f5a98e2600752a7e0538f075bc6ab99473191e4b3a7d"},
+    "tools/g2_saved_campaign/succession_expectation_freshness_v1.py": {"bytes": 4976, "sha256": "51f8f8ee6ad97619e9050d5a0b6a79f9c7cbc00934dad49b9f3afd7cc1688d55"},
+    "ck3_autonomous_player/tests/unit/test_p51_resident_successor_adoption_v1.py": {"bytes": 3064, "sha256": "15fa34b23f67a76822b2ebde228cbdf918eb6ed4539de4185f6ee5aa68e3e6bf"},
+    "ck3_autonomous_player/tests/unit/test_succession_expectation_freshness_v1.py": {"bytes": 5119, "sha256": "31f3540d83eacb9e3a075419981e098b8eacc299d7e25016ccd47133d51c93b5"}
+  },
+  "observed_public_source_pins_at_015214_utc": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": "1068a715180998349f8d0ad089c8630393120e811e3bd6f58a90d68af8fe6f72",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py": "695167ab424b937c2b3f728a6020d22dfee9b36dff049781daaad3efb77a7ff8",
+    "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py": "b9b4296794d3666504104cdffe4722ee5d92f54abf4e9455e6dcaf4c71ad98fc",
+    "tools/g2_saved_campaign/m7_ordinary_successor_queue.py": "3edbbf47d34523758736917378149155e23bc4ff78469f75652c54ee3283f256",
+    "tools/g2_saved_campaign/m7_ordinary_successor_async_queue.py": "ebfa9a2416e05db6cc7fd6f5b58848bf36734173d369be05def1ebb90df28a54"
+  },
+  "historical_projection": {"source": "docs/ck3-native-ai/evidence/p50r1-natural-successor-actual-2026-10-18.json", "expectation_age_days": 3121, "primary_heir_last_living_age_days": 7, "fresh_immediately_before_death_claimed": false, "complete_title_expectation_in_that_projection": false},
+  "focused_validation": {
+    "command": "py -B -m pytest -q ck3_autonomous_player/tests/unit/test_succession_expectation_freshness_v1.py ck3_autonomous_player/tests/unit/test_p51_resident_successor_adoption_v1.py",
+    "chunk": "bd372a", "tests_passed": 3, "pytest_seconds": 3.41, "outer_seconds": 4.3835244, "exit_code": 0,
+    "scope": "production Service complete-estate refresh plus registered MCP/App/Service synthetic endpoint compound",
+    "synthetic_diagnostic_preserved": "ordinary camera presentation lacks a planner observation; no camera or gameplay credit claimed",
+    "not_covered": ["entire transformed P37 full_loop execution", "deferred production SAVE transaction", "real Game deployment", "real natural succession", "new Game cold lineage", "M7 matrix"]
+  },
+  "prior_failed_attempts": [
+    {"chunk": "7d9256", "exit_code": 2, "reason": "new test imported sibling before package src path"},
+    {"chunk": "18df1a", "exit_code": 1, "reason": "test expected obsolete held_title_partition key; production normalized rows are title_heirs"},
+    {"chunk": "e3a805", "exit_code": 1, "reason": "test compared nonexistent event_id instead of complete active_event projection"}
+  ],
+  "runtime_review_emission": {
+    "input_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/candidate-runtime",
+    "input_kind": "two small Python source files; no runtime process or state operation",
+    "output_root": "Z:/ck3_mod_rewrite/artifacts/g2-m3-p51-resident-review02",
+    "chunk": "5a3a0e", "exit_code": 0, "complete_transformed_source_AST": "passed", "runtime_input_written": false,
+    "files": {
+      "root_p37_sdk_queue.py": {"bytes": 259624, "sha256": "509fc5eef9aa24d3fda54fc69da7240fe7798a6051dd6784551b47372211fa8c"},
+      "root_p37_automatic_natural_succession_handoff.py": {"bytes": 38473, "sha256": "af114b3088ca847fdd14affe40f1c942f191fc0c2cac81e45d431eda64e070e1"},
+      "p51_resident_successor_adoption_v1.py": {"bytes": 20154, "sha256": "df3aed4f239bf5aac107f5a98e2600752a7e0538f075bc6ab99473191e4b3a7d"}
+    },
+    "supersedes_review01": true, "applied_by_this_task": false, "sole_apply_owner": "/root/runtime_v20261019"
+  },
+  "storage": {
+    "policy_version": "1.0.0", "owner_budget_bytes": 16777216, "heavy_writes": false, "files_deleted": 0,
+    "task_start_and_close_scope": "small declared source/JSON outputs only; no tree inventory or bulk hashing",
+    "observed_workspace_volume_at_015214_utc": {"total_bytes": 4096787476480, "free_bytes": 178427457536},
+    "capacity_observation_is_heavy_write_admission": false,
+    "derived_review_at_utc": "2026-10-21T01:58:13Z", "record_default_review_days": 180, "other_machine_checks": "not_performed"
+  }
+}

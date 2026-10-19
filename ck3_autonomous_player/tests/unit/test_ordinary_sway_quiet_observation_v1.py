@@ -178,6 +178,49 @@ class MarketDriver(SourceDriver):
 
 
 class QuietObservationTests(unittest.TestCase):
+    def test_generation_zero_start_gets_baseline_and_later_ordinary_consumption(self):
+        from test_ordinary_sway_service_v1 import NamedBaselineDriver, service as full_service
+
+        class GenerationZeroDriver(NamedBaselineDriver):
+            # Explicit synthetic identity at a valid first-generation slot.
+            def query_active_scheme_sway_target_private_v1(self, **arguments):
+                read = super().query_active_scheme_sway_target_private_v1(**arguments)
+                for row in read["active_sway_instances"]:
+                    row.update(scheme_instance_id=17, scheme_instance_generation=0)
+                return read
+
+            def query_active_scheme_sway_receipt_private_v1(self, **arguments):
+                return {**super().query_active_scheme_sway_receipt_private_v1(**arguments),
+                        "scheme_instance_id": 17, "scheme_instance_generation": 0}
+
+            def query_active_scheme_sway_completion_private_v1(self, **arguments):
+                self.asserted_instance = arguments["scheme_instance_id"]
+                return {**super().query_active_scheme_sway_completion_private_v1(**arguments),
+                        "scheme_instance_id": 17, "scheme_instance_generation": 0}
+
+        with tempfile.TemporaryDirectory(prefix="sway-generation-zero-") as temp:
+            driver = GenerationZeroDriver(Path(temp))
+            ordinary = full_service(driver)
+            first = ordinary.auto_turn()
+            identity = quiet._start_identity(first["result"])
+            self.assertEqual(identity[3:], (17, 0))
+            self.assertEqual(first["ordinary_sway_post_start_observation"]["outcome"], "observed")
+            baseline = read_sway_ledger(driver.state_dir)["resolved"]["material_intervention"]
+            self.assertEqual((baseline["scheme_instance_id"], baseline["scheme_instance_generation"]), (17, 0))
+            self.assertFalse(baseline["next_turn_consumed"])
+            self.assertFalse(baseline["incremental_named_gain_observed"])
+            self.assertEqual((driver.submits, driver.opinion_reads, driver.asserted_instance), (1, 1, 17))
+            for key, invalid in (("scheme_instance_generation", 1), ("scheme_instance_generation", True),
+                                 ("scheme_instance_id", 0), ("scheme_instance_id", 0xFFFFFFFF)):
+                with self.subTest(key=key, invalid=invalid):
+                    changed = deepcopy(first["result"])
+                    changed["native_receipt"][key] = invalid
+                    self.assertIsNone(quiet._start_identity(changed))
+            second = ordinary.auto_turn()
+            self.assertEqual(second["selected_step"], "life-advance")
+            self.assertTrue(second["sway_following_turn"]["material_intervention"]["next_turn_consumed"])
+            self.assertEqual((driver.submits, driver.opinion_reads, driver.advances), (1, 1, 1))
+
     def test_only_retained_gain_pending_reaches_real_service_fastgate(self):
         from xar_autoplayer.sway_lifecycle_consumer import has_pending_sway_following_turn
         with tempfile.TemporaryDirectory(prefix="sway-gain-only-") as temp:

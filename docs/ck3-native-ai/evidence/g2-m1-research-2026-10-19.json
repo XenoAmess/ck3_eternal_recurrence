@@ -1,0 +1,88 @@
+{
+  "schema": "xar-g2-m1-territory-research/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "py tools/ck3_live_run_id.py machine; actual output in this task",
+  "observed_at_utc": "2026-10-19T01:50:05.272129+00:00",
+  "git_head_at_observation": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+  "authority": {
+    "path": "docs/autonomous-agent-progress/g2-requirements-v1.json",
+    "access": "git show HEAD:path, sparse file not expanded",
+    "M1_status": "complete",
+    "G2_completed": 6,
+    "G2_total": 8,
+    "completion_credit_added": 0
+  },
+  "implementation": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/turn_bundle_contract.py",
+    "bytes": 27516,
+    "sha256": "0119ea8a1d41a0ab84ac6dd33f865b022f54595c8097bb6e55a70ba7bcff356a",
+    "initial_implementation_sha256": "a0e733108d1c371df4ec958f3632603d881a1e8fc900aa7f44ac59fc87cc7fb5",
+    "additive_path": "realm_state.value.territory",
+    "additional_rpc_count": 0,
+    "existing_readiness_changed": false,
+    "deployed_or_live_qualified": false
+  },
+  "verification": {
+    "scope": "initial six tests before Root review increment",
+    "test_path": "ck3_autonomous_player/tests/unit/test_turn_bundle_territory_v1.py",
+    "test_bytes": 5629,
+    "test_sha256": "86aff4cb2630755086fd96c7bfa7d8225c7f8ccf17d69d811ce706a002989e44",
+    "command": "py -m unittest discover -s tests/unit -p test_turn_bundle_territory_v1.py -v",
+    "cwd_relative": "ck3_autonomous_player",
+    "passed": 6,
+    "unittest_seconds": 0.002,
+    "outer_seconds": 0.303478,
+    "exit_code": 0,
+    "runs": 1,
+    "old_M1_matrix_repeated": false,
+    "diff_check_exit_code": 0,
+    "synthetic_inputs": true,
+    "business_or_live_credit_added": 0
+  },
+  "root_review_increment": {
+    "observed_at_utc": "2026-10-19T01:53:39.469871+00:00",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "fixed": [
+      "partition unavailable/not_applicable no longer produces available empty direct geographic county list; original reason preserved",
+      "geographic county with missing first heir no longer produces available complete transfer set"
+    ],
+    "command": "py -m unittest test_turn_bundle_territory_v1.TurnBundleTerritoryV1Tests.test_unavailable_partition_preserves_its_gap_instead_of_an_empty_set test_turn_bundle_territory_v1.TurnBundleTerritoryV1Tests.test_missing_county_heir_keeps_complete_transfer_set_unknown -v",
+    "cwd_relative": "ck3_autonomous_player/tests/unit",
+    "passed": 2,
+    "unittest_seconds": 0.001,
+    "outer_seconds": 0.3114377,
+    "exit_code": 0,
+    "runs": 1,
+    "previous_six_tests_repeated": false,
+    "final_test_bytes": 7275,
+    "final_test_sha256": "919ca3a6cdec0bf41e7fd3775bf75868465c69dbd7c6fbde08997a5937a3fc9b",
+    "final_implementation_sha256": "0119ea8a1d41a0ab84ac6dd33f865b022f54595c8097bb6e55a70ba7bcff356a"
+  },
+  "historical_basis": {
+    "path": "docs/ck3-native-ai/p50-populist-loss-prevention-2026-10-18.md",
+    "current_observation_must_not_rebind_historical_machine_identity": true,
+    "confirmed_issue": "SEM successor held cache remained bound to native4191 while later SEM reached native8533; fresh campaign-root8535 was a separate actual observation",
+    "entire_first30_territory_loss_cause_closed": false
+  },
+  "operations": {
+    "game_native_desktop_steam_calls": 0,
+    "save_driver_media_body_reads": 0,
+    "compiles": 0,
+    "staging_or_commits": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "parent_output_ceiling_bytes": 16777216,
+    "output_upper_bound_bytes": 65536,
+    "heavy_writes": 0,
+    "deletions": 0,
+    "checkpoints": ["task_start_policy_read", "task_close_small_output_capacity_read"],
+    "native_diskfree_attempt": "fsutil volume diskfree Z: returned access denied",
+    "capacity_fallback": "Python shutil.disk_usage('Z:/') actual output",
+    "volume_total_bytes": 4096787476480,
+    "volume_free_bytes": 178427846656,
+    "atomic_reservation_or_heavy_write_admission": false,
+    "record_review_days": 180,
+    "old_save_or_media_retention_extended": false
+  }
+}

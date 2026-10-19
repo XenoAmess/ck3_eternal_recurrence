@@ -1,0 +1,63 @@
+{
+  "schema": "xar.ck3.g2-m6-offline-research/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "python tools/ck3_live_run_id.py machine; current tool readback",
+  "observed_at_utc": "2026-10-19T01:49:44.739203Z",
+  "source_parent": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+  "status": "M6 in_progress; G2 6/8",
+  "source_change": "Accept valid generation 0 and require generation == full SchemeID >> 24 in the existing optional observer identity gate",
+  "sources": [
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_quiet_observation_v1.py", "bytes": 11603, "sha256": "f4fe1d5038b1d9a6b5618e43ca051687a2d7a7d3a60815fc0921aaa6b58827e1"},
+    {"path": "ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py", "bytes": 28073, "sha256": "77fd0bff94eaf3baa7e2a15ac0e4a92d3991f7ae29d6fda077af6cc0792cb0d2"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py", "bytes": 27237, "sha256": "fa27a839036564f762d18969265c2baae33d5b8e517ee9d01d0ceb7393394dc8"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/sway_material_consumer.py", "bytes": 10269, "sha256": "be8106b70cda7368e6646c65b3429526fe6fa97f03f3230c4624520a639d7b5d"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/sway_lifecycle_consumer.py", "bytes": 15067, "sha256": "64f77cbfa900168824b8f9f8d0aad98c40038de5822923d0eb98d10a2ba4b674"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py", "bytes": 9667, "sha256": "7962d271184b2ff35a614ca784b6070f708b3de78a65aec6a9494fa1fa38004e"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_lifecycle_observation_v1.py", "bytes": 6043, "sha256": "acd42963f529b680166d439d433e226ff213c5f5d4c07c04e1251923e2d168b4"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_service_v1.py", "bytes": 9219, "sha256": "3f45b4c07dd79a8279605c438a57fa7cdc819a7900a642953f9c3e0fd93d8321"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_hold_observation_v1.py", "bytes": 7829, "sha256": "ba98e1dbc08c71f1c3b0011a0c2f2f634ede8c6c101b6d03b5e42dd3a3720a19"},
+    {"path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py", "bytes": 865841, "sha256": "1068a715180998349f8d0ad089c8630393120e811e3bd6f58a90d68af8fe6f72", "boundary": "Observed current shared source only; Root may subsequently change before freeze"},
+    {"path": "tools/g2_saved_campaign/sway_start_typed_classifier_v1.py", "bytes": 8597, "sha256": "98463e8d62dbec1df8b4a7d2f1e6210430e6823f6b2a6767f7ee42ab26b60c75"}
+  ],
+  "verification": {
+    "command": "python -B ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py",
+    "finished_before_utc": "2026-10-19T01:49:16Z",
+    "tool_chunk": "bdd225",
+    "exit_code": 0,
+    "test_count": 10,
+    "unittest_seconds": 0.912,
+    "tool_wall_seconds": 4.3675507,
+    "output": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.912s\n\nOK\n",
+    "new_compound": "Full normal planner/formal ledger/one synthetic Start/gen0 early baseline/later ordinary consumption; four bad identity subcases rejected",
+    "native_and_os_endpoints": "synthetic",
+    "git_diff_check": {"tool_chunk": "0c1366", "exit_code": 0},
+    "runtime_or_business_qualification": false,
+    "new_game_days": 0
+  },
+  "runtime_adoption": {
+    "status": "runtime_adoption_pending_owner_receipt",
+    "owner_notified": "/root/runtime_v20261019",
+    "tuple_verified_by_this_package": false,
+    "closure": "See ../g2-m6-research-2026-10-19.md; no source-only deployment claim"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "package_max_bytes": 16777216,
+    "shared_start_check_at_utc": "2026-10-19T01:48:56.993837Z",
+    "shared_profile": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/machine-profile.json",
+    "shared_admission": {"path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/STORAGE-ADMISSION.json", "bytes": 5395, "sha256": "e1b062f71a2d3099fb855373bec3b279a58583a76ce1764376a9d719a6fa1a24", "source": "storage owner message; not independently reopened by this package"},
+    "volume_readback": [
+      {"path": "Z:/", "total_bytes": 4096787476480, "free_bytes": 178427994112},
+      {"path": "D:/", "total_bytes": 14000483987456, "free_bytes": 892296916992}
+    ],
+    "volume_source": "Python shutil.disk_usage at observed_at_utc; not heavy-write admission",
+    "deletions": 0,
+    "heavy_writes": 0,
+    "new_capacity_credit": 0,
+    "close_check": "Root shared storage owner closeout; not completed by this package",
+    "derived_review_at_utc": "2026-10-21T01:49:44.739203Z",
+    "record_policy": "4320-hour record review/consolidation; retention expiry does not itself authorize deletion"
+  },
+  "live_RPC_Start_Stop_native_compile_forced_event_large_Driver_SAVE_media_reads": 0,
+  "open_kaishek": "not-applicable"
+}

@@ -109,9 +109,8 @@ PersonCallbackEntryInputs12004 CapturePersonCallbackEntryInputs12004(
   return out;
 }
 
-std::string SerializePersonCallbackEntryInputs12004(
-    const PersonCallbackEntryInputs12004 &inputs) {
-  std::ostringstream out;
+void WritePersonCallbackEntryInputs12004(
+    std::ostream &out, const PersonCallbackEntryInputs12004 &inputs) {
   out << "{\"schema\":\"xar.ck3.person-callback-entry-inputs-12004-v1\""
       << ",\"source_stage\":\"before_original_ci_getter\""
       << ",\"selected_character_identity\":";
@@ -134,7 +133,7 @@ std::string SerializePersonCallbackEntryInputs12004(
       << (inputs.entry_event_observed ? "true" : "false")
       << ",\"preparation_at_entry\":";
   if (inputs.preparation_at_entry)
-    out << SerializePersonSixStageCapture12004(*inputs.preparation_at_entry);
+    WritePersonSixStageCapture12004(out, *inputs.preparation_at_entry);
   else out << "null";
   out << ",\"capture_identity_matches_selected\":";
   Boolean(out, inputs.capture_identity_matches_selected);
@@ -147,6 +146,12 @@ std::string SerializePersonCallbackEntryInputs12004(
   out << ",\"reason\":";
   JsonString(out, inputs.reason);
   out << '}';
+}
+
+std::string SerializePersonCallbackEntryInputs12004(
+    const PersonCallbackEntryInputs12004 &inputs) {
+  std::ostringstream out;
+  WritePersonCallbackEntryInputs12004(out, inputs);
   return out.str();
 }
 

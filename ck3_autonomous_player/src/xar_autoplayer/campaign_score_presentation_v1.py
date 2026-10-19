@@ -7,8 +7,9 @@ from fractions import Fraction as Q
 from functools import lru_cache
 from pathlib import Path
 
-FRAMES = 1800
 FPS = 30
+DURATION_SECONDS = 15
+FRAMES = DURATION_SECONDS * FPS
 WIDTH, HEIGHT = 2560, 1440
 KEYS = "LEMUDH"
 WEIGHTS = {"L": Q(1,4), "E": Q(1,4), "M": Q(3,20), "U": Q(1,10), "D": Q(3,20), "H": Q(1,10)}
@@ -47,9 +48,9 @@ def format_number(x,direction=None):
 def format_interval(r):return format_number(r['value']) if r.get('value') is not None else format_number(r['lower'],'down')+'–'+format_number(r['upper'],'up')
 
 def storyboard(s):
- validate_report(s);chapters=[{'id':'scope','start_frame':0,'end_frame':180,'title':'先看清评分口径'}]
- for i,k in enumerate(KEYS):chapters.append({'id':k,'start_frame':180+i*180,'end_frame':360+i*180,'title':s['scores'][k]['label_zh']})
- chapters += [{'id':'aggregate','start_frame':1260,'end_frame':1500,'title':'合成当前局面评分'},{'id':'facts','start_frame':1500,'end_frame':1800,'title':'主要得失与未确认信息'}];return chapters
+ validate_report(s);chapters=[{'id':'scope','start_frame':0,'end_frame':30,'title':'先看清评分口径'}]
+ for i,k in enumerate(KEYS):chapters.append({'id':k,'start_frame':30+i*45,'end_frame':75+i*45,'title':s['scores'][k]['label_zh']})
+ chapters += [{'id':'aggregate','start_frame':300,'end_frame':360,'title':'合成当前局面评分'},{'id':'facts','start_frame':360,'end_frame':FRAMES,'title':'主要得失与未确认信息'}];return chapters
 
 def draw_score_frame(s,frame,font_path,bold_font_path,summary=False,campaign_title='战役发展报告'):
  FONT=Path(font_path);BOLD=Path(bold_font_path)
@@ -83,7 +84,7 @@ def draw_score_frame(s,frame,font_path,bold_font_path,summary=False,campaign_tit
   shown=format_interval(row) if on else '待展开';text(x+26,y+74,shown,43,color,True);text(x+300,y+88,'已确认' if row['value'] is not None else '数据区间',25,'#9db0c1')
   bx=x+28;by=y+153;bw=674;d.rounded_rectangle((bx,by,bx+bw,by+16),8,fill='#263b50')
   if on:
-   progress=1 if summary or i<active or ch['id'] not in KEYS else min(1,(frame-ch['start_frame'])/42);lo=float(Q(row['lower']))/100;hi=float(Q(row['upper']))/100
+   progress=1 if summary or i<active or ch['id'] not in KEYS else min(1,(frame-ch['start_frame'])/12);lo=float(Q(row['lower']))/100;hi=float(Q(row['upper']))/100
    if hi>0:d.rectangle((bx,by,bx+bw*hi*progress,by+16),fill='#345b65')
    if lo>0:d.rectangle((bx,by,bx+bw*lo*progress,by+16),fill=color)
    if lo!=hi:d.line((bx+bw*hi*progress,by-5,bx+bw*hi*progress,by+22),fill='#dcbd78',width=3)

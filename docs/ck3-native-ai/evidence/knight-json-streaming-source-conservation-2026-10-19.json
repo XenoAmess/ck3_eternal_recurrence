@@ -1,0 +1,74 @@
+{
+  "schema": "xar.ck3.knight-json-streaming-source-conservation/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T01:48:20.142589+00:00",
+  "evidence_source": "tools/ck3_live_run_id.py machine; fixed Git source blobs; current worktree; shutil.disk_usage(project_root)",
+  "baseline_commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+  "scope": "five small source leaves, UTF-8 with line endings normalized by text reader",
+  "checks": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_person_six_stage_capture.hpp",
+      "baseline_utf8_sha256": "dc4a1fdfe98ae538dddb609366a49f25c92cf25708e8fb7c5e9e90e2cd770dd4",
+      "candidate_utf8_sha256": "d288d1a1c4b796f972f31e7f1bff8ad86bcf90d784054291b757fedc7b96a611",
+      "candidate_utf8_bytes": 11292,
+      "whole_source_equals_only_declared_rewrite": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/person_callback_entry_inputs_12004.hpp",
+      "baseline_utf8_sha256": "f4163708ced28c2fdf5db26bd82d5b49f2bbb6c22b704bb1405508a9a866554e",
+      "candidate_utf8_sha256": "65d753f165de30e5128936ae37186b0a061d631e14d2f1a864ae64ec40fbe373",
+      "candidate_utf8_bytes": 4413,
+      "whole_source_equals_only_declared_rewrite": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_person_six_stage_capture.cpp",
+      "baseline_utf8_sha256": "59e44d189086900198405655c83ef9abc05f9f210b7258dca3592aeb0c94c21d",
+      "candidate_utf8_sha256": "7d29a6df2d30203cffa1d5a7f35e7736a7ebf430d3ca08cfcd7bdc9ac5837106",
+      "candidate_utf8_bytes": 52878,
+      "whole_source_equals_only_declared_rewrite": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/person_callback_entry_inputs_12004.cpp",
+      "baseline_utf8_sha256": "e161f9fff9e271a768bca0e9a58297dc8428ab5b2e6adbc3da31ddd19ef04a63",
+      "candidate_utf8_sha256": "f3b43777e80e3ce15dbbbc2d08f2985db5e6ed3f6c739f2e6e1063c134d114f0",
+      "candidate_utf8_bytes": 6499,
+      "whole_source_equals_only_declared_rewrite": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_knight_stat_consumption_serializer.cpp",
+      "baseline_utf8_sha256": "624d1507fedc669323a0a981424d0d1915860e3a71c346186227c617a936f600",
+      "candidate_utf8_sha256": "8d2f3f8e05b9c0cb03936015e388a029f38e803faf6b782db7d05fa884b71a40",
+      "candidate_utf8_bytes": 14860,
+      "whole_source_equals_only_declared_rewrite": true
+    }
+  ],
+  "source_conservation_passed": true,
+  "preserved_source_scope": "all DTO fields, output literals, ordering loops, string/number/pointer helpers, capture/history access and unrelated code",
+  "removed_temporary_string_edges": [
+    "knight Context -> preparation_capture_at_consumption",
+    "knight Context -> preparation_entry_inputs",
+    "callback entry -> preparation_at_entry",
+    "six-stage query -> character_captures item"
+  ],
+  "runtime_boundary": {
+    "qualification": "source-only",
+    "cpp_build": "NOTRUN",
+    "executable_equivalence": "NOTRUN",
+    "native_game_mcp_calls": 0,
+    "large_historical_payload_reads": 0,
+    "latency_or_speedup_claimed": false,
+    "output_size_reduction_claimed": false,
+    "deployment_claimed": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "root": "Z:\\ck3_mod_rewrite",
+    "volume_total_bytes": 4096787476480,
+    "volume_available_bytes": 178428653568,
+    "write_limit_bytes": 16777216,
+    "this_lane_heavy_write_performed": false,
+    "deletion_performed": false,
+    "root_owns_full_capacity_reservation_and_expiry_checks": true
+  }
+}

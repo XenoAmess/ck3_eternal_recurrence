@@ -1,0 +1,52 @@
+{
+  "schema": "xar.g2-m4-loan-decision-costs-source-contract.v1",
+  "observed_at_utc": "2026-10-19T01:51:12.609769+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "status": "SOURCE_CONTRACT_PASS",
+  "checks": {
+    "reused_source_pins_match": true,
+    "exact_12004_admission": true,
+    "factory_reuses_existing_12004_decision_bindings": true,
+    "no_new_native_function_pointer_addresses": true,
+    "no_12003_image_factory": true,
+    "ten_slot_dto_and_evaluator": true,
+    "all_slots_serialized_without_four_resource_projection": true,
+    "unknown_read_has_null_costs": true,
+    "paused_actor_frame_checked_before_and_after": true,
+    "definition_stability_checked": true,
+    "principal_debt_unknown_and_no_funding_credit": true,
+    "no_native_mutation_entrypoints": true
+  },
+  "sources": {
+    "ck3_autonomous_player/native_bridge/src/ck3_12004_religion_context_addons.cpp": {
+      "sha256": "e0ba99a34214b07efb832136af60f75cd80c3f9a9f24a2856a5735ca99bb6dc4",
+      "bytes": 24496
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_decision_cooldown.cpp": {
+      "sha256": "e502cc469de98d25c29c1f5c25314192d1af485a0f24299b5dcf5af14c818573",
+      "bytes": 6194
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_12003_mystical_communion_decision_terms.cpp": {
+      "sha256": "2195e69beff24ef3645a9d6d39e311b1f631eeeced5bf47178724b24943f4870",
+      "bytes": 7864
+    },
+    "ck3_autonomous_player/native_bridge/research/holy_order_loan_decision_costs_12004.cpp": {
+      "sha256": "7a0e934f210564b1473c391ae72158368f9dabf5e4496cb75b370de246d0cb4d",
+      "bytes": 9450
+    },
+    "ck3_autonomous_player/native_bridge/research/holy_order_loan_decision_costs_12004.hpp": {
+      "sha256": "529539d86c67fa611a6ac26b268dfec45fe4602a12b2357c6e6f56eb53a23819",
+      "bytes": 2091
+    }
+  },
+  "qualification": {
+    "validation": "bounded_source_contract_only",
+    "cpp_compiled": false,
+    "cpp_executed": false,
+    "native_or_game_access": false,
+    "registered_public_route": false,
+    "loan_or_cancellation_executed": false,
+    "g2_m4_status_change": false
+  }
+}

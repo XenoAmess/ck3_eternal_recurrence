@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12004_person_following_2922680.hpp"
 #include <array>
 #include <atomic>
+#include <iosfwd>
 #include <span>
 #include <string>
 
@@ -211,6 +212,10 @@ PersonFollowing2922680Pc CopyPersonSixStageAggregatePc12004(
     std::uintptr_t actual_pc) noexcept;
 std::string SerializePersonSixStageCapture12004(
     const PersonSixStageCapture12004DTO &dto);
+// Writes the same JSON directly into an enclosing serializer's default-format
+// stream, without materializing a second complete capture string.
+void WritePersonSixStageCapture12004(
+    std::ostream &out, const PersonSixStageCapture12004DTO &dto);
 // Called inside the validated paused AppThread query boundary. Each full ID is
 // resolved through the qualified Character storage before any owned lookup.
 PersonSixStageQuery12004DTO CollectPersonSixStageQuery12004(

@@ -1,0 +1,3023 @@
+{
+  "schema": "xar.g2.m2.source-carry-manifest/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T01:49:33.145276+00:00",
+  "status": "ALL_98_REVIEWED_ENTRY_FACTS_AND_STOCK_SOURCE_BYTES_VALIDATED_OFFLINE",
+  "source_registry": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry",
+  "target_state": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/state",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine (actual invocation in this work package)",
+  "white_list": [
+    "evidence/event-source-registry/*.json",
+    "entry-bound facts only"
+  ],
+  "entry_count": 98,
+  "event_key_count": 96,
+  "entry_plus_facts_input_bytes": 1466525,
+  "build_counts": {
+    "1.20.0.4": 98
+  },
+  "cross_calculated_id_mode_counts": {
+    "source_rebound": 90,
+    "populist1001_source_rebound": 1,
+    "exact_only": 7
+  },
+  "entries": [
+    {
+      "fingerprint": "03b7f19c729c9d8ee16b5c07cf1fb96aa5657b744f3bb3a75f6f4f3fdf9e9434",
+      "binding": {
+        "calculated_event_id": 5621105,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.1105",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "b4de4341ebf3e761af76fabe6ead267a170ade76e675e643922a215350185f09",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\03b7f19c729c9d8ee16b5c07cf1fb96aa5657b744f3bb3a75f6f4f3fdf9e9434.json",
+        "bytes": 1279,
+        "sha256": "c4fb062868b37d47969cb22d1b739c1d1984068644d17af476ab0d97340db530"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\03b7f19c729c9d8ee16b5c07cf1fb96aa5657b744f3bb3a75f6f4f3fdf9e9434.json",
+        "bytes": 2810,
+        "sha256": "d51272ea2efdbb6d69199e6986c63ac463cff6c6e3d29ef0c5a8e3056329cecf"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "092ba758187ad87990b3f1fae3f111b1413f81c3c57602503ccec7f1ef344414",
+      "binding": {
+        "calculated_event_id": 4251000,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "conqueror.1000",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "b0e4a42c86629f0a79111d2f5101063f3fe16bf352124619c030fc9c8e3934f3",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\092ba758187ad87990b3f1fae3f111b1413f81c3c57602503ccec7f1ef344414.json",
+        "bytes": 1311,
+        "sha256": "a2f6e8507faaedd065c57ba03501e90075f8cdd66bed3b826703d34cc361202f"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\092ba758187ad87990b3f1fae3f111b1413f81c3c57602503ccec7f1ef344414.json",
+        "bytes": 5490,
+        "sha256": "6dddb8d854bf25ccf3be71fd95f24d3770e7b443c0507c85b8b122ec0701f965"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\story_cycles\\story_cycle_conqueror_events.txt",
+        "bytes": 24492,
+        "sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "0afbd062bbedb9f25c902d58e2a8717002572d88f076449268d5c211fb452200",
+      "binding": {
+        "calculated_event_id": 3050030,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_clergy_events.0030",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "5fd706a08b8a0c7fbaf204f763addce2554a9dfa954b03538866f529caa79f5f",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "f78674213449d3545d81ae9acd0d1998f9666c84b62075fc9651ba398942da47"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\0afbd062bbedb9f25c902d58e2a8717002572d88f076449268d5c211fb452200.json",
+        "bytes": 1304,
+        "sha256": "fa864e555cd4b8bd5197285ad0ea22677c6cefe2d23e21928ae61efede2125ea"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\0afbd062bbedb9f25c902d58e2a8717002572d88f076449268d5c211fb452200.json",
+        "bytes": 9002,
+        "sha256": "c28fa2d7760e7cb14548ba948bc0213757e2cc4fa89e9bcdec410d30c356a3b1"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_clergy_events.txt",
+        "bytes": 24351,
+        "sha256": "f78674213449d3545d81ae9acd0d1998f9666c84b62075fc9651ba398942da47"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "0e45f0eb9b2e94e6b34bc9a8bb72a9a4c564a96a46da9078fa04694613914eb5",
+      "binding": {
+        "calculated_event_id": 3331011,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stewardship_wealth.1011",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "6ca806e377abbcd7513d9027468b82c52ae176afde943406bae80793343a5610",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "1213e6a76a6c465e03a3e4a9177905902f9d3fb23cd751b911d34041e61881bf"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\0e45f0eb9b2e94e6b34bc9a8bb72a9a4c564a96a46da9078fa04694613914eb5.json",
+        "bytes": 1337,
+        "sha256": "39227c14f9b72aeaa87fb193c6295d0213e6d2ca1c2de4581303c60b5a02ee04"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\0e45f0eb9b2e94e6b34bc9a8bb72a9a4c564a96a46da9078fa04694613914eb5.json",
+        "bytes": 9857,
+        "sha256": "a8e853c4369f53808979224e00f639a32ce41f38b163f19036c97c63b37cdeea"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_wealth_events.txt",
+        "bytes": 71932,
+        "sha256": "1213e6a76a6c465e03a3e4a9177905902f9d3fb23cd751b911d34041e61881bf"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "0f890a77dd399ec270ff68fa7b20ddc9081a727e03a2d1f045c9cfe1b07cfbd6",
+      "binding": {
+        "calculated_event_id": 5672331,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.2331",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 10,
+        "option_catalogue_sha256": "d49d870b274749fd739cbdfc8c53044127b6df42d016e56df080778a76fbec62",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\0f890a77dd399ec270ff68fa7b20ddc9081a727e03a2d1f045c9cfe1b07cfbd6.json",
+        "bytes": 1315,
+        "sha256": "41cc760a113309e67e6efba9178ca2678b95488f2257d148440407269fce4987"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\0f890a77dd399ec270ff68fa7b20ddc9081a727e03a2d1f045c9cfe1b07cfbd6.json",
+        "bytes": 56309,
+        "sha256": "ca1f9ecf53789ff3fa13b1493072481a52202169fa24e0ae294b6d9471693ef9"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "104bd273e0ca544bbdcfd54425d89ef5a6b33e5801c763f789e5ec1c9aa18262",
+      "binding": {
+        "calculated_event_id": 1464010,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp2_yearly.4010",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "b89169a1359db048b2f6219cc9e0ed78550a2318a287d9ffefbb226503913832",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\104bd273e0ca544bbdcfd54425d89ef5a6b33e5801c763f789e5ec1c9aa18262.json",
+        "bytes": 1292,
+        "sha256": "366a1cd8037136ba1d3cc6badeccd47b9eeea440f9eb2cce191e66229e8925e6"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\104bd273e0ca544bbdcfd54425d89ef5a6b33e5801c763f789e5ec1c9aa18262.json",
+        "bytes": 7644,
+        "sha256": "6d61bb0af38b89ea7fb8d4bde5f7733b5911587763f94ab5ae79a3b80cf30204"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp2\\bp2_yearly_4.txt",
+        "bytes": 41687,
+        "sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f",
+      "binding": {
+        "calculated_event_id": 3571001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "faction_demand.1001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "5c76ae1a7cc44883f5d4af07e6f5c2e59986b9b0c6d6ca9cb379ac7ce298bace",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f.json",
+        "bytes": 1299,
+        "sha256": "2127e8163fcbd9232572cb26b24d7f95c22191aba8a4b13e058f640b89bb225d"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f.json",
+        "bytes": 45102,
+        "sha256": "4564f0f8af65591708ab8f9b580250d71084b091c44cc06e97775462e243a5cd"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+        "bytes": 102190,
+        "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "populist1001_source_rebound"
+    },
+    {
+      "fingerprint": "18f4161cbf9a02914bd4e89a05fd2c45ef6a806d8e176991c2bf4a7ccb259b65",
+      "binding": {
+        "calculated_event_id": 5980840,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp1_house_feud.0840",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "ed5ebd34bd308681895525e4a465f4d807c70607ea5a84659bae41e377d96b89",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\18f4161cbf9a02914bd4e89a05fd2c45ef6a806d8e176991c2bf4a7ccb259b65.json",
+        "bytes": 1298,
+        "sha256": "0869fe8c8aff616a2b930cf8df60d3a5b57d720d1e5dc10874b0373b48994ec1"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\18f4161cbf9a02914bd4e89a05fd2c45ef6a806d8e176991c2bf4a7ccb259b65.json",
+        "bytes": 7226,
+        "sha256": "9efc9bc10871946e5a2cf6e4af0a4829cc0329ccfd9a8e81436c44870d216c43"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp1\\bp1_house_feud.txt",
+        "bytes": 128362,
+        "sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "19e17fb0583812aa047318463ef43a9b1217e8963bd9e5ee66413c74e3edd649",
+      "binding": {
+        "calculated_event_id": 5191711,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.1711",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 9,
+        "option_catalogue_sha256": "3cf2f3b89d8ce657d0a9d2c47c14e4d4188670729f2872fe8afe09edb04b591a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\19e17fb0583812aa047318463ef43a9b1217e8963bd9e5ee66413c74e3edd649.json",
+        "bytes": 1314,
+        "sha256": "8e41c4999fd5cfcb04a2e5bd2ec04974738041a5a05c9d1804ce517ab389b7fc"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\19e17fb0583812aa047318463ef43a9b1217e8963bd9e5ee66413c74e3edd649.json",
+        "bytes": 46267,
+        "sha256": "64b77f4fea3ab8056e3ecc296e3180d1fb6115c08975e2822a6fe816e5023d60"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "1f660edcbe3267b1d1b4dc6a82f4015ea1d95ce108d5afeba6b536eb7d9e18eb",
+      "binding": {
+        "calculated_event_id": 4331015,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.1015",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 8,
+        "option_catalogue_sha256": "8d0fca8d92fa67f30f3a128e4cd81bddb2008c9c7bf919e663a54eec3c655702",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\1f660edcbe3267b1d1b4dc6a82f4015ea1d95ce108d5afeba6b536eb7d9e18eb.json",
+        "bytes": 1279,
+        "sha256": "5874cf5467633f8b4b0fcef74c0bf011a02b84ce323a15c3891a42254aea5a95"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\1f660edcbe3267b1d1b4dc6a82f4015ea1d95ce108d5afeba6b536eb7d9e18eb.json",
+        "bytes": 15561,
+        "sha256": "53d0ddc064c6b1752287db695c96f9235068ce844201fdf8365eaea8e83d6f29"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "226a39614be7153739810ae5940d1da8da3ccba83600186253666e12448c438c",
+      "binding": {
+        "calculated_event_id": 5980410,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp1_house_feud.0410",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "8fd687f7fe28af4911c50f09600dc037cd474fc84e9ff0885a1d35e24612a6df",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\226a39614be7153739810ae5940d1da8da3ccba83600186253666e12448c438c.json",
+        "bytes": 1298,
+        "sha256": "93d9dc84122aa34d7f19b77119accbd53e82146322b18630d081715a9e43d6d1"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\226a39614be7153739810ae5940d1da8da3ccba83600186253666e12448c438c.json",
+        "bytes": 8322,
+        "sha256": "22a1a6dcd671ecc62376924e0a0e4d012b94dad75db25a1d81675059518f7d24"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp1\\bp1_house_feud.txt",
+        "bytes": 128362,
+        "sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "279d90eb39d27f54f97e1ec1f8833eb688cccd457102f070e3fbd9e356c114d0",
+      "binding": {
+        "calculated_event_id": 2111001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "yearly.1001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "beb35bd52ea4afa519a7e1d14652e52394bc5947ac1d7621e7e38b7e226b4df3",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "bed4cfd11b476b29751b73c644e4d1a3500ab25cffb322c706a5fefffbe5012d"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\279d90eb39d27f54f97e1ec1f8833eb688cccd457102f070e3fbd9e356c114d0.json",
+        "bytes": 1296,
+        "sha256": "87b06df06f4b83197fcda89ac4d94b035c6fe44121c4929edf1a016b210effca"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\279d90eb39d27f54f97e1ec1f8833eb688cccd457102f070e3fbd9e356c114d0.json",
+        "bytes": 18889,
+        "sha256": "29ba638b9145312cee0a5d5e7cee3eff58cb71b4c6aff0c3d5124c4ef6827d5f"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\yearly_events\\yearly_events_2.txt",
+        "bytes": 171690,
+        "sha256": "bed4cfd11b476b29751b73c644e4d1a3500ab25cffb322c706a5fefffbe5012d"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "29e29418e11459ef39a2eeb7d0d4bfb99e216c626f183d147cdb037bfaa37b83",
+      "binding": {
+        "calculated_event_id": 4161200,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "conqueror.1200",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "eba4a631f55b0b3c00ea99f04478ed45347ecf6a06f37b330cbdfaf346326b7e",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\29e29418e11459ef39a2eeb7d0d4bfb99e216c626f183d147cdb037bfaa37b83.json",
+        "bytes": 1311,
+        "sha256": "30120cfd423ba673d1252976eed97cce55f34836a2bad8b2bb623b5a46a0eac5"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\29e29418e11459ef39a2eeb7d0d4bfb99e216c626f183d147cdb037bfaa37b83.json",
+        "bytes": 6581,
+        "sha256": "e0352af6f1e21f923b3aa423566ecd56d9721a687e8e20a05172d59d60ff556a"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\story_cycles\\story_cycle_conqueror_events.txt",
+        "bytes": 24492,
+        "sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "2af8b639a59e837e0a9d34ad592ad2bf82a7ebd599e7f3b6de5a2b6f4800e787",
+      "binding": {
+        "calculated_event_id": 4103010,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_strategy.3010",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "77bb1ccc251b586e970787a43fa657b99e1cf75d671f3d76602c1652387ef51a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "a6816e58f34e660b6222d10f03824a87dcd206e6836c932b4eaa7ff3b2279440"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\2af8b639a59e837e0a9d34ad592ad2bf82a7ebd599e7f3b6de5a2b6f4800e787.json",
+        "bytes": 1330,
+        "sha256": "3c2a564704fdc1167fdc02fef599498221d070f56ee7668ab4e70cc504f02a58"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\2af8b639a59e837e0a9d34ad592ad2bf82a7ebd599e7f3b6de5a2b6f4800e787.json",
+        "bytes": 20309,
+        "sha256": "de777352e59f66259172a92f8405d01d4cf023c6196c31810dd72fe81aa14d91"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_strategy_events.txt",
+        "bytes": 87035,
+        "sha256": "a6816e58f34e660b6222d10f03824a87dcd206e6836c932b4eaa7ff3b2279440"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "2c582d610fb8433d51a042af3f5bac14db879699a6ff2c98949c259546680df9",
+      "binding": {
+        "calculated_event_id": 4792451,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "vassal.2451",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "14b237eaec475ada2ea421f525506ebdd037d5271fbadaba18d80308475876a4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\2c582d610fb8433d51a042af3f5bac14db879699a6ff2c98949c259546680df9.json",
+        "bytes": 1297,
+        "sha256": "cb2d98482322079929f5a34c537d0e4d99fafe66127db977c7b25d8f73d17d4f"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\2c582d610fb8433d51a042af3f5bac14db879699a6ff2c98949c259546680df9.json",
+        "bytes": 9386,
+        "sha256": "f97949ec51bba0917cb62bfe201bf6f01b288056d8ab05d2740492f9f40a6eac"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\relations_events\\vassal_events.txt",
+        "bytes": 100461,
+        "sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "2c732f58b48ae94164f7e01d2c13aa3c8fc759f151faa3d0ff45da53ef013e3f",
+      "binding": {
+        "calculated_event_id": 3315011,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stewardship_general.5011",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "fa8901c275ee5a5bb915acf68b1e405220b7af1e2662ee84867305b49ed0e7ef",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "78de4fe8010bdb7c1b7968d767c306e86bfae75a99d50c358e392246735e59e3"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\2c732f58b48ae94164f7e01d2c13aa3c8fc759f151faa3d0ff45da53ef013e3f.json",
+        "bytes": 1339,
+        "sha256": "5ec0d1d196dbe2b4c62e30a2217a31819dca5996a7f87b5007557b8bc4f9e2c5"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\2c732f58b48ae94164f7e01d2c13aa3c8fc759f151faa3d0ff45da53ef013e3f.json",
+        "bytes": 11342,
+        "sha256": "b3f9d937036b1dc96787949ca112c905c7a4c1af9382998896082fdf78b95acf"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_general_events.txt",
+        "bytes": 47192,
+        "sha256": "78de4fe8010bdb7c1b7968d767c306e86bfae75a99d50c358e392246735e59e3"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "2dcfc6fb4f32775d1f9fa9acafd10443f776e6a727679e97b1facf6a4459d258",
+      "binding": {
+        "calculated_event_id": 3881052,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stewardship_domain.1052",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "1063de590638d2321d29e7b6c988bb726b695631a7b93fd57c1569b318d53ea5",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "2011de9b8c6e4be9cc613402208d7a0545b237fbad42127920def6009b640cd5"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\2dcfc6fb4f32775d1f9fa9acafd10443f776e6a727679e97b1facf6a4459d258.json",
+        "bytes": 1337,
+        "sha256": "75b90d445276acbc28c14266511b91c29fd69cc3ec0052c438c69c238b7dcf81"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\2dcfc6fb4f32775d1f9fa9acafd10443f776e6a727679e97b1facf6a4459d258.json",
+        "bytes": 12841,
+        "sha256": "44531bae22e8ec889c9a66d7f626b57041f57d9ebeef3aeb4112abe51c00d2b0"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_domain_events.txt",
+        "bytes": 247085,
+        "sha256": "2011de9b8c6e4be9cc613402208d7a0545b237fbad42127920def6009b640cd5"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "304e3350d0ac22a3dd2f4973002fea6d6962a957ef744b357c871051c0bb6c60",
+      "binding": {
+        "calculated_event_id": 1958042,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp2_yearly.8042",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "6089231df0c3c6cc7c11e23f829b260f9e8957759159f8019d37f87d2df54039",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "67df046bf1a6b2fe6186e26d9eb9586c6346dbaeb78f0e5b46baaede4c385332"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\304e3350d0ac22a3dd2f4973002fea6d6962a957ef744b357c871051c0bb6c60.json",
+        "bytes": 1290,
+        "sha256": "c07029a0fc5e85152d7bb18bb93883057eb0a814d8b93b26211e3ba67688a6c5"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\304e3350d0ac22a3dd2f4973002fea6d6962a957ef744b357c871051c0bb6c60.json",
+        "bytes": 3176,
+        "sha256": "b956a9170191df9804f01a74e55dece8471f2b312556ffb9104f94f94184625d"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp2\\bp2_yearly.txt",
+        "bytes": 110296,
+        "sha256": "67df046bf1a6b2fe6186e26d9eb9586c6346dbaeb78f0e5b46baaede4c385332"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "3126352313ffa5179ad72c0c3acc4b2c822171118964b4dd027c4f08600be8e6",
+      "binding": {
+        "calculated_event_id": 1083100,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp1_yearly.3100",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "c210f3d97fb17b6e377a22a5bd3a2b19472047f3cabc3977c2a10dce2805ba15",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "ff217f814f1ceb8e1eeee9546dcbfd892169d925fe381c8ec9cfc6148d967e13"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\3126352313ffa5179ad72c0c3acc4b2c822171118964b4dd027c4f08600be8e6.json",
+        "bytes": 1302,
+        "sha256": "60b8b98037ba6d06945b67ef1d485bdefaeb5bc9128e9ce79ceea6edec8c6fa5"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\3126352313ffa5179ad72c0c3acc4b2c822171118964b4dd027c4f08600be8e6.json",
+        "bytes": 18010,
+        "sha256": "f745b8d25a1a5441135861b1675b912f9613e66778e0a794094fcdb803d6aa86"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp1\\bp1_yearly_events_chad.txt",
+        "bytes": 65335,
+        "sha256": "ff217f814f1ceb8e1eeee9546dcbfd892169d925fe381c8ec9cfc6148d967e13"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "315fa3dd7b1cc4c4cfbe8fabea15941fd37aa0cf5cf906c2f27b1888615306aa",
+      "binding": {
+        "calculated_event_id": 1111010,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "birth.1010",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "1a660e76efce4e61a3b540ce9708e959c6f993dc2c787a23e24468180ba121af",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\315fa3dd7b1cc4c4cfbe8fabea15941fd37aa0cf5cf906c2f27b1888615306aa.json",
+        "bytes": 1277,
+        "sha256": "6c4c2574040e707538c68291fced77b1c99a8b16a7a6bfa7c4b5f31b14c3c8fa"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\315fa3dd7b1cc4c4cfbe8fabea15941fd37aa0cf5cf906c2f27b1888615306aa.json",
+        "bytes": 4093,
+        "sha256": "7d6feadcd3751c858259cf8c1486023a660377d47cc4f193381084d3d0e12107"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\birth_events.txt",
+        "bytes": 116119,
+        "sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "3471e482c5c3bdd9191bb54cc8c3dabf4aeaf52cd881d3daf75c35f117ba89df",
+      "binding": {
+        "calculated_event_id": 5191001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.1001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 7,
+        "option_catalogue_sha256": "5692462bee1d667a20c4a51de7a52324dc51d81fc94903ca4c93970ea322871c",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\3471e482c5c3bdd9191bb54cc8c3dabf4aeaf52cd881d3daf75c35f117ba89df.json",
+        "bytes": 1314,
+        "sha256": "433cc6f716e8d968bd9442ea53001e96cc8efc751b1d6ae1be78f73200d9c285"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\3471e482c5c3bdd9191bb54cc8c3dabf4aeaf52cd881d3daf75c35f117ba89df.json",
+        "bytes": 27531,
+        "sha256": "19ece05fe7670995122530485cf611baca683f5d306c9bf4eb4464bf3e5c7116"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "3c4c64ec4655d753db39b7098323605292408d45ca1d40f3efa395a5a6c87413",
+      "binding": {
+        "calculated_event_id": 1464012,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp2_yearly.4012",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "778806e1f29673ad7094b7933efaeca103c8b561d00dc4fa35f9417af5951730",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\3c4c64ec4655d753db39b7098323605292408d45ca1d40f3efa395a5a6c87413.json",
+        "bytes": 1292,
+        "sha256": "1ffa26519ead827fc75e7b7da3ad2f5303430834f738c62ef3b0044ef2a83c0a"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\3c4c64ec4655d753db39b7098323605292408d45ca1d40f3efa395a5a6c87413.json",
+        "bytes": 9383,
+        "sha256": "aabb0172e0e896e93798489caf8bbd5c8336ef0ed4953115cde9bfa155ee3d8b"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp2\\bp2_yearly_4.txt",
+        "bytes": 41687,
+        "sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "43a8b70bb63c6d4a4e181f1ec11fa6f816345bb1a6d8b2594eb0d8bebee64517",
+      "binding": {
+        "calculated_event_id": 3000018,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_decision_events.0018",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "cfb4f2399de9aa3d91f15ad15d58a518f23fa01c31d1c4b9de529d86d596e4d9",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "8282ca575f87e165771eb51608a296911eaa27ab93228ee48649917665484b78"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\43a8b70bb63c6d4a4e181f1ec11fa6f816345bb1a6d8b2594eb0d8bebee64517.json",
+        "bytes": 1308,
+        "sha256": "afbdb7d3b3e523dfb3643d2b05cb9f915efffd186c6fbd5e3fda307e3f2cec76"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\43a8b70bb63c6d4a4e181f1ec11fa6f816345bb1a6d8b2594eb0d8bebee64517.json",
+        "bytes": 3157,
+        "sha256": "d9d48aaf3c005b939a889c80fd97f7e91cd49d4c11894257055a685cbbff3ce9"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_decision_events.txt",
+        "bytes": 83499,
+        "sha256": "8282ca575f87e165771eb51608a296911eaa27ab93228ee48649917665484b78"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "483fa10d4006be2465171a252be891511bec5f046f409d28463687714e4cae42",
+      "binding": {
+        "calculated_event_id": 2014101,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "court_chaplain_task.4101",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "f18b8591c9c066305272f3ed47e0d353c6c013bb1f34ae49d9b81f6f8e1df52c",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "ea86aeae9a122f06699d8cb0550d3d299e72bc460520a704d050499196d4af71"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\483fa10d4006be2465171a252be891511bec5f046f409d28463687714e4cae42.json",
+        "bytes": 1329,
+        "sha256": "331cd7e209f4162062e8e07c62842e59dbb0ab0135b517af742dae9c0ac22eda"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\483fa10d4006be2465171a252be891511bec5f046f409d28463687714e4cae42.json",
+        "bytes": 3077,
+        "sha256": "7c8ef465fd979d87ed0fea28a378ddf0e6eb6ee7358ecaffe4280473354ccc3c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\councillor_task_events\\court_chaplain_task_events.txt",
+        "bytes": 41240,
+        "sha256": "ea86aeae9a122f06699d8cb0550d3d299e72bc460520a704d050499196d4af71"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "4a622ff627b65d8bc2a1b298d33207bb67c99220e4c34b0589abfde74784e9cd",
+      "binding": {
+        "calculated_event_id": 4151031,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority.1031",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "77726baa62cee4ad73f18ab85a39f87180b05c198d789b9a320afe0073b52d76",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\4a622ff627b65d8bc2a1b298d33207bb67c99220e4c34b0589abfde74784e9cd.json",
+        "bytes": 1332,
+        "sha256": "c4da8235b1843c5be6afd312aaafc51ab5ed38ffd7cb5ca4ceba031aa90b4bbf"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\4a622ff627b65d8bc2a1b298d33207bb67c99220e4c34b0589abfde74784e9cd.json",
+        "bytes": 9910,
+        "sha256": "1470ee4e7937b1d410d3620dfa69d6496a09195ff83478ff1c3dc48d8124bb50"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events.txt",
+        "bytes": 54064,
+        "sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "4c7aa9932114d7afccd1445456a23af4658464fd40bd5460ad2126a9597b624e",
+      "binding": {
+        "calculated_event_id": 5771000,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "death_management.1000",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "5acd07a822ea99d0c797949683085296b5cb78fc9264e28f4b15310f5098d174",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\4c7aa9932114d7afccd1445456a23af4658464fd40bd5460ad2126a9597b624e.json",
+        "bytes": 1313,
+        "sha256": "d44931928de3eb60006a9cb066e8be9a3ce41ca79d45a9ac16d5530d2e8d0044"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\4c7aa9932114d7afccd1445456a23af4658464fd40bd5460ad2126a9597b624e.json",
+        "bytes": 15604,
+        "sha256": "ebec43948e5a051c0837fcc055838413b6353f75510980f8c6563460554a7d32"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+        "bytes": 154888,
+        "sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "565faf781d392b9762dd26a748a3f7a12789a36d995918f507b8cd299a5f44d9",
+      "binding": {
+        "calculated_event_id": 5192311,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.2311",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 12,
+        "option_catalogue_sha256": "109d1ca4fdf62ee0086f9b13c803630c96a025ce97eb27b39079d7182866e6fe",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\565faf781d392b9762dd26a748a3f7a12789a36d995918f507b8cd299a5f44d9.json",
+        "bytes": 1315,
+        "sha256": "d28024a0396cdc6171ddb40ac824bc874e84a6d15fd4ec9da747616c2ea0fdb6"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\565faf781d392b9762dd26a748a3f7a12789a36d995918f507b8cd299a5f44d9.json",
+        "bytes": 67269,
+        "sha256": "4a0b1906f7abbe155c7aaa4c9c848c89b55b108786eff1db12ca8650dbc50169"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "5cec178e5faa5e3b5a8dcdfd4a23609e58f46c073d12955cb09c68e1f67048d6",
+      "binding": {
+        "calculated_event_id": 1875009,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "epidemic_events.5009",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "dfefd04bb539b14a177a0f627160cd297263328c09ae130a1589e605e9852627",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\5cec178e5faa5e3b5a8dcdfd4a23609e58f46c073d12955cb09c68e1f67048d6.json",
+        "bytes": 1300,
+        "sha256": "4791969440077214b09de2e095d1f804c5857906a301704db815a626aeaf309a"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\5cec178e5faa5e3b5a8dcdfd4a23609e58f46c073d12955cb09c68e1f67048d6.json",
+        "bytes": 13451,
+        "sha256": "541f8168418f7fa9f18811693af01a23196e39213f89aa27fc71bd0c5c4e2838"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\ce1\\epidemic_events.txt",
+        "bytes": 222275,
+        "sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "5e60fc40b245c98dfb0c44b6a10685465d80fd7cf88714df4fa2f70354acfe27",
+      "binding": {
+        "calculated_event_id": 3965060,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "vassal.5060",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "86c681c9d3641a37d0e6a396c1e98485cf4b53b402aecc41dabc5f1a27a13821",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\5e60fc40b245c98dfb0c44b6a10685465d80fd7cf88714df4fa2f70354acfe27.json",
+        "bytes": 1297,
+        "sha256": "d194c6b84cf0bf500d6f5d6d2eed0907b37c5c1ed2681fe710bba3153fba685c"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\5e60fc40b245c98dfb0c44b6a10685465d80fd7cf88714df4fa2f70354acfe27.json",
+        "bytes": 4240,
+        "sha256": "60a491292df149c6c75d703998cba3859793e8557d3e2b9f2cb669266f1bba50"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\relations_events\\vassal_events.txt",
+        "bytes": 100461,
+        "sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "603465af07d3344cb8644e141c676d601f1ceaf358ebf2d89722ec91b0190af1",
+      "binding": {
+        "calculated_event_id": 3312001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stewardship_general.2001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "8d24cc5c34bb400c532523dc4d196ada6d41f35586e5fb5a9d92b678f5846ad7",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "78de4fe8010bdb7c1b7968d767c306e86bfae75a99d50c358e392246735e59e3"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\603465af07d3344cb8644e141c676d601f1ceaf358ebf2d89722ec91b0190af1.json",
+        "bytes": 1339,
+        "sha256": "d5a75880d3386024eedb6b23498045b817051a5691a4a28a7076cfcebdb2af16"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\603465af07d3344cb8644e141c676d601f1ceaf358ebf2d89722ec91b0190af1.json",
+        "bytes": 36791,
+        "sha256": "3ddf40ef9b409a12f2f5c1f21b253974ed9b4f054377e9e882286ef234122511"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_general_events.txt",
+        "bytes": 47192,
+        "sha256": "78de4fe8010bdb7c1b7968d767c306e86bfae75a99d50c358e392246735e59e3"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "60765a745b718279774198b35c5a9cea453ed09630162bacc24b5992c8ec4a36",
+      "binding": {
+        "calculated_event_id": 4822201,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.2201",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 7,
+        "option_catalogue_sha256": "cfe1806708be44491757c0a18b7ea3276d0a34b3df171fabcd86ca8e3d0c1b97",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\60765a745b718279774198b35c5a9cea453ed09630162bacc24b5992c8ec4a36.json",
+        "bytes": 1279,
+        "sha256": "c4d38553203ca3495280f3c9aa77d9509dc38d07cc3b32355de0e9f9291f2b6f"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\60765a745b718279774198b35c5a9cea453ed09630162bacc24b5992c8ec4a36.json",
+        "bytes": 22150,
+        "sha256": "293e2df8c391bb578c428ecb1b3e62615e9c1304dddfce04237d565d2dd45155"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "618f1831d2370502a7e9a9b90d8df60c484379eac9a9788a72afb4467a0f6887",
+      "binding": {
+        "calculated_event_id": 4211300,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "conqueror.1300",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "2d29e191fa118832851ca8206804f125f5b3f109a25173f93ee9f3a09e9da034",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\618f1831d2370502a7e9a9b90d8df60c484379eac9a9788a72afb4467a0f6887.json",
+        "bytes": 1311,
+        "sha256": "12e094b647beb56c4da5e1091987cf4ac071bc7dcc16fbd24d79ed805004d1d5"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\618f1831d2370502a7e9a9b90d8df60c484379eac9a9788a72afb4467a0f6887.json",
+        "bytes": 11937,
+        "sha256": "3dc3fd627b824e5ade76aa07ce12fde0d9bfebbcbd01245177b043ef45c8b009"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\story_cycles\\story_cycle_conqueror_events.txt",
+        "bytes": 24492,
+        "sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "61cf720ecb5fa9fc942138974170f6af7658e62645ccc371ce8693ab0b25246c",
+      "binding": {
+        "calculated_event_id": 4154002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority.4002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "bca32b25f01700c803ebb23267088ddb38554cd0f8645eb95e3707f85f41b45a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\61cf720ecb5fa9fc942138974170f6af7658e62645ccc371ce8693ab0b25246c.json",
+        "bytes": 1332,
+        "sha256": "cb4fb2128f6518128ba2ca51846e110e733f53265cb655d55621cf2e8ed86bf6"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\61cf720ecb5fa9fc942138974170f6af7658e62645ccc371ce8693ab0b25246c.json",
+        "bytes": 5458,
+        "sha256": "bcbf56d40834abbb60a974de412e4f25b70c8d5baa7efc786725a980b201cad4"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events.txt",
+        "bytes": 54064,
+        "sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "61ee0f011ef151537f876eb5185026251e40d385f38e10250f724766a79fe1ea",
+      "binding": {
+        "calculated_event_id": 2970004,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_bull_events.0004",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "3d5cd59935f30994b63f98d1c824b96be509f5dcf02d4230458e1e7bdac3ca6b",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\61ee0f011ef151537f876eb5185026251e40d385f38e10250f724766a79fe1ea.json",
+        "bytes": 1300,
+        "sha256": "1d1c339f9e11795a83aa77e898c14667914b45b9508f062a7f92e971416106de"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\61ee0f011ef151537f876eb5185026251e40d385f38e10250f724766a79fe1ea.json",
+        "bytes": 3511,
+        "sha256": "b69a1a4e82b4cf2e45e0dd93b0dc4b974a21a5364546e1dfec1df9ec3ce22456"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_bull_events.txt",
+        "bytes": 7694,
+        "sha256": "596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "61fbff11df4e312abe5af2f4c762b7ec000b8ab0b288c15255ae396e759997f2",
+      "binding": {
+        "calculated_event_id": 3530058,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_the_christian_church.0058",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "505256893b3a5bad3cc1ad10f57e9b187bba3c40a2cb77add6366ecbfeceb1be",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "669211157d9541fe33010433f266e68d25e2eb78b040323ed843447269279e07"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\61fbff11df4e312abe5af2f4c762b7ec000b8ab0b288c15255ae396e759997f2.json",
+        "bytes": 1324,
+        "sha256": "17a00be74dab72d98839f567e33f9328e9ebae7fa74e0ab675f060cf4cb75950"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\61fbff11df4e312abe5af2f4c762b7ec000b8ab0b288c15255ae396e759997f2.json",
+        "bytes": 2423,
+        "sha256": "6dd8b088c575573757c8958870677d7b6c697952fdf9c2b9608baae0c8749ad3"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_christian_situation_events.txt",
+        "bytes": 37312,
+        "sha256": "669211157d9541fe33010433f266e68d25e2eb78b040323ed843447269279e07"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "64af40b9532927d1fb12eaf6c112e250b5a17f831555b5635e7c161fabc65d91",
+      "binding": {
+        "calculated_event_id": 5651002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "councillor_spouse_martial.1002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "8d177ad5dc6f5bae835f0e6e8c9c0042af6e0396bfe9905139899a723ce4e749",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "f891a2bebca6dfe95b3967cbea2e972e6f568b8dea2aa002f5f447c237c8ef83"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\64af40b9532927d1fb12eaf6c112e250b5a17f831555b5635e7c161fabc65d91.json",
+        "bytes": 1367,
+        "sha256": "8c84b85e988b50c7e043dfe693dec3886339c9c24638712c517395f7e0a20ff7"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\64af40b9532927d1fb12eaf6c112e250b5a17f831555b5635e7c161fabc65d91.json",
+        "bytes": 7811,
+        "sha256": "c78618a34fcb1e89d9df353990260c7d256eb74eaea3f1803ccf190b4b98949b"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\councillor_task_events\\councillor_spouse_events\\councillor_spouse_martial_events.txt",
+        "bytes": 32055,
+        "sha256": "f891a2bebca6dfe95b3967cbea2e972e6f568b8dea2aa002f5f447c237c8ef83"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "6c2ae93a5d62bd765c0f896446b7f62cf1c3ad1203013df118aef3e05f9ac0e2",
+      "binding": {
+        "calculated_event_id": 2870010,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "heresy_light.0010",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "43be2cbe04d8c289947479129f98df8a4e417044eaf21ab9293ff21b8d97c09a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "b3bd7432cfb8b58de1cf10f9d67a3bb1e0f49d813091bb4e4cb20c7e03111a19"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\6c2ae93a5d62bd765c0f896446b7f62cf1c3ad1203013df118aef3e05f9ac0e2.json",
+        "bytes": 1313,
+        "sha256": "8d720fe8e7a14dbb8785916009b8a57e9a8e6f93d2366249df1288b46e4acc4e"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\6c2ae93a5d62bd765c0f896446b7f62cf1c3ad1203013df118aef3e05f9ac0e2.json",
+        "bytes": 6294,
+        "sha256": "545d5d0213d7bb1cef9126cc91d052592669db0b0077947b33b8d665b38eb9d3"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\heresy\\pam_heresy_light_events.txt",
+        "bytes": 15376,
+        "sha256": "b3bd7432cfb8b58de1cf10f9d67a3bb1e0f49d813091bb4e4cb20c7e03111a19"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "6d63e86becd0adbcf9919def05f21303844ba1c2be11262338c70514c1207d1a",
+      "binding": {
+        "calculated_event_id": 1111006,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "birth.1006",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "0ce337c95f74717599ee0aea3ec95fd2f1eee001dd25ccda92905125a001348b",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\6d63e86becd0adbcf9919def05f21303844ba1c2be11262338c70514c1207d1a.json",
+        "bytes": 1277,
+        "sha256": "acaad70bc4536366df7270b6acfc0a5c33052a42c4bccc45b9746be0ce12acce"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\6d63e86becd0adbcf9919def05f21303844ba1c2be11262338c70514c1207d1a.json",
+        "bytes": 7425,
+        "sha256": "e689a1b0ecab69d5bf6ea847815ffdf90d2356e2f8b5c4e3bfc661527f86a303"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\birth_events.txt",
+        "bytes": 116119,
+        "sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "6f19f6e232f7ebeaad2bb53d7f240bfc312b225efab0c25fe8a875eed06118e2",
+      "binding": {
+        "calculated_event_id": 1958040,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp2_yearly.8040",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "5d202902f74fefee8eea6e1ef9d6b711ced7f46c7663dea81f0f3cbb955dc625",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "67df046bf1a6b2fe6186e26d9eb9586c6346dbaeb78f0e5b46baaede4c385332"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\6f19f6e232f7ebeaad2bb53d7f240bfc312b225efab0c25fe8a875eed06118e2.json",
+        "bytes": 1290,
+        "sha256": "ca6f5c3ad0ab3bba0b6a5a27cf7c66768984305fa4f4150edc6424a7ad9bbb1f"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\6f19f6e232f7ebeaad2bb53d7f240bfc312b225efab0c25fe8a875eed06118e2.json",
+        "bytes": 11374,
+        "sha256": "d15b02b37d4057055c32814e2c55b5481138e85c8a4535a80764db207cd41800"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp2\\bp2_yearly.txt",
+        "bytes": 110296,
+        "sha256": "67df046bf1a6b2fe6186e26d9eb9586c6346dbaeb78f0e5b46baaede4c385332"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "6f4dddab1f3b75c7aeb8f355ebd1c54d8d05f1e56879be9d2366660c6eea46a5",
+      "binding": {
+        "calculated_event_id": 5161701,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.1701",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 9,
+        "option_catalogue_sha256": "7a100e18d5ee086cf715229b126c363d3be957e2ecd57dad750dd581b4ba0c75",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\6f4dddab1f3b75c7aeb8f355ebd1c54d8d05f1e56879be9d2366660c6eea46a5.json",
+        "bytes": 1314,
+        "sha256": "81148441e64275a53c111233e63a624eb38a38dfa0db18ee7adce74f3b62b6d7"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\6f4dddab1f3b75c7aeb8f355ebd1c54d8d05f1e56879be9d2366660c6eea46a5.json",
+        "bytes": 50577,
+        "sha256": "5a9ee20bec9959cdaef2cfe3ddf65533e905af10a37d6f9718553d3df870179c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "6f5738d374b0f8757ec50e31f7e7da5f01c9d05acca0b9edbcf0446a0b9a20da",
+      "binding": {
+        "calculated_event_id": 1084001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "court_chaplain_task.4001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "923d7bd239831db41f7db423f697b44cb9293949bdca5c8328439e16b0f67c27",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "ea86aeae9a122f06699d8cb0550d3d299e72bc460520a704d050499196d4af71"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\6f5738d374b0f8757ec50e31f7e7da5f01c9d05acca0b9edbcf0446a0b9a20da.json",
+        "bytes": 1329,
+        "sha256": "472adf8d5a3b1ddf8100e61c2c961432c70dccb7eb174500cd026be0ab197398"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\6f5738d374b0f8757ec50e31f7e7da5f01c9d05acca0b9edbcf0446a0b9a20da.json",
+        "bytes": 3007,
+        "sha256": "64cf56411ff02004a53dfe70ffc4efe0877a81ffcc6c39736e35ff9924efbf93"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\councillor_task_events\\court_chaplain_task_events.txt",
+        "bytes": 41240,
+        "sha256": "ea86aeae9a122f06699d8cb0550d3d299e72bc460520a704d050499196d4af71"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "710f078468e3f77f7e79ffcc32ac19cf10bc6af3d583aca420433f14eff833da",
+      "binding": {
+        "calculated_event_id": 3745001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stewardship_wealth.5001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "a417ae7300e8d7419ca905d5fb64d3986714f0167cd22d95f34be686e6eca7a2",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "1213e6a76a6c465e03a3e4a9177905902f9d3fb23cd751b911d34041e61881bf"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\710f078468e3f77f7e79ffcc32ac19cf10bc6af3d583aca420433f14eff833da.json",
+        "bytes": 1337,
+        "sha256": "8c92b91c3248f0401a6fbbe80e83589895f99b74167cd50d8cfb164d42b5dac4"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\710f078468e3f77f7e79ffcc32ac19cf10bc6af3d583aca420433f14eff833da.json",
+        "bytes": 11319,
+        "sha256": "f029405bfcd27ec026941d61a2a6ad793beb27beb64dd9f51e850ec7ab388ba1"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_wealth_events.txt",
+        "bytes": 71932,
+        "sha256": "1213e6a76a6c465e03a3e4a9177905902f9d3fb23cd751b911d34041e61881bf"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "751641009d24e37fb078232cdb938cfab6b094cdd77f206ac1ff0c82d01e63b9",
+      "binding": {
+        "calculated_event_id": 4210001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "conqueror.0001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "ec774fb97a98e8494e1eeb41423d1be0b49396f6d91a1dfeb23cd35943b43669",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\751641009d24e37fb078232cdb938cfab6b094cdd77f206ac1ff0c82d01e63b9.json",
+        "bytes": 1311,
+        "sha256": "1496af3083b577ef6f561f3859225c44ce8b63070a22ec65168556067245f462"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\751641009d24e37fb078232cdb938cfab6b094cdd77f206ac1ff0c82d01e63b9.json",
+        "bytes": 9881,
+        "sha256": "a12d08aa8f03bdfa0cdf8940d8b2e4739447c586e75a38e695225703af9a70ca"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\story_cycles\\story_cycle_conqueror_events.txt",
+        "bytes": 24492,
+        "sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "7856d48a5574c1de0abc670c1e9495e5118de4ed2ad31495966b72439498557e",
+      "binding": {
+        "calculated_event_id": 4362002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "secret_bastard.2002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "3467206193acb951f19aa057ac36eac6560e4d598f7f2c869995a28b34ab0cb9",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "b3a2ee46f6505d67f24c0c9f7716b3b1497d52e90b6660bbbe0e02644a4f6040"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\7856d48a5574c1de0abc670c1e9495e5118de4ed2ad31495966b72439498557e.json",
+        "bytes": 1310,
+        "sha256": "b2279f436363aa0838a1ed74ed079eb1a091393b663ba708d9146ef97ed1ae28"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\7856d48a5574c1de0abc670c1e9495e5118de4ed2ad31495966b72439498557e.json",
+        "bytes": 5436,
+        "sha256": "1acdb01197a5f4026bb2664c84081e47319a35b09dc4000d260b81df40c7a1a2"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\secret_events\\secret_bastard_events.txt",
+        "bytes": 25023,
+        "sha256": "b3a2ee46f6505d67f24c0c9f7716b3b1497d52e90b6660bbbe0e02644a4f6040"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "7d1a89aec0837f08530b169978d33eba4cc7e2b94fca905d63dc995789799d55",
+      "binding": {
+        "calculated_event_id": 4350008,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "secrets.0008",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "0f79c40638e08334c0e27ba60b022e960ff103ca44c3ee807a20acd6b316d811",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "17e31688436eda16af4fe2c4b18122a2c227a8acd9010c6238a223e33ccdea64"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\7d1a89aec0837f08530b169978d33eba4cc7e2b94fca905d63dc995789799d55.json",
+        "bytes": 1296,
+        "sha256": "6f90995c93a214437f1443ff93d5a9a44fa3071313e4649470e9c05ac1d8a733"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\7d1a89aec0837f08530b169978d33eba4cc7e2b94fca905d63dc995789799d55.json",
+        "bytes": 4118,
+        "sha256": "f01faca0b793f9d934d5a7a078ff787892465494bd021e65ac83c6676eb3c915"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\secret_events\\secrets_events.txt",
+        "bytes": 128331,
+        "sha256": "17e31688436eda16af4fe2c4b18122a2c227a8acd9010c6238a223e33ccdea64"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "80562c9e1a541d81c4184f300ff41a3f6b55488558c84f5eab175ce51e1627fe",
+      "binding": {
+        "calculated_event_id": 5553011,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "global_culture.3011",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "93b2be5a8c7c2cd5388514b32f41fa9b8b3b72e706499b488f2388cd04983a09",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "af85fb3ef6049dd7112bcd2255e2a0f33b6b5b58dbc0b415625b6b8df239e32c"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\80562c9e1a541d81c4184f300ff41a3f6b55488558c84f5eab175ce51e1627fe.json",
+        "bytes": 1295,
+        "sha256": "ae306e6dfb20e9abac3317ed6258000cc70d85333f27a2616d0e9829c744614e"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\80562c9e1a541d81c4184f300ff41a3f6b55488558c84f5eab175ce51e1627fe.json",
+        "bytes": 4115,
+        "sha256": "3b6ca23aa011b073e79eb6601a3132f365b9010ea0a7a0affc7c22f3c9133c42"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\global_culture_events.txt",
+        "bytes": 32893,
+        "sha256": "af85fb3ef6049dd7112bcd2255e2a0f33b6b5b58dbc0b415625b6b8df239e32c"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "811e68670131f24ddfc20b8ad40dcac2a96d9f8910dbaab8340af0897b362728",
+      "binding": {
+        "calculated_event_id": 1117056,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp1_yearly.7056",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "9694615891febbeed686a3ae5677e4c3dfd9b6bedf04f4c3f6e16b7fe8dd2d6b",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "969156d79a0b3c5c463404e13e92e102a5f54d59824c607c1210e3a9b857077f"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\811e68670131f24ddfc20b8ad40dcac2a96d9f8910dbaab8340af0897b362728.json",
+        "bytes": 1284,
+        "sha256": "4a2447c52445912197ab4a5cd3a27ef15e214870ad1b2858e6b6dd914145bfc7"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\811e68670131f24ddfc20b8ad40dcac2a96d9f8910dbaab8340af0897b362728.json",
+        "bytes": 11138,
+        "sha256": "3b22e2d83c700554c7d3105394d7d0d3bd9b2b7798017492d8d195c054b6cb9a"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\bp1_dan_events.txt",
+        "bytes": 89446,
+        "sha256": "969156d79a0b3c5c463404e13e92e102a5f54d59824c607c1210e3a9b857077f"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "843ede317ca271a255e687db6380521fa5915d24230885183b01d73f591ccd0a",
+      "binding": {
+        "calculated_event_id": 4171101,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority_special.1101",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "2e9d81c29d1df3ef5c80b8bfbf247bd8bfb3e0c14bbb829f4d3340472734e03a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\843ede317ca271a255e687db6380521fa5915d24230885183b01d73f591ccd0a.json",
+        "bytes": 1340,
+        "sha256": "b3793b41881f8595cca6c835f1d4df144825c65b08855a8c7d0e9ed8be81c686"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\843ede317ca271a255e687db6380521fa5915d24230885183b01d73f591ccd0a.json",
+        "bytes": 4126,
+        "sha256": "3686f2f8944fe15fec6e3095e22e57e65b6291f9f9c44a5888f0bfa5d57789b1"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events.txt",
+        "bytes": 54064,
+        "sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "896d034e6a61821cd6f7b66840524a447fb880d76f0302bfdaf9e7aabb9d553e",
+      "binding": {
+        "calculated_event_id": 3910004,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "historical_commander_trait.0004",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "1c60ae7402917330c26dde1a514e10a194b05f2f594d41579f9fd0ba20ac1bff",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "275cd0afe38d62e331f4aa1fc1c20be356d13bbe69185abfa341975ad1f9e8af"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\896d034e6a61821cd6f7b66840524a447fb880d76f0302bfdaf9e7aabb9d553e.json",
+        "bytes": 1350,
+        "sha256": "372adaf4b4577787402128c307b7246ce90a28960c620354adae0ea310c752ac"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\896d034e6a61821cd6f7b66840524a447fb880d76f0302bfdaf9e7aabb9d553e.json",
+        "bytes": 7480,
+        "sha256": "6e9f6365fd96e424265dc6c6c0906e053ede33d47874395b5fde30f369cd3b3b"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\historical_commander_trait_events.txt",
+        "bytes": 18582,
+        "sha256": "275cd0afe38d62e331f4aa1fc1c20be356d13bbe69185abfa341975ad1f9e8af"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "8abcb9d8a5aab039174828c19d5946b38ad8d68c1cf92f8efffa4c3f75120b35",
+      "binding": {
+        "calculated_event_id": 4777300,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.7300",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "735f928b9fbce2d37f89b9297f5f51ed92ee09dddd8bd4b58c53a1715509c4a5",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\8abcb9d8a5aab039174828c19d5946b38ad8d68c1cf92f8efffa4c3f75120b35.json",
+        "bytes": 1279,
+        "sha256": "a594624014bc7de4a912b786d69d337444eade4cfa8ba8ceb664b207c10db5b2"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\8abcb9d8a5aab039174828c19d5946b38ad8d68c1cf92f8efffa4c3f75120b35.json",
+        "bytes": 4753,
+        "sha256": "44df8a3057f492db7bf4bc79a4559ed5dcf4845b6728d8f49b7b1934da4d2030"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "8de23b02bc04db00e7cdc90c67dd0fbc1a7d98b40526fadb0d729e8139177b04",
+      "binding": {
+        "calculated_event_id": 5761006,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "death_management.1006",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "21d4e58db407533ea9d6ec3c73568d87b5fb63552f296c219ddac32990dfa664",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\8de23b02bc04db00e7cdc90c67dd0fbc1a7d98b40526fadb0d729e8139177b04.json",
+        "bytes": 1313,
+        "sha256": "40a03efacce760dbf35bae08fbb7da9728787f50502fb13ff3557d32ac95ed17"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\8de23b02bc04db00e7cdc90c67dd0fbc1a7d98b40526fadb0d729e8139177b04.json",
+        "bytes": 7498,
+        "sha256": "743f7188d6ad001981cafe21dab1971b451f90d4cd6f7ab175a2373148e8c85c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+        "bytes": 154888,
+        "sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "8fad3d606214ae12f20ec3743696ca296c0a7b0a6cf69481592aea44a2033423",
+      "binding": {
+        "calculated_event_id": 2205007,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "epidemic_events.5007",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "493c3116b01261b01e34b3c6390bea8ff310cd5326fc8331bf2607275999b843",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\8fad3d606214ae12f20ec3743696ca296c0a7b0a6cf69481592aea44a2033423.json",
+        "bytes": 1300,
+        "sha256": "e5e7286d79746f290b9545a299863349205e371786f3c907a388bc8d0c479b29"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\8fad3d606214ae12f20ec3743696ca296c0a7b0a6cf69481592aea44a2033423.json",
+        "bytes": 13468,
+        "sha256": "1dddd8a26e9fe62809698190ca95df83e8c739eaeeada87a931113c9d2811f24"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\ce1\\epidemic_events.txt",
+        "bytes": 222275,
+        "sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "92e91a3d724df74acab330ee74bf9cc88dcabb34d8529f6e8a32dbda64c52a21",
+      "binding": {
+        "calculated_event_id": 4155000,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority.5000",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "67790a2f13a787e453ed158681ab87b8a61424fc2caf9e94f080e228d73b00fd",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "1e5acf501ed04a351ee0253d819709bc4d66664e5fb8679da73d62e27b10efe6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\92e91a3d724df74acab330ee74bf9cc88dcabb34d8529f6e8a32dbda64c52a21.json",
+        "bytes": 1334,
+        "sha256": "45f228af60db2c9ef0c5d770249c8543d9f175777164be3d732ac585f0e91e4f"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\92e91a3d724df74acab330ee74bf9cc88dcabb34d8529f6e8a32dbda64c52a21.json",
+        "bytes": 13927,
+        "sha256": "e08d2244be0b1610fd1972349bc92e5ff9967dcf035224aef26235f885d8373e"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events_2.txt",
+        "bytes": 15390,
+        "sha256": "1e5acf501ed04a351ee0253d819709bc4d66664e5fb8679da73d62e27b10efe6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "a24e3fc17fe0196b357ef776f1a25045119d5673d930b709cea7c16f17b564fa",
+      "binding": {
+        "calculated_event_id": 5980220,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp1_house_feud.0220",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "44d8245bf34e66df6ccbcb2adb25eb9b81b626b6d5eb3d80ca9af50233c6153d",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\a24e3fc17fe0196b357ef776f1a25045119d5673d930b709cea7c16f17b564fa.json",
+        "bytes": 1298,
+        "sha256": "aab098475e85dec35e1222221e8fd43d45f830d1497374c8224fb7a7aa12052d"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\a24e3fc17fe0196b357ef776f1a25045119d5673d930b709cea7c16f17b564fa.json",
+        "bytes": 7723,
+        "sha256": "4d311aef215188becfb82746d0139d856f45beb4db4856709548754931b874e3"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp1\\bp1_house_feud.txt",
+        "bytes": 128362,
+        "sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "a3f67906cb4ba8a36e5583fd37894749429ff4ce66ece623ad35e5c76537565e",
+      "binding": {
+        "calculated_event_id": 2890004,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_tenet_events.0004",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "c75decf625653f0a77a7ee06b888579766db0dd64eb16107525c09d8b4ce438f",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c60f4539b4afb6803cacd1b9a1cb938ad847e5f843ecef2d0bfc81202d987a12"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\a3f67906cb4ba8a36e5583fd37894749429ff4ce66ece623ad35e5c76537565e.json",
+        "bytes": 1302,
+        "sha256": "1a44f9df0430937f93fef2bde40866dcf2cd732fd12f0458a989ec1487cbe883"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\a3f67906cb4ba8a36e5583fd37894749429ff4ce66ece623ad35e5c76537565e.json",
+        "bytes": 5343,
+        "sha256": "3c4b18506232e261a2faebbb0c2dfde77c3a269e5951e9d9555689193cc68ce4"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_tenet_events.txt",
+        "bytes": 19644,
+        "sha256": "c60f4539b4afb6803cacd1b9a1cb938ad847e5f843ecef2d0bfc81202d987a12"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "a4a5c9512d3720a8f17200f91c2052e0f306a9e974873bd5441a1b96af377944",
+      "binding": {
+        "calculated_event_id": 5183411,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.3411",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 12,
+        "option_catalogue_sha256": "326cc949f148abef03fd6ca78561ef7561ccbf63608f49055542ed6b63425563",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\a4a5c9512d3720a8f17200f91c2052e0f306a9e974873bd5441a1b96af377944.json",
+        "bytes": 1315,
+        "sha256": "e26a088fd287e02da84478edb6f39e308202ed6b8c019912ac7fd3433f3b9e8c"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\a4a5c9512d3720a8f17200f91c2052e0f306a9e974873bd5441a1b96af377944.json",
+        "bytes": 75850,
+        "sha256": "34cc542e9e3dd2c3269b80126de74a5ea3a16a0ac74c1972d359c4913d15a520"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "a5ae99f11429c3d538527b147cb601129c5369ea2500ca70eb96210a6f6ae199",
+      "binding": {
+        "calculated_event_id": 5961001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold_special.1001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 9,
+        "option_catalogue_sha256": "dd94042925b144029963f7a934dae4cc54fe7588f2d3a9ef9d2cf8759081ecf9",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "0368cab22debac1b874f8d82cddc75a26d1822b6c3afc816d2338219ca49733a"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\a5ae99f11429c3d538527b147cb601129c5369ea2500ca70eb96210a6f6ae199.json",
+        "bytes": 1330,
+        "sha256": "85ba34e6fb657d2a54251e63d8e19f96becd890d3933f631eed02de8c97b7be3"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\a5ae99f11429c3d538527b147cb601129c5369ea2500ca70eb96210a6f6ae199.json",
+        "bytes": 30456,
+        "sha256": "7fe68f815e9e42af891623043c635278d590c53f6cd3f31848103ecbefb9d91f"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_special_events.txt",
+        "bytes": 19484,
+        "sha256": "0368cab22debac1b874f8d82cddc75a26d1822b6c3afc816d2338219ca49733a"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "a9404439f14b7cc3fd922a82e79e37854a770fd6219c28b92dcce44de0cecf76",
+      "binding": {
+        "calculated_event_id": 4044001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "adultery.4001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "35bfcc71d496e76d7c4700bd46752f272346e8847321d80790186107961463b7",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "af8de94001cdba23fd385ee6b4672415461a828a004344bf3e30b146fafd46bd"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\a9404439f14b7cc3fd922a82e79e37854a770fd6219c28b92dcce44de0cecf76.json",
+        "bytes": 1301,
+        "sha256": "2a26e546597893f8a95ebf7db67e4292f5c4d1ecb1e3e7c4aa0a34457d3ce871"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\a9404439f14b7cc3fd922a82e79e37854a770fd6219c28b92dcce44de0cecf76.json",
+        "bytes": 17478,
+        "sha256": "b6551284257766e5e2dc2ebe093c841e587aab87aa32c617c8b60dfcf31f98fc"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\relations_events\\adultery_events.txt",
+        "bytes": 70383,
+        "sha256": "af8de94001cdba23fd385ee6b4672415461a828a004344bf3e30b146fafd46bd"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "aa09eb8066f24fc6b57585698bd1f59493a5ea1f9f69f0f426814a2ef2b22982",
+      "binding": {
+        "calculated_event_id": 2950058,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_secular_faith_events.0058",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "cf12b40926ba640e84811c4017bcd7e9a39202e78be032656f28e286f0c7bc39",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\aa09eb8066f24fc6b57585698bd1f59493a5ea1f9f69f0f426814a2ef2b22982.json",
+        "bytes": 1318,
+        "sha256": "f85653f85c097181a517076473e40639ceda1934e3d065183c5b91b7456358c7"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\aa09eb8066f24fc6b57585698bd1f59493a5ea1f9f69f0f426814a2ef2b22982.json",
+        "bytes": 9325,
+        "sha256": "c1135f3ae84bbe259bc8eb874a558c10dbfafc39468a1050c1ec4b69aa7d8960"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_secular_faith_events.txt",
+        "bytes": 209088,
+        "sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b0c2a72cf375cdd2e839cf84879f3b23b49b44ed2ecdc488901865bebdd61aea",
+      "binding": {
+        "calculated_event_id": 1841001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "death_management.1001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "2a1ae581965bf385daa9578c3c89cf3efae96c08700bfff0b414092030518144",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b0c2a72cf375cdd2e839cf84879f3b23b49b44ed2ecdc488901865bebdd61aea.json",
+        "bytes": 1313,
+        "sha256": "6e499be994cf6977384fb37b20dd523d01e1d69b9c032bc91c31f95fefd09592"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b0c2a72cf375cdd2e839cf84879f3b23b49b44ed2ecdc488901865bebdd61aea.json",
+        "bytes": 11737,
+        "sha256": "a30b59ef9366d2cec24647f7bb9339c8f75de5726350158ce9581de82e450cc0"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+        "bytes": 154888,
+        "sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b17789c394039d8534ad1a83883a72aeb16541dc346147de423f7fd1b37e67cb",
+      "binding": {
+        "calculated_event_id": 3430009,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_secular_faith_events.0009",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "a0f910c78a9bcfa628695ede9194670047441606bac2d9a4498f1421c9f05a45",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b17789c394039d8534ad1a83883a72aeb16541dc346147de423f7fd1b37e67cb.json",
+        "bytes": 1318,
+        "sha256": "7804bdd42208548f8e52f9555989f7feead5aa7990184e36a889078a73240767"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b17789c394039d8534ad1a83883a72aeb16541dc346147de423f7fd1b37e67cb.json",
+        "bytes": 7102,
+        "sha256": "57fd376bc15a15a6fb895184a0ebbf824339806cf25b1aed9c116efa201216f1"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_secular_faith_events.txt",
+        "bytes": 209088,
+        "sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b4b149a459809e53eb97d47a9c71b613822ecc24ffc1d8ccc74604340415904d",
+      "binding": {
+        "calculated_event_id": 4154001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority.4001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "2e7b58f272f946796209739debfe0190f837c10a68ae24c5e8863bd0c6e80401",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b4b149a459809e53eb97d47a9c71b613822ecc24ffc1d8ccc74604340415904d.json",
+        "bytes": 1332,
+        "sha256": "1715241163e61bd76a2bddd9a505b6a4bc3da0360a645e8c5f0b93979f256f6f"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b4b149a459809e53eb97d47a9c71b613822ecc24ffc1d8ccc74604340415904d.json",
+        "bytes": 8969,
+        "sha256": "03dd678f1da45ebea8012dd39d7e0840b1f6b15ae114aabf8a9e5513cbd9ba95"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events.txt",
+        "bytes": 54064,
+        "sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b57637113cd6ab2e0df0a5b1ab0244b3048a858d145159a9620cfbaaf4aa8584",
+      "binding": {
+        "calculated_event_id": 3040055,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_the_christian_church.0055",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "2413ef560950ebbc679e76ce2b73ce8bd7f98e922d4291ff042d134d9c3ebbee",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "669211157d9541fe33010433f266e68d25e2eb78b040323ed843447269279e07"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b57637113cd6ab2e0df0a5b1ab0244b3048a858d145159a9620cfbaaf4aa8584.json",
+        "bytes": 1324,
+        "sha256": "4686d9b38380ccbb970cd3bfb20ae713f3cc89adc262eeef1ae47151117b1c61"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b57637113cd6ab2e0df0a5b1ab0244b3048a858d145159a9620cfbaaf4aa8584.json",
+        "bytes": 5921,
+        "sha256": "543245cdd8287c3de88ab134a1d04d09bb5518e2fda44ae5c7f5caba54bc1f50"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_christian_situation_events.txt",
+        "bytes": 37312,
+        "sha256": "669211157d9541fe33010433f266e68d25e2eb78b040323ed843447269279e07"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b600d2a494600b4bbcd250b311c55867c4c4bed724b9627df91cc09c27582b6a",
+      "binding": {
+        "calculated_event_id": 3800029,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_secular_faith_events.0029",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "5a1dffda41536aa755e5d6c03f6ecd23f33d7b1ca525fcefcbafa24041412c53",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b600d2a494600b4bbcd250b311c55867c4c4bed724b9627df91cc09c27582b6a.json",
+        "bytes": 1318,
+        "sha256": "c80eb4c7c7685297a8a8b4a02a55ec276ea3cf4adb3aaba10f711942e350d7d1"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b600d2a494600b4bbcd250b311c55867c4c4bed724b9627df91cc09c27582b6a.json",
+        "bytes": 5942,
+        "sha256": "8b26b527345fd72913e2332da5593066d8bfe0f94657ea871a832b4895dd8027"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_secular_faith_events.txt",
+        "bytes": 209088,
+        "sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b614c52ae704465d95dfd8981958d57aa82779b91d526f1bda7874e8b61cb7b5",
+      "binding": {
+        "calculated_event_id": 5192202,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.2202",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "215e94a642ece28f9df146448f4093eb53b8e85b1adb7c28919ce686546ffb5d",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b614c52ae704465d95dfd8981958d57aa82779b91d526f1bda7874e8b61cb7b5.json",
+        "bytes": 1314,
+        "sha256": "235d7cc1aaae41e40b9606684dd348e8f76800773ae343405bf19d103cf01d73"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b614c52ae704465d95dfd8981958d57aa82779b91d526f1bda7874e8b61cb7b5.json",
+        "bytes": 4916,
+        "sha256": "8fbece545007740ff91455d6b71bc3024e838aa13ebc80c8b86e2df9dc252187"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b6556f24b426698c546c27dd6a8a9c4bd5fa49b53d73164d3d43cc3a5bd3b660",
+      "binding": {
+        "calculated_event_id": 1464013,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp2_yearly.4013",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "cc582808170dee4eeb1f279e20afcf5ba89ab59d11778793654e84d0138914a0",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b6556f24b426698c546c27dd6a8a9c4bd5fa49b53d73164d3d43cc3a5bd3b660.json",
+        "bytes": 1292,
+        "sha256": "54e885a162cc9cff689e9e5b922e2fc293c10015221d6e2faa2bdb39010ebb10"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b6556f24b426698c546c27dd6a8a9c4bd5fa49b53d73164d3d43cc3a5bd3b660.json",
+        "bytes": 7401,
+        "sha256": "1a5cf1d078642dfc15767f8ca8fb5304b1da2ffc6ce871016897685147faba51"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp2\\bp2_yearly_4.txt",
+        "bytes": 41687,
+        "sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "b81b7d00008c4ab04d56360a8e48e2477f583bf56d70f6b83d18bf3a725ebefb",
+      "binding": {
+        "calculated_event_id": 4872001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "marriage_effect.2001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "a46e3489734bdde986218053cd5118040276d20ecc3d664cceb11c4dbf9433ca",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "a6b9e37be40df1fae1a3954e78a6987580ede31eca353f7d0feaf17f54ba2923"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b81b7d00008c4ab04d56360a8e48e2477f583bf56d70f6b83d18bf3a725ebefb.json",
+        "bytes": 1297,
+        "sha256": "9ab04e6a250ae0dfb33f5346eaa1005817da40df1b55f07b697d0c5f08d1773c"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\b81b7d00008c4ab04d56360a8e48e2477f583bf56d70f6b83d18bf3a725ebefb.json",
+        "bytes": 6867,
+        "sha256": "829af40d4a6af49aeccbf604d24ffa76bfe1b3a9c8258667d9c866c20fec2a91"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\marriage_effect_events.txt",
+        "bytes": 26174,
+        "sha256": "a6b9e37be40df1fae1a3954e78a6987580ede31eca353f7d0feaf17f54ba2923"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "ba769c57e01c520b692036b3ccda7ab4728d4ba01719d16a5b13f331126326eb",
+      "binding": {
+        "calculated_event_id": 3311054,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stewardship_general.1054",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "eb84503b093858fc09fa5ddb5c8068662c28cccea64eea522e8e573a29e32359",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "78de4fe8010bdb7c1b7968d767c306e86bfae75a99d50c358e392246735e59e3"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\ba769c57e01c520b692036b3ccda7ab4728d4ba01719d16a5b13f331126326eb.json",
+        "bytes": 1339,
+        "sha256": "ad2c2e6c481b6fcc7c64b669f65c33c043b31b47bc703b84863d3a4fac1a7d98"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\ba769c57e01c520b692036b3ccda7ab4728d4ba01719d16a5b13f331126326eb.json",
+        "bytes": 21981,
+        "sha256": "2bb4b93a1d68ae758d9e9fd7aa08578175d6eecaf68725e83bad9baabc99acd9"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\governance_lifestyle\\stewardship_general_events.txt",
+        "bytes": 47192,
+        "sha256": "78de4fe8010bdb7c1b7968d767c306e86bfae75a99d50c358e392246735e59e3"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "bb8555e0a15aea40ac11dbeb9803eb2d5504a966fc0aff6356d7b165dbcf3ca2",
+      "binding": {
+        "calculated_event_id": 4752202,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.2202",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "fe1bb8d623154cb627bed5b9b48581017b0b4bd554547527ba68af378b7c72fd",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\bb8555e0a15aea40ac11dbeb9803eb2d5504a966fc0aff6356d7b165dbcf3ca2.json",
+        "bytes": 1279,
+        "sha256": "447e53d332dded7222fe314c07e3bad616ccd4246ed5877ef6038c94408c18d7"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\bb8555e0a15aea40ac11dbeb9803eb2d5504a966fc0aff6356d7b165dbcf3ca2.json",
+        "bytes": 13654,
+        "sha256": "56569038841fc164699baf397e0e347900efac9d6dac057b5f200f4da8773257"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "bc1f4a90fb843d6f121feea811307f8bd8ac472dcfca1be4a12fc354625e1f06",
+      "binding": {
+        "calculated_event_id": 5621005,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.1005",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 7,
+        "option_catalogue_sha256": "f24163be7841ab087c48f1fbd08945cb706c4df6a7854a721aae401ed97c8146",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\bc1f4a90fb843d6f121feea811307f8bd8ac472dcfca1be4a12fc354625e1f06.json",
+        "bytes": 1279,
+        "sha256": "069d0169a831ba5cf11ec3e160eb282c1e3732c0e54dfe59c8035a3a13f5fd16"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\bc1f4a90fb843d6f121feea811307f8bd8ac472dcfca1be4a12fc354625e1f06.json",
+        "bytes": 12542,
+        "sha256": "a22e49478a71fb444efe3be1f6b40718f9dc760105a199b2df5f17a41ead0856"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "bcd181936536a5e2419c838398b59bcce98f7a7cf49b96595fa4f7864357a366",
+      "binding": {
+        "calculated_event_id": 3530059,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_the_christian_church.0059",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "6be75f79be483482d582185f74f55c4138d0ff22764b19d0a76ef82dfe4524f7",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "669211157d9541fe33010433f266e68d25e2eb78b040323ed843447269279e07"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\bcd181936536a5e2419c838398b59bcce98f7a7cf49b96595fa4f7864357a366.json",
+        "bytes": 1324,
+        "sha256": "76bee05ee5e54a117091c1b5c9ef16fe7fc7e8674fb97877ce3f439be9e1e6bf"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\bcd181936536a5e2419c838398b59bcce98f7a7cf49b96595fa4f7864357a366.json",
+        "bytes": 2616,
+        "sha256": "21f46b8842f588229ad9ef624290e345011e85085bed0556f55ea816b4efe13a"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_christian_situation_events.txt",
+        "bytes": 37312,
+        "sha256": "669211157d9541fe33010433f266e68d25e2eb78b040323ed843447269279e07"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "bed1e9378cab4e4c7889a7cf8f3a61aff6c8d94b02fe0f33f25277e4c4ef2e71",
+      "binding": {
+        "calculated_event_id": 5022000,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "murder_outcome.2000",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "3073b9cb8491f28daa747cbd407507eb6359c8e58486420db102188ab8dba7d6",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "53dab5df37346e086938293d314605e65acbf01ae52fa0d9fe6029f627583e6f"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\bed1e9378cab4e4c7889a7cf8f3a61aff6c8d94b02fe0f33f25277e4c4ef2e71.json",
+        "bytes": 1325,
+        "sha256": "033b67de8b05846e713f78d544246b26eb03f5d7b0daa6f3199c9cb962660c11"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\bed1e9378cab4e4c7889a7cf8f3a61aff6c8d94b02fe0f33f25277e4c4ef2e71.json",
+        "bytes": 2104,
+        "sha256": "b85224ed6eea204ab3e488256b3dd66d45301345a4304513733a6eb808719f7c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\scheme_events\\murder_scheme\\murder_outcome_events.txt",
+        "bytes": 93738,
+        "sha256": "53dab5df37346e086938293d314605e65acbf01ae52fa0d9fe6029f627583e6f"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "c262bae9e55142ca2dc11508ff4980af743814e39f68203f2af281480bbded5e",
+      "binding": {
+        "calculated_event_id": 5081011,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "stress_threshold.1011",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 6,
+        "option_catalogue_sha256": "c2cd2f81b582c6649163a7cd920ad0d48dceed81d4b9f055497f926ccd0cc5c6",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c262bae9e55142ca2dc11508ff4980af743814e39f68203f2af281480bbded5e.json",
+        "bytes": 1314,
+        "sha256": "0a33e89944a52f9d6ef8980d8777faf36d9ff522298bda018c4b3b378caafdce"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c262bae9e55142ca2dc11508ff4980af743814e39f68203f2af281480bbded5e.json",
+        "bytes": 47728,
+        "sha256": "96cc814c7183738ee7d5e5016c8078eff062f1b683512a227fe7cfe73f53d5c2"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\stress_events\\stress_threshold_events.txt",
+        "bytes": 437124,
+        "sha256": "feb4702321a7b872ebb39c1d3fab6bdfd2002300098e912fcd307abdc775a339"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716",
+      "binding": {
+        "calculated_event_id": 5020082,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "ecumenical_council_events.0082",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "80ad6cd429d44d7a785575f7417d3a8bb06c4a51b574ebc8f8cbb0acf9fe771a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+        "bytes": 1355,
+        "sha256": "89b0389262cc07a346481e15da8d72b9be6ef569d3e4591e65440828109e0173"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+        "bytes": 4514,
+        "sha256": "8baf602abac1051b0ace8c1f60a22c3c06f080aa31c3831121f6ae5dc701b95c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\ecumenical_council_activity\\pam_ecumenical_council_events.txt",
+        "bytes": 419164,
+        "sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "c3f55339dcfe4fbe86ecad3de391c9e56f8e09c4fa2845bffbbf3ca04f5689e3",
+      "binding": {
+        "calculated_event_id": 4171100,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority_special.1100",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "1906567637d0a301b6280874f8e5d2368993f3a772246d4c195640ad8d77e88b",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c3f55339dcfe4fbe86ecad3de391c9e56f8e09c4fa2845bffbbf3ca04f5689e3.json",
+        "bytes": 1340,
+        "sha256": "6cb4d4718b553f84c053ac6a2328e120c1b615160c75586e9a5a439544490a3e"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c3f55339dcfe4fbe86ecad3de391c9e56f8e09c4fa2845bffbbf3ca04f5689e3.json",
+        "bytes": 15467,
+        "sha256": "fba2498c57053e6ddedfeb7098a945cd77b3cd741753f6b59d78fccaaff06b56"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events.txt",
+        "bytes": 54064,
+        "sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "c400af7df86a23b2b1bb6fb4b14203b76de8ee8b3194f7e50741da2a77663dc4",
+      "binding": {
+        "calculated_event_id": 5740102,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "courtier_guest_management.0102",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "d3138cfc5e07e3ba2f01bd3995d2214b27babd594325be7ff15bbfa81dfb807c",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "bcb96949a4c6e6794b87175634d2a2d1c08435c4c4d35ae115e3b596c73743b5"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c400af7df86a23b2b1bb6fb4b14203b76de8ee8b3194f7e50741da2a77663dc4.json",
+        "bytes": 1351,
+        "sha256": "8c2cc1912b1a7613323bbbcead3dba2ec3a1773b350cb030575150c2bbf020ea"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c400af7df86a23b2b1bb6fb4b14203b76de8ee8b3194f7e50741da2a77663dc4.json",
+        "bytes": 5701,
+        "sha256": "b1419540c16e3961d44ddf11904557b9c15f374b299eaca6f18b325c4dc5651c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\courtier_guest_management_events\\courtier_guest_management_events.txt",
+        "bytes": 30842,
+        "sha256": "bcb96949a4c6e6794b87175634d2a2d1c08435c4c4d35ae115e3b596c73743b5"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "c4d62a44c1f29953ce0e63370ff018fbcd6011c0166bd447904168bca0cac28a",
+      "binding": {
+        "calculated_event_id": 4154000,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "martial_authority.4000",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "5845052a55c36f128445fb6053207aea76fd75eace9f5c9948f25793ab6afc4e",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c4d62a44c1f29953ce0e63370ff018fbcd6011c0166bd447904168bca0cac28a.json",
+        "bytes": 1332,
+        "sha256": "09784fc2a8f0ca4a0bd07e286d0934485b0ee2b337cd34145426d86d84672825"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c4d62a44c1f29953ce0e63370ff018fbcd6011c0166bd447904168bca0cac28a.json",
+        "bytes": 3858,
+        "sha256": "4ac5c7f61fa3143ffb5c5211effa626751c805e3f4b71dfecf9fbc54b8f6bda9"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\martial_authority_events.txt",
+        "bytes": 54064,
+        "sha256": "9ae01bfb0cb8e9b51708917c5d5adc3e5832e66f50a1c299aa41111fffe76ab6"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "c6c6317dc30d8541a7d7b9781df41d030ca862534be9e0dcc7ccb3be77dafb38",
+      "binding": {
+        "calculated_event_id": 4482601,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "vassal.2601",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "283db583ef8786a2daf5ee46a029cb718f2cc841ddbfa4c430e49994e5364e7a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c6c6317dc30d8541a7d7b9781df41d030ca862534be9e0dcc7ccb3be77dafb38.json",
+        "bytes": 1297,
+        "sha256": "487f1df4287bd6078e83a82a463d1c69ccf70250d6e01ec59ceaa9ea29b79cd2"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c6c6317dc30d8541a7d7b9781df41d030ca862534be9e0dcc7ccb3be77dafb38.json",
+        "bytes": 11504,
+        "sha256": "6a83eefb000de4a0de4f80c85fc42ffb22f825b9c35d6a676411fb91452a3849"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\relations_events\\vassal_events.txt",
+        "bytes": 100461,
+        "sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "c7027e14f7a918bafb3cff960bd2359ee2ac075d00fa8b610130070c4ac0e5aa",
+      "binding": {
+        "calculated_event_id": 3030004,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_bull_events.0004",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "3d5cd59935f30994b63f98d1c824b96be509f5dcf02d4230458e1e7bdac3ca6b",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c7027e14f7a918bafb3cff960bd2359ee2ac075d00fa8b610130070c4ac0e5aa.json",
+        "bytes": 1300,
+        "sha256": "3baa5479ff33b3c07197d704125abbcdd3e767412e9a901e6f729d6632ff4d67"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c7027e14f7a918bafb3cff960bd2359ee2ac075d00fa8b610130070c4ac0e5aa.json",
+        "bytes": 3511,
+        "sha256": "c208572d7839e822cacb56855fc8f2084d56572a47b311ecbf2b20e017d1b802"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_bull_events.txt",
+        "bytes": 7694,
+        "sha256": "596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "caba008eee2664a991e0a3da90a2723759457648efb3ac35b9abac2421e813df",
+      "binding": {
+        "calculated_event_id": 3930011,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "great_holy_war.0011",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 5,
+        "option_catalogue_sha256": "0804ca3dba822f3addbfc19eb47002787566e5757fb14dd6db43f7a039142509",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "dfac5841107682613a78ec817d48c10b6ffb7ad411d9043901079de0a27897c0"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\caba008eee2664a991e0a3da90a2723759457648efb3ac35b9abac2421e813df.json",
+        "bytes": 1312,
+        "sha256": "1df52c7d7ebbaa8b01d982fb0517907cf9c1a9da3050245a246c4de160c965e3"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\caba008eee2664a991e0a3da90a2723759457648efb3ac35b9abac2421e813df.json",
+        "bytes": 13584,
+        "sha256": "ed6a779ea493081eedf0efcf81ccb145868043121bfdc1fff5aff6c0d7376041"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\religion_events\\great_holy_war_events.txt",
+        "bytes": 118565,
+        "sha256": "dfac5841107682613a78ec817d48c10b6ffb7ad411d9043901079de0a27897c0"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "cb374a33e527779e98ce8af43ec595e53cb3278e55968c8dcbbf352ef4f80915",
+      "binding": {
+        "calculated_event_id": 1119002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "birth.9002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "af605f2b1e08a7c41746fba56a36b787c37615284e7924caf35e20512a2c9981",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\cb374a33e527779e98ce8af43ec595e53cb3278e55968c8dcbbf352ef4f80915.json",
+        "bytes": 1277,
+        "sha256": "5482dbd29570c04d4d9431aa950fafc6565f09c472803bc12fdfa3788c9165c0"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\cb374a33e527779e98ce8af43ec595e53cb3278e55968c8dcbbf352ef4f80915.json",
+        "bytes": 66964,
+        "sha256": "8e3516b4e3bbb99eaa76a9edbc4bb10ac6b99a8419e425347b5ec330e16d6486"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\birth_events.txt",
+        "bytes": 116119,
+        "sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "cd99e9bd3ff7ef3c2fa2c079e24d62e5a6e05463803ae8d175fbaf445f2f687f",
+      "binding": {
+        "calculated_event_id": 4251100,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "conqueror.1100",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "687628e775ff77e3b1fe20cabbf6f33aee735cabd39ff2d47e623df9c00d1f58",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\cd99e9bd3ff7ef3c2fa2c079e24d62e5a6e05463803ae8d175fbaf445f2f687f.json",
+        "bytes": 1311,
+        "sha256": "05dfb669ad2e3261e045b1a11660a9bc3e8529c75ecf4eef031ae80dd615fada"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\cd99e9bd3ff7ef3c2fa2c079e24d62e5a6e05463803ae8d175fbaf445f2f687f.json",
+        "bytes": 12718,
+        "sha256": "d1df77716c33ebfc86795398b212e95e5e7f22edf5bb44a51d16c0b9a2c40c20"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\story_cycles\\story_cycle_conqueror_events.txt",
+        "bytes": 24492,
+        "sha256": "4ff9491ecccdf52351f82ecc3701a28ad6823bd2f18c2ef0c599fd81de50e9c1"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "ceb1ce28ba02fe78848d17e88e5d572dfb18f2bc7fe0f590a6b49ffb9f299c79",
+      "binding": {
+        "calculated_event_id": 1454011,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp2_yearly.4011",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "5467bba29d410398e1399dc5ad56d1f7c8fc346e7dcaa79c2ded61d50fbe1714",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\ceb1ce28ba02fe78848d17e88e5d572dfb18f2bc7fe0f590a6b49ffb9f299c79.json",
+        "bytes": 1292,
+        "sha256": "8311608a9763401e7e15c43761e43a195bf4fd5790992d376f1e2394a18f1712"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\ceb1ce28ba02fe78848d17e88e5d572dfb18f2bc7fe0f590a6b49ffb9f299c79.json",
+        "bytes": 10649,
+        "sha256": "b17e314f8893f7c56bfa2a071900ea90ca7d5f6f1b29151282e1ac75a649ae3e"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp2\\bp2_yearly_4.txt",
+        "bytes": 41687,
+        "sha256": "c4e24497c9e4a1cf3213f545fc47fe0de5b13717b8f13ffbf5d91ec09c4bacc9"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e",
+      "binding": {
+        "calculated_event_id": 4350110,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "secrets.0110",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "1f585f1df8ac9f7e43403598dcc3ad2195bf72cc8645d0480cf73048fe9247d4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "17e31688436eda16af4fe2c4b18122a2c227a8acd9010c6238a223e33ccdea64"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e.json",
+        "bytes": 1296,
+        "sha256": "39e7b5fb58b1d352b021e1533053218b2a778e7382e319cfe23ca83387bc8eb5"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e.json",
+        "bytes": 17614,
+        "sha256": "3a8efe78ff955125cdf492f7b4e138f522ca0a560197756ae7e85041fb1463a7"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\secret_events\\secrets_events.txt",
+        "bytes": 128331,
+        "sha256": "17e31688436eda16af4fe2c4b18122a2c227a8acd9010c6238a223e33ccdea64"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "d6a57e489729bb3a3698e915b99470001c1927555da70c9ac8f3b648b0668501",
+      "binding": {
+        "calculated_event_id": 3000004,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "pam_generic_events.0004",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "6fc705f7c2070311c8dac48848be71b855f7e540e8668eaf24eccb651d4bf52b",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c4a6ee6b45a1f20806fffe3ab564782621933326b7354c137369e647619686cb"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\d6a57e489729bb3a3698e915b99470001c1927555da70c9ac8f3b648b0668501.json",
+        "bytes": 1306,
+        "sha256": "77ae6774a4fbdb1d01fb014d75d743eb914bde3e8acaf6a364ffba3c4359fa67"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\d6a57e489729bb3a3698e915b99470001c1927555da70c9ac8f3b648b0668501.json",
+        "bytes": 15202,
+        "sha256": "2913d72b99b680e15072032164f196fe5a7a3526be8190c0673845c19fce3a6a"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_generic_events.txt",
+        "bytes": 42208,
+        "sha256": "c4a6ee6b45a1f20806fffe3ab564782621933326b7354c137369e647619686cb"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "db8a98531857b67bcc6420a67bec778f6756507285a02e8d19edd4eab1269487",
+      "binding": {
+        "calculated_event_id": 2201050,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "epidemic_events.1050",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "6a318e4ace8d88a70418ac0e35b414e823b834a25a98862a4b341c0ffc1b84b0",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\db8a98531857b67bcc6420a67bec778f6756507285a02e8d19edd4eab1269487.json",
+        "bytes": 1300,
+        "sha256": "0e04f56ecc0faa717393cb69fc87ddb9eac12f75bcc9c8777daf12a166164bfb"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\db8a98531857b67bcc6420a67bec778f6756507285a02e8d19edd4eab1269487.json",
+        "bytes": 11639,
+        "sha256": "f34d2b761438c36aa25be794911e087a365e3874d431e70d23015e61a0bd4f2e"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\ce1\\epidemic_events.txt",
+        "bytes": 222275,
+        "sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "e19c6689ad0b5835186d1181522e950d9bf94d502aa4b14f7782bf538fe62520",
+      "binding": {
+        "calculated_event_id": 2111002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "yearly.1002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "b05e4a406a5392fbdfdd93f69a2c347629a0035482f67862bff87a337daf17b1",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "bed4cfd11b476b29751b73c644e4d1a3500ab25cffb322c706a5fefffbe5012d"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\e19c6689ad0b5835186d1181522e950d9bf94d502aa4b14f7782bf538fe62520.json",
+        "bytes": 1296,
+        "sha256": "0015f9dae9ef1701b7e815f0ef6fa607e15e08d33c5126eee048ade35a0782c3"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\e19c6689ad0b5835186d1181522e950d9bf94d502aa4b14f7782bf538fe62520.json",
+        "bytes": 8535,
+        "sha256": "555e9e6d33e696acc11e5ff0f6f42f4d73ac56ceb2c04af3aecf88a41198b760"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\yearly_events\\yearly_events_2.txt",
+        "bytes": 171690,
+        "sha256": "bed4cfd11b476b29751b73c644e4d1a3500ab25cffb322c706a5fefffbe5012d"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "e90474cf0946c2bb3e54e02ab0bc39ca12b54e5c35e0c55318abd9f075963bd1",
+      "binding": {
+        "calculated_event_id": 3771001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "hostile_scheme_discovery.1001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "87a9e37ec22a88bfc81bdabd6f27fd2262065b73d87c2cd9208e0754dda84bcb",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "c5232383e70f16d125347fa124f260974cf61334ce42efa4f87981c86dde736d"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\e90474cf0946c2bb3e54e02ab0bc39ca12b54e5c35e0c55318abd9f075963bd1.json",
+        "bytes": 1330,
+        "sha256": "6c907514b6970c753ff822c1355a6bc705f952e0915c76a23cc8a150aa7b35bf"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\e90474cf0946c2bb3e54e02ab0bc39ca12b54e5c35e0c55318abd9f075963bd1.json",
+        "bytes": 11318,
+        "sha256": "67bd8afb157c68785f02a186ec93975e8ecec9e2e979a5835870500cf7d44393"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\scheme_events\\hostile_scheme_discovery_events.txt",
+        "bytes": 17313,
+        "sha256": "c5232383e70f16d125347fa124f260974cf61334ce42efa4f87981c86dde736d"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137",
+      "binding": {
+        "calculated_event_id": 4410101,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "faction_demand.0101",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "fe3f9e729592133fed0faaa4b4b57b0051183a1450bcdb85d37627700f017ea6",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137.json",
+        "bytes": 1299,
+        "sha256": "db94d8c177d8c78be140e490610e9fd79ec1a91273579a997025ed6364f6b797"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\e9729396772bcc83f78e55d2e7f04b58d883ab19649587bf9036dc8d3bc0b137.json",
+        "bytes": 12234,
+        "sha256": "bb971aafbcbd92e83f1818a0c3e164a23466bab59ee2d2e410cab49ddfb52e55"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+        "bytes": 102190,
+        "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "ea8f670cab6958a41439a35d2f111af5dff500f0dc4bfdd86f81760e1a48fc85",
+      "binding": {
+        "calculated_event_id": 4510002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "murder_outcome_reworked.0002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "5f4deb316fbb196b40dc39d2da8817fbbac892c1077dddf13445b273ba417ef3",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "95a3ff62b02e189279dd13799754e4e488e459b619588c3eef4c50a092c661c9"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\ea8f670cab6958a41439a35d2f111af5dff500f0dc4bfdd86f81760e1a48fc85.json",
+        "bytes": 1343,
+        "sha256": "5c88c2271eb162f8a58012ee25fc72d4b23c52beaaf62c9d4fd0552311df2974"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\ea8f670cab6958a41439a35d2f111af5dff500f0dc4bfdd86f81760e1a48fc85.json",
+        "bytes": 4272,
+        "sha256": "110dff979f790a0fd426b4791cc69834838a8655dbc14105abf13ec0da1c5120"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\scheme_events\\murder_scheme\\murder_outcome_reworked_events.txt",
+        "bytes": 158279,
+        "sha256": "95a3ff62b02e189279dd13799754e4e488e459b619588c3eef4c50a092c661c9"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "ec27197b4af2ca596f991c485d1bfa466f91c3b3e404a4494c748d8defee6bc1",
+      "binding": {
+        "calculated_event_id": 5850082,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "ecumenical_council_events.0082",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "80ad6cd429d44d7a785575f7417d3a8bb06c4a51b574ebc8f8cbb0acf9fe771a",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\ec27197b4af2ca596f991c485d1bfa466f91c3b3e404a4494c748d8defee6bc1.json",
+        "bytes": 1355,
+        "sha256": "5ab9ff2e40bfdf891a97129ee2a235656dff14c9a77dc15a8fcf9f0d835e6a89"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\ec27197b4af2ca596f991c485d1bfa466f91c3b3e404a4494c748d8defee6bc1.json",
+        "bytes": 4514,
+        "sha256": "8bfac3d4f91a7e0fa6d73b9c123ba9ed7247ae41c661006d729a03d5a30ffd00"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\ecumenical_council_activity\\pam_ecumenical_council_events.txt",
+        "bytes": 419164,
+        "sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+      },
+      "source_event_type": "letter_event",
+      "eligible_cross_calculated_id_mode": "exact_only"
+    },
+    {
+      "fingerprint": "eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca",
+      "binding": {
+        "calculated_event_id": 5242001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.2001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "303149b5b0338805412f80052ad4c1f315037f67c4b9f645344394627fb97258",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.json",
+        "bytes": 1279,
+        "sha256": "e4f0560777fd9eb9542b4c5feada510882bcfe02d90949e6782c41b0412f049c"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.json",
+        "bytes": 12578,
+        "sha256": "cb5c9d248a8b19ca01da2f983e45276ddd0c38ccce66c1485c512c065cfae7da"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "f00610eef67e5c60dd901aaf48f14a66c13b5232f0cc9b1312265d3ee1589546",
+      "binding": {
+        "calculated_event_id": 3952301,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "vassal.2301",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 3,
+        "option_catalogue_sha256": "41e7065a3c0b48ff6e7d9865800ca427c0ccc4acd26a531673082331419c7758",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\f00610eef67e5c60dd901aaf48f14a66c13b5232f0cc9b1312265d3ee1589546.json",
+        "bytes": 1297,
+        "sha256": "f4807810572c64a393471345159c0d588df8c9da8ecac3c722a0dc84d4991549"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\f00610eef67e5c60dd901aaf48f14a66c13b5232f0cc9b1312265d3ee1589546.json",
+        "bytes": 17657,
+        "sha256": "87e6fe67a6291d3a6d7d033dc059d75445c7aeb847b9324baca4a232a3d2fb7c"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\relations_events\\vassal_events.txt",
+        "bytes": 100461,
+        "sha256": "4630daec21be89d43b836c248fb2fea10ea876d584f503d482cecfaf37bccb26"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "f57b137c70a7527b1124f3520ac0c26dcd9717fbea654ccf2fdb569f3dd65a7f",
+      "binding": {
+        "calculated_event_id": 2441012,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "childhood.1012",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "b6f89531bc4726083a3985db4f90af7b4928d32c70ff970f09282f7e05cbf876",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "a5361650725bd460c07463b528542898978d61c0312cb280c2e0c61b9e8db883"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\f57b137c70a7527b1124f3520ac0c26dcd9717fbea654ccf2fdb569f3dd65a7f.json",
+        "bytes": 1310,
+        "sha256": "7d559d4a8dbea25a0e69ad25e715cdb3bd8c616f234b9961b2762708dff298cf"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\f57b137c70a7527b1124f3520ac0c26dcd9717fbea654ccf2fdb569f3dd65a7f.json",
+        "bytes": 6639,
+        "sha256": "793a1255bb431167963a16f6258840ffcd7784629698557d5e8cb201ac568f19"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\education_and_childhood\\childhood_events.txt",
+        "bytes": 151729,
+        "sha256": "a5361650725bd460c07463b528542898978d61c0312cb280c2e0c61b9e8db883"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "f82e4fd5fea101d050c013f8cdd9abaf3ae9ac5cdc0b4dc5dc6b67bf1c5ee827",
+      "binding": {
+        "calculated_event_id": 4331112,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "health.1112",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "88efc46c96efac8da0193f054d0782188cfeeaca6a00801d0edc525d14d5bad1",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\f82e4fd5fea101d050c013f8cdd9abaf3ae9ac5cdc0b4dc5dc6b67bf1c5ee827.json",
+        "bytes": 1279,
+        "sha256": "1e45066ede5b8c78b6f2f53126816f31a0acb95e53517ef3d6a96e12e6b9477b"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\f82e4fd5fea101d050c013f8cdd9abaf3ae9ac5cdc0b4dc5dc6b67bf1c5ee827.json",
+        "bytes": 3050,
+        "sha256": "9e62d0cff55b71de08971bd38df31ee912e95b45596ade17afb6c0a0c60b99a1"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+        "bytes": 278987,
+        "sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "f82fdfbbc333d0989fb19b7263196b1257a8975d81dc5d64032a24d52b73372e",
+      "binding": {
+        "calculated_event_id": 3070001,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "historical_commander_trait.0001",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 4,
+        "option_catalogue_sha256": "f94a1b17c3893bd30decbac1c2623870a4a9dee3d4e4ebaf7ba85d9a82ab28fe",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "275cd0afe38d62e331f4aa1fc1c20be356d13bbe69185abfa341975ad1f9e8af"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\f82fdfbbc333d0989fb19b7263196b1257a8975d81dc5d64032a24d52b73372e.json",
+        "bytes": 1350,
+        "sha256": "142cba08991b1b5b0992bf2545f6649d10ee2ae879bec8e85c2f7e2e400d9448"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\f82fdfbbc333d0989fb19b7263196b1257a8975d81dc5d64032a24d52b73372e.json",
+        "bytes": 8902,
+        "sha256": "37ccc11f312b4cb2bbe3d0440384f6bdc5244da716f1a14750f02040aa09f70d"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\lifestyles\\warfare_lifestyle\\historical_commander_trait_events.txt",
+        "bytes": 18582,
+        "sha256": "275cd0afe38d62e331f4aa1fc1c20be356d13bbe69185abfa341975ad1f9e8af"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "fe809c6fac0273dabb73837933f4cc7fba790652e775fab0d739fc2efc1c1bad",
+      "binding": {
+        "calculated_event_id": 3561002,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "coming_of_age.1002",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 1,
+        "option_catalogue_sha256": "6f713f296c50d74cd38eeb3137cbc761c491a04bdc0483044ead3f18acf06665",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "fb2c0e3d52b9f625ebd128195c3bf622d656c49ef1aba91fb13c93569998a4ba"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\fe809c6fac0273dabb73837933f4cc7fba790652e775fab0d739fc2efc1c1bad.json",
+        "bytes": 1318,
+        "sha256": "1e0cfb641184482321d96b18518bc214f54616fc7d35f786fd98391ab773f587"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\fe809c6fac0273dabb73837933f4cc7fba790652e775fab0d739fc2efc1c1bad.json",
+        "bytes": 3417,
+        "sha256": "5a0302471373e48a6bf488555d68fc51783f5defa541a8c1dc4fdb1706b309b1"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\education_and_childhood\\coming_of_age_events.txt",
+        "bytes": 89409,
+        "sha256": "fb2c0e3d52b9f625ebd128195c3bf622d656c49ef1aba91fb13c93569998a4ba"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    },
+    {
+      "fingerprint": "fecb2ef168fc5b76d91451946e9fc36974bd0f9ddf467d7badeceab60b2b10b9",
+      "binding": {
+        "calculated_event_id": 5980110,
+        "ck3_build": "1.20.0.4",
+        "event_definition_key": "bp1_house_feud.0110",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "native_option_count": 2,
+        "option_catalogue_sha256": "5a6d43a03a1f6291b48ea1af40fbf1f2ac50255a4b386625253ddfef165f79c9",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "source_sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\fecb2ef168fc5b76d91451946e9fc36974bd0f9ddf467d7badeceab60b2b10b9.json",
+        "bytes": 1298,
+        "sha256": "d7578afb768278dd9f2f6b02e3bb408b5e333cd927f60db72aaf7a2c2165784d"
+      },
+      "facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\fecb2ef168fc5b76d91451946e9fc36974bd0f9ddf467d7badeceab60b2b10b9.json",
+        "bytes": 8489,
+        "sha256": "3ed9d77f7ac6453f9ee04810f8f31c59d965e68aa5119941acafa4b0ee6c2802"
+      },
+      "source": {
+        "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\bp1\\bp1_house_feud.txt",
+        "bytes": 128362,
+        "sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8"
+      },
+      "source_event_type": "character_event",
+      "eligible_cross_calculated_id_mode": "source_rebound"
+    }
+  ],
+  "offline_closure": {
+    "source_review_report_count": 67,
+    "unresolved_reports": [],
+    "batch_count_with_event_incidents": 51,
+    "event_incidents_in_batches": 66,
+    "unreviewed_incidents_in_batches": [],
+    "unreviewed_before_files": [],
+    "audit": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\g2-m2-offline-closure-2026-10-19.json",
+      "bytes": 189770,
+      "sha256": "6d77d63873877e2e72614f94eb9da65a7ba628c7cdb7339bf2aaf2c8c37dbc62"
+    }
+  },
+  "validation_source": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+    "bytes": 27211,
+    "sha256": "7fa059549591cd37b67c54ad0114a61473052b3456eba411360a554993828a8b"
+  },
+  "boundaries": {
+    "new_M2_credit": 0,
+    "Game_MCP_OBS_calls": 0,
+    "new_state_created_or_changed": false,
+    "SAVE_Driver_media_body_reads": 0,
+    "generic_letter_rebind_enabled": false,
+    "source_effects_claimed_applied": false,
+    "P50_behavior_suite_repeated": false
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "peak_new_small_output_budget_bytes": 16777216,
+    "deletions": 0,
+    "task_start_capacity": {
+      "D:\\": {
+        "total": 14000483987456,
+        "free": 892297101312
+      },
+      "Z:\\ck3_mod_rewrite": {
+        "total": 4096787476480,
+        "free": 178428542976
+      }
+    },
+    "task_close_capacity": {
+      "D:\\": {
+        "total": 14000483987456,
+        "free": 892296916992
+      },
+      "Z:\\ck3_mod_rewrite": {
+        "total": 4096787476480,
+        "free": 178428182528
+      }
+    },
+    "derived_local_review_at_utc": "2026-10-21T02:00:00Z",
+    "record_review_at_utc": "2027-04-17T02:00:00Z",
+    "reason": "New-campaign source knowledge carry and bounded offline event closure; tracked record reviewed/consolidated at record TTL, local audit derived 48-hour review."
+  },
+  "completed_at_utc": "2026-10-19T01:50:37.005691+00:00"
+}

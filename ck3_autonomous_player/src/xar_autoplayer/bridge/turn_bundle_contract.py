@@ -291,6 +291,85 @@ def _war_state(snapshot: dict[str, object]) -> tuple[dict[str, object], bool]:
     return {"active_war_count": len(summaries), "wars": summaries}, True
 
 
+def _territory_state(
+    result: dict[str, object],
+    partition: dict[str, object],
+    *,
+    character_id: int,
+) -> dict[str, object]:
+    """Expose geographic direct counties without equating them to the realm.
+
+    Only the fresh campaign-root partition is consumed here.  A title with a
+    different first title-heir is a direct-holding transfer exposure; it does
+    not prove that the county will leave the player's future subrealm.
+    """
+
+    counties: list[int] = []
+    other_heir_counties: list[int] = []
+    geography_ready = partition["status"] == "available"
+    geography_reason = (
+        "held_county_geography_unavailable"
+        if geography_ready
+        else str(partition["unavailable_reason"])
+    )
+    heir_comparison_ready = geography_ready
+    heir_comparison_reason = "primary_title_heir_unavailable"
+    if heir_comparison_ready:
+        heir = partition["value"]["primary_heir_character_id"]
+        heir_comparison_ready = heir is not None
+        for row in partition["value"]["title_heirs"]:
+            title = row["title"]
+            if title["tier_raw"] != 2 or _is_landless_noble_family_no_province_row(row):
+                continue
+            if row.get("capital_province_id") is None:
+                # Legacy readers did not publish county geography.  Do not
+                # turn an unclassified county into an empty geographic set.
+                geography_ready = False
+                continue
+            county_id = _positive_int(title["title_id"], "direct county title_id")
+            _positive_int(row["capital_province_id"], "direct county capital")
+            counties.append(county_id)
+            first_heir = row["first_heir_character_id"]
+            if first_heir is None:
+                heir_comparison_ready = False
+                if heir is not None:
+                    heir_comparison_reason = "held_county_first_heir_unavailable"
+            if heir is not None and first_heir is not None and first_heir != heir:
+                other_heir_counties.append(county_id)
+    direct_counties = (
+        _component("available", sorted(counties))
+        if geography_ready
+        else _component("unavailable", reason=geography_reason)
+    )
+    transfer_counties = (
+        _component("available", sorted(other_heir_counties))
+        if geography_ready and heir_comparison_ready
+        else _component(
+            "unavailable",
+            reason=(
+                geography_reason
+                if not geography_ready
+                else heir_comparison_reason
+            ),
+        )
+    )
+    return {
+        "source_frame": {
+            **copy.deepcopy(result["binding"]),
+            "player_character_id": character_id,
+            "query_sequence": result["query_sequence"],
+        },
+        "directly_held_geographic_county_title_ids": direct_counties,
+        "direct_counties_to_other_title_heirs": transfer_counties,
+        "player_subrealm_county_title_ids": _component(
+            "unavailable", reason="campaign_root_subrealm_county_membership_unavailable"
+        ),
+        "succession_realm_county_loss": _component(
+            "unavailable", reason="post_succession_subrealm_membership_unavailable"
+        ),
+    }
+
+
 def build_turn_bundle_v1(
     snapshot: object,
     campaign_root_result: object,
@@ -555,6 +634,9 @@ def build_turn_bundle_v1(
         "no_primary_title_heir_alert": no_heir_alert,
         "partition": partition,
     }
+    realm_state["territory"] = _territory_state(
+        result, partition, character_id=character_id
+    )
     ruler_state["vitals"] = build_player_vitals_v1(
         turn_bundle_binding=result["binding"],
         character_id=character_id,

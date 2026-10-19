@@ -789,23 +789,27 @@ def _same_frame_player_faction_alerts(
     if not all(isinstance(value, int) and not isinstance(value, bool)
                for value in (actor_id, native_revision, date_raw)):
         return None
-    payloads: list[object] = [snapshot.get("player_faction_alerts")]
-    for row in rows:
-        if (_effective_command(row) != QUERY_PLAYER_FACTION_ALERTS_V1_STEP
-                or row.get("ok") is not True):
-            continue
-        result = _effective_command_result(row)
-        if not isinstance(result, dict):
-            continue
-        if any(key in result and result[key] != snapshot.get(expected)
-               for key, expected in (
-                   ("queried_snapshot_id", "snapshot_id"),
-                   ("queried_revision", "revision"),
-                   ("queried_native_revision", "native_revision"),
-               )):
-            continue
-        payloads.append(result.get("player_faction_alerts"))
-    for payload in reversed(payloads):
+    def newest_payloads():
+        # Keep the latest valid history alert ahead of the snapshot fallback;
+        # once it normalizes, older rows cannot change the selected observation.
+        for row in reversed(rows):
+            if (_effective_command(row) != QUERY_PLAYER_FACTION_ALERTS_V1_STEP
+                    or row.get("ok") is not True):
+                continue
+            result = _effective_command_result(row)
+            if not isinstance(result, dict):
+                continue
+            if any(key in result and result[key] != snapshot.get(expected)
+                   for key, expected in (
+                       ("queried_snapshot_id", "snapshot_id"),
+                       ("queried_revision", "revision"),
+                       ("queried_native_revision", "native_revision"),
+                   )):
+                continue
+            yield result.get("player_faction_alerts")
+        yield snapshot.get("player_faction_alerts")
+
+    for payload in newest_payloads():
         try:
             alert = normalize_player_faction_alerts_v1(
                 payload, expected_date_raw=date_raw,

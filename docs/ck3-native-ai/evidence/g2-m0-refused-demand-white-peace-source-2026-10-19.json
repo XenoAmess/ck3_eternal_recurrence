@@ -1,0 +1,125 @@
+{
+  "schema": "xar.g2-m0-refused-demand-white-peace-source.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T01:49:13.796107+00:00",
+  "source_kind": "fresh_read_only_installed_script_and_public_code",
+  "game_root_on_this_machine": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "exe_build_or_runtime_not_requalified": true,
+  "historical_source_contract_reference": "docs/ck3-native-ai/evidence/p87-political-survival-crisis-profile-2026-10-18.json",
+  "stock_sources": [
+    {
+      "path": "common/casus_belli_types/00_civil_war.txt",
+      "bytes": 61252,
+      "sha256": "a9f5d844413bd7acfd4d4b1611877ac34e78eb293f309c0e7a41f27aca3a0047",
+      "matches_p87_source_contract": true,
+      "excerpts": [
+        {
+          "first_line": 1557,
+          "last_line": 1582,
+          "text": "\ton_white_peace = {\n\t\tscope:attacker = {\n\t\t\tshow_pow_release_message_effect = yes\n\t\t\tstress_and_fulfillment_impact = {\n \t\t\t\tambitious = medium_stress_impact_gain\n \t\t\t\tarrogant = medium_stress_impact_gain\n \t\t\t}\n\t\t}\n\n\t\tscope:defender = {\n\t\t\tstress_and_fulfillment_impact = {\n \t\t\t\tarrogant = medium_stress_impact_gain\n \t\t\t}\n\t\t}\n\t\thidden_effect = {\n\t\t\tscope:attacker = {\n\t\t\t\tadd_truce_both_ways = {\n\t\t\t\t\tcharacter = scope:defender\n\t\t\t\t\tdays = 1825\n\t\t\t\t\twar = root.war\n\t\t\t\t\tresult = white_peace\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\ton_white_peace_request_revolt_war = yes\n\t}"
+        },
+        {
+          "first_line": 1595,
+          "last_line": 1630,
+          "text": "\ton_defeat = {\n\t\tscope:attacker = { show_pow_release_message_effect = yes }\n\t\tscope:defender = {\n\t\t\tmandala_peacemaker_perk_serenity_effect = yes\n\t\t\tadd_character_flag = {\n\t\t\t\tflag = recent_liberty_faction_war\n\t\t\t\tyears = 10\n\t\t\t}\n\t\t\tadd_dread = medium_dread_gain\n\n\t\t\t# LEGITIMACY FROM WINNING FACTION WAR\n\t\t\tfaction_war_end_victory_legitimacy_effect = yes\n\t\t}\n\n\t\t# For revoking titles of character's imprisoned abroard who have lost a revocation war\n\t\thidden_effect = {\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tscope:attacker = {\n\t\t\t\t\t\tis_imprisoned = yes\n\t\t\t\t\t\tNOT = { is_imprisoned_by = scope:defender }\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tscope:defender = {\n\t\t\t\t\tadd_opinion = {\n\t\t\t\t\t\ttarget = scope:attacker\n\t\t\t\t\t\tmodifier = foreign_prison_revocation_opinion\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\ton_lost_request_revolt_war = yes\n\n\t\t#Mandalas gain or lose piety/devotion depending on Decree\n\t\tmandala_war_defeat_effects = yes"
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_war_effects.txt",
+      "bytes": 75993,
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b",
+      "matches_p87_source_contract": true,
+      "excerpts": [
+        {
+          "first_line": 1190,
+          "last_line": 1216,
+          "text": "on_lost_request_revolt_war = {\n\twar = {\n\t\tevery_war_attacker = {\n\t\t\tlimit = {\n\t\t\t\texists = liege\n\t\t\t\tany_liege_or_above = { this = scope:defender }\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = { is_imprisoned = no }\n\t\t\t\thard_imprison_character_effect = {\n\t\t\t\t\tTARGET = this\n\t\t\t\t\tIMPRISONER = scope:defender\n\t\t\t\t}\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = { liege = scope:defender }\n\t\t\t\tadd_faction_cooldown_effect = { YEARS = faction_war_defeat_cooldown }\n\t\t\t}\n\t\t\tscope:defender = {\n\t\t\t\tadd_opinion = {\n\t\t\t\t\ttarget = prev\n\t\t\t\t\tmodifier = vassal_lost_faction_revolt_war\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+        },
+        {
+          "first_line": 1249,
+          "last_line": 1269,
+          "text": "#Add revoke reason to all attackers if they white peace on request war.\non_white_peace_request_revolt_war = {\n\twar = {\n\t\tevery_war_attacker = {\n\t\t\tlimit = {\n\t\t\t\texists = liege\n\t\t\t\tany_liege_or_above = { this = scope:defender }\n\t\t\t}\n\t\t\tscope:defender = {\n\t\t\t\tadd_opinion = {\n\t\t\t\t\ttarget = prev\n\t\t\t\t\tmodifier = vassal_wp_faction_revolt_war\n\t\t\t\t}\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = { liege = scope:defender }\n\t\t\t\tadd_faction_cooldown_effect = { YEARS = faction_war_white_peace_cooldown }\n\t\t\t}\n\t\t}\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "path": "common/opinion_modifiers/00_war_opinions.txt",
+      "bytes": 2095,
+      "sha256": "750864482d2d6c5d268424a1e03cba24301dedf853722d7fc12cb6f9fbcc68dc",
+      "matches_p87_source_contract": true,
+      "excerpts": [
+        {
+          "first_line": 27,
+          "last_line": 44,
+          "text": "vassal_lost_faction_revolt_war = {\n\topinion = -30\n\tyears = 15\n\tdecaying = yes\n\trevoke_title_reason = yes\n\timprisonment_reason = yes\n\tbanish_reason = yes\n\texecute_reason = yes\n}\n\n# Revolted Against Me\nvassal_wp_faction_revolt_war = {\n\topinion = -30\n\tyears = 15\n\tdecaying = yes\n\trevoke_title_reason = yes\n\timprisonment_reason = yes\n}"
+        }
+      ]
+    }
+  ],
+  "code_sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_political_survival_stakes_v1.py",
+      "bytes": 7710,
+      "sha256": "f3046fcdfca99a7e4039c76348452cb4152df0e4f0accb8ad405b99d41b676a8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_exit_observation.py",
+      "bytes": 8184,
+      "sha256": "68db3dd2475f40220a2fe61e8355ea38675d0c2dcd4f09148cef5aa5a73cf8e4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_exit_comparison.py",
+      "bytes": 18519,
+      "sha256": "8524bcf187af8bfdfc3897b912c0c69e878e876bcaa49491273cb88e2b3d4b26"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/formal_defender_continue_risk_v1.py",
+      "bytes": 11025,
+      "sha256": "2be0bf55b7a6d90e36aa200492ff509c004179f36010a857220f7d82dad4db68"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/defender_dejure_exit_terms_v1.py",
+      "bytes": 18163,
+      "sha256": "fdb5155ed55d5c1c700cdeb4fe8235f9e6317515d70341fe58a6860f5ec6dc0a"
+    }
+  ],
+  "finding": {
+    "cb": "refused_liege_demand_war",
+    "player_role_required_for_rebel_profile": "primary_attacker_with_current_defender_liege_relation",
+    "white_peace_is_politically_cost_free": false,
+    "white_peace_conditional_reasons": [
+      "revoke_title_reason",
+      "imprisonment_reason"
+    ],
+    "defeat_additional_conditional_risks": [
+      "hard_imprison_character_effect_if_not_imprisoned",
+      "banish_reason",
+      "execute_reason"
+    ],
+    "white_peace_immediate_imprisonment_proven": false,
+    "automatic_title_transfer_or_later_revoke_proven": false,
+    "native_white_peace_legal_or_accepted_now_proven": false,
+    "actual_result_or_new_live_credit": false
+  },
+  "validation": {
+    "kind": "single_offline_source_contract_check",
+    "source_files": 3,
+    "p87_hash_matches": 3,
+    "branch_assertions_passed": true,
+    "game_calls": 0,
+    "desktop_calls": 0,
+    "native_calls": 0,
+    "compile_calls": 0,
+    "existing_live_milestones_retested": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "new_heavy_writes": 0,
+    "output_budget_bytes": 32768,
+    "review_at_utc": "2027-04-17T00:00:00Z",
+    "temporary_reader_under_task_tmp": true,
+    "no_deletion_or_cleanup_credit": true
+  }
+}

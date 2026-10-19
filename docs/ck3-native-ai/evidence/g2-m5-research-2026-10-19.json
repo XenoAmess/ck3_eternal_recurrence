@@ -1,0 +1,236 @@
+{
+  "schema": "xar.g2-m5-non-primary-war-scope-research.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T01:51:02.551615+00:00",
+  "evidence_kind": "one_synthetic_offline_source_probe",
+  "game_or_native_or_desktop_calls": 0,
+  "source_mutations": 0,
+  "source_hashes": {
+    "docs/autonomous-agent-progress/g2-requirements-v1.json": "4af8d801b82867949a47cc6a06a42bc7a58777d59877e4f3c7159305bcf7624b",
+    "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py": "c27266b60a80e7b18a38c22bdc8a076a79f351eb0b3b976c367ddc3dc90299ac",
+    "ck3_autonomous_player/src/xar_autoplayer/war_strategic_reserve_v1.py": "9c86a5f0fc82e292fc3baa553d128978b8b53f74ac7dae067bf86d8344b7a703",
+    "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e",
+    "ck3_autonomous_player/src/xar_autoplayer/wartime_construction_cash_v1.py": "9eb2f93a573e2c6f467e6ff478c50d9856350cb4c436b5403fd0dd70351b772e",
+    "ck3_autonomous_player/src/xar_autoplayer/war_political_survival_stakes_v1.py": "f3046fcdfca99a7e4039c76348452cb4152df0e4f0accb8ad405b99d41b676a8"
+  },
+  "source_head_at_probe": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+  "synthetic_inputs": {
+    "snapshot": {
+      "snapshot_id": "native:7",
+      "revision": 9,
+      "native_revision": 7,
+      "date_raw": 53144328,
+      "episode_run_id": "synthetic-m5-non-primary-scope",
+      "paused": true,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 31254,
+        "alive": true
+      },
+      "played_character_gold": {
+        "raw": 23900000,
+        "scale": 100000
+      },
+      "player_armies": [
+        {
+          "army_id": 1,
+          "soldiers": 800
+        }
+      ],
+      "active_wars": [
+        {
+          "war_id": 100663323,
+          "player_side": "defender",
+          "player_is_primary_war_leader": false,
+          "player_relative_war_score": -80,
+          "targeted_title_ids": [
+            2230
+          ],
+          "enemy_armies": [
+            {
+              "army_id": 2,
+              "soldiers": 1500
+            }
+          ]
+        }
+      ]
+    },
+    "campaign_root": {
+      "status": "available",
+      "player_character_id": 31254,
+      "snapshot_revision": 7,
+      "date_raw": 53144328,
+      "primary_title": {
+        "title_id": 2230
+      },
+      "held_title_partition": [
+        {
+          "title": {
+            "title_id": 2230,
+            "tier_raw": 3
+          }
+        }
+      ]
+    }
+  },
+  "non_primary_projection": {
+    "schema": "xar.war-spending-priority.v1",
+    "read_only": true,
+    "defer_new_economic_construction": false,
+    "wars": [
+      {
+        "war_id": 100663323,
+        "primary_player_war": false,
+        "player_side": "defender",
+        "player_relative_war_score": -80,
+        "political_survival_stakes_v1": {
+          "status": "unavailable",
+          "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+          "reason": "current_primary_rebel_attacker_identity_unavailable"
+        },
+        "possible_defensive_target_title_ids": [],
+        "target_stakes_v1": {
+          "current_root_available": true,
+          "primary_title_targeted": true,
+          "directly_held_target_title_ids": [
+            2230
+          ],
+          "source": "same-native-frame root title identities; CB defeat transfer remains unverified"
+        },
+        "major_direct_title_targeted": true,
+        "defeat_title_transfer_verified": false,
+        "active_war_observed": true,
+        "war_resolution_verified": false,
+        "new_procurement_suppressed_by_score_policy": false,
+        "observed_hostile_siege_in_player_subrealm_army_ids": [],
+        "observed_primary_opponent_objective_occupation_province_ids": [],
+        "objective_control_projection_available": false,
+        "all_observed_own_raised_armies_currently_retreating": false,
+        "observed_player_raised_soldiers": 800,
+        "observed_enemy_raised_soldiers": 1500,
+        "raised_force_deficit": true,
+        "existing_operational_strength_balance_v1": null,
+        "protect_cash_reasons": []
+      }
+    ],
+    "count_scope": "observed raised armies; no unraised reserves or promised allies",
+    "cash_protection_priority_war_ids": [],
+    "cash_priority_does_not_assign_armies": true,
+    "primary_war_hostile_union_v1": {
+      "war_ids": [],
+      "unique_army_ids": [],
+      "observed_current_soldiers": null,
+      "shared_player_raised_soldiers": 800,
+      "shared_force_deficit": null,
+      "future_or_unraised_reinforcements_bounded": false
+    },
+    "war_win_probability": null
+  },
+  "primary_control_projection": {
+    "schema": "xar.war-spending-priority.v1",
+    "read_only": true,
+    "defer_new_economic_construction": true,
+    "wars": [
+      {
+        "war_id": 100663323,
+        "primary_player_war": true,
+        "player_side": "defender",
+        "player_relative_war_score": -80,
+        "political_survival_stakes_v1": {
+          "status": "unavailable",
+          "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+          "reason": "current_primary_rebel_attacker_identity_unavailable"
+        },
+        "possible_defensive_target_title_ids": [
+          2230
+        ],
+        "target_stakes_v1": {
+          "current_root_available": true,
+          "primary_title_targeted": true,
+          "directly_held_target_title_ids": [
+            2230
+          ],
+          "source": "same-native-frame root title identities; CB defeat transfer remains unverified"
+        },
+        "major_direct_title_targeted": true,
+        "defeat_title_transfer_verified": false,
+        "active_war_observed": true,
+        "war_resolution_verified": false,
+        "new_procurement_suppressed_by_score_policy": false,
+        "observed_hostile_siege_in_player_subrealm_army_ids": [],
+        "observed_primary_opponent_objective_occupation_province_ids": [],
+        "objective_control_projection_available": false,
+        "all_observed_own_raised_armies_currently_retreating": false,
+        "observed_player_raised_soldiers": 800,
+        "observed_enemy_raised_soldiers": 1500,
+        "raised_force_deficit": true,
+        "existing_operational_strength_balance_v1": null,
+        "protect_cash_reasons": [
+          "losing_primary_defence_exposes_target_titles",
+          "losing_own_war_and_observed_raised_force_outnumbered"
+        ]
+      }
+    ],
+    "count_scope": "observed raised armies; no unraised reserves or promised allies",
+    "cash_protection_priority_war_ids": [
+      100663323
+    ],
+    "cash_priority_does_not_assign_armies": true,
+    "primary_war_hostile_union_v1": {
+      "war_ids": [
+        100663323
+      ],
+      "unique_army_ids": [
+        2
+      ],
+      "observed_current_soldiers": 1500,
+      "shared_player_raised_soldiers": 800,
+      "shared_force_deficit": true,
+      "future_or_unraised_reinforcements_bounded": false
+    },
+    "war_win_probability": null
+  },
+  "p83_optional_construction_control": {
+    "schema": "xar.wartime-construction-cash.v1",
+    "construction_kind": "new_building",
+    "source_frame": {
+      "played_character_id": 31254,
+      "native_revision": 7,
+      "date_raw": 53144328,
+      "snapshot_id": "native:7",
+      "revision": 9,
+      "episode_run_id": "synthetic-m5-non-primary-scope"
+    },
+    "new_spend_allowed": false,
+    "construction_gold_raw": 10000000,
+    "thresholds_are_user_hard_limits": false,
+    "thresholds_are_native_rules": false,
+    "future_income_credited_raw": 0,
+    "loan_or_refund_credited_raw": 0,
+    "does_not_open_or_refresh_mercenary_procurement_epoch": true,
+    "status": "defer_optional_construction",
+    "reason": "same_frame_maximum_military_maintenance_unobserved"
+  },
+  "assertions_passed": 11,
+  "assertion_count_correction": "The successful probe contained eleven assert statements; its initial hand-entered counter was ten. No probe rerun or result change.",
+  "inputs_unchanged": true,
+  "meaning": "Non-primary target overlap is observed but outside primary-war procurement/cash-reason scope; P83 still defers optional construction when required inputs are absent.",
+  "does_not_prove": [
+    "a natural liege war occurred in first30",
+    "CB defeat transfers target",
+    "war-safe status",
+    "runtime deployment",
+    "new M5 credit"
+  ],
+  "closeout": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T01:51:53.635650+00:00",
+    "source": "Python shutil.disk_usage and exact artifact Path.stat; no deletion or full scan",
+    "volume_total_bytes": 4096787476480,
+    "volume_free_bytes": 178427465728,
+    "storage_policy_version": "1.0.0",
+    "heavy_writes": 0,
+    "deleted_files": 0,
+    "maximum_task_artifact_bytes": 16777216
+  }
+}

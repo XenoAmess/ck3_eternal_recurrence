@@ -181,7 +181,11 @@ def _start_identity(value):
     identity = (value.get("action_id"), value.get("actor_character_id"), value.get("target_character_id"),
                 instance.get("scheme_instance_id"), instance.get("scheme_instance_generation"))
     if (not isinstance(identity[0], str) or not identity[0]
-            or any(type(item) is not int or item <= 0 for item in identity[1:])):
+            or any(type(item) is not int or not 0 < item <= 0xFFFFFFFF for item in identity[1:3])
+            or identity[1] == identity[2]
+            or type(identity[3]) is not int or not 0 < identity[3] < 0xFFFFFFFF
+            or type(identity[4]) is not int or not 0 <= identity[4] <= 255
+            or identity[4] != identity[3] >> 24):
         return None
     return identity
 

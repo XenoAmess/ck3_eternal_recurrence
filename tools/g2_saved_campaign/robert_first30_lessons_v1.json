@@ -1,0 +1,39 @@
+{
+  "schema": "xar.robert-first30-source-lessons/v1",
+  "lesson_version": "20261019",
+  "source_comparison": "UTF-8 source bytes after optional BOM removal and CRLF/CR to LF normalization; actual byte SHA retained separately",
+  "lessons": [
+    {
+      "id": "reviewed_populist_source_survives_new_namespace",
+      "observed_failure": "AUTO193 granted independence through the unknown first-displayed fallback; the older known hook also fixed a previous calculated definition ID.",
+      "required_behavior": "Carry reviewed source registry and referenced facts only, verify their actual source, and qualify changed-ID binding with the selected frozen SDK and new state.",
+      "sources": ["vanilla_events/event_offline_analysis.py", "vanilla_events/faction_demand1001_context.py", "vanilla_events/populist1001_known_refusal_v1.py", "strategy.py", "bridge/service.py"],
+      "required_offline_qualification": "qualify_populist_source.py --verify-cold-id-rebind",
+      "live_result_still_required": "Selected native refusal and original instance advancement; war creation, land retention and victory are separate observations."
+    },
+    {
+      "id": "reserve_war_cash_before_optional_construction",
+      "observed_failure": "The first campaign's frozen source did not prove adoption of the later common wartime cash and political-survival repairs.",
+      "required_behavior": "Use the deployed common gate, protect current military cost and unpaid commitments plus a qualified emergency contract; defer only optional construction when inputs are unavailable.",
+      "sources": ["wartime_construction_cash_v1.py", "war_reinforcement_tradeoff_v1.py", "war_reinforcement_finance_v1.py", "war_emergency_budget_v1.py", "war_political_survival_stakes_v1.py", "war_strategic_reserve_v1.py", "war_mercenary_consumer_v1.py", "bridge/service.py"],
+      "live_result_still_required": "Current complete native quote, payable contract, independent employment/payment/army readback; unreceived refunds and loans count as zero."
+    },
+    {
+      "id": "resident_successor_once_and_current_family",
+      "observed_failure": "Frozen Host06 did not adopt the later resident App/Queue durable handoff and exception-safe once permit.",
+      "required_behavior": "Keep one resident ordinary campaign App, retain exact pre/post and goal/title lineage, consume permission before dispatch, and preserve unknown actions without replay.",
+      "sources": ["bridge/mcp_server.py", "bridge/service.py", "bridge/successor_ui_app_owner_v1.py", "successor_ui_pending_ledger_v1.py", "successor_ui_owner_continuation_v1.py", "native_auto_run.py", "native_driver.py", "family_marriage_episode_handoff_v1.py"],
+      "live_result_still_required": "Natural successor, title distribution, timeline clearance and subsequent ordinary plan; same-game reconnect is not a new-game SAVE restoration proof."
+    },
+    {
+      "id": "state_coverage_and_loss_attribution",
+      "observed_failure": "The final player realm had 10 to 2 counties, while sparse and stale held-title observations could not attribute every loss; half the scoring weight and the 360-month history remained unknown.",
+      "required_behavior": "Retain fixed founding anchors, same-frame realm/domain/dynasty scopes, exact source bindings and monthly/endpoint samples using existing results; do not infer victory from missing WarID or current held titles from old succession cache.",
+      "sources": ["campaign_development_score_v1.py", "campaign_score_target_projection.py", "ordinary_player_risk_context_v1.py"],
+      "live_result_still_required": "Deduplicated current player-realm counties and fresh title/war/faction outcomes; each loss cause remains unknown until independently linked."
+    }
+  ],
+  "gameplay_claims_granted_by_source_audit": false,
+  "live_followup_adds_no_per_turn_rpc": true,
+  "historical_machine_identity": "See linked source records; this portable lesson catalogue does not establish a machine installation or deployment."
+}

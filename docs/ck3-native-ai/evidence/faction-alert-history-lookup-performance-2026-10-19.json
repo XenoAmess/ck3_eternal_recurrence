@@ -1,0 +1,181 @@
+{
+  "schema": "xar.faction-alert-history-lookup-performance.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_started_utc": "2026-10-19T01:48:29.100157+00:00",
+  "observed_ended_utc": "2026-10-19T01:48:32.143811+00:00",
+  "baseline_commit": "652e873ab164cfb78b654854c0dc2ca35ef816b3",
+  "baseline_function_sha256": "364edeff36536a4515375acc6ea8899a4867b85bc4720b7a20b47b09bba22f6e",
+  "source_path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+  "source_sha256_at_verification": "fa6c9de0e9ef63c3931a1899c1d3150ebaec0a2eb4310841310cb8caec46fa32",
+  "input": {
+    "path": "ck3_autonomous_player/tests/fixtures/faction_watch_current_673_674.json",
+    "bytes": 7206,
+    "sha256": "87974c28e1331eb80ec2cc0111da7307db52f25efb990f90b1e2853051763b38",
+    "scope": "actual small 1.20.0.3 projection; repeated history filler is synthetic"
+  },
+  "equal_cases": [
+    {
+      "case": "latest-direct",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "latest-auto",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "recent-four-of-8853",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "no-current-history-or-snapshot",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 4
+    },
+    {
+      "case": "snapshot-only",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "not-paused",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 4
+    },
+    {
+      "case": "bool-actor",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 4
+    },
+    {
+      "case": "none-snapshot",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 4
+    },
+    {
+      "case": "malformed-latest",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "failed-latest",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "wrong-queried_snapshot_id",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "wrong-queried_revision",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "wrong-queried_native_revision",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "wrong-leaf-date_raw",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "wrong-leaf-snapshot_revision",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    },
+    {
+      "case": "wrong-leaf-player_character_id",
+      "equal": true,
+      "input_unchanged": true,
+      "result_bytes": 3241
+    }
+  ],
+  "focused_tests": {
+    "run": 3,
+    "failures": 0,
+    "errors": 0
+  },
+  "existing_war_watch_plan": {
+    "baseline_equals_new": true,
+    "baseline_selected_step": "life-advance",
+    "new_selected_step": "life-advance",
+    "prior_test_expected_step": "declare-war-808-17-0",
+    "prior_test_result": "existing test first failed on new helper; replayed complete first plan is equal with baseline, so that first assertion also fails there; remaining test assertions not replayed"
+  },
+  "timings": [
+    {
+      "case": "recent-four-of-8853",
+      "history_rows": 8853,
+      "old_median_ms": 0.518982,
+      "new_median_ms": 0.040829,
+      "unpack_calls": {
+        "old": 8853,
+        "new": 4
+      },
+      "per_group_iterations": 100,
+      "alternating_groups": 9
+    },
+    {
+      "case": "no-current-history-or-snapshot",
+      "history_rows": 8849,
+      "old_median_ms": 0.451134,
+      "new_median_ms": 0.500567,
+      "unpack_calls": {
+        "old": 8849,
+        "new": 8849
+      },
+      "per_group_iterations": 100,
+      "alternating_groups": 9
+    },
+    {
+      "case": "snapshot-only",
+      "history_rows": 8849,
+      "old_median_ms": 0.471521,
+      "new_median_ms": 0.532831,
+      "unpack_calls": {
+        "old": 8849,
+        "new": 8849
+      },
+      "per_group_iterations": 100,
+      "alternating_groups": 9
+    }
+  ],
+  "native_calls": 0,
+  "game_calls": 0,
+  "deployed": false,
+  "limits": [
+    "local lookup timings only; no games/day throughput claim",
+    "no shared plan cache or query/strategy change",
+    "missing/snapshot paths still scan all history"
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "peak_budget_bytes": 1048576,
+    "free_at_start_bytes": 178428567552,
+    "free_at_close_bytes": 178428567552,
+    "large_inputs_read": false,
+    "deletions": 0,
+    "record_review_at_utc": "2027-04-17T01:48:32.145798+00:00"
+  }
+}
