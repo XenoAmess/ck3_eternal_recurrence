@@ -1,0 +1,55 @@
+{
+  "schema": "xar.ck3.functional09-artifact11-source-lineage-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T23:45:23.357981+00:00",
+  "status": "SOURCE_READY_NOT_EXPORTED_OR_ADOPTED",
+  "historical_proof": {
+    "path": "docs/ck3-native-ai/evidence/g2-m7-functional09-artifact11-transition-source-ready-2026-10-20.json",
+    "bytes": 9814,
+    "sha256": "c74b4aa7afe8f28bc85ef2e409191c29cb5ad0f14a464cd13206a4c05ad20d8a"
+  },
+  "change": "Close the full Native source manifest/plan provenance boundary; original source704 label and three component matches alone did not bind all5355 rows. Old08B files and original09/11 results remain unchanged.",
+  "new_evidence_names": [
+    "native_readonly_plan",
+    "snapshot07_plan"
+  ],
+  "actual_source_chain": "Fixed09 plan3b7a base_plan -> existing08B source-only plan6043 base_readonly_plan/helperSHA -> existing07 planb4af prior_pins and wholeclean helperSHA. These plans do not confer08B administrator success.",
+  "source_freeze": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/evidence/source-freeze.json",
+    "bytes": 1560447,
+    "sha256": "648b3ff2e7cd01f6e8c46490dc78a457fbcf716af17dcc78a45c8c1c356ec590"
+  },
+  "native_plan_sha256": "d9a44fc874bd253425626712eb17131f6986de5db17b74c5200b53cea3932bdb",
+  "new_files": [
+    {
+      "path": "tools/g2_saved_campaign/native30_functional09_artifact11_transition_v1.py",
+      "bytes": 29262,
+      "sha256": "1df6088a521f2de2f9d72d6686d161a87a28cd74a6cb35bbc59e02013e0b4442"
+    },
+    {
+      "path": "tools/g2_saved_campaign/export_native30_functional_artifact_views_v1.py",
+      "bytes": 2789,
+      "sha256": "c414dde8b9557837feaa27591fab38f2ab2a606ef8792bc21e1731955b072d99"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_functional_artifact_transition_v1.py",
+      "bytes": 18607,
+      "sha256": "cf2a26bcb112d9993625c4859918d38948af2a66ad0c777220a49f3b06a961e7"
+    }
+  ],
+  "focused_validation": {
+    "node": "FunctionalArtifactTransitionTests::test_public_reader_binds_complete_native_source_provenance",
+    "result": "1 passed, 2 subtests passed in 0.41s",
+    "tool_chunk": "41228b",
+    "scope": "Run the actual new four-reference entry against RAM fixtures; positive complete lineage; reject replaced full source manifest and replaced native plan even after repairing all old compatibility/card links. source_fixture=true remains unadmitted.",
+    "old6_nodes13_subtests_rerun": false,
+    "old_pass_scope": "Original6/13 result and original4pins remain exactly recorded in c74b historical proof."
+  },
+  "gross_bytes": 63327,
+  "hard_bytes": 65536,
+  "scratch_bytes": 0,
+  "Game_Task_EXE_export_calls": 0,
+  "source_freeze_body_copied_or_trimmed": false,
+  "actual_loaded_or_OS_or_H_credit": 0,
+  "future_writes_after_freeze": 0
+}

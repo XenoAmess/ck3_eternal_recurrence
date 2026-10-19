@@ -1,0 +1,45 @@
+{
+  "schema": "xar.ci-aa5-war-spending-epoch-fixture-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T23:25:33Z",
+  "machine_id_source": "Actual tools/ck3_live_run_id.py machine, tool13e5ba, followed by UTC clock",
+  "scope": "Only the three parameter cases of one existing synthetic fixture. No production, Game, MCP, SDK, Task or Git action.",
+  "storage_card_sha256": "befa91d413c1ff11ae5b843aebd9b6fa57474401eb8121d29ed07e7b2ad54c89",
+  "original_CI": {
+    "head": "aa5da921a028a7b851d09cf3f7b5cddc719b18ea",
+    "official_run":39339233094,
+    "job":118356346802,
+    "failed_step":47,
+    "runner_machine_id":"unknown",
+    "result":"1 failed, 165 passed, 62 subtests passed in12.01s; later skipped gates remain skipped",
+    "failed_node":"test_war_spending_epoch_v2.py::test_actual_hostile_pressure_can_keep_cash_before_score_turns_negative[unknown_occupation]",
+    "original_full_log":{"bytes":7046,"sha256":"9d6935eda44769c035cf1d6ad96bdc6fd8a29c8070f8d3434458e2ac73aebd80","availability":"Read in RAM by the CI owner, never written as a full local original"},
+    "retained_excerpt":["_runtime/official-ci-aa5da921-step47-trace01.json",1414,"d5cda97e2000e9d0347b7311f7d89006723c131e8dce99274ea29acc8ed179a6"],
+    "terminal_metadata":["_runtime/official-ci-aa5da921-final01.json",1847,"b2e6a82e7b895a4a68511ebc33e56cedde8f2a6c4a0ccb119cf36aa29076ff3d"]
+  },
+  "diagnosis":"The old unknown-occupation case retained WarDriver's complete current own800/enemy1500 roster in a primary defensive war at score+12. Unknown occupation removed siege/occupation evidence but did not remove the independent, intentionally added preventive deficit cash-protection reason. Its False expectation was stale; weakening production would incorrectly discard observed defensive risk.",
+  "change":"Set the common three-case fixture to own2000/enemy1500 so only independently known siege or occupation triggers this layer. Assert both counts, absence of the preventive deficit reason, and exact known-siege/known-occupation booleans. The unknown case also calls the real construction consumer: incomplete wartime cash inputs still defer optional construction while retaining life-advance and sending no building query. No legal hire, quote or once-only gate changes.",
+  "files":[["ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py",10150,"43d4e247e02ae627d30701042ee162eb6b6e894afaa499ea6d9af1cb73641e38"]],
+  "original_file":[9104,"65323891afa363c99b649f117c2b0474ee5f90c131c367381c7c15d1595f7988"],
+  "validation": {
+    "cwd":"Z:/ck3_mod_rewrite/ck3_autonomous_player/tests/unit",
+    "command":"Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider -o tmp_path_retention_policy=none --basetemp=Z:/ck3_mod_rewrite/_runtime/war-spending-epoch-ci-aa5-tests01 test_war_spending_epoch_v2.py::test_actual_hostile_pressure_can_keep_cash_before_score_turns_negative",
+    "result":"3 PASS in2.00s, tool4c02b2; no 165-case matrix, prior15-case matrix or full-module repeat",
+    "CI_rerun_claimed":false,
+    "live_or_business_credit":0
+  },
+  "storage": {
+    "source_hard_cap_bytes":32768,
+    "separate_scratch_reserved_bytes":131072,
+    "scratch_root":"Z:/ck3_mod_rewrite/_runtime/war-spending-epoch-ci-aa5-tests01",
+    "scratch_root_absent_before":true,
+    "retained_file_inventory_after_tests":[],
+    "retained_scratch_bytes_after_tests":0,
+    "exact_peak_bytes":null,
+    "cleanup":"Resolved exact self-created root, rejected symlink/junction/escape, required zero retained files, removed empty directories only; actual root absent, tool ed60c6",
+    "cleanup_helper":["_runtime/war_spending_epoch_ci_aa5_cleanup01.py",1043,"3d21c03a2e6c2f495516f0cb4a57ccb0048d876939d259998bfc44fb51782d57"],
+    "other_assets_deleted":false,
+    "retained_source_bytes_excluding_this_proof":11193,
+    "future_written_bytes":0
+  }
+}

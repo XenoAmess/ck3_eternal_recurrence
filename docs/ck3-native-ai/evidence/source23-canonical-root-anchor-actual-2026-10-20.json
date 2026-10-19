@@ -1,0 +1,175 @@
+{
+  "schema": "xar.source23.canonical-git-anchor/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T23:36:32.604213+00:00",
+  "status": "CANONICAL_REF_CREATED_NOT_DEPLOYED",
+  "execution_owner": "Root",
+  "root_direct_execution_release": true,
+  "parent": "0722bef48d412ed5e49d0109177493846d988745",
+  "ref": "refs/heads/campaign/robert-v20261019-c23-native30-m7-cold-01",
+  "source_commitment": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE23-INTEGRATION16MiB-BUDGET-ROOTWRITER-SOURCE32KiB-COMMITMENT01.json",
+    "bytes": 2084,
+    "sha256": "3e443e0209332d57b9bbe653c43ee6351c73aa8f509328f8711e1c825829f9fc"
+  },
+  "capacity_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SOURCE23-INTEGRATION16MiB-EXACT-GIT-ONLY-ADMITTED01.json",
+    "bytes": 3923,
+    "sha256": "32714a52949b3abe17b23ec0ccb89b23a07074c62ed97be671e5fec4e692cdd4"
+  },
+  "writer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\write_source23_canonical_ref_v1.py",
+    "bytes": 25349,
+    "sha256": "69a1f115354a64796ee668954e3841da7a4f11367684283d162666c31831dca9"
+  },
+  "composer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source22_m7_candidate_sdk_v1.py",
+    "bytes": 17552,
+    "sha256": "4b3fe7fe1397aec7c705a4ac52ec339421d4fc6648b98b1d1475c0145caad778"
+  },
+  "source_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-m7-candidate-sdk-source-plan-2026-10-20.json",
+    "bytes": 44530,
+    "sha256": "2642fcf89699ce2ea1af8d693786dbb1f7653ddd6a98df3dd6f3ce6d5649fed6"
+  },
+  "metadata_only_helper": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\export_immutable_sdk_views_v1.py",
+    "bytes": 22964,
+    "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+  },
+  "Git_object_quote": {
+    "retained_upper": 2187264,
+    "largest_temporary_upper": 1646592,
+    "refs_dirs_locks_reserve": 65536,
+    "peak_upper": 3899392,
+    "hard_bytes": 3932160,
+    "compression_or_dedup_credit": 0
+  },
+  "runtime_calls": 0,
+  "SDK_export_calls": 0,
+  "Native_Game_Task_calls": 0,
+  "push_calls": 0,
+  "index_or_tracked_worktree_mutations": 0,
+  "actual_H": "unknown",
+  "actual_loaded_provider": false,
+  "Native30_bound": false,
+  "commit": "330d6e67c99eb22a60919b2bf7666c1ed0ca1b71",
+  "tree": "a30bffebb335c113160e2f61e2d746fe135d465f",
+  "twelve_output_pins": [
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "bytes": 56460,
+      "sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3",
+      "git_blob_sha1": "624f818ff8d020ce4d9114ff384bcfdcd99dd235",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1641945,
+      "sha256": "06a4ce9c8020f792c611287dcd5c03358c92c819190ac077e9f443e8dae8dcaa",
+      "git_blob_sha1": "8cfbf6c66714be9221f0ea6b2bf4fa7aa5b70ef5",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "bytes": 21503,
+      "sha256": "a935b8912fd553058b10e7307c04e9103669279d723a0caeff68ac9acd4ac563",
+      "git_blob_sha1": "0da95dbe95b5e8cdcec90c36a878d6a1517326db",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+      "bytes": 6755,
+      "sha256": "9b0e5e3528f68777979afd1742cd4d525051ad0e9b16225d7175d4a29474827e",
+      "git_blob_sha1": "1858e8d84f13e5a12896e8394fd1fb8fad37b11d",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+      "bytes": 15954,
+      "sha256": "3b8bd840df7b3d6af7326f388363729e909c88355d0649f892189d70ae390695",
+      "git_blob_sha1": "5e176de8a7c66925b6ee44a0934b62fb18292305",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+      "bytes": 9299,
+      "sha256": "10fdcb40766c913671c797e848d078dad7f4f4ffdd87cec80b9473b26fe53d7e",
+      "git_blob_sha1": "889ceffddab124edcc63345820b6f61d8b19fefc",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+      "bytes": 20371,
+      "sha256": "fd6f581ce13c22e18eff50729d9dc11a95e8b6b9a861fd6e33244a341911731b",
+      "git_blob_sha1": "7bf0604a7f3c932147fee19a59c712c47eb64cb9",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "bytes": 12841,
+      "sha256": "69977b160964c526187e3ae4612d2da670e6af5e6f76acc5fb2ccdfd4570342a",
+      "git_blob_sha1": "883bd9703f21dae97c3608e0309189225aecf69f",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 20197,
+      "sha256": "a1af05519d8b514ee91a7a4a7d037cf5da006e05bb1bdfdb32185ddb7a65f071",
+      "git_blob_sha1": "5ed2d6458ed4f393aeac0a92f4ee15f91eff9ed1",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+      "bytes": 11877,
+      "sha256": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e",
+      "git_blob_sha1": "946334ec9ea9190749e1e76acf2ae4591864fba2",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/runtime.py",
+      "bytes": 170719,
+      "sha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c",
+      "git_blob_sha1": "caf3da6c61c9831bbaf441e818b89f9d241532dd",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21905,
+      "sha256": "9de01d4f0d1c45d0c28a964d03f41abaad36c1c18fad2fec3ba561361a78583b",
+      "git_blob_sha1": "975a95df7bf7243484bac1c54ea57c34d82821a5",
+      "git_mode": "100644"
+    }
+  ],
+  "charged_retained_objects_upper": 2187264,
+  "exact_object_metadata": {
+    "count": 18,
+    "canonical_rows": {
+      "bytes": 4108,
+      "sha256": "7f8a5a8b0d419e6ff61091e9d185896c449d83e4307b47b11801f3559ad960d3"
+    },
+    "known_loose_allocated_bytes": 483576,
+    "allocation_unknown_count": 0,
+    "no_directory_scan": true,
+    "no_dedup_credit_or_hold_refund": true
+  },
+  "end_utc": "2026-10-19T23:36:40.190068+00:00",
+  "future_writes": 0,
+  "source_file_count": 1456,
+  "source_bytes": 59198354,
+  "complete_rows_JSON": {
+    "bytes": 374182,
+    "sha256": "f16995df275525a39ceacf3825f38f5f9a508a67970d59e83cb3bb43e7f7fdb4"
+  },
+  "all1456_Git_mode_blob_size_verified": true,
+  "twelve_SHA256_body_readbacks": true,
+  "all1456_SHA256_bodies_reread": false,
+  "parent1449_Git_mode_blob_size_verified": true,
+  "complete_rows_SHA256_authority": "Frozen full inventory plus Git mode/blob/size; twelve new body SHA256 readbacks",
+  "source_epoch_detached_model": "8176ef4e9a24f48dc9b3185f7316396e5be4f455425a2b03fc96b24c20c8f48e",
+  "source_epoch_actual_filesystem_authority": false,
+  "original_Native29_metadata_retained": true,
+  "Native_transition_qualification_reused": false,
+  "clock_root_cause": "UNKNOWN; diagnostic only",
+  "record_review_at_utc": "2027-04-17T23:36:40.190250+00:00"
+}

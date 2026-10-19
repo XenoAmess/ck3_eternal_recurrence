@@ -1,0 +1,132 @@
+{
+  "schema": "xar.ck3.functional09-artifact11-transition-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T23:32:01.972422+00:00",
+  "machine_source": "python -B tools/ck3_live_run_id.py machine; tool chunk ba027a",
+  "status": "SOURCE_READY_RAM_QUALIFIED_NOT_EXPORTED_OR_ADOPTED",
+  "source_files": [
+    {
+      "path": "tools/g2_saved_campaign/native30_functional09_artifact11_transition_v1.py",
+      "bytes": 27764,
+      "sha256": "6e6e04d7b2cb91c5d90542d2fc3f789b425229e18934050636b96b012dd4cf81"
+    },
+    {
+      "path": "tools/g2_saved_campaign/export_native30_functional_artifact_views_v1.py",
+      "bytes": 2789,
+      "sha256": "c414dde8b9557837feaa27591fab38f2ab2a606ef8792bc21e1731955b072d99"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_functional_artifact_transition_v1.py",
+      "bytes": 15886,
+      "sha256": "d22757b9ed36669ce910934978ee74a0d1b03e98bb30fff9f8be6f248833208f"
+    }
+  ],
+  "new_protocol": {
+    "build_chain": "resume02_snapshot07_functional09_artifact11",
+    "qualification_kind": "artifact_plus_closed09_functional_only",
+    "entry": "tools/g2_saved_campaign/export_native30_functional_artifact_views_v1.py",
+    "public_loader": "read_native_transition_v1(*, base_freeze_ref, base_native_ref, capacity_ref, machine_id, source_fixture=False)",
+    "pure_validator": "validate_functional_artifact_transition_v1",
+    "export": "export_native30_views_v1(args, execute=False)",
+    "metadata_type": "existing NativeTransitionV1, never a loaded-provider or custody token",
+    "default_enabled": false,
+    "new_Game_RPC": 0,
+    "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+    "metadata_description": "Native30 continuous hotspot tracking and idle realm overview",
+    "description_is_compiled_DLL_field": false
+  },
+  "qualification_rules": [
+    "A separate module and explicit chain consume these finite actual09/11 receipts. The frozen08B helper, original generic loader/contract, NativeTransitionV1, adapter and old exporter remain byte-identical; no fallback or fake08B status is introduced.",
+    "Production mode requires fixed exact path/size/SHA for original09/11 results, plans, owner SPEC/CLOSED/unregister, summaries, original08 build/manifest/owner closure and failed08 admin launch. Root's byte-identical promoted11 summary is accepted as a source alias; all internal backlinks still identify the original receipts.",
+    "The original09 result must remain FAILED with error five exports and parent child1/bootstrap1, while all nine original command nodes and layout postcheck must be actual0/Job0. Original command argv, machine/observedUTC, full nine target set and nonempty journals are checked; arbitrary FAILED results and renamed09 wholePASS are refused.",
+    "Artifact11 must independently have OFFLINE_ARTIFACT_QUALIFIED_NOT_DEPLOYED, only its two actual postcheck commands0/Job0/future0, outer child0/bootstrap0/Job0 without forced cleanup, and exact SPEC nonce/SHA plus scheduler instances0/last_result0/absent_after. Parent spawn wait/exit fields never substitute for terminal fields.",
+    "The actual09 and11 retained snapshot identities must match. The11 NoWork command must use original build cwd/-f attempt07 snapshot and exact three production targets; the second command must be the original library /LIST. There is no configure, compilation, repeated fixture, UAC, settings or Game path.",
+    "Original08 build-only facts, nine full EXE SHA/FileID/bytes identities and original manifest remain exact across build08,09 and11. All original build and09 backlink references must match; failed08 administrative future_writes:null stays null.",
+    "The six-symbol artifact record is finite: exact five bridge code names plus XarRefillCoreCarrier12004 as explicit non-callable DATA within the .data RVA interval, outside the five code RVAs and linked to the original map/source record. It is not a generic allow-six-exports rule.",
+    "Three unique native component source/object/archive-payload tuples must match bytes/SHA and source704 freeze rows. DLL pin must equal artifact11, match the new target metadata, differ from Native29 and, in production, equal the fixed closed39350b artifact.",
+    "Preserve original Native29 base freeze/native/card fields, exact machine, fresh review time, source704, same supported CK3 1.20.0.4 x64 EXE SHA/size/version, wire envelope/layout and explicit compatibility/source references. Cross-build or ABI changes are not admitted.",
+    "The existing FrozenExporterAdapterV1 still executes the exact22964-byte original exporter validator and inverse-guarded metadata seams. Native29 Host/tree/NTFS/capacity/source validation is unchanged. New JSON qualification and original admission both precede its first mkdir.",
+    "New manifests explicitly retain qualification_kind artifact_plus_closed09_functional_only, defender_registration_pending:true and os_qualification:UNKNOWN. runtime_admitted:false, actual_loaded_provider_issued:false and H:NOTRUN remain explicit. Metadata export does not grant a cold switch or Native loaded adoption.",
+    "All reads in the new entry use the existing bounded2MiB strict pinned JSON reader and real Path handling. Synthetic fixtures return the same metadata type with source_fixture:true; the existing adapter refuses their deployment."
+  ],
+  "actual_facts_reused_without_requalification": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_source": "Earlier authorized independent RAM reads; no new binary or whole-R scan in this source package.",
+    "functional09_result": {
+      "bytes": 44290,
+      "sha256": "1459f738ea8961abc98249043c75d2c28eac51bd052d3bd94d247792c3207ab1"
+    },
+    "functional09_status": "FAILED; only nine actual0/Job0 plus layout0 are reusable subfacts",
+    "artifact11_result": {
+      "bytes": 13662,
+      "sha256": "95c29ce88b131f2f480b4a3ac83d4ee5f76ea8975be8b5f72a07849a1a166f67"
+    },
+    "artifact11_delivery": {
+      "bytes": 6167,
+      "sha256": "ee1d97afec5e31a8137a6728110830d1da340032272a4c283f676fd397d4abb8"
+    },
+    "artifact11_summary": {
+      "path": "docs/ck3-native-ai/evidence/native30-artifact11-actual-closed-2026-10-20.json",
+      "bytes": 8828,
+      "sha256": "ed443ce2c1c7e5659be3e7fd870becc497c0c986389d25721be6f4d82a7a1905"
+    },
+    "old08B": "FAILED_OR_UNKNOWN/admin cancellation1223/future null remains; no registration success asserted",
+    "old10": "FAILED before spawn; inner owned/future null remains; no artifact credit",
+    "OS_qualification": "UNKNOWN",
+    "Native30_loaded": "NOTRUN",
+    "H": "NOTRUN"
+  },
+  "software_qualification": {
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 -m pytest tools/g2_saved_campaign/test_native30_functional_artifact_transition_v1.py -q -p no:cacheprovider",
+    "result": "6 passed, 13 subtests passed in 0.78s",
+    "tool_chunk": "00574d",
+    "cases": [
+      "Complete RAM09-failed subfacts plus11-artifact recipe; preserve originals and unknown OS; synthetic admission/deployment reject.",
+      "Reject renamed09 wholePASS, unrelated failure, failing fixture node, erased parent1 or repaired08 admin null.",
+      "Reject11 failure, nonzero owner Job, non-absent Task, nine EXE FileID drift, archive payload mismatch or callable DATA.",
+      "Require original Native29 and same EXE/layout/unknown OS metadata.",
+      "Separate real four-reference loader and defaultOFF zero-I/O export.",
+      "Read back unchanged legacy exporter/adapter/08B/common bytes and frozen actual09/11 producer pins."
+    ],
+    "fixture_storage": "In-memory generated source_fixture:true metadata only; no new fixture files, Native binaries, children, Tasks or UAC.",
+    "old_protocol_tests_rerun": 0,
+    "old_game_matrices_rerun": 0,
+    "actual_export_outputs": 0
+  },
+  "review": {
+    "reviewer": "/root/g2_m1_entities",
+    "scope": "Independent source-only consumer/entry and already closed small09/11 records, no tests, big artifacts or runtime. Initial review found no substantive blocker; final pins/delta/proof check requested separately.",
+    "M3": "Assigned Source23 Rootwriter priority; this package does not wait on a duplicate M3 review."
+  },
+  "storage": {
+    "source_card": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/SOURCE22-M7-COMPOSER96KiB-CONSUMER64KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2106,
+      "sha256": "41e54516937b8f0f7438439b844f6bfb886eaa1efc6709b405f645b1d1e3b79d"
+    },
+    "hard_bytes": 65536,
+    "accounting": "Complete new pure module + entry + test + this proof. No legacy shared leaf changed; unchanged references borrow their already-retained package. No unknown slack/refund/physical-release credit.",
+    "source_bytes": 46439,
+    "proof_bytes": 9814,
+    "complete_gross_bytes": 56253,
+    "scratch_bytes": 0,
+    "D_or_R_asset_writes": 0
+  },
+  "unchanged_shared_sources": {
+    "native30_two_stage_export_contract_v1.py": "a854db9bf02ac98f5b1eb0b1b498cc4c93ca4e0a48597bc09c22b05e7c5d5c17",
+    "native29_to30_export_contract_v1.py": "d348b59cdf68a2da0928ccfc4034006c0c42618fe341ad0ca1c7dac1bbfa7554",
+    "export_native30_immutable_sdk_views_v1.py": "90ccd7a5c12d90101217391857d793715fdaebcb98a3e374e6a5d4b3776f9369",
+    "native30_export_adapter_v1.py": "2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298",
+    "export_immutable_sdk_views_v1.py": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+  },
+  "operations": {
+    "new_EXE_build_or_execution": 0,
+    "Task_UAC_settings_Game_RPC": 0,
+    "DLL_lib_map_body_reads": 0,
+    "whole_R_scan": 0,
+    "Git_writes_stage_commit_push": 0,
+    "actual_cold_or_Source23_tree": 0,
+    "NativeTransition_runtime_adoption": 0,
+    "future_writes_after_freeze": 0
+  }
+}

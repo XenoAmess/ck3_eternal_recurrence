@@ -1,0 +1,200 @@
+{
+  "schema": "native30-artifact11-success-closed/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T23:15:05.875283+00:00",
+  "status": "OFFLINE_ARTIFACT_QUALIFIED_NOT_DEPLOYED",
+  "result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\RESULT.json",
+    "bytes": 13662,
+    "sha256": "95c29ce88b131f2f480b4a3ac83d4ee5f76ea8975be8b5f72a07849a1a166f67"
+  },
+  "delivery": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\production-delivery.json",
+    "bytes": 6167,
+    "sha256": "ee1d97afec5e31a8137a6728110830d1da340032272a4c283f676fd397d4abb8"
+  },
+  "spec": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\SPEC.json",
+    "bytes": 2052,
+    "sha256": "91005c55efad447e20d0c7339700948f1ba54789ad6b6b418cf0b7e2b45a64ab"
+  },
+  "outer_closed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\CLOSED.json",
+    "bytes": 744,
+    "sha256": "2f9439efb6b510692e4562cf50111bb3b9771e6669b73b89364bd36c8f5bec2d"
+  },
+  "unregister": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\UNREGISTER.json",
+    "bytes": 978,
+    "sha256": "03bcc51fda82875b47ef46b6c07f80f83e35f07674b0e02df6b9ac0525710a1b"
+  },
+  "stage_stdout": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\stage.stdout.log",
+    "bytes": 534,
+    "sha256": "dfd259141039862c109ec58b0b8232ee4d9a66a8351e36ba7d2842f0bf46a76a"
+  },
+  "inventory_stat_only": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\FILES-CLOSED.json",
+    "bytes": 1374419,
+    "producer_sha256_not_rehashed": "9e4cfd591aa7226a1863707cd64e0b620a00566f2ff698ee1e057fe64e5999ab"
+  },
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "DLL": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_bridge.dll",
+    "bytes": 19469312,
+    "sha256": "39350bd933549ff11e7a79e1b1e0340664bf87ee129a2aa8cdb7b0e9be269f56"
+  },
+  "exports_and_data": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck\\exports-and-data.json",
+    "bytes": 1783,
+    "sha256": "073073c0d63d29f90e319726b4617363f8caa400102b17f7d459f9e92a680db7"
+  },
+  "original09": {
+    "result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt09-functional\\RESULT.json",
+      "bytes": 44290,
+      "sha256": "1459f738ea8961abc98249043c75d2c28eac51bd052d3bd94d247792c3207ab1"
+    },
+    "summary": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\FINAL-CLOSED-SUMMARY.json",
+      "bytes": 7610,
+      "sha256": "a613819afd6e632bd097e21a703ed52d4bb4c56ee29eb390fcca972904c88bc1"
+    },
+    "spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\owner-spec\\SPEC.json",
+      "bytes": 2042,
+      "sha256": "51e859df3a884904a0b0fdda66275d0065e2d07b744b6a151a725c6de673e4e4"
+    },
+    "exports": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt09-functional\\exports.log",
+      "bytes": 951,
+      "sha256": "bab03b66414f42178267be01dc6ce562b121b80cc7416bb4d3611ec298f6f260"
+    },
+    "closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "73d428bd16f972b4228f6ac23709490fe34ea3ed893693b529524a1ea6774318"
+    },
+    "unregister": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\UNREGISTER.json",
+      "bytes": 980,
+      "sha256": "921fe6d69bb07ef60134388cb3ab6d8b759a2f4b8b65fe045b0b8fda05013833"
+    }
+  },
+  "actual_postcheck_phases": [
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+        "-C",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build",
+        "-f",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\production-manifest.ninja",
+        "-n",
+        "-d",
+        "explain",
+        "xar_ck3_bridge",
+        "xar_ck3_12002_runtime",
+        "xar_bridge_protocol"
+      ],
+      "start_utc": "2026-10-19T23:13:42.417730+00:00",
+      "end_utc": "2026-10-19T23:13:44.532634+00:00",
+      "returncode": 0,
+      "owned_active_after": 0
+    },
+    {
+      "argv": [
+        "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\lib.exe",
+        "/LIST",
+        "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_12002_runtime.lib"
+      ],
+      "start_utc": "2026-10-19T23:13:45.857132+00:00",
+      "end_utc": "2026-10-19T23:13:47.931881+00:00",
+      "returncode": 0,
+      "owned_active_after": 0
+    }
+  ],
+  "nine_runs_reused_not_reexecuted": 9,
+  "prior_failures_requalified": false,
+  "original_inner_owned": 0,
+  "original_inner_future_writes": 0,
+  "stage_close_allocation_asof": 739290824,
+  "whole_R_final_actual": null,
+  "stage_plus_full_owner_cap_conservative": 739356360,
+  "owner_files_before_this_summary": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\close_summary.py",
+      "bytes": 5385,
+      "sha256": "cae02a351ea820a6ddf34ebd95c148cdf32a4851773d6fe0c67421e50eb9c5d9",
+      "allocation_bytes": 8192
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\INSPECT-CLOSED.json",
+      "bytes": 953,
+      "sha256": "202752fcd747ad5dd8e4441d42882d54a41391d1c5d2a1804159d32c0d38349f",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\CLOSED.json",
+      "bytes": 744,
+      "sha256": "2f9439efb6b510692e4562cf50111bb3b9771e6669b73b89364bd36c8f5bec2d",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\SPEC.json",
+      "bytes": 2052,
+      "sha256": "91005c55efad447e20d0c7339700948f1ba54789ad6b6b418cf0b7e2b45a64ab",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\stage.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "allocation_bytes": 0
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\stage.stdout.log",
+      "bytes": 534,
+      "sha256": "dfd259141039862c109ec58b0b8232ee4d9a66a8351e36ba7d2842f0bf46a76a",
+      "allocation_bytes": 536
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec\\STARTED.json",
+      "bytes": 1320,
+      "sha256": "d76c9040dd86f05d251458b1b4bb15f5514a30b63331e048b562dae63e90948b",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\READBACK.json",
+      "bytes": 958,
+      "sha256": "d1ec888683351c44bb506ea24dd7e003838f51a3916061e04cf30acd9a14f72d",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\REGISTER.json",
+      "bytes": 959,
+      "sha256": "714d676409c389847aab97f7780e4ac5e35645a9f7139bd186eb15f7d7577f25",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\RUN.json",
+      "bytes": 1013,
+      "sha256": "8b250440da290447f87263d0c7e909d00aff4a2eaeaa68f42acd60f2dad8a628",
+      "allocation_bytes": 4096
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\UNREGISTER.json",
+      "bytes": 978,
+      "sha256": "03bcc51fda82875b47ef46b6c07f80f83e35f07674b0e02df6b9ac0525710a1b",
+      "allocation_bytes": 4096
+    }
+  ],
+  "owner_cap": 65536,
+  "owner_future_writes_after_summary": 0,
+  "outerJob0": true,
+  "Task_absent": true,
+  "project_EXE_build_UAC_Game_calls": 0,
+  "Defender_pending": true,
+  "os_qualification": "UNKNOWN",
+  "deployed": false,
+  "Game_camera_H": "NOTRUN"
+}

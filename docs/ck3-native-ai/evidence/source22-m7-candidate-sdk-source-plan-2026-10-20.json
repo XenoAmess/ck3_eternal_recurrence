@@ -1,0 +1,856 @@
+{
+  "schema": "xar.source22.minimal-m7-candidate-sdk/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T23:24:15.050950+00:00",
+  "machine_source": "py -3 -B tools/ck3_live_run_id.py machine; actual tool c707cc; Source22 freeze agrees; no Game/runtime observation",
+  "status": "RAM_SOURCE_CANDIDATE_DEFAULT_OFF_NOT_CANONICAL_NOT_DEPLOYED",
+  "base": {
+    "freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C22.json",
+      "bytes": 449181,
+      "sha256": "07fe7edd6bf76cf7a3c2c438de9d13178ced61c00f1d701b748745f4bc33e443"
+    },
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src18",
+    "business_commit": "0722bef48d412ed5e49d0109177493846d988745",
+    "files": 1449,
+    "source_bytes": 59095358,
+    "rows": {
+      "bytes": 372481,
+      "sha256": "7290b3370b64335b27ff375713dd92de331b0ca114bf99440014d40404593a85"
+    }
+  },
+  "output": {
+    "files": 1456,
+    "source_bytes": 59198354,
+    "canonical_rows_JSON": {
+      "bytes": 374182,
+      "sha256": "f16995df275525a39ceacf3825f38f5f9a508a67970d59e83cb3bb43e7f7fdb4"
+    },
+    "new": 7,
+    "changed_existing": 5,
+    "unchanged_original_rows": 1444,
+    "changed_source_logical_bytes_each": 2009826,
+    "prospective_dual4096cluster_data_upper": 4055040
+  },
+  "delta": [
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/campaign_root_context_contract.py",
+        "bytes": 55613,
+        "sha256": "34232dd34a1c88cda3d63962715e596eb9e50f2fa917fd5db6dec969d409c73d",
+        "git_blob_sha1": "106ad2007c6f9929246f87cf9c8c89227db6342b",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/campaign_root_context_contract.py",
+        "bytes": 56460,
+        "sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3",
+        "git_blob_sha1": "624f818ff8d020ce4d9114ff384bcfdcd99dd235",
+        "git_mode": "100644"
+      },
+      "net_bytes": 847
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1640335,
+        "sha256": "e15fdf47aca82572ff0663d33511e566e9ed6e19a46d22500722058b387f34e2",
+        "git_blob_sha1": "cc8e0c10d4d8d31f4cc7dd4f903d8a6c79b4223e",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1641945,
+        "sha256": "06a4ce9c8020f792c611287dcd5c03358c92c819190ac077e9f443e8dae8dcaa",
+        "git_blob_sha1": "8cfbf6c66714be9221f0ea6b2bf4fa7aa5b70ef5",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1610
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+        "bytes": 21503,
+        "sha256": "a935b8912fd553058b10e7307c04e9103669279d723a0caeff68ac9acd4ac563",
+        "git_blob_sha1": "0da95dbe95b5e8cdcec90c36a878d6a1517326db",
+        "git_mode": "100644"
+      },
+      "net_bytes": 21503
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+        "bytes": 6755,
+        "sha256": "9b0e5e3528f68777979afd1742cd4d525051ad0e9b16225d7175d4a29474827e",
+        "git_blob_sha1": "1858e8d84f13e5a12896e8394fd1fb8fad37b11d",
+        "git_mode": "100644"
+      },
+      "net_bytes": 6755
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+        "bytes": 15954,
+        "sha256": "3b8bd840df7b3d6af7326f388363729e909c88355d0649f892189d70ae390695",
+        "git_blob_sha1": "5e176de8a7c66925b6ee44a0934b62fb18292305",
+        "git_mode": "100644"
+      },
+      "net_bytes": 15954
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+        "bytes": 9299,
+        "sha256": "10fdcb40766c913671c797e848d078dad7f4f4ffdd87cec80b9473b26fe53d7e",
+        "git_blob_sha1": "889ceffddab124edcc63345820b6f61d8b19fefc",
+        "git_mode": "100644"
+      },
+      "net_bytes": 9299
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+        "bytes": 20371,
+        "sha256": "fd6f581ce13c22e18eff50729d9dc11a95e8b6b9a861fd6e33244a341911731b",
+        "git_blob_sha1": "7bf0604a7f3c932147fee19a59c712c47eb64cb9",
+        "git_mode": "100644"
+      },
+      "net_bytes": 20371
+    },
+    {
+      "relative": "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+        "bytes": 12841,
+        "sha256": "69977b160964c526187e3ae4612d2da670e6af5e6f76acc5fb2ccdfd4570342a",
+        "git_blob_sha1": "883bd9703f21dae97c3608e0309189225aecf69f",
+        "git_mode": "100644"
+      },
+      "net_bytes": 12841
+    },
+    {
+      "relative": "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+        "bytes": 20001,
+        "sha256": "9d0843acfceb997c46e623e30753c241b1a3f9855210ffdee664c3d4fb2005a0",
+        "git_blob_sha1": "9af8f5bee77c82907802e6c925dacc413120d24e",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+        "bytes": 20197,
+        "sha256": "a1af05519d8b514ee91a7a4a7d037cf5da006e05bb1bdfdb32185ddb7a65f071",
+        "git_blob_sha1": "5ed2d6458ed4f393aeac0a92f4ee15f91eff9ed1",
+        "git_mode": "100644"
+      },
+      "net_bytes": 196
+    },
+    {
+      "relative": "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+        "bytes": 11877,
+        "sha256": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e",
+        "git_blob_sha1": "946334ec9ea9190749e1e76acf2ae4591864fba2",
+        "git_mode": "100644"
+      },
+      "net_bytes": 11877
+    },
+    {
+      "relative": "xar_autoplayer/runtime.py",
+      "before": {
+        "relative": "xar_autoplayer/runtime.py",
+        "bytes": 169403,
+        "sha256": "bfaadaaedf3d499339b5223d722930b20644fc090bc1b8a04f83e0eb8d5b2726",
+        "git_blob_sha1": "b749397ff27d1aa6be97a68cf960fc88de0b7f94",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/runtime.py",
+        "bytes": 170719,
+        "sha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c",
+        "git_blob_sha1": "caf3da6c61c9831bbaf441e818b89f9d241532dd",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1316
+    },
+    {
+      "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+        "bytes": 21478,
+        "sha256": "c0efbfa6474aee2fde033953a7a0220aa5a74a4a9484b1daa4ed32d13fa8b0e4",
+        "git_blob_sha1": "7809807e6bfbf0c9be1fdef7ac5793f8fdf38df8",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+        "bytes": 21905,
+        "sha256": "9de01d4f0d1c45d0c28a964d03f41abaad36c1c18fad2fec3ba561361a78583b",
+        "git_blob_sha1": "975a95df7bf7243484bac1c54ea57c34d82821a5",
+        "git_mode": "100644"
+      },
+      "net_bytes": 427
+    }
+  ],
+  "exact_M7_operations": [
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "from_commit": "777c562d43746eea681b7aee6c372208f9669343",
+      "to_commit": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+      "patch": {
+        "bytes": 2449,
+        "sha256": "1dd21bd9ca72f4155e6a3eecc0cedb951adea348b6a9e0d76218a78108f8bb06"
+      },
+      "hunks": 4,
+      "entire_leaf_inverse": true
+    },
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "from_commit": "777c562d43746eea681b7aee6c372208f9669343",
+      "to_commit": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+      "patch": {
+        "bytes": 1536,
+        "sha256": "aef06908cc7330d80b4f2d86aa8fbcc8f220ab11ece769d8a1bf0d5455b2532a"
+      },
+      "hunks": 1,
+      "entire_leaf_inverse": true
+    },
+    {
+      "relative": "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "from_commit": "777c562d43746eea681b7aee6c372208f9669343",
+      "to_commit": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+      "patch": {
+        "bytes": 884,
+        "sha256": "6965ee00f89ab073f39b434646ad0ab7f1a35a029ca192d102ce9a0bf4335ed3"
+      },
+      "hunks": 1,
+      "entire_leaf_inverse": true
+    },
+    {
+      "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "from_commit": "777c562d43746eea681b7aee6c372208f9669343",
+      "to_commit": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+      "patch": {
+        "bytes": 1062,
+        "sha256": "35d3ed224459ab76ad530acce8f5d405c9f0b74d889bb7c965cbfb4df99fe6f1"
+      },
+      "hunks": 1,
+      "entire_leaf_inverse": true
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "from_commit": "ddf7dcc30543088d4175f712ee39dfb81218a0c3",
+      "to_commit": "6dbcf3e957a2d59fd072aeed2a7a6ec52b312ac6",
+      "patch": {
+        "bytes": 2600,
+        "sha256": "103f4d2f12862379c01985b7a8e0d1f42e50887059caaa38b90b031e402c7b38"
+      },
+      "hunks": 4,
+      "entire_leaf_inverse": true
+    },
+    {
+      "relative": "xar_autoplayer/runtime.py",
+      "from_commit": "ddf7dcc30543088d4175f712ee39dfb81218a0c3",
+      "to_commit": "6dbcf3e957a2d59fd072aeed2a7a6ec52b312ac6",
+      "patch": {
+        "bytes": 2878,
+        "sha256": "3de3f436befa987fc63dcc5719e8a329e4f8ebd34d3473976b1d7f7eaa31228a"
+      },
+      "hunks": 4,
+      "entire_leaf_inverse": true
+    },
+    {
+      "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "from_commit": "ddf7dcc30543088d4175f712ee39dfb81218a0c3",
+      "to_commit": "6dbcf3e957a2d59fd072aeed2a7a6ec52b312ac6",
+      "patch": {
+        "bytes": 1298,
+        "sha256": "03dac43c42ce0c0668a409167bc6f49da791149931405aedb293754548aa99e5"
+      },
+      "hunks": 1,
+      "entire_leaf_inverse": true
+    }
+  ],
+  "Driver_changed_functions": [
+    "NativeHeadlessGameplayDriver.__init__",
+    "NativeHeadlessGameplayDriver._adopt_bridge_session",
+    "NativeHeadlessGameplayDriver._execute_campaign_root_context_v1_query",
+    "NativeHeadlessGameplayDriver._ingest",
+    "NativeHeadlessGameplayDriver._invalidate_player_heir_provider_v1",
+    "NativeHeadlessGameplayDriver._mark_bridge_disconnected_v1",
+    "NativeHeadlessGameplayDriver.close"
+  ],
+  "Runtime_changed_functions": [
+    "_apply_pre_native_resume_v1",
+    "launch"
+  ],
+  "entire_each_existing_leaf_inverse": true,
+  "M7_then_WAL_equals_WAL_then_M7_entire_Driver": true,
+  "WAL_inverse_leaves_exact_a0": {
+    "bytes": 1638219,
+    "sha256": "b26db9389bb5e015e5607122c3d0eb8cf66fe828df0e2036419683e3cd6f8eb1"
+  },
+  "non_owned_Driver_function_ASTs_unchanged": true,
+  "all1449_source_bodies_verified": true,
+  "static_internal_dependency_closure": {
+    "xar_autoplayer/bridge/campaign_root_context_contract.py": [
+      "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "xar_autoplayer/bridge/version_identity.py"
+    ],
+    "xar_autoplayer/bridge/native_driver.py": [
+      "xar_autoplayer/bridge/active_combat_retreat_contract.py",
+      "xar_autoplayer/bridge/active_scheme_sway_completion_execution_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_completion_invalidation_reason_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_completion_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_completion_termination_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_formal_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_outcome_opinion_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_private_transport.py",
+      "xar_autoplayer/bridge/active_scheme_sway_stop_private_transport.py",
+      "xar_autoplayer/bridge/activity_feast_guest_candidate_private_transport.py",
+      "xar_autoplayer/bridge/activity_feast_stage5_start_private_transport.py",
+      "xar_autoplayer/bridge/activity_planner_diag_private_transport.py",
+      "xar_autoplayer/bridge/activity_stage5_feast_full_cost_private_transport.py",
+      "xar_autoplayer/bridge/actor_cached_succession_private_v1.py",
+      "xar_autoplayer/bridge/actual_contact_contract.py",
+      "xar_autoplayer/bridge/application_main_pump_readiness.py",
+      "xar_autoplayer/bridge/appointment_window_contract.py",
+      "xar_autoplayer/bridge/army_captured_target_land_supply_inputs_contract.py",
+      "xar_autoplayer/bridge/army_commander_assignment.py",
+      "xar_autoplayer/bridge/army_commander_candidates.py",
+      "xar_autoplayer/bridge/army_county_entry_preview_condition_contract.py",
+      "xar_autoplayer/bridge/army_gathering_research_sampling_contract.py",
+      "xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "xar_autoplayer/bridge/army_query_history_store.py",
+      "xar_autoplayer/bridge/army_query_timing.py",
+      "xar_autoplayer/bridge/army_strengths_manager_shared_wire.py",
+      "xar_autoplayer/bridge/army_strengths_profile_contract.py",
+      "xar_autoplayer/bridge/assault_holding_observation_v1.py",
+      "xar_autoplayer/bridge/aub_business_state_contract.py",
+      "xar_autoplayer/bridge/aub_policy_options_contract.py",
+      "xar_autoplayer/bridge/auto_army_core_validation_v1.py",
+      "xar_autoplayer/bridge/battle_control_contract.py",
+      "xar_autoplayer/bridge/battle_person_six_stage_capture_12004.py",
+      "xar_autoplayer/bridge/battle_reader_exact_clock_speed_v1.py",
+      "xar_autoplayer/bridge/battle_reader_watch_v1.py",
+      "xar_autoplayer/bridge/battle_reinforcement_assignment_contract.py",
+      "xar_autoplayer/bridge/battle_terminal_transition_contract.py",
+      "xar_autoplayer/bridge/battle_transition_contract.py",
+      "xar_autoplayer/bridge/call_ally_to_war_private_action_v1.py",
+      "xar_autoplayer/bridge/campaign_deadline_transport_v1.py",
+      "xar_autoplayer/bridge/campaign_deadline_v1.py",
+      "xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "xar_autoplayer/bridge/child_education_focus_private_v1.py",
+      "xar_autoplayer/bridge/clock_observation_timing_v1.py",
+      "xar_autoplayer/bridge/coat_of_arms_source_export_contract.py",
+      "xar_autoplayer/bridge/coat_of_arms_source_probe_contract.py",
+      "xar_autoplayer/bridge/combat_contract.py",
+      "xar_autoplayer/bridge/combat_history_superseded_v1.py",
+      "xar_autoplayer/bridge/combat_phase_contract.py",
+      "xar_autoplayer/bridge/combat_phase_event_trace_contract.py",
+      "xar_autoplayer/bridge/confucian_challenger_graph_v1.py",
+      "xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+      "xar_autoplayer/bridge/core_frame_contract.py",
+      "xar_autoplayer/bridge/council_assign_councillor_action_contract.py",
+      "xar_autoplayer/bridge/council_composition_candidates_contract.py",
+      "xar_autoplayer/bridge/council_private_transport_v1.py",
+      "xar_autoplayer/bridge/county_conversion_task_private_action_v1.py",
+      "xar_autoplayer/bridge/current_actor_stress_adjustment_contract.py",
+      "xar_autoplayer/bridge/current_first_heir_relationship_private_transport.py",
+      "xar_autoplayer/bridge/death_succession_modal_private_transport.py",
+      "xar_autoplayer/bridge/declaration_contract.py",
+      "xar_autoplayer/bridge/defender_dejure_exit_terms_v1.py",
+      "xar_autoplayer/bridge/driver.py",
+      "xar_autoplayer/bridge/driver_state_history_json.py",
+      "xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "xar_autoplayer/bridge/education_payload_materializer_private_v1.py",
+      "xar_autoplayer/bridge/epidemic_recovery_private_transport.py",
+      "xar_autoplayer/bridge/epidemic_treatment_private_transport.py",
+      "xar_autoplayer/bridge/event_contract.py",
+      "xar_autoplayer/bridge/event_window_context_contract.py",
+      "xar_autoplayer/bridge/exact_clock_failure_diagnostic_v1.py",
+      "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "xar_autoplayer/bridge/explicit_war_surrender_v1.py",
+      "xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "xar_autoplayer/bridge/faction_gift_private_transport_v1.py",
+      "xar_autoplayer/bridge/family_obligations_private_transport.py",
+      "xar_autoplayer/bridge/frontend_applied_game_rules_contract.py",
+      "xar_autoplayer/bridge/frontend_fixture_scenario_start_v1.py",
+      "xar_autoplayer/bridge/frontend_fixture_start_contract.py",
+      "xar_autoplayer/bridge/frontend_game_rules_contract.py",
+      "xar_autoplayer/bridge/frontend_game_rules_control_contract.py",
+      "xar_autoplayer/bridge/frontend_gui_route_contract.py",
+      "xar_autoplayer/bridge/government_runtime_adapter_private_transport.py",
+      "xar_autoplayer/bridge/grant_title_picker_v1.py",
+      "xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+      "xar_autoplayer/bridge/gui_window_tree_contract.py",
+      "xar_autoplayer/bridge/h2743_exit_readonly_transport.py",
+      "xar_autoplayer/bridge/h2743_preaction_existing_truce_v1.py",
+      "xar_autoplayer/bridge/h3937_date_hold.py",
+      "xar_autoplayer/bridge/hire_holy_order.py",
+      "xar_autoplayer/bridge/hire_mercenary.py",
+      "xar_autoplayer/bridge/holy_site_adoption_detail_private_transport.py",
+      "xar_autoplayer/bridge/holy_site_creation_create_once_private_transport.py",
+      "xar_autoplayer/bridge/holy_site_decision_action_v1.py",
+      "xar_autoplayer/bridge/holy_site_decision_cooldown_private_transport.py",
+      "xar_autoplayer/bridge/ingame_decision_item_action_contract.py",
+      "xar_autoplayer/bridge/ingame_decision_item_contract.py",
+      "xar_autoplayer/bridge/ingame_decision_outcome_contract.py",
+      "xar_autoplayer/bridge/ingame_decision_predispatch_contract.py",
+      "xar_autoplayer/bridge/ingame_decisions_open_contract.py",
+      "xar_autoplayer/bridge/ingame_military_open_12004.py",
+      "xar_autoplayer/bridge/ingame_ui_contract.py",
+      "xar_autoplayer/bridge/loaded_feature_manifest_contract.py",
+      "xar_autoplayer/bridge/m5_war_primary_current_private_transport.py",
+      "xar_autoplayer/bridge/mandatory_choice_transport_v1.py",
+      "xar_autoplayer/bridge/marriage_candidate_alliance_private_transport.py",
+      "xar_autoplayer/bridge/marriage_contract.py",
+      "xar_autoplayer/bridge/marriage_matchmaking_private_transport.py",
+      "xar_autoplayer/bridge/mercenary_history_projection_v1.py",
+      "xar_autoplayer/bridge/military_reinforcement_12004.py",
+      "xar_autoplayer/bridge/minor_religious_war_defenders_private_transport.py",
+      "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "xar_autoplayer/bridge/nonwar_private_build.py",
+      "xar_autoplayer/bridge/normal_exit_map_driver_v1.py",
+      "xar_autoplayer/bridge/normal_exit_pending_observer_v1.py",
+      "xar_autoplayer/bridge/observed_heir_marriage_private_action_v1.py",
+      "xar_autoplayer/bridge/ordinary_interaction_contract.py",
+      "xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
+      "xar_autoplayer/bridge/persistence_growth_timing_v1.py",
+      "xar_autoplayer/bridge/player_child_marriage_subject_private_transport.py",
+      "xar_autoplayer/bridge/player_child_marriage_value_private_transport.py",
+      "xar_autoplayer/bridge/player_child_matrilineal_private_action_v1.py",
+      "xar_autoplayer/bridge/player_claims_contract.py",
+      "xar_autoplayer/bridge/player_clergy_appointment_private_transport.py",
+      "xar_autoplayer/bridge/player_control_driver_v1.py",
+      "xar_autoplayer/bridge/player_default_raise.py",
+      "xar_autoplayer/bridge/player_event_trait_membership_contract.py",
+      "xar_autoplayer/bridge/player_faction_alerts_contract.py",
+      "xar_autoplayer/bridge/player_head_of_faith_gold_context_private_transport.py",
+      "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "xar_autoplayer/bridge/player_holy_order_context_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_order_loan_context_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_order_selected_title_terms_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_site_creation_context_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_site_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_site_relic_action_context_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_site_relic_context_private_transport.py",
+      "xar_autoplayer/bridge/player_holy_site_relic_permissions_private_transport.py",
+      "xar_autoplayer/bridge/player_lifestyle_private_transport_v1.py",
+      "xar_autoplayer/bridge/player_ordinary_holy_war_declaration_context_private_transport.py",
+      "xar_autoplayer/bridge/player_prisoner_collection_private_transport.py",
+      "xar_autoplayer/bridge/player_prisoner_ransom_private_action.py",
+      "xar_autoplayer/bridge/player_religion_ai_reform_inputs_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_context_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_conversion_choices_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_conversion_inputs_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_conversion_outcome_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_conversion_private_action_v1.py",
+      "xar_autoplayer/bridge/player_religion_conversion_reasons_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_conversion_terms_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_doctrine_catalogue_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_doctrine_knowledge_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_doctrines_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_draft_doctrine_choices_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_draft_groups_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_draft_resource_costs_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_draft_tenet_choices_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_hostility_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_numeric_special_parameters_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_personal_parameters_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_reform_context_private_transport.py",
+      "xar_autoplayer/bridge/player_religion_tenets_private_transport.py",
+      "xar_autoplayer/bridge/player_repentance_context_private_transport.py",
+      "xar_autoplayer/bridge/player_rite_governance_private_transport.py",
+      "xar_autoplayer/bridge/player_rite_members_private_transport.py",
+      "xar_autoplayer/bridge/player_seek_indulgences_terms_private_transport.py",
+      "xar_autoplayer/bridge/player_truce_expiry_contract.py",
+      "xar_autoplayer/bridge/prewar_force_coalition_transport.py",
+      "xar_autoplayer/bridge/prewar_force_coalition_v2_transport.py",
+      "xar_autoplayer/bridge/prisoner_release_action_private_12004.py",
+      "xar_autoplayer/bridge/prisoner_war_retention.py",
+      "xar_autoplayer/bridge/private_auto_scalar_ab_control_v1.py",
+      "xar_autoplayer/bridge/projected_contact_contract.py",
+      "xar_autoplayer/bridge/public_unit_contract.py",
+      "xar_autoplayer/bridge/raiktor_actual_truce_expiry_contract.py",
+      "xar_autoplayer/bridge/raiktor_surrender_public_aggregate.py",
+      "xar_autoplayer/bridge/raiktor_surrender_session_binding_contract.py",
+      "xar_autoplayer/bridge/raiktor_war_bound_loss_cleanup_contract.py",
+      "xar_autoplayer/bridge/raiktor_war_bound_regiment_contract.py",
+      "xar_autoplayer/bridge/realm_law_formal_private_transport.py",
+      "xar_autoplayer/bridge/realm_law_paused_private_transport.py",
+      "xar_autoplayer/bridge/regular_maa_create_private_action_v1.py",
+      "xar_autoplayer/bridge/relic_action_private_transport.py",
+      "xar_autoplayer/bridge/religion_presentation_ui_contract.py",
+      "xar_autoplayer/bridge/rite_creation_action_private_v1.py",
+      "xar_autoplayer/bridge/route_contact_window_contract.py",
+      "xar_autoplayer/bridge/route_contact_window_projection_v1.py",
+      "xar_autoplayer/bridge/session_queue.py",
+      "xar_autoplayer/bridge/set_played_character_contract.py",
+      "xar_autoplayer/bridge/settlement_contract.py",
+      "xar_autoplayer/bridge/steward_develop_county_contract.py",
+      "xar_autoplayer/bridge/succession_binding_refresh_wal_v1.py",
+      "xar_autoplayer/bridge/succession_expectation_invalidation_v1.py",
+      "xar_autoplayer/bridge/succession_transition_contract.py",
+      "xar_autoplayer/bridge/succession_warm_publication_refresh_v1.py",
+      "xar_autoplayer/bridge/tactical_pause_boundary_diagnostics_v1.py",
+      "xar_autoplayer/bridge/timeline_blocker_private_transport.py",
+      "xar_autoplayer/bridge/title_holder_contract.py",
+      "xar_autoplayer/bridge/title_map_navigation_contract.py",
+      "xar_autoplayer/bridge/title_own_laws_contract.py",
+      "xar_autoplayer/bridge/version_identity.py",
+      "xar_autoplayer/bridge/war31_one_shot_surrender.py",
+      "xar_autoplayer/bridge/war_cash_private_transport_v1.py",
+      "xar_autoplayer/bridge/war_contract.py",
+      "xar_autoplayer/bridge/war_daily_watch_v1.py",
+      "xar_autoplayer/bridge/war_declaration_continuity_v1.py",
+      "xar_autoplayer/bridge/war_declared_overview_contract.py",
+      "xar_autoplayer/bridge/war_declared_overview_transport.py",
+      "xar_autoplayer/bridge/war_entry_contract.py",
+      "xar_autoplayer/bridge/war_exit_terms_contract.py",
+      "xar_autoplayer/bridge/war_occupation_targets_contract.py",
+      "xar_autoplayer/bridge/war_results_window_contract.py",
+      "xar_autoplayer/bridge/war_results_window_transport.py",
+      "xar_autoplayer/bridge/white_control_action_driver.py",
+      "xar_autoplayer/bridge/white_numeric_control_action_driver.py",
+      "xar_autoplayer/bridge/white_player_business_variables_contract.py",
+      "xar_autoplayer/bridge/white_rendered_text_contract.py",
+      "xar_autoplayer/bridge/zhongguo_ai_owned_case_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_b1_cycle_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_b2_pip_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_career_hc_workforce_postcondition_contract.py",
+      "xar_autoplayer/bridge/zhongguo_case_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_compensation_af5_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_incident_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_manager_governance_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_manager_subordinate_selector_contract.py",
+      "xar_autoplayer/bridge/zhongguo_projects_metrics_postcondition_contract.py",
+      "xar_autoplayer/bridge/zhongguo_promotion_compensation_postcondition_contract.py",
+      "xar_autoplayer/bridge/zhongguo_promotion_source_progress_contract.py",
+      "xar_autoplayer/bridge/zhongguo_result_case_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_scoreboard_action_contract.py",
+      "xar_autoplayer/bridge/zhongguo_scoreboard_state_contract.py",
+      "xar_autoplayer/bridge/zhongguo_workforce_collective_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_workforce_normal_exit_snapshot_contract.py",
+      "xar_autoplayer/bridge/zhongguo_workforce_owner_snapshot_contract.py",
+      "xar_autoplayer/construction_economic_outcome_v1.py",
+      "xar_autoplayer/construction_formal_consumer.py",
+      "xar_autoplayer/crown_authority_formal_consumer_v1.py",
+      "xar_autoplayer/defender_refuge_candidates_v1.py",
+      "xar_autoplayer/environment.py",
+      "xar_autoplayer/faction_gift_outcome_v1.py",
+      "xar_autoplayer/family_marriage_episode_handoff_v1.py",
+      "xar_autoplayer/m5_observed_opportunity_selector.py",
+      "xar_autoplayer/m5_peacetime_proposal_sources_v1.py",
+      "xar_autoplayer/ordinary_war_exit_observation_v1.py",
+      "xar_autoplayer/physical_army_inventory_v1.py",
+      "xar_autoplayer/siege_subject_contribution_v1.py",
+      "xar_autoplayer/strategy.py",
+      "xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "xar_autoplayer/vanilla_events/bookmark1070_material.py"
+    ],
+    "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py": [
+      "xar_autoplayer/bridge/native_driver.py",
+      "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+      "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "xar_autoplayer/environment.py",
+      "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+      "xar_autoplayer/runtime.py"
+    ],
+    "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py": [
+      "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py"
+    ],
+    "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py": [
+      "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+      "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+      "xar_autoplayer/successor_ui_pending_ledger_v1.py"
+    ],
+    "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py": [
+      "xar_autoplayer/bridge/native_driver.py",
+      "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+      "xar_autoplayer/bridge/successor_ui_app_owner_v1.py"
+    ],
+    "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py": [
+      "xar_autoplayer/bridge/native_driver.py",
+      "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py"
+    ],
+    "xar_autoplayer/bridge/player_heir_candidate_component_v1.py": [
+      "xar_autoplayer/bridge/native_driver.py",
+      "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+      "xar_autoplayer/bridge/nonwar_private_build.py",
+      "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "xar_autoplayer/bridge/version_identity.py",
+      "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+      "xar_autoplayer/strategy.py",
+      "xar_autoplayer/successor_ui_checkpoint_lineage_v1.py"
+    ],
+    "xar_autoplayer/bridge/successor_ui_app_owner_v1.py": [
+      "xar_autoplayer/bridge/native_driver.py",
+      "xar_autoplayer/ck3_live_run_identity_v1.py",
+      "xar_autoplayer/errors.py",
+      "xar_autoplayer/native_auto_run.py",
+      "xar_autoplayer/runtime.py",
+      "xar_autoplayer/strategy.py",
+      "xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "xar_autoplayer/successor_ui_owner_continuation_v1.py",
+      "xar_autoplayer/successor_ui_pending_ledger_v1.py"
+    ],
+    "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py": [],
+    "xar_autoplayer/runtime.py": [
+      "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "xar_autoplayer/environment.py",
+      "xar_autoplayer/errors.py",
+      "xar_autoplayer/integrity.py",
+      "xar_autoplayer/locking.py",
+      "xar_autoplayer/native_session.py",
+      "xar_autoplayer/rules.py",
+      "xar_autoplayer/vision/ocr.py",
+      "xar_autoplayer/watchdog_process_custody.py",
+      "xar_autoplayer/windows_injector_job.py",
+      "xar_autoplayer/windows_process.py"
+    ],
+    "xar_autoplayer/successor_ui_pending_ledger_v1.py": [
+      "xar_autoplayer/bridge/verified_successor_ui_service_v1.py",
+      "xar_autoplayer/environment.py",
+      "xar_autoplayer/runtime.py",
+      "xar_autoplayer/strategy.py"
+    ]
+  },
+  "epoch_names": [
+    "native_auto_run.py",
+    "successor_ui_pending_ledger_v1.py",
+    "successor_ui_owner_continuation_v1.py",
+    "bridge/service.py",
+    "bridge/verified_successor_ui_service_v1.py",
+    "bridge/succession_ui_observation_v1.py",
+    "bridge/successor_ui_app_owner_v1.py",
+    "bridge/mcp_server.py",
+    "ck3_live_run_identity_v1.py",
+    "bridge/native_driver.py",
+    "strategy.py",
+    "successor_ui_checkpoint_lineage_v1.py",
+    "runtime.py",
+    "environment.py",
+    "bridge/player_heir_candidate_component_v1.py",
+    "bridge/campaign_root_context_contract.py",
+    "player_heir_fixed_dynasty_projection_v1.py",
+    "bridge/native_loaded_provider_custody_v1.py",
+    "bridge/native_loaded_provider_windows_v1.py",
+    "bridge/native_loaded_provider_receiver_v1.py",
+    "bridge/native_loaded_provider_origin_v1.py",
+    "bridge/native_loaded_provider_origin_io_v1.py"
+  ],
+  "epoch_inputs_after_final_Driver": {
+    "native_auto_run.py": "39c928ba26ee74c0b74d41b873d252cd6697a8995746e44816b54e96fec31a04",
+    "successor_ui_pending_ledger_v1.py": "9de01d4f0d1c45d0c28a964d03f41abaad36c1c18fad2fec3ba561361a78583b",
+    "successor_ui_owner_continuation_v1.py": "7b8d49d16bee5d60d604c20d7aef3679ffeb697fe98bef9d0bb72e1400909cfd",
+    "bridge/service.py": "642e62f20b49ceed796b7dcb106b19cb94043db0593cceabeca0f0746d7aabb9",
+    "bridge/verified_successor_ui_service_v1.py": "8a5cee33bb36e08e3c0bed68b3a3228235637269a5c57ccc22cb47e161412dd3",
+    "bridge/succession_ui_observation_v1.py": "05694356218da8dc50ce825dd34d41e2033bc75e2406eb292ddb36d038ef6973",
+    "bridge/successor_ui_app_owner_v1.py": "a1af05519d8b514ee91a7a4a7d037cf5da006e05bb1bdfdb32185ddb7a65f071",
+    "bridge/mcp_server.py": "75e01e9b117fd6a64de10b7971a65a0571ffe3923e93aa7065f166987ab05de5",
+    "ck3_live_run_identity_v1.py": "b81c2a1f1e7c562981a1cc001ef65d454a52f4993b2783d3a5a468db84ced43b",
+    "bridge/native_driver.py": "06a4ce9c8020f792c611287dcd5c03358c92c819190ac077e9f443e8dae8dcaa",
+    "strategy.py": "45c164297b90b32203e7860b4a7735cfa65c5ca1db7141e898d15395d2e47e78",
+    "successor_ui_checkpoint_lineage_v1.py": "bb1f6e93fd875dc1ca75163e8d34d293fab7c04c015f575d6d937947cd686d98",
+    "runtime.py": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c",
+    "environment.py": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582",
+    "bridge/player_heir_candidate_component_v1.py": "69977b160964c526187e3ae4612d2da670e6af5e6f76acc5fb2ccdfd4570342a",
+    "bridge/campaign_root_context_contract.py": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3",
+    "player_heir_fixed_dynasty_projection_v1.py": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e",
+    "bridge/native_loaded_provider_custody_v1.py": "a935b8912fd553058b10e7307c04e9103669279d723a0caeff68ac9acd4ac563",
+    "bridge/native_loaded_provider_windows_v1.py": "fd6f581ce13c22e18eff50729d9dc11a95e8b6b9a861fd6e33244a341911731b",
+    "bridge/native_loaded_provider_receiver_v1.py": "10fdcb40766c913671c797e848d078dad7f4f4ffdd87cec80b9473b26fe53d7e",
+    "bridge/native_loaded_provider_origin_v1.py": "3b8bd840df7b3d6af7326f388363729e909c88355d0649f892189d70ae390695",
+    "bridge/native_loaded_provider_origin_io_v1.py": "9b0e5e3528f68777979afd1742cd4d525051ad0e9b16225d7175d4a29474827e"
+  },
+  "source_epoch_detached_model": "8176ef4e9a24f48dc9b3185f7316396e5be4f455425a2b03fc96b24c20c8f48e",
+  "source_epoch_actual_filesystem_authority": false,
+  "retained": [
+    "all Source20 typed ROOT/shared once budget/bounded diagnostics/audit/family",
+    "all Source21 five outputs including durable receipt",
+    "Source22 WAL thin and exact-clock error DTO",
+    "original WAL persistence/barriers and same-speed behavior",
+    "Native29 historical metadata"
+  ],
+  "not_included": [
+    "old C19 M2 finite",
+    "old bounded-multiday WAL",
+    "any other master leaf",
+    "any controls or Native30 bytes"
+  ],
+  "controls_separate": "Future genuine enabled custody graph, preserve C22 child WAL env; then-bound source/entry pins and epoch. No disabled timing graph substitution.",
+  "Native_transition": "Separate new finite09-FAILED-child-facts plus actual11-artifact protocol required; never relabel08B or09. No Native metadata issuer here.",
+  "actual_H": "unknown",
+  "actual_loaded_provider": false,
+  "clock_root_cause": "UNKNOWN; diagnostic only",
+  "source_participation": {
+    "twelve_output_refs_RAM_only": [
+      {
+        "relative": "xar_autoplayer/bridge/campaign_root_context_contract.py",
+        "bytes": 56460,
+        "sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1641945,
+        "sha256": "06a4ce9c8020f792c611287dcd5c03358c92c819190ac077e9f443e8dae8dcaa"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+        "bytes": 21503,
+        "sha256": "a935b8912fd553058b10e7307c04e9103669279d723a0caeff68ac9acd4ac563"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_io_v1.py",
+        "bytes": 6755,
+        "sha256": "9b0e5e3528f68777979afd1742cd4d525051ad0e9b16225d7175d4a29474827e"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_origin_v1.py",
+        "bytes": 15954,
+        "sha256": "3b8bd840df7b3d6af7326f388363729e909c88355d0649f892189d70ae390695"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+        "bytes": 9299,
+        "sha256": "10fdcb40766c913671c797e848d078dad7f4f4ffdd87cec80b9473b26fe53d7e"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+        "bytes": 20371,
+        "sha256": "fd6f581ce13c22e18eff50729d9dc11a95e8b6b9a861fd6e33244a341911731b"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+        "bytes": 12841,
+        "sha256": "69977b160964c526187e3ae4612d2da670e6af5e6f76acc5fb2ccdfd4570342a"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+        "bytes": 20197,
+        "sha256": "a1af05519d8b514ee91a7a4a7d037cf5da006e05bb1bdfdb32185ddb7a65f071"
+      },
+      {
+        "relative": "xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+        "bytes": 11877,
+        "sha256": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e"
+      },
+      {
+        "relative": "xar_autoplayer/runtime.py",
+        "bytes": 170719,
+        "sha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c"
+      },
+      {
+        "relative": "xar_autoplayer/successor_ui_pending_ledger_v1.py",
+        "bytes": 21905,
+        "sha256": "9de01d4f0d1c45d0c28a964d03f41abaad36c1c18fad2fec3ba561361a78583b"
+      }
+    ],
+    "twelve_output_logical_bytes": 2009826,
+    "new_three_source_hard_bytes": 98304,
+    "logical_payload_plus_new_source_hard_upper": 2108130,
+    "logical_participation_hard_bytes": 2621440,
+    "shared_original_inputs": "Existing src18/Native29 freeze, old M7 proof/helper and frozen Git objects retained under original cards; no second source tree/candidate copy",
+    "physical_RAM_peak_bytes": null,
+    "RAM_limit_claim": "2.5MiB is the logical participating-source envelope, not measured interpreter/AST resident memory; transient original/output/AST buffers are not disk allocation",
+    "scratch_files": 0,
+    "new_production_source_copies": 0
+  },
+  "operations": {
+    "Git_read_only_show_diff": true,
+    "Git_writes": 0,
+    "SDK_exports": 0,
+    "D_writes": 0,
+    "Game_Task_Native_RPC": 0,
+    "Driver_SAVE_state_body_reads": 0
+  },
+  "future_writes_after_freeze": 0,
+  "qualification": {
+    "kind": "Two new RAM composition cross-package checks; no Game/OS/Native function execution",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 4.895786,
+    "runner": "test_complete_inventory_preserves_recovery_family_performance_and_current_epoch_inputs (__main__.Source22M7CrossPackage.test_complete_inventory_preserves_recovery_family_performance_and_current_epoch_inputs) ... ok\ntest_custody_and_source22_wal_ctor_commute_with_complete_inverse (__main__.Source22M7CrossPackage.test_custody_and_source22_wal_ctor_commute_with_complete_inverse) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 4.896s\n\nOK\n",
+    "historical_M7_57_or_other_matrices_repeated": false,
+    "new_SDK_global_imports": 0,
+    "new_children": 0,
+    "scratch_files": 0,
+    "source_compile": "All twelve changed modules compiled in RAM; internal imports inventoried without importing SDK",
+    "source_provenance_inheritance": {
+      "original_M7_source_proof": {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c18-m7-minimal-cold-sdk-qualification-2026-10-20.json",
+        "bytes": 45511,
+        "sha256": "f7b415cba9949ce283984ef1cff03e9689e0503acf59e42f80187f059e78b0f4"
+      },
+      "M7_scope": "Exact seven leaves plus original70137/6db hunks. Old57 software cases retained at their old source pins, not rerun or promoted to current runtime.",
+      "creator_S_guard": {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\g2-m7-c17-no-site-direct-script-guard-2026-10-19.json",
+        "bytes": 3096,
+        "sha256": "a2d5e78ef791d4fd6b43dd285682f12193680abded9adeb518caf2db2b864517"
+      },
+      "owned_kernel_boundary": "Old four harmless Python-child run predates final creator guard; Native absence/module/hello were synthetic. No new loaded-provider credit.",
+      "Source22": "Actual0722 full1449 inventory plus exact source bodies verified. All current recovery/performance rows retained."
+    },
+    "actual_tool_result": "84fa80; exit0;2PASS4.895786s",
+    "historical_prequalification_guard_rejection": {
+      "tool": "6e58d4",
+      "tests_run": 0,
+      "disposition": "Rejected before tests and before plan write; no output tree or runtime operation",
+      "reason": "Frozen thin-WAL patch is ordinary difflib ---/+++ rather than a Git diff --git header.",
+      "correction": "Whole5800B/23a15c pin remains required; exact single-file header and unique path guards then prepend one fixed Git header in RAM only. Existing parser/file unchanged.",
+      "corrected_before_final_PASS": true
+    }
+  },
+  "source_package": {
+    "source_card": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/SOURCE22-M7-COMPOSER96KiB-CONSUMER64KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2106,
+      "sha256": "41e54516937b8f0f7438439b844f6bfb886eaa1efc6709b405f645b1d1e3b79d"
+    },
+    "hard_bytes": 98304,
+    "new_files": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source22_m7_candidate_sdk_v1.py",
+        "bytes": 17552,
+        "sha256": "4b3fe7fe1397aec7c705a4ac52ec339421d4fc6648b98b1d1475c0145caad778"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_source22_m7_candidate_sdk_v1.py",
+        "bytes": 9247,
+        "sha256": "c2d1ac044da003778fa8b787a68e8f6e7a230abe93ada0be5cbea2254b3dcf19"
+      }
+    ],
+    "new_file_count": 3,
+    "scratch_bytes": 0,
+    "new_production_tree_or_copy_bytes": 0,
+    "full_participating_output_payload_in_existing_refs": 2009826,
+    "logical_complete_gross_bytes_including_new_three": 2081155,
+    "unmeasured_physical_RAM_peak": true
+  },
+  "plan_path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source22-m7-candidate-sdk-source-plan-2026-10-20.json",
+  "plan_bytes": 44530,
+  "new_three_gross_bytes": 71329
+}

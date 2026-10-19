@@ -108,6 +108,8 @@ def test_actual_hostile_pressure_can_keep_cash_before_score_turns_negative(tmp_p
     driver = WarDriver(tmp_path)
     war = driver.snapshot["active_wars"][0]
     war.update(player_relative_war_score=12, primary_opponent_character_id=777)
+    # Isolate siege/occupation evidence from the independent preventive deficit policy.
+    driver.snapshot["player_armies"][0]["soldiers"] = 2000
     if pressure == "known_own_siege":
         war["enemy_armies"][0].update(army_state="sieging", siege_province_in_player_subrealm=True)
     elif pressure == "known_opponent_occupation":
@@ -117,12 +119,23 @@ def test_actual_hostile_pressure_can_keep_cash_before_score_turns_negative(tmp_p
         war["objective_province_states"] = []
         war["enemy_armies"][0].update(army_state="sieging", siege_province_in_player_subrealm=None)
     priority = observe_war_spending_priority_v1(driver.snapshot)
+    observed = priority["wars"][0]
+    assert (observed["observed_player_raised_soldiers"], observed["observed_enemy_raised_soldiers"]) == (2000, 1500)
+    assert "primary_defence_observed_raised_force_outnumbered" not in observed["protect_cash_reasons"]
+    assert bool(observed["observed_hostile_siege_in_player_subrealm_army_ids"]) is (pressure == "known_own_siege")
+    assert bool(observed["observed_primary_opponent_objective_occupation_province_ids"]) is (pressure == "known_opponent_occupation")
     assert priority["defer_new_economic_construction"] is (pressure != "unknown_occupation")
     if pressure != "unknown_occupation":
         baseline = {"revision": driver.snapshot["revision"], "plan": {"selected_step": "life-advance"}}
         result = plan_construction_private(driver, baseline, driver.snapshot, [], {"life-advance"})
         assert result["plan"]["selected_step"] == "life-advance"
         assert result["plan"]["construction_spending_deferred_v1"]["deferred_domain"] == "new_economic_construction"
+        assert driver.requests == []
+    else:
+        baseline = {"revision": driver.snapshot["revision"], "plan": {"selected_step": "life-advance"}}
+        result = plan_construction_private(driver, baseline, driver.snapshot, [], {"life-advance"})
+        assert result["plan"]["selected_step"] == "life-advance"
+        assert result["plan"]["phase"] == "construction_wartime_cash_deferred"
         assert driver.requests == []
 
 
