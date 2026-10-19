@@ -3961,6 +3961,9 @@ class GameplayBridgeService:
             for key in ("state", "focus", "focus_query"):
                 if key in value:
                     summary[key] = summarize_readback(value[key])
+            for key in ("education_focus_scope", "education_focus_source_frame", "education_focus_query"):
+                if key in value:
+                    summary[key] = copy.deepcopy(value[key])
             return summary
 
         def blocked(reason: str) -> dict[str, object]:
@@ -4188,6 +4191,38 @@ class GameplayBridgeService:
         readback_diagnostic["after_formal_stock"] = {
             key: after.get(key) for key in binding
         }
+        from ..lifestyle_education_focus_scope_v1 import (
+            LIFESTYLE_BINDING_ERRORS, education_focus_frame,
+            qualify_current_education_focus,
+        )
+        education = (
+            qualify_current_education_focus(
+                stock.get("education_focus_query"), education_focus_frame(before),
+                expected_revision=revision,
+            ) if isinstance(stock, dict) and stock.get("status") == "education_focus_not_applicable" else None
+        )
+        state = stock.get("state") if isinstance(stock, dict) else None
+        if (education is not None and stock.get("education_focus_scope") == education
+                and stock.get("education_focus_source_frame") == education_focus_frame(before)
+                and isinstance(formal, dict) and formal.get("status") == "native_query_unavailable"
+                and isinstance(state, dict) and state.get("status") == "native_query_unavailable"
+                and isinstance(formal.get("native_error"), str)
+                and formal["native_error"] in LIFESTYLE_BINDING_ERRORS
+                and formal["native_error"] == state.get("native_error")
+                and pending is None
+                and education_focus_frame(after) == education_focus_frame(before)):
+            # This episode has an observed education focus, rather than an
+            # adult opening focus to submit/receipt. Retain the failure/proof
+            # and return through the complete ordinary planner exactly once.
+            gate.update(stage="complete", completion_kind="education_focus_not_applicable",
+                        education_focus_scope=education)
+            self.driver.initial_lifestyle_focus_gate_stage = "complete"
+            self.driver.require_initial_lifestyle_focus_before_date_advance = False
+            ordinary = self._plan_turn_internal()
+            return {**ordinary, "plan": {
+                **ordinary["plan"], "opening_lifestyle_education_scope": education,
+                "opening_lifestyle_readback_diagnostic": readback_diagnostic,
+            }}
         formal_source = (
             formal.get("source_frame") if isinstance(formal, dict) else None
         )
