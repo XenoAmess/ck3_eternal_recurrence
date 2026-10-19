@@ -1,0 +1,42 @@
+--- a/root_p37c16_same_game_loop_feeder90.py
++++ b/root_p37c16_same_game_loop_feeder90.py
+@@ -150,4 +150,8 @@
+ 
+ 
++from full_lifecycle_timing_v1 import FullLifecycleTimingV1
++
++_FULL_TIMING = FullLifecycleTimingV1()  # Explicit owned admission may enable a future batch.
++
+ def publish_or_follow(sequence: int) -> str:
+     request = {"sequence": sequence, "command": "full_loop", "arguments": {"max_turns": 30}}
+@@ -165,5 +169,10 @@
+     if outbox.exists() or next_sequence() != sequence:
+         raise ValueError("P37 SDK next sequence moved without an exact existing control")
+-    atomic(inbox, request)
++    _FULL_TIMING.before_publish(sequence)
++    try:
++        atomic(inbox, request)
++    except BaseException:
++        _FULL_TIMING.discard()
++        raise
+     return "published_new_exact_control"
+ 
+@@ -482,5 +491,10 @@
+             continue
+         try:
+-            result, before, response = result_for(sequence, first=first, previous_cycles=previous_cycles)
++            try:
++                result, before, response = result_for(sequence, first=first, previous_cycles=previous_cycles)
++            except BaseException:
++                _FULL_TIMING.discard()
++                raise
++            full_wall_fields = _FULL_TIMING.after_receipt(sequence)
+         except ValueError as error:
+             recovered_construction = recover_construction_blocked(sequence, {
+@@ -536,5 +550,5 @@
+         else:
+             incidents = collect_incidents(index)
+-            atomic(batch, {"machine_id": "xenoamess-full-tower-eb9d2c1186", "at_utc": datetime.now(timezone.utc).isoformat(),
++            atomic(batch, {**full_wall_fields, "machine_id": "xenoamess-full-tower-eb9d2c1186", "at_utc": datetime.now(timezone.utc).isoformat(),
+                 "completed_control_sequence": sequence, "control_response": str(response),
+                 "cumulative_cycles": result["cumulative_cycles"],

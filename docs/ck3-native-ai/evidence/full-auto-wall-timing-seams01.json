@@ -1,0 +1,138 @@
+{
+ "schema": "xar.full-auto-wall-timing-seams-source-plan/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T15:51:23Z",
+ "status": "SOURCE_ONLY_PLAN_NO_PRODUCTION_PATCH_NO_RUNTIME_MEASUREMENT",
+ "scope": "Immutable C15 source audit; no C16 edits, GameRPC, Driver/SAVE/AUTO body reads, benchmark or probe activation.",
+ "sources": {
+  "runtime_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+  "queue": {
+   "relative_path": "root_p37c15_sdk_queue.py",
+   "bytes": 267956,
+   "sha256": "30823cafc946b846fefd851b1ad65b9601fd8ba0d8d9cd388ecc1ae9867c236f"
+  },
+  "feeder": {
+   "relative_path": "root_p37c15_same_game_loop_feeder88.py",
+   "bytes": 32047,
+   "sha256": "a86354ab365d45daa745536dc06d99d7818a982b188f1134f608c7e39db9a324"
+  },
+  "SDK_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src13/xar_autoplayer/bridge",
+  "service": {
+   "relative_path": "service.py",
+   "bytes": 877777,
+   "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8",
+   "span": "auto_turn4920-4996; plan_turn1895-1933; execution/display5240-5259"
+  },
+  "MCP": {
+   "relative_path": "mcp_server.py",
+   "bytes": 263923,
+   "sha256": "b4d2fab30a5c8cd8a0291c3759d9a0518b31df55698002d8ea6e7e64ad3bfb4a",
+   "span": "ck3_auto_turn2887-2980"
+  },
+  "probe": {
+   "path": "tools/g2_saved_campaign/queue_control_timing_v1.py",
+   "bytes": 8642,
+   "sha256": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+  },
+  "adapter": {
+   "path": "tools/g2_saved_campaign/queue_control_timing_adapter_v1.py",
+   "bytes": 15038,
+   "sha256": "7a9a350ea43f3cb32754ad89b31b6621a46fa38e8e319bffcdbff199b353d171"
+  }
+ },
+ "existing_boundaries": [
+  [
+   "Queue1823-1837",
+"Original mono precedes session.call_tool; success elapsed follows model_dump, before response encoding. It covers complete synchronous MCP/business wall. Error elapsed includes original exception preservation1833; label client-attempt wall, not pure Native/service time."
+  ],
+  [
+   "Service4920-4996",
+   "The awaited service covers full ordinary planning, before_submit display, execution, after-hooks/cadences and camera scheduling. Later asynchronous camera completion is outside this receipt."
+  ],
+  [
+   "Queue1805-1870",
+   "Existing call scope covers preflight, response write/decode, relay ACK, classifier, credit/display/after-result writes and return. Its optional probe records call_enter/rpc_start/rpc_end/call_return."
+  ],
+  [
+   "Queue1872-1879",
+   "generated request atomic1878 precedes call_enter; this prefix is outside call_total."
+  ],
+  [
+   "Queue2154-2373",
+   "FULL writes original final response2371 before returning. Its response has no started/elapsed. Methods after2373 are outside this FULL."
+  ],
+  [
+   "Queue3435-3451",
+   "FULL dispatch is awaited; .25 sleep occurs afterward, not per AUTO."
+  ],
+  [
+   "Feeder144-160,200-227,427-582",
+   "New FULL publishes159; result_for reads/validates original response209-226. No monotonic endpoints exist. Following-existing has unknown original submission; .2 poll contributes receipt-observation tail."
+  ],
+  [
+   "MCP2889,2968",
+   "auto_turn_service finishes only in Army shaping, so it is not an all-action/error end-to-end timer."
+  ]
+ ],
+ "reuse": {
+  "AUTO_business": "Carry original row.elapsed_seconds for every AUTO, including zero-day/client_error. It already covers complete service/model_dump. Success response encoding and later Queue work are outside.",
+  "AUTO_Queue": "Use existing explicitly admitted <=30-cycle probe: call_return-call_enter. rpc_start/end reuse original mono+elapsed; no new Service timer.",
+  "components": "Reuse response_prepare, atomic_write, decode, relay_total, classifier, guards, pending_paths, loop_state and loop_step. Inclusive nested totals are not additive; use interval union or recorded exclusive time.",
+  "coverage": "Default-off remains off absent explicit admission. Missing, capped or dropped boundaries stay unknown. Do not infer historical data merely because hooks exist."
+ },
+ "future_single_hook": {
+  "owner": "Harness/feeder, during a future normally necessary source freeze only. This is a reviewable design, no C16 patch.",
+  "placement": "One FULL-lifecycle observer with two endpoint samples in the existing feeder. Before original publish_or_follow159 atomic, retain monotonic_ns and UTC for the new control sequence; after original main480 result_for returns, sample receipt_validated_ns.",
+  "extent": "Includes submit JSON/fsync/rename, admission/queue wait, complete child calls, checkpoints, original FULL-response write and feeder polling/read validation. No Game read is added.",
+  "output": "Append scalar timing to existing batch summary534-540 or original error/status receipt. No extra file, scan, body copy or new request fields; immutable response/once/display/ACK/guards unchanged.",
+  "fields": [
+   "sequence",
+   "producer_pid",
+   "machine_id",
+   "clock_kind",
+   "submit_ns",
+   "receipt_validated_ns",
+   "submit_utc",
+   "receipt_observed_utc",
+   "completion_status",
+   "error_type",
+   "date_before_raw",
+   "date_after_raw",
+   "date_source_refs",
+   "actual_days",
+   "settled_cycles",
+   "AUTO_count",
+   "zero_day_count",
+   "unknown_count"
+  ],
+  "following": "After producer restart or following an existing request, original submit and elapsed stay null. A new follow-start describes only a partial observation window. Never backfill from mtime/index/UTC.",
+  "error": "Preserve elapsed-to-error with the original exception/unknown result. Timing errors are nonfatal and never replay actions; killed-before-retention remains missing.",
+  "budget": "Use existing explicit one-batch <=30-cycle admission. Off adds zero clocks/I/O. Only owned in-memory scalars. Summary's own later write remains in cumulative wall.",
+  "limit": "This single lifecycle records inclusive FULL wall. Disk latency and scheduler/queue delay remain combined unless existing phase evidence separates them."
+ },
+ "flow": "FULL submit -> Queue admission -> complete AUTO/MCP -> encode/write/ACK/classify/settle/checkpoint -> FULL response -> feeder validates.",
+ "accounting": {
+  "FULL": "Same-producer (receipt_validated_ns-submit_ns)/1e9. Include zero-day AUTO, MET/SEM/SAVE and failed waits.",
+  "outer": "FULL wall minus union of all child RPC intervals is combined outer/unobserved wall, including JSON/disk/ACK/guards/dispatch/feeder. Do not call it all CPU, Native or disk.",
+  "Queue": "With complete probe coverage, call_total minus contained RPC intervals gives pre/post Queue wall. Separate existing phases without parent/child double counting. Generated prefix and FULL/feeder tail remain separate or unknown.",
+  "clock": "Join by existing sequence/control identity. Monotonic absolute values are used only within proven same clock/producer lifetime; never invent SDK perf_counter origins or bridge a restart.",
+  "days": "Use existing verified before/after date_raw from prior closed result/owned FULL state and this result, /24. Missing before or rollback scope means unknown; no extra MET.",
+  "zero_unknown": "Keep all zero-day/failed wall. Zero days => s/day null. Partial/unknown days need existing paired verified evidence, never ACK.",
+  "campaign": "Keep AUTO9 2026-10-19T03:26:49.420926Z and all maintenance, SAVE, failure and restart gaps. Local windows supplement it; concurrent builds or repair pauses are not subtracted."
+ },
+ "qualification": {
+  "performed": "Named-source SHA/size readback and AST spans only; no new measurement, production patch or runtime test.",
+  "future_checks": [
+   "Off zero-clock/I/O; zero-day keeps wall; follow/restart start unknown; errors never replay; guards/display/once and nested-time accounting unchanged."
+  ],
+  "measured_seconds_or_speedup": null
+ },
+ "storage": {
+  "allocation": "Root code3 minor source-only report <=8192B",
+  "producer_closed": true,
+  "future_write_bytes": 0,
+  "external_write_bytes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+ }
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "xar.primary.C16-recording-pixels-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:14:32Z",
+  "recorded_at_utc": "2026-10-19T16:17:25.839271+00:00",
+  "reviewer": "Root directly viewed both frozen original PNGs; no OCR or desktop input",
+  "Game_identity_from_runtime_pair": {
+    "pid": 30852,
+    "creation_filetime": "134368995759027619"
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c16-saved2433-first01-game.png",
+      "bytes": 1653443,
+      "sha256": "7c61d43eb880a3e5486c907d1b1101796ac1ffa1d70d2afddc256f43cca7b43e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c16-saved2433-first01-scene.png",
+      "bytes": 1517659,
+      "sha256": "b7f84790719da2cbe3cd59e286591beedf68535659581c4fb4de22b5de369136"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c16-saved2433-first01-FROZEN-PAIR.json",
+      "bytes": 2814,
+      "sha256": "e857f1996088ca177f3847b6cc3671a280b648750514c73771491f3eee6ce721"
+    }
+  ],
+  "actual_visuals": {
+    "game": "Paused1073.5.16; Southern Italy and northern Sicily, current armies and map UI visible; no black/loading frame.",
+    "scene": "Same saved-date local map with right gray-black current-state/decision/reason/result panel. Text says checking current situation and awaiting map/receipts.",
+    "retired_blue_overlay_visible": false,
+    "film_title_visible": false,
+    "bottom_southern_Sicily_clipped": true
+  },
+  "qualification": {
+    "new_Game_and_scene_pixels": true,
+    "retired_overlay_visual_check": true,
+    "native_saved_frontier_SEM": false,
+    "whole_realm_coverage": false,
+    "continuous_hotspot_follow": false,
+    "Native30_live": false
+  },
+  "boundaries": "Frozen pixels corroborate source-bound new capture and visible saved date, not native frontier/actor/war action effectiveness. Sole runtime must still prove fresh SEM/CAP before full ordinary planning."
+}

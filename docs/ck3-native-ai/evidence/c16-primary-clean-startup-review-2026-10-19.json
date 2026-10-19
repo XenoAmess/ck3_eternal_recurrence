@@ -1,0 +1,19 @@
+{
+  "schema": "xar.primary.C16-clean-startup-text-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:11:19Z",
+  "identity_source": "same current machine Root4ce71c and sole runtime Game identity; direct frozen small startup text",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CLEAN-STARTUP-LOG-REVIEWED-C16.snapshot",
+    "bytes": 16384,
+    "sha256": "df155c72526053dd22a8adda152b8fddeeadb9dbf502a02da5f6d3acdb99671f"
+  },
+  "runtime_reported_game": {
+    "pid": 30852,
+    "creation_filetime": "134368995759027619"
+  },
+  "review": "Actual new startup initialization00:06:19 local; Mod header then blank line immediately followed by stock DLC Mounted Data. No mod mount entries in the actual startup Mod block. This supports this attempt, not any other machine/build or gameplay result.",
+  "profile_report": "Runtime reports enabled_mods=[] and loadsave launch; primary read is the exact native startup log block.",
+  "current_recovery_business_proven": false,
+  "Root_Game_or_desktop_actions": 0
+}

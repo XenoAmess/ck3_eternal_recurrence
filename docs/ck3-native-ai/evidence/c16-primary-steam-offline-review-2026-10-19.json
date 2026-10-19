@@ -1,0 +1,67 @@
+{
+  "schema": "xar.primary.C16-Steam-offline-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:05:51Z",
+  "image_observed_at_utc": "2026-10-19T16:05:18Z",
+  "machine_source": "tools/ck3_live_run_id.py machine Root4ce71c; current same-machine runtime controlled recover",
+  "image": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-steam-offline90\\recovery\\probe-1\\steam-moved.png",
+    "bytes": 698585,
+    "sha256": "b8c2424a7ccd4dda62c9d7b133501774b15f8f26661f3a677cbf6f5ae97b67cc"
+  },
+  "freshness": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-steam-offline90\\recovery\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1389,
+    "sha256": "40e94164e56fd57265ee2ab4a40c15abba6b1a842f4d737f2cca985451dd9607",
+    "original_facts": {
+      "schema": "ck3.steam_fresh_desktop_frame.v1",
+      "captured_at_utc": "2026-10-19T16:05:18.840162+00:00",
+      "steam_hwnd": 52505028,
+      "steam_pid": 142952,
+      "desktop_size": [
+        2560,
+        1440
+      ],
+      "before_rect": [
+        100,
+        80,
+        1900,
+        1180
+      ],
+      "moved_rect": [
+        120,
+        80,
+        1920,
+        1180
+      ],
+      "restored_rect": [
+        100,
+        80,
+        1900,
+        1180
+      ],
+      "before_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-steam-offline90\\recovery\\probe-1\\steam-before.png",
+      "before_sha256": "F0B18D990212C4C7C6B86F26B66475357692B5FAA66330FC8C6510E394861C2A",
+      "moved_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-steam-offline90\\recovery\\probe-1\\steam-moved.png",
+      "moved_sha256": "B8C2424A7CCD4DDA62C9D7B133501774B15F8F26661F3A677CBF6F5AE97B67CC",
+      "moved_identity": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-steam-offline90\\recovery\\probe-1\\steam-moved.png",
+        "bytes": 698585,
+        "sha256": "B8C2424A7CCD4DDA62C9D7B133501774B15F8F26661F3A677CBF6F5AE97B67CC"
+      },
+      "pixel_difference_bbox": [
+        17,
+        69,
+        1953,
+        1436
+      ],
+      "moving_edge_changed": true,
+      "clock_check": null,
+      "offline_status_observed": null
+    }
+  },
+  "primary_visual_review": "Root directly viewed frozen original image: central Steam 当前处于离线模式 and bottom 离线模式 are visible. No OCR/input. New controlled window displacement evidence, rather than image timestamp alone, supports current pixels.",
+  "Game_launch_permission": "Previously authorized C16 same-user supervisor/SDK/display/feeder roles; original actual EXE/build/lease/validator guards remain. This review only proves this machine Steam offline at observed time.",
+  "new_desktop_actions_by_Root": 0,
+  "other_machine_or_future_offline_inference": false
+}

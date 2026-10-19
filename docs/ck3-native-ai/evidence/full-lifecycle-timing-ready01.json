@@ -1,0 +1,81 @@
+{
+ "schema": "xar.full-lifecycle-timing-source-ready/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T16:00:23Z",
+ "status": "FUTURE_SOURCE_READY_DEFAULT_OFF_NOT_ADOPTED",
+ "input": {
+  "producer": {
+   "path": "tools/g2_saved_campaign/prepare_c16_saved6397_feeder_v1.py",
+   "bytes": 7653,
+   "sha256": "71e5fd9e053e4e99527332901960786531a4dce283b2fd4a68bbc8f370b25c8e"
+  },
+  "base": {
+   "name": "root_p37c16_same_game_loop_feeder90.py",
+   "bytes": 31906,
+   "sha256": "eb16c1c6139ce0719dd2b409fc70d4a24f87b23db2afd65f8e1f562028d6a245"
+  },
+  "origin": "build_sources() pure bytes, not an installed/active feeder",
+  "design_sha256": "2986c86ebb98dbc2bc72f233948ac9bb43e34ad9f0a7bafd96196fa870416163"
+ },
+ "files": [
+  {
+   "path": "tools/g2_saved_campaign/full_lifecycle_timing_v1.py",
+   "bytes": 2480,
+   "sha256": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+  },
+  {
+   "path": "tools/g2_saved_campaign/test_full_lifecycle_timing_v1.py",
+   "bytes": 2986,
+   "sha256": "e199a968a9c5dcfc54de2d30a4c72ec846a472d58677ff49044b004ceb23b487"
+  },
+  {
+   "path": "docs/ck3-native-ai/evidence/full-lifecycle-timing-feeder01.patch",
+   "bytes": 1906,
+   "sha256": "8e335db2d9aae82d5ddcb2808ef2f55c8b8deb384c69954d4138a3f92de3ca20"
+  }
+ ],
+ "candidate": {
+  "bytes": 32391,
+  "sha256": "45b09ed09f4bb289a121794c2936836f850a96f3c73be6c5a7095fc2a2c7a661"
+ },
+ "API": {
+  "constructor": "FullLifecycleTimingV1(enabled=False, clock=None); default clock monotonic_ns.",
+  "before_publish": "Immediately before original new request atomic: retain one sequence/start in memory. Clock failure drops metrics.",
+  "after_receipt": "After original result_for validates receipt: second clock only for matching observed submission; scalar return merges into existing batch dict.",
+  "discard": "Original publish/receipt failure clears timing with no end clock/retry/exception replacement.",
+  "follow_restart": "Unobserved original submit => null submit/end/wall and no clock. Finish consumes the start; it cannot reuse an old duration.",
+  "off": "No clocks/I/O/fields/env/config reads. Patch defaults off; future owned in-memory admission must explicitly enable it."
+ },
+ "integration": {
+  "hunks": 4,
+  "runtime_patch_applied": false,
+  "changes": "Import/default-off instance; before original atomic and discard/reraise on error; after original result_for and discard/reraise on error; merge scalars in existing batch.",
+  "inverse": "Four inverse edits restore exact base bytes/SHA. Base/candidate compile in memory.",
+  "adoption": "C16 is frozen: future-only, no Game wait/restart. Future producer must supply helper with feeder imports; no current leaf was amended.",
+  "IO": "No new sink/log/file/scan/RPC. Existing receipt carries metrics; failed/unknown or killed-before-retention may have no timing, never zero."
+ },
+ "validation": {
+  "command": "python -B -m unittest discover -s tools/g2_saved_campaign -p test_full_lifecycle_timing_v1.py -v",
+  "result": "5 tests PASS first run, chunk ce54ce: off0clock; success2clocks/zero-day; follow/restart/mismatch unknown; invalid/failing clock drops metrics; original OSError identity retained.",
+  "actual_source": "Unified patch applied in memory to pinned base; candidate SHA/compile PASS. Extracted actual original/patched publish_or_follow compared with fake paths/atomic in5 cases: off/new/follow/publish-error/clock-error. Returns/errors/business traces equal, 0 real I/O/Game. Chunk7a25e3.",
+  "checks": "Helper/test compile in memory; helper no AST Assert; test assertions test-only; whitespace PASS.",
+  "levels": "Unit contracts and source/byte qualifications only. No runtime/feeder/FULL/deployment/per-day/speedup qualification."
+ },
+ "accounting": {
+  "wall": "Publish-before-atomic to validated receipt. Failed receipt has no validated end, so no duration is invented.",
+  "days": "No inferred day credit or s/day. Use existing verified raw-date pairs from closed FULL/state; missing/rollback scope unknown. Zero-day wall stays counted.",
+  "residual": "FULL minus child RPC interval union is combined outer/unobserved wall, not all CPU/Native/disk.",
+  "campaign": "AUTO9 2026-10-19T03:26:49.420926Z and all maintenance/restart/failure/SAVE gaps remain; local timing never resets or trims it."
+ },
+ "storage": {
+  "allocation": "code3 minor2MiB; source+test+patch+proof <=12288B",
+  "three_files_bytes": 7372,
+  "producer_closed": true,
+  "future_write_bytes": 0,
+  "external_bytes": 0,
+  "scratch_bytes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+ },
+ "ownership": "4 new leaves only; 0 current feeder/SDK/Service edits; no stage/commit."
+}
