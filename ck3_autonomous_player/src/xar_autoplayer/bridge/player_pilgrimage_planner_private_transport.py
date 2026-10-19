@@ -194,13 +194,11 @@ def _request(driver, *, operation, expected_revision, province_id, read_stage,
         "expected_date_raw": before["date_raw"],
         "expected_actor_character_id": before["played_character"]["character_id"],
         "expected_activity_key": "activity_pilgrimage", "expected_option_key": "pilgrimage_type_pious",
-        "province_id": province_id,
+        "province_id": province_id, "read_stage": read_stage,
     }
     if submit:
         payload["policy_positive"] = policy_positive
         payload.update({"reserve_" + name + "_raw": reserves[name] for name in RESOURCES})
-    else:
-        payload["read_stage"] = read_stage
     # The native process-persistent ledger owns exactly-once Start. This
     # transport sends once, never retries, and exposes no reset/resend tool.
     driver.endpoint.send(payload)

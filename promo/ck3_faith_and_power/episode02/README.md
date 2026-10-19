@@ -12,6 +12,7 @@
 - [前四章可审阅样片（9分25.888秒）](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)：含画面、旁白、配乐和双语字幕；附[双语SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02.bilingual.srt)、[中文SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02.zh.srt)、[英文SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02.en.srt)与[配套剧本](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/text/episode02-script.md)。[生产通路记录](docs/production-b3-20261020.md)保留构建、配音及恢复事实。
 - [D1实拍诊断与后续执行入口](docs/filming-b4-and-pilgrimage-execution-20261020.md)：已有教宗的真实读回、27.9秒上下文素材、正常关场及朝圣执行候选的当前资格。
 - [新执行资格与七章声音](docs/production-b5-and-voices-20261020.md)：B5生产DLL、19项原生和37项接口验证、两条拍摄流程、后36段声音以及B6容量准入。
+- [朝圣第二场诊断与修复](docs/filming-b6-and-request-seam-20261020.md)：本场70／100金默认活动费、open请求字段缺失、真实解析验证、专用事件策略与正常关场。
 - 机制研究：[圣物与类型效果](docs/research-artifacts-and-site-effects.md)、[普通朝圣](docs/research-pilgrimage.md)、[精神领袖与大圣战](docs/research-spiritual-head-and-ghw.md)。
 
 前四章29段已形成可审阅视频，尚待完整观看与听审；七章固定配音已齐，后三章画面与全片成片仍在制作。普通朝圣完整旅程、精神信仰领袖建制的真实报价与受领后态，以及装备／净收益对照继续研究和拍摄；预览不算这些结果。B4另有27.9秒诊断素材，只记录已有领袖和当前决议起点。旧失败保留原记录，研究、构建、写稿与制作并行，游戏和屏幕继续单一所有者执行。本地交付属于 `machine_id: 4-8e1c2f1861`，实际来源和时间见各专题。

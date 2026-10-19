@@ -73,6 +73,25 @@ def _opening_reader(context):
         sys.path[:] = previous
 
 
+def _event_policy_reader(context):
+    source = Path(context["shared_source_root"]).resolve()
+    if (source / "ck3_autonomous_player/src/xar_autoplayer").is_dir():
+        source = source / "ck3_autonomous_player/src"
+    previous = list(sys.path)
+    try:
+        sys.path.insert(0, str(source))
+        modules = {name: importlib.import_module("xar_autoplayer.vanilla_events." + name)
+                   for name in ("policy", "registry", "records_manager_a")}
+        for name, module in modules.items():
+            _need(Path(module.__file__).resolve() == source / ("xar_autoplayer/vanilla_events/" + name + ".py"),
+                  "Event policy import escaped selected source")
+        return (modules["policy"].recommend_registered_vanilla_event_option_v1,
+                modules["registry"].query_vanilla_event_knowledge_v1,
+                {name: _pin(module.__file__) for name, module in modules.items()})
+    finally:
+        sys.path[:] = previous
+
+
 class _Journey:
     def __init__(self, context, client, binding, initial_identity, limits):
         self.context, self.client = context, client
@@ -230,6 +249,69 @@ class _Journey:
                 self.result["status"] = "INVALIDATED_NATIVE_FLAG_OBSERVED"
             # Native activity completion alone never overwrites a partial return status.
 
+    def choose_event_option(self, typed, options, frame, after):
+        # Reuse the existing registry. The explicit user doctor preference is a
+        # current named-row override, not a historical scope/index projection.
+        def legal(option):
+            index = option.get("native_option_index")
+            return (option.get("shown") is True and option.get("enabled") is True and
+                type(index) is int and index >= 0 and
+                any(row.get("option_number") == index + 1 and row.get("enabled") is True
+                    for row in (after.get("active_event") or {}).get("options", [])))
+        decision = {"policy": "native_first_displayed_v1", "registry_decision": None,
+                    "registry_knowledge_status": None, "registry_analysis_available": False,
+                    "source_sha256": None, "policy_sources": None, "gap": None}
+        knowledge = {}
+        try:
+            recommend, query, sources = _event_policy_reader(self.context)
+            knowledge = query(typed["event_definition_key"], "1.20.0.4")
+            decision.update(policy_sources=sources, registry_knowledge_status=knowledge.get("status"),
+                registry_analysis_available=isinstance(knowledge.get("analysis"), dict) and bool(knowledge["analysis"]),
+                source_sha256=(knowledge.get("analysis") or {}).get("source_sha256"))
+            decision["registry_decision"] = recommend(typed,
+                played_character_id=self.binding["actor_character_id"],
+                snapshot_option_count=(after.get("active_event") or {}).get("option_count"),
+                ck3_build="1.20.0.4", played_character=frame.get("played_character"))
+        except Exception as error:
+            decision["gap"] = "registry_reader_or_consumer_unavailable: " + type(error).__name__ + ": " + str(error)
+        if typed["event_definition_key"] == "health.1015":
+            analysis = knowledge.get("analysis") or {}
+            hashes = analysis.get("source_sha256") or {}
+            root = (typed.get("root_scope") or {}).get("typed_identity") or {}
+            sick = [row.get("scope", {}).get("typed_identity", {}) for row in typed.get("saved_scopes", [])
+                    if row.get("name") == "sick_character"]
+            source_ready = (knowledge.get("status") == "available" and
+                hashes.get("events/health_events.txt") == "74073E049A416C744B36A2A996FA467610705E38D53C836B050F1AC6F66E1212" and
+                hashes.get("common/scripted_effects/20_health_effects.txt") == "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB")
+            owner_ready = (root.get("status") == "available" and root.get("kind") == "character" and
+                root.get("character_id") == self.binding["actor_character_id"] and len(sick) == 1 and
+                sick[0].get("status") == "available" and sick[0].get("kind") == "character" and
+                sick[0].get("character_id") == self.binding["actor_character_id"])
+            named = [option for option in options if option.get("resolved_name") == "叫医生来！马上！"]
+            available = [option for option in named if legal(option)]
+            decision["health1015_user_preference"] = {"source_ready": source_ready, "current_patient_owner_ready": owner_ready,
+                "localization_key": "health.3101.e", "resolved_name": "叫医生来！马上！",
+                "localization_source_sha256": "7600AD3C4A482F335DE1B27367CE81F27348742F8F19BE034FD1B547686A747A",
+                "shown_named_rows": len(named), "legal_named_rows": len(available),
+                "full_registry_occurrence_contract_claimed": False}
+            if source_ready and owner_ready and len(named) == len(available) == 1:
+                decision["policy"] = "user_health1015_current_named_doctor_v1"
+                return available[0], decision
+            decision["gap"] = "health1015 named doctor unavailable/disabled/ambiguous or current source/patient not bound"
+        recommended = decision["registry_decision"] or {}
+        if recommended.get("status") == "recommended":
+            matches = [option for option in options if legal(option) and
+                option.get("native_option_index") == recommended.get("selected_native_option_index") and
+                option["native_option_index"] + 1 == recommended.get("selected_option_number")]
+            if len(matches) == 1:
+                decision["policy"] = "existing_registered_vanilla_event_v1"
+                return matches[0], decision
+            decision["gap"] = "registry recommendation not a unique currently legal displayed native row"
+        elif decision["gap"] is None:
+            decision["gap"] = "registry did not recommend: " + str(recommended.get("reason", recommended.get("status")))
+        _need(legal(options[0]), "First displayed option unavailable/disabled; no silent skip to another row")
+        return options[0], decision
+
     def event(self, frame):
         _need(len(self.result["event_receipts"]) + len(self.result["interaction_receipts"]) < self.limits["max_events"],
               "Finite modal cap", "PARTIAL_EVENT_CAP")
@@ -241,7 +323,7 @@ class _Journey:
         row, before, source = self.call("event-query", EVENT_CONTEXT, {"event_instance_id": instance}, frame)
         value, typed = row["result"], row["result"].get("current_event_window_context", {})
         capture = {"frame": frame, "query_after_frame": before, "active_event": active,
-                   "typed_context": typed, "query_source": source, "policy": "native_first_displayed_v1",
+                   "typed_context": typed, "query_source": source, "policy": "dedicated_then_native_first_displayed_v1",
                    "offline_analysis_required_after_batch": True}
         offline = self.record("event-" + str(instance) + "-offline-analysis-input", capture)
         self.result["offline_analysis_inputs"].append(offline)
@@ -256,30 +338,30 @@ class _Journey:
         options = typed.get("options")
         _need(isinstance(options, list) and options and len(options) <= 64 and
               [o.get("rendered_index") for o in options] == list(range(len(options))), "Native rendered order unavailable")
-        first = options[0]
-        index = first.get("native_option_index")
-        _need(first.get("shown") is True and first.get("enabled") is True and type(index) is int and index >= 0,
-              "First displayed option is unavailable/disabled; do not choose a different row")
+        chosen, event_policy = self.choose_event_option(typed, options, frame, before)
+        index = chosen["native_option_index"]
         number = index + 1
         snapshot_options = (before.get("active_event") or {}).get("options", [])
         _need(any(o.get("option_number") == number and o.get("enabled") is True for o in snapshot_options),
-              "Rendered first option differs from actual native option map")
+              "Chosen displayed option differs from actual native option map")
         capture_response = self.capture_key_window(typed, options, frame)
         refresh_source = None
         if capture_response is not None:
-            refreshed = self.refresh_key_window(typed, first, before)
+            refreshed = self.refresh_key_window(typed, chosen, before)
             typed, frame, before = refreshed["typed_context"], refreshed["query_frame"], refreshed["query_after_frame"]
             refresh_source = refreshed["evidence"]
+            event_policy = refreshed["event_policy"]
         intent = self.record("event-" + str(instance) + "-selection-intent", {
             **capture, "actual_displayed_options": options, "selected_native_option_index": index,
             "selected_option_number": number, "submission_attempted": False,
-            "decision_reason": "Use the current native first displayed option and continue; effects analyzed offline",
+            "decision_reason": event_policy["policy"], "event_policy": event_policy,
             "decision_display_evidence": None})
         receipt = {"event_instance_id": instance, "event_definition_key": typed["event_definition_key"],
             "intent": intent, "offline_analysis_input": offline, "selected_option_number": number,
             "selected_native_option_index": index, "submission_attempted": True, "ack_accepted": False,
             "old_instance_gone_in_independent_snapshot": False, "selection_source": None,
-            "root_capture_checkpoint": capture_response, "key_window_refresh_source": refresh_source}
+            "root_capture_checkpoint": capture_response, "key_window_refresh_source": refresh_source,
+            "event_policy": event_policy}
         self.guard()  # Budget exhaustion before submission remains a budget partial, not an unknown ACK.
         self.result["event_receipts"].append(receipt)
         self.consumed_events.add(instance)  # Before the sole original submission.
@@ -310,7 +392,7 @@ class _Journey:
         self.accept_source_bound_phase_event(typed, receipt, frame)
         return after
 
-    def refresh_key_window(self, original, first, previous):
+    def refresh_key_window(self, original, chosen, previous):
         # Root's capture can publish a new public revision. Never submit the old one.
         instance = original["current_event_instance_id"]
         fresh = self.snapshot(previous, same_date=True)
@@ -324,7 +406,7 @@ class _Journey:
         evidence = {"query_frame": fresh, "query_after_frame": after,
             "typed_context": typed, "query_source": source,
             "captured_instance_id": instance, "captured_definition_key": original["event_definition_key"],
-            "captured_first_native_option_index": first["native_option_index"]}
+            "captured_selected_native_option_index": chosen["native_option_index"]}
         evidence["evidence"] = self.record("event-" + str(instance) + "-key-window-refresh", evidence)
         _need(value.get("accepted") is True and value.get("current_event_window_context_ready") is True and
               typed.get("schema") == "current-event-window-context-v1" and typed.get("status") == "available" and
@@ -335,13 +417,14 @@ class _Journey:
               typed.get("readiness", {}).get("option_presentation_ready") is True and
               (after.get("active_event") or {}).get("instance_id") == instance and
               isinstance(options, list) and 1 <= len(options) <= 64 and
-              [o.get("rendered_index") for o in options] == list(range(len(options))) and
-              options[0].get("native_option_index") == first["native_option_index"] and
-              options[0].get("shown") is True and options[0].get("enabled") is True and
-              any(o.get("option_number") == first["native_option_index"] + 1 and o.get("enabled") is True
-                  for o in (after.get("active_event") or {}).get("options", [])),
+              [o.get("rendered_index") for o in options] == list(range(len(options))),
               "Key event definition/root/first displayed option changed or unavailable after Root capture; no option submitted",
               "PARTIAL_KEY_EVENT_CHANGED")
+        selected, policy = self.choose_event_option(typed, options, fresh, after)
+        _need(selected["native_option_index"] == chosen["native_option_index"],
+              "Key event policy selected a different native option after capture; no option submitted",
+              "PARTIAL_KEY_EVENT_CHANGED")
+        evidence["event_policy"] = policy
         return evidence
 
     def capture_key_window(self, typed, options, frame):

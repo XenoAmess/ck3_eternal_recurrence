@@ -140,6 +140,21 @@ class TransportTests(unittest.TestCase):
                     d.query_player_pilgrimage_planner_private_v1(**kwargs)
                 self.assertEqual(d.sent, [])
 
+    def test_all_serialized_operations_carry_native_required_read_stage(self):
+        for op in sorted(T.QUERY_OPERATIONS | T.SUBMIT_OPERATIONS):
+            submit = op in T.SUBMIT_OPERATIONS
+            d = Driver(body(op, submit))
+            kwargs = {"expected_revision": 5, "operation": op,
+                      "province_id": 3 if op in {"can_select", "select", "start"} else 0}
+            with self.subTest(operation=op):
+                if submit:
+                    d.submit_player_pilgrimage_planner_private_v1(policy_positive=True, **kwargs)
+                else:
+                    d.query_player_pilgrimage_planner_private_v1(**kwargs)
+                self.assertEqual(len(d.sent), 1)
+                self.assertIs(type(d.sent[0]["read_stage"]), int)
+                self.assertEqual(d.sent[0]["read_stage"], 0)
+
     def test_submit_requires_explicit_policy_and_rejects_unused_arguments(self):
         for op in T.SUBMIT_OPERATIONS:
             d = Driver(body(op, True))

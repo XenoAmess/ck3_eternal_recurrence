@@ -195,6 +195,7 @@ def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE)
 REVIEW_CLASSES = {'rule', 'preview', 'historical-recall', 'editorial'}
 REVIEW_CLAIMS = {'source-rule', 'rule-example', 'observed-preview', 'historical-recall', 'editorial-scope'}
 PREPARED_RETIRE_POLICY = 'verified-segment-exact-prepared-retirement-v1'
+FULL_PREPARED_RETIRE_POLICY = 'verified-full-episode-exact-prepared-retirement-v1'
 
 
 def rules_preview_segment(document, voices=None, evidence=None):
@@ -213,18 +214,33 @@ def rules_preview_segment(document, voices=None, evidence=None):
     return True
 
 
+def prepared_retirement_mode(document,*,profile):
+    """Select storage policy only; formal result/readiness checks remain unchanged."""
+    policy=document.get('prepared_visual_policy')
+    if policy is None:return None
+    if policy==PREPARED_RETIRE_POLICY:
+        if not rules_preview_segment(document):
+            raise ValueError('Prepared retirement is restricted to explicit rules/preview excerpts')
+        if profile!=EPISODE02_SAMPLE_PROFILE:
+            raise ValueError('Prepared retirement requires the immutable excerpt profile')
+        return 'review-excerpt'
+    if policy==FULL_PREPARED_RETIRE_POLICY:
+        if document.get('scope')!='episode02-formal-review' or profile!=EPISODE02_PROFILE:
+            raise ValueError('Full prepared retirement requires episode02 formal scope and immutable full profile')
+        return 'formal-full'
+    raise ValueError('Unknown exact prepared retirement policy')
+
+
 def document_budget(document,rows,*,profile):
     budget=peak_budget(sum(row['duration_seconds'] for row in rows),len(rows),profile=profile)
-    policy=document.get('prepared_visual_policy')
-    if policy is None:return budget
-    if policy!=PREPARED_RETIRE_POLICY or not rules_preview_segment(document):
-        raise ValueError('Prepared retirement is restricted to explicit rules/preview excerpts')
-    if profile!=EPISODE02_SAMPLE_PROFILE:raise ValueError('Prepared retirement requires the immutable excerpt profile')
+    mode=prepared_retirement_mode(document,profile=profile)
+    if mode is None:return budget
+    policy=document['prepared_visual_policy']
     # At most one newly generated visual coexists with retained narrated clips.
     # The final stream-copy film coexists with all narrated clips. Voice and original
     # source files remain external inputs; the admission helper charges current usage.
     single=max(media_limit(row['duration_seconds'],audio=False) for row in rows)
-    side=48*1024**2
+    side=48*1024**2 if mode=='review-excerpt' else budget['graphics_metadata_audio_audit_scratch_bytes']
     budget.update(prepared_visual_bytes=single,graphics_metadata_audio_audit_scratch_bytes=side,
         peak_new_bytes=single+2*budget['narrated_segment_bytes']+side+budget['conservative_packet_overshoot_bytes'],
         prepared_visual_policy=policy,required_workers=1,
@@ -779,9 +795,9 @@ def build(args,doc,inspection,inputs,admission):
     music=background_music(doc,inputs.bound,repo=args.repo)
     if profile!=DEFAULT_PROFILE and (music is None or doc.get('project_config') is None):
         raise ValueError('Explicit extended profile requires exact music and actual selected ProjectConfig')
-    retiring=doc.get('prepared_visual_policy')==PREPARED_RETIRE_POLICY
-    if retiring and (not rules_preview_segment(doc) or args.workers!=1 or profile!=EPISODE02_SAMPLE_PROFILE):
-        raise ValueError('Exact prepared retirement requires the excerpt profile and a single worker')
+    retiring=prepared_retirement_mode(doc,profile=profile) is not None
+    if retiring and args.workers!=1:
+        raise ValueError('Exact prepared retirement requires a single worker')
     out=Path(args.output).resolve(); out.mkdir(parents=True,exist_ok=False)
     write(out/'storage-admission.json',admission)
     runtime=read(args.runtime)
