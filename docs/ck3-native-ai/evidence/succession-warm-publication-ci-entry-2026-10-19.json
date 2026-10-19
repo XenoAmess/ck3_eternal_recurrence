@@ -1,0 +1,26 @@
+{
+  "schema": "xar.succession-publication-CI-entry-fix/v1",
+  "observed_at_utc": "2026-10-19T06:44:27.249588+00:00",
+  "executor_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "github_runner_machine_id": "unknown",
+  "source_head": "86946eef76e25aa78df80c30a6426c433fd8faa6",
+  "official_run": 39209188549,
+  "official_job": 117918551721,
+  "official_result": "completed/failure",
+  "source_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39209188549/job/117918551721",
+  "failed_step": "Test succession refresh after an SDK publication revision reset without CK3",
+  "actual_failure": "No module named pytest",
+  "test_collection_or_execution_observed": false,
+  "later_steps_in_this_failed_run": "skipped; no pass credit",
+  "linear_run": 39209188533,
+  "linear_result": "completed/success",
+  "excerpt": {
+    "path": "_runtime\\ci-job-117918551721-failure-excerpt.json",
+    "bytes": 25365,
+    "sha256": "b3eb5338f0aa670f5c3b7690de442b509f867bc500386e2df9b21f339b8f077a"
+  },
+  "fix": "Move the unchanged succession regression after the existing mcp/pytest dependency installation step",
+  "production_source_changed": false,
+  "game_or_native_or_runtime_calls": 0,
+  "new_official_result": "pending actual new HEAD CI"
+}

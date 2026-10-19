@@ -126,8 +126,6 @@ jobs:
         run: python -B -X utf8 tools/g2_saved_campaign/test_natural_succession_sentinel_boundary_v1.py
       - name: Test explicit cold readiness relay and result publication order without CK3
         run: python -B -X utf8 tools/g2_saved_campaign/test_startup_readiness_v1.py
-      - name: Test succession refresh after an SDK publication revision reset without CK3
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py
       - name: Test atomic decision text replacement with a Windows reader without CK3
         run: python -B -X utf8 tools/g2_saved_campaign/test_decision_text_replace_retry.py
       - name: Test unresolved successor event and timeline observations without CK3
@@ -154,6 +152,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test succession refresh after an SDK publication revision reset without CK3
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py
       - name: Test retained named Sway gain and independent consumption without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
