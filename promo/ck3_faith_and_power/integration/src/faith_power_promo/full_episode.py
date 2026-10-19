@@ -65,6 +65,17 @@ DEFAULT_PROFILE = RenderProfile('episode01-31m-1440p30-v1', MAX_SECONDS)
 EXTENDED_PROFILE = RenderProfile('episode01-35m-1440p30-v1', 2100)
 PADDING_PROFILE = RenderProfile('episode01-2101s-1440p30-v1', 2101)
 V5_REORDER_PROFILE = RenderProfile('episode01-v5-54m-1440p30-v1', 3240)
+EPISODE02_PROFILE = RenderProfile('episode02-34m-1440p30-v1', 2040)
+
+
+def episode_prefix(scope):
+    """Resolve only supported production scopes; never derive paths from input text."""
+    if scope in {'episode01-full-review', 'episode01-adoption-review-segment',
+                 'episode01-formal-review', 'episode01-P-relic-review-scene'}:
+        return 'episode01'
+    if scope in {'episode02-formal-review', 'episode02-review-segment'}:
+        return 'episode02'
+    raise ValueError('Unknown episode production scope')
 
 
 def render_profile(document, bound):
@@ -72,7 +83,7 @@ def render_profile(document, bound):
     if reference is None:return DEFAULT_PROFILE
     if Path(reference['path']).suffix.lower()!='.json':raise ValueError('Render profile must be pinned JSON')
     actual=read(bound(reference))
-    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE):
+    for profile in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE,EPISODE02_PROFILE):
         if actual==profile.to_mapping():return profile
     raise ValueError('Unknown immutable render profile or changed quality settings')
 
@@ -159,7 +170,7 @@ def media_limit(seconds, *, audio):
 
 def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE):
     """New future bytes, not an existing-package cap or measured output size."""
-    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE):raise ValueError('Unknown render profile')
+    if profile not in (DEFAULT_PROFILE,EXTENDED_PROFILE,PADDING_PROFILE,V5_REORDER_PROFILE,EPISODE02_PROFILE):raise ValueError('Unknown render profile')
     seconds=profile.max_seconds if seconds is None else seconds
     if not 0 < seconds <= profile.max_seconds or not 0 < segments <= profile.max_segments:
         raise ValueError(f'{profile.max_seconds}-second / {profile.max_segments}-segment limit exceeded')
@@ -549,8 +560,9 @@ def available_memory():
     return os.sysconf('SC_AVPHYS_PAGES')*os.sysconf('SC_PAGE_SIZE')
 
 
-def companion_text(rows,mapping,directory):
+def companion_text(rows,mapping,directory,*,scope='episode01-formal-review'):
     """External subtitles use measured final video PTS, including mux start offset."""
+    prefix=episode_prefix(scope)
     directory=Path(directory);directory.mkdir(exist_ok=False)
     def stamp(value):
         value=round(value*1000)
@@ -564,12 +576,22 @@ def companion_text(rows,mapping,directory):
                 number+=1
                 body=group['zh']+'\n'+group['en'] if language=='bilingual' else group[language]
                 lines.extend([str(number),stamp(start+float(group['start_seconds']))+' --> '+stamp(start+float(group['end_seconds'])),body,''])
-        paths.append(write_text(directory/('episode01.'+language+'.srt'),'\n'.join(lines)))
+        paths.append(write_text(directory/(prefix+'.'+language+'.srt'),'\n'.join(lines)))
     lines=['# Faith and Power: review narration','','Source and live result disclosures are preserved in the input catalog and burned-in source labels.','']
     for row,item in zip(rows,mapping):
         lines.extend([stamp(item['actual_final_first_pts'])+'  '+row['zh'],row['en'],''])
-    paths.append(write_text(directory/'episode01-script.md','\n'.join(lines)))
+    paths.append(write_text(directory/(prefix+'-script.md'),'\n'.join(lines)))
     return paths
+
+
+def review_concat_plan(ffmpeg,segment_paths,media,audit,scope):
+    """Plan the existing public concat with this episode's explicit output names."""
+    prefix=episode_prefix(scope)
+    media=Path(media)
+    return plan_concat(ffmpeg=ffmpeg,segment_paths=segment_paths,
+        concat_path=media/(prefix+'.ffconcat'),
+        partial_output=media/(prefix+'-review.partial.mp4'),
+        final_output=media/(prefix+'-review.mp4'),audit_directory=audit)
 
 
 def theme_concat(plan, music, duration, final_cap):
@@ -684,6 +706,7 @@ def music_presence(ffmpeg, final_ref, dry_manifest, music, source_duration, dura
 
 def build(args,doc,inspection,inputs,admission):
     if not inspection['ready_to_build']:raise ValueError('Full build refused: '+ '; '.join(inspection['gaps']))
+    prefix=episode_prefix(doc['scope'])
     profile=render_profile(doc,inputs.bound)
     music=background_music(doc,inputs.bound,repo=args.repo)
     if profile!=DEFAULT_PROFILE and (music is None or doc.get('project_config') is None):
@@ -751,9 +774,8 @@ def build(args,doc,inspection,inputs,admission):
                 'actual_final_frame_indices_exclusive':[round(cursor*30),round((cursor+d)*30)],
                 'authored_final_interval_seconds':[cursor,cursor+d],'human_1x_review_performed':False})
             cursor+=d
-        final=media/'episode01-review.mp4'
-        plan=plan_concat(ffmpeg=ffmpeg,segment_paths=segment_paths,concat_path=media/'episode01.ffconcat',
-            partial_output=media/'episode01-review.partial.mp4',final_output=final,audit_directory=out/'audit/concat')
+        final=media/(prefix+'-review.mp4')
+        plan=review_concat_plan(ffmpeg,segment_paths,media,out/'audit/concat',doc['scope'])
         if music is not None:
             source_probe=media_duration(ffprobe,inputs.bound(music['file']),out/'audit/music-source-probe')
             source_audio=[s for s in source_probe['streams'] if s['codec_type']=='audio']
@@ -808,7 +830,7 @@ def build(args,doc,inspection,inputs,admission):
             'evidence_source':'actual final decode/probe/every frame PTS plus immutable input catalog',
             'final':pin(final),'entries':mapping,'composition_coverage':gui_composition.coverage(inspection['rows']),'human_full_1x_review_performed':False,
             'human_listening_performed':False,'clean_span_certified':False,'native_business_verified':False})
-        text_paths=companion_text(inspection['rows'],mapping,media/'text')
+        text_paths=companion_text(inspection['rows'],mapping,media/'text',scope=doc['scope'])
         for path in text_paths:records.append(('text.'+path.stem,'subtitle-or-script',path,'text/plain'))
         volume=run_process([str(ffmpeg),'-nostdin','-v','info','-i',str(final),'-vn','-af','volumedetect','-f','null','-'],
             out/'audit/audio-signal','actual final audio signal check')
@@ -819,11 +841,11 @@ def build(args,doc,inspection,inputs,admission):
         if music is not None:
             music_proof=music_presence(ffmpeg,read(map_path)['final'],dry_manifest,music,
                 float(source_probe['format']['duration']),cursor,out,doc['machine_id'])
-        records.extend([('episode01.review','deliverable',final,'video/mp4')])
+        records.extend([(prefix+'.review','deliverable',final,'video/mp4')])
         direct_register(run,records)
         from xar_promo.runlog import append_phase_record
         append_phase_record(run,phase_id='full-review.direct-output',status='succeeded',
-            artifact_ids=['episode01.review'],detail='Actual bounded encode and strict AV/PTS checks; human review pending; no business qualification awarded')
+            artifact_ids=[prefix+'.review'],detail='Actual bounded encode and strict AV/PTS checks; human review pending; no business qualification awarded')
         write(out/'completed-review.json',{'machine_id':doc['machine_id'],'observed_at_utc':now(),
             'status':'ENCODED_REVIEW_PENDING','scope':doc['scope'],'final':pin(final),'map':pin(map_path),'native_run':pin(run),
             'actual_new_bytes':package_bytes(out),'budget':inspection['budget'],

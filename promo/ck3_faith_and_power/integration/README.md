@@ -4,6 +4,14 @@
 
 **后续生产先读[系列研究与讲解方法](../docs/production-lessons.md)。** 先明确要支持的玩家决策、所需观测和因果验证，再编排声画；研究同时演进现有MCP与智能体。下述初始试拍／authoring状态保留各自历史身份，2026-10-19早期成果见[一期v5交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)；技术检查与讲解效果、实际听审分别记录。
 
+## 第二期复用正式生产入口
+
+第二期继续调用现有`episode01_formal.py`封装及`formal_episode`，使用`episode02-formal-review`（全片）或`episode02-review-segment`（连续样片）scope。保留原正式schema、测量音频、逐句来源、结果槽、原生后态、ProjectConfig和容量门禁；改变scope不授予拍摄或渲染资格。旧`episode01_full.py`的158句及E01结果槽输入仍只属于一期，不把二期伪装成旧库存。
+
+正式消费者将二期输出命名为`episode02-review.mp4`、`episode02.{zh,en,bilingual}.srt`、`episode02-script.md`，注册ID为`episode02.review`；一期既有命名不变。[二期34分钟profile](profiles/episode02-2040s-1440p30-v1.json)须在正式输入中精确绑定，沿用1440p30、码率与质量设置；默认31分钟上限保持不变。34分钟是这份配方的容量上界，实际片长仍跟随讲解与实测声音，超出时另评估配方和预算。
+
+离线检查覆盖实际正式输入消费者、公共concat planner、带最终PTS的字幕/讲稿输出和一期回归；不调用TTS、FFmpeg或CK3，不证明二期已生成媒体。
+
 下文“全片无预算／未渲染”只描述2026-10-17初始试拍入口的当时状态；不是后继正式全片当前状态。v5沿既有formal/full入口取得独立容量准入，双向教改和采用已经有真实后态。新任务仍须核自己的当前来源与预算，不能复用已关闭场次的剩余额度。
 
 本轮按[第五轮整体重排](../docs/episode01-revision-v5.md)实现缺失教改MCP并制作双向案例；配音与新take前应用[制作经验](../docs/production-experience.md)。源码候选、构建、实测、配音和最终媒体各自保留实际状态，不从已有run继承新版资格。

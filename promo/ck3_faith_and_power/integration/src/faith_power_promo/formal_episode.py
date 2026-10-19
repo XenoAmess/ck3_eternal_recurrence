@@ -20,6 +20,8 @@ SCHEMA = 'ck3-faith-power-formal-edit-v1'
 VALUE_V3_SCHEMA = 'ck3-faith-power-value-v3-formal-edit-v1'
 VOICE_CATALOG_SCHEMA = 'faith-power-value-v3-voice-authoring-catalog-v2'
 EVIDENCE_SCHEMA = 'ck3-faith-power-value-v3-cue-evidence-v1'
+FORMAL_REVIEW_SCOPES = {'episode01-formal-review', 'episode02-formal-review'}
+SCENE_SCOPES = {'episode01-P-relic-review-scene', 'episode02-review-segment'}
 
 
 class MetadataBindings:
@@ -159,7 +161,7 @@ class FormalInputs:
         value_v3=doc.get('schema')==VALUE_V3_SCHEMA
         if doc.get('schema') not in {SCHEMA,VALUE_V3_SCHEMA} or not doc.get('machine_id'):
             raise ValueError('Explicit formal schema and machine required')
-        if doc.get('scope') not in {'episode01-formal-review', 'episode01-P-relic-review-scene'}:
+        if doc.get('scope') not in FORMAL_REVIEW_SCOPES | SCENE_SCOPES:
             raise ValueError('Declare formal episode or independent P/relic scene')
         if value_v3:
             old,claims,checks=self.value_v3_inventory()
@@ -206,7 +208,7 @@ class FormalInputs:
         selected = [row['id'] for row in doc['cues']]
         if len(set(selected)) != len(selected) or not set(selected) <= set(inventory):
             raise ValueError('Duplicate or unknown selected voice')
-        if doc['scope'] == 'episode01-formal-review':
+        if doc['scope'] in FORMAL_REVIEW_SCOPES:
             excluded = doc['excluded_cues']
             excluded_ids = {row['id'] for row in excluded if row.get('reason')}
             if len(excluded_ids) != len(excluded) or set(selected) & excluded_ids or set(selected) | excluded_ids != set(inventory):
@@ -393,7 +395,7 @@ class FormalInputs:
         warnings = []
         for key, value in states.items():
             if value is None:
-                if value_v3 or doc['scope'] == 'episode01-formal-review':
+                if value_v3 or doc['scope'] in FORMAL_REVIEW_SCOPES:
                     gaps.append(key + ': result still unbound')
             elif value.get('status') == 'omitted':
                 if not value.get('reason'):
@@ -406,7 +408,7 @@ class FormalInputs:
                     raise ValueError('Value-v3 live slot must bind its actual new result voice batch')
             else:
                 raise ValueError('Result slot needs observed-bound or explicit omitted status')
-        if doc['scope'] == 'episode01-formal-review' and not 1200 <= total <= 2400:
+        if doc['scope'] in FORMAL_REVIEW_SCOPES and not 1200 <= total <= 2400:
             warnings.append('Outside director 20–40 minute preference; an honest shorter review may build. No padding or raw loops.')
         if doc.get('project_config') is not None:
             common.explicit_project_config(self.load(doc['project_config']),rows,profile=profile)
