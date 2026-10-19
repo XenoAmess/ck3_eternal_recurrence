@@ -1,0 +1,52 @@
+{
+  "schema": "native30-artifact-postcheck11-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T23:06:55.520224+00:00",
+  "status": "SOURCE_READY_NOT_EXECUTED",
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck11-plan-2026-10-20.json",
+    "bytes": 5504,
+    "sha256": "f778024583d94a27a3590e366219aa3f07a35ae060021af6d7ba3c68588ff338"
+  },
+  "files_excluding_this_ready": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_artifact_postcheck11_20261020.py",
+      "bytes": 2566,
+      "sha256": "bd3b72694121f96f5bcad08c2fb0bfc0c3f780bc40d0fba06d48fb7603571d5a"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_native30_artifact_postcheck11_20261020.py",
+      "bytes": 2785,
+      "sha256": "1e93c57e6ccf9e4b817a1c8e45156846b98752f2a1f584dfa904577391522d93"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\seal_native30_artifact_postcheck11_20261020.py",
+      "bytes": 7008,
+      "sha256": "1bee19343cc8137e2f7d5bd7f55d83bc8d9481074eab5f718a98a6cca69247ad"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck11-plan-2026-10-20.json",
+      "bytes": 5504,
+      "sha256": "f778024583d94a27a3590e366219aa3f07a35ae060021af6d7ba3c68588ff338"
+    }
+  ],
+  "full_logical_bytes": 19745,
+  "hard_bytes": 32768,
+  "tests": {
+    "passed": 3,
+    "failed": 0,
+    "unittest_seconds": 0.275,
+    "output": "67cb4b",
+    "cases": [
+      "64MiB parent reserve preserved and small local accepted",
+      "local>8MiB rejected",
+      "parent error same object/full RAM inverse"
+    ]
+  },
+  "full_inverse": true,
+  "generated_syntax": true,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "owned_children": 0,
+  "physical_credit_bytes": 0
+}

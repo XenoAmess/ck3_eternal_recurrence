@@ -1,0 +1,133 @@
+{
+  "schema": "native30-artifact-postcheck11-plan-v1",
+  "status": "SOURCE_ONLY_NOT_EXECUTION_ADMISSION",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T23:06:55.520224+00:00",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_artifact_postcheck11_20261020.py",
+    "bytes": 2566,
+    "sha256": "bd3b72694121f96f5bcad08c2fb0bfc0c3f780bc40d0fba06d48fb7603571d5a"
+  },
+  "source_files": [
+    "tools/g2_saved_campaign/native30_artifact_postcheck11_20261020.py",
+    "tools/g2_saved_campaign/test_native30_artifact_postcheck11_20261020.py",
+    "tools/g2_saved_campaign/seal_native30_artifact_postcheck11_20261020.py",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck11-plan-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-artifact-postcheck11-source-ready-2026-10-20.json"
+  ],
+  "source_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C22-RUNTIME12MiB-BUDGET-CI8KiB-NATIVE11-SOURCE32KiB-ADMITTED01.json",
+    "bytes": 3517,
+    "sha256": "5e693d1218b8dc121500ce53584e48a1b861a837b3695375a5b2a642b7131f71"
+  },
+  "base_contract": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck10-plan-revision2-2026-10-20.json",
+    "bytes": 2895,
+    "sha256": "f305087ccb481960ebce8c7c13b8179b48629979787515e006077a428d97045d"
+  },
+  "original10_FAILED": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner10-artifact\\FINAL-CLOSED-SUMMARY.json",
+    "bytes": 5455,
+    "sha256": "489b4c51601afd63bca331fac105643f251e49249d39637076647ecde7a01f0a"
+  },
+  "base_input": {
+    "git_commit": "c84d4db799f092a698a9aca2af10bebe20466221",
+    "git_path": "tools/g2_saved_campaign/native30_artifact_postcheck10_20261020.py",
+    "bytes": 23736,
+    "sha256": "a6cad40bf6975b93b70f4b8789e827be7f96c2e26705aa34a463ece1dbe41368",
+    "disk_copy_written": false
+  },
+  "RAM_generated": {
+    "bytes": 23726,
+    "sha256": "e7019de54f9c81da36fd54def0f6101a0240f6cd348cc94a3ad7dd38b244bde1",
+    "full_inverse_to_original10": true,
+    "hunks": [
+      [
+        "ROOT / \"attempt10-artifact-postcheck\"",
+        "ROOT / \"attempt11-artifact-postcheck\""
+      ],
+      [
+        "ROOT / \"owner10-artifact/owner-spec\"",
+        "ROOT / \"owner11-artifact/owner-spec\""
+      ],
+      [
+        "\"native30-artifact-postcheck10-plan-v1\"",
+        "\"native30-artifact-postcheck11-plan-v1\""
+      ],
+      [
+        "\"artifact10_\" + path.stem",
+        "\"artifact11_\" + path.stem"
+      ],
+      [
+        "require(owned + reserve <= 8388608, \"new postcheck8M including owner\")",
+        "require(owned <= 8388608, \"new postcheck8M including owner\")"
+      ]
+    ]
+  },
+  "identity_contract": "The actual c0 stage is the wrapper with its own file SHA/FileID. RAM source is compiled under this real wrapper path and separate namespace. No fake Path, source file, shared-module or guard monkeypatch.",
+  "change_scope": "Only namespace stage/owner/plan/module10 to11 and owned+reserve<=8MiB to owned<=8MiB. Same latest=budget(reserve) and all Native10 artifact/source/9closed-fact checks retained byte-for-byte.",
+  "units": {
+    "parent_reserve": "run_owned default64MiB remains solely in aggregate1.5GiB and free-floor checks",
+    "local8MiB": "new stage+whole owner outputs charged max(EOF,AllocationSize), no extra parent slack added"
+  },
+  "roots": {
+    "aggregate": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+    "postcheck": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt11-artifact-postcheck",
+    "owner": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner11-artifact\\owner-spec"
+  },
+  "caps": {
+    "source_complete": 32768,
+    "aggregate": 1610612736,
+    "sourceR": 100663296,
+    "metadata": 167772160,
+    "TEMP": 402653184,
+    "new_metadata_including_owner": 8388608,
+    "owner": 65536
+  },
+  "metadata_quote": {
+    "old08_full": 131238080,
+    "old08_admin_future_writes": null,
+    "old09_full": 16777216,
+    "old10_full": 8388608,
+    "new11_full": 8388608,
+    "combined": 164792512
+  },
+  "future_stage_args": [
+    "--plan",
+    "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-artifact-postcheck11-plan-2026-10-20.json",
+    "--admission",
+    "<new exact card>",
+    "--admission-sha256",
+    "<fullSHA>",
+    "--execute"
+  ],
+  "ledger_facts": {
+    "10_outer_failed_normally_Job0_Task_absent": true,
+    "10_inner_owned_and_future": null,
+    "10_commands_journal": "[{}], no command started",
+    "10_failure": "Parent64MiB guard passed; incorrect repeated64MiB addition into local8MiB rejected before OwnedJob.",
+    "10_before_failure_local_counter": null
+  },
+  "software_tests": {
+    "passed": 3,
+    "failed": 0,
+    "unittest_seconds": 0.275,
+    "output": "67cb4b",
+    "cases": [
+      "64MiB parent reserve preserved and small local accepted",
+      "local>8MiB rejected",
+      "parent error same object/full RAM inverse"
+    ]
+  },
+  "no_repeated_work": [
+    "no09nineEXE",
+    "no full input preflight rerun",
+    "no old6/other matrix",
+    "no build/UAC/Game/SDK"
+  ],
+  "qualification": "Same independent artifact-only Native10 protocol;09/10 FAILED stay FAILED; Defender_pending/OSunknown/GameH NOTRUN/deployedfalse.",
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}
