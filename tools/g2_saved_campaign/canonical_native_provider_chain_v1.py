@@ -61,7 +61,7 @@ def _require_direct_entry_command_v1(command, entry):
     index=1;seen=set()
     while index<len(command) and command[index].startswith("-"):
         flag=command[index]
-        contract._require(flag in ("-B","-u","-X") and flag not in seen,
+        contract._require(flag in ("-B","-u","-S","-X") and flag not in seen,
                           "unsupported Python interpreter flag or execution mode")
         seen.add(flag);index+=1
         if flag=="-X":

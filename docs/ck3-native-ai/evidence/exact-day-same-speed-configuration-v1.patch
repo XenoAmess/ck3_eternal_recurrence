@@ -1,0 +1,22 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
+@@ -25721,16 +25721,9 @@
+         arm_status: dict[str, object] | None = None
+         cancel_attempted = False
+         try:
+-            speed_step = f"set-speed-{speed}"
+-            speed_result = self._execute_composite_primitive(speed_step, current)
+-            actions.append({"step": speed_step, "result": speed_result})
+-            current = self._wait_for_life_advance_snapshot(
+-                self.take_internal_semantic_snapshot(),
+-                lambda snapshot: snapshot.get("speed") == speed,
+-                timeout_seconds=self.command_timeout_seconds,
+-            )
+-            if current.get("speed") != speed:
+-                raise BridgeUnavailableError("exact-day clock did not observe its speed")
++            from .exact_day_speed_configuration_v1 import prepare_exact_day_speed_v1
++            current = prepare_exact_day_speed_v1(
++                self, current, speed=speed, actions=actions)
+             if war_daily_watch is not None and not war_daily_watch.ready_to_arm(current):
+                 raise BridgeUnavailableError("war daily watch owner/roster changed before arm")
+             arm_result = self._execute_primitive_step(

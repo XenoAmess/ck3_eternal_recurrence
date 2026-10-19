@@ -172,7 +172,7 @@ class CanonicalSourceContracts(unittest.TestCase):
 
     def test_only_the_actual_direct_script_operand_can_bind_frozen_source(self):
         entry=str(Path(__file__).resolve());python=str(Path(sys.executable).resolve())
-        for flags in ([],["-B"],["-u"],["-X","utf8"],["-B","-X","utf8","-u"]):
+        for flags in ([],["-B"],["-u"],["-S"],["-X","utf8"],["-B","-X","utf8","-u","-S"]):
             with self.subTest(flags=flags):
                 command=[python,*flags,entry,"--owned-canonical-role"]
                 self.assertEqual(chain._require_direct_entry_command_v1(command,entry),1+len(flags))
@@ -184,6 +184,7 @@ class CanonicalSourceContracts(unittest.TestCase):
             [python,"-X","dev",entry],
             [python,"-X","utf8"],
             [python,"-B","-B",entry],
+            [python,"-S","-S",entry],
             [python,str(Path(chain.__file__).resolve()),entry],
             [python,"-",entry],
         )

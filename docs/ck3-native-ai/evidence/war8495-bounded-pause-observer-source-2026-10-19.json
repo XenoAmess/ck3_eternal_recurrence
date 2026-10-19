@@ -1,0 +1,95 @@
+{
+  "schema": "xar.war8495-bounded-pause-observer-source-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 17:09:23 UTC",
+  "machine_id_source": "tools/ck3_live_run_id.py machine freshly returned the same ID during this source task",
+  "storage_admission": {
+    "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M5-WAR-RESULTS-PAUSE-SCOPE-SOURCE32KiB-COMMITMENT01.json",
+    "bytes": 1513,
+    "sha256": "da2d2476a244fa63c2c45e721cb9f3a62d28c0655841b111cb7103cf49ee5f6a",
+    "hard_bytes": 32768,
+    "policy_version": "1.0.0",
+    "class": "record/source",
+    "future_heavy_write_bytes": 0
+  },
+  "actual_failure_packet": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c16-war-results8495-failure91/FROZEN.json",
+    "bytes": 5776,
+    "sha256": "0cc6e2e8b12096d89913a53267bb2ddfdb03e0080d9c74879fb3edcd40a727d5"
+  },
+  "actual_source": {
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src13",
+    "SDK_commit": "d804be64838b25c234ef1f805d8e641e4f677450",
+    "old_helper_bytes": 6325,
+    "old_helper_sha256": "697bde508093b4ea1bd9612730ecfe3b0fdd434efc9fdf890ccc229e08592161"
+  },
+  "original8495": {
+    "response_bytes": 19980,
+    "response_sha256": "7cb2ed83a6342107ca399c97e81995b90fdbdde56b0b938c2e455bc85fa7e14b",
+    "started_at_utc": "2026-10-19T16:44:09.067203+00:00",
+    "ended_at_utc": "2026-10-19T16:44:10.018447+00:00",
+    "selected_step": "close-war-results-window-v1",
+    "status": "pending",
+    "native_handled": true,
+    "dispatch_invoked": true,
+    "post_window_present": true,
+    "closure_verified": false,
+    "ui_action_credit": false,
+    "pause_ACK_accepted": true,
+    "after_pause": {
+      "native_revision": 1126,
+      "revision": 1127,
+      "date_raw": 53217072,
+      "paused": false,
+      "Game_pid": 30852
+    },
+    "actual_pause_status": "pause_unverified"
+  },
+  "cause": "Existing helper submitted one pause and immediately sampled once. ACK was not a paused postcondition. Service correctly retained pending with zero closure credit. Future repair observes subsequent semantic frames within one fixed budget; it never retries the original close or adds a second pause.",
+  "production": {
+    "helper": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_results_scope_pause_v1.py",
+      "bytes": 11069,
+      "sha256": "26f8facdf8235f7ef2a0640044d588351a8aeefc81e2417d487fd3b72b2eb771"
+    },
+    "function": {
+      "name": "pause_after_war_results_scope_transition_v1",
+      "line": 118,
+      "end_line": 212,
+      "ast_sha256": "e20e1f2bc8aa4df96c38f5f111989d230c98526197e1e792359f3604c4756794"
+    },
+    "Service_changed": false,
+    "Driver_changed": false,
+    "reused_wait": "NativeHeadlessGameplayDriver._wait_for_life_advance_snapshot; frozen src13 native_driver.py25921-25962. Actual wait runs in tests. It calls state.wait_for_public_change then take_internal_semantic_snapshot; no extra Native action, history materialization or normal advance is requested.",
+    "budget_seconds": 1.5,
+    "pause_submit_maximum": 1,
+    "close_submit_count": 0,
+    "admission": "The existing exact completed UI-scope-transition matcher remains. One owned safety pause and immediate already-paused behavior are retained. Foreign/unknown owner or regressed source cannot authorize pause.",
+    "observer": "If immediate frame is still unpaused and scope permits, wait with a predicate. Actor/Game PID/hello/episode/connection changes, public/native/date regression, map exit, terminal/identity/death boundary or new event/interaction/modal ends observation. Subsequent boundary remains unverified even if its frame is paused.",
+    "timeout": "Return pause_unverified on timeout, missing waiter or observer error; preserve actual after-frame/error, original close and zero action credit. No pause/close replay.",
+    "legacy_immediate_boundary": "An already-arrived event does not suppress the existing single safety pause. Immediate same-owner paused readback retains its old pause-only status. This grants no event handling/window closure, and does not extend the new wait across a subsequent decision boundary.",
+    "evidence": "wait_attempted, fixed budget, elapsed, immediate_after_pause, predicate observed_frame_count including baseline, final after_pause and stop reason. Fresh owner war-results query remains separately required."
+  },
+  "fixture": {
+    "path": "ck3_autonomous_player/tests/unit/fixtures/war8495_pause_wait_source_v1.json",
+    "bytes": 4940,
+    "sha256": "86f780f9d4001235dbfa200b01d23af2af5659aebdf6a784418a528ce53239b4",
+    "boundary": "Original8495 result including old pause_unverified evidence is unchanged. Tests reconstruct only semantic containers removed by the original frame projection. Later paused/foreign/modal frames are explicitly synthetic. The candidate is not retrospectively applied to8495."
+  },
+  "tests": {
+    "new_file": {
+      "path": "ck3_autonomous_player/tests/unit/test_war_results_pause_wait_8495.py",
+      "bytes": 7393,
+      "sha256": "d31ab8a939d01b6a9bd61730416c05709ce35b333b15506a56a6d42843a55a97"
+    },
+    "command": "python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_war_results_pause_wait_8495.py','ck3_autonomous_player/tests/unit/test_war_results_scope_transition_pause.py','ck3_autonomous_player/tests/unit/test_war_results_scope_transition_chain.py']))",
+    "result": "30 passed in2.92s",
+    "exit_code": 0,
+    "coverage": "Real8495 immediatefalse -> synthetic same-owner paused successor with1pause; actual internal waiter and deterministic clock; timeout; actor/episode/connection/PID; public/native/date regression; map/event/interaction/modal/terminal/identity boundary; alreadypaused0pause; waiter absent/error; foreign before submit; legacy immediate decision safety pause; unchanged full Service/Native close/pause chain.",
+    "initial_scope_correction": "An initial pre-modal guard incorrectly suppressed the old safety pause:26pass/3chainfail. Removed that overreach; retained the existing single pause and immediate verified path, while new wait boundaries remain conservative. No old fixture assertion was weakened.",
+    "no_new_Game_or_RPC": true
+  },
+  "current_reconcile_boundary": "Current actual8495 remains an already-invoked close, not a blocked/no-action turn. Existing transport may clear its Driver execution latch on a qualified later query even if still visible. Only actual hidden/absent supports the independent outer-queue reconciliation; a visible/foreign result must not trigger another close under this repair.",
+  "adoption": "Future SDK source/software candidate only; current live source unchanged. No actual8495 closure/paused/day/victory credit or deployed fix is claimed. Runtime/harness own current pause and readonly reconciliation.",
+  "storage": "Complete changed helper, new test, small source fixture and this proof fit32KiB; existing regression files are referenced, not copied. No processes/builds/heavy assets created or deleted. Record review after180days under policy1.0.0."
+}

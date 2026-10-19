@@ -1,0 +1,75 @@
+{
+  "schema": "xar.g2.m7.c17-no-site-direct-script-guard/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:51:10.057182+00:00",
+  "status": "SOURCE_READY_PURE_GUARD_ONLY",
+  "parent_source_commit": "5ada3d1e1afecd86d25426155f578468cd838b13",
+  "reason": "Future genuine App entry requires sys.flags.no_site; its frozen direct Python command includes -S. This adds only that explicit interpreter flag.",
+  "allowed_prefix_flags": {
+    "single_use": [
+      "-B",
+      "-u",
+      "-S"
+    ],
+    "single_option_pair": [
+      "-X",
+      "utf8"
+    ],
+    "order": "Any order before exact frozen script operand"
+  },
+  "unchanged_guards": [
+    "First actual script operand must equal exact frozen entry",
+    "Reject -c/-m/--/stdin/unknown flags/duplicate flags/extra preceding script",
+    "Held actual returned image must match declared direct base before child ACK",
+    "Same original MCP binder, source SHA/entry closure, parent/peer/FileID/FILETIME and unique issuer remain",
+    "Production command is not automatically rewritten; directbase qualification remains external"
+  ],
+  "qualification": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_at_utc": "2026-10-19T16:50:33.137434+00:00",
+    "source": "tools/.venv/Scripts/python.exe pytest, tool5a7ed5",
+    "node": "tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py::CanonicalSourceContracts::test_only_the_actual_direct_script_operand_can_bind_frozen_source",
+    "result": "1 passed, 16 subtests passed in 1.47s",
+    "actual_children_created": 0,
+    "Game_RPC": 0,
+    "current_runtime_adopted": false,
+    "actual_H": "unknown"
+  },
+  "historical_evidence": {
+    "source_qualification": "docs/ck3-native-ai/evidence/g2-m7-canonical-source-chain-qualification-2026-10-19.json",
+    "sha256": "d19103e4c342dd22e48d56d1b35b42b971d95ca13600fce1edbb5e1017df070a",
+    "scope": "Unchanged historical proof. Original four-child run belongs to its earlier producer/test pins; prior strict-script guard run belongs to 0831/b901. Neither is claimed as a new -S mechanical run."
+  },
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/canonical_native_provider_chain_v1.py",
+      "bytes": 15181,
+      "sha256": "54475da0a10dce93fe306880df502e977cd41c056195b3a429bd7465e79a1ef4"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py",
+      "bytes": 28145,
+      "sha256": "2b094c01d3a85befffa97dac26c2761dd435a1904f3640283c2c7c08f2b8b7f6"
+    }
+  ],
+  "budget": {
+    "existing_phase_bytes": 98478,
+    "new_full_source_file_growth_bytes": 55,
+    "new_proof_bytes": 3096,
+    "revised_phase_bytes": 101629,
+    "hard_cap_bytes": 131072,
+    "card_remaining_bytes": 106496
+  },
+  "execution": {
+    "stage_commit_push": false,
+    "source_default_enabled": false,
+    "Game_MCP_Job_connections": 0,
+    "Native_builds": 0,
+    "new_tasks": 0
+  },
+  "retention": {
+    "category": "record",
+    "review_after_days": 180,
+    "purpose": "Consolidate with future C17 source wiring; no new runtime assets"
+  }
+}

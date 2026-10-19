@@ -1,0 +1,309 @@
+{
+  "schema": "xar.c16-exact-day-same-speed-configuration.v1",
+  "status": "SOURCE_READY_FOCUSED_SOFTWARE_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T17:10:15Z",
+  "machine_identity_source": "python -B tools/ck3_live_run_id.py machine",
+  "purpose": "Remove one redundant same-frame speed command and its speed-only wait while preserving every native exact-day Arm/Resume/Status and daily stop. Do not infer end-to-end speedup from this software result.",
+  "source_custody": {
+    "root_authorized_baseline_commit": "798a28e908e686e69eada051d08d2cb06d73bd5d",
+    "released_by": "/root/g2_m1_entities",
+    "root_authorized_exact_span_apply": true,
+    "before": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1640148,
+      "sha256": "397ca34de66a69d28a4d206b1574d2186282b8563d2cc8d2059704466b68030e"
+    },
+    "after": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1639750,
+      "sha256": "b30c072273e1c19630e95ce10d1ba0d0da54f9dbdc93ba457c46b07aa692dc4e"
+    },
+    "exact_method_before_ast_sha256": "cf8c73514474be46c5c2318c2b7ccaf0a7d4ee06f755b46a8746ba86b14090f5",
+    "exact_method_after_ast_sha256": "cef9d7c747f0fa6815884962e0b5f8e1e5d67309267456422bd588e5b596d6b7",
+    "exact_method_after_lines": [
+      25703,
+      25885
+    ],
+    "composite_primitive_unchanged_ast_sha256": "3772d83357acc899e3d7673416ddfba0d4c6a813169130723414818f0ed49f1b",
+    "inverse_hunk_restores_entire_baseline_bytes": true,
+    "inverse_sha256": "397ca34de66a69d28a4d206b1574d2186282b8563d2cc8d2059704466b68030e",
+    "diff_summary": "3 inserted / 10 removed lines in _advance_exact_day_with_sentinel only; WAL, custody, camera and all other Driver bytes unchanged.",
+    "historical_wal_proof_unmodified": true,
+    "service_strategy_camera_modified": false,
+    "staged_or_committed_by_this_agent": false
+  },
+  "delivered_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "bytes": 3412,
+      "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_exact_day_same_speed_configuration_v1.py",
+      "bytes": 12182,
+      "sha256": "2a9e062c40208b40ebd8bd5f098af404c90e2d346cafa8822c3920c8b1a1d8ec"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/exact-day-same-speed-configuration-v1.patch",
+      "bytes": 1315,
+      "sha256": "554674d15ec52bba48067a258df356063933ae6ebd9d0e2d27592e999c8de142"
+    }
+  ],
+  "eligibility": {
+    "scope": "One invocation, local cached semantic snapshots only; no persisted or cross-call cache.",
+    "start_requires": [
+      "plain dict",
+      "native-headless / injected-dll-named-pipe",
+      "paused living map",
+      "exact integer speed equal to requested speed 1..5",
+      "complete positive integer public revision/native revision/date/actor/episode actor/local player/bridge PID/connection generation",
+      "actor equals episode actor",
+      "snapshot_id equals native:<native_revision>",
+      "nonempty episode_run_id",
+      "connected native hello with exact CK3 1.20.0.4 version/SHA and ck3_build_match true"
+    ],
+    "revalidation": "Read the existing local internal semantic snapshot once. Its complete binding and strict integer speed must still match before skipping the setter and speed-only wait.",
+    "incomplete_foreign_or_stale_binding": "Use the original setter/wait path and its original composite primitive revision/retry/rejection behavior; never treat a foreign frame as proof of a no-op.",
+    "changed_or_wrong_typed_fresh_speed": "Raise BridgeUnavailableError before any setter, Arm, or resume. Do not set the speed back or retry timeline advancement.",
+    "independent_native_check": "The original native Arm validates its own actual speed and full date/mode/watch binding. This remains mandatory even after a same-frame SDK match.",
+    "missing_build_or_owner": "Conservative original path; the optimization does not create new gameplay capability."
+  },
+  "software_qualification": {
+    "evidence_level": "Focused synthetic in-memory protocol test, plus byte/AST/source compilation checks. This is not a live CK3 run, engine timing, whole AUTO benchmark, or sustained throughput qualification.",
+    "final_command": "python -B -m unittest -v ck3_autonomous_player.tests.unit.test_exact_day_same_speed_configuration_v1 ck3_autonomous_player.tests.unit.test_exact_day_native_clock_paused_next_frame ck3_autonomous_player.tests.unit.test_native_exact_day_speed_five",
+    "final_result": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "reported_test_runner_seconds": 0.069,
+      "exit_code": 0
+    },
+    "new_tests": 9,
+    "existing_tests": 4,
+    "original_failure_preserved": {
+      "result": "Initial run: 13 tests, 12 passed, 1 test assertion failure; no production behavior failure.",
+      "test": "test_public_stale_revision_rejection_is_unchanged",
+      "cause": "The test incorrectly required an entirely empty provider frame list; the existing background heartbeat can legally emit a ping.",
+      "exact_observed_frame_type": "ping",
+      "correction": "Require zero execute_step commands. Heartbeat traffic is not an advancing or speed command. Production code was unchanged after this test-only correction.",
+      "initial_runner_seconds": 0.07
+    },
+    "same_speed_1_and_5": {
+      "original_native_commands": 4,
+      "candidate_native_commands": 3,
+      "removed_command": "set-speed-<same speed>",
+      "removed_speed_only_wait_calls": 1,
+      "preserved_commands_in_order": [
+        "research-arm-tactical-daily-sentinel-v1-<start>-to-<start+24>-speed-<speed>-mode-terminal-a-0",
+        "resume-map",
+        "research-query-tactical-daily-sentinel-v1"
+      ],
+      "all_other_native_command_steps_identical": true,
+      "original_and_candidate_arm_stop_dictionaries_equal": true,
+      "elapsed_days": 1,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "final_paused": true,
+      "no_extra_pause_command": true,
+      "revision_caveat": "Removing a command can change revision counters and request IDs. No byte equality of such counters or of actions containing the intentionally removed setter is claimed."
+    },
+    "different_speed": "Start speed 1 / target 5 keeps the identical original command sequence, wait count and native Arm/Stop dictionaries.",
+    "rejects_preserved": [
+      "public stale expected_revision produces no execute_step",
+      "fresh stale/foreign/changed build binding reaches original composite rejection and preserves exception identity",
+      "native Arm actual speed mismatch rejects before resume in original and candidate",
+      "fresh changed/wrong-typed/unavailable speed rejects without any command"
+    ],
+    "input_mutation": "Helper does not mutate the caller snapshot or its nested owner/build data; verified with a pre-call deepcopy.",
+    "default_native_policy_tests": "Existing combat, retreat, missing roster, modal, unresolved siege/assault, capability and native exact-day admission exclusions pass unchanged.",
+    "compile_checks": [
+      "helper in-memory compile",
+      "new test in-memory compile",
+      "entire candidate Driver in-memory compile"
+    ],
+    "production_helper_assert_nodes": 0,
+    "baseline_full_file_inverse_equality": true,
+    "new_game_rpc": 0,
+    "new_disk_state_or_save_reads": 0,
+    "new_benchmark_or_timing_probe": 0
+  },
+  "closed_actual_boundary_evidence": {
+    "scope": "Historical, named closed C16 files only. Do not conflate these historical dates with the current recovery frontier or reset the campaign clock.",
+    "root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+    "exact_day_batch": {
+      "path": "p37-queue/C16-FULL-6877-CLOSED-INDEX.json",
+      "bytes": 54611,
+      "sha256": "1e9be0edf8466fea06e32863224278c0f616d3f72e4485e08a44959814cf57e0",
+      "life_auto_sequences": [
+        6888,
+        6894,
+        6900,
+        6906,
+        6912,
+        6918,
+        6926,
+        6936
+      ],
+      "phase": "native_war_stationary_excluded_siege_one_day_observation"
+    },
+    "earlier_exact_day": {
+      "path": "p37-responses/6888-1-result.json",
+      "bytes": 125291,
+      "sha256": "8921cb71aac0aaa3d851ec19d85bc5f485c5b048438957b5f54a9149b24dc9c4",
+      "started_at_utc": "2026-10-19T16:18:09.958213Z",
+      "ended_at_utc": "2026-10-19T16:18:14.224521Z",
+      "full_mcp_seconds": 4.266312299994752,
+      "actual_days": 1,
+      "starting_date_raw": 53202720,
+      "ending_date_raw": 53202744,
+      "actual_speed": 5,
+      "policy": "exact_one_day_noncombat_native_speed_5",
+      "setter_present": true,
+      "native_arm_speed": 5,
+      "daily_ticks": 1,
+      "overshoot_days": 0,
+      "paused": true
+    },
+    "next_exact_day": {
+      "path": "p37-responses/6894-1-result.json",
+      "bytes": 98049,
+      "sha256": "cb88c8ca326c70e58f0050f88fa4e0cb0b0f7fc8b4c4216f1c97823a9cf4e46a",
+      "started_at_utc": "2026-10-19T16:18:17.266828Z",
+      "ended_at_utc": "2026-10-19T16:18:18.306410Z",
+      "full_mcp_seconds": 1.0395778000820428,
+      "actual_days": 1,
+      "starting_date_raw": 53202744,
+      "ending_date_raw": 53202768,
+      "actual_speed": 5,
+      "policy": "exact_one_day_noncombat_native_speed_5",
+      "setter_present": true,
+      "native_arm_speed": 5,
+      "daily_ticks": 1,
+      "overshoot_days": 0,
+      "paused": true,
+      "interpretation": "The actual C16 path has no universal speed-1 two-second/day floor: this whole MCP was below two seconds. This single advancing RPC does not establish whole AUTO/FULL or long-term <=1 second/day."
+    },
+    "between_exact_days": {
+      "army_auto": 6890,
+      "mercenary_auto": 6892,
+      "six_fields_unchanged": {
+        "native_revision": 4,
+        "revision": 5,
+        "date_raw": 53202744,
+        "character_id": 40526,
+        "episode_character_id": 40526,
+        "episode_run_id": "native-40526-1bec95182886"
+      },
+      "limit": "These six closed projection fields establish a repeated-setting opportunity, not complete helper eligibility or Native wait time. The new helper still requires its full independently refreshed binding."
+    },
+    "latest_named_batch": {
+      "path": "p37-queue/C16-FULL-8413-CLOSED-INDEX.json",
+      "bytes": 61951,
+      "sha256": "8a17b98f017d944eb4c5dc171a26f54396ce1698cd19991758d972db814e1f31",
+      "settled_cycles": 30,
+      "actual_days": 46,
+      "life_advance_one_day_count": 0,
+      "progress_count": 8,
+      "main_progress_scope": "stationary_objective_hold_sentinel"
+    },
+    "latest_hold_example": {
+      "path": "p37-responses/8416-1-result.json",
+      "bytes": 78983,
+      "sha256": "54e593c05f58c6847cfaa7fb0e6b0ef40f206ef15e64de5df39d282fa4f205a3",
+      "actual_speed": 3,
+      "actual_days": 6,
+      "full_mcp_seconds": 5.384678700007498,
+      "daily_ticks": 6,
+      "overshoot_days": 0,
+      "paused": true,
+      "interpretation": "A different already-qualified objective-hold scope. Do not relabel it as exact-day or remove its daily/native observations."
+    },
+    "full_auto_or_full_lifecycle_elapsed": "unknown; existing closed MCP timing excludes some Queue, display, classifier and outer control work.",
+    "actual_seconds_saved_by_candidate": null,
+    "endpoint_wall_anchor_utc": "2026-10-19T03:26:49.420926Z",
+    "all_maintenance_failures_and_zero_day_work_remain_counted": true,
+    "no_new_runtime_sampling": true
+  },
+  "speed_policy_and_source_boundary": {
+    "speed_or_policy_changed": false,
+    "campaign_deadline_prior_art": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_deadline_transport_v1.py",
+      "historical_actual_bytes": 7375,
+      "historical_actual_sha256": "476df8524de496c1e87d8ac4f127654eb1e41a1fb870914bbb2f8c3dbe8e4940",
+      "contract": "The sibling native campaign deadline already skips a same-speed setter; this exact-day patch retains an independent native Arm speed validation."
+    },
+    "war_daily_watch": {
+      "default_enabled": false,
+      "actual_candidate_speed": 2,
+      "prior_47_checks": "Software-only source qualification; not C16 live adoption. Speed 2 is not faster than the already observed C16 generic speed 5. It has a different roster-watch contract and remains disabled."
+    },
+    "c11_speed1_reference": {
+      "path": "docs/ck3-native-ai/evidence/c11-exact-day-wait-source-audit01.json",
+      "bytes": 20777,
+      "sha256": "081d9ccffcc87458fd463d4f0a9a119af709ecc41b9049bc3b1c36175f5ea576",
+      "source_owner": "/root/performance_native",
+      "limit": "Eight historical C11 speed-1 waits do not prove a C16 floor or current throughput."
+    },
+    "actual_src13_strategy": {
+      "bytes": 1047320,
+      "sha256": "45c164297b90b32203e7860b4a7735cfa65c5ca1db7141e898d15395d2e47e78"
+    },
+    "actual_src13_service": {
+      "bytes": 877777,
+      "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8"
+    },
+    "inspected_src13_driver": {
+      "bytes": 1620598,
+      "sha256": "db9f8fb05483146abe1bea7c00d5ec4c53e5fc6a9c370133ba7e8ff7ebedb3da",
+      "root_runtime_correction": "Current src13 freeze was independently corrected to db9 by sole runtime. Do not assign the obsolete e19 full-file pin to these C16 observations."
+    },
+    "candidate_bound_to": "Released canonical 798a28e9 full bytes plus guarded exact-method AST. It is not a whole historical SDK replacement."
+  },
+  "rejected_cpu_candidate": {
+    "fixture": {
+      "path": "ck3_autonomous_player/tests/fixtures/ordinary_sway_fullplanner_v1.json",
+      "bytes": 58255,
+      "sha256": "3c4724e662e371a6edf53d3419bb6f1e19c7802ff9cd05e53f576fe9353f2b96"
+    },
+    "result": "Keep private snapshot deepcopy. The five semantic aliases reference one snapshot, so deepcopy copies it once; removing isolation could expose mutable cached Native nested DTOs to planner/strategy changes.",
+    "existing_pure_memory_profile_scope": "One cold fixture plus a derived synthetic absent-window fixture; no Game, RPC, state_dir, or runtime throughput measurement.",
+    "observed_profile_seconds": {
+      "exact_fixture_choose_cpu": 0.0001287,
+      "derived_choose_cpu": 0.0087455,
+      "derived_choose_wall": 0.0088003,
+      "derived_service_cpu": 0.0682523,
+      "derived_service_wall": 0.068315
+    },
+    "service_profile_dominant_cold_import_seconds_approx": 0.054,
+    "service_profile_all_deepcopy_cumulative_seconds_approx": 0.01,
+    "protected_snapshot_copy_count": 1,
+    "mutation_isolation_removed": false,
+    "limit": "Cold imports and this synthetic fixture cannot explain actual sustained seconds/day. No CPU or end-to-end saving claimed and no new copy benchmark rerun."
+  },
+  "deployment": {
+    "canonical_source_hunk_applied": true,
+    "current_runtime_sdk_or_queue_modified": false,
+    "current_game_or_obs_touched": false,
+    "actual_speedup_qualified": false,
+    "wal_enabled": false,
+    "root_owns_commit_and_future_adoption": true
+  },
+  "storage": {
+    "admitted_by": "storage_v20261019",
+    "admission_receipt": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/C17-CUSTODY256KiB-PLANNER128KiB-CODE3-COMMITMENT01.json",
+    "admission_receipt_bytes": 2021,
+    "admission_receipt_sha256": "d2936977804802c29beb0ef24be1b8e44c70a05979d73caec2fd2f0d6eefc9bc",
+    "budget_bytes": 131072,
+    "allocation": "Existing code3 spare finite planner128KiB package; not minor or other128 research.",
+    "existing_fixture_not_copied": true,
+    "source_driver_delta_bytes": -398,
+    "external_new_bytes": 0,
+    "new_driver_or_save_body_copies": 0,
+    "generated_bytecode_bytes": 0,
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}
