@@ -2197,7 +2197,19 @@ class NativeHeadlessGameplayDriver:
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
-        self.endpoint.start(self._ingest, self.state.mark_disconnected)
+        self.endpoint.start(self._ingest, self._mark_bridge_disconnected_v1)
+
+    def _invalidate_player_heir_provider_v1(self, reason: str) -> None:
+        owner = getattr(self, "_player_heir_candidate_owner_v1", None)
+        if owner is not None and getattr(owner, "_player_heir_loaded_custody_v1", None) is not None:
+            from .native_loaded_provider_custody_v1 import invalidate_loaded_native_provider_v1
+            invalidate_loaded_native_provider_v1(owner, reason=reason)
+
+    def _mark_bridge_disconnected_v1(self) -> None:
+        try:
+            self.state.mark_disconnected()
+        finally:
+            self._invalidate_player_heir_provider_v1("native_disconnect")
 
     def bind_succession_lifecycle_v1(self, binding: object) -> None:
         """Freeze the run profile before the first bridge session is adopted."""
@@ -2227,7 +2239,7 @@ class NativeHeadlessGameplayDriver:
                     }
                 )
             except BridgeUnavailableError:
-                self.state.mark_disconnected()
+                self._mark_bridge_disconnected_v1()
 
     def _h3937_date_hold_active(
         self, snapshot: dict[str, object] | None = None
@@ -11593,6 +11605,7 @@ class NativeHeadlessGameplayDriver:
 
     def _adopt_bridge_session(self, bridge_pid: int) -> None:
         """Adopt a bridge now, but delay cross-PID identity until map-ready."""
+        self._invalidate_player_heir_provider_v1("native_connection_adoption")
         first_connection = False
         with self._driver_state_lock:
             first_connection = self._session_bridge_pid is None
@@ -17817,7 +17830,8 @@ class NativeHeadlessGameplayDriver:
             else starting_revision
         )
         wait_record = None
-        wait_options = {}
+        request_id = f"step-{self._request_sequence + 1}-{uuid.uuid4().hex[:12]}"
+        wait_options = {"protocol_request_id": request_id}
         if deadline is not None:
             remaining = deadline - time.monotonic()
             if remaining <= 0:
@@ -17916,6 +17930,12 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native campaign-root query crossed a snapshot revision"
             )
+        player_heir_projection = None
+        if "player_heir_candidate_v1" in normalized:
+            from .player_heir_candidate_component_v1 import project_existing_root_player_heir_v1
+            player_heir_projection = project_existing_root_player_heir_v1(self,
+                starting=starting, current=current, root=normalized,
+                request_id=request_id, query_sequence=query_sequence)
         mirror_keys = (
             "schema_version",
             "date_raw",
@@ -17949,6 +17969,8 @@ class NativeHeadlessGameplayDriver:
             mirror_keys = tuple(key for key in mirror_keys if key in normalized)
         response = {
             **result,
+            **({"player_heir_fixed_dynasty_projection_v1": player_heir_projection}
+               if player_heir_projection is not None else {}),
             "status": normalized["status"],
             "campaign_root_context": normalized,
             "query_sequence": query_sequence,
@@ -17977,6 +17999,8 @@ class NativeHeadlessGameplayDriver:
         with self._driver_state_lock:
             self._campaign_root_context_query = {
                 "query_sequence": query_sequence,
+                **({"player_heir_fixed_dynasty_projection_v1": copy.deepcopy(player_heir_projection)}
+                   if player_heir_projection is not None else {}),
                 "campaign_root_context": copy.deepcopy(normalized),
                 "cache_binding": {
                     "snapshot_id": starting.get("snapshot_id"),
@@ -26301,6 +26325,7 @@ class NativeHeadlessGameplayDriver:
 
     def close(self) -> None:
         from .normal_exit_pending_observer_v1 import dispose_normal_exit_observer_v1
+        self._invalidate_player_heir_provider_v1("native_driver_close")
         dispose_normal_exit_observer_v1(self)
         while True:
             with self._driver_state_lock:
