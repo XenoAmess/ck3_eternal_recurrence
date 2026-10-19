@@ -71,8 +71,8 @@ class RootScope {
   RootScope(const RootScope &) = delete;
   RootScope &operator=(const RootScope &) = delete;
  private:
-  const DecisionBindings &b_;
   alignas(16) std::array<std::byte, 0x168> bytes_{};
+  const DecisionBindings &b_;
 };
 
 bool ReadDecision(const Bindings &b, void *character, void *scope,
