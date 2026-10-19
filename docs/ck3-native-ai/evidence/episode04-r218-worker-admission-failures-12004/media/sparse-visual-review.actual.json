@@ -1,0 +1,23 @@
+{
+  "schema": "xar.e04.r218-sparse-visual-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T03:16:46Z",
+  "source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r218-refill-worker-positive-a01/media-qa-take01-a01/MEDIA-QA.actual.json",
+    "bytes": 3021,
+    "sha256": "8137e489b97ed648ef5090d8120e9ed7e1e0c305edfe3588ec033ac4e9fea7c8"
+  },
+  "AI_reviewed_requested_seconds": [5, 44.1, 86.2],
+  "AI_visual_observation": "All three sparse samples show the CK3 client map, 1067-03-31 at the bottom, and Army label 6679. No ArmyWindow or supply panel is visible. The images differ in map rendering details but do not establish a game-date transition.",
+  "visual_claims": {
+    "actual_client_window_visible": true,
+    "army_label_6679_visible_in_samples": true,
+    "date_transition_visible_in_samples": false,
+    "supply_panel_visible_in_samples": false,
+    "continuous_clean_span_certified": false,
+    "human_1x_reviewed": false,
+    "formal_episode_shot_qualified": false,
+    "worker_or_refill_business_positive_from_video": false
+  },
+  "scope": "Three sparse still images only; 88.2 seconds full single-thread decode was technical validation, not frame-by-frame visual review."
+}

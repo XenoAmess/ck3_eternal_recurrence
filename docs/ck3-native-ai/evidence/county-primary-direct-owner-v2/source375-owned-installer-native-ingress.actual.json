@@ -1,0 +1,151 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "execution_machine_id": "unknown",
+  "observed_at_utc": "2026-10-19T03:57:26.846428+00:00",
+  "source_head": "375a48cb15b0e590160a331b86c12d39386083ed",
+  "run_id": 39196000014,
+  "artifact_id": 12161944450,
+  "artifact_zip": {
+    "bytes": 3960,
+    "sha256": "cb56d94b2c039221044abd640672e1ee01e49341493c06ecd75eb5fefc7083ee",
+    "local_body_retained": false
+  },
+  "files": [
+    {
+      "name": "CONSUMED.actual.json",
+      "bytes": 2690,
+      "sha256": "a9bba2c08768ab3831ba4ad899edc3141c45f2717d1c7dde8b817f9140393778"
+    },
+    {
+      "name": "NATIVE-WIRE.json",
+      "bytes": 43585,
+      "sha256": "63c840f00933cce53a04391b3a8e96cd38f463b8e29de0b0b4094152f3639848"
+    },
+    {
+      "name": "PYTHON-COMPOUND.actual.json",
+      "bytes": 1479,
+      "sha256": "01971f984a001adfdef6e185e9f491304b4b14b29f54106d743dc1071691a8f0"
+    }
+  ],
+  "native_ingress": {
+    "schema": "xar.county-primary-direct-owner-v2.native-wire-ingress.v1",
+    "status": "PASS_NATIVE_SYNTHETIC_WIRE_PRODUCTION_CONSUMERS",
+    "wire": {
+      "path": "D:\\a\\_temp\\native-decision-completion-ci\\wire\\county-primary-direct-owner-v2\\NATIVE-WIRE.json",
+      "bytes": 43585,
+      "sha256": "63c840f00933cce53a04391b3a8e96cd38f463b8e29de0b0b4094152f3639848"
+    },
+    "cases": [
+      {
+        "case": "ON_no_phaseTLS_direct_Army0_physical7",
+        "direct_positive_count": 1,
+        "global_window_continuous": true
+      },
+      {
+        "case": "ON_postDate_direct_complete_v1_absent",
+        "direct_positive_count": 1,
+        "global_window_continuous": true
+      },
+      {
+        "case": "ON_no_registerTLS_diagnostic",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "forged_R13_magic_only_rejected",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "wrong_army_registry",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "cross_army_unit_backlink",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "wrong_ArRg_registry",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "writer_missing_actual_array",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "raw_physical_pointer_mismatch",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "physical_backlink_other_ArRg",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "wrong_Regi_registry_type",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "OFF_owner_capture_absent_original_once",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "unknown_caller_no_owner",
+        "direct_positive_count": 0,
+        "global_window_continuous": true
+      },
+      {
+        "case": "nested_unknown_masks_outer_context",
+        "direct_positive_count": 1,
+        "global_window_continuous": true
+      },
+      {
+        "case": "unreadable_ArRg_unbound_diagnostic_old_global_unchanged",
+        "direct_positive_count": 0,
+        "global_window_continuous": false
+      }
+    ],
+    "live_or_R04_credit": false,
+    "SDK_calls": 0,
+    "native_process_started_by_this_consumer": false,
+    "original_call_and_OFF_read_counts": "asserted inside native fixture, not inferred by Python"
+  },
+  "python_compound": {
+    "schema": "xar.r218.county-direct-owner.compound.v1",
+    "status": "PASS_ONE_PRODUCTION_DIRECT_OWNER_COMPOUND",
+    "machine_id": "runnervm0xl3a-89d3c56171",
+    "observed_at_utc": "2026-10-19T03:55:24.890299+00:00",
+    "checks": [
+      "production_exact_ingress_to_physical_consumer_no_phase_and_post_date",
+      "global_195_call_window_and_target_fact_are_independent",
+      "registry_thread_sampling_and_unknown_failure_guards_are_strict",
+      "cross_Army_full_generation_and_date_are_not_backfilled",
+      "writer_invocation_token_reuse_rejects_both_calls",
+      "physical_pointer_triple_DATA_binding_and_actual_debit_are_independent",
+      "explicit_register_skip_legacy_unknown_and_strict_v1_contract_preserved",
+      "foreign_parent_caller_cannot_carry_direct_county_child",
+      "independent_unbound_pair_is_strict_diagnostic_only_and_preserves_old_counts"
+    ],
+    "native_inputs": "explicitly synthetic registers/registry/membership/date/physical premises",
+    "contract_pre_sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2",
+    "contract_post_sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2",
+    "new_module_sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c",
+    "native_DLL_built": false,
+    "native_code_executed": false,
+    "SDK_DR_game_calls": 0,
+    "D_writes": 0,
+    "actual_R217_reclassified": false,
+    "R04_live_closed": false,
+    "old_matrix_runs": 0,
+    "optimization": 1
+  },
+  "local_tests_repeated": 0,
+  "native_or_live_qualification": false
+}

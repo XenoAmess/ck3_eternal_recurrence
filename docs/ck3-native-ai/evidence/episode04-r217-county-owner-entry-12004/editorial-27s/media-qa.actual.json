@@ -1,0 +1,83 @@
+{
+  "schema": "xar.e04.r217-insert-media-qa.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-19T02:32:03.772096+00:00",
+  "technical_status": "PROBE_DECODE_PTS_GREEN_PENDING_SPARSE_VISUAL",
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/work-build-a01/R217-R04-COUNTY-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1698188,
+    "sha256": "4b7f762d37c2c6e961e7284a7db26d24634dfcbe1970eb8043e2428611619e33"
+  },
+  "probe_command": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/commands/probe_movie.actual.json",
+    "bytes": 1176,
+    "sha256": "c0cac892361a3c7ad266d1dd4a30dbe12c1ebf9a4f28a7e06f34ae58371264df"
+  },
+  "strict_decode": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/commands/strict_decode_movie.actual.json",
+    "bytes": 1163,
+    "sha256": "3e05fd3a8363777fa21a8c74c54874cc0fcf4547323d86e54ebb430a42a660f0"
+  },
+  "pts_command": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/commands/pts_movie.actual.json",
+    "bytes": 1100,
+    "sha256": "774b6d2b2815d1f1dd8266e442f54f2f1d2b39d5936755d994505cdd1a3cfe2a"
+  },
+  "frame_count": 810,
+  "first_pts": 0.021354,
+  "last_pts": 26.988021,
+  "max_pts_gap": 0.03333400000000175,
+  "sample_frames": [
+    {
+      "label": "before",
+      "movie_second": 5.0,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/audit/samples/before.jpg",
+        "bytes": 207177,
+        "sha256": "14e9822dc42f2e49ac726acddc975445d79699cabe8226ff6da085d6ca704e06"
+      }
+    },
+    {
+      "label": "transition",
+      "movie_second": 12.5,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/audit/samples/transition.jpg",
+        "bytes": 223253,
+        "sha256": "7f7bc9f864fd407d4268464e481587fa3aa9796d37aa6e6f42ea51ee72d26dec"
+      }
+    },
+    {
+      "label": "after",
+      "movie_second": 18.0,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/audit/samples/after.jpg",
+        "bytes": 196563,
+        "sha256": "a4ec6ec32feadc5f4acc7e8725731988ffd7b465cb0f854db290fce7322c6865"
+      }
+    },
+    {
+      "label": "tail_card",
+      "movie_second": 25.0,
+      "image": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/audit/samples/tail_card.jpg",
+        "bytes": 120403,
+        "sha256": "ec5cf42498d858efefc1bb8bb214531b14d49ad2b849d1f2a48c97186c11ac61"
+      }
+    }
+  ],
+  "full_human_1x": false,
+  "formal_R04_positive": false,
+  "signoff": false,
+  "uploaded": false,
+  "root_usage": {
+    "phase": "qa_close",
+    "at_utc": "2026-10-19T02:32:04.247670+00:00",
+    "root_bytes": 11093480,
+    "soft_stop_bytes": 58720256,
+    "fresh_free_bytes": {
+      "C:/": 34638626816,
+      "D:/": 24809476096
+    },
+    "stop_at_utc": "2026-10-19T04:58:00+00:00"
+  }
+}

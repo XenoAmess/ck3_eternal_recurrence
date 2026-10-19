@@ -1,0 +1,78 @@
+{
+  "schema": "xar.e04.r04-v2.master-source-final.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T04:14:12.030048+00:00",
+  "status": "SOURCE_AND_EXACT_CI_CLOSED",
+  "master_commit": "375a48cb15b0e590160a331b86c12d39386083ed",
+  "native_tree": "7d135d047fe9cccae77e6d537ddbc355e9fb2a33",
+  "integration_commits": [
+    "7314b4bc45d9c0f34803223e0defb6f9a8f543e3",
+    "345038254675a7c8a7c465db0914e53e133371ef",
+    "9c52a741c7039f77ac5e40a2ef8737aa2c8900e6",
+    "375a48cb15b0e590160a331b86c12d39386083ed"
+  ],
+  "ordinary_FF_push": true,
+  "CI": {
+    "Official": {
+      "run": 39196000014,
+      "conclusion": "success",
+      "completed_at_utc": "2026-10-19T04:10:56Z"
+    },
+    "Linear": {
+      "run": 39195999960,
+      "conclusion": "success",
+      "completed_at_utc": "2026-10-19T03:43:45Z"
+    },
+    "observer_exit_code": 0,
+    "new_native_owned_installer_and_strict_v1_ctest": "PASS 2/2",
+    "native_wire_to_production_consumers": "PASS 15 cases; three expected physical7 positives, twelve no positives",
+    "python_compound": "PASS 9 groups under -O",
+    "python_receipt_machine_id": "runnervm0xl3a-89d3c56171",
+    "native_receipt_machine_id": "unknown; native JSON has no explicit machine_id"
+  },
+  "D_frozen_readback": {
+    "head": "ba3528fc04621529ed528930623b5d34826a46a4",
+    "index_sha256": "5c1017c2a221955e9c7ec5ea7f82f4ee6d67eeabbf5059257f8f1b3f2479cb05",
+    "source_mutations_by_this_task": 0
+  },
+  "scope": {
+    "C_owned_sparse_worktrees_and_private_indexes_removed": true,
+    "all_observers_closed": true,
+    "local_native_builds_or_EXE_executions": 0,
+    "SDK_DR_game_calls": 0,
+    "production_DLL_SYSTEM_a38_qualification": false,
+    "live_R04_closed": false,
+    "old_CI_RED_retained": true,
+    "research": "10/14",
+    "business": "7/11",
+    "formal_dynamic": "0/11",
+    "ABC": "0/3"
+  },
+  "retained_C_bytes_before_final": 125477,
+  "evidence": {
+    "SOURCE-PUSHED-CLOSED.actual.json": {
+      "bytes": 7694,
+      "sha256": "6fb42832b79ca0c647aefa704431979b8dcf2f4b39ce3ee2e455edfbbd37e3fb"
+    },
+    "DOC-GATE-FIX-CLOSED.actual.json": {
+      "bytes": 1502,
+      "sha256": "59efd272ad99eca6605be53d71a667f6a1951bf5f9ad88bc0ddcccf2864078fa"
+    },
+    "ROUTE-LINK-FIX-CLOSED.actual.json": {
+      "bytes": 1246,
+      "sha256": "89c1cd0e252128b29c377930c521e79795286b9243db593c241a57f61de48055"
+    },
+    "OWNED-INSTALLER-FIX-CLOSED.actual.json": {
+      "bytes": 2375,
+      "sha256": "bd426fd74be0a6941bd99bd91cd9e322668330bdefa962c15c1be47de034286a"
+    },
+    "OWNED-INSTALLER-NATIVE-INGRESS-PASS.actual.json": {
+      "bytes": 5452,
+      "sha256": "d328ca0a2c75b46b2bc5b474d473607e953e35d1b36585dbfadcbe76efb96c0a"
+    },
+    "OWNED-INSTALLER-CI-FINAL.actual.json": {
+      "bytes": 3379,
+      "sha256": "1574879b5c6a14dbfc0469a8ab78e9780435875f768f9f4c4207d68dde158057"
+    }
+  }
+}

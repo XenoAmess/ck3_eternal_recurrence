@@ -1,0 +1,87 @@
+{
+  "schema": "xar.ck3.refill_ADD_12004.root_launch.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-19T03:25:10.088304+00:00",
+  "prepared": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\PREPARED.actual.json",
+    "bytes": 101898,
+    "sha256": "e86e5cdeefcf17c53792f41fa2a3296fc11bd59a990d006a40da02a18a146a0f"
+  },
+  "native_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a37\\REFILL-WORKER-LIVE-a01\\refill_add_hwprobe_12004.exe",
+    "--enable",
+    "--pid",
+    "37652",
+    "--thread",
+    "0",
+    "--regiment",
+    "2602",
+    "--slot",
+    "1",
+    "--created",
+    "134368510959429822",
+    "--timeout-ms",
+    "30000",
+    "--raw",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.raw.ndjson",
+    "--ready",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.ready.json",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080",
+    "--thread-policy",
+    "carrier-owned-target",
+    "--max-threads",
+    "64"
+  ],
+  "consume_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+    "--raw",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.raw.ndjson",
+    "--binding",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\owner-binding.json",
+    "--output",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\instruction-item.json",
+    "--create-target-core-proof",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\target-core-proof.json"
+  ],
+  "target_pid": 37652,
+  "process_created_filetime": 134368510959429822,
+  "automatic_advance": false,
+  "automatic_consumer": false,
+  "automatic_retry": false,
+  "force_kill": false,
+  "observer_pid": 16796,
+  "finished_at_utc": "2026-10-19T03:25:10.368469+00:00",
+  "observer_exit_code": 1,
+  "ready_verified": false,
+  "ready_error": null,
+  "launcher_error": null,
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.raw.ndjson",
+    "present": true,
+    "bytes": 14422,
+    "sha256": "12c2658e711448d680aa5c1c6c112bd940c9726d439520f4a3d554f98c6c400b"
+  },
+  "native_ready": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.ready.json",
+    "present": false
+  },
+  "stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\observer.stdout",
+    "present": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\observer.stderr",
+    "present": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false
+}

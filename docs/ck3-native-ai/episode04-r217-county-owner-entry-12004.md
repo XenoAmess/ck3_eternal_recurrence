@@ -19,3 +19,11 @@ flowchart LR
   W -. native owner child absent23of23 .-> O[Army invocation ownership unknown]
   Q[Independent GUI close and original process waits] --> C[OS0 and Root bus6803 resources empty]
 ```
+
+## 27 秒研究插片已完成技术制作（2026-10-19 UTC 补录）
+
+来源机器仍为 `desktop-3fevhd2-1c74096080`。02:32 UTC 的[独立交付](evidence/episode04-r217-county-owner-entry-12004/editorial-27s/delivery.actual.json)记录新 27 秒、810 帧 rough insert；24 秒原片窗口 51–75 秒后接 3 秒卡片。影片 1,698,188 B，SHA-256 `4b7f762d37c2c6e961e7284a7db26d24634dfcbe1970eb8043e2428611619e33`，仅保留来源机器路径引用，不重复入库媒体本体，也未改旧 Full71。
+
+[冻结编辑输入](evidence/episode04-r217-county-owner-entry-12004/editorial-27s/insert.candidate.json)保留当时 candidate 状态；[实际 build](evidence/episode04-r217-county-owner-entry-12004/editorial-27s/build-result.actual.json)、[probe/decode/PTS QA](evidence/episode04-r217-county-owner-entry-12004/editorial-27s/media-qa.actual.json)及[用途闭场](evidence/episode04-r217-county-owner-entry-12004/editorial-27s/purpose-closed.actual.json)是后续独立事实。技术 QA 通过不替代其原记录中尚待的稀疏视觉审阅、人类1×或签核。
+
+可复用口播只说地图6746→6510、物理6741→6505均少236，损失来源仍待验证。原生23条缺 owner child 的结果不变；数值吻合不补 invocation Army 因果，不能说“236 已证全部县界损耗”。新插片没有 formal R04、动态镜头或 ABC 信用；换机器制作须重新绑定输入和运行来源，不能把原机绝对路径当公共协议。

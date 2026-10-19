@@ -168,3 +168,7 @@ registers, and no individual fact grants a complete county total. New native
 build/cold and a separate admitted live window are required; a37 and the frozen
 ba3528 runtime do not acquire this capability. R217 remains unqualified for
 R04. Research10/14, business7/11, formal dynamic0/11 and ABC0/3 are unchanged.
+
+## 2026-10-19 UTC：准入失败与新源资格的可复用决策
+
+来源机器 `desktop-3fevhd2-1c74096080`；运行冻结3e与后续知识 master 分列。[R218 两次准入失败及下一线程预算](episode04-r218-worker-admission-failures-12004.md)要求 fresh OS 线程代际 census、Root 新N/正出生预留、实际 READY 后才最多一日，不能把0day视作月界补员反例。[R04 v2 的 exact CI、ID0与a38补注](county-primary-direct-owner-v2.md)区分源/合成冷测和未取得的 live 归属；whole3e CI的实验WAL RED保留。[R21727秒插片](episode04-r217-county-owner-entry-12004.md)只提供带限制的剪辑输入与技术制作事实。研究10/14、业务7/11、动态0/11、ABC0/3 不涨。

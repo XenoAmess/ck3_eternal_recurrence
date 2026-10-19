@@ -1,0 +1,45 @@
+{
+  "schema": "xar.r218.selected_prepare_packet_capacity_delta.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T03:22:58.843920+00:00",
+  "status": "EXTERNAL_SOURCE_AND_RAM_ONLY_CHECK_NOT_LIVE_EXECUTED",
+  "entry": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-packet-bound-a03\\root_worker_packet_a03.py",
+    "bytes": 3295,
+    "sha256": "eb81e60faf461b09eab28170ae915338bf6f3e92f071f02e3cc19d136517e0b4"
+  },
+  "focused_check": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-packet-bound-a03\\FOCUSED-PACKET-CHECK.actual.json",
+    "bytes": 684,
+    "sha256": "01311f317718fd20893fa7c5b9c5f2db15ea10330409c7e2b24238aeb6f38899"
+  },
+  "check_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-packet-bound-a03\\focused_packet_check.py",
+    "bytes": 3590,
+    "sha256": "7fb772d7a68cbe92b76f35b074f13bd3563c94f11c7cb7653d55c4d96aafb97c"
+  },
+  "prior_local_refusal": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a01\\R06-WORKER-RESULT.json",
+    "bytes": 159769,
+    "sha256": "91c0965dad99ae9dd0d0f2c9ef6878347b859c3a46cf5d0bfa5c633cb48d748b"
+  },
+  "prior_error": {
+    "type": "ValueError",
+    "message": "complete derived input exceeds original bound: D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a01\\worker-prepare-inputs\\army-packet.json"
+  },
+  "original_army_packet_file_absent": true,
+  "actual_reconstructed_encoded_packet_bytes": 19814013,
+  "old_input_limit_bytes": 2097152,
+  "new_selected_prepare_packet_limit_bytes": 33554432,
+  "ordinary_metadata_bounds_changed": false,
+  "legacy_complete_Core_4MiB_changed": false,
+  "SDK_calls": 0,
+  "DR_calls": 0,
+  "D_writes": 0,
+  "existing_DLL_and_worker_EXE_changed": false,
+  "new_output": "actualREADY.run_dir/r06-worker-month-a02",
+  "new_queue_prefix": "r218-refill-worker-a02",
+  "maximum_new_exact_days": 1,
+  "Root_explicit_capacity_flag_required": true,
+  "old_attempt_files_modified": false
+}

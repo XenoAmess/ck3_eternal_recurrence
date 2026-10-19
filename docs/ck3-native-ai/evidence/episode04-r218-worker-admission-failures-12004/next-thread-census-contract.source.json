@@ -1,0 +1,76 @@
+{
+  "schema": "xar.refill.next_worker_thread_contract_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T05:10:57.747954+00:00",
+  "status": "ROOT_EXECUTABLE_EXTERNAL_ONLY_NOT_LIVE_OBSERVED",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\refill-next-thread-contract-a01\\worker_next.py",
+      "bytes": 17191,
+      "sha256": "6df1cfd22c2f6b69cb572e21c062d75322c4e31af50d5b8a39b9d46096027408"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\refill-next-thread-contract-a01\\ROOT-NEXT-WORKER.md",
+      "bytes": 5271,
+      "sha256": "8418071ca9e6f4eeb599729d7fed12f21db4ba97f53879c73ae70cb6021c2a73"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\refill-next-thread-contract-a01\\focused_contract_check.py",
+      "bytes": 2929,
+      "sha256": "edfbaa157fa189dc356cd2c55b845e17804e6513d33817037bde7bb29c625c25"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\refill-next-thread-contract-a01\\FOCUSED-CONTRACT-CHECK.actual.json",
+      "bytes": 1106,
+      "sha256": "a9ccb8fa6bec997d1083caeac347fd41b7467b171bbf632503653fba79f4c771"
+    }
+  ],
+  "immutable_reused_helpers": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-admission-generator-a01\\make_admission_a02.py",
+      "bytes": 1785,
+      "sha256": "0202910f8f0d3cf2c80686fbd8847c2009f5d0fc9494dcc3d050b4bf95c1d165"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-packet-bound-a03\\root_worker_packet_a03.py",
+      "bytes": 3295,
+      "sha256": "eb81e60faf461b09eab28170ae915338bf6f3e92f071f02e3cc19d136517e0b4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r216-refill-worker-live-card-a01\\a02\\root_worker_month_a02.py",
+      "bytes": 7235,
+      "sha256": "7ec1ffd7f33c31ce89c05537c7a333cc457bab9da4550d803f5eaff37a044869"
+    }
+  ],
+  "contract": {
+    "new_scene_only": "actual Selection run sequence >214",
+    "count": "three complete OS thread-generation metadata snapshots plus observed births/retirements; not debugger-owned proof",
+    "admission": "Root explicitly chooses N<=256 and positive birth reserve, covers union+reserve, fourth actual metadata sample; actualmodule/source/SYSTEM/cold/newcapacity bind",
+    "run": "sealed a02 clock + a03 selected-packet32MiB; once READY then max1exact day; restore/OFF/Save/close_handle, no normal_close",
+    "original_native_game_episode": null,
+    "legacy_global_closure_unchanged": true
+  },
+  "Root_inputs_required": [
+    "fresh handoff path+SHA",
+    "Root chooses N and birth reserve after actual count",
+    "new exact capacity/observer authorization",
+    "fresh camera Start if recording",
+    "unique prefix/output and actual Root hard deadline/Driver limit"
+  ],
+  "SDK_calls": 0,
+  "OS_process_calls": 0,
+  "DR_calls": 0,
+  "EXE_payload_reads": 0,
+  "native_builds": 0,
+  "D_writes": 0,
+  "main_writes": 0,
+  "future_READY_or_ADD_qualified": false,
+  "storage": {
+    "C_limit_bytes": 131072,
+    "C_free_metadata_observed_bytes": 93538992128,
+    "D_limit_bytes": 0,
+    "purpose_deadline_UTC": "2026-10-19T05:30:00Z",
+    "review_at_UTC": "2026-10-19T05:30:00Z",
+    "retention_reason": "small source and immutable helper dependencies needed for next Root-admitted R06 single-day window; review before cleanup; no indefinite raw protection"
+  }
+}

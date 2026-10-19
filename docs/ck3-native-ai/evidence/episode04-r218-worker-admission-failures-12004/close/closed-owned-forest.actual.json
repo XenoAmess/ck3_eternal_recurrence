@@ -1,0 +1,169 @@
+{
+  "schema": "xar.e04.r218-closed-owned-forest-capacity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-19T04:02:58.491536+00:00",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r218-capacity-prep-a01\\actual-a01\\R218-PUBLIC-REFILL-WORKER-CAPACITY.actual-root-a01.json",
+    "bytes": 14889,
+    "sha256": "39706df381a1a184163a73f616b4d2e400d6c34ac5be59c4e473483ad8f43a5e"
+  },
+  "actual_resource_release": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\SCREEN-RELEASE.actual.json",
+    "bytes": 2374,
+    "sha256": "3261652c23cdddf8fc87355e6bad0cfa21fc62564a60098404fdc0bccb7a790f"
+  },
+  "Root_actual_original_game_native_host_public_keeper_allocator_waits_zero": true,
+  "registry_snapshot": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 210544,
+    "sha256": "f1e404e23e54de68b5d7749a91bafe03cd34fc7aa407f10d96a64c7f7988c5ec"
+  },
+  "original_scene_claim_exact": {
+    "state": "active",
+    "phase_kind": "R218-public-a37-refill-worker",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "task_id": "e04-r218-public-capacity-a01",
+    "at_utc": "2026-10-19T02:25:49.603499+00:00",
+    "review_at_utc": "2026-10-19T05:00:00Z",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0214",
+    "run_id_state": "expected_not_allocated",
+    "expected_public_attempt": "a219",
+    "product_key": "war-episode04-r10",
+    "case_id": "r10-common-preparation",
+    "runtime_mod_key": "vanilla",
+    "external_mod": false,
+    "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01",
+    "additional_run_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214",
+    "write_roots": [
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214"
+    ],
+    "scene_volume": "D:/",
+    "source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+    "runtime_source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+    "native_build_source_head": "bc4604bed4eb8558b3f4e0e554a642aa69a4ba2f",
+    "reserved_scene_bytes": 1879048192,
+    "reserved_native_build_bytes": 0,
+    "reserved_media_bytes": 0,
+    "reserved_archival_bytes": 0,
+    "component_ceiling_bytes": {
+      "profile": 536870912,
+      "driver": 1073741824,
+      "raw": 201326592,
+      "other": 67108864
+    },
+    "component_roots": {
+      "profile": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01",
+      "driver": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214",
+      "raw": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\raw-r218",
+      "other": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01"
+    },
+    "actual_receipt_path": "C:\\ck3-e04-resume-20261015-a01\\r218-capacity-prep-a01\\actual-a01\\R218-PUBLIC-REFILL-WORKER-CAPACITY.actual-root-a01.json"
+  },
+  "owned_roots": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214"
+  ],
+  "component_actuals": {
+    "profile": {
+      "logical_bytes": 527468285,
+      "allocated_by_path_bytes": 536178216,
+      "files": 3898,
+      "charged_retained_bytes": 536178216,
+      "original_ceiling_bytes": 536870912,
+      "ceiling_pass": true
+    },
+    "driver": {
+      "logical_bytes": 340546035,
+      "allocated_by_path_bytes": 341092008,
+      "files": 539,
+      "charged_retained_bytes": 341092008,
+      "original_ceiling_bytes": 1073741824,
+      "ceiling_pass": true
+    },
+    "raw": {
+      "logical_bytes": 63285637,
+      "allocated_by_path_bytes": 63300416,
+      "files": 10,
+      "charged_retained_bytes": 63300416,
+      "original_ceiling_bytes": 201326592,
+      "ceiling_pass": true
+    },
+    "other": {
+      "logical_bytes": 51496425,
+      "allocated_by_path_bytes": 51715128,
+      "files": 386,
+      "charged_retained_bytes": 51715128,
+      "original_ceiling_bytes": 67108864,
+      "ceiling_pass": true
+    }
+  },
+  "root_actuals": {
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01": {
+      "logical_bytes": 642250347,
+      "allocated_by_path_bytes": 651193760,
+      "files": 4294
+    },
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214": {
+      "logical_bytes": 340546035,
+      "allocated_by_path_bytes": 341092008,
+      "files": 539
+    }
+  },
+  "charge_basis": "sum exclusive-component max(logical, NTFS FileStandardInfo allocated by path); no inode/hardlink deduction",
+  "charged_retained_bytes": 992285768,
+  "unused_scene_not_yet_applied_bytes": 886762424,
+  "hardlink_paths": 0,
+  "future_owned_scene_driver_writes_bytes": 0,
+  "media_closed_evidence": {
+    "capacity": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-capacity-prep-a01\\actual-a01\\R217-COUNTY-INSERT-MEDIA-CAPACITY.actual-root-a01.json",
+      "bytes": 1684,
+      "sha256": "dbbd43fc4fc38202267b1b2a4b222706d60cd2c4fa5b54d3816b207390cef12d"
+    },
+    "purpose_closed": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\PURPOSE-CLOSED.actual.json",
+      "bytes": 810,
+      "sha256": "b3e7d234a08827029fc6ecf3abd24c71fd405fa5f15206363a4fd28f1c474e20"
+    },
+    "delivery": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 2477,
+      "sha256": "d11adc494099d4ac94be583f1ad3f9c7f0913b445040f874ddd619d189750c1e"
+    },
+    "producer_exact_root_actual_bytes": 11099774,
+    "unused_media_not_yet_applied_bytes": 56009090,
+    "future_media_writes_bytes": 0,
+    "new_media_walks": 0
+  },
+  "prior_project_peak_bytes": 172882604036,
+  "conditional_project_peak_after_both_once_settlements_bytes": 171939832522,
+  "existing_D_finite_max_project_bytes": 173140869120,
+  "existing_review_deadline_utc": "2026-10-19T05:00:00Z",
+  "baseline_C_D_coverage_not_assumed_by_this_measurement": true,
+  "fresh_volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "free_bytes": 37066612736,
+      "used_bytes": 474067333120
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "free_bytes": 23808274432,
+      "used_bytes": 476281733120
+    }
+  },
+  "fresh_memory": {
+    "available_bytes": 15195987968,
+    "pagefile_total_bytes": 11722702848,
+    "pagefile_used_bytes": 4025032704
+  },
+  "forest_walks": 1,
+  "metadata_entries": 4978,
+  "files": 4833,
+  "elapsed_seconds": 1.104804900009185,
+  "payload_read_hash_bytes": 0,
+  "all_originals_retained": true,
+  "unused_credit_applied": false,
+  "ledger_mutations": 0
+}

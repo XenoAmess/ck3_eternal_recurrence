@@ -1,0 +1,90 @@
+{
+  "schema": "xar.county-primary-direct-owner-v2.native-wire-ingress.v1",
+  "status": "PASS_NATIVE_SYNTHETIC_WIRE_PRODUCTION_CONSUMERS",
+  "wire": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\wire\\county-primary-direct-owner-v2\\NATIVE-WIRE.json",
+    "bytes": 43611,
+    "sha256": "32e26ad7245933af07e4cc2c2a8ea3e9e849f5b17570da24f5351f64f861fa5a"
+  },
+  "cases": [
+    {
+      "case": "ON_no_phaseTLS_direct_Army0_physical7",
+      "direct_positive_count": 1,
+      "global_window_continuous": true
+    },
+    {
+      "case": "ON_postDate_direct_complete_v1_absent",
+      "direct_positive_count": 1,
+      "global_window_continuous": true
+    },
+    {
+      "case": "ON_no_registerTLS_diagnostic",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "forged_R13_magic_only_rejected",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "wrong_army_registry",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "cross_army_unit_backlink",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "wrong_ArRg_registry",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "writer_missing_actual_array",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "raw_physical_pointer_mismatch",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "physical_backlink_other_ArRg",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "wrong_Regi_registry_type",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "OFF_owner_capture_absent_original_once",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "unknown_caller_no_owner",
+      "direct_positive_count": 0,
+      "global_window_continuous": true
+    },
+    {
+      "case": "nested_unknown_masks_outer_context",
+      "direct_positive_count": 1,
+      "global_window_continuous": true
+    },
+    {
+      "case": "unreadable_ArRg_unbound_diagnostic_old_global_unchanged",
+      "direct_positive_count": 0,
+      "global_window_continuous": false
+    }
+  ],
+  "live_or_R04_credit": false,
+  "SDK_calls": 0,
+  "native_process_started_by_this_consumer": false,
+  "original_call_and_OFF_read_counts": "asserted inside native fixture, not inferred by Python"
+}

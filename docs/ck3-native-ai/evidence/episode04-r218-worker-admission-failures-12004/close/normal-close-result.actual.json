@@ -1,0 +1,236 @@
+{
+  "root_normal_gui_review": {
+    "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-19T03:41:09.915962+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0214",
+    "reviewer": "/root",
+    "pid": 37652,
+    "create_time": 1792377495.9429822,
+    "original_hold_deadline": 1792385194.3281863,
+    "quit_request": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\case-output\\normal-quit-awaiting.json",
+      "bytes": 681,
+      "sha256": "12d08aae371c3f5f6ebb489c0120655c8071d1d158a54f3a154f12d78daf22b3"
+    },
+    "normal_gui_quit": true,
+    "direct_reviewed": true,
+    "review_method": "Root explicit direct original image review",
+    "autosave_unchecked_observed": true,
+    "autosave_unchecked_screenshot": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\confirmation-original.png",
+      "bytes": 1732925,
+      "sha256": "109b79a70249d3ec4dc249dbaeba8096203930a84bcf76de4ab404321c712c00"
+    },
+    "final_click": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png.json",
+      "bytes": 1558,
+      "sha256": "18d9a2c550848fae4f45622364d0467f9b28c7f94c0bd4d5222d0052deb91271"
+    },
+    "after_click_screenshot": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png",
+      "bytes": 1732759,
+      "sha256": "26c761141644ddfe24f17d21d71b53977275e8627f31948ad3a2758e8ed83ea9"
+    },
+    "evidence": [
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\confirmation-original.png",
+        "bytes": 1732925,
+        "sha256": "109b79a70249d3ec4dc249dbaeba8096203930a84bcf76de4ab404321c712c00"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png.json",
+        "bytes": 1558,
+        "sha256": "18d9a2c550848fae4f45622364d0467f9b28c7f94c0bd4d5222d0052deb91271"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png",
+        "bytes": 1732759,
+        "sha256": "26c761141644ddfe24f17d21d71b53977275e8627f31948ad3a2758e8ed83ea9"
+      }
+    ],
+    "actual_os0_proven": false,
+    "actual_native0_proven": false,
+    "process_exit_claimed": false,
+    "business_pass": false
+  },
+  "operator_normal_gui_review": {
+    "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-19T03:41:09.915962+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0214",
+    "reviewer": "/root",
+    "pid": 37652,
+    "create_time": 1792377495.9429822,
+    "original_hold_deadline": 1792385194.3281863,
+    "quit_request": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\case-output\\normal-quit-awaiting.json",
+      "bytes": 681,
+      "sha256": "12d08aae371c3f5f6ebb489c0120655c8071d1d158a54f3a154f12d78daf22b3"
+    },
+    "normal_gui_quit": true,
+    "direct_reviewed": true,
+    "review_method": "Root explicit direct original image review",
+    "autosave_unchecked_observed": true,
+    "autosave_unchecked_screenshot": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\confirmation-original.png",
+      "bytes": 1732925,
+      "sha256": "109b79a70249d3ec4dc249dbaeba8096203930a84bcf76de4ab404321c712c00"
+    },
+    "final_click": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png.json",
+      "bytes": 1558,
+      "sha256": "18d9a2c550848fae4f45622364d0467f9b28c7f94c0bd4d5222d0052deb91271"
+    },
+    "after_click_screenshot": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png",
+      "bytes": 1732759,
+      "sha256": "26c761141644ddfe24f17d21d71b53977275e8627f31948ad3a2758e8ed83ea9"
+    },
+    "evidence": [
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\confirmation-original.png",
+        "bytes": 1732925,
+        "sha256": "109b79a70249d3ec4dc249dbaeba8096203930a84bcf76de4ab404321c712c00"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png.json",
+        "bytes": 1558,
+        "sha256": "18d9a2c550848fae4f45622364d0467f9b28c7f94c0bd4d5222d0052deb91271"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\quit-desktop-click-a01.png",
+        "bytes": 1732759,
+        "sha256": "26c761141644ddfe24f17d21d71b53977275e8627f31948ad3a2758e8ed83ea9"
+      }
+    ],
+    "actual_os0_proven": false,
+    "actual_native0_proven": false,
+    "process_exit_claimed": false,
+    "business_pass": false
+  },
+  "normal_quit_automation": null,
+  "normal_quit_automation_failure_preserved": null,
+  "retained_handle": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 37652,
+    "create_time": 1792377495.9429822,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "native_zero_proof": {
+    "status": "not_applicable",
+    "reason": "finished_native_process_exit_zero_cleanup_proven",
+    "alive_or_business_credit": false,
+    "managed_session_done": true,
+    "pid": 37652,
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0214",
+    "started_at": "2026-10-19T02:38:12.592357+00:00",
+    "finished_at": "2026-10-19T03:41:17.564263+00:00",
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "ad4fe57096864b1d8a19bba135104801",
+      "ck3_pid": 37652,
+      "ck3_creation_date": "20261019023815.942982+000",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 30456,
+      "watchdog_creation_date": "20261019023813.584023+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\ck3.json": true,
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\watchdog-ad4fe57096864b1d8a19bba135104801.ready.json": true,
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\ck3.watchdog_error": true,
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "finish_hold_rows": [
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "plan": {
+        "id": "acceptance-normal-exit-finish-hold",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "started_at": "2026-10-19T03:41:23.177565+00:00",
+      "ok": true,
+      "result": {
+        "hold_finished": true
+      },
+      "resolved_expect": {
+        "hold_finished": true
+      },
+      "after_snapshot": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 37652,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0214",
+        "started_at": "2026-10-19T02:38:12.592357+00:00",
+        "finished_at": "2026-10-19T03:41:17.564263+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "ad4fe57096864b1d8a19bba135104801",
+          "ck3_pid": 37652,
+          "ck3_creation_date": "20261019023815.942982+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 30456,
+          "watchdog_creation_date": "20261019023813.584023+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\ck3.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\watchdog-ad4fe57096864b1d8a19bba135104801.ready.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\ck3.watchdog_error": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\state-a01\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finished_at": "2026-10-19T03:41:24.201409+00:00"
+    }
+  ],
+  "host_finished_at": "2026-10-19T03:41:26.340293+00:00",
+  "managed_thread_finished": true,
+  "cleanup_ok": true,
+  "host_error": null,
+  "failure_shutdown_proof": null,
+  "failure_preserved": false,
+  "failure_lifecycle_completed": false,
+  "business_pass": false,
+  "normal_close_qualified": true
+}

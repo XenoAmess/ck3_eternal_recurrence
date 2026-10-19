@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.r217-editorial-record-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "records": [
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/delivery.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 2477,
+      "sha256": "d11adc494099d4ac94be583f1ad3f9c7f0913b445040f874ddd619d189750c1e",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Missing machine ID remains unknown in the original. No identity inferred from path."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/build-result.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\BUILD-RESULT.actual.json",
+      "bytes": 1958,
+      "sha256": "4cb5412ae2a97635bd3f871fbd35b4483f782ee8fff1b1e6865fb752ec3be381",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Missing machine ID remains unknown in the original. No identity inferred from path."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/media-qa.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\MEDIA-QA.actual.json",
+      "bytes": 3007,
+      "sha256": "ab8f72582edadf1610452e3e7423a51d9d03daf2194206bacd4773907d589f36",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Missing machine ID remains unknown in the original. No identity inferred from path."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/purpose-closed.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\PURPOSE-CLOSED.actual.json",
+      "bytes": 810,
+      "sha256": "b3e7d234a08827029fc6ecf3abd24c71fd405fa5f15206363a4fd28f1c474e20",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Missing machine ID remains unknown in the original. No identity inferred from path."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/insert.candidate.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r217-editorial-insert-prep-a01\\R217-INSERT.candidate-a01.json",
+      "bytes": 3842,
+      "sha256": "e11ddb96644965c83ec833af3d30f771fe865af51ff44383bd4d7672d0013e3c",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Missing machine ID remains unknown in the original. No identity inferred from path."
+    }
+  ],
+  "raw_and_movie_reference_only": true,
+  "human_1x": false,
+  "signoff": false,
+  "formal_R04_positive": false,
+  "historical_candidate_status_preserved": true
+}

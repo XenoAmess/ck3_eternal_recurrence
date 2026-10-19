@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-10-19T05:43:33.596200+00:00",
+  "exit_code": 0,
+  "failure": null,
+  "stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\02-focused-cold\\stdout.txt",
+    "bytes": 575,
+    "sha256": "0799ce8339624771c9f32b3817ebf71661103db98dce80453b492fc9fb878c8d"
+  },
+  "stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\02-focused-cold\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "aggregate_peak_bytes": 393443029
+}

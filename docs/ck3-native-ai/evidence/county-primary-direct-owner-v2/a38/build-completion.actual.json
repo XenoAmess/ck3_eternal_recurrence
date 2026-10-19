@@ -1,0 +1,79 @@
+{
+  "schema": "xar.e04.a38-build-completion.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\a38-exact-source-qualification-prep-a01\\A38-PLAN.actual-a01.json",
+    "bytes": 35780,
+    "sha256": "428ce50e4c9c2c835c4c763fac52f7c30c13e46e83ed5a269297fe20c69dc43c"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-per-volume-upper-bound-prep-a01\\A38-C-NATIVE-SOURCE-BOUND.actual-root-a02.json",
+    "bytes": 8506,
+    "sha256": "5d0908100a58880c270551e20b98876e5024d1e23367ff74ff375bb7f82150eb"
+  },
+  "build_step": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\01-build\\result.actual.json",
+    "bytes": 601,
+    "sha256": "400e2308cac57353b7957319edbb5361efc79c190b8d3d8b9f675b67ffaf98af"
+  },
+  "SYSTEM": {
+    "producer": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\native-msvc-result.json",
+      "bytes": 1920,
+      "sha256": "f5edb87859a01da6cce0ffc3bd9663fba2213f69d14c64608d9e681eadd93580"
+    },
+    "SYSTEM_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\defender-exe-exclusions\\20261019T054251Z-f0fd4c1d\\receipt.json",
+      "bytes": 479292,
+      "sha256": "59c47e1973f9ab43a6cd567412350101d10be18e2069a62d2b46cb96ba102e19"
+    },
+    "Defender_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\defender-exe-exclusions\\20261019T054251Z-f0fd4c1d\\manifest.json",
+      "bytes": 5543,
+      "sha256": "d4ff2dd3d774cf2eab23ebd33f617da1bba34960d0355add1aed4470dae95935"
+    },
+    "executables": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_12002_declarations_test.exe",
+        "bytes": 173568,
+        "sha256": "ed8381f1ade1a9a5068e4ee233ba432a9b5733736d428d7a10876973b1f58ae8"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "0517fff0ef4ef641cd4d874b4290efdee778fe967f88f36f95cecda9ba5c256e"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "28510650ca6b380bee834fb0edeca73961eb2f49ca6dde7edf3deee6fc8c18f3"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_direct_owner_v2_12004.exe",
+        "bytes": 445440,
+        "sha256": "e639c34df6e79d60bbe669caf40282c6095cd1b570012d1939374c00e94529c3"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\xar_test_county_primary_owner_12004.exe",
+        "bytes": 387584,
+        "sha256": "c7677fec979b9c723709087b124ff3c8838397bd5a51597ec232af333bb13e93"
+      }
+    ]
+  },
+  "cold_step": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\02-focused-cold\\result.actual.json",
+    "bytes": 613,
+    "sha256": "33f3dce083d01562ca540af220230bc358150ad011b7e5c0ca3f61cd89bb3c50"
+  },
+  "wire_consumer_step": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\03-wire-consumer\\result.actual.json",
+    "bytes": 614,
+    "sha256": "13aa8177d7aff29b421c78dd6dbdfe74620cfe56512df1b23012a53ada36f525"
+  },
+  "aggregate_actual_bytes": 393448164,
+  "aggregate_peak_bytes": 393448164,
+  "at_utc": "2026-10-19T05:43:42.539045+00:00",
+  "build_and_focused_cold_success": true
+}

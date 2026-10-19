@@ -1,0 +1,292 @@
+{
+  "schema": "xar.e04.r218-r217-v2-knowledge-records.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T05:51:48.242840+00:00",
+  "status": "HISTORICAL_RECORD_INTEGRITY_NOT_LIVE_QUALIFICATION",
+  "runtime_source_frozen": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "master_record_parent": "de577a6b4ae78b3db58d9895c80ed37d70f9991c",
+  "records": [
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/attempt1-packet-bound-source.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-packet-bound-a03\\ROOT-DELIVERY.actual-a03.json",
+      "bytes": 2134,
+      "sha256": "7b942f949dc756f3aa24aac534badc4547256e2ea0f10a0c501ded36b7a62933",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/attempt2-native-thread-budget.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-worker-packet-bound-a03\\native-exit-a01\\NATIVE-EXIT-DIAGNOSIS.actual-a01.json",
+      "bytes": 7637,
+      "sha256": "5a1f348dcfcb884355d401759798dc6655bd1711b271af7eb4385d331d03d3db",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/next-thread-census-contract.source.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\refill-next-thread-contract-a01\\ROOT-DELIVERY.actual-a01.json",
+      "bytes": 3422,
+      "sha256": "37d77279f30b89af35a242cf639d6711d7eae64709d5867f0f462274d35297cb",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/source375-exact-ci-close.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-v2-master-intake-a01\\ROOT-DELIVERY.final-a02.json",
+      "bytes": 2882,
+      "sha256": "213890b8d6f29b3c468ea817c59926664a9ee2a24ef998241d6a7389f1288d1d",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/source375-owned-installer-native-ingress.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-v2-master-intake-a01\\OWNED-INSTALLER-NATIVE-INGRESS-PASS.actual.json",
+      "bytes": 5452,
+      "sha256": "d328ca0a2c75b46b2bc5b474d473607e953e35d1b36585dbfadcbe76efb96c0a",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/source375-ci-terminal.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-v2-master-intake-a01\\OWNED-INSTALLER-CI-FINAL.actual.json",
+      "bytes": 3379,
+      "sha256": "1574879b5c6a14dbfc0469a8ab78e9780435875f768f9f4c4207d68dde158057",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/history/source9c-native-ingress-red.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-r04-v2-master-intake-a01\\NATIVE-INGRESS-RED.actual.json",
+      "bytes": 1575,
+      "sha256": "4675c0b27df265751a0b84daff65ee623411feda2e21df2011d8000a3c66956d",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/full-id-zero-review.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r219-r04-v2-id0-review-a01\\REVIEW.actual.json",
+      "bytes": 8362,
+      "sha256": "b837f5bb5fcc971fe28d7477569277f6342271dbf88d6af708398aba4edfdd75",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/full-id-zero-source-pins.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r219-r04-v2-id0-review-a01\\SOURCE-PINS.actual.json",
+      "bytes": 3301,
+      "sha256": "5c541475c692cfad75b01e5848001fb132d3e9ea6fd5b052f165bcc5659cc442",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/attempt1-terminal.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a01\\R06-WORKER-TERMINAL.json",
+      "bytes": 950,
+      "sha256": "e7b16d3384a02ec4b4c95bd39b3750c615ea950838eb4def972fb91909bec47d",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/attempt2/supervisor-exit.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\EXIT.actual.json",
+      "bytes": 4204,
+      "sha256": "b3b572b85ba1cea1431a56b0fef1c803f16e3517aaee2933b3d0c6eab1c01601",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/attempt2/observer.raw.ndjson",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.raw.ndjson",
+      "bytes": 14422,
+      "sha256": "12c2658e711448d680aa5c1c6c112bd940c9726d439520f4a3d554f98c6c400b",
+      "original_record_machine_id": "unknown",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/attempt2/terminal.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\R06-WORKER-TERMINAL.json",
+      "bytes": 949,
+      "sha256": "ee783d20bcd417a86dd739797715b9fdb6046fc45006138eed69d53fc8bb45aa",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/close/normal-close-result.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\case-output\\normal-close-result.json",
+      "bytes": 10098,
+      "sha256": "74110c3c24ede9ee2a5d25e43fb5a2df10f36d696cb3057d6a96ea6fce23fa0f",
+      "original_record_machine_id": "unknown",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/close/keeper-report.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\keeper-a01\\report.json",
+      "bytes": 469,
+      "sha256": "102417b44bad6d397823d8fb9eb81b3adef5f3d0811d75bb18aec7c0f1bb8ea6",
+      "original_record_machine_id": "unknown",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/close/public-original-wait.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\PUBLIC-ORIGINAL-WAIT.actual.json",
+      "bytes": 204,
+      "sha256": "34199d01f6d3bd67315c8ad0691296f6629f74453fea455836506dc432decdac",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/close/allocator-original-wait.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\ALLOCATOR-ORIGINAL-WAIT.actual.json",
+      "bytes": 217,
+      "sha256": "927063397c35cc308c0bc3ebc3b44f5b4fec387a0e6534d90fd1f53530f118f4",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/close/screen-release.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-normal-close-owner-a01\\actual\\SCREEN-RELEASE.actual.json",
+      "bytes": 2374,
+      "sha256": "3261652c23cdddf8fc87355e6bad0cfa21fc62564a60098404fdc0bccb7a790f",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/close/closed-owned-forest.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-postclose-capacity-a01\\R218-CLOSED-OWNED-FOREST.actual-a01.json",
+      "bytes": 7020,
+      "sha256": "7e4629c3e2de38ba9e61052a94671bf5cec9a4dcc7fb41a5c440e7fb85b7b0df",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/media/media-qa.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\media-qa-take01-a01\\MEDIA-QA.actual.json",
+      "bytes": 3021,
+      "sha256": "8137e489b97ed648ef5090d8120e9ed7e1e0c305edfe3588ec033ac4e9fea7c8",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r218-worker-admission-failures-12004/media/sparse-visual-review.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\media-qa-take01-a01\\R218-SPARSE-VISUAL-REVIEW.actual.json",
+      "bytes": 1245,
+      "sha256": "276cdb9a2d14c0ee893666fc7f884fc687781f9cdc6dcae60876078e23e283d3",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/delivery.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 2477,
+      "sha256": "d11adc494099d4ac94be583f1ad3f9c7f0913b445040f874ddd619d189750c1e",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/build-result.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\BUILD-RESULT.actual.json",
+      "bytes": 1958,
+      "sha256": "4cb5412ae2a97635bd3f871fbd35b4483f782ee8fff1b1e6865fb752ec3be381",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/media-qa.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\MEDIA-QA.actual.json",
+      "bytes": 3007,
+      "sha256": "ab8f72582edadf1610452e3e7423a51d9d03daf2194206bacd4773907d589f36",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/purpose-closed.actual.json",
+      "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r217-county-insert-a01\\PURPOSE-CLOSED.actual.json",
+      "bytes": 810,
+      "sha256": "b3e7d234a08827029fc6ecf3abd24c71fd405fa5f15206363a4fd28f1c474e20",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/editorial-27s/insert.candidate.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r217-editorial-insert-prep-a01\\R217-INSERT.candidate-a01.json",
+      "bytes": 3842,
+      "sha256": "e11ddb96644965c83ec833af3d30f771fe865af51ff44383bd4d7672d0013e3c",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/a38/qualification.actual.json",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+      "bytes": 20576,
+      "sha256": "d2cd74ebc706d78d052016a286a2908f7d41832e20fcd6c864dd3f93acebd194",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/a38/build-completion.actual.json",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-BUILD-COMPLETION.actual.json",
+      "bytes": 3752,
+      "sha256": "4c035499f89aed2678178d2116b94e6781d825bd314c13a9fbe7ddae543fc449",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/a38/focused-cold-step.actual.json",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PHASES\\02-focused-cold\\result.actual.json",
+      "bytes": 613,
+      "sha256": "33f3dce083d01562ca540af220230bc358150ad011b7e5c0ca3f61cd89bb3c50",
+      "original_record_machine_id": "unknown",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/a38/wire-consumed.actual.json",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\COUNTY-V2-WIRE-CONSUMED.actual.json",
+      "bytes": 2712,
+      "sha256": "06abb99e768e1d727de10bd78f61064614fdf69497eaa9c2709df3cb88b312cb",
+      "original_record_machine_id": "unknown",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/exact3e-wal-impact.actual.json",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-r217-knowledge-intake-a01\\EXACT-3E-WAL-IMPACT.actual-a02.json",
+      "bytes": 4339,
+      "sha256": "f84d72af72d183892c84277e2857a4afb6a8e322e588580bc7b3dd9e85111acb",
+      "original_record_machine_id": "desktop-3fevhd2-1c74096080",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/exact3e-step54.tail.log.gz",
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r218-r217-knowledge-intake-a01\\EXACT-3E-STEP54.tail.log.gz",
+      "bytes": 7189,
+      "sha256": "30beb6d0440ca6dbd0898ea436e11adf080bf4da899478940777896b1ac9e5c2",
+      "original_record_machine_id": "unknown",
+      "machine_note": "Only an explicit original top-level machine/observer field is recorded. Missing identity remains unknown; referenced qualification does not rewrite the original."
+    }
+  ],
+  "original_source_groups": [
+    "R218 actual runtime ba3528/a37 compiledbc4604",
+    "R217 capture ba3528; new27s technical editorial delivery",
+    "R04 source375 CI synthetic owned installer and current3e ID0 source review",
+    "a38 compiled3e current-machine production/SYSTEM/focused-cold; livefalse"
+  ],
+  "excluded_payloads": [
+    "EXE/DLL",
+    "raw video/MP4/PNGs/audio",
+    "save bodies",
+    "large native full reports",
+    "private live helper API"
+  ],
+  "retention_policy": "docs/storage-retention-policy.json",
+  "policy_version": "1.0.0",
+  "record_review_at_utc": "2027-04-17T05:45:00Z",
+  "automatic_retention_exemption": false,
+  "counts": {
+    "research": "10/14",
+    "business": "7/11",
+    "formal_dynamic": "0/11",
+    "ABC": "0/3",
+    "R04_closed": false
+  },
+  "initial_master_record_parent": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "runtime_master_separation": "The frozen runtime and a38 compiled source remain3e7d337; this later master contains independent upstream changes, not deployed to that runtime."
+}

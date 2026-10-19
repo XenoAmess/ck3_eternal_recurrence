@@ -1,0 +1,35 @@
+{
+  "schema": "xar.e04.r04-v2.native-ingress-red.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T03:31:35.005599+00:00",
+  "execution_machine_id": "unknown",
+  "source_head": "9c52a741c7039f77ac5e40a2ef8737aa2c8900e6",
+  "official_run": 39193312824,
+  "status": "FAIL_NATIVE_WIRE_PRODUCTION_CONSUMER",
+  "build": "PASS four requested CMake targets",
+  "ctest": "PASS direct-v2 and strict-v1 2/2; synthetic owned memory only",
+  "wire": {
+    "bytes": 43600,
+    "sha256": "3f63197eafa8338e6b9388fd971505e1d1ae486cffafd9c3426e00ccbbbf0266",
+    "local_body_retained": false
+  },
+  "failure": "consume_county_primary_direct_owner_native_wire_12004.py line57: native direct fact failed production physical consumer",
+  "source_cause": {
+    "initializer": "InitializeActualLossWriterJournalFixture12004 calls InitializeRuntime without g_active_state installer",
+    "export": "ReadActualLossWriterObservations12004 observer_installed requires g_active_state installed",
+    "consumer": "evaluate_army_physical_loss_evidence_12004 rejects installed_natural_writer_observer missing",
+    "asserted_case_name": "unknown; current failure message lacks case/exclusions"
+  },
+  "limits": {
+    "SDK_calls": 0,
+    "local_native_builds": 0,
+    "D_source_writes": 0,
+    "production_consumer_guard_relaxed": false,
+    "live_R04_credit": false
+  },
+  "log_tail": {
+    "path": "LINK-FIX-CI-RED.tail.log.gz",
+    "bytes": 4206,
+    "sha256": "90ef59549abbfc15107e5775d3df160e6dd3dc4afc7df8e6194f8295c8e44ecc"
+  }
+}

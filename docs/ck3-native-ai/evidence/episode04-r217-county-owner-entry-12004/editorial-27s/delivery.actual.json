@@ -1,0 +1,58 @@
+{
+  "schema": "xar.e04.r217-county-insert-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-19T02:32:33.004432+00:00",
+  "status": "TECHNICAL_QA_GREEN_PENDING_HUMAN_1X",
+  "candidate": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/R217-INSERT.candidate-a01.json",
+    "bytes": 3842,
+    "sha256": "e11ddb96644965c83ec833af3d30f771fe865af51ff44383bd4d7672d0013e3c"
+  },
+  "capacity": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r218-capacity-prep-a01/actual-a01/R217-COUNTY-INSERT-MEDIA-CAPACITY.actual-root-a01.json",
+    "bytes": 1684,
+    "sha256": "dbbd43fc4fc38202267b1b2a4b222706d60cd2c4fa5b54d3816b207390cef12d"
+  },
+  "official_latest": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/PROMO-LATEST.actual-a01.json",
+    "bytes": 1891,
+    "sha256": "027b224621a9d8b8248bc52c00811d0b7a5e322bdf72e99f8beff17ce6b2b377"
+  },
+  "composer": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/r217_insert_composer.py",
+    "bytes": 10061,
+    "sha256": "d9331d4b1cb43af73a3abf1d5b1b910a2a68be8e0c744480e74c1f0e0546f712"
+  },
+  "producer": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/execute.py",
+    "bytes": 22201,
+    "sha256": "8590ec90bfa4bc57728930f5a2efa4ba781f7e13ec8142ca3fd155f156fef3aa"
+  },
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/work-build-a01/R217-R04-COUNTY-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1698188,
+    "sha256": "4b7f762d37c2c6e961e7284a7db26d24634dfcbe1970eb8043e2428611619e33"
+  },
+  "tts": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/PHASE1.actual.json",
+    "bytes": 2545,
+    "sha256": "cc6138d3edc2de05b6c2f5f714544b2549556c33bfff49337f957c58d2c16953"
+  },
+  "build": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/BUILD-RESULT.actual.json",
+    "bytes": 1958,
+    "sha256": "4cb5412ae2a97635bd3f871fbd35b4483f782ee8fff1b1e6865fb752ec3be381"
+  },
+  "qa": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/MEDIA-QA.actual.json",
+    "bytes": 3007,
+    "sha256": "ab8f72582edadf1610452e3e7423a51d9d03daf2194206bacd4773907d589f36"
+  },
+  "raw_body_copied_or_rehashed": false,
+  "full71_changed": false,
+  "human_1x": false,
+  "signoff": false,
+  "uploaded": false,
+  "formal_R04_positive": false,
+  "root_bytes": 11096487
+}

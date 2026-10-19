@@ -1,0 +1,99 @@
+{
+  "budget": {
+    "full71_reencode_bytes": 0,
+    "hard_bytes": 67108864,
+    "media_root": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01",
+    "preview_cap_bytes": 6291456,
+    "raw_copy_bytes": 0,
+    "target_soft_bytes": 58720256
+  },
+  "created_at_utc": "2026-10-19T02:25:51.030643+00:00",
+  "editorial": {
+    "chapter_id": "E4-R217",
+    "cue_id": "R217-R04-COUNTY-NET236-INSERT",
+    "fps": 30,
+    "frames": 810,
+    "game_seconds": 24.0,
+    "geometry": [
+      1920,
+      1080
+    ],
+    "narration_zh": "一天之间，地图上这支军队从六千七百四十六降到六千五百一十，少了二百三十六人。底层兵数也净少二百三十六，但相关写入尚未证明原因，损失来源仍待验证。",
+    "paired_sentences": [
+      {
+        "en": "Over one day, the army on the map fell from 6,746 to 6,510, a loss of 236 soldiers.",
+        "zh": "一天之间，地图上这支军队从六千七百四十六降到六千五百一十，少了二百三十六人。"
+      },
+      {
+        "en": "The physical count also fell by 236, but the recorded writes do not yet prove the cause. The source of the loss remains unverified.",
+        "zh": "底层兵数也净少二百三十六，但相关写入尚未证明原因，损失来源仍待验证。"
+      }
+    ],
+    "raw_window_seconds": [
+      51.0,
+      75.0
+    ],
+    "review_label": "R217 / RESEARCH INSERT / CAUSE PENDING / NO SIGNOFF",
+    "shot_id": "S-R217-COUNTY",
+    "tail_card": {
+      "limitation": "写入数值吻合，逐条归属缺失；损失来源仍待验证。",
+      "summary": "地图6746→6510；物理6741→6505",
+      "title": "县界当天，兵数减少236"
+    },
+    "tail_card_seconds": 3.0,
+    "total_seconds": 27.0
+  },
+  "limits": {
+    "formal_R04_positive": false,
+    "formal_dynamic_credit": false,
+    "human_full_1x": false,
+    "signoff": false,
+    "uploaded": false
+  },
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "media_qa": {
+    "bytes": 3180,
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-owner-entry-a01/resume-a02/media-qa-take01-a01/MEDIA-QA.actual.json",
+    "sha256": "c83155c7cdca5dadf103c9001e540c3b91ce1e778eb2d4cffeaab2674fa6e980"
+  },
+  "native_facts": {
+    "date_raw_after": 53147544,
+    "date_raw_before": 53147520,
+    "individual_county_owner_observed": false,
+    "legacy_writer_debit_sum": 236,
+    "legacy_writer_events": 23,
+    "physical_after": 6505,
+    "physical_before": 6741,
+    "physical_net": -236,
+    "r04_card_closed": false,
+    "whole_army_causal_attribution": false
+  },
+  "official_toolchain_probe": {
+    "bytes": 1891,
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/PROMO-LATEST.actual-a01.json",
+    "sha256": "027b224621a9d8b8248bc52c00811d0b7a5e322bdf72e99f8beff17ce6b2b377"
+  },
+  "raw_existing_pin_not_rehashed": {
+    "bytes": 122413730,
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-owner-entry-a01/resume-a02/raw/take01/raw.mkv",
+    "sha256": "8375750748c88b136e456cfac9a2d8c6ccadd4a489a1d5a93e3796a08f51e189"
+  },
+  "schema": "xar.e04.r217-county-insert-candidate.v1",
+  "source_head_at_capture": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0213",
+  "status": "CANDIDATE_ONLY_NO_MEDIA_WRITTEN",
+  "transition_scan": {
+    "bytes": 10235,
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/TRANSITION-SCAN.actual-a01.json",
+    "sha256": "400472eaf4244dfa8c675c10a80f3ba50c47e392f7210ed50864668d212578dd"
+  },
+  "visual_observed": {
+    "pixel_scan_is_not_ocr_or_human_1x": true,
+    "sample_5_seconds": "1067-01-26 map label 6746",
+    "sample_90_seconds": "1067-01-27 map label 6510",
+    "transition_bracket_raw_seconds": [
+      62,
+      63
+    ]
+  }
+}

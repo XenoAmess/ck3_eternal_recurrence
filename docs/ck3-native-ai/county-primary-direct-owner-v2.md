@@ -108,3 +108,15 @@ is unchanged. Research10/14, business7/11, formal dynamic0/11 and ABC0/3
 are unchanged; no R218 result is implied by this source package.
 
 Actual4 county receiver/ArRg data flow is bound to the already-held complete body. Army/Unit/Regi registry layouts reuse adopted source contracts; this integration performs no fresh EXE read or independent reconstruction of those other bodies. `actual4_source_qualified` denotes that source binding, never OS identity, process ownership, cold qualification or a live business result. The caller must still bind the current process/executable/observer/query fences.
+
+## Exact source CI、ID0 与 a38 独立资格补注（2026-10-19 UTC）
+
+旧整合段的 pending 状态是当时历史，保留不改。`machine_id: desktop-3fevhd2-1c74096080` 的[实际封包](evidence/county-primary-direct-owner-v2/source375-exact-ci-close.actual.json)记录 source `375a48cb15b0e590160a331b86c12d39386083ed`：Official39196000014 于04:10:56Z、Linear39195999960 于03:43:45Z 均 success。新 fixture 使用真实 owned installer→生产 MASM hook→trampoline→Original；direct v2 与严格 v1 CTest 2/2，native synthetic wire 的15例进入真实 normalizer/physical/direct consumer，3例预期 physical7 positive、其余12例无 positive，Python -O 九组通过。[原始 ingress 结果](evidence/county-primary-direct-owner-v2/source375-owned-installer-native-ingress.actual.json)保留 machine unknown 的 native JSON 边界及 CI Python 来源机器；这不代表游戏执行。
+
+[旧9c失败](evidence/county-primary-direct-owner-v2/history/source9c-native-ingress-red.actual.json)未改写：当时 fixture 未实际安装使生产 physical consumer 正确拒绝 observer 状态。修正的是 fixture 的真实安装链，生产 installed 守卫未放宽。后续当前源码 `3e7d337dc4edadde26642ad23fee85df5e41ecf9` 的 Official39203172231 Step19 同样实际通过，但整个 workflow 因 Step54 的实验 WAL 临时 patch setup 失败而 RED；不能称整个3e CI绿色。[有界 trace 与公共路径影响判定](evidence/county-primary-direct-owner-v2/exact3e-wal-impact.actual.json)只证明未发现该实验 setup 对未打补丁公共 Driver 的直接影响，没有修复或授予实验 WAL 资格。
+
+[ID0窄审](evidence/county-primary-direct-owner-v2/full-id-zero-review.actual.json)绑定3e源码及[精确源 pins](evidence/county-primary-direct-owner-v2/full-id-zero-source-pins.actual.json)。Army、Unit、ArRg、Regi 的合法完整 ID0 与 optional0 均可通过原类型解析；拒绝哨兵是 -1/None，不能以 truthiness 把0当缺失。registry 非空对象指针、完整 generation 相等、Unit/Army 回链、roster occurrence、Regi DATA物理槽和实际 debit 守卫仍须全部成立。指针0仍是 null，token/epoch等既有正数条件不改；此源审查没有声称某个实际 Regi0 存在，也没有新增 live 结果。
+
+05:43:42Z 的[本机 a38 qualification](evidence/county-primary-direct-owner-v2/a38/qualification.actual.json)独立绑定 **compiled/runtime source3e**、native tree `a288c6475a171aeacab625431126e76d7c65abed`：6个生产输出、5个 EXE 的 SYSTEM SID18 精确设置读回、v2/v1/declarations 三项 focused cold 及15例 strict wire consumer 均通过。[build completion](evidence/county-primary-direct-owner-v2/a38/build-completion.actual.json)、[cold step](evidence/county-primary-direct-owner-v2/a38/focused-cold-step.actual.json)和[consumer](evidence/county-primary-direct-owner-v2/a38/wire-consumed.actual.json)保留小原件。完整 SYSTEM receipt、EXE/DLL 和 wire body仅引用原 Q 的 pins，没有重读或复制。
+
+该 a38 结果是来源机器的 production bytes/SYSTEM 与 synthetic cold 资格；`live_CK3_qualified`、`gameplay_qualified`、`R04_closed`、`external_DR_admitted` 均 false。后续纯知识 master 提交不等于新的编译来源；实际运行冻结3e与 master 记录提交须分开。研究10/14、业务7/11、正式动态0/11、ABC0/3 不变。

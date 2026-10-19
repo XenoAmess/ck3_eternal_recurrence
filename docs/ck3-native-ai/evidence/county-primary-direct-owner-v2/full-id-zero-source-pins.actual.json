@@ -1,0 +1,64 @@
+{
+  "schema": "xar.r219.id0-review.source-pins.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T05:31:20.083464+00:00",
+  "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+  "selected_source_diff_from_HEAD": "",
+  "pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_army.cpp",
+      "bytes": 93517,
+      "sha256": "6cb7c9d04fe0683a7a32cf9a6dbe5a78e843fae962c2519ddd439e3b880e058b",
+      "source_blob": "570c248eb84acb01764dcd8e56092494cd86d87b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\county_primary_direct_owner_at_writer_12004.cpp",
+      "bytes": 15430,
+      "sha256": "fda4b2ad0dec3555e2dd40c4d2e4b830974cef53e5474dc9fcbc6ccc6d389001",
+      "source_blob": "52993d70cd89b20707683e43dc03b2a7cf4d3f96"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\county_primary_direct_owner_at_writer_v2.hpp",
+      "bytes": 4231,
+      "sha256": "1ad506c9774c47dba99427dc6ca3273b82082a6c93d7cfd8cb8bd9abf149c9bb",
+      "source_blob": "a78cba34b0a9fa3f4712285cf18bcf10374226ad"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_actual_loss_writer_journal.cpp",
+      "bytes": 32977,
+      "sha256": "81d1b2ecc85711a00a3e63fdcb4887666cf3a3a84ae09c3123e42ad2f7d90f61",
+      "source_blob": "c4f16131527274b14ee73e51ac091fd34a60978c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_actual_loss_writer_observations_v1.hpp",
+      "bytes": 12057,
+      "sha256": "076747c9b1a92a17ad9c4652fc2d318723850bd25ba6ae475bb61a80ca58b4a9",
+      "source_blob": "3d010eb51a24609cb9aa99a6364d64510c6766f7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_county_primary_direct_owner_12004.py",
+      "bytes": 16172,
+      "sha256": "2c488d9350add31ca7b2153448a32102e8d727b1dc6b462ea983a8e32ed8437c",
+      "source_blob": "02b75a8f8a083e058062c8c4e382d9d47a9a00f5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_actual_loss_writer_observations_contract.py",
+      "bytes": 11926,
+      "sha256": "1faf44d93bafe5479304b113dc6031d1231bd8d91355e4d5ce1bcb19c388eee2",
+      "source_blob": "bbd9a22b24c882ae952847733b8c333a510b6a95"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_observed_phase_contract_12004.py",
+      "bytes": 25149,
+      "sha256": "1a08699adb77baa4db219200e31abf719f270cf8ccbb35c52c290d0387552a4a",
+      "source_blob": "0a4d804d99c2a8153fe77be274889f4792950ddf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_physical_loss_evidence_12004.py",
+      "bytes": 6895,
+      "sha256": "b7b7cdf56b564d6a840878cf8d5aa1c4550f5fa03eab44d6a12c88a0829fd119",
+      "source_blob": "1ee49f069741cd82b58c12450e96592c9754d18f"
+    }
+  ]
+}

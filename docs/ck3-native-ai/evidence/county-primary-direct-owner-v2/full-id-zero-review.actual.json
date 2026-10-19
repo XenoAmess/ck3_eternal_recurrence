@@ -1,0 +1,136 @@
+{
+  "schema": "xar.r219.r04-v2-fullid-zero-source-review.v1",
+  "status": "NO_FULLID_ZERO_TRUTHINESS_DEFECT_FOUND_IN_SCOPED_CANONICAL_SOURCE",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T05:31:20.083464+00:00",
+  "machine_identity_source": {
+    "command": "py tools/ck3_live_run_id.py machine",
+    "result": "desktop-3fevhd2-1c74096080"
+  },
+  "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "native_tree": "a288c6475a171aeacab625431126e76d7c65abed",
+  "source_pins": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r219-r04-v2-id0-review-a01\\SOURCE-PINS.actual.json",
+    "bytes": 3301,
+    "sha256": "5c541475c692cfad75b01e5848001fb132d3e9ea6fd5b052f165bcc5659cc442"
+  },
+  "scope": "Canonical R04v2 strict registry/direct owner/serialization and Python ingress/physical/direct consumers only; no repeated full contract review.",
+  "requested_runtime_context": {
+    "origin": "Root task message; historical native evidence was not reread in this narrow source review.",
+    "selected_army_id": 0,
+    "selected_native_carmy_full_id": 0,
+    "non_null_army_pointer": true,
+    "actor_id": 33388,
+    "not_new_live_evidence": true
+  },
+  "conclusion": {
+    "army_full_id_0_supported_by_source": true,
+    "public_unit_full_id_0_supported_by_source": true,
+    "writer_arrg_full_id_0_supported_by_source": true,
+    "persistent_regi_full_id_0_supported_by_source": true,
+    "array_occurrence_and_physical_ordinal_0_supported": true,
+    "new_code_change_required_for_zero_ID": false,
+    "P0": 0,
+    "P1": 0,
+    "qualification_limit": "ID0 is an admissible full ID when its typed registry entry exists, has a nonnull object pointer and exact full ID0, and the existing identity/membership/physical guards pass. This source result is not actual a38 or R219 live qualification."
+  },
+  "native_locations": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "lines": "95-143",
+      "fact": "Resolve rejects id==-1 at102, not id==0. ID0 computes index0 at118, requires capacity>0 through123, reads entry0 at128 and requires object+10==0 at134-136. The rejection sentinel is signed int32 -1, bit-patternFFFFFFFF; a null entry pointer remains a separate failure."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "lines": "1279-1296",
+      "fact": "Army Unit, internal Army, ArRg and persistent Regi wrappers gate only on bindings.enabled and pass the exact signed full ID to Resolve. None uses if(id) or id>0."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "lines": "75-83",
+      "fact": "ArmyAt requires native!=-1 and unit!=-1 at78; Identity requires id!=-1 at83. Full IDs0 satisfy these ID predicates. Pointer checks in Reader::At and elsewhere concern actual addresses, not IDs."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "lines": "119-138",
+      "fact": "Army/public IDs are copied into optional<int32> at119; lookup uses id!=-1 at121; Unit+178/native Army+124 relationship uses exact equality; writer_full_regiment_id is populated for rid!=-1 at138. Zero remains an engaged ID value."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "lines": "149-153",
+      "fact": "The native array member is compared with rid by equality. army_roster_occurrence is std::optional<int32>; its contextual bool at152 tests presence, so an engaged occurrence0 is accepted."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/county_primary_direct_owner_at_writer_12004.cpp",
+      "lines": "167-191",
+      "fact": "Regi DATA ID uses optional.value_or(-1) and pid!=-1; value_or(-1) preserves an engaged0. Strict Regi resolution and Identity accept pid0, and physical ownership comparisons sp==pid, so==ord and sr==rid preserve zeros. Ordinal0 and physical slot index0 pass >=0 bounds."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_loss_writer_journal.cpp",
+      "lines": "97-102,285-304,548-550",
+      "fact": "ReadRegiment permits values.id0 and rejects only -1. Publish uses event.army_regiment_id==-1 as the unbound path, so ArRg ID0 is normally published. Query transport uses std::find on the exact current full-ID list, which retains a matching0."
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_actual_loss_writer_observations_v1.hpp",
+      "lines": "127-131",
+      "fact": "OptionalNumber receives const std::optional<Integer>&; if(value) is optional presence, not bool(*value). An engaged fullID0 serializes as numeric0, not null. Direct owner serializer delegates all optional IDs and physical IDs to this helper."
+    }
+  ],
+  "python_locations": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "lines": "51-55,106-110",
+      "fact": "all(value[key]>0) applies only to tokens, epoch and pointer identities listed in IDENTITIES. army_id, native_carmy_id, writer_full_regiment_id and Regi full IDs are excluded. The ID guard is is not None and !=-1, explicitly accepting0."
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "lines": "118-137",
+      "fact": "Array occurrence0 is allowed by 0<=occurrence<count. Regi ID guard is persistent_regiment_id!=-1; ordinal0/slot0 pass bounds. Physical persistent/ArRg IDs use equality and may all be0."
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_primary_direct_owner_12004.py",
+      "lines": "191-195,233-237,245-253",
+      "fact": "The selected-row IDs are retained without or-defaults; direct child Army/native IDs compare directly with row.get(...), so matching Army0/native0 is accepted. Writer fullID compares directly to event ID. Associations compare tuples, preserving0 values."
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_loss_writer_observations_contract.py",
+      "lines": "43-51,110-112,136-146",
+      "fact": "Ingress integer parsing accepts exact int0; only None is optional absence. Current full-ID membership uses in, not truthiness. DATA alias integer parsing and physical_slot_index bounds retain0."
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+      "lines": "18-21,54-58",
+      "fact": "_typed treats optional None as absent and otherwise range-checks exact int; i32?0 and i32 fullID0 are valid. bool false is not silently accepted as an integer ID."
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_physical_loss_evidence_12004.py",
+      "lines": "66-67,84-105",
+      "fact": "The existing physical consumer transports current full IDs unchanged, checks DATA/slot index sets and optional presence, and compares physical debits; it does not apply a positive-ID check to Army/ArRg/Regi full IDs."
+    }
+  ],
+  "necessary_distinctions": [
+    "The native pointer identity0 is null and is rightly rejected; a valid object with fullID0 has a nonzero pointer, matching the requested actual Army0 case.",
+    "A missing std::optional<int32> is distinct from optional<int32>{0}; Python None is distinct from int0.",
+    "A FullID0 registry slot whose current object has fullID01000000 is rejected by exact generation equality even though both use low24 index0. This is a correct existing guard, not rejection of valid ID0.",
+    "No claim is made that an actual target Regi fullID0 exists in R217/R218/R219. If it exists and its existing strict physical guards pass, the inspected source path accepts it."
+  ],
+  "operations": {
+    "D_writes": 0,
+    "source_edits": 0,
+    "builds": 0,
+    "tests": 0,
+    "CK3_calls": 0,
+    "SDK_calls": 0,
+    "DR_calls": 0,
+    "GUI_calls": 0,
+    "new_EXE_reads": 0,
+    "new_large_native_evidence_reads": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-17T05:31:20.083464+00:00",
+    "helper_category": "derived",
+    "helper_review_at_utc": "2026-10-21T05:31:20.083464+00:00"
+  }
+}

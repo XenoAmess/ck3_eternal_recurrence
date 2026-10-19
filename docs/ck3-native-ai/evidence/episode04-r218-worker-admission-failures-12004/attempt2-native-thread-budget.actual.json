@@ -1,0 +1,199 @@
+{
+  "schema": "xar.r218.worker_preREADY_native_budget_exit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T03:47:04.298491+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0214",
+  "originals": {
+    "worker-launch/supervisor/EXIT.actual.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\EXIT.actual.json",
+      "bytes": 4204,
+      "sha256": "b3b572b85ba1cea1431a56b0fef1c803f16e3517aaee2933b3d0c6eab1c01601"
+    },
+    "worker-launch/supervisor/STARTED.actual.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\STARTED.actual.json",
+      "bytes": 2726,
+      "sha256": "d89c1d103fdecac476ad633103a9a381bb0171239777dd8989a8164665aeabbe"
+    },
+    "worker-launch/supervisor.stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor.stdout",
+      "bytes": 227,
+      "sha256": "ba40a28350bf2d98f96961acdc74fc6e006f59a22af50e90478136559d430792"
+    },
+    "worker-launch/supervisor.stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worker-launch/supervisor/observer.stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\observer.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worker-launch/supervisor/observer.stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-launch\\supervisor\\observer.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worker-prepared/observer.raw.ndjson": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\observer.raw.ndjson",
+      "bytes": 14422,
+      "sha256": "12c2658e711448d680aa5c1c6c112bd940c9726d439520f4a3d554f98c6c400b"
+    },
+    "worker-prepared/owner-binding.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\worker-prepared\\owner-binding.json",
+      "bytes": 1190,
+      "sha256": "6b49fd155cbf32b08f3942170d0d89e7be49f0190901d33042e91f7efa60ef92"
+    },
+    "R06-WORKER-TERMINAL.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a37\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0214\\r06-worker-month-a02\\R06-WORKER-TERMINAL.json",
+      "bytes": 949,
+      "sha256": "ee783d20bcd417a86dd739797715b9fdb6046fc45006138eed69d53fc8bb45aa"
+    }
+  },
+  "aggregate_small_original_bytes": 23718,
+  "identity": {
+    "pid": 37652,
+    "process_creation_FILETIME": 134368510959429822,
+    "observer_pid": 16796,
+    "generation": 1,
+    "game_episode": null,
+    "projection": "native_campaign"
+  },
+  "target": {
+    "CArmy": 0,
+    "Regi": 2602,
+    "slot": 1,
+    "ArRg": 82
+  },
+  "native_exit": {
+    "code": 1,
+    "reason": "maximum_owned_threads_exceeded",
+    "started": "2026-10-19T03:25:10.088304+00:00",
+    "finished": "2026-10-19T03:25:10.368469+00:00",
+    "READY": false,
+    "ready_file_present": false,
+    "hit_count": 0,
+    "selected_worker_tid": null
+  },
+  "owned_threads": {
+    "admitted_max": 64,
+    "logged_armed_generations": 64,
+    "process_events": 1,
+    "thread_events": 63,
+    "peak": 64,
+    "last_armed_event_ordinal": 65,
+    "thread_ids": [
+      34952,
+      20120,
+      36204,
+      34656,
+      27108,
+      21804,
+      29160,
+      25312,
+      26508,
+      36832,
+      27516,
+      28828,
+      36132,
+      11608,
+      25140,
+      21864,
+      15444,
+      37800,
+      26588,
+      28772,
+      19320,
+      29396,
+      32308,
+      34088,
+      26520,
+      29728,
+      18272,
+      30640,
+      25632,
+      3828,
+      32092,
+      34368,
+      30348,
+      36936,
+      28188,
+      34100,
+      32504,
+      17516,
+      36456,
+      35720,
+      16148,
+      28068,
+      33876,
+      32420,
+      25036,
+      16696,
+      14132,
+      23352,
+      25296,
+      28820,
+      28984,
+      37464,
+      35472,
+      31740,
+      10944,
+      22148,
+      36636,
+      37604,
+      25884,
+      29136,
+      36968,
+      34432,
+      29424,
+      640
+    ],
+    "actual_total_process_threads": null,
+    "bound_applies_to_total_generations_not_concurrent_only": true
+  },
+  "recovery": {
+    "native_DR_cleared": true,
+    "native_detached": true,
+    "supervisor_reaped_exit": 1,
+    "actor_restore_verified": true,
+    "OFFclear": true,
+    "Save": true,
+    "cleanup_errors": [],
+    "game_normal_exit": "Root closing; not asserted here",
+    "resource_basis": "native source closes duplicated thread handles and process handle; supervisor reports observer exit1"
+  },
+  "qualification": {
+    "actual_days": 0,
+    "actual_ADD_observed": false,
+    "full_R06_qualified": false,
+    "global_closure_relaxed": false,
+    "interpretation": "Observer admission failed before READY/day. This does not show that native monthly refill cannot occur."
+  },
+  "source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_hwprobe_12004.cpp",
+    "bytes": 53214,
+    "sha256": "762913208e75274ce9bab2bbfd564be2aa5d4ad5abb0a4b75987a62f5287ccbe",
+    "lines": {
+      "313-328": "all-generation bound; next ownership rejected at >=N",
+      "769-795": "own/arm CREATE_PROCESS and CREATE_THREAD",
+      "813-818": "READY after initial breakpoint with full arming",
+      "887-900": "restore before continuing failure event",
+      "951-960": "detach and close duplicated handles",
+      "997-1002": "terminal and process-handle close; exit1 unless paired",
+      "1006-1020": "existing carrier max range1..256"
+    }
+  },
+  "next_case": {
+    "current_run_rearm": false,
+    "new_Root_admission_required": true,
+    "new_DLL_or_probe_build_required_if_N_le_256": false,
+    "preflight": "Fresh exact PID/creation FILETIME: bounded Toolhelp THREADENTRY32 or psutil thread metadata count only. Save complete/truncated/error and count. Do not reuse numeric TIDs.",
+    "admission": "Root chooses N<=256 covering actual initial count plus bounded thread births. A point count cannot guarantee30s churn; existing native cap stays authoritative. New immutable admission generator must bind N/fresh PIDFT/module/capacity; never edit current signed max64 receipt.",
+    "source_limit": "If initial count>256, stop before DR/day: current producer cannot cover it. A new bounded producer design/build/cold qualification is then needed. No historical worker preselection.",
+    "run": "Fresh month/q gate then real READY then one existing exact day; strict target proof, restore, OFF/Save. No global closure reduction or unknown replay."
+  },
+  "SDK_calls": 0,
+  "DR_calls": 0,
+  "full_packet_reads": 0,
+  "D_writes": 0
+}

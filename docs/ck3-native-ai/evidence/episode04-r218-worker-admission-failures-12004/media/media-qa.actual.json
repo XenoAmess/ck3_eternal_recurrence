@@ -1,0 +1,74 @@
+{
+  "schema": "xar.e04.r218-window-media-qa.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T03:15:56.515718+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0214",
+  "source_head": "ba3528fc04621529ed528930623b5d34826a46a4",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\recorder-control\\R218-WINDOW-R0214-TAKE01.actual.json",
+    "bytes": 3298,
+    "sha256": "40a1520db0c64c52f009a80fe2b76e3864769ca55e883e298d0eb796d3de380b"
+  },
+  "raw_existing_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\raw-r218\\take01\\result.json",
+    "bytes": 2045,
+    "sha256": "1686a536bf1d737207c3cca433b4b7464d7e51651aa21dc7bb218620fcf3203d"
+  },
+  "job_terminal": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\raw-r218\\take01\\job-terminal.json",
+    "bytes": 205,
+    "sha256": "7220f51bf49a568f89f225b98b61a7339d84506395bea9e2abcfa1cf422488d0"
+  },
+  "raw_existing_pin_not_rehashed": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\raw-r218\\take01\\raw.mkv",
+    "bytes": 61163780,
+    "sha256": "8b4dc0f0edd5b68bce29b53e7cdd38e92ca273b2520a8ee1ee3d34cbfa8c39de"
+  },
+  "ffprobe": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\media-qa-take01-a01\\ffprobe.actual.json",
+    "bytes": 2452,
+    "sha256": "2cd1ffcdde7e36159a3ce94735f53afd08f66caddae143e204daa6932b9cc315"
+  },
+  "duration_seconds": 88.2,
+  "video": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "fps": "30/1"
+  },
+  "full_single_thread_decode": true,
+  "sparse_frames": [
+    {
+      "requested_second": 5,
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\media-qa-take01-a01\\frame-005.png",
+        "bytes": 1275010,
+        "sha256": "cfa9a7b8ea49ebdef6cf0ee843d97b734bde0b43e74b32515484880840aec61f"
+      },
+      "human_1x_reviewed": false
+    },
+    {
+      "requested_second": 44.1,
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\media-qa-take01-a01\\frame-mid.png",
+        "bytes": 1326818,
+        "sha256": "799f508eafa9b14673012bfec35946cb9ada4b35e1d68a3f58a30113a6b34a4d"
+      },
+      "human_1x_reviewed": false
+    },
+    {
+      "requested_second": 86.2,
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r218-refill-worker-positive-a01\\media-qa-take01-a01\\frame-end.png",
+        "bytes": 1326071,
+        "sha256": "9ddb69bbb8369fff1f31089b435d350233838c92130af9f970621ebf4fee5fea"
+      },
+      "human_1x_reviewed": false
+    }
+  ],
+  "AI_visual_review_pending": true,
+  "continuous_clean_span_certified": false,
+  "human_1x_reviewed": false,
+  "formal_episode_shot_qualified": false,
+  "worker_business_positive_from_video": false
+}

@@ -1,0 +1,95 @@
+{
+  "schema": "xar.e04.exact3e-wal-setup-impact-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-19T05:47:50.107781+00:00",
+  "source_head": "3e7d337dc4edadde26642ad23fee85df5e41ecf9",
+  "official_run": 39203172231,
+  "job_id": 117900277941,
+  "whole_Official_conclusion": "failure",
+  "R04_focused_step19": "success 05:30:31Z",
+  "failed_step54": "Test experimental Driver WAL pairing without CK3",
+  "failure": "Six tests error at class setup: test_portable.py:103 -> patched_modules():43-50 -> git apply experimental bridge-native_driver.py.patch returns1 before loading the patched modules. No timeout failure is established; TimeoutExpired text in traceback is standard subprocess.run source context.",
+  "production_scope_assessment": "No direct R219 unpatched common public Driver failure is demonstrated by this trace. The test copies2 source leaves to a temporary directory and applies optional experimental patches; production Driver/native_session/public host/public acceptance contain none of the WAL opt-in/helper symbols. The experimental README explicitly says uninstalled/default-off and not installed in the game SDK. R219 must continue using the original actual source/runtime path; no experimental patch is applied or bypassed here. This does not qualify the failing experimental feature or turn the whole CI green.",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py",
+      "bytes": 12272,
+      "sha256": "9375a91d9cddeecefbdf42ebf977d78ff954d8aa7f24730c935e752d265b84c1",
+      "production_WAL_symbols_present": null
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/README.md",
+      "bytes": 4095,
+      "sha256": "60d35a524be1242096a03a90c283398867bf4fc287e67ac7d24984e31046d3f5",
+      "production_WAL_symbols_present": null
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1611698,
+      "sha256": "7b58e526580d7b2b49f8472a6296aaae03fabe19c15bfc88b68f224a366509b8",
+      "production_WAL_symbols_present": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "bytes": 76078,
+      "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8",
+      "production_WAL_symbols_present": false
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "bytes": 313953,
+      "sha256": "4b1340accf72135426cdc90c207574490356d7ebcf4fb704871db1aebcf5b614",
+      "production_WAL_symbols_present": false
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "bytes": 50480,
+      "sha256": "98a8de179c8529df301d7de471fa3f751e208f365924bc6f7ba2fe55b1b002bb",
+      "production_WAL_symbols_present": false
+    }
+  ],
+  "bounded_log_fetch": {
+    "whole_job_log_bytes": 332038,
+    "range_start": 282886,
+    "bytes_read": 49152,
+    "HTTP_status": 206,
+    "whole_job_downloaded": false,
+    "saved_gzip_bytes": 7189,
+    "saved_gzip_sha256": "30beb6d0440ca6dbd0898ea436e11adf080bf4da899478940777896b1ac9e5c2"
+  },
+  "tail_gzip": {
+    "path": "EXACT-3E-STEP54.tail.log.gz",
+    "bytes": 7189,
+    "sha256": "30beb6d0440ca6dbd0898ea436e11adf080bf4da899478940777896b1ac9e5c2"
+  },
+  "steps": [
+    {
+      "name": "Test keyed query completion diagnostics without CK3",
+      "number": 18,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-19T05:14:50Z",
+      "completed_at": "2026-10-19T05:30:27Z"
+    },
+    {
+      "name": "Test county direct-owner native wire and strict v1 boundary without CK3",
+      "number": 19,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-19T05:30:27Z",
+      "completed_at": "2026-10-19T05:30:31Z"
+    },
+    {
+      "name": "Test experimental Driver WAL pairing without CK3",
+      "number": 54,
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-19T05:33:38Z",
+      "completed_at": "2026-10-19T05:33:39Z"
+    }
+  ],
+  "tests_rerun": 0,
+  "source_mutations": 0,
+  "SDK_DR_GUI": 0,
+  "specific_patch_hunk_not_determined": "The captured traceback exposes CalledProcessError, not the captured git stderr. No invented failing hunk or production assertion."
+}

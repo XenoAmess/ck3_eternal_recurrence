@@ -1,0 +1,49 @@
+{
+  "schema": "xar.e04.r217-native-insert-build.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-19T02:31:37.395070+00:00",
+  "status": "NATIVE_BUILD_COMPLETE_PENDING_MEDIA_QA",
+  "movie": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/work-build-a01/R217-R04-COUNTY-INSERT-27s-REVIEW-NO-SIGNOFF.mp4",
+    "bytes": 1698188,
+    "sha256": "4b7f762d37c2c6e961e7284a7db26d24634dfcbe1970eb8043e2428611619e33"
+  },
+  "manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/run/run-manifest.json",
+    "bytes": 8838,
+    "sha256": "8d30d258dfd2fdd069a805d9b8cf468ef318b1788548d5e02c7d9f452386c807"
+  },
+  "config": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/project/promo-project.json",
+    "bytes": 1554,
+    "sha256": "0f90c3b4b01ed454fe020f8998b016126f61df85b411bd4f7431bbe36bf4e6bb"
+  },
+  "inputs": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/inputs/render-inputs.json",
+    "bytes": 3608,
+    "sha256": "8545c3c61acdd744ed107194d0520946fe44642f8983546219660464a7469aff"
+  },
+  "composer": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r217-editorial-insert-prep-a01/r217_insert_composer.py",
+    "bytes": 10061,
+    "sha256": "d9331d4b1cb43af73a3abf1d5b1b910a2a68be8e0c744480e74c1f0e0546f712"
+  },
+  "build_command": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r217-county-insert-a01/commands/native_build.actual.json",
+    "bytes": 1247,
+    "sha256": "a47df16a1adf5a448324dfbd3b5a0567403e326c110b352e15794419a0af0182"
+  },
+  "root_usage": {
+    "phase": "build_close",
+    "at_utc": "2026-10-19T02:31:37.832028+00:00",
+    "root_bytes": 10326481,
+    "soft_stop_bytes": 58720256,
+    "fresh_free_bytes": {
+      "C:/": 34639003648,
+      "D:/": 24810283008
+    },
+    "stop_at_utc": "2026-10-19T04:58:00+00:00"
+  },
+  "human_1x": false,
+  "signoff": false
+}
