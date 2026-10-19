@@ -1,0 +1,226 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-19T00:52:11.586760+00:00",
+  "delivery_manifest": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\first30-scored-film-delivery-2026-10-19.json",
+    "bytes": 15122,
+    "sha256": "cbc761524c200f794197a550c20560353fe2b4969ba1fcd616bb6462b7822cf9"
+  },
+  "file_checks": [
+    {
+      "kind": "film",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\render-output\\robert-first30-scored-complete09.mp4",
+      "actual_stat": {
+        "bytes": 13485902026,
+        "mtime_ns": 1792357467896338100,
+        "device": 6505083400996699863,
+        "inode": 281474988837043
+      },
+      "matches_delivery_stat": true,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "permanent_save",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\first30-permanent-save01\\Robert-first30-raw53407320.ck3",
+      "actual_stat": {
+        "bytes": 143852966,
+        "mtime_ns": 1792313402006790400,
+        "device": 6505083400996699863,
+        "inode": 281474988832795
+      },
+      "matches_delivery_stat": true,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "score_video",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\campaign-score-visual01\\score-explanation.mp4",
+      "actual_stat": {
+        "bytes": 4581281,
+        "mtime_ns": 1792355215570760500,
+        "device": 6505083400996699863,
+        "inode": 281474988836965
+      },
+      "matches_delivery_stat": true,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "score_image",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\campaign-score-visual01\\campaign-score.png",
+      "actual_bytes": 253852,
+      "matches_delivery_bytes": true,
+      "new_SHA_computed": false
+    },
+    {
+      "kind": "video_only_material",
+      "session_id": "90e81184-8475-4053-9b83-d01c0f314e0e",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\90e81184-8475-4053-9b83-d01c0f314e0e-video-only.mkv",
+      "actual_stat": {
+        "bytes": 2930534966,
+        "mtime_ns": 1792359446671583200,
+        "device": 6505083400996699863,
+        "inode": 281474988840622
+      },
+      "matches_delivery_stat": true,
+      "old_original_present": false,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "video_only_material",
+      "session_id": "30f4c0c4-1cfb-401b-ac07-fdfb7584c8a2",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\30f4c0c4-1cfb-401b-ac07-fdfb7584c8a2-video-only.mkv",
+      "actual_stat": {
+        "bytes": 2237704362,
+        "mtime_ns": 1792359545531236100,
+        "device": 6505083400996699863,
+        "inode": 281474988840641
+      },
+      "matches_delivery_stat": true,
+      "old_original_present": false,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "video_only_material",
+      "session_id": "7c2df029-2374-4eff-b0db-a331d6adcbb4",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\7c2df029-2374-4eff-b0db-a331d6adcbb4-video-only.mkv",
+      "actual_stat": {
+        "bytes": 6123995701,
+        "mtime_ns": 1792359802665042800,
+        "device": 6505083400996699863,
+        "inode": 281474988840656
+      },
+      "matches_delivery_stat": true,
+      "old_original_present": false,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "video_only_material",
+      "session_id": "5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\5ebe8c91-d388-4a66-91c4-60d9692c33e0-video-only.mkv",
+      "actual_stat": {
+        "bytes": 11125325660,
+        "mtime_ns": 1792360168599720100,
+        "device": 6505083400996699863,
+        "inode": 281474988840676
+      },
+      "matches_delivery_stat": true,
+      "old_original_present": false,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "video_only_material",
+      "session_id": "cf67e76e-9493-45d7-a72e-794b3d7b9661",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\cf67e76e-9493-45d7-a72e-794b3d7b9661-video-only.mkv",
+      "actual_stat": {
+        "bytes": 281394762,
+        "mtime_ns": 1792360209368557100,
+        "device": 6505083400996699863,
+        "inode": 562949965551350
+      },
+      "matches_delivery_stat": true,
+      "old_original_present": false,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    },
+    {
+      "kind": "video_only_material",
+      "session_id": "da74988f-a20d-428e-9877-f2bc9d39b133",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\first30-final-film01\\recording-materials-video-only01\\da74988f-a20d-428e-9877-f2bc9d39b133-video-only.mkv",
+      "actual_stat": {
+        "bytes": 28912262022,
+        "mtime_ns": 1792361448965861600,
+        "device": 6505083400996699863,
+        "inode": 281474988840706
+      },
+      "matches_delivery_stat": true,
+      "old_original_present": false,
+      "exact_stat_serialized_at_utc": "2026-10-19T01:11:43.485876+00:00"
+    }
+  ],
+  "historical_process_checks": [
+    {
+      "pid": 51028,
+      "birth_FILETIME": "134367033244212072",
+      "expected_historical_birth_FILETIME": "134367033244212072",
+      "matches_historical_birth": true,
+      "current_exit_code": 1,
+      "image": null,
+      "query_only_new_handle": true,
+      "normal_exit_verified": false
+    },
+    {
+      "pid": 229304,
+      "query": "OpenProcess_failed",
+      "winerror": 87,
+      "normal_exit_verified": false
+    }
+  ],
+  "disk": {
+    "C": {
+      "total": 998748684288,
+      "used": 981716455424,
+      "free": 17032228864
+    },
+    "D": {
+      "total": 14000483987456,
+      "used": 13108183945216,
+      "free": 892300042240
+    }
+  },
+  "Game_window_MCP_or_desktop_actions": 0,
+  "large_media_or_SAVE_body_reads": 0,
+  "new_game_started": false,
+  "targeted_Game_exit_readback": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T00:52:56.348057+00:00",
+    "pid": 51028,
+    "creation_FILETIME": "134367033244212072",
+    "exit_FILETIME": "134368056149718956",
+    "exit_time_utc": "2026-10-18T14:00:14.971895+00:00",
+    "exit_code": 1,
+    "new_readonly_query_handle": true,
+    "held_from_process_start": false,
+    "process_control_calls": 0,
+    "normal_exit_claimed": false
+  },
+  "observation_tools": {
+    "identity_and_capacity": "e8fc3c",
+    "targeted_Game_exit": "111abe",
+    "machine": "4c8cb0"
+  },
+  "schema": "xar.first30.vacation-handoff-readonly-observation/v1",
+  "status": "EXISTING_LOCAL_DELIVERY_IDENTITIES_MATCH_HISTORICAL_GAME_EXIT1_OBSERVED",
+  "assistant_child_threads": {
+    "source": "collaboration.list_agents",
+    "all_child_agents_completed": true,
+    "observed_during_this_handoff": true
+  },
+  "no_new_capacity_admission": true,
+  "no_retention_extension": true,
+  "no_deletion_or_media_execution": true,
+  "Game_exit_cause": "unknown; no normal-exit or shutdown-cause attribution",
+  "exact_integer_serialization": {
+    "at_utc": "2026-10-19T01:11:43.485876+00:00",
+    "source": "Python os.stat integer fields; direct Python json.dump without a JavaScript Number round-trip",
+    "reason": "Correct pre-commit draft rounding in device and mtime_ns; file bodies were not read",
+    "initial_identity_comparison_source": "e8fc3c",
+    "independent_unrounded_readback_source": "5e2612",
+    "film_and_permanent_save_rechecked_against_pinned_delivery_stat": true
+  },
+  "close_capacity": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "at_utc": "2026-10-19T01:13:53.165746+00:00",
+    "disk": {
+      "C": {
+        "total": 998748684288,
+        "used": 981345886208,
+        "free": 17402798080
+      },
+      "D": {
+        "total": 14000483987456,
+        "used": 13108189175808,
+        "free": 892294811648
+      }
+    },
+    "new_heavy_write_admitted": false,
+    "retention_extended": false
+  }
+}
