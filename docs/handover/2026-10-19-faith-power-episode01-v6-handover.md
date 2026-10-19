@@ -9,7 +9,7 @@
 1. [系列研究与讲解方法](../../promo/ck3_faith_and_power/docs/production-lessons.md)和[制作经验](../../promo/ck3_faith_and_power/docs/production-experience.md)：这是用户反复指导后归纳的方法，不只是本期措辞纠错。
 2. [第六轮整改与实际进展](../../promo/ck3_faith_and_power/docs/episode01-revision-v6.md)、[当前逐句镜头单](../../promo/ck3_faith_and_power/docs/episode01-current-shot-list-v6.md)、[当前中文稿](../../promo/ck3_faith_and_power/docs/episode01-narration-v6.zh.md)。旧144句已归并为135段，不能照旧稿重新配音。
 3. 本文的恢复顺序及 `S/authoring-deltas-a08/REMAINING-MEDIA.md`。后者列59对象组的逐章缺图，不需要重新审计全部历史媒体。
-4. [根 AGENTS](../../AGENTS.md)、[公共验收入口](../ck3-mod-upgrade-fast-validation.md)、[存储策略](../storage-retention-policy.md)与[参数](../storage-retention-policy.json)。本项目禁用 PowerShell，Windows 命令用 `cmd.exe` 和 Python。
+4. [根 AGENTS](../../AGENTS.md)、[公共验收入口](../ck3-mod-upgrade-fast-validation.md)、[存储策略](../storage-retention-policy.md)与[参数](../storage-retention-policy.json)。Windows 自动化仅允许 `cmd.exe` 与 Python；执行前遵守根 AGENTS 的 Python-only 规则。
 
 ## 用户要交付什么
 
