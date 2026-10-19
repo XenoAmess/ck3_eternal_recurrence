@@ -1,0 +1,439 @@
+{
+  "schema": "python-java-assessment-inventory-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:49:11.745699+00:00",
+  "source_commit": "42ddbb4f4184e1e70b1b28a21c2ea610d42695fb",
+  "method": "git ls-tree -r -z SOURCE; git cat-file --batch; physical splitlines including blanks/comments; tests by test_ basename or /tests/ path; no runtime imports",
+  "tracked_blob_files": 51057,
+  "languages": {
+    ".py": {
+      "files": 6306,
+      "lines": 1960701,
+      "bytes": 96944228
+    },
+    ".cpp": {
+      "files": 2145,
+      "lines": 878624,
+      "bytes": 41443967
+    },
+    ".hpp": {
+      "files": 1471,
+      "lines": 149903,
+      "bytes": 6697570
+    },
+    ".ts": {
+      "files": 107,
+      "lines": 21536,
+      "bytes": 883157
+    },
+    ".vue": {
+      "files": 1,
+      "lines": 2766,
+      "bytes": 122210
+    },
+    ".java": {
+      "files": 0,
+      "lines": 0,
+      "bytes": 0
+    }
+  },
+  "python_groups": {
+    "XenoAmess_s_Eternal_Recurrence": {
+      "files": 1,
+      "lines": 442,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 19847
+    },
+    "ck3_autonomous_player": {
+      "files": 3323,
+      "lines": 1010836,
+      "test_files": 1548,
+      "test_lines": 415624,
+      "bytes": 47654896
+    },
+    "ck3_autonomous_player/agent.py": {
+      "files": 1,
+      "lines": 16,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 330
+    },
+    "ck3_autonomous_player/codex_mcp_setup.py": {
+      "files": 1,
+      "lines": 15,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 337
+    },
+    "ck3_autonomous_player/experimental": {
+      "files": 2,
+      "lines": 656,
+      "test_files": 1,
+      "test_lines": 236,
+      "bytes": 32822
+    },
+    "ck3_autonomous_player/h3937_cold_observer_once.py": {
+      "files": 1,
+      "lines": 14,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 436
+    },
+    "ck3_autonomous_player/h3937_combined_once.py": {
+      "files": 1,
+      "lines": 14,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 442
+    },
+    "ck3_autonomous_player/h3937_freeze_operator_profile.py": {
+      "files": 1,
+      "lines": 88,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 4127
+    },
+    "ck3_autonomous_player/h3937_single_query_once.py": {
+      "files": 1,
+      "lines": 9,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 300
+    },
+    "ck3_autonomous_player/mcp_server.py": {
+      "files": 1,
+      "lines": 15,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 356
+    },
+    "ck3_autonomous_player/mod_bridge": {
+      "files": 3,
+      "lines": 368,
+      "test_files": 1,
+      "test_lines": 151,
+      "bytes": 13700
+    },
+    "ck3_autonomous_player/native_bridge": {
+      "files": 699,
+      "lines": 177969,
+      "test_files": 90,
+      "test_lines": 15895,
+      "bytes": 8013245
+    },
+    "ck3_autonomous_player/offline_mandatory_choice_worker.py": {
+      "files": 1,
+      "lines": 130,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 5828
+    },
+    "ck3_autonomous_player/operator_mcp_server.py": {
+      "files": 1,
+      "lines": 15,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 334
+    },
+    "ck3_autonomous_player/run_combat_research_envelope.py": {
+      "files": 1,
+      "lines": 191,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 6833
+    },
+    "ck3_autonomous_player/run_no_bridge_main_menu_control.py": {
+      "files": 1,
+      "lines": 62,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 1991
+    },
+    "ck3_autonomous_player/run_no_bridge_startup_control.py": {
+      "files": 1,
+      "lines": 71,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 2358
+    },
+    "ck3_autonomous_player/src": {
+      "files": 1050,
+      "lines": 413676,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 19818875
+    },
+    "ck3_autonomous_player/tests": {
+      "files": 1455,
+      "lines": 399247,
+      "test_files": 1455,
+      "test_lines": 399247,
+      "bytes": 18823055
+    },
+    "ck3_autonomous_player/tools": {
+      "files": 102,
+      "lines": 18280,
+      "test_files": 1,
+      "test_lines": 95,
+      "bytes": 929527
+    },
+    "ck3_workshop_mcp": {
+      "files": 28,
+      "lines": 6331,
+      "test_files": 11,
+      "test_lines": 1678,
+      "bytes": 265841
+    },
+    "coat_of_arms_editer_of_ck3": {
+      "files": 9,
+      "lines": 2363,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 99694
+    },
+    "docs": {
+      "files": 626,
+      "lines": 80052,
+      "test_files": 9,
+      "test_lines": 5277,
+      "bytes": 6051784
+    },
+    "mod_change_holding_types": {
+      "files": 4,
+      "lines": 385,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 19360
+    },
+    "mod_de_jure_conquest": {
+      "files": 5,
+      "lines": 563,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 27844
+    },
+    "mod_li_yu_dao": {
+      "files": 38,
+      "lines": 12563,
+      "test_files": 17,
+      "test_lines": 5982,
+      "bytes": 854615
+    },
+    "mod_superman_qiang": {
+      "files": 30,
+      "lines": 5999,
+      "test_files": 5,
+      "test_lines": 691,
+      "bytes": 336688
+    },
+    "mod_zhongguo_style": {
+      "files": 134,
+      "lines": 178442,
+      "test_files": 65,
+      "test_lines": 55131,
+      "bytes": 8546312
+    },
+    "promo": {
+      "files": 860,
+      "lines": 257236,
+      "test_files": 110,
+      "test_lines": 17253,
+      "bytes": 13860683
+    },
+    "research": {
+      "files": 64,
+      "lines": 6709,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 431281
+    },
+    "skills": {
+      "files": 5,
+      "lines": 1619,
+      "test_files": 0,
+      "test_lines": 0,
+      "bytes": 80219
+    },
+    "tests": {
+      "files": 8,
+      "lines": 696,
+      "test_files": 8,
+      "test_lines": 696,
+      "bytes": 42308
+    },
+    "tools": {
+      "files": 1171,
+      "lines": 396465,
+      "test_files": 456,
+      "test_lines": 145137,
+      "bytes": 18652856
+    }
+  },
+  "largest_python": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "lines": 36414,
+      "blob": "9046df2a93447940f2ab9be95f55a105f2805716"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0143-current-research-originals/raw/frozen-ui-contract-source-04/native_driver.py",
+      "lines": 28768,
+      "blob": "ffc42286f907a7d8f495ff00f435420a32fa6c10"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0140-current-research-originals/exact-copies/ui_repair_pending_live/source-freeze-ui-paused-owner-a03/sources/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "lines": 28724,
+      "blob": "95810531263ad96e12b80407f6918d2271330227"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/exact-copies/hidden_modal_repair_offline_only/source-freeze-ui-hidden-modal-a01/source/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "lines": 28724,
+      "blob": "95810531263ad96e12b80407f6918d2271330227"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a04-audit-20261001/knights/R0141-current-research-originals/exact-copies/hidden_modal_repair_offline_only/source-freeze-ui-hidden-modal-a02/source/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "lines": 28724,
+      "blob": "95810531263ad96e12b80407f6918d2271330227"
+    },
+    {
+      "path": "tools/run_zhongguo_acceptance.py",
+      "lines": 25788,
+      "blob": "831c4c65cd63676cdca11e478533b246aad090b0"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "lines": 23935,
+      "blob": "f23751b8b7aae6d08df19a8eb43a1e7d898889ae"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_gameplay_bridge.py",
+      "lines": 19761,
+      "blob": "d3fb860d46c3c9c250c2889d9958b3f734c08b26"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py",
+      "lines": 19170,
+      "blob": "afeb300c5d88dfafef972acf38a7392632073c32"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "lines": 18479,
+      "blob": "da22880ec2c03a8ccf3755dc1a7d78b53b12a728"
+    },
+    {
+      "path": "mod_zhongguo_style/tools/gen_361_b1_runtime.py",
+      "lines": 11194,
+      "blob": "8480754796ed02673fe37a582f5a764b8adafe28"
+    },
+    {
+      "path": "mod_zhongguo_style/tools/gen_361_workforce_endgame_runtime.py",
+      "lines": 9846,
+      "blob": "98250e836fbaea230f6b9482601d43d5dff7b57a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
+      "lines": 9832,
+      "blob": "a03d7785938b0030c371f4e58b78e117ec606b48"
+    },
+    {
+      "path": "tools/test_run_zhongguo_promo_capture.py",
+      "lines": 8746,
+      "blob": "e096db84567f94ac84f8302f5d3bd264f7c310b3"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_auto_run.py",
+      "lines": 8457,
+      "blob": "2e80bd40e06aeecaf0a6f6951bb63408d1563ad8"
+    }
+  ],
+  "python_marker_generated_lower_bound": {
+    "marker_files": 65,
+    "marker_lines": 88855
+  },
+  "python_text_mentions_not_import_graph": {
+    "typing": 750,
+    "subprocess": 890,
+    "ctypes": 159,
+    "pyautogui": 112,
+    "numpy": 56,
+    "win32": 215,
+    "pydantic": 17,
+    "cv2": 44,
+    "comtypes": 3
+  },
+  "core_files": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {
+      "lines": 36414,
+      "sha256": "c74a21ab7d7d9c556e3eb355a3e3134ab94e15e3a11eeca57141cc424f999fa7"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": {
+      "lines": 18479,
+      "sha256": "33943062c4acda4d686ccf4d5e07d10029f9826e8b5f60c62d88e68c365bc2e1"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/strategy.py": {
+      "lines": 23935,
+      "sha256": "552713a0057cb57e1fc8207c3363ff43b907a88f6ece3bc0e8905d63141e5f11"
+    }
+  },
+  "java_paths": [],
+  "build_manifests": [
+    "ck3_autonomous_player/pyproject.toml",
+    "ck3_workshop_mcp/pyproject.toml",
+    "coat_of_arms_editer_of_ck3/package.json",
+    "promo/ck3_faith_and_power/integration/pyproject.toml",
+    "promo/ck3_native_war_ai/integration/pyproject.toml",
+    "promo/reclaim_the_motherland/integration/pyproject.toml",
+    "promo/superman_qiang/plugin/pyproject.toml"
+  ],
+  "all_python_present_in_worktree": 4589,
+  "test_heuristic_totals": {
+    "files": 2229,
+    "lines": 647469
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "task_id": "java-migration-assessment-20261019",
+    "root_id": "user_workspace",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "task_start": {
+      "observed_at_utc": "2026-10-19T13:47:26.949430+00:00",
+      "source": "Python shutil.disk_usage('.') in Z:/ck3_mod_rewrite",
+      "volume_total_bytes": 4096787476480,
+      "volume_free_bytes": 178259845120
+    },
+    "scope": "Small tracked report/evidence; no raw source/media copies. Git sparse documentation-only delivery checkout may allocate at most 16 MiB planned metadata.",
+    "project_usage_bytes": null,
+    "system_growth_reserve_bytes": null,
+    "other_unspent_reservations_bytes": null,
+    "effective_project_quota_bytes": null,
+    "whole_project_expiry_and_protection_state": "UNKNOWN: no authoritative current whole-project ledger identified; historical other-task budgets not reused",
+    "heavy_write_admission": "NOT_GRANTED",
+    "deletions": 0,
+    "category": "record",
+    "review_at_utc": "2027-04-17T13:49:11.745699+00:00",
+    "review_action": "review_and_consolidate; do not automatically delete delivered report",
+    "task_close": {
+      "observed_at_utc": "2026-10-19T13:55:36.891289+00:00",
+      "source": "Python shutil.disk_usage; exact report bytes read",
+      "volume_total_bytes": 4096787476480,
+      "volume_free_bytes": 178248830976,
+      "report_bytes": 25752,
+      "report_sha256": "2344f0eb5216ad1ce5a832d3fd7c5a7b34fc1a438c3e32d0aafa538ffd4c43a6",
+      "isolated_docs_checkout": "Z:/jva1019",
+      "checkout_purpose": "Only this task documents; existing user workspace edits and index preserved",
+      "no_heavy_outputs": true,
+      "deletions": 0,
+      "concurrent_volume_changes_not_attributed_to_this_task": true,
+      "delivery_checkout_review_at_utc": "2026-11-02T13:55:36.891496+00:00"
+    }
+  },
+  "limitations": [
+    "No runtime or performance tests",
+    "No Java prototype",
+    "No full import/reachability graph",
+    "No team skill or cost survey",
+    "Counts include generated code, tests and frozen copies; directory groups overlap",
+    "Working tree dirty edits excluded; only pinned commit blobs counted"
+  ]
+}
