@@ -22,7 +22,7 @@
       "id": "resident_successor_once_and_current_family",
       "observed_failure": "Frozen Host06 did not adopt the later resident App/Queue durable handoff and exception-safe once permit.",
       "required_behavior": "Keep one resident ordinary campaign App, retain exact pre/post and goal/title lineage, consume permission before dispatch, and preserve unknown actions without replay.",
-      "sources": ["bridge/mcp_server.py", "bridge/service.py", "bridge/successor_ui_app_owner_v1.py", "successor_ui_pending_ledger_v1.py", "successor_ui_owner_continuation_v1.py", "native_auto_run.py", "native_driver.py", "family_marriage_episode_handoff_v1.py"],
+      "sources": ["bridge/mcp_server.py", "bridge/service.py", "bridge/successor_ui_app_owner_v1.py", "successor_ui_pending_ledger_v1.py", "successor_ui_owner_continuation_v1.py", "native_auto_run.py", "bridge/native_driver.py", "family_marriage_episode_handoff_v1.py"],
       "live_result_still_required": "Natural successor, title distribution, timeline clearance and subsequent ordinary plan; same-game reconnect is not a new-game SAVE restoration proof."
     },
     {
