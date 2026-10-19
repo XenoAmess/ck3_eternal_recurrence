@@ -1,0 +1,131 @@
+{
+  "schema": "xar.obs.mutable-latest-replace-retry-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T13:20:14.982477Z",
+  "machine_binding": "Old job.decision_text_publisher.machine_id matches the existing same-machine actual closure receipt; no new Game/process query.",
+  "status": "SOURCE_READY_FOCUSED_SOFTWARE_AND_OWNED_FILE_MECHANICS_PASS",
+  "current_p0": {
+    "actual_closure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c12-auto6343-failure87\\C11-RECORDING-FAILED-ACTUAL.json",
+      "bytes": 10110,
+      "sha256": "81d1065e0c73161e691fc4a114caf0163a087c524bfb6b12a096fe238f8afcb7"
+    },
+    "failed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\failed.json",
+      "bytes": 17651,
+      "sha256": "966ec925b5ffdbe4fe71ac4b985264a341812595ed7f970f1dc7b60ac470a41a"
+    },
+    "cleanup": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\cleanup.json",
+      "bytes": 18566,
+      "sha256": "8aa6ab1aa6ec5cc3bccb9b4c340bb28a14bba9e4a7606c6b1deba8c2ccefbace"
+    },
+    "recording_latest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\recording-latest.json",
+      "bytes": 17215,
+      "sha256": "1e2a38b6870ce4ed266f8eb9a85e58602a75c96828f1354ae70b267c89b241f9"
+    },
+    "job": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\job.json",
+      "bytes": 13118,
+      "sha256": "e4fe30a41b9bbfbe6b870319313ec409c37d39365a9a1abbd57083369ebc69ee"
+    },
+    "error": "[WinError 5] 拒绝访问。: 'D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-v20261019-campaign01\\\\runtime\\\\recordings\\\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\\\recording-latest-game.png.tmp' -> 'D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-v20261019-campaign01\\\\runtime\\\\recordings\\\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\\\recording-latest-game.png'",
+    "actual_holder": "unknown",
+    "source_failure": "Frozen950d screenshots975-990 writes the PNG temp once and performs pending.replace(dest) once. Any Win5 escapes into failed cleanup; the existing decision-binding read retry is a different operation.",
+    "engine_close": {
+      "requested": true,
+      "actual_exit_code": 0,
+      "normal_exit_proven": true,
+      "forced_process_calls": 0
+    },
+    "inputs_unbound": true,
+    "capture_closed_receipt_exists": false,
+    "closed_file_probe_exists": false,
+    "boundary": "This attempt failed despite owned OBS normal0/unbound. It is not completed/capture_closed. Original failed/cleanup/media remain unchanged. No cause is attributed to a specific reader."
+  },
+  "permanent_repository_change": {
+    "source": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\ck3_obs_capture.py",
+      "bytes": 69656,
+      "sha256": "f0e66034173353c37ba3626e423a2e8139f815e3f8dfa938c4219bc41a16b4e2"
+    },
+    "test": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\test_ck3_obs_capture_mutable_replace.py",
+      "bytes": 8005,
+      "sha256": "5d9054b8479c195011f1e648cec14057d7044b0dce9dc1506289e1c6d55136e1"
+    },
+    "exact_projection_producer": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_capture_latest_retry_v1.py",
+      "bytes": 3114,
+      "sha256": "180de995996e4eda93273a125024c90ae0dda82bddc283ae2678782291e30a11"
+    },
+    "helper": "_replace_mutable_latest(pending,destination): same existing pending bytes; WinError5/32/33 only, <=8 attempts, shared monotonic deadline2.0s, small(.02.. .4)s backoff. No screenshot, serialization, OBS command, request ID or Native action is repeated.",
+    "deadline_boundary": "No new retry starts after its monotonic deadline; an individual kernel replace operation is not preempted.",
+    "three_calls": [
+      "mutable latest JSON pending->path",
+      "armed-latest JSON pending->latest",
+      "already-captured latest PNG pending->dest"
+    ],
+    "failure": "Permanent sharing/access denial still raises the original OSError with finite-attempt/deadline notes. Non-sharing errors are raised immediately. Create-only evidence and all other capture guards keep their original paths.",
+    "public_base_bytes": 68667,
+    "public_net_growth_bytes": 989
+  },
+  "focused_checks": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "tool_result": "exec_command chunk f177bb",
+    "command": "python -B -m unittest tools.test_ck3_obs_capture_mutable_replace",
+    "result": "5 tests OK in0.095s; actual Windows case ran (not skipped)",
+    "cases": [
+      "Actual nested screenshot producer: two screenshot RPC stubs only despite transient replaces; same pending/content retained.",
+      "Permanent Win5: <=8 attempts, old/current bytes unchanged on failure.",
+      "Non-sharing Win87: one attempt/no sleep.",
+      "Win32/33 plus monotonic deadline: no subsequent attempt after budget.",
+      "Real <=32B own temporary old/new files: actual read handle omits DELETE sharing, first actual PermissionError starts release Timer, bounded replacement succeeds; temp directory exits cleanly."
+    ],
+    "real_lock_precision": "The test asserts an actual error in{5,32,33} occurred before its timer. Individual actual code/count/PID were not separately captured; no claim about the live recording holder follows.",
+    "Game_OBS_calls": 0,
+    "unchanged_previous_matrices_rerun": false
+  },
+  "actual_c11_950d_projection": {
+    "base": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\presentation-c11\\ck3_obs_capture.py",
+      "bytes": 70587,
+      "sha256": "950d156551da3579ee6902a1c945e5a343bffecb4addcff9cee86249f99b2161"
+    },
+    "expected_single_output": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\presentation-c11\\ck3_obs_capture_png_retry_c13.py",
+      "bytes": 71575,
+      "sha256": "20e40e58137ee40ee002e3e6b3cfb670addf12b62c6e2f7f666a4252601759b8"
+    },
+    "qualification": "Pure in-memory project/compile. Remove unique helper and reverse exactly three call substitutions -> original950d bytes exactly. This is stronger than preserving all other AST. Existing no-Move/foreground/storage/source/publisher/old-blue guards are retained.",
+    "written_by_this_agent": false,
+    "storage": "Root authorized one independent96KiB source-copy cap from existing code3. Sole runtime creates exactly one output, separate from <=48KiB incremental tool/tests/proof budget.",
+    "location_requirement": "Same physical presentation-c11 parent is required because unchanged source resolves helper/publisher/legacy guard siblings from __file__. No __file__ spoofing, whole public-file replacement, dependency-tree copy or original950d overwrite.",
+    "owner_command": [
+      "python -B tools/g2_saved_campaign/prepare_capture_latest_retry_v1.py",
+      "--input T/presentation-c11/ck3_obs_capture.py",
+      "--helper-source Z:/ck3_mod_rewrite/tools/ck3_obs_capture.py",
+      "--helper-source-sha256 f0e66034173353c37ba3626e423a2e8139f815e3f8dfa938c4219bc41a16b4e2",
+      "--expected-output-sha256 20e40e58137ee40ee002e3e6b3cfb670addf12b62c6e2f7f666a4252601759b8",
+      "--output T/presentation-c11/ck3_obs_capture_png_retry_c13.py"
+    ]
+  },
+  "same_publisher_new_uuid_recipe": [
+    "Do not rerun start_new_game_display.py: its lines42-44 require fresh config/binding/state/text/requested/current outputs and launch a new PublisherOwner. Preserve original retained publisher owner/STARTED/config/text/binding; sole runtime verifies its actual current PID/birth/liveness/source.",
+    "Preserve211ac failed/cleanup/media. Sole runtime requires exact old worker generation absence plus owned OBS normal0/unbound and storage scope; do not substitute missing capture_closed. Archive only that owned obs_root/config/obs-studio and portable_mode.txt via the existing admitted failed-profile procedure. prepare_profile rejects either existing path. Personal OBS remains untouched.",
+    "Prepare a fresh profile receipt/name and new OBS UUID. Import the new immutable capture leaf by its actual path. Load original root_decision_text_api_c11.load_api(N), obtain original started_reference(N,api), and require(new_capture.decision_publisher_api() is api). Use launch_recording(newProfile,recordings,15512,original_hwnd,None,launch_receipt=originalC11launch,ffprobe=existing,placement_receipt=originalC11placement,decision_publisher_receipt=Path(reference[path]),continuous=True). No new publisher owner, Game launch or placement.",
+    "New started and actual frozen Game+scene pixels require a new saved_map FIRST_SCHEMA admission. Existing root_continuous_segment_auto_c11.verify_segment accepts the same publisher with a new job when all real bindings/pixels/storage pass. Do not reuse an old first frame or infer pixel success from TEXT_PUBLISHED.",
+    "Publish a new request receipt and update the explicit current recording view; preserve initial request/admission history. Give the not-yet-constructed C13B owner the new job and new --first-frame-admission path. Adopt the new capture only through explicit SOURCE_DELTA; no hot edit to old950d/live publisher."
+  ],
+  "execution_limits": {
+    "new_Game_Native_RPC": 0,
+    "actual_Game_OBS_desktop_calls": 0,
+    "personal_OBS_calls": 0,
+    "live_Driver_SAVE_reads": 0,
+    "old_runtime_or_publisher_writes": 0,
+    "new_capture_source_full_copies_by_agent": 0,
+    "staged_or_committed": false
+  },
+  "retention": "Keep while this failed recording and recovery adoption remain active; review on successful segment closure or by2026-11-18. No media or raw PNG copies added."
+}

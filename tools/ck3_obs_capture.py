@@ -81,12 +81,34 @@ def _read_decision_binding(path, expected, *, retry_seconds=2.0):
 
 
 
+def _replace_mutable_latest(pending, destination):
+    """Retry this already-written temp only; never capture or serialize again."""
+    deadline = time.monotonic() + 2.0
+    delays = (.02, .04, .08, .16, .24, .32, .4)
+    last_error = None
+    for attempt in range(8):
+        if last_error is not None and time.monotonic() >= deadline:
+            last_error.add_note("mutable latest replace retry deadline exhausted")
+            raise last_error
+        try:
+            return pending.replace(destination)
+        except OSError as error:
+            if getattr(error, "winerror", None) not in (5, 32, 33):
+                raise
+            last_error = error
+            remaining = deadline - time.monotonic()
+            if attempt == 7 or remaining <= 0:
+                error.add_note(f"mutable latest replace failed after {attempt + 1} attempts")
+                raise
+            time.sleep(min(delays[attempt], remaining))
+
+
 def _replace_json(path, value):
     """Mutable latest state; old paths are never presented as immutable evidence."""
     path = Path(path)
     pending = path.with_suffix(path.suffix + ".tmp")
     _write_new(pending, value)
-    pending.replace(path)
+    _replace_mutable_latest(pending, path)
 
 
 def _validate_storage(storage, paths):
@@ -644,7 +666,7 @@ def _wait_for_start_signal(job, check, screenshots, ready_frame):
             pending = latest.with_suffix(".json.tmp")
             _write_new(pending, {"state": "awaiting_start_signal", "mutable_latest_frame": True,
                                  "frame": frame, "recording_started": False})
-            pending.replace(latest)
+            _replace_mutable_latest(pending, latest)
             screenshot_at = time.monotonic() + 15
         time.sleep(.5)
 
@@ -971,7 +993,7 @@ def run_worker(path):
                 with pending.open("xb") as stream:
                     stream.write(raw)
                 if replace_latest:
-                    pending.replace(dest)
+                    _replace_mutable_latest(pending, dest)
                 item[key] = {"path": str(dest), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
             if replace_latest:
                 item["mutable_latest_frame"] = True

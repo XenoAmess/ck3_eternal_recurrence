@@ -1,0 +1,75 @@
+{
+  "schema": "xar.camera-receipt-status-ci-fixture-repair/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:24:22.831139+00:00",
+  "machine_identity_source": {
+    "command": "python tools/ck3_live_run_id.py machine",
+    "tool_chunk": "799496"
+  },
+  "base_commit": "2fbdb80f81069ce53405fae1e63139c112859776",
+  "status": "FOCUSED_LOCAL_SOFTWARE_PASS_CI_RERUN_PENDING",
+  "failure_source": {
+    "path": "_runtime/ci-job-118073122420-failure-excerpt.json",
+    "bytes": 32534,
+    "sha256": "2f8b540c4b95b6dbf0aa9f251f8a2d4eaf47020043ce110aa38a93d9fe057600",
+    "query_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_utc": "2026-10-19T13:19:42.494785+00:00",
+    "github_runner_machine_id": "unknown",
+    "evidence_source": "gh GitHub job logs read-only stream; raw log not copied",
+    "job_id": 118073122420
+  },
+  "machine_boundary": "The excerpt was queried on this machine; the actual GitHub runner identity is unknown. Local test pass is not a rerun of that remote job or live Game qualification.",
+  "diagnosis": "The old ServiceProbe borrowed only _select_auto_camera_hotspot and replaced publication. It omitted production owner sync and request-context helpers/fields, and asserted the retired global retry timer/observe-before-reset representation. CI stopped first at missing _sync_camera_presentation_owner in three nodes.",
+  "changed_test": {
+    "path": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+    "bytes": 10483,
+    "sha256": "cca453c4b211c8ec5d1ab97671dd1af6c74d83906a198e2192eef755e35a121a",
+    "base_bytes": 7513,
+    "base_sha256": "f59702c9f6c270443017ae61050fe2d99eb92f4169188dfeddc5a7fbbe1679b2",
+    "net_new_bytes": 2970
+  },
+  "repair": {
+    "fixture": "ServiceProbe subclasses GameplayBridgeService, uses its real constructor, inherits selector/owner/backoff helpers and calls the real production publisher. Only NativeCameraPresentationClient OS/shared-memory boundary is replaced by Client.submit/latest/close.",
+    "native_contract": "Synthetic payload supplies original frame/build identity. Native results now have explicit actor and actual processing date within the permitted submitted..+7d interval; second failure is explicitly dated1792 rather than reusing an old baseline.",
+    "same_failed_hotspot": "Preserve no repeated publication before retry1744, exactly one retry on1744, no repeat1768, and second real bound failure creating its target retry2512. Policy now correctly retains the observed b_test/quiet=None during cooldown.",
+    "mapping_exception": "Preserve no successful submissions and no original publication context/sequence during cooldown, then submit exactly once at1720. The observed policy target is not treated as a submitted request and cannot make expiry hold forever.",
+    "wrong_sequence": "Matching owner/date but wrong sequence200 produces no native actual, no target backoff, no failure-sequence reset and no additional publication.",
+    "owner_coverage": "Added actor, episode, Game PID and connection generation switch subtests: clear old target backoff, publish once for the new owner, retain its exact original source_frame, reject old Native result; PID change closes the old fake Native client.",
+    "production_changes": "none"
+  },
+  "validation": {
+    "tool_chunk": "fb9129",
+    "exit_code": 0,
+    "result": "41 passed in 2.49s",
+    "nodes": [
+      "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py (9 tests; includes 4 owner switch subtests)",
+      "ck3_autonomous_player/tests/unit/test_camera_target_backoff_v1.py (32 cases)"
+    ],
+    "diff_check": {
+      "tool_chunk": "133e80",
+      "exit_code": 0
+    },
+    "unchanged_production_camera_leaves": {
+      "tool_chunk": "9e8f18",
+      "command": "git diff --numstat -- service.py native_driver.py auto_camera_follow.py",
+      "result": "empty; all unchanged from base commit"
+    }
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "MCP": 0,
+    "OBS": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads": 0,
+    "SDK_edits": 0,
+    "current_scene_changes": 0,
+    "Native_compile": 0,
+    "commit_or_stage": false,
+    "new_external_assets": 0,
+    "deleted_bytes": 0,
+    "volume_scans": 0,
+    "future_reserved_bytes": 0,
+    "physical_credit_bytes": 0,
+    "storage": "Original code/micro allowance; no source retention extension."
+  }
+}
