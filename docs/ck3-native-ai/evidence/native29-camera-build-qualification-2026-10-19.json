@@ -1,0 +1,290 @@
+{
+  "schema": "xar.ck3.native29-camera-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:43:46.540131+00:00",
+  "status": "BUILD_AND_OFFLINE_PASS_NOT_DEPLOYED",
+  "label": "Native29 minimized camera and bounded native diagnostics",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\source\\src\\camera_presentation_v1.cpp",
+    "bytes": 15775,
+    "sha256": "656055437114c216f8703197cc010f4443025969d16cece5fd63333bce3c6abf"
+  },
+  "header": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\source\\include\\xar_bridge\\camera_presentation_v1.hpp",
+    "bytes": 3124,
+    "sha256": "976491c0821a651fd6d38ff05427a5a6ed0810ae06776ecede16241348cbfc10"
+  },
+  "geometry": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\source\\include\\xar_bridge\\realm_camera_geometry_v1.hpp",
+    "bytes": 2180,
+    "sha256": "bf38c223793d44d2904a62fe2903078f37079c9c5562abf9d8bc679536ecc80a"
+  },
+  "candidate_DLL": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\build\\native29.dll",
+    "bytes": 18443776,
+    "sha256": "7e8534e03ec9cad039c99094aa6cb74b21cc6b8002d26d97e3a126e885a589c1"
+  },
+  "baseline_DLL": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\build\\native27.dll",
+    "bytes": 18442752,
+    "sha256": "bea9727b86b9013809b965c8f5ea98cf075d813bf3a56a075b93639f7e36b775",
+    "relative_path": "build\\native27.dll"
+  },
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native29-camera-build-plan-2026-10-19.json",
+    "bytes": 14716,
+    "sha256": "6bd541930f4247e847bd992ff104638bc1e6d88c1fa5e5456c35a462f1364d72"
+  },
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE29-CAMERA-CHILD01.json",
+    "bytes": 12609,
+    "sha256": "76f5efda48dfe490e5c1ee60835cad8c04731e5c9ceb4b51a27187aaa4c41b4a"
+  },
+  "compile": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\COMPILE-RESULT.json",
+    "bytes": 11280,
+    "sha256": "1a98916f4d160f92e52aff3f39ad0ddd30ec67d1b459e67664e328ee875f3980"
+  },
+  "link": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\LINK-RESULT.json",
+    "bytes": 8099,
+    "sha256": "75c48639780aa347da1ac71f33cd6bd8fe6f1a6c74c2515cab048216b8b97800"
+  },
+  "offline": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\offline01\\RESULT.json",
+    "bytes": 12572,
+    "sha256": "cb098c0208c78c878c7f1390223d236bcb5599c1f4d102e0bed2135aa4009b44"
+  },
+  "exports": [
+    {
+      "ordinal": 1,
+      "rva_hex": "0050F120",
+      "name": "XarCk3BridgeIdentity"
+    },
+    {
+      "ordinal": 2,
+      "rva_hex": "0050F770",
+      "name": "XarCk3BridgePrepareStartup"
+    },
+    {
+      "ordinal": 3,
+      "rva_hex": "00513760",
+      "name": "XarCk3BridgeStart"
+    },
+    {
+      "ordinal": 4,
+      "rva_hex": "00513770",
+      "name": "XarCk3BridgeStartWithPipe"
+    },
+    {
+      "ordinal": 5,
+      "rva_hex": "005137D0",
+      "name": "XarCk3BridgeStop"
+    }
+  ],
+  "status_values": {
+    "idle": 0,
+    "submitted": 1,
+    "settled": 2,
+    "cancelled": 3,
+    "stale_actor": 4,
+    "preempted": 5,
+    "unavailable": 6,
+    "target_changed": 7,
+    "bounds_available": 8,
+    "window_unavailable": 16,
+    "camera_resolve_unavailable": 17,
+    "camera_target_write_blocked_or_unreadable": 18,
+    "camera_transient_x_active_or_unreadable": 19,
+    "camera_transient_z_active_or_unreadable": 20,
+    "camera_viewport_extent_unavailable": 21,
+    "camera_bucket_table_unavailable": 22,
+    "camera_bucket_read_or_match_unavailable": 23,
+    "camera_zoom_index_unavailable": 24,
+    "camera_zoom_or_target_state_unavailable": 25,
+    "camera_angle_state_unavailable": 26,
+    "camera_canonical_target_unavailable": 27,
+    "camera_target_write_or_readback_unavailable": 28
+  },
+  "wire_layout_unchanged": true,
+  "M1_ABI_adopted": false,
+  "production_TUs_compiled": 1,
+  "fixture_TUs_compiled": 1,
+  "old_inputs_copied": 0,
+  "production_DLL_loaded": false,
+  "Game_RPC_desktop_actions": 0,
+  "new_EXE_outputs": 0,
+  "tool_windows": [
+    {
+      "phase": "compile_production",
+      "started_at_utc": "2026-10-19T09:43:35.925182+00:00",
+      "ended_at_utc": "2026-10-19T09:43:39.792743+00:00",
+      "wall_seconds": 3.8675645000766963,
+      "exit_code": 0
+    },
+    {
+      "phase": "link_production",
+      "started_at_utc": "2026-10-19T09:43:39.903347+00:00",
+      "ended_at_utc": "2026-10-19T09:43:42.128653+00:00",
+      "wall_seconds": 2.225314699811861,
+      "exit_code": 0
+    },
+    {
+      "phase": "link_production",
+      "started_at_utc": "2026-10-19T09:43:42.267235+00:00",
+      "ended_at_utc": "2026-10-19T09:43:42.382170+00:00",
+      "wall_seconds": 0.1149345999583602,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T09:43:42.482144+00:00",
+      "ended_at_utc": "2026-10-19T09:43:45.766487+00:00",
+      "wall_seconds": 3.284353299997747,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T09:43:45.820955+00:00",
+      "ended_at_utc": "2026-10-19T09:43:46.157426+00:00",
+      "wall_seconds": 0.33647289988584816,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T09:43:46.230179+00:00",
+      "ended_at_utc": "2026-10-19T09:43:46.462368+00:00",
+      "wall_seconds": 0.23219060013070703,
+      "exit_code": 0
+    }
+  ],
+  "measured_sampled_peak_bytes": {
+    "logical_bytes": 54988312,
+    "allocated_bytes": 55214552
+  },
+  "measured_peak_scope": "100ms samples and phase/exit checks; no claim to observe all transient peaks",
+  "child_usage_before_close": {
+    "logical_bytes": 44194049,
+    "allocated_bytes": 44258120
+  },
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "future_writes_bytes": 0,
+  "owned_subprocesses_remaining": 0,
+  "live_camera_qualified": false,
+  "source_qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\QUALIFICATION.json",
+    "bytes": 6115,
+    "sha256": "364acdd870faa7fd21e5f5ce5806d98fc22fe64416064dd015c0eb65647bebe5",
+    "relative_path": "QUALIFICATION.json"
+  },
+  "closed_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\FILES-CLOSED.json",
+    "bytes": 11524,
+    "sha256": "2ee5a67003ad2d9a3d1a6ee11f44c2bc02288c357f4410ea9112e119f7b0e206"
+  },
+  "producer_used": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\producer-used.py",
+    "bytes": 22560,
+    "sha256": "064dfd1967f59b0f69c0f768b9b8cfa3b5997811ad01f61e5d79a6fe0f99983a",
+    "relative_path": "producer-used.py"
+  },
+  "production_object": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\build\\camera\\attempt01\\camera_presentation_v1.obj",
+    "bytes": 183411,
+    "sha256": "36ee5cf8c9cb89782d23717de4ee4d5ebc132f90039ef8423e4d1df6554746f5"
+  },
+  "compile_source_closure": {
+    "actual395_order_preserved_except_two_explicit_headers": true,
+    "source_dependencies": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\build\\camera\\attempt01\\dependencies.json",
+      "bytes": 53758,
+      "sha256": "d700cbb100bbbc4f4e566b93138c4fbcf9c89b11e41878a3ef3c197e362aff83"
+    },
+    "headers_and_retained_input_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native29-camera01\\PREPARED.json",
+      "bytes": 184081,
+      "sha256": "da85c6d60aa5bdf6168f6c32fb6611b78be05bb068cae38d247f1993f7a9b8b1",
+      "relative_path": "PREPARED.json"
+    },
+    "new_three_leaf_source_sha256": "ccd609811ba201a4b3f38390e2a1e7781de3060f920af87b8b36b8d53c7055af",
+    "source_sha_scope": "Exact compiled cpp/status header/one-token geometry header pin aggregate; not a claim to rewrite the retained BridgeIdentity embedded build label."
+  },
+  "storage": {
+    "logical_bytes_including_manifest": 44211688,
+    "future_writes_bytes": 0,
+    "owned_build_or_fixture_subprocesses_remaining": 0,
+    "files_including_manifest": 39,
+    "allocated_bytes_including_manifest": 44278600,
+    "allocation_source": "Build final FileStandardInfo exact-child usage after closed manifest; coordinator independent closure follows.",
+    "physical_credit_released": 0,
+    "root_closed_no_future_writes": true
+  },
+  "prior_native28_failure": {
+    "status": "RED_SINGLE_ATTEMPT_RETAINED_NOT_DEPLOYABLE",
+    "closed_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native28-camera01\\FILES-CLOSED.json",
+      "bytes": 10894,
+      "sha256": "959aa9909b3f4ff123f0ebbacc620fe3aeb155e484ad696e2a0fff5c9fa0ad4f"
+    },
+    "failure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native28-camera01\\FAILED01.json",
+      "bytes": 1927,
+      "sha256": "a12d19df973a23cdf0255b24cdee59950987aa3dcc25f402afe760b5b52c61d5"
+    },
+    "run_log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native28-camera01\\offline01\\run.log",
+      "bytes": 113,
+      "sha256": "5bbbdd2cb71802b845e3220e588fb12cf73f520d3200a869d73e2abb9e704c88"
+    },
+    "original_observed_result": "Fixture -99 at stock8-bucket sentinel matrix first row; actual frozen header rejected all negative thresholds.",
+    "corrective_delta": "Only thresholds[i] < 0 to thresholds[i] < -1 in original frozen geometry header; all other bytes equal. Existing repo commit87b64c8579ac3e0232c72ec3774918b23da1caaf.",
+    "native28_root_future_writes": 0,
+    "old_DLL_qualified_or_loaded": false,
+    "tool_windows": [
+      {
+        "phase": "compile_production",
+        "started_at_utc": "2026-10-19T09:37:56.474102+00:00",
+        "ended_at_utc": "2026-10-19T09:38:00.989071+00:00",
+        "wall_seconds": 4.514974300051108,
+        "exit_code": 0
+      },
+      {
+        "phase": "link_production",
+        "started_at_utc": "2026-10-19T09:38:01.095463+00:00",
+        "ended_at_utc": "2026-10-19T09:38:03.128393+00:00",
+        "wall_seconds": 2.0329354000277817,
+        "exit_code": 0
+      },
+      {
+        "phase": "link_production",
+        "started_at_utc": "2026-10-19T09:38:03.265246+00:00",
+        "ended_at_utc": "2026-10-19T09:38:03.377789+00:00",
+        "wall_seconds": 0.1125469000544399,
+        "exit_code": 0
+      },
+      {
+        "phase": "offline_fixture",
+        "started_at_utc": "2026-10-19T09:38:03.470416+00:00",
+        "ended_at_utc": "2026-10-19T09:38:06.684412+00:00",
+        "wall_seconds": 3.213991600088775,
+        "exit_code": 0
+      },
+      {
+        "phase": "offline_fixture",
+        "started_at_utc": "2026-10-19T09:38:06.734160+00:00",
+        "ended_at_utc": "2026-10-19T09:38:07.061614+00:00",
+        "wall_seconds": 0.3274617998395115,
+        "exit_code": 0
+      },
+      {
+        "phase": "offline_fixture",
+        "started_at_utc": "2026-10-19T09:38:07.117294+00:00",
+        "ended_at_utc": "2026-10-19T09:38:07.562690+00:00",
+        "wall_seconds": 0.4453968999441713,
+        "exit_code": 1
+      }
+    ]
+  },
+  "scope": "Exact Native27 baseline plus1camera production TU and2explicit frozen-header overlays. Other355 direct objects including27 termination registration and original612 archive members retained unchanged, no archive copy or M1 ABI. Independent mock windows and geometry fixture43checks PASS; original v1 sizes/offsets and enum0-8/16-28 static_assert PASS;9-15 reserved. No Game, RPC, desktop action, newEXE, PDB or production DLL load.",
+  "actual_camera_acceptance": "PENDING runtime-owned fresh SAVE, cold DLL/binder adoption, native target/current outcome and original-pixel movement/coverage verification. Old seq106 had bbox/client but reason was not observed; no claim window fix or sentinel fix proves its specific cause. Presentation grants no gameplay credit."
+}

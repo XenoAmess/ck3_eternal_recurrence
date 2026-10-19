@@ -1,0 +1,387 @@
+{
+ "schema": "xar.g2-m7.H-fixed-D0-candidate-wiring-plan/v1",
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T09:44:40.805027+00:00",
+ "status": "source_and_fixture_plan_only; no runtime provider implemented or invoked",
+ "purpose": "Prepare one current native-qualified candidate witness and independent fixed-T0 dynasty comparison, preserving unknown complete backup count.",
+ "source_pins": [
+  {
+   "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_family.hpp",
+   "bytes": 1349,
+   "sha256": "6e54fb5f2008cc59a4d5b8d9c8e11b0f385a1c0ed41754cc07e56fbc50695378"
+  },
+  {
+   "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_family_value.hpp",
+   "bytes": 3665,
+   "sha256": "2b147f2ada426101cfe56288e9f1a9b0684746b413246470c23073459c81e6cc"
+  },
+  {
+   "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_family.cpp",
+   "bytes": 7824,
+   "sha256": "019867a54a7a26bcc5d26b5bd90f523af6f2f423401dd81ce2fe0e827a629c9f"
+  },
+  {
+   "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_family_value.cpp",
+   "bytes": 5556,
+   "sha256": "b8e14482d9e5429a78353785b8a36a7762d55c035f45aeceeb2c15583efd9612"
+  },
+  {
+   "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_abi_profile.cpp",
+   "bytes": 12698,
+   "sha256": "628d752540de8e4726ce0074f8f5c36e444158a9ed364c68f714ad48d886bcb8"
+  },
+  {
+   "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_first_heir_descendants.hpp",
+   "bytes": 7434,
+   "sha256": "d59a30725c4ca7d59e4c35aee3bb05a482444d527a2c8701d5d54ca74055265c"
+  },
+  {
+   "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/current_first_heir_descendants_v1.py",
+   "bytes": 29232,
+   "sha256": "bfbfa8c6c1d6afbaa749d5852c2f0368ddced1f50ba8395052b6f2a2bfe4c410"
+  },
+  {
+   "path": "docs/ck3-native-ai/campaign-development-scoring-v1-design-2026-10-19.md",
+   "bytes": 40357,
+   "sha256": "9585b9eeb45d2c59eac2ac788e463a9074eb2e6c2f56ff18fd397ba30b40bb97"
+  },
+  {
+   "path": "docs/ck3-native-ai/evidence/g2-m1-robert-v20261019-T0-summary.json",
+   "bytes": 12442,
+   "sha256": "bb5cb5593e6a4e1156dfbacf2d94aa13f10eb41735a5f215dbaad2eb2d89ada8"
+  },
+  {
+   "path": "docs/ck3-native-ai/research-plans/gui-getplayerheir-owner12004-20261019/source-index01.json",
+   "bytes": 2981,
+   "sha256": "a848cb92e0ecb300ecf274514ab3d0764273ca7a32a6dc3dad08caf48627c95e"
+  },
+  {
+   "path": "docs/ck3-native-ai/research-plans/gui-getplayerheir-typejoin12004-20261019/source-index01.json",
+   "bytes": 2258,
+   "sha256": "43def6a152064d121d0490bb4f456e60cf0eb7176165854e7d7ad19c7f8621a3"
+  },
+  {
+   "path": "docs/ck3-native-ai/research-plans/gui-getplayerheir-mapjoin12004-20261019/source-index01.json",
+   "bytes": 4327,
+   "sha256": "a25c6ef0f48df21270cb8dfdea1247bf875593e25e8c40c0cc8bbd833281f835"
+  },
+  {
+   "path": "docs/ck3-native-ai/evidence/player-heir-h12004-source-closure-2026-10-19.json",
+   "bytes": 10898,
+   "sha256": "632f01555310ab57b65743a686d5653b87a08ada14ebcb7d849371027ae27660"
+  }
+ ],
+ "frozen_baseline": {
+  "founder_id": 31254,
+  "T0_date_raw": 53144328,
+  "goal_campaign_id": "native-31254-6271ac8cd441",
+  "scoring_campaign_label": "robert-first30-v20261019",
+  "baseline_episode_run_id": "native-31254-6271ac8cd441",
+  "fixed_D0_full_dynasty_id_raw": 174,
+  "fixed_H0_full_house_id_raw": 174,
+  "T0_SAVE_sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+  "rule": "Use the pinned original T0 summary/source mapping. Current/new episode and current ruler dynasty do not reset D0/H0. The scoring campaign label and goal campaign ID are separate existing namespaces."
+ },
+ "exact_source_entry": {
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "getter_rva": "0x289DCC0",
+  "selector_rva": "0x2B93D50",
+  "predicate_rvas": [
+   "0x2B93A90",
+   "0x2B938D0"
+  ],
+  "raw_call_shape": "CCharacter const* (__fastcall*)(CCharacter const*) on x64; RCX=current played Character, RAX=returned Character.",
+  "return_type": "Actual SCopyableAnyTypeInPlace<CCharacter const*,32> RTTI.",
+  "receiver_join": "Final frozen M3 mapjoin index proves Character receiver/return grouping; source-static only.",
+  "registration_record_correction": "Raw getter uses CString->SPromote at SType+20. Boxed adapter separately uses C960E0; do not call the boxed wrapper as the raw Character getter.",
+  "excluded_vector": "The getter constructs/destroys its own temporary exclusion vector. Call the raw getter once; do not call selector/predicates or iterate exclusions to manufacture a complete eligible pool.",
+  "qualification_limit": "Source-static binding is not an actual current-frame candidate. Current-owner dynasty/COrg policy does not replace fixed D0.",
+  "special_branch_boundary": "Early house/title paths are not assumed to share fallback predicate. Independently check actual returned fullID, sentinel and alive; no invented IsPlayerHeir/CanContinue call."
+ },
+ "exact_reusable_interfaces": [
+  {
+   "id": "core",
+   "declarations": "ck3_12004.hpp:44-49",
+   "implementation": "ck3_12004_abi_profile.cpp:17-48",
+   "calls": "BindCoreImage(base, exactSHA); ReadCoreSnapshot(core,before/after); ResolveCoreCharacter(core, signed_full_id)",
+   "contract": "Actual.4 resolver masks only for indexing and compares the entire own ID+18. Preserve high generation bits; -1 sentinel is unavailable."
+  },
+  {
+   "id": "family",
+   "declarations": "ck3_12004_family.hpp:24 and ck3_12002_family_value.hpp:87-95",
+   "implementation": "ck3_12004_family.cpp:106-127; ck3_12002_family_value.cpp:16-29,52-72",
+   "calls": "values=ck3_12004::BindFamilyValuesImage(base,exactSHA); family_value::ReadCharacterLineage(values, character, lineage, &reason)",
+   "contract": "Use the actual.4 binder, not the old generic BindImage. Character+158 full House ID -> typed House store/full ownID+10 -> House+2C full Dynasty ID -> typed Dynasty store/full ownID+10. Check returned bool; default Lineage{-1,-1} after failure is not known absence."
+  },
+  {
+   "id": "liveness",
+   "declarations": "ck3_12004.hpp:22,38",
+   "calls": "Round-trip getter pointer through actual.4 ResolveCoreCharacter using own fullID+18, reject self/sentinel/null/unresolved, and verify deathData+1D0 null before and after.",
+   "contract": "ReadCharacterLineage alone neither resolves Character identity nor checks alive; both are mandatory bookends for a positive witness."
+  },
+  {
+   "id": "existing_lineage_DTO",
+   "declarations": "ck3_12004_first_heir_descendants.hpp:46-59 and current_first_heir_descendants_v1.py:36-45,357+",
+   "calls": "Reuse existing available/unavailable + house_id_raw/dynasty_id_raw semantics or the already captured heir_lineage only when its exact candidate fullID and same frame equal the actual player-heir getter result.",
+   "contract": "Primary-title first heir and descendant roster alone do not carry player-continuation qualification. Do not relabel them as GetPlayerHeir."
+  }
+ ],
+ "construction_points": {
+  "proposed_new_leaf": "An independent exact.4 optional observer leaf accepting existing CoreBindings, actual.4 family_value bindings, and the qualified raw getter binding; no shared Service/Driver/Native28 changes in this work.",
+  "future_owner": "Existing application-main snapshot/query owner. Reuse the current capture epoch and published Native frame; the owner performs the read and emits a compact observation.",
+  "future_capture_schedule": "Only when the existing monthly scoring/explicit read-only capture needs H. Carry one getter result and both lineage observations in that capture; no new mandatory RPC on each ordinary AUTO.",
+  "future_projection_owner": "Pure scoring input assembly joins the trusted native candidate observation to the immutable baseline. Native qualification is not a client JSON boolean/token or a generic migration/override input.",
+  "no_extra_runtime_gate": "Missing/unavailable H remains a score interval; ordinary gameplay and natural handoff continue under their existing rules."
+ },
+ "planned_native_capture_steps": [
+  "Use already-owned application-main execution and existing guarded-read/exception conventions. Bind only the exact accepted.4 image and final M3 source guards.",
+  "Read before CoreSnapshot: paused, map-ready, living actual played fullID. Bind capture epoch and the owner-provided Native snapshot/date/source; do not substitute a viewed GUI character.",
+  "Resolve played fullID with actual.4 core. Call raw GetPlayerHeir(currentPlayer) once, retaining its result only inside this capture.",
+  "Validate returned Character tag/sentinel/fullID, round-trip the full ID to the exact returned pointer, require alive and not self. Unknown/null/fallback does not manufacture a negative H result.",
+  "Read current-player and candidate Lineage via actual.4 family bindings. Keep available true with house/dynasty=-1 distinct from false/unavailable. Avoid ReadCharacterValue's unrelated age/sex/employer/fertility gates.",
+  "Repeat identity/liveness and lineage-only reads; require both lineage results and owner/candidate pointers/fullIDs unchanged. Read after CoreSnapshot and reuse the existing SameFrame/capture binding checks.",
+  "Emit only compact IDs/status/provenance and the immutable-source references. Do not retain engine pointers or loop cached+3A0 rosters.",
+  "At the pure consumer, compare candidate full Dynasty ID bit pattern to the original D0 bit pattern; never compare just its24-bit storage index, current-owner Dynasty, House ID or name."
+ ],
+ "proposed_compact_fields": {
+  "provenance": [
+   "exact_build_exe",
+   "getter_source_pin",
+   "machine_id",
+   "Game_birth_decimal",
+   "connection_generation",
+   "snapshot_id",
+   "public_revision",
+   "native_revision",
+   "capture_epoch",
+   "date_raw",
+   "actor_full_id",
+   "campaign_and_baseline_mapping"
+  ],
+  "candidate": [
+   "status",
+   "native_player_selector_observed",
+   "candidate_full_id_raw",
+   "identity_round_trip",
+   "alive",
+   "lineage.status",
+   "house_id_raw",
+   "dynasty_id_raw",
+   "unavailable_reason"
+  ],
+  "projection": [
+   "fixed_D0_raw",
+   "candidate_same_fixed_D0",
+   "positive_same_D0_legal_witness",
+   "k_value_or_unknown",
+   "backup_count_unknown",
+   "H_min",
+   "H_max"
+  ],
+  "protocol_status": "Proposed leaf data only; no MCP schema, route, permission flag, field mutation or live reader is installed."
+ },
+ "H_projection_rules": [
+  "Original score design section10: k=1 requires at least one living legal player-continuation candidate in fixed D0; b is distinct qualified backups, capped2. H=100*k*(0.70+0.30*min(b,2)/2).",
+  "One trusted native-qualified living candidate with matching full D0 establishes k=1. Since this observation has no complete backup domain, b remains unknown and H is [70,100], not a point100.",
+  "Returned candidate not in D0 is a known mismatch for that candidate. Without a proven complete eligible domain, it does not by itself establish k=0. Unavailable, null/sentinel, unresolved ID, dead/self or changed frame also keep k unknown.",
+  "A legitimate cadet House may differ from H0 while its Dynasty equals D0; that remains a positive D0 witness. Native minor eligibility is retained; no age16 rule is added.",
+  "A raw cached+3A0 array, generic membership, title-first-heir list, two sons or repeated selector exclusions does not supply b or complete eligible-domain absence.",
+  "The observation is current-frame only. Do not backfill Robert's predeath H from the already realized31254->40526 transition."
+ ],
+ "planned_fixture_cases": [
+  {
+   "id": "same_D0_cadet",
+   "synthetic": true,
+   "input": {
+    "native_qualified": true,
+    "alive": true,
+    "fullID_valid": true,
+    "candidate_house": 900,
+    "candidate_dynasty": 174,
+    "current_owner_dynasty": 175,
+    "fixed_D0": 174,
+    "backup_domain_complete": false
+   },
+   "expected": {
+    "same_fixed_D0": true,
+    "k": 1,
+    "b": null,
+    "H_interval": [
+     70,
+     100
+    ]
+   },
+   "purpose": "Fixed D0 remains independent from current-owner policy/COrg and cadet House."
+  },
+  {
+   "id": "different_D0_incomplete_domain",
+   "synthetic": true,
+   "input": {
+    "native_qualified": true,
+    "alive": true,
+    "candidate_dynasty": 175,
+    "fixed_D0": 174
+   },
+   "expected": {
+    "same_fixed_D0": false,
+    "k": null,
+    "b": null,
+    "H_interval": [
+     0,
+     100
+    ]
+   },
+   "purpose": "One mismatching selected candidate is not a complete no-D0 proof."
+  },
+  {
+   "id": "full_generation_not_slot",
+   "synthetic": true,
+   "input": {
+    "native_qualified": true,
+    "alive": true,
+    "candidate_dynasty": 16777390,
+    "fixed_D0": 174
+   },
+   "expected": {
+    "same_fixed_D0": false,
+    "k": null
+   },
+   "purpose": "0x010000AE and0x000000AE share a slot index but are different full IDs."
+  },
+  {
+   "id": "lineage_unavailable",
+   "synthetic": true,
+   "input": {
+    "native_qualified": true,
+    "lineage_status": "unavailable",
+    "default_ids": [
+     -1,
+     -1
+    ]
+   },
+   "expected": {
+    "same_fixed_D0": null,
+    "k": null
+   },
+   "purpose": "Do not consume default IDs after a false reader result."
+  },
+  {
+   "id": "known_no_house",
+   "synthetic": true,
+   "input": {
+    "native_qualified": true,
+    "lineage_status": "available",
+    "house": -1,
+    "dynasty": -1
+   },
+   "expected": {
+    "same_fixed_D0": false,
+    "k": null
+   },
+   "purpose": "Known absence and unavailable are different; incomplete domain still has no negative k proof."
+  },
+  {
+   "id": "title_heir_only",
+   "synthetic": true,
+   "input": {
+    "candidate_source": "primary_title_first_heir",
+    "alive": true,
+    "candidate_dynasty": 174
+   },
+   "expected": {
+    "k": null,
+    "b": null
+   },
+   "purpose": "Lineage and alive do not establish native player eligibility."
+  },
+  {
+   "id": "lawful_minor",
+   "synthetic": true,
+   "input": {
+    "native_qualified": true,
+    "alive": true,
+    "age": 10,
+    "candidate_dynasty": 174
+   },
+   "expected": {
+    "k": 1,
+    "H_interval": [
+     70,
+     100
+    ]
+   },
+   "purpose": "Use the original native legality; no adulthood proxy."
+  },
+  {
+   "id": "frame_or_generation_changed",
+   "synthetic": true,
+   "input": {
+    "same_frame": false,
+    "identity_round_trip": false,
+    "candidate_dynasty": 174
+   },
+   "expected": {
+    "k": null,
+    "b": null
+   },
+   "purpose": "Discard stale positive evidence."
+  },
+  {
+   "id": "duplicate_roster_or_exclude_loop",
+   "synthetic": true,
+   "input": {
+    "cached_roster": [
+     1,
+     1,
+     2
+    ],
+    "exclude_queries": "not_executed"
+   },
+   "expected": {
+    "b": null,
+    "complete_backup_domain": false
+   },
+   "purpose": "No repeated ID or exclude-driven pseudo-enumeration credit."
+  },
+  {
+   "id": "new_episode_same_baseline",
+   "synthetic": true,
+   "input": {
+    "current_actor": 40526,
+    "current_episode": "successor-episode",
+    "original_D0": 174
+   },
+   "expected": {
+    "fixed_D0": 174,
+    "baseline_reset": false
+   },
+   "purpose": "Natural continuation preserves the original campaign anchor."
+  }
+ ],
+ "qualification_state": {
+  "fixtures": "planned only; not executed",
+  "source_receiver_final_pin": "closed by frozen mapjoin a25c6ef0 and aggregate632f0155; no actual candidate observed",
+  "current_runtime_H": "unknown/interval unchanged",
+  "actual_candidate_or_D0_match_observed": false,
+  "complete_backup_domain_proven": false,
+  "M7": "in_progress",
+  "M7_breadth": "Original multiple rulers/seeds/governments remains incomplete. The actual natural transition/goal-consumption chain is only one sub-evidence; no new government matrix or seed prerequisite is introduced."
+ },
+ "actions": {
+  "Game_RPC_process_activeDriver_SAVE_Nativebuild_reads_or_calls": 0,
+  "new_EXE_window_reads": 0,
+  "new_Native_builds": 0,
+  "sharedService_Driver_Native28_edits": 0
+ },
+ "storage": {
+  "policy_version": "1.0.0",
+  "maximum_total_product_bytes": 16384,
+  "heavy_writes": false,
+  "Z_free_bytes": 178357862400,
+  "record_review_after_utc": "2027-04-17T09:38:01Z",
+  "files_deleted": 0,
+  "capacity_observed_at_utc": "2026-10-19T09:38:01.784857Z",
+  "capacity_source": "shutil.disk_usage(Z:/), same stated machine"
+ }
+}

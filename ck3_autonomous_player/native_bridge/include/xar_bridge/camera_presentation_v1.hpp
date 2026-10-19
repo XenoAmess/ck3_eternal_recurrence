@@ -12,7 +12,21 @@ enum class Mode : std::uint32_t { cancel = 0, realm = 1, hotspot = 2, query = 3 
 enum class Status : std::uint32_t {
   idle = 0, submitted = 1, settled = 2, cancelled = 3,
   stale_actor = 4, preempted = 5, unavailable = 6, target_changed = 7,
-  bounds_available = 8
+  bounds_available = 8,
+  // Values 9-15 remain reserved. These additive failures preserve the v1 layout.
+  window_unavailable = 16,
+  camera_resolve_unavailable = 17,
+  camera_target_write_blocked_or_unreadable = 18,
+  camera_transient_x_active_or_unreadable = 19,
+  camera_transient_z_active_or_unreadable = 20,
+  camera_viewport_extent_unavailable = 21,
+  camera_bucket_table_unavailable = 22,
+  camera_bucket_read_or_match_unavailable = 23,
+  camera_zoom_index_unavailable = 24,
+  camera_zoom_or_target_state_unavailable = 25,
+  camera_angle_state_unavailable = 26,
+  camera_canonical_target_unavailable = 27,
+  camera_target_write_or_readback_unavailable = 28
 };
 struct Request {
   std::uint32_t mode = 0;

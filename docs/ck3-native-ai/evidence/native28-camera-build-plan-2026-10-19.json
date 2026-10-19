@@ -1,0 +1,238 @@
+{
+  "schema": "xar.ck3.native28-camera-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:30:50.509307+00:00",
+  "status": "SOURCE_FROZEN_AWAITING_CHILD_ADMISSION",
+  "proposed_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native28-camera01",
+  "baseline_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01",
+  "baseline_native26_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native26-performance01",
+  "source_pins": {
+    "candidate_cpp": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\camera_presentation_v1.cpp",
+      "bytes": 15775,
+      "sha256": "656055437114c216f8703197cc010f4443025969d16cece5fd63333bce3c6abf"
+    },
+    "candidate_header": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\camera_presentation_v1.hpp",
+      "bytes": 3124,
+      "sha256": "976491c0821a651fd6d38ff05427a5a6ed0810ae06776ecede16241348cbfc10"
+    },
+    "original_cpp": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\sources\\src\\camera_presentation_v1.cpp",
+      "bytes": 14436,
+      "sha256": "eac6e72d94a8e85c3ceb7a780f6982525fd8e2be4a30ce23cb46876c1206bd31"
+    },
+    "original_header": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\sources\\include\\xar_bridge\\camera_presentation_v1.hpp",
+      "bytes": 2482,
+      "sha256": "8dc43afceedbefe83fd186318e1f67a9dc44372fe98bed26ab05157b19567c1a"
+    },
+    "original_object": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\camera_presentation_v1.obj",
+      "bytes": 183219,
+      "sha256": "ec5086e648831781e1c1e4ebb77a590ee0e63c44a00191c8a5ec8be547c25a63"
+    }
+  },
+  "baseline_pins": {
+    "QUALIFICATION.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\QUALIFICATION.json",
+      "bytes": 4971,
+      "sha256": "5724de59422cde11e85e0ef65517222f3c35cef6d87e26975bab0416c77ffec3",
+      "relative_path": "QUALIFICATION.json"
+    },
+    "PREPARED.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\PREPARED.json",
+      "bytes": 238449,
+      "sha256": "e01aa95e5d7a96464d399d021797992d24505e88f8379763f5951db3b7c77fc8",
+      "relative_path": "PREPARED.json"
+    },
+    "LINK-RESULT.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\LINK-RESULT.json",
+      "bytes": 3574,
+      "sha256": "d9895dc32a135831a2c55ef5ce3197eab4174fe0ddc21382ac38d39fe2532ccb",
+      "relative_path": "LINK-RESULT.json"
+    },
+    "build/native27-link.rsp": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\build\\native27-link.rsp",
+      "bytes": 33334,
+      "sha256": "7f81cb4979ab2c1c43f0e3a1f714d2c001b8e09269e6fc973ba843199c2a4766",
+      "relative_path": "build\\native27-link.rsp"
+    },
+    "build/native27.dll": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\build\\native27.dll",
+      "bytes": 18442752,
+      "sha256": "bea9727b86b9013809b965c8f5ea98cf075d813bf3a56a075b93639f7e36b775",
+      "relative_path": "build\\native27.dll"
+    },
+    "build/native27.map": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\build\\native27.map",
+      "bytes": 25042091,
+      "sha256": "dbe8448806a37831279d92d7799473aafc2d13daf29bb2c4cedf2bfaedae06da",
+      "relative_path": "build\\native27.map"
+    },
+    "build/router/attempt01/nonwar12004.obj": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\build\\router\\attempt01\\nonwar12004.obj",
+      "bytes": 183805,
+      "sha256": "5128e7e74cc0121c1ac80ac13c6eec351ec7d1ef277ccc875ee107e7c60ace0c",
+      "relative_path": "build\\router\\attempt01\\nonwar12004.obj"
+    }
+  },
+  "baseline_closed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\FILES-CLOSED.json",
+    "bytes": 12954,
+    "sha256": "ffec55d7a3299dc8f000cb6b8fc2dc23917ef2c84939c475b169dc36ae030861"
+  },
+  "original_compile_recipe": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\camera_presentation_v1.compile.json",
+    "bytes": 102943,
+    "sha256": "af12ef0038362bb41c982e305d30e0dd3cc15c9bfd18a03f1d843884ab4f31ee"
+  },
+  "original_dependencies": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\camera_presentation_v1.dependencies.json",
+    "bytes": 53797,
+    "sha256": "ca7fcb6f4cfdc42952531d8f7d972e76f390b55422e08a4b2e9f79d0b1339a5c"
+  },
+  "original_header_pins_field": "/actual_include_pins",
+  "original_includes_count": 395,
+  "original_project_header_count": 128,
+  "original_project_header_digest": "b1dc21dc5e206b71cad9580cf3a9550b2832a29778d0459969e3c9190c9163f7",
+  "named_actual_headers": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\sources\\include\\xar_bridge\\camera_presentation_v1.hpp",
+      "bytes": 2482,
+      "sha256": "8dc43afceedbefe83fd186318e1f67a9dc44372fe98bed26ab05157b19567c1a"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\sources\\include\\xar_bridge\\realm_camera_geometry_v1.hpp",
+      "bytes": 2179,
+      "sha256": "50bd950871c4fef4b9b9366910684eab43fb8cee1cb15e8e6853a82c394ba20c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\unknown-mandatory-choice-native01\\candidate\\native_bridge\\include\\xar_bridge\\ck3_12004_title_map.hpp",
+      "bytes": 11131,
+      "sha256": "6e9ccc2b07ca137356be1c981fd95650c361d114d7a151df45047ecf81009c18"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\unknown-mandatory-choice-native01\\candidate\\native_bridge\\include\\xar_bridge\\title_map_navigation_v1_camera.hpp",
+      "bytes": 8732,
+      "sha256": "8cc54f52d564c87d55c693feb469b7cb23535aa34847c0048df30e9d055243b5"
+    }
+  ],
+  "build_scope": {
+    "production_TUs": 1,
+    "new_archive_members": 0,
+    "retained_other_direct_objects": 355,
+    "retained_archive_members": 612,
+    "old_inputs_copied": 0,
+    "archive": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native26-performance01\\build\\native26-runtime.lib",
+      "bytes": 179605836,
+      "sha256": "34fc1901f60e9f968b954fd1f4f9b7646bc2f6fd84ad04c8b760344aca56f5c6"
+    },
+    "compile": "Original camera argv verbatim except source/output/dependencies/Fd paths and one first /I new source/include overlay containing only the revised camera_presentation_v1.hpp. Original remaining include order/macros/flags retained; no mutable master includes.",
+    "include_check": "Actual 395 sourceDependencies Includes must equal original order with only the first camera header path replaced by the exact new overlay; every other actual header SHA must match original actual_include_pins. Verify overlay header is unique effective camera header.",
+    "link": "Original Native27 response tokens/order unchanged except exactly one original camera direct object and output/map/implib/PDB path tokens. /INCREMENTAL:NO and absence of /DEBUG retained. No PDB emitted; stop if PDB/ILK/EXE appears.",
+    "reuse_basis": "Header delta is only explicit uint32 Status enumerators. Mode, old0-8, all struct/class tokens, fields, methods, offsets, alignment and symbols unchanged. Existing bridge initializes/pumps the unchanged class and does not use added status values. No M1 faction struct/layout/header adopted; original 395 camera Includes remain pinned.",
+    "M1_ABI_adopted": false,
+    "workers": 1,
+    "priority": "BELOW_NORMAL",
+    "attempts": 1,
+    "TEMP_TMP": "All compile/link/fixture TEMP and TMP under exact new root; old roots read-only.",
+    "compiler": {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/cl.exe",
+      "bytes": 893288,
+      "sha256": "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640"
+    },
+    "tool_pin_source": "Native27 PREPARED.json tools.compiler/linker_fresh/dumpbin_fresh; fresh exact SHA recheck before launch. Original camera short cl path must resolve to same compiler body.",
+    "new_EXE_outputs": 0,
+    "production_DLL_loaded": false,
+    "Game_RPC_desktop_actions": 0
+  },
+  "status_values": {
+    "idle": 0,
+    "submitted": 1,
+    "settled": 2,
+    "cancelled": 3,
+    "stale_actor": 4,
+    "preempted": 5,
+    "unavailable": 6,
+    "target_changed": 7,
+    "bounds_available": 8,
+    "window_unavailable": 16,
+    "camera_resolve_unavailable": 17,
+    "camera_target_write_blocked_or_unreadable": 18,
+    "camera_transient_x_active_or_unreadable": 19,
+    "camera_transient_z_active_or_unreadable": 20,
+    "camera_viewport_extent_unavailable": 21,
+    "camera_bucket_table_unavailable": 22,
+    "camera_bucket_read_or_match_unavailable": 23,
+    "camera_zoom_index_unavailable": 24,
+    "camera_zoom_or_target_state_unavailable": 25,
+    "camera_angle_state_unavailable": 26,
+    "camera_canonical_target_unavailable": 27,
+    "camera_target_write_or_readback_unavailable": 28
+  },
+  "reserved_status_values": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "source_behavior": [
+    "Allow managed minimized HWND with unique current-process Crusader Kings III title, real positive GetClientRect, no show/restore/activation/move or synthetic viewport.",
+    "Remove broad ordinary-war/active-army realm preempt; Python current actual battle/siege/march hotspot policy controls display priority. Mandatory event/interaction preempt remains.",
+    "Keep actor/date/main-thread/map/alive guards, all title/county and target guards; check latest request sequence and expiry again immediately before target writes.",
+    "Split the same original reads in the same short-circuit order into statuses16-28. No additional Game memory reads, no write guard relaxation, v1 layout stays fixed."
+  ],
+  "offline": {
+    "kind": "One bounded no-EXE independent Python ctypes fixture DLL; no production DLL load.",
+    "new_fixture_objects": 1,
+    "checks": [
+      "C++ static_assert sizeof/offsetof Request/Result/Shared and old/new enum values, compared to literal frozen v1 contract; M4 actual Python ctypes parser pairing already passes.",
+      "Extract verbatim actual new GameWindowSearch/FindGameWindow/IsUniqueGameWindow bodies; remap only Win32 window APIs to deterministic mocks before compilation. Test unique/duplicate/wrong PID/title/invalid/enumeration failure without desktop calls.",
+      "Use exact original pinned realm_camera_geometry_v1.hpp functions to test valid bounds/unions, actual wide/tall viewport and invalid/small viewport/padding/bucket edges; no projection or live pixel claim.",
+      "Static source check retains mandatory/actor/date/mainthread guards, no IsIconic/active_wars/active_army gate, new latest sequence check before target writes, statuses16-28 all wired.",
+      "Production object in new DLL map owns CameraPresentationRuntimeV1; other355 direct objects/archive identities unchanged; five export names/ordinals equal Native27 and record actual new RVAs."
+    ],
+    "scope_limit": "Offline checks qualify source/binary routing/layout only. Old seq106 actual reason and real camera movement/coverage require runtime fresh SAVE/cold adoption and original pixels; no gameplay credit."
+  },
+  "storage": {
+    "hard_limit_bytes": 402653184,
+    "expected_peak_bound_bytes": 335544320,
+    "phase_total_MiB": {
+      "prepare": 16,
+      "compile": 128,
+      "link": 320,
+      "offline_and_close": 320
+    },
+    "peak_components_MiB": {
+      "retained_source_obj_DLL_map_fixture_logs": 64,
+      "bounded_link_temporary_files": 256,
+      "uncommitted_margin": 64
+    },
+    "basis": "Native27 actual closed AllocationSize45,928,984B from storage. Its linker writes DLL18,442,752B/map25,042,091B; no archive copy or incremental/debug/PDB. Historical transient peak was not recorded and remains unknown. The 320MiB estimate is a new bounded plan, not measured historical peak; memory usage is excluded.",
+    "guard": "Before link require actual child plus256MiB <=384MiB; check exact child cumulative files during each subprocess and every phase. Stop/kill on ceiling or unexpected outputs; retain all failure/temp files in same child, never retry automatically.",
+    "new_root_created": false,
+    "heavy_output_started": false,
+    "future_writes_after_close": 0,
+    "parent_or_old_child_credit_released": false,
+    "allocated_bytes_now": null
+  },
+  "old_failure_limit": {
+    "source": "Runtime/M4 CAMERA-SHARED-STATUS-ONCE.json seq106, 2026-10-19T09:20:56Z same machine",
+    "observed": "unavailable; bbox point1787,2510; client2560x1440; zoom_index-1; target/current zero. Bounds are assigned after original window gate, so this old request already passed that gate.",
+    "reason": "not_observed; ResolveCamera/blocked/transient/extent/bucket before index remain candidates. Window repair does not prove the old failure is fixed."
+  },
+  "exact4_camera_source_comparison": {
+    "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12004_title_map_camera.cpp",
+    "legacy_recipe_pointer": "/compile_jobs/252",
+    "retained_object": "native-p0253.obj in original runtime archive",
+    "source_spans": "ResolveHandlerAndCamera173-211; BindTitleMapNavigationCameraEnvironmentV1 652-684",
+    "result": "Same root slot -> root+0x10 -> runtime dynamic cast -> cast+0x88 -> exact.4 handler+0x670 -> camera; both handler and camera vtable checks match. No source-proven root/offset discrepancy; do not introduce speculative resolver changes.",
+    "source_pin_scope": "Existing recipe metadata locates source; this plan does not claim a newly obtained historical source hash for this executor."
+  },
+  "current_live_adoption": "Native26/C9 runtime separately owned. No deployment, restart, injector or Game changes authorized to this producer."
+}

@@ -101,6 +101,26 @@ void *TitleByKey(abi::NativeResolveLandedTitleByKeyV1 function,
 bool Finite(const std::array<float, 6> &a) noexcept {
   return std::all_of(a.begin(), a.end(), [](float v) { return std::isfinite(v); });
 }
+struct GameWindowSearch {
+  DWORD pid = 0;
+  HWND hwnd = nullptr;
+  std::uint32_t count = 0;
+};
+BOOL CALLBACK FindGameWindow(HWND hwnd, LPARAM context) noexcept {
+  auto &search = *reinterpret_cast<GameWindowSearch *>(context);
+  DWORD pid = 0; wchar_t title[64]{};
+  if (!IsWindow(hwnd) || !GetWindowThreadProcessId(hwnd, &pid) || pid != search.pid ||
+      GetWindowTextW(hwnd, title, 64) <= 0 ||
+      std::wstring_view(title) != L"Crusader Kings III") return TRUE;
+  search.hwnd = hwnd;
+  ++search.count;
+  return TRUE;
+}
+bool IsUniqueGameWindow(HWND hwnd) noexcept {
+  GameWindowSearch search{GetCurrentProcessId()};
+  return EnumWindows(&FindGameWindow, reinterpret_cast<LPARAM>(&search)) &&
+      search.count == 1 && search.hwnd == hwnd;
+}
 } // namespace
 
 CameraPresentationRuntimeV1::~CameraPresentationRuntimeV1() {
@@ -185,21 +205,16 @@ bool CameraPresentationRuntimeV1::Advance(
     Publish(Status::stale_actor); return false;
   }
   const bool realm = request_.mode != static_cast<std::uint32_t>(Mode::hotspot);
-  const bool active_army = std::any_of(snapshot.player_armies.begin(), snapshot.player_armies.end(),
-      [](const auto &army) { return army.in_combat || army.retreating ||
-          army.move_target_province_id > 0 || army.army_state == "moving" ||
-          army.army_state == "siege" || army.army_state == "sieging" ||
-          army.army_state == "gathering"; });
-  if (snapshot.has_active_event || snapshot.has_pending_character_interaction ||
-      (request_.mode == static_cast<std::uint32_t>(Mode::realm) &&
-       (!snapshot.active_wars.empty() || active_army))) {
+  if (snapshot.has_active_event || snapshot.has_pending_character_interaction) {
     Publish(Status::preempted); return false;
   }
   const auto hwnd = reinterpret_cast<HWND>(request_.hwnd);
   DWORD pid = 0; RECT client{};
-  if (!IsWindow(hwnd) || IsIconic(hwnd) || !GetWindowThreadProcessId(hwnd, &pid) ||
-      pid != GetCurrentProcessId() || !GetClientRect(hwnd, &client)) {
-    Publish(Status::unavailable); return false;
+  if (!IsWindow(hwnd) || !GetWindowThreadProcessId(hwnd, &pid) ||
+      pid != GetCurrentProcessId() || !IsUniqueGameWindow(hwnd) ||
+      !GetClientRect(hwnd, &client) || client.right <= client.left ||
+      client.bottom <= client.top) {
+    Publish(Status::window_unavailable); return false;
   }
   result_.client_width = static_cast<std::uint32_t>(client.right - client.left);
   result_.client_height = static_cast<std::uint32_t>(client.bottom - client.top);
@@ -237,32 +252,48 @@ bool CameraPresentationRuntimeV1::Advance(
   }
   void *camera = nullptr; std::uint8_t blocked = 0; float dx = 0, dz = 0;
   std::int32_t extent = 0;
-  if (!ResolveCamera(camera_env, camera) ||
-      !Read(camera, abi::kTitleMapCameraTargetWriteBlockedOffset, blocked) || blocked ||
-      !Read(camera, abi::kTitleMapCameraTransientXOffset, dx) || dx != 0 ||
-      !Read(camera, abi::kTitleMapCameraTransientZOffset, dz) || dz != 0 ||
-      !ViewportExtent(aggregate, result_.client_width, result_.client_height,
-                      request_.padding, extent)) { Publish(Status::unavailable); return false; }
+  if (!ResolveCamera(camera_env, camera)) {
+    Publish(Status::camera_resolve_unavailable); return false;
+  }
+  if (!Read(camera, abi::kTitleMapCameraTargetWriteBlockedOffset, blocked) || blocked) {
+    Publish(Status::camera_target_write_blocked_or_unreadable); return false;
+  }
+  if (!Read(camera, abi::kTitleMapCameraTransientXOffset, dx) || dx != 0) {
+    Publish(Status::camera_transient_x_active_or_unreadable); return false;
+  }
+  if (!Read(camera, abi::kTitleMapCameraTransientZOffset, dz) || dz != 0) {
+    Publish(Status::camera_transient_z_active_or_unreadable); return false;
+  }
+  if (!ViewportExtent(aggregate, result_.client_width, result_.client_height,
+                      request_.padding, extent)) {
+    Publish(Status::camera_viewport_extent_unavailable); return false;
+  }
   std::int32_t count = 0; const std::int32_t *thresholds = nullptr, *indexes = nullptr;
   if (!Read(camera_env.bucket_count, 0, count) || count <= 0 || count > 4096 ||
       !Read(camera_env.bucket_thresholds_slot, 0, thresholds) || !thresholds ||
       !Read(camera_env.zoom_indexes_slot, 0, indexes) || !indexes) {
-    Publish(Status::unavailable); return false;
+    Publish(Status::camera_bucket_table_unavailable); return false;
   }
   std::vector<std::int32_t> table(static_cast<std::size_t>(count)); std::size_t bucket = 0;
   if (!Copy(thresholds, table.data(), table.size() * sizeof(std::int32_t)) ||
-      !NativeBucket(extent, table, bucket) ||
-      !Read(indexes, bucket * sizeof(std::int32_t), result_.zoom_index)) {
-    Publish(Status::unavailable); return false;
+      !NativeBucket(extent, table, bucket)) {
+    Publish(Status::camera_bucket_read_or_match_unavailable); return false;
+  }
+  if (!Read(indexes, bucket * sizeof(std::int32_t), result_.zoom_index)) {
+    Publish(Status::camera_zoom_index_unavailable); return false;
   }
   const float *zoom = nullptr, *angles = nullptr; std::int32_t zoom_count = 0, angles_enabled = 0;
   if (!Read(camera, abi::kTitleMapCameraZoomTableOffset, zoom) || !zoom ||
-      !Read(camera, abi::kTitleMapCameraZoomCountOffset, zoom_count) ||
-      result_.zoom_index < 0 || result_.zoom_index >= zoom_count ||
-      !Read(camera, abi::kTitleMapCameraTargetStateOffset, result_.target) ||
+      !Read(camera, abi::kTitleMapCameraZoomCountOffset, zoom_count)) {
+    Publish(Status::camera_zoom_or_target_state_unavailable); return false;
+  }
+  if (result_.zoom_index < 0 || result_.zoom_index >= zoom_count) {
+    Publish(Status::camera_zoom_index_unavailable); return false;
+  }
+  if (!Read(camera, abi::kTitleMapCameraTargetStateOffset, result_.target) ||
       !Read(zoom, static_cast<std::size_t>(result_.zoom_index) * sizeof(float), result_.target[3]) ||
       !Read(camera, abi::kTitleMapCameraParam4EnabledOffset, angles_enabled)) {
-    Publish(Status::unavailable); return false;
+    Publish(Status::camera_zoom_or_target_state_unavailable); return false;
   }
   result_.target[0] = static_cast<float>((static_cast<std::int64_t>(aggregate[0]) + aggregate[2]) / 2);
   result_.target[1] = 0;
@@ -271,20 +302,29 @@ bool CameraPresentationRuntimeV1::Advance(
     float degrees = 0, conversion = 0;
     if (!Read(camera, abi::kTitleMapCameraParam4TableOffset, angles) || !angles ||
         !Read(angles, static_cast<std::size_t>(result_.zoom_index) * sizeof(float), degrees) ||
-        !Read(camera_env.degrees_to_radians, 0, conversion)) { Publish(Status::unavailable); return false; }
+        !Read(camera_env.degrees_to_radians, 0, conversion)) {
+      Publish(Status::camera_angle_state_unavailable); return false;
+    }
     result_.target[4] = degrees * conversion;
   }
   const auto raw = result_.target;
   if (!Finite(raw) || !Canonicalize(camera_env.canonicalize_camera_state, camera, result_.target) ||
       raw[0] != result_.target[0] || raw[2] != result_.target[2]) {
-    Publish(Status::unavailable); return false;
+    Publish(Status::camera_canonical_target_unavailable); return false;
   }
   // Equivalent target/index fields used by the reviewed native title command.
   // No game-state/script/input fields are written; normal camera update settles.
+  if (sequence != static_cast<std::uint32_t>(InterlockedCompareExchange(
+      &shared_->request_sequence, 0, 0))) {
+    Publish(Status::preempted); return false;
+  }
+  if (GetTickCount64() > request_.expires_uptime_ms) {
+    Publish(Status::unavailable); return false;
+  }
   if (!Write(camera, abi::kTitleMapCameraZoomIndexOffset, result_.zoom_index) ||
       !Write(camera, abi::kTitleMapCameraTargetStateOffset, result_.target) ||
       !Read(camera, abi::kTitleMapCameraCurrentStateOffset, result_.current)) {
-    Publish(Status::unavailable); return false;
+    Publish(Status::camera_target_write_or_readback_unavailable); return false;
   }
   result_.native_elapsed_us = static_cast<std::uint32_t>(std::chrono::duration_cast<
       std::chrono::microseconds>(std::chrono::steady_clock::now() - started).count());

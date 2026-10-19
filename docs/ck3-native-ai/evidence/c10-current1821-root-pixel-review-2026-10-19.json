@@ -1,0 +1,57 @@
+{
+  "schema": "xar.C10-current1821-primary-pixel-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:01:24.613417+00:00",
+  "reviewer": "/root",
+  "status": "GREEN",
+  "qualification_scope": "Clean current map and retired-overlay admission only; NOT hotspot-follow or full-realm camera acceptance",
+  "review_method": "Root directly viewed both frozen PNGs using view_image; file bytes checked independently",
+  "frozen_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\c10-current1821-map02-FROZEN-PAIR.json",
+    "bytes": 2817,
+    "sha256": "2c41b0c38e804549415eef19ab626814ca95efeeff56007ecf87c34916879efd"
+  },
+  "images": {
+    "game_frame": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\c10-current1821-map02-game.png",
+      "sha256": "1735f41b451a381ad76a9521e6109afba26358f443602c09b20c955662960b12",
+      "bytes": 1640291,
+      "width": 1280,
+      "height": 720
+    },
+    "scene_frame": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\e6f643ea-3404-446b-ae18-6b75cb9d682a\\c10-current1821-map02-scene.png",
+      "sha256": "3e837197174341685edda71d792acbba7672190b593f422789246dec6a0aa39c",
+      "bytes": 1503604,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "game_pid": 153556,
+  "game_creation_filetime": "134368602545256920",
+  "game_creation_date": "20261019051054.525692+000",
+  "recording_session_id": "e6f643ea-3404-446b-ae18-6b75cb9d682a",
+  "original_frame_at_utc": "2026-10-19T09:52:47.073127Z",
+  "pixel_observations": {
+    "game_map_visible": true,
+    "paused_indicator_visible": true,
+    "displayed_date": "1071-09-11",
+    "successor_portrait_visible": true,
+    "event_option_modal_visible": false,
+    "scene_preserves_game_map_and_portrait": true,
+    "right_current_decision_text_visible": true,
+    "current_decision_text_concerns_observation_and_next_action": true,
+    "old_blue_decision_panel_visible": false,
+    "film_or_session_title_visible": false,
+    "war_markers_near_top_of_map_visible": true,
+    "hotspot_closeup_or_tracking_verified": false,
+    "full_realm_pixel_coverage_verified": false
+  },
+  "business_or_territory_results_inferred_from_pixels": false,
+  "Game_MCP_OBS_desktop_input_calls": 0,
+  "screenshot_recording_or_runtime_files_mutated": false,
+  "post_warm_CAP_at_utc": "2026-10-19T09:52:30Z",
+  "native_frame": 3138,
+  "connection_epoch": 8,
+  "sdk_source_commit": "e1e3007aa508d9b109bb9312be18a1f7999cd87c"
+}
