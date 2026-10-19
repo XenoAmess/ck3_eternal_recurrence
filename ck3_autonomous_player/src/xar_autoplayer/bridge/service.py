@@ -186,6 +186,7 @@ from .battle_reinforcement_assignment_contract import (
     normalize_battle_reinforcement_assignment_v1,
     query_battle_reinforcement_assignment_v1_step,
 )
+from .campaign_root_terminal_retry_v1 import claim_campaign_root_terminal_retry_v1
 from .campaign_root_context_contract import (
     is_baseline_campaign_root_context_12002,
     QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY,
@@ -1683,10 +1684,10 @@ class GameplayBridgeService:
                        if planning_root_result is not None else {}),
                 )
             except BridgeUnavailableError as error:
-                if getattr(error, "native_error", None) not in {
+                if (getattr(error, "native_error", None) not in {
                     "campaign-root snapshot changed or is not ready",
                     "application-main typed query failed or its snapshot changed",
-                }:
+                } and not claim_campaign_root_terminal_retry_v1(error, snapshot)):
                     raise
                 retry_snapshot = snapshot
                 if query_history_index is not None:
@@ -3324,10 +3325,10 @@ class GameplayBridgeService:
                        if campaign_root_result is not None else {}),
                 )
             except BridgeUnavailableError as error:
-                if getattr(error, "native_error", None) not in {
+                if (getattr(error, "native_error", None) not in {
                     "campaign-root snapshot changed or is not ready",
                     "application-main typed query failed or its snapshot changed",
-                }:
+                } and not claim_campaign_root_terminal_retry_v1(error, snapshot)):
                     raise
                 retry_snapshot = snapshot
                 if query_history_index is not None:
@@ -5665,11 +5666,11 @@ class GameplayBridgeService:
             if (
                 not isinstance(error, BridgeUnavailableError)
                 or selected_step != QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
-                or getattr(error, "native_error", None)
+                or (getattr(error, "native_error", None)
                 not in {
                     "campaign-root snapshot changed or is not ready",
                     "application-main typed query failed or its snapshot changed",
-                }
+                } and not claim_campaign_root_terminal_retry_v1(error, root_query_start))
                 or not isinstance(root_query_start, dict)
             ):
                 raise
