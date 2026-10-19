@@ -1,0 +1,235 @@
+{
+  "rules": [
+    {
+      "key": "directed_great_holy_war",
+      "definition_source_sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33",
+      "actor_trigger_closure_sha256": "cd35c46378013f3ec8d8eeb10858ec08f0c62c38e32cfc845500bb0c3293d3bd"
+    },
+    {
+      "key": "hungarian_migration_cb",
+      "definition_source_sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa",
+      "actor_trigger_closure_sha256": "c5786c864a7e7f4aef8db9f24e6407498e6f5a4ff1cd03bc30a2defe014d23c6"
+    },
+    {
+      "key": "japan_imperial_expansion_cb",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "actor_trigger_closure_sha256": "14333d501c60cba83e8b7e0a2a0f5c81ffde37ff76f30166ef7a960f7256db03"
+    },
+    {
+      "key": "japan_imperial_reconquest_cb",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "actor_trigger_closure_sha256": "4cb7450d34e16e156b08d20cadbf1594787c92582060e8ba2e7a613a9b685858"
+    }
+  ],
+  "rules_sha256": "e384744fd346fe35db1ad585a336402244de69172a5664ecec38cb28f8573f83",
+  "closure": {
+    "hungarian_migration_cb": [
+      {
+        "name": "hungarian_migration_cb/allowed_for_character",
+        "relative_path": "casus_belli_types/00_event_war.txt",
+        "source_sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa",
+        "token_sha256": "08725b5b2fe0e0066773e4f1c65ca8c9ee99dab0d3c83f3670354fe11f2086ca",
+        "named_scopes": [],
+        "dependencies": []
+      }
+    ],
+    "directed_great_holy_war": [
+      {
+        "name": "directed_great_holy_war/allowed_for_character",
+        "relative_path": "casus_belli_types/00_religious_war.txt",
+        "source_sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33",
+        "token_sha256": "aca36f08271a98f0721792d507fb598e1a918aeab149a07e2cde20ee7da1981d",
+        "named_scopes": [
+          "attacker"
+        ],
+        "dependencies": [
+          "suitable_faith_for_directed_ghw_trigger"
+        ]
+      },
+      {
+        "name": "suitable_faith_for_directed_ghw_trigger",
+        "relative_path": "scripted_triggers/00_great_holy_war_triggers.txt",
+        "source_sha256": "7e449bcfa18bc02cf97cffff950d7b6f2d97aab7e0e93110db6c39d5e26505ba",
+        "token_sha256": "bc78549958cef0ceee603a967eeb314d434f568cbb70dd13dcf4930bc4fdbaeb",
+        "named_scopes": [],
+        "dependencies": []
+      }
+    ],
+    "japan_imperial_expansion_cb": [
+      {
+        "name": "government_is_japanese_trigger",
+        "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+        "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+        "token_sha256": "27d730d31d9781079cdc9322f51280e1c6a6dd2b9ab4a111a5e71fd464a1af9d",
+        "named_scopes": [],
+        "dependencies": []
+      },
+      {
+        "name": "has_tgp_dlc_trigger",
+        "relative_path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+        "source_sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+        "token_sha256": "a9fb3dec7377860a99674234c1ed7e51b5f58dc9261e39b5ad4b40a5378d8927",
+        "named_scopes": [],
+        "dependencies": []
+      },
+      {
+        "name": "japan_imperial_expansion_cb/allowed_for_character",
+        "relative_path": "casus_belli_types/10_tgp_japan_wars.txt",
+        "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+        "token_sha256": "9e1ade85f6b246d76805f9301ee649666ced9b2a2b6406b924f940bef7241134",
+        "named_scopes": [],
+        "dependencies": [
+          "japan_imperial_expansion_cb_allowed_for_character_trigger"
+        ]
+      },
+      {
+        "name": "japan_imperial_expansion_cb_allowed_for_character_trigger",
+        "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+        "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+        "token_sha256": "acb6d40f9cfdc70f0fedeb3286a5d5a1ac96d1f1ce055843ab0f2141bca2e61d",
+        "named_scopes": [],
+        "dependencies": [
+          "has_tgp_dlc_trigger",
+          "realm_law_use_imperial_policy_trigger",
+          "tgp_realm_has_ceremonial_liege_trigger"
+        ]
+      },
+      {
+        "name": "realm_law_use_imperial_policy_trigger",
+        "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+        "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+        "token_sha256": "f5caace5d56ab5e14d007929dc60b857813a99cea484bd147a13132f427052bb",
+        "named_scopes": [],
+        "dependencies": [
+          "government_is_japanese_trigger"
+        ]
+      },
+      {
+        "name": "tgp_realm_has_ceremonial_liege_trigger",
+        "relative_path": "scripted_triggers/10_tgp_triggers.txt",
+        "source_sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c",
+        "token_sha256": "076dbcbc52af7acefa8631822e7eb3955d583bda5ce19dd7883e381e6df9d6c1",
+        "named_scopes": [],
+        "dependencies": []
+      }
+    ],
+    "japan_imperial_reconquest_cb": [
+      {
+        "name": "government_is_japanese_trigger",
+        "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+        "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+        "token_sha256": "27d730d31d9781079cdc9322f51280e1c6a6dd2b9ab4a111a5e71fd464a1af9d",
+        "named_scopes": [],
+        "dependencies": []
+      },
+      {
+        "name": "has_tgp_dlc_trigger",
+        "relative_path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+        "source_sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+        "token_sha256": "a9fb3dec7377860a99674234c1ed7e51b5f58dc9261e39b5ad4b40a5378d8927",
+        "named_scopes": [],
+        "dependencies": []
+      },
+      {
+        "name": "japan_imperial_reconquest_cb/allowed_for_character",
+        "relative_path": "casus_belli_types/10_tgp_japan_wars.txt",
+        "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+        "token_sha256": "09b897dffc689499f7ffc61211b0e5219728763a3d96f9db9598af6102016e60",
+        "named_scopes": [],
+        "dependencies": [
+          "japan_imperial_reconquest_cb_allowed_for_character_trigger"
+        ]
+      },
+      {
+        "name": "japan_imperial_reconquest_cb_allowed_for_character_trigger",
+        "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+        "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+        "token_sha256": "acb6d40f9cfdc70f0fedeb3286a5d5a1ac96d1f1ce055843ab0f2141bca2e61d",
+        "named_scopes": [],
+        "dependencies": [
+          "has_tgp_dlc_trigger",
+          "realm_law_use_imperial_policy_trigger",
+          "tgp_realm_has_ceremonial_liege_trigger"
+        ]
+      },
+      {
+        "name": "realm_law_use_imperial_policy_trigger",
+        "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+        "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+        "token_sha256": "f5caace5d56ab5e14d007929dc60b857813a99cea484bd147a13132f427052bb",
+        "named_scopes": [],
+        "dependencies": [
+          "government_is_japanese_trigger"
+        ]
+      },
+      {
+        "name": "tgp_realm_has_ceremonial_liege_trigger",
+        "relative_path": "scripted_triggers/10_tgp_triggers.txt",
+        "source_sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c",
+        "token_sha256": "076dbcbc52af7acefa8631822e7eb3955d583bda5ce19dd7883e381e6df9d6c1",
+        "named_scopes": [],
+        "dependencies": []
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "relative_path": "casus_belli_types/00_event_war.txt",
+      "bytes": 97481,
+      "sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa"
+    },
+    {
+      "relative_path": "casus_belli_types/00_religious_war.txt",
+      "bytes": 114768,
+      "sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33"
+    },
+    {
+      "relative_path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "bytes": 77732,
+      "sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16"
+    },
+    {
+      "relative_path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "bytes": 2631,
+      "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066"
+    },
+    {
+      "relative_path": "scripted_triggers/00_great_holy_war_triggers.txt",
+      "bytes": 4073,
+      "sha256": "7e449bcfa18bc02cf97cffff950d7b6f2d97aab7e0e93110db6c39d5e26505ba"
+    },
+    {
+      "relative_path": "scripted_triggers/10_tgp_japan_triggers.txt",
+      "bytes": 22800,
+      "sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06"
+    },
+    {
+      "relative_path": "scripted_triggers/10_tgp_triggers.txt",
+      "bytes": 29024,
+      "sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c"
+    }
+  ],
+  "schema": "xar.declaration-actor-candidate-source-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:34:48.288320+00:00",
+  "game_common": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\audit_declaration_actor_candidates_12004.py",
+    "sha256": "5a01c3bea0c7f81d1210b3c33ce2b20b870d6899b97a04459ee3b2e18ebb51d4"
+  },
+  "native_caller": {
+    "rva": "0x31F4520",
+    "call_site": "0x31F4736",
+    "receiver": "type+0x48",
+    "callee": "0x37998D0",
+    "evaluator_argument": "null",
+    "root_kind": 4,
+    "actor_full_id": "zero_extended Character+0x18",
+    "named_attacker_key_slot": "0x5D4BD94"
+  },
+  "loaded_source_qualification": "PENDING: resolve CB AND scripted-trigger overrides for future playset",
+  "native_abi_qualification": "static source only; future same-frame shadow remains required",
+  "current_native25_changed": false,
+  "game_or_native_calls": 0,
+  "claim": "Only source-qualified deterministic actor no may empty this CB candidate superset; yes/unknown remain wide."
+}

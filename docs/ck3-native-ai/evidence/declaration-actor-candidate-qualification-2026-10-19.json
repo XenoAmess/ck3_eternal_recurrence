@@ -1,0 +1,290 @@
+{
+  "schema": "xar.native-declaration-actor-candidate-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:42:21.895879+00:00",
+  "status": "OFFLINE_CALLBACK_EQUIVALENCE_PASS_NEXT_NATIVE_ONLY",
+  "source": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_declarations.hpp",
+      "bytes": 9367,
+      "sha256": "583f17ca64061cdf62c4af954babc1654ca7e179e049c94d0f6b14a09473ec4e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_declaration_actor_candidate.hpp",
+      "bytes": 2497,
+      "sha256": "48ac4c2cd8f5f185b64795bfb4301ecc26284ac039306809363993f1774f8a7f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_declarations.cpp",
+      "bytes": 46294,
+      "sha256": "e1553e3a30a88625da13118c75283a268e3de8ef3e1ed95b1df8806815cffd94"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_declarations_test.cpp",
+      "bytes": 36983,
+      "sha256": "dbd751ea1f365fadb0505ab1d89915e03e306ef920d2baaf13cf146418c887d5"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_war_declarations.cpp",
+      "bytes": 10378,
+      "sha256": "6425ce9739c608abb4b40b4887e6c79787ef905a4c82abf5b90e85581bf9673b"
+    }
+  ],
+  "source_audit": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\declaration-actor-candidate-source-audit-2026-10-19.json",
+    "bytes": 10260,
+    "sha256": "af641700d2dae86cba44b80a88cf97fa083f1de164eb04bf88bbf5ba0db67a46"
+  },
+  "static_native_source": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\declaration-actor-candidate-native-source-2026-10-19.json",
+    "bytes": 21076,
+    "sha256": "dc22ffbc0144fc93925d4391a59e17208963333d0c51f157bff10f3d0fdc4210"
+  },
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\run_declaration_actor_candidate_fixture_12004.py",
+    "bytes": 9979,
+    "sha256": "1b75153bef2bf52f53d0862b92c1212c51ccfd5ec558c1dbc4c5bf00216c6190"
+  },
+  "audit_producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\audit_declaration_actor_candidates_12004.py",
+    "bytes": 8318,
+    "sha256": "5a01c3bea0c7f81d1210b3c33ce2b20b870d6899b97a04459ee3b2e18ebb51d4"
+  },
+  "fixture_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\RESULT.json",
+    "bytes": 88807,
+    "sha256": "bdff146979f3c7fb7bb261946ebb4cddcdb71991f76428965f8582edbf01ebbf"
+  },
+  "fixture_compile": {
+    "argv": [
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+      "/nologo",
+      "/LD",
+      "/std:c++20",
+      "/MD",
+      "/EHsc",
+      "/W4",
+      "/WX",
+      "/permissive-",
+      "/utf-8",
+      "/UNDEBUG",
+      "/DNOMINMAX",
+      "/DWIN32_LEAN_AND_MEAN",
+      "/showIncludes",
+      "/ID:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\source\\include",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\source\\ck3_12002.cpp",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\source\\ck3_12002_commands.cpp",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\source\\ck3_12002_declarations.cpp",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\source\\offline-fixture.cpp",
+      "/FoD:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\",
+      "/link",
+      "/OUT:D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\declaration-actor-fixture.dll",
+      "/IMPLIB:D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\declaration-actor-fixture.lib"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.639030100079253,
+    "log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\compile-link.log",
+      "bytes": 160220,
+      "sha256": "4b7f5c90e1e62a46edcf46cc707f556f796255fb197311423321ac2362d95d31"
+    }
+  },
+  "fixture_execute": {
+    "route": "independent ordinary Python ctypes DLL",
+    "exit_code": 0,
+    "elapsed_seconds": 0.13006650004535913,
+    "runner": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\run-ctypes.py",
+      "bytes": 169,
+      "sha256": "edb92a36c8400d96e014c8b72e00bf22fa1ece6ca7c184e154d52e4876d719a0"
+    },
+    "log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\fixture.log",
+      "bytes": 101,
+      "sha256": "1834c8af24c6f7ee84a714edf82c2ba0951894ec4c49a3cbe0eb6e3179327b71"
+    }
+  },
+  "compiler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+    "bytes": 893288,
+    "sha256": "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640"
+  },
+  "msvc_environment_producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\run_native_msvc.py",
+    "bytes": 13321,
+    "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e"
+  },
+  "DLL": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\build\\declaration-actor-fixture.dll",
+    "bytes": 285184,
+    "sha256": "c1ff9699686f2368ee6c10b89239bed0777f7e0360d5838501eead59e43ea344"
+  },
+  "project_header_count": 130,
+  "actual_header_count": 390,
+  "actual_header_log_correction": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\ACTUAL-HEADER-PINS-CP936-CORRECTION01.json",
+    "bytes": 97666,
+    "sha256": "02878a50278a23984cf3309360f2fc7622063aac930e96ff16a7682265955adb"
+  },
+  "fixture_limit": "same callback DTOs/full ordered tuples; native addresses not executed; war-binding.cpp source-only, future actual same-frame shadow mandatory",
+  "guards": {
+    "rules_env": "XAR_CK3_DECLARATIONS_ACTOR_RULES_SHA256",
+    "rules_sha256": "e384744fd346fe35db1ad585a336402244de69172a5664ecec38cb28f8573f83",
+    "loaded_source_manifest_env": "XAR_CK3_DECLARATIONS_ACTOR_SOURCE_MANIFEST_SHA256",
+    "loaded_override_review": "PENDING; must include CB and scripted trigger definitions, playset, DLC, replace_path",
+    "default": "disabled; old defender admission cannot enable this gate"
+  },
+  "storage": {
+    "closed_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-cb-actor-prefilter01\\FILES-CLOSED.json",
+      "bytes": 45087,
+      "sha256": "461f82e90b6ceba0c4f0617ac8e9033715d79fe83b01870e0f3888167468eb98"
+    },
+    "logical_bytes": 3869969,
+    "file_count": 162,
+    "allocated_bytes": null,
+    "future_writes_reserved_bytes": 0,
+    "processes_remaining": 0
+  },
+  "new_EXEs": 0,
+  "Game_native_RPC_injection_or_system_setting_calls": 0,
+  "current_runtime_changed": false,
+  "stage_or_commit_performed": false,
+  "live_speedup_claimed": false,
+  "native25_api": {
+    "source_bridge": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+      "bytes": 1600530,
+      "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+    },
+    "full_query_dispatch_line": 25926,
+    "request_scope_filters": false,
+    "internal_target_helper": "ReadDeclarableWarsForTarget; M5/unique-player-claim private branches select first/unique row for specialized analysis, not a full-catalogue subset API",
+    "old_cap_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0002-1-result.json",
+      "bytes": 61855,
+      "sha256": "077eeee97493c97aa94fd2e6903140fcfde3b7559e178f02d9da8802a64b0f9c"
+    },
+    "old_cap_source_machine_id": "unknown",
+    "declaration_capabilities": [
+      "game.command.query-declarable-wars"
+    ],
+    "actor_gate_capability": false,
+    "existing_policy_modes": [
+      "full",
+      "shadow-v1",
+      "cb-first-v1"
+    ],
+    "adoption_requires": "successor Native; do not replace current Game Native25"
+  },
+  "old_profile": {
+    "source_machine_id": "unknown",
+    "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\profile-output\\declarable-query.jsonl",
+    "file_bytes_at_read": 2287169,
+    "window_offset": 2221633,
+    "window_bytes": 65536,
+    "window_sha256": "9765060dea7f43eb9e141b0702383eeb6672a0ea44f3378f7fc9a3b7f8720770",
+    "last_record_raw_sha256": "88fca2fe1746dc583ba0b5663d1b2f90813a2822cb0856aa9c92153c9420de8b",
+    "recorded_unix_ns": 1792303765677712600,
+    "actor": 82925,
+    "date_raw": 53401728,
+    "native_total_ns": 4496534100,
+    "evaluations": 2529581,
+    "cb_first_already_enabled": "cb-first-v1",
+    "four_actor_source_families": [
+      {
+        "ordinal": 26,
+        "key": "hungarian_migration_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 320378200,
+        "materialize_and_clear_ns": 812600
+      },
+      {
+        "ordinal": 47,
+        "key": "directed_great_holy_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 108878200,
+        "materialize_and_clear_ns": 824600
+      },
+      {
+        "ordinal": 114,
+        "key": "japan_imperial_expansion_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 162717300,
+        "materialize_and_clear_ns": 817000
+      },
+      {
+        "ordinal": 115,
+        "key": "japan_imperial_reconquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 105777800,
+        "materialize_and_clear_ns": 797400
+      }
+    ],
+    "four_evaluations": 152844,
+    "four_evaluate_ns": 697751500,
+    "limitation": "Available0 does not prove actor precheck no; instrumented historic times are not expected savings or fresh Game AB."
+  },
+  "fresh_natural_batch": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-BATCH-0011-COMPACT30.json",
+      "bytes": 122512,
+      "sha256": "fb2415b1cbc179a78e8d013c7417c2fefaf65e65d3670e5aa435cbae1cfea06f"
+    },
+    "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "source_observed_at_utc": "2026-10-19T03:31:06.361558+00:00",
+    "selected_whole_RPCs": [
+      {
+        "sequence": 20,
+        "selected_step": "query-declarable-wars",
+        "elapsed_seconds": 3.638117599999532,
+        "source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0020-1-result.json",
+          "bytes": 142055,
+          "sha256": "12d4d54af9df50a9ce38e589139f26add474db3ff6fea66172f6b9cbe8457f59"
+        }
+      },
+      {
+        "sequence": 50,
+        "selected_step": "life-advance",
+        "elapsed_seconds": 3.0005308999679983,
+        "source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0050-1-result.json",
+          "bytes": 99076,
+          "sha256": "40ff19a9f194b26bc3916c8573711967de2604c82756a1b139c01b2f92a24a5b"
+        }
+      },
+      {
+        "sequence": 56,
+        "selected_step": "query-declarable-wars",
+        "elapsed_seconds": 3.4817476000171155,
+        "source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0056-1-result.json",
+          "bytes": 42202,
+          "sha256": "96baef679b50fc22ffb7075ec43d7260d4bec63a09ae9912bb85cea1994a576d"
+        }
+      },
+      {
+        "sequence": 74,
+        "selected_step": "life-advance",
+        "elapsed_seconds": 30.314162000082433,
+        "source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0074-1-result.json",
+          "bytes": 96821,
+          "sha256": "c345f8008f9e22026d21526550b0a2cbc03e109904849cb3b048e42a9ae5a53b"
+        }
+      }
+    ],
+    "army_five_native_scalars": "not_observed",
+    "combat_stage_split": "not_observed",
+    "limitation": "Whole RPC latency; cannot assign these new samples to Native evaluator time. AUTO74 clock wait is separately the dominant batch hotspot."
+  }
+}

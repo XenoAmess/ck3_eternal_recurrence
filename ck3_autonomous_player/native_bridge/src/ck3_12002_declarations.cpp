@@ -264,6 +264,11 @@ struct QueryProfile {
                  << ",\"native_target_titles_mode\":" << cb.native_target_titles_mode
                  << ",\"native_realm_index_used\":" << (cb.native_realm_index_used ? "true" : "false")
                  << ",\"projected_candidate_evaluations\":" << cb.projected_candidate_evaluations
+                 << ",\"actor_precheck_qualified\":" << (cb.actor_precheck_qualified ? "true" : "false")
+                 << ",\"actor_precheck\":\""
+                 << (cb.actor_precheck == DeclarationsCandidateFactV1::no ? "no" :
+                     cb.actor_precheck == DeclarationsCandidateFactV1::yes ? "yes" : "unknown")
+                 << "\",\"actor_precheck_ns\":" << cb.actor_precheck_ns
                  << ",\"definition_source_sha256\":";
           JsonString(stream, cb.definition_source_sha256);
           stream << '}';
@@ -271,6 +276,8 @@ struct QueryProfile {
         stream << ']';
         stream << ",\"native_realm_index_complete\":" << (d.native_realm_index_complete ? "true" : "false")
                << ",\"native_realm_index_entries\":" << d.native_realm_index_entries;
+        stream << ",\"qualified_actor_source_manifest_sha256\":";
+        JsonString(stream, d.qualified_actor_source_manifest_sha256);
       }
       stream << "}\n";
     } catch (...) { /* Diagnostic output is independent of gameplay. */ }
@@ -333,6 +340,19 @@ std::uint32_t CandidateConditions(const DeclarationsCandidateOptionsV1 &options,
     found = &rule;
   }
   return found ? found->necessary_conditions : 0;
+}
+
+bool ActorCandidateQualified(const DeclarationsCandidateOptionsV1 &options,
+                             std::string_view key) noexcept {
+  if (!Sha256Text(options.qualified_actor_source_manifest_sha256)) return false;
+  const DeclarationsCandidateActorRuleV1 *found = nullptr;
+  for (const auto &rule : options.qualified_actor_rules) {
+    if (rule.key != key) continue;
+    if (found || !Sha256Text(rule.definition_source_sha256) ||
+        !Sha256Text(rule.actor_trigger_closure_sha256)) return false;
+    found = &rule;
+  }
+  return found != nullptr;
 }
 
 bool TupleLess(const game::DeclarableWarSnapshot &a,
@@ -530,6 +550,7 @@ bool ReadDeclarableWarsWithCandidatesV1(
   std::vector<std::uint32_t> conditions;
   diagnostic.source_qualified = Sha256Text(options.qualified_source_manifest_sha256);
   diagnostic.qualified_source_manifest_sha256 = options.qualified_source_manifest_sha256;
+  diagnostic.qualified_actor_source_manifest_sha256 = options.qualified_actor_source_manifest_sha256;
   for (std::int32_t ordinal = 0; ordinal < count; ++ordinal) {
     void *type = Load<void *>(types, ordinal * sizeof(void *));
     if (!EnabledType(type)) continue;
@@ -546,6 +567,13 @@ bool ReadDeclarableWarsWithCandidatesV1(
         if (rule.key == d.key) d.definition_source_sha256 = rule.definition_source_sha256;
     if (b.read_candidate_realm && b.candidate_target_titles_mode_offset)
       d.native_target_titles_mode = Load<std::uint8_t>(type, b.candidate_target_titles_mode_offset);
+    d.actor_precheck_qualified = b.read_candidate_actor && key_read &&
+        ActorCandidateQualified(options, d.key);
+    if (d.actor_precheck_qualified) {
+      const auto actor_start = profile.active() ? ProfileClock::now() : ProfileClock::time_point{};
+      d.actor_precheck = b.read_candidate_actor(b.candidate_provider_image_base, type, actor);
+      if (profile.active()) d.actor_precheck_ns = ElapsedNs(actor_start);
+    }
   }
   // Build current-frame identity indexes once; never cache across dates/queries.
   // Unknown facts remain in every affected superset.
@@ -576,11 +604,13 @@ bool ReadDeclarableWarsWithCandidatesV1(
       }
   }
   std::vector<const std::vector<std::size_t> *> candidate_indexes;
+  const std::vector<std::size_t> actor_denied_index;
   for (std::size_t i = 0; i < enabled.size(); ++i) {
     auto &d = diagnostic.casus_belli[i];
     d.native_realm_index_used = diagnostic.native_realm_index_complete &&
         d.native_target_titles_mode >= 1 && d.native_target_titles_mode <= 4;
-    const auto &index = d.native_realm_index_used ? realm_indexes[conditions[i]] : indexes[conditions[i]];
+    const auto &index = d.actor_precheck == DeclarationsCandidateFactV1::no ? actor_denied_index :
+        d.native_realm_index_used ? realm_indexes[conditions[i]] : indexes[conditions[i]];
     candidate_indexes.push_back(&index);
     d.candidates = index.size(); d.projected_candidate_evaluations = index.size();
   }

@@ -1,6 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_declarations.hpp"
 
 #include "xar_bridge/ck3_12004_declaration_candidates.hpp"
+#include "xar_bridge/ck3_12004_declaration_actor_candidate.hpp"
 #include <array>
 #include <cassert>
 #include <chrono>
@@ -57,6 +58,9 @@ struct World {
   bool restrict_first_cb = false, candidate_facts_available = true;
   bool exclude_all_candidates = false, candidate_realm_available = true;
   int candidate_fact_reads = 0, candidate_realm_reads = 0;
+  int candidate_actor_reads = 0;
+  bool actor_reject_first_cb = false, actor_frame_drift = false;
+  DeclarationsCandidateFactV1 candidate_actor_result = DeclarationsCandidateFactV1::unknown;
   std::vector<void *> candidate_realm;
   std::vector<std::pair<std::int32_t, std::int32_t>> evaluation_order;
   int evaluations = 0, config_destroys = 0, context_destroys = 0, queues = 0;
@@ -87,7 +91,8 @@ bool Evaluate(void *type, void *actor, void *target, void *scratch, bool blocked
   Array(world->configurations.data() + 0x98 + 8, nullptr, 0);
   Array(world->configurations.data() + 0x98 * 2 + 8, world->third_titles.data(), 1);
   if (world->malformed) Put(world->configurations.data() + 8, 12, std::int32_t{3});
-  return world->available && !(world->restrict_first_cb &&
+  return world->available && !(world->actor_reject_first_cb && type == world->type.data()) &&
+      !(world->restrict_first_cb &&
       type == world->type.data() && target == world->dead.data());
 }
 void DestroyConfiguration(void *) { ++world->config_destroys; }
@@ -440,6 +445,136 @@ void CandidateQueryFixture() {
   Require(ReadDeclarableWars(w.bindings, candidate) && candidate == baseline &&
           w.evaluations - missing_start == 4, "missing runtime policy falls back to full");
 }
+
+DeclarationsCandidateFactV1 CandidateActor(std::uintptr_t, void *type, void *actor) noexcept {
+  assert(type == world->type.data() && actor == world->actor.data());
+  ++world->candidate_actor_reads;
+  if (world->actor_frame_drift) Put(world->state.data(), 8, std::int32_t{53175840});
+  return world->candidate_actor_result;
+}
+
+void ActorCandidateQueryFixture() {
+  World w; Initialize(w);
+  w.extra_target = w.extra_type = w.actor_reject_first_cb = true;
+  Put(w.dead.data(), 0x1D0, static_cast<void *>(nullptr));
+  std::array<void *, 3> types{w.type.data(), nullptr, w.disabled_type.data()};
+  Put(w.cb_database.data(), 0x50, types.data()); Put(w.cb_database.data(), 0x5C, std::int32_t{3});
+  std::memcpy(w.disabled_type.data(), w.type.data(), w.type.size());
+  Put(w.disabled_type.data(), 0x40, w.disabled_rule.data()); w.disabled_rule[0x1F9] = std::byte{};
+  const char unknown_key[] = "unknown_cb";
+  std::memcpy(w.disabled_type.data() + 0x18, unknown_key, sizeof(unknown_key));
+  Put(w.disabled_type.data(), 0x28, sizeof(unknown_key) - 1);
+  constexpr std::string_view sha = "087d6151be86546d4b1fcb600230534cb14c6a57ec2762e4efdb3ae98f9227c9";
+  const std::array<DeclarationsCandidateActorRuleV1, 1> rules{{{"test_cb", sha, sha}}};
+  DeclarationsCandidateOptionsV1 options;
+  options.variant = DeclarationsCandidateVariantV1::cb_first;
+  options.qualified_actor_rules = rules; options.qualified_actor_source_manifest_sha256 = sha;
+  w.bindings.read_candidate_actor = &CandidateActor;
+  w.candidate_actor_result = DeclarationsCandidateFactV1::no;
+  std::vector<xar::game::DeclarableWarSnapshot> baseline, candidate;
+  Require(ReadDeclarableWars(w.bindings, baseline) && baseline.size() == 4, "actor-denied full baseline");
+  DeclarationsCandidateDiagnosticV1 d;
+  auto before = w.evaluations;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.evaluations - before == 2 && w.candidate_actor_reads == 1 &&
+          d.casus_belli[0].candidates == 0 && d.casus_belli[0].actor_precheck_qualified &&
+          d.casus_belli[1].candidates == 2 && !d.casus_belli[1].actor_precheck_qualified,
+          "one actor rejection removes only proved-unavailable family; unknown family stays complete");
+  for (const auto fact : {DeclarationsCandidateFactV1::unknown, DeclarationsCandidateFactV1::yes}) {
+    w.candidate_actor_result = fact; before = w.evaluations;
+    Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+            w.evaluations - before == 4 && d.casus_belli[0].candidates == 2,
+            "yes and unknown actor facts retain the complete target superset");
+  }
+  w.actor_reject_first_cb = false; w.candidate_actor_result = DeclarationsCandidateFactV1::yes;
+  Require(ReadDeclarableWars(w.bindings, baseline) && baseline.size() == 8, "actor-admitted full baseline");
+  before = w.evaluations;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.evaluations - before == 4, "legal family keeps all native tuples and original target-major order");
+  const auto reads_before = w.candidate_actor_reads;
+  options.qualified_actor_source_manifest_sha256 = "not-loaded-source-qualified";
+  w.candidate_actor_result = DeclarationsCandidateFactV1::no;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.candidate_actor_reads == reads_before && d.casus_belli[0].candidates == 2,
+          "old defender/source admission cannot qualify an actor gate");
+  options.qualified_actor_source_manifest_sha256 = sha;
+  const std::array<DeclarationsCandidateActorRuleV1, 2> duplicate{{rules[0], rules[0]}};
+  options.qualified_actor_rules = duplicate;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.candidate_actor_reads == reads_before, "duplicate actor source rule must use wide fallback");
+  const std::array<DeclarationsCandidateActorRuleV1, 1> bad_closure{{{"test_cb", sha, "unknown"}}};
+  options.qualified_actor_rules = bad_closure;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.candidate_actor_reads == reads_before, "missing scripted-trigger closure must use wide fallback");
+  options.qualified_actor_rules = rules; options.variant = DeclarationsCandidateVariantV1::shadow;
+  before = w.evaluations;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.evaluations - before == 4 && !d.tuple_sets_equal && d.casus_belli[0].missing_tuples == 4 &&
+          d.casus_belli[0].projected_candidate_evaluations == 0 && d.casus_belli[0].evaluations == 0,
+          "shadow detects a bad actor denial, returns the full baseline and runs no second N*C pass");
+  options.variant = DeclarationsCandidateVariantV1::full;
+  const auto full_reads = w.candidate_actor_reads;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          w.candidate_actor_reads == full_reads, "full policy never uses the actor precheck");
+  options.variant = DeclarationsCandidateVariantV1::cb_first;
+  w.bindings.read_candidate_actor = nullptr;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline,
+          "missing actor provider must keep every native candidate");
+  w.bindings.read_candidate_actor = &CandidateActor; w.actor_frame_drift = true;
+  Require(!ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate.empty(),
+          "actor precheck cannot bypass the after-query paused date guard");
+}
+
+struct ActorScopeFixtureState {
+  void *scope = nullptr;
+  const void *receiver = nullptr;
+  std::uint8_t raw = 0;
+  int constructed = 0, destroyed = 0, saves = 0, predicates = 0;
+  bool throw_predicate = false;
+} actor_scope;
+void *ActorScopeConstruct(void *scope) {
+  actor_scope.scope = scope; ++actor_scope.constructed;
+  Put(scope, 4, std::uint32_t{0x12345678}); return scope;
+}
+void ActorScopeDestroy(void *scope) { assert(scope == actor_scope.scope); ++actor_scope.destroyed; }
+void ActorScopeSave(void *destination, std::int32_t key,
+    const xar::ck3_12004::DeclarationActorCandidateBindings12004::Token *token) {
+  assert(destination == static_cast<std::byte *>(actor_scope.scope) + 0x18 && key == 17 &&
+         token->kind == 4 && token->reserved == 0 && token->payload == 0xF3000001ULL);
+  ++actor_scope.saves;
+}
+std::uint8_t ActorScopePredicate(const void *receiver, void *scope, void *evaluator) {
+  assert(receiver == actor_scope.receiver && scope == actor_scope.scope && !evaluator &&
+         Get<std::uint16_t>(scope, 0) == 4 && Get<std::uint64_t>(scope, 8) == 0xF3000001ULL &&
+         Get<std::uint32_t>(scope, 4) == 0x12345678U);
+  ++actor_scope.predicates;
+  if (actor_scope.throw_predicate) throw std::runtime_error("unavailable actor predicate");
+  return actor_scope.raw;
+}
+void ActorCandidateScopeFixture() {
+  using namespace xar::ck3_12004;
+  actor_scope = {};
+  const std::int32_t key = 17;
+  std::array<std::byte, 0x20> actor{};
+  std::array<std::byte, 0x60> type{};
+  Put(actor.data(), 0x18, std::uint32_t{0xF3000001U});
+  actor_scope.receiver = type.data() + 0x48;
+  DeclarationActorCandidateBindings12004 b{&ActorScopeConstruct, &ActorScopeDestroy,
+      &ActorScopeSave, &ActorScopePredicate, &key};
+  for (const auto raw : {std::uint8_t{0}, std::uint8_t{1}, std::uint8_t{0x82}}) {
+    actor_scope.raw = raw;
+    Require(ReadDeclarationActorCandidate12004(b, type.data(), actor.data()) ==
+            (raw ? DeclarationsCandidateFactV1::yes : DeclarationsCandidateFactV1::no),
+            "native root/attacker binding and TEST AL truth semantics");
+  }
+  actor_scope.throw_predicate = true;
+  Require(ReadDeclarationActorCandidate12004(b, type.data(), actor.data()) == DeclarationsCandidateFactV1::unknown &&
+          actor_scope.constructed == 4 && actor_scope.destroyed == 4 && actor_scope.saves == 4 &&
+          actor_scope.predicates == 4, "unavailable actor predicate is unknown and destroys its owned scope");
+  b.predicate = nullptr;
+  Require(ReadDeclarationActorCandidate12004(b, type.data(), actor.data()) == DeclarationsCandidateFactV1::unknown &&
+          actor_scope.constructed == 4, "missing actor binding must not construct or deny");
+}
 } // namespace
 
 int main(int argc, char **argv) {
@@ -490,5 +625,7 @@ int main(int argc, char **argv) {
   QueryProfileFixture(argc > 1 ? argv[1] : nullptr);
   RealmCandidateLayoutFixture();
   CandidateQueryFixture();
+  ActorCandidateQueryFixture();
+  ActorCandidateScopeFixture();
   std::cout << "PASS 1.20.0.2 declarations enumeration, stale choice, validation and native clone ownership fixtures\n";
 }

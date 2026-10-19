@@ -65,6 +65,8 @@ using DeclarationsCandidateFactsReaderV1 = bool (*)(
     std::uintptr_t, void *, DeclarationsCandidateFactsV1 &) noexcept;
 using DeclarationsCandidateRealmReaderV1 = bool (*)(
     std::uintptr_t, void *, std::vector<void *> &) noexcept;
+using DeclarationsCandidateActorReaderV1 = DeclarationsCandidateFactV1 (*)(
+    std::uintptr_t, void *, void *) noexcept;
 inline constexpr std::uint32_t kDeclarationsCandidateLandedV1 = 1;
 inline constexpr std::uint32_t kDeclarationsCandidateIndependentV1 = 2;
 // Entries must come from this loaded definition set's qualified source
@@ -75,6 +77,13 @@ struct DeclarationsCandidateRuleV1 {
   std::string_view definition_source_sha256;
   std::uint32_t necessary_conditions = 0;
 };
+// Separate qualification includes the complete allowed_for_character scripted
+// trigger closure. Defender-only source admission does not qualify this gate.
+struct DeclarationsCandidateActorRuleV1 {
+  std::string_view key;
+  std::string_view definition_source_sha256;
+  std::string_view actor_trigger_closure_sha256;
+};
 struct DeclarationsCandidateOptionsV1 {
   DeclarationsCandidateVariantV1 variant = DeclarationsCandidateVariantV1::full;
   std::span<const DeclarationsCandidateRuleV1> qualified_rules;
@@ -82,6 +91,8 @@ struct DeclarationsCandidateOptionsV1 {
   // Optional launch-bound controlled file, read at each existing query entry.
   // Accepts only full/shadow-v1/cb-first-v1; unavailable/malformed means full.
   std::string_view runtime_policy_path;
+  std::span<const DeclarationsCandidateActorRuleV1> qualified_actor_rules;
+  std::string_view qualified_actor_source_manifest_sha256;
 };
 struct DeclarationsCandidateCbDiagnosticV1 {
   std::int32_t ordinal = -1;
@@ -94,6 +105,9 @@ struct DeclarationsCandidateCbDiagnosticV1 {
   std::int32_t native_target_titles_mode = -1;
   bool native_realm_index_used = false;
   std::uint64_t projected_candidate_evaluations = 0;
+  bool actor_precheck_qualified = false;
+  DeclarationsCandidateFactV1 actor_precheck = DeclarationsCandidateFactV1::unknown;
+  std::uint64_t actor_precheck_ns = 0;
 };
 struct DeclarationsCandidateDiagnosticV1 {
   bool source_qualified = false, baseline_compared = false;
@@ -102,6 +116,7 @@ struct DeclarationsCandidateDiagnosticV1 {
   bool native_realm_index_complete = false;
   std::uint64_t native_realm_index_entries = 0;
   std::vector<DeclarationsCandidateCbDiagnosticV1> casus_belli;
+  std::string qualified_actor_source_manifest_sha256;
 };
 
 struct DeclarationsBindings {
@@ -129,6 +144,7 @@ struct DeclarationsBindings {
   DeclarationsCandidateRealmReaderV1 read_candidate_realm = nullptr;
   std::size_t candidate_target_titles_mode_offset = 0;
   DeclarationsCandidateOptionsV1 candidate_options;
+  DeclarationsCandidateActorReaderV1 read_candidate_actor = nullptr;
 };
 
 DeclarationsBindings BindDeclarationsImage(std::uintptr_t image_base,
