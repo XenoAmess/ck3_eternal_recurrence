@@ -17,6 +17,50 @@ def _exact(bundle, key, path):
     ref=bundle[key];need(Path(ref['path']).resolve()==Path(path).resolve(),'Unrun original path differs: '+key)
     check_pin(Path(path),ref);return _read(path)
 
+def _allocator_argv(bundle, machine, keeper_stamps):
+    """Read one original wait receipt, or the pinned original Popen triplet.
+
+    The triplet has no shell field; only its actual Popen wait is credited.
+    Neither receipt form establishes a host or CK3 exit.
+    """
+    keys=('allocator_intent','allocator_process','allocator_exit')
+    combined='allocator_result' in bundle
+    need((combined and not any(k in bundle for k in keys))
+         or (not combined and all(k in bundle for k in keys)),
+         'One complete original allocator evidence form required')
+    def original(key):
+        ref=bundle[key];check_pin(Path(ref['path']),ref);return _read(ref['path'])
+    if combined:
+        command=original('allocator_result')
+        need(command.get('machine_id')==machine and command.get('exit_code')==0
+             and command.get('shell') is False and bool(command.get('finished_at_utc')),
+             'Actual original allocator wait0 differs')
+        argv=command.get('argv',[])
+    else:
+        intent,process,exit_row=(original(k) for k in keys)
+        pid=process.get('pid');created=process.get('create_time')
+        need(all(row.get('machine_id')==machine for row in (intent,process,exit_row))
+             and intent.get('stage')=='allocate' and type(pid) is int and pid>0
+             and exit_row.get('pid')==pid and exit_row.get('actual_original_popen_wait') is True
+             and type(exit_row.get('returncode')) is int and exit_row['returncode']==0
+             and intent.get('argv')==process.get('argv'),
+             'Actual original allocator intent/process/wait0 differs')
+        need(type(created) in (int,float),'Original allocator process creation time missing')
+        started=datetime.fromtimestamp(created,timezone.utc)
+        intended=datetime.fromisoformat(intent['at_utc']);finished=datetime.fromisoformat(exit_row['completed_at_utc'])
+        need(intended.tzinfo is not None and finished.tzinfo is not None
+             and intended<=started<=keeper_stamps[0]<=keeper_stamps[-1]<=finished,
+             'Original allocator intent/process/wait time differs')
+        argv=process.get('argv',[])
+    need(isinstance(argv,list) and all(isinstance(x,str) for x in argv),'Original allocator argv missing')
+    index=next((i for i,x in enumerate(argv) if Path(x).name=='ck3_mod_acceptance.py'),-1)
+    # The public CLI's mode is positional: it accepts both mode-first and
+    # global-options-first invocations. Preserve the actual argv unchanged.
+    need(index>=0 and argv.count('allocate')==1 and
+         (argv[index+1:index+2]==['allocate'] or argv[-1:] == ['allocate']),
+         'Actual original allocator command differs')
+    return argv
+
 def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release, bus_packet):
     from ck3_mod_acceptance_allocate import closed_lease, read_failed_runtime_release, runtime_process_inventory
     import ck3_live_run_id as ids
@@ -50,15 +94,11 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     stamps=[datetime.fromisoformat(v) for v in (keeper_ready['at_utc'],idle['utc'],keeper['at_utc'])]
     need(all(x.tzinfo is not None for x in stamps) and (stamps[1]-stamps[0]).total_seconds()>=600
          and stamps[2]>=stamps[1],'Original ten-minute unused interval unproven')
-    original=bundle['allocator_result'];check_pin(Path(original['path']),original);command=_read(original['path'])
-    argv=command.get('argv',[])
+    argv=_allocator_argv(bundle,machine,stamps)
     def argument(name):
         need(argv.count(name)==1 and argv.index(name)+1<len(argv),'Original allocator argument missing: '+name)
         return argv[argv.index(name)+1]
-    index=next((i for i,x in enumerate(argv) if Path(x).name=='ck3_mod_acceptance.py'),-1)
-    need(command.get('machine_id')==machine and command.get('exit_code')==0 and command.get('shell') is False
-         and bool(command.get('finished_at_utc')) and index>=0 and argv[index+1]=='allocate'
-         and Path(argument('--prepared-case')).resolve()==Path(ready['prepared_case']['path']).resolve()
+    need(Path(argument('--prepared-case')).resolve()==Path(ready['prepared_case']['path']).resolve()
          and Path(argument('--keeper-output')).resolve()==keeper_root,'Actual original allocator wait0 differs')
     stdout=bundle['allocator_stdout'];check_pin(Path(stdout['path']),stdout)
     allocated,end=json.JSONDecoder().raw_decode(Path(stdout['path']).read_text(encoding='utf-8-sig').lstrip())
@@ -77,9 +117,16 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     need(all(absent.values()),'Allocated-unrun predecessor has actual host/native/control/Save evidence')
     identity=freeze['identity_allocation'];root=ids.default_state_root().resolve()
     need(Path(identity['state_root']).resolve()==root,'Actual machine counter namespace differs')
+    products=Path(argument('--products')).resolve();product_key=argument('--product')
+    need(str(products) in freeze['files'],'Original allocated product registry pin missing')
+    check_pin(products,freeze['files'][str(products)])
+    product=_read(products)['products'][product_key];external_mod=product.get('external_mod',False)
+    need(type(external_mod) is bool and product_key==ready['product']
+         and (product.get('runtime_mod_key') or product_key)==freeze['mod_key'],
+         'Original allocated product namespace differs')
     counter=root/machine/freeze['mod_key']/'counter.json';row=_exact(bundle,'counter',counter)
     need(row.get('machine_id')==machine and row.get('mod_key')==freeze['mod_key']
-         and ids.format_run_id(machine,freeze['mod_key'],row['last_sequence'])==run,
+         and ids.format_run_id(machine,freeze['mod_key'],row['last_sequence'],external_mod=external_mod)==run,
          'Allocated-unrun run is not the latest actual machine/product counter')
     cas=read_failed_runtime_release(Path(bundle['CAS_release']['path']))
     done=read_failed_runtime_release(Path(bundle['admin_done']['path']))
@@ -114,6 +161,10 @@ def _write(path,value):
 def build_bundle(args):
     import ck3_live_run_id as ids
     from ck3_mod_acceptance_allocate import read_failed_runtime_release, current_screen_absent
+    allocator={key:getattr(args,key,None) for key in ('allocator_result','allocator_intent','allocator_process','allocator_exit')}
+    need((allocator['allocator_result'] is not None and all(allocator[k] is None for k in allocator if k!='allocator_result'))
+         or (allocator['allocator_result'] is None and all(allocator[k] is not None for k in allocator if k!='allocator_result')),
+         'Provide --allocator-result or all three --allocator-intent/--allocator-process/--allocator-exit originals')
     live=args.previous_live.resolve();keeper=args.keeper_root.resolve();freeze=_read(live/'frozen-argv.json')
     machine=ids.current_machine_id();taskpath=args.task_bus_root/'tasks'/(freeze['screen_task']+'.json');task=_read(taskpath)
     journal=args.task_bus_root/'events.jsonl';size=journal.stat().st_size;start=max(0,size-65536)
@@ -139,7 +190,7 @@ def build_bundle(args):
     paths={'ready':live/'ready-context.json','frozen':live/'frozen-argv.json','allocated_context':live/'allocated-context.json',
         'keeper':keeper/'report.json','keeper_parent_exit':live/'keeper-actual-parent-exit.json','keeper_STOP':keeper/'STOP',
         'keeper_ready':keeper/'ready.json','idle_timeout':live/'allocation-unused-idle-timeout.json',
-        'allocator_result':args.allocator_result,'allocator_stdout':args.allocator_stdout,
+        **{k:v for k,v in allocator.items() if v is not None},'allocator_stdout':args.allocator_stdout,
         'counter':ids.default_state_root()/machine/freeze['mod_key']/'counter.json'}
     row.update({k:pin(v) for k,v in paths.items()});bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
@@ -150,7 +201,11 @@ def build_bundle(args):
     return {'bundle':bundle,'previous_release':proofs['admin_done'],'validation':verdict,'SDK_or_launch':False}
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--previous-live',type=Path,required=True)
-    p.add_argument('--keeper-root',type=Path,required=True);p.add_argument('--allocator-result',type=Path,required=True)
+    p.add_argument('--keeper-root',type=Path,required=True)
+    allocator=p.add_mutually_exclusive_group(required=True)
+    allocator.add_argument('--allocator-result',type=Path)
+    allocator.add_argument('--allocator-intent',type=Path)
+    p.add_argument('--allocator-process',type=Path);p.add_argument('--allocator-exit',type=Path)
     p.add_argument('--allocator-stdout',type=Path,required=True);p.add_argument('--task-bus-root',type=Path,required=True)
     p.add_argument('--release-sequence',type=int,required=True);p.add_argument('--done-sequence',type=int,required=True)
     p.add_argument('--output',type=Path,required=True)

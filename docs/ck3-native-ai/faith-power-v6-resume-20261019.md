@@ -11,3 +11,5 @@
 当前先解决的具体阻点为公共 `allocated-unrun` 前驱：R26实际保存了 `intent.json`、`original-process.json` 和 `original-exit.json`，退出原件只证明同PID的真实wait0，不能补造含shell/argv的旧command-result。现入口还假定allocate紧跟脚本名，而原argv把全局参数放在前面。适配限于消费这三份实际原件及其身份关联，不追认CK3、native、正常退出或业务通过。
 
 拍摄范围仍为四种礼仪核心信条完整正文及九建筑的实际本体/合法候选/条件，正常草稿保持预览，不Confirm、不推进、不新保存。已完成的双向采用、供奉和更换不再重演。个人同名正文、圣地建筑名称、工具ACK、合成transport和编译通过分别保留原范围，不能替代缺少的原版画面。新增实际结果和来源在本页后续追加。
+
+2026-10-19T01:55:46Z后继：公共unrun入口已实际消费R26的三份原件，支持全局选项在前、allocate在末尾的真实argv，并从frozen精确pin的产品registry读取原external_mod标记。首跑暴露外部产品命名空间缺口，失败留在 `V6/root/r26-unrun-closure-a01/`；修复后的a02完整bundle实际退出0。`a02/ALLOCATED-UNRUN.actual.json`及 `a02/admin_done.canonical.json`可直接供下一场使用，不重新分配R26。01:55:59Z的 `-O` 聚焦验收同样退出0，覆盖实际task list、机器/PID/argv/时间关联与不匹配反例、旧统一receipt兼容；1754B回执 `a02/FOCUSED-CHECK.actual.json` SHA-256 `a7c7dfe9955c23a4cfb36cf1cce62baea2af8efd7228a9469d2aca75c21e7e98`。修改的验收器以显式条件检查，优化模式不会移除判断。没有游戏、SDK、正常退出或业务通过信用。
