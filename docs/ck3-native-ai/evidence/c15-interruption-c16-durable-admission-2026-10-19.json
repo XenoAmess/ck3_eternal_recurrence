@@ -1,0 +1,110 @@
+{
+  "schema": "xar.root.C15-closure-and-C16-admission/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:47:47.031753+00:00",
+  "machine_source": "Root tool 4ce71c: py tools/ck3_live_run_id.py machine, 2026-10-19T15:40:55Z",
+  "closed_proofs": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-session-interruption90/FROZEN.json",
+      "sha256": "e84e889772141a8b3e31bc1d5b9b27577eb830860429c2d8f48403339389d8bd"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-session-interruption90/OWNED-OBS-TERMINAL.json",
+      "sha256": "67436ff13b58ff10d35de8142147444dc5fe690deb191c7d9dc0d48a04cb1fba"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-session-interruption90/CLOSED-C15-SCREEN-RELEASE.json",
+      "sha256": "da78d3413366b53f9713d0a8a503313bee42a9abf7d7fc5e8dbe047788353b17"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-session-interruption90/CLOSED-DRIVER-RENAMED-FOR-C16.json",
+      "sha256": "8653daf49ce3e0b3b02a2e324d911b72622b607a297d2d802012b029ac5a5126"
+    }
+  ],
+  "Root_review": "Tool 4be1bd exact SHA verification and direct reading of four named closed small receipts. No Driver, SAVE, media bodies read/copied/hashed.",
+  "C15": {
+    "Game_exit": 1,
+    "SDKQueue_exit": 1,
+    "SDKApp_exit": 1,
+    "normal_supervisor_closure": false,
+    "cause": "unattributed; do not assign to earlier storage lock incident",
+    "owned_OBS_exit": 0,
+    "recording_completed": false,
+    "personal_OBS_touched": false,
+    "old_screen_sequence_release": [
+      7255,
+      7257
+    ]
+  },
+  "restorable_frontier": {
+    "SAVE": 6397,
+    "date_raw": 53202720,
+    "days": 2433,
+    "cycles": 3039,
+    "target_days": 10950,
+    "percent": 22.21917808219178,
+    "save_sha256": "417b06a63310cf3c59544394024b387a3fc2700dced3c08b42aa5980bfeb27cb",
+    "checkpoint_saved_count": 35
+  },
+  "historical_unsaved": {
+    "last_days": 2504,
+    "last_cycles": 3273,
+    "tail_days": 71,
+    "tail_cycles": 234,
+    "AUTO_unknown": 6874,
+    "replayed": false,
+    "restored_credit": 0
+  },
+  "availability_correction": {
+    "SAVE6322": "Canonical SAVE body was normally replaced by SAVE6397; old6322 body is no longer readable at that path. Historical receipts remain, not a second retained save.",
+    "C15_Driver": "Original19641271B retained by same-volume atomic rename, FileID281474988978430; no body copy/hash, canonical source absent pending true saved-state projection."
+  },
+  "C16_admission": {
+    "owner": "runtime_v20261019 sole Game/MCP/desktop/OBS/CAS",
+    "namespace": "C16",
+    "restore_only_SAVE": 6397,
+    "reuse": "Native29 + d804/src13 reference",
+    "maximum_tasks": 4,
+    "roles": [
+      "supervisor",
+      "display_owner",
+      "sdk_owner",
+      "feeder"
+    ],
+    "mechanical_proof": "docs/ck3-native-ai/evidence/interactive-task-owned-lifetime-2026-10-19.json",
+    "source_sha256": "c0d76a7064996cafd7412f8f39ba2bb5c5cb6271627246b84e946c00bafb864f",
+    "conditions": "Exact prepared stage source/args/Task-name manifest, independent frozen bootstrap, same SID/session1 InteractiveToken3 RunLevel0, disk stdio, original business guards, fresh Steam-offline pixels and sole screen lease before Game. No SYSTEM, restarts, unknown replay or Task.Stop.",
+    "registered_or_Game_started_in_this_record": false
+  },
+  "Native30": {
+    "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+    "configure": 0,
+    "compile": 0,
+    "deployed": false,
+    "required": "Independent fresh65.5/1.5GiB admission then whole clean production +9 fixtures; separate native_build Task not yet admitted.",
+    "mechanical_tests": 11,
+    "prior_failures_preserved": "attempt01/02/03/05/06 tracked. attempt04 own guard.log WinError32 cleanup error had no receipt; exact0B owned file subsequently cleaned, retained source fix and attempt05/06 PASS; no retroactive green."
+  },
+  "performance": {
+    "target_seconds_per_day": 1,
+    "achieved": false,
+    "original_allwall_anchor_utc": "2026-10-19T03:26:49.420926Z",
+    "reset_anchor": false,
+    "old_C12_RPC_extent_seconds_per_day": 2.18037,
+    "old_C12_value_is_current_fullwall": false,
+    "current_fullAUTO_ROI": "unknown"
+  },
+  "CI": {
+    "fixed_commit": "7f5407202f71b914c70bd96efcfe6631527e3355",
+    "original_a45_step62_failed": true,
+    "fixed_actual_CI_pending": true
+  },
+  "source_minor_pool": {
+    "hard_bytes": 1048576,
+    "category": "within original code3 unused balance, not increased total",
+    "C16_independent_source_metadata_cap": 524288,
+    "native_build_owner_metadata_cap": 65536,
+    "old_runtime2MiB_contract_mutated": false
+  },
+  "qualification_boundary": "Mechanical/source proof is separate from real Game business acceptance. No new H or camera live credit."
+}
