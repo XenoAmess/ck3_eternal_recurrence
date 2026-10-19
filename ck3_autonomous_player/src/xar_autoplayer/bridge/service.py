@@ -677,7 +677,9 @@ class GameplayBridgeService:
         from .realm_overview_camera import PeaceRealmCameraPolicy
         self._peace_realm_camera_policy = PeaceRealmCameraPolicy()
         self._camera_presentation_client = None
-        self._camera_presentation_retry_after_raw = None
+        self._camera_presentation_owner_key = None
+        self._camera_presentation_request_context = None
+        self._camera_presentation_target_backoffs = {}
         self._camera_presentation_requested_sequence = None
         self._camera_presentation_failure_sequence = None
         self._auto_camera_worker = LatestCameraFollowWorker(
@@ -775,6 +777,77 @@ class GameplayBridgeService:
             },
         }
 
+    @staticmethod
+    def _camera_presentation_owner(frame):
+        return tuple(frame.get(key) for key in (
+            "actor_character_id", "episode_run_id", "bridge_pid", "connection_generation"))
+
+    def _sync_camera_presentation_owner(self, frame):
+        owner = self._camera_presentation_owner(frame)
+        if getattr(self, "_camera_presentation_owner_key", None) != owner:
+            self._camera_presentation_owner_key = owner
+            self._camera_presentation_request_context = None
+            self._camera_presentation_target_backoffs = {}
+            self._camera_presentation_requested_sequence = None
+            self._camera_presentation_failure_sequence = None
+        return owner
+
+    @classmethod
+    def _camera_presentation_target_key(cls, frame, intent):
+        mode = intent["mode"]
+        return (*cls._camera_presentation_owner(frame), mode,
+                str(intent.get("title_key", "")) if mode == "hotspot" else "",
+                intent.get("reason") if mode == "hotspot" else None)
+
+    def _camera_presentation_backoff(self, key, date):
+        if type(date) is not int or key[4] == "cancel":
+            return
+        rows = self._camera_presentation_target_backoffs
+        rows[key] = date + 30 * 24
+        while len(rows) > 16:
+            rows.pop(min(rows, key=rows.get))
+
+    def _bound_camera_presentation_actual(self, frame=None):
+        context = getattr(self, "_camera_presentation_request_context", None)
+        client = self._camera_presentation_client
+        if not isinstance(context, dict) or client is None:
+            return None
+        if (context["owner"] != self._camera_presentation_owner_key
+                or frame is not None and (
+                    context["owner"] != self._camera_presentation_owner(frame)
+                    or type(frame.get("date_raw")) is not int
+                    or frame["date_raw"] < context["frame"]["date_raw"])):
+            return None
+        actual = client.latest()
+        if (not isinstance(actual, dict)
+                or actual.get("request_sequence") != context["sequence"]
+                or context["sequence"] != self._camera_presentation_requested_sequence):
+            return None
+        # Cancel is acknowledged before Native reads a game frame; it is never
+        # an applied camera result or a failed hotspot observation.
+        if context["mode"] == "cancel" and actual.get("status") == "cancelled":
+            return actual
+        date = actual.get("date_raw")
+        submitted_date = context["frame"]["date_raw"]
+        if (actual.get("actor_character_id") != context["owner"][0]
+                or type(date) is not int
+                or not submitted_date <= date <= submitted_date + 7 * 24):
+            return None
+        # Native returns its processing date, which can legally follow the
+        # submitted/cache date. Do not force same-frame or exact-date equality.
+        if actual.get("status") in {"submitted", "settled"}:
+            target = actual.get("target")
+            if not isinstance(target, list) or len(target) != 6:
+                return None
+            expected = context.setdefault("native_target", tuple(target))
+            if tuple(target) != expected:
+                return None
+            if actual.get("status") == "settled" and (
+                    actual.get("current") != target
+                    or actual.get("camera_postcondition_verified") is not True):
+                return None
+        return actual
+
     def _select_auto_camera_hotspot(self, payload: object) -> dict[str, object]:
         """Publish latest presentation intent through its independent mailbox."""
         from .war_hotspot_camera import LandedProvinceIndex, select_war_hotspot
@@ -811,36 +884,57 @@ class GameplayBridgeService:
             )
             frame = payload.get("source_frame") or {}
             date = frame.get("date_raw")
-            actual = None
-            client = self._camera_presentation_client
-            if client is not None:
-                observed = client.latest()
-                if isinstance(observed, dict) and (
-                        observed.get("request_sequence") == self._camera_presentation_requested_sequence):
-                    actual = observed
+            self._sync_camera_presentation_owner(frame)
+            actual = self._bound_camera_presentation_actual(frame)
+            context = self._camera_presentation_request_context
             if (actual is not None and
                     camera_receipt_outcome({"native_actual": actual})[0] == "failed" and
+                    context["mode"] not in {"query", "cancel"} and
                     actual.get("request_sequence") != self._camera_presentation_failure_sequence):
                 self._camera_presentation_failure_sequence = actual.get("request_sequence")
-                self._peace_realm_camera_policy.retry_after_failure()
-                if type(date) is int:
-                    self._camera_presentation_retry_after_raw = date + 30 * 24
-            retry = self._camera_presentation_retry_after_raw
-            if type(date) is int and type(retry) is int and date < retry:
-                # Do not observe/remember a new followed intent while no request is sent.
+                self._camera_presentation_backoff(context["key"], actual["date_raw"])
+            # Mandatory cancel and owner changes must reach the policy even
+            # while an unrelated failed target remains in backoff.
+            intent = self._peace_realm_camera_policy.observe(payload, hotspot)
+            desired = intent
+            if intent["mode"] == "hold":
+                if intent.get("title_key"):
+                    desired = {**intent, "mode": "hotspot"}
+                elif self._peace_realm_camera_policy.mode == "realm":
+                    desired = {**intent, "mode": "realm"}
+                else:
+                    desired = None
+            key = self._camera_presentation_target_key(frame, desired) if desired else None
+            rows = self._camera_presentation_target_backoffs
+            retry = rows.get(key) if key is not None else None
+            if intent["mode"] != "cancel" and type(date) is int and type(retry) is int and date < retry:
                 return {"status": "unavailable", "available": False,
                         "reason": "camera_retry_cooldown", "retry_after_raw": retry,
-                        "native_actual": actual, "hotspot": hotspot,
+                        "native_actual": actual if context and context["key"] == key else None,
+                        "hotspot": hotspot,
                         "display_mode": self._peace_realm_camera_policy.mode,
                         "native_command_submitted": False,
                         "same_frame_with_gameplay_claim": False}
-            if retry is not None:
-                self._camera_presentation_retry_after_raw = None
+            unconfirmed_expired = (
+                context and context["key"] == key and context["mode"] not in {"query", "cancel"}
+                and type(date) is int and date >= context["frame"]["date_raw"] + 30 * 24
+                and (actual is None or actual.get("status") in {"idle", "submitted"}))
+            if (retry is not None and type(date) is int and date >= retry) or unconfirmed_expired:
+                # No bound result is unknown, rather than success/failure.
+                # Keep its retry bounded without remembering an unsent target forever.
+                rows.pop(key, None)
                 self._peace_realm_camera_policy.retry_after_failure()
-            intent = self._peace_realm_camera_policy.observe(payload, hotspot)
+                intent = self._peace_realm_camera_policy.observe(payload, hotspot)
+            elif (intent["mode"] == "hold" and desired is not None
+                    and (not context or context["key"] != key)):
+                # A new battle at the same title, or an explicit query, must
+                # not make the title-only policy remember an unsent target.
+                intent = desired
+            actual = actual if context and context["key"] == key else None
             receipt = {"status": intent["reason"], "intent": intent, "hotspot": hotspot,
                        "display_mode": self._peace_realm_camera_policy.mode,
                        "source_frame": payload.get("source_frame"),
+                       "native_actual_source_frame": dict(context["frame"]) if actual is not None else None,
                        "native_actual": actual, "available": False,
                        "native_command_submitted": False,
                        "same_frame_with_gameplay_claim": False}
@@ -848,10 +942,10 @@ class GameplayBridgeService:
                 try:
                     receipt.update(self._publish_camera_presentation_v1(intent, payload))
                     receipt["native_actual"] = None
+                    receipt["native_actual_source_frame"] = None
                 except (OSError, ValueError, TypeError, KeyError) as error:
-                    self._peace_realm_camera_policy.retry_after_failure()
-                    if type(date) is int:
-                        self._camera_presentation_retry_after_raw = date + 30 * 24
+                    self._camera_presentation_backoff(
+                        self._camera_presentation_target_key(frame, intent), date)
                     receipt.update(status="unavailable", reason=f"{type(error).__name__}: {error}")
             receipt["available"] = camera_receipt_outcome(receipt)[1]
             return receipt
@@ -864,6 +958,7 @@ class GameplayBridgeService:
     def _publish_camera_presentation_v1(self, intent, payload):
         from .realm_overview_camera import NativeCameraPresentationClient
         frame = payload["source_frame"]
+        owner = self._sync_camera_presentation_owner(frame)
         pid = frame["bridge_pid"]
         client = self._camera_presentation_client
         if client is None or client.pid != pid:
@@ -872,7 +967,15 @@ class GameplayBridgeService:
             client = NativeCameraPresentationClient(pid)
             self._camera_presentation_client = client
         result = client.submit(intent, frame, payload["source_build"])
-        self._camera_presentation_requested_sequence = result.get("request_sequence")
+        sequence = result.get("request_sequence")
+        if type(sequence) is not int or sequence < 0 or sequence & 1:
+            raise ValueError("camera submission lacks an even request sequence")
+        self._camera_presentation_requested_sequence = sequence
+        self._camera_presentation_request_context = {
+            "sequence": sequence, "owner": owner, "frame": dict(frame),
+            "key": self._camera_presentation_target_key(frame, intent),
+            "mode": intent["mode"], "title_key": intent.get("title_key"),
+        }
         return result
 
     def center_map_on_player_realm_v1(self, *, expected_revision: int,
@@ -890,7 +993,7 @@ class GameplayBridgeService:
 
     def realm_camera_status_v1(self) -> dict[str, object]:
         client = self._camera_presentation_client
-        actual = client.latest() if client is not None else None
+        actual = self._bound_camera_presentation_actual()
         return {"status": "available" if client is not None else "not_requested",
                 "requested_sequence": self._camera_presentation_requested_sequence,
                 "native_actual": actual if isinstance(actual, dict) and (
@@ -3276,6 +3379,8 @@ class GameplayBridgeService:
             self.driver, planned, snapshot,
             prewar_arbitration=prewar_arbitration,
             **({"wartime_arbitration": True} if wartime_arbitration else {}),
+            **({"relationship": education_relationship}
+               if education_relationship is not None else {}),
         )
         return mark_ordinary_review(self._plan_private_family_education_v1(
             family, snapshot, relationship=education_relationship))

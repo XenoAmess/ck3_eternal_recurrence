@@ -30,6 +30,42 @@ STEP = "query-current-first-heir-relationship-v1-private"
 SCHEMA = "xar.ck3.current-first-heir-relationship.v1"
 
 
+def _relationship_native_frame_v1(snapshot: object) -> dict[str, object] | None:
+    """Project only an observed complete owner/native frame; never refresh it."""
+    if not isinstance(snapshot, dict):
+        return None
+    played, diagnostics = snapshot.get("played_character"), snapshot.get("diagnostics")
+    if not isinstance(played, dict) or not isinstance(diagnostics, dict):
+        return None
+    fields = {
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "actor_character_id": played.get("character_id"),
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "bridge_pid": diagnostics.get("bridge_pid"),
+        "connection_generation": diagnostics.get("connection_generation"),
+    }
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or played.get("alive") is not True
+            or any(type(fields[key]) is not int or fields[key] <= 0 for key in (
+                "native_revision", "actor_character_id", "bridge_pid", "connection_generation"))
+            or type(fields["date_raw"]) is not int
+            or not isinstance(fields["episode_run_id"], str) or not fields["episode_run_id"]):
+        return None
+    try:
+        return {**fields, **private_native_provenance(snapshot)}
+    except BridgeUnavailableError:
+        return None
+
+
+def _relationship_public_frame_v1(snapshot: dict[str, object]) -> dict[str, object] | None:
+    identifier, revision = snapshot.get("snapshot_id"), snapshot.get("revision")
+    if (not isinstance(identifier, str) or not identifier
+            or type(revision) is not int or revision < 0):
+        return None
+    return {"snapshot_id": identifier, "revision": revision}
+
+
 _CHILD_MATERIALS = "current_child_relation_materials_v1"
 _MATERIAL_SIDECAR_READ_LIMIT = 4 * 1024 * 1024
 
@@ -450,6 +486,19 @@ def query_current_first_heir_relationship_private_v1(
             derive_family_generation_education_decision_inputs_v1(descendants)
         )
     def finish(family: dict[str, object]) -> dict[str, object]:
+        native_before = _relationship_native_frame_v1(before)
+        native_after = _relationship_native_frame_v1(after)
+        public_before = _relationship_public_frame_v1(before)
+        public_after = _relationship_public_frame_v1(after)
+        if (family.get("status") == "available" and native_before is not None
+                and native_before == native_after and public_before is not None
+                and public_after is not None
+                and public_after["revision"] >= public_before["revision"]):
+            family = {**family, "source_frame": {
+                "binding_scope": "query_before_after_native_frame",
+                "native_frame": native_before,
+                "public_before": public_before, "public_after": public_after,
+            }}
         if include_relation_materials:
             return _attach_same_query_relation_materials(
                 family, frame=frame, request_id=request_id,
