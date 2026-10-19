@@ -154,6 +154,8 @@ class SmallNativeDriver(NativeHeadlessGameplayDriver):
         self._driver_state_lock = threading.RLock()
         self._history_lock = threading.RLock()
         self._rollback_war_failures = []
+        self._succession_expectation = None
+        self._succession_reconciliation = None
         self._command_history = OpaqueHistory(forbid_copy=poison_history)
         self.transport = FakeNativeTransport()
         self.semantic_frames: list[dict[str, object]] = []

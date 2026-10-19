@@ -1,0 +1,60 @@
+{
+  "schema": "xar.service-history79-fixture-ci-correction.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine actual read; chunk 2f9b91",
+  "observed_at_utc": {"start": "2026-10-19T05:07:40Z", "tests_complete": "2026-10-19T05:08:12Z"},
+  "source_head_before_fix": "77d715965b5ce3516432fd4a38caaea723129475",
+  "original_ci": {
+    "run_id": 39201366343,
+    "job_id": 117894839369,
+    "step": 40,
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39201366343/job/117894839369",
+    "github_runner_machine_id": "unknown",
+    "status": "RED_preserved",
+    "step_started_utc": "2026-10-19T05:05:09.8153974Z",
+    "four_errors_summary_utc": "2026-10-19T05:05:10.9612295Z",
+    "error": "AttributeError: 'SmallNativeDriver' object has no attribute '_succession_expectation'",
+    "excerpt": {
+      "path": "_runtime/ci-job-117894839369-failure-excerpt.json",
+      "bytes": 17989,
+      "sha256": "0efed3321462ceb7010981421db3563539a63a106a254eedbcf3d37e6e37e965",
+      "query_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "query_observed_utc": "2026-10-19T05:06:47.076878Z",
+      "source": "perf_planner read-only gh job log stream; full log not copied; this task consumed only bounded excerpt",
+      "availability": "local original excerpt; remote job URL and literal failure summary retained here if the local derived excerpt expires"
+    }
+  },
+  "correction": {
+    "path": "ck3_autonomous_player/tests/unit/test_service_query_history79.py",
+    "bytes": 18115,
+    "sha256": "9f364f37e0dcf0352558500ba525e61ec357984f39bb52979fbd2ad18e100ee2",
+    "change": "SmallNativeDriver.__init__ initializes _succession_expectation and _succession_reconciliation to None, matching production NativeHeadlessGameplayDriver.__init__ lines 2119-2120",
+    "reason": "The synthetic subclass bypasses production construction. Both previous-call and current Service methods inherit the fresh-root hook and reach its real Driver API; raw_driver['succession_expectation'] does not initialize the private attribute.",
+    "lines_added": 2,
+    "production_files_changed": 0,
+    "workflow_changed": false,
+    "assertions_or_history_calibration_weakened": false
+  },
+  "workflow_source": {
+    "path": ".github/workflows/static-ci.yml",
+    "lines": "185-193",
+    "bytes": 55185,
+    "sha256": "5c7e34c9ddac863f30c18d81c76b7b278c5e5870452ba550a0b44646b7b20d67",
+    "environment": {"PYTHONPATH": "workspace root;workspace root/ck3_autonomous_player/src", "PYTHONDONTWRITEBYTECODE": "1"}
+  },
+  "local_validation": [
+    {
+      "command": "python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_service_query_history79.py",
+      "scope": "the four original failed cases, once",
+      "chunk": "1dbe3b", "tests": 4, "seconds": 0.326, "exit_code": 0, "status": "OK"
+    },
+    {
+      "command": "python -X utf8 -m unittest discover -s ck3_autonomous_player/tests -p test_gameplay_mcp_packet_reader_warm.py",
+      "scope": "same workflow step's subsequent existing consumer, once",
+      "chunk": "3cc823", "tests": 1, "seconds": 0.111, "exit_code": 0, "status": "OK",
+      "actual_runtime_restore_or_gameplay_credit": false
+    }
+  ],
+  "qualification": {"local_software_only": true, "remote_rerun_green_claimed": false, "other_inflight_CI_status_inferred": false, "production_M3_or_runtime_C4_refrozen": false, "Game_Native_MCP_desktop_calls": 0, "live_Driver_or_SAVE_reads": 0, "stage_commit_push_by_this_task": false},
+  "storage": {"policy_version": "1.0.0", "new_tracked_outputs_below_bytes": 16384, "heavy_write": false, "files_deleted": 0, "record_review_at_utc": "2027-04-17T05:08:12Z"}
+}
