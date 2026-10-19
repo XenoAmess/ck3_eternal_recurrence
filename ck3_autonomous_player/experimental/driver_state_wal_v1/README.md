@@ -3,15 +3,14 @@
 This is **uninstalled, default-off research code**. Committing this directory does
 not change the production SDK. No Game or native bridge acceptance is claimed.
 
-`driver_state_wal_v1.py` is the prospective package module. The two patches are
-complete, narrow diffs against the pinned source leaves in `SOURCE-PINS.json`:
+`driver_state_wal_v1.py` is the preserved experimental helper. The two patches
+are historical diffs against the pinned source leaves in `SOURCE-PINS.json`:
 `ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py` and
-`ck3_autonomous_player/src/xar_autoplayer/native_session.py`. Before a controlled
-SDK generation uses them, copy the helper to
-`src/xar_autoplayer/bridge/driver_state_wal_v1.py`, rebase both patches against
-that generation, run the tests, and keep the opt-in environment variable unset
-until its startup and recovery contracts are reviewed. Neither patch belongs in
-a running or frozen SDK tree.
+`ck3_autonomous_player/src/xar_autoplayer/native_session.py`. The current SDK
+has its own [production contract](../../../docs/ck3-native-ai/driver-state-wal-production-candidate-2026-10-20.md).
+Do not replace that helper or apply these patches to it. Reproducing an earlier
+experimental qualification requires its pinned pre-production source generation;
+neither historical patch belongs in a running or frozen SDK tree.
 
 The active base is a sealed v3 envelope. An old direct reader cannot extract its
 pipe, checkpoint, or history and must reject it. A new reader accepts only the
@@ -39,12 +38,18 @@ whole base. This avoids re-reading and parsing the full base on every journal
 append without using stat metadata as a cold recovery proof.
 
 `test_portable.py` accepts `XAR_WAL_PUBLIC_REPO` or finds its containing checkout.
-It copies only the two source leaves to a temporary directory, applies the
-patches there, loads the real Driver and cold validator, and tests default-off,
+The historical helper is loaded under its own experimental namespace. Since
+the production WAL candidate was installed, integration cases import the actual
+production Driver/helper and cold validator directly; they neither copy an SDK
+nor apply the old patches again. The patches remain historical evidence for
+their `SOURCE-PINS.json` baseline, not current production overlays. Cases test default-off,
 strict route results, hot append and tamper rejection, reader rejection, SAVE,
 normal close, materialization, and journal corruption. It does not contact CK3.
 The actual-route microfixture records its immutable source file and SHA but
-contains no machine path or process binding. The larger prior fault suite and
+contains no machine path or process binding. Synthetic daily results carry the
+real exact-clock proof; namespace and writer-OFF bad/missing-pair checks protect
+the installed reader. This checks forward pairing compatibility, not a new
+qualification of the historical patched SDK. The larger prior fault suite and
 closed 33.5 MB benchmark remain in the external development packet.
 
 The [2026-10-19 bounded qualification](../../../docs/ck3-native-ai/evidence/driver-wal-qualification-2026-10-19.json)

@@ -1,0 +1,173 @@
+{
+  "schema": "xar.ck3.ci367-experimental-production-wal-pairing-fix/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:13:19.904301+00:00",
+  "machine_id_source": {
+    "command": [
+      "py",
+      "-B",
+      "tools/ck3_live_run_id.py",
+      "machine"
+    ],
+    "stdout": "xenoamess-full-tower-eb9d2c1186",
+    "tool_chunk": "afc78c"
+  },
+  "status": "SOURCE_READY_LOCAL_FOCUSED_PASS_REMOTE_CI_PENDING",
+  "ci_failure": {
+    "commit_short": "36717710",
+    "run_id": "39297197779",
+    "job_id": "118212675771",
+    "step_number": 58,
+    "step_name": "Test experimental Driver WAL pairing without CK3",
+    "failure_window_utc": [
+      "2026-10-19T18:03:08Z",
+      "2026-10-19T18:03:09Z"
+    ],
+    "outcome": "six setup errors before business assertions",
+    "cause": "The test copied current production sources and applied the historical bridge-native_driver.py.patch again. The old constructor hunk failed at native_driver.py:2113; production journal state was not involved.",
+    "evidence": {
+      "source": "Root-provided bounded actual failure excerpt; no further log download/read",
+      "path": "_runtime/ci-job-118212675771-failure-excerpt.json",
+      "bytes": 71896,
+      "sha256": "812b4cf890ec207ce7fe8bbb320442cf9f2950004985eca0a9847521df8f1ef6",
+      "truncated_repeated_tail": true
+    },
+    "ci_test_source_actual_git_read": {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py",
+      "bytes": 12550,
+      "sha256": "ba127391f44cf46ed335e47b36a1c3ebd3263fa062d5bdf6621fc016adeed8fd",
+      "git_source": "36717710:path",
+      "setup_line": 106,
+      "git_apply_line": 50
+    }
+  },
+  "changes": [
+    "Load the preserved experimental helper only as xar_experimental_driver_state_wal_portable_v1; never replace xar_autoplayer.bridge.driver_state_wal_v1.",
+    "Import the real production Driver, helper and native-session cold consumer directly. Remove all temporary SDK/Driver copies and git apply.",
+    "Retain the six original risk categories, use a real exact-clock daily shape and canonical lifecycle, and create the enabled adoption full barrier before a delta.",
+    "Current materialization uses the production companion-custody contract with an explicitly staged empty native-session directory; historical corrupt-pair assertions still exercise the unchanged experimental helper.",
+    "Add namespace identity and installed-reader writer-OFF malformed/missing-pair regressions.",
+    "Rename the test class and workflow label to state historical-helper/production pairing. README marks old patches as historical SOURCE-PINS overlays, not current SDK install instructions."
+  ],
+  "qualification": {
+    "command": [
+      "py",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py"
+    ],
+    "exit_code": 0,
+    "tests_passed": 8,
+    "pytest_seconds": 1.27,
+    "tool_wall_seconds": 1.807609,
+    "tool_chunk": "5bb574",
+    "scope": "Only the failed six pairing cases plus namespace and installed-reader isolation. No historical benchmark or unrelated matrix rerun.",
+    "categories": [
+      "default OFF and strict route exact delta",
+      "strict route interruption/mutated-clock fallback",
+      "second append avoids base read and rejects base identity tamper",
+      "cold reader rejection, full barrier, closed materialization",
+      "missing/reordered/truncated/foreign sealed pair",
+      "SAVE receipt and normal close full barriers",
+      "experimental/production namespace separation",
+      "installed reader rejects malformed or missing pair even writer OFF"
+    ],
+    "git_diff_check_exit_code": 0,
+    "remote_ci_rerun": "not performed by this owner",
+    "live_journal_corruption_claim": false
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py",
+      "bytes": 14303,
+      "sha256": "53580d35804f778287a6a99c6e7f679ac7c7bc4f589d3b6be0e446a3750273a3",
+      "before_bytes": 12550,
+      "before_sha256": "ba127391f44cf46ed335e47b36a1c3ebd3263fa062d5bdf6621fc016adeed8fd",
+      "net_bytes": 1753,
+      "patch_bytes": 12872,
+      "patch_sha256": "6f2643a845684dfe2d2e202c01655537bc5ea07925c5c134aeb3786c15128a5e"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/README.md",
+      "bytes": 4600,
+      "sha256": "e9a2f6834237051d7cb73b52450391d4d63b47810ff254d568c54f93a853d0d0",
+      "before_bytes": 4095,
+      "before_sha256": "60d35a524be1242096a03a90c283398867bf4fc287e67ac7d24984e31046d3f5",
+      "net_bytes": 505,
+      "patch_bytes": 3521,
+      "patch_sha256": "591c059178eb1da93d3b11201c74f620309c4808bfd207ded6ff3f9d6dad1537"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 62261,
+      "sha256": "5924b29da7fc4810520e16d48bb0ddb0e993a7f18510ea48521d3994e930dfb6",
+      "before_bytes": 62241,
+      "before_sha256": "13816b3bab0d79a084ba3d824c2a1304259c1743ea05718b0ed969bce46d006b",
+      "net_bytes": 20,
+      "patch_bytes": 1850,
+      "patch_sha256": "28ecce44006db81e8942a57525c2e8834ce4677273ede542e19bc751b3df200c"
+    }
+  ],
+  "preserved_sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "bytes": 23998,
+      "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d",
+      "role": "production helper unchanged"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/driver_state_wal_v1.py",
+      "bytes": 20272,
+      "sha256": "fdca7355377e957bbbcffcef509988e3f34f488ef3340256dfdf7214534303c1",
+      "role": "historical helper unchanged"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+      "bytes": 15292,
+      "sha256": "f695f9c6a08688da15db51932b0a8ed7c74e1ec4ab66e9201c1f970b115304ac",
+      "role": "historical patch unchanged, not applied"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/native_session.py.patch",
+      "bytes": 1265,
+      "sha256": "553029dd5acbc1f641cef3e409738b188e67abb9dab0571fc6ceba170bf54e29",
+      "role": "historical patch unchanged, not applied"
+    }
+  ],
+  "production_boundary": {
+    "repository_production_sources_changed": 0,
+    "current_sdk_source_reads_or_writes": 0,
+    "current_driver_body_reads_or_writes": 0,
+    "current_save_or_wal_reads_or_writes": 0,
+    "game_or_native_rpc": 0,
+    "task_calls": 0,
+    "runtime_flag_changes": 0,
+    "new_runtime_adoption_credit": 0
+  },
+  "storage": {
+    "admission_path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M1-CI367-WAL-FIX-SOURCE64KiB-COMMITMENT01.json",
+    "admission_bytes": 2039,
+    "admission_sha256": "1569121402f1097e673a067d302cef8cca1075edc7d32cf0d7974e6072e5cf89",
+    "admission_actual_read_tool_chunk": "91ecb3",
+    "hard_bytes": 65536,
+    "source_net_excluding_receipt_bytes": 2278,
+    "full_unified_patches_excluding_receipt_bytes": 18243,
+    "receipt_hard_upper_bytes": 8192,
+    "synthetic_scratch_upper_bytes": 32768,
+    "scratch_upper_kind": "Conservative analytical upper, not a sampled peak: sequential TemporaryDirectory cases, <=3 small history rows each; route result JSON 1568B. No SDK copy, no subprocess git apply, no bytecode or pytest cache.",
+    "conservative_complete_upper_bytes": 59203,
+    "actual_scratch_peak_bytes": null,
+    "retained_external_scratch_bytes": 0,
+    "allocated_bytes": null,
+    "physical_release_credit_bytes": 0,
+    "source_producer_closed": true,
+    "future_writes_after_receipt": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+  }
+}

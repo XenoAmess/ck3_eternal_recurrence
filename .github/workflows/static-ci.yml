@@ -259,7 +259,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py ck3_autonomous_player/tests/unit/test_pending_arrange_marriage_source_v1.py ck3_autonomous_player/tests/unit/test_pending_interaction_left_fallback.py ck3_autonomous_player/tests/unit/test_faction_gift_wartime_cash_v1.py ck3_autonomous_player/tests/unit/test_player_heir_candidate_component_v1.py ck3_autonomous_player/tests/unit/test_native_loaded_provider_custody_v1.py ck3_autonomous_player/tests/unit/test_native_loaded_provider_windows_v1.py ck3_autonomous_player/tests/unit/test_family_same_call_relationship_v1.py tools/g2_saved_campaign/test_export_immutable_sdk_views_v1.py ck3_autonomous_player/tests/unit/test_enemy_already_combat_one_day_watch.py tests/test_shared_harness_reads.py tools/g2_saved_campaign/test_readonly_precondition_portable_v1.py tools/g2_saved_campaign/test_owner_response_json_once_v1.py
-      - name: Test experimental Driver WAL pairing without CK3
+      - name: Test historical helper and production Driver WAL pairing without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py
       - name: Test exact-day hostile scope and local runner recovery without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_route_contact_exact_day_war_scope_v1.py tests/test_zero_rpc_optional_research.py tests/test_runner_preflight.py
