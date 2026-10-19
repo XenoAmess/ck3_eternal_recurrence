@@ -1,0 +1,183 @@
+{
+  "schema": "native30-camera-follow-readonly-source-review-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T13:46:56.955539+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine actual output in this turn",
+  "status": "AUTHORED_NOTRUN_SOURCE_ONLY",
+  "scope": "Root-authorized independent <=64KiB code3 review; reader header/cpp/fixture <=16KiB; no compile/Game/RPC/source freeze change",
+  "authored": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/include/xar_bridge/camera_follow_readonly_12004.hpp",
+      "bytes": 1592,
+      "sha256": "d9b33385a5c66481b6f84d07e313864c77ef4c6e91237f39b17eae828f863bf6"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/camera_follow_readonly_12004.cpp",
+      "bytes": 10334,
+      "sha256": "073964b8bc00a469a51ac87ec042a95120615ad1225f0c215f7870f20f663539"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/tests/camera_follow_readonly_12004_fixture.cpp",
+      "bytes": 3844,
+      "sha256": "92bb42a9733a7162af22ab880ac9bf31f93528e7d16498983ee690593a44b247"
+    }
+  ],
+  "authored_total_bytes": 15770,
+  "retained_source_pins": {
+    "core": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12004_abi_profile.cpp",
+      "bytes": 12698,
+      "sha256": "628d752540de8e4726ce0074f8f5c36e444158a9ed364c68f714ad48d886bcb8",
+      "span": "51-94: direct core, player-manager entries <=1024; no UI cache"
+    },
+    "core_header": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004.hpp",
+      "bytes": 2922,
+      "sha256": "03f3487d485c75996a9f1bd022f2454cae04ea1f2293aa6d62441ed294e203e6",
+      "span": "exact .4 SHA, slots and actor/death offsets"
+    },
+    "clock": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/tactical_daily_sentinel_v1.cpp",
+      "bytes": 43967,
+      "sha256": "25f16c2d21bba1a040abff4bc2876366109dcfdcb70aa9307d7ecc9cbde889a5",
+      "span": "131-206 full-ID component/army; 252-278 combat; 749-792 status"
+    },
+    "clock_binder": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12004_tactical_daily_sentinel.cpp",
+      "bytes": 2428,
+      "sha256": "e7ed46c69742174053842556ebdb0c1c51039e894745126d6375bb759d78a2ba",
+      "span": "5-20 .4 unit/internal/combat slots"
+    },
+    "army": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "bytes": 84331,
+      "sha256": "d249453cec59c6044b047c24ecebabcbf40ef5b1192841006a0998ad20d68779",
+      "span": "1283/1578 owner+174; full roster reader deliberately not called"
+    },
+    "province": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12002_province.cpp",
+      "bytes": 21143,
+      "sha256": "f02efc77b4df2af6d8ebec6a90f525f7376cc946a8e378cf8792c653c64e17e9",
+      "span": "145-154 Province array/ID/tag roundtrip"
+    },
+    "combat": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12002_combat.cpp",
+      "bytes": 96966,
+      "sha256": "ead8df00d5da543bbcc7ca2c5759e3ff07e8dd963f1f5970efe9e33e74039514",
+      "span": "25 province+6B8; 1266-1288 roundtrip/phase"
+    },
+    "events": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/src/ck3_12004_snapshot_foundation.cpp",
+      "bytes": 9642,
+      "sha256": "73c712d4d7be7d2e8846810121fbe342bd72d27745035b60fe34b4f120927720",
+      "span": "46-113 event/pending validation; capacity+2C is slots, not active count"
+    },
+    "events_header": {
+      "path": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_snapshot_foundation.hpp",
+      "bytes": 2911,
+      "sha256": "664e55facbe73ab7941a274c2324b89b15f28959fb358be1b8ec6176a84f5f8d",
+      "span": "11-17 actual .4 event/pending callback RVAs"
+    }
+  },
+  "current_source_pins": {
+    "modal": {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/ck3_12004_modal_choice_port_v1.cpp",
+      "bytes": 26599,
+      "sha256": "131ba4e6675c20b34867e778e1bec97252f39029a618a6a4c119fc15f19f3564",
+      "span": "151-197 bounded direct modal memory read, no GUI input",
+      "compiled_Native29_adoption": "not established by this receipt"
+    },
+    "gui": {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_state_v1.cpp",
+      "bytes": 104731,
+      "sha256": "8c21157bc4316fb1fdcfcc765a1f835689483df83d6797c8287d44a7e62e6dfe",
+      "span": "780-808 direct GUI pointer chain; no native callback",
+      "compiled_Native29_adoption": "not established by this receipt"
+    },
+    "worker_cache": {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "bytes": 44661,
+      "sha256": "ba2265b777fe6b52089a23aa5912b9f4cb47e7bfc388245084116852d6b434ba",
+      "span": "248 full DTO copy; 267-273 restamps cache epoch inside 250ms, not fresh UI evidence",
+      "compiled_Native29_adoption": "not established by this receipt"
+    },
+    "pump": {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/main_thread_query_mailbox_v1.cpp",
+      "bytes": 112883,
+      "sha256": "5c9a954993e3d84df75b76d147a3a55de3da1de84ad04b4627aa5b7290fc4618",
+      "span": "1865-1896 observer then idle-only presentation; gameplay may queue after idle check",
+      "compiled_Native29_adoption": "not established by this receipt"
+    }
+  },
+  "actual_bridge": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p26-all-lifestyle-frontier01/jobs/47f64e761c49/bridge.cpp",
+    "bytes": 1600530,
+    "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9",
+    "pin_source": "existing Native26/29 frozen closure, not rehashed by this producer",
+    "spans": {
+      "596-615": "owner observer directly calls public modal hint each eligible pump",
+      "12274-12287": "actual .4 GUI environment and chained observer install",
+      "12383-12387": "camera idle callback install",
+      "29457-29462": "ConnectToHost success -> RunConnectedSession -> CloseHandle; proposed native connection epoch fences"
+    },
+    "historical_compile_machine_id": "unknown"
+  },
+  "design": {
+    "thread": "caller must independently prove current main-thread stamp/TLS, native connection active+epoch, mailbox idle and request lease; recheck before writing camera",
+    "pointer_lifetime": "every full ID is resolved again in this call; all pointers local; no pointer retained in Frame",
+    "actor": "two direct core reads must agree on live local actor, player ID, date, paused, map readiness and game-state pointer",
+    "army": "one regular CUnit full-ID; owner==actor; CArmy full-ID and public back-reference; reread both component identities, owner, province pointer and combat ID at end",
+    "position": "Province+10 positive ID, +85C Prov tag, current GameData array pointer roundtrip; optional current combat+6B8 province uses same roundtrip",
+    "battle": "full combat ID resolves, phase 0..3, not finalized and not updating; otherwise cancel rather than reuse old location",
+    "ui": "direct modal must be known absent; any ordinary current event cancels; pending follows existing recipient/predicate/reply-validator semantics; no commands queued",
+    "scope": "existing Native sentinel must remain armed with exact uint64 generation/start/target; reader never Arms or Cancels it; status does not expose watched IDs and does not prove subject membership",
+    "map_point": "M0 resolves finite request ProvinceID/canonical-title whitelist and title->Province native roundtrip, then existing bounds; no guessed Province reverse pointer or old static coordinate",
+    "priority": "existing mailbox idle gate first; new M0 request/owner epoch fence plus idle recheck before camera writes; no gameplay locks, tickets, waits, speed/pause changes or full army scan"
+  },
+  "pending_capacity_boundary": {
+    "source_field": "storage+2C high-water slot capacity; each slot+8 may be null or historical/ineligible",
+    "active_count": null,
+    "maximum_slots": 4096,
+    "over_cap": "false, complete=false, ui_clear=false; capacity retained diagnostically, zero slots visited; NEVER absence/truncation",
+    "actual_ordinary_capacity": null,
+    "actual_ordinary_coverage": "unknown; arbitrary cap alone cannot prove real tracking availability",
+    "fixture_meaning": "authored same production PendingClear algorithm: sparse/empty capacity256, inactive historical slot, one active final slot, validator-negative, notification, empty4096, over4097, negative count and missing slots",
+    "fixture_executed": false
+  },
+  "upper_bounds_per_reader_call": {
+    "subjects": 1,
+    "native_core_calls": 2,
+    "core_player_manager_entries": "<=1024 per core read, <=2048 total",
+    "public_modal_calls": 1,
+    "modal_receiver_entries": "<=256 plus constant stability rereads",
+    "current_event_native_calls": 1,
+    "pending_slots": "P<=4096, complete coverage required",
+    "pending_is_pending_native_calls": "<=P",
+    "pending_validate_reply_native_calls": "<=P",
+    "native_callback_total": "<=3+2P, <=8195; excludes direct memory/API loads, NOT a latency estimate",
+    "status_calls": 2,
+    "status_atomic_loads": "15 per call, <=30 total; no seqlock coherence claim",
+    "full_world_army_scans": 0,
+    "county_bounds_scans": 0,
+    "warning": "Worst-case bound is substantial for a frequent owner pump. No cost/ordinary capacity measurement exists; 200ms cadence alone does not qualify latency. Unknown cancels; no performance gain asserted."
+  },
+  "checks": {
+    "git_diff_check": "PASS (named leaves)",
+    "compiler": "NOTRUN by authorization",
+    "fixture": "AUTHORED_NOTRUN",
+    "Game": "NOTRUN",
+    "Native29_new_credit": false
+  },
+  "remaining_qualification": [
+    "Native30 future clean closure must compile these exact sources and dependencies; no CMake/build or ABI adoption asserted here",
+    "M0 supplies native connection epoch + current main-thread/idle/request lease gates; not SDK self-reported connection",
+    "Offline full reader fault/generation/owner/UI/position fixtures and actual ordinary slot capacity/latency before claiming availability",
+    "Natural camera follow pixels/positions/cancel/queued-gameplay and UI priority acceptance belong to future sole runtime; no live authorization in this package"
+  ],
+  "storage": {
+    "future_writes": 0,
+    "external_outputs": 0,
+    "allocated_bytes": null,
+    "physical_credit": 0
+  }
+}

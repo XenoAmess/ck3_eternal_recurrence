@@ -1,0 +1,52 @@
+{
+  "scope": "OWNED_PYTHON_TINY_FILES_AND_SYNTHETIC_PARSER_ONLY",
+  "processes": [
+    {
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-c",
+        "from pathlib import Path; Path('Z:\\\\ck3_mod_rewrite\\\\.codex-tmp\\\\native30-producer-owned-test01\\\\test_actual_owned_normal_process\\\\normal.bin').write_bytes(b'x'*32)"
+      ],
+      "pid": 185648,
+      "start_utc": "2026-10-19T15:36:53.710420+00:00",
+      "end_utc": "2026-10-19T15:36:53.969509+00:00",
+      "returncode": 0,
+      "owned_active_after": 0,
+      "log": {
+        "path": "Z:\\ck3_mod_rewrite\\.codex-tmp\\native30-producer-owned-test01\\test_actual_owned_normal_process\\child.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "CPP_compile_or_run": 0,
+  "Game_OBS_MCP": 0,
+  "peak_eof": 4096,
+  "peak_allocation": 5096,
+  "FileStandardInfo": {
+    "eof": 17,
+    "allocation": 24
+  },
+  "guard_stop": "real owned Job stop+active0 readback required by run_owned; no PID enumeration",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "utc": "2026-10-19T15:36:54.464887+00:00",
+  "tests": 11,
+  "failures": 0,
+  "errors": 0,
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\build_native30_wholeclean_20261019.py",
+    "bytes": 34947,
+    "sha256": "db51b7e5b37083cf803f4b1611dd714dec197f4e0c559a688d22781f2ef07c00"
+  },
+  "test_source": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_native30_wholeclean_producer_20261019.py",
+    "bytes": 9641,
+    "sha256": "2a471a9b15ddefb9dc3709dce7007dd2b39b0796664ef5c01a092b38575953eb"
+  },
+  "final_scratch_eof": 0,
+  "final_scratch_allocation": 0,
+  "future_writes": 0,
+  "qualified": "PRODUCER_MECHANICS_ONLY_NOT_CPP",
+  "owned_root_absent": true
+}

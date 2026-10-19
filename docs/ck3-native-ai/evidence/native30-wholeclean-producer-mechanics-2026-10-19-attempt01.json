@@ -1,0 +1,32 @@
+{
+  "scope": "OWNED_PYTHON_TINY_FILES_AND_SYNTHETIC_PARSER_ONLY",
+  "processes": [],
+  "CPP_compile_or_run": 0,
+  "Game_OBS_MCP": 0,
+  "peak_eof": 1451,
+  "peak_allocation": 1464,
+  "FileStandardInfo": {
+    "eof": 17,
+    "allocation": 24
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "utc": "2026-10-19T15:21:16.163017+00:00",
+  "tests": 8,
+  "failures": 0,
+  "errors": 2,
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\build_native30_wholeclean_20261019.py",
+    "bytes": 28729,
+    "sha256": "0f549e6941bac5299da3173432cbba5b465f9663325273fe8d7e9ba1441fde57"
+  },
+  "test_source": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_native30_wholeclean_producer_20261019.py",
+    "bytes": 8167,
+    "sha256": "84b1a24c3f277134535908bd2768cc00d7186275482a5b638a51c651a182b97e"
+  },
+  "final_scratch_eof": 0,
+  "final_scratch_allocation": 0,
+  "future_writes": 0,
+  "qualified": "PRODUCER_MECHANICS_ONLY_NOT_CPP",
+  "owned_root_absent": true
+}

@@ -10008,3 +10008,6 @@ include(cmake/rite_creation_actions12004.cmake)
 
 # Exact4 typed relic UI; selection and original buttons have explicit separate opt-ins.
 include(cmake/holy_site_relic_typed_ui12004.cmake)
+
+# Optional header-only companion; inherits production compile properties.
+include(cmake/native_layout_report_v1.cmake)

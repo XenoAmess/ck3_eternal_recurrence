@@ -1,0 +1,251 @@
+{
+  "schema": "xar.native30-continuous-camera-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:02:58.821609+00:00",
+  "status": "SOURCE_FROZEN_PYTHON_PASS_CPP_AUTHORED_NOT_RUN_NO_ACTUAL_TRACKING_CREDIT",
+  "head_metadata_basis": "a45fa372b6c51cbf64ffc4400b6844333b6b626d",
+  "production_and_owned_test_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/camera_tracking_v1.hpp",
+      "bytes": 4626,
+      "sha256": "2208a68383a8f7545c058ccd04ab179aa0f450c9c807e8b23b2c1fa48f4b4fe3",
+      "head_bytes": 0,
+      "net_bytes": 4626
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/camera_tracking_v1_test.cpp",
+      "bytes": 2626,
+      "sha256": "abe6400b1e2c808b7d85e9067b69163ab1be3eb268685faf7c08e90e7f9498fa",
+      "head_bytes": 0,
+      "net_bytes": 2626
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/camera_presentation_v1.hpp",
+      "bytes": 4709,
+      "sha256": "3aa1c50cadecec4e8b2107286f9de6b6e10cdcfbcbd5c1cd5b4fb28c0958070a",
+      "head_bytes": 3124,
+      "net_bytes": 1585
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/camera_presentation_v1.cpp",
+      "bytes": 28276,
+      "sha256": "0ba345a1fcb336c40bb2581d29ef300c373c0012ba46df04e478df51126ff24d",
+      "head_bytes": 15775,
+      "net_bytes": 12501
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1605122,
+      "sha256": "975cad765a74c388cfa9dd5849d82b0dbe3091e4b6aa39273138a50279970a7e",
+      "head_bytes": 1604573,
+      "net_bytes": 549
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/cmake/realm_camera_presentation_v1.cmake",
+      "bytes": 3441,
+      "sha256": "7fe98ee6a48eb75fffba4166e2ac302088ff07113ee8ece69b9c688b8c155b7f",
+      "head_bytes": 2030,
+      "net_bytes": 1411
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/camera_tracking_v1.py",
+      "bytes": 7621,
+      "sha256": "b202796bbeecd911ab608855dd09014ff9ecf8d551babb96f51fdd717832ef8c",
+      "head_bytes": 0,
+      "net_bytes": 7621
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 18206,
+      "sha256": "8ac023d51c8f36ec96d40df0da745f20b2e79aed8c43c365a9260e080fa074ec",
+      "head_bytes": 13511,
+      "net_bytes": 4695
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_pre_advance_v1.py",
+      "bytes": 4070,
+      "sha256": "186f0fcbe218cfc14987bcae2a9b3bb946f9cd2abdf328da56352aa011b51ad9",
+      "head_bytes": 3914,
+      "net_bytes": 156
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1622527,
+      "sha256": "9480fe56b5693d1d7d8c73bd02a363070ce19e523b821d257fd67ad79a90b10c",
+      "head_bytes": 1622303,
+      "net_bytes": 224
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 891014,
+      "sha256": "9c293647d45273ef725cbb6657de1c935ce04a5985efc10b9d5248cd1211b14f",
+      "head_bytes": 880676,
+      "net_bytes": 10338
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_camera_tracking_v1.py",
+      "bytes": 8150,
+      "sha256": "62f65d7094d20e33b8cb66ca533ce78f057ca201dc38bb4b032641986bcfe46b",
+      "head_bytes": 0,
+      "net_bytes": 8150
+    },
+    {
+      "path": "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+      "bytes": 21432,
+      "sha256": "878136529665936ac076b0e175e1a511d9912a6e6a9213879eb564be169d0e92",
+      "head_bytes": 18915,
+      "net_bytes": 2517
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_camera_target_backoff_v1.py",
+      "bytes": 12646,
+      "sha256": "08a7951548c70718518d0ce7ae00db560eb9d941903fffdfe95b35e6b510dff0",
+      "head_bytes": 12483,
+      "net_bytes": 163
+    }
+  ],
+  "separately_budgeted_M1_and_readonly_reader_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/camera_follow_readonly_12004.hpp",
+      "bytes": 2325,
+      "sha256": "d3ba816252b14a009ed60e7c38de4b939fc1eada76c3ffd7ac98da64e1bd0456"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/camera_follow_readonly_12004.cpp",
+      "bytes": 12609,
+      "sha256": "7ccc59102188f283cdd4b528b56fd16dc56d4ccc21ae676c60e400d984d628fc"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/tests/camera_follow_readonly_12004_fixture.cpp",
+      "bytes": 4588,
+      "sha256": "ef24e0ee54d93d14d3371f253b6246f38d66d1a881a84c4ebf4284ae090cfc24"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/camera_settle_diagnostics_v1.hpp",
+      "bytes": 4223,
+      "sha256": "dbda4b07f1cb3025a5bb72e8c9cd8f84ad8dc11061e790a55f64edab3f3f7266"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/camera_settle_diagnostics_v1_test.cpp",
+      "bytes": 3195,
+      "sha256": "82c2aae00b1bd4a8d44421f27838ac0552f01e57b6427bda9b5d9c6accd5d5da"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/camera_settle_diagnostics_v1.py",
+      "bytes": 8684,
+      "sha256": "b232437c643f8bb285b1b4572705d71a39612032ffbafe4f968dfdd862060dc8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_follow.py",
+      "bytes": 10325,
+      "sha256": "6911578d47edefbc74f8f7ca89a8fc548536c9cae1e0971d3719b1349b86110e"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_camera_settle_diagnostics_v1.py",
+      "bytes": 9960,
+      "sha256": "92b2bb5d7e408089aa0743fc00c0c65f56da64f6d158fd8e68ae8b084b8be995"
+    }
+  ],
+  "scope": {
+    "current_Game_Native_MCP_desktop_OBS_or_live_Driver_SAVE_operations": 0,
+    "new_Native_build_or_compiler_calls": 0,
+    "target_runtime_writes": 0,
+    "stage_commit_push": false
+  },
+  "software_validation": {
+    "combined_command": "python -B -m pytest -p no:cacheprovider ck3_autonomous_player/tests/unit/test_camera_tracking_v1.py ck3_autonomous_player/tests/unit/test_camera_settle_diagnostics_v1.py ck3_autonomous_player/tests/unit/test_auto_camera_pre_advance_v1.py ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py ck3_autonomous_player/tests/unit/test_camera_target_backoff_v1.py ck3_autonomous_player/tests/test_realm_overview_camera.py -q",
+    "tool": "cd367f",
+    "result": "147 PASS",
+    "seconds": 3.95,
+    "failure_preserved": {
+      "tool": "c842d1",
+      "result": "144 PASS / 2 FAIL",
+      "cause": "old realm fixture bypassed constructor without new _tracking_binding and allocated only legacy region; fixed fixture now allocates full131072B and initializes both new optional fields"
+    },
+    "layout_optimization_negative": "poisoned new wire expected size under compile optimize=2 raises RuntimeError; production new module uses no assert layout guard",
+    "CPP": "tracking/diagnostic/pending fixtures authored; not compiled or executed"
+  },
+  "protected_Service_planner_AST_SHA256": {
+    "_plan_turn_internal": "8a1b2567db79b3ad0d1bea966af7a0be5ff6bd3e6004809f8726fbfa7bb0e08d",
+    "_plan_turn_internal_without_readonly_retry_v1": "66d1f5f88a1fab274c77afdda68f72983811f6ae41a91f3387ba813e227f94ab"
+  },
+  "implemented_contract": [
+    "Scope is one controllable own army from actual validated tactical sentinel watch IDs, not a world roster search. Native only supports capability mode4 and currently armed exact64bit generation/start/target with finite <=30game-day and <=120s request lease.",
+    "Every eligible idle pump re-resolves full CUnit/CArmy ID/backref/owner/retreat and Province/Combat identity. No native pointer is dereferenced across ticks. Combat sentinel is exactly -1; zero and signed generation IDs use battle province.",
+    "Native connection active+epoch comes from WorkerMain successful connection and RAII clear on ordinary/C++ unwind exit. Fresh owner-thread stamp GameState/Jomini integers are equality latches; zero/change cancels. Same-address reload is not proven as a complete world epoch.",
+    "At most32 current/route/target province/title entries; title->province Native roundtrip verifies each target. New battle location outside this finite set is unknown/cancel, never old-title substitution.",
+    "Reader callback checks queue idle/Native connection/request sequence/lease at begin, every32pending slots and before complete. reason18 yields this tick without any old-frame camera write; only finite lease remains, next idle attempt rescans fully. Gameplay clock is never cancelled/rearmed by camera.",
+    "Writes additionally recheck current mailbox idle, exact request sequence/expiry and Native owner epoch immediately before target writes. A disconnect after final atomic check remains a next-tick race boundary, not a zero-race promise.",
+    "Fresh actor/UI/event/pending/scope errors cancel. Partial pending scan is never UI-clear. Typed small result publishes state plus reader reason/capacity/visited/QPCelapsed; UINT64_MAX means clock unavailable. Pending capacity is not active count.",
+    "Mode4 request/result extension uses [0x18400,0x1a400), exact Request4264/Result80/Shared4384 and seqlocks; legacy Request168/Result65640/Shared65832 unchanged. M1 diagnostic168B region [0x18000,0x180a8) remains separate; mode4 does not claim its mode1/2 diagnostic scope.",
+    "No hotspot: default configurable10 real monotonic seconds, new activity/identity/game-date rollback/monotonic rollback reset. Overview requires a new complete source-frame marker after delay; paused/no new frame means no stale geometry action. Mandatory UI still cancels first. Refresh/backoff may remain30game days; retry reuses only intent already evaluated against that same fresh call.",
+    "Default tracking build OFF/missing Native capability stays unavailable. Native29/currentC15 unaffected. Source/Python scheduling is not proof of actual ongoing camera coverage, successful interpolation or measured throughput."
+  ],
+  "qualification_limits": [
+    "Native reader worst source bound8195callbacks + at most130cooperative callbacks; actual pending slot capacity, elapsed latency and gameplay fairness not measured",
+    "200ms eligibility interval is a throttle, not a performance guarantee; queued-mid-scan wait is bounded by next cooperative check, not a walltime guarantee",
+    "No actual new battle/movement/UI/connection preemption or post-action realm overview result observed on Native30",
+    "M1 diagnostics CPP and whole clean ABI/layout still require actual qualification"
+  ],
+  "native30_build_plan": {
+    "status": "PLAN_ONLY_PENDING_ROOT_STORAGE_ADMISSION_AND_BOUNDED_CONFIGURE",
+    "root": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01",
+    "hard_child_bytes": 1610612736,
+    "owned_TEMP_allowance_bytes": 402653184,
+    "workers": "at most4 BELOW_NORMAL, no /MP; source-root-only actual commands/dependencies",
+    "metadata_reference": {
+      "path": "docs/ck3-native-ai/evidence/native30-one-gib-phased-clean-build-budget-2026-10-19.json",
+      "sha256": "ac11b3484cf364ab2554dcfa9ee19c8f736855ae5961e2ca44959270c84bee31",
+      "scope": "historical finite estimates only; new Root choice1.5GiB supersedes1GiB candidate"
+    },
+    "source_snapshot_metadata": {
+      "Git_entries": 5342,
+      "Git_logical_bytes": 58224491,
+      "planned_with_pinned_new_camera_M1_reader_entries": 5349,
+      "planned_logical_bytes": 58274729,
+      "scope": "all committed Native subtree plus these exact WIP pins; no source export or AllocationSize measurement; not an already frozen physical tree"
+    },
+    "production_targets": [
+      "xar_ck3_bridge",
+      "xar_ck3_12002_runtime",
+      "xar_bridge_protocol"
+    ],
+    "feature_additions": [
+      "XAR_CK3_ENABLE_CAMERA_TRACKING_V1=ON",
+      "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1=ON",
+      "XAR_CK3_ENABLE_G2_PLAYER_HEIR_CANDIDATE_COMPONENT12004_V1=ON"
+    ],
+    "preserve": "All ordinary Native29 feature flags, combat/policies, Release x64 MSVC14.51 /MD C++20 /O2 /Ob2; no LTO/debug/incremental change for size. No old355object or612member archive reuse.",
+    "phases": [
+      "0 Root freezes all selected production/M1/heir/reader sources once. Exact dependency/macro/ABI source changes join same tree. No per-TU overlay/header forests.",
+      "1 Bounded configure + CMake FileAPI/Ninja metadata resolves actual3-target closure and explicitly named fixtures. Check all real sources/headers/macros/CRT/packing/no debugPDB/ILK/LTCG/noMP. Historical968occurrences is not a new graph count. Stop before compiler if unexpected closure or budget.",
+      "2 Under cumulative max(sumEOF,sumFileStandardInfoAllocation)<=1.5GiB guard plus separate storage global floor, run cmake --build <build> --config Release --target xar_ck3_bridge --parallel 4. This freshly builds its runtime/protocol dependency closure once; reserve <=384MiB owned TEMP and retain source/member/export/layout checks. No default ALL.",
+      "3 Verify successful production DLL/link/member/export/5exports and same-source ABI. Verify own compiler/librarian/link exited and owned TEMP gone before fixture phase. Unexpected lingering TEMP counts fully and stops progression; no imaginary cleanup credits or deleting failure evidence.",
+      "4 Build and run explicitly named fixtures sequentially with --parallel 1 under same total guard, new objects only. MSVC target /UNDEBUG follows Release /DNDEBUG on assert-based fixtures; inspect actual recipe. Do not compile duplicate bridge/presentation compile-only targets: production already covers same TUs.",
+      "5 Pin actual DLL/map/export/source/dependency/fixture results and sampled allocation. No CK3 deployment/restart from source qualification; Root separately authorizes actual adoption. Guard failure retains attempt and prevents auto retry/expansion."
+    ],
+    "four_camera_targets": [
+      "xar_ck3_camera_tracking_v1_test",
+      "xar_ck3_camera_settle_diagnostics_v1_test",
+      "xar_ck3_camera_follow_pending_v1_test",
+      "xar_ck3_realm_camera_geometry_v1_test"
+    ],
+    "other_necessary_named_checks": [
+      "xar_ck3_realm_camera_subrealm_v1_test",
+      "xar_ck3_12004_faction_adopted_whole_test",
+      "xar_ck3_main_thread_query_mailbox_v1_test --idle-presentation-only",
+      "M1 by-value DTO/SourceSample/generic/.2/.4 mailbox exact-layout report under selected compiler/CRT/packing; reporter target must be frozen by its owner before compile",
+      "M3 ON component3runtimeTUs/both macros/link/layout reachability; existing exact-source defaultOFF4/ON19 and SDK7+23 credit retained; no repeated full business matrix"
+    ],
+    "pending_fixture_recipe": "tests/camera_follow_readonly_12004_fixture.cpp includes production PendingClear once under its fixture define; EXE define XAR_CAMERA_FOLLOW_READONLY_FIXTURE_EXE. Kernel32/CRT only; no second full reader TU/Bridge/runtime dependency required. Focused pending tests are not full reader/game qualification.",
+    "unknown_before_admission": "Actual configured graph counts, AllocationSize/source filesystem overhead, final artifact growth/TEMP peak and new actual fixture commands remain unobserved;1.5GiB is a hard guarded allowance, not measured peak or guaranteed completion."
+  },
+  "net_budget": {
+    "rows_net_including_other_shared_writers": 57162,
+    "subtract_already_frozen_planner_timer_net": 8931,
+    "tracking_conservative_before_this_proof": 48231,
+    "M1_and_reader_separate_scopes": true,
+    "limit_bytes": 65536,
+    "this_proof_bytes": "self-listed by returned pin; combined conservative <=65536 enforced at creation"
+  }
+}

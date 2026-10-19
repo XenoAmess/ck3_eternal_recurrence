@@ -1,0 +1,276 @@
+{
+  "schema": "xar.ck3.native29-production-compile-macro-provenance/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:26:52Z",
+  "identity_source": "tools.ck3_live_run_id.current_machine_id fresh readback at2026-10-19T15:08:10.951256Z; current UTC from clock tool",
+  "status": "READ_ONLY_PROVENANCE_HANDOFF_NOT_NATIVE30_BUILD_QUALIFICATION",
+  "cmake_defines": [
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1=ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1=ON",
+    "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1=ON",
+    "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1=ON",
+    "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1=ON",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=ON",
+    "XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1=ON"
+  ],
+  "required_target_defines": {
+    "xar_ck3_bridge": {
+      "base": "cmake_ON_as_1",
+      "remove": [],
+      "add": [
+        "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1=1",
+        "XAR_BRIDGE_VERSION=\"0.1.0\"",
+        "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1=1",
+        "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0",
+        "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1",
+        "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1",
+        "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1",
+        "XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004=1",
+        "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004=1",
+        "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004=1",
+        "XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004=1",
+        "XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004=1",
+        "XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004=1",
+        "XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004=1",
+        "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004=1",
+        "XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004=1",
+        "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1",
+        "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=1",
+        "XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1=1",
+        "XAR_ENABLE_PREWAR_FORCE_COALITION_V2=1"
+      ],
+      "expanded_XAR_define_count": 86
+    },
+    "xar_ck3_12002_runtime": {
+      "base": "cmake_ON_as_1",
+      "remove": [
+        "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1"
+      ],
+      "add": [
+        "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1",
+        "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1",
+        "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1",
+        "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1"
+      ],
+      "expanded_XAR_define_count": 69
+    },
+    "xar_bridge_protocol": {
+      "base": "empty",
+      "remove": [],
+      "add": [],
+      "expanded_XAR_define_count": 0
+    }
+  },
+  "projection_recipe": "For cmake_ON_as_1, take the66 cmake_defines names with value1; remove named keys; then add/replace exact NAME=VALUE strings. Empty base starts empty. Original argv order/duplicate flags remain in their pinned recipes.",
+  "required_target_defines_scope": {
+    "xar_ck3_bridge": "Exact source bridge.cpp/55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9, inherited original argv and actual Native26 rebuilt bridge. Not evidence that every Bridge TU has these86 defines.",
+    "xar_ck3_12002_runtime": "ONLY actual c0138 src/ck3_12002.cpp. Its69 defines are NOT a uniform requirement for all612 Runtime TUs. Preserve individual source-specific flags through per-TU recipe comparison.",
+    "xar_bridge_protocol": "Actual c0271 src/protocol.cpp has0 XAR defines. Do not give it Bridge or Runtime private flags."
+  },
+  "small_recipe_pins": {
+    "cache": {
+      "path": "C:/codex-ck3-background/migration4-complete-domain-build/strict07/cache-observers/CMakeCache.txt",
+      "bytes": 38642,
+      "sha256": "66ec7e8a3af7f1adc35f49b8d40e5f55db9bb87af795df50d5d75f94ca00440d"
+    },
+    "bridge": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p37-prewar-v2-native24-02/build/bridge-COMPILE-RESULT.json",
+      "bytes": 12730,
+      "sha256": "b914c2936cbf003ce2f893b78771ecbdb4211c48685aa7f07e18e1b10621c384"
+    },
+    "runtime": {
+      "path": "D:/codex-ck3-background-spill/g2-native89-production01/jobs/c0138/stage.verified.json",
+      "bytes": 23648,
+      "sha256": "394d194ab879675b4719dbad866aeca5e451e2964691dc639ae9dc9ce038b08a"
+    },
+    "protocol": {
+      "path": "D:/codex-ck3-background-spill/g2-native89-production01/jobs/c0271/stage.verified.json",
+      "bytes": 39496,
+      "sha256": "a7e9621cc7fb8461dae24cd91c6ce3810d0a35382fb570352b4c9fbb3b81b523"
+    }
+  },
+  "policy_pin": {
+    "path": "D:/codex-ck3-background-spill/g2-native89-render01/ROOT-FROZEN-COMPILE-POLICY.json",
+    "bytes": 21330,
+    "sha256": "816051050abc922b8905d368b0d7a5989909a2d7febdfde0b6b70f08d9c18ec2",
+    "fields": [
+      "target_templates.xar_ck3_bridge",
+      "target_templates.xar_ck3_12002_runtime",
+      "target_templates.xar_bridge_protocol",
+      "compile_flag_rules_by_target"
+    ],
+    "status": "ROOT_EXPLICIT_REVIEWED_NEW_COMPILE_POLICY; policy compiler_invoked=false is not execution evidence. Small stage.verified.actual_stage records are the actual compile evidence."
+  },
+  "native29_binding": {
+    "runtime_pin": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/ROOT-NATIVE29-NATIVE-PIN-C15.json",
+      "bytes": 4546,
+      "sha256": "a54a356ebfb314a81488748f7c97a1c6e79aaad8003678b14b9f98f40ab047ea"
+    },
+    "qualification": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native29-camera01/QUALIFICATION.json",
+      "bytes": 6115,
+      "sha256": "364acdd870faa7fd21e5f5ce5806d98fc22fe64416064dd015c0eb65647bebe5"
+    },
+    "link_result": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native29-camera01/LINK-RESULT.json",
+      "bytes": 8099,
+      "sha256": "75c48639780aa347da1ac71f33cd6bd8fe6f1a6c74c2515cab048216b8b97800"
+    },
+    "link_rsp": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native29-camera01/build/native29-link.rsp",
+      "bytes": 33321,
+      "sha256": "628ac08217ca33ac2424392c099d789fc9be599f2021bcec5b21cd2be229075e",
+      "relevant_lines": {
+        "233": "Native26 build/jobs/769c280bdfe8/attempt01/769c280bdfe8.obj",
+        "326": "g2-native89-production01/jobs/c0271/native-p0271.obj",
+        "360": "Native26 build/native26-runtime.lib"
+      }
+    },
+    "inheritance": "29 rebuilds camera only;27 rebuilds router;26 rebuilds121 declared consumers. Other declared identities retained. This is not an entire Native29 CMake configure.",
+    "Native26_input_plan": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native26-performance01/INPUT-PLAN.json",
+      "bytes": 531889,
+      "sha256": "46a6e0acafa3152302f8410241793776ef9f61d7a0a8a356dee60380f6a7c93d"
+    },
+    "Native26_retained": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native26-performance01/RETAINED-INPUTS.json",
+      "bytes": 220673,
+      "sha256": "5d7ffc4d5fefe85d70732ce12ea6adc1d7edc55bd0efd2c142c95eaefe87c1a6",
+      "c0138": "Runtime archive member12548B/ebe5302b85c23cb2dbbea0d002a055d05cf0555bfdbee62d7ecb19dae5a6822b",
+      "c0271": "Direct93682B/e405ecbcb02b4efbe9fce0cd7917946237366d9b30a850e9049ef4e887bb6d6f",
+      "neither_rebuilt_in_Native26_input_plan": true
+    },
+    "actual_Native26_bridge_confirmation": {
+      "source": "performance_native independently inspected closed compile metadata lines1120-1388; confirmed original override flags retained. This worker did not read the full1.28MB receipt.",
+      "receipt": {
+        "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native26-performance01/COMPILE-RESULT.json",
+        "bytes": 1282968,
+        "sha256": "9565edc359039b851751d5b97e2daba102199123b220cbc11c49e2152f54857a"
+      },
+      "actual_object_path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native26-performance01/build/jobs/769c280bdfe8/attempt01/769c280bdfe8.obj",
+      "object_bytes": 20369413,
+      "object_sha256": "f371c587027a4d2778fcb8b440dcbceff08ccafe370efabe0c66cc9279044a1c"
+    }
+  },
+  "actual_TU_metadata": {
+    "bridge": {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+      "source_sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9",
+      "object": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\build\\bridge.obj",
+      "object_sha256": "c9c86c0c5dd652fa4250afe0e8622ee6f157f9cc9dc1a65baf7d1e17bbdc7cbd",
+      "compile_exit_code": 0,
+      "argv_field": "/argv",
+      "historical_compile_machine_id": "unknown"
+    },
+    "runtime": {
+      "source": "D:\\codex-ck3-background-spill\\ck3-sdk91\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002.cpp",
+      "source_sha256": "a5c1411c5c7db9838477a77209735d3aa47e18a291c9d7ebaf33e14885c23e6e",
+      "object": "D:\\codex-ck3-background-spill\\g2-native89-production01\\jobs\\c0138\\native-p0138.obj",
+      "object_sha256": "ebe5302b85c23cb2dbbea0d002a055d05cf0555bfdbee62d7ecb19dae5a6822b",
+      "compile_exit_code": 0,
+      "argv_field": "/actual_stage/argv",
+      "historical_compile_machine_id": "unknown"
+    },
+    "protocol": {
+      "source": "D:\\codex-ck3-background-spill\\ck3-sdk91\\ck3_autonomous_player\\native_bridge\\src\\protocol.cpp",
+      "source_sha256": "64854f1ed50609d5212db58eae01ad9858e3c232b44953e0474c940781dbef2d",
+      "object": "D:\\codex-ck3-background-spill\\g2-native89-production01\\jobs\\c0271\\native-p0271.obj",
+      "object_sha256": "e405ecbcb02b4efbe9fce0cd7917946237366d9b30a850e9049ef4e887bb6d6f",
+      "compile_exit_code": 0,
+      "argv_field": "/actual_stage/argv",
+      "historical_compile_machine_id": "unknown"
+    }
+  },
+  "critical_differences": {
+    "cache_XAR_ON": 66,
+    "Bridge_XAR_defines": 86,
+    "runtime_c0138_XAR_defines": 69,
+    "protocol_c0271_XAR_defines": 0,
+    "runtime_excludes_cache_ON_death_modal": true,
+    "Bridge_original_force_coalition_flag_occurrences": 2,
+    "H2743_STOCK_PREDICATE_READER": "Bridge explicitly0; do not flip ON",
+    "BUILD_TESTING": "Historical cacheON, not a production capability or instruction to build all tests.",
+    "ordinary_flags": "Keep original target/source scope. Native30 camera/heir additions belong separately to its authorized plan."
+  },
+  "limits": [
+    "Cache values were read from the exact historical compiler-origin build directory. No historical SHA pin proves that this identical cache existed at every ancestor compile; actual per-TU argv remains authoritative. Original cache/compile machine_id is unknown.",
+    "No exhaustive special-define audit of all356 direct and612 archive inputs was performed. This finite projection cannot erase other per-TU flags, assert every Runtime TU has69, or prove wholeclean capability equivalence.",
+    "Do not infer from current defaults or enable all research. FileAPI/compile-command comparison must account for source-specific macros and authorized Native30 additions; missing coverage remains unknown/BLOCKED.",
+    "Scope deviation preserved: an existence/metadata helper read the named8,105,616B compile_commands.json once to hash it, without parsing/copying the body. It was not used for this projection; afterwards only pinned small cache/recipe records were reloaded.",
+    "A command-length failure while preparing this report executed no Python/write. User interruption cleared transient tool memory; the4 already-pinned small records were reloaded with exact SHA verification, without new source research."
+  ],
+  "work_boundaries": {
+    "binary_DLL_OBJ_LIB_SAVE_body_reads": 0,
+    "active_Driver_reads": 0,
+    "Game_RPC_desktop_calls": 0,
+    "configure_compile_calls": 0,
+    "directory_tree_scan": false,
+    "source_runtime_mutations": 0
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-17T15:24:13Z",
+    "large_artifacts_created": 0
+  }
+}

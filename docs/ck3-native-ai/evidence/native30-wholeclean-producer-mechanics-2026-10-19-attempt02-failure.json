@@ -1,0 +1,15 @@
+{
+  "schema": "native30-producer-mechanics-failure-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_utc": "2026-10-19T15:23:09Z",
+  "source": "actual exec result 6dc608; no receipt was written because final scratch rmdir failed",
+  "tests": 8,
+  "passed_cases": 6,
+  "errors": 3,
+  "cause": "win32con lacks BELOW_NORMAL_PRIORITY_CLASS; constructor failed before CreateProcess, and early log handle cleanup was missing",
+  "secondary_failure": "normal-case tearDown could not unlink its open child.log; final rmdir failed",
+  "CPP_Game_calls": 0,
+  "child_processes_started": 0,
+  "cleanup": "after failed test interpreter exited, exact owned child.log was verified 0B by dir result 1fedd9 and removed with nonrecursive del/rmdir; same original scratch root reused, no other path touched",
+  "superseding_check": "attempt03:8PASS0.608s; real owned normal/guard-stop Python processes, FileStandardInfo; no C++ qualification"
+}

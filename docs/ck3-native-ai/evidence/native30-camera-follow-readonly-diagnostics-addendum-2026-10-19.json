@@ -1,0 +1,90 @@
+{
+  "schema": "native30-camera-follow-readonly-diagnostics-addendum-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:39:58.734048+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine actual output during parent source audit",
+  "status": "AUTHORED_NOTRUN_SOURCE_ONLY",
+  "authorization": "Root diagnostic requirement relayed by M0; own reader leaves only, within original independent 64KiB review; no shared Camera/CMake edits",
+  "historical_review_unchanged": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/native30-camera-follow-readonly-source-review-2026-10-19.json",
+    "bytes": 10847,
+    "sha256": "41c9641a2f89686b641be33db759e6fec18ea9a933fa61a1a3201b4f5da06b19"
+  },
+  "historical_authored_bytes": 15770,
+  "final_authored": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/include/xar_bridge/camera_follow_readonly_12004.hpp",
+      "bytes": 2186,
+      "sha256": "cb75b12def657d7f3ab3aa8d5547cf7be7a575ece1d0ddcb5e2f217f337d3e9e"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/camera_follow_readonly_12004.cpp",
+      "bytes": 11853,
+      "sha256": "74d5212efa5541203d4a52cb54724e4ec1d9e62ffd995662ccff31b934043094"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/tests/camera_follow_readonly_12004_fixture.cpp",
+      "bytes": 4200,
+      "sha256": "9e87418c3693abeb137556a6a150c116632a7cf89c2af1aa8f89eb4eb0249812"
+    }
+  ],
+  "final_authored_bytes": 18239,
+  "net_existing_source_bytes": 2469,
+  "failure_integer_table": {
+    "0": "none",
+    "1": "not_started",
+    "2": "invalid_request",
+    "3": "core_read",
+    "4": "actor_or_date",
+    "5": "clock_scope",
+    "6": "army_identity",
+    "7": "combat_or_position",
+    "8": "modal_not_clear",
+    "9": "event_not_clear",
+    "10": "pending_binding",
+    "11": "pending_storage_read",
+    "12": "pending_capacity",
+    "13": "pending_slot_read",
+    "14": "pending_present",
+    "15": "pending_storage_changed",
+    "16": "final_identity",
+    "17": "fault_or_exception"
+  },
+  "fields": {
+    "reason": "Frame.reason is enum class Failure:uint32_t; none only on full success; failure branches preserve available capacity/visited and identity scalars; complete/ui_clear remain false",
+    "elapsed_us": "uint64 OS QueryPerformanceCounter wall duration, frequency queried once per reader call; UINT64_MAX means clock unavailable; not Game CPU or engine-only time",
+    "no_new_Game_reads": "Only reason assignments and OS clock calls added to existing full reader flow"
+  },
+  "focused_fixture": {
+    "source": {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/tests/camera_follow_readonly_12004_fixture.cpp",
+      "bytes": 4200,
+      "sha256": "9e87418c3693abeb137556a6a150c116632a7cf89c2af1aa8f89eb4eb0249812"
+    },
+    "main_macro": "XAR_CAMERA_FOLLOW_READONLY_FIXTURE_EXE",
+    "source_include_macro": "XAR_CAMERA_FOLLOW_READONLY_PENDING_FIXTURE",
+    "meaning": "Compile same production PendingClear/Copy/Get bodies; excludes unrelated full reader body in this focused fixture, so no Bridge/runtime object or link dependency and no duplicate cpp object",
+    "minimal_prospective_inputs": "one fixture TU, normal project headers, Windows Kernel32 APIs and normal C++ runtime; full-reader and tracking qualification remain separate",
+    "new_checks": "eligible final-slot interaction gives pending_present; over-cap4097 gives pending_capacity and visited0; existing sparse/history/notification cases retained",
+    "executed": false,
+    "future_exe": "No EXE built or run here; any future EXE requires existing exact-source Defender registration/readback before execution"
+  },
+  "qualification_limits_unchanged": [
+    "ordinary actual pending slot capacity/active count/latency remain unknown",
+    "4096-slot hard cap is safety boundary, not evidence of ordinary-game coverage",
+    "Native owner epoch, idle/main-thread/request lease and write-time gates belong to M0; reader never arms/cancels sentinel",
+    "No Native29/C13/Game/pixels/performance credit; no compiler, tests or RPC executed"
+  ],
+  "checks": {
+    "named_git_diff_check": "PASS",
+    "compiler": "NOTRUN",
+    "fixture": "AUTHORED_NOTRUN"
+  },
+  "storage": {
+    "scope": "original independent code3 <=64KiB reader/review",
+    "future_writes": 0,
+    "external_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit": 0
+  }
+}

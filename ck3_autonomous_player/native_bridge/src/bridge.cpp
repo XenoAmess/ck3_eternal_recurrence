@@ -12541,7 +12541,7 @@ public:
 #endif
     if (observer_ != nullptr && camera_presentation_.Initialize(
             reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-            game_->descriptor().executable_sha256, observer_)) {
+            game_->descriptor().executable_sha256, observer_, &g_main_thread_query_mailbox_v1)) {
       xar::ck3_11906::ConfigureIdlePresentationV1(
           &xar::presentation::CameraPresentationRuntimeV1::Pump, &camera_presentation_);
     }
@@ -29946,8 +29946,21 @@ DWORD WINAPI WorkerMain(void *) noexcept {
     if (pipe == INVALID_HANDLE_VALUE) {
       return WaitForSingleObject(g_stop_event, 0) == WAIT_OBJECT_0 ? 0 : 1;
     }
-    RunConnectedSession(pipe, session_game, state, mailbox_lifetime);
+    bool camera_session_failed = false;
+    {
+      // Native connection authority; also clears on a C++ unwinding exit.
+      struct CameraConnectionScopeV1 {
+        CameraConnectionScopeV1() { xar::presentation::tracked::SetConnectionActiveV1(true); }
+        ~CameraConnectionScopeV1() { xar::presentation::tracked::SetConnectionActiveV1(false); }
+      } camera_connection_scope;
+      try {
+        RunConnectedSession(pipe, session_game, state, mailbox_lifetime);
+      } catch (...) {
+        camera_session_failed = true;
+      }
+    }
     CloseHandle(pipe);
+    if (camera_session_failed) return 1;
     if (WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
       WaitForSingleObject(g_stop_event, 50);
     }

@@ -1,0 +1,46 @@
+{
+  "schema": "native30-wholeclean-plan-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "SOURCE_PLAN_NOT_HEAVY_ADMISSION",
+  "root": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01",
+  "caps_MiB": {"whole": 1536, "source_charged": 96, "metadata": 80, "TEMP": 384},
+  "production": ["xar_ck3_bridge", "xar_ck3_12002_runtime", "xar_bridge_protocol"],
+  "macro_contract": {
+    "path": "docs/ck3-native-ai/evidence/native29-production-compile-macro-provenance-2026-10-19.json",
+    "sha256": "ccffb26fe48e49bae5045cc25cc58a24c1f0ca2cc5d8db0f84d0fcbb8f4b1e8d"
+  },
+  "additional_cmake_defines": [
+    "XAR_CK3_ENABLE_CAMERA_TRACKING_V1=ON",
+    "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1=ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_HEIR_CANDIDATE_COMPONENT12004_V1=ON",
+    "XAR_CK3_BUILD_NATIVE_LAYOUT_REPORT_V1=ON",
+    "CMAKE_SHARED_LINKER_FLAGS=/INCREMENTAL:NO /MAP"
+  ],
+  "additional_target_defines": {
+    "xar_ck3_bridge": ["XAR_CK3_ENABLE_CAMERA_TRACKING_V1=1", "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1=1", "XAR_CK3_ENABLE_PLAYER_HEIR_CANDIDATE12004_V1=1", "XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1=1"],
+    "xar_ck3_12002_runtime": ["XAR_CK3_ENABLE_PLAYER_HEIR_CANDIDATE12004_V1=1", "XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1=1"]
+  },
+  "allowed_system_roots": ["C:/Program Files/Microsoft Visual Studio/18/Community", "C:/Program Files (x86)/Windows Kits/10"],
+  "assertion_targets": ["xar_ck3_camera_tracking_v1_test", "xar_ck3_camera_settle_diagnostics_v1_test", "xar_ck3_camera_follow_pending_v1_test", "xar_ck3_realm_camera_geometry_v1_test", "xar_ck3_realm_camera_subrealm_v1_test", "xar_ck3_12004_faction_adopted_whole_test"],
+  "fixtures": [
+    {"target": "xar_ck3_camera_tracking_v1_test", "artifact": "xar_ck3_camera_tracking_v1_test.exe"},
+    {"target": "xar_ck3_camera_settle_diagnostics_v1_test", "artifact": "xar_ck3_camera_settle_diagnostics_v1_test.exe"},
+    {"target": "xar_ck3_camera_follow_pending_v1_test", "artifact": "xar_ck3_camera_follow_pending_v1_test.exe"},
+    {"target": "xar_ck3_realm_camera_geometry_v1_test", "artifact": "xar_ck3_realm_camera_geometry_v1_test.exe"},
+    {"target": "xar_ck3_realm_camera_subrealm_v1_test", "artifact": "xar_ck3_realm_camera_subrealm_v1_test.exe"},
+    {"target": "xar_ck3_12004_faction_adopted_whole_test", "artifact": "xar_ck3_12004_faction_adopted_whole_test.exe"},
+    {"target": "xar_ck3_player_faction_alerts_v1_mailbox_test", "artifact": "xar_ck3_player_faction_alerts_v1_mailbox_test.exe"},
+    {"target": "xar_ck3_main_thread_query_mailbox_v1_test", "artifact": "xar_ck3_main_thread_query_mailbox_v1_test.exe", "args": ["--idle-presentation-only"]},
+    {"target": "xar_ck3_native_layout_report_v1", "artifact": "xar_ck3_native_layout_report_v1.exe", "args": ["--machine-id", "$MACHINE_ID", "--observed-at-utc", "$OBSERVED_UTC"], "postcheck": "tools/check_native_layout_report_v1.py"}
+  ],
+  "dll_artifact": "xar_ck3_bridge.dll",
+  "map_artifact": "xar_ck3_bridge.map",
+  "runtime_artifact": "xar_ck3_12002_runtime.lib",
+  "required_sources": {"xar_ck3_12002_runtime": ["src/ck3_12004_player_heir_candidate_v1.cpp", "src/campaign_player_heir_candidate_component12004_v1.cpp", "src/campaign_player_heir_candidate_component12004_v1_serializer.cpp"]},
+  "required_runtime_members": ["ck3_12004_player_heir_candidate_v1.cpp.obj", "campaign_player_heir_candidate_component12004_v1.cpp.obj", "campaign_player_heir_candidate_component12004_v1_serializer.cpp.obj"],
+  "required_map_symbols": ["ReadForCampaignRoot@campaign_player_heir_candidate_v1", "AppendToCanonicalRoot@campaign_player_heir_candidate_v1", "?Read@player_heir_candidate_v1@ck3_12004"],
+  "exports": ["XarCk3BridgeIdentity", "XarCk3BridgePrepareStartup", "XarCk3BridgeStart", "XarCk3BridgeStartWithPipe", "XarCk3BridgeStop"],
+  "admission_contract": "SHA-pinned ADMITTED JSON requires machine_id,root,hard_bytes=1610612736,source_charge_cap_bytes=100663296,jobs1..4,source_commit40,plan_sha256,producer_sha256,deadline_utc,minimum_free_bytes(including other reservations/systemgrowth/floor),quota_remaining_bytes>=hard. Root/storage sign before root creation.",
+  "execution_boundary": "CMake may generate compiler-probe EXEs (charged; not explicitly run here). Fixture execution requires exact Defender verified readback. No injector, DLL load, Game/OBS/MCP or foreign process termination.",
+  "limits": "Fresh Git Native/tools only. FileAPI/compile not run;69/86 macros cover representative TUs, not612-TU equivalence. <=4 BELOW_NORMAL/noMP. Production/TEMP exit before sequential fixtures. Failure stops/no retry; sampled peaks are lower bounds. Reuse unchanged M3 4+19 Native/7+23 SDK audit; verify3TUs/PUBLIC2macros/archive/map. Provider/H later, no OFF DLL/fullmatrix. Final commit/admission required."
+}

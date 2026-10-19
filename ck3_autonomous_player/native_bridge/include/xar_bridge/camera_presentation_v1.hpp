@@ -1,14 +1,17 @@
 #pragma once
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/camera_settle_diagnostics_v1.hpp"
+#include "xar_bridge/camera_tracking_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include <windows.h>
 #include <array>
+#include <chrono>
 #include <cstdint>
 namespace xar::presentation {
 inline constexpr std::uint32_t kMagic = 0x43524158;
 inline constexpr std::size_t kMappingBytes = 131072;
 inline constexpr std::size_t kCountyCapacity = 16384;
-enum class Mode : std::uint32_t { cancel = 0, realm = 1, hotspot = 2, query = 3 };
+enum class Mode : std::uint32_t { cancel = 0, realm = 1, hotspot = 2, query = 3, tracked_hotspot = 4 };
 enum class Status : std::uint32_t {
   idle = 0, submitted = 1, settled = 2, cancelled = 3,
   stale_actor = 4, preempted = 5, unavailable = 6, target_changed = 7,
@@ -66,19 +69,37 @@ struct Shared {
 };
 static_assert(sizeof(Shared) < kMappingBytes);
 static_assert(offsetof(Shared, request) == 24);
+// A changed legacy layout needs a new protocol, even if it still fits.
+static_assert(sizeof(Request) == 168);
+static_assert(sizeof(Result) == 65640);
+static_assert(offsetof(Shared, result) == 192);
+static_assert(sizeof(Shared) == 65832);
+// The optional extension must never overlap the complete legacy v1 region.
+static_assert(sizeof(Shared) <= kCameraSettleDiagnosticsOffsetV1);
+static_assert(offsetof(Shared, result) + sizeof(Result) <= kCameraSettleDiagnosticsOffsetV1);
+static_assert(kCameraSettleDiagnosticsOffsetV1 + sizeof(CameraSettleDiagnosticsV1) <= kMappingBytes);
 class CameraPresentationRuntimeV1 {
 public:
   ~CameraPresentationRuntimeV1();
   bool Initialize(std::uintptr_t base, std::string_view sha,
-                  const game::GameAdapter *game) noexcept;
+                  const game::GameAdapter *game,
+                  const ck3_11906::MainThreadQueryMailboxV1 *mailbox = nullptr) noexcept;
   static bool Pump(void *context,
       const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept;
 private:
   bool Advance(const ck3_11906::MainThreadExecutionStampV1 &);
-  void Publish(Status status) noexcept;
+  bool AdvanceTracking(std::uint32_t sequence, std::uint64_t now);
+  static bool ContinueTrackingRead(void *context) noexcept;
+  bool ApplyBounds(const std::array<std::int32_t, 4> &, std::uint32_t,
+                   std::uint64_t, std::chrono::steady_clock::time_point);
+  void ReleaseTracking(tracked::State) noexcept;
+  void PublishTracking(tracked::State) noexcept;
+  void Publish(Status status,
+      const CameraSettleDiagnosticsV1 *diagnostic = nullptr) noexcept;
   HANDLE mapping_ = nullptr;
   Shared *shared_ = nullptr;
   const game::GameAdapter *game_ = nullptr;
+  const ck3_11906::MainThreadQueryMailboxV1 *mailbox_ = nullptr;
   std::uintptr_t base_ = 0;
   std::uint32_t seen_ = 0;
   std::uint64_t next_check_ms_ = 0;
@@ -86,5 +107,11 @@ private:
   void *camera_ = nullptr;
   Request request_{};
   Result result_{};
+  tracked::RequestV1 tracking_request_{};
+  tracked::ResultV1 tracking_result_{};
+  bool tracking_ = false;
+  // Opaque identities only. Never cast back or dereference across pumps.
+  std::uintptr_t tracking_game_state_ = 0, tracking_jomini_state_ = 0;
+  std::uint64_t next_position_ms_ = 0;
 };
 } // namespace xar::presentation

@@ -1,0 +1,129 @@
+{
+  "schema": "xar.ck3.native-layout-reporter-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:29:26.588328+00:00",
+  "machine_source": "fresh py -B tools/ck3_live_run_id.py machine",
+  "status": "SOURCE_READY_NOT_CONFIGURED_NOT_COMPILED_NOT_EXECUTED",
+  "target": "xar_ck3_native_layout_report_v1",
+  "required_option": "XAR_CK3_BUILD_NATIVE_LAYOUT_REPORT_V1=ON",
+  "configuration": "Release; Windows/MSVC production Native30 build",
+  "artifact": "FileAPI-resolved target artifact path; not created by this task",
+  "command_arguments": [
+    "--machine-id",
+    "fresh stable ID from producer",
+    "--observed-at-utc",
+    "fresh UTC from producer"
+  ],
+  "output": "JSON stdout; capture inside approved Native30 child, then py -B tools/check_native_layout_report_v1.py <report.json>",
+  "CTest_target": null,
+  "design": {
+    "true_types": "8 exact production header types; no mirror structs, offsets, object construction, Game functions or DLL linkage",
+    "production_flags": "inherits bridge target include directories/compile definitions/compile options/MSVC_RUNTIME_LIBRARY; normal global/config flags remain in force",
+    "generated_source_flags": "same config header from file(GENERATE), including compiler/global/config/GENEX-evaluated target options/definitions/includes/runtime properties",
+    "exact_compile_command": "must also retain real Native30 compiler invocation/FileAPI output; generated source_flags does not claim to observe a compiler command",
+    "macros": "_MSC_VER/_MSC_FULL_VER/_MSVC_LANG/_MSVC_STL_VERSION/_MSVC_STL_UPDATE/_ITERATOR_DEBUG_LEVEL/_CRT_PACKING/_MT/_DLL/_DEBUG",
+    "packing": "current_pragma_pack=null explicitly approved by Root; _CRT_PACKING is a CRT header macro, not current pragma state. No pack probe/mirrors, no pack(show), no /WX-.",
+    "Bridge_recompile_or_link": false,
+    "private_type_export_needed": false,
+    "reporter_runtime_metadata": "caller-supplied machine/UTC explicitly labeled; producer retains fresh identity/time evidence",
+    "no_layout_numbers_invented": true,
+    "standalone_report_scope": "header sizes and compiler/STL/CRT metadata only; not proof that arbitrary existing DLL/old objects share the measured ABI",
+    "future_production": "whole clean Native30 with matching source/flags; no Native29 retained355 objects",
+    "Native_Game_qualification": false
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/native_layout_report_v1.cpp",
+      "bytes": 4658,
+      "sha256": "ec56da537ce4f597c8f5c7e1544f9c224dd2aee26f684fee7f665d1d2c276107"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/cmake/native_layout_report_v1.cmake",
+      "bytes": 2393,
+      "sha256": "b9140dc471a14e6661a0a4235dc356fe2f8176297e9b34309b5c94c8805d86a7"
+    },
+    {
+      "path": "tools/check_native_layout_report_v1.py",
+      "bytes": 2593,
+      "sha256": "71d829580e3eb2d349b510a619c0e2c97d5ff4ed3b230beb2cc6f101ad5975f5"
+    }
+  ],
+  "top_CMake_change": {
+    "path": "ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+    "bytes": 453519,
+    "sha256": "abeae6aec614db664faca9dfc6fb4f115f20865fa0faf6deebee15d690e2445f",
+    "net_added_bytes": 120,
+    "before_bytes": 453399,
+    "before_sha256": "542a52e3fe0601f92e9df1cab3979fe390d29c3956bb54bff447d171bdaec807"
+  },
+  "type_definition_headers": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "bytes": 175382,
+      "sha256": "6c300e7626bdf47fcafdfa4f51fcb70b56adf7c689d597db016d057ace960c2b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_faction_alerts_v1.hpp",
+      "bytes": 14279,
+      "sha256": "9fa5509813ea5276490ec4ec2fe4bc76db9eb8aa38e0fab9d23a4f03c5ddb5d4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_faction_alerts_v1_mailbox.hpp",
+      "bytes": 2540,
+      "sha256": "a88de009115b6c832da72494ed79857572e4c41888851aa1d391d9a014bafc5c"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_faction_mailbox.hpp",
+      "bytes": 855,
+      "sha256": "213d66cbc00eaa561b1b8c97e46c78e026e7b179e034d499fe3dfd1d4f7b9701"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_faction_mailbox.hpp",
+      "bytes": 1076,
+      "sha256": "294710f4b33aed0ef7d937d54a7fcaaecacf2c513f59af4dad4e9c5f67c311b9"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_query_mailbox.hpp",
+      "bytes": 1739,
+      "sha256": "ec9daa105d421b7b3720c84e56ff34746b8fb33a2a4adf1b1f9550b751ea4f55"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/main_thread_query_mailbox_v1.hpp",
+      "bytes": 44898,
+      "sha256": "cc28ec3ec5ae12160d440c7ccb04b6ff650956b585bb178bce54edf656cb722c"
+    }
+  ],
+  "verification": {
+    "checker_ast_parse": "PASS",
+    "checker_only_synthetic_fixture": {
+      "positive": 1,
+      "negative_rejections": 6,
+      "cases": "missing type, Debug iterator ABI, unknown machine, invented pragma pack, zero size, missing Release flags",
+      "actual_measured_layout_values": false
+    },
+    "configure": false,
+    "Cpp_compile": false,
+    "reporter_execution": false,
+    "no_native_or_Game_credit": true
+  },
+  "ownership": {
+    "top_CMake": "single final include(cmake/native_layout_report_v1.cmake), Native owner explicitly yielded span",
+    "untouched": "M0 frozen camera/Bridge/realm_camera_presentation_v1.cmake and Native producer wrapper",
+    "source_storage_card": "M1-LAYOUT-REPORTER-SOURCE16KiB-COMMITMENT01.json / ab97b951de5eb98d96204cb93184660821399fc0974a85b4ec5621c5ab6d7f42"
+  },
+  "storage": {
+    "before_new_files": 0,
+    "other_source_net_before_this_proof": 9764,
+    "hard_source_test_review_bytes": 16384,
+    "account": "original code3",
+    "producer_closed": true,
+    "future_bytes": 0,
+    "allocated_bytes": null,
+    "external_outputs": 0,
+    "new_Droot": false,
+    "physical_credit": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "final_net_and_self_sha": "reported separately to avoid self-reference"
+  }
+}
+

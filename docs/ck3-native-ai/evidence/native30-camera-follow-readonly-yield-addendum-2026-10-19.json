@@ -1,0 +1,65 @@
+{
+  "schema": "native30-camera-follow-readonly-yield-addendum-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:46:00.008477+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine actual output during parent source audit",
+  "status": "AUTHORED_NOTRUN_SOURCE_ONLY",
+  "authorization": "Root-approved optional cooperative callback relayed by M0; only owned reader leaves, no Game/compile/shared Camera edits",
+  "prior_diagnostics_unchanged": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/evidence/native30-camera-follow-readonly-diagnostics-addendum-2026-10-19.json",
+    "bytes": 4573,
+    "sha256": "63d0a07d3701123d3c40ec7fe093dacac65e264a432969a109c4108928509ed9"
+  },
+  "final_authored": [
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/include/xar_bridge/camera_follow_readonly_12004.hpp",
+      "bytes": 2325,
+      "sha256": "d3ba816252b14a009ed60e7c38de4b939fc1eada76c3ffd7ac98da64e1bd0456"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/src/camera_follow_readonly_12004.cpp",
+      "bytes": 12609,
+      "sha256": "7ccc59102188f283cdd4b528b56fd16dc56d4ccc21ae676c60e400d984d628fc"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/ck3_autonomous_player/native_bridge/tests/camera_follow_readonly_12004_fixture.cpp",
+      "bytes": 4588,
+      "sha256": "ef24e0ee54d93d14d3371f253b6246f38d66d1a881a84c4ebf4284ae090cfc24"
+    }
+  ],
+  "final_authored_bytes": 19522,
+  "net_source_bytes_since_diagnostics": 1283,
+  "interface": {
+    "callback": "ContinueRead = bool (*)(void*) noexcept",
+    "signature": "ReadTrackedSubject12004V1(base, exact_sha, request, frame, ContinueRead continue_read=nullptr, void* context=nullptr)",
+    "failure": "Failure::cooperative_yield=18; prior 0..17 unchanged",
+    "positions": "before any Game read; before each pending slot index divisible by32 including0; after final identity checks before complete/ui_clear",
+    "false_result": "return false, reason18, complete=false, ui_clear=false; preserve actual capacity/visited; skip later reads and never claim absence",
+    "null_callback": "original call signature remains valid and original reads/guards remain",
+    "callback_calls_upper_bound": "2+ceil(P/32) <=130 for complete P<=4096 scan, with early exits; no recursive/unbounded loop",
+    "no_new_Game_reads": true
+  },
+  "caller_contract": {
+    "callback": "M0 loads actual Native mailbox idle, Native active connection epoch, and unchanged even request seqlock only; never waits or reads Game",
+    "pure_yield": "caller skips camera write this tick and may retry entire reader from fresh reads at next idle tick within finite lease; no sentinel Arm/Cancel or clock mutation",
+    "continuing_guards": "actor/date/full-ID/position/UI/clock scope and final write-time current owner/request/idle gates remain mandatory; no old scan continuation or cache UI-clear reuse"
+  },
+  "fixture": {
+    "new_case": "same production PendingClear with sparse4096 slots; callback true atindex0, false atindex32 => exactly32 visited,2 callbacks,reason18,false complete/ui_clear",
+    "existing_null_cases_retained": true,
+    "compiler": "NOTRUN",
+    "execution": "AUTHORED_NOTRUN",
+    "scope": "focused pending algorithm only; not full reader/Native tracking qualification"
+  },
+  "unchanged_unknowns": "Actual ordinary slot capacity, callback/reader latency and full-reader/Game qualification unknown. No Native29 or live performance credit.",
+  "checks": {
+    "named_git_diff_check": "PASS"
+  },
+  "storage": {
+    "scope": "original independent code3 <=64KiB review",
+    "future_writes": 0,
+    "external_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit": 0
+  }
+}
