@@ -11,7 +11,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from g2_saved_campaign.native29_to30_export_contract_v1 import (
-    MAX_JSON, native_transition_evidence_names_v1, parse_document_v1, validate_native_transition_v1, require)
+    MAX_JSON, native_transition_evidence_names_v1, parse_document_v1, validate_native_transition_v1, require, _ref)
 from g2_saved_campaign.native30_export_adapter_v1 import FrozenExporterAdapterV1
 
 
@@ -27,6 +27,19 @@ def _read_document(reference):
     return parse_document_v1(raw, reference)
 
 
+def _read_fixture07_no_work_log(reference):
+    """Only original07 NoWork text, never a general artifact/body reader."""
+    from g2_saved_campaign.native30_resume_fixture07_snapshot_chain_v1 import (
+        RAW_LOG_LIMIT, parse_native07_no_work_log_v1)
+    _ref(reference)
+    require(reference["bytes"] <= RAW_LOG_LIMIT, "07 NoWork log bound exceeded")
+    path = Path(reference["path"])
+    require(path.is_absolute() and path.name == "production-no-work.log", "only exact07 NoWork log can be read")
+    with path.open("rb") as stream:
+        raw = stream.read(RAW_LOG_LIMIT + 1)
+    return parse_native07_no_work_log_v1(raw, reference)
+
+
 def read_native_transition_v1(*, base_freeze_ref, base_native_ref, capacity_ref,
                               machine_id, source_fixture=False):
     """Reusable source-pinned qualification loader; it creates no output.
@@ -39,7 +52,7 @@ def read_native_transition_v1(*, base_freeze_ref, base_native_ref, capacity_ref,
     capacity = _read_document(capacity_ref)
     transition = capacity.value.get("native_transition")
     require(isinstance(transition, dict), "capacity lacks admitted Native30 transition evidence")
-    evidence = {name: _read_document(transition.get(name))
+    evidence = {name: (_read_fixture07_no_work_log if name == "fixture07_no_work_log" else _read_document)(transition.get(name))
                 for name in native_transition_evidence_names_v1(capacity.value)}
     return validate_native_transition_v1(base_freeze=base, base_native_pin=native,
         evidence=evidence, capacity=capacity, machine_id=machine_id, source_fixture=source_fixture)

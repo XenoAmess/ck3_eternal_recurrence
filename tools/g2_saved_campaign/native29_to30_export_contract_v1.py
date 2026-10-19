@@ -35,6 +35,9 @@ def native_transition_evidence_names_v1(capacity_value):
     chain = transition.get("build_chain", "wholeclean_v1")
     if chain == "wholeclean_v1":
         return EVIDENCE_NAMES
+    if chain == "resume02_fixture07_snapshot":
+        from g2_saved_campaign.native30_resume_fixture07_snapshot_chain_v1 import EXTRA_EVIDENCE
+        return EVIDENCE_NAMES + EXTRA_EVIDENCE
     require(chain == "resume02_fixture06", "unsupported Native build chain")
     from g2_saved_campaign.native30_resume_fixture_chain_v1 import EXTRA_EVIDENCE
     return EVIDENCE_NAMES + EXTRA_EVIDENCE
@@ -147,7 +150,10 @@ def validate_native_transition_v1(*, base_freeze, base_native_pin, evidence, cap
     base, old, card = _doc(base_freeze), _doc(base_native_pin), _doc(capacity)
     evidence_names = native_transition_evidence_names_v1(card)
     require(isinstance(evidence, dict) and set(evidence) == set(evidence_names), "complete fixed evidence set required")
-    docs = {name: _doc(evidence[name]) for name in evidence_names}
+    # The new07 branch has exactly one bounded original text log. All other
+    # evidence retains the original pinned-JSON type and parser unchanged.
+    raw_name = "fixture07_no_work_log" if card.get("native_transition", {}).get("build_chain") == "resume02_fixture07_snapshot" else None
+    docs = {name: _doc(evidence[name]) for name in evidence_names if name != raw_name}
     all_docs = [base, old, card, *docs.values()]
     for value in all_docs:
         if "machine_id" in value:
@@ -190,9 +196,13 @@ def validate_native_transition_v1(*, base_freeze, base_native_pin, evidence, cap
                 "closed successful actual Native build required; wrong wholeclean status/schema")
         _same_ref(result.get("plan"), evidence["build_plan"].reference)
         _same_ref(delivery.get("source_freeze"), evidence["source_freeze"].reference)
-    else:
+    elif transition.get("build_chain") == "resume02_fixture06":
         from g2_saved_campaign.native30_resume_fixture_chain_v1 import validate_resume_fixture_chain_v1
         chain_audit = validate_resume_fixture_chain_v1(docs=docs, evidence=evidence,
+            transition=transition, machine_id=machine_id, now=now)
+    else:
+        from g2_saved_campaign.native30_resume_fixture07_snapshot_chain_v1 import validate_resume_fixture07_snapshot_chain_v1
+        chain_audit = validate_resume_fixture07_snapshot_chain_v1(docs=docs, evidence=evidence,
             transition=transition, machine_id=machine_id, now=now)
     require(plan.get("schema") == "native30-wholeclean-plan-v1", "actual frozen Native30 plan required")
     commit = delivery.get("source_commit")

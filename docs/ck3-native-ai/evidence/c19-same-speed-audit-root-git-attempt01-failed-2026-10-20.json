@@ -1,0 +1,29 @@
+{
+  "schema": "xar.root.C19-audit-anchor-bounded-writer-failure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:37:57.726196+00:00",
+  "machine_source": "Root current machine tool b67828",
+  "status": "FAILED_BEFORE_COMMIT_OR_REF",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\root189-c19-audit-anchor.py",
+    "bytes": 8149,
+    "sha256": "5698a00a28d47632677fffbd30e8428c48660e70d6185a050c1abc31ccdb9c43"
+  },
+  "release": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-same-speed-audit-root-git-release-2026-10-20.json",
+    "bytes": 1838,
+    "sha256": "ec0620c3c3e61702dc37730855daacccb3520574ec813970b7b485b260622d5a"
+  },
+  "error": "Root callback used default zlib compressed size as a loose-object bound. Actual Git loose tree was larger; postwrite assertion stopped after the first ancestor tree.",
+  "partial_object": {
+    "oid": "e3a13611b1616d923acd8c0c7a868b45c9f95a4e",
+    "uncompressed_tree_bytes": 40875,
+    "loose_file_bytes": 21256,
+    "conservative_cluster_charge": 24576
+  },
+  "budget": "Original exact supplement quoted bridge tree45056 from uncompressed bytes. Partial object remains charged; no new reserve or duplicate credit.",
+  "new_ref_absent": true,
+  "master_preserved": "48ed81c4c8733f54651807b235bfb367b07254a2",
+  "repair": "New Root190 exact RAM transform uses uncompressed object stream length plus fixed overhead; begins counter with the retained failed object charge. Preserve original failed producer and release.",
+  "review_at_utc": "2026-10-20T01:48:56.993837Z"
+}

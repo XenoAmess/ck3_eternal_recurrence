@@ -1,0 +1,108 @@
+{
+  "schema": "xar.ck3.native29-to30-snapshot07-transition-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T20:32:47Z",
+  "status": "SOURCE_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; retained same-session278d24. Source-only evidence.",
+  "storage": {
+    "total_cap_bytes": 163840,
+    "additional_net_cap_bytes": 57344,
+    "receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M0-AUDIT32KiB-C19-ADDON96KiB-CONTROLS96KiB-M7-TRANSITION160KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2672,
+      "sha256": "d667018d1f6c01a622e2f677b68e59c3029fe0139eae5dff47f43c908ee9b8da"
+    },
+    "provenance": "Owner registered total160KiB before writes, +56KiB only; receipt not reread from D."
+  },
+  "source_files": [
+    {
+      "path": "tools/g2_saved_campaign/native29_to30_export_contract_v1.py",
+      "bytes": 16421,
+      "sha256": "d8b624eaba54b355c4fe7c199e33ff21b818b9d1dcc2def9f5a8398c4cea8090"
+    },
+    {
+      "path": "tools/g2_saved_campaign/export_native30_immutable_sdk_views_v1.py",
+      "bytes": 4544,
+      "sha256": "f65bd5a175caa37a3ae78cd8cb12565488baa249aae5d78ca08d014fa15ed4a7"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_resume_fixture07_snapshot_chain_v1.py",
+      "bytes": 26152,
+      "sha256": "ceddbbfcf4daec435fd19326b3ad446936b2f4384d88e6277c205e3663a49ac3"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_resume_fixture07_snapshot_chain_v1.py",
+      "bytes": 22019,
+      "sha256": "2a629436ca0abc4b2c1f9e838ddedb524b79f11a91b20c8dd7b4348246b83c7f"
+    }
+  ],
+  "immutable_dependencies": {
+    "adapter": "tools/g2_saved_campaign/native30_export_adapter_v1.py:8824/2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298",
+    "old06_helper": "tools/g2_saved_campaign/native30_resume_fixture_chain_v1.py:13571/d9e5dc3c22f3b1fc58f1ab7b93de4f7ccb480c3ed938fdc6b2375d11a814f555",
+    "old_exporter": "22964/8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+  },
+  "historical_proofs": [
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-native29-to30-export-transition-source-ready-2026-10-20.json",
+      "bytes": 11928,
+      "sha256": "1f2aca090f08b5778970288dd30e3dca523e00edf605af92d9ee1f97cb987ca2"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-native29-to30-resume06-transition-source-ready-2026-10-20.json",
+      "bytes": 7794,
+      "sha256": "4cf3dee35604f5c2c303cb3eb604a215751569ea787707793dbf9ec87ccdec5e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-native30-exact-metadata-description-2026-10-20.json",
+      "bytes": 5689,
+      "sha256": "c8f2fb9c0b5618ab34d14a28729207b8efcbc18158b35e6de64a6c64b79dc587"
+    }
+  ],
+  "actual_producer_sources": {
+    "producer": "tools/g2_saved_campaign/qualify_native30_fixture07_20261020.py:37100/b22eb598dbfdc01359dd1e15c65132b0fbb37bab23840df3b15b2e8ce32df4ae",
+    "plan": "docs/ck3-native-ai/evidence/native30-fixture07-snapshot-plan-2026-10-20.json:14086/b4af9fa48d48b9c5a982b5bf392a7d6e367de1385fe425f941e389590ad7c006",
+    "supporting_sources": "Snapshot/capture/inventory exact pins are in frozen plan.helper_pins; only checked-in metadata read."
+  },
+  "contract": {
+    "chain": "resume02_fixture07_snapshot",
+    "scope": "Separate exact07 schema/status/plan/admission, not renamed06 or arbitrary schema/08. Original02 FAILED and successful production stay independent.704/overlay02/COPY04/overlay04/old29/EXE/wire/Root metadata guards remain.",
+    "evidence": "20 fixed refs:19 pinned JSON documents plus only fixture07_no_work_log. Its new typed text record is bounded8192 and original SHA/bytes checked; not a generic body reader or custody token. Public loader still four refs, source_fixture=False by default; export disabled before IO.",
+    "snapshot": "Exact original build.ninja and snapshot SHA/size; separate original4-key mtime pins; same original build cwd, rules include and .ninja_log/.ninja_deps. Exactly219 unique regeneration inputs, ordered JSON identity hash and non-newer mtimes, cache/overlay02/04 included; exactly2 equal physical glob reports and script identity. Original/snapshot expanded command logs for all12 targets must share SHA/size; logs/full15MB manifest not read.",
+    "pipeline": "Exact ordered35 phases: original/snapshot Ninja-f commands, snapshot Ninja-n-d explain plus independently literal NoWork raw log, owned frozen MSVC initializer and bounded safe environment delta/tool inventory, nine Ninja-f-j1..4 single-target builds+registration+execution, layout postcheck, snapshot deps and exports/archive checks. Every phase has matching actual argv/PID root0/Job0 journal. No original-manifest build/configure fallback.",
+    "cwd_limit": "Phase/journal has no independent cwd field. Qualification binds snapshot.same_cwd/inputs.cwd, argv-C and frozen producer literal run(cwd=build); does not invent OS cwd observations.",
+    "relative_output": "Actual output_from_command can return relative/Fo;07 resolves only under exact original build. Closed inventory names compare with Windows case folding. Tests cover mixed-case relative CMakeFiles/Actor.DIR/First.OBJ. No06 history rewrite."
+  },
+  "validation": {
+    "final_new_suite": {
+      "tool": "3d7087",
+      "tests": 9,
+      "subtests": 26,
+      "seconds": 1.8
+    },
+    "legacy_smoke": "f6a23e:11PASS/26subtests included new suite and only two existing wholeclean/06 positives. Old13/40 matrix not rerun.",
+    "inverse": "0f71c7 exactly removes new dispatch/fixed-reader hunks in memory to recover contract76b1cc50 and loaderedbe75a6; old branch guard changes0.",
+    "coverage": "Input/glob/hash/cwd/mtime drift; root0 fakeNoWork; wrong-f/-C/-j/tool; initializer/unsafe delta; missing fixture/unknownJob; prior relabel; registration-failed prefix/missingdelivery; bounded rawreader; publicloader/fullMemoryFS core.",
+    "fixture_boundary": "All success rows are invented source fixtures. Private MemoryFS/Git/NTFS only, no child/OS/Native calls. Initial collection/path test-only failures75e49a/bb213d corrected, ce736a; final new9/26 pass."
+  },
+  "actual_boundary": {
+    "owner": "performance_native",
+    "actual07_result": {
+      "bytes": 22565,
+      "sha256": "7191c5ac4155bc91e42c9025c429ee4d1846dfc23dcbf68bc9d23a17c079248e",
+      "read_by_this_agent": false
+    },
+    "status": "FAILED; fixture01 registration denied, zero fixture executions and no production-delivery, as owner reported. Snapshot/NoWork success alone is not Native qualification.",
+    "runtime_admitted": false,
+    "actual_loaded_provider_issued": false,
+    "H": "unknown",
+    "D_IO": false,
+    "Git_operations": false,
+    "Game_or_Task_or_Native_calls": 0,
+    "SDK_outputs": 0
+  },
+  "accounting": "Net before proof49744; prior package104159. Closing readback supplies exact proof SHA/sums; newnet<=57344 and total<=163840.",
+  "retention": {
+    "review_at_utc": "2027-04-17T20:32:47Z",
+    "reason": "Finite07 source/history; review current use and successor evidence under source-policy180-day rule."
+  }
+}
