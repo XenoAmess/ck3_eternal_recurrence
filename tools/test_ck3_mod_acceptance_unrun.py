@@ -17,6 +17,7 @@ def main():
     assert verdict['mode']=='previous-shared-allocated-unrun-idle'
     assert verdict['failure_cleanup']['typed_normal_exit_proven'] is False
     assert verdict['failure_cleanup']['original_host_exit_code'] is None
+    assert 'counter' in bundle and 'counter' not in verdict['failure_cleanup']['original_evidence']
     def refuses(expected,call):
         try:call()
         except ValueError as error:assert expected in str(error),(expected,str(error))

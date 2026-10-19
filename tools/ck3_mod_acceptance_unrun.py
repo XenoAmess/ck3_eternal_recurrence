@@ -96,7 +96,7 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     inventory=runtime_process_inventory(psutil,os.getpid())
     need(not inventory['blockers'],'Allocated-unrun predecessor process still running: '+repr(inventory['blockers']))
     return {'mode':'previous-shared-allocated-unrun-idle','actual_process_inventory':inventory,
-        'failure_cleanup':{'close':pin(close_path),'original_evidence':{k:v for k,v in bundle.items() if isinstance(v,dict) and 'sha256' in v},
+        'failure_cleanup':{'close':pin(close_path),'original_evidence':{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},
             'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
             'host_started':False,'native_session_started':False,'original_host_exit_code':None,
             'original_ck3_exit_code':None,'typed_normal_exit_proven':False,'business_pass':False}}
