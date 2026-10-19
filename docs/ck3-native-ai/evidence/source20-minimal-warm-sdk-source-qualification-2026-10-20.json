@@ -1,0 +1,394 @@
+{
+  "schema": "xar.source20.minimal-warm-sdk-source-composition/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:57:23.505515+00:00",
+  "status": "SOURCE_INTEGRITY_IMPORT_AND_CROSS_PACKAGE_PASS_NOT_ADOPTED",
+  "base": {
+    "freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+      "bytes": 375083,
+      "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b"
+    },
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15",
+    "business_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "files": 1445,
+    "source_bytes": 59052571,
+    "canonical_rows_JSON": {
+      "bytes": 371514,
+      "sha256": "20b02b77ebbe43b9f822717295ac377b9ca445d43b11429d1117f330cc8252f7"
+    },
+    "all1445_Git_mode_blob_size_checked": true,
+    "unchanged1441_body_SHA_authority": "Pinned actual624c inventory; not falsely rehashed this run. Original exporter rechecks frozen inputs before materialization."
+  },
+  "complete_manifest": {
+    "file_count": 1447,
+    "source_bytes": 59065188,
+    "canonical_rows_JSON": {
+      "bytes": 371996,
+      "sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935"
+    },
+    "access": "compose() returns all1447 rows in RAM"
+  },
+  "delta": [
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+        "bytes": 6111,
+        "sha256": "9c2a85ba1b00efd0a68ca3c92bb195dd15938223a91ad3abfdc794ebec41f4e9",
+        "git_blob_sha1": "167109e4b32867be9ef53fbfd3ec3588abdf7a63",
+        "git_mode": "100644"
+      },
+      "net_bytes": 6111
+    },
+    {
+      "relative": "xar_autoplayer/bridge/campaign_root_terminal_retry_v1.py",
+      "before": null,
+      "after": {
+        "relative": "xar_autoplayer/bridge/campaign_root_terminal_retry_v1.py",
+        "bytes": 3566,
+        "sha256": "c7187d98c791148686369636848a5209b4323c25618c050f81b840da8ce9641c",
+        "git_blob_sha1": "3302c965a28f25784e462971f8cdd5944851101c",
+        "git_mode": "100644"
+      },
+      "net_bytes": 3566
+    },
+    {
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 3412,
+        "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185",
+        "git_blob_sha1": "fd4af79da8533cdbc82604902cd3c520ae0966ea",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 4934,
+        "sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+        "git_blob_sha1": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1522
+    },
+    {
+      "relative": "xar_autoplayer/bridge/mcp_server.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/mcp_server.py",
+        "bytes": 263923,
+        "sha256": "b4d2fab30a5c8cd8a0291c3759d9a0518b31df55698002d8ea6e7e64ad3bfb4a",
+        "git_blob_sha1": "bc4dd82d5d65522f6b6167bdd3b7b4a55cc38729",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/mcp_server.py",
+        "bytes": 264359,
+        "sha256": "8b1c260f779dbd3e25770af75ed87de0cfd39200454c7662f611accfce92688f",
+        "git_blob_sha1": "b32f26eb23a210a830cf50b908eb83d353738ac9",
+        "git_mode": "100644"
+      },
+      "net_bytes": 436
+    },
+    {
+      "relative": "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+        "bytes": 13443,
+        "sha256": "69ff7e9dc23dc6d06c2703e8c0f4a7475589cb91475b12f4e11e569234194414",
+        "git_blob_sha1": "cff42d3de6d432e492351b92fdbe0e5001aa69d7",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+        "bytes": 14139,
+        "sha256": "a761179ca74f576950cdeda76649af9f39d8f1c831af21941753b622696cb24f",
+        "git_blob_sha1": "48b80df41ffbc3b0c13fe17662a258b39d020660",
+        "git_mode": "100644"
+      },
+      "net_bytes": 696
+    },
+    {
+      "relative": "xar_autoplayer/bridge/service.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/service.py",
+        "bytes": 877777,
+        "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8",
+        "git_blob_sha1": "a081bb9ae1af88d19f3df9c7c27522cc97ed64b6",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/service.py",
+        "bytes": 878063,
+        "sha256": "642e62f20b49ceed796b7dcb106b19cb94043db0593cceabeca0f0746d7aabb9",
+        "git_blob_sha1": "e671892c6124fa7bcce6870b938770916cff9717",
+        "git_mode": "100644"
+      },
+      "net_bytes": 286
+    }
+  ],
+  "changed_existing_leaves": 4,
+  "new_leaves": 2,
+  "unchanged_original_leaves": 1441,
+  "Service_inverse_entire_actual_bytes": true,
+  "Service_existing_retry_method_segment_unchanged": true,
+  "existing_ContextVar_shared_claim_API": "typed inner claim and existing outer retry share one remaining budget; outer loop is not replaced",
+  "readonly_budget_inverse_entire_actual_bytes": true,
+  "MCP_actual_transform": {
+    "base_sha256": "b4d2fab30a5c8cd8a0291c3759d9a0518b31df55698002d8ea6e7e64ad3bfb4a",
+    "base_bytes": 263923,
+    "candidate_bytes": 264359,
+    "candidate_sha256": "8b1c260f779dbd3e25770af75ed87de0cfd39200454c7662f611accfce92688f",
+    "span_count": 1,
+    "source_offset": 131103,
+    "inverse_bytes_and_AST_exact": true,
+    "original_error_content_and_native_diagnostic_preserved": true,
+    "new_helper": "xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+    "new_retry_or_Game_calls": 0,
+    "outputs_materialized": false
+  },
+  "audit_single_insertion_bytes": 1522,
+  "family_fix_preserved": {
+    "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+    "bytes": 61273,
+    "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+    "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+    "git_mode": "100644"
+  },
+  "candidate_Git_tree_model": "c868c9aa96fc012cd34f05e3fad6ebf7b8f3d8b8",
+  "candidate_tree_model_not_actual_Git_object_or_deployment": true,
+  "prospective_capacity": {
+    "status": "QUOTE_ONLY_NOT_CAPACITY_ADMISSION",
+    "logical_changed_source_each": 1171172,
+    "Git_object_inventory": [
+      {
+        "kind": "blob",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+        "oid": "167109e4b32867be9ef53fbfd3ec3588abdf7a63",
+        "payload_bytes": 6111,
+        "loose_uncompressed4096overhead_cluster_upper": 12288
+      },
+      {
+        "kind": "blob",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_terminal_retry_v1.py",
+        "oid": "3302c965a28f25784e462971f8cdd5944851101c",
+        "payload_bytes": 3566,
+        "loose_uncompressed4096overhead_cluster_upper": 8192
+      },
+      {
+        "kind": "blob",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "oid": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+        "payload_bytes": 4934,
+        "loose_uncompressed4096overhead_cluster_upper": 12288
+      },
+      {
+        "kind": "blob",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+        "oid": "b32f26eb23a210a830cf50b908eb83d353738ac9",
+        "payload_bytes": 264359,
+        "loose_uncompressed4096overhead_cluster_upper": 270336
+      },
+      {
+        "kind": "blob",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+        "oid": "48b80df41ffbc3b0c13fe17662a258b39d020660",
+        "payload_bytes": 14139,
+        "loose_uncompressed4096overhead_cluster_upper": 20480
+      },
+      {
+        "kind": "blob",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+        "oid": "e671892c6124fa7bcce6870b938770916cff9717",
+        "payload_bytes": 878063,
+        "loose_uncompressed4096overhead_cluster_upper": 884736
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge",
+        "oid": "3664fe725090d5770c37fba8bf06d7ef9e485663",
+        "payload_bytes": 40560,
+        "loose_uncompressed4096overhead_cluster_upper": 45056
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player/src/xar_autoplayer",
+        "oid": "0b7a913ea690197ae4bd3bd76a1d66b40650e9ea",
+        "payload_bytes": 12584,
+        "loose_uncompressed4096overhead_cluster_upper": 20480
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player/src",
+        "oid": "5e5d7f3c4077dbe9101930796d1afbdf0c749977",
+        "payload_bytes": 41,
+        "loose_uncompressed4096overhead_cluster_upper": 8192
+      },
+      {
+        "kind": "tree",
+        "path": "ck3_autonomous_player",
+        "oid": "6f8b667d9be0f648e3a35fc55c24a9bd24dc8d32",
+        "payload_bytes": 1122,
+        "loose_uncompressed4096overhead_cluster_upper": 8192
+      },
+      {
+        "kind": "tree",
+        "path": "<root>",
+        "oid": "c868c9aa96fc012cd34f05e3fad6ebf7b8f3d8b8",
+        "payload_bytes": 1565,
+        "loose_uncompressed4096overhead_cluster_upper": 8192
+      },
+      {
+        "kind": "commit",
+        "path": "<future Root commit>",
+        "payload_cap_bytes": 8192,
+        "loose_uncompressed4096overhead_cluster_upper": 16384
+      }
+    ],
+    "Git_retained_upper": 1314816,
+    "Git_largest_extra_temporary_upper": 884736,
+    "Git_refs_locks_dirs_extra_reserve": 65536,
+    "Git_conservative_peak_upper": 2265088,
+    "compression_credit": 0,
+    "Git_callback_requires": "stdin RAM payload; no extra disk source/full SDK alias; commit payload<=8192. Any different writer adds its actual peak before admission.",
+    "components": {
+      "Z_Git_uncompressed_alias_temp_refs_envelope": 2359296,
+      "D_dual_changed4096cluster_upper": 2367488,
+      "D_rich_JSON_MFT_and_FS_reserve": 4194304,
+      "D_compact_ROOTFINAL_envelope": 524288,
+      "D_controls_and_feeder_envelope": 409600,
+      "D_Task_specs_initial_metadata_logs_envelope": 262144,
+      "D_atomic_control_temp_envelope": 65536
+    },
+    "complete_stage_quote_upper": 10182656,
+    "Root_budget_ceiling_bytes": 12582912,
+    "budget_is_not_write_authorization": true,
+    "physical_allocated_bytes": null,
+    "closed_Driver_bytes": null,
+    "closed_Driver_copy": "Separate actual normal-close stat and existing Driver-budget card; not zero, not read or silently included in this source-stage quote.",
+    "feeder_controls_atomic": "400KiB includes then actual controls+feeder;64KiB is additional atomic temp. Final owner exact pins/peak must fit or quote rises; current controls not assumed installed."
+  },
+  "proposed_roots": {
+    "source_destination": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src17",
+    "reference_destination": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\reference-c20\\src",
+    "output_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c20-campaign-root-retry97\\immutable-source-export",
+    "authority": "runtime message; names only, absence/closed-state/capacity not inspected or admitted"
+  },
+  "Root_create_only_ref": "refs/heads/campaign/robert-v20261019-c20-campaign-root-retry-warm-01",
+  "Root_parent_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+  "existing_frozen_input_pins": [
+    {
+      "path": "tools/g2_saved_campaign/prepare_c16_perf_warm_sdk_v1.py",
+      "bytes": 25869,
+      "sha256": "ed79fdb82f422c4cd17dc9fc1c00a133603dbea2ca4374b980172c1eb33a916b"
+    },
+    {
+      "path": "tools/g2_saved_campaign/transform_campaign_root_terminal_retry_v1.py",
+      "bytes": 5257,
+      "sha256": "fb787f922b21c869bc94acdef0aff9ad5fc729f3469a41b6f8c86b1429efa729"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_campaign_root_retry_mcp_observability_v1.py",
+      "bytes": 3340,
+      "sha256": "32770be8ebe15169c9418295f2cd11c068302bd2c1bc1f40c310c2d69c95a7e6"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/same-speed-persistent-audit-source-ready-2026-10-20.json",
+      "bytes": 1822,
+      "sha256": "4e985b55d1b67300eb9c4e91d1c0b362334ac898106d71682a8c18eaae01130f"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/source20-campaign-root-retry-mcp-observability-2026-10-20.json",
+      "bytes": 2744,
+      "sha256": "d821fdd4705266b2d1c855286bb0c98e7b6cf13a11442e08ca0226783c3fe9f0"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/source20-campaign-root-retry-mcp-bounded-input-addendum-2026-10-20.json",
+      "bytes": 3254,
+      "sha256": "3e3ec2ae12d2d8db78165b7d074561fefd02cf308babccf13cca7e82b864f78d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/source20-campaign-root-retry-budget-diagnostic-addendum-2026-10-20.json",
+      "bytes": 3704,
+      "sha256": "e660a710006bcf217a029b68b1e335c522ce55be2d9ce74f27b275fcee04b029"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/source20-campaign-root-shared-budget-addendum-2026-10-20.json",
+      "bytes": 7701,
+      "sha256": "448daca214cc539d240a7d984796ca4c1ae1a2f52a29588d79d5354f06ecc4b0"
+    }
+  ],
+  "boundaries": {
+    "C19_M7_multiday_finite_source_bytes_included": false,
+    "canonical_master_Service_or_MCP_overlay": false,
+    "Source15_temporary_classifier_wrapper_included": false,
+    "Native_binary_ABI_or_qualification_changed": false,
+    "current_C18_modified": false,
+    "new_retry_beyond_shared_once_or_Native_reads": 0,
+    "runtime_Driver_SAVE_ledger_body_reads": 0,
+    "D_Git_Task_Game_RPC_writes": 0,
+    "actual_seconds_saved": null,
+    "actual_runtime_recovery_credit": false
+  },
+  "future_materialization": "Original immutable full-view exporter8b697; same Native29pin8ace and Hostd90 remain. Needs Root actual new business anchor, exact capacity card and then normal warm controls/inputs. No C19 Native30/M7 cold authority is imported.",
+  "qualification": {
+    "new_cross_package_checks": [
+      {
+        "kind": "synthetic cross-package seam using actual unchanged Source15 exception and actual MCP diagnostic function",
+        "passed": true,
+        "shared_budget_first_true_second_false": true,
+        "replan_audit_not_fabricated": true,
+        "bounded_MCP_budget_decline": true,
+        "Game_Native_commands_or_reads": 0
+      }
+    ],
+    "loaded_RAM_modules": [
+      {
+        "module": "xar_autoplayer.bridge.campaign_root_retry_diagnostic_v1",
+        "relative": "xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+        "bytes": 6111,
+        "sha256": "9c2a85ba1b00efd0a68ca3c92bb195dd15938223a91ad3abfdc794ebec41f4e9"
+      },
+      {
+        "module": "xar_autoplayer.bridge.campaign_root_terminal_retry_v1",
+        "relative": "xar_autoplayer/bridge/campaign_root_terminal_retry_v1.py",
+        "bytes": 3566,
+        "sha256": "c7187d98c791148686369636848a5209b4323c25618c050f81b840da8ce9641c"
+      },
+      {
+        "module": "xar_autoplayer.bridge.exact_day_speed_configuration_v1",
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 4934,
+        "sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c"
+      },
+      {
+        "module": "xar_autoplayer.bridge.service",
+        "relative": "xar_autoplayer/bridge/service.py",
+        "bytes": 878063,
+        "sha256": "642e62f20b49ceed796b7dcb106b19cb94043db0593cceabeca0f0746d7aabb9"
+      },
+      {
+        "module": "xar_autoplayer.bridge.mcp_server",
+        "relative": "xar_autoplayer/bridge/mcp_server.py",
+        "bytes": 264359,
+        "sha256": "8b1c260f779dbd3e25770af75ed87de0cfd39200454c7662f611accfce92688f"
+      },
+      {
+        "module": "xar_autoplayer.bridge.readonly_planning_retry_v1",
+        "relative": "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+        "bytes": 14139,
+        "sha256": "a761179ca74f576950cdeda76649af9f39d8f1c831af21941753b622696cb24f"
+      }
+    ],
+    "other_production_imports": "actual frozen Source15; RAM modules use virtual __file__ paths, no new physical authority",
+    "Service_and_MCP_and_readonly_inverse": "PASS",
+    "full1445_original_Git_metadata_and1447_rows": "PASS",
+    "original_outer_loop_AST": "UNCHANGED",
+    "owner_tests_reused": "M0 3; M5 final43+actualSource15 outer12; MCP original7+bounded2+budget1. None repeated here.",
+    "withdrawn_five_delta_31case_candidate_used_as_final": false,
+    "Root_writer_recipe_executed": false,
+    "scratch_files": 0,
+    "Git_D_Task_Game_RPC_writes": 0,
+    "actual_runtime_recovery_or_performance_credit": false
+  }
+}

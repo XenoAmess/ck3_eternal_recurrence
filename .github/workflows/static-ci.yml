@@ -289,6 +289,16 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}\tools\g2_saved_campaign;${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_route_contact_same_speed_10416.py
+      - name: Test guarded campaign retries and preventive defence funds
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_campaign_root_terminal_retry_v1.py ck3_autonomous_player/tests/unit/test_campaign_root_shared_retry_budget_v1.py ck3_autonomous_player/tests/unit/test_primary_defender_preventive_reserve_v1.py
+      - name: Test portable bounded retry diagnostic projection
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/qualify_campaign_root_retry_mcp_observability_v1.py -k "not actual_handler and not exact_source_inverse"
       - name: Test native build recovery guards without CK3 or MSVC
         env:
           PYTHONDONTWRITEBYTECODE: "1"

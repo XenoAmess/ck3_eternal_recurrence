@@ -1,0 +1,40 @@
+{
+  "schema": "xar.root.Source20-shared-budget-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:00:15.088992+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine;Rootb67828",
+  "source_qualification": {
+    "M5": "43PASS/3.44s and12 actualSrc15 RAM outer/inner cross cases. M0 and M1 final independent noBlock.",
+    "superseded_candidate": "Old31PASS/direct-three-gate package is historical and was withdrawn before adoption. It missed the already-loaded outer ContextVar retry. No-any-retry claim for F95/F96 was too broad; old public diagnostics leave outer attempts unknown.",
+    "final": "New typed path claims the existing single budget before inner wait. Spent outer budget refuses inner read; inner fresh decline or second refusal refuses outer replan. Pure recognition stays separate; unknown action is not retried.",
+    "audit": "Inner-only success does not append to outer rejections or invent fresh_replans1. Existing true outer audit/finally reset and original strict fresh/history method remain.",
+    "MCP": "Original7PASS plus bounded-input2 and budget-enum1 increments. performance_python final noBlock on bounded input, original error/native diagnostic and absent-evidence semantics; final budget enum only adds explicit decline.",
+    "native": "executor_enterfalse proves typed campaign body not entered; callback/Capture may have read Game state. Native subgate remains unknown."
+  },
+  "composition": {
+    "independent_review": "performance_python complete producer/qualifier/plan/proof final noBlock; Root full producer fe4f69 and plan625815 read.",
+    "base": "ActualSource15 freeze624c,0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "files": 1447,
+    "source_bytes": 59065188,
+    "fullrows_sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935",
+    "delta": "Four existing leaves plus two new helpers.1441 unchanged; familyd8bb preserved. No canonical master Service/MCP wholesale, C19/M7 or temporarySource15 classifier wrapper.",
+    "budget": "Frozen quote10,182,656 is conditional. Actual7controls368122+feeder68328+optionalbootstrap26982 exceed400KiB. Raise controls component to at least512KiB; updated lower quote10,297,344, still below independently held12MiB. Final source/Task/atomic/card still required.",
+    "git": "2.25MiB envelope uses uncompressed objects plus largest temp/refs. Root SHA format is not permission; separate actual Git card/release and guarded callback required."
+  },
+  "current_runtime": {
+    "game_pid": 30852,
+    "source": "Source15/Native29;same recording",
+    "settled_cycles": 4748,
+    "days": 5427,
+    "SAVE10456": "normal checkpoint.saved/raw53274576/history5254/116194023B/SHA40483c63e79155a03bd3d495411d43a89ef11690b2b720e39113abe4579460fa",
+    "loop": "Saved physically; count72/cache5378 remain old until separately qualified offline reconcile. Pendingnull/NEXT10457; no newAUTO/FULL or SDK/Game closure.",
+    "adoption": "This source commit does not deploy Source20, restart a process or claim actual retry/performance improvement."
+  },
+  "storage": {
+    "root_scope": "post186 independent128KiB/f030",
+    "oldRoot512": "full grossunknown, not borrowed",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "record_review_at_utc": "2027-04-17T21:02:00Z"
+  },
+  "remaining": "Create exact Source20 Git anchor; final C20 controls/closure/Driver/capacity/SPEC; normal warm and actual FULL measurement. Native08B still revision2 source review, zero actual fixtures."
+}
