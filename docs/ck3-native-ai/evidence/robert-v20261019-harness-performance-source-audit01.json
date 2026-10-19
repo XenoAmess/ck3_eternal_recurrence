@@ -1,0 +1,100 @@
+{
+  "schema": "xar.harness-performance-source-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:25:54.248317+00:00",
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_mcp_entry.py",
+      "bytes": 12596,
+      "sha256": "846dc07a6b39efac97d26ac59430801b68ed2bb0ff7b9c2252d00411ffdb9dd3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_sdk_queue.py",
+      "bytes": 262759,
+      "sha256": "3773af1c2beb0d66d800371012826e42d973d16cac855c4786212d45b28b9f20"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_same_game_loop_feeder.py",
+      "bytes": 30667,
+      "sha256": "ff5d3367e6ee66f24cc06dc6b9616cefd01295d579d669b4bdfe5dd1d8c33a71"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\launch_clean_feeder.py",
+      "bytes": 2451,
+      "sha256": "9ff70ca1183f9e30afe21b7bf165ba4ba30b45c513a7dd247e50f85224e88c81"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_overlay_relay.py",
+      "bytes": 3027,
+      "sha256": "d898044571967395436d3571f6a62d268c4210f536a930cc5bf089e114e71755"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_decision_text_api.py",
+      "bytes": 1830,
+      "sha256": "a468174c80f29244d11a52687bba17718e3ee9d6bc8ed0767150751c4f16e376"
+    }
+  ],
+  "qualification_source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_queue_response_encoding_v1.py",
+      "bytes": 12918,
+      "sha256": "f837ac26b04a5b4a4581c4662445aefdd418c1fab95d01dea62ea2b34bbf7cc0"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\owner_response_json_once_v1.py",
+      "bytes": 1448,
+      "sha256": "895519ed2d403f87fa8740252909ca2d4e23d88940eca70833d945f333cc8b2c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\owner_response_source_transform_v1.py",
+      "bytes": 5771,
+      "sha256": "c6f2678f0fa96672c87425076dd07daccd1c2f0a5e1cb29edfcce3079df491c3"
+    }
+  ],
+  "qualification_result": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\robert-v20261019-queue-encoding-source-qualification01.json",
+    "bytes": 3911,
+    "sha256": "aaa3e02ffb1f91333dbb7ba06e01cf65a33e80d506d3a61eb9461c51d9693076"
+  },
+  "historical_source": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p49-settled-performance.json",
+    "bytes": 10920,
+    "sha256": "5cabf32650b81db2adafe96d79edb81341ccacf7de91243b315ac4ddebe3de36"
+  },
+  "historical_machine_id": "unknown",
+  "historical_scope": "P49 sealed timing, not attributed to current machine",
+  "P49": {
+    "game_days": 118,
+    "wall_seconds": 134.92461,
+    "RPC_busy_union_seconds": 130.511249,
+    "unattributed_gap_seconds": 4.413361,
+    "seconds_per_game_day": 1.1434288983050847,
+    "zero_gap_theoretical_seconds_per_game_day": 1.106027533898305,
+    "maximum_gain_if_every_gap_removed_seconds_per_game_day": 0.037401364406779665,
+    "attribution": "Upper-bound arithmetic, not an optimization or causal assignment"
+  },
+  "source_findings": {
+    "full_loop_max_turns": 30,
+    "full_loop_per_turn_fixed_poll_sleep": false,
+    "queue_sleep_after_each_control_seconds": 0.25,
+    "feeder_wait_between_batch_checks_seconds": 0.2,
+    "SDK_pair_startup_poll_seconds": 0.25,
+    "SDK_pair_handshake_per_turn": false,
+    "artifact_scan": "Existing fresh scandir across four flat roots; no retained byte cache",
+    "whole_Driver_hash": "Preflight/cold transition only, not ordinary per-RPC guard",
+    "paired_METRICS": "Actual take_internal_semantic_snapshot preserved after every ordinary AUTO",
+    "complete_result_JSON_encodings": 2,
+    "decision_publications": "Synchronous before_submit and actual result publication; exact ACK, source and process identity checks retained",
+    "text_publisher_poll_seconds": 0.02
+  },
+  "live_calls_or_mutations": 0,
+  "performance_window_requested_from_runtime": true,
+  "claim": "No current end-to-end speedup or 1 second/day qualification yet",
+  "storage": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2027-04-17T03:25:20Z",
+    "retention_reason": "Compact provenance and bounded reproducible performance qualification",
+    "outputs_below_bytes": 1048576,
+    "raw_runtime_payloads_read": 0
+  }
+}

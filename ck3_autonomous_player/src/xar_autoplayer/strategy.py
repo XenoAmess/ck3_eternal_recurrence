@@ -5674,14 +5674,18 @@ def _battle_control_turn_state(
     scoped = _history_after_latest_restore(rows)
     # Battle queries are scoped to this process; persisted move proof is not.
     scope_offset = len(rows) - len(scoped)
-    advance_positions = [
-        position
-        for position, row in enumerate(scoped, start=1)
-        if row.get("ok") is True
-        and _is_battle_timeline_advance_step(_effective_command(row))
-    ]
-    latest_advance = advance_positions[-1] if advance_positions else 0
-    previous_advance = advance_positions[-2] if len(advance_positions) > 1 else 0
+    # Only the last two successful advances bound the pre/post query window.
+    # Older advances cannot change those positions. Keep the original parser,
+    # restore scope and 1-based positions without reparsing the whole campaign.
+    latest_advance = previous_advance = 0
+    for position in range(len(scoped), 0, -1):
+        row = scoped[position - 1]
+        if (row.get("ok") is True
+                and _is_battle_timeline_advance_step(_effective_command(row))):
+            if latest_advance:
+                previous_advance = position
+                break
+            latest_advance = position
     latest_advance_result = (
         _effective_command_result(scoped[latest_advance - 1])
         if latest_advance

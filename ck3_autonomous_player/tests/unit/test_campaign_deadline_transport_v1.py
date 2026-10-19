@@ -18,7 +18,8 @@ from ck3_autonomous_player.tests.unit.test_native_bridge_driver import (
 
 
 class CampaignDeadlineCompoundTests(unittest.TestCase):
-    def driver(self, date="1066.10.10", *, battle=False, overshoot=False):
+    def driver(self, date="1066.10.10", *, battle=False, overshoot=False, initial_speed=1,
+               early_event_days=None):
         endpoint = FakeEndpoint()
         driver = n.NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint,
             command_timeout_seconds=.2, life_advance_timeout_seconds=.2)
@@ -29,11 +30,12 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
         start = date_to_raw(date)
         players = [_army(501, in_combat=True)] if battle else []
         wars = [_war(allied_armies=players)] if battle else []
-        state = {"revision": 1, "date": start, "speed": 1, "arm": None}
+        state = {"revision": 1, "date": start, "speed": initial_speed, "arm": None,
+                 "paused": True, "event": None}
 
         def publish():
             endpoint.publish(_snapshot(state["revision"], date_raw=state["date"], speed=state["speed"],
-                paused=True, active_wars=wars, player_armies=players))
+                paused=state["paused"], active_event=state["event"], active_wars=wars, player_armies=players))
         publish()
         driver.configure_campaign_score_cadence_v1(campaign_id="software-fixture",
             start_date="1066.9.15", start_date_raw=53144328)
@@ -53,12 +55,13 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
                 result["tactical_daily_sentinel"] = state["arm"]
             elif step == n._TACTICAL_DAILY_SENTINEL_STATUS_STEP:
                 arm = state["arm"]
-                result["tactical_daily_sentinel"] = _tactical_sentinel_status(state="triggered", generation=7,
+                event_boundary = early_event_days is not None
+                result["tactical_daily_sentinel"] = _tactical_sentinel_status(state="armed" if event_boundary else "triggered", generation=7,
                     starting_date_raw=start, target_date_raw=arm["target_date_raw"], observed_date_raw=state["date"],
                     speed=arm["speed"], mode=arm["mode"], army_count=arm["army_count"], combat_count=arm["combat_count"],
-                    completed_daily_ticks=(state["date"]-start)//24, trigger_flags=1,
-                    trigger_reasons=["date_deadline"], overshoot_days=1 if overshoot else 0,
-                    pause_wrapper_called=True, pause_observed=True)
+                    completed_daily_ticks=(state["date"]-start)//24, trigger_flags=0 if event_boundary else 1,
+                    trigger_reasons=[] if event_boundary else ["date_deadline"], overshoot_days=-1 if event_boundary else 1 if overshoot else 0,
+                    pause_wrapper_called=not event_boundary, pause_observed=not event_boundary)
             elif step.startswith(n._TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX):
                 result["status"] = "canceled"
             endpoint.publish({"type": "command_result", "protocol_version": 1,
@@ -66,9 +69,14 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
             if step.startswith("set-speed-"):
                 state["speed"] = int(step[-1]); state["revision"] += 1; publish()
             elif step == "resume-map":
-                state["date"] = state["arm"]["target_date_raw"] + (24 if overshoot else 0)
+                state["date"] = (start + early_event_days * 24 if early_event_days is not None
+                                 else state["arm"]["target_date_raw"] + (24 if overshoot else 0))
+                if early_event_days is not None:
+                    state["paused"] = False
+                    state["event"] = {"instance_id": 1, "option_count": 1}
                 state["revision"] += 1; publish()
             elif step == "pause-map":
+                state["paused"] = True
                 state["revision"] += 1; publish()
         endpoint.send_hook = answer
         self.addCleanup(driver.close)
@@ -154,6 +162,78 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
         plain = object.__new__(n.NativeHeadlessGameplayDriver)
         planned = {"plan": {"selected_step": "life-advance"}}
         self.assertIs(plain.cap_campaign_advance_plan_v1(planned), planned)
+
+    def test_same_bound_speed_omits_only_redundant_setter_and_retains_native_speed_proof(self):
+        driver, endpoint = self.driver(initial_speed=5)
+        starting = driver.take_internal_semantic_snapshot()
+        result = driver.execute_step("life-advance", expected_revision=int(starting["revision"]))
+        steps = self.steps(endpoint)
+        self.assertEqual(len(steps), 3)
+        self.assertTrue(steps[0].startswith(n._TACTICAL_DAILY_SENTINEL_ARM_PREFIX))
+        self.assertEqual(steps[1:], ["resume-map", n._TACTICAL_DAILY_SENTINEL_STATUS_STEP])
+        self.assertEqual(result["elapsed_days"], 5)
+        proof = result["campaign_deadline_native_clock_v1"]
+        self.assertEqual(proof["speed_configuration"], {"status": "already_observed", "submitted": False,
+            "observed_speed": 5, "source_snapshot_id": starting["snapshot_id"],
+            "source_native_revision": starting["native_revision"], "source_date_raw": starting["date_raw"]})
+        self.assertEqual(proof["armed"]["speed"], proof["stopped"]["speed"])
+        self.assertEqual(result["timeline_speed"], 5)
+        self.assertTrue(all(action["result"]["accepted"] is True for action in result["actions"]))
+
+    def test_same_observed_speed_cannot_replace_independent_native_arm_speed_validation(self):
+        driver, endpoint = self.driver(initial_speed=5)
+        publish = endpoint.publish
+        def bad_arm_speed(frame):
+            result = frame.get("result")
+            if (frame.get("type") == "command_result" and isinstance(result, dict)
+                    and str(result.get("step")).startswith(n._TACTICAL_DAILY_SENTINEL_ARM_PREFIX)):
+                frame = copy.deepcopy(frame)
+                frame["result"]["tactical_daily_sentinel"]["speed"] = 4
+            publish(frame)
+        endpoint.publish = bad_arm_speed
+        with self.assertRaises(n.BridgeUnavailableError):
+            driver.execute_step("life-advance", expected_revision=int(driver.take_snapshot()["revision"]))
+        self.assertNotIn("resume-map", self.steps(endpoint))
+        self.assertNotIn("set-speed-5", self.steps(endpoint))
+
+    def test_native_event_before_deadline_pauses_and_cancels_without_timeout_or_second_resume(self):
+        driver, endpoint = self.driver("1066.9.23", initial_speed=5, early_event_days=2)
+        # AUTO74's published native event is not a top-exclusive-modal hint.
+        # The old predicate ignored it while the public map still ran.
+        original_wait = driver.state.wait_for_public_change
+        waited = []
+        def no_blind_wait(revision, timeout):
+            waited.append(timeout)
+            return original_wait(revision, 0)
+        driver.state.wait_for_public_change = no_blind_wait
+        result = driver.execute_step("life-advance", expected_revision=int(driver.take_snapshot()["revision"]))
+        self.assertEqual(waited, [])
+        self.assertEqual(result["elapsed_days"], 2)
+        self.assertEqual(result["active_event"]["instance_id"], 1)
+        self.assertEqual(result["event_resolution"], "unsupported")
+        self.assertTrue(result["paused"])
+        proof = result["campaign_deadline_native_clock_v1"]
+        self.assertEqual(proof["stopped"]["state"], "armed")
+        self.assertEqual(proof["stopped"]["completed_daily_ticks"], 2)
+        self.assertEqual(proof["early_boundary_cancel"]["status"], "canceled")
+        steps = self.steps(endpoint)
+        self.assertEqual(steps.count("resume-map"), 1)
+        self.assertEqual(steps.count("pause-map"), 1)
+        self.assertEqual(sum(step.startswith(n._TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX) for step in steps), 1)
+
+    def test_early_date_progress_without_event_is_not_a_legal_cancelled_boundary(self):
+        driver, endpoint = self.driver("1066.9.23", initial_speed=5, early_event_days=2)
+        driver.life_advance_timeout_seconds = .01
+        publish = endpoint.publish
+        def omit_event(frame):
+            if frame.get("type") == "state_snapshot":
+                frame = copy.deepcopy(frame)
+                frame["state"]["active_event"] = None
+            publish(frame)
+        endpoint.publish = omit_event
+        with self.assertRaises(n.BridgeUnavailableError):
+            driver.execute_step("life-advance", expected_revision=int(driver.take_snapshot()["revision"]))
+        self.assertEqual(self.steps(endpoint).count("resume-map"), 1)
 
 
 if __name__ == "__main__":

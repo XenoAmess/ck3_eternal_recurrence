@@ -1,0 +1,206 @@
+{
+  "schema": "xar.closed-runtime-end-to-end-wall.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T03:36:47.563444+00:00",
+  "campaign_id": "robert-first30-v20261019",
+  "evidence_layer": "sealed actual timestamps/date observations; no CPU/native attribution",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-BATCH-0008-COMPACT29.json",
+      "bytes": 11863,
+      "sha256": "4ff6d54429ce62464b7831cf6783602ab233022c0cc43b4760aa16ff74c4f452"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-BATCH-0011-COMPACT30.json",
+      "bytes": 122512,
+      "sha256": "fb2415b1cbc179a78e8d013c7417c2fefaf65e65d3670e5aa435cbae1cfea06f"
+    }
+  ],
+  "calendar_profile": "ck3-1.20.0.4-cdate-fixed365-raw24/v1",
+  "initial_date_raw": 53144328.0,
+  "last_date_raw": 53144568,
+  "actual_game_days": 10.0,
+  "first_AUTO_to_last_closed_RPC_wall_seconds": 110.445645,
+  "seconds_per_actual_game_day": 11.0445645,
+  "phase_goal_seconds_per_day": 1.0,
+  "phase_goal_reached_in_window": false,
+  "known_RPC_sum_seconds": 53.20091410027817,
+  "unobserved_RPC_and_all_gaps_seconds": 57.24473089972183,
+  "RPC_groups": {
+    "query-war-results-window-v1": {
+      "count": 2,
+      "elapsed_seconds": 0.6056732998695225
+    },
+    "root_current_runtime_metrics": {
+      "count": 31,
+      "elapsed_seconds": 0.12226700037717819
+    },
+    "private-select-player-lifestyle-stock-focus-v1": {
+      "count": 1,
+      "elapsed_seconds": 0.38085810001939535
+    },
+    "private-query-player-lifestyle-receipt-v1": {
+      "count": 1,
+      "elapsed_seconds": 2.3167336999904364
+    },
+    "ck3_take_semantic_snapshot_private_v1": {
+      "count": 2,
+      "elapsed_seconds": 0.0072246999479830265
+    },
+    "ck3_save_checkpoint": {
+      "count": 2,
+      "elapsed_seconds": 4.724609500030056
+    },
+    "query-declarable-wars": {
+      "count": 2,
+      "elapsed_seconds": 7.119865200016648
+    },
+    "query-war-entry-assessments-*": {
+      "count": 16,
+      "elapsed_seconds": 1.6304051994811743
+    },
+    "private-assign-councillor-v1": {
+      "count": 1,
+      "elapsed_seconds": 0.4841076999437064
+    },
+    "query-observed-first-heir-marriage-result-v1-private": {
+      "count": 3,
+      "elapsed_seconds": 1.7598777003586292
+    },
+    "private-query-assign-councillor-receipt-v1": {
+      "count": 1,
+      "elapsed_seconds": 0.2628952001687139
+    },
+    "ordinary-sway-opportunity-v1": {
+      "count": 1,
+      "elapsed_seconds": 0.47170390002429485
+    },
+    "life-advance": {
+      "count": 2,
+      "elapsed_seconds": 33.31469290005043
+    }
+  },
+  "batches": [
+    {
+      "batch": 1,
+      "first_rpc_started_at_utc": "2026-10-19T03:26:49.420926+00:00",
+      "last_rpc_ended_at_utc": "2026-10-19T03:26:49.917996+00:00",
+      "wall_seconds": 0.49707,
+      "known_RPC_sum_seconds": 0.42846779990941286,
+      "unobserved_RPC_count": 0,
+      "unobserved_RPC_and_inter_RPC_gaps_seconds": 0.06860220009058715,
+      "preceding_inter_batch_gap_seconds": 0.0,
+      "actual_calendar_days_as_reported": 0.0
+    },
+    {
+      "batch": 2,
+      "first_rpc_started_at_utc": "2026-10-19T03:27:38.331085+00:00",
+      "last_rpc_ended_at_utc": "2026-10-19T03:28:39.866571+00:00",
+      "wall_seconds": 61.535486,
+      "known_RPC_sum_seconds": 52.772446300368756,
+      "unobserved_RPC_count": 1,
+      "unobserved_RPC_and_inter_RPC_gaps_seconds": 8.763039699631243,
+      "preceding_inter_batch_gap_seconds": 48.413089,
+      "actual_calendar_days_as_reported": 10.0
+    }
+  ],
+  "advance_RPC_observations": [
+    {
+      "sequence": 50,
+      "elapsed_seconds": 3.0005308999679983,
+      "starting_date_raw": 53144328,
+      "ending_date_raw": 53144520,
+      "actual_days": 8.0,
+      "clock_stopped": {
+        "state": "triggered",
+        "generation": 1,
+        "starting_date_raw": 53144328,
+        "target_date_raw": 53144520,
+        "last_observed_date_raw": 53144520,
+        "trigger_date_raw": 53144520,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 8,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "active_event_source": null
+    },
+    {
+      "sequence": 74,
+      "elapsed_seconds": 30.314162000082433,
+      "starting_date_raw": 53144520,
+      "ending_date_raw": 53144568,
+      "actual_days": 2.0,
+      "clock_stopped": {
+        "state": "armed",
+        "generation": 2,
+        "starting_date_raw": 53144520,
+        "target_date_raw": 53144712,
+        "last_observed_date_raw": 53144568,
+        "trigger_date_raw": 0,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 2,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": {
+        "step": "research-cancel-tactical-daily-sentinel-v1-generation-2",
+        "accepted": true,
+        "status": "canceled",
+        "backend_id": "native-headless"
+      },
+      "active_event_source": "native"
+    }
+  ],
+  "unobserved_source_rows": [
+    {
+      "sequence": 18,
+      "source_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0018-1-result.json",
+      "bytes": 2076840,
+      "body_read": false,
+      "status": "oversized_not_observed"
+    }
+  ],
+  "limits": [
+    "includes every gap and zero-day batch after first AUTO, including repairs",
+    "setup/recording before first AUTO excluded and separately disclosed by runtime owner",
+    "unknown response intervals remain mixed with gaps; never relabelled as idle CPU",
+    "latest open batch and repairs after the last closed timestamp not yet measured",
+    "whole AUTO durations include planning and persistence; clock observations do not attribute their full duration"
+  ],
+  "new_RPC_calls": 0,
+  "active_Driver_or_SAVE_reads": 0,
+  "external_writes_bytes": 0,
+  "producer": {
+    "path": "tools/g2_saved_campaign/summarize_closed_runtime_wall_v1.py",
+    "sha256": "e605e6c0141bfeb8ed7392ec3fd505166988ca4bbe1276075207ff2cdc3ac409"
+  },
+  "storage": {
+    "shared_research_annotation": "shared128MiB; ledger16KiB/tool8KiB/peak32KiB limits",
+    "producer_closed": true,
+    "unconsumed_planned_writes_bytes": 0
+  }
+}

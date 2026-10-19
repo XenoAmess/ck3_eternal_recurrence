@@ -1,0 +1,146 @@
+{
+  "schema": "xar.combat-v3-revalidation-copy-software.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_started_utc": "2026-10-19T03:41:04.060411+00:00",
+  "observed_ended_utc": "2026-10-19T03:41:09.310761+00:00",
+  "evidence_layer": "offline valid synthetic production-schema old/new bytes, refusal, isolation, CPU and traced allocation",
+  "baseline": {
+    "commit": "b000c9a6",
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_phase_contract.py",
+    "function": "normalize_combat_simulation_inputs_v3",
+    "function_sha256": "88876b609fb220005b65986e65a42e0d74f40a96a3c67f30b8d694f911b8c6ea"
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_phase_contract.py",
+      "bytes": 92987,
+      "sha256": "657a3bccd9b8ed8426ceffa4ba36ce69aff20e670b3f786e2ff4885e38888828"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_production_contract.py",
+      "bytes": 50039,
+      "sha256": "8c925106ea6391a3ef002b8f9ee89f584f729ef4d7ba46cb2fa020a3ea118fc6"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_knight_stat_consumption_stage_lineage_12004.py",
+      "bytes": 12147,
+      "sha256": "110af9941062ea3ff74efad90a0956ed89d4e9a388e390fae318ac6b99f902a7"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_contract.py",
+      "bytes": 24937,
+      "sha256": "cb44040df2dc1f9d0de5284b3e181e01bceef17d1d7d32fc782570af9e7b6b25"
+    },
+    {
+      "path": "tools/g2_saved_campaign/verify_combat_v3_revalidation_copy_v1.py",
+      "bytes": 10416,
+      "sha256": "24cb0580b565ca46674e05b2f04b9947ba192ddbee473d541d6183fac1773b73"
+    }
+  ],
+  "input": {
+    "source": "existing production + knight stage-lineage fixture builders; ring expanded to 8 distinct ordered sequences",
+    "all_synthetic": true,
+    "wire_bytes": 663341,
+    "canonical_bytes": 2892696,
+    "wire_sha256": "5a2912c2753127d6850767ea982369bd4408c6c2d0546978a95e6aa8725c577e",
+    "canonical_sha256": "aa776762127a8516693531774e977f2967af3933b4630ac21d2d58c1b64a5112",
+    "knight_events": 8
+  },
+  "equivalence": {
+    "successful_wire_and_enriched_bytes_equal": true,
+    "unavailable_bytes_equal": true,
+    "input_unchanged": true,
+    "output_mutable_graph_disjoint_from_input": true,
+    "full_recompute_and_derived_comparison_retained": true,
+    "rejected": [
+      {
+        "case": "phase_schema",
+        "same_exception_and_message": true,
+        "exception": "ValueError",
+        "message": "normalized production combat v3 phase schema is malformed",
+        "input_unchanged": true
+      },
+      {
+        "case": "missing_derived",
+        "same_exception_and_message": true,
+        "exception": "ValueError",
+        "message": "normalized production combat v3 phase schema is malformed",
+        "input_unchanged": true
+      },
+      {
+        "case": "derived_drift",
+        "same_exception_and_message": true,
+        "exception": "ValueError",
+        "message": "normalized production combat v3 derivation drifted",
+        "input_unchanged": true
+      },
+      {
+        "case": "raw_numeric",
+        "same_exception_and_message": true,
+        "exception": "ValueError",
+        "message": "combat_simulation_inputs.knight_stat_consumption_v1.events[0].contexts[0].operand_raw must retain a native decimal64 string or integer",
+        "input_unchanged": true
+      },
+      {
+        "case": "phase_derived_drift",
+        "same_exception_and_message": true,
+        "exception": "ValueError",
+        "message": "normalized production combat v3 derivation drifted",
+        "input_unchanged": true
+      }
+    ]
+  },
+  "cpu": {
+    "alternating_groups": 3,
+    "samples_seconds": {
+      "old": [
+        0.1940822,
+        0.2199154,
+        0.2103162
+      ],
+      "new": [
+        0.1770833,
+        0.1378175,
+        0.1668858
+      ]
+    },
+    "median_seconds": {
+      "old": 0.2103162,
+      "new": 0.1668858
+    }
+  },
+  "memory": {
+    "scope": "traced complete revalidation call; prebuilt fixture excluded; not RSS",
+    "sources": [
+      {
+        "source": "old",
+        "peak_traced_additional_bytes": 14265354
+      },
+      {
+        "source": "new",
+        "peak_traced_additional_bytes": 13152122
+      }
+    ]
+  },
+  "read_only_source_basis": [
+    "combat_contract normalizers build canonical values and deepcopy at return:669",
+    "phase _normalize_raw constructs new raw values; _normalize_phase_event_inputs copies advantage before adapting origin:715-725",
+    "only root/phase shells lose derived keys; recursive normalization/recomputed!=value/final deepcopy:510-607 unchanged"
+  ],
+  "limits": [
+    "valid fixture and five malformed mutations do not qualify every possible external object subclass",
+    "not an actual 25MB query or game-throughput result; no size-linear extrapolation",
+    "input graphs are expected stable for the duration of their existing synchronous validation call"
+  ],
+  "game_native_or_RPC_calls": 0,
+  "live_Driver_or_SAVE_reads": 0,
+  "frozen_source_modified": false,
+  "deployed": false,
+  "storage": {
+    "external_writes_bytes": 0,
+    "synthetic_body_written": false,
+    "max_repo_leaf_bytes": 49152,
+    "producer_closed": true,
+    "unconsumed_planned_writes_bytes": 0
+  }
+}

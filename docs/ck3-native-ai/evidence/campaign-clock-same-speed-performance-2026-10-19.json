@@ -1,0 +1,66 @@
+{
+  "schema": "xar.ck3.campaign-clock-same-speed-software-comparison/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:21:28.269860Z",
+  "identity_source": "tools/ck3_live_run_id.py machine; fresh current_machine_id readback",
+  "phase_target_seconds_per_actual_game_day": 1.0,
+  "later_target_seconds_per_actual_game_day": 0.5,
+  "baseline_commit": "f5d26108b7fe26c0d27b1b1240850d2b62a1481e",
+  "baseline_source": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_deadline_transport_v1.py",
+  "candidate_source": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_deadline_transport_v1.py",
+  "candidate_source_sha256": "1c6d80c77dfa1e4cb4b83d6521a44298ed2d18d75715cef4805b2aacbf6c5883",
+  "test_source": "ck3_autonomous_player/tests/unit/test_campaign_deadline_transport_v1.py",
+  "test_source_sha256": "16c085c5a7b5c5a80937d97b9eaefce3467b6715b50b23239d67a5a522a3ab2e",
+  "comparison": {
+    "execution_layer": "actual NativeHeadlessGameplayDriver.execute_step -> production primitive executor -> NativeProtocolState -> FakeEndpoint command_result packets",
+    "same_input": "paused 1066.10.10 raw53144928, speed5, no war, same complete software fixture, same campaign cap to1066.10.15",
+    "baseline_source_loaded": "git show fixed baseline commit, exec in isolated Python module namespace; no file written",
+    "gameplay_clock_projection_equal": true,
+    "compared_fields": ["step", "backend_id", "source", "starting_date_raw", "ending_date_raw", "elapsed_days", "requested_horizon_days", "timeline_speed", "timeline_policy", "progress_status", "paused", "campaign_deadline_v1"],
+    "baseline_native_commands": [
+      "set-speed-5",
+      "research-arm-tactical-daily-sentinel-v1-53144928-to-53145048-speed-5-mode-terminal-a-0",
+      "resume-map",
+      "research-query-tactical-daily-sentinel-v1"
+    ],
+    "candidate_native_commands": [
+      "research-arm-tactical-daily-sentinel-v1-53144928-to-53145048-speed-5-mode-terminal-a-0",
+      "resume-map",
+      "research-query-tactical-daily-sentinel-v1"
+    ],
+    "baseline_command_count": 4,
+    "candidate_command_count": 3,
+    "same_policy_speed": 5,
+    "same_elapsed_game_days": 5,
+    "candidate_arm_and_stop_speed": [5, 5],
+    "actual_comparison_exit_code": 0,
+    "comparison_live_native_calls": 0
+  },
+  "directed_tests": {
+    "command": "set PYTHONPATH=ck3_autonomous_player\\src;ck3_autonomous_player\\tests\\unit && py -B -m unittest ck3_autonomous_player.tests.unit.test_campaign_deadline_transport_v1",
+    "tests": 7,
+    "actual_exit_code": 0,
+    "reported_seconds": 0.043,
+    "new_negative": "Starting snapshot speed5 with independent native Arm reporting speed4 is rejected before resume; matching cached speed never bypasses Arm speed validation.",
+    "retained_cases": ["different starting speed still submits setter", "29-day,5-day,3-day deadline slices", "single Arm and original native watch/mode", "public and internal dispatch cap", "endpoint zero resume", "overshoot rejected", "unconfigured driver unchanged"]
+  },
+  "scope_and_limits": {
+    "changed_policy_choices": false,
+    "changed_speed_readiness": false,
+    "changed_month_or_endpoint": false,
+    "changed_native_watch_or_ab": false,
+    "changed_exact_one_day_helper": false,
+    "changed_running_source": false,
+    "Game_Native_MCP_desktop_SAVE_calls": 0,
+    "new_exes_or_builds": 0,
+    "live_throughput_measured": false,
+    "one_second_goal_achieved_claimed": false,
+    "performance_claim": "One redundant native setter and its fresh same-frame semantic read removed when the actual bound starting speed already equals the original chosen speed. Command count reduction is software-verified; wall-clock gain requires the next actual frozen-source batch."
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-17T03:21:28.269860Z",
+    "new_media_or_large_artifacts": 0
+  }
+}

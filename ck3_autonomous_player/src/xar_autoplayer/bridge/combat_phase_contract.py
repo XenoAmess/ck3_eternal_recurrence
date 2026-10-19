@@ -489,7 +489,10 @@ def normalize_combat_simulation_inputs_v3(
     # compare it.  This keeps normalization idempotent without letting a
     # producer smuggle pre-derived production claims into the native wire.
     if isinstance(value, dict) and set(value) == wire_root_keys | {"completeness"}:
-        candidate = copy.deepcopy(value)
+        # Only these two object shells are edited before full revalidation.
+        # Raw subtrees are read by the normalizers and their returned values
+        # remain detached; avoid copying large, discarded derived projections.
+        candidate = dict(value)
         candidate.pop("completeness")
         candidate_phase = candidate.get("phase_event_inputs")
         enriched_phase_keys = {
@@ -505,6 +508,8 @@ def normalize_combat_simulation_inputs_v3(
             | ({private_sides_key} if private_sides_key in candidate_phase else set())
         ):
             raise ValueError("normalized production combat v3 phase schema is malformed")
+        candidate_phase = dict(candidate_phase)
+        candidate["phase_event_inputs"] = candidate_phase
         for key in enriched_phase_keys:
             candidate_phase.pop(key)
         recomputed = normalize_combat_simulation_inputs_v3(

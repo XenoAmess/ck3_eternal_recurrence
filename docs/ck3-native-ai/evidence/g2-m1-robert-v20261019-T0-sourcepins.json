@@ -1,0 +1,66 @@
+{
+  "schema": "xar.ck3.actual-T0-sourcepins/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:15:11.299965+00:00",
+  "campaign_id": "robert-first30-v20261019",
+  "episode_run_id": "native-31254-6271ac8cd441",
+  "source_SAVE_sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+  "sha_basis": "actual Native SAVE and Root protected-copy receipt reused, no new body hash scan",
+  "summary": {"path": "docs/ck3-native-ai/evidence/g2-m1-robert-v20261019-T0-summary.json", "bytes": 12442, "sha256": "bb5cb5593e6a4e1156dfbacf2d94aa13f10eb41735a5f215dbaad2eb2d89ada8"},
+  "external_root": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/m1-t0-projection01",
+  "external_projection": {"name": "T0-PROJECTION01.json", "bytes": 262848, "sha256": "25314c0ef55673455ea91d08cda30ca9f5a8becb6ca4c12f0e886fda8f400271"},
+  "external_close": {"name": "CLOSE01.json", "bytes": 1223, "sha256": "f4500100e5ffdda1463da8ae91dd6256180dffb24bfef27fd72ae717bef34a97"},
+  "custody": {
+    "desired_access": "GENERIC_READ", "share_mode": "FILE_SHARE_READ",
+    "locked_from_utc": "2026-10-19T03:14:57.081491+00:00",
+    "verified_at_utc": "2026-10-19T03:15:11.221756+00:00",
+    "identity_before": {"volume_serial_number": 6505083400996699863, "file_id_128_hex": "2646b900000001000000000000000000", "bytes": 68936116, "mtime_ns": 1792379282998522000, "attributes": 32, "number_of_links": 1},
+    "identity_after_matches_exactly": true,
+    "SAVE_projection_passes": 1, "SAVE_body_sha_passes": 0, "SAVE_write_or_copy_calls": 0,
+    "decoder_exit_code": 0, "unknown_tokens": 0, "full_melt_files_written": 0
+  },
+  "decoder_provenance": {
+    "version": "0.8.19",
+    "exe_path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/scoring-decoder-input01/rakaly.exe",
+    "exe_bytes": 6552576,
+    "fresh_exe_sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+    "input_receipt_path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-presentation-prepare01/scoring-draft01/decoder-input-receipt.json",
+    "input_receipt_bytes": 2427,
+    "fresh_input_receipt_sha256": "15ea7fef1ae5d0d9a878d79ab586de8c65eaccb8d11a7e351a9d71f60c6dfdcc",
+    "original_official_zip_url": "https://github.com/rakaly/cli/releases/download/v0.8.19/rakaly-0.8.19-x86_64-pc-windows-msvc.zip",
+    "zip_SHA_from_original_receipt_not_rehashed": "343e2c33869b1ec82e4ab018d1bb6936cc68b63146f99f426939f4d76106710d",
+    "downloads_or_installs": 0
+  },
+  "static_definition_root": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/landed_titles",
+  "static_definition_files": [
+    {"name": "00_landed_titles.txt", "bytes": 1315737, "sha256": "fc8ea76e8bcc8c3aa8557dfb7226dc75b4aee8830e906c434754599ab8c75f55"},
+    {"name": "01_japan.txt", "bytes": 30815, "sha256": "770d6913716d44f2ef25f336a32c1616df1ede5f71946bd17eae9c1ca104db39"},
+    {"name": "01_japan_noble_family.txt", "bytes": 67185, "sha256": "ec165455683237400a19f45d863fd0288a5effcdba1369997d7e940f02efc0f7"},
+    {"name": "01_korea_noble_family.txt", "bytes": 32942, "sha256": "ff61efe4be890c9fb116229450064fdf4e5d3292160ebd9b9e63a666b8e435d0"},
+    {"name": "01_other_noble_family.txt", "bytes": 72851, "sha256": "dde5ebf4007e1c57567f8d66aad404e4f9fc396049562059d9b2d1a51cc2f8df"},
+    {"name": "02_china.txt", "bytes": 144819, "sha256": "6d31002969b3d12d0fcdf09a1e7eb163cbd9e6dcd4b660acc588698581859ba1"},
+    {"name": "03_seasia.txt", "bytes": 34149, "sha256": "1715dec12cf4835d2efc328a7c7ba26e237da80547eec41ce9ede63f0b66034c"},
+    {"name": "04_china_noble_families.txt", "bytes": 302342, "sha256": "81283d1dd865eced9f31ddb65ed4de3630db905cbea95e96a3529365e568ff07"},
+    {"name": "05_goryeo.txt", "bytes": 20648, "sha256": "c6c1d46941b22f00e0daee33abacd3e3ed3c5bfa85c07d809e0ca38d2ff74f57"},
+    {"name": "06_philippines.txt", "bytes": 31432, "sha256": "334ae828ccfd93f5d310f668c93995028021c5bebd0cecd1683e8d1721e8b855"},
+    {"name": "07_pam_ecclesiastical_titles.txt", "bytes": 29296, "sha256": "4f7f348a32292fc1f8b89d3f2e6100465a3c5803c00e16845ee56e598c18fe51"},
+    {"name": "07_pam_hegemony_titles.txt", "bytes": 519, "sha256": "0381ae23e5de04f7598c58136395e4a782d1de2d9131cf952bde93d10d35cb4f"}
+  ],
+  "static_source_boundary": "Explicit current vanilla files pinned; actual no-mod environment source in summary; per-file historical VFS loading hash not independently claimed",
+  "pre_melt_failure": {
+    "name": "PRE-MELT-FAILURE01.json", "exit_code": 1, "outer_seconds": 0.3533077,
+    "reason": "Static landed_title_map inherited SAVE 256 root-name cap",
+    "SAVE_scans": 0, "decoder_executions": 0,
+    "correction": "External static mapper omits unused root-name collection, preserves original lexer, 128 depth, 8MiB file cap and conflict refusal; production SAVE parser/frozen SDK unchanged"
+  },
+  "baseline_boundaries": {
+    "prior_campaign_values_copied": false,
+    "native_domain_size_limit": "unknown; direct county2 and geographic holding4 are separate SAVE facts",
+    "rebel_share": "unknown; player landed wars list missing, never inferred empty",
+    "gold_scope": "personal current-player wallet, not net wealth",
+    "E_M_H": "unknown",
+    "runtime_month_anchor_or_frozen_SDK_edits": 0,
+    "Native_or_RPC_calls": 0, "game_days_caused_by_this_offline_package": 0, "G2_credit_added": 0
+  },
+  "storage_close": {"logical_bytes": 293165, "allocated_bytes_or_null": null, "producer_closed": true, "future_unspent_output_bytes": 0, "new_global_reservation_bytes": 0, "derived_review_at_utc": "2026-10-21T03:10:04.107622+00:00", "small_record_review_days": 180}
+}

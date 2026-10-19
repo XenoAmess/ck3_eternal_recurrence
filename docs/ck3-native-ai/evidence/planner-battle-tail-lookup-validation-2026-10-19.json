@@ -1,0 +1,45 @@
+{
+  "schema": "xar.planner-battle-tail-lookup-validation.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T03:27:41Z",
+  "observed_utc_source": "planner-battle-tail-lookup-2026-10-19.json#/observed_utc",
+  "evidence_source": "local Python pytest process stdout; cmd.exe; original fixed Git function restored in baseline process only",
+  "candidate": {
+    "exit_code": 1,
+    "passed": 17,
+    "failed": 3,
+    "subtests_passed": 2,
+    "deselected": 293,
+    "pytest_seconds": 4.48
+  },
+  "baseline": {
+    "commit": "f5d26108b7fe26c0d27b1b1240850d2b62a1481e",
+    "only_failed_cases_rerun": true,
+    "production_function_rebound_in_process_only": true,
+    "working_source_overwritten": false,
+    "exit_code": 1,
+    "failed": 3,
+    "pytest_seconds": 2.92
+  },
+  "same_failures": [
+    {
+      "node": "test_battle_reader_unavailable_watch.py::BattleReaderUnavailableWatch::test_actual_native_failure_uses_one_read_and_keeps_raw_evidence",
+      "error": "AttributeError: 'types.SimpleNamespace' object has no attribute 'driver'",
+      "source": "service.py _execute_planned_turn_without_unhandled_capture cap_campaign hook"
+    },
+    {
+      "node": "test_battle_terminal_transition_readonly_history.py::test_registered_terminal_query_omits_history_and_preserves_command_evidence",
+      "error": "KeyError: 'CK3_PERSON_READONLY_HISTORY_PACKET'",
+      "source": "explicit retained packet environment fixture was not supplied"
+    },
+    {
+      "node": "test_gameplay_bridge.py::GameplayBridgeTests::test_r0168_combat_hands_off_only_with_current_exact_battle_frame",
+      "error": "AssertionError: 'not_applicable' != 'active_combat'",
+      "source": "existing _primary_defender_siege_relief_assessment fixture; not changed by this scan patch"
+    }
+  ],
+  "production_changes_to_satisfy_existing_fixture_failures": false,
+  "native_calls": 0,
+  "live_acceptance": false,
+  "storage_policy_version": "1.0.0"
+}

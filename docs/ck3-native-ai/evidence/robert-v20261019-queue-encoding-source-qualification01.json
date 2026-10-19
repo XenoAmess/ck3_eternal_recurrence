@@ -1,0 +1,128 @@
+{
+  "schema": "xar.queue-response-encoding-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:24:41.359064+00:00",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_sdk_queue.py",
+    "bytes": 262759,
+    "sha256": "3773af1c2beb0d66d800371012826e42d973d16cac855c4786212d45b28b9f20"
+  },
+  "candidate_source": {
+    "bytes": 263109,
+    "sha256": "cae7a895ea1307fec08f81ce3b2e735c9853470ca2784d4fe1b24297c76f65d5",
+    "produced_by": "owner_response_source_transform_v1.transform_owner_source_v1"
+  },
+  "actual_source_excerpts": [
+    {
+      "case": "success",
+      "response_bytes_identical": true,
+      "response_bytes": 629,
+      "same_check_and_relay_order": true,
+      "fake_RPC_calls_before_and_after": 1,
+      "ordinary_credit": true,
+      "error_type": null
+    },
+    {
+      "case": "unknown",
+      "response_bytes_identical": true,
+      "response_bytes": 282,
+      "same_check_and_relay_order": true,
+      "fake_RPC_calls_before_and_after": 1,
+      "ordinary_credit": false,
+      "error_type": "RuntimeError"
+    },
+    {
+      "case": "postverification_refusal",
+      "response_bytes_identical": true,
+      "response_bytes": 629,
+      "same_check_and_relay_order": true,
+      "fake_RPC_calls_before_and_after": 1,
+      "ordinary_credit": false,
+      "error_type": "ValueError"
+    },
+    {
+      "case": "existing_original",
+      "response_bytes_identical": true,
+      "response_bytes": 18,
+      "same_check_and_relay_order": true,
+      "fake_RPC_calls_before_and_after": 0,
+      "ordinary_credit": false,
+      "error_type": "FileExistsError"
+    }
+  ],
+  "unrelated_function_AST_unchanged": true,
+  "post_result_tail_AST_unchanged": true,
+  "benchmarks": [
+    {
+      "synthetic_only": true,
+      "approximate_result_bytes": 4194304,
+      "full_response_bytes": 4194384,
+      "full_result_traversals_before": 2,
+      "full_result_traversals_after": 1,
+      "full_response_bytes_identical": true,
+      "seconds": {
+        "before": [
+          0.04831039998680353,
+          0.057369699934497476,
+          0.05007990007288754,
+          0.048201499972492456,
+          0.06252910010516644
+        ],
+        "after": [
+          0.02586599998176098,
+          0.027190800057724118,
+          0.03182439994998276,
+          0.028871299931779504,
+          0.03436229983344674
+        ]
+      },
+      "median_seconds": {
+        "before": 0.05007990007288754,
+        "after": 0.028871299931779504
+      }
+    },
+    {
+      "synthetic_only": true,
+      "approximate_result_bytes": 16777216,
+      "full_response_bytes": 16777351,
+      "full_result_traversals_before": 2,
+      "full_result_traversals_after": 1,
+      "full_response_bytes_identical": true,
+      "seconds": {
+        "before": [
+          0.24620880000293255,
+          0.23848109995014966,
+          0.2294296999461949,
+          0.20457569998688996,
+          0.21248209988698363
+        ],
+        "after": [
+          0.10744039993733168,
+          0.11474159988574684,
+          0.11482149991206825,
+          0.10921970009803772,
+          0.10928810015320778
+        ]
+      },
+      "median_seconds": {
+        "before": 0.2294296999461949,
+        "after": 0.10928810015320778
+      }
+    }
+  ],
+  "new_Game_Driver_Native_or_MCP_calls": 0,
+  "runtime_source_mutations": 0,
+  "live_adopted": false,
+  "seconds_per_game_day_measured": false,
+  "limits": [
+    "Synthetic encoding wall time is not end-to-end campaign throughput.",
+    "Actual response size and frequency determine useful savings.",
+    "An active frozen owner must not be hot-swapped."
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "temporary_receipts_deleted_after_test": true,
+    "maximum_source_bytes": 1048576,
+    "maximum_receipt_bytes": 1048576
+  }
+}

@@ -68,3 +68,19 @@ M7后继源码已补完成resolved台账与精确checkpoint的新Game谱系：�
 [M1月度来源映射](g2-m1-monthly-observation-source-map-2026-10-19.md)确认当前普通月度数值仍只有gold；已有cash-v2尚未进入同帧MET，不能把AUTO前态财务移到动作后月点。[M5参与战争事实后继](g2-m5-participating-war-threats-2026-10-19.md)确认普通战术已有all-participant敌军覆盖，并给出未接消费者的去重关系投影；CB及双方主将已有query DTO，剩余重点是后果消费者与未发布宗主战争范围，不新增采购/投降权限。
 
 WAL实验恢复修复及98项知识实际迁入观察已在 `b000c9a623eec88a48c95a2f8e2ad72eaf59198e` 推送。[隔离资格](evidence/driver-wal-qualification-2026-10-19.json)保全144行全部字段，JSON键顺序差异及首失败不隐去，计时缺失保null。实验仍default-off，不修改当前src02；后继性能源审计发现只读query本已有延后持久化，不能将所有零日回合都归因于完整写入。研究与现场并行，不把未采用候选、软件测试或等待自然证据计为G2完成；仍6/8。
+
+## 03:44后继：真实T0、18日与阶段性能目标
+
+同一 `machine_id: xenoamess-full-tower-eb9d2c1186`，本节汇总截至2026-10-19T03:44Z的唯一runtime owner及已封存小回执。用户明确将阶段性能目标调整为**≤1秒/实际游戏日**，0.5秒保留为后继目标。10950日分别对应3小时2分30秒、1小时31分15秒；以端到端墙钟除实际日期差计，零日规划/查询、持久化及运行中恢复间隔均保留，启动/录制准备另列。
+
+03:02:45Z真实原生frontend选择1066 Robert，03:04:29Z SEM确认actor31254、episode `native-31254-6271ac8cd441`、raw53144328/1066.9.15、paused/map_ready；03:05:39Z首次SAVE成功。保护的T0为外置运行根 `robert30-v20261019-campaign01/runtime/baselines/robert-v20261019-T0-1066-09-15.ck3`，68,936,116 B，SHA `381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4`。终点raw53407128固定10950日。来源与实际SDK/Native/首SAVE pins见[M7真实新局证据](evidence/g2-m7-v20261019-fresh-campaign-zero-day-2026-10-19.json)。[M1离线T0投影](g2-m1-robert-v20261019-T0-baseline.md)实际一次SAVE解析得到realm10县、直接地理county2、direct holding4、house174/dynasty174、宗族8县、现金257金；Native domain size/limit及E/M/H仍unknown，不把旧局数值挪用。
+
+03:25:33.905006Z新录制UUID `9222b897-e0d6-42d5-9062-55f8e2c58317`实际启动；专用OBS留原Desktop2最小化，未移动AppView、未切桌面，前后foreground保持Steam HWND52505028。实际map/HUD审阅通过，无旧蓝窗或影片标题。[无移动录制证据](evidence/p51-obs-no-move-recording-2026-10-19.json)保留此前失败；02:47提出的AppView候选后经实际验证会切桌面，已弃用，不追认成功。
+
+普通完整规划已实际推进18日，当前47个settled cycles、pending48/auto_verified。AUTO109及MET110均已完成，故障发生在将MET110写入 `CURRENT-INPUT.json` 时的WinError5。原P37B Queue231428实际exit1、App258172实际exit0，owner退出1，`normal=false`；Game214568、Native25、OBS141536及publisher273652保留。来源为准备根 `SDK-METADATA-ROTATION-REQUEST31.json`、`MET110-TEXT-PUBLICATION-RECOVERED32.json`及运行根 `ROOT-P37B-OWNER-CLOSED.json`。M0将原552B不可变投影重新发布获得真实TEXT_PUBLISHED，0新AUTO/MET/RPC；[小回执](evidence/p51-current-input-replace-retry-2026-10-19.json)区分这次replace成功与未实际触发的重试。必要SDK-only维护保留原47/48状态，仅一次消费原MET110，之后从新sequence继续，不重发游戏动作；[软件组合资格](evidence/met110-warm-resume-software-qualification01.json)通过，现场暖恢复尚待实际读回。
+
+[已闭墙钟账](evidence/robert-v20261019-closed-wall-ledger01.json)首FULL11为61.535486秒/10实际日，即6.1535486秒/日；从首AUTO9至FULL11闭合含零日首批和48.413089秒间隔为110.445645秒，即11.0445645秒/日。此后开放批和修复间隔尚未闭合，不能据此报告全局平均。AUTO50的8日耗3.000531秒，AUTO74仅2日却耗30.314162秒；后者原生event已出现而新date-only predicate漏接，导致无效等待。已修复为复用原完整早停条件；[同输入软件复现](campaign-clock-throughput-2026-10-19.md)保留同6命令/同实际2日/同cancel、无重resume。集成测试40项及75子测试通过；首次Root测试缺PYTHONPATH导致collection失败，正确环境后通过，不隐藏首次失败。未以软件计时认定已达到1秒/日。
+
+同批Python候选还包括[有界JSON编码](driver-bounded-json-encoding-2026-10-19.md)、[等价历史尾扫与规划分层计时](planner-battle-tail-lookup-2026-10-19.md)、combat V3仅复制待修改的两层容器及完整递归重验、[owner响应单次编码](robert-v20261019-harness-performance.md)。各自资格保留字节、顺序、拒绝与隔离行为；局部CPU收益不换算为实际秒/日。本次维护不更换Native25，WAL仍default-off。
+
+[M6首次真实Start](g2-m6-first-natural-start-2026-10-19.md)已确认fullSchemeID2/generation0及随后8日普通推进，尚未观察first gain或自然terminal。精确Native25的1.20.0.4外层非战路由白名单遗漏completion-termination常量，虽然handler/serializer已链接，实际入口仍unsupported；本次SDK维护仅关闭该不支持的optional query flag，保留Start、completion、opinion及完整普通/战争规划。后继Native补gate单独验证，不热换当前Game。M7真实新局不等于cold或自然继承，G2仍6/8。

@@ -1,0 +1,150 @@
+{
+  "schema": "xar.planner-battle-tail-lookup-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T03:26:04.397556+00:00",
+  "evidence_kind": "offline closed P18 failure projection and explicitly synthetic scaling histories",
+  "baseline_commit": "f5d26108b7fe26c0d27b1b1240850d2b62a1481e",
+  "baseline_function_sha256": "dcae8f6f90c97fb3f69f177d117c400785fa3bb8c2bcad99c48e5b35de506417",
+  "candidate_source": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "bytes": 1032197,
+    "sha256": "4dc6d947f7280c42d7471d84975178e5cabf7a4815271cdee00a2f2bbb3b6193"
+  },
+  "checks": [
+    {
+      "case": "empty",
+      "history_rows": 0,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "7fa6bc839b41ee68bb30dc96f94e95459379b41d8ced9c3de4a916ac6bfbe1f2",
+      "selected_step": "save-checkpoint"
+    },
+    {
+      "case": "no_advances_8853",
+      "history_rows": 8853,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "21a292e6b788f666c983193beeeddec9cf3ad36941df8415626974e93c579993",
+      "selected_step": "dynasty-review"
+    },
+    {
+      "case": "one_advance",
+      "history_rows": 8855,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "21a292e6b788f666c983193beeeddec9cf3ad36941df8415626974e93c579993",
+      "selected_step": "dynasty-review"
+    },
+    {
+      "case": "recent_two_advances_8857",
+      "history_rows": 8857,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "21a292e6b788f666c983193beeeddec9cf3ad36941df8415626974e93c579993",
+      "selected_step": "dynasty-review"
+    },
+    {
+      "case": "failed_newer_advance",
+      "history_rows": 8858,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "21a292e6b788f666c983193beeeddec9cf3ad36941df8415626974e93c579993",
+      "selected_step": "dynasty-review"
+    },
+    {
+      "case": "auto_turn_advance",
+      "history_rows": 8856,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "21a292e6b788f666c983193beeeddec9cf3ad36941df8415626974e93c579993",
+      "selected_step": "dynasty-review"
+    },
+    {
+      "case": "restore_discards_old_window",
+      "history_rows": 8857,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "62dd3cce96fe564320e50f081e6efcda9f838ea924cf547f4182dba5e96c605e",
+      "plan_sha256": "21a292e6b788f666c983193beeeddec9cf3ad36941df8415626974e93c579993",
+      "selected_step": "dynasty-review"
+    },
+    {
+      "case": "malformed_latest_sentinel",
+      "history_rows": 8855,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "3af1743f661b09e975a17663d6252ee64470593a273d1f2c1db1820dd89b76af",
+      "plan_sha256": "e1d03aaf41ef0f714f6b2827a06cff937854876f0a5610494843eb9d85e3b5ed",
+      "selected_step": null
+    },
+    {
+      "case": "closed_P18_actual_unavailable",
+      "history_rows": 1,
+      "same_battle_state": true,
+      "same_complete_ordinary_plan": true,
+      "input_unchanged": true,
+      "state_sha256": "804504216dbbe4e8ebab21a459223990bc64ee14df14ae9fcd2c00de79f2de4b",
+      "plan_sha256": "25cd47b0d26ffb141e6be5095dbfdd03703771bd117a017ec99e6b8dd57a9038",
+      "selected_step": null
+    }
+  ],
+  "measurements": [
+    {
+      "case": "no_advances_8853",
+      "predicate_calls": {
+        "baseline": 8853,
+        "candidate": 8853
+      },
+      "median_seconds_per_battle_state": {
+        "baseline": 0.005365829984657467,
+        "candidate": 0.005633999989368021
+      },
+      "repetitions": 7,
+      "calls_per_repetition": 10
+    },
+    {
+      "case": "recent_two_advances_8857",
+      "predicate_calls": {
+        "baseline": 8857,
+        "candidate": 4
+      },
+      "median_seconds_per_battle_state": {
+        "baseline": 0.0049538800027221445,
+        "candidate": 0.0005406499840319157
+      },
+      "repetitions": 7,
+      "calls_per_repetition": 10
+    }
+  ],
+  "native_evaluation_count_before": 0,
+  "native_evaluation_count_after": 0,
+  "new_game_or_rpc_calls": 0,
+  "running_sdk_modified": false,
+  "live_seconds_per_game_day": null,
+  "limits": [
+    "Python function/ordinary-plan equivalence only; no full campaign speed claim.",
+    "No-advance miss retains a complete scan; source frame and all existing battle finalizers remain unchanged.",
+    "Original full-list expansion returns independently mutable outer rows; no row cache or history pruning added."
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "body_reads": "fixed Git source plus existing small fixtures only",
+    "output_limit_bytes": 1048576,
+    "deletions": 0,
+    "review_at_utc": "2027-04-17T03:26:04.397556+00:00"
+  }
+}

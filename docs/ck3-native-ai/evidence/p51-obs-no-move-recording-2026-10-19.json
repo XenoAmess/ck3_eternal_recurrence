@@ -1,0 +1,95 @@
+{
+  "schema": "xar.p51-obs-no-move-recording-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:28:25.786032+00:00",
+  "status": "ACTUAL_START_AND_REVIEWED_SAVED_MAP_ADMISSION_VERIFIED",
+  "session_id": "9222b897-e0d6-42d5-9062-55f8e2c58317",
+  "receipts": {
+    "placement": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\9222b897-e0d6-42d5-9062-55f8e2c58317\\obs-desktop-placement.json",
+      "bytes": 4042,
+      "sha256": "3b44cc3d6a4eafd83d1449a60573051f55de21332a6cfb250d98d3f96db6bcf8"
+    },
+    "foreground": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\9222b897-e0d6-42d5-9062-55f8e2c58317\\foreground-observation.json",
+      "bytes": 287,
+      "sha256": "4db914c72a25e57cccc85d88aa38b640a1ab3418d1deeda2bb4fceeefc9f890c"
+    },
+    "started": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\9222b897-e0d6-42d5-9062-55f8e2c58317\\started.json",
+      "bytes": 3717,
+      "sha256": "3c860bbcf390d0d90b927a3a07e8f05f262e5ad53dbd607bcf8287bd0026cb6d"
+    },
+    "frozen_pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\9222b897-e0d6-42d5-9062-55f8e2c58317\\saved-map01-FROZEN-PAIR.json",
+      "bytes": 2785,
+      "sha256": "91cfd9e74d515ae1ab2c6cce1470619d389657d28781eea060ed2b2588b2bb4f"
+    },
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-SAVED-MAP-RECORDING-ADMITTED.json",
+      "bytes": 3451,
+      "sha256": "fb72afd242fa0b816d3fbe9aa0e669841850ad614a40d67d0d98bd243175bac1"
+    }
+  },
+  "source_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-obs-no-move-review01\\REVIEW.json",
+    "applied_helper_sha256": "74c9f4ce9d800dd5d51159ca8080035f2abd159fcdaf0d42a531f624cd9eb204",
+    "capture_sha256": "950d156551da3579ee6902a1c945e5a343bffecb4addcff9cee86249f99b2161"
+  },
+  "actual_start": {
+    "at_utc": "2026-10-19T03:25:33.905006+00:00",
+    "capture_mode": "game_decision_text",
+    "game_pid": 214568,
+    "game_creation_filetime": 134368503807325674,
+    "publisher": {
+      "pid": 273652,
+      "creation_filetime": 134368507480369927,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+    },
+    "legacy_window_count_at_start": 0
+  },
+  "actual_owned_obs": {
+    "pid": 141536,
+    "creation_filetime": 134368539268274914,
+    "show_window_command": 6,
+    "show_window_calls": 1,
+    "minimized": true,
+    "obs_desktop_id": "11b2eee2-855d-4029-b35c-59adc9a19203",
+    "game_desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+    "current_desktop_before": "11b2eee2-855d-4029-b35c-59adc9a19203",
+    "current_desktop_after": "11b2eee2-855d-4029-b35c-59adc9a19203",
+    "appview_move_calls": 0,
+    "desktop_switch_calls": 0,
+    "windows_next_foreground_selection_requested": true
+  },
+  "actual_foreground": {
+    "foreground_before": 52505028,
+    "foreground_after": 52505028,
+    "foreground_changed": false,
+    "foreground_after_pid": null,
+    "owned_obs_pid": 141536,
+    "foreground_after_is_owned_obs": false,
+    "focus_restoration_attempted": false,
+    "owned_obs_foreground_window": null
+  },
+  "actual_pixels": {
+    "original_frame_at_utc": "2026-10-19T03:26:04.289694+00:00",
+    "frozen_at_utc": "2026-10-19T03:26:12.354071+00:00",
+    "stage": "saved_map",
+    "gate_reviewer_field": "/root",
+    "Game_map_visible": true,
+    "decision_text_visible": true,
+    "legacy_blue_window_visible": false,
+    "review_evidence_basis": "Runtime owner reported direct review of the frozen Game and scene images; public strict admission receipt binds that exact frozen pair. This M0 agent read small receipts only.",
+    "image_body_bytes_read_by_M0": 0
+  },
+  "scope_limits": [
+    "This is one actual local saved_map frame pair, not perpetual capture freshness or all-machine qualification.",
+    "Started/pixels do not prove future recorded AUTO, successful game decisions, 30-year completion or normal final shutdown.",
+    "Normal publisher STOP/OBS close still belongs to original retained owners at natural closure.",
+    "Previous 346/cfdb AppView paths were RED and are superseded by a helper with no AppView/Move calls; original failed evidence is not relabelled."
+  ],
+  "local_Game_OBS_Desktop_Native_calls_by_M0": 0,
+  "new_builds": 0,
+  "G2_live_credit_added": 0
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "g2.m6.closed-evidence-manifest/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "campaign_id": "robert-first30-v20261019",
+  "batch_id": "control11-closed30-turns",
+  "closed_at_utc": "2026-10-19T03:28:39.866571Z",
+  "closure_source": "runtime owner closed-batch message; not an additional Game/RPC call",
+  "sources": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0048-1-result.json",
+      "bytes": 87990,
+      "sha256": "44defd2b790131659d9dbd617b755b98d9d36820789bbc5e8248274152c93c24",
+      "closed": true,
+      "runtime_identity": {"Game_pid": 214568, "Game_creation_filetime": 134368503807325674, "actor_character_id": 31254, "episode_run_id": "native-31254-6271ac8cd441", "birth_source": "runtime owner supplied closed-batch identity"}
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0050-1-result.json",
+      "bytes": 99076,
+      "sha256": "40ff19a9f194b26bc3916c8573711967de2604c82756a1b139c01b2f92a24a5b",
+      "closed": true,
+      "runtime_identity": {"Game_pid": 214568, "Game_creation_filetime": 134368503807325674, "actor_character_id": 31254, "episode_run_id": "native-31254-6271ac8cd441", "birth_source": "runtime owner supplied closed-batch identity"}
+    }
+  ],
+  "selections": [
+    {"source": 0, "pointer": "/result/structured_content", "kind": "ordinary_auto"},
+    {"source": 1, "pointer": "/result/structured_content", "kind": "ordinary_auto"}
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "xar.planner-stage-timing-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T03:31:09.778336+00:00",
+  "evidence_source": "local cmd.exe Python pytest stdout; production normal Service over existing private Council DTO fixture",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 867186,
+      "sha256": "ea1acd1404d44bfba505999b8fe822130fdfefe8036ce0db72038f32ba59582d"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py",
+      "bytes": 2814,
+      "sha256": "4f081fbaa797bba4a56244221f37de91ee5509506094a11e91cf815bea562510"
+    }
+  ],
+  "validation": {
+    "command": "tools/.venv/Scripts/python.exe -B -X utf8 -m pytest -q --tb=short ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py",
+    "exit_code": 0,
+    "passed": 1,
+    "pytest_seconds": 1.49,
+    "assertions_verified": [
+      "sink enabled/disabled complete normal plan equal",
+      "original snapshot/capability/chooser/root/final-gates/submit/receipt call counts equal",
+      "one chooser and one council final-gates read in each version",
+      "zero submit or receipt sends",
+      "without diagnostic sink no timing file created",
+      "all four new stage names plus existing normal_plan stage emitted",
+      "every stage elapsed_ns nonnegative",
+      "scalar schema keys only; no history or snapshot body emitted",
+      "all non-capability stages emitted exactly once"
+    ],
+    "initial_attempt": {
+      "exit_code": 2,
+      "error": "ModuleNotFoundError: No module named xar_autoplayer",
+      "correction": "test-only conventional source path bootstrap; no production change for the collection error"
+    }
+  },
+  "stages": [
+    "service.planner_capabilities",
+    "service.planner_history_rows",
+    "service.planner_choose",
+    "service.planner_public_plan_copy"
+  ],
+  "interpretation": "nested wall intervals; neither additive categories nor Python CPU measurements",
+  "new_game_or_rpc_calls": 0,
+  "running_sdk_modified": false,
+  "live_acceptance": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "output_limit_bytes": 1048576,
+    "deletions": 0,
+    "review_at_utc": "2027-04-17T03:31:09.778336+00:00"
+  }
+}

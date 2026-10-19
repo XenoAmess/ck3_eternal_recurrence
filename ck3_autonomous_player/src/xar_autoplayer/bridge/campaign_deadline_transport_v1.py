@@ -16,12 +16,22 @@ def advance_campaign_deadline_v1(driver, starting: dict, *, target_date_raw: int
     current = starting
     cancel = None
     cancel_submitted = False
+    speed_configuration = None
     try:
-        speed_step = f"set-speed-{speed}"
-        result = driver._execute_composite_primitive(speed_step, current)
-        actions.append({"step": speed_step, "result": result})
-        current = driver._wait_for_life_advance_snapshot(driver.take_internal_semantic_snapshot(),
-            lambda value: value.get("speed") == speed, timeout_seconds=driver.command_timeout_seconds)
+        if starting.get("speed") != speed:
+            speed_step = f"set-speed-{speed}"
+            result = driver._execute_composite_primitive(speed_step, current)
+            actions.append({"step": speed_step, "result": result})
+            current = driver._wait_for_life_advance_snapshot(driver.take_internal_semantic_snapshot(),
+                lambda value: value.get("speed") == speed, timeout_seconds=driver.command_timeout_seconds)
+            speed_configuration = {"status": "submitted", "step": speed_step}
+        else:
+            # The bound paused frame already observes this policy speed. The
+            # following native Arm independently binds the same actual speed;
+            # do not submit an identical setter or query another same frame.
+            speed_configuration = {"status": "already_observed", "submitted": False,
+                "observed_speed": speed, "source_snapshot_id": starting.get("snapshot_id"),
+                "source_native_revision": starting.get("native_revision"), "source_date_raw": start}
         if current.get("speed") != speed:
             raise n.BridgeUnavailableError("campaign deadline did not observe the original policy speed")
         result = driver._execute_primitive_step(arm_step, expected_revision=None,
@@ -33,7 +43,8 @@ def advance_campaign_deadline_v1(driver, starting: dict, *, target_date_raw: int
             sentinel_scope="campaign_date_deadline")
         current = driver._resume_life_advance(current, actions, native_stop_target_date_raw=target_date_raw)
         current = driver._wait_for_life_advance_snapshot(current,
-            lambda value: value.get("paused") is True or n._life_advance_new_modal_hint(value, starting) is not None,
+            lambda value: value.get("paused") is True or n._life_advance_progressed(
+                value, starting, horizon_days_override=(target_date_raw-start)//24),
             timeout_seconds=driver.life_advance_timeout_seconds)
         if current.get("paused") is not True:
             current = driver._pause_life_advance(current, actions)
@@ -74,6 +85,7 @@ def advance_campaign_deadline_v1(driver, starting: dict, *, target_date_raw: int
         return current, {"schema": "xar.ck3.campaign-native-date-clock/v1", "scope": "campaign_date_deadline",
                          "starting_date_raw": start, "target_date_raw": target_date_raw,
                          "armed": arm, "stopped": status, "early_boundary_cancel": cancel,
+                         "speed_configuration": speed_configuration,
                          "exact_one_day_qualification_claimed": False}
     except Exception:
         try:

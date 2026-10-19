@@ -1,0 +1,116 @@
+{
+  "schema": "xar.p51-current-input-replace-retry-source-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:40:40.185621+00:00",
+  "status": "ACTUAL_ORIGINAL_METADATA_PUBLICATION_RECOVERED",
+  "failure_evidence": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0076-1-result.json",
+      "bytes": 757,
+      "sha256": "6cf83b579c682aa5e1bfa4c90521b438da85b7c1245bc49ec3ebce3408183796"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CURRENT-HALT-P37.json",
+      "bytes": 1089,
+      "sha256": "7ae3a7c31218bea8ed4eab056265c739ff05a81f96b2b857f66fdf8ffed4a3bb"
+    }
+  ],
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\migrate_p51_decision_text_v20261019.py",
+    "bytes": 31230,
+    "sha256": "c76c9c707bc241a6fdcdceafae1900e26b67ac8b0824352ef53d35cc9d8e0815"
+  },
+  "emitted_wrapper": {
+    "name": "root_decision_text_api.py",
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-current-input-replace-review01\\root_decision_text_api.py",
+    "bytes": 4131,
+    "sha256": "ecd6cc4f3c28679dc41df1f4b4dc2612136cb8e93a4a2eae191564db4f8eb223"
+  },
+  "unchanged_live_child_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\presentation\\g2_saved_campaign\\decision_text_publisher.py",
+    "bytes": 21983,
+    "sha256": "e969030afa11d3f59109bb075f82b1b69ac295bc5d8ae7ca4f994a1301a492f7"
+  },
+  "review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-current-input-replace-review01\\REVIEW.json",
+    "bytes": 3662,
+    "sha256": "f2f3d0600fe6305eab9778774a2a0eea40ae9ca2240b6f63c0b417a9de365d2e"
+  },
+  "qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-current-input-replace-review01\\SOURCE-QUALIFICATION.json",
+    "bytes": 857,
+    "sha256": "69ade32017b4099440b0f4041b0e9e0c2107809a10a7490cf239d2b72c13993d"
+  },
+  "producer_equivalence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-current-input-replace-review01\\PRODUCER-EQUIVALENCE.json",
+    "bytes": 638,
+    "sha256": "fcb1d9477e5301e3f8d37720da9213dbf354d957c3c317c0b20fda3dab7d4347"
+  },
+  "scope": "Only exact session decision-text-publisher/CURRENT-INPUT.json, new=False. Same serialized bytes/temp UUID reused over at most8 os.replace attempts; only PermissionError WinError5 retried, .5s retry deadline, .45s maximum scheduled waits.",
+  "qualification_result": {
+    "single_targeted_fixture": "PASS_SINGLE_TARGETED_FIXTURE",
+    "transient": {
+      "same_temp_UUID_count": 1,
+      "replace_attempts": 3,
+      "same_temp_and_bytes": true
+    },
+    "persistent": {
+      "replace_attempts": 8,
+      "scheduled_wait_seconds": 0.44999999999999996,
+      "target_unchanged": true
+    },
+    "other_error_attempts": 1,
+    "create_only_and_other_path_delegated": 2
+  },
+  "recovery_scope": "Only original110 immutable display projection may be republished to the same input/source SHA and awaited for real TEXT_PUBLISHED; Root/perf_harness separately consumes already received MET110 into pending48. No AUTO or MET replay.",
+  "root_cause_status": "Short ordinary rb reader contention is an inference from producer/consumer source; the actual conflicting handle was not identified. Bounded retry cannot turn permanent denial into success.",
+  "runtime_success_or_live_retry_claimed": true,
+  "SDK_Native_Game_OBS_Desktop_calls_by_this_agent": 0,
+  "new_builds": 0,
+  "full_old_matrix_rerun": false,
+  "frozen_child_physical_source_modified": false,
+  "history": [
+    {
+      "status": "SOURCE_READY_RUNTIME_OWNER_ADOPTION_PENDING",
+      "observed_at_utc": "2026-10-19T03:39:23.303078+00:00",
+      "runtime_success_or_live_retry_claimed": false
+    }
+  ],
+  "actual_WinError5_retry_exercised": false,
+  "runtime_owner_observation": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\MET110-TEXT-PUBLICATION-RECOVERED32.json",
+      "bytes": 2452,
+      "sha256": "bbae554407221e8ba8d8bf043f2edf789d0728c57757d6bab6b42232a15a91ad"
+    },
+    "owner_observed_at_utc": "2026-10-19T03:39:20.682546+00:00",
+    "source_unchanged": true,
+    "new_root_api": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_decision_text_api.py",
+      "bytes": 4131,
+      "sha256": "ecd6cc4f3c28679dc41df1f4b4dc2612136cb8e93a4a2eae191564db4f8eb223"
+    },
+    "retained_publisher": {
+      "pid": 273652,
+      "creation_filetime": 134368507480369927,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+    },
+    "existing_immutable_projection": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\responses\\p37-responses-0110-1-result.json",
+      "bytes": 552,
+      "sha256": "1f669fe0335c545e9cffc21541b9ebeb4564bf7eee2168e1b8c6b03f049bdc54"
+    },
+    "actual_TEXT_PUBLISHED_ACK": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\decision-text-publisher\\TEXT-PUBLISHED-1f669fe0335c545e9cffc21541b9ebeb4564bf7eee2168e1b8c6b03f049bdc54.json",
+      "bytes": 1252,
+      "sha256": "54c62bee4de27f8e454f1a8daac1f93e73f39f5b3a6008b3f7d1d9fa58891dad"
+    },
+    "replace_attempts": 1,
+    "WinError5_retries": 0,
+    "AUTO_MET_replay_calls": 0,
+    "new_observation_projection_or_UUID": false,
+    "Native_MCP_calls": 0,
+    "OBS_draw_ACK": false,
+    "scope": "Existing exact MET110 display source was published by the same live child. This invocation replaced on first attempt; no actual Win5 retry collision or root cause was diagnosed."
+  }
+}

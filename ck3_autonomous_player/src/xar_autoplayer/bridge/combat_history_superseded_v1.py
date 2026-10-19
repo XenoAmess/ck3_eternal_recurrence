@@ -9,6 +9,8 @@ import copy
 import hashlib
 import json
 
+from .bounded_json_chunks_v1 import iter_bounded_json_chunks_v1
+
 from .combat_contract import (
     combat_simulation_inputs_status, parse_query_combat_simulation_inputs_step,
 )
@@ -69,7 +71,7 @@ def _digest(body, limit):
     size = 0
     encoder = json.JSONEncoder(ensure_ascii=False, sort_keys=True,
                                separators=(",", ":"), allow_nan=False)
-    for piece in encoder.iterencode(body):
+    for piece in iter_bounded_json_chunks_v1(body, encoder):
         raw = piece.encode("utf-8")
         size += len(raw)
         if size > limit:

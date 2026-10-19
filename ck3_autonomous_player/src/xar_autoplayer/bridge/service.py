@@ -637,6 +637,18 @@ from ..m5_formal_proposal_collector import (
 )
 
 
+def _timed_planning_call_v1(
+    stage: str, operation: Callable[..., dict[str, object]],
+    *args: object, **kwargs: object,
+) -> dict[str, object]:
+    """Time existing work only; the optional sink receives scalar receipts."""
+    timing = start_army_timing(stage)
+    try:
+        return operation(*args, **kwargs)
+    finally:
+        finish_army_timing(timing, step="plan-turn")
+
+
 class GameplayBridgeService:
     def __init__(self, driver: GameplayBridgeDriver) -> None:
         self.driver = driver
@@ -1204,7 +1216,8 @@ class GameplayBridgeService:
                     submitted_request_id=submitted_request_id, action_id=action_id)
 
     def capabilities(self) -> dict[str, object]:
-        return self.driver.capabilities()
+        return _timed_planning_call_v1(
+            "service.planner_capabilities", self.driver.capabilities)
 
     def snapshot(
         self, *, include_native_command_history: bool = True,
@@ -1808,7 +1821,8 @@ class GameplayBridgeService:
             cap_campaign = getattr(self.driver, "cap_campaign_advance_plan_v1", None)
             if callable(cap_campaign):
                 planned = cap_campaign(planned)
-            return copy.deepcopy(planned)
+            return _timed_planning_call_v1(
+                "service.planner_public_plan_copy", copy.deepcopy, planned)
         finally:
             finish_army_timing(plan_timing, step="plan-turn")
 
@@ -2167,23 +2181,27 @@ class GameplayBridgeService:
             native_history: list[dict[str, object]],
         ) -> dict[str, object]:
             planning_snapshot = {**planning_snapshot, **overview_projection}
-            raw_history = planning_snapshot.get("history")
-            history = (
-                [row for row in raw_history if isinstance(row, dict)]
-                if isinstance(raw_history, list)
-                else []
-            )
-            # Capture row/result bindings while the native helper owns its
-            # lock; marriage observation may replace a result's top-level
-            # marriage_result field later. Payload readers below are readonly.
-            history.extend(
-                (
-                    {**row, **({"result": dict(row["result"])}
-                              if isinstance(row.get("result"), dict) else {})}
-                    if use_internal_view else row
+            history_timing = start_army_timing("service.planner_history_rows")
+            try:
+                raw_history = planning_snapshot.get("history")
+                history = (
+                    [row for row in raw_history if isinstance(row, dict)]
+                    if isinstance(raw_history, list)
+                    else []
                 )
-                for row in native_history if isinstance(row, dict)
-            )
+                # Capture row/result bindings while the native helper owns its
+                # lock; marriage observation may replace a result's top-level
+                # marriage_result field later. Payload readers below are readonly.
+                history.extend(
+                    (
+                        {**row, **({"result": dict(row["result"])}
+                                  if isinstance(row.get("result"), dict) else {})}
+                        if use_internal_view else row
+                    )
+                    for row in native_history if isinstance(row, dict)
+                )
+            finally:
+                finish_army_timing(history_timing, step="plan-turn")
             played_character = planning_snapshot.get("played_character")
             opening_focus_first = getattr(
                 self.driver, "require_initial_lifestyle_focus_before_date_advance",
@@ -2249,7 +2267,8 @@ class GameplayBridgeService:
                     "reason": "observe and settle the opening focus before war planning",
                 }
                 if opening_focus_first
-                else choose_one_life_turn(
+                else _timed_planning_call_v1(
+                    "service.planner_choose", choose_one_life_turn,
                     history,
                     snapshot=planning_snapshot,
                     action_steps=available_steps,

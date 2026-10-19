@@ -1,0 +1,197 @@
+{
+  "schema": "xar.bounded-json-chunks-software-performance.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_started_utc": "2026-10-19T03:27:25.337506+00:00",
+  "observed_ended_utc": "2026-10-19T03:27:34.948889+00:00",
+  "evidence_layer": "exact-source old/new offline synthetic JSON write/digest and traced additional encoder allocation; not game throughput",
+  "baseline_sources": [
+    {
+      "commit": "b000c9a6",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_history_store.py",
+      "function_sha256": "ad8d04b9a5073423d3b2e6e067daa3417d4fcc36d58c045a92958469b214004b"
+    },
+    {
+      "commit": "b000c9a6",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_history_superseded_v1.py",
+      "function_sha256": "7f1747236126e655958b125af1709599ec54606be4dbed81bd42ea2fe45fbc6e"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/bounded_json_chunks_v1.py",
+      "bytes": 4881,
+      "sha256": "1091a2d1dba3661acfe67509405c3092e85c7ddce88cbb9b48bac52ea6b791f9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_history_store.py",
+      "bytes": 8855,
+      "sha256": "22a46bdb75c4f70c8466c4d4b7a665992c75c0cb3aa7004f182965d1dfd5297d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_history_superseded_v1.py",
+      "bytes": 8679,
+      "sha256": "7abc5449138728a9ef869e27d2001a1a0290abc1e456ac3c35b00f20ddf51994"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_bounded_json_chunks_v1.py",
+      "bytes": 3255,
+      "sha256": "dc9e1e13132c664b0ea350bddb1940f43e19719ca144aabd7c319c615653fbc5"
+    },
+    {
+      "path": "tools/g2_saved_campaign/profile_driver_json_chunks_v1.py",
+      "bytes": 13354,
+      "sha256": "7cc5db6d4c936439e6ddc662783f18a08ba530db636884aac930a9065df84db9"
+    }
+  ],
+  "input": {
+    "schema": "synthetic-stream-serialization-workload/v1",
+    "bytes_including_newline": 3175802,
+    "sha256": "66473cb48447cdb5d09f5289453d9ca4ad1cc960e12ebcb071eda777faa1f22a",
+    "rows": 256,
+    "integer_values_per_row": 2048,
+    "flat_contexts_per_row": 24,
+    "all_data_synthetic": true
+  },
+  "unit_tests": {
+    "run": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  "actual_create_only_writes": [
+    {
+      "source": "old",
+      "elapsed_seconds": 0.4073632,
+      "bytes": 3175802,
+      "sha256": "66473cb48447cdb5d09f5289453d9ca4ad1cc960e12ebcb071eda777faa1f22a",
+      "budget_used": 3175802
+    },
+    {
+      "source": "new",
+      "elapsed_seconds": 0.2347813,
+      "bytes": 3175802,
+      "sha256": "66473cb48447cdb5d09f5289453d9ca4ad1cc960e12ebcb071eda777faa1f22a",
+      "budget_used": 3175802
+    }
+  ],
+  "budget_refusals": [
+    {
+      "source": "old",
+      "error": "SidecarBudgetExhaustedError",
+      "bytes": 1048576,
+      "sha256": "d450f6b62f8c8413d7317973a86d67a0756cdeeb49beabb3abaad7be5a11f6f8",
+      "budget_used": 1048576
+    },
+    {
+      "source": "new",
+      "error": "SidecarBudgetExhaustedError",
+      "bytes": 1048576,
+      "sha256": "d450f6b62f8c8413d7317973a86d67a0756cdeeb49beabb3abaad7be5a11f6f8",
+      "budget_used": 1048576
+    }
+  ],
+  "canonical_digest": {
+    "bytes": 3175801,
+    "sha256": "fb4bea87123041b8cb2db453a6b6026c0b5bf482baed07472c4eb68dd81d7a76",
+    "alternating_groups": 3,
+    "samples_seconds": {
+      "old": [
+        0.1741503,
+        0.1602224,
+        0.1750547
+      ],
+      "new": [
+        0.1463922,
+        0.1661917,
+        0.1482186
+      ]
+    },
+    "median_seconds": {
+      "old": 0.1741503,
+      "new": 0.1482186
+    }
+  },
+  "memory_probe": {
+    "scope": "encoder chunks plus UTF-8/hash consumption; input graph and expected bytes allocated before tracing",
+    "sources": [
+      {
+        "source": "old",
+        "peak_traced_additional_bytes": 3472,
+        "max_text_piece_utf8_bytes": 44,
+        "text_pieces": 712205
+      },
+      {
+        "source": "new",
+        "peak_traced_additional_bytes": 172140,
+        "max_text_piece_utf8_bytes": 9129,
+        "text_pieces": 16397
+      }
+    ],
+    "maximum_grouped_fast_text_bytes": 262144,
+    "oversized_scalar_limit": "a single oversized string retains the original encoder fallback/allocation behavior"
+  },
+  "historical_wall_budget": {
+    "source_machine_id": "unknown",
+    "stage_source_machine_id": "unknown",
+    "game_days": 118,
+    "wall_seconds": 134.92461,
+    "seconds_per_actual_day": 1.1434288983050847,
+    "phase_goal_seconds_per_actual_day": 1.0,
+    "phase_goal_budget_seconds": 118,
+    "gap_to_phase_goal_seconds": 16.92461,
+    "later_goal_seconds_per_actual_day": 0.5,
+    "later_goal_gap_seconds": 75.92461,
+    "full_persistence_sum_seconds": 10.448259,
+    "stream_write_sum_seconds": 9.954374,
+    "plan_unique_wall_seconds": 29.275382,
+    "date_changed_wait_seconds": 69.960223,
+    "limits": [
+      "stages overlap, so they are not added into wall",
+      "zero-day counts do not establish persistence causality",
+      "no synthetic encoding gain is extrapolated to historical or current game days"
+    ]
+  },
+  "current_runtime": {
+    "new_AUTO_sample_received": false,
+    "game_or_native_or_RPC_calls": 0,
+    "live_Driver_or_SAVE_reads": 0,
+    "frozen_source_modified": false,
+    "deployed": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "admission_path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\SERIALIZATION-RESEARCH-CHILD01.json",
+    "admission_sha256": "3ff5515e25a0bb0ce2b9e1e3003919670a31a8cf2da001a0de343e8170f94acb",
+    "work_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-serialization01",
+    "package_max_bytes": 16777216,
+    "retained_logical_bytes_before_receipt": 8448756,
+    "allocated_bytes": null,
+    "free_at_start_bytes": 891367706624,
+    "free_at_close_bytes": 891345805312,
+    "producer_closed": true,
+    "unconsumed_planned_writes_bytes": 0,
+    "derived_review_at_utc": "2026-10-21T03:27:34.950323+00:00",
+    "deletions": 0,
+    "manifest": [
+      {
+        "relative_path": "new-budget-partial.json",
+        "bytes": 1048576,
+        "sha256": "d450f6b62f8c8413d7317973a86d67a0756cdeeb49beabb3abaad7be5a11f6f8"
+      },
+      {
+        "relative_path": "new-sidecar.json",
+        "bytes": 3175802,
+        "sha256": "66473cb48447cdb5d09f5289453d9ca4ad1cc960e12ebcb071eda777faa1f22a"
+      },
+      {
+        "relative_path": "old-budget-partial.json",
+        "bytes": 1048576,
+        "sha256": "d450f6b62f8c8413d7317973a86d67a0756cdeeb49beabb3abaad7be5a11f6f8"
+      },
+      {
+        "relative_path": "old-sidecar.json",
+        "bytes": 3175802,
+        "sha256": "66473cb48447cdb5d09f5289453d9ca4ad1cc960e12ebcb071eda777faa1f22a"
+      }
+    ]
+  }
+}

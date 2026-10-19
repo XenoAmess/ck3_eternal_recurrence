@@ -1,0 +1,41 @@
+{
+  "schema": "xar.completed-metrics-resume-software-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:42:14.446793+00:00",
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C-MET-RESUME-ADMISSION.json",
+    "sha256": "22400c81274010759a769225316bda99614579692cea7ba9b9de73fedb1c0961"
+  },
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_sdk_queue.py",
+    "bytes": 262759,
+    "sha256": "3773af1c2beb0d66d800371012826e42d973d16cac855c4786212d45b28b9f20"
+  },
+  "exact_original_full_loop_AST_used": true,
+  "old_closed_status": "honest Queue1/App0, normal=false",
+  "restore47_and_pending48_unchanged": true,
+  "T0_map_anchor_retained": true,
+  "original_MET110_consumed_with_new_RPC_calls": 0,
+  "first_settled_cycle": 48,
+  "next_settled_cycle": 49,
+  "next_new_fake_RPC_tools": [
+    "ck3_auto_turn",
+    "root_current_runtime_metrics"
+  ],
+  "inherited_MET_postcheck_retained": true,
+  "original_camera_gate_calls": 2,
+  "negative_cases": [
+    "AUTO_before_fresh_SEM_CAP_rejected",
+    "changed_date_fresh_SEM_rejected",
+    "cold_restore_rejected",
+    "AUTO_before_original_MET110_settled_rejected"
+  ],
+  "new_actual_MCP_Native_Game_calls": 0,
+  "runtime_files_mutated": 0,
+  "live_qualified": false,
+  "limits": [
+    "Constructor recording/process/identity guards need actual runtime readback.",
+    "Fresh SEM/CAP in this software composition are explicit fixtures.",
+    "Checkpoint/month helper side effects are bounded fixture callbacks; settlement is original full_loop AST."
+  ]
+}

@@ -1,0 +1,380 @@
+{
+  "schema": "xar.ck3.actual-T0-scoring-summary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:15:11.299965+00:00",
+  "campaign_id": "robert-first30-v20261019",
+  "date": "1066.9.15",
+  "date_raw": 53144328,
+  "actor_id": 31254,
+  "episode_run_id": "native-31254-6271ac8cd441",
+  "source_SAVE": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\baselines\\robert-v20261019-T0-1066-09-15.ck3",
+    "device": 6505083400996699863,
+    "inode": 281474988852774,
+    "bytes": 68936116,
+    "mtime_ns": 1792379282998522000,
+    "sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+    "sha_basis": "actual_owner_locked_copy_and_native_SAVE_receipts_reused_not_rehashed"
+  },
+  "source_pins": {
+    "protected_copy": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-T0-SAVE-PROTECTED.json",
+      "bytes": 2106,
+      "sha256": "525b3efa4c21eb0bea2ca2549a6181206c4eb5e927eda5126f9d7d2f8ff4ef7c"
+    },
+    "native_SAVE": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0006-1-result.json",
+      "bytes": 9661,
+      "sha256": "48f479b91173fd475b5c77469f1451a4943103e75759caf024a509017eabb7e6"
+    },
+    "storage_child": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M1-T0-PROJECTION-CHILD01.json",
+      "bytes": 2859,
+      "sha256": "4d4b5f2fc119d9acbaf23d518e1d1b3b544f65057e9701632d10ec222bdf78d6"
+    },
+    "asset": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\ACTUAL-T0-BASELINE-ASSET01.json",
+      "bytes": 2574,
+      "sha256": "8937b07020c57ab46b7d683c366852316eca58b5e7e7a4dcadb239b259082beb"
+    },
+    "environment": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CLEAN-CAMPAIGN-MOD-ABSENCE-ACTUAL.json",
+      "bytes": 1714,
+      "sha256": "5b726ae874a7ecba8a725dad21bfeed46e52c8b701b0b0cfea0b67234ec1681a"
+    },
+    "decoder": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-presentation-prepare01\\scoring-decoder-input01\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d"
+    },
+    "reader_source": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\campaign_score_save_reader.py",
+      "bytes": 40660,
+      "sha256": "f10eaae7d7ede43e97afd2a2e7d8621714d9d5220f80b968821ecdea13f285fc"
+    },
+    "runner_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m1-t0-projection01\\project_t0_baseline01.py",
+      "bytes": 15390,
+      "sha256": "f56f7fe5429422823f391dbd794a4a7a9f3f6b781ac28e5abcb324f36ab5d6df"
+    },
+    "config": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m1-t0-projection01\\CONFIG01.json",
+      "bytes": 491,
+      "sha256": "89ce03835639dcdecaa4ee1d907a024a90c26b924513bd09b56dc23fe28ddb98"
+    }
+  },
+  "derived_projection": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m1-t0-projection01\\T0-PROJECTION01.json",
+    "bytes": 262848,
+    "sha256": "25314c0ef55673455ea91d08cda30ca9f5a8becb6ca4c12f0e886fda8f400271"
+  },
+  "founding_house_id": 174,
+  "founding_dynasty_id": 174,
+  "realm_county_count": 10,
+  "dynasty_county_count": 8,
+  "direct_geographic_county_count": 2,
+  "direct_geographic_holding_count": 4,
+  "native_domain_size": {
+    "value": null,
+    "availability": "unknown",
+    "reason": "SAVE geographic holdings are not an observed Native GetDomainSize result"
+  },
+  "native_domain_limit": {
+    "value": null,
+    "availability": "unknown",
+    "reason": "No same-T0 Native GetDomainLimit observation in this offline package"
+  },
+  "metrics": {
+    "Q_realm": {
+      "value": "15.97500",
+      "unit": "quality_county_equivalent",
+      "availability": "observed",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "county.development/control + province.holding.type + static county/barony/province mapping",
+      "unavailable_reason": null
+    },
+    "K_dynasty": {
+      "value": "12.675",
+      "unit": "quality_county_equivalent",
+      "availability": "observed",
+      "scope": "fixed_founding_dynasty",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "deduplicated county holders + house ancestry + structural q",
+      "unavailable_reason": null
+    },
+    "legacy_ranks": {
+      "value": "0",
+      "unit": "rank",
+      "availability": "observed",
+      "scope": "fixed_founding_dynasty",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "dynasties.dynasties.174.perk (unique canonical keys)",
+      "unavailable_reason": null
+    },
+    "control_average": {
+      "value": "1",
+      "unit": "fraction",
+      "availability": "observed",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "q_weighted_county_control",
+      "unavailable_reason": null
+    },
+    "rebel_share": {
+      "value": null,
+      "unit": "fraction",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "gold": {
+      "value": "257",
+      "unit": "gold",
+      "availability": "observed",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "living.31254.alive_data.gold.value",
+      "unavailable_reason": null
+    },
+    "gross_income": {
+      "value": null,
+      "unit": "gold/month",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "total_expenses": {
+      "value": null,
+      "unit": "gold/month",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "military_current": {
+      "value": null,
+      "unit": "gold/month",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "military_all_raised": {
+      "value": null,
+      "unit": "gold/month",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "due_commitments": {
+      "value": null,
+      "unit": "gold",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "P_quality": {
+      "value": null,
+      "unit": "standard_soldier_equivalent",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "continuation_legal": {
+      "value": null,
+      "unit": "boolean",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "backup_heirs": {
+      "value": null,
+      "unit": "person",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "u_discretionary": {
+      "value": null,
+      "unit": "gold/month",
+      "availability": "unknown",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": null,
+      "unavailable_reason": "尚缺该字段完整、同帧且语义闭合的观测"
+    },
+    "realm_county_count": {
+      "value": "10",
+      "unit": "county",
+      "availability": "observed",
+      "scope": "saved_current_player_realm",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "deduplicated saved title/house identity",
+      "unavailable_reason": null
+    },
+    "dynasty_county_count": {
+      "value": "8",
+      "unit": "county",
+      "availability": "observed",
+      "scope": "fixed_founding_dynasty",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "deduplicated saved title/house identity",
+      "unavailable_reason": null
+    },
+    "house_anchor_id": {
+      "value": "174",
+      "unit": "id",
+      "availability": "observed",
+      "scope": "fixed_founding_house",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "fixed T0 anchor",
+      "unavailable_reason": null
+    },
+    "dynasty_anchor_id": {
+      "value": "174",
+      "unit": "id",
+      "availability": "observed",
+      "scope": "fixed_founding_dynasty",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "fixed T0 anchor",
+      "unavailable_reason": null
+    },
+    "active_family_branches": {
+      "value": "0",
+      "unit": "house",
+      "availability": "observed",
+      "scope": "fixed_founding_dynasty",
+      "source_ref": "actual_T0_SAVE",
+      "locator": "same dynasty established cadet houses",
+      "unavailable_reason": null
+    }
+  },
+  "realm_counties": [
+    {
+      "title_id": 2196,
+      "key": "c_messina",
+      "holder": 34232,
+      "development": "11",
+      "control": "100",
+      "completed_holdings": 3,
+      "q_structural": "1.775"
+    },
+    {
+      "title_id": 2217,
+      "key": "c_foggia",
+      "holder": 34973,
+      "development": "8",
+      "control": "100",
+      "completed_holdings": 2,
+      "q_structural": "1.45"
+    },
+    {
+      "title_id": 2231,
+      "key": "c_apulia",
+      "holder": 31254,
+      "development": "13",
+      "control": "100",
+      "completed_holdings": 3,
+      "q_structural": "1.825"
+    },
+    {
+      "title_id": 2236,
+      "key": "c_bari",
+      "holder": 35899,
+      "development": "11",
+      "control": "100",
+      "completed_holdings": 3,
+      "q_structural": "1.775"
+    },
+    {
+      "title_id": 2240,
+      "key": "c_lecce",
+      "holder": 33946,
+      "development": "11",
+      "control": "100",
+      "completed_holdings": 2,
+      "q_structural": "1.525"
+    },
+    {
+      "title_id": 2250,
+      "key": "c_camarda",
+      "holder": 36445,
+      "development": "11",
+      "control": "100",
+      "completed_holdings": 1,
+      "q_structural": "1.275"
+    },
+    {
+      "title_id": 2254,
+      "key": "c_reggio_calabria",
+      "holder": 34232,
+      "development": "8",
+      "control": "100",
+      "completed_holdings": 3,
+      "q_structural": "1.7"
+    },
+    {
+      "title_id": 2258,
+      "key": "c_cosenza",
+      "holder": 34232,
+      "development": "8",
+      "control": "100",
+      "completed_holdings": 2,
+      "q_structural": "1.45"
+    },
+    {
+      "title_id": 2262,
+      "key": "c_rossano",
+      "holder": 31254,
+      "development": "8",
+      "control": "100",
+      "completed_holdings": 3,
+      "q_structural": "1.7"
+    },
+    {
+      "title_id": 2488,
+      "key": "c_lanciano",
+      "holder": 34973,
+      "development": "10",
+      "control": "100",
+      "completed_holdings": 2,
+      "q_structural": "1.5"
+    }
+  ],
+  "unknown_metrics": [
+    "rebel_share",
+    "gross_income",
+    "total_expenses",
+    "military_current",
+    "military_all_raised",
+    "due_commitments",
+    "P_quality",
+    "continuation_legal",
+    "backup_heirs",
+    "u_discretionary"
+  ],
+  "SAVE_full_projection_passes": 1,
+  "full_melt_files_written": 0,
+  "Native_or_RPC_calls": 0,
+  "custody_identity_unchanged": true,
+  "decoder_exit": 0,
+  "decoder_unknown_tokens": 0,
+  "no_global_or_runtime_changes": true
+}

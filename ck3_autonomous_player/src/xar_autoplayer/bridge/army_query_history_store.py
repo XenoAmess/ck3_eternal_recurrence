@@ -14,6 +14,8 @@ import os
 import uuid
 from pathlib import Path
 
+from .bounded_json_chunks_v1 import iter_bounded_json_chunks_v1
+
 
 ARMY_QUERY_STEP = "query-army-strengths-v1"
 SUMMARY_SCHEMA = "xar.ck3.army-query-history-summary.v1"
@@ -105,7 +107,7 @@ def write_json_exclusive(
                 if len(buffer) == chunk_bytes:
                     flush_buffer()
 
-        for text in encoder.iterencode(payload):
+        for text in iter_bounded_json_chunks_v1(payload, encoder):
             append_buffered(text.encode("utf-8"))
         append_buffered(b"\n")
         flush_buffer()

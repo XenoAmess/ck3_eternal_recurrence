@@ -1,0 +1,46 @@
+--- a/root_p37_sdk_queue.py
++++ b/root_p37_sdk_queue.py
+@@ -120,8 +120,15 @@
+     return value
+ 
+ 
++from owner_response_json_once_v1 import prepare_success_response_row_v1 as _owner_response_success_row_once_v1
++
+ def atomic(path, value, *, replace=False, limit=REPLY_RESERVE):
+     payload = json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
++    return atomic_payload_v1(path, payload, replace=replace, limit=limit)
++
++def atomic_payload_v1(path, payload, *, replace=False, limit=REPLY_RESERVE):
++    if not isinstance(payload, bytes):
++        raise TypeError('atomic payload must be bytes')
+     if len(payload) > limit:
+         raise ValueError("finite receipt bound exceeded: " + str(path))
+     pending = path.with_name(path.name + "." + uuid.uuid4().hex + ".pending")
+@@ -1811,19 +1818,22 @@
+         atomic(Q / f"INFLIGHT-{sequence:04d}.json", context, limit=16384)
+         atomic(Q / f"{sequence:04d}-before-action.json", context, limit=16384)
+         started, mono = now().isoformat(), time.monotonic()
++        response_payload = None
+         try:
+             result = await session.call_tool(tool, arguments, read_timeout_seconds=budget)
+             dumped = result.model_dump(mode="json")
+-            row = {"started_at_utc": started, "ended_at_utc": now().isoformat(),
+-                   "elapsed_seconds": time.monotonic() - mono, "request": request, "result": dumped,
+-                   "mcp_result_projection_json_utf8_bytes": len(json.dumps(dumped, ensure_ascii=False,
+-                                                              separators=(",", ":")).encode("utf-8"))}
++            row, response_payload = _owner_response_success_row_once_v1(
++                started_at_utc=started, ended_at_utc=now().isoformat(),
++                elapsed_seconds=time.monotonic() - mono, request=request, result=dumped)
+         except Exception as error:
+             preserve_first_exception(error, stage="sdk_call", request=request)
+             row = {"started_at_utc": started, "ended_at_utc": now().isoformat(),
+                    "elapsed_seconds": time.monotonic() - mono, "request": request,
+                    "client_error": repr(error), "replay_allowed": False}
+-        atomic(response, row)
++        if response_payload is None:
++            atomic(response, row)
++        else:
++            atomic_payload_v1(response, response_payload)
+         self.current_attempt = {"request": request, "row": row, "response": str(response)}
+         from root_p37_overlay_relay import relay_compact, error_projection
+         try:

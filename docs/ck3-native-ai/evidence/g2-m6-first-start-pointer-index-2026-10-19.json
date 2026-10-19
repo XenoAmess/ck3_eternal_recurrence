@@ -1,0 +1,162 @@
+{
+  "schema": "g2.m6.closed-evidence-pointer-index/v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "campaign_id": "robert-first30-v20261019",
+  "batch_id": "control11-closed30-turns",
+  "closed_at_utc": "2026-10-19T03:28:39.866571Z",
+  "collected_at_utc": "2026-10-19T03:34:12.256053+00:00",
+  "sources": [
+    {
+      "pin": {
+        "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0048-1-result.json",
+        "bytes": 87990,
+        "sha256": "44defd2b790131659d9dbd617b755b98d9d36820789bbc5e8248274152c93c24",
+        "closed": true,
+        "runtime_identity": {
+          "Game_pid": 214568,
+          "Game_creation_filetime": 134368503807325674,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441",
+          "birth_source": "runtime owner supplied closed-batch identity"
+        }
+      },
+      "state": "pin_verified"
+    },
+    {
+      "pin": {
+        "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0050-1-result.json",
+        "bytes": 99076,
+        "sha256": "40ff19a9f194b26bc3916c8573711967de2604c82756a1b139c01b2f92a24a5b",
+        "closed": true,
+        "runtime_identity": {
+          "Game_pid": 214568,
+          "Game_creation_filetime": 134368503807325674,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441",
+          "birth_source": "runtime owner supplied closed-batch identity"
+        }
+      },
+      "state": "pin_verified"
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "83a7cc43fe767fba0aa45a6cd4cab946818de9982b86b64865f879f7debb5508",
+      "identity": {
+        "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+        "actor_character_id": 31254,
+        "target_character_id": 33946,
+        "scheme_instance_id": 2,
+        "scheme_instance_generation": 0
+      },
+      "observations": [
+        {
+          "kind": "applied_episode_reference",
+          "strict_Start_validation": "not_performed",
+          "occurrences": [
+            {
+              "source": 0,
+              "pointer": "/result/structured_content/result",
+              "receipt_pointer": "/result/structured_content/result/native_receipt",
+              "ordinary_auto": {
+                "status": "executed",
+                "selected_step": "ordinary-sway-opportunity-v1",
+                "planning_source_frame": {
+                  "schema": "xar.ck3.planning-source-frame/v1",
+                  "status": "complete",
+                  "snapshot_id": "native:8",
+                  "revision": 9,
+                  "native_revision": 8,
+                  "date_raw": 53144328,
+                  "actor_character_id": 31254,
+                  "episode_run_id": "native-31254-6271ac8cd441",
+                  "connection_generation": 2,
+                  "bridge_pid": 214568
+                }
+              }
+            },
+            {
+              "source": 1,
+              "pointer": "/result/structured_content/sway_following_turn",
+              "receipt_pointer": "/result/structured_content/sway_following_turn/native_receipt",
+              "ordinary_auto": {
+                "status": "executed",
+                "selected_step": "life-advance",
+                "planning_source_frame": {
+                  "schema": "xar.ck3.planning-source-frame/v1",
+                  "status": "complete",
+                  "snapshot_id": "native:8",
+                  "revision": 9,
+                  "native_revision": 8,
+                  "date_raw": 53144328,
+                  "actor_character_id": 31254,
+                  "episode_run_id": "native-31254-6271ac8cd441",
+                  "connection_generation": 2,
+                  "bridge_pid": 214568
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "terminal_intervention",
+          "measurement": {
+            "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+            "actor_character_id": 31254,
+            "target_character_id": 33946,
+            "scheme_instance_id": 2,
+            "scheme_instance_generation": 0,
+            "exact_ck3_build": "1.20.0.4",
+            "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "source_native_revision": 8,
+            "source_date_raw": 53144328,
+            "tracked_instance_active": true,
+            "instance_terminal_outcome_observed": false,
+            "native_status_key": "continue",
+            "terminal_cause_observed": false,
+            "terminal_cause": "unknown"
+          },
+          "occurrences": [
+            {
+              "source": 1,
+              "pointer": "/result/structured_content/sway_following_turn/terminal_intervention",
+              "record_sha256": "1a56ddcb26f5fd00cc86c8e5f0eac972ddabfaf7472ccd73856056ab3f05e077",
+              "consumption": {
+                "next_turn_consumed": true,
+                "following_native_revision": 18,
+                "following_date_raw": 53144520
+              },
+              "ordinary_auto": {
+                "status": "executed",
+                "selected_step": "life-advance",
+                "planning_source_frame": {
+                  "schema": "xar.ck3.planning-source-frame/v1",
+                  "status": "complete",
+                  "snapshot_id": "native:8",
+                  "revision": 9,
+                  "native_revision": 8,
+                  "date_raw": 53144328,
+                  "actor_character_id": 31254,
+                  "episode_run_id": "native-31254-6271ac8cd441",
+                  "connection_generation": 2,
+                  "bridge_pid": 214568
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "issues": [],
+  "G2_M6_credit_awarded": false,
+  "evidence_packet_ready": "not_evaluated",
+  "Game_MCP_SDK_calls": 0,
+  "boundary": "Producer facts and pinned pointers only; no natural cause, same-connection, useful outcome or actual following independently inferred",
+  "manifest": {
+    "path": "docs\\ck3-native-ai\\evidence\\g2-m6-first-start-manifest-2026-10-19.json",
+    "bytes": 1604,
+    "sha256": "ffe757523747ed0a97d527f9f8709a1945349543b251daea98c435b83658c63a"
+  }
+}

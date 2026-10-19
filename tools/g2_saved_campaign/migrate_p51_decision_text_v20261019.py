@@ -24,6 +24,49 @@ import importlib.util
 import json
 import sys
 
+
+def _install_current_input_replace_retry(api, session):
+    """Retry only replacement of this session's already-written metadata temp.
+
+    No new observation/input/source IDs, no business call and no child-source
+    modification. All create-only writes and other paths keep the frozen API.
+    """
+    target=Path(session).resolve()/'decision-text-publisher/CURRENT-INPUT.json'
+    marker=getattr(api,'_root_current_input_replace_retry_v1',None)
+    if marker is not None:
+        if marker['target']!=str(target):raise ValueError('Metadata retry belongs to another actual session')
+        return api
+    original=api.atomic
+    marker={'target':str(target),'max_replace_attempts':8,'max_retry_elapsed_seconds':.5,
+            'last_replace_attempts':0,'last_win5_retries':0}
+    def current_input_atomic(path,value,*,new=False):
+        path=Path(path)
+        if new or path.resolve()!=target:
+            return original(path,value,new=new)
+        data=api.json.dumps(value,ensure_ascii=False,separators=(',',':')).encode()
+        if len(data)>api.LIMIT:raise ValueError('Decision metadata exceeds32KiB')
+        temporary=path.with_name(path.name+'.'+api.uuid.uuid4().hex+'.pending')
+        with temporary.open('xb') as stream:stream.write(data)
+        delays=(.01,.02,.04,.08,.1,.1,.1)
+        deadline=api.time.monotonic()+.5
+        marker.update(last_replace_attempts=0,last_win5_retries=0)
+        try:
+            for attempt in range(8):
+                marker['last_replace_attempts']=attempt+1
+                try:
+                    api.os.replace(temporary,path)
+                    return
+                except PermissionError as error:
+                    remaining=deadline-api.time.monotonic()
+                    if getattr(error,'winerror',None)!=5 or attempt==7 or remaining<=0:
+                        raise
+                    marker['last_win5_retries']+=1
+                    api.time.sleep(min(delays[attempt],remaining))
+        finally:temporary.unlink(missing_ok=True)
+    api.atomic=current_input_atomic
+    api._root_current_input_replace_retry_v1=marker
+    return api
+
 def load_api(session, name='decision_text_publisher'):
     session=Path(session).resolve()
     manifest=json.loads((session/'ROOT-DECISION-TEXT-PROVIDER.json').read_bytes())
@@ -37,7 +80,7 @@ def load_api(session, name='decision_text_publisher'):
     existing=sys.modules.get(name)
     if existing is not None:
         if Path(existing.__file__).resolve()!=path:raise ValueError('Foreign cached decision provider')
-        return existing
+        return _install_current_input_replace_retry(existing,session) if name=='decision_text_publisher' else existing
     if name!='decision_text_publisher':load_api(session)
     spec=importlib.util.spec_from_file_location(name,path)
     module=importlib.util.module_from_spec(spec);sys.modules[name]=module
@@ -45,7 +88,7 @@ def load_api(session, name='decision_text_publisher'):
     except BaseException:
         if sys.modules.get(name) is module:sys.modules.pop(name)
         raise
-    return module
+    return _install_current_input_replace_retry(module,session) if name=='decision_text_publisher' else module
 
 def started_reference(session, api):
     binding=api.read(Path(session)/'ROOT-DECISION-TEXT-PUBLISHER-BINDING.json')
