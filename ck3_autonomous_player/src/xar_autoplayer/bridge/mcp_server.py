@@ -3708,11 +3708,11 @@ def create_server(
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
     def ck3_present_faith_power_ui_v1(
-        operation: Literal["open_holding", "open_personal_beliefs", "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window"],
-        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
+        operation: Literal["open_holding", "open_personal_beliefs", "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview"],
+        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation", "clerical_interaction"],
         subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
         expected_revision: IngameUiRevisionV1,
-        presentation_target: Literal["", "faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview", "holding_construct_conditions"] | None = None,
+        presentation_target: Literal["", "faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "rite_core_tenet_slot", "holding_building", "holding_building_preview", "holding_construct_conditions", "clerical_puppet", "external_clerical_puppet"] | None = None,
         presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)] | None = None,
         presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] | None = None,
         presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")] | None = None,
@@ -3723,7 +3723,9 @@ def create_server(
         holding=Province map ID, personal_beliefs=current player CharacterID.
         A displayed Rite does not change the Faith container ID domain.
         Actions bind the actual subject; ShowDetails accepts preview rows only.
-        No building or Faith mutation.
+        clerical_interaction: subject is the complete recipient CharacterID;
+        use one clerical target and the receipt from an independent default query.
+        No Send, option selection, building or Faith mutation.
         """
         return service.present_faith_power_ui_v1(operation, window_kind, subject_id,
             expected_revision=expected_revision, presentation_target=presentation_target,
@@ -3733,9 +3735,11 @@ def create_server(
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_faith_power_ui_v1(
-        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
+        window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation", "clerical_interaction"],
         expected_revision: IngameUiRevisionV1, subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] = 0,
         presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] = "",
+        presentation_target: Literal["clerical_puppet", "external_clerical_puppet"] | None = None,
+        presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")] | None = None,
     ) -> dict[str, object]:
         """Independently observe the selected window/tab and finite rows.
 
@@ -3746,14 +3750,16 @@ def create_server(
         Native window observations are separate from rendered pixel proof.
         """
         return service.present_faith_power_ui_v1("query", window_kind, subject_id,
-            expected_revision=expected_revision, presentation_tab=presentation_tab)
+            expected_revision=expected_revision,
+            presentation_tab=None if window_kind == "clerical_interaction" and presentation_tab == "" else presentation_tab,
+            presentation_target=presentation_target, presentation_receipt=presentation_receipt)
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_faith_power_ui_v1")
 
     @server.tool(annotations=read_only_tool)
     def ck3_query_faith_power_tooltip_v1(
         window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
         subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], expected_revision: IngameUiRevisionV1,
-        presentation_target: Literal["faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview", "holding_construct_conditions"],
+        presentation_target: Literal["faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "rite_core_tenet_slot", "holding_building", "holding_building_preview", "holding_construct_conditions"],
         presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)],
         presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")],
     ) -> dict[str, object]:

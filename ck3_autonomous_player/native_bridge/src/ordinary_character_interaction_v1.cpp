@@ -1,4 +1,5 @@
 #include "xar_bridge/ordinary_character_interaction_v1.hpp"
+#include "xar_bridge/clerical_puppet_preview_context12004.hpp"
 #include "xar_bridge/ck3_12004_interaction_context.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12004_phase_character.hpp"
@@ -840,3 +841,5 @@ void InitiateOrdinaryInteractionV1(const Bindings &b,
 }
 
 } // namespace xar::ck3_12003::ordinary_interaction
+
+#include "clerical_puppet_preview_context12004.inc"

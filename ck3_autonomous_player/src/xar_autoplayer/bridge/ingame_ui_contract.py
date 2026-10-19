@@ -17,7 +17,7 @@ from .religion_presentation_ui_contract import (
     requested as presentation_requested, request_fields as presentation_request_fields,
     tooltip_query as presentation_tooltip_query, normalize_presentation_result,
 )
-KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation"}
+KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "clerical_interaction"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army", "open_holy_site":"holy_site",
@@ -116,7 +116,7 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
                             army_tooltip_kind: str | None = None) -> None:
     if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):
         raise ValueError("native UI exact build has no migrated presentation route")
-    if kind in {"holding", "personal_beliefs", "rite_creation"} or operation in PRESENTATION_OPERATIONS:
+    if kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction"} or operation in PRESENTATION_OPERATIONS:
         if build != CK3_12004 or kind not in PRESENTATION_ROOTS or army_tooltip_kind is not None:
             raise ValueError("finite presentation requires exact 1.20.0.4")
         return

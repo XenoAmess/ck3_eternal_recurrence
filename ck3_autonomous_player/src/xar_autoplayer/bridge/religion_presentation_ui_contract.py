@@ -8,32 +8,33 @@ from __future__ import annotations
 import re
 import hashlib
 from typing import Literal
+from .clerical_preview_ui_contract import KEYS as CLERICAL_KEYS, validate_request as validate_clerical_request, normalize as normalize_clerical_result
 
-PresentationWindowKind = Literal["faith", "holding", "personal_beliefs", "rite_creation"]
+PresentationWindowKind = Literal["faith", "holding", "personal_beliefs", "rite_creation", "clerical_interaction"]
 PresentationTarget = Literal["faith_core_tenet", "faith_doctrine", "personal_tenet",
-    "rite_core_tenet_choice", "holding_building", "holding_building_preview", "holding_construct_conditions"]
+    "rite_core_tenet_choice", "rite_core_tenet_slot", "holding_building", "holding_building_preview", "holding_construct_conditions", "clerical_puppet", "external_clerical_puppet"]
 PresentationTab = Literal["", "beliefs", "holy_sites", "tenets", "doctrines"]
 PresentationOperation = Literal["query", "open_holding", "open_personal_beliefs",
     "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip",
-    "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window"]
+    "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview"]
 
 WINDOW_ROOTS = {"faith": "faith_window", "holding": "holding_view",
-    "personal_beliefs": "window_personal_beliefs", "rite_creation": "rite_creation_window"}
+    "personal_beliefs": "window_personal_beliefs", "rite_creation": "rite_creation_window", "clerical_interaction": "character_interaction_confirmation_window"}
 TARGET_KIND = {"faith_core_tenet": "faith", "faith_doctrine": "faith",
-    "personal_tenet": "personal_beliefs", "rite_core_tenet_choice": "rite_creation",
+    "personal_tenet": "personal_beliefs", "rite_core_tenet_choice": "rite_creation", "rite_core_tenet_slot": "rite_creation",
     "holding_building": "holding", "holding_building_preview": "holding",
-    "holding_construct_conditions": "holding"}
+    "holding_construct_conditions": "holding", **{key: "clerical_interaction" for key in CLERICAL_KEYS}}
 RESPONSE_TARGET_KIND = {**TARGET_KIND, "rite_core_tenet_slot": "rite_creation"}
 TABS = {"faith": {"beliefs", "holy_sites"}, "personal_beliefs": {"tenets", "doctrines"}}
 NEW_OPERATIONS = {"open_holding", "open_personal_beliefs", "select_presentation_tab",
     "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip",
-    "show_building_details", "open_building_track", "close_presentation_window"}
+    "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview"}
 _RECEIPT = re.compile(r"[0-9a-f]{32}\Z")
 
 
 def requested(operation: str, kind: str, *, presentation_target=None,
         presentation_index=None, presentation_tab=None, presentation_receipt=None) -> bool:
-    return (operation in NEW_OPERATIONS or kind in {"holding", "personal_beliefs", "rite_creation"}
+    return (operation in NEW_OPERATIONS or kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction"}
         or any(value is not None for value in (presentation_target, presentation_index,
             presentation_tab, presentation_receipt)))
 
@@ -73,6 +74,11 @@ def request_fields(operation: str, kind: str, subject_id: int, *, presentation_t
         raise ValueError("tooltip observation requires its actual ProvinceID or CharacterID")
     if tab and tab not in TABS.get(kind, set()):
         raise ValueError("presentation tab belongs to another typed window")
+    if kind == "clerical_interaction":
+        validate_clerical_request(operation, subject_id, values)
+        return {key: value for key, value in values.items() if value is not None}
+    if operation in {"open_clerical_preview", "close_clerical_preview"}:
+        raise ValueError("clerical preview operations require their finite typed window")
     if operation == "query":
         if target:
             if presentation_index is None or presentation_receipt is None or tab:
@@ -107,7 +113,8 @@ def request_fields(operation: str, kind: str, subject_id: int, *, presentation_t
 
 
 def tooltip_query(operation: str, *, presentation_target=None, presentation_receipt=None, **_) -> bool:
-    return operation == "query" and bool(presentation_target) and presentation_receipt is not None
+    return (operation == "query" and bool(presentation_target) and presentation_target not in CLERICAL_KEYS
+            and presentation_receipt is not None)
 
 
 def validated_call_fields(operation: str, kind: str, subject_id: int, **fields) -> dict:
@@ -203,14 +210,14 @@ def normalize_presentation_result(value: dict, *, operation: str, kind: str, sub
     if operation != "query" and leaf["available"]:
         if not value["dispatch_invoked"] or not value["native_dispatch_attempted"] or not value["verification_pending"]:
             raise ValueError("presentation action ACK lacks the actual original dispatch")
-        if operation not in {"open_holding", "open_personal_beliefs"} and not leaf["source_bound"]:
+        if operation not in {"open_holding", "open_personal_beliefs", "open_clerical_preview"} and not leaf["source_bound"]:
             raise ValueError("presentation action lacks its actual source-bound window")
         if operation in {"open_rite_core_picker", "show_building_details", "open_building_track"}:
             expected_kind = {"open_rite_core_picker": "rite_core_tenet_slot",
                 "show_building_details": "holding_building_preview", "open_building_track": "holding_building"}[operation]
             if leaf["target_kind"] != expected_kind or leaf["target_index"] != presentation_index:
                 raise ValueError("presentation ACK lost the current original GUI container row identity")
-    if operation == "close_presentation_window" and leaf["available"]:
+    if operation in {"close_presentation_window", "close_clerical_preview"} and leaf["available"]:
         if leaf["post_window_visible"] is not None or leaf["action_owner_epoch"] is None:
             raise ValueError("close ACK must retain unknown postvisibility until an independent window query")
     if operation == "hover_presentation_tooltip" and leaf["available"]:
@@ -230,6 +237,8 @@ def normalize_presentation_result(value: dict, *, operation: str, kind: str, sub
             raise ValueError("tooltip observation lacks its currently bound visible unlocked source")
         if leaf["leave_observed"] and leaf["hover_source_matches"]:
             raise ValueError("tooltip leave cannot also claim an active matching hover")
+    normalize_clerical_result(value, leaf, operation=operation, kind=kind, subject_id=subject_id,
+        actor_id=actor_id, target=presentation_target, receipt=presentation_receipt)
     normalize_holding_tracks_result(leaf, kind)
     texts, targets = leaf["cache_texts"], leaf["targets"]
     if not isinstance(texts, list) or len(texts) > 64:

@@ -10,7 +10,7 @@ bool PresentationRequested12004(const IngameUiRequestV1 &r) noexcept {
 }
 bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
-  if(!PresentationRequested12004(r)||(k!=7&&k!=9&&k!=10&&k!=11)||r.subject_id==0xFFFFFFFFU||
+  if(!PresentationRequested12004(r)||(k!=7&&k!=9&&k!=10&&k!=11&&k!=12)||r.subject_id==0xFFFFFFFFU||
       (k==9&&r.subject_id>0x7FFFFFFFU)||r.presentation_index>=128||
       !r.army_tooltip_kind.empty()||!r.army_tooltip_receipt.empty()||r.holy_site_decision_explicit||
       r.relic_action_explicit||r.relic_action!=ck3_12004::religion::relic_actions::Request{}||
@@ -19,9 +19,13 @@ bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
       r.appointment.requested_title_id||r.appointment.candidate_offset||r.appointment.candidate_limit!=32||
       r.appointment.breakdown_character_id||r.appointment.diagnostic_character_id)return false;
   const auto&t=r.presentation_target;const auto&tab=r.presentation_tab;
+  if(k==12)return r.subject_id>0&&(t=="clerical_puppet"||t=="external_clerical_puppet")&&
+      !r.presentation_index_explicit&&!r.presentation_tab_explicit&&!r.presentation_index&&tab.empty()&&
+      ((o==0&&(r.presentation_receipt.empty()||ArmyTooltipNonceValid(r.presentation_receipt)))||
+       ((o==209||o==210)&&ArmyTooltipNonceValid(r.presentation_receipt)));
   const bool target=t.empty()||(k==7&&(t=="faith_core_tenet"||t=="faith_doctrine"))||
       (k==9&&(t=="holding_building"||t=="holding_building_preview"||t=="holding_construct_conditions"))||
-      (k==10&&t=="personal_tenet")||(k==11&&t=="rite_core_tenet_choice");
+      (k==10&&t=="personal_tenet")||(k==11&&(t=="rite_core_tenet_choice"||t=="rite_core_tenet_slot"));
   const bool tab_ok=tab.empty()||(k==7&&(tab=="beliefs"||tab=="holy_sites"))||
       (k==10&&(tab=="tenets"||tab=="doctrines"));
   if(!target||!tab_ok)return false;
@@ -70,6 +74,7 @@ bool ParsePresentationTabSelector12004(std::string_view json,std::string&out) no
 bool ParsePresentationRequest12004(std::string_view json,IngameUiRequestV1&r) noexcept {
   const auto has=[&](std::string_view name){return json.find(std::string("\"")+std::string(name)+"\"")!=std::string_view::npos;};
   r.presentation_requested=has("presentation_target")||has("presentation_index")||has("presentation_tab")||has("presentation_receipt");
+  r.presentation_index_explicit=has("presentation_index");r.presentation_tab_explicit=has("presentation_tab");
   if(has("presentation_target")&&!bridge::JsonStringField(json,"presentation_target",r.presentation_target,32))return false;
   if(has("presentation_tab")&&!ParsePresentationTabSelector12004(json,r.presentation_tab))return false;
   if(has("presentation_receipt")&&!bridge::JsonStringField(json,"presentation_receipt",r.presentation_receipt,32))return false;
@@ -77,6 +82,19 @@ bool ParsePresentationRequest12004(std::string_view json,IngameUiRequestV1&r) no
     std::uint64_t i=0;if(!bridge::JsonUnsignedField(json,"presentation_index",i)||i>=128)return false;r.presentation_index=static_cast<std::uint32_t>(i);
   }
   return true;
+}
+void SerializeClericalContext12004(std::ostringstream&o,const ck3_12004::clerical_preview::Context&c) {
+  if(!c.available){o<<"null";return;}
+  o<<"{\"interaction_key\":\""<<JsonEscape(c.key)<<"\",\"definition_hash\":"<<c.definition_hash
+    <<",\"actor_id\":"<<c.actor<<",\"recipient_id\":"<<c.recipient<<",\"effective_actor_id\":"<<c.effective_actor
+    <<",\"interface_kind\":"<<c.kind<<",\"needs_confirmation\":"<<c.needs_confirmation
+    <<",\"declared_option_count\":"<<c.declared_count<<",\"selected_option_count\":"<<c.selected_count<<",\"roles\":[";
+  for(std::size_t i=0;i<c.roles.size();++i){if(i)o<<',';if(c.roles[i]==UINT32_MAX)o<<"null";else o<<c.roles[i];}
+  o<<"],\"options\":[";
+  for(std::size_t i=0;i<c.option_flags.size();++i){if(i)o<<',';
+    o<<"{\"key\":\""<<ck3_12004::clerical_preview::kOptionKeys[i]<<"\",\"flag_id\":"<<c.option_flags[i]
+      <<",\"bank_value\":"<<static_cast<unsigned>(c.option_bank[i])<<",\"selected\":false}";}
+  o<<"]}";
 }
 void SerializePresentationUi12004(std::ostringstream&o,const FaithPowerPresentationObservationV1&v) {
   if(!v.requested)return;
@@ -103,6 +121,13 @@ void SerializePresentationUi12004(std::ostringstream&o,const FaithPowerPresentat
     o<<"{\"index\":"<<x.index<<",\"kind\":\""<<JsonEscape(x.kind)<<"\",\"runtime_name\":\""<<JsonEscape(x.runtime_name)<<"\",\"definition_key\":";text(x.definition_key);
     o<<",\"label\":";text(x.label);o<<",\"effective_visible\":"<<x.effective_visible<<",\"enabled\":"<<x.enabled<<'}';}
   o<<']';
+  if(v.clerical_preview){const auto&c=*v.clerical_preview;
+    o<<",\"clerical_preview\":{\"available\":"<<(c.available&&v.available)<<",\"root_bound\":"<<c.root_bound
+      <<",\"window_visible\":";scalar(c.window_visible);
+    o<<",\"phase\":\""<<JsonEscape(c.phase)<<"\",\"default_context\":";SerializeClericalContext12004(o,c.default_context);
+    o<<",\"window_context\":";if(c.window_context)SerializeClericalContext12004(o,*c.window_context);else o<<"null";
+    o<<",\"command_submitted\":false,\"options_mutated\":false,\"business_outcome_observed\":false}";
+  }
   if(v.holding_tracks){const auto&t=*v.holding_tracks;
     o<<",\"holding_tracks\":{\"available\":"<<t.available<<",\"unavailable_reason\":";
     if(t.unavailable_reason.empty())o<<"null";else o<<'"'<<JsonEscape(t.unavailable_reason)<<'"';

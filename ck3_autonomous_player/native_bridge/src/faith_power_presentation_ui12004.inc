@@ -326,6 +326,7 @@ bool InvokePresentationPersonalClose12004(std::uintptr_t base,void*window,bool&a
   (void)base;(void)window;(void)attempted;return false;
 #endif
 }
+#include "faith_power_clerical_preview12004.inc"
 bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,const IngameUiRequestV1&r,
     const game::Snapshot&snapshot,const MainThreadExecutionStampV1&stamp,
     const IngameUiGuiOwnerBindingV1&gui,void*handler,IngameUiResultV1&out) {
@@ -335,6 +336,8 @@ bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
   try{
     const auto operation=static_cast<std::uint32_t>(r.operation);
     if(operation>=200&&operation!=204&&operation!=205)CancelPresentationTooltipPosition12004();
+    if(r.window_kind==IngameUiWindowKindV1::clerical_interaction)
+      return ExecuteClericalPreview12004(env,r,snapshot,stamp,gui,handler,out);
     if(operation==204||operation==205||(operation==0&&!r.presentation_receipt.empty())){
       PresentationPanel12004 tooltip_panel{};std::string why;
       if(!ReadPresentationPanel12004(env,r,snapshot,stamp.pump_epoch,gui,handler,tooltip_panel,why))return fail(why);

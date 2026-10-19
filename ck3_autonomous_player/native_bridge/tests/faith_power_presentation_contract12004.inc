@@ -1,6 +1,50 @@
 // Included by the existing navigation fixture; no engine/desktop/native calls.
 void FaithPowerPresentationContractFixture12004() {
   using namespace xar::ck3_11906;
+  { // New assertions explicitly survive NDEBUG. No engine or callback executes.
+    const auto require=[](bool value){if(!value)throw "clerical preview/visible core-slot finite contract failed";};
+    const std::string receipt="0123456789abcdef0123456789abcdef";
+    for(const auto target:{"clerical_puppet","external_clerical_puppet"}){
+      const std::string prefix="{\"window_kind\":\"clerical_interaction\",\"subject_id\":2148676694,\"presentation_target\":\""+std::string(target)+"\"";
+      IngameUiRequestV1 query{};require(ParseIngameUiRequestV1(prefix+"}",true,query));
+      require(query.window_kind==IngameUiWindowKindV1::clerical_interaction&&query.subject_id==2148676694U);
+      require(IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12004,query)==PresentationUiEnabled12004());
+      require(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,query));
+      for(const auto op:{"open_clerical_preview","close_clerical_preview"}){
+        require(!ParseIngameUiRequestV1(prefix+",\"operation\":\""+op+"\"}",false,query));
+        require(ParseIngameUiRequestV1(prefix+",\"operation\":\""+op+"\",\"presentation_receipt\":\""+receipt+"\"}",false,query));
+      }
+      require(!ParseIngameUiRequestV1(prefix+",\"presentation_index\":0}",true,query));
+      require(!ParseIngameUiRequestV1(prefix+",\"presentation_tab\":\"\"}",true,query));
+    }
+    IngameUiRequestV1 bad{};
+    require(!ParseIngameUiRequestV1(R"({"window_kind":"clerical_interaction","subject_id":0,"presentation_target":"clerical_puppet"})",true,bad));
+    require(!ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":50,"presentation_target":"clerical_puppet"})",true,bad));
+    require(!ParseIngameUiRequestV1(R"({"window_kind":"clerical_interaction","subject_id":19,"presentation_target":"make_clerical_puppet_interaction"})",true,bad));
+    using namespace xar::ck3_12004::clerical_preview;
+    Context c{};c.available=c.needs_confirmation=true;c.key="make_clerical_puppet_interaction";
+    c.actor=c.effective_actor=19;c.recipient=2148676694U;c.roles={19,2148676694U,UINT32_MAX,UINT32_MAX,UINT32_MAX,19};
+    c.kind=0;c.declared_count=6;for(std::size_t i=0;i<6;++i)c.option_flags[i]=static_cast<std::uint32_t>(i+1);
+    require(DefaultOnly(c,c.key,19,2148676694U));
+    auto changed=c;changed.needs_confirmation=false;require(!DefaultOnly(changed,c.key,19,2148676694U));
+    changed=c;changed.option_bank[3]=1;require(!DefaultOnly(changed,c.key,19,2148676694U));
+    changed=c;changed.declared_count=5;require(!DefaultOnly(changed,c.key,19,2148676694U));
+    changed=c;changed.selected_count=1;require(!DefaultOnly(changed,c.key,19,2148676694U));
+    changed=c;changed.kind=2;require(!DefaultOnly(changed,c.key,19,2148676694U));
+    require(!DefaultOnly(c,c.key,20,2148676694U));require(!DefaultOnly(c,c.key,19,0x123456));
+    require(ClericalActionPhase12004(ClericalPhase12004::default_observed,true));
+    require(ClericalActionPhase12004(ClericalPhase12004::visible_observed,false));
+    require(!ClericalActionPhase12004(ClericalPhase12004::open_pending,true));
+    require(!ClericalActionPhase12004(ClericalPhase12004::close_pending,false));
+    require(!ClericalActionPhase12004(ClericalPhase12004::visible_observed,true));
+    require(PresentationTooltipTargetKind12004("rite_core_tenet_slot"));
+    for(const auto kind:{"faith","holding","personal_beliefs"}){
+      const std::string json="{\"window_kind\":\""+std::string(kind)+"\",\"subject_id\":19,\"operation\":\"hover_presentation_tooltip\",\"presentation_target\":\"rite_core_tenet_slot\",\"presentation_index\":0}";
+      require(!ParseIngameUiRequestV1(json,false,bad));
+    }
+    require(ParseIngameUiRequestV1(R"({"window_kind":"rite_creation","subject_id":0,"operation":"hover_presentation_tooltip","presentation_target":"rite_core_tenet_slot","presentation_index":0})",false,bad));
+    // Slot key remains an independent native/draft/GUI observation; no fabricated definition key.
+  }
   IngameUiRequestV1 r{};
   assert(ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"presentation_tab":""})",true,r));
   assert(r.presentation_requested&&r.subject_id==0);
@@ -258,6 +302,52 @@ void FaithPowerBuildingReceiverFixture12004(){
  image[0xC41480]^=1;put(entryp,0,rowp);put(widgetp,0x404,one);
  verify_receiver(read(false)&&observed.callback_group==0x3F8,
      "production receiver changed nonempty-primary precedence");
+
+ // Actual R28 has a local unready placeholder and the owned special row
+ // in its immediate original parent; no getter/provider is executed here.
+ std::array<unsigned char,0x200>parent_context{},parent_definition{},redirect_context{},redirect_definition{};
+ std::array<unsigned char,0x50>parent_entry{},redirect_entry{};
+ void*parentp=parent_context.data(),*parentdefp=parent_definition.data(),*parententryp=parent_entry.data();
+ void*redirectp=redirect_context.data(),*redirectdefp=redirect_definition.data(),*redirectentryp=redirect_entry.data();
+ const auto init_parent=[&](void*ctx,void*def,void*item){
+   put(ctx,0xE0,def);put(def,0x90,item);put(def,0x9C,one);
+   put(item,0,special_row);put(item,0x40,mode1);put(item,0x48,declaration);put(item,0x4C,ready);
+ };
+ init_parent(parentp,parentdefp,parententryp);init_parent(redirectp,redirectdefp,redirectentryp);
+ std::uint8_t not_ready=0;std::int8_t mode0=0;
+ put(datap,0xE8,parentp);put(entryp,0,nil);put(entryp,0x40,mode0);put(entryp,0x4C,not_ready);
+ verify_receiver(read(false)&&observed.row==special_row&&observed.model_sources.size()==2&&
+     observed.model_sources[1].context==parentp&&observed.model_sources[1].entry==parententryp,
+     "production receiver did not inherit actual R28 ready owned special row");
+ put(parententryp,0x48,secondtype+1);
+ verify_receiver(!read(false),"inherited receiver admitted another registered type");put(parententryp,0x48,declaration);
+ put(parententryp,0x4C,not_ready);
+ verify_receiver(!read(false),"inherited receiver admitted an unready parent value");put(parententryp,0x4C,ready);
+ put(parententryp,0x40,unsupported);
+ verify_receiver(!read(false),"inherited receiver admitted a computed provider mode");put(parententryp,0x40,mode1);
+ put(parententryp,0,special_row+1);
+ verify_receiver(!read(false),"inherited receiver admitted a non-owned row");put(parententryp,0,special_row);
+ // A nearest ready value is authoritative; do not skip it for a usable parent.
+ put(entryp,0x4C,ready);put(entryp,0x40,unsupported);
+ verify_receiver(!read(false),"receiver skipped nearest ready unsupported value");
+ put(entryp,0x40,mode1);put(entryp,0,special_row+1);
+ verify_receiver(!read(false),"receiver skipped nearest ready non-owned value");
+ put(entryp,0x4C,not_ready);put(entryp,0x40,mode0);put(entryp,0,nil);
+ // Original definition+108 takes precedence over the ordinary context+E8.
+ put(defp,0x108,redirectp);
+ verify_receiver(read(false)&&observed.model_sources[1].context==redirectp,
+     "receiver did not preserve original definition-parent precedence");
+ put(redirectentryp,0,special_row+1);
+ verify_receiver(!read(false),"receiver fell past authoritative definition parent");
+ put(redirectentryp,0,special_row);put(defp,0x108,nil);
+ put(parentdefp,0x9C,zero);put(parentp,0xE8,datap);
+ verify_receiver(!read(false),"receiver did not reject cyclic model context");
+ put(parentdefp,0x9C,one);put(parentp,0xE8,nil);
+ image[0x3AC40CF]^=1;
+ verify_receiver(!read(false),"receiver ignored inherited original source pin mismatch");image[0x3AC40CF]^=1;
+ put(entryp,0,rowp);put(entryp,0x40,mode1);put(entryp,0x4C,ready);put(datap,0xE8,nil);
+ verify_receiver(read(false)&&observed.model_sources.size()==1,
+     "existing direct local receiver changed after inherited fixture");
 
  put(entryp,0,widgetp);assert(!read(false));put(entryp,0,rowp);
  auto&rpin=kPresentationReceiverPins12004[0];const auto original=image[rpin.rva];image[rpin.rva]^=1;assert(!read(false));image[rpin.rva]=original;

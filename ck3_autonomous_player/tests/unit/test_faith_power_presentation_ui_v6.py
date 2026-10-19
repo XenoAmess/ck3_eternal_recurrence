@@ -125,6 +125,7 @@ class PresentationContracts(unittest.TestCase):
             ('select_presentation_tab','faith',0,{'presentation_tab':'beliefs'}),
             ('select_presentation_tab','personal_beliefs',29829,{'presentation_tab':'doctrines'}),
             ('open_rite_core_picker','rite_creation',0,{'presentation_index':0}),
+            ('hover_presentation_tooltip','rite_creation',0,{'presentation_target':'rite_core_tenet_slot','presentation_index':0}),
             ('show_building_details','holding',1503,{'presentation_target':'holding_building_preview','presentation_index':2}),
             ('query','faith',0,{'presentation_tab':''}),
             ('select_presentation_tab','faith',0x80000000,{'presentation_tab':'beliefs'}),
@@ -137,7 +138,6 @@ class PresentationContracts(unittest.TestCase):
             ('hover_presentation_tooltip','holding',1503,{'presentation_target':'faith_doctrine','presentation_index':0}),
             ('query','faith',50,{'presentation_target':'faith_doctrine','presentation_index':0}),
             ('open_rite_core_picker','rite_creation',0,{'presentation_index':True})]
-        invalid.append(('hover_presentation_tooltip','rite_creation',0,{'presentation_target':'rite_core_tenet_slot','presentation_index':0}))
         invalid += [('open_holding','holding',0x80000000,{}),
             ('open_rite_core_picker','rite_creation',0,{'presentation_index':128})]
         for op,kind,subject,fields in invalid:

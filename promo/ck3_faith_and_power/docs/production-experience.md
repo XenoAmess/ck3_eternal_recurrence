@@ -183,3 +183,10 @@ R25 已有原版信仰总览与个人信念静帧。原小索引记录，个人�
 - R25 当次失败原件位于同场 `root-native-receipts/r25-faith-core-hover-a01.json`（实际 `23:28:02.228096–23:28:02.596431Z`）与 `r25-mecca-census-a01.json`（实际 `23:29:20.666335–23:29:20.928813Z`）；两者保留 available=false，不能由公共调用的外层 ok 推成目标已可用。
 - P14：[qualification-a01.json](C:/workspace/ck3-faith-and-power-20261017/episode01/runtime/religion-candidate-a14-tooltip/qualification-a01.json)，59,389B，SHA256 `064aa7fde17366b6ea14a308923637e1780b0f9a6efdf85a67d4e4356c28f1ac`，来源提交 `8e1205135b6d7d675e6dbe76e4e9be47960db6f2`；Root 实际审阅观察 `2026-10-18T23:16:46.576529+00:00`。这里不把其编译／检查资格外推为 R25 展示或业务结果。
 - 后继外置准备修复：[preparation-guards-receipt-a01.json](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/root/r25-presentation-preparation-red-a01/preparation-guards-receipt-a01.json)，观察 `2026-10-18T23:42:59.847160+00:00`，SHA256 `799b604e92c9a2890277496939445b7f0dde70e047827752a327a26f1380d728`；仅源码候选与补丁检查，compiled/fixture_executed/game_accessed 均为 false。
+
+
+## 2026-10-19：用真实对象承载规则讲解
+
+本轮像素观察属于 `machine_id: 4-8e1c2f1861`，UTC与原件在 `episode01/revision-v6-20261019/resume-20261019/ROOT-SELECTED-PIXELS-REVIEW-a01.json` 至 `a03.json`。开场先放大双向采用的地点、信仰和效果，门槛留给后文；同名核心与个人信条并列时，保留原版分界和综摄互斥条件。短注写出效果的实际受益者或受罚者，例如四名异信仰人物，不能只重复红色数值。
+
+隐藏结算规则可以用清楚的编辑图解，但必须锚定真实地点或人物页，说明判断主体与结算时点；地点示例不冒称完成朝圣，人物页不冒称读到隐藏狂热或忙碌状态。技术状态和取证限制留在生产记录，影片短标签只解释对象与规则。直接审过样板不等于完整一倍速听看。

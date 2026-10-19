@@ -38,6 +38,11 @@ static constexpr PresentationReceiverPin12004 kPresentationReceiverPins12004[]{
 {0x1abc8dU,"4c8d058ca2100133d2488d4defe881251201"},
 {0x12b5f20U,"e95bb598ff"},
 {0xc41480U,"488d8140010000c3"},
+{0x3ac40cfU,"4d85ff74104d8bbf080100004c897d404d85ff7514"},
+{0x3ac40e4U,"4d8bbde80000004c897d404d85ff0f8427010000"},
+{0x3ac413fU,"4d8b86900000004963869c000000488d148048c1e2044903d0498bc8"},
+{0x3ac41a0U,"80794c00742f498bd1e852daffff"},
+{0x3ac41f0U,"498b86080100004885c074054c8bf8eb074d8bbfe80000004c897d40"},
 };
 bool PresentationReceiverSourcePins12004(const ZhongguoScoreboardNativeEnvironmentV1&env) {
 std::array<unsigned char,32>raw{};

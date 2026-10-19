@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/clerical_puppet_preview_context12004.hpp"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -30,6 +31,14 @@ struct FaithPowerPresentationObservationV1 {
  std::optional<bool> post_window_visible;
  bool source_bound=false,tab_observed=false,picker_observed=false,preview_observed=false;
  std::optional<FaithPowerHoldingTracksObservation12004> holding_tracks;
+ struct ClericalPreview {
+   bool available=false,root_bound=false;
+   std::optional<bool> window_visible;
+   std::string phase="none";
+   ck3_12004::clerical_preview::Context default_context{};
+   std::optional<ck3_12004::clerical_preview::Context> window_context;
+ };
+ std::optional<ClericalPreview> clerical_preview;
  bool hover_source_matches=false,tooltip_stack_observed=false,tooltip_root_visible=false;
  std::optional<std::int32_t> tooltip_active_count,tooltip_top_locked;
  bool leave_observed=false,cache_complete=false,rendered_pixels_observed=false;

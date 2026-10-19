@@ -31,3 +31,27 @@
 精确输入及候选在 `resume-20261019/tooltip-readback-research/building-receiver-a02/DELIVERY.actual.json`，4,601B，SHA-256 `92af768bdee0d15cd966fd2ceada083f3921d488bab296b6673caa2caed95fd6`。tooltip关联失败另补已有first-stack值的有限诊断，保持原拒绝，尚不认定具体失败谓词。代码静态应用检查通过；后继P16沿原两个目标编译和现fixture一次，新的建筑实机结果仍待D1。七个原静态知识例也补齐大王宫02及瓦加尔沙帕特两例，来源catalogue与MCP消费检查分层保留，不改变state_observed/native_legality/action_ready。
 
 作者已续接原R25来源与六组R19/R22前后态，保留135/460/76832；实际四图审阅发现替换预览红色−20与避开本教惩罚口播需明确区分。相关短注按异信仰人物解释，不能把“未实测”等内部验收措辞放上片。九建筑仍缺正文，整片尚未编码。
+
+
+## R28 实际新增素材与下一轮来源修复
+
+仍为 `machine_id: 4-8e1c2f1861`。P16在2026-10-19T03:27:30Z完成真实编译与唯一导航夹具，绑定clean `28502c33fb2990f879d6ff935b7d97a107678e64`。原MSVC Release/jobs8两个声明目标实际触发CMake自动再生及423个依赖编译单元、3次link；没有另调configure、ALL或旧矩阵。原build wait0、原fixture wait0、精确新EXE的管理员设置读回分别保留。资格及同内容seal为56,134B，SHA-256 `485991214964a0c381f78eda30e21f9dfaa04b7207a4f552693949838ee30114`；新发布DLL14,656,000B，SHA-256 `03a97b9aad096692a74d603e5d03eadef3c852b9f4eade778e4d1b917a54b010`。Root独立解析实际原件后收口retained19,741,364B、future0，见 `resume-20261019/NATIVE-P16-ROOT-REVIEW-CLOSED-a01.json`。这些事实仍只证明编译与合成夹具，不授建筑实机通过。
+
+D1新准入保持原2,153,775,104B总额，改为静帧优先、raw0；profile/native/live1.5GiB、48张各不超过8MiB的PNG、keeper128MiB，余量分给common与收口。新薄materializer直接核P16当前commit、seal和compiled manifest，不再沿用P15等价声明；实际manifest选择加载前注入，allocation没有recording。首次物化因母档路径斜杠字符串不同，在common创建前真实拒绝；仅将同一save字段规范化为原合同正斜杠，保留旧失败，母档字节、SHA、actor、日期不变。修订准入不增加额度或延长期限。R28在03:34Z取得当次窗口真实位移、边缘像素和Steam“离线模式”新图，Root直接审图；任务栏时钟停在11:05，没有用它作新鲜度证明。后续地图与业务结果另记。
+
+本轮所涉CI逐条保留：`3a8539c`的39187634517因交接文档禁用shell的措辞触发词法检查，已由当前祖先345038254修正；`28502c`的39193081083因隔离army producer漏列县所有者序列化实现而LNK2019。正常CMake已包含该实现，P16 DLL/nav实际编译通过；远端9c52a741c已有精确两行CI清单修复，等现场释放后合入，不为它更改正在使用的冻结源码。两份有限核查回执均在 `resume-20261019/tooltip-readback-research/`；本机观察者ID与未核实的CI worker `machine_id: unknown`分开，未把静态清单检查写成编译或全CI绿色。
+
+实际构图审阅进一步落实两条方法：开场双向采用只放大当前需要读的地点、Faith和效果，详细门槛留在对应章节；同名核心与个人信条并排时保留原分界及只能一种综摄的条件。替换预览的红色惩罚短注明确指向四名异信仰人物，避免与“同教不受惩罚”的口播互相矛盾。Root直接查看SC01/02/07/24-a15与SC44-a14实际像素，限定用途见 `resume-20261019/ROOT-SELECTED-PIXELS-REVIEW-a01.json`；这不是整片听看片完成。
+
+
+R28观察仍属 `machine_id: 4-8e1c2f1861`，不是跨机器资格。03:42Z完成D1母档冷加载读回：actor31254/date53144328、Faith13/Religion8、当前及主流Rite0、piety20000、paused且无事件。Rite0是合法值；未做A/B准备、世界Confirm、日期推进或新存档。03:45:01Z原图取得伊斯兰核心完整说明和独立个人信条分支。顺应最初不可选；有限草稿多元主义选择后，`selected_slots[12]`独立读回为pluralistic，04:15:31Z槽位0实际为tenet_adaptive（报价975）。04:24:39Z槽位0实际为tenet_adoptionism（报价325）。后两张仅证明选中卡片，完整悬停正文仍缺；不能用旧栏目缓存`current_selected_definition_key`代替实际selected_slots。
+
+Mecca当前对象/持有者与4个普通槽位、1个特殊槽位的原生census通过，特殊槽位hover在派发前被拒绝。Root限定的唯一只读双采样探针在当前进程执行126次读、3538B，零函数调用/写入/输入：当前层type604未就绪mode0，直接父context同type604已就绪mode1，row恰为HoldingView+0x140，global getter/converter均空。来源追踪确认原版3AC3EF0按词法定义父链/运行context父链找最近ready对象；+0x115只在初始3AC38C0调用方检查，原版父链不重复此条件。有限4层、原有owned-row和definition guard、双采样绑定的修复候选为10,707B/SHA `67b4fb0a6c76df3519902312c3fcdd9d39b3670d7382c52ca2eda03f9437ae31`，不扩为任意模式provider调用。九座建筑完整正文仍未取得。
+
+两种神职傀儡确认页及已选核心槽位悬停候选绑定固定原版来源：仅两有限interaction key、原始默认6选项全部off、kind0和needs_confirmation真；只走原版context copy、enum11窗口open、refresh和normalClose，保留普通业务发送守卫。最终候选96,638B/SHA `e23fbe021f9ac9eb654ac77bbdc65479ff44289f6d709c6064d759eee333f90f`，37段6520B字节pin。3个合成MCP检查/12次转发通过，另经独立源码审阅无阻塞；这仍不是原生编译、收件人资格或实际窗口通过。见 `resume-20261019/research/clerical-preview-source-a06/DELIVERY-a06.json` 与独立 `tooltip-readback-research/clerical-a06-independent-review/REVIEW.actual.json`。
+
+Root又直接审阅SC03伊斯兰完整核心、SC27以实际Najaf地点页作锚的朝圣规则图，以及SC18/47/48稀有度、信仰领袖与人物条件样板。朝圣减半先按朝圣者本教判定普通/主要圣地，明确在朝圣奖励结算，未冒称拍到原生奖励页或完成朝圣。隐藏狂热、忙碌条件等保持规则讲解，未写成角色页读回。字幕/旁白仍135cue、460双语组、76,832帧；整片成品尚未编码、未完整1倍速审听看。
+
+R28未完成正常关闭：原hold在04:41:01.413Z到期，原public返回2、原host返回1；正常关闭query/prepare完成后，continue在派发前因host已退出而拒绝。原native stop/shutdown记录CK3 exit1、Job active1→0、tree_gone/cleanup_proven/ok均真、contract_errors空。原normalfalse、retained signaledfalse/exitnull均保留，不能补写成自然退出或OS0。keeper原wait0、allocator原wait0后，04:57:15.711Z实际CAS12102释放resources[]。对原件执行现有一般闭场helper（优化模式仍有效）确认closed_session/native_cleanup_closed和previous-shared-managed-session通过，无需改协议、无需套用failed-query专用入口。证据为外置 `L28/root-screen-release-a01.json`、`resume-20261019/tooltip-readback-research/r28-failed-close-review-a01/REVIEW.actual.json`；源文件与精确路径均在小回执中。
+
+现场释放后正常fetch/rebase至远端 `dde6cc5f7dccb88ba48f34b5f0f6592e17cb3dd5`，再应用上述两项呈现补丁和来源知识。应用后检查发现旧测试仍将新支持的核心槽位hover列作拒绝，已将该例移入允许域；现有呈现检查与新增默认预览检查共19项全部通过（合成transport，未运行游戏）。原生编译、独立窗口显隐及像素资格仍待新P17/R29实际记录。

@@ -3,6 +3,15 @@
 constexpr std::array<unsigned char,24>kPresentationConstructTooltipPin12004{
   0x40,0x53,0x48,0x83,0xEC,0x30,0x48,0x8B,0xD9,0x48,0x85,0xC9,
   0x74,0x38,0x4C,0x8B,0x41,0x08,0x8B,0x51,0x10,0x48,0x8B,0x09};
+// Original ready-value resolution is lexical: a not-ready local placeholder
+// may inherit, but a ready nearest value is authoritative even if unsupported.
+struct PresentationReceiverModelSource12004 {
+  void *context=nullptr,*definition=nullptr,*entries=nullptr,*entry=nullptr,*row=nullptr;
+  void *definition_parent=nullptr,*context_parent=nullptr;
+  std::int32_t entry_count=0;std::int8_t entry_mode=-1;std::uint8_t entry_flag=0;
+  std::vector<std::uint32_t>scanned_keys;
+  bool operator==(const PresentationReceiverModelSource12004&)const=default;
+};
 struct PresentationBuildingReceiver12004 {
   void *callback=nullptr,*callback_vtable=nullptr,*context=nullptr,*declarations=nullptr,*indices=nullptr;
   void *callback_data=nullptr;std::size_t callback_group=0;
@@ -16,6 +25,7 @@ struct PresentationBuildingReceiver12004 {
   std::int32_t dynamic_count=0,literal_count=0,chain_count=0,final_kind=0;
   std::int8_t entry_mode=0;std::uint8_t receiver_flag=0,entry_flag=0,local_active=0;
   std::string building_key,next_building_key;
+  std::vector<PresentationReceiverModelSource12004>model_sources;
   bool operator==(const PresentationBuildingReceiver12004&)const=default;
 };
 bool PresentationBuildingDefinition12004(void*building,std::string&key) {
@@ -28,6 +38,48 @@ bool PresentationBuildingDefinition12004(void*building,std::string&key) {
   std::array<char,161>bytes{};if(!Read(data,bytes.data(),static_cast<std::size_t>(size)+1)||bytes[size]!=0)return false;
   key.assign(bytes.data(),static_cast<std::size_t>(size));
   return std::all_of(key.begin(),key.end(),[](unsigned char c){return (c>='a'&&c<='z')||(c>='0'&&c<='9')||c=='_';});
+}
+bool PresentationBuildingReadyModel12004(PresentationBuildingReceiver12004&v,std::string&why) {
+  const auto fail=[&](const char*s){why=s;return false;};
+  void*context=v.context;
+  // Same original lexical links as 3AC3EF0; finite observation, no preparation
+  // table, provider execution or parent value copied into the game is created.
+  constexpr std::size_t max_contexts=4;
+  while(context) {
+    if(v.model_sources.size()>=max_contexts||std::any_of(v.model_sources.begin(),v.model_sources.end(),
+        [&](const auto&s){return s.context==context;}))
+      return fail("presentation_building_model_context_cycle_or_budget");
+    PresentationReceiverModelSource12004 model{};model.context=context;
+    if(!Value(context,0xE0,model.definition))return fail("presentation_building_model_context_unreadable");
+    if(model.definition) {
+      if(!Value(model.definition,0x90,model.entries)||!Value(model.definition,0x9C,model.entry_count)||
+          model.entry_count<0||model.entry_count>256||(model.entry_count&&!model.entries))
+        return fail("presentation_building_inherited_model_header_unverified");
+      for(std::int32_t i=0;i<model.entry_count;++i) {
+        auto*entry=static_cast<unsigned char*>(model.entries)+static_cast<std::size_t>(i)*0x50;
+        std::uint32_t key=0;if(!Value(entry,0x48,key))return fail("presentation_building_local_key_unreadable");
+        model.scanned_keys.push_back(key);
+        if(key==v.type_id){model.entry=entry;break;}
+      }
+      if(model.entry) {
+        if(!Value(model.entry,0x4C,model.entry_flag))return fail("presentation_building_model_ready_flag_unreadable");
+        if(model.entry_flag) {
+          if(!Value(model.entry,0x40,model.entry_mode)||model.entry_mode!=1||
+              !Value(model.entry,0,model.row)||!model.row)
+            return fail("presentation_building_receiver_not_ready_mode1_provider_unknown");
+          v.entry=model.entry;v.entry_mode=model.entry_mode;v.entry_flag=model.entry_flag;v.row=model.row;
+          v.model_sources.push_back(std::move(model));return true;
+        }
+      }
+      if(!Value(model.definition,0x108,model.definition_parent))
+        return fail("presentation_building_definition_parent_unreadable");
+    }
+    if(!model.definition_parent&&!Value(context,0xE8,model.context_parent))
+      return fail("presentation_building_context_parent_unreadable");
+    context=model.definition_parent?model.definition_parent:model.context_parent;
+    v.model_sources.push_back(std::move(model));
+  }
+  return fail("presentation_building_receiver_not_ready_mode1_provider_unknown");
 }
 bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
     const IngameUiGuiOwnerBindingV1&gui,const PresentationPanel12004&panel,void*root,
@@ -73,14 +125,7 @@ bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvi
       !Value(v.context,0xE0,v.definition)||!v.definition||!Value(v.definition,0x115,v.local_active)||!v.local_active||
       !Value(v.definition,0x90,v.entries)||!Value(v.definition,0x9C,v.entry_count)||v.entry_count<0||v.entry_count>256||
       (v.entry_count&&!v.entries))return fail("presentation_building_local_receiver_declaration_unverified");
-  for(std::int32_t i=0;i<v.entry_count;++i){
-    std::uint32_t key=0;auto*e=static_cast<unsigned char*>(v.entries)+static_cast<std::size_t>(i)*0x50;
-    if(!Value(e,0x48,key))return fail("presentation_building_local_key_unreadable");
-    if(key==v.type_id){v.entry=e;break;}
-  }
-  if(!v.entry||!Value(v.entry,0x40,v.entry_mode)||v.entry_mode!=1||
-      !Value(v.entry,0x4C,v.entry_flag)||!v.entry_flag||!Value(v.entry,0,v.row)||!v.row)
-    return fail("presentation_building_receiver_not_local_ready_mode1_provider_unknown");
+  if(!PresentationBuildingReadyModel12004(v,why))return false;
   const auto header=potential?0xE8U:0x100U;
   if(!Value(panel.window,header,v.rows)||!Value(panel.window,header+8,v.array_capacity)||
       !Value(panel.window,header+12,v.array_count)||v.array_count<0||v.array_count>4096||

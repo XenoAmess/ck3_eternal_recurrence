@@ -34,7 +34,7 @@ bool PresentationTooltipTextFits12004(std::size_t count,std::size_t total,
 }
 bool PresentationTooltipTargetKind12004(std::string_view kind) noexcept {
   return kind=="faith_core_tenet"||kind=="faith_doctrine"||kind=="personal_tenet"||
-      kind=="rite_core_tenet_choice"||kind=="holding_building"||kind=="holding_building_preview"||kind=="holding_construct_conditions";
+      kind=="rite_core_tenet_choice"||kind=="rite_core_tenet_slot"||kind=="holding_building"||kind=="holding_building_preview"||kind=="holding_construct_conditions";
 }
 bool PresentationTooltipHoverPin12004(const ZhongguoScoreboardNativeEnvironmentV1 &env) {
   std::array<char,902>bytes{};std::string digest;

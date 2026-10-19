@@ -9276,9 +9276,13 @@ option(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1
   "Admit exact .3 ordinary key/full-recipient context query and single owned send" OFF)
 if(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
-    src/ordinary_interaction_request_v1.cpp
     src/ordinary_interaction_mailbox_v1.cpp)
-  if(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
+  if(XAR_ENABLE_RELIGION_UI12004_PRESENTATION)
+    target_sources(xar_ck3_12002_runtime PRIVATE src/ordinary_interaction_request_v1.cpp)
+  else()
+    target_sources(xar_ck3_bridge PRIVATE src/ordinary_interaction_request_v1.cpp)
+  endif()
+  if(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1 OR XAR_ENABLE_RELIGION_UI12004_PRESENTATION)
     target_sources(xar_ck3_12002_runtime PRIVATE src/ordinary_character_interaction_v1.cpp)
   else()
     target_sources(xar_ck3_bridge PRIVATE src/ordinary_character_interaction_v1.cpp)
