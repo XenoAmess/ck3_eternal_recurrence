@@ -1,0 +1,86 @@
+{
+  "schema": "xar.C20-normal-warm-control-source-closure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:15:58.331659+00:00",
+  "status": "SOURCE_READY_NOT_ADOPTED",
+  "source_binding": {
+    "plan": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-plan-2026-10-20.json",
+    "actual_anchor": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-root-git-actual-2026-10-20.json",
+    "business_commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+    "full_files": 1447,
+    "rows_sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935",
+    "changed_existing": 4,
+    "new_leaves": 2
+  },
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c20_normal_warm_controls_v1.py",
+      "bytes": 5932,
+      "sha256": "a45ef52c459925997b7bff0df03d9621ea8500201c6e21ea7d4a99adbfd76b9c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c20_normal_warm_controls_v1.py",
+      "bytes": 3327,
+      "sha256": "1cdeeec2e15acff6dd51a77c3728282a3491bbef9babb03c1396b6abfc11a701"
+    }
+  ],
+  "sources": {
+    "root_p37c20_sdk_queue.py": {
+      "bytes": 267957,
+      "sha256": "ed5f8b77b5fbb69b27be204d36f28e1a2e45acd572ff7fae2658444f07f9a09d"
+    },
+    "root_p37c20_mcp_entry.py": {
+      "bytes": 12630,
+      "sha256": "a00aa55f62ec6184a31f4a6f4f9957ed95dfaceb55094352adc70af89bb68a6f"
+    },
+    "root_native_build_binding_p37c20.py": {
+      "bytes": 4090,
+      "sha256": "93468a9628b2b3f7a24c5dbd7013ceb6eb1d3f6bbb32a8adb4240e0a4b30b50f"
+    },
+    "root_p37c20_automatic_natural_succession_handoff.py": {
+      "bytes": 38624,
+      "sha256": "dca34aee98f396da3a8593c10df8618643e16022a294e3b956585266adf2ca85"
+    },
+    "p51_resident_successor_adoption_c20.py": {
+      "bytes": 24607,
+      "sha256": "af99ff1943c46cf053ac19e9244152251f541973c2ee9a6c0f86b6c3a7b357a4"
+    },
+    "launch_sdk_p37c20_owner.py": {
+      "bytes": 5462,
+      "sha256": "e6063206ff45cf7d5f7da42e0534bc058adc51798bcf7cc19e8f0d3370272630"
+    },
+    "root_p37c20_warm_resume.py": {
+      "bytes": 14752,
+      "sha256": "b4abc2203eaeaef17f1b058cdaf416c39b31262654a90450e31f2e583d0894c7"
+    }
+  },
+  "logical_bytes": 368122,
+  "prospective4096cluster_bytes": 385024,
+  "protected_constants": 45,
+  "seven_RAM_results_reproduced": true,
+  "original_namespace_port_inverse_bytes_AST": true,
+  "old_matrices_or_startup_RPC_repeated": false,
+  "resident_algorithm_and_full_loop_unchanged_except_namespace": true,
+  "retained_physical_Game_record_publisher_score_generation": "C16",
+  "WAL_Task_env_required": "XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1=1",
+  "execution_query_flag_supported": false,
+  "new_classifier_pin_required": {
+    "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c11_prisoner_epoch_classifier.py",
+    "sha256": "0bff8fae24c072d5f05285ba62c503dfed408f8095690fb8dffec16fe72ec28b",
+    "four_action_rows": true
+  },
+  "Source15_f236_omission_proof_not_inherited": true,
+  "SAVE_offline_reconciliation_preserves_original_governance_classifier_until_new_constructor": true,
+  "boundary": "then actual clean/reconciled SAVE10456 and normalclosed inputs; no request sequence minted here",
+  "payload_subcap_quote": 655360,
+  "additional_atomic_subcap_quote": 327680,
+  "complete_stage_quote_upper": 10690560,
+  "stage_ceiling": 12582912,
+  "budget_quote_not_D_install_or_Task_authority": true,
+  "source_card_sha256": "4cca727314c44ca64ad974c80e784e711ee041fa84e60a93eafc1bbf884636da",
+  "D_Git_Task_Game_RPC_Driver_SAVE_operations": 0,
+  "outputs_materialized": false,
+  "scratch_files": 0,
+  "record_review_at_utc": "2027-04-18T21:04:37+00:00",
+  "future_writes_after_freeze": 0
+}

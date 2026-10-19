@@ -1,0 +1,58 @@
+diff --git a/ck3_autonomous_player/native_bridge/CMakeLists.txt b/ck3_autonomous_player/native_bridge/CMakeLists.txt
+index cecc94e2..827e8070 100644
+--- a/ck3_autonomous_player/native_bridge/CMakeLists.txt
++++ b/ck3_autonomous_player/native_bridge/CMakeLists.txt
+@@ -9226,7 +9226,8 @@ endif()
+ if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
+   add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test
+     tests/ingame_decision_outcome_contract_v1_test.cpp
+-    tests/keyed_query_completion_diagnostics_v1_test.cpp src/protocol.cpp)
++    tests/keyed_query_completion_diagnostics_v1_test.cpp src/protocol.cpp
++    src/ck3_12004_holy_site_adoption_detail_json.cpp)
+   target_include_directories(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE include)
+   target_compile_features(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE cxx_std_20)
+   if(MSVC)
+diff --git a/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp b/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp
+index ea600c73..0408a6b1 100644
+--- a/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp
++++ b/ck3_autonomous_player/native_bridge/tests/keyed_query_completion_diagnostics_v1_test.cpp
+@@ -76,6 +76,8 @@ std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &v) {
+     }
+     s+="]}";
+   }
++  if(v.game_version=="1.20.0.4")
++    s+=",\"selected_terms\":"+ck3_12004::religion::holy_site::SerializeSelectedDecisionTerms12004(v.selected_terms);
+   text("decision_key",v.decision_key);text("detail_decision_key",v.detail_decision_key);text("unavailable_reason",v.unavailable_reason);return s+'}';
+ }}
+ // The failure block is projected from the reviewed production branch. Capture
+@@ -191,6 +193,23 @@ void RevisionAndWire(){
+   Need(wire.find("\"snapshot_equal\":null")!=std::string::npos&&wire.find("\"state_revision_equal\":null")!=std::string::npos&&
+        wire.find("\"compared_state_revision\":null")!=std::string::npos,"unknown serialized as false or zero");
+ }
++void SelectedTermsWire(){
++  IngameDecisionItemResultV1 out{};out.game_version="1.20.0.4";out.available=true;
++  auto &terms=out.selected_terms;terms.decision_key="fixture_selected_decision";terms.capture_epoch=9;
++  terms.native.available=true;terms.native.native_can_confirm=true;terms.native.native_resource_quote_available=true;
++  terms.native.native_resource_vector_raw[0]=123400;terms.native.native_affordable=false;
++  for(const bool available:{false,true}){
++    terms.available=available;terms.context_verified=available;
++    const auto serialized=xar::ck3_12004::religion::holy_site::SerializeSelectedDecisionTerms12004(terms);
++    const auto wire=reviewed_candidate::SerializeIngameDecisionItemV1(out);
++    Need(wire.find(",\"selected_terms\":"+serialized)!=std::string::npos,"selected terms differ from actual serializer");
++    Need(serialized.find(available?"\"can_confirm\":true":"\"can_confirm\":null")!=std::string::npos,"selected terms unknown legality changed");
++    Need(serialized.find(available?"\"resource_quote_available\":true":"\"resource_quote\":null")!=std::string::npos,"selected terms quote availability changed");
++    if(available)Need(serialized.find("\"resource_vector_raw\":[123400,0,0,0,0,0,0,0,0,0]")!=std::string::npos,"selected terms quote values lost");
++  }
++  out.game_version="1.20.0.3";
++  Need(reviewed_candidate::SerializeIngameDecisionItemV1(out)==frozen_source11::SerializeIngameDecisionItemV1(out),"selected terms leaked outside actual4");
++}
+ void CaptureExceptionsPreserveRefusal(){
+   for(bool allocation:{false,true}){
+     IngameDecisionItemResultV1 out{};out.available=true;out.frame_verified=true;
+@@ -208,5 +227,5 @@ void CaptureExceptionsPreserveRefusal(){
+ }
+ } // namespace
+ void RunKeyedQueryCompletionDiagnosticsFocusedV1(){
+-  GuardTruthPaths();AllSnapshotMembers();RevisionAndWire();CaptureExceptionsPreserveRefusal();
++  GuardTruthPaths();AllSnapshotMembers();RevisionAndWire();SelectedTermsWire();CaptureExceptionsPreserveRefusal();
+ }

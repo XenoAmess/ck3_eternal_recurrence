@@ -9226,7 +9226,8 @@ endif()
 if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test
     tests/ingame_decision_outcome_contract_v1_test.cpp
-    tests/keyed_query_completion_diagnostics_v1_test.cpp src/protocol.cpp)
+    tests/keyed_query_completion_diagnostics_v1_test.cpp src/protocol.cpp
+    src/ck3_12004_holy_site_adoption_detail_json.cpp)
   target_include_directories(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE include)
   target_compile_features(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE cxx_std_20)
   if(MSVC)
