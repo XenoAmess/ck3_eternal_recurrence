@@ -1,0 +1,145 @@
+{
+  "actual_postcondition": {
+    "new_event_instance_id": null,
+    "old_event_instance_id": 9,
+    "postcondition_verified": true,
+    "selected_native_option_index": 0,
+    "selected_option_number": 1,
+    "status": "event_instance_advanced"
+  },
+  "actual_selection": {
+    "enabled": true,
+    "excluded_disabled_rendered_indices": [],
+    "native_option_index": 0,
+    "option_number": 1,
+    "rendered_index": 0,
+    "resolved_name": "教会在没有我的情况下行事。",
+    "selected_step": "select-event-option-1",
+    "selection_order": "native_rendered_index_after_shown_enabled_filter"
+  },
+  "analysis": {
+    "classification": "Existing analyzed .4 council-results letter; old source/facts/options are byte-equivalent in definition and catalogue. Added current observed calculated-ID binding only.",
+    "immediate": "Copies council activity tenet1/tenet2/doctrine1 to saved scopes when present; no invented debate-result values.",
+    "option0": "Only conditional custom_tooltip rows for passed debates. No tenet/doctrine mutation, conversion, cost or choice branching in the option body.",
+    "outcome": "ACK and instance9->null separately verified. Stress45->45, gold25232147->25232147 and prestige79541060->79541060 raw unchanged. Actual rite/doctrine/council results were not queried; no religion/material credit.",
+    "reuse_boundary": "Exact current-ID loader known. Generic letter cold-ID rebind remains unavailable except existing1001 narrow rule; no broad opening and no policy edit."
+  },
+  "binding": {
+    "calculated_event_id": 2740082,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "ecumenical_council_events.0082",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 1,
+    "option_catalogue_sha256": "80ad6cd429d44d7a785575f7417d3a8bb06c4a51b574ebc8f8cbb0acf9fe771a",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+  },
+  "boundaries": {
+    "G2_credit_added": 0,
+    "Game_MCP_OBS_calls": 0,
+    "action_replayed": false,
+    "incident_originals_rewritten": false,
+    "live_Driver_SAVE_reads": 0,
+    "strategy_SDK_or_Native_edits": 0
+  },
+  "checks": {
+    "ACK_separate_true": true,
+    "loader_known_exact": true,
+    "one_authored_native0_tooltip_option": true,
+    "same_prior_definition_and_options": true,
+    "same_prior_option_catalogue": true,
+    "same_prior_source_sha": true,
+    "window_advanced_separate_true": true
+  },
+  "current_calculated_event_id": 2740082,
+  "input": {
+    "after": {
+      "bytes": 3540,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\74d4de55506049a1b3d4faf4abccf3cb.after.json",
+      "sha256": "1ace3094c7840b164660bcf869f09298facd0c710bf7df37bb9f2bc2bf095ea7"
+    },
+    "before": {
+      "bytes": 8648,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\74d4de55506049a1b3d4faf4abccf3cb.before.json",
+      "sha256": "9c48bc4e9812f064f07ebb9e43e5f4e478a602074edfa37e66317dd0e181706e"
+    },
+    "manifest": {
+      "bytes": 1760,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-offline-batches\\2498.json",
+      "sha256": "2eb87ce0dd8e14739eefa47d3ad733df7a71813019e852567ce2c8b3b01eb6e2"
+    }
+  },
+  "loader_after": {
+    "binding_mode": "exact",
+    "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\6a2d5c2e98e59017f6c58f659a604d1fc9a8aa9184a11b8fc40c3c1fdd8e746e.json",
+    "entry_sha256": "5848be77c0d9aa74042e86d518fecf93a8f930860e029c79bbc0a1a4b2cc6389",
+    "fingerprint": "6a2d5c2e98e59017f6c58f659a604d1fc9a8aa9184a11b8fc40c3c1fdd8e746e",
+    "material_effects_verified": false,
+    "registry_contract_accepted": false,
+    "status": "offline-source-reviewed"
+  },
+  "loader_before": {
+    "rejected_entries": [
+      {
+        "entry": "c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+        "reason": "source-declared event root differs"
+      }
+    ],
+    "status": "unknown"
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:46:43.851474+00:00",
+  "observed_material_values": {
+    "gold_raw": [
+      25232147,
+      25232147
+    ],
+    "money_scale": 100000,
+    "prestige_raw": [
+      79541060,
+      79541060
+    ],
+    "stress": [
+      45,
+      45
+    ]
+  },
+  "old_calculated_event_id": 5020082,
+  "prior_entry": {
+    "bytes": 1340,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+    "sha256": "ee21f671d81f497988691afc796dbf3c28d3ec3e2954efb8f3b289bd2704e366"
+  },
+  "prior_facts": {
+    "bytes": 4514,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\c29fbf1e9377a24c86275c721cc5f01cead164ff74f6b237ec4f32098a0cf716.json",
+    "sha256": "8baf602abac1051b0ace8c1f60a22c3c06f080aa31c3831121f6ae5dc701b95c"
+  },
+  "published_entry": {
+    "bytes": 1340,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\6a2d5c2e98e59017f6c58f659a604d1fc9a8aa9184a11b8fc40c3c1fdd8e746e.json",
+    "sha256": "5848be77c0d9aa74042e86d518fecf93a8f930860e029c79bbc0a1a4b2cc6389"
+  },
+  "published_facts": {
+    "bytes": 4514,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\6a2d5c2e98e59017f6c58f659a604d1fc9a8aa9184a11b8fc40c3c1fdd8e746e.json",
+    "sha256": "78af9971cdcb44ffc1e07a0cd64462c987d0d26dcd81a9bec0716008153f0ad1"
+  },
+  "recorded_at_utc": "2026-10-19T07:47:55.261232+00:00",
+  "schema": "xar.g2.m2.council0082-current-ID-source-closure/v1",
+  "source_file": {
+    "bytes": 419164,
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\ecumenical_council_activity\\pam_ecumenical_council_events.txt",
+    "sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559"
+  },
+  "status": "KNOWN_EXISTING_SOURCE_CURRENT_ID_APPENDED",
+  "storage": {
+    "admitted_source_closure_peak_bytes": 65536,
+    "allocated_bytes_or_null": null,
+    "derived_review_at_utc": "2026-10-21T07:47:55.261232+00:00",
+    "future_output_after_closure_bytes": 0,
+    "physical_credit_added": 0,
+    "record_review_at_utc": "2027-04-17T07:47:55.261232+00:00",
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+  }
+}

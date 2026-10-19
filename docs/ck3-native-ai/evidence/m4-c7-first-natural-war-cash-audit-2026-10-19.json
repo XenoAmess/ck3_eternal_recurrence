@@ -1,0 +1,559 @@
+{
+  "schema": "xar.m4-c7-first-natural-war-cash-audit.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:42:47.876270+00:00",
+  "identity_source": "tools/ck3_live_run_id.py current_machine_id",
+  "scope": "Read-only supplied closed C7 FULL1213 range1213..1273. Facts are at the specified frames, not the later live campaign.",
+  "source_binding": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T07:42:47.876270+00:00",
+    "identity_source": "tools/ck3_live_run_id.py current_machine_id",
+    "compact": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-COMPACT.json",
+      "bytes": 229835,
+      "sha256": "fc3e3eeccd51de35650c4adb9a53a1551b01d7d3db3ca79e6d507467c9c958bb"
+    },
+    "stage": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C7-BATCH1213-75-STAGE-TRACE.jsonl",
+      "bytes": 236790,
+      "sha256": "e3777c3db721e47dd25bf491eef74178d49acc34c61e458aec9107241b18ca88"
+    },
+    "runtime_observation_utc": "2026-10-19T07:34:59.423607+00:00",
+    "closed_range": [
+      1213,
+      1273
+    ],
+    "business_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+    "source_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C7.json",
+      "bytes": 403018,
+      "sha256": "4c9de700f1572ad81627fe6c92cd5fec4b05cb4e02b0c4e6449bda48b32cb4d9"
+    },
+    "freeze_at_utc": "2026-10-19T07:04:56.868706+00:00",
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06",
+    "native_label": "Native26 narrow Native25 successor",
+    "documentary_native_dll_sha256": "eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184",
+    "freeze_runtime_admitted_field": false,
+    "owner_generation": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C7.json",
+      "bytes": 465,
+      "sha256": "f36bd1092e0058f971052e6b602db395e24271b12754fb2d7a98d24fc3c34e65"
+    },
+    "owner_record_machine_id": "unknown",
+    "owner_association": "Referenced by machine-bound compact; original owner receipt lacks standalone machine_id and is not rewritten",
+    "source_pins": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 21416,
+        "sha256": "bfbf3770e346502b46cbedaa528b3e5cf87ea5c61c52329eb89faebfc4a9007e"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer\\wartime_construction_cash_v1.py",
+        "bytes": 16639,
+        "sha256": "9eb2f93a573e2c6f467e6ff478c50d9856350cb4c436b5403fd0dd70351b772e"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer\\construction_formal_consumer.py",
+        "bytes": 38521,
+        "sha256": "ed408b47b0e9de3851a79aa06b4abaa631f8d663c46ee02e51b777905e75af5c"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer\\war_reinforcement_tradeoff_v1.py",
+        "bytes": 19588,
+        "sha256": "c27266b60a80e7b18a38c22bdc8a076a79f351eb0b3b976c367ddc3dc90299ac"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+        "bytes": 11901,
+        "sha256": "e33f43c54fe4fa0960383065931a1b2179b8b40b706393f628a94dbb6b6d4249"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src06\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 867830,
+        "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+      }
+    ],
+    "loan_child_in_deployed_cash_source": false,
+    "handoff_in_deployed_service_source": false
+  },
+  "response_sources": [
+    {
+      "sequence": 1214,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\1214-1-result.json",
+      "bytes": 3270,
+      "sha256": "d5d76e22dd1e46689405c9ae8d80fe55cbb69efccc2399468a2240c065bc4e2e"
+    },
+    {
+      "sequence": 1216,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\1216-1-result.json",
+      "bytes": 103749,
+      "sha256": "16177e93382863e34abba4d8afe956ebd147d4a46b05e995a74c58b70bcee4de"
+    },
+    {
+      "sequence": 1270,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\1270-1-result.json",
+      "bytes": 174162,
+      "sha256": "7aca36b3691a1ed6203301cf36adfb092f3bcbd0ff5227ea61df3886b1af0207"
+    },
+    {
+      "sequence": 1273,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\1273-1-result.json",
+      "bytes": 23440,
+      "sha256": "147f2013eb48be2e05f4cf08e03fd7b718ef6d3ab6c3a75634cb6a3c9c90e9b7"
+    }
+  ],
+  "natural_evidence": {
+    "frames": {
+      "first_plan": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:1423",
+        "revision": 1005,
+        "native_revision": 1423,
+        "date_raw": 53171784,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "connection_generation": 4,
+        "bridge_pid": 153556
+      },
+      "last_plan": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:1460",
+        "revision": 1042,
+        "native_revision": 1460,
+        "date_raw": 53172048,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "connection_generation": 4,
+        "bridge_pid": 153556
+      },
+      "final_MET": {
+        "snapshot_id": "native:1463",
+        "revision": 1045,
+        "native_revision": 1463,
+        "date_raw": 53172072,
+        "paused": true,
+        "map_ready": true,
+        "actor_character_id": 31254,
+        "actor_alive": true,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "bridge_pid": 153556,
+        "connection_generation": 4,
+        "war_count": 1
+      },
+      "date": "1069.11.15"
+    },
+    "selected_AUTO_actions": 30,
+    "selected_step_counts": {
+      "query-army-strengths-v1": 1,
+      "preview-move-army-33554800-to-2604": 1,
+      "query-route-contact-horizon-v1-33554800-to-2604-h-1-33554439": 9,
+      "move-army-33554800-to-2604": 1,
+      "advance-route-contact-horizon-v1-33554800-to-2604-h-1-33554439": 8,
+      "query-war-results-window-v1": 1,
+      "query-war-termination-options-16777278": 1,
+      "query-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439": 4,
+      "advance-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439": 4
+    },
+    "war": {
+      "war_id": 16777278,
+      "player_character_id": 31254,
+      "side": "defender",
+      "player_is_primary_war_leader": true,
+      "primary_opponent_character_id": 69057,
+      "cb": {
+        "database_index": 17,
+        "canonical_key": "individual_county_de_jure_cb"
+      },
+      "first_native_termination": {
+        "duration_days": 7,
+        "nonloss_exit": false,
+        "surrender_legal": true,
+        "white_peace_legal": false,
+        "terms_observable": false,
+        "terms": {
+          "status": "unavailable",
+          "reason": "cb_specific_terms_not_observable"
+        }
+      },
+      "first_score": 0,
+      "latest_score": 0,
+      "late_hostile_endpoint_epochs": [
+        {
+          "war_id": 16777278,
+          "enemy_army_id": 33554439,
+          "date_raw": 53172048,
+          "current_province_id": 2598,
+          "move_target_province_id": 2604,
+          "next_hop_province_id": 2595,
+          "endpoint_province_id": 2604,
+          "route_province_ids": [
+            2595,
+            2603,
+            2604
+          ],
+          "intent_state": "moving",
+          "epoch_sequence": 1,
+          "first_observed_date_raw": 53171952,
+          "last_observed_date_raw": 53172048,
+          "observed_span_days": 4,
+          "sample_count": 5,
+          "milestones_crossed_days": [],
+          "active": true,
+          "closed_date_raw": null,
+          "closed_reason": null
+        }
+      ],
+      "final_MET_active_wars": [
+        {
+          "war_id": 16777278,
+          "player_side": "defender",
+          "primary_opponent_character_id": 69057,
+          "player_relative_war_score": 0
+        }
+      ],
+      "later_priority": {
+        "defer_new_economic_construction": false,
+        "cash_protection_priority_war_ids": [],
+        "wars": [
+          {
+            "war_id": 16777278,
+            "primary_player_war": true,
+            "player_side": "defender",
+            "player_relative_war_score": 0,
+            "political_survival_stakes_v1": {
+              "status": "unavailable",
+              "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+              "reason": "current_primary_rebel_attacker_identity_unavailable"
+            },
+            "possible_defensive_target_title_ids": [
+              2488
+            ],
+            "target_stakes_v1": {
+              "current_root_available": true,
+              "primary_title_targeted": false,
+              "directly_held_target_title_ids": [],
+              "source": "same-native-frame root title identities; CB defeat transfer remains unverified"
+            },
+            "major_direct_title_targeted": false,
+            "defeat_title_transfer_verified": false,
+            "active_war_observed": true,
+            "war_resolution_verified": false,
+            "new_procurement_suppressed_by_score_policy": false,
+            "observed_hostile_siege_in_player_subrealm_army_ids": [],
+            "observed_primary_opponent_objective_occupation_province_ids": [],
+            "objective_control_projection_available": true,
+            "all_observed_own_raised_armies_currently_retreating": false,
+            "observed_player_raised_soldiers": null,
+            "observed_enemy_raised_soldiers": null,
+            "raised_force_deficit": null,
+            "existing_operational_strength_balance_v1": null,
+            "protect_cash_reasons": []
+          }
+        ],
+        "hostile_union": {
+          "war_ids": [
+            16777278
+          ],
+          "unique_army_ids": [
+            393,
+            33554439
+          ],
+          "observed_current_soldiers": null,
+          "shared_player_raised_soldiers": null,
+          "shared_force_deficit": null,
+          "future_or_unraised_reinforcements_bounded": false
+        },
+        "war_win_probability": null,
+        "count_scope": "observed raised armies; no unraised reserves or promised allies"
+      }
+    },
+    "first_strength": {
+      "source": {
+        "revision": 1005,
+        "native_revision": 1423
+      },
+      "profile": "ordinary_core_v1",
+      "armies": [
+        {
+          "status": "available",
+          "army_id": 33554800,
+          "native_carmy_id": 33554783,
+          "current_soldiers": 1431,
+          "maximum_soldiers": 1431,
+          "regiment_count": 28
+        },
+        {
+          "status": "available",
+          "army_id": 33554439,
+          "native_carmy_id": 67108961,
+          "current_soldiers": 0,
+          "maximum_soldiers": 0,
+          "regiment_count": 0
+        }
+      ],
+      "boundary": "One earlier hostile army=0 is not total enemy strength or reserves. Later hostile union adds393 and late current strengths are null."
+    },
+    "cash_metrics": {
+      "gold": {
+        "value": "229.42536",
+        "unit": "gold",
+        "availability": "observed",
+        "source_ref": "ordinary_frame"
+      },
+      "gross_income": {
+        "value": "5.18238",
+        "unit": "gold/month",
+        "availability": "observed",
+        "source_ref": "existing_cash_v2"
+      },
+      "total_expenses": {
+        "value": "2.32522",
+        "unit": "gold/month",
+        "availability": "observed",
+        "source_ref": "existing_cash_v2"
+      },
+      "military_current": {
+        "value": "2.32522",
+        "unit": "gold/month",
+        "availability": "observed",
+        "source_ref": "existing_cash_v2"
+      },
+      "military_all_raised": {
+        "value": "5.4075",
+        "unit": "gold/month",
+        "availability": "observed",
+        "source_ref": "existing_cash_v2"
+      },
+      "due_commitments": {
+        "value": null,
+        "unit": "gold",
+        "availability": "unknown",
+        "source_ref": "ordinary_frame"
+      }
+    },
+    "cash_source": {
+      "id": "existing_cash_v2",
+      "kind": "already_obtained_ordinary_query",
+      "binding": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:1463",
+        "revision": 1045,
+        "native_revision": 1463,
+        "date_raw": 53172072,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "connection_generation": 4,
+        "bridge_pid": 153556
+      },
+      "monthly_income_semantics": {
+        "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+        "time_basis": "month",
+        "source_scope": "played_character_personal_gold",
+        "income_source": "native_character_monthly_gold_income",
+        "expense_source": "native_character_monthly_total_gold_expenses",
+        "military_expenses_included": true
+      },
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+    },
+    "monthly_collection": {
+      "mode": "paused_readonly_bundle",
+      "same_native_capture": false,
+      "source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:1463",
+        "revision": 1045,
+        "native_revision": 1463,
+        "date_raw": 53172072,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "connection_generation": 4,
+        "bridge_pid": 153556
+      },
+      "closing_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:1463",
+        "revision": 1045,
+        "native_revision": 1463,
+        "date_raw": 53172072,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "connection_generation": 4,
+        "bridge_pid": 153556
+      },
+      "closing_frame_verified": true,
+      "queries": {
+        "cash": {
+          "status": "returned",
+          "elapsed_seconds": 0.028591
+        },
+        "realm": {
+          "status": "returned",
+          "elapsed_seconds": 0.047108
+        }
+      },
+      "readonly_query_invocations": 2,
+      "native_requests_observed": null,
+      "retry_count": 0
+    },
+    "construction_readonly_observation": {
+      "status": "observed",
+      "native_source_status": "no_legal_budgeted_building",
+      "read_only": true,
+      "advertised": false,
+      "formal_action_ready": false,
+      "candidate": null,
+      "native_budgeted_positive_income_candidate": false,
+      "observed_player_gold_raw": 22942536,
+      "observed_active_war_count": 1,
+      "observed_player_army_count": 1,
+      "existing_shared_gold_commitment_raw": null,
+      "war_future_gold_cost_raw": null,
+      "joint_budget_affordability": "unassessed",
+      "positive_income_coverage_complete": true,
+      "source_frame": {
+        "snapshot_id": "native:1460",
+        "revision": 1042,
+        "native_revision": 1460,
+        "date_raw": 53172048,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "actor_character_id": 31254
+      },
+      "native_query_request_id": "construction-read-789da43286b34c5d936eeb43e799a4b2",
+      "native_proof_epoch": 983179,
+      "reason": null
+    },
+    "historical_construction_receipt": {
+      "action_request_id": "construction-submit-68ff6da06b3243ff9afefb514a223bb1",
+      "status": "applied",
+      "completion_status": "completed",
+      "pre_cash_date_raw": 53150136,
+      "post_cash_date_raw": 53166576
+    }
+  },
+  "findings": {
+    "war_risk": {
+      "possible_defensive_target_title_ids": [
+        2488
+      ],
+      "primary_title_targeted": false,
+      "directly_held_target_title_ids": [],
+      "exact_defeat_title_transfer_verified": false,
+      "war_resolution_or_land_transfer_observed": false,
+      "interpretation": "Defensive county/title stake is possible. Specific CB defeat terms remain unobserved; cannot quantify lost titles, infer zero loss or infer good surrender value from legal surrender/score alone.",
+      "army_interpretation": "Earlier friendly army33554800=1431 and one hostile33554439=0 are source-bound raised counts, not a win probability. At the late frame hostile union393/33554439 has unknown totals; no unraised/late reinforcements bound.",
+      "arrival_or_battle_result_from_ACK": false
+    },
+    "cash": {
+      "scale": 100000,
+      "wallet_raw": 22942536,
+      "gross_income_monthly_raw": 518238,
+      "total_expenses_monthly_raw": 232522,
+      "current_military_monthly_raw": 232522,
+      "all_raised_military_monthly_raw": 540750,
+      "income_minus_total_expenses_raw": 285716,
+      "all_raised_static_replacement_net_raw": -22512,
+      "scenario_boundary": "Arithmetic holds current income/nonmilitary expenses constant and replaces current military once with all-raised. Not a forecast, maximum-maintenance input or spending credit.",
+      "current_unpaid_commitments_raw": null,
+      "emergency_mercenary_quote_raw": null,
+      "free_cash_after_commitments_and_emergency_quote_raw": null,
+      "same_frame_root_maximum_maintenance_in_published_sample": null,
+      "deployed_policy_minimum_military_buffer_raw": 40000000,
+      "wallet_minus_policy_minimum_raw": -17057464,
+      "very_ample_cash_proven": false,
+      "source_policy": "max(400 gold,24*maximum-maintenance)+nonnegative unpaid commitments+legal emergency quote after optional outlay",
+      "policy_boundary": "Wallet is below the source policy400-gold floor even before an optional cost/commitments/quote. The floor is reviewable agent policy, not a Native/user hard rule. This lower-bound comparison is not a claim that the full runtime gate actually ran."
+    },
+    "construction": {
+      "selected_new_build_upgrade_holding_actions": 0,
+      "selected_hire_or_loan_actions": 0,
+      "historical_receipt_not_new_wartime_spend": true,
+      "pre_cash_date_raw": 53150136,
+      "post_cash_date_raw": 53166576,
+      "first_supplied_war_plan_date_raw": 53171784,
+      "latest_candidate": null,
+      "latest_native_status": "no_legal_budgeted_building",
+      "latest_joint_affordability": "unassessed",
+      "actual_runtime_cash_gate_execution_proven": false,
+      "interpretation": "Concrete war routing/army actions kept priority; read-only no-candidate observation and old completed receipt do not authorize or prove new construction.",
+      "source_path": "construction_formal_consumer:480..516 preserves concrete war work;522..547 requires all-war funding admission for optional outlays, then624..659 rechecks actual quoted cost"
+    },
+    "mercenary_and_loan": {
+      "current_legal_emergency_quote_verified": false,
+      "new_employment_or_payment_attributed_in_this_sample": false,
+      "hired_army_arrival_or_effectiveness_verified": false,
+      "existing_employment_outside_this_range": null,
+      "current_loan_eligibility": null,
+      "current_principal_quote_raw": null,
+      "current_typed_debt_raw": null,
+      "received_loan_funds_verified": false,
+      "unreceived_funding_credit_raw": 0,
+      "new_loan_child_or_handoff_deployed": false,
+      "interpretation": "No hire/borrow selected in the closed30-action range. ACK is not payment or army availability; earlier fake/object/source work is not current Native26 qualification."
+    }
+  },
+  "existing_observation_gaps": [
+    {
+      "gap": "Exact CB defeat transfer/terms",
+      "path": "Existing query-war-termination-options-N/native_end_conditions preserve legality separately from unknown terms",
+      "consequence": "Keep possible title-loss risk; do not infer zero loss or add CB rules here"
+    },
+    {
+      "gap": "Current complete hostile forces/reserves",
+      "path": "Existing army-strength and contact-horizon routes; late priority retains null strength/deficit and null win odds",
+      "consequence": "Do not carry the earlier0 forward; no extra query requested by this audit"
+    },
+    {
+      "gap": "Same-frame commitments, maximum-maintenance and emergency market terms",
+      "path": "observe_driver_wartime_construction_cash_v1 uses current root/spending/market/ledger;wartime_construction_cash_v1:112..138,201..242",
+      "consequence": "Unknown is not zero; missing input defers optional construction"
+    },
+    {
+      "gap": "No current mercenary availability/payment/material army evidence",
+      "path": "war_mercenary_consumer:79..156 quiet opportunity, financing/pending guard, evidenced purpose, existing market query and guarded hire/receipt path",
+      "consequence": "Priority defer=false is not a building window; separate all-war cash gate still applies"
+    },
+    {
+      "gap": "Loan child and Service handoff absent from deployed8e1e/src06",
+      "path": "Pinned deployed cash transport11901B and war consumer21416B match C7 freeze; legal-debt gap still reports unqualified terms/debt/funds",
+      "consequence": "Do not treat new canonical code as deployed or credit future borrowed gold"
+    }
+  ],
+  "conclusion": {
+    "observed_user_wartime_cash_rule_violation": false,
+    "scope": "No violation proven in this closed sample; not full campaign/territory/finance verification",
+    "production_source_patch_justified_by_this_sample": false,
+    "reason": "No optional construction/hire/borrow selected; deployed policy requires complete current inputs and a reserve floor above the observed wallet",
+    "preserve_live_war_progress": true,
+    "no_current_game_pause_or_new_query_for_research": true
+  },
+  "audit_boundary": {
+    "audit_new_RPC_calls": 0,
+    "active_Driver_SAVE_reads": 0,
+    "game_desktop_access": false,
+    "source_runtime_mutation": false,
+    "new_tests_builds_or_external_artifacts": 0,
+    "source_packet_or_stage_rewritten": false,
+    "stage_trace_rows": 674,
+    "timing_only": "Stage rows do not prove payment, army availability, wallet changes or budget qualification",
+    "monthly_capture_boundary": "Cash and root are separate captures with verified full published frame; no atomic shared Native epoch is claimed",
+    "freeze_marker_boundary": "Freeze runtime_admitted=false remains its original freeze-time fact; later actual closed responses/owner reference supply execution observations",
+    "owner_identity_boundary": "Standalone owner receipt has machine_id unknown; its association is the explicit reference in the verified machine-bound compact, not a retroactive rewrite"
+  },
+  "storage": {
+    "hard_new_evidence_bytes": 24576,
+    "pool": "original other-research128MiB",
+    "original_review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "producer_closed": true,
+    "future_write_reserved_bytes": 0,
+    "processes_left_running": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "parent_budget_credit_bytes": 0
+  }
+}

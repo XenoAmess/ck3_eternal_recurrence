@@ -1,0 +1,89 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "player-heir-h12004-canonical-token-immediate",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Locate exact-build immediate consumers of canonical player_heir token0x31A6 without assigning callback or legality meaning from a numeric match.",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Only canonical token0x31A6 .text immediate candidates and their unique pdata envelopes, at most10 candidates with256B each",
+    "identity_lifetime": "the existing direct hashed exact file, with matching pre/post metadata",
+    "producer_trigger": "not-applicable",
+    "producer": "actual living selector and eligibility producer remain the source question",
+    "caller": "offline mmap fixed4byte operand locator; no engine invocation",
+    "consumer": "human review of source candidates; no H provider or runtime consumer",
+    "cache_lifetime": "one frozen source-discovery result",
+    "expected_signal": "An immediate0x31A6 consumer with original operand, unique pdata bounds and bounded local instructions",
+    "zero_sample_meaning": "No admitted immediate consumer in this declared fixed-token locator, not absence of an heir or callback",
+    "stop_condition": "maximum10 candidate windows; no31A7, callee/AI traversal, process or Game/RPC/build",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "single_target_u32": 12710,
+    "section": ".text",
+    "candidate_cap": 10,
+    "window_bytes_per_candidate": 256,
+    "file_identity": {
+      "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-h12004-20261019/exact-file-identity01.json",
+      "bytes": 1080,
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844"
+    },
+    "canonical_record_source": {
+      "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-h12004-20261019/token-record-alignment03.json",
+      "bytes": 4468,
+      "sha256": "43d666f6e32f0ac2889cfb04f7cf653f92b977d2332dec0b507904b921d5e0fc"
+    },
+    "scan": "mmap fixed little-endian4byte search; each candidate instruction is decoded only inside its <=256B copied window using an already-installed disassembler",
+    "function_envelope": "binary search only for matching PCs through PE exception directory; no whole pdata dump",
+    "proof_boundary": "Immediate numeric consumers are candidates. No static byte decoding alone proves execution, current player receiver or native player-continuation eligibility.",
+    "receipt_total_bytes_cap": 32768,
+    "Root_authorization": "2026-10-19 continuation: canonical31A6 immediate refs<=10, unique pdata and<=256B per candidate; no previously frozen file changes"
+  },
+  "evidence": [
+    {
+      "id": "exact-file",
+      "layer": "exact-build",
+      "path": "exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "actual streamed file identity only"
+    },
+    {
+      "id": "canonical-name-id",
+      "layer": "exact-build",
+      "path": "token-record-alignment03.json",
+      "sha256": "43d666f6e32f0ac2889cfb04f7cf653f92b977d2332dec0b507904b921d5e0fc",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "source-defined table record and native indexed name getter, not qualification callback"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "token",
+      "label": "canonical player_heir31A6"
+    },
+    {
+      "id": "consumer",
+      "label": "living player selector and continuation qualifier"
+    }
+  ],
+  "edges": [
+    {
+      "id": "registration",
+      "from": "token",
+      "to": "consumer",
+      "label": "compiled property or scope registration and original living-player qualification",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which actual immediate consumer is a source-bound registration or selector rather than the existing law enum parser?"
+    }
+  ],
+  "cases": []
+}

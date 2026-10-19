@@ -1,0 +1,558 @@
+{
+  "schema": "xar.player-heir12004.canonical-token-immediate-refs.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T07:43:46.207601+00:00",
+  "ended_at_utc": "2026-10-19T07:43:46.291427+00:00",
+  "exe_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "target_u32": 12710,
+  "section": ".text",
+  "raw_fixed4byte_hits_examined": 5,
+  "rejected_without_immediate_decode_or_pdata": 0,
+  "candidate_cap": 10,
+  "candidate_cap_reached": false,
+  "unexamined_tail_possible": false,
+  "candidates": [
+    {
+      "operand_rva": 38748162,
+      "raw_operand_hex": "a6310000",
+      "immediate_decodings": [
+        {
+          "start_rva": 38748161,
+          "bytes": "baa6310000",
+          "mnemonic": "mov",
+          "operand": "edx, 0x31a6",
+          "imm_offset": 1,
+          "imm_size": 4
+        }
+      ],
+      "function": {
+        "index": 129036,
+        "begin_rva": 38747808,
+        "end_rva_exclusive": 38748607,
+        "unwind_rva": 84986992,
+        "row_rva": 99864720
+      },
+      "window_rva": 38748130,
+      "window_bytes": 256,
+      "window_hex": "01ba10000000488bcbe8d04ea901488b3e837f08ff743d488bcbe87f4ba901baa6310000488bcbe8b24ea901ba01000000488bcbe8a54ea9018b5708488bcbe8da51a901ba10000000488bcbe88d4ea901488b3e837f04ff743d488bcbe83c4ba901bad72d0000488bcbe86f4ea901ba01000000488bcbe8624ea9018b5704488bcbe89751a901ba10000000488bcbe84a4ea901488b3e8b771c488b7f1085f60f8e27010000488bcbe8f04aa901bad5270000488bcbe8234ea901ba01000000488bcbe8164ea9018b431085c0781fba03000000488bcbe8024ea901ba12000000488bcbe8f54da901ff4310eb05ffc08943108b431085c0781dba0300000048",
+      "window_sha256": "fedba4b6fc6c51f42dd071aa4dd12f66d42c8fa84e75099a5553e9fed64701f8",
+      "instructions_from_candidate_start": [
+        {
+          "rva": 38748161,
+          "bytes": "baa6310000",
+          "instruction": "mov edx, 0x31a6"
+        },
+        {
+          "rva": 38748166,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 38748169,
+          "bytes": "e8b24ea901",
+          "instruction": "call 0x143f88ec0"
+        },
+        {
+          "rva": 38748174,
+          "bytes": "ba01000000",
+          "instruction": "mov edx, 1"
+        },
+        {
+          "rva": 38748179,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 38748182,
+          "bytes": "e8a54ea901",
+          "instruction": "call 0x143f88ec0"
+        },
+        {
+          "rva": 38748187,
+          "bytes": "8b5708",
+          "instruction": "mov edx, dword ptr [rdi + 8]"
+        },
+        {
+          "rva": 38748190,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 38748193,
+          "bytes": "e8da51a901",
+          "instruction": "call 0x143f89200"
+        },
+        {
+          "rva": 38748198,
+          "bytes": "ba10000000",
+          "instruction": "mov edx, 0x10"
+        },
+        {
+          "rva": 38748203,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 38748206,
+          "bytes": "e88d4ea901",
+          "instruction": "call 0x143f88ec0"
+        }
+      ],
+      "instruction_boundary_proof": "local decode candidate only; not an execution/control-flow or current-player qualification witness"
+    },
+    {
+      "operand_rva": 38749462,
+      "raw_operand_hex": "a6310000",
+      "immediate_decodings": [
+        {
+          "start_rva": 38749461,
+          "bytes": "3da6310000",
+          "mnemonic": "cmp",
+          "operand": "eax, 0x31a6",
+          "imm_offset": 1,
+          "imm_size": 4
+        }
+      ],
+      "function": {
+        "index": 129039,
+        "begin_rva": 38749298,
+        "end_rva_exclusive": 38749635,
+        "unwind_rva": 86321716,
+        "row_rva": 99864756
+      },
+      "window_rva": 38749430,
+      "window_bytes": 205,
+      "window_hex": "8b173d0707000074423dd52700000f84ae0000003dd72d00000f849d0000003da631000074213d013c00007407e898d7a801eb1c488d4228488d553048894530e815d72900eb094883c208e8fa13c3fe83bfd4000000000f8442ffffff488bcfe8a5dba801488bb7e000000041b4014c8b76304d85f6742f498b06498bceff90900000004863d8498bce498b06ff9088000000488bb7e0000000482bd84883fb010f8ff8feffff80beb400000000741dc686b400000000e97f0100004883c204eb894883c210e8fffbffffeb83",
+      "window_sha256": "31ec531a0e021de7615c76a5e88e77a37b7a49fe0a6db421380f6df843a98921",
+      "instructions_from_candidate_start": [
+        {
+          "rva": 38749461,
+          "bytes": "3da6310000",
+          "instruction": "cmp eax, 0x31a6"
+        },
+        {
+          "rva": 38749466,
+          "bytes": "7421",
+          "instruction": "je 0x1424f453d"
+        },
+        {
+          "rva": 38749468,
+          "bytes": "3d013c0000",
+          "instruction": "cmp eax, 0x3c01"
+        },
+        {
+          "rva": 38749473,
+          "bytes": "7407",
+          "instruction": "je 0x1424f452a"
+        },
+        {
+          "rva": 38749475,
+          "bytes": "e898d7a801",
+          "instruction": "call 0x143f81cc0"
+        },
+        {
+          "rva": 38749480,
+          "bytes": "eb1c",
+          "instruction": "jmp 0x1424f4546"
+        },
+        {
+          "rva": 38749482,
+          "bytes": "488d4228",
+          "instruction": "lea rax, [rdx + 0x28]"
+        },
+        {
+          "rva": 38749486,
+          "bytes": "488d5530",
+          "instruction": "lea rdx, [rbp + 0x30]"
+        },
+        {
+          "rva": 38749490,
+          "bytes": "48894530",
+          "instruction": "mov qword ptr [rbp + 0x30], rax"
+        },
+        {
+          "rva": 38749494,
+          "bytes": "e815d72900",
+          "instruction": "call 0x142791c50"
+        },
+        {
+          "rva": 38749499,
+          "bytes": "eb09",
+          "instruction": "jmp 0x1424f4546"
+        },
+        {
+          "rva": 38749501,
+          "bytes": "4883c208",
+          "instruction": "add rdx, 8"
+        }
+      ],
+      "instruction_boundary_proof": "local decode candidate only; not an execution/control-flow or current-player qualification witness"
+    },
+    {
+      "operand_rva": 42552122,
+      "raw_operand_hex": "a6310000",
+      "immediate_decodings": [
+        {
+          "start_rva": 42552121,
+          "bytes": "baa6310000",
+          "mnemonic": "mov",
+          "operand": "edx, 0x31a6",
+          "imm_offset": 1,
+          "imm_size": 4
+        }
+      ],
+      "function": {
+        "index": 139352,
+        "begin_rva": 42551904,
+        "end_rva_exclusive": 42552239,
+        "unwind_rva": 84974928,
+        "row_rva": 99988512
+      },
+      "window_rva": 42552090,
+      "window_bytes": 149,
+      "window_hex": "e2466f01ba10000000488bcbe895436f01837f2cff743a488bcbe847406f01baa6310000488bcbe87a436f01ba01000000488bcbe86d436f018b572c488bcbe8a2466f01ba10000000488bcbe855436f01488bcbe80d406f01ba16000000488bcbe840436f01ba01000000488bcbe833436f018b5730488bcbe8b8456f01ba10000000488bcb488b5c24304883c4205fe911436f01",
+      "window_sha256": "80414cb4c9625df6b2864ddec30c3a6bd7bdbd9f75513152ea9dc2ae93e87e19",
+      "instructions_from_candidate_start": [
+        {
+          "rva": 42552121,
+          "bytes": "baa6310000",
+          "instruction": "mov edx, 0x31a6"
+        },
+        {
+          "rva": 42552126,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 42552129,
+          "bytes": "e87a436f01",
+          "instruction": "call 0x143f88ec0"
+        },
+        {
+          "rva": 42552134,
+          "bytes": "ba01000000",
+          "instruction": "mov edx, 1"
+        },
+        {
+          "rva": 42552139,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 42552142,
+          "bytes": "e86d436f01",
+          "instruction": "call 0x143f88ec0"
+        },
+        {
+          "rva": 42552147,
+          "bytes": "8b572c",
+          "instruction": "mov edx, dword ptr [rdi + 0x2c]"
+        },
+        {
+          "rva": 42552150,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 42552153,
+          "bytes": "e8a2466f01",
+          "instruction": "call 0x143f89200"
+        },
+        {
+          "rva": 42552158,
+          "bytes": "ba10000000",
+          "instruction": "mov edx, 0x10"
+        },
+        {
+          "rva": 42552163,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 42552166,
+          "bytes": "e855436f01",
+          "instruction": "call 0x143f88ec0"
+        }
+      ],
+      "instruction_boundary_proof": "local decode candidate only; not an execution/control-flow or current-player qualification witness"
+    },
+    {
+      "operand_rva": 46637170,
+      "raw_operand_hex": "a6310000",
+      "immediate_decodings": [
+        {
+          "start_rva": 46637169,
+          "bytes": "baa6310000",
+          "mnemonic": "mov",
+          "operand": "edx, 0x31a6",
+          "imm_offset": 1,
+          "imm_size": 4
+        }
+      ],
+      "function": {
+        "index": 153743,
+        "begin_rva": 46637161,
+        "end_rva_exclusive": 46637881,
+        "unwind_rva": 86738128,
+        "row_rva": 100161204
+      },
+      "window_rva": 46637161,
+      "window_bytes": 256,
+      "window_hex": "488bcbe80feb3001baa6310000488bcbe842ee3001ba01000000488bcbe835ee30010fb65706488bcbe8c9f23001ba10000000488bcbe81cee3001807f0701743b488bcbe8ceea3001baab410000488bcbe801ee3001ba01000000488bcbe8f4ed30010fb65707488bcbe888f23001ba10000000488bcbe8dbed3001807f0801743b488bcbe88dea3001baac410000488bcbe8c0ed3001ba01000000488bcbe8b3ed30010fb65708488bcbe847f23001ba10000000488bcbe89aed3001807f0901743b488bcbe84cea3001bafe2d0000488bcbe87fed3001ba01000000488bcbe872ed30010fb65709488bcbe806f23001ba10000000488bcbe859ed3001807f",
+      "window_sha256": "14bf8f320bea8b9322e37af027a2631302cddfd8bf36b07e80a94e12c4096504",
+      "instructions_from_candidate_start": [
+        {
+          "rva": 46637169,
+          "bytes": "baa6310000",
+          "instruction": "mov edx, 0x31a6"
+        },
+        {
+          "rva": 46637174,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 46637177,
+          "bytes": "e842ee3001",
+          "instruction": "call 0x143f88ec0"
+        },
+        {
+          "rva": 46637182,
+          "bytes": "ba01000000",
+          "instruction": "mov edx, 1"
+        },
+        {
+          "rva": 46637187,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 46637190,
+          "bytes": "e835ee3001",
+          "instruction": "call 0x143f88ec0"
+        },
+        {
+          "rva": 46637195,
+          "bytes": "0fb65706",
+          "instruction": "movzx edx, byte ptr [rdi + 6]"
+        },
+        {
+          "rva": 46637199,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 46637202,
+          "bytes": "e8c9f23001",
+          "instruction": "call 0x143f89360"
+        },
+        {
+          "rva": 46637207,
+          "bytes": "ba10000000",
+          "instruction": "mov edx, 0x10"
+        },
+        {
+          "rva": 46637212,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        },
+        {
+          "rva": 46637215,
+          "bytes": "e81cee3001",
+          "instruction": "call 0x143f88ec0"
+        }
+      ],
+      "instruction_boundary_proof": "local decode candidate only; not an execution/control-flow or current-player qualification witness"
+    },
+    {
+      "operand_rva": 46637929,
+      "raw_operand_hex": "a6310000",
+      "immediate_decodings": [
+        {
+          "start_rva": 46637926,
+          "bytes": "4981faa6310000",
+          "mnemonic": "cmp",
+          "operand": "r10, 0x31a6",
+          "imm_offset": 3,
+          "imm_size": 4
+        },
+        {
+          "start_rva": 46637927,
+          "bytes": "81faa6310000",
+          "mnemonic": "cmp",
+          "operand": "edx, 0x31a6",
+          "imm_offset": 2,
+          "imm_size": 4
+        }
+      ],
+      "function": {
+        "index": 153744,
+        "begin_rva": 46637888,
+        "end_rva_exclusive": 46638444,
+        "unwind_rva": 85062936,
+        "row_rva": 100161216
+      },
+      "window_rva": 46637897,
+      "window_bytes": 256,
+      "window_hex": "18574883ec20498bf8488bd981faa84100007f70745781fafe2d0000744981faa6310000741281fadc3700000f85af010000498d500ceb04498d50064881c1c8010000e81fdd310184c00f8599010000488bcb488b5c2430488b7424404883c4205fe9307b3001498d5009ebcf488bd7488b5c2430488b7424404883c4205fe9639a300181c257beffff83fa090f874e0100004863c2488d151a5c38fd8b8c8244a5c7024803caffe18b83c8010000488d35090dba01488d1d1a0dba0189442438488bd34c8d442438488bcee81660c0fd483bc3741a482bc648c1f802884704488b5c2430488b7424404883c4205fc3b006884704488b5c2430488b74244048",
+      "window_sha256": "096a41f89b96d79a9c8d66c0446445143965b85e1b2c77a939a3ae5983f04662",
+      "instructions_from_candidate_start": [
+        {
+          "rva": 46637926,
+          "bytes": "4981faa6310000",
+          "instruction": "cmp r10, 0x31a6"
+        },
+        {
+          "rva": 46637933,
+          "bytes": "7412",
+          "instruction": "je 0x142c7a381"
+        },
+        {
+          "rva": 46637935,
+          "bytes": "81fadc370000",
+          "instruction": "cmp edx, 0x37dc"
+        },
+        {
+          "rva": 46637941,
+          "bytes": "0f85af010000",
+          "instruction": "jne 0x142c7a52a"
+        },
+        {
+          "rva": 46637947,
+          "bytes": "498d500c",
+          "instruction": "lea rdx, [r8 + 0xc]"
+        },
+        {
+          "rva": 46637951,
+          "bytes": "eb04",
+          "instruction": "jmp 0x142c7a385"
+        },
+        {
+          "rva": 46637953,
+          "bytes": "498d5006",
+          "instruction": "lea rdx, [r8 + 6]"
+        },
+        {
+          "rva": 46637957,
+          "bytes": "4881c1c8010000",
+          "instruction": "add rcx, 0x1c8"
+        },
+        {
+          "rva": 46637964,
+          "bytes": "e81fdd3101",
+          "instruction": "call 0x143f980b0"
+        },
+        {
+          "rva": 46637969,
+          "bytes": "84c0",
+          "instruction": "test al, al"
+        },
+        {
+          "rva": 46637971,
+          "bytes": "0f8599010000",
+          "instruction": "jne 0x142c7a532"
+        },
+        {
+          "rva": 46637977,
+          "bytes": "488bcb",
+          "instruction": "mov rcx, rbx"
+        }
+      ],
+      "instruction_boundary_proof": "local decode candidate only; not an execution/control-flow or current-player qualification witness"
+    }
+  ],
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-h12004-20261019/source-discovery-plan03.json",
+    "bytes": 4410,
+    "sha256": "e773a2ef486e3c8c895e959f52c361b77173a5b3b2730951bd689989d52624cc"
+  },
+  "identity_receipt": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-h12004-20261019/exact-file-identity01.json",
+    "bytes": 1080,
+    "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-immediate31a6-discovery04.py",
+    "bytes": 11907,
+    "sha256": "92dc32b1ad32d4855177c76bede075fc42c7b9e104c338a151c0391ad28182bd"
+  },
+  "forbidden_operations": {
+    "target31A7_scanned": false,
+    "callee_or_AI_tree_traversal": false,
+    "EXE_copied": false,
+    "whole_file_hash_repeated": false,
+    "process_Game_RPC_Native_builds": 0
+  },
+  "qualification_claim": false,
+  "current_candidate_or_backup_truth": null,
+  "source_review": {
+    "observed_at_utc": "2026-10-19T07:46:03.876622+00:00",
+    "new_EXE_or_process_reads": 0,
+    "original_locator_output_sha256": "7caf79ecb3f22df8aabec2a9bd5aec9a8aab7c4324fe6ab9b21d2e172d98ca48",
+    "original_output_reconstruction": "Remove only this source_review member; JSON encode ensure_ascii=False,indent=2, append newline. This exactly reconstructs the original locator output above.",
+    "pdata_boundary": "Preserved intervals are exact exception-directory RUNTIME_FUNCTION records. A record can be a split/chained fragment; no complete logical function, class receiver, or producer identity is inferred from its interval.",
+    "local_decode_correction": {
+      "operand_rva": "0x2C7A369",
+      "raw_alternatives_retained": [
+        "0x2C7A366:49 81 FA A6 31 00 00 / CMP R10",
+        "0x2C7A367:81 FA A6 31 00 00 / CMP EDX"
+      ],
+      "already_copied_window_continuous_sequence": [
+        "0x2C7A35F:CMP EDX,2DFE",
+        "0x2C7A365:74 49 / JE2C7A3B0",
+        "0x2C7A367:81 FA A6 31 00 00 / CMP EDX,31A6",
+        "0x2C7A36D:74 12 / JE2C7A381"
+      ],
+      "conclusion": "The earlier longest local decoding consumes the preceding JE displacement49 as a REX prefix. It is not independent CMP R10 evidence. The internally consistent contiguous window sequence uses CMP EDX at2C7A367. This window review adds no reachability or living-player proof."
+    },
+    "candidate_families": [
+      {
+        "pc_rvas": [
+          "0x24F4001",
+          "0x24F4515"
+        ],
+        "source_facts": "First candidate loads EDX31A6 and calls3F88EC0; later reads DWORD[RDI+8] and calls3F89200. Second compares EAX31A6, equal branch adds8 to RDX before call1125940 within the copied window. Receiver/field type, living owner and update producer are not identified.",
+        "relationship_boundary": "Similar token and field+8 are a candidate serialization/parsing pair, not a proved shared object or legal player-heir getter."
+      },
+      {
+        "pc_rvas": [
+          "0x2894B39"
+        ],
+        "source_facts": "Loads EDX31A6, calls3F88EC0; later reads DWORD[RDI+2C] and calls3F89200. Object source and field semantics unknown."
+      },
+      {
+        "pc_rvas": [
+          "0x2C7A071",
+          "0x2C7A367"
+        ],
+        "source_facts": "First loads token31A6, then BYTE[RDI+6] for3F89360. Second token compare equal branch points RDX at R8+6, adds1C8 to RCX and calls3F980B0. The bool-parser target is already source-named by an independent exact.4 topic; no callee bytes read here.",
+        "existing_bool_parser_source": {
+          "path": "docs/ck3-native-ai/bookmark1070-spawn-defaults-native-12004.md",
+          "bytes": 5849,
+          "sha256": "d4994c661afc7a3cef1d170cf5a624d1b7336fceae75a68f9f9d1c7cd8b1a46f",
+          "line": 39
+        },
+        "relationship_boundary": "A raw boolean field keyed player_heir does not supply a qualified Character ID or a complete legal backup pool."
+      }
+    ],
+    "strongest_next_specific_source": "Establish the object receiver and current living owner of the field+8 token31A6 candidate at24F4001/24F4515, then its actual update/getter and original player-continuation qualification caller. Prefer an existing source-bound constructor/caller/vtable identity for this exact pair. No additional code/data/callee expansion performed or automatically authorized by this record.",
+    "second_missing_anchor": "Exact LandState+3A0 cache writer/update epoch and complete native eligible domain with original per-candidate continuation filters; the five numeric consumers do not close it.",
+    "conclusion": "Five immediate consumers source-located. No living player-heir selector/qualifier or complete legal-backup producer is identified; no H provider or runtime/score credit.",
+    "plan_checks": {
+      "ordinary": "a88939 exit0, record/file consistency only",
+      "for_observation": "6accd3 exit2 offline-only/no live producer; unchanged boundary",
+      "initial_CLI_syntax_error": "38b67b --plan rejected, corrected to positional plan before any discovery"
+    }
+  }
+}
