@@ -594,7 +594,42 @@ def query_player_lifestyle_stock_focus_combined_private_v1(
         query_step=STATE_QUERY_STEP,
     )
     if state.get("status") != "available":
-        return {"status": "current_state_unavailable", "state": state}
+        unavailable = {"status": "current_state_unavailable", "state": state}
+        from ..lifestyle_education_focus_scope_v1 import (
+            LIFESTYLE_BINDING_ERRORS, education_focus_frame,
+            qualify_current_education_focus,
+        )
+        if (state.get("status") != "native_query_unavailable"
+                or not isinstance(state.get("native_error"), str)
+                or state["native_error"] not in LIFESTYLE_BINDING_ERRORS):
+            return unavailable
+        reader = getattr(driver, "query_child_education_focus_private_v1", None)
+        if not callable(reader):
+            return unavailable
+        read = (getattr(driver, "take_internal_semantic_snapshot", None)
+                or getattr(driver, "take_snapshot"))
+        before = education_focus_frame(read())
+        try:
+            education = reader(
+                child_full_id=before["player_character_id"],
+                target_key="education_stewardship", expected_revision=expected_revision,
+            )
+        except Exception as error:
+            return {**unavailable, "education_focus_query_error": {
+                "type": type(error).__name__, "reason": str(error),
+            }}
+        after = education_focus_frame(read())
+        qualified = (
+            qualify_current_education_focus(education, before, expected_revision=expected_revision)
+            if before == after else None
+        )
+        return {
+            **unavailable,
+            **({"status": "education_focus_not_applicable",
+                "education_focus_source_frame": before,
+                "education_focus_scope": qualified} if qualified is not None else {}),
+            "education_focus_query": education,
+        }
     focus = query_player_lifestyle_focus_private_v1(
         driver, expected_revision=expected_revision, query_step=focus_step,
     )

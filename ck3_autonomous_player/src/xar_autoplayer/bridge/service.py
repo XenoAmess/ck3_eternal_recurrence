@@ -1793,9 +1793,11 @@ class GameplayBridgeService:
         """Return a detached public plan after its private readers finish."""
         plan_timing = start_army_timing("service.normal_plan_turn")
         try:
-            planned = self._plan_turn_internal()
+            planned = _timed_planning_call_v1(
+                "service.planner_internal", self._plan_turn_internal)
             from .ordinary_sway_service_v1 import stage_ordinary_sway_v1
-            planned = stage_ordinary_sway_v1(self, planned)
+            planned = _timed_planning_call_v1(
+                "service.planner_sway_staging", stage_ordinary_sway_v1, self, planned)
             from ..vanilla_events.rite_growth_material import (
                 capture_rite_growth_fulfillment_observation_v1,
                 plan_rite_growth_material_postcondition_v1,
