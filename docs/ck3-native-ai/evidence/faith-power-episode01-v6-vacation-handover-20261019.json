@@ -1,0 +1,73 @@
+{
+  "schema": "faith-power-episode01-v6-vacation-handover-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T01:39:27.349244+00:00",
+  "handover": "docs/handover/2026-10-19-faith-power-episode01-v6-handover.md",
+  "native_qualified_source_commit": "707f456bd318ba1fe7bb94b3be10dd6e1c3e2326",
+  "handover_base_commit": "68a2e127bded717508f2475f409fc2e83e4d2118",
+  "native_qualification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a15-cold-presentation\\qualification-a01.json",
+    "bytes": 9044,
+    "sha256": "cf7732df6aea800475ece31de11215ba533a1f92c95927ecc88ecfda3619f50b"
+  },
+  "R26_stop": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0026\\root-unused-allocation-stop-proof-a01.json",
+    "bytes": 1337,
+    "sha256": "e7c1d7b1cd9ec34a286d8f16c2702aec654e88d3512eb95aa996a5d1292948c9"
+  },
+  "R26_CAS": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0026\\root-screen-release-a01.json",
+    "bytes": 1669,
+    "sha256": "15d865176c6e39a59541f553e2b9635d0b0fecf66eb3884a0b3ae0ddf1dbe3b6"
+  },
+  "R26_capacity": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\VACATION-CAPACITY-CLOSED-a01.json",
+    "bytes": 3643,
+    "sha256": "2ba9b4487bceeccf8669f11610b3fc2ba14e1b0a3cec558c3c369083a5661c30"
+  },
+  "a27_final_admin_task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "68a2e127bded717508f2475f409fc2e83e4d2118"
+    },
+    "last_sequence": 11997,
+    "next_step": "No-automatic-resume-colleague-handover-fresh-source-and-unrun-predecessor-required",
+    "pid": 19856,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R26-unused-allocation-stopped-actual-wait0-CAS11996-no-game-native-or-recording",
+    "task_id": "faith-e01-shared-a27",
+    "updated_at_utc": "2026-10-19T01:39:14.743415+00:00",
+    "age_seconds": 12,
+    "stale": false
+  },
+  "authoring_stop": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v6-production-a01\\authoring\\visual-v6-a01\\VACATION-HANDOVER-a01.json",
+    "bytes": 3642,
+    "sha256": "27a4d1c365da22b2ae9f167da85b2541effcba712542c7b85f457881e868e2f9"
+  },
+  "D1_binding_delivery": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v6-20261019\\root\\d1-capture-binding-a03\\DELIVERY.json",
+    "bytes": 1870,
+    "sha256": "1f6a66ac8b4b7841e82a927b032d46f29951c3f2dbdb008755bb27955eab61b7"
+  },
+  "game_started_R26": false,
+  "native_session_started_R26": false,
+  "normal_close_qualified_R26": false,
+  "business_pass_R26": false,
+  "native_P15_live_presentation_qualified": false,
+  "V6_final_video_exists": false,
+  "authoring_content_ready": false,
+  "voice_cues": 135,
+  "subtitle_groups": 460,
+  "frames_30fps": 76832,
+  "estimated_total_work_percent": 75,
+  "percent_is_weighted_estimate": true,
+  "further_media_work_authorized_by_this_handover": false,
+  "root_docs_task_still_running_until_commit_push": true,
+  "retention_deadlines_not_reset": true,
+  "no_cleanup_performed_for_handover": true
+}

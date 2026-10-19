@@ -1,8 +1,8 @@
 # CK3 信仰与权力拍摄交接
 
-**2026-10-19现行接手要求：先读[系列研究与讲解方法](docs/production-lessons.md)，再写稿、配音或开拍。** 以玩家目标组织工作，追清机制因果、各主体的权责和利益，比较选择并回流智能体能力。下文2026-10-17的待拍状态是初始交接截点，当前使用[一期v5及研究／MCP更新](../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)，接手时复用已有成果和其具体资格边界。
+**2026-10-19现行接手要求：先读[系列研究与讲解方法](docs/production-lessons.md)，再写稿、配音或开拍。** 以玩家目标组织工作，追清机制因果、各主体的权责和利益，比较选择并回流智能体能力。**最新恢复入口为[2026-10-19一期V6休假交接](../../docs/handover/2026-10-19-faith-power-episode01-v6-handover.md)**：135段／42:41.067的新声音与字幕已完成，缺原版画面、合成及最终编码。R26已分配但从未启动，现场已释放，不能沿旧目录重复启动。下文2026-10-17为初始交接截点，[一期v5](../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)是历史审阅交付，复用时保留具体资格边界。
 
-同时读[制作经验](docs/production-experience.md)，将已归纳的指导用于本次写稿和审片。[第五轮整体重排](docs/episode01-revision-v5.md)已将双向跨宗教采用纳入一期主线，补完整条件、主体后果、建筑分类与实例，并重新编排顺序和转场。R19创建新信仰与R22编辑现有礼仪是两个不同的实际模式，不能照搬准备；影片入口和后续检查见v5交付页。
+同时读[制作经验](docs/production-experience.md)，将已归纳的指导用于本次写稿和审片。[第五轮整体重排](docs/episode01-revision-v5.md)已将双向跨宗教采用纳入一期主线，补完整条件、主体后果、建筑分类与实例，并重新编排顺序和转场。R19创建新信仰与R22编辑现有礼仪是两个不同的实际模式，不能照搬准备；历史影片见v5交付页，剩余制作按最新V6交接执行。
 
 > **2026-10-18 后续拍摄约束：** 左上蓝色旧智能体面板已废弃，所有新录制不再启动或挂载它。不要复用历史 `decision_overlay*.py` 拍摄 helper；旧素材可保留，无须为此重录。共享 recorder 在新 take 前拒绝残留旧面板，原版 GUI、新版 decision UI 与决策记录照常使用。新 allocation 必须按当前源码重新准备并 pin recorder，不能修改旧冻结 runtime 追认新规则。详见[迁移说明](integration/legacy-decision-panel-retirement.md)。
 
