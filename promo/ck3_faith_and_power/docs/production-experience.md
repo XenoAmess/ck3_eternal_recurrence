@@ -194,3 +194,17 @@ R25 已有原版信仰总览与个人信念静帧。原小索引记录，个人�
 ## 2026-10-19 R30：先清锁定提示，再拍确认页
 
 `machine_id: 4-8e1c2f1861`，R30于2026-10-19T07:25:24Z释放。确认窗的六项off／context／visible／hidden原生资格与正文画面分别验收；旧locked tooltip遮住正文时不能用开窗成功填图。下一场优先拍两类教士确认页，已取得的两核心不重拍，需清提示时用原版CloseAllTooltips的query→一次action→独立清栈后验。建筑中“无下一等级”可能是非零canonical Null，不能把地产页或ACK当作建筑正文，也不为补图修改建造条件。两核心a29已直接审图，当前12句缺画面；完整编码／human1x仍待。实际研究与收场证据见[续作记录](../../../docs/ck3-native-ai/faith-power-v6-resume-20261019.md)。
+
+## 2026-10-19 R32：按实际身份补足解释，并让失败保持可见
+
+`machine_id: 4-8e1c2f1861`；截至2026-10-19T09:43:09Z的实际记录。P18原编译和唯一导航fixture均退出0，来源98ee；R32的8efe只凭逐文件源码等价复用原DLL，不能说在后继HEAD重编。R31在allocate后未启动即到期，保留真实单completed/CAS12173、7,413,760 B/future0；不能用它的桌面图或退出记录补一场实机。当前可用性仍由R32自己的原生读回和原图决定，编译、复用与现场资格各自回链[展示专题](../../../docs/ck3-native-ai/faith-power-presentation-ui12004-v6.md)。
+
+**保留实际对象的名字，再用来源图解解释未显示的目标。** R32最终八张原图中，自己的司祭确认页及四个目标建筑本体已有清楚画面；另有雅典现有诞神女教堂、大王宫废墟和亚美尼亚礼仪地产空槽。当前建筑不是目标版本时，图面保留真实名称，条件卡另标原版源码。例如教堂01不改称清真寺02，废墟01不改称复建02，通用神庙美术不改称主教座堂。完整Construct候选仍缺，空槽“租户或事实上领主”的局部提示也不填成完整建造许可。四个目标本体与五个缺失目标的来源规则分别见[建筑专题](../../../docs/ck3-native-ai/faith-power-building-track207-v6.md)。
+
+**失败要定位到实际返回的层，不能用相近条件解释。** 本场教宗国实际持有人30490已由title-map和独立title-holder核实，external默认context仍在聚合守卫拒绝。现结果不能区分原生is_shown、角色/default结构或读取失败；发送资格false也不直接挡预览。因此没有把拒绝写成“缺强钩”。SC10采用成功取得的own司祭原窗口、既有信仰页的类型身份示例和来源条件卡；后者没有30490图像ID绑定，不能冒充本场教宗人物页或外部窗口。own画面的100虔诚是报价，没有付款或Send。[傀儡预览专题](../../../docs/ck3-native-ai/faith-power-clerical-preview-12004.md)保留实际条件与未分型边界。
+
+**解析修正应保住原生失败，而不是将其改成成功。** 全局tooltip query真实返回source/owner/frame未核实，Python却先抛出旧army空census错误。a12仅区分虚拟global stack与army窗口：一次离线replay和4项focused检查通过后，原native unavailable、null receipt、未派发clear如实可见，原army反例继续拒绝。完整建造条件、typed tooltip join和清栈业务仍未取得；不为修一条错误文案重启现场或补造窗口。
+
+**素材封存、进入作者输入、成片验收继续分别记录。** [R32最终index-a02](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/ORIGINAL-GUI-CAPTURE-INDEX-a02.json)27,497 B／SHA `635e5d7ae96e29c8aa650116d6be85e98bdc75c0d4af2945a3a267f7c35bfb30`记录八图及operator／Root直接审阅，本次文档整合未新增审图。[a35交付](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/authoring/r32-final-lineage-a35/DELIVERY-a35.json)把八个wrapper、12句增量绑定到最终索引；后继[a36交付](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/authoring/SC28-canonical-holder-a36/DELIVERY-a36.json)只纠正SC28地产持有者与伯爵领持有者的称谓，重产这一张样板，其余像素规格相同。Root直接审阅后封a08，最终合并选择为a17＋a29＋a36，不重复加入a33/a34/a35相同行。原声和声钟未变，未授完整编码或人工1倍速听看；不能把已有源图和成功的薄封装算成最终影片已完成。
+
+**正常退出和任务结果分开闭账，派生回收只记实际删除。** R32已经原生GUI正常退出并由retained HANDLE读到OS0，public原wait0；host原wait1/report RED保持，keeper／allocator原wait0，09:32:39Z原CAS12208为DONE/resources=[]。实际[容量闭账](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/CAPTURE-CAPACITY-CLOSED-a01.json)记录628,764,672 B/future0，无新save、world Confirm、日期推进或录制。此前经逐文件来源、当前引用、保护和配方复核，六组旧review派生1,034个MP4已分两批精确unlink，实际AllocationSize下限1,038,503,936 B仅扣账一次；原raw/audio/stills及small manifests/audits/ASS/concat与V5比较基线保留。旧精确MP4已不可读取，不继续借历史local-delivery入口声称其可读；保留原件和配方允许按依赖重建，也不承诺逐字节复现。来源为[实际回收闭账](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/RECLAIM-a10-CLOSED.actual.json)，SHA `07c8ba1d3ef260e03ad2fc9dcd7be310253a2d1e1f8c07bf394cb6fe66612f08`。卷free、未用预留取消和真实删除是不同量，不能互相替代。

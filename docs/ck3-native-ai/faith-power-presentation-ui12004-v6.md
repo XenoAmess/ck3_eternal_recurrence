@@ -145,3 +145,30 @@ R24的原游戏、public、host和keeper均实际正常退出，CAS11953已释�
 原 `leave` 只清hover，不关闭已锁定的其他提示。R30的继承说提示遮住own教士确认页，原open/query/close/hidden资格不能补足被遮挡正文。原版 `game/gui/preload/tooltip.gui` 的CloseAllTooltips动作注册链为 `0x36F21→0xAB5500→0xA8F4E0`；noarg bool wrapper只发延后清理，GUI update `0x3AB26B0`消费`+42C`并经`0x3AA8620`隐藏原roots／清count。新有限路由仍用既有faith-power query/present工具，`window_kind=tooltips,subject_id=0`，拒绝target/index/tab或任意GUI动作。先独立query取nonce，再一次`close_tooltips`，最后同nonce的更晚owner query必须读到deferred0/count0及原roots双读hidden，才称cleared。ACK仅pending，未知不重发；不会直接写GUI标记，也不降低typed tooltip source/top_locked/text join。
 
 有限原字节spans与注册/MCP合同检查见外置`resume-20261019/tooltip-readback-research/r30-locked-tooltip-clear-a01/a02/DELIVERY.actual.json`，7,427 B／SHA `b404af7c1f341e17a1e32d9a66455c84016e7f4d7882373f8426912788626aa6`。两修复停场后已合入，27项Python/MCP检查实际通过（native transport仍为合成）。P18实际编译／唯一导航fixture和R31真实清栈／建筑正文均待完成，不能由静态源链取得新实机资格。
+
+## P18、R31未启动闭场与R32最终采集（2026-10-19）
+
+`machine_id: 4-8e1c2f1861`；以下更新截至2026-10-19T09:43:09Z，上文的pending均保留为当时截点。P18实际编译来源为`98ee48319f947624654a8b73b58aedc15fb994da`：07:40:54Z原build wait0，07:41:12Z既有navigation fixture原wait0，随后seal0。DLL为14,779,904 B／SHA `8bbface041e892eb878d50829f6d1a2f5ff76006956b56f47c79c0389573a12a`；[Root编译闭账](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/NATIVE-P18-ROOT-REVIEW-CLOSED-a01.json)1,603 B／SHA `28c7fcedbc072b1d71b5309d44afddb1da38f0ad4f34aa5f5f7bca6b1085a8c3`只授其实际编译／夹具范围。R32冻结源码为`8efe5f985b78b1db1530e48a2f05da7c30bea89e`，沿[逐pin源码等价复用记录](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/capture-d1-a05/p18-source-reuse-a01/SOURCE-EQUIVALENCE-a01.json)核同3,783项／41,536,564 B；不是在8efe重新编译，也不把远端其他功能授予实机资格。
+
+R31先前allocate后600秒idle到期，host/native session/CK3/录制均未启动。原CAS12173直接completed/DONE/resources=[]，实际保留7,413,760 B/future0；两张桌面图不能追认过期开场或复用为R32离线资格。实际bundle及后继单completed合同处理见[续作记录](faith-power-v6-resume-20261019.md)，不将R31记为正常CK3退出或一次业务尝试。
+
+R32保存八张2560×1440原图，唯一最终依据为[ORIGINAL-GUI-CAPTURE-INDEX-a02.json](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/ORIGINAL-GUI-CAPTURE-INDEX-a02.json)，27,497 B／SHA `635e5d7ae96e29c8aa650116d6be85e98bdc75c0d4af2945a3a267f7c35bfb30`，封存于09:32:12Z。原图由索引列明的operator／Root直接审阅；本次文档整合只读其小索引，不新增审图信用。
+
+| UTC | 实际原版对象 | 本场可用范围 |
+|---|---|---|
+| 08:34:22 | own court-chaplain58490默认确认页 | 六项off、接受度+85、100虔诚报价可见；未发送、未付款 |
+| 08:42:33 | `holy_site_great_mosque_of_mecca_01` | 麦加现有建筑完整本体、当地收益、说明及不可升级页脚 |
+| 08:54:48 | `hagia_sophia_01` | 圣索菲亚大教堂01；不是清真寺02 |
+| 08:56:20 | `dome_of_the_rock_01` | 圆顶清真寺；不是第三圣殿 |
+| 08:56:44 | `brihadeeswarar_temple_01` | 苾利诃地湿伐罗神庙现有本体；创新及宗教条件另据源码解释 |
+| 08:57:11 | 雅典现有诞神女教堂 | 地点与不同建筑的原版锚，不是帕特农神庙本体 |
+| 08:57:40 | 亚美尼亚礼仪地产的空特殊槽位 | 实际空槽／租户或事实上领主限制；通用神庙美术不是主教座堂 |
+| 09:06:04 | `palace_of_ctesiphon_01`，省份4796 | 大王宫废墟01；不是复建02，也不把巴格达县都4828当该地产持有人 |
+
+九个教学目标中只取得四个目标本体；另五个缺失目标由真实当前对象配明确标注的原版源码规则图解解释。六个现有建筑本体、七处地产、八张原图是不同计数，不能合称九目标均已拍到。精确对象／source phase／未得条件见[建筑专题](faith-power-building-track207-v6.md)；自己的确认页与外部聚合拒绝见[傀儡预览专题](faith-power-clerical-preview-12004.md)。R32只恢复已有历史准备的D1母档，没有重放A/B准备、教改、采用、世界Confirm、推进日期、付款或新存档。
+
+P18的精确canonical Null冷修在本场麦加installed-row悬停实际越过了R30的definition identity拒绝，取得source_bound、原调用ACK和独立原图；这只闭合该行的来源准入与已读像素，typed tooltip source/top-stack join仍没有GREEN。麦加207开轨道仍在原callback admission前拒绝，未派发；完整Construct条件窗口／候选未取得。不能用已建成建筑的收益正文或空槽局部限制替代完整建造许可。
+
+全局`tooltips`首次query的真实native结果仍为`tooltip_stack_exact_source_or_owner_frame_unverified`，receipt=null，未派发clear。Python把其无root／count0／空scope错误套进旧army ACK guard，掩盖原原因；[a12离线修正与一次replay](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/research/r32-tooltip-contract-a12/DELIVERY.a12.json)只使这条native RED可正常返回。4项focused检查及patch check通过；global虚拟窗仍拒绝root、非空census、truncated和其他scope，available仍严格`tooltip_stack`，原army guard保持。没有新实机清栈、source-owner通过或像素资格。
+
+R32经原生GUI正常退出，原retained HANDLE实际OS0、public原wait0，host原wait1／report RED，keeper和allocator原wait0；三类退出值分别保留，不能用public0覆盖host RED，也不能用进程消失代替正常退出。09:32:39Z原CAS12208完成DONE/resources=[]。[实际容量闭账](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/CAPTURE-CAPACITY-CLOSED-a01.json)4,980 B／SHA `87de9f073ff1521182a871c4dd19b1c8356e394339471c63d2c7af1bba651456`记录retained628,764,672 B/future0、无录制和新存档；必要source／RED证据保护不迟2026-10-26复核，不自动续TTL。以上没有完成V6正式整片编码或人工1倍速听看。

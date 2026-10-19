@@ -342,7 +342,13 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                         or confirm.get("parameter_holy_site_id")!=subject_id or confirm.get("selected_holy_site_id")!=subject_id):
                     raise ValueError("original Confirm attempt lacked actual key/parameter/entry and regular native legality")
     global_tooltip_stack = expected_build == CK3_12004 and kind == "tooltips"
-    if unopened_current_select_ack or absent_presentation_query or global_tooltip_stack:
+    if global_tooltip_stack:
+        # The global manager has no widget-tree root. Native pre-admission
+        # failures return an empty scope; later failures retain tooltip_stack.
+        allowed_scopes = {expected_window} if value["available"] else {"", expected_window}
+        if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") not in allowed_scopes:
+            raise ValueError("global tooltip stack must keep an empty virtual-window census")
+    elif unopened_current_select_ack or absent_presentation_query:
         if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") != expected_window:
             raise ValueError("unopened army ACK must keep an empty target-window census")
     elif value["available"] and (not tree["root_available"] or count < 1 or tree.get("scope_root_name") != value.get("window_name")):

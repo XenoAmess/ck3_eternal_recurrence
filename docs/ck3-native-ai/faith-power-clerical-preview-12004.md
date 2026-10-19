@@ -73,3 +73,29 @@ Confirmation primary vtable=`0x45250E8`、secondary=`0x45250C0`、type descripto
 `machine_id: 4-8e1c2f1861`，2026-10-19T06:45–07:08Z。当前court-chaplain58490来自实际campaign root；原默认query→open→独立visible/context一致／六项off→close→独立hidden已成立，无Send。但两张确认页原图都受旧locked继承说提示覆盖，不授完整正文画面。外部候选30490只来自相邻角色31531的当次liege关系，默认query实际拒绝default_context_not_qualified，receiptnull/dispatchfalse/未open，不能称其教宗或归因某个未返回的具体触发分支。
 
 `d_papacy`定位实际title_key_not_found；原版`common/landed_titles/00_landed_titles.txt:68`的真实key为`k_papal_state`（SHA `fc8ea76e8bcc8c3aa8557dfb7226dc75b4aee8830e906c434754599ab8c75f55`）。下一场有限title map必须先取真实holder完整ID，再核默认context；原版is_shown要求双方同Faith、recipient为clergy且ruler，并排除actor本身、own realm-priest和own clerical puppet。title key存在不证明当前持有人满足这些条件。来源小件`resume-20261019/EXTERNAL-CLERICAL-TARGET-SOURCE-a01.json` 2,600 B／SHA `7aad5d5bed6d3922a5860f0ba781d53c9e578d7704084a70ad83ce32a10413ec`；原会话未新增head ID查询。
+
+## R32干净own窗口、真实外部身份与未分型拒绝（2026-10-19）
+
+`machine_id: 4-8e1c2f1861`；本节依据08:34–08:38Z实际小回执及09:32Z最终原图索引更新，上文未编译／首次root待验及R30遮挡是各自历史截点。R32使用P18实际DLL与98ee→8efe源码等价复用，具体编译来源见[展示专题](faith-power-presentation-ui12004-v6.md)。本场typed root确实已初始化；不因此保证任意未来冷载均有root。
+
+同一campaign-root council读到actor31254的court-chaplain为58490。默认query→一次open→独立visible/context相同→close→独立hidden均已实际成立，key为`make_clerical_puppet_interaction`，kind0、needs_confirmation=true、六个固定flag／bank0／全部off。08:34:22干净原图显示“傀儡领地司祭”、实际对象、接受度+85及100虔诚报价；这是预览报价，没有Send、支付或关系变化。原图与全部五步native回执由[最终index-a02的screenshots/0](C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0032/ORIGINAL-GUI-CAPTURE-INDEX-a02.json)绑定，PNG SHA `59dbcc0b47bb7eb76d4f767854fff1eda01934305b16c64e9ae656b32d4c3d6d`。这里复用operator／Root的原图审阅，不新增直接审图记录。
+
+外部身份缺口部分闭合：08:38:38Z实际title-map解析`k_papal_state→TitleID4`，08:38:43Z独立title-holder读到30490，immediate_liege=null、top_liege=30490、不在玩家领地。30490已能准确称为“本场教宗国持有人”，不再仅由相邻人物liege推断；这些字段仍未分别证明其Faith、clergy及其余互动条件。08:38:46Z external默认query仍返回`clerical_preview_default_context_not_qualified`，receipt=null、dispatch=false、未open。
+
+拒绝准确归到provider的`ReadDefault`聚合false，**尚不能分型为原生is_shown=false或某个具体trigger失败**。`ExecuteClericalPreview12004`已经越过exact source/owner/frame及initialized typed root，回执root_bound=true；`ReadDefault`丢弃`Prepare`的Observation细分reason，再把definition/kind、角色与alive、六项default shape、is_shown、needs_confirmation、双读一致性合成一个bool。`default_context=null`表示没有发布合格完整对象，不证明构造从未发生；失败先于window_exists赋值，其false也不能覆盖typed root已通过的事实。`Prepare`要求can_send读取调用成功，却不因can_send=false而拒绝预览，因此不能把本次失败归因为“教宗缺强钩”。当前没有返回精确失败分支，不扩大业务支持或放宽guard。
+
+原版external的is_shown（脚本273–284）要求双方不同且同Faith、recipient为clergy+ruler，并排除own司祭／own theological puppet，不要求独立。kingdom tier涉及的强钩等位于can_send（316–362），不能由title身份反推其native结果。[a11实际来源与诊断](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/research/r32-external-preview-a11/DELIVERY.a11.json)SHA `b33b4abd1557465237e4a95f6ed170ad0f58147a075488ae59c5c98e5ba50baf`保存9个小回执、6份现源码／脚本／文档SHA及未知边界；没有新增游戏调用或外部窗口。
+
+SC10采用已取得的own原版大图、既有天主教信仰页P02的“信仰领袖／你的总主教”类型身份示例和明确标注的来源条件卡。P02没有30490图像ID绑定，不能称为本场30490人物页，也不把own窗口换标题当external窗口。最终[a35来源范围](C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/resume-20261019/authoring/r32-final-lineage-a35/R32-FINAL-SOURCE-SCOPE.a35.json)明确external_interaction_window_obtained=false、100虔诚paid=false/sent=false；作者候选不是整片编码或人工听看完成。
+
+来源条件卡的三个教义键须保留类别和本地化差别：
+
+| key | 简中原版名称 | 作用域 |
+|---|---|---|
+| `doctrine_theocracy_temporal` | name“神权制”；“圣职专权传统”为类别措辞 | own司祭条件取此项；external三项OR之一 |
+| `doctrine_monasticism_accepted` | name“接纳”，descriptive_name“接受隐修” | external三项OR之一；口播“接纳隐修”不是原版descriptive_name逐字全文 |
+| `doctrine_monasticism_encouraged` | name“鼓励”，descriptive_name“鼓励隐修” | external三项OR之一 |
+
+`pam_scripted_triggers.txt:1211–1220`给external三项OR及其余外层条件，`:1223–1229`给own司祭条件；复用前表SHA `0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e`。`religion_l_simp_chinese.yml:837,995–999`为上述名称，SHA `1ba3f480f5255d3def8e9c968544daa2f5f4ee4ff40a9e214e60d623cc461d5c`；`religion_doctrine_triggers_l_simp_chinese.yml:42`为类别措辞，SHA `b878f4cc9f9dbc2f94898c09cb896ca682c17e82f34e0967f541b2ad2dd65ca0`。这些是静态条件，不追认本场external默认context合格。
+
+R32实际原生GUI＋retained HANDLE OS0、public0、host1 RED及CAS12208/future0分别保留，见[展示专题的最终闭场记录](faith-power-presentation-ui12004-v6.md)。全局tooltips原生source/owner拒绝和a12仅修Python错误遮蔽，不补授外部预览、清栈或业务资格。

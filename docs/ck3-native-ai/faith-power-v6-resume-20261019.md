@@ -2,6 +2,32 @@
 
 用户于2026-10-19明确要求阅读[休假交接](../handover/2026-10-19-faith-power-episode01-v6-handover.md)并继续研究与拍摄。交接中的停工是当时事实，本轮恢复沿现有135段、460组双语字幕、76,832帧声钟及生产链继续；V6尚无最终成片。
 
+## 2026-10-19T09:48Z：补拍结束，进入最终作者合并
+
+`machine_id: 4-8e1c2f1861`。以下为本轮实际结果，后文各时点记录保留。R32/a33已正常无保存退出：原生关闭与原保留进程HANDLE均确认CK3 OS0，原public wait0、allocator wait0、keeper wait0，09:32:39Z真实CAS12208为DONE/resources=[]。原host wait1和报告RED因查询失败保留，不写成整场业务通过。未推进日期、执行世界Confirm、付款、建立傀儡关系、创建新存档或录制新raw。
+
+最终八张教学原图由Root逐幅直接审阅：自家领地司祭完整默认确认页；麦加大清真寺、圣索菲亚大教堂01、圆顶清真寺、Tanjavur神庙、雅典当前诞神女教堂、埃里温空特殊槽及泰西封王宫遗迹01。九个讲解目标中仅四个取得目标本体；清真寺02、第三圣殿、帕特农、王宫02和主教座堂缺少各自目标正文，按原交接第134行允许的真实当前对象配有来源的机制说明制作，不能把当前阶段改名为目标阶段。完整Construct候选与全部条件未取得，埃里温实际禁用原因只证明承租人/事实领主这一门槛。原版Null-next建筑读取守卫已在麦加正文实际验证；这不证明所有建筑建造合法性。
+
+原图与原生来源最终索引为外置 `L32/ORIGINAL-GUI-CAPTURE-INDEX-a02.json`（27,497B，SHA-256 `635e5d7ae96e29c8aa650116d6be85e98bdc75c0d4af2945a3a267f7c35bfb30`）；L32为 `EP/live/4-8e1c2f1861--faith-and-power--R0032`，EP沿本文本机路径。Root对SC10/a33构图已接受；建筑九张合成已直接审阅，仅SC28非原版称谓纠正后合入最终增量。135段/17章/460组字幕/76,832帧保持，正式输出沿冻结2560×1440配置；此时完整编码与完整人工1倍速听看片仍未完成。
+
+R32容量在09:43:09Z对五个精确新增根只读元数据闭账，保守保留含收尾guard **628,764,672B/future0**，当时卷free110,540,587,008B。`CAPTURE-CAPACITY-CLOSED-a01.json`（4,980B，SHA-256 `87de9f073ff1521182a871c4dd19b1c8356e394339471c63d2c7af1bba651456`）已包含最终a02索引；没有删除、重新占用现场或扩展拍摄。`PREDECESSOR-READY-a01.json`仅证明现有公共前驱闭场消费，不新增业务信用。
+
+### P18来源、未启动R31与实际容量回收
+
+P18原编译仍为clean `98ee48319f947624654a8b73b58aedc15fb994da`：07:40:54Z原build wait0、07:41:12Z唯一导航fixture wait0、seal0。沿既有MSVC Release/jobs8两目标，CMake自动再生后实际586个CXX单元及3次link；DLL14,779,904B，SHA-256 `8bbface041e892eb878d50829f6d1a2f5ff76006956b56f47c79c0389573a12a`。Q/同字节seal各78,463B，SHA-256 `995d739f7236e1ab948bebee960d5b2b1108aaacb0743f3203bc2409ea668295`。Defender为同管理员token直接设置并实际读回，非SYSTEM分支。P18含guard保留21,288,692B/future0，来源 `NATIVE-P18-ROOT-REVIEW-CLOSED-a01.json`。
+
+R31/a32原600秒idle于07:59:09Z到期，CK3/host/native/录制从未启动；实际allocator0、keeper0及08:03:57Z原CAS12173单completed/DONE/resources=[]成立。公共unrun旧合同只接受status→completed，已最小支持同一真实单completed路径，严格绑定两canonical原事件/任务/偏移/SHA、keeper先后、current task与closed lease，仍拒绝混源及重复序号。08:14:34Z真实原包消费0，优化模式两正向/22反例通过。原R31含guard保留7,413,760B/future0，不授正常CK3退出信用；原件为 `r31-unrun-closure-a01/ALLOCATED-UNRUN.actual.json`。Root曾提出追加done状态，读installed CLI后发现也会产生completed，及时撤回；实际没有追加事件或改写12173。
+
+修正正常rebase远端后推送 `8efe5f985b78b1db1530e48a2f05da7c30bea89e`。R32明确复用原P18：3,783项native/CMake及source-contract文件、41,536,564B和文件集合逐pin相同；保留原编译commit、Q/seal与DLL，actual_build_performed=false，不将新HEAD追认为重新编译。来源 `capture-d1-a05/p18-source-reuse-a01/SOURCE-EQUIVALENCE-a01.json`，SHA-256 `b3a7f086873a00786a5cedfc5b2e484cfa9c350c3659a31d2740ddd397d70644`。8efe官方CI39221639330已实际completed/success，08:56:44Z更新；linear39221639703也成功。CI worker machine_id unknown。本机只读终态回执 `tooltip-readback-research/ci8efe5f9-a01/TERMINAL-REVIEW-a02.actual.json`（3,957B，SHA-256 `6be79de27210d73cb1d098783ae1f74be87082b3e321de40919a7db45b4dea2b`）。98ee旧fixture失败仍保留为历史RED。
+
+本轮依通用策略对六组已替代、可由保留输入重建的review派生执行精确回收：1,034个MP4分1000+34两批于07:41:13Z和07:41:44Z实际unlink0；1,374个当前必要输入与V5比较基线排除并核身份未变。logical1,036,372,953B、实际AllocationSize下限 **1,038,503,936B**只扣一次；旧精确MP4不可读，配方可重建不保证编码字节相同。没有递归删目录、删除raw/音频/截图、把未用预留算腾空或重置TTL。闭账 `RECLAIM-a10-CLOSED.actual.json`（4,499B，SHA-256 `07c8ba1d3ef260e03ad2fc9dcd7be310253a2d1e1f8c07bf394cb6fe66612f08`）。作者128MiB/研究16MiB/Root16MiB原累计额度仅续时间至10:36:53Z，不补回已花容量；旧素材必要保护复核仍不晚于10月26日。
+
+### 两个真实接口缺口的处置
+
+外部神职预览通过实际k_papal_state→kingdom title4→holder30490定位及来源/owner/frame检查后，ReadDefault聚合失败；现有聚合吞掉具体谓词，无法断定是is_shown、默认形状、角色绑定、needs_confirmation或读取异常。不能推断为缺强钩或教宗必不符合，未发送、未付款。自家司祭58490实际默认六选项均off、报价100虔诚及+85接受度，正常打开/关闭后独立可见性读回成立；100是该次报价，不外推所有目标固定费用。SC10以完整自家确认页和已标身份示例、机制条件图解交付。详见[神职预览专题](faith-power-clerical-preview-12004.md)。
+
+全局tooltip查询实际native为 `tooltip_stack_exact_source_or_owner_frame_unverified`、available=false、零派发。Python旧解析错误套用army空窗错误，遮蔽原原因；已应用最小独立虚拟tooltip census分支，available时严格tooltip_stack，unavailable时仅接受空scope或tooltip_stack，root/count/truncation继续拒绝，army分支不变。实际R32原包回放及四项聚焦检查已通过；只修诊断，native clear/source join仍RED、receipt仍null。来源 `research/r32-tooltip-contract-a12/REPLAY.actual-a12.json`（1,850B，SHA-256 `dc9fa17146900fc15170c7c764eb67f578cba46708c65e1cfe441c1a64fd9538`）；未为此再冷载或冒称清除成功。
+
 `machine_id: 4-8e1c2f1861`。2026-10-19T01:50:10Z实际运行 `tools/ck3_live_run_id.py machine` 并查询进程，机器身份与交接一致，当时没有CK3或录制进程。任务总线原屏幕任务已释放，没有当前屏幕owner；这些观察不代替下一场新鲜Steam离线图、实际EXE绑定或运行资格。
 
 本轮工作按实际资源拆分：唯一操作者负责R26未启动闭场适配、P15来源等价核对、D2后D1的原版界面补拍；作者继续当前S/a10的构图、真实原片区间与来源绑定；研究线程把新观察接回已有原生专题和智能体知识；Root协调容量、源码交付和后续正式剪辑准入。运行期间owner checkout保持clean，文档和代码候选先写外置，闭场释放后再合入。
