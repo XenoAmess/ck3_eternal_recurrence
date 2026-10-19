@@ -1,0 +1,110 @@
+{
+  "schema": "xar.ck3.native07-defender-canonical-broker-readonly/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:27:30Z",
+  "machine_identity_source": "Actual py -B tools/ck3_live_run_id.py machine returned xenoamess-full-tower-eb9d2c1186 during this diagnosis",
+  "disposition": "FIXED_CANONICAL_ORDINARY_BROKER_UNAVAILABLE_IN_CURRENT_TOKEN_NAMESPACE",
+  "current_sources": {
+    "client": {
+      "path": "Z:/ck3_mod_rewrite/tools/project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8",
+      "matches_Native07_frozen_client_pin": true,
+      "source_seams": "21-26 fixed policy/task;191-200 dispatch returns None only when exists(policy) is false;323 exists uses os.path.lexists;479-482 accesses exact task folder/name"
+    },
+    "register_helper": {
+      "path": "Z:/ck3_mod_rewrite/tools/register_project_exe_exclusions.py",
+      "bytes": 26973,
+      "sha256": "67c6021fcd5af209f409957fe045cfbc890da4eda72baf9a5bdf5b0c58d4701b"
+    },
+    "historical_docs_read": [
+      "Z:/ck3_mod_rewrite/docs/ck3-native-ai/project-exe-defender-broker.md",
+      "Z:/ck3_mod_rewrite/docs/ck3-native-ai/project-exe-defender-exclusions.md"
+    ],
+    "historical_machine_boundary": "The old installation and SYSTEM setting facts in these documents lack machine_id and remain machine_id:unknown. They do not establish that this fixed broker is installed on1186."
+  },
+  "policy_actual_readonly_probe": {
+    "observed_at_utc": "2026-10-19T20:25:52.019962+00:00",
+    "path": "C:/Program Files/XAR CK3 Project EXE Broker/policy.json",
+    "GetFileAttributesW": {"attributes":4294967295,"last_error":3,"classification":"ERROR_PATH_NOT_FOUND"},
+    "CreateFileW": {
+      "desired_access": "GENERIC_READ",
+      "share": "READ|WRITE|DELETE",
+      "creation_disposition": "OPEN_EXISTING",
+      "flags": "FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OPEN_REPARSE_POINT",
+      "opened": false,
+      "last_error": 3,
+      "classification": "ERROR_PATH_NOT_FOUND"
+    },
+    "ACCESS_DENIED_5_observed": false,
+    "limit": "This is a fresh Win32 result for this exact path and current token/namespace, not an assertion that every possible administrator namespace or historical installation is absent. No policy contents, ACL or installed seal could be validated."
+  },
+  "exact_task_actual_readonly_probe": {
+    "observed_at_utc": "2026-10-19T20:26:22.331781+00:00",
+    "task_folder": "\\XAR CK3 Project EXE Broker",
+    "task_name": "RegisterDeclaredProjectExecutables",
+    "local_Schedule_Service_connect_succeeded": true,
+    "failed_stage": "GetFolder",
+    "outer_hresult": -2147352567,
+    "outer_hresult_hex": "0x80020009",
+    "EXCEPINFO_scode": -2147024894,
+    "EXCEPINFO_scode_hex": "0x80070002",
+    "classification": "structured inner ERROR_FILE_NOT_FOUND, not ACCESS_DENIED",
+    "GetTask_reached": false,
+    "task_state": "unknown; fixed folder could not be obtained",
+    "actual_action_path": "unknown; no task object obtained",
+    "expected_action_from_source_only": "C:/Program Files/XAR CK3 Project EXE Broker/runtime/python.exe -I -S -B with fixed broker_bootstrap.py and policy.json; not an observed installed action",
+    "all_task_enumeration_calls": 0,
+    "Task_Run_calls": 0,
+    "probe_shutdown_warning": "After the structured missing result, Python emitted 'Win32 exception occurred releasing IUnknown' during COM object release after CoUninitialize. No Task.Run or system mutation was attempted; the warning is not used as evidence of installation state."
+  },
+  "single_fixture_original_evidence": {
+    "manifest": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/attempt07/fixture-01/project-exe-manifest.json",
+      "bytes": 1967,
+      "whole_file_sha256": "8a8754987a34baa03f2cf6e9620823100ae1f33219505d07796c7dc760436371",
+      "schema": "xar.project-exe-exclusions.v1",
+      "producer": "CMake File API selected executable target; external_candidate native30-fixture07"
+    },
+    "failed_receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/attempt07/fixture-01/project-exe-receipt.json",
+      "bytes": 1164,
+      "whole_file_sha256": "f744c389cdbd876d8ae6c5bb707a5a7eba2e18c86d4e44fa319954d4df711da9",
+      "status": "settings_failed",
+      "admin_token": false,
+      "admin_required_for_verified_readback": true,
+      "error_stage": "broker-dispatch",
+      "calls": [],
+      "before": null,
+      "after": null,
+      "manifest_semantic_sha256": "d53e9a35a097b3050b6755bf8a980a32884dce6e50adb470afac40b6aaf0300c",
+      "semantic_hash_is_not_whole_manifest_file_hash": true
+    },
+    "declared_file_identity_matches_manifest_and_receipt": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/build/xar_ck3_camera_tracking_v1_test.exe",
+      "bytes": 12288,
+      "sha256_from_original_small_evidence_only": "5870c844261bbfd0f27274055b139afd7c9a89d0da9557faa1caa36e15b5a5b9",
+      "target": "xar_ck3_camera_tracking_v1_test",
+      "EXE_body_rehashed_or_run_by_this_worker": false
+    }
+  },
+  "conclusion": {
+    "ordinary_dispatch_can_currently_reuse_this_canonical_broker": false,
+    "repeating_ordinary_registration_is_a_solution": false,
+    "global_never_installed_claimed": false,
+    "Defender_exclusion_present_or_absent_claimed": false,
+    "minimum_next_step": "Preserve Native07 failure and its exact manifest/fixture identity. Nativeowner remains sole mutation operator. Under the user's existing project-EXE authorization, Root/Nativeowner may separately choose a verified existing administrator registration context or an explicitly reviewed broker install/recovery for this machine; a new admin/SYSTEM before-and-after receipt is still required. This diagnosis does not execute either path, widen exclusions, run a fixture or request UAC."
+  },
+  "work_boundaries": {
+    "system_Defender_Task_or_ACL_mutations": 0,
+    "UAC_calls": 0,
+    "project_fixture_EXE_or_installer_or_broker_runtime_started": 0,
+    "Game_MCP_or_desktop_calls": 0,
+    "Task_enumeration": 0,
+    "request_publish_or_Task_Run": 0,
+    "WMI_query_or_Add": 0,
+    "DLL_OBJ_LIB_SAVE_or_active_Driver_reads": 0,
+    "source_files_modified": 0
+  },
+  "retention": {"policy_version":"1.0.0","category":"record","review_at_utc":"2027-04-17T20:27:30Z","large_artifacts_created":0}
+}

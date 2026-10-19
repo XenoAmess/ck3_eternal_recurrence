@@ -1,0 +1,157 @@
+{
+  "schema": "xar.c19.same-speed-audit-addon-source-composition/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:22:00.407754+00:00",
+  "status": "SOURCE_INTEGRITY_AND_IMPORT_PASS_NOT_ADOPTED",
+  "actual_source15_base": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+    "bytes": 375083,
+    "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b",
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15",
+    "business_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "files": 1445
+  },
+  "parent": {
+    "commit": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+    "ref": "refs/heads/campaign/robert-v20261019-c19-combined-cold-01",
+    "files": 1454,
+    "source_bytes": 59176029,
+    "canonical_rows_JSON": {
+      "bytes": 373692,
+      "sha256": "a91c8952d863eafbf433b1aa4fedec5ad42f8edfe0da4f14a3b29de972649b10"
+    },
+    "all_rows_reconstructed_and_Git_mode_blob_size_verified": true
+  },
+  "complete_manifest": {
+    "file_count": 1454,
+    "source_bytes": 59177551,
+    "canonical_rows_JSON": {
+      "bytes": 373692,
+      "sha256": "443af4f80195dc413d5e7add1af7fbadcba65069b91675120226d182020f0abf"
+    },
+    "access": "compose() returns all1454 rows in memory"
+  },
+  "delta_from_parent": [
+    {
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "before": {
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 3412,
+        "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185",
+        "git_blob_sha1": "fd4af79da8533cdbc82604902cd3c520ae0966ea",
+        "git_mode": "100644"
+      },
+      "after": {
+        "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+        "bytes": 4934,
+        "sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+        "git_blob_sha1": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+        "git_mode": "100644"
+      },
+      "net_bytes": 1522
+    }
+  ],
+  "unchanged_parent_rows": 1453,
+  "original_source15_total_delta": 16,
+  "original_source15_new_leaves": 9,
+  "original_source15_changed_existing_leaves": 7,
+  "original_source15_unchanged_leaves": 1438,
+  "operation": {
+    "kind": "one_exact_success_branch_insertion",
+    "offset_in_old_bytes": 2845,
+    "inserted": {
+      "bytes": 1522,
+      "sha256": "f1d8c297bbb081b471958ad6bc131dd54a3330752949f919b58cbb0fc395aea6"
+    },
+    "inverse_restores_entire_old_helper": true,
+    "changed_function_ASTs": [
+      "prepare_exact_day_speed_v1"
+    ],
+    "all_other_function_ASTs_and_imports_unchanged": true
+  },
+  "family_fix_preserved": {
+    "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+    "bytes": 61273,
+    "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+    "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+    "git_mode": "100644"
+  },
+  "prior_fifteen_delta_rows_unchanged": true,
+  "M7_WAL_M2_Driver_Runtime_owner_rootparser_epoch_bytes_unchanged": true,
+  "epoch_source_model": "3642dbf251640efc845ab0c633d8f5f832e49682e482cd1df9b676324fb6ddc3",
+  "epoch_unchanged_reason": "Helper is outside existing epoch names; no additional epoch leaf is changed.",
+  "helper_direct_dependency_rows": [
+    {
+      "relative": "xar_autoplayer/bridge/driver.py",
+      "bytes": 20571,
+      "sha256": "571c3776ac958d38d15906412f7f7af24cc6be098d62341a479ec905f48a9c31",
+      "git_blob_sha1": "92c52c0aee1f8cf42ed9fd3517355d5de7029d11",
+      "git_mode": "100644"
+    },
+    {
+      "relative": "xar_autoplayer/bridge/version_identity.py",
+      "bytes": 2114,
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086",
+      "git_blob_sha1": "e34968e2eaaba55ee54d48081118e49f5143b5c7",
+      "git_mode": "100644"
+    }
+  ],
+  "reused_M0_functional_qualification": {
+    "path": "docs/ck3-native-ai/evidence/same-speed-persistent-audit-source-ready-2026-10-20.json",
+    "bytes": 1822,
+    "sha256": "4e985b55d1b67300eb9c4e91d1c0b362334ac898106d71682a8c18eaae01130f",
+    "result": {
+      "result": "3 PASS / 0.027s",
+      "tool": "50b77d",
+      "cases": [
+        "same-frame no setter; actual fields, JSON and no alias",
+        "missing/foreign/changed binding preserves original setter refusal and no audit",
+        "real canonical route/window consumers accept four rows; protocol clock still three commands"
+      ],
+      "earlier_RED": "eb1295: synthetic window clock and copied action receipts diverged; fixture synchronized, production unchanged"
+    },
+    "tests_rerun": 0
+  },
+  "prospective_original_source15_dual_changed4096cluster_upper": 4177920,
+  "prospective_parent_only_dual_changed4096cluster_upper": 16384,
+  "prospective_sizes_are_not_capacity_or_runtime_admission": true,
+  "semantics": "Observation already_observed/submittedFalse/acceptedNone. Native commands remain3; audit rows4. No setter ACK or world credit.",
+  "new_create_only_ref": "refs/heads/campaign/robert-v20261019-c19-same-speed-audit-01",
+  "Root_parent_commit": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+  "Native30_binary_or_loaded_qualification_added": 0,
+  "actual_H": "unknown",
+  "actual_performance_credit": null,
+  "Driver_SAVE_ledger_body_reads": 0,
+  "D_Git_Task_Game_RPC_writes": 0,
+  "FULL_timing_business_leaves_added": 0,
+  "historical_recovery_or_copy_optimization_included": false,
+  "qualification": {
+    "full_parent_rows_checked": 1454,
+    "unchanged_parent_rows": 1453,
+    "helper_exact_insertion_inverse_compile_AST": "PASS",
+    "candidate_helper_import_against_original_source15_dependencies": "PASS",
+    "actual_dependency_pins": [
+      {
+        "relative": "xar_autoplayer/bridge/driver.py",
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15\\xar_autoplayer\\bridge\\driver.py",
+        "bytes": 20571,
+        "sha256": "571c3776ac958d38d15906412f7f7af24cc6be098d62341a479ec905f48a9c31"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/version_identity.py",
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15\\xar_autoplayer\\bridge\\version_identity.py",
+        "bytes": 2114,
+        "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+      }
+    ],
+    "functional_M0_tests_reused_not_repeated": 3,
+    "M0_original_result_tool": "50b77d",
+    "prior_five_cross_package_57_M7_10_WAL_12_timing_matrices_repeated": false,
+    "new_functional_tests_or_Game_calls": 0,
+    "Root_writer_recipe_executed": false,
+    "test_scratch_files": 0,
+    "Git_D_Task_Game_Native_writes": 0,
+    "actual_H": "unknown",
+    "actual_seconds_saved": null
+  }
+}

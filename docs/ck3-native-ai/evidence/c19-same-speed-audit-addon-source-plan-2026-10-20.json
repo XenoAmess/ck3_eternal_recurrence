@@ -1,0 +1,214 @@
+{
+  "schema": "xar.c19.same-speed-audit-addon-frozen-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:22:00.139635+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool329d4e",
+  "status": "SOURCE_FROZEN_FUTURE_COLD_NOT_ADOPTED",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c19_same_speed_audit_addon_v1.py",
+    "bytes": 18072,
+    "sha256": "a017871f08b831ec0d19c67267d6eca9a7395ec2bb88d6221e2b84c0bcf91b6d"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c19_same_speed_audit_addon_v1.py",
+    "bytes": 9657,
+    "sha256": "3eb65c74952735d07b02553268dd3337e9600c2af079ad7e271b28abc8d733dd"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-same-speed-audit-addon-source-qualification-2026-10-20.json",
+    "bytes": 6955,
+    "sha256": "5e493a8775fe0ab139852326f61a9da8f2a6799efc8d4f07c73ec3a7fd61dbf7"
+  },
+  "entry": "prepare_c19_same_speed_audit_addon_v1.compose() -> one changed byte leaf, full1454 rows, small proof; no writes.",
+  "base": {
+    "freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+      "bytes": 375083,
+      "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b",
+      "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15",
+      "business_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+      "files": 1445
+    },
+    "business_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "family_fix": {
+      "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 61273,
+      "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+      "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+      "git_mode": "100644"
+    }
+  },
+  "immutable_parent": {
+    "commit": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+    "ref": "refs/heads/campaign/robert-v20261019-c19-combined-cold-01",
+    "files": 1454,
+    "source_bytes": 59176029,
+    "canonical_rows_JSON": {
+      "bytes": 373692,
+      "sha256": "a91c8952d863eafbf433b1aa4fedec5ad42f8edfe0da4f14a3b29de972649b10"
+    },
+    "all_rows_reconstructed_and_Git_mode_blob_size_verified": true
+  },
+  "output": {
+    "complete_manifest": {
+      "file_count": 1454,
+      "source_bytes": 59177551,
+      "canonical_rows_JSON": {
+        "bytes": 373692,
+        "sha256": "443af4f80195dc413d5e7add1af7fbadcba65069b91675120226d182020f0abf"
+      },
+      "access": "compose() returns all1454 rows in memory"
+    },
+    "delta_from_parent": 1,
+    "unchanged_parent_rows": 1453,
+    "delta_from_actual_source15": 16,
+    "nine_new_seven_existing_changes_1438_unchanged_original": true,
+    "prospective_dual_changed_data4096cluster_upper": 4177920
+  },
+  "one_delta": {
+    "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+    "before": {
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "bytes": 3412,
+      "sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185",
+      "git_blob_sha1": "fd4af79da8533cdbc82604902cd3c520ae0966ea",
+      "git_mode": "100644"
+    },
+    "after": {
+      "relative": "xar_autoplayer/bridge/exact_day_speed_configuration_v1.py",
+      "bytes": 4934,
+      "sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+      "git_blob_sha1": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+      "git_mode": "100644"
+    },
+    "net_bytes": 1522
+  },
+  "operation": {
+    "kind": "one_exact_success_branch_insertion",
+    "offset_in_old_bytes": 2845,
+    "inserted": {
+      "bytes": 1522,
+      "sha256": "f1d8c297bbb081b471958ad6bc131dd54a3330752949f919b58cbb0fc395aea6"
+    },
+    "inverse_restores_entire_old_helper": true,
+    "changed_function_ASTs": [
+      "prepare_exact_day_speed_v1"
+    ],
+    "all_other_function_ASTs_and_imports_unchanged": true
+  },
+  "prior_fifteen_delta_rows_unchanged": true,
+  "epoch_source_model": "3642dbf251640efc845ab0c633d8f5f832e49682e482cd1df9b676324fb6ddc3",
+  "epoch_reason": "Helper is outside existing epoch names; no additional epoch leaf is changed.",
+  "semantics": "Observation already_observed/submittedFalse/acceptedNone. Native commands remain3; audit rows4. No setter ACK or world credit.",
+  "reused_M0_proof": {
+    "path": "docs/ck3-native-ai/evidence/same-speed-persistent-audit-source-ready-2026-10-20.json",
+    "bytes": 1822,
+    "sha256": "4e985b55d1b67300eb9c4e91d1c0b362334ac898106d71682a8c18eaae01130f",
+    "result": {
+      "result": "3 PASS / 0.027s",
+      "tool": "50b77d",
+      "cases": [
+        "same-frame no setter; actual fields, JSON and no alias",
+        "missing/foreign/changed binding preserves original setter refusal and no audit",
+        "real canonical route/window consumers accept four rows; protocol clock still three commands"
+      ],
+      "earlier_RED": "eb1295: synthetic window clock and copied action receipts diverged; fixture synchronized, production unchanged"
+    },
+    "tests_rerun": 0
+  },
+  "qualification_scope": {
+    "full_parent_rows_checked": 1454,
+    "unchanged_parent_rows": 1453,
+    "helper_exact_insertion_inverse_compile_AST": "PASS",
+    "candidate_helper_import_against_original_source15_dependencies": "PASS",
+    "actual_dependency_pins": [
+      {
+        "relative": "xar_autoplayer/bridge/driver.py",
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15\\xar_autoplayer\\bridge\\driver.py",
+        "bytes": 20571,
+        "sha256": "571c3776ac958d38d15906412f7f7af24cc6be098d62341a479ec905f48a9c31"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/version_identity.py",
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15\\xar_autoplayer\\bridge\\version_identity.py",
+        "bytes": 2114,
+        "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+      }
+    ],
+    "functional_M0_tests_reused_not_repeated": 3,
+    "M0_original_result_tool": "50b77d",
+    "prior_five_cross_package_57_M7_10_WAL_12_timing_matrices_repeated": false,
+    "new_functional_tests_or_Game_calls": 0,
+    "Root_writer_recipe_executed": false,
+    "test_scratch_files": 0,
+    "Git_D_Task_Game_Native_writes": 0,
+    "actual_H": "unknown",
+    "actual_seconds_saved": null
+  },
+  "Root_canonical_recipe": {
+    "call": "canonical_anchor_with_root_writer(Root_git_writer, anchor_ref=NEW_REF, root_release_sha256=exact_new_release_SHA)",
+    "parent_commit": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+    "create_only_ref": "refs/heads/campaign/robert-v20261019-c19-same-speed-audit-01",
+    "new_blob": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+    "behavior": "Root writes one helper blob and only its ancestor trees/new commit/ref; all sibling entries retained. Old65f branch/master/index/checkout untouched.",
+    "executed_by_source_qualification": false,
+    "requires": "Separate Root Git-object budget/release and then exact new commit capacity card; this source card authorizes neither."
+  },
+  "future_controls_business_adapter": {
+    "owner": "perf_harness; new files preserve frozen prior controls",
+    "required": [
+      "Bind this new plan SHA and fullrows443af to the new Root addon commit, not old65f",
+      "Validate old65f/a91 provenance and one493573 helper delta; complete_files remains1454",
+      "Preserve familyd8bb/M7/WAL/M2 and unchanged epoch3642; no extra SDK leaf",
+      "Keep genuinely enabled M7 custody graph, Native30 transition and separately chosen FULL timing"
+    ],
+    "old_control_source_or_runtime_changed": false
+  },
+  "boundaries": {
+    "D_Git_Task_Game_RPC_writes": 0,
+    "Driver_SAVE_ledger_body_reads": 0,
+    "full_Driver_or_SDK_copy_output": false,
+    "Native30_qualification_added": 0,
+    "actual_H": "unknown",
+    "actual_performance_credit": null,
+    "historical_F94_recovery_or_turn_bundle_copy_optimization_included": false,
+    "M0_source_test_copied_or_doublecharged": false
+  },
+  "storage": {
+    "source_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M0-AUDIT32KiB-C19-ADDON96KiB-CONTROLS96KiB-M7-TRANSITION160KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2672,
+      "sha256": "d667018d1f6c01a622e2f677b68e59c3029fe0139eae5dff47f43c908ee9b8da"
+    },
+    "hard_bytes": 98304,
+    "owned_retained_files_excluding_this_plan": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c19_same_speed_audit_addon_v1.py",
+        "bytes": 18072,
+        "sha256": "a017871f08b831ec0d19c67267d6eca9a7395ec2bb88d6221e2b84c0bcf91b6d"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c19_same_speed_audit_addon_v1.py",
+        "bytes": 9657,
+        "sha256": "3eb65c74952735d07b02553268dd3337e9600c2af079ad7e271b28abc8d733dd"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-same-speed-audit-addon-source-qualification-2026-10-20.json",
+        "bytes": 6955,
+        "sha256": "5e493a8775fe0ab139852326f61a9da8f2a6799efc8d4f07c73ec3a7fd61dbf7"
+      }
+    ],
+    "total_retained_logical_including_this_plan": 44674,
+    "new_scratch_bytes": 0,
+    "allocated_bytes": null,
+    "physical_release_credit_bytes": 0,
+    "future_writes_after_freeze": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "small_record_review_at_utc": "2027-04-17T20:22:00.139635+00:00"
+  },
+  "remaining": [
+    "Root review and separate new create-only canonical anchor",
+    "New controls business pins and real Native30 qualification/transition",
+    "Exact then-cold inputs/capacity/admission and actual custody/H/performance evidence"
+  ]
+}

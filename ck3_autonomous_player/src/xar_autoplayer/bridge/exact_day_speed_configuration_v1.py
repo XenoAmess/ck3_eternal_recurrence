@@ -55,6 +55,25 @@ def prepare_exact_day_speed_v1(driver, starting, *, speed, actions):
                 or fresh["speed"] != speed):
             raise BridgeUnavailableError("exact-day clock observed a changed or unavailable speed; no resume")
         if _binding(fresh) == binding:
+            # This is an observation in the composite audit, never a setter
+            # submission or ACK. Keep the complete compared frame as JSON.
+            frame_binding = dict(zip(("revision", "native_revision", "date_raw",
+                "actor_character_id", "episode_character_id", "local_player_id",
+                "bridge_pid", "connection_generation", "snapshot_id", "episode_run_id"), binding[:-1]))
+            frame_binding.update(backend_id=fresh["backend_id"], source=fresh["source"],
+                paused=fresh["paused"], map_ready=fresh["map_ready"],
+                actor_alive=fresh["played_character"]["alive"], connected=fresh["diagnostics"]["connected"],
+                build={"game_version": binding[-1].game_version,
+                       "executable_sha256": binding[-1].executable_sha256})
+            speed_step = f"set-speed-{speed}"
+            actions.append({"step": speed_step, "result": {
+                "step": speed_step, "status": "already_observed", "submitted": False,
+                "accepted": None, "observed_speed": fresh["speed"],
+                "source_snapshot_id": fresh["snapshot_id"],
+                "source_native_revision": fresh["native_revision"], "source_date_raw": fresh["date_raw"],
+                "observation_proof": {"schema": "xar.ck3.exact-day-speed-observation/v1",
+                    "same_frame_binding": frame_binding, "starting_speed": starting["speed"],
+                    "revalidated_speed": fresh["speed"], "observation_only": True}}})
             return fresh
     speed_step = f"set-speed-{speed}"
     speed_result = driver._execute_composite_primitive(speed_step, starting)

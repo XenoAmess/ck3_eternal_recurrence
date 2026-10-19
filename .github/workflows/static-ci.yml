@@ -284,6 +284,11 @@ jobs:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_camera_tracking_v1.py ck3_autonomous_player/tests/unit/test_camera_settle_diagnostics_v1.py ck3_autonomous_player/tests/unit/test_planner_remainder_counters_v1.py ck3_autonomous_player/tests/unit/test_sway_retained_wrapper_persistence_12004.py ck3_autonomous_player/tests/unit/test_native_loaded_provider_receiver_v1.py tools/g2_saved_campaign/test_interactive_task_owner_v1.py tools/g2_saved_campaign/test_storage_native30_65p5_overlay_v1.py tools/g2_saved_campaign/test_storage_policy_annotation_adapter_v1.py tools/g2_saved_campaign/test_full_lifecycle_timing_v1.py tools/g2_saved_campaign/test_canonical_native_provider_chain_v1.py ck3_autonomous_player/tests/unit/test_driver_state_wal_production_v1.py ck3_autonomous_player/tests/unit/test_exact_day_same_speed_configuration_v1.py ck3_autonomous_player/tests/unit/test_war_results_pause_wait_8495.py tools/g2_saved_campaign/test_native30_export_transition_v1.py tools/g2_saved_campaign/test_native30_resume_fixture_chain_v1.py
+      - name: Test closed same-speed route recovery without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools\g2_saved_campaign;${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_route_contact_same_speed_10416.py
       - name: Test native build recovery guards without CK3 or MSVC
         env:
           PYTHONDONTWRITEBYTECODE: "1"
