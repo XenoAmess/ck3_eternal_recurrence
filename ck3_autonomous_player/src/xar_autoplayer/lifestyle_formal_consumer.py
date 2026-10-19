@@ -226,6 +226,30 @@ def consume_lifestyle_private_query(
             "selected_step": None,
             "reason": "feudal scope has no independent true observation",
         }
+    if isinstance(query, Mapping) and query.get("status") == "education_focus_not_applicable":
+        from .lifestyle_education_focus_scope_v1 import (
+            LIFESTYLE_BINDING_ERRORS, qualify_current_education_focus,
+        )
+        state = query.get("state")
+        frame = query.get("education_focus_source_frame")
+        qualified = (
+            qualify_current_education_focus(
+                query.get("education_focus_query"), frame,
+                expected_revision=frame.get("revision"),
+            ) if isinstance(frame, Mapping) else None
+        )
+        if (qualified is not None and query.get("education_focus_scope") == qualified
+                and isinstance(state, Mapping) and state.get("status") == "native_query_unavailable"
+                and isinstance(state.get("native_error"), str)
+                and state["native_error"] in LIFESTYLE_BINDING_ERRORS
+                and scope.get("snapshot_revision") == frame.get("native_revision")
+                and scope.get("player_character_id") == frame.get("player_character_id")):
+            return {
+                **plan, "lifestyle_query": dict(query),
+                "lifestyle_query_status": query["status"],
+                "lifestyle_native_error": state["native_error"],
+                "lifestyle_decision": qualified,
+            }
     if not isinstance(query, Mapping) or query.get("status") not in {
         "available", "stock_focus_available",
     }:

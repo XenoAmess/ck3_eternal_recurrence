@@ -1,0 +1,127 @@
+{
+  "schema": "xar.m4.camera-native-diagnostic-status-pairing.v1",
+  "status": "python_source_test_ready_native_runtime_pending",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:24:48.749250+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "prior_frozen_implementation_evidence": {
+    "path": "docs/ck3-native-ai/evidence/m4-camera-minimized-no-hotspot-repair-2026-10-19.json",
+    "bytes": 16069,
+    "sha256": "37ab9db0934b18e55fc6ff0854d97b27dacbcd392f45e3b8b26d1c6c69ce19fd"
+  },
+  "prior_source_pins_historical": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 12834,
+      "sha256": "f5b15de1c454dd40c20e7df6f6ac32df392e68fb30c521836ca7b262ce7e3b6b"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+      "bytes": 17180,
+      "sha256": "f1fcb2a77d87b6af336da9c23187dfd588688528a47d287e95e6a7ce094e47a1"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+      "bytes": 7513,
+      "sha256": "f59702c9f6c270443017ae61050fe2d99eb92f4169188dfeddc5a7fbbe1679b2"
+    }
+  ],
+  "final_source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 13511,
+      "sha256": "5878650d997058411b6d73b2ad531147a8441632339c18957890b28b5d4cd037"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+      "bytes": 18915,
+      "sha256": "559da3efcd78646d8a3dc316880a00b96847fec36b8c6fd07bcc91f558825f99"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+      "bytes": 7513,
+      "sha256": "f59702c9f6c270443017ae61050fe2d99eb92f4169188dfeddc5a7fbbe1679b2"
+    }
+  ],
+  "authorization": "Root approved additive Native16+ status pairing for the next normal SDK batch, with old 0..8 compatible before Native28 replacement. No Service/NativeDriver change.",
+  "protocol": {
+    "source": "performance_native finalized integer/string table, direct team handoff; Native owner separately freezes/reviews its enum header and single TU",
+    "scope": "Only enum values are added; Request/Result fields, shared offsets, mapping version and old values unchanged.",
+    "legacy": "0..8 remain exactly as before; 9..15 reserved and rejected by this parser.",
+    "failures": {
+      "16": "window_unavailable",
+      "17": "camera_resolve_unavailable",
+      "18": "camera_target_write_blocked_or_unreadable",
+      "19": "camera_transient_x_active_or_unreadable",
+      "20": "camera_transient_z_active_or_unreadable",
+      "21": "camera_viewport_extent_unavailable",
+      "22": "camera_bucket_table_unavailable",
+      "23": "camera_bucket_read_or_match_unavailable",
+      "24": "camera_zoom_index_unavailable",
+      "25": "camera_zoom_or_target_state_unavailable",
+      "26": "camera_angle_state_unavailable",
+      "27": "camera_canonical_target_unavailable",
+      "28": "camera_target_write_or_readback_unavailable"
+    },
+    "failure_semantics": "Each new value is a failed observation, never camera success, gameplay benefit or replay permission. blocked/transient read failures remain combined with active/blocked states instead of asserting a known value.",
+    "readiness": "This Python parser accepts the additive failures now. Native26 old receipts still decode. New Native failure branches require the companion Native build and actual adoption, neither performed by this leaf."
+  },
+  "implementation": {
+    "source_leaf": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+    "change": "Extend existing STATUS mapping only; retain malformed/unknown rejection and status==2 plus valid zoom as the only parsed camera postcondition.",
+    "test_leaf": "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+    "test_node": "test_native_diagnostic_statuses_decode_as_failures_and_preserve_legacy_wire",
+    "witness": "The real ctypes _Shared/client.latest path decodes all 16..28 exact names, rejects their camera success even with zoom_index=4, feeds camera_receipt_outcome and requires failed/False. Same fixture then decodes legacy2 settled as completed/True and rejects reserved9 as malformed.",
+    "unchanged_leaf": "tests/unit/test_auto_camera_receipt_status.py stayed byte-identical to the previous repair phase."
+  },
+  "actual_focused_verification": {
+    "argv": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "ck3_autonomous_player/tests/test_realm_overview_camera.py::test_native_diagnostic_statuses_decode_as_failures_and_preserve_legacy_wire",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "environment_overrides": {
+      "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 1.377218599896878,
+    "stdout": ".                                                                        [100%]\n1 passed in 0.96s\n",
+    "stderr": "",
+    "tool": {
+      "chunk_id": "5a3755",
+      "exit_code": 0,
+      "wall_time_seconds": 1.333624
+    },
+    "test_utc": null,
+    "test_utc_reason": "Runner recorded exact argv, elapsed time, exit/stdout, not UTC; later source metadata time is not a test timestamp."
+  },
+  "history": "Previous real results remain 33-pass initial two-file run plus 2-pass changed/new nodes in the prior frozen evidence. This phase ran only one new parser node: 1 passed. No final 35-case/full suite rerun claimed; no test failures.",
+  "runtime_acceptance": "Prior implementation evidence's minimized native deployment, request->settled and original recorded-frame checks remain pending. The existing Native106 failure with real2560x1440 client cannot be uniquely attributed to minimization; the new phase values will localize future actual Native failures after adoption.",
+  "storage": {
+    "source_test_incremental_net_growth_bytes": 2412,
+    "evidence_limit_bytes": 8192,
+    "aggregate_incremental_limit_bytes": 12288,
+    "external_written_bytes": 0,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "producer_processes": 0,
+    "future_write_bytes": 0,
+    "physical_credit_bytes": 0,
+    "budget": "original other-research128MiB / original review unchanged; old closure/evidence remains frozen"
+  },
+  "no_live_actions": {
+    "new_Game_RPC": 0,
+    "Desktop_calls": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads_or_exports": 0,
+    "Native_builds": 0,
+    "current_SDK_or_Native_adoption": 0
+  }
+}

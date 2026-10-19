@@ -1,0 +1,74 @@
+{
+  "schema": "xar.closed-lifestyle-4106-4107-offline-inputs.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": [
+    "2026-10-19T09:18:06.316078+00:00",
+    "2026-10-19T09:18:16.562237+00:00"
+  ],
+  "qualification": "closed actual input projection; offline replay does not qualify a live fix",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4106-1-result.json",
+      "bytes": 3899,
+      "sha256": "6813b0fc6929f2c5b174630c66019430de324804afed1a4e7415e24bacf4407d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4107-1-result.json",
+      "bytes": 5488,
+      "sha256": "4ae9cc87100123704eea156f31541f8e8355cc583e9efd7814f42d4607d94e6b"
+    }
+  ],
+  "frame": {
+    "snapshot_id": "native:3136",
+    "revision": 2,
+    "native_revision": 3136,
+    "date_raw": 53188032,
+    "episode_run_id": "native-40526-1bec95182886",
+    "paused": true,
+    "map_ready": true,
+    "player_character_id": 40526,
+    "actor_alive": true
+  },
+  "state_query": {
+    "status": "native_query_unavailable",
+    "step": "private-query-player-lifestyle-current-state-v1",
+    "request_id": "life-query-8b23ff8acb584e85af6bb9673ce9117d",
+    "native_error": "native_lifestyle_current_state_current_lifestyle_key_read_failed"
+  },
+  "education_query": {
+    "schema": "child-education-focus-private-12004-v1",
+    "kind": "query",
+    "status": "unavailable",
+    "unavailable_reason": "education_definition_missing",
+    "source_frame": {
+      "snapshot_id": "native:3136",
+      "episode_run_id": "native-40526-1bec95182886",
+      "native_revision": 3136,
+      "date_raw": 53188032,
+      "controller_full_id": 40526,
+      "paused": true
+    },
+    "child_full_id": 40526,
+    "target_key": "education_stewardship",
+    "native_legal": null,
+    "current_focus": {
+      "available": true,
+      "unavailable_reason": null,
+      "presence": "present",
+      "key": "education_intrigue"
+    },
+    "request_id": "child-focus-query-d85f1dac40614d4e9d0ed14129e5cfd4",
+    "source_public_revision": 2,
+    "source_context": {
+      "snapshot_id": "native:3136",
+      "episode_run_id": "native-40526-1bec95182886",
+      "native_revision": 3136,
+      "date_raw": 53188032,
+      "controller_full_id": 40526,
+      "paused": true,
+      "public_revision": 2,
+      "exact_ck3_build": "1.20.0.4",
+      "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+    }
+  }
+}

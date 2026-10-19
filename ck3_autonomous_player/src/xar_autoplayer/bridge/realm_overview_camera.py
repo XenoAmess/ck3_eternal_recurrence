@@ -1,4 +1,4 @@
-"""Peace camera policy and an independent native presentation mailbox client."""
+"""Quiet-map camera policy and an independent native presentation mailbox client."""
 from __future__ import annotations
 
 import ctypes
@@ -15,7 +15,20 @@ COUNTY_CAPACITY = 16384
 EXACT_SHA = "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
 STATUS = {0: "idle", 1: "submitted", 2: "settled", 3: "cancelled",
           4: "stale_actor", 5: "preempted", 6: "unavailable", 7: "target_changed",
-          8: "bounds_available"}
+          8: "bounds_available",
+          16: "window_unavailable",
+          17: "camera_resolve_unavailable",
+          18: "camera_target_write_blocked_or_unreadable",
+          19: "camera_transient_x_active_or_unreadable",
+          20: "camera_transient_z_active_or_unreadable",
+          21: "camera_viewport_extent_unavailable",
+          22: "camera_bucket_table_unavailable",
+          23: "camera_bucket_read_or_match_unavailable",
+          24: "camera_zoom_index_unavailable",
+          25: "camera_zoom_or_target_state_unavailable",
+          26: "camera_angle_state_unavailable",
+          27: "camera_canonical_target_unavailable",
+          28: "camera_target_write_or_readback_unavailable"}
 
 
 class _Request(ctypes.Structure):
@@ -72,26 +85,26 @@ class PeaceRealmCameraPolicy:
             self.quiet_since, self.last_realm_date = None, None
             old, self.mode = self.mode, "idle"
             return {"mode": "cancel" if old != "idle" else "hold", "reason": "mandatory_choice"}
-        if hotspot is not None:
+        # Static objectives and idle army anchors are useful explicit navigation
+        # targets, but are not continuing activity that should postpone overview.
+        if hotspot is not None and hotspot.get("reason") in {
+                "battle", "siege", "objective_siege", "moving_player_army",
+                "army_destination"}:
             self.quiet_since, self.last_realm_date = None, None
             key = str(hotspot["title_key"])
             changed = self.mode != "hotspot" or key != self.last_hotspot
             self.mode, self.last_hotspot = "hotspot", key
             return {"mode": "hotspot" if changed else "hold", "title_key": key,
                     "reason": str(hotspot.get("reason", "observed_war_hotspot"))}
-        if payload.get("active_wars") or payload.get("has_player_armies"):
-            self.quiet_since, self.last_realm_date = None, None
-            old, self.mode = self.mode, "idle"
-            return {"mode": "cancel" if old != "idle" else "hold", "reason": "war_or_army_without_land_anchor"}
         if self.quiet_since is None:
             self.quiet_since = date
         if date - self.quiet_since < self.quiet_days * 24:
-            return {"mode": "hold", "reason": "peace_quiet_period",
+            return {"mode": "hold", "reason": "no_hotspot_quiet_period",
                     "quiet_days_observed": (date - self.quiet_since) / 24}
         if self.last_realm_date is not None and date - self.last_realm_date < self.refresh_days * 24:
             return {"mode": "hold", "reason": "holding_realm_overview"}
         self.mode, self.last_realm_date = "realm", date
-        return {"mode": "realm", "reason": "peace_realm_overview",
+        return {"mode": "realm", "reason": "no_hotspot_realm_overview",
                 "quiet_days_observed": (date - self.quiet_since) / 24}
 
     def retry_after_failure(self) -> None:
@@ -99,21 +112,25 @@ class PeaceRealmCameraPolicy:
 
 
 def desktop1_game_window(pid: int, cached: int | None = None) -> int:
-    """Check the exact PID/HWND and Desktop 1 without any desktop input."""
+    """Bind one owned HWND, including minimized, with its real client viewport."""
     import win32gui
     import win32process
     import winreg
     from .windows_virtual_desktop import window_virtual_desktop
     def owned(hwnd):
-        return (win32gui.IsWindow(hwnd) and not win32gui.IsIconic(hwnd)
+        return (win32gui.IsWindow(hwnd)
                 and win32process.GetWindowThreadProcessId(hwnd)[1] == pid
                 and win32gui.GetWindowText(hwnd) == "Crusader Kings III")
-    if not cached or not owned(cached):
-        windows = []
-        win32gui.EnumWindows(lambda hwnd, _: windows.append(hwnd) if owned(hwnd) else None, None)
-        if len(windows) != 1:
-            raise ValueError("camera needs the unique owned CK3 window")
-        cached = windows[0]
+    # Re-enumerate even a cached handle: a second owned window must not silently
+    # make a previously valid selection ambiguous. No focus/window input occurs.
+    windows = []
+    win32gui.EnumWindows(lambda hwnd, _: windows.append(hwnd) if owned(hwnd) else None, None)
+    if len(windows) != 1:
+        raise ValueError("camera needs the unique owned CK3 window")
+    cached = windows[0]
+    left, top, right, bottom = win32gui.GetClientRect(cached)
+    if right <= left or bottom <= top:
+        raise ValueError("camera needs a nonzero owned CK3 client viewport")
     with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
             r"Software\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops") as key:
         desktops, _ = winreg.QueryValueEx(key, "VirtualDesktopIDs")

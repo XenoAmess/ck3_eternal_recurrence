@@ -1,0 +1,258 @@
+{
+  "schema": "xar.m4.camera-minimized-no-hotspot-repair.v1",
+  "status": "python_source_test_ready_runtime_acceptance_pending",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T09:18:29.223614+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "producer": {
+    "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "version": "3.13.2 (tags/v3.13.2:4f8bb39, Feb  4 2025, 15:23:48) [MSC v.1942 64 bit (AMD64)]"
+  },
+  "source_ownership": "M4 owns only the three changed Python/test leaves below; Native one-TU work belongs to performance_native. Service/NativeDriver/current SDK unchanged.",
+  "source_binding": {
+    "business_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+    "sdk_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src06",
+    "sdk_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C7.json",
+      "bytes": 403018,
+      "sha256": "4c9de700f1572ad81627fe6c92cd5fec4b05cb4e02b0c4e6449bda48b32cb4d9",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-19T07:04:56.868706+00:00"
+    },
+    "frozen_sdk_source_pins": [
+      {
+        "relative": "xar_autoplayer/bridge/realm_overview_camera.py",
+        "bytes": 12557,
+        "sha256": "de915463d5c214d1d66bf703493447487fd3688b7d0fb8eb046f50a9f8bb3f02",
+        "git_blob_sha1": "5a9b16e6dd9c11c94cf894066e0fb6551e45423f"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/auto_camera_follow.py",
+        "bytes": 9245,
+        "sha256": "8b1a2ef99f73ccd5a31696173cc9e9544530f8bdd83507559fcc882ebec3b9b1",
+        "git_blob_sha1": "8f3f7dcbedda0eaa946623cc14e57dc42a1e9e90"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/war_hotspot_camera.py",
+        "bytes": 13650,
+        "sha256": "b00487eb816a450531955199d2d85b344a3aac30197132c1a685f235b2fabe96",
+        "git_blob_sha1": "171e24763c0cec0624245e0ac418b7e81697884c"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/service.py",
+        "bytes": 867830,
+        "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e",
+        "git_blob_sha1": "f99f20986bc893d2845866964a54978a24252935"
+      },
+      {
+        "relative": "xar_autoplayer/bridge/army_strengths_mcp_result.py",
+        "bytes": 3437,
+        "sha256": "65b698e52ba5e33032af2b84a3a77c3a8c7d97183da062ac9dc759ccde040fcb",
+        "git_blob_sha1": "db165a3ac1c508ba85e38604e56e66d6acdf5717"
+      }
+    ],
+    "actual_audit": {
+      "path": "docs\\ck3-native-ai\\evidence\\c7-camera-actual-outcome-audit-2026-10-19.json",
+      "bytes": 8994,
+      "sha256": "77809698837d6022c7ee362b72096e2034f80d26e6d757f88a8459804f3baa8f"
+    }
+  },
+  "retained_native_camera_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate01\\sources\\src\\camera_presentation_v1.cpp",
+    "bytes": 14436,
+    "sha256": "eac6e72d94a8e85c3ceb7a780f6982525fd8e2be4a30ce23cb46876c1206bd31"
+  },
+  "retained_native_provenance_scope": "Named frozen camera source bytes independently checked here. performance_native separately traced Native26 retained direct object ec5086e648831781e1c1e4ebb77a590ee0e63c44a00191c8a5ec8be547c25a63; this leaf did not compile, link or inspect current installed Native.",
+  "frozen_before": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 12557,
+      "sha256": "de915463d5c214d1d66bf703493447487fd3688b7d0fb8eb046f50a9f8bb3f02"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+      "bytes": 10614,
+      "sha256": "0fd6672d41381615f6139069f7e6616766663d1996e93831dacec349643fe22a"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+      "bytes": 7413,
+      "sha256": "d18a36c44e0b4f1d18a0763728d0f05dcf7ffab28d3faa6c9d6fc8b99480ca35"
+    }
+  ],
+  "frozen_after": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/realm_overview_camera.py",
+      "bytes": 12834,
+      "sha256": "f5b15de1c454dd40c20e7df6f6ac32df392e68fb30c521836ca7b262ce7e3b6b"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+      "bytes": 17180,
+      "sha256": "f1fcb2a77d87b6af336da9c23187dfd588688528a47d287e95e6a7ce094e47a1"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+      "bytes": 7513,
+      "sha256": "f59702c9f6c270443017ae61050fe2d99eb92f4169188dfeddc5a7fbbe1679b2"
+    }
+  ],
+  "deployed_source_findings": [
+    "Service 677-686 unconditionally constructs PeaceRealmCameraPolicy and LatestCameraFollowWorker. Ordinary auto_turn 4809-4831 schedules only after actual business turn. No separate AutoCameraWorker enable flag was found in this path.",
+    "LatestCameraFollowWorker 82-128 returns scheduled/latest_actual references, not applied camera credit. Its 0.25-second quiet window retains the prior pending eligible_at under superseding requests (91-92), so rapid scheduling does not indefinitely restart it.",
+    "Service 726-776 copies existing source frame, war army positions, objective states and build binding. Automatic worker consumes that payload; it does not call the old explicit follow_war_hotspot/park_cursor route.",
+    "Selector priority: controllable/other battle 0/1, siege 2/3, objective siege 4, moving own current land 5, destination fallback 6, static war objective 7, idle own army 8. Static 7/8 previously reset quiet because any selected anchor counted as activity.",
+    "Original PeaceRealmCameraPolicy 48-95 used 30 game days (raw date ticks /24), not wall seconds. Ordinary war/army without a land anchor reset quiet_since every observation, so no-hotspot fallback was peace-only. Mandatory choice/event/interaction and map-not-ready also interrupt quiet.",
+    "Python original desktop1_game_window 101-125 rejected IsIconic before mailbox submission. Native retained camera_presentation_v1.cpp 193-202 separately preempted realm for any war/active_army and rejected IsIconic. Removing only the Python guard cannot enable minimized Native presentation.",
+    "Native realm bounds 210-225 enumerate ReadSubrealmCountyIdsV1 and union every returned county's native bounds: whole subrealm, not only directly held counties. Viewport padding/bucket fit is not independently verified pixel coverage.",
+    "Native publish submitted at 292 only after target write; settled at 160 requires current==target. Python camera_receipt_outcome accepts only settled plus camera_postcondition_verified. queued/scheduled/hold are not applied.",
+    "army_strengths_mcp_result.py 86-104 explicitly drops camera_follow from the compact AUTO summary, retaining status/selected_step/plan/result/result_location. Missing camera fields on such rows do not prove the worker did not run."
+  ],
+  "closed_actual_limits": {
+    "closed_shared_status_once": {
+      "relative_under_runtime_pack": "c8-life-diagnostic79/CAMERA-SHARED-STATUS-ONCE.json",
+      "bytes": 2431,
+      "sha256": "42ffe2d07c836553232eebd36bdf4371410d8b57d4e299bcc06834391ba892e7",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-10-19T09:20:56.445346+00:00",
+      "producer": "runtime owner, Root-authorized one existing-map latest read; M4 only read this closed receipt",
+      "request_sequence": 106,
+      "actor": 40526,
+      "date_raw": 53187336,
+      "native_status": "unavailable",
+      "client_size": [2560, 1440],
+      "zoom_index": -1,
+      "meaning": "Nonzero Native client and computed bounds show this request passed window validation. Remaining failure phase unknown; protocol has no textual reason. No new request/pixels."
+    },
+    "actual_evidence_reference": {
+      "path": "docs\\ck3-native-ai\\evidence\\c7-camera-actual-outcome-audit-2026-10-19.json",
+      "bytes": 8994,
+      "sha256": "77809698837d6022c7ee362b72096e2034f80d26e6d757f88a8459804f3baa8f"
+    },
+    "latest_delivered_closed_30": "3864..3924 compact 94165 bytes, SHA256 22a0311efe46ff544a5bf3a08bca2a0bc36b4109d0c3bc0f9458a48c989d3736; this is the delivered closed window, not asserted globally latest.",
+    "summary": "score15 independently consumed pinned originals: 22 camera summaries expose scheduled with earlier latest_actual failed/camera_retry_cooldown, Native104 unavailable; 8 army-strength compact rows omit camera fields. None establishes 22 same-request completions.",
+    "battle4100": {
+      "relative_under_runtime_pack": "c7-lifestyle4102-blocked79/p37-responses/4100-1-result.json",
+      "bytes": 37632,
+      "sha256": "a858b5272c01e97449be38736fc730143f5a674c51b9c0e5b0c986ca2a1c5edc",
+      "scheduled": 1738,
+      "latest_actual": 1737,
+      "hotspot": {
+        "reason": "battle",
+        "priority": 0,
+        "war_id": 16777278,
+        "army_id": 33554800,
+        "province_id": 2604,
+        "title_key": "b_lanciano"
+      },
+      "native_request_sequence": 106,
+      "native_status": "unavailable",
+      "camera_postcondition_verified": false,
+      "coverage_verified": false,
+      "zoom_index": -1,
+      "native_elapsed_us": 0
+    },
+    "inference": "Worker execution and battle recognition are observed; that latest Native result did not apply. Point bounds [1787,2510,1787,2510] are not viewport/pixel evidence. Because Native bounds assignment follows the HWND check, these old unavailable results cannot be uniquely attributed to minimized rejection; subsequent camera/viewport/bucket guards remain possible. No same-battle screenshot/recorded-frame pair was read here."
+  },
+  "implementation": {
+    "policy": "Only battle/siege/objective_siege/moving_player_army/army_destination resets quiet and immediately requests the hotspot on a changed anchor. Static war_objective/player_army anchors and bare war/army presence do not reset quiet. After 30 quiet game days request realm; refresh remains every 30 game days. Mandatory choices/events/interactions still interrupt.",
+    "window": "Re-enumerate exact existing owned predicate (IsWindow, exact PID, exact CK3 title) each submission, including cached handles; require exactly one HWND and its real nonzero GetClientRect. Keep Desktop 1 binding. Do not query placement or iconic state; never restore, activate, resize, move or send mouse input.",
+    "wire": "Existing v1 request/result layout and gameplay pipe behavior unchanged. Native companion must make its corresponding window/realm guards consistent before actual use; no source-only claim of Native support.",
+    "fixture_compatibility": "test_auto_camera_receipt_status.py payload previously used only war_objective_province_ids=[4242]. Replaced with an actual in_combat controllable allied army at the same province. Retry counts, assertions and production guards unchanged; static objectives intentionally no longer trigger an activity request."
+  },
+  "focused_verification": {
+    "first": {
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "ck3_autonomous_player/tests/test_realm_overview_camera.py",
+        "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "environment_overrides": {
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 2.295514900004491,
+      "stdout": ".................................                                        [100%]\n33 passed in 1.87s\n",
+      "stderr": "",
+      "tool": {
+        "chunk_id": "c79d14",
+        "exit_code": 0,
+        "wall_time_seconds": 2.253787
+      },
+      "test_utc": null,
+      "scope": "Initial two-file focused run: 33 passed. Production Python matches final; test file subsequently gained one Service integration case and strengthened one existing window-publication case. First-run test-file SHA was not captured."
+    },
+    "second": {
+      "argv": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "ck3_autonomous_player/tests/test_realm_overview_camera.py::test_owned_minimized_window_uses_only_real_nonzero_client_viewport",
+        "ck3_autonomous_player/tests/test_realm_overview_camera.py::test_service_wartime_static_anchor_falls_back_and_battle_preempts_without_driver",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "environment_overrides": {
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 1.9570307000540197,
+      "stdout": "..                                                                       [100%]\n2 passed in 1.48s\n",
+      "stderr": "",
+      "tool": {
+        "chunk_id": "253d12",
+        "exit_code": 0,
+        "wall_time_seconds": 1.918997
+      },
+      "test_utc": null,
+      "scope": "Only two changed/new nodes, 2 passed: real client validation->ctypes memory mailbox without desktop calls; actual Service static-war anchor->realm then battle hotspot without Driver reads."
+    },
+    "not_claimed": "No final 34-case full rerun; no Native build, ABI qualification or live camera success. No test failures occurred.",
+    "metadata_check_history": {
+      "first": {
+        "tool_chunk": "c0c5d0",
+        "exit_code": 1,
+        "reason": "StopIteration: freeze inventory lookup omitted xar_autoplayer/ prefix; no source mutation."
+      },
+      "corrected": {
+        "tool_chunk": "56152c",
+        "exit_code": 0,
+        "scope": "Correct relative prefix; five frozen SDK sources and score15 audit byte/SHA pins verified."
+      }
+    }
+  },
+  "adoption_and_acceptance": {
+    "status": "pending Root's normal SDK batch plus performance_native's consistent Native candidate; no current C7/C8 hot replacement by this work",
+    "required_steps": [
+      "At an already required managed adoption, bind the actual SDK source and Native DLL plus Game PID/connection/episode; retain minimized CK3 and its exact owned HWND. Do not restore, activate or take foreground.",
+      "On natural battle/siege/march data, tie schedule request to the later Native sequence/actor/date; require Native settled, valid zoom, current==target and true postcondition. Scheduled/submitted alone is pending.",
+      "Use the normal recorder/screenshot owner to retain original recorded frames showing the actual intended hotspot. Pixel/viewport proof is a separate acceptance item; this source work cannot supply it.",
+      "On naturally quiet observations with no activity hotspot for 30 game days, including a war with only static objectives, require a realm request and later settled result. Check actual subrealm county identities/bounds and real nonzero viewport, then verify recorded frame covers that realm.",
+      "Keep mandatory choice interruption and ownership/zero-client rejection. If Native returns unavailable, retain the exact request and real phase diagnosis; do not manufacture a viewport or claim the minimized gate alone explains it."
+    ],
+    "live_verification_owner": "Root/runtime/score15; no new live sampling performed by M4",
+    "no_funding_credit": true
+  },
+  "storage": {
+    "repo_source_test_net_growth_bytes": 6943,
+    "external_written_bytes": 0,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "producer_processes": 0,
+    "future_write_bytes": 0,
+    "physical_credit_bytes": 0,
+    "budget": "original other-research128MiB / existing review unchanged; source+test<=48KiB and single evidence<=16KiB; aggregate net<=64KiB"
+  }
+}

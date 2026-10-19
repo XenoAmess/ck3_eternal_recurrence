@@ -1,12 +1,17 @@
 import ctypes
 import os
+import sys
 import threading
 import time
+import types
+import uuid
+
+import pytest
 
 from xar_autoplayer.bridge.auto_camera_follow import LatestCameraFollowWorker
 from xar_autoplayer.bridge.realm_overview_camera import (
     EXACT_SHA, MAGIC, NativeCameraPresentationClient, PeaceRealmCameraPolicy,
-    _Request, _Result, _Shared,
+    _Request, _Result, _Shared, desktop1_game_window,
 )
 
 
@@ -41,10 +46,9 @@ def test_hotspot_preempts_realm_and_restarts_peace_timer():
     assert policy.observe(payload(64), None)["mode"] == "realm"
 
 
-def test_forced_choice_war_without_anchor_and_succession_reset_timer():
+def test_forced_choice_and_succession_reset_timer():
     for block in ({"mandatory_choice": True}, {"has_active_event": True},
-                  {"has_pending_interaction": True}, {"active_wars": [{"war_id": 1}]},
-                  {"has_player_armies": True}):
+                  {"has_pending_interaction": True}):
         policy = PeaceRealmCameraPolicy()
         policy.observe(payload(), None)
         policy.observe(payload(30), None)
@@ -57,6 +61,102 @@ def test_forced_choice_war_without_anchor_and_succession_reset_timer():
     policy.observe(payload(30), None)
     assert policy.observe(payload(31, actor=40526), None)["mode"] == "hold"
     assert policy.observe(payload(61, actor=40526), None)["mode"] == "realm"
+
+
+@pytest.mark.parametrize("anchor", [None, {"title_key": "b_bari", "reason": "war_objective"},
+                                    {"title_key": "b_bari", "reason": "player_army"}])
+def test_war_without_activity_reaches_overview_without_refreshing_quiet_timer(anchor):
+    policy = PeaceRealmCameraPolicy()
+    for day in range(30):
+        result = policy.observe(payload(day, active_wars=[{"war_id": 1}],
+                                        has_player_armies=True), anchor)
+        assert result["mode"] == "hold"
+        assert policy.quiet_since == payload()["source_frame"]["date_raw"]
+    assert policy.observe(payload(30, active_wars=[{"war_id": 1}],
+                                  has_player_armies=True), anchor)["mode"] == "realm"
+
+
+@pytest.mark.parametrize("reason", ["battle", "siege", "objective_siege",
+                                   "moving_player_army", "army_destination"])
+def test_activity_preempts_overview_and_restarts_quiet_period(reason):
+    policy = PeaceRealmCameraPolicy()
+    policy.observe(payload(), None)
+    policy.observe(payload(30), None)
+    hotspot = {"title_key": "b_bari", "reason": reason}
+    assert policy.observe(payload(31), hotspot)["mode"] == "hotspot"
+    assert policy.observe(payload(32), hotspot)["mode"] == "hold"
+    assert policy.quiet_since is None
+    assert policy.observe(payload(33, active_wars=[{}]), None)["mode"] == "hold"
+    assert policy.observe(payload(62, active_wars=[{}]), None)["mode"] == "hold"
+    assert policy.observe(payload(63, active_wars=[{}]), None)["mode"] == "realm"
+
+
+def window_fixture(monkeypatch, *, handles=(4242,), client=(0, 0, 1920, 1080),
+                   owner=123, desktop_id=None):
+    desktop = uuid.UUID("11111111-1111-1111-1111-111111111111")
+    calls = []
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("camera must not query placement, restore, activate or move the window")
+
+    gui = types.SimpleNamespace(
+        IsWindow=lambda hwnd: hwnd in handles,
+        GetWindowText=lambda hwnd: "Crusader Kings III",
+        EnumWindows=lambda callback, context: [callback(hwnd, context) for hwnd in handles],
+        GetClientRect=lambda hwnd: (calls.append(hwnd), client)[1],
+        IsIconic=forbidden, GetWindowPlacement=forbidden, ShowWindow=forbidden,
+        SetForegroundWindow=forbidden, MoveWindow=forbidden)
+    process = types.SimpleNamespace(GetWindowThreadProcessId=lambda hwnd: (1, owner))
+
+    class Key:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+
+    registry = types.SimpleNamespace(HKEY_CURRENT_USER=0, OpenKey=lambda *args: Key(),
+                                     QueryValueEx=lambda *args: (desktop.bytes_le, 0))
+    virtual = types.SimpleNamespace(window_virtual_desktop=lambda hwnd: {
+        "desktop_id": desktop_id or str(desktop)})
+    for name, module in [("win32gui", gui), ("win32process", process), ("winreg", registry),
+                         ("xar_autoplayer.bridge.windows_virtual_desktop", virtual)]:
+        monkeypatch.setitem(sys.modules, name, module)
+    return calls
+
+
+def test_owned_minimized_window_uses_only_real_nonzero_client_viewport(monkeypatch):
+    # No IsIconic/placement call is permitted: iconic state cannot reject an
+    # otherwise owned HWND or supply guessed viewport dimensions.
+    calls = window_fixture(monkeypatch)
+    client, shared = client_fixture()
+    queued = client.submit({"mode": "hotspot", "title_key": "b_bari"},
+                           payload()["source_frame"], payload()["source_build"])
+    assert queued["status"] == "queued_native_presentation"
+    assert queued["camera_postcondition_verified"] is False
+    assert shared.request.hwnd == 4242 and shared.request.mode == 2
+    assert calls == [4242]
+
+
+@pytest.mark.parametrize("client", [(0, 0, 0, 1080), (0, 0, 1920, 0), (0, 0, -1, 1080)])
+def test_zero_or_invalid_actual_client_viewport_rejects(monkeypatch, client):
+    window_fixture(monkeypatch, client=client)
+    with pytest.raises(ValueError, match="nonzero"):
+        desktop1_game_window(123)
+
+
+def test_cached_window_does_not_bypass_uniqueness_or_owner_checks(monkeypatch):
+    window_fixture(monkeypatch, handles=(4242, 4243))
+    with pytest.raises(ValueError, match="unique owned"):
+        desktop1_game_window(123, 4242)
+    window_fixture(monkeypatch, owner=999)
+    with pytest.raises(ValueError, match="unique owned"):
+        desktop1_game_window(123, 4242)
+
+
+def test_owned_window_on_other_desktop_still_rejects(monkeypatch):
+    window_fixture(monkeypatch, desktop_id="22222222-2222-2222-2222-222222222222")
+    with pytest.raises(ValueError, match="outside Desktop 1"):
+        desktop1_game_window(123)
 
 
 def test_sustained_requests_do_not_starve_latest_worker():
@@ -148,6 +248,41 @@ def test_partial_receipt_never_becomes_success():
     assert client.latest()["coverage_verified"] is False
 
 
+def test_native_diagnostic_statuses_decode_as_failures_and_preserve_legacy_wire():
+    from xar_autoplayer.bridge.auto_camera_follow import camera_receipt_outcome
+
+    expected = (
+        "window_unavailable", "camera_resolve_unavailable",
+        "camera_target_write_blocked_or_unreadable",
+        "camera_transient_x_active_or_unreadable",
+        "camera_transient_z_active_or_unreadable",
+        "camera_viewport_extent_unavailable", "camera_bucket_table_unavailable",
+        "camera_bucket_read_or_match_unavailable", "camera_zoom_index_unavailable",
+        "camera_zoom_or_target_state_unavailable", "camera_angle_state_unavailable",
+        "camera_canonical_target_unavailable", "camera_target_write_or_readback_unavailable",
+    )
+    client, shared = client_fixture()
+    shared.result.request_sequence = 2
+    shared.result.zoom_index = 4
+    for code, name in enumerate(expected, 16):
+        shared.result_sequence += 2
+        shared.result.status = code
+        actual = client.latest()
+        assert actual["status"] == name
+        assert actual["camera_postcondition_verified"] is False
+        assert camera_receipt_outcome({"native_actual": actual})[:2] == ("failed", False)
+    # Existing Native26 settled receipts remain compatible with the same layout.
+    shared.result_sequence += 2
+    shared.result.status = 2
+    actual = client.latest()
+    assert actual["status"] == "settled"
+    assert camera_receipt_outcome({"native_actual": actual})[:2] == ("completed", True)
+    shared.result_sequence += 2
+    shared.result.status = 9  # Reserved values are not promoted to known failures/success.
+    with pytest.raises(ValueError, match="malformed native presentation receipt"):
+        client.latest()
+
+
 def test_service_selects_and_publishes_without_gameplay_snapshot_or_pipe():
     from xar_autoplayer.bridge.service import GameplayBridgeService
     from xar_autoplayer.bridge.war_hotspot_camera import LandedProvinceIndex
@@ -172,11 +307,49 @@ def test_service_selects_and_publishes_without_gameplay_snapshot_or_pipe():
     service._camera_presentation_client = client
     service._select_auto_camera_hotspot(payload())
     result = service._select_auto_camera_hotspot(payload(30))
-    assert client.intents == [{"mode": "realm", "reason": "peace_realm_overview",
+    assert client.intents == [{"mode": "realm", "reason": "no_hotspot_realm_overview",
                                "quiet_days_observed": 30.0}]
     assert result["display_mode"] == "realm"
     assert result["same_frame_with_gameplay_claim"] is False
     service._auto_camera_worker.close_without_wait()
+
+
+def test_service_wartime_static_anchor_falls_back_and_battle_preempts_without_driver():
+    from xar_autoplayer.bridge.service import GameplayBridgeService
+    from xar_autoplayer.bridge.war_hotspot_camera import LandedProvinceIndex
+
+    class ForbiddenDriver:
+        def take_snapshot(self, **_):
+            raise AssertionError("camera requested another gameplay snapshot")
+
+    class Client:
+        pid = 123
+        def __init__(self):
+            self.intents = []
+        def latest(self):
+            return None
+        def submit(self, intent, frame, source):
+            self.intents.append(dict(intent))
+            return {"status": "queued_native_presentation", "request_sequence": len(self.intents) * 2}
+
+    service = GameplayBridgeService(ForbiddenDriver())
+    service.bind_war_hotspot_camera_index(LandedProvinceIndex({4242: "b_bari"}, {4242: "c_bari"}, ()))
+    client = Client()
+    service._camera_presentation_client = client
+    try:
+        static = {"war_id": 1, "war_objective_province_ids": [4242]}
+        service._select_auto_camera_hotspot(payload(0, active_wars=[static]))
+        realm = service._select_auto_camera_hotspot(payload(30, active_wars=[static]))
+        battle = {**static, "allied_armies": [{"army_id": 7, "current_province_id": 4242,
+                                             "in_combat": True, "controllable": True}]}
+        hotspot = service._select_auto_camera_hotspot(payload(31, active_wars=[battle]))
+        assert [intent["mode"] for intent in client.intents] == ["realm", "hotspot"]
+        assert hotspot["hotspot"]["reason"] == "battle"
+        assert hotspot["hotspot"]["title_key"] == "b_bari"
+        assert realm["available"] is False and hotspot["available"] is False
+        assert realm["same_frame_with_gameplay_claim"] is False
+    finally:
+        service._auto_camera_worker.close_without_wait()
 
 
 def test_stationary_peace_armies_allow_overview_but_movement_preempts():

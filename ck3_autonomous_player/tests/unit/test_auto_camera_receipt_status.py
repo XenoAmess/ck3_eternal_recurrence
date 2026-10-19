@@ -37,7 +37,9 @@ class ServiceProbe:
 def payload(date, title='b_syracusa'):
     return {'source_frame': {'actor_character_id': 40526, 'episode_run_id': 'test',
             'bridge_pid': 51028, 'connection_generation': 1, 'date_raw': date},
-            'active_wars': [{'war_id': 42, 'war_objective_province_ids': [4242]}],
+            'active_wars': [{'war_id': 42, 'allied_armies': [{
+                'army_id': 7, 'current_province_id': 4242,
+                'in_combat': True, 'controllable': True}]}],
             'map_ready': True}
 
 
