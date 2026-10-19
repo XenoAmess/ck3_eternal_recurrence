@@ -1,0 +1,130 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "GUI-Character-DataFunction-type-provider-bootstrap",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Identify actual GUI Character DataFunction/type-registration metadata, excluding generic binders and local tooltip payloads before applying the <=10 relevant-candidate cap.",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Character actual DataFunction/type metadata; then explicit DataFunction/DataBinding/DataType/TypeInfo RTTI framework metadata only",
+    "identity_lifetime": "existing actual direct-hashed file with same pre/post stat",
+    "producer_trigger": "not-applicable",
+    "producer": "GUI Character type/method-table producer, not script name or trigger registries",
+    "caller": "offline exact-name RTTI metadata locator",
+    "consumer": "source review; no runtime orH provider",
+    "cache_lifetime": "source-bound this exact file",
+    "expected_signal": "actual Character DataType/provider class with source-bound COL/vtable/bootstrap",
+    "zero_sample_meaning": "no selected type metadata encoding, not absence of a getter/provider",
+    "stop_condition": "Relevant metadata candidates<=10; complete <=1024B CString names, capture<=512B; code windows remain 0 of <=3x512B; whole phase receipts<=48KiB; no hash without proved algorithm",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "prior_result": {
+      "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/character-datafunction-bootstrap12004-20261019/metadata-output02.json",
+      "bytes": 10945,
+      "sha256": "498269d2dfc485965fd0a93658c8c8b25f0931afa29d34b994e98596e5c27746"
+    },
+    "prior_ten_excluded_as": "CPdxGuiDataModel{Wrap}Collection<Character> array/span adapters; not actual type/method registration",
+    "phaseA_resume_after_Character_rva": 91066970,
+    "phaseA_require_any": [
+      "DataFunction",
+      "DataBinding",
+      "DataType",
+      "TypeInfo",
+      "GuiData",
+      "DataAccessor"
+    ],
+    "phaseA_exclude": [
+      "std binders",
+      "AI/ParallelFor",
+      "local tooltip payload",
+      "GuiDataModelCollection",
+      "GuiDataModelWrapCollection"
+    ],
+    "phaseB_if_A_zero": "only RTTI names with DataFunction/DataBinding/DataType/TypeInfo, or concrete CPdxGuiData metadata; filter same exclusions, no arbitrary Data",
+    "CString_bound_each_side": 1024,
+    "capture_bytes_max": 512,
+    "relevant_candidates_max": 10,
+    "function_windows_read": 0,
+    "future_functions_max": 3,
+    "future_function_bytes_max": 512,
+    "total_phase_receipts_bytes_max": 49152,
+    "hash_values_computed": false,
+    "Root_authorization": "Continue namespace DataFunction registration metadata; proven generic adapters do not exhaust relevant candidate cap; record exclusions and cursors, no arbitrary Data/tooltip callee paths."
+  },
+  "evidence": [
+    {
+      "id": "actual-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "actual direct-hashed file identity only"
+    },
+    {
+      "id": "getter-source-frontier",
+      "layer": "source-contract",
+      "path": "../../evidence/player-heir-getter-source-index-2026-10-19.json",
+      "sha256": "785739019a9c5523121e71b0fb5759e81847541e49a0b5e4353e6685178150ae",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "ordinary Character getter consumer and exhausted plain-method encodings; not native callback proof"
+    },
+    {
+      "id": "prior-metadata",
+      "layer": "locator",
+      "path": "metadata-output01.json",
+      "sha256": "7c6ab28e82a099f6142c0b376777dbd8f2ab44573a021f48854450555a7f0251",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "raw metadata and resume cursor; prior ten names excluded as std wrappers/trait or nickname-local tooltip data"
+    },
+    {
+      "id": "collection-adapters",
+      "layer": "locator",
+      "path": "metadata-output02.json",
+      "sha256": "498269d2dfc485965fd0a93658c8c8b25f0931afa29d34b994e98596e5c27746",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "concrete collection adapter names and resume cursor only, not GUI registration source"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "type",
+      "label": "actual Character GUI type/provider"
+    },
+    {
+      "id": "methods",
+      "label": "native methods registration/lookup shape"
+    },
+    {
+      "id": "heir",
+      "label": "GetPlayerHeir native callback"
+    }
+  ],
+  "edges": [
+    {
+      "id": "bootstrap",
+      "from": "type",
+      "to": "methods",
+      "label": "actual provider registration and table algorithm",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which current Character-specific metadata class provides GUI method registration?"
+    },
+    {
+      "id": "method",
+      "from": "methods",
+      "to": "heir",
+      "label": "source-proved key and typed callback",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does actual lookup bindCharacter.GetPlayerHeir and what original qualification boundary applies?"
+    }
+  ],
+  "cases": []
+}

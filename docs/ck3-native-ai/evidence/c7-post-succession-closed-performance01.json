@@ -1,0 +1,319 @@
+{
+  "schema": "xar.ck3.c7-post-succession-closed-performance.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:41:38Z",
+  "business_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+  "evidence_layer": "Natural closed source projections; software wall accounting, no new game observation or performance benchmark.",
+  "sourcepins": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/C7-BATCH3864-75-COMPACT.json",
+      "bytes": 94165,
+      "sha256": "22a0311efe46ff544a5bf3a08bca2a0bc36b4109d0c3bc0f9458a48c989d3736"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/C7-BATCH3864-75-STAGE-TRACE.json",
+      "bytes": 987,
+      "sha256": "849ab6d694d21db381f89e164674c83c86a0db43a7a43517ddd0fdee53911864"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/C7-BATCH3864-75-STAGE-TRACE.jsonl",
+      "bytes": 166914,
+      "sha256": "8a58f2d584f42cb8bdb36baa476875444d4afef4342e6a2cd1ec9825fa90d260"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-natural-succession-success78/ACTUAL.json",
+      "bytes": 6358,
+      "sha256": "c88be197a856deb2f787fce82fc7672151a70c4606f1b0d54ff86d1068a12b45"
+    }
+  ],
+  "anchors": {
+    "AUTO9": "2026-10-19T03:26:49.420926Z",
+    "SDK115": "2026-10-19T03:54:19.068067Z",
+    "C7_first_AUTO523": "2026-10-19T07:23:56.695174Z",
+    "recovered_first_AUTO3865": "2026-10-19T08:38:00.181184Z",
+    "end_MET3924": "2026-10-19T08:38:28.198180Z",
+    "T0_date_raw": 53144328
+  },
+  "closed_batch": {
+    "control": 3864,
+    "status": "bounded_loop_finished",
+    "actual_turns": 30,
+    "cumulative_cycles_start": 1839,
+    "cumulative_cycles_end": 1869,
+    "first_frame": {
+      "snapshot_id": "native:3007",
+      "revision": 2589,
+      "native_revision": 3007,
+      "date_raw": 53186880,
+      "paused": true,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886",
+      "war_count": 1
+    },
+    "last_frame": {
+      "snapshot_id": "native:3030",
+      "revision": 2612,
+      "native_revision": 3030,
+      "date_raw": 53187048,
+      "paused": true,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886",
+      "war_count": 1
+    },
+    "actual_days": 7,
+    "first_to_last_tool_wall_seconds": 28.016996,
+    "seconds_per_actual_day": 4.002428,
+    "complete_timed_tool_RPC_count": 60,
+    "tool_RPC_wall_seconds": 17.680280500557274,
+    "inter_RPC_or_control_seconds": 10.336715499442725,
+    "FULL_outer_elapsed_seconds": null,
+    "all_30_MET_war_count": 1
+  },
+  "cumulative_windows": {
+    "run_wall_start_utc": {
+      "seconds": 18698.777254,
+      "days": 1780,
+      "s_per_day": 10.504931041573034
+    },
+    "adopted_SDK_first_AUTO_start_utc": {
+      "seconds": 17049.130113,
+      "days": 1762,
+      "s_per_day": 9.676010279795687
+    },
+    "C7_first_AUTO_start_utc": {
+      "seconds": 4471.503006,
+      "days": 1399,
+      "s_per_day": 3.1962137283774124
+    }
+  },
+  "window_contract": "Every cumulative window ends at observed MET3924 and keeps every intervening maintenance/P0/SAVE/recovery gap. Recovered AUTO3865 is an additional local window, not a replacement anchor. FULL wrapper start/end are absent and remain unknown.",
+  "RPC_step_groups": {
+    "query-war-results-window-v1": {
+      "n": 2,
+      "sum_s": 0.48643709998577833
+    },
+    "root_current_runtime_metrics": {
+      "n": 30,
+      "sum_s": 0.11198160029016435
+    },
+    "query-war-termination-options-16777278": {
+      "n": 3,
+      "sum_s": 1.7460413000080734
+    },
+    "query-army-strengths-v1": {
+      "n": 8,
+      "sum_s": 5.660059600137174
+    },
+    "query-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439": {
+      "n": 7,
+      "sum_s": 1.1085378001444042
+    },
+    "advance-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439": {
+      "n": 7,
+      "sum_s": 7.393561399774626
+    },
+    "query-campaign-root-context-v1": {
+      "n": 1,
+      "sum_s": 0.30576519994065166
+    },
+    "query-current-event-window-context-v1": {
+      "n": 1,
+      "sum_s": 0.16977010015398264
+    },
+    "select-event-option-2": {
+      "n": 1,
+      "sum_s": 0.698126400122419
+    }
+  },
+  "inter_RPC_gaps": {
+    "AUTO_to_MET": {
+      "count": 30,
+      "sum_seconds": 4.333968,
+      "median_seconds": 0.1347025,
+      "max_seconds": 0.421584
+    },
+    "MET_to_AUTO": {
+      "count": 29,
+      "sum_seconds": 6.002749,
+      "median_seconds": 0.190269,
+      "max_seconds": 0.453117
+    }
+  },
+  "gap_scope": "Adjacent ended-to-started timestamps; do not assign control/display/queue gaps to Native CPU or assume fixed sleeps. Gap sum and wall-minus-RPC may differ at timestamp precision.",
+  "selected_stage_totals": {
+    "service.normal_plan_turn": {
+      "n": 30,
+      "sum_s": 4.1234612,
+      "max_s": 0.6893019
+    },
+    "service.planner_capabilities": {
+      "n": 87,
+      "sum_s": 0.0909241,
+      "max_s": 0.0015835
+    },
+    "service.planner_history_rows": {
+      "n": 39,
+      "sum_s": 0.0013706,
+      "max_s": 0.0000818
+    },
+    "service.planner_choose": {
+      "n": 28,
+      "sum_s": 0.0480037,
+      "max_s": 0.0357495
+    },
+    "service.planner_public_plan_copy": {
+      "n": 30,
+      "sum_s": 0.0058122,
+      "max_s": 0.0002726
+    },
+    "driver.native_pipe_send_wait": {
+      "n": 8,
+      "sum_s": 2.7704322,
+      "max_s": 0.3868153
+    },
+    "driver.army_normalize": {
+      "n": 8,
+      "sum_s": 0.0009451,
+      "max_s": 0.0002042
+    },
+    "driver.record_command": {
+      "n": 8,
+      "sum_s": 0.0004716,
+      "max_s": 0.0000804
+    },
+    "driver.route_preview_native_pipe_send_wait": {
+      "n": 7,
+      "sum_s": 0.1723644,
+      "max_s": 0.0333997
+    },
+    "driver.life_advance_public_change_wait": {
+      "n": 23,
+      "sum_s": 6.5330226,
+      "max_s": 0.9237962
+    },
+    "driver.exact_clock_resume_to_paused": {
+      "n": 7,
+      "sum_s": 6.1868873,
+      "max_s": 1.1811117
+    },
+    "driver.full_state_persistence": {
+      "n": 16,
+      "sum_s": 0.0609752,
+      "max_s": 0.0045439
+    },
+    "driver.full_state_utf8_encoding": {
+      "n": 16,
+      "sum_s": 0.0006297,
+      "max_s": 0.0000841
+    },
+    "driver.full_state_temp_stream_write": {
+      "n": 16,
+      "sum_s": 0.002709,
+      "max_s": 0.0002308
+    },
+    "driver.full_state_atomic_write": {
+      "n": 16,
+      "sum_s": 0.0379682,
+      "max_s": 0.0029817
+    }
+  },
+  "clock_interval_union": {
+    "driver.exact_clock_observation": {
+      "seconds": 6.189782,
+      "spans": 7
+    },
+    "driver.exact_clock_resume_to_paused": {
+      "seconds": 6.186887,
+      "spans": 7
+    },
+    "driver.life_advance_public_change_wait": {
+      "seconds": 6.533022,
+      "spans": 23
+    }
+  },
+  "clock_contract": "35 exact_clock_observation rows sum18.1499754s are cumulative phases within seven resumes and must not be added. Union merges finished_at_utc-elapsed_ns intervals at UTC microsecond precision. Other nested stages are also nonadditive. Speed3 and route horizon/AB guard unchanged.",
+  "Army_native_stage_seconds": {
+    "read_total_ns": 0.5251943,
+    "owner_query_ns": 0.431157,
+    "baseline_read_ns": 0.4292842,
+    "rich_attach_ns": 0.0008164,
+    "serialize_ns": 0.4679328
+  },
+  "Army_native_contract": "Eight Army RPCs sum5.6600596s; pipe2.7704322s. read_total and serialize are distinct Native stages; owner_query/baseline/rich_attach overlap read_total. No Native-only total or pipe residual CPU attribution is inferred.",
+  "persistence": {
+    "successful_full_writes": 16,
+    "failed_full_writes_observed": 0,
+    "wall_seconds": 0.0609752,
+    "logical_payload_bytes": 2863714,
+    "reason_counts": {
+      "succession_expectation": 8,
+      "record_command:advance-route-contact-horizon-v1-33554800-to-2604-h-2-393-33554439": 7,
+      "record_command:select-event-option-2": 1
+    },
+    "history_first": {
+      "json_bytes": 33485,
+      "rows": 4
+    },
+    "history_last": {
+      "json_bytes": 320284,
+      "rows": 48
+    },
+    "history_growth": {
+      "json_bytes": 286799,
+      "rows": 44
+    },
+    "candidate_closed_run_lengths": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "max_candidate_current_run": 1,
+    "actual_WAL_appends": 0,
+    "WAL_default_off": true,
+    "counter_scope": "Driver_instance_timing_enabled_observations_only",
+    "interpretation": "Post-succession active history starts small. This does not prove archival preservation/deletion or future SAVE/Driver upper bounds; no Driver/archive body was read. Candidate is timeline-family classification, not WAL eligibility. Persistence is small in this batch and does not justify a new storage framework."
+  },
+  "succession_recovery": {
+    "source_status": "actual_handoff_UI_SAVE_finalSEM_verified",
+    "completed_cycles": 1839,
+    "elapsed_days": 1773,
+    "current_character_id": 40526,
+    "reconciled_successions": 1,
+    "SAVE3862_elapsed_seconds": 3.6560810999944806,
+    "saved_checkpoint_metadata_bytes": 90804740,
+    "scope": "ACTUAL's small sealed projection was read; no90804740B SAVE was read. SAVE3862 and all recovery gaps are already in cumulative wall, outside the local3865-to3924 window. One SAVE metadata size is not a future SAVE budget upper bound."
+  },
+  "findings": [
+    "Local30cycles advanced7days at4.002428s/day. C7 cumulative4471.503006s/1399days=3.1962137284s/day; original AUTO9 cumulative18698.777254s/1780days=10.5049310416s/day. No sustained target qualification.",
+    "Main measured components are seven route advances7.3935614s, eight Army queries5.6600596s and unassigned inter-RPC/control10.3367155s. Planning4.1234612s is nested in RPC and not additive.",
+    "Sixteen full writes take0.0609752s for2.863714MB logical payload. Candidate runs are all1 and WAL remains disabled; no observed repeat-append run justifies enabling it.",
+    "Keep legal observation/Army queries/strategy intact. Native owner can source-audit actual pipe timings; harness owner can audit closed inter-RPC/control gaps. Existing source-only internal/sway timers are not yet in this C7 evidence.",
+    "No30s RPC appears in this batch; longest observed AUTO1.2986742s. This alone does not qualify all ordinary-event clock cases."
+  ],
+  "prior_ledger": {
+    "path": "docs/ck3-native-ai/evidence/c7-long-window-first-war-increment01.json",
+    "sha256": "f902f92024829eefa6514b5c7d82a1dc8539025bacf6153ebe0bc68218818215",
+    "modified": false
+  },
+  "producer": {
+    "method": "Inline bounded Python parse with explicit exact bytes/SHA checks on four sealed inputs; no acceptance assert. Aggregate elapsed_ns per stage; keep nested totals nonadditive.",
+    "formulas": "days=(last_date_raw-first_date_raw)/24; elapsed=(endUTC-anchorUTC).total_seconds(); cumulative day=(date_raw-53144328)/24 minus opening day0/18/381.",
+    "inputs_only": true
+  },
+  "sustained_goal_qualified": false,
+  "new_game_RPC_calls": 0,
+  "active_Driver_SAVE_reads": 0,
+  "large_raw_reads": 0,
+  "external_writes_bytes": 0,
+  "storage": {
+    "pool": "Existing MICROPOOL01/other128MiB; single repo JSON<=12KiB follow-up",
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}

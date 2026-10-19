@@ -1,0 +1,81 @@
+{
+  "schema": "xar.ck3.contact-free-exact-route-speed-trial-software-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:24:26.282248Z",
+  "identity_source": "fresh tools.ck3_live_run_id.current_machine_id readback",
+  "status": "SOFTWARE_DIRECTED_PASS_CONTROLLED_TRIAL_PENDING_LIVE",
+  "source_baseline": "d192b7bade022fe1c51e7e0c92e9c25e685ae2cf",
+  "production_delta": {
+    "driver": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "driver_sha256": "faad6ce17fe95a58fda03771bd94dead7774ccdb83da0a5d4dfbeea9a62bd8a7",
+    "driver_added_lines": 13,
+    "leaf": "ck3_autonomous_player/src/xar_autoplayer/bridge/contact_free_exact_route_speed_trial_v1.py",
+    "leaf_bytes": 6823,
+    "leaf_sha256": "1858ce808880a4c06ce4be8907f9273201bf0ac7ec8477d5342c2eb326208a6a",
+    "constructor_global_speed": 3,
+    "effective_global_route_speed": 3,
+    "allow_route_contact_high_speed_ab": false,
+    "scope": "contact_free_typed_route_exact_one_day",
+    "max_selected_attempts_per_driver": 1,
+    "idempotent_configuration_resets_attempt": false,
+    "failed_or_unknown_attempt_is_consumed_before_native_submission": true,
+    "native_army_watch_claimed": false,
+    "live_ready": false
+  },
+  "directed_tests": {
+    "source": "ck3_autonomous_player/tests/unit/test_contact_free_exact_route_speed_trial_v1.py",
+    "bytes": 15843,
+    "sha256": "9e3f6bb2de1f3e4bfea30d51e44c6efc0d28b8b2815d38cfd520a5cfe5655ffe",
+    "layer": "actual NativeHeadlessGameplayDriver execute_step -> existing route query and fresh proof -> original life/exact clock -> NativeProtocolState and synthetic endpoint",
+    "actual_nodes_passed": 8,
+    "actual_seconds": 1.69,
+    "actual_exit_code": 0,
+    "last_test_only_strengthening": "Added an assertion that existing setter/Arm-speed/overshoot negative cases consume the one allowed attempt. Re-ran only that changed node:1pass/1.64s/exit0.",
+    "same_input_3_vs_5": {
+      "query_proof_and_start_frame_equal": true,
+      "critical_clock_war_event_paused_results_equal": true,
+      "command_lifecycle_equal_except_speed_tokens": true,
+      "native_clock_watch_army_count_each": 0,
+      "actual_game_days_each": 1,
+      "resume_count_each": 1,
+      "python_cleanup_pause_count_each": 0,
+      "business_success_or_live_throughput_inferred": false
+    },
+    "negative_and_boundary_coverage": [
+      "explicit immutable campaign/trial identity; non5 or bool speed rejected; global AB cannot qualify",
+      "second fresh ordinary route restores3; idempotent configure cannot reset allowance",
+      "missing Cancel capability retains3 with reason",
+      "stale date/revision and unsafe sibling rejected before any clock native command",
+      "wrong setter speed or Arm speed rejects before resume; overshoot rejects after only one resume",
+      "zero-day owner-bound modal cancel remains zero-day; one-day ordinary event remains pending",
+      "unavoidable contact and identity materialization preference remain1",
+      "exact month and endpoint boundaries; already-at-endpoint submits no resume"
+    ],
+    "initial_fixture_failures_preserved": [
+      "7failed: synthetic provider assigned integer self.start, shadowing endpoint.start; fixture renamed to start_raw",
+      "5pass2failed: modal fixture omitted required played-character owner; stale proof was correctly rejected by UnsupportedStepError earlier than the fixture expected. Added explicit synthetic owner and admitted either original refusal exception; production guards unchanged."
+    ]
+  },
+  "adjacent_original_guards": {
+    "source": "ck3_autonomous_player/tests/unit/test_native_bridge_driver.py::NativeHeadlessGameplayDriverTests",
+    "nodes": ["test_high_speed_route_contact_arm_requires_explicit_admission", "test_scope_live_speed_never_leaks_to_other_scope_or_route_contact", "test_exact_contact_selector_represents_all_five_speed_arms"],
+    "passed": 3,
+    "seconds": 1.79,
+    "exit_code": 0,
+    "whole_matrix_repeated": false
+  },
+  "future_natural_recipe": "docs/ck3-native-ai/contact-free-exact-route-speed-trial-v1.md",
+  "limits": {
+    "C7_or_frozen_SDK_changed": false,
+    "live_RPC_Game_Native_calls": 0,
+    "new_game_days": 0,
+    "native_builds": 0,
+    "active_Driver_or_SAVE_reads": 0,
+    "source_service_strategy_or_workflow_scope_expanded": false,
+    "old_exact_clock_helper_changed": false,
+    "route_window_committed_hold_or_battle_speed_readiness_changed": false,
+    "candidate_war_choices_or_horizon_changed": false,
+    "one_second_or_route5_live_goal_claimed": false
+  },
+  "retention": {"policy_version": "1.0.0", "category": "record", "review_at_utc": "2027-04-17T08:24:26.282248Z", "large_artifacts_created": 0}
+}

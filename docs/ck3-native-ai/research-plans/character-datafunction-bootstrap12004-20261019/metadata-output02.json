@@ -1,0 +1,235 @@
+{
+  "schema": "xar.GUI-Character-DataFunction.relevant-type-metadata.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T08:41:08.482698+00:00",
+  "ended_at_utc": "2026-10-19T08:41:08.486038+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/character-datafunction-bootstrap12004-20261019/plan02.json",
+    "bytes": 5515,
+    "sha256": "683a3db5cb1b0aa400bf81110f0462a867088799c79ffd2629448c9ab8be6ba4"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-character-datatype-bootstrap02.py",
+    "bytes": 9467,
+    "sha256": "09d8dd3814aecdef10ecb798c442f5300ff5a2270ea2ca8aae8c6ae9dc267905"
+  },
+  "excluded_prior_candidates": [
+    {
+      "name_rva": 89108112,
+      "reason": "std binder/icon database or ParallelFor wrapper; no actual GUI type/method-table identity"
+    },
+    {
+      "name_rva": 89108256,
+      "reason": "std binder/icon database or ParallelFor wrapper; no actual GUI type/method-table identity"
+    },
+    {
+      "name_rva": 89108416,
+      "reason": "std binder/icon database or ParallelFor wrapper; no actual GUI type/method-table identity"
+    },
+    {
+      "name_rva": 89258656,
+      "reason": "trait/nickname-local tooltip payload or its any-visitor wrapper"
+    },
+    {
+      "name_rva": 89259104,
+      "reason": "trait/nickname-local tooltip payload or its any-visitor wrapper"
+    },
+    {
+      "name_rva": 89259456,
+      "reason": "trait/nickname-local tooltip payload or its any-visitor wrapper"
+    },
+    {
+      "name_rva": 89259712,
+      "reason": "trait/nickname-local tooltip payload or its any-visitor wrapper"
+    },
+    {
+      "name_rva": 89278672,
+      "reason": "std binder/icon database or ParallelFor wrapper; no actual GUI type/method-table identity"
+    },
+    {
+      "name_rva": 89284512,
+      "reason": "std binder/icon database or ParallelFor wrapper; no actual GUI type/method-table identity"
+    },
+    {
+      "name_rva": 89464096,
+      "reason": "std binder/icon database or ParallelFor wrapper; no actual GUI type/method-table identity"
+    }
+  ],
+  "prior_cursor": {
+    "section": ".data",
+    "after_fixed_Character_rva": 89464211,
+    "prior_raw_occurrences": 154,
+    "prior_RTTI_with_Data_Bind_TypeInfo_count": 10
+  },
+  "counts": {
+    "A_fixed_substring_occurrences": 381,
+    "A_excluded_generic_std_tooltip_AI": 114,
+    "A_not_RTTI_CString": 41,
+    "A_excluded_not_registration_type_metadata": 166,
+    "A_duplicate_CString": 50
+  },
+  "scan_cursors": [
+    {
+      "phase": "A",
+      "section": ".data",
+      "needle": "Character",
+      "start_rva": 89464220,
+      "end_cursor_rva": 91066979,
+      "section_exhausted_for_this_needle": false
+    }
+  ],
+  "selected_relevant_metadata_candidates": [
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90746320,
+      "match_rva": 90746386,
+      "full_CString_bytes_including_NUL": 125,
+      "capture_bytes": 125,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c57726170436f6c6c656374696f6e40563f24435064785370616e4024244342563f2454506478526566405643436861726163746572404040402430485050505050505040404024244342563f245450647852656640564343686172616374657240404040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelWrapCollection@V?$CPdxSpan@$$CBV?$TPdxRef@VCCharacter@@@@$0HPPPPPPP@@@$$CBV?$TPdxRef@VCCharacter@@@@@@",
+      "name_sha256": "d3d2ce40607a9150089b3a779bd399ca517f817de14146f76099c1af09d977ee",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90746464,
+      "match_rva": 90746526,
+      "full_CString_bytes_including_NUL": 121,
+      "capture_bytes": 121,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c436f6c6c656374696f6e40563f24435064785370616e4024244342563f2454506478526566405643436861726163746572404040402430485050505050505040404024244342563f245450647852656640564343686172616374657240404040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelCollection@V?$CPdxSpan@$$CBV?$TPdxRef@VCCharacter@@@@$0HPPPPPPP@@@$$CBV?$TPdxRef@VCCharacter@@@@@@",
+      "name_sha256": "5cd9c5ba9b0c48fedb71276da9ee985a85270d9a8eb0e5b2d507cf0092c8ea49",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90753872,
+      "match_rva": 90753938,
+      "full_CString_bytes_including_NUL": 115,
+      "capture_bytes": 115,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c57726170436f6c6c656374696f6e40414542563f2443506478417272617940563f24545064785265664056434368617261637465724040404048404024244342563f245450647852656640564343686172616374657240404040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelWrapCollection@AEBV?$CPdxArray@V?$TPdxRef@VCCharacter@@@@H@@$$CBV?$TPdxRef@VCCharacter@@@@@@",
+      "name_sha256": "54587a6f9014952db4264f95bb90002fbc08a175c452324e11721bdda242c208",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90754016,
+      "match_rva": 90754078,
+      "full_CString_bytes_including_NUL": 111,
+      "capture_bytes": 111,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c436f6c6c656374696f6e40414542563f2443506478417272617940563f24545064785265664056434368617261637465724040404048404024244342563f245450647852656640564343686172616374657240404040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelCollection@AEBV?$CPdxArray@V?$TPdxRef@VCCharacter@@@@H@@$$CBV?$TPdxRef@VCCharacter@@@@@@",
+      "name_sha256": "ebf433d0b22234e8e0a67458eeb191769d6f6b73dc43039dbb73d51a7a736f5d",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90981456,
+      "match_rva": 90981506,
+      "full_CString_bytes_including_NUL": 93,
+      "capture_bytes": 93,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c436f6c6c656374696f6e40563f24435064785370616e40514542564343686172616374657240402430485050505050505040404051454256434368617261637465724040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelCollection@V?$CPdxSpan@QEBVCCharacter@@$0HPPPPPPP@@@QEBVCCharacter@@@@",
+      "name_sha256": "ead326b94c3b9edbe0dddaead98c275b5bb61f7446957fa896b1a890d06d84d7",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90981568,
+      "match_rva": 90981622,
+      "full_CString_bytes_including_NUL": 97,
+      "capture_bytes": 97,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c57726170436f6c6c656374696f6e40563f24435064785370616e40514542564343686172616374657240402430485050505050505040404051454256434368617261637465724040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelWrapCollection@V?$CPdxSpan@QEBVCCharacter@@$0HPPPPPPP@@@QEBVCCharacter@@@@",
+      "name_sha256": "870332845c30fef693c32a09c522c65a291dc839bea6a617f0edb093945f3429",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90985984,
+      "match_rva": 90986042,
+      "full_CString_bytes_including_NUL": 91,
+      "capture_bytes": 91,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c57726170436f6c6c656374696f6e40414542563f24435064784172726179405045425643436861726163746572404048404051454256434368617261637465724040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelWrapCollection@AEBV?$CPdxArray@PEBVCCharacter@@H@@QEBVCCharacter@@@@",
+      "name_sha256": "e87611ee6ad03f59bfb49254295a4a3605b495218c0c420c1a4a30d3fbc6a195",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 90986320,
+      "match_rva": 90986374,
+      "full_CString_bytes_including_NUL": 87,
+      "capture_bytes": 87,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c436f6c6c656374696f6e40414542563f24435064784172726179405045425643436861726163746572404048404051454256434368617261637465724040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelCollection@AEBV?$CPdxArray@PEBVCCharacter@@H@@QEBVCCharacter@@@@",
+      "name_sha256": "ecdcb2c6db2ce222cc07cf6be546e373d247daf3b507732187f03a924055825d",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 91066496,
+      "match_rva": 91066558,
+      "full_CString_bytes_including_NUL": 117,
+      "capture_bytes": 117,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c57726170436f6c6c656374696f6e40563f24435064785370616e40563f24545064785265664056434368617261637465724040404024304850505050505050404040563f245450647852656640564343686172616374657240404040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelWrapCollection@V?$CPdxSpan@V?$TPdxRef@VCCharacter@@@@$0HPPPPPPP@@@V?$TPdxRef@VCCharacter@@@@@@",
+      "name_sha256": "c548752c182fc6de32b6faae483aed5dd8a8c5041ac5c82695193ae2883c43a4",
+      "metadata_only_not_registration_proof": true
+    },
+    {
+      "phase": "A",
+      "section": ".data",
+      "name_rva": 91066912,
+      "match_rva": 91066970,
+      "full_CString_bytes_including_NUL": 113,
+      "capture_bytes": 113,
+      "capture_complete": true,
+      "capture_hex": "2e3f41563f2443506478477569446174614d6f64656c436f6c6c656374696f6e40563f24435064785370616e40563f24545064785265664056434368617261637465724040404024304850505050505050404040563f245450647852656640564343686172616374657240404040404000",
+      "decorated_name_ASCII": ".?AV?$CPdxGuiDataModelCollection@V?$CPdxSpan@V?$TPdxRef@VCCharacter@@@@$0HPPPPPPP@@@V?$TPdxRef@VCCharacter@@@@@@",
+      "name_sha256": "4eae7c69fc3dfa74be53e7cf427823b6c43443594ef565570ae49e963c96b59a",
+      "metadata_only_not_registration_proof": true
+    }
+  ],
+  "relevant_candidate_cap": 10,
+  "cap_reached": true,
+  "candidate_functions_read": 0,
+  "hash_values_computed": false,
+  "operations": {
+    "Game_RPC_process_memory_builds": 0,
+    "EXE_copies": 0,
+    "AI_or_callee_tree": false,
+    "H_or_runtime_credit": false
+  },
+  "semantic_boundary": "Metadata names are locators only. No GUI method registration/hash/provider or living continuation legal qualification is inferred."
+}

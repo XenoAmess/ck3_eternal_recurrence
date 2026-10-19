@@ -1,5 +1,6 @@
 """Synthetic portable source-review tests; no CK3 installation or MCP calls."""
 import copy
+import hashlib
 import json
 from pathlib import Path
 
@@ -45,7 +46,14 @@ def reviewed_case(tmp_path, monkeypatch):
         ' option = {\n name = synthetic.1.a\n add_piety = -5\n }\n'
         ' option = {\n name = {\n trigger = { always = yes }\n text = synthetic.1.b\n }\n'
         ' if = {\n limit = { exists = scope:doctor }\n scripted_treatment_effect = yes\n }\n }\n}\n', encoding="utf-8")
-    monkeypatch.setattr(offline, "_index", lambda build: {"events": {}})
+    # This tests the indexed source/loader contract, independently of an
+    # undeclared command-line rg installation on the test runner. Freeze the
+    # original source SHA so later source mutations still fail validation.
+    source_index = {"events": {"synthetic.1": {"definition": {
+        "relative_path": "events/synthetic.txt",
+        "file_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+    }}}}
+    monkeypatch.setattr(offline, "_index", lambda build: source_index)
     ticket = capture_unhandled_event_before_v1(state, {"plan": plan, "snapshot_id": "synthetic:7", "revision": 3})
     after = capture_unhandled_event_after_v1(ticket, outcome={"result": {"accepted": True,
         "event_selection": {"status": "event_instance_advanced", "postcondition_verified": True,
@@ -91,6 +99,17 @@ def test_first_unknown_then_same_process_ordinary_boundary_is_known(reviewed_cas
     assert len(facts["options"]) == 2 and "exists = scope:doctor" in facts["options"][1]["source_option"]
     assert facts["options"][1]["source_name_keys"] == ["synthetic.1.b"]
     assert facts["options"][1]["direct_effect_statements"][0]["effect"] == "scripted_treatment_effect"
+
+
+def test_source_fixture_uses_frozen_index_without_external_search(reviewed_case, monkeypatch):
+    def unexpected_search(*args, **kwargs):
+        raise AssertionError("indexed synthetic source must not require external rg")
+
+    monkeypatch.setattr(offline.subprocess, "run", unexpected_search)
+    report = publish(reviewed_case)
+    assert report["unresolved"] == [] and len(report["entries"]) == 1
+    assert offline.load_source_reviewed_event_v1(
+        reviewed_case["state"], reviewed_case["plan"]["unhandled_event_fallback"])[0] is not None
 
 
 @pytest.mark.parametrize("mutation", ["build", "count", "option", "source", "facts"])

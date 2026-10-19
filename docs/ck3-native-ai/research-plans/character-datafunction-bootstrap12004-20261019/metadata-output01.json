@@ -1,0 +1,141 @@
+{
+  "schema": "xar.GUI-Character-DataFunction.type-metadata.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T08:32:26.373259+00:00",
+  "ended_at_utc": "2026-10-19T08:32:26.375475+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/character-datafunction-bootstrap12004-20261019/plan01.json",
+    "bytes": 4154,
+    "sha256": "8a082563d87b910383b8e20712692525344f4c37547aa8f7efd530fe6914a7f0"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-character-datatype-bootstrap01.py",
+    "bytes": 7189,
+    "sha256": "0ff2997c7cfd4296954d376a02dcc6cd85dbf18ec77399080593fddf8934e061"
+  },
+  "raw_fixed_Character_occurrences_examined": 154,
+  "selected_metadata_candidates": [
+    {
+      "section": ".data",
+      "name_rva": 89108112,
+      "owner_substring_rva": 89108168,
+      "bytes": 122,
+      "hex": "2e3f41563f245f42696e64657240555f556e666f7263656440737464404050383f24434a6f6d696e6949636f6e4461746162617365405553436861726163746572496e746572616374696f6e416c65727449636f6e44617461626173655472616974734040404045414158585a50454156334040737464404000",
+      "decorated_name_ASCII": ".?AV?$_Binder@U_Unforced@std@@P8?$CJominiIconDatabase@USCharacterInteractionAlertIconDatabaseTraits@@@@EAAXXZPEAV3@@std@@",
+      "sha256": "b64a6fdcb9b25fdebf288d9a52137b2216c81dadfc6c5cd738e6e679de0f6364",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89108256,
+      "owner_substring_rva": 89108312,
+      "bytes": 135,
+      "hex": "2e3f41563f245f42696e64657240555f556e666f7263656440737464404050383f24434a6f6d696e6949636f6e4461746162617365405553436861726163746572496e746572616374696f6e43617465676f72794261636b67726f756e6449636f6e44617461626173655472616974734040404045414158585a50454156334040737464404000",
+      "decorated_name_ASCII": ".?AV?$_Binder@U_Unforced@std@@P8?$CJominiIconDatabase@USCharacterInteractionCategoryBackgroundIconDatabaseTraits@@@@EAAXXZPEAV3@@std@@",
+      "sha256": "712752b791bc19676e91e350aef552b89fab608fc2466613db0c07b5fb73d676",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89108416,
+      "owner_substring_rva": 89108472,
+      "bytes": 125,
+      "hex": "2e3f41563f245f42696e64657240555f556e666f7263656440737464404050383f24434a6f6d696e6949636f6e4461746162617365405553436861726163746572496e746572616374696f6e43617465676f727949636f6e44617461626173655472616974734040404045414158585a50454156334040737464404000",
+      "decorated_name_ASCII": ".?AV?$_Binder@U_Unforced@std@@P8?$CJominiIconDatabase@USCharacterInteractionCategoryIconDatabaseTraits@@@@EAAXXZPEAV3@@std@@",
+      "sha256": "07d24803b2d680fe963c0d8741a8850c8b712c08c4bbf32f1796d7ffb6abf0fc",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89258656,
+      "owner_substring_rva": 89258684,
+      "bytes": 227,
+      "hex": "2e3f41563f2443506478416e79547970656456697369746f72405643436861726163746572546f6f6c74697044617461403f313f3f3f2448616e646c65546f6f6c74697044617461626173654f626a65637457697468436861726163746572405643547261697444617461626173654040403f4130783763393932363437404059415f4e5045424450454156435064784775695465787457696467657440405045415643506478477569546f6f6c7469704576656e7440405643506478537472696e67566965774040573445506f736974696f6e557064617465403240405a40404000",
+      "decorated_name_ASCII": ".?AV?$CPdxAnyTypedVisitor@VCCharacterTooltipData@?1???$HandleTooltipDatabaseObjectWithCharacter@VCTraitDatabase@@@?A0x7c992647@@YA_NPEBDPEAVCPdxGuiTextWidget@@PEAVCPdxGuiTooltipEvent@@VCPdxStringView@@W4EPositionUpdate@2@@Z@@@",
+      "sha256": "ad31c62cc48ff034d67be4bcbc2fdf5f5e08ed89d966dbfe4b4c1e825526470a",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89259104,
+      "owner_substring_rva": 89259109,
+      "bytes": 202,
+      "hex": "2e3f415643436861726163746572546f6f6c74697044617461403f313f3f3f2448616e646c65546f6f6c74697044617461626173654f626a65637457697468436861726163746572405643547261697444617461626173654040403f4130783763393932363437404059415f4e5045424450454156435064784775695465787457696467657440405045415643506478477569546f6f6c7469704576656e7440405643506478537472696e67566965774040573445506f736974696f6e557064617465403140405a4000",
+      "decorated_name_ASCII": ".?AVCCharacterTooltipData@?1???$HandleTooltipDatabaseObjectWithCharacter@VCTraitDatabase@@@?A0x7c992647@@YA_NPEBDPEAVCPdxGuiTextWidget@@PEAVCPdxGuiTooltipEvent@@VCPdxStringView@@W4EPositionUpdate@1@@Z@",
+      "sha256": "bbad7081e547bd61911526bdddb0d57168f656e07b0d7cdf13f567cd5e5ffe8e",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89259456,
+      "owner_substring_rva": 89259484,
+      "bytes": 230,
+      "hex": "2e3f41563f2443506478416e79547970656456697369746f72405643436861726163746572546f6f6c74697044617461403f313f3f3f2448616e646c65546f6f6c74697044617461626173654f626a656374576974684368617261637465724056434e69636b6e616d6544617461626173654040403f4130783763393932363437404059415f4e5045424450454156435064784775695465787457696467657440405045415643506478477569546f6f6c7469704576656e7440405643506478537472696e67566965774040573445506f736974696f6e557064617465403240405a40404000",
+      "decorated_name_ASCII": ".?AV?$CPdxAnyTypedVisitor@VCCharacterTooltipData@?1???$HandleTooltipDatabaseObjectWithCharacter@VCNicknameDatabase@@@?A0x7c992647@@YA_NPEBDPEAVCPdxGuiTextWidget@@PEAVCPdxGuiTooltipEvent@@VCPdxStringView@@W4EPositionUpdate@2@@Z@@@",
+      "sha256": "8165862fb7d6c58b062d7a80d69caa61e6d0e681dad0f01ca4160fb8ebfd67d4",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89259712,
+      "owner_substring_rva": 89259717,
+      "bytes": 205,
+      "hex": "2e3f415643436861726163746572546f6f6c74697044617461403f313f3f3f2448616e646c65546f6f6c74697044617461626173654f626a656374576974684368617261637465724056434e69636b6e616d6544617461626173654040403f4130783763393932363437404059415f4e5045424450454156435064784775695465787457696467657440405045415643506478477569546f6f6c7469704576656e7440405643506478537472696e67566965774040573445506f736974696f6e557064617465403140405a4000",
+      "decorated_name_ASCII": ".?AVCCharacterTooltipData@?1???$HandleTooltipDatabaseObjectWithCharacter@VCNicknameDatabase@@@?A0x7c992647@@YA_NPEBDPEAVCPdxGuiTextWidget@@PEAVCPdxGuiTooltipEvent@@VCPdxStringView@@W4EPositionUpdate@1@@Z@",
+      "sha256": "2731bb4ebaba67de4be12873aa29b20337fa6745e64691cef2e9e0ab78be0728",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89278672,
+      "owner_substring_rva": 89278705,
+      "bytes": 79,
+      "hex": "2e3f41563f245f42696e64657240555f556e666f7263656440737464404050384343686172616374657253656c656374696f6e4c697374404045414158585a41454251454156334040737464404000",
+      "decorated_name_ASCII": ".?AV?$_Binder@U_Unforced@std@@P8CCharacterSelectionList@@EAAXXZAEBQEAV3@@std@@",
+      "sha256": "b0ef5ed1a8775d511336edcd38e675d225477225ff1054a81bac30a4c2c6ee66",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89284512,
+      "owner_substring_rva": 89284545,
+      "bytes": 76,
+      "hex": "2e3f41563f245f42696e64657240555f556e666f7263656440737464404050384343686172616374657253656c656374696f6e4c697374404045414158585a50454156334040737464404000",
+      "decorated_name_ASCII": ".?AV?$_Binder@U_Unforced@std@@P8CCharacterSelectionList@@EAAXXZPEAV3@@std@@",
+      "sha256": "749a61ac8951a3e84918b7f095618896760c071c022d9a23556201d0c9e3a2c6",
+      "metadata_only_not_GUI_registration_proof": true
+    },
+    {
+      "section": ".data",
+      "name_rva": 89464096,
+      "owner_substring_rva": 89464211,
+      "bytes": 240,
+      "hex": "2e3f41563f247265666572656e63655f7772617070657240553f2453506478506172616c6c656c466f7240553f2453506478506172616c6c656c466f724f76657241727261794f70657261746f7246726f6d43616c6c5472616974734024244342563f244350647841727261794050454155534368617261637465724c6973744974656d404048404055534275696c644d617463686d616b6572457874726144617461403f413078366663313539323240405553506172616c6c656c466f724f766572417272617943616c6c54726169747340404040404e506172616c6c656c466f72496d706c404040737464404000",
+      "decorated_name_ASCII": ".?AV?$reference_wrapper@U?$SPdxParallelFor@U?$SPdxParallelForOverArrayOperatorFromCallTraits@$$CBV?$CPdxArray@PEAUSCharacterListItem@@H@@USBuildMatchmakerExtraData@?A0x6fc15922@@USParallelForOverArrayCallTraits@@@@@NParallelForImpl@@@std@@",
+      "sha256": "349bfc56d2473681e881f4effc6313526efbe3e6dc9b9a865344df847a750ee3",
+      "metadata_only_not_GUI_registration_proof": true
+    }
+  ],
+  "candidate_cap": 10,
+  "cap_reached_tail_not_examined": true,
+  "candidate_functions_read": 0,
+  "hash_values_computed": false,
+  "namespace_boundary": "Type names are source locators, not automatic GUI registration. Script-scope/name/trigger registries are not substituted.",
+  "operations": {
+    "Game_RPC_process_memory_builds": 0,
+    "EXE_copies": 0,
+    "AI_or_callee_tree": false,
+    "H_or_runtime_credit": false
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "Character.GetPlayerHeir-same-method-wide-encoding",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Does the same observed Character.GetPlayerHeir method have a UTF16LE registration string not represented by the retained ASCII death-window literal?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Same fixed methodGetPlayerHeir UTF16LE NUL in.rdata/.data only, <=10hits and64B context each; no functions yet",
+    "identity_lifetime": "exact actual hashed file and same stat",
+    "producer_trigger": "not-applicable",
+    "producer": "same-method DataFunction registration remains the target",
+    "caller": "offline fixed encoded-string metadata locator",
+    "consumer": "source review, noH orruntime consumer",
+    "cache_lifetime": "this fixed receipt",
+    "expected_signal": "same exact wide method name giving a demanded registration reference",
+    "zero_sample_meaning": "no declared wide encoding, not absence of a native getter",
+    "stop_condition": "10 total hits/64B each; no other names/AI/callees/process/Game/RPC/build",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "name": "GetPlayerHeir",
+    "encoding": "UTF16LE",
+    "NUL_terminator_bytes": 2,
+    "sections": [
+      ".rdata",
+      ".data"
+    ],
+    "total_hit_cap": 10,
+    "context_bytes": 64,
+    "other_names_scanned": false
+  },
+  "evidence": [
+    {
+      "id": "actual-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "actual direct-hashed file identity only"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "encoded",
+      "label": "same-method wide name"
+    },
+    {
+      "id": "binder",
+      "label": "Character DataFunction binder"
+    }
+  ],
+  "edges": [
+    {
+      "id": "wide",
+      "from": "encoded",
+      "to": "binder",
+      "label": "actual registration identity",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Is the Character getter registration named by a wide string?"
+    }
+  ],
+  "cases": []
+}

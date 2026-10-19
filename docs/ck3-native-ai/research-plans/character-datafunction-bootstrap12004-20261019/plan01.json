@@ -1,0 +1,103 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "GUI-Character-DataFunction-type-provider-bootstrap",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Locate an actual GUI Character DataFunction type/provider or methods-table bootstrap; prove key/hash and table shape before computing any GetPlayerHeir lookup value.",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Character-specific Data/Bind/TypeInfo RTTI metadata candidates<=10; only reached registration/provider candidate functions<=3x512B in later source step",
+    "identity_lifetime": "existing actual direct-hashed file with same pre/post stat",
+    "producer_trigger": "not-applicable",
+    "producer": "GUI Character type/method-table producer, not script name or trigger registries",
+    "caller": "offline exact-name RTTI metadata locator",
+    "consumer": "source review; no runtime orH provider",
+    "cache_lifetime": "source-bound this exact file",
+    "expected_signal": "actual Character DataType/provider class with source-bound COL/vtable/bootstrap",
+    "zero_sample_meaning": "no selected type metadata encoding, not absence of a getter/provider",
+    "stop_condition": "metadata candidates10, each<=512B; noAI/callee tree, noGame/process/RPC/build; hash untouched until real algorithm source",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "sections": [
+      ".data",
+      ".rdata"
+    ],
+    "fixed_owner_substring": "Character",
+    "required_metadata_tokens_any": [
+      "Data",
+      "Bind",
+      "TypeInfo"
+    ],
+    "require_complete_CString_RTTI_prefix": ".?A",
+    "max_candidates": 10,
+    "bounded_left_bytes": 256,
+    "bounded_right_bytes": 256,
+    "max_capture_bytes": 512,
+    "same_CString_deduplicated": true,
+    "hash_values_computed": false,
+    "maximum_future_candidate_functions": 3,
+    "maximum_future_function_bytes": 512,
+    "receipt_total_bytes_max": 49152,
+    "Root_authorization": "2026-10-19 continue actual Character DataFunction type/provider bootstrap, finite metadata<=10 and3 functions<=512B; distinguish GUI namespace from script scope and prove algorithm before hash."
+  },
+  "evidence": [
+    {
+      "id": "actual-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "actual direct-hashed file identity only"
+    },
+    {
+      "id": "getter-source-frontier",
+      "layer": "source-contract",
+      "path": "../../evidence/player-heir-getter-source-index-2026-10-19.json",
+      "sha256": "785739019a9c5523121e71b0fb5759e81847541e49a0b5e4353e6685178150ae",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "ordinary Character getter consumer and exhausted plain-method encodings; not native callback proof"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "type",
+      "label": "actual Character GUI type/provider"
+    },
+    {
+      "id": "methods",
+      "label": "native methods registration/lookup shape"
+    },
+    {
+      "id": "heir",
+      "label": "GetPlayerHeir native callback"
+    }
+  ],
+  "edges": [
+    {
+      "id": "bootstrap",
+      "from": "type",
+      "to": "methods",
+      "label": "actual provider registration and table algorithm",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Which current Character-specific metadata class provides GUI method registration?"
+    },
+    {
+      "id": "method",
+      "from": "methods",
+      "to": "heir",
+      "label": "source-proved key and typed callback",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does actual lookup bindCharacter.GetPlayerHeir and what original qualification boundary applies?"
+    }
+  ],
+  "cases": []
+}

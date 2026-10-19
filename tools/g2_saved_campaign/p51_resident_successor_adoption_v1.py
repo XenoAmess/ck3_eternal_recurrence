@@ -61,18 +61,31 @@ async def observe_app_ui_v1(call, env, current, current_path, continued, *, requ
     status, pending = resumed["status"], resumed["pending"]
     if status == "close_required":
         require(pending is True, "Close requirement lacks its pending obligation")
-        closed, _ = await call(CLOSE, {
-            "expected_revision": fresh["revision"],
-            "expected_played_character_id": continued["successor_character_id"],
-            "expected_episode_run_id": continued["episode_run_id"]})
-        require(_ordinary_succession_close_issue(closed,
-            starting_date_raw=fresh["date_raw"], successor_character_id=continued["successor_character_id"]) is None,
-            "original typed Close did not verify; no replay")
+        # The App owns the pending UI and its once-only Close. AUTO gives its
+        # real before_submit callback the current held AUTO request; a direct
+        # Close tool cannot manufacture that publication authority.
+        turn, _ = await call("ck3_auto_turn", {})
+        ui = turn.get("successor_ui_obligation_v1")
+        require(turn.get("status") in {"successor_ui_pending", "successor_ui_resumed"}
+                and turn.get("selected_step") is None and isinstance(ui, dict)
+                and type(ui.get("pending")) is bool
+                and (turn["status"] == "successor_ui_resumed") is (ui["pending"] is False),
+                "UI AUTO lacks its retained pending/resumed result; no replay")
+        _app_proof(ui, continued, required=True)
+        advanced, closed = ui.get("date_advanced") is True, turn.get("result")
+        if advanced:
+            require(isinstance(closed, dict) and _ordinary_succession_close_issue(closed,
+                starting_date_raw=fresh["date_raw"], successor_character_id=continued["successor_character_id"]) is None,
+                "original UI AUTO Close did not verify; no replay")
+        else:
+            require(ui["pending"] is True, "UI AUTO cleared without its verified Close")
         fresh, fresh_path = await call(env["SEMANTIC"], {})
-        require(all(fresh.get(left) == closed.get(right) for left, right in (
-            ("date_raw", "ending_date_raw"), ("revision", "ending_revision"), ("native_revision", "ending_native_revision"))),
-            "independent Close post differs")
-        pending = False
+        require(_same_frame(fresh, ui.get("snapshot", {})), "independent UI AUTO post differs from App")
+        if advanced:
+            require(all(fresh.get(left) == closed.get(right) for left, right in (
+                ("date_raw", "ending_date_raw"), ("revision", "ending_revision"), ("native_revision", "ending_native_revision"))),
+                "independent Close post differs")
+        pending, resumed = ui["pending"], ui
     else:
         require((status == "clear") is (pending is False), "App UI pending status contradicts clearance")
     require(fresh.get("paused") is True and fresh.get("map_ready") is True

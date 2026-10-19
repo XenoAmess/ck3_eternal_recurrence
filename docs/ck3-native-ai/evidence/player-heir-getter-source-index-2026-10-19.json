@@ -1,0 +1,80 @@
+{
+  "schema": "xar.Character.GetPlayerHeir.source-index.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:17:55.225692+00:00",
+  "source_receipts": [
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter12004-20261019/plan01.json",
+      "bytes": 6368,
+      "sha256": "1f3dd96b6023fae1ca74786d6e3b7f0a08d47c9f3fe7e87a15342c70d596b6c8"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter12004-20261019/source-output01.json",
+      "bytes": 4525,
+      "sha256": "f12b8d43c90f7c946c6ada50a64d8c7a50bf9b25a20723e48daf3447324decae"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter-metadata12004-20261019/plan01.json",
+      "bytes": 3374,
+      "sha256": "c59cde201dd4d2eea4f0cccaca7b86bd2a6e5aec72c4dc3b557aecbb18bdb9a2"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter-metadata12004-20261019/source-output01.json",
+      "bytes": 2279,
+      "sha256": "f5eb27f47cd9b13b1fe77e5ad33ace35ab27cc41cbf9c64b7e0464f90468ebc9"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter-data12004-20261019/plan01.json",
+      "bytes": 3375,
+      "sha256": "5ff6691ef228412f258c1f1b9ee929b48721b66e00bb7d4b583017e6225b414f"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter-data12004-20261019/source-output01.json",
+      "bytes": 1340,
+      "sha256": "9d67a3e8dd1c2f35a13cf4424025a71dc08ae39b8133a66ef25c91acd890a8a7"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter-wide12004-20261019/plan01.json",
+      "bytes": 2514,
+      "sha256": "98c11ad03390fcc05f991c64a57b2783af65963746a279747544b484cd7321a7"
+    },
+    {
+      "path": "docs/ck3-native-ai/research-plans/player-heir-getter-wide12004-20261019/source-output01.json",
+      "bytes": 1244,
+      "sha256": "ff889c224e0f0bad4a00fe5e76610cd2463d0b11620c2926135477498eaf560f"
+    }
+  ],
+  "receipts_total_bytes": 25019,
+  "source_closed": {
+    "authored_consumer": "Current installed gui/window_character.gui883-886 heir_player widget: CharacterWindow.GetCharacter.GetPlayerHeir; valid returnedCharacter and ownerIsLocalPlayer gates. SHA8cd9ed0cca9699ea08dc29ae444802f1d842cc332156b072283146075840e2d9; actual source07:57:27.360321Z, not live UI observation.",
+    "excluded_serialization_path": "The canonical31A6 field+8 nested at parent+268 is serialized under keydestiny_characters (3C01), not a proved living-player getter/qualifier. That earlier independent packet is retained unchanged.",
+    "literal_cluster": "Only plainASCII GetPlayerHeir at45231D0 and Legacy at45231F0 in.rdata. The512B neighborhood contains SuccessionEventWindow and source/interface/succession_event_window.cpp. Compiler pooling remains possible, so this does not establish sole ownership.",
+    "finite_locator_results": [
+      "Original plain name VA/RVA data and fixedRIP refs retained as0.",
+      "New same-target aligned cell-relative32 data andtext absoluteRVA4/preferredVA8 refs0.",
+      "Same-method substring.rdata has plain+Legacy only; .data has0, so no mangled/templateCharacter binding found.",
+      "Same-method UTF16LE_NUL in.rdata/.data has0."
+    ],
+    "function_candidates_or_windows_read": 0
+  },
+  "source_explanation_and_receiver_boundary": "Character.GetPlayerHeir is an actual ordinary-character GUI consumer with local-player gating. The DataFunction type/method registration producer, callback address/ABI, native returned fullID and original continuation-qualification caller are not source-bound by these locators. GUIvisibility does not establish living/eligible/D0 truth or implementH.",
+  "unique_next_required_source": "A source-bound GUI Character DataFunction type-registration/provider or methods-table bootstrap, then its exact GetPlayerHeir entry/callback. Do not replace it with script-scope type registry, title heir, destiny serializer, death modalgetter or another pass over the exhausted45231D0 encodings. Any new type-name locator must keep namespaces explicit and stay within the separately authorized next scope.",
+  "tool_and_cache_audit": "performance_native knows no source-bound Character.GetPlayerHeir binder cache/tool. Existing find_string_xrefs.py/find_xrefs.py encoding logic reviewed; whole-image read/hash/decode versions not run. Native tools metadata exposed no disassembler/index service.",
+  "static_macro_probe": "Onlygame/data_binding/*.txt fixedGetPlayerHeir query produced0matches; this does not prove absence of macros in other source domains.",
+  "validation": "First getter plan had two actual metadata validationREDs: unsupported authored-source layer and missing explicit source-contract build hash. Both retained; corrected record passed77b445. Other normal plan checks passed. for-observation remained offline-only/no live producer; no semantic/live qualification claimed.",
+  "operations": {
+    "Game_RPC_builds": 0,
+    "process_memory_reads": 0,
+    "EXE_copies": 0,
+    "new_dependencies": 0,
+    "AI_or_callee_traversal": false,
+    "H_provider_implemented": false,
+    "H_or_runtime_credit": false
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "review_at_utc": "2027-04-17T08:17:55.225692+00:00",
+    "automatic_renewal": false,
+    "reason": "One compact index preserves genuine zero encodings and the ordinaryCharacter getter entry to avoid repeating source scans"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "xar.Character.GetPlayerHeir.method-metadata-discovery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T08:14:59.078881+00:00",
+  "ended_at_utc": "2026-10-19T08:14:59.086010+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-getter-data12004-20261019/plan01.json",
+    "bytes": 3375,
+    "sha256": "5ff6691ef228412f258c1f1b9ee929b48721b66e00bb7d4b583017e6225b414f"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-getplayerheir-data-metadata03.py",
+    "bytes": 6336,
+    "sha256": "aabd8f52b52d3975e2877e6207455cd6926bb5cf6f1eb74e6a415f19d7e134af"
+  },
+  "fixed_substring": "GetPlayerHeir",
+  "section": ".data",
+  "hits": [],
+  "more_than10_hits": false,
+  "native_function_windows_read": 0,
+  "scope_boundary": {
+    "other_method_names_scanned": false,
+    "AI_or_callee_tree": false,
+    "process_Game_RPC_builds": 0,
+    "EXE_copied": false,
+    "H_provider_or_score_credit": false
+  }
+}

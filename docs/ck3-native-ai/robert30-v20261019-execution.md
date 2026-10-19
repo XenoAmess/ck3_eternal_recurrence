@@ -2,7 +2,13 @@
 
 用户在2026-10-19明确要求：后续评分结算片改为15秒，旧片不改；复盘首局并写入智能体；随后从1066重开罗贝尔三十年v20261019；继续性能优化及高并发G2研究。这一指令解除旧交接的“暂不开下一局”。
 
-**当前指针（2026-10-19T08:18:48Z汇总；事实截止3851）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，同Game153556/birth134368602545256920、Native26与C7源8e1e59f0。最新已冻结3851原生SEM于08:00:41.696827Z显示1839完整周期/1772实际日/raw53186856，played actor已31254→40526，但原episode与goal current仍31254、reconciled0，正式自然继承交接尚未完成。原始T0/raw53144328与终点10950日/raw53407128保留。此次首SEM已成功，随后旧relay来源检查拒绝，NEXT3852无queue pending；原SEM不得重发。
+**当前指针（2026-10-19T08:55:24Z汇总；事实截止4102）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，同Game153556/birth134368602545256920、Native26与C7业务源8e1e59f073f239d266f5b59f57c65b5645658512。自然继承交接实际完成：3853 Continue仅提交一次；原3858直清窗因缺少held AUTO publication在提交前拒绝，3859按原成功前缀零RPC供给，由3860普通AUTO合法清窗，3862 SAVE、3863独立SEM闭合；3865普通AUTO已消费40526新角色目标。原campaign/origin31254、T0 raw53144328、D0/house174和终点raw53407128/10950日保留；继承数1。新原图1773日/1071-07-25已经Root直接审阅。最后已封4102为1956完整周期/1821实际日，约五年，在生活方式LIFE2 current_state_unavailable处于动作提交前阻塞；selected_step=null，未执行/未结算1957。当前核查精确native_error，不把未知读取故障当作未成年合法负资格；一次只读诊断已授权sole runtime。
+
+M7本场自然继承子链闭合，但多君主/seed/政府等原广度尚缺；M6旧Sway的具名收益有证据，原owner自然终态尚无独立证据，不能由角色更替推定。G2仍6/8。领土当前全realm与分封实际结果尚未完整读回，2262只是在继承预期中属于其他继承人，不能冒作最终领土变化。M1正在补复用已有faction查询的全realm集合，未加载实机。Native27候选仅补termination注册，1生产对象构建与原fixture21项检查通过，DLL bea9727b…b775，未加载Game；M3已定位真实CGuiDataTypesExplorer，尚未取得Character.GetPlayerHeir回调/资格合同。
+
+恢复后FULL3864实际30轮推进7日/28.016996秒=4.002428秒/日；同期原AUTO9起累计18698.777254秒/1780日=10.504931秒/日，含维护，不重置基线。其中60次计时RPC17.680281秒，未归因调用间隔10.336715秒；16次持久化仅0.060975秒/2.864MB逻辑写入。优先分析推进、Army查询与控制间隔，WAL保持关闭。阶段≤1秒/实际日仍未达。独立route5最多一次、默认关闭的软件路径已通过针对性测试，当前C7仍原速3守卫，无实际提速资格。Native27已闭账，临时64.25/code3.25GiB补额退回原64/code3GiB、原expiry不变；没有物理删除或容量释放。 来源：[真实交接](evidence/c7-succession3859-software-and-actual01.json)、[后继目标消费](evidence/g2-m7-p0-successor-goal-consumed-2026-10-19.json)、[新原图审阅](evidence/c7-successor1773-root-pixel-review-2026-10-19.json)、[继承后性能](evidence/c7-post-succession-closed-performance01.json)、[Native27离线构建](evidence/native27-termination-build-qualification-2026-10-19.json)。
+
+**历史指针（2026-10-19T08:18:48Z汇总；事实截止3851）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，同Game153556/birth134368602545256920、Native26与C7源8e1e59f0。最新已冻结3851原生SEM于08:00:41.696827Z显示1839完整周期/1772实际日/raw53186856，played actor已31254→40526，但原episode与goal current仍31254、reconciled0，正式自然继承交接尚未完成。原始T0/raw53144328与终点10950日/raw53407128保留。此次首SEM已成功，随后旧relay来源检查拒绝，NEXT3852无queue pending；原SEM不得重发。
 
 3852恢复源已按原算法首SEM一次供给/后继正常Continue-CAP-UI-SAVE组成并通过1正4负软件前缀资格，真实继承后验和新的camera原图准入仍待sole runtime完成，不以clearhalt替代。永久producer已改为显式注入当前relay，实际C7源形状变换/相关测试通过。较新的3057/3059/3103闭件已证我军抵达2604、实际接战，后段战分+22且敌军撤退，未授胜利/领土结果。Sway首次观察具名增量在723日（实际发生于687–723日测量窗），730日独立消费；1521日具名74/总好感92，1528日再次消费。这些不能搬作1772日现值；角色切换本身不证明旧scheme终态。G2仍6/8，M6自然终态及M7多政府等原要求未闭。
 

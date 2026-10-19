@@ -1,0 +1,66 @@
+{
+  "schema": "xar.Character.GetPlayerHeir.method-metadata-discovery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T08:13:52.278721+00:00",
+  "ended_at_utc": "2026-10-19T08:13:52.292478+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-getter-metadata12004-20261019/plan01.json",
+    "bytes": 3374,
+    "sha256": "c59cde201dd4d2eea4f0cccaca7b86bd2a6e5aec72c4dc3b557aecbb18bdb9a2"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-getplayerheir-method-metadata02.py",
+    "bytes": 6341,
+    "sha256": "42f6aceb289020b495e98009e9130605df13c3a2981d964c7cf04e0e571b201d"
+  },
+  "fixed_substring": "GetPlayerHeir",
+  "section": ".rdata",
+  "hits": [
+    {
+      "substring_rva": 72495568,
+      "CString_start_rva": 72495568,
+      "left_NUL_boundary_proved": true,
+      "right_NUL_boundary_proved": true,
+      "bytes": 14,
+      "hex": "476574506c617965724865697200",
+      "text_ASCII": "GetPlayerHeir",
+      "sha256": "6ff66784b3ea9ffe5d0d1fb01a204fe90012f03081fec98bf01c8b602cbe0ff0",
+      "standalone_plain_name": true,
+      "legacy_name": false,
+      "metadata_not_callback_proof": true
+    },
+    {
+      "substring_rva": 72495600,
+      "CString_start_rva": 72495600,
+      "left_NUL_boundary_proved": true,
+      "right_NUL_boundary_proved": true,
+      "bytes": 20,
+      "hex": "476574506c61796572486569724c656761637900",
+      "text_ASCII": "GetPlayerHeirLegacy",
+      "sha256": "be0f893870662a67107212acaf55f55b38e593957fc45398bb1755cc2690fc43",
+      "standalone_plain_name": false,
+      "legacy_name": true,
+      "metadata_not_callback_proof": true
+    }
+  ],
+  "more_than10_hits": false,
+  "native_function_windows_read": 0,
+  "scope_boundary": {
+    "other_method_names_scanned": false,
+    "AI_or_callee_tree": false,
+    "process_Game_RPC_builds": 0,
+    "EXE_copied": false,
+    "H_provider_or_score_credit": false
+  }
+}

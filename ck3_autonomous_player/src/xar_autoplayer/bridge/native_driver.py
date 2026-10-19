@@ -24010,6 +24010,10 @@ class NativeHeadlessGameplayDriver:
             if proof_kind == "contact_free"
             else 1
         )
+        from .contact_free_exact_route_speed_trial_v1 import select_v1, receipt_v1
+        route_speed_trial = select_v1(self, starting, proof, fallback_speed=preferred_timeline_speed)
+        if route_speed_trial is not None:
+            preferred_timeline_speed = route_speed_trial["selected_speed"]
         result = self._execute_life_advance(
             expected_revision=expected_revision,
             exact_one_day=True,
@@ -24019,6 +24023,8 @@ class NativeHeadlessGameplayDriver:
             exact_one_day_preferred_speed=preferred_timeline_speed,
             result_step=step,
         )
+        if route_speed_trial is not None:
+            result = {**result, "contact_free_exact_route_speed_trial_v1": receipt_v1(route_speed_trial, result)}
         if proof.get("proof_kind") != "unavoidable_current_province_contact":
             return result
         strict_endpoint_followup = proof.get("strict_endpoint_followup") is True
@@ -24189,6 +24195,13 @@ class NativeHeadlessGameplayDriver:
     def cap_campaign_advance_plan_v1(self, planned: dict[str, object]) -> dict[str, object]:
         from .campaign_deadline_v1 import cap_plan_v1
         return cap_plan_v1(self, planned)
+
+    def configure_contact_free_exact_route_speed_trial_v1(
+        self, *, campaign_id: str, trial_id: str, speed: int = 5,
+    ) -> dict[str, object]:
+        """Explicit route-only controlled trial; no global A/B or live-ready promotion."""
+        from .contact_free_exact_route_speed_trial_v1 import configure_v1
+        return configure_v1(self, campaign_id=campaign_id, trial_id=trial_id, speed=speed)
 
     def _campaign_advance_deadline_v1(
         self, starting: dict[str, object], target_date_raw: int,

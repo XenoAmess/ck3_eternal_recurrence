@@ -1,0 +1,231 @@
+{
+  "schema": "xar.g2-m7.P0-natural-transition-and-goal-consumption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:39:32.034108Z",
+  "source_pins": [
+    {
+      "id": "actual_closed_handoff",
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-natural-succession-success78/ACTUAL.json",
+      "bytes": 6358,
+      "sha256": "c88be197a856deb2f787fce82fc7672151a70c4606f1b0d54ff86d1068a12b45",
+      "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "source_utc": "2026-10-19T08:34:47.197667Z"
+    },
+    {
+      "id": "closed_handoff_audit",
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-natural-succession-success78/p37-queue/AUTOMATIC-SUCCESSION-HANDOFF-001839-RESUME3859.json",
+      "bytes": 7714,
+      "sha256": "03f96e5aa9b4d56bd8c135ad31820f289d9309176f41482d7f91ac7893db145f",
+      "source_machine_id": "unknown",
+      "outer_same_machine_binding": "actual_closed_handoff.sources and same_game exact birth"
+    },
+    {
+      "id": "closed_resume_settled",
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c7-natural-succession-success78/p37-queue/SUCCESSION3858-RESUME-SETTLED.json",
+      "bytes": 3812,
+      "sha256": "be60420842ad8fb3dd3f3a79ebb37c40d357b9f4162dc4b2c552aa8fe716f2b9",
+      "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "source_utc": "2026-10-19T08:33:31.629483Z"
+    },
+    {
+      "id": "next_normal_AUTO3865",
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/3865-1-result.json",
+      "bytes": 17028,
+      "sha256": "904b03b07a0ee9cd75d2d9951b66882cfd772ba4a6521881ad7ecb9899aeadfd",
+      "source_machine_id": "unknown",
+      "source_utc": "2026-10-19T08:38:00.467207Z"
+    },
+    {
+      "id": "original_T0_summary",
+      "path": "docs/ck3-native-ai/evidence/g2-m1-robert-v20261019-T0-summary.json",
+      "bytes": 12442,
+      "sha256": "bb5cb5593e6a4e1156dfbacf2d94aa13f10eb41735a5f215dbaad2eb2d89ada8",
+      "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "source_utc": "2026-10-19T03:15:11.299965Z"
+    },
+    {
+      "id": "original_T0_sourcepins",
+      "path": "docs/ck3-native-ai/evidence/g2-m1-robert-v20261019-T0-sourcepins.json",
+      "bytes": 5687,
+      "sha256": "3873a99886e38ebb1d26f711f60a9428c31333ea1c0db95ca18a82d68471d65a",
+      "source_machine_id": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "id": "original_M7_contract_audit",
+      "path": "docs/ck3-native-ai/evidence/g2-m7-p0-original-acceptance-contract-2026-10-19.json",
+      "bytes": 4509,
+      "sha256": "e6e9b054f7aa9783ba358c418b9849b9a29c09f4f76df3cae4f3d0ddc9b6db55"
+    }
+  ],
+  "natural_transition": {
+    "status": "closed_for_actual_handoff_UI_normal_SAVE_and_next_normal_goal_consumer",
+    "dedup": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "old_episode_run_id": "native-31254-6271ac8cd441",
+      "new_episode_run_id": "native-40526-1bec95182886"
+    },
+    "predecessor_character_id": 31254,
+    "actual_successor_character_id": 40526,
+    "retained_same_Game": {
+      "pid": 153556,
+      "creation_filetime_decimal": "134368602545256920",
+      "connection_generation": 4,
+      "new_Game_launches": 0
+    },
+    "logical_Continue": {
+      "sequence": 3853,
+      "status": "executed_once",
+      "response_bytes": 79971,
+      "response_sha256": "6a025ce119ec89e04128d549ccc3715a32a08abe24a2d9900cf3563a2078926a",
+      "original_prefix_replayed": false
+    },
+    "actual_UI_tail": {
+      "typed_close_AUTO_sequence": 3860,
+      "independent_following_SEM_sequence": 3861,
+      "audit_status": "verified",
+      "terminal_cleared": true,
+      "resident_ui_deferred": false,
+      "original_failed3858_replayed": false,
+      "old_failed3858_preserved": true
+    },
+    "original3851_native_success_and_display_failure_retained": true,
+    "old3852_outer_failure_not_relabelled_as_all_complete": true,
+    "saved_checkpoint": {
+      "sequence": 3862,
+      "name": "xar_checkpoint.ck3",
+      "bytes": 90804740,
+      "sha256": "1b0fb1055ff02601b7a84e65e63cf1b0dd9fc859f269fc9e761ee3d40ccac341",
+      "date_raw": 53186880,
+      "history_index": 3,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886",
+      "elapsed_seconds": 3.6560810999944806,
+      "fsync_or_true_cold_restore_claimed": false
+    },
+    "final_SEM3863": {
+      "snapshot_id": "native:3007",
+      "revision": 2589,
+      "native_revision": 3007,
+      "date_raw": 53186880,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "calendar": {
+      "T0_start_date_raw": 53144328,
+      "endpoint_date_raw": 53407128,
+      "pre_handoff3851_date_raw": 53186856,
+      "final_date_raw": 53186880,
+      "elapsed_campaign_days": 1773,
+      "UI_tail_actual_extra_days": 1,
+      "completed_cycles_before_after_handoff": 1839,
+      "ordinary_cycle_credit_added_by_handoff": 0
+    },
+    "pending_natural_succession": null,
+    "owner_source_epoch_or_absolute_character_pointers": "not_exposed_by_these_small_sources; no active state or memory read"
+  },
+  "retained_goal": {
+    "goal_key": "dynasty_continuity",
+    "campaign_id": "native-31254-6271ac8cd441",
+    "origin_character_id": 31254,
+    "current_character_id": 40526,
+    "progress": {
+      "reconciled_successions": 1,
+      "last_succession": {
+        "predecessor_character_id": 31254,
+        "actual_successor_character_id": 40526,
+        "matched_inherited_title_ids": [
+          2230,
+          2231
+        ],
+        "expected_other_heir_title_ids": [
+          2262
+        ],
+        "expected_without_heir_title_ids": []
+      }
+    },
+    "expected_other_heir_boundary": "Legitimate partition is not automatically defeat loss; this goal's expected-other2262 field alone does not establish its actual new holder.",
+    "lifecycle": "ordinary_campaign_succession",
+    "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+  },
+  "actual_following_NORMAL_AUTO": {
+    "sequence": 3865,
+    "ended_at_utc": "2026-10-19T08:38:00.467207Z",
+    "is_error": false,
+    "result_type": "complete",
+    "status": "executed",
+    "selected_step": "query-war-results-window-v1",
+    "campaign_goal_plan_used": {
+      "policy": "ordinary-campaign-goal-v1",
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "current_character_id": 40526,
+      "reconciled_successions": 1,
+      "last_succession_matches_retained_goal": true,
+      "focus": "marriage"
+    },
+    "planning_source_frame": {
+      "snapshot_id": "native:3007",
+      "revision": 2589,
+      "native_revision": 3007,
+      "date_raw": 53186880,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886",
+      "connection_generation": 4,
+      "bridge_pid": 153556
+    },
+    "actual_result": {
+      "status": "hidden",
+      "accepted": true,
+      "dispatch_attempted": false,
+      "post_observed": true
+    },
+    "marriage_action_or_war_victory_inferred": false
+  },
+  "fixed_original_D0_addendum": {
+    "original_founding_house_id": 174,
+    "original_founding_dynasty_id": 174,
+    "source": "original_T0_summary /founding_house_id and /founding_dynasty_id; independently pinned sourcepins and original SAVE381e anchor",
+    "T0_actor_id": 31254,
+    "T0_date_raw": 53144328,
+    "T0_episode_run_id": "native-31254-6271ac8cd441",
+    "T0_SAVE_sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+    "baseline_was_not_replaced_by_new_ruler_dynasty": true,
+    "old_ordinary_month_anchor_null_does_not_override_actual_T0_174": true,
+    "supersedes_knowledge_limit_in_pre3851_snapshot_only": true,
+    "new40526_current_full_dynasty_and_family_lineage": "not_observed in supplied successor projections",
+    "comparison_to_fixed_D0_174": "not_observed; do not infer from heir matching or goal key",
+    "backup_eligible_complete_domain": "not_observed; the realized successor does not reconstruct the complete predeath pool",
+    "H_score_or_family_D0_match_credit": 0
+  },
+  "contract_verdict": {
+    "original_contract_ref": "original_M7_contract_audit",
+    "actual_natural_transition_subchain_closed": true,
+    "same_high_level_goal_consumed_after_inheritance": true,
+    "D0_unknown_is_not_added_M7_gate": true,
+    "M7": "in_progress",
+    "M7_whole_milestone_credit_added": 0,
+    "reason": "Original M7 also qualifies multiple rulers/seeds/governments. Actual multiple-government breadth remains incomplete; one natural transition or same-Game SDK rotation does not close it.",
+    "no_fixed_generation_count_or_all18_government_gate_added": true,
+    "successor_paired_true_Game_cold_restore": "not_observed; only collect later normally required maintenance without forced restart",
+    "independent_seed_or_additional_government_credit_from_this_handoff": 0,
+    "whole_G2_denominator_change_from_this_M7_subchain": 0,
+    "M6_or_other_milestone_decisions": "remain separate under their own original contracts"
+  },
+  "collector_actions": {
+    "new_Game_Native_MCP_queries": 0,
+    "new_Close_or_SAVE_calls": 0,
+    "active_Driver_or_SAVE_body_reads": 0,
+    "original3851_or_applied_actions_reissued": 0,
+    "source_changes": 0,
+    "new_tests_or_builds": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "maximum_product_bytes": 12288,
+    "review_after_utc": "2027-04-17T08:39:32Z",
+    "heavy_writes": false,
+    "files_deleted": 0
+  }
+}

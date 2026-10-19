@@ -1,0 +1,79 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "Character.GetPlayerHeir-data-RTTI-metadata",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "question": "Does a same-method-name mangled/RTTI/registration CString identify the actual Character.GetPlayerHeir binder rather than the death-window plain literal?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "identity_kind": "definition-key",
+    "owner_scope": "Single fixed ASCII substringGetPlayerHeir in.data, at most10 metadata strings each<=512B; no functions yet",
+    "identity_lifetime": "existing direct-hashed file and matching stat",
+    "producer_trigger": "not-applicable",
+    "producer": "actual Character getter DataFunction binder is the source question",
+    "caller": "offline fixed-string metadata locator, no native execution",
+    "consumer": "source review only, no H/runtime result",
+    "cache_lifetime": "one exact-build receipt",
+    "expected_signal": "full mangled/template name with Character receiver or source-bound method binder identity",
+    "zero_sample_meaning": "no admitted metadata encoding hit, not absence of native getter",
+    "stop_condition": "<=10hits; max256B left/right to firstNUL, max512B total per captured string; noAI/callee/process/Game/RPC/build",
+    "runtime_window_ref": null
+  },
+  "discovery": {
+    "fixed_substring": "GetPlayerHeir",
+    "section": ".data",
+    "maximum_hits": 10,
+    "CString_left_limit": 256,
+    "CString_right_limit": 256,
+    "CString_capture_max_bytes": 512,
+    "legacy_suffix_separately_excluded": true,
+    "old_plain_literal_and_zero_refs_preserved": true,
+    "source_limit": "Root authorizes finite unique-method registration metadata matching and at most3 candidate functions<=512B; this substep reads0functions",
+    "receipt_total_max_bytes": 32768
+  },
+  "evidence": [
+    {
+      "id": "actual-file",
+      "layer": "exact-build",
+      "path": "../player-heir-h12004-20261019/exact-file-identity01.json",
+      "sha256": "ec9a7683d62733d590c445124c6199820e8bcd77deebe33712e3a55d65a35844",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "current direct hashed file identity only"
+    },
+    {
+      "id": "ordinary-getter",
+      "layer": "source-contract",
+      "path": "../player-heir-receiver12004-20261019/source-output01.json",
+      "sha256": "5aabbf0fca4c6df5a938d5a8907a0012f3fc6e7fb113958533bd017a267b2bf2",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "pinned ordinary local-player widget Character.GetPlayerHeir consumer; no native qualification assertion"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "metadata",
+      "label": "same-method registration metadata"
+    },
+    {
+      "id": "callback",
+      "label": "typed Character callback"
+    }
+  ],
+  "edges": [
+    {
+      "id": "binding",
+      "from": "metadata",
+      "to": "callback",
+      "label": "actual template/registration identity",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Does the full current CString carry a Character-specific binder and callback identity?"
+    }
+  ],
+  "cases": []
+}

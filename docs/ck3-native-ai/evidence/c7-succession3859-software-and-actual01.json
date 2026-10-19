@@ -1,0 +1,165 @@
+{
+  "schema": "xar.c7-succession3859-software-and-actual-adoption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:35:58.016437+00:00",
+  "status": "ACTUAL_ORIGINAL_HANDOFF_TAIL_VERIFIED",
+  "actual_finished_at_utc": "2026-10-19T08:33:31.629483+00:00",
+  "sources": {
+    "tools/g2_saved_campaign/succession3858_pending_ui_resume_v1.py": {
+      "bytes": 13291,
+      "sha256": "d8db7befff7d7106cbeec9816065c0b488a119758a5373ed1132ee476443f280"
+    },
+    "tools/g2_saved_campaign/qualify_succession3858_resume_v1.py": {
+      "bytes": 7922,
+      "sha256": "6b85842d180afd98f206738db47cba3821290da69e6c02688b18f6d1c65336c5"
+    },
+    "tools/g2_saved_campaign/prepare_succession3858_resume_v1.py": {
+      "bytes": 3261,
+      "sha256": "af291278c461f9314a199da771f2de54159fabdd7e3bf044fa71bd77898d9a86"
+    }
+  },
+  "source_frozen_package": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c7-succession3858-ui-failure78\\FROZEN.json",
+    "bytes": 21987,
+    "sha256": "987e1e0d2f6f37ab49c15840fa42dab9a09d6a671f45ea6f624b1bb264c1eb7b"
+  },
+  "software": {
+    "observed_at_utc": "2026-10-19T08:31:36.002678+00:00",
+    "command": "py tools/g2_saved_campaign/qualify_succession3858_resume_v1.py",
+    "result": "PASS_SOFTWARE_PREFIX_NOT_LIVE_OR_COMPLETE_TAIL",
+    "actual_outer_partial_small_env_and_cached_dynamic_dispatch_AST": true,
+    "prefix_zero_RPC": [
+      3851,
+      3853,
+      3854,
+      3855,
+      3856,
+      3857
+    ],
+    "next_simulated_call": [
+      3860,
+      "ck3_auto_turn",
+      {}
+    ],
+    "new_simulated_failure_retained": 3860,
+    "original1839_state_unchanged": true,
+    "wrong_failed_original_rejected": true,
+    "qualification_scope": "Pre-adoption unchanged-source fixture; successful adoption consumes the once guard and changes current state. No post-adoption rerun or success is claimed. Only bytecode-write suppression was subsequently added to qualifier; business fixture and helper unchanged."
+  },
+  "actual_pins": {
+    "marker": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\SUCCESSION3858-RESUME-SETTLED.json",
+      "bytes": 3812,
+      "sha256": "be60420842ad8fb3dd3f3a79ebb37c40d357b9f4162dc4b2c552aa8fe716f2b9"
+    },
+    "original_tail_audit": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\AUTOMATIC-SUCCESSION-HANDOFF-001839-RESUME3859.json",
+      "bytes": 7714,
+      "sha256": "03f96e5aa9b4d56bd8c135ad31820f289d9309176f41482d7f91ac7893db145f"
+    },
+    "new_UI_AUTO": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3860-1-result.json",
+      "bytes": 187265,
+      "sha256": "be975dc98884c51053459b6031d8aef53f28c19c77edde126d0bf285bbe5fbc5"
+    },
+    "new_SAVE_metadata": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3862-1-result.json",
+      "bytes": 11231,
+      "sha256": "17781f88ba042314a8374b3e21998cd8d7a6064650b38edbd287c7897031e2b4"
+    },
+    "final_SEM": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\3863-1-result.json",
+      "bytes": 58121,
+      "sha256": "e824314819018a06558e265528a46b697dd30b6f0892fba285ba500c736cf9ad"
+    }
+  },
+  "actual": {
+    "physical_Game": {
+      "pid": 153556,
+      "creation_filetime": 134368602545256920
+    },
+    "completed_cycles_before_after": 1839,
+    "ordinary_cycle_credit_added": 0,
+    "old_prefix_RPC_calls": 0,
+    "new_sequence_tools": [
+      {
+        "sequence": 3860,
+        "tool": "ck3_auto_turn"
+      },
+      {
+        "sequence": 3861,
+        "tool": "ck3_take_semantic_snapshot_private_v1"
+      },
+      {
+        "sequence": 3862,
+        "tool": "ck3_save_checkpoint"
+      },
+      {
+        "sequence": 3863,
+        "tool": "ck3_take_semantic_snapshot_private_v1"
+      }
+    ],
+    "UI_AUTO_status": "successor_ui_resumed",
+    "UI_AUTO_selected_step": null,
+    "resident_UI_pending": false,
+    "pending_natural_succession_cleared": true,
+    "final_frame": {
+      "snapshot_id": "native:3007",
+      "revision": 2589,
+      "native_revision": 3007,
+      "date_raw": 53186880,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "calendar_days_from_T0": 1773,
+    "checkpoint": {
+      "status": "saved",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 90804740,
+      "sha256": "1b0fb1055ff02601b7a84e65e63cf1b0dd9fc859f269fc9e761ee3d40ccac341",
+      "date_raw": 53186880,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": null,
+        "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+        "source": "absent_by_verified_xar_mod_not_loaded",
+        "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+      },
+      "history_index": 3,
+      "episode_character_id": 40526,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "SAVE_wall_seconds": 3.6560810999944806,
+    "Driver_replace_scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+    "Driver_save_binding_verified": true,
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "origin_character_id": 31254,
+      "current_character_id": 40526,
+      "progress": {
+        "reconciled_successions": 1,
+        "last_succession": {
+          "predecessor_character_id": 31254,
+          "actual_successor_character_id": 40526,
+          "matched_inherited_title_ids": [
+            2230,
+            2231
+          ],
+          "expected_other_heir_title_ids": [
+            2262
+          ],
+          "expected_without_heir_title_ids": []
+        }
+      }
+    },
+    "original_failures_replayed_or_overwritten": false
+  },
+  "independent_read_scope": "Only listed closed JSON receipts/source files; no Game/MCP call, active Driver or SAVE-body read, no source/process changes.",
+  "remaining_owner_step": "Original camera admission: runtime/Root new actual frozen pair and primary review bound to final_frame/final_SEM before ordinary FULL; this evidence does not grant new pixel acceptance or claim later FULL success."
+}

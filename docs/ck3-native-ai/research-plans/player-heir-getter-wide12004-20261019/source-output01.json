@@ -1,0 +1,36 @@
+{
+  "schema": "xar.Character.GetPlayerHeir.wide-metadata-discovery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-19T08:15:59.543355+00:00",
+  "ended_at_utc": "2026-10-19T08:15:59.565048+00:00",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1791307594040564100,
+    "file_id": 1688849860293886
+  },
+  "plan": {
+    "path": "Z:/ck3_mod_rewrite/docs/ck3-native-ai/research-plans/player-heir-getter-wide12004-20261019/plan01.json",
+    "bytes": 2514,
+    "sha256": "98c11ad03390fcc05f991c64a57b2783af65963746a279747544b484cd7321a7"
+  },
+  "producer": {
+    "path": "Z:/ck3_mod_rewrite/_runtime/m3-playerheir-wide-metadata04.py",
+    "bytes": 4883,
+    "sha256": "ff571203b8ab3fc5fc2396d4f72a60404a237ae210fc5988763ec51554f157af"
+  },
+  "same_method": "GetPlayerHeir",
+  "encoding": "UTF16LE_NUL",
+  "hits": [],
+  "cap_reached": false,
+  "function_windows_read": 0,
+  "process_Game_RPC_builds": 0,
+  "EXE_copied": false,
+  "AI_or_callee_tree": false,
+  "H_or_runtime_credit": false
+}

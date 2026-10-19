@@ -1,0 +1,176 @@
+{
+  "schema": "xar.ck3.native27-registration-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:35:01.499665+00:00",
+  "status": "BUILD_AND_OFFLINE_PASS_NOT_DEPLOYED",
+  "label": "Native27 termination executor registration",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\source\\src\\ck3_12002_nonwar_router.cpp",
+    "bytes": 52747,
+    "sha256": "5e80c6b7747f92b4bba4e99bc8b224c4fb945ddda8d873c98e3795c48b54dc56"
+  },
+  "baseline_DLL": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native26-performance01\\build\\native26.dll",
+    "bytes": 18442752,
+    "sha256": "eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184"
+  },
+  "candidate_DLL": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\build\\native27.dll",
+    "bytes": 18442752,
+    "sha256": "bea9727b86b9013809b965c8f5ea98cf075d813bf3a56a075b93639f7e36b775"
+  },
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native27-router-registration-plan-2026-10-19.json",
+    "bytes": 12090,
+    "sha256": "cc6e6385ad982f911afa1f5cd135eac45d2cfb16504ad6e3fe1bf767ac9dd6bf"
+  },
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE27-TERMINATION-CHILD01.json",
+    "bytes": 3601,
+    "sha256": "8e5b6d23c97a7599eaa6dd31fc287d1da7d271675ade3900c64b9a4f38779ea7"
+  },
+  "compile": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\COMPILE-RESULT.json",
+    "bytes": 28382,
+    "sha256": "5b465d1dff20f021dd3e9e176adb4e71a758241a9d269ed32af6e672e11a0f89"
+  },
+  "link": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\LINK-RESULT.json",
+    "bytes": 3574,
+    "sha256": "d9895dc32a135831a2c55ef5ce3197eab4174fe0ddc21382ac38d39fe2532ccb"
+  },
+  "offline": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\offline01\\RESULT.json",
+    "bytes": 8109,
+    "sha256": "fa96df516b0a88a1d57f14e9759078738473a4058af1581bffef90549c13e6c7"
+  },
+  "exports": [
+    {
+      "ordinal": 1,
+      "rva_hex": "0050EEC0",
+      "name": "XarCk3BridgeIdentity"
+    },
+    {
+      "ordinal": 2,
+      "rva_hex": "0050F510",
+      "name": "XarCk3BridgePrepareStartup"
+    },
+    {
+      "ordinal": 3,
+      "rva_hex": "00513500",
+      "name": "XarCk3BridgeStart"
+    },
+    {
+      "ordinal": 4,
+      "rva_hex": "00513510",
+      "name": "XarCk3BridgeStartWithPipe"
+    },
+    {
+      "ordinal": 5,
+      "rva_hex": "00513570",
+      "name": "XarCk3BridgeStop"
+    }
+  ],
+  "production_objects_compiled": 1,
+  "fixture_objects_compiled": 2,
+  "headers_or_ABI_changed": false,
+  "M4_public_ABI_adopted": false,
+  "old_input_copies": 0,
+  "archive_rebuilds": 0,
+  "tool_windows": [
+    {
+      "phase": "compile_production",
+      "started_at_utc": "2026-10-19T08:34:41.470437+00:00",
+      "ended_at_utc": "2026-10-19T08:34:48.499519+00:00",
+      "wall_seconds": 7.029083699919283,
+      "exit_code": 0
+    },
+    {
+      "phase": "compile_production",
+      "started_at_utc": "2026-10-19T08:34:48.587605+00:00",
+      "ended_at_utc": "2026-10-19T08:34:48.800008+00:00",
+      "wall_seconds": 0.21240100008435547,
+      "exit_code": 0
+    },
+    {
+      "phase": "link_production",
+      "started_at_utc": "2026-10-19T08:34:48.874970+00:00",
+      "ended_at_utc": "2026-10-19T08:34:51.558917+00:00",
+      "wall_seconds": 2.6839492002036422,
+      "exit_code": 0
+    },
+    {
+      "phase": "link_production",
+      "started_at_utc": "2026-10-19T08:34:51.726312+00:00",
+      "ended_at_utc": "2026-10-19T08:34:51.936879+00:00",
+      "wall_seconds": 0.21056809998117387,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T08:34:52.044727+00:00",
+      "ended_at_utc": "2026-10-19T08:34:55.553111+00:00",
+      "wall_seconds": 3.508388200076297,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T08:34:55.619714+00:00",
+      "ended_at_utc": "2026-10-19T08:35:00.624890+00:00",
+      "wall_seconds": 5.005184599896893,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T08:35:00.684599+00:00",
+      "ended_at_utc": "2026-10-19T08:35:01.105336+00:00",
+      "wall_seconds": 0.4207421999890357,
+      "exit_code": 0
+    },
+    {
+      "phase": "offline_fixture",
+      "started_at_utc": "2026-10-19T08:35:01.188039+00:00",
+      "ended_at_utc": "2026-10-19T08:35:01.405563+00:00",
+      "wall_seconds": 0.21753080002963543,
+      "exit_code": 0
+    }
+  ],
+  "production_DLL_loaded": false,
+  "Game_or_RPC_calls": 0,
+  "new_EXE_outputs": 0,
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+  "future_writes_bytes": 0,
+  "owned_subprocesses_remaining": 0,
+  "live_termination_or_performance_qualified": false,
+  "production_exact4_relocation": {
+    "function": "?PopulateNonwarRouterExecutors12004@ck3_12002@xar@@YAXAEAUNonwarMailboxExecutorsV1@12@@Z",
+    "section": 110,
+    "old_target_relocations": 0,
+    "new_target_relocations": [
+      {
+        "offset": 417,
+        "symbol": "?ExecuteSwayCompletionTerminationMailboxV1@ck3_12002@xar@@YA_NPEAXAEBUMainThreadExecutionStampV1@ck3_11906@2@@Z",
+        "type": 4
+      }
+    ]
+  },
+  "source_qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\QUALIFICATION.json",
+    "bytes": 4971,
+    "sha256": "5724de59422cde11e85e0ef65517222f3c35cef6d87e26975bab0416c77ffec3",
+    "relative_path": "QUALIFICATION.json"
+  },
+  "closed_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native27-termination01\\FILES-CLOSED.json",
+    "bytes": 12954,
+    "sha256": "ffec55d7a3299dc8f000cb6b8fc2dc23917ef2c84939c475b169dc36ae030861"
+  },
+  "storage": {
+    "logical_bytes_including_manifest": 45859113,
+    "allocated_bytes": null,
+    "future_writes_bytes": 0,
+    "owned_build_or_fixture_subprocesses_remaining": 0,
+    "files_including_manifest": 42
+  },
+  "scope": "Only80B executor assignment over Native26;1router object/355retained direct/612archive members,546project headers unchanged. No M4 ABI, Game/RPC, production loading, natural terminal occurrence or performance qualification. Sequential1worker BELOW_NORMAL; no PDB/newEXE/retry. Closed root future0."
+}

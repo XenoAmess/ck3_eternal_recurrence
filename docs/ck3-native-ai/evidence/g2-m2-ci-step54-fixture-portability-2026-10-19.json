@@ -1,0 +1,132 @@
+{
+  "schema": "xar.g2.m2.CI54-indexed-fixture-portability/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T08:48:48.016616+00:00",
+  "status": "TEST_FIXTURE_ONLY_FIXED_SAME_SEVEN_FILES_NO_RG_PASS",
+  "official_failure": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\ci-job-117959324035-failure-excerpt.json",
+    "bytes": 34564,
+    "sha256": "b1ad881185683e6faffa2330cb2ca774ab2a27d94657d22e6a48a49b011ac3a7"
+  },
+  "official_runner_machine_id": "unknown",
+  "base_commit": "d192b7bade022fe1c51e7e0c92e9c25e685ae2cf",
+  "actual_test_argv": [
+    "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_material_publication_portable.py",
+    "ck3_autonomous_player/tests/unit/test_window_priority_portable.py",
+    "ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py",
+    "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+    "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+    "ck3_autonomous_player/tests/unit/test_reviewed_letter_source_rebind_v1.py",
+    "ck3_autonomous_player/tests/unit/test_event_offline_analysis.py"
+  ],
+  "cwd": "Z:\\ck3_mod_rewrite",
+  "environment_overrides": {
+    "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TEMP": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-ci54-repro-20261019\\temp",
+    "TMP": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-ci54-repro-20261019\\temp"
+  },
+  "reproductions": [
+    {
+      "receipt": {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-ci54-repro-20261019\\SEVEN-FILES-1.json",
+        "bytes": 1432,
+        "sha256": "dfb42f844d92ca6a9a6cca830bacffe55b198eec92cfd9c561eedebe63658994"
+      },
+      "exit_code": 0,
+      "controlled_missing_rg": false,
+      "rg_before": null,
+      "rg_after": null,
+      "PATH_entries_removed": null,
+      "result": "89 passed in 6.03s"
+    },
+    {
+      "receipt": {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-ci54-repro-20261019\\SEVEN-FILES-2.json",
+        "bytes": 19850,
+        "sha256": "e33446f063bb56249bd550eb3ed69ad71ee924aed39c8238fb4a4b1a15f334ab"
+      },
+      "exit_code": 1,
+      "controlled_missing_rg": true,
+      "rg_before": "C:\\Users\\xenoa\\AppData\\Local\\pnpm\\store\\v11\\links\\@openai\\codex\\0.162.1-win32-x64\\dac23e11feaff3792dc2ed0007f7afde40d7404d9059d6e8d25b8a7720558a7f\\node_modules\\@openai\\codex\\vendor\\x86_64-pc-windows-msvc\\codex-path\\rg.EXE",
+      "rg_after": null,
+      "PATH_entries_removed": 2,
+      "result": "13 failed, 76 passed in 5.30s"
+    },
+    {
+      "receipt": {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-ci54-repro-20261019\\SEVEN-FILES-3.json",
+        "bytes": 1777,
+        "sha256": "8b016e4d90c9113eb263e581a9073cb4e7f0e13ec7d17080c6b240488104a297"
+      },
+      "exit_code": 0,
+      "controlled_missing_rg": true,
+      "rg_before": "C:\\Users\\xenoa\\AppData\\Local\\pnpm\\store\\v11\\links\\@openai\\codex\\0.162.1-win32-x64\\dac23e11feaff3792dc2ed0007f7afde40d7404d9059d6e8d25b8a7720558a7f\\node_modules\\@openai\\codex\\vendor\\x86_64-pc-windows-msvc\\codex-path\\rg.EXE",
+      "rg_after": null,
+      "PATH_entries_removed": 2,
+      "result": "90 passed in 5.40s"
+    }
+  ],
+  "causal_check": {
+    "official_and_local_failure_names_equal": true,
+    "matching_failure_count": 13,
+    "local_missing_rg_source_review_unresolved": [
+      {
+        "event_definition_key": "synthetic.1",
+        "incident_id": "02a1b1a137db468fb380ecaeb5639e15",
+        "reason": "[WinError 2] 系统找不到指定的文件。",
+        "status": "unknown_unable_to_source_review"
+      }
+    ],
+    "CI_rg_absence_observed": false,
+    "CI_rg_absence_inferred": true,
+    "root_cause": "Synthetic fixture forced an empty source index and unintentionally required external rg, which is not a declared test dependency. Removing only rg availability in child PATH reproduces the exact13 CI failure names; normal local PATH passes. Official runner rg availability itself was not observed."
+  },
+  "change": {
+    "only_file": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_event_offline_analysis.py",
+      "bytes": 16397,
+      "sha256": "4bc08ffd20c608a63b9a4f70279d65a4b3c03879ea6fa888ecf453bd149a4b41"
+    },
+    "behavior": "Fixture supplies synthetic.1 exact relative path and SHA frozen at original source creation. Real source parsing, immutable publication, loader reuse and negative source checks remain. New focused case raises on any subprocess search while publication/loader still succeed.",
+    "production_sources_unchanged": {
+      "leaf": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\reviewed_letter_source_rebind_v1.py",
+        "bytes": 10292,
+        "sha256": "6d88bf7d5be9aabf12fa4126268b6857a47dda422fcda3498e03bf5c8ba99b91"
+      },
+      "dispatch": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+        "bytes": 28072,
+        "sha256": "929802ce55f9626a16ded0c59177cae3048ffe6ca5007b60165aac629b9b8a6a"
+      }
+    },
+    "focused_cases_added": 1,
+    "production_guard_changes": 0
+  },
+  "validation": {
+    "same_seven_files_after_fix": "90 passed; no rg available",
+    "git_diff_check_exit_code": 0,
+    "tests_beyond_requested_group": false,
+    "Game_RPC_OBS_calls": 0,
+    "runtime_C7_or_LIFE2_touched": false,
+    "stage_commit_push": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "allocated_bytes_or_null": null,
+    "physical_credit_added": 0,
+    "future_output_bytes": 0,
+    "derived_review_at_utc": "2026-10-21T08:48:48.016616+00:00",
+    "record_review_at_utc": "2027-04-17T08:48:48.016616+00:00"
+  }
+}

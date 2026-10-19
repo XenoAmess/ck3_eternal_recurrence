@@ -229,6 +229,16 @@ def consume_lifestyle_private_query(
     if not isinstance(query, Mapping) or query.get("status") not in {
         "available", "stock_focus_available",
     }:
+        native_error = query.get("native_error") if isinstance(query, Mapping) else None
+        if native_error is None and isinstance(query, Mapping):
+            # The combined reader retains the original LIFE2/focus read under
+            # these two named components. Preserve its reason without changing
+            # an unavailable observation into a legal no-action result.
+            for component in ("state", "focus"):
+                readback = query.get(component)
+                if isinstance(readback, Mapping) and readback.get("native_error") is not None:
+                    native_error = readback["native_error"]
+                    break
         return {
             **plan,
             "phase": "lifestyle_native_query_unavailable",
@@ -236,9 +246,8 @@ def consume_lifestyle_private_query(
             "lifestyle_query_status": (
                 query.get("status") if isinstance(query, Mapping) else "not_executed"
             ),
-            "lifestyle_native_error": (
-                query.get("native_error") if isinstance(query, Mapping) else None
-            ),
+            "lifestyle_native_error": native_error,
+            "lifestyle_query": dict(query) if isinstance(query, Mapping) else None,
             "reason": "LIFE2 state or LIFE4 final candidates did not bind this paused player",
         }
     life_snapshot = query.get("snapshot")
