@@ -1,0 +1,48 @@
+{
+  "schema": "xar.ck3.g2-m6-exact12004-termination-gate-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:47:53.886095Z",
+  "actual_failure_source": "g2-m6-first-natural-start-2026-10-19.json#/post_start_observer_failure",
+  "diagnosis_source": "g2-m6-first-natural-start-2026-10-19.json#/termination_route_diagnosis",
+  "candidate": {
+    "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_router.cpp",
+    "baseline_bytes": 52606,
+    "baseline_sha256": "ed55cf483fdd0cfdd1cdebd7acdc3401c445ec74d5a3c1f3945c112eab30feff",
+    "candidate_bytes": 52667,
+    "candidate_sha256": "bac63779bcd8ddee1db61b0a5b8418874e28e8a1173713de5f73209fb4b5ceb9",
+    "function": "IsNonwarPrivateStep12004",
+    "existing_macro": "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1",
+    "added_source": "  if (step == kSwayCompletionTerminationStepV1) return true;\n",
+    "insertion": "After the existing kSwayCompletionStepV1 match, before sway_target parsing",
+    "other_routes_expanded": false,
+    "old_12002_route_changed": false,
+    "Python_fail_fast_changed": false
+  },
+  "unchanged_provider_pins": [
+    {"path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_handler.cpp", "bytes": 4364, "sha256": "2889a007fc96dcc36220aa3190ec36b7d1538dca0a33fbdff7eef339e2efab6e"},
+    {"path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_mailbox.cpp", "bytes": 972, "sha256": "0e9e14bcf198c5d028e2b3ddef854949afe2d9b1150fdd9ef5e993a815a0953f"},
+    {"path": "ck3_autonomous_player/native_bridge/src/ck3_12002_sway_completion_termination_serializer.cpp", "bytes": 1622, "sha256": "a8ad58c4d0bc57bad63c28ecf6a4172857857fbadc14bcde48fc1927e032ca2a"}
+  ],
+  "verification": {
+    "kind": "source-only exact single-line delta against current tracked baseline",
+    "runs": 1,
+    "tool_chunk": "95008c",
+    "exit_code": 0,
+    "only_delta_is_single_termination_gate": true,
+    "diff_review_chunk": "c39ddf",
+    "git_diff_check": {"tool_chunk": "de6e86", "exit_code": 0},
+    "existing_route_check_sources": ["ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_router_test.cpp", "ck3_autonomous_player/native_bridge/CMakeLists.txt"],
+    "existing_route_checks": "CMake default/selected .2 RouterAdapter dispatcher spies retain R5 selector/recorder/argument checks; they do not execute the newly admitted .4 gate in this source-only package",
+    "Cplusplus_compiles_or_executions": 0,
+    "Native_loads": 0,
+    "runtime_qualification": false
+  },
+  "downstream_owner": "/root/performance_native",
+  "required_next_qualification": "Next necessary Native batch must exercise exact .4 gate and compile/link the single changed router object with the retained original handler, process-lifetime recorder, main-owner executor and serializer; preserve typed unavailable/empty-ring facts and original identity. Do not manufacture a terminal outcome.",
+  "current_Game_or_Native_changed": false,
+  "new_Game_MCP_SDK_calls": 0,
+  "manual_Start_Stop_forced_terminal": 0,
+  "G2_M6_credit_awarded": false,
+  "storage": {"policy_version": "1.0.0", "heavy_writes": 0, "deletions": 0, "derived_review_at_utc": "2026-10-21T03:47:53.886095Z"},
+  "open_kaishek": "not-applicable"
+}

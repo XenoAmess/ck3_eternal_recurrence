@@ -482,6 +482,7 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   if (step == kSwayCompletionStepV1) return true;
+  if (step == kSwayCompletionTerminationStepV1) return true;
   std::uint32_t sway_target = 0;
   if (ck3_11906::ParseActiveSchemeSwayPrivateQueryStepV1(step, sway_target))
     return true;

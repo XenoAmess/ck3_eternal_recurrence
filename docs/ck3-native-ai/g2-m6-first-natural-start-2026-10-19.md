@@ -69,3 +69,17 @@ tuple 元数据复核有一项范围偏差：`ROOT-FINAL-SDK-FREEZE-P37.json` �
 本包不再重读该表，只记录它的精确 pin 和必要顶层字段；collector 真实输入始终只有两份小 AUTO。
 没有读活跃 ledger、Driver、SAVE 或媒体，没有新增游戏/RPC/Start/Stop，也未操作当时的 publisher halt。
 全部新增物仍为小文档/JSON，沿 Root 统一存储预算和 48 小时派生复核，不新增容量信用或删除。
+
+## 03:47Z：后继 Native 的单常量源码修复
+
+Root 已授权后继 Native 最小修复。在 exact `.4` gate 的既有 active-scheme 宏中，
+仅新增 `if (step == kSwayCompletionTerminationStepV1) return true;`。
+[源码回执](evidence/g2-m6-native-termination-gate-source-2026-10-19.json)封定原 52606 B/SHA `ed55cf48…30feff`
+和候选 52667 B/SHA `bac63779…b5ceb9`，一次精确文本 delta 检查证明整个源文件只有该行增量，
+`git diff --check` 通过。原 handler、executor、serializer 及 Python fail-fast 未修改。
+
+现有 CMake `xar_ck3_12002_nonwar_router_default_test` / `selected_test` 使用 `.2` RouterAdapter，
+保留 R5 termination 精确 selector、recorder 和原参数转发检查；本次没有为了当前长局编译或重跑它们。
+源码检查不等于新 `.4` C++ 执行通过。已将候选 SHA 和资格边界交给后继 Native owner，
+由其下一必要合批做 exact `.4` gate、真实对象链接和原 provider 闭包的定向资格。
+当前 Game、Native25 与已恢复的 SDK flag 绑定不由本源码变更改变；没有新现场查询或终态信用。
