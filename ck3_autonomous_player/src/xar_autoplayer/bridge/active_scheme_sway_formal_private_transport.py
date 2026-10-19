@@ -14,6 +14,7 @@ from .nonwar_private_build import (
 SCHEMA = "active-scheme-sway-formal-private-v1"
 SUBMIT_PREFIX = "submit-active-scheme-sway-v1-private-"
 RECEIPT_PREFIX = "receipt-active-scheme-sway-v1-private-"
+RECEIPT_SOURCE_KEY = "_receipt_source_frame_v1"
 _ENVELOPE_KEYS = {
     "step", "accepted", "status", "private_build", "advertised",
     "active_scheme_sway_formal", "backend_id",
@@ -22,6 +23,23 @@ _ENVELOPE_KEYS = {
 
 def _positive(value: object) -> bool:
     return type(value) is int and value > 0
+
+
+def _receipt_source_frame(snapshot: Mapping[str, object]) -> dict[str, object]:
+    """Project only fields already present in this transport's cached snapshot."""
+    source = {key: snapshot[key] for key in (
+        "snapshot_id", "revision", "native_revision", "date_raw",
+        "episode_run_id", "episode_character_id",
+    ) if key in snapshot}
+    played = snapshot.get("played_character")
+    if isinstance(played, Mapping) and "character_id" in played:
+        source["actor_character_id"] = played["character_id"]
+    diagnostics = snapshot.get("diagnostics")
+    if isinstance(diagnostics, Mapping):
+        source.update({key: diagnostics[key] for key in (
+            "bridge_pid", "connection_generation",
+        ) if key in diagnostics})
+    return source
 
 
 def _send(driver: object, *, step: str, action_id: str,
@@ -83,7 +101,16 @@ def _send(driver: object, *, step: str, action_id: str,
             or after.get("paused") is not True
             or after.get("map_ready") is not True):
         raise BridgeUnavailableError("private sway action crossed actor/date frame")
-    return {**result, **provenance}
+    returned = {**result, **provenance}
+    if stage == "applied":
+        # Python-only provenance; never add these fields to the native request
+        # or mutate the native receipt. Missing snapshot fields remain absent.
+        returned[RECEIPT_SOURCE_KEY] = {
+            "schema": "xar.ck3.sway-receipt-source-frame.v1",
+            "before": _receipt_source_frame(before),
+            "after": _receipt_source_frame(after),
+        }
+    return returned
 
 
 def submit_active_scheme_sway_private_v1(
