@@ -1,0 +1,216 @@
+{
+  "schema": "native30-08B-two-stage-plan-v1",
+  "revision": 2,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:59:19.640272+00:00",
+  "status": "SOURCE_ONLY_NOT_EXECUTION_ADMISSION",
+  "files": [
+    "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+    "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+    "tools/g2_saved_campaign/test_native30_two_stage_20261020.py",
+    "tools/g2_saved_campaign/seal_native30_two_stage_source_20261020.py",
+    "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-08B-readonly-preflight-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-08B-source-ready-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision2-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-08B-readonly-preflight-revision2-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-08B-source-ready-revision2-2026-10-20.json"
+  ],
+  "preserved_revision1": [
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-2026-10-20.json",
+      "bytes": 11219,
+      "sha256": "df7a1c6ab612dd7b34e51256e40b74e5c92c36ac6aa28b3a0f6661e62bb47747"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-readonly-preflight-2026-10-20.json",
+      "bytes": 2528,
+      "sha256": "114c3305c932209766a8126f4446c8bdfb974860d0843e45e72371e13679d2bf"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-source-ready-2026-10-20.json",
+      "bytes": 1637,
+      "sha256": "9977bbf6cab8f136611674bcb31c7edb4e1e3237a8fcc121df1576361cf29b50"
+    }
+  ],
+  "producer": {
+    "path": "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+    "bytes": 25416,
+    "sha256": "8fff948b9f119a3341b9afc5fa69e094c8a8bea7868812dd20b0579da63a8fef"
+  },
+  "admin_producer": {
+    "path": "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+    "bytes": 10783,
+    "sha256": "fdfaf3009128b89e49c33e08f416e5e0480eae504b969d104104955336244e8a"
+  },
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "helper_pins": {
+    "ck3_autonomous_player/native_bridge/src/camera_tracking_v1_test.cpp": "6393d0168cdf4ffc4b701c4a349dacc1d7ed3cac51ec8fece409d245e35ed9c1",
+    "tools/g2_saved_campaign/build_native30_resume_20261019.py": "d4298f56dba6eabd8ccd0b95ba15eea090be55f51917149a4b3e279b177ee968",
+    "tools/g2_saved_campaign/native30_resume_guard_20261019.py": "97330a4086bf13df858708935226cb8f6838294c6f5ac51eec8ee2767b925e5d",
+    "tools/g2_saved_campaign/native30_msvc_auxiliary_policy_20261019.py": "5236ebbc53fb640567c2af31fe21ca375a43bfb908efc258f9ba0004746a255d",
+    "tools/g2_saved_campaign/build_native30_wholeclean_20261019.py": "db51b7e5b37083cf803f4b1611dd714dec197f4e0c559a688d22781f2ef07c00",
+    "docs/ck3-native-ai/evidence/native30-wholeclean-producer-plan-2026-10-19.json": "d9a44fc874bd253425626712eb17131f6986de5db17b74c5200b53cea3932bdb",
+    "docs/ck3-native-ai/evidence/native29-production-compile-macro-provenance-2026-10-19.json": "ccffb26fe48e49bae5045cc25cc58a24c1f0ca2cc5d8db0f84d0fcbb8f4b1e8d",
+    "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json": "0e0ca135fc5b3fa5edba470e5b736e11f0e3f7a187ba55c770d249adc8c08be4",
+    "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json": "cfd0302f1a0cd2800cb203fd8228725b20757146276b7847ebe5d3cc68e5d69e",
+    "tools/g2_saved_campaign/native30_ninja_snapshot_contract_20261020.py": "5aead409ffebb876f5ac08e50a9131ff3ddc6ef46bc8e011793f9d735b05f1d4",
+    "tools/g2_saved_campaign/native30_capture_msvc_environment_20261020.py": "b26d675482b7b5aa5cf398f8d08cc381d31c7bd6d9e2db43502986ec4cd42900",
+    "docs/ck3-native-ai/evidence/native30-fixture07-snapshot-plan-2026-10-20.json": "b4af9fa48d48b9c5a982b5bf392a7d6e367de1385fe425f941e389590ad7c006",
+    "tools/g2_saved_campaign/qualify_native30_fixture07_20261020.py": "b22eb598dbfdc01359dd1e15c65132b0fbb37bab23840df3b15b2e8ce32df4ae",
+    "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py": "fdfaf3009128b89e49c33e08f416e5e0480eae504b969d104104955336244e8a",
+    "tools/project_exe_broker/windows_adapter.py": "88eb97048190b3a0caf89941a77701dfd9c5434f0c5d32e1deda00056bcd9f82",
+    "tools/project_exe_broker/installer_core.py": "090063ebf11e0e704a8c4fcb41034de5bd0e7c49a4c4253b053ff3a5ca15f493",
+    "tools/project_exe_broker/native_safety.py": "873ec34e49d2549493ffddeb934d4d7d12e7a97de76fecc43c5135c0ee5118e2"
+  },
+  "base_readonly_plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture07-snapshot-plan-2026-10-20.json",
+    "bytes": 14086,
+    "sha256": "b4af9fa48d48b9c5a982b5bf392a7d6e367de1385fe425f941e389590ad7c006"
+  },
+  "inventory": "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json",
+  "binding": "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json",
+  "configured_inputs_expected": {
+    "manifest": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4",
+    "rules": "1d3b91567dd7612acf3d98ee7a5018d77e923b6d89dcee75d00f89968097250c",
+    "inputs": "8934e4696de8bddb5b1c31d20baf451460a3b45a6a4ea3dc2c0b8b00f1865c9e",
+    "glob_script": "95290fbffd2c73b478fe1ee86dd65f3a5824c7515cdcddc885cb298d8aa2ec52"
+  },
+  "seed_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\RESULT.json",
+      "bytes": 22565,
+      "sha256": "7191c5ac4155bc91e42c9025c429ee4d1846dfc23dcbf68bc9d23a17c079248e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\snapshot-command-equivalence.json",
+      "bytes": 1045,
+      "sha256": "f9d3f9d236e4240746cc8cdd6be1fe7c0b37c15eb9f881237536bf4ba47d830c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\production-no-work.log",
+      "bytes": 123,
+      "sha256": "ad3a9eeb65a977179bc5c91c5594077091b3e542ec6b5114bc1868798446fe42"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\snapshot-identity.json",
+      "bytes": 80543,
+      "sha256": "ee96925532414818a12d8360abd991b281addc4cd27e0d60d3638b5f85a27f2d"
+    }
+  ],
+  "roots": {
+    "aggregate": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+    "build": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build",
+    "run": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-run",
+    "admin": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-admin",
+    "owner_build": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec",
+    "owner_run": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-run\\owner-spec"
+  },
+  "snapshot_reused_readonly": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\production-manifest.ninja",
+  "copy_snapshot_or_commands": false,
+  "protocol": {
+    "schema": "native30-two-stage-qualification-v1",
+    "protocol_version": 1,
+    "run_id": "native30-08B",
+    "build_status": "BUILD_READY_FOR_ADMIN",
+    "run_status": "OFFLINE_QUALIFIED_NOT_DEPLOYED",
+    "admin_schema": "native30-exact-nine-admin-registration-v1",
+    "leases": "Not continuous across Tasks. Admin and run reacquire SHA/FileID leases and reject drift; never rebuild/re-register silently."
+  },
+  "budget": {
+    "same_aggregate_hard_bytes": 1610612736,
+    "prior_retained_allocation_bytes": 706251512,
+    "new_reservation_bytes": 0,
+    "source_cap_bytes": 100663296,
+    "metadata_cap_bytes": 134217728,
+    "TEMP_cap_bytes": 402653184,
+    "all_new_metadata_upper_bytes": 16777216,
+    "including_two_owner_caps": 131072,
+    "including_admin_proof_cap": 4194304,
+    "jobs": 4,
+    "priority": "BELOW_NORMAL",
+    "compiler_MP": false,
+    "physical_credit": 0,
+    "current_component_charges": {
+      "utc": "2026-10-19T20:59:24.023850+00:00",
+      "eof": 691564667,
+      "allocation": 706251512,
+      "source": 69409880,
+      "metadata": 114460864,
+      "temporary": 160,
+      "raced": 0
+    },
+    "metadata_projected_upper_bytes": 131238080
+  },
+  "execution": [
+    "One new build-only c0 native_build Task after exactSPEC Rootrelease. Recheck5355/995/12/219+two physical globs/983production leases and exact failed07 seed; no old FAILED requalified. Reuse byte-identical07snapshot -f at original buildcwd; actual productionNoWork. Frozen MSVC initializer, sequential nine selected Ninja-f builds, no CMake or projectEXE execution. Freeze one current FileAPI exact9 EXE manifest and FileID/SHA bindings. Native result BUILD_READY_FOR_ADMIN plus actual outer root0/Job0, exactTaskunregister before admin handoff.",
+    "After all9products and manifest are frozen, Root reviews concrete admin argv/buildRESULTSHA/receipt paths; sole operator coordinates runtime screen exclusive/checkpoint/recording boundary. One explicit ShellExecuteEx runas (no bypass, no desktop/global input). Same-owner actual admin first requires actual owner-SID non-reparse ADMIN directory, then creates STARTED exclusively with actual PID/birth/SID/machine/build/manifest before any WMI. Existing STARTED/RESULT/LAUNCH prevents re-entry; unknown future prohibits repeat Add/UAC. One real SameAdminDefenderClient observes all three arrays. Existing immutable register_manifest with real full-settings adapter only ExclusionPath exact9files. None/error/partial always fresh readback; preserve latest raw actual three arrays even if validation fails, with settings_failed/error distinct. No interpreter/directory/extension/process exclusion. Before/after and full9 verified actual receipt required; cancellation/timeout or unexpected process remains FAILED_OR_UNKNOWN with no run-only start.",
+    "Run-only c0 native_build SPEC prepared only after actual admin result SHA and successful LAUNCH closure are available/reviewed. Before shared preflight, production/EXE leases or stage mkdir: finite build-only RESULT and Task CLOSED explicit same-machine/root0/Job0; admin receipt explicit same-machine and reviewed SHA, closed future0/exact9; LAUNCH explicit same-machine/schema VERIFIED/settings_success true/UAC_calls exactly1/actual_exit0/future0 with exact buildResult+adminResult refs. Timeout/unknown rejects even a late verified child RESULT. Shared fullpreflight then read-leases all five closure/manifest files and repeats identical handoff checks; all9 EXE SHA/FileID re-leases, registration/current identities equal. ProductionNoWork-f again; no fixture rebuild/second registration. Nine exact fixture argv including layout postchecker; dependency roots/five exports/three unique component archive payload/map symbols/noPDB/immutable original/source checks. Only full run root0/Job0+all9 execution0+actual adminverified permits OFFLINE_QUALIFIED_NOT_DEPLOYED delivery. No Game/load/Steam/provider/camera credit."
+  ],
+  "prospective_build_argv": [
+    "py",
+    "-B",
+    "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+    "--phase",
+    "build",
+    "--plan",
+    "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision2-2026-10-20.json",
+    "--admission",
+    "<new exact card>",
+    "--admission-sha256",
+    "<SHA>",
+    "--execute"
+  ],
+  "prospective_admin_argv": [
+    "<qualifiedPython>",
+    "-B",
+    "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+    "--launch",
+    "--plan",
+    "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision2-2026-10-20.json",
+    "--admission",
+    "<same card>",
+    "--admission-sha256",
+    "<SHA>",
+    "--build-result-sha256",
+    "<actual frozen buildresult SHA>",
+    "--execute"
+  ],
+  "prospective_run_argv": [
+    "py",
+    "-B",
+    "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+    "--phase",
+    "run",
+    "--plan",
+    "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision2-2026-10-20.json",
+    "--admission",
+    "<same card>",
+    "--admission-sha256",
+    "<SHA>",
+    "--admin-receipt-sha256",
+    "<actual verified adminresult SHA>",
+    "--execute"
+  ],
+  "metadata_roles": {
+    "build": "native_build only --phase build",
+    "run": "native_build only --phase run; adminSHA mandatory"
+  },
+  "source_tests": {
+    "count": 16,
+    "seconds": 0.032,
+    "tool": "exec00e412",
+    "scope": "pure mocks/AST only; no actual C++/WMI/UAC"
+  },
+  "future_source_writes_after_seal": 0,
+  "system_or_Task_or_R_writes": 0,
+  "admin_python": {
+    "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "bytes": 105840,
+    "sha256": "7d96a4ed35d6e596cd9dd8933feafc66349cc21f75be3b15c89fd336e50140c1",
+    "file_id": {
+      "volume_serial": "5669105749829453645",
+      "file_id": "7c88130000003f000000000000000000"
+    }
+  }
+}

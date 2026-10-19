@@ -1,0 +1,143 @@
+{
+  "schema": "xar.root.Source20-Git-anchor-actual/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:04:37.644948+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine;Rootb67828",
+  "status": "GIT_ANCHOR_CREATED_NOT_EXPORTED_NOT_ADOPTED",
+  "release": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-root-git-release-2026-10-20.json",
+    "bytes": 1598,
+    "sha256": "3c1455371751240aafa7d038372d31a5c7b5517be98c1efc76475e27d1a4e605"
+  },
+  "card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C20-WARM12MiB-GIT2P25MiB-PREANCHOR-ADMITTED01.json",
+    "bytes": 4766,
+    "sha256": "99ebebb95a841314be091e0f0e94a91fc3bdb2d241a083d68571b1e0cd546765"
+  },
+  "actual": {
+    "commit": "f19864de1cc073eed62617faad2307c57ad45a97",
+    "parent": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "ref": "refs/heads/campaign/robert-v20261019-c20-campaign-root-retry-warm-01",
+    "tree": "c868c9aa96fc012cd34f05e3fad6ebf7b8f3d8b8",
+    "complete_manifest": {
+      "file_count": 1447,
+      "source_bytes": 59065188,
+      "canonical_rows_JSON": {
+        "bytes": 371996,
+        "sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935"
+      },
+      "access": "compose() returns all1447 rows in RAM"
+    },
+    "D_Task_Game_writes": 0
+  },
+  "calls": [
+    {
+      "command": "hash-object",
+      "kind": "blob",
+      "stdin_bytes": 6111,
+      "result": "167109e4b32867be9ef53fbfd3ec3588abdf7a63",
+      "conservative_retained_charge": 12288
+    },
+    {
+      "command": "hash-object",
+      "kind": "blob",
+      "stdin_bytes": 3566,
+      "result": "3302c965a28f25784e462971f8cdd5944851101c",
+      "conservative_retained_charge": 8192
+    },
+    {
+      "command": "hash-object",
+      "kind": "blob",
+      "stdin_bytes": 4934,
+      "result": "9d0766616cc1827204d250148f2a8eb2be3dae16",
+      "conservative_retained_charge": 12288
+    },
+    {
+      "command": "hash-object",
+      "kind": "blob",
+      "stdin_bytes": 264359,
+      "result": "b32f26eb23a210a830cf50b908eb83d353738ac9",
+      "conservative_retained_charge": 270336
+    },
+    {
+      "command": "hash-object",
+      "kind": "blob",
+      "stdin_bytes": 14139,
+      "result": "48b80df41ffbc3b0c13fe17662a258b39d020660",
+      "conservative_retained_charge": 20480
+    },
+    {
+      "command": "hash-object",
+      "kind": "blob",
+      "stdin_bytes": 878063,
+      "result": "e671892c6124fa7bcce6870b938770916cff9717",
+      "conservative_retained_charge": 884736
+    },
+    {
+      "command": "hash-object",
+      "kind": "tree",
+      "stdin_bytes": 40560,
+      "result": "3664fe725090d5770c37fba8bf06d7ef9e485663",
+      "conservative_retained_charge": 45056
+    },
+    {
+      "command": "hash-object",
+      "kind": "tree",
+      "stdin_bytes": 12584,
+      "result": "0b7a913ea690197ae4bd3bd76a1d66b40650e9ea",
+      "conservative_retained_charge": 20480
+    },
+    {
+      "command": "hash-object",
+      "kind": "tree",
+      "stdin_bytes": 41,
+      "result": "5e5d7f3c4077dbe9101930796d1afbdf0c749977",
+      "conservative_retained_charge": 8192
+    },
+    {
+      "command": "hash-object",
+      "kind": "tree",
+      "stdin_bytes": 1122,
+      "result": "6f8b667d9be0f648e3a35fc55c24a9bd24dc8d32",
+      "conservative_retained_charge": 8192
+    },
+    {
+      "command": "hash-object",
+      "kind": "tree",
+      "stdin_bytes": 1565,
+      "result": "c868c9aa96fc012cd34f05e3fad6ebf7b8f3d8b8",
+      "conservative_retained_charge": 8192
+    },
+    {
+      "command": "commit-tree",
+      "kind": null,
+      "stdin_bytes": 148,
+      "result": "f19864de1cc073eed62617faad2307c57ad45a97",
+      "conservative_retained_charge": 16384
+    },
+    {
+      "command": "update-ref",
+      "kind": null,
+      "stdin_bytes": 0,
+      "result": "",
+      "conservative_retained_charge": 0
+    }
+  ],
+  "master_preserved": "669442bd3eee90a8818e29063cbf9a9ee4c7b66c",
+  "index_preserved": {
+    "bytes": 9891662,
+    "sha256": "aa7a228bb00171e015caf0746622ca60da53afd433887c230cf10ae65d86b53a"
+  },
+  "complete_leaves": 1447,
+  "retained_uncompressed_upper": 1314816,
+  "largest_temp_upper": 884736,
+  "refs_dirs_reserve": 65536,
+  "total_git_peak_upper": 2265088,
+  "hard_git_cap": 2359296,
+  "D_Task_Game_calls": 0,
+  "current_Source15_changed": false,
+  "seconds_saved": null,
+  "remaining": "Exact exporter/card/normal-closed Driver inputs and C20 control/adoption/SPEC; actual SDK runtime validation.",
+  "root_record_scope": "post186 independent128KiB/f030",
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+}

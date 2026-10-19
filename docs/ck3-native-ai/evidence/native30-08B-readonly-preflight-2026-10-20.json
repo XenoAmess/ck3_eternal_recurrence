@@ -1,0 +1,67 @@
+{
+  "schema": "native30-08B-readonly-preflight-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T20:49:07.983334+00:00",
+  "end_utc": "2026-10-19T20:49:14.727023+00:00",
+  "seconds": 6.743699500104412,
+  "status": "ALL_EXISTING_INPUTS_PASS_FUTURE_NINE_NOT_BUILT",
+  "source_count": 5355,
+  "selected_rows": 995,
+  "targets": 12,
+  "production_rows": 978,
+  "production_FileID_SHA_leases": 983,
+  "regen_inputs": 219,
+  "configured_inputs": {
+    "manifest": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4",
+    "rules": "1d3b91567dd7612acf3d98ee7a5018d77e923b6d89dcee75d00f89968097250c",
+    "inputs": "8934e4696de8bddb5b1c31d20baf451460a3b45a6a4ea3dc2c0b8b00f1865c9e",
+    "glob_script": "95290fbffd2c73b478fe1ee86dd65f3a5824c7515cdcddc885cb298d8aa2ec52"
+  },
+  "reused_snapshot": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\production-manifest.ninja",
+    "bytes": 15398163,
+    "sha256": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4",
+    "file_id": {
+      "volume_serial": "6505083400996699863",
+      "file_id": "d813bc00000001000000000000000000"
+    }
+  },
+  "budget": {
+    "same_aggregate_hard_bytes": 1610612736,
+    "prior_retained_allocation_bytes": 706251512,
+    "new_reservation_bytes": 0,
+    "source_cap_bytes": 100663296,
+    "metadata_cap_bytes": 134217728,
+    "TEMP_cap_bytes": 402653184,
+    "all_new_metadata_upper_bytes": 16777216,
+    "including_two_owner_caps": 131072,
+    "including_admin_proof_cap": 4194304,
+    "jobs": 4,
+    "priority": "BELOW_NORMAL",
+    "compiler_MP": false,
+    "physical_credit": 0,
+    "current_component_charges": {
+      "utc": "2026-10-19T20:49:12.023343+00:00",
+      "eof": 691564667,
+      "allocation": 706251512,
+      "source": 69409880,
+      "metadata": 114460864,
+      "temporary": 160,
+      "raced": 0
+    },
+    "metadata_projected_upper_bytes": 131238080
+  },
+  "admin_Python": {
+    "path": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "bytes": 105840,
+    "sha256": "7d96a4ed35d6e596cd9dd8933feafc66349cc21f75be3b15c89fd336e50140c1",
+    "file_id": {
+      "volume_serial": "5669105749829453645",
+      "file_id": "7c88130000003f000000000000000000"
+    }
+  },
+  "lease_handles_closed": true,
+  "future_stage_specific_gates": "Build9+Taskclosure+exact9manifest/UACactual3array+9identity/run9+final guard NOTRUN; no synthetic substitute.",
+  "R_Task_UAC_Game_mutations": 0,
+  "future_writes": 0
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "native30-08B-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "SOURCE_READY_CPP_UAC_NOTRUN",
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+      "bytes": 22920,
+      "sha256": "40eeac58c5fa4a32816852312df031a4b3c693028504ccf6fd1e8287ffec13a6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+      "bytes": 8875,
+      "sha256": "fb8cbe2a88a18c75bdbd475c7da8ede6d7257b4e96d40c79d8a7cc6f3a84231c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_two_stage_20261020.py",
+      "bytes": 7711,
+      "sha256": "9254d3f42d59dfccdaa2b13ebaa81ed7a18b2055ecf9cfb3b576356e1c4a9d66"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_two_stage_source_20261020.py",
+      "bytes": 9484,
+      "sha256": "0a3e69d27b201b0759548ebb3396424233c455de3092554487ed4da7da6e541b"
+    }
+  ],
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-2026-10-20.json",
+    "bytes": 11219,
+    "sha256": "df7a1c6ab612dd7b34e51256e40b74e5c92c36ac6aa28b3a0f6661e62bb47747"
+  },
+  "readonly_preflight": {
+    "path": "docs/ck3-native-ai/evidence/native30-08B-readonly-preflight-2026-10-20.json",
+    "bytes": 2528,
+    "sha256": "114c3305c932209766a8126f4446c8bdfb974860d0843e45e72371e13679d2bf"
+  },
+  "source_tests": {
+    "count": 10,
+    "seconds": 0.028,
+    "tool": "exec0e669e",
+    "scope": "pure mocks/AST only; no actual C++/WMI/UAC"
+  },
+  "source_cap_bytes": 65536,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

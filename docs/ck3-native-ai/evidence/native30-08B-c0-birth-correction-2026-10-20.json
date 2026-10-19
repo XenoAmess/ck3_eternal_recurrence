@@ -1,0 +1,54 @@
+{
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T21:03:38.456744+00:00",
+ "status": "SOURCE_READY_CPP_UAC_NOTRUN",
+ "previous_plan": {
+  "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision2-2026-10-20.json",
+  "bytes": 12997,
+  "sha256": "105a910726f779e4891180ee23b00a70c343aea18702117289b12687e3f36402"
+ },
+ "changed_sources": [
+  {
+   "path": "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+   "bytes": 10911,
+   "sha256": "52561e0d2ae7e3116953168d29154f7c8b1a7cad2a01a6d67058d3eaa4dfae9b"
+  },
+  {
+   "path": "tools/g2_saved_campaign/test_native30_two_stage_20261020.py",
+   "bytes": 14302,
+   "sha256": "ba78dd2e43b0cd15141db24302f03899e60ca78979fca89f0b7fc045d165ef0d"
+  },
+  {
+   "path": "tools/g2_saved_campaign/seal_native30_08B_birth_correction_20261020.py",
+   "bytes": 4189,
+   "sha256": "b3d79a7dc3e252c164beab83b3d5f84d98fe771491feea1cacb01490ea29c46b"
+  }
+ ],
+ "tests": {
+  "count": 16,
+  "seconds": 0.038,
+  "tool": "execa50a8e",
+  "scope": "pure mock/AST; actual c0 decimal FILETIME shape; no WMI/UAC"
+ },
+ "readonly_preflight_seconds": 6.383105100132525,
+ "prior_seal": "exec57874d/510b96/8d65b9 preflight PASS, caps RED116469/115162/115873 before docs; dedup refs and serialize complete machine plan compactly; source/guards unchanged",
+ "preflight": "5355source/995rows/12targets/219inputs+2globs/983production leases PASS; no output writes",
+ "component_charges": {
+  "utc": "2026-10-19T21:03:35.941417+00:00",
+  "eof": 691564667,
+  "allocation": 706251512,
+  "source": 69409880,
+  "metadata": 114460864,
+  "temporary": 160,
+  "raced": 0
+ },
+ "source_cap_bytes": 114688,
+ "future_writes": 0,
+ "allocated_bytes": null,
+ "physical_credit_bytes": 0,
+ "plan": {
+  "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision3-2026-10-20.json",
+  "bytes": 12089,
+  "sha256": "6043fd5240c9adbaa90ff3c1d61dd3832550a668382d75af1bf59019a2aa150a"
+ }
+}

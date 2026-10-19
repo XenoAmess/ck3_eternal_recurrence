@@ -1,0 +1,65 @@
+{
+  "schema": "native30-08B-source-ready-v1",
+  "revision": 2,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "SOURCE_READY_CPP_UAC_NOTRUN",
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/native30_two_stage_qualification_20261020.py",
+      "bytes": 25416,
+      "sha256": "8fff948b9f119a3341b9afc5fa69e094c8a8bea7868812dd20b0579da63a8fef"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_two_stage_admin_20261020.py",
+      "bytes": 10783,
+      "sha256": "fdfaf3009128b89e49c33e08f416e5e0480eae504b969d104104955336244e8a"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_two_stage_20261020.py",
+      "bytes": 13642,
+      "sha256": "74e0a52dc49730b232bee9b82d5329793bfd3d4e8bd672e5d67d9b01be5465c0"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_two_stage_source_20261020.py",
+      "bytes": 11207,
+      "sha256": "f2600990098a401f73ed6adeb4073749996f6c3e30cacfd759b984208f066543"
+    }
+  ],
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-revision2-2026-10-20.json",
+    "bytes": 12997,
+    "sha256": "105a910726f779e4891180ee23b00a70c343aea18702117289b12687e3f36402"
+  },
+  "readonly_preflight": {
+    "path": "docs/ck3-native-ai/evidence/native30-08B-readonly-preflight-revision2-2026-10-20.json",
+    "bytes": 3800,
+    "sha256": "721c994a3d2ea41e01caa16ff2c9686be49f04d54c4bd665dd5c5b3160b586b8"
+  },
+  "preserved_revision1": [
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-two-stage-plan-2026-10-20.json",
+      "bytes": 11219,
+      "sha256": "df7a1c6ab612dd7b34e51256e40b74e5c92c36ac6aa28b3a0f6661e62bb47747"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-readonly-preflight-2026-10-20.json",
+      "bytes": 2528,
+      "sha256": "114c3305c932209766a8126f4446c8bdfb974860d0843e45e72371e13679d2bf"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-08B-source-ready-2026-10-20.json",
+      "bytes": 1637,
+      "sha256": "9977bbf6cab8f136611674bcb31c7edb4e1e3237a8fcc121df1576361cf29b50"
+    }
+  ],
+  "source_tests": {
+    "count": 16,
+    "seconds": 0.032,
+    "tool": "exec00e412",
+    "scope": "pure mocks/AST only; no actual C++/WMI/UAC"
+  },
+  "source_cap_bytes": 98304,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

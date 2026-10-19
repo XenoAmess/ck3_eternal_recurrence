@@ -1,0 +1,27 @@
+{
+  "schema": "xar.root.Source20-Git-only-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:04:34.500505+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine;Rootb67828",
+  "status": "RELEASED_GIT_ONLY",
+  "card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C20-WARM12MiB-GIT2P25MiB-PREANCHOR-ADMITTED01.json",
+    "bytes": 4766,
+    "sha256": "99ebebb95a841314be091e0f0e94a91fc3bdb2d241a083d68571b1e0cd546765"
+  },
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source20_minimal_warm_sdk_v1.py",
+    "bytes": 20496,
+    "sha256": "712ca1e6b9f02c5e0e2339d0a2e473b7dab9f15bbd5f8cd2805d737dbb2e1f63"
+  },
+  "plan_sha256": "fe1e72416971ca15617d48ec79415f6b841eb776a8dc7718502783926df2d41f",
+  "Root_direct_reads": "fe4f69 complete producer;625815 full plan;3464d0 exact actual capacity card. Independent performance_python final noBlock.",
+  "ref": "refs/heads/campaign/robert-v20261019-c20-campaign-root-retry-warm-01",
+  "parent": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+  "fullrows_sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935",
+  "limits": "6 exact blobs,5trees,newcommit<=8192 payload,CAS-zero ref only;2359296 full uncompressed peak with largest extra temp/65536 ref-dir reserve. FreshZfree and deadline each mutation.",
+  "source_SHA_is_provenance_not_automatic_authorization": true,
+  "D_Task_Game_permissions": false,
+  "root_record_scope": "post186 independent128KiB/f030",
+  "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+}

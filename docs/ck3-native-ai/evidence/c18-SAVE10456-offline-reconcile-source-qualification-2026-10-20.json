@@ -1,0 +1,49 @@
+{
+  "schema": "xar.C18-SAVE10456-offline-reconcile-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:54:33.935631+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; current execution readback",
+  "status": "SOURCE_QUALIFIED_NOT_ADOPTED",
+  "tests_passed": 4,
+  "positive_fixture": "actual closed10455/10456 responses and original Queue/cadence source; synthetic SDK closure/cleanstate explicitly source_fixture True",
+  "actual_SDK_closure_or_loop_snapshot_claimed_by_fixture": false,
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\reconcile_c18_save10456_offline_v1.py",
+      "bytes": 13846,
+      "sha256": "ad586ba5b1faaf5c9f2bbd80232e3f319d6fcacc2f24b03c6c47cc12b0656d11"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c18_save10456_offline_v1.py",
+      "bytes": 9711,
+      "sha256": "aa97d450084a661169c2e41410d58238e8c1500c98eddf4bf33dfaa7801d31ef"
+    }
+  ],
+  "original_source_pins": {
+    "Queue": "f4adb613364e56413b5244e13122f2530a897a5e42d76c1fa9897e2c7bfcd694",
+    "cadence": "a017eded18ca03733700fd61b10cace8981e5379e73dbe99b4d281fb97e4ae87",
+    "SAVE_notice": "6d1d9bd4f938a0ba1cc12ac6c37fe2efdebebcacf44010175f17bb568e06e34a"
+  },
+  "original_finish_calls_per_projection": 1,
+  "original_atomic_and_persist_side_effects": "captured only in RAM",
+  "diff_whitelist": [
+    "actual_saved_checkpoint",
+    "actual_saved_checkpoint_source",
+    "checkpoint_calendar_v1",
+    "checkpoint_dirty_since_save",
+    "checkpoint_due_after_readonly_chain",
+    "counts",
+    "pending_checkpoint"
+  ],
+  "governance_or_original_inputs_modified": false,
+  "duplicate_CUM_recount_drift_unknown_SAVE_abnormal_SDK_refused": true,
+  "actual_closed_input_RAM_projection": null,
+  "D_Git_Task_Game_RPC_Driver_SAVE_operations": 0,
+  "scratch_files": 0,
+  "source_cap_bytes": 32768,
+  "separate_scratch_cap_bytes": 16384,
+  "source_card_sha256": "e3df047a164191676a445ede507a4c8f9419c6893ad1bf5e11feafced6ba44b1",
+  "runtime_adoption_requires_separate_release_and_fresh_target_absence_recheck": true,
+  "record_review_at_utc": "2027-04-17T20:47:44+00:00",
+  "future_writes_after_freeze": 0
+}
