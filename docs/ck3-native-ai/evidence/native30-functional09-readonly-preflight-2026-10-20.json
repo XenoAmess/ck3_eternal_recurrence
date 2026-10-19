@@ -1,0 +1,179 @@
+{
+  "schema": "native30-functional09-readonly-source-preflight-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T21:58:17.730574+00:00",
+  "end_utc": "2026-10-19T21:58:25.050455+00:00",
+  "status": "EXISTING_INPUTS_PASS_ACTUAL_FIXTURES_NOTRUN",
+  "seconds": 7.11742000002414,
+  "source_count": 5355,
+  "selected_rows": 995,
+  "targets": 12,
+  "production_rows": 978,
+  "production_leases": 983,
+  "regen_inputs": 219,
+  "snapshot": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt07\\production-manifest.ninja",
+    "bytes": 15398163,
+    "sha256": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4",
+    "file_id": {
+      "volume_serial": "6505083400996699863",
+      "file_id": "d813bc00000001000000000000000000"
+    }
+  },
+  "original_records": {
+    "original_build_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build\\RESULT.json",
+      "bytes": 68788,
+      "sha256": "847b6b54f7e544315507dd5c0aa91e0d1abf992cecadd73c1a4fe2f9c94d6c85"
+    },
+    "project_exe_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build\\project-exe-manifest.json",
+      "bytes": 10169,
+      "sha256": "f35cf135db1a564bcb55b3b5c932059deb4369d0e06fd4a5ff006b25d80e57a7"
+    },
+    "original_build_owner_spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec\\SPEC.json",
+      "bytes": 2059,
+      "sha256": "58a06b5408b45dc3097e5afc50c31dbc27a9613754596d59bd03d2d8cad27bd6"
+    },
+    "original_build_owner_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "b73e93e01f6d51309faee52ddee5e0b490e553b0c6e10a449f7f76c632ca9562"
+    },
+    "original_build_unregister": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\UNREGISTER.json",
+      "bytes": 975,
+      "sha256": "c1d64fc3a76ac2b44cc6bb17efd2b7721b94ce9c3bd5204b029668f860f3e093"
+    },
+    "prior_failed_admin_launch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-admin\\LAUNCH-RESULT.json",
+      "bytes": 1817,
+      "sha256": "73cae6d2f7e52ccf2c3d0a60b8d367eac443e3b58580ad7a0f4c53ea970ce0a5"
+    }
+  },
+  "fixture_count": 9,
+  "exe_bindings": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_12004_faction_adopted_whole_test.exe",
+      "bytes": 19523072,
+      "sha256": "4830c9829267a70daa509dd78cbb3112d7db77aa19544070a171823f2099beff",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "8215bc00000004000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_camera_follow_pending_v1_test.exe",
+      "bytes": 16896,
+      "sha256": "f277f857ec7e57e101ce5da3213975c5c42dc2926a534c8c29d5efbb2c03976a",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "6d15bc00000001000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_camera_settle_diagnostics_v1_test.exe",
+      "bytes": 17408,
+      "sha256": "afeb9407ad9b53bdcb906cbad0a97b92b940a574b94a43d5b55a8b661dc530e3",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "6415bc00000002000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_camera_tracking_v1_test.exe",
+      "bytes": 12288,
+      "sha256": "5870c844261bbfd0f27274055b139afd7c9a89d0da9557faa1caa36e15b5a5b9",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "ee13bc00000001000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 145920,
+      "sha256": "328dd20f3f6520d562843087168fe28d5cd94dd073ae05e5b854ddf5defbcd6e",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "9215bc00000002000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_native_layout_report_v1.exe",
+      "bytes": 26112,
+      "sha256": "7f32cea60744c23533687bc97035415047b748c73bee6e223dd26572400cefac",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "9615bc00000002000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_player_faction_alerts_v1_mailbox_test.exe",
+      "bytes": 60416,
+      "sha256": "1f90f80d371a2e820fbda8ada79d3ea66f59f65a912323c800cefd55d6c14951",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "8a15bc00000003000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_realm_camera_geometry_v1_test.exe",
+      "bytes": 14848,
+      "sha256": "37fd8636290dddb5fb15924aceda863d2ee58fc1e298fa369755904ce9410d92",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "7415bc00000003000000000000000000"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_realm_camera_subrealm_v1_test.exe",
+      "bytes": 168960,
+      "sha256": "e9c44823fc02e4c794a60a8b3254744d453bedd8e0218cdaef006f54d1187340",
+      "file_id": {
+        "volume_serial": "6505083400996699863",
+        "file_id": "7a15bc00000003000000000000000000"
+      }
+    }
+  ],
+  "capacity_basis_for_inspection_only": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-08B-BUILD-SAMEAGGREGATE-ADMITTED01.json",
+    "bytes": 3315,
+    "sha256": "0e00b6413b7c140a53157af6136ce04d234be313f9f7b2ab35ce0dcfab68de45"
+  },
+  "component_charges": {
+    "utc": "2026-10-19T21:58:22.082912+00:00",
+    "eof": 719763530,
+    "allocation": 734603176,
+    "source": 69409880,
+    "metadata": 116057296,
+    "temporary": 320,
+    "raced": 0
+  },
+  "new_execution_admission": false,
+  "new_stage_and_owner_roots_absent": true,
+  "prior_admin_status": "FAILED_OR_UNKNOWN",
+  "prior_admin_future_writes": null,
+  "defender_registration_pending": true,
+  "defender_effective_settings_known": false,
+  "os_qualification": "UNKNOWN",
+  "tests": {
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_native30_functional09_20261020.py"
+    ],
+    "count": 11,
+    "returncode": 0,
+    "seconds": 0.2011832999996841,
+    "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.020s\n\nOK\n",
+    "scope": "pure mocks/AST; no fixtures, WMI, UAC or Task"
+  },
+  "source_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FUNCTIONAL09-COMPLETE64KiB-SOURCE-COMMITMENT01.json",
+    "bytes": 1842,
+    "sha256": "7d6906cffe37fcfb1584a9c6ae69276063fbe001fe0869fdb556867973ab2ba1"
+  },
+  "R_Task_UAC_settings_Game_binary_writes_or_execution": 0,
+  "future_writes": 0
+}

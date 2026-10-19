@@ -1,0 +1,206 @@
+{
+  "schema": "native30-functional09-plan-v1",
+  "protocol_version": 1,
+  "run_id": "native30-functional09",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:58:17.730574+00:00",
+  "status": "SOURCE_ONLY_NOT_EXECUTION_ADMISSION",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_functional09_20261020.py",
+    "bytes": 23662,
+    "sha256": "7fcd4596056aea3503f700899d07a3366722e0768afe785e72f3d2653dc9c261"
+  },
+  "source_files": [
+    "tools/g2_saved_campaign/native30_functional09_20261020.py",
+    "tools/g2_saved_campaign/test_native30_functional09_20261020.py",
+    "tools/g2_saved_campaign/seal_native30_functional09_20261020.py",
+    "docs/ck3-native-ai/evidence/native30-functional09-plan-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-functional09-readonly-preflight-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-functional09-source-ready-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-functional09-metadata160-revision2-2026-10-20.json"
+  ],
+  "source_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FUNCTIONAL09-COMPLETE64KiB-SOURCE-COMMITMENT01.json",
+    "bytes": 1842,
+    "sha256": "7d6906cffe37fcfb1584a9c6ae69276063fbe001fe0869fdb556867973ab2ba1"
+  },
+  "common": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_two_stage_qualification_20261020.py",
+    "bytes": 25416,
+    "sha256": "8fff948b9f119a3341b9afc5fa69e094c8a8bea7868812dd20b0579da63a8fef"
+  },
+  "base_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-08B-two-stage-plan-revision3-2026-10-20.json",
+    "bytes": 12089,
+    "sha256": "6043fd5240c9adbaa90ff3c1d61dd3832550a668382d75af1bf59019a2aa150a"
+  },
+  "original_records": {
+    "original_build_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build\\RESULT.json",
+      "bytes": 68788,
+      "sha256": "847b6b54f7e544315507dd5c0aa91e0d1abf992cecadd73c1a4fe2f9c94d6c85"
+    },
+    "project_exe_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build\\project-exe-manifest.json",
+      "bytes": 10169,
+      "sha256": "f35cf135db1a564bcb55b3b5c932059deb4369d0e06fd4a5ff006b25d80e57a7"
+    },
+    "original_build_owner_spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec\\SPEC.json",
+      "bytes": 2059,
+      "sha256": "58a06b5408b45dc3097e5afc50c31dbc27a9613754596d59bd03d2d8cad27bd6"
+    },
+    "original_build_owner_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "b73e93e01f6d51309faee52ddee5e0b490e553b0c6e10a449f7f76c632ca9562"
+    },
+    "original_build_unregister": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner08-build\\UNREGISTER.json",
+      "bytes": 975,
+      "sha256": "c1d64fc3a76ac2b44cc6bb17efd2b7721b94ce9c3bd5204b029668f860f3e093"
+    },
+    "prior_failed_admin_launch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-admin\\LAUNCH-RESULT.json",
+      "bytes": 1817,
+      "sha256": "73cae6d2f7e52ccf2c3d0a60b8d367eac443e3b58580ad7a0f4c53ea970ce0a5"
+    }
+  },
+  "functional_nonce": "e85d4392f7b843a9aa2572b46e06ae7b",
+  "roots": {
+    "aggregate": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+    "functional": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt09-functional",
+    "owner": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\owner-spec"
+  },
+  "fields": {
+    "defender_registration_pending": true,
+    "defender_effective_settings_known": false,
+    "os_qualification": "UNKNOWN"
+  },
+  "fixtures": [
+    {
+      "target": "xar_ck3_camera_tracking_v1_test",
+      "artifact": "xar_ck3_camera_tracking_v1_test.exe"
+    },
+    {
+      "target": "xar_ck3_camera_settle_diagnostics_v1_test",
+      "artifact": "xar_ck3_camera_settle_diagnostics_v1_test.exe"
+    },
+    {
+      "target": "xar_ck3_camera_follow_pending_v1_test",
+      "artifact": "xar_ck3_camera_follow_pending_v1_test.exe"
+    },
+    {
+      "target": "xar_ck3_realm_camera_geometry_v1_test",
+      "artifact": "xar_ck3_realm_camera_geometry_v1_test.exe"
+    },
+    {
+      "target": "xar_ck3_realm_camera_subrealm_v1_test",
+      "artifact": "xar_ck3_realm_camera_subrealm_v1_test.exe"
+    },
+    {
+      "target": "xar_ck3_12004_faction_adopted_whole_test",
+      "artifact": "xar_ck3_12004_faction_adopted_whole_test.exe"
+    },
+    {
+      "target": "xar_ck3_player_faction_alerts_v1_mailbox_test",
+      "artifact": "xar_ck3_player_faction_alerts_v1_mailbox_test.exe"
+    },
+    {
+      "target": "xar_ck3_main_thread_query_mailbox_v1_test",
+      "artifact": "xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "args": [
+        "--idle-presentation-only"
+      ]
+    },
+    {
+      "target": "xar_ck3_native_layout_report_v1",
+      "artifact": "xar_ck3_native_layout_report_v1.exe",
+      "args": [
+        "--machine-id",
+        "$MACHINE_ID",
+        "--observed-at-utc",
+        "$OBSERVED_UTC"
+      ],
+      "postcheck": "tools/check_native_layout_report_v1.py"
+    }
+  ],
+  "authority": {
+    "user_scope": "AGENTS108-115 permanent exact-file registration remains pending; no universal test prohibition.",
+    "engineering_scope": "AGENTS471-477 necessary bounded work. Independent functional protocol replaces no historical result.",
+    "precedent": "docs/ck3-native-ai/peace-realm-overview-camera-implementation-2026-10-15.md:58-68 separates focused CTest pass and admin-required.",
+    "not_claimed": "No Defender state, original08B pass, SYSTEM broker, Game/load/camera/H or performance GREEN."
+  },
+  "consumer_contract": {
+    "status": "OFFLINE_FUNCTIONAL_PASS_NOT_DEPLOYED",
+    "stage": "functional_test_only",
+    "fixture_executions": 9,
+    "fixture_builds": [],
+    "production_recompiled": false,
+    "Game_calls": 0,
+    "DLL_loaded": false,
+    "owned_active_after": 0,
+    "future_writes": 0,
+    "outer_bundle": "Bind this RESULT and original build records to new owner SPEC/CLOSED/UNREGISTER exact refs and matching nonce. Outer child/bootstrap/Job0 and Task absent_after required; RESULT alone does not award closure.",
+    "M7_scope": "Independent functional-only audit. Existing08B export/NativeTransitionV1 remains unchanged; no automatic export, loaded-provider or H credit."
+  },
+  "execution_card_contract": {
+    "phase": "functional_test_only",
+    "status": "ADMITTED",
+    "root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+    "functional_stage_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt09-functional",
+    "owner_stage_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\owner09-functional\\owner-spec",
+    "original_build_stage_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt08-build",
+    "hard_bytes": 1610612736,
+    "source_charge_cap_bytes": 100663296,
+    "metadata_charge_cap_bytes": 167772160,
+    "TEMP_cap_bytes": 402653184,
+    "new_metadata_upper_bytes": 16777216,
+    "owner_metadata_cap_bytes": 65536,
+    "aggregate_includes_prior_retained": true,
+    "new_reservation_bytes": 0,
+    "additional_fields": "machine_id, functional_nonce, original_build_result_sha256, project_exe_manifest_sha256, source_commit704, committed producer_sha256/plan_sha256/implementation_commit, admissionSHA, fresh prior_retained_allocation_bytes, minimum_free_bytes>=2GiB, quota_remaining_bytes>=hard, deadline_utc, jobs1..4. Capacity is not Root Task release."
+  },
+  "metadata_quote_bytes": {
+    "complete_new_upper": 16777216,
+    "complete_owner_upper": 65536,
+    "functional_including_nine_logs_layout_deps_exports_delivery_RESULT_FILES_CLOSED_and_TEMP_upper": 16711680
+  },
+  "sequence": [
+    "Fresh execution capacity/card/Root SPEC review. New native_build Task only; no CMake/compiler/registration route.",
+    "Finite original build/SPEC/nonce/CLOSED/unregister/manifest pins first, failed admin stays FAILED_OR_UNKNOWN/future null. Plan/card/owner SPEC then read-leased.",
+    "Unmodified shared fullpreflight:5355source/995rows/12targets/219inputs+two globs/983production leases. Reacquire exact9 EXE SHA/FileID identities. No continuous between-Tasks claim.",
+    "At original buildcwd use retained07 snapshot: production Ninja -n -d explain must be exactNoWork. Run exact9 original argv plus original layout postchecker. No rebuild or binary copy.",
+    "Actual dependencies, five exports, three unique archive component payloads/map symbols/noPDB and original/source immutability; recheck original seed and nine identities. New own children0/future0 then external owner child/bootstrap/Job0+unregister.",
+    "Only OFFLINE_FUNCTIONAL_PASS_NOT_DEPLOYED with Defender registration pending/current settings unknown. No UAC/settings, DLL load, Game/SDK/Steam/OBS or deployment."
+  ],
+  "prospective_stage_args": [
+    "--plan",
+    "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-functional09-plan-2026-10-20.json",
+    "--admission",
+    "<new exact functional card>",
+    "--admission-sha256",
+    "<SHA>",
+    "--execute"
+  ],
+  "source_cap_bytes": 73728,
+  "scratch_bytes": 0,
+  "physical_release_credit_bytes": 0,
+  "open_kaishek": "not-applicable: Python orchestration/source pins; existing deterministic C++ fixtures are deferred, no Paradox script semantics.",
+  "metadata_revision": 2,
+  "phase_metadata_cap_bytes": 167772160,
+  "source_supplement": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FUNCTIONAL09-SOURCE72KiB-META160MiB-SUPPLEMENT01.json",
+    "bytes": 2491,
+    "sha256": "99fbe9394e1d31deda44a15775ce24df605b39d15ee47cbd3ce5e75a6dbd4b29"
+  },
+  "metadata160_contract": {
+    "initial_readonly": "Unmodified borrowed Q.preflight retains stricter metadata128 plus16MiB reserve; failure grants no execution.",
+    "actual_phase": "Independent FunctionalParentGuard160 replaces only new09 private state budget; its call never invokes old128. Complete root1.5GiB/source96/TEMP384 and new scope16MiB/owner64KiB unchanged.",
+    "original08_metadata_quote_preserved": 131238080,
+    "new09_complete_metadata_quote": 16777216,
+    "combined_metadata_quote": 148015296,
+    "phase_metadata_limit": 167772160
+  }
+}

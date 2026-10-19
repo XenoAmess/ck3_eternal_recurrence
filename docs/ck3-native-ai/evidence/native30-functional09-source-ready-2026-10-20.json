@@ -1,0 +1,44 @@
+{
+  "schema": "native30-functional09-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T21:58:25.072959+00:00",
+  "status": "SOURCE_READY_ACTUAL_FIXTURES_NOTRUN",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\native30_functional09_20261020.py",
+      "bytes": 21186,
+      "sha256": "92ddb036defed04d70ba4ba36ebbd7c4fad8cd80bb77bc492bd601e4dcd7637b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_native30_functional09_20261020.py",
+      "bytes": 11673,
+      "sha256": "47246e9530b61dc44fa4f02ca7a35c5593a181a63a562289b88380b4801c71fa"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\seal_native30_functional09_20261020.py",
+      "bytes": 11912,
+      "sha256": "c77cea0ea9a4fc93068dc9576ee0e7f4aa04e19239a005daf95ed8d75a08549f"
+    }
+  ],
+  "plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-functional09-plan-2026-10-20.json",
+    "bytes": 9670,
+    "sha256": "7807026144c85e3fd93f66a5dd75edc45e62c8ce074f20b7a46539d28c396779"
+  },
+  "readonly_preflight": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-functional09-readonly-preflight-2026-10-20.json",
+    "bytes": 7546,
+    "sha256": "a9ffdac90a505a93503f233dad2ad4f1129cea55043ed38e79c4f8b2c7c3b811"
+  },
+  "tests": {
+    "count": 11,
+    "seconds": 0.2011832999996841
+  },
+  "source_cap_bytes": 65536,
+  "scratch_bytes": 0,
+  "future_writes": 0,
+  "defender_registration_pending": true,
+  "defender_effective_settings_known": false,
+  "os_qualification": "UNKNOWN",
+  "new_execution_card_Root_SPEC_actual_nine_runs_and_outer_closure": "NOTRUN"
+}
