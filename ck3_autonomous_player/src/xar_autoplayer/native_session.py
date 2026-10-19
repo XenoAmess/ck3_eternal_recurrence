@@ -1758,8 +1758,9 @@ def validate_cold_start_checkpoint_for_pipe(
         spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME / NATIVE_DRIVER_STATE_FILENAME
     )
     try:
-        payload = json.loads(state_path.read_text(encoding="utf-8-sig"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        from .bridge.driver_state_wal_v1 import require_full_cold_state
+        payload = require_full_cold_state(state_path)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
         raise AgentError(
             f"cold checkpoint state is unavailable: {state_path}: {error}"
         ) from error

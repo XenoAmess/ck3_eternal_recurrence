@@ -1,0 +1,232 @@
+{
+  "schema": "xar.ck3.driver-state-wal-production-candidate/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:02:14.449215+00:00",
+  "machine_id_source": {
+    "command": [
+      "py",
+      "-B",
+      "tools/ck3_live_run_id.py",
+      "machine"
+    ],
+    "stdout": "xenoamess-full-tower-eb9d2c1186",
+    "tool_chunk": "653c36"
+  },
+  "status": "SOURCE_READY_DEFAULT_OFF_NOT_RUNTIME_ADOPTED",
+  "baseline_commit": "5ada3d1e1afecd86d25426155f578468cd838b13",
+  "m7_committed_baseline": "6dbcf3e957a2d59fd072aeed2a7a6ec52b312ac6",
+  "scope": {
+    "new_runtime_or_driver_body_reads": 0,
+    "new_save_body_reads": 0,
+    "new_game_rpc": 0,
+    "native_builds": 0,
+    "new_external_roots": 0,
+    "new_sdk_freezes": 0,
+    "current_runtime_modified": false,
+    "old_experiment_modified": false,
+    "old_8177_byte_audit_modified": false,
+    "default_writer_enabled": false
+  },
+  "activation": {
+    "environment_variable": "XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1",
+    "enabled_value": "1",
+    "read_at": "NativeHeadlessGameplayDriver.__init__",
+    "default": "OFF",
+    "reader_enabled_even_when_writer_off": true,
+    "all_four_sdk_sources_required": [
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/driver_state_history_json.py",
+      "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/driver_state_wal_v1.py"
+    ],
+    "runtime_source_manifest_and_readback_required_before_adoption": true,
+    "actual_eligible_rate": null,
+    "real_long_campaign_wall_speedup": null
+  },
+  "contracts": {
+    "legacy": "Unjournaled valid v1/v2 retains canonical payload normalization; WAL exact scalar schema applies only to sealed/journal pair.",
+    "fail_closed": "Any present journal is sticky through load/parse/checksum/canonical validation, including plain ValueError before replay_status assignment. Invalid journal never becomes a fresh episode.",
+    "writer_gate": "Only qualified exact native one-day clock for explicit life-advance-one-day or existing strict parsed route horizon; all new rows checked, successful deferred readonly rows allowed.",
+    "full_barriers": [
+      "failed or UNKNOWN action",
+      "noneligible mutation",
+      "missing/interrupted/multi-day proof",
+      "scope/checkpoint/lifecycle scalar change",
+      "existing history-cache prefix invalidation/list replacement/shrink/uncached prefix",
+      "delta or journal capacity",
+      "SAVE",
+      "adoption",
+      "close"
+    ],
+    "once": "Historical UNKNOWN/failed rows become full baseline records; native-session sidecars and existing action-specific guards remain. No action replay, claim clearing or global campaign lock is introduced.",
+    "closed_recovery": "Existing closed consolidation and empty-activation recovery reused. Closed create-only materialization requires pinned base+journal and already-staged exact native-session companions; copies no companions and grants no wider SDK custody.",
+    "durability": "Existing atomic write/replace contract; no power-loss/fsync or CK3-side-effect atomicity claim.",
+    "bounded_journal_rewrite": true,
+    "delta_cap_bytes": 262144,
+    "journal_cap_bytes": 8388608
+  },
+  "qualification": {
+    "kind": "focused_actual_production_python_paths_with_tiny_synthetic_fixtures",
+    "observed_at_utc": "2026-10-19T17:01:21.765267+00:00",
+    "tool_chunk": "271578",
+    "exit_code": 0,
+    "tests": 16,
+    "unittest_seconds": 0.313,
+    "process_tool_wall_seconds": 1.3079638,
+    "command": [
+      "py",
+      "-B",
+      "-c",
+      "import sys,unittest; sys.path.insert(0,'ck3_autonomous_player/src'); sys.path.insert(0,'ck3_autonomous_player/tests/unit'); import test_driver_state_wal_production_v1 as t; r=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(t)); sys.exit(not r.wasSuccessful())"
+    ],
+    "actual_paths": [
+      "NativeHeadlessGameplayDriver._record_command",
+      "NativeHeadlessGameplayDriver._persist_driver_state",
+      "NativeHeadlessGameplayDriver._read_driver_state",
+      "NativeHeadlessGameplayDriver._adopt_bridge_session (negative terminal guards)",
+      "load_native_driver_state_for_resume",
+      "native_session.validate_cold_start_checkpoint_for_pipe",
+      "unchanged strict v2 cold_checkpoint_validator",
+      "NativeHeadlessGameplayDriver.close (existing M7 cleanup separately mocked, unmodified)",
+      "existing reject_unresolved_claims"
+    ],
+    "observed_assertions": {
+      "after_initial_activation_followup_daily_ticks": 2,
+      "followup_base_replaces": 0,
+      "followup_journal_replaces": 2,
+      "base_bytes_unchanged": true,
+      "raw_committed_history_equal": true,
+      "unknown_claim_retained_and_original_consumer_rejects_retry": true,
+      "missing_or_corrupt_staged_companions_rejected_before_output_driver": true,
+      "save_episode_binding_preserved": true,
+      "cleanup_denied_then_same_process_next_day_recovers": true,
+      "journal_nan_plain_valueerror_cannot_fresh_fallback": true
+    },
+    "test_names": [
+      "test_activation_crash_empty_header_requires_closed_recovery",
+      "test_canonical_invalid_journal_never_becomes_fresh_state",
+      "test_closed_materialize_requires_exact_staged_unknown_claims",
+      "test_cross_pid_and_invalid_pair_are_terminal_adoption_refusals",
+      "test_daily_deltas_avoid_rewriting_historical_base",
+      "test_default_off_and_legacy_reader",
+      "test_default_off_resume_full_barrier_and_cold_reader",
+      "test_default_off_still_rejects_bad_or_missing_journal",
+      "test_delta_capacity_uses_existing_full_barrier",
+      "test_existing_prefix_edit_invalidation_forces_full_barrier",
+      "test_foreign_or_lost_pair_never_overwritten_by_barrier",
+      "test_full_barrier_crash_points_are_not_stale_base_fallback",
+      "test_interrupted_or_unproved_day_is_full_barrier",
+      "test_noneligible_and_unknown_rows_cannot_hitchhike_after_failed_barrier",
+      "test_save_and_close_are_full_barriers",
+      "test_scope_or_lifecycle_change_is_full_barrier"
+    ],
+    "git_diff_check_exit_code": 0,
+    "old_experimental_matrix_repeated": false,
+    "benchmark_run": false,
+    "real_game_business_credit": 0,
+    "scratch": "TemporaryDirectory synthetic files only, cleaned by unittest addCleanup; no retained external outputs; bytecode disabled."
+  },
+  "independent_review": {
+    "owner": "g2_m0_exit",
+    "mode": "read_only_no_new_test",
+    "blocking_findings": 2,
+    "remaining_blockers": 0,
+    "resolved": [
+      "Keep marked document and complete v2 identity when cleanup fails; verify/remove completed marker before any new full transition, avoiding a mismatched crash pair.",
+      "Normalize plain parse/checksum ValueError on journal presence before replay_status can be assigned."
+    ],
+    "other_reviewed": [
+      "actual once roots are native-session children",
+      "known marriage/market/combat prefix edits invalidate the shared cache",
+      "cross-PID and native-session full cold guards"
+    ]
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1640148,
+      "sha256": "397ca34de66a69d28a4d206b1574d2186282b8563d2cc8d2059704466b68030e",
+      "before_bytes": 1623300,
+      "before_sha256": "e4c7b21c1e7a8003d420e538c0eadd70f0df49efa3a3c35bb09df010af6326ae",
+      "net_bytes": 16848,
+      "gross_patch_bytes": 22279,
+      "patch_sha256": "2d18c55f4e3568af5f0c5105388f6a0fbdd21acfe3ad54a6028cace8131a159d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/driver_state_history_json.py",
+      "bytes": 4172,
+      "sha256": "224f0422a8e17e77b988a0482d6bdd6bdd2d231b74a88031ee8cac991882ee7c",
+      "before_bytes": 3584,
+      "before_sha256": "1ad843c2347e2e1b07c007aa9dd45d4011baa70253b07f7a16695fab3dd1fc46",
+      "net_bytes": 588,
+      "gross_patch_bytes": 1290,
+      "patch_sha256": "acd63db2a0aa481dd970f212cc10f3201a442105d1fb1271b67e8c2184a93527"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "bytes": 76143,
+      "sha256": "b88e5162902ca5407132e04e23acc9db292cb6b3a35560b09236c14b795eee49",
+      "before_bytes": 76078,
+      "before_sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8",
+      "net_bytes": 65,
+      "gross_patch_bytes": 940,
+      "patch_sha256": "4123d51fe7a5db52f297367a455032d9959931f3333449984306525f5941793a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "bytes": 23998,
+      "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d",
+      "before_bytes": 0,
+      "net_bytes": 23998,
+      "gross_patch_bytes": null
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_driver_state_wal_production_v1.py",
+      "bytes": 21491,
+      "sha256": "7c6ceb55b6dd31ee6c972e03669d1075083df8cbe9ef63bbf78479986879de45",
+      "before_bytes": 0,
+      "net_bytes": 21491,
+      "gross_patch_bytes": null
+    },
+    {
+      "path": "docs/ck3-native-ai/driver-state-wal-production-candidate-2026-10-20.md",
+      "bytes": 8949,
+      "sha256": "df12dc8efe5a3dc2e85568f92104133db9e7a8f1ae1b63bae48ac7a785855022",
+      "before_bytes": 0,
+      "net_bytes": 8949,
+      "gross_patch_bytes": null
+    }
+  ],
+  "preserved_inputs": [
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/driver_state_wal_v1.py",
+      "bytes": 20272,
+      "sha256": "fdca7355377e957bbbcffcef509988e3f34f488ef3340256dfdf7214534303c1",
+      "role": "reused algorithm/schema, untouched experimental original"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m1-driver-persist-source-review-2026-10-20.md",
+      "bytes": 8177,
+      "sha256": "5930ac595857bdc8631d8e6f0773d668f421657b3d385c4be02854ec6db4f35e",
+      "role": "immutable prior source audit"
+    }
+  ],
+  "storage": {
+    "admission_path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M1-WAL256KiB-ROOT-EVIDENCE128KiB-CODE3-COMMITMENT01.json",
+    "admission_bytes": 2303,
+    "admission_sha256": "45227d0e37df4fad0091364b032be469fd46012874ebd27161a2605c2c24f942",
+    "admission_actual_read_tool_chunk": "18b1c8",
+    "pool": "existing code3, not minor2MiB",
+    "gross_cap_bytes": 262144,
+    "gross_shared_unified_patches_plus_new_files_excluding_this_receipt_bytes": 78947,
+    "net_source_bytes_excluding_this_receipt": 71939,
+    "this_receipt_hard_upper_bytes": 16384,
+    "gross_total_upper_bytes": 95331,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "allocated_bytes": null,
+    "physical_release_credit_bytes": 0,
+    "producer_closed": true,
+    "future_heavy_writes": 0,
+    "future_writes_after_receipt": 0
+  }
+}
