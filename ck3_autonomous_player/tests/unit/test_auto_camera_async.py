@@ -96,7 +96,11 @@ def test_auto_turn_business_first_and_source_binding() -> None:
         return service.GameplayBridgeService._select_auto_camera_hotspot(obj, payload)
 
     class Driver:
+        def __init__(self):
+            self.cache_reads = 0
+
         def take_internal_semantic_snapshot(self):
+            self.cache_reads += 1
             return {**frame, "active_wars": [{"war_id": 16777224,
                 "allied_armies": [{"army_id": 1, "current_province_id": 2640,
                                     "in_combat": True, "controllable": True}]}]}
@@ -159,6 +163,7 @@ def test_auto_turn_business_first_and_source_binding() -> None:
     assert time.monotonic() - began < 0.2
     assert order[:2] == ["business", "decision"]
     assert result["planning_source_frame"] == observed
+    assert obj.driver.cache_reads == 1
     assert result["camera_follow"]["status"] == "scheduled"
     assert result["camera_follow"]["same_frame_with_gameplay_claim"] is False
     assert entered.wait(2)

@@ -182,7 +182,7 @@ def make_normal_checkpoint_cold_queue_v1(base, env, *, admission_path):
             freeze = checked(admission['sdk_freeze'], 2*1024**2)
             require(Path(admission['sdk_freeze']['path']).name == 'ROOT-FINAL-SDK-FREEZE-P37C11.json'
                 and freeze['business_source_commit'] == admission['business_source_commit']
-                and freeze['native_build_label'] == 'Native29'
+                and freeze['native_build_label'] == 'Native29 minimized camera and bounded native diagnostics'
                 and Path(admission['current_map_admission']).resolve() == (env['N'] / 'ROOT-CAMPAIGN-MAP-ADMITTED-C11.json').resolve()
                 and type(admission['next_sequence']) is int and admission['next_sequence'] > admission['save_sequence'],
                 'C11 source/Native/current map/sequence required')

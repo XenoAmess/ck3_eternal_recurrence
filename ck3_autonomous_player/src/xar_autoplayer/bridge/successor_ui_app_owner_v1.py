@@ -335,4 +335,7 @@ def install_successor_ui_app_owner_v1(service, *, before_submit=None):
         raise ValueError("ordinary successor App requires a persistent state directory")
     owner = SuccessorUIAppOwner(service, before_submit=before_submit)
     service._successor_ui_app_owner_v1 = owner
+    # Internal provenance reference only. No loaded Native custody is issued;
+    # absent optional components add no OS/query/persistence work.
+    driver._player_heir_candidate_owner_v1 = owner
     return owner

@@ -1,0 +1,121 @@
+{
+  "schema": "xar.m7-existing-root-candidate-SDK-seam-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "source_interface_audit; no new query or runtime provider adopted",
+  "chosen_existing_query": {
+    "step": "query-campaign-root-context-v1",
+    "SDK": "NativeHeadlessGameplayDriver._execute_campaign_root_context_v1_query",
+    "Native_component": "campaign_root_context.player_heir_candidate_v1",
+    "top_level": "Existing strict seven-field command result envelope unchanged; no opcode or new RPC.",
+    "M3_owner": "Native optional capture, serializer and default-off build gate; future Native30 only.",
+    "M7_owner": "SDK optional component parser and trusted exact query/source binding to existing pure mapper.",
+    "failure_scope": "Missing/default-off/older producer leaves old root behavior intact. Optional unavailable or malformed component gives H unknown and cannot lower existing root readiness. No backup-domain credit."
+  },
+  "existing_reusable_seams": [
+    {
+      "source": "bridge/native_driver.py:17463-17679",
+      "contract": "One original _execute_primitive_step, required capability, native revision, strict envelope, normalize inner root, then _same_paused_native_frame plus public revision/date equality; original cache binding includes PID, connection, actor and snapshot."
+    },
+    {
+      "source": "bridge/campaign_root_context_contract.py:1061-1095,1376-1413",
+      "contract": "Inner root currently exact-fields; known optional fields are explicitly admitted and normalized. Extend only with this named optional field; maintain prior field checks and normalized existing result."
+    },
+    {
+      "source": "bridge/successor_ui_app_owner_v1.py:57-73,325-338",
+      "contract": "Actual registered ordinary App already owns service/driver identity, machine ID, SDK source epoch and original campaign goal. Installation currently only attaches owner to service, so native driver has no direct canonical owner reference."
+    },
+    {
+      "source": "bridge/successor_ui_app_owner_v1.py:28-36",
+      "contract": "Existing canonical OS reader yields actual PID/birth/image; reuse rather than caller JSON or float/current-timezone birth conversion. Original raw birth retained; strict same-instant predicate already exists."
+    },
+    {
+      "source": "bridge/nonwar_private_build.py:28-46",
+      "contract": "Semantic snapshot hello carries exact CK3 build/EXE; absence cannot qualify actual.4. It does not carry a loaded Native DLL hash."
+    },
+    {
+      "source": "player_heir_fixed_dynasty_projection_v1.py",
+      "contract": "Existing typed current/captured query tuples, core bookends, original immutable Robert D0=174/T0 pins and positive-only mapper reused unchanged. No new family_value reader or eligible roster."
+    }
+  ],
+  "alternative_rejected_for_now": {
+    "step": "read-family-obligations-private-12002",
+    "SDK": "family_obligations_private_transport.query_family_obligations_private_v1:241-281",
+    "reason": "Requires an existing requested pair or ally observation. It is not the ordinary no-argument root query and should not be invoked solely to obtain H. Existing g2_private_query_transport does offer UUID and frame checks but has no machine/birth/provider context either."
+  },
+  "proposed_native_component_contract": {
+    "fields": [
+      "schema_version",
+      "snapshot_revision",
+      "query_kind",
+      "executable_sha256",
+      "getter_rva",
+      "parent_frame_bound",
+      "observation"
+    ],
+    "observation": "Native Observation copied with before/after eight core values, source_fixture/source_bound, signed full IDs, lineage availability and known -1 semantics; outer App/query identities are deliberately not native self-reported fields.",
+    "bookends": "Native parent revision/date/local player/current actor and Core before/after must match this original root capture; SDK additionally binds its original actual public/native/episode/connection/query tuple."
+  },
+  "trusted_source_gap": {
+    "present": "Original command_result query/transport binding, snapshot hello EXE/PID/connection and canonical App machine/source epoch.",
+    "absent": "Driver-level canonical owner reference and loaded Native DLL hash/provider source adoption field.",
+    "must_not_do": "Do not populate machine, Game birth, source epoch or loaded DLL identity from component JSON, current world caches, an arbitrary client token or PID/name inference.",
+    "source_contract_option": "Provider-source contract SHA can be explicitly the frozen getter source-closure pin, separately labeled from loaded Native binary SHA. This semantic choice requires Root coordination before wiring the pure binding field.",
+    "binary_option": "If exact DLL SHA is required for this binding, source-ready parsing must keep H unknown until a future canonical launch/adoption supplies the actual immutable provider pin; no new real Game call or restart is justified now."
+  },
+  "minimal_shared_spans_to_coordinate": [
+    "SuccessorUIAppOwner installation: expose only its actual internal owner reference to its own native driver; no MCP/client constructor.",
+    "NativeDriver existing root query after original successful paused-frame validation: call independent optional parser/binder once and attach compact projection; preserve generated request ID without a command-history scan."
+  ],
+  "qualification_boundaries": {
+    "actual_H": "unknown/interval unchanged",
+    "M7": "in_progress: original multiple rulers/seeds/governments breadth remains incomplete; natural transition remains a subchain only",
+    "Native29_src10_C11_cold_inputs_modified": false,
+    "Service_modified": false,
+    "Game_RPC_SAVE_activeDriver_desktop_or_build_calls": 0,
+    "new_general_query_framework": false
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1613007,
+      "sha256": "faad6ce17fe95a58fda03771bd94dead7774ccdb83da0a5d4dfbeea9a62bd8a7"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\campaign_root_context_contract.py",
+      "bytes": 55613,
+      "sha256": "34232dd34a1c88cda3d63962715e596eb9e50f2fa917fd5db6dec969d409c73d"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\successor_ui_app_owner_v1.py",
+      "bytes": 20001,
+      "sha256": "9d0843acfceb997c46e623e30753c241b1a3f9855210ffdee664c3d4fb2005a0"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\nonwar_private_build.py",
+      "bytes": 2663,
+      "sha256": "fe1a53ca0f01e60ae37231e3b1a566442454f3bb77afd33b616849b25f6d53e9"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\family_obligations_private_transport.py",
+      "bytes": 18239,
+      "sha256": "20868ed7178205ca00c2813741a53c5f7a5dbb4fa27e30bb83dc705ac1e48d1a"
+    },
+    {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\player_heir_fixed_dynasty_projection_v1.py",
+      "bytes": 11877,
+      "sha256": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e"
+    }
+  ],
+  "observed_at_utc": "2026-10-19T10:51:40.097747+00:00",
+  "source_head": "075eb151c683ff9531b1c51b66537bcf972d7808",
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "purpose": "small source audit on Z only; no D child admission",
+    "measured_path": "Z:/",
+    "measured_volume": "Z:",
+    "free_bytes": 178312646656,
+    "source": "shutil.disk_usage(Z:/) at observation UTC",
+    "maximum_audit_bytes": 12288,
+    "new_heavy_artifacts": false
+  }
+}

@@ -42,7 +42,8 @@ def owner_source_epoch_v1():
              "bridge/verified_successor_ui_service_v1.py", "bridge/succession_ui_observation_v1.py",
              "bridge/successor_ui_app_owner_v1.py", "bridge/mcp_server.py", "ck3_live_run_identity_v1.py",
              "bridge/native_driver.py", "strategy.py", "successor_ui_checkpoint_lineage_v1.py",
-             "runtime.py", "environment.py")
+             "runtime.py", "environment.py", "bridge/player_heir_candidate_component_v1.py",
+             "bridge/campaign_root_context_contract.py", "player_heir_fixed_dynasty_projection_v1.py")
     return digest({name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in names})
 
 

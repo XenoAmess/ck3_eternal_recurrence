@@ -1,0 +1,39 @@
+{
+  "schema": "xar.c11.primary_saved_map_review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewed_at_utc": "2026-10-19T11:04:01.830323+00:00",
+  "frame_captured_at_utc": "2026-10-19T11:03:04.070215Z",
+  "reviewer": "root, direct view_image of both original PNG files",
+  "source_files": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c11-saved1863-first01-game.png",
+      "size_bytes": 1641961,
+      "sha256": "3a755ccaa6d6d320500bab19da49f98418a2035c25376a2291bb4be6b34c59c3"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c11-saved1863-first01-scene.png",
+      "size_bytes": 1506849,
+      "sha256": "b4c134a5d45c28bf44589ef07803b16feac3dd101c2be9c5ae86587034bc7777"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c11-saved1863-first01-FROZEN-PAIR.json",
+      "size_bytes": 2815,
+      "sha256": "b467b101de8f297095c2a6ea5cc297631dddac92b4d01efb499606f0b021ca53"
+    }
+  ],
+  "visible_observations": [
+    "Both frames show a rendered, paused CK3 map rather than a menu or blank capture.",
+    "Visible date is 23 October 1071; southern Italy, Sicily and the Adriatic coast are visible.",
+    "The young successor portrait is visible at the lower left.",
+    "Scene frame adds the current-decision panel on the right; no retired upper-left blue panel or film title is visible."
+  ],
+  "runtime_identity_from_frozen_pair_report": {
+    "game_pid": 15512,
+    "game_birth_filetime": 134368811928524228,
+    "obs_job_uuid": "211ac3d1-5be2-4f23-9caa-94ce02aac657"
+  },
+  "result": "GREEN: actual saved-map capture and new recording presentation only",
+  "hotspot_follow_qualified": false,
+  "quiet_realm_overview_qualified": false,
+  "inputs_sent": 0
+}

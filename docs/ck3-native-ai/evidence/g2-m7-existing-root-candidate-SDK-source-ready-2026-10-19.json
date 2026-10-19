@@ -1,0 +1,170 @@
+{
+  "schema": "xar.m7-existing-root-candidate-SDK-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; prior observed output fa407a on this same task",
+  "status": "source_ready; actual loaded Native DLL custody unavailable",
+  "implementation": {
+    "existing_query": "query-campaign-root-context-v1",
+    "optional_component": "campaign_root_context.player_heir_candidate_v1",
+    "normalizer": "Recursively reuse unchanged base root validation, explicitly admit this one optional component, preserve a valid copied wire observation or bounded unknown diagnostic. No old root readiness field changes.",
+    "parser": "Strict seven component fields, fifteen Observation fields, eight flat Core fields; signed32 full IDs, booleans, reason null/string, known -1 distinct from unavailable; root revision/date/local player/actor and exact.4 EXE bound.",
+    "trusted_SDK_hook": "Original successful paused root query only. Retain that actual request ID, use existing starting/current frames and native query sequence, then attach detached compact projection to original response/cache. No command history scan.",
+    "owner": "Only registered canonical SuccessorUIAppOwner reference attached to its own native driver. Existing actual machine/source epoch, original goal and eventual OS identity reused; no Service change.",
+    "missing_component": "No helper import/call, extra OS identity read, additional RPC or optional persistence. Original root result remains compatible with old/default-off producers.",
+    "unavailable_component": "H remains unknown/interval while original root status/readiness survives; no retry/replay permission.",
+    "provenance": "native_provider_sha256 means actual loaded DLL hash. Getter source-contract hash cannot replace it. Reserved private owner/driver/seal-bound typed custody interface has NO production issuer. Public JSON mapping is not custody.",
+    "OS_birth_cache": "Only a future valid typed custody reaches OS identity. First qualified component or changed PID/connection/pipe tuple reads existing _game_identity once; subsequent same-connection queries reuse its copied exact identity. Strict existing same_game_identity handles CIM offsets and retains raw evidence.",
+    "mapper": "Reuse original immutable D0=174/T0 SAVE+summary mapping, exact SDK query tuple and copied Native Core bookends. Single positive witness gives k1/bunknown/H[70,100]; no point100, negative k or complete backup domain.",
+    "capture_epoch_basis": "Original root query_sequence, explicitly labeled; not a fabricated provider captureEpoch or historical snapshot.",
+    "source_epoch": "Existing NativeDriver/owner names already hash hooks. Only parser, campaign-root contract and pure mapper added to the existing owner_source_epoch_v1 names tuple; ledger _checked unchanged."
+  },
+  "validation": {
+    "new_tests": {
+      "module": "test_player_heir_candidate_component_v1",
+      "count": 7,
+      "result": "PASS",
+      "output_chunk": "692a8a",
+      "coverage": [
+        "Real NativeDriver original query with synthetic pipe; old producer remains one request and adds no OS/source work",
+        "Real query with valid component and missing or JSON-only DLL custody caches Hunknown; no full history export",
+        "Synthetic future sealed custody model binds actual sent request IDs, actual.4 hello, owner machine/epoch, original goal and same-instant birth; two queries cause one birth read; changed connection refreshes once without an extra request",
+        "Source hash, foreign owner/seal, different birth or connection cannot stand in for loaded DLL custody",
+        "Malformed component source/revision/actor/types/extra self-signed fields fail only optional H and preserve root readiness",
+        "Fixture/null/dead/lineage unavailable/full-generation mismatch cannot gain H or backup credit",
+        "Actual C++ serializer/extracted production ResultFrame wire fixture is parsed with exact fixed SHA; full signed candidate/house/dynasty preserved and source_fixture blocks scoring"
+      ]
+    },
+    "related_regression": {
+      "count": 23,
+      "result": "PASS",
+      "output_chunk": "e83c40",
+      "modules": [
+        "test_campaign_root_context_v1_bridge.CampaignRootContextV1NativeDriverTests",
+        "test_campaign_root_context_v1_bridge.FrontendStartRootDeadlineTests",
+        "test_campaign_root_history_omission_ownership",
+        "test_player_heir_fixed_dynasty_projection_v1",
+        "test_successor_ui_same_game_source_retirement_v1"
+      ]
+    },
+    "fixture_boundary": "All pipe/native/provider/OS facts in software tests are synthetic. Reserved custody DTO is created only inside tests to model a future trusted issuer; production cannot issue it yet. No actual H or Native30 qualification follows.",
+    "initial_test_fixture_correction": "Synthetic state_dir changed from str to temporary Path, and existing episode initialization completed before measuring optional-query work; production guards were retained.",
+    "whitespace": "git diff --check and explicit single-EOF-LF/new-file trailing-whitespace checks PASS"
+  },
+  "limitations": {
+    "actual_loaded_DLL_custody": "not_observed; no production issuer",
+    "actual_H": "unknown/interval unchanged",
+    "M7": "in_progress: original multiple rulers/seeds/governments breadth still incomplete; one real natural transition remains sub-evidence",
+    "complete_backup_domain": false,
+    "future_adoption": "Native30 actual source adoption/loaded-module provenance and any real candidate observation must be independently qualified at one normal maintenance boundary; no new Game restart requested here."
+  },
+  "actions": {
+    "Game_RPC_SAVE_activeDriver_SAVEbody_desktop_reads_or_calls": 0,
+    "Native_builds": 0,
+    "Service_Native29_src10_C11_inputs_changed": false,
+    "new_public_query_or_JSON_token": false,
+    "staged_or_committed_by_M7": false
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "bytes": 12223,
+      "sha256": "16b02ac78192d6811493914b020d2271b590513515c667973612928b0606a556"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_root_context_contract.py",
+      "bytes": 56460,
+      "sha256": "06fa8e6399672106409a8f840ee96e8c1897b09688176a8704484bd18e6cb3f3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1613844,
+      "sha256": "2b6912a4ba680e4f8a03288f4735b9ce6ee56da6a2f7ae8f3cca2a1ace67d81c"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 20197,
+      "sha256": "a1af05519d8b514ee91a7a4a7d037cf5da006e05bb1bdfdb32185ddb7a65f071"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21629,
+      "sha256": "87eb09f829df75e30f22fc6b99b43588cc4052ceecf47508c3ffaf00133f431d"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_player_heir_candidate_component_v1.py",
+      "bytes": 14022,
+      "sha256": "5df2d10d457f9d6dbe838aa0f3f5d62cc168b75a4230b73f77d18936729ff74a"
+    }
+  ],
+  "observed_at_utc": "2026-10-19T11:10:27.100636+00:00",
+  "source_head": "777c562d43746eea681b7aee6c372208f9669343",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/player_heir_fixed_dynasty_projection_v1.py",
+      "bytes": 11877,
+      "sha256": "1ca02c48f94503ef05a4d3f0d2d3045d8eb83670c55fd6ac7952a321ac3f735e"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/campaign_player_heir_candidate_component12004_v1_serializer.cpp",
+      "bytes": 5321,
+      "sha256": "9a954115f402fee645f5daf026505f6b9b8cbef0d2aff526d248ed419fc4e18f"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/campaign_player_heir_candidate_component12004_v1.hpp",
+      "bytes": 1488,
+      "sha256": "66153de23975b34bb58a33eee5aae6db43c88a6ad4a1dcfe0466512cad100687"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-existing-root-candidate-SDK-seam-audit-2026-10-19.json",
+      "bytes": 7599,
+      "sha256": "c3193bcd737b15b3f1aff9358fee0f18d47f9ce3aae33c14a33e9a3bc54614c6"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/player-heir-campaign-attachment-wire-fixture-2026-10-19.json",
+      "bytes": 1325,
+      "sha256": "f7feb5c3e6c527237f7cd0064e9540ee89dcf55fe8c48644cd5e54464dfdcdfa"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/player-heir-campaign-attachment-source-ready-2026-10-19.json",
+      "bytes": 10271,
+      "sha256": "b883390f88c71249f230fe139a0e07f707c6cc04f7f73429cac0062b1e3a1d63"
+    }
+  ],
+  "wire_fixture_qualification": {
+    "status": "PASS",
+    "fixture": {
+      "path": "docs/ck3-native-ai/evidence/player-heir-campaign-attachment-wire-fixture-2026-10-19.json",
+      "bytes": 1325,
+      "sha256": "f7feb5c3e6c527237f7cd0064e9540ee89dcf55fe8c48644cd5e54464dfdcdfa"
+    },
+    "parsed_status": "parsed",
+    "candidate_character_id": -1845493758,
+    "house_id_raw": -520093695,
+    "dynasty_id_raw": -251658239,
+    "source_fixture": true,
+    "original_getter_source_bound": false,
+    "k": null,
+    "b": null,
+    "H_interval": [
+      0,
+      100
+    ],
+    "scoring_reason": "synthetic_provider_has_no_scoring_credit",
+    "boundary": "Actual C++ component serializer and extracted1715B production ResultFrame compiled by M3; base root serializer explicitly stubbed. Parent date53186880/local7/actor1 supplied by the same fixture setup. Not a real production root or Native30 loaded-module qualification.",
+    "M7_additional_Native_builds": 0
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "measured_path": "Z:/",
+    "measured_volume": "Z:",
+    "free_bytes": 178319663104,
+    "source": "shutil.disk_usage(Z:/) at observation UTC",
+    "purpose": "small SDK source/tests/proof on Z only; no D child admission",
+    "maximum_source_delta_bytes": 98304,
+    "budget_basis": "new M7 files + unified diff of existing shared sources + evidence; existing full NativeDriver is an approved narrow edit",
+    "new_heavy_artifacts": false,
+    "deleted_files": 0,
+    "measured_at_utc": "2026-10-19T11:10:27.100636+00:00",
+    "shared_unified_diff_bytes": 5931
+  }
+}

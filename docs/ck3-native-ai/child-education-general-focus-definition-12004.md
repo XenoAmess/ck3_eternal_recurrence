@@ -51,3 +51,15 @@ Root source adoption: **SOURCE_ADOPTED_NOT_RUN**. The connected native query,
 original command, independent receipt, exact executor registration, guarded
 Runtime source list, strict Driver and ordinary family caller are adopted
 together. No test, import, build, deployment or game operation followed.
+
+2026-10-19 source-scope correction: the historical “general FocusDB” label
+above does not prove that its F08 span contains all education definitions.
+It was adopted from the adult lifestyle-window traversal. Closed actual4107
+retained current `education_intrigue` while target `education_stewardship`
+was missing from that resolver; original target legality remained unknown.
+New exact.4 source identifies `CharacterFocusWindow.GetFocus(int32)` as a
+window-owned D0/DC collection getter, not a global education registry.
+See [the bounded source audit](child-education-target-resolver-source-2026-10-19.md)
+for machine ID, UTC, exact bytes and the remaining collection-producer gap.
+The old capture and adoption facts remain historical; neither “missing”
+nor this new getter supplies education-choice or focus-write qualification.

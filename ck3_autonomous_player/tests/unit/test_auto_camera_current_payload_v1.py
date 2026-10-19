@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+from types import SimpleNamespace
 
 import pytest
 
@@ -53,6 +54,9 @@ class Worker:
         self.payloads.append(copy.deepcopy(payload))
         return {"status": "scheduled", "same_frame_with_gameplay_claim": False}
 
+    def latest_actual(self):
+        return None
+
 
 def run_turn(after, *, before=None, driver=None, result_status="executed",
              ending_date=None, presentation="enabled"):
@@ -92,6 +96,8 @@ def run_turn(after, *, before=None, driver=None, result_status="executed",
         service._auto_camera_worker = None
     elif presentation == "noncallable-worker":
         service._auto_camera_worker = type("DisabledWorker", (), {"schedule": None})()
+    elif presentation == "schedule-only-worker":
+        service._auto_camera_worker = SimpleNamespace(schedule=worker.schedule)
     outcome = service.auto_turn()
     assert calls == ["business"]
     assert outcome["status"] == result_status and outcome["result"] is result
@@ -126,7 +132,8 @@ def test_same_frame_zero_day_action_remains_supported():
 
 
 @pytest.mark.parametrize("presentation", ["missing-input", "nonmapping-input",
-                                        "absent-worker", "noncallable-worker"])
+                                        "absent-worker", "noncallable-worker",
+                                        "schedule-only-worker"])
 def test_ineligible_presentation_does_not_read_cache_or_replay_business(presentation):
     outcome, payloads, driver = run_turn(snapshot(8, public=11, native=21),
                                        presentation=presentation, result_status="pending")

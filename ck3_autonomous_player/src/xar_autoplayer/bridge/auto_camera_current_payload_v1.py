@@ -12,7 +12,8 @@ def current_camera_payload_v1(service: object, planned: Mapping,
     if not isinstance(planned.get("_auto_camera_hotspot_input"), Mapping):
         raise ValueError("camera presentation input unavailable")
     worker = getattr(service, "_auto_camera_worker", None)
-    if not callable(getattr(worker, "schedule", None)):
+    if (not callable(getattr(worker, "schedule", None))
+            or not callable(getattr(worker, "latest_actual", None))):
         raise ValueError("camera presentation worker unavailable")
     before = planned.get("planning_source_frame")
     if not isinstance(before, Mapping) or before.get("status") != "complete":

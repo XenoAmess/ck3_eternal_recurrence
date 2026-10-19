@@ -217,6 +217,9 @@
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12004_campaign.hpp"
+#if defined(XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1)
+#include "xar_bridge/campaign_player_heir_candidate_component12004_v1.hpp"
+#endif
 #include "xar_bridge/ck3_12002_nonwar_realm.hpp"
 #include "xar_bridge/ck3_12002_nonwar_metrics.hpp"
 #include "xar_bridge/ck3_12002_pending_context.hpp"
@@ -7830,14 +7833,25 @@ std::string BattleReinforcementAssignmentResultFrame(
 std::string CampaignRootContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::CampaignRootContextV1 &context,
-    bool crozier = false, bool actual4 = false) {
-  const auto payload = actual4
+    bool crozier = false, bool actual4 = false
+#if defined(XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1)
+    , const xar::ck3_12004::campaign_player_heir_candidate_v1::Component
+          *player_heir_component = nullptr
+#endif
+    ) {
+  auto payload = actual4
       ? xar::ck3_12004::SerializeCampaignRootContextV1(context)
       : crozier ? xar::ck3_12002::SerializeCampaignRootContextV1(context)
                 : xar::ck3_11906::SerializeCampaignRootContextV1(context);
   if (payload.empty()) {
     return {};
   }
+#if defined(XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1)
+  if (actual4) {
+    payload = xar::ck3_12004::campaign_player_heir_candidate_v1::
+        AppendToCanonicalRoot(std::move(payload), context, player_heir_component);
+  }
+#endif
   const std::string_view status =
       context.status == xar::game::CampaignRootContextStatusV1::available
           ? "available"
@@ -11327,6 +11341,10 @@ struct TypedQuery12002 {
   xar::game::BattleTerminalTransitionSnapshotV1 terminal{};
   xar::game::WarEntryAssessmentsV1 war_entry{};
   xar::game::CampaignRootContextV1 campaign{};
+#if defined(XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1)
+  std::optional<xar::ck3_12004::campaign_player_heir_candidate_v1::Component>
+      player_heir_component;
+#endif
   xar::ck3_12002::HeldTitlePartitionFailure12002 held_partition_failure{};
   xar::game::LoadedFeatureManifestV1 loaded{};
   xar::game::PendingCharacterInteractionContextV1 pending{};
@@ -11625,6 +11643,16 @@ bool ExecuteTypedQuery12002(
         xar::ck3_12004::ReadCampaignRootContextV1(
             environment, access, query.campaign_request, query.campaign,
             &query.held_partition_failure);
+#if defined(XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1)
+        query.player_heir_component = xar::ck3_12004::
+            campaign_player_heir_candidate_v1::ReadForCampaignRoot(
+                xar::ck3_12004::player_heir_candidate_v1::BindImage(
+                    query.image_base,
+                    envelope->game->descriptor().executable_sha256,
+                    &xar::ck3_12002::IsQueryOwningThread, envelope),
+                query.campaign,
+                query.campaign_request.expected_snapshot_revision);
+#endif
       } else {
         auto environment = xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(
             query.image_base, true);
@@ -13856,7 +13884,11 @@ std::string RunTypedQuery12002(
   case QueryKind12002::campaign:
     response = CampaignRootContextResultFrame(request_id,
         ++state.campaign_root_context_query_sequence, query.campaign, true,
-        xar::game::IsCk3_12004Descriptor(game.descriptor()));
+        xar::game::IsCk3_12004Descriptor(game.descriptor())
+#if defined(XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1)
+        , query.player_heir_component ? &*query.player_heir_component : nullptr
+#endif
+        );
     response = RenderNativePrivateFrameV1(game, std::move(response));
     if (readonly_diagnostic != nullptr &&
         query.campaign.unavailable_reason == "held_title_partition_unavailable" &&

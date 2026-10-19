@@ -1,0 +1,80 @@
+{
+  "schema": "xar.C11-actual-canonical-cold-SAVE1863/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:07:29.763701+00:00",
+  "status": "ACTUAL_COLD_SEM_CAP_AND_ROOT_MAP_GREEN",
+  "actual_Game": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH-C11.json",
+    "bytes": 6243,
+    "sha256": "95bcef7453b60f3dd7e7f5abe6a3af132aa21871c72fe4ad6acc8cc41fa020e8"
+  },
+  "actual_SDK_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C11.json",
+    "bytes": 658,
+    "sha256": "15aadb3d5f151a0cbef364933367f75f85aa1c7b2a1ac6862e8dae9e470d1e2a"
+  },
+  "semantic": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4235-1-result.json",
+    "bytes": 60353,
+    "sha256": "d39372fc0f0b27571257dc67c711713d4b29fca18b32596581e2ed2db787ebea"
+  },
+  "capabilities": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4236-1-result.json",
+    "bytes": 60192,
+    "sha256": "c50ea17346695deb439bf349cd456a58cb41059652b200c19b536f3ac0351651"
+  },
+  "native_session_control": {
+    "configured": true,
+    "queue_dir": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\bridge",
+    "restore_checkpoint": true,
+    "driver_state_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\driver-state.json",
+    "driver_state_restored": true,
+    "driver_state_error": null,
+    "driver_state_restore_kind": "cold_checkpoint",
+    "episode_binding_state": "active_resumed",
+    "cold_candidate_rejection": null,
+    "episode_transition": null,
+    "episode_transition_error": null
+  },
+  "cold_bound": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-C11-NORMAL-COLD-BOUND.json",
+    "bytes": 1728,
+    "sha256": "0ef49a55a04c23417f554fdd5bf4e3d472dce34d234e488db13db6f5f416d8b4"
+  },
+  "map_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C11.json",
+    "bytes": 2541,
+    "sha256": "86d2b01c3a9fade0145a6ffe948434ebd2e70adc479b928535ffd9a38cb73f2d"
+  },
+  "first_frame_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-SAVED-MAP-RECORDING-ADMITTED-C11.json",
+    "bytes": 2859,
+    "sha256": "e6b7c2447bf43c6ea3929bad5ade9707c412f574e03d4fd4525f244f40d6a290"
+  },
+  "native29_pin": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-NATIVE29-NATIVE-PIN-C11.json",
+    "bytes": 4213,
+    "sha256": "27f6f56593d2fdb8808d7c355119249936433cd4e8bf8293919c0d15fa5e7bd5"
+  },
+  "SDK_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C11.json",
+    "bytes": 404161,
+    "sha256": "f9d487961fe56b84f607a2d44e702a5a1161593145a209d7778eb95d27424890"
+  },
+  "closed_original_SAVE4234": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4234-1-result.json",
+    "bytes": 10222,
+    "sha256": "110c1f27adf670243dc45d69819d7dfd8d95129df2389c458a198b452d23cf15"
+  },
+  "new_recording_request": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CURRENT-OBS-RECORDING-REQUESTED-C11.json",
+    "bytes": 545,
+    "sha256": "7ab14ecb34d36af5c052b3794dab506027ca9d054b644882405136b1dd92211f"
+  },
+  "completed_cycles": 2010,
+  "campaign_days": 1863,
+  "new_cycle_or_day_credit": 0,
+  "next_sequence": 4237,
+  "total_wall_anchor_UTC": "2026-10-19T03:26:49.420926+00:00",
+  "hotspot_or_coverage_credit": false
+}

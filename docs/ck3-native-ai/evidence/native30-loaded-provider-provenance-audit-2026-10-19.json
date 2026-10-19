@@ -1,0 +1,172 @@
+{
+  "schema": "xar.ck3.native30-loaded-provider-provenance-audit/v1",
+  "status": "SOURCE_AUDIT_ONLY_TRUSTED_ISSUER_MISSING",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:12:29.462621+00:00",
+  "machine_id_source": "tools/ck3_live_run_id.py machine, executed by this report producer",
+  "scope": {
+    "Game_RPC": 0,
+    "Native_calls": 0,
+    "desktop_OBS_process_operations": 0,
+    "active_Driver_SAVE_reads": 0,
+    "C11_or_owner_control_writes": 0,
+    "production_source_edits": 0,
+    "new_builds_or_qualification_runs": 0,
+    "output_budget_bytes": 32768
+  },
+  "decision": "当前没有合法 production issuer。M7 的 DTO 继续缺省，H 保持 unknown。现有启动、注入成功和 build JSON 只能分别证明其已有范围，不能直接拼成已加载 DLL 身份。",
+  "reviewed_facts": [
+    {
+      "source": "runtime.py:97-104,240-259",
+      "finding": "NativeBridgeLaunchConfig 只有 mode/pipe_name/dll_path/injector_path；validate 只校路径存在及模式/pipe，并未测量 DLL SHA 或声明该文件已加载。"
+    },
+    {
+      "source": "windows_injector_job.py:324-336; runtime.py:2416-2499,2558-2692",
+      "finding": "contained Job 的 executable_sha256/pinned_executable 是 injector EXE。runtime 重验该 EXE 哈希和完整 stdout/stderr、Job 子树及 exit0；attempt target_ck3_pid 与 argv 保存了指定 DLL 路径，但没有目标出生/loaded DLL path/base/hash。",
+      "forbidden_inference": "不能把 injector executable_sha256 当 native_dll_sha256，也不能把 INJECTOR_EXIT_ZERO_TREE_PROVEN 当实际加载 DLL 字节的 typed proof。"
+    },
+    {
+      "source": "native_bridge/src/injector.cpp:49-86,235-255,329; injector_main.cpp:57-105; include/xar_bridge/injector.hpp:9-27",
+      "finding": "原生 injector 确实 LoadLibrary 并查 remote module，随后调用 prepare/start。FindRemoteModule 目前仅匹配 szModule basename，返回 base；CLI/结果结构仅返回 Windows error 与 load/start/prepare exitcode，未保全 full module path/file identity/hash。",
+      "forbidden_inference": "这个内部 basename 命中和32位 remote exitcode不能被解释成精确完整路径、64位模块基址或 DLL SHA。"
+    },
+    {
+      "source": "runtime.py:3100-3152; native29_checkpoint_bootstrap_v1.py:171-179",
+      "finding": "canonical launch 的真实 suspended process、出生/EXE 校验、单例和原 retained kernel handle，是可复用的 Game 身份起点；cold bootstrap 已沿该 runtime.launch，未增加 Game 查询。它与独立 SDK App 不在同一个 Python 对象域。",
+      "gap": "不能把 supervisor 的 Python seal/object 经普通 JSON 序列化后在 App 中重新构造为可信对象。"
+    },
+    {
+      "source": "native_driver.py:1484-1506,1588-1612,1094-1144,2190-2195",
+      "finding": "SDK 是 named-pipe server；连接后直接读帧，hello.pid 被用来 adopt session，connection_generation 来自原 native hello（旧版缺省按 hello 计数）。本段没有 GetNamedPipeClientProcessId 的内核对端读回，也没有 loaded module observer。",
+      "gap": "PID/connection 可作现有协议绑定字段，但仅凭 wire JSON 不能签发 reserved loaded-provider DTO。"
+    },
+    {
+      "source": "bridge/player_heir_candidate_component_v1.py:28-55,140-180; M7 direct interface confirmation",
+      "finding": "_LoadedNativeProviderV1 明确私有且目前没有 production issuer。要求同一 canonical owner/driver/service、machine、Game PID/birth/image、connection、pipe、实际 loaded DLL lowercase64 SHA 与本叶 seal；只存 owner._player_heir_loaded_provider_v1。公共 dict、source closure SHA 都不具资格。",
+      "boundary": "parser/root 同帧成功与 H 资格分开；缺组件不做额外工作，缺 typed proof 不读 OS、不授 H。M7确认本轮不新增 issuer。"
+    },
+    {
+      "source": "native29-camera-build-qualification-2026-10-19.json",
+      "finding": "该冻结资格将 candidate_DLL=18,443,776B/SHA7e8534e03ec9cad039c99094aa6cb74b21cc6b8002d26d97e3a126e885a589c1 与 compiled source/fixture/build 来源分列，并明确 BUILD_AND_OFFLINE_PASS_NOT_DEPLOYED / production_DLL_loaded=false。",
+      "boundary": "这里只复核这份历史 build 文档自身的声明；不据其推断当前 C11 是否加载、Native30 是否已构建、或目标机器未来实机资格。"
+    }
+  ],
+  "minimal_future_owner_boundary": {
+    "recommendation": "保留现有 cold runtime.launch + 独立 SDK App 结构；在真正加载前的 retained launch owner 和 SDK 的实际管道 adoption 之间，仅补一个私有文件 custody 接点。不是新增 MCP、任意 JSON issuer 或新的 IPC 平台。",
+    "steps": [
+      "1. Native30 DLL 完整构建后，冻结 build/qualification 的实际 DLL 文件 SHA 与所需 getter/source closure。它们是不同字段；632f 等 source 合同哈希绝不进入 native_dll_sha256。SDK 固定来源可以携带期望 pins，但这些 pins 本身不产生加载信用。",
+      "2. canonical cold launch owner 在原 _inject_native_bridge 前，打开该精确 DLL 的只读 kernel file handle：允许读共享，拒绝写/删除共享；从同一 handle 测量真实 bytes/SHA、final path 与 file ID，跨原 LoadLibrary/prepare/start 和初次 SDK adoption 保持 custody。若拿不到这份稳定 custody，本阶段保持 H unknown，不把“事后路径文件 hash”当“加载时字节”。",
+      "3. 复用现有远程 module 查询，将 basename 命中收紧为唯一 exact full path + module base + image size 观察，关联到上述 retained 文件。原 target kernel handle 给出 Game PID/精确 birth/EXE。这里只在原启动/采用阶段读 OS 元数据，不添加 Native/Game RPC；注入/查询失败仍真实拒绝。",
+      "4. 独立 SDK App 不能只读 JSON 就 mint seal。最小跨进程实现候选是通过现有 Windows 子进程显式 handle_list/受控 DuplicateHandle，传入单个只读 DLL custody handle；SDK 自己重验该 handle 的文件 ID/path/hash，并从自己真实 pipe handle 读 GetNamedPipeClientProcessId。其 PID 必须等于 hello PID，且当前真实 Game birth/image、pipe 与连接 generation 一致。handle 传递的来源约束、寿命、关闭责任和加载前后 file-ID 对应必须先做软件+Windows资格，当前尚不存在。",
+      "5. 只有 SDK 内 canonical owner-adoption hook 合流上述独立观测后，由同叶私有 issuer 创建 M7 seal DTO，并只写 owner 内部属性。owner 尚未 install 时可暂存 driver-bound 内部证据，在 install 双向引用完成后绑定；不得通过 MCP/Queue 参数、source file SHA、公开 JSON dict 或客户端 constructor 签发。首次现有 root 消费后沿原 mapper；不新增 query、不改变 T0/goal/score cursor。",
+      "6. disconnect、PID/birth、pipe/connection 或 module identity 改变立即使旧 capsule 失配。暖 SDK 新进程也必须重新从实际连接和 retained DLL custody 建立自身 owner-bound capsule；不能复制旧 owner 的 seal 或沿用旧 Game 资格。未知继续 Hunknown，普通自动规划照常。"
+    ],
+    "important_limit": "步骤2-5是可审查的未来候选，不是现有完成能力。若不愿增加私有 kernel-handle 接点，则当前正确结论仍是无可信 issuer；不建议以更多 JSON 校验替代这个缺口。"
+  },
+  "smallest_candidate_spans": [
+    {
+      "area": "runtime.py::_inject_native_bridge / canonical launch retained owner",
+      "change": "只在原 DLL load 生命周期建立/持有精确源文件 handle 与 target birth/module tuple；现有 injector Job custody和失败处理保留。"
+    },
+    {
+      "area": "native_bridge/src/injector.cpp::FindRemoteModule or equivalent existing OS observer",
+      "change": "精确 full path/module base/file identity 观察；已有 basename/exitcodes 继续仅其原范围，新增证据不授额外业务结果。是否需要改 injector EXE 由实际实现选择；本轮未构建。"
+    },
+    {
+      "area": "NativeNamedPipeServer::_run after connection + NativeHeadlessGameplayDriver::_ingest/adoption",
+      "change": "一次内核 pipe client PID 与当前 connection 绑定，disconnect 清失效。无额外 ping/query，现有 hello generation 语义不改。"
+    },
+    {
+      "area": "player_heir_candidate_component_v1 private issuer + canonical App owner install",
+      "change": "消费内部 OS/custody capsule后才签现有 reserved DTO；纯 parser/mapper 与公共MCP参数不变。当前C11和M7本轮冻结叶不改。"
+    }
+  ],
+  "required_future_directed_qualification_not_run": [
+    "正例：实际新 Game kernel birth + matching pipe peer + full loaded module path + pre-load held file SHA -> 同 owner/driver capsule；现有 root同帧可映射。",
+    "同 PID 复用而出生不同、同 walltime 不同 instant、EXE不同、pipe peer PID不同、连接 generation变更均拒。CIM +000/+480仅在严格同一 UTC 微秒时相等。",
+    "相同 DLL basename/不同完整路径，以及源合同 SHA、injector EXE SHA、旧已加载 DLL SHA 冒充当前 actual DLL SHA 均拒。",
+    "公共 JSON、自造 dict、外部 constructor/错误 seal、另一 owner/driver、旧 Game/旧 SDK capsule 不能签发。",
+    "源文件在 load 前变化/不能取得稳定 held-file身份，或模块观察不唯一/失败，保持 unknown；不伪造成功或再发原生动作。",
+    "缺 optional component 或缺 typed proof仍0额外OS/0新RPC；现有 root、普通规划、T0/目标/分数游标不受阻。"
+  ],
+  "authoritative_API_references": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeclientprocessid",
+      "verified": "2026-10-19 source-audit web read only",
+      "supports": "该 API 从 CreateNamedPipe 创建的服务端管道实例 handle 读取 client process ID；当前 SDK 正是 server，不能误用 server PID API。"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew",
+      "verified": "2026-10-19 source-audit web read only",
+      "supports": "共享约束持续到 handle 关闭，拒绝 DELETE sharing 约束删除/重命名；未来使用只读 FILE_SHARE_READ 需资格证明与实际 loader 兼容，本轮不声称已测。"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "bytes": 169403,
+      "sha256": "bfaadaaedf3d499339b5223d722930b20644fc090bc1b8a04f83e0eb8d5b2726"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/windows_injector_job.py",
+      "bytes": 21062,
+      "sha256": "82c379bb59fb3b7631179ad3d4128dc3433133efabfc5d36ef89a907b2adb7b6"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/injector_main.cpp",
+      "bytes": 3312,
+      "sha256": "e20f503b7a196c32b0dde5c6c9871fb974a0d801e68788f86a9b10e5eecabfeb"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/injector.cpp",
+      "bytes": 13522,
+      "sha256": "9c44bbcfa0605e5de311e5a90232c07f747a3ca918c78b2ed49e2d4328eefbcb"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/injector.hpp",
+      "bytes": 1834,
+      "sha256": "1c7a5233da4f0bea8d87627d3ffe5c705dd044efab89ced14945e8916cf957e9"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1613844,
+      "sha256": "2b6912a4ba680e4f8a03288f4735b9ce6ee56da6a2f7ae8f3cca2a1ace67d81c"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "bytes": 12223,
+      "sha256": "16b02ac78192d6811493914b020d2271b590513515c667973612928b0606a556"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 31647,
+      "sha256": "bb1f6e93fd875dc1ca75163e8d34d293fab7c04c015f575d6d937947cd686d98"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/environment.py",
+      "bytes": 58031,
+      "sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native29_checkpoint_bootstrap_v1.py",
+      "bytes": 10653,
+      "sha256": "78b791dead2099fac0906daa8753bd5fa1b429466ff37b14e9448979bdfc6014"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_native29_cold_controller_v1.py",
+      "bytes": 14122,
+      "sha256": "40a9fd2aa68c468d61c4239b86198fd187967cadeeaf8ea9d6f244eea381c4d2"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native29-camera-build-qualification-2026-10-19.json",
+      "bytes": 12034,
+      "sha256": "ed50db122c0c7a403ee7755ad8c4393b829ad9b258a715928f6870ff6f992b47"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/player-heir-campaign-attachment-source-ready-2026-10-19.json",
+      "bytes": 10271,
+      "sha256": "b883390f88c71249f230fe139a0e07f707c6cc04f7f73429cac0062b1e3a1d63"
+    }
+  ],
+  "final_boundary": "只读审计与方案；无生产 issuer实现、编译、部署、actual module读取或 H 得分信用。当前 C11 运行和既有显示/OBS控制完全未改。"
+}

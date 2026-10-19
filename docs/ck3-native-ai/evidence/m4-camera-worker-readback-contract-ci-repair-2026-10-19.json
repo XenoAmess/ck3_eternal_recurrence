@@ -1,0 +1,143 @@
+{
+  "schema": "xar.m4.camera-worker-readback-contract-ci-repair.v1",
+  "status": "master_source_focused_ready_live_source_unchanged",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:08:00.005242+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "historical_failure": {
+    "job_id": 118017245014,
+    "step": 54,
+    "github_runner_machine_id": "unknown",
+    "query_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "excerpt": {
+      "path": "_runtime/ci-job-118017245014-failure-excerpt.json",
+      "bytes": 11982,
+      "sha256": "3da9c921e34dfae594594387f89655369d48e0e87d164a11dcff45c80222bc8e"
+    },
+    "original_result": "2 failed,146 passed,113 subtests passed in5.29s. Realm service expected snapshot_calls3 for plan+2AUTO, got5; expected1 for other cycle, got2. Query calls remained STEP/public9 and STEP/public10.",
+    "nodes": [
+      "RealmMembershipServiceTests.test_actual_planning_public_copy_dispatch_and_vassal_loss",
+      "RealmMembershipServiceTests.test_other_cycle_does_not_retain_or_copy_query_snapshot"
+    ],
+    "original_failure_retained": true
+  },
+  "source_findings": {
+    "M1_test": {
+      "path": "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py",
+      "bytes": 7806,
+      "sha256": "965eb36d88e56c20c5d791af09b4623da92e89ad2bc1acb58e0e464083c98d5b"
+    },
+    "fixture": "Real Service constructs camera payloads while the M1 fixture replaces its worker with Camera.schedule returning fixture_no_camera. That sink has no latest_actual outcome-readback method.",
+    "counter": "Each AUTO was adding one camera cache read after the business planning read; two AUTO cycles therefore produced5 instead of3, and one other cycle2 instead of1. No extra faction query or business replay was observed.",
+    "corrected_hypothesis": "An initial claim that this fixture lacked an exact .4 build was incorrect. Reading test_realm_membership_feedback_v1.inputs lines26-27 showed CK3_12004 game_version/executable_sha256 in hello. This was corrected before any edits; no ineffective build guard was written.",
+    "existing_worker_source": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_follow.py",
+      "bytes": 9245,
+      "sha256": "8b1a2ef99f73ccd5a31696173cc9e9544530f8bdd83507559fcc882ebec3b9b1"
+    },
+    "existing_Service_contract": {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 873470,
+      "sha256": "bb1960b2f0eb2bf943f90100c8fe966ebb5adcd3409a157c3db863dbcb846b0f",
+      "method_start_line": 918,
+      "method": "def auto_camera_follow_status(self) -> dict[str, object]:\n        \"\"\"Read bounded presentation diagnostics; no gameplay/source-frame claim.\"\"\"\n        return {\n            \"latest_actual\": self._auto_camera_worker.latest_actual(),\n            \"recent_failures\": self._auto_camera_worker.recent_failures(),\n        }"
+    },
+    "interpretation": "Production LatestCameraFollowWorker already has schedule plus latest_actual. Service.auto_camera_follow_status uses latest_actual to report real presentation outcomes; a schedule-only sink cannot provide this presentation contract."
+  },
+  "change": {
+    "sources": [
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_current_payload_v1.py",
+        "bytes": 2846,
+        "sha256": "e2a6cc9ae1a061a0676c3162838b61eb4b42ebaf025934bc27e42a5a2a57a52f",
+        "before_bytes": 2776,
+        "before_sha256": "9253f40df09c8e38f676c9ae1ac4b610271e499e3d97348fe4e8644f2b5e5157"
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py",
+        "bytes": 9354,
+        "sha256": "3e4829cfaf4d2ebfd5cf34d5bf816f549edebd70c14893cee009d3f79741ebc5",
+        "before_bytes": 9077,
+        "before_sha256": "52e9e46518e8811e2ce6ba142d1655934cff3d49001aa08d09e0abe18ee69900"
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_auto_camera_async.py",
+        "bytes": 7092,
+        "sha256": "3587bfaac6242da2b88b8060b629857f2c07a8c53a65a48a8bdbc1c37b2da869",
+        "before_bytes": 6957,
+        "before_sha256": "486cdf877c394cc35e22c6716c478a284ede9a9453db0b314d4e3ed75a162611"
+      }
+    ],
+    "predicate": "Before reading cache, require callable worker.schedule AND callable worker.latest_actual. Existing camera-payload Mapping eligibility guard remains. No fixture string, concrete class name, new flag or build exception is used.",
+    "missing_component": "A schedule-only sink now raises the same camera-unavailable error before cache/observer work. The business result and its exact reads/queries survive.",
+    "enabled_component": "The normal real worker retains the existing one post-business current-cache projection. latest_actual is checked for callability only, never invoked by this guard; no outcome polling or new bookend/RPC was added.",
+    "test_fixtures": "The helper's deliberately enabled Worker fixture now provides latest_actual->None (pending/absent actual, not fake success). A schedule-only sink is an explicit ineligible case. The existing real-worker async test now counts cache reads and requires exactly1.",
+    "shared_scope": "No Service, NativeDriver, Native or current/frozen C11 SDK writes. Original M1 test/count/query assertions are byte-identical and not replaced."
+  },
+  "actual_focused_verification": {
+    "argv": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py::RealmMembershipServiceTests::test_actual_planning_public_copy_dispatch_and_vassal_loss",
+      "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py::RealmMembershipServiceTests::test_other_cycle_does_not_retain_or_copy_query_snapshot",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py::test_ineligible_presentation_does_not_read_cache_or_replay_business",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py::test_eight_day_business_uses_current_positions_dates_and_build_without_query",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py::test_same_frame_zero_day_action_remains_supported",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_async.py::test_auto_turn_business_first_and_source_binding",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "environment_overrides": {
+      "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 3.477491300087422,
+    "stdout": "..........                                                               [100%]\n10 passed in 2.85s\n",
+    "stderr": "",
+    "tool": {
+      "chunk_id": "b1ed0a",
+      "exit_code": 0,
+      "wall_time_seconds": 3.4525151
+    },
+    "test_utc": null,
+    "test_utc_reason": "Runner captured argv/elapsed/stdout/exit; source metadata time is not test UTC.",
+    "cases": "Original two M1 failures2 + input/worker eligibility5 + enabled8-day and0-day2 + actual LatestCameraFollowWorker async1 =10 passed in2.85s.",
+    "witnesses": [
+      "Original M1 assertions still snapshot_calls3/1, public_snapshot_calls0 and query STEP/public9,10.",
+      "Schedule-only or otherwise ineligible presentation performs zero cache reads and emits no payload; pending business result is retained with one execution.",
+      "Enabled8-day and zero-day tests still read current cache once and use current date/positions/build.",
+      "The actual production worker async path still queues presentation with one cache read; queued remains pending, never applied credit."
+    ],
+    "limit": "One targeted post-fix invocation. The entire Official step54 matrix and earlier camera suites were not rerun. Original CI failure and prior18/7/etc histories remain preserved."
+  },
+  "rollout": {
+    "master_only": "Use new helper pin in a future natural source maintenance. No replacement of live C11/source-frozen inputs and no extra warm restart for this CI fix.",
+    "future_minimal_input": "Only the helper changes in production: prior2776B/9253f40d... ->2846B/e2a6cc9a...; tests and this proof accompany review. No Native/Service/ABI input change.",
+    "qualification": "A callable readback hook identifies a supported worker component, not an applied Native camera result. Current C11/Native29 movement, settling and pixel evidence remain runtime-owned and are not qualified here.",
+    "cache_cost": "Eligible path still one existing local semantic projection with prior observer side effects; ineligible schedule-only path zero. No source-only live performance improvement is claimed."
+  },
+  "storage": {
+    "source_test_net_growth_bytes": 482,
+    "total_net_limit_bytes": 16384,
+    "external_written_bytes": 0,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "producer_processes": 0,
+    "future_write_bytes": 0,
+    "physical_credit_bytes": 0,
+    "budget": "original other-research128MiB / original review unchanged"
+  },
+  "no_live_actions": {
+    "Game_RPC": 0,
+    "Desktop_calls": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads_or_exports": 0,
+    "Native_builds": 0,
+    "current_SDK_writes": 0
+  }
+}

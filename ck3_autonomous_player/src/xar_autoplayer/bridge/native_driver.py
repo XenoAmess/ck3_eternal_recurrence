@@ -17500,7 +17500,8 @@ class NativeHeadlessGameplayDriver:
             else starting_revision
         )
         wait_record = None
-        wait_options = {}
+        request_id = f"step-{self._request_sequence + 1}-{uuid.uuid4().hex[:12]}"
+        wait_options = {"protocol_request_id": request_id}
         if deadline is not None:
             remaining = deadline - time.monotonic()
             if remaining <= 0:
@@ -17599,6 +17600,12 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "native campaign-root query crossed a snapshot revision"
             )
+        player_heir_projection = None
+        if "player_heir_candidate_v1" in normalized:
+            from .player_heir_candidate_component_v1 import project_existing_root_player_heir_v1
+            player_heir_projection = project_existing_root_player_heir_v1(self,
+                starting=starting, current=current, root=normalized,
+                request_id=request_id, query_sequence=query_sequence)
         mirror_keys = (
             "schema_version",
             "date_raw",
@@ -17632,6 +17639,8 @@ class NativeHeadlessGameplayDriver:
             mirror_keys = tuple(key for key in mirror_keys if key in normalized)
         response = {
             **result,
+            **({"player_heir_fixed_dynasty_projection_v1": player_heir_projection}
+               if player_heir_projection is not None else {}),
             "status": normalized["status"],
             "campaign_root_context": normalized,
             "query_sequence": query_sequence,
@@ -17660,6 +17669,8 @@ class NativeHeadlessGameplayDriver:
         with self._driver_state_lock:
             self._campaign_root_context_query = {
                 "query_sequence": query_sequence,
+                **({"player_heir_fixed_dynasty_projection_v1": copy.deepcopy(player_heir_projection)}
+                   if player_heir_projection is not None else {}),
                 "campaign_root_context": copy.deepcopy(normalized),
                 "cache_binding": {
                     "snapshot_id": starting.get("snapshot_id"),

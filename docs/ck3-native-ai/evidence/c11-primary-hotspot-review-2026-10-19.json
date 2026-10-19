@@ -1,0 +1,79 @@
+{
+  "schema": "xar.c11.primary_actual_hotspot_review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewed_at_utc": "2026-10-19T11:13:52.740717+00:00",
+  "captured_at_utc": "2026-10-19T11:10:16.676698Z",
+  "reviewer": "/root: direct view_image of both original PNGs, compared with previously directly reviewed first01 pair",
+  "sources": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c11-hotspot1871-01-game.png",
+      "bytes": 1624515,
+      "sha256": "e512d544a46772d3251ea917642723ff231de374b12bc541e157746140c700cc"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c11-hotspot1871-01-scene.png",
+      "bytes": 1522187,
+      "sha256": "3e5c65c2179d61e98ab22a27c74272dede9c46cc6504a16d200af6904f9e3136"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c11-hotspot1871-01-FROZEN-PAIR.json",
+      "bytes": 2807,
+      "sha256": "3102ea49ee23eefeed1d605edc01b033b1bea55e1b52521be8a8c1303c48f257"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c11-prisoner4286-failure85/C11-FULL4237-CAMERA-CLOSED.json",
+      "bytes": 37436,
+      "sha256": "cdbcea32082ce9d4c460c330e1c07da5ad238bb821273bb9cb9b6c64dc5fc0d1"
+    }
+  ],
+  "visible_observations": [
+    "The first01 southern Italy/Sicily overview has visibly changed to a close view of the Adriatic coast.",
+    "An army around 2525 troops and siege smoke are visible near the central portion of the map.",
+    "Detailed terrain, holdings and province borders are visible; the prior wide Sicily framing is gone.",
+    "Visible date is 31 October 1071. The right decision panel is present only in the scene image."
+  ],
+  "actual_native_receipt_from_closed_4286": {
+    "request_id": "auto-camera-7ce753e07787-24",
+    "status": "completed",
+    "available": true,
+    "work_status": "objective_siege",
+    "reason": null,
+    "receipt": {
+      "status": "objective_siege",
+      "display_mode": "hotspot",
+      "hotspot": {
+        "reason": "objective_siege",
+        "priority": 4,
+        "war_id": 16777278,
+        "army_id": null,
+        "province_id": 2604,
+        "title_key": "b_lanciano",
+        "county_key": "c_lanciano"
+      },
+      "native_actual": {
+        "status": "settled",
+        "request_sequence": 2,
+        "county_count": 0,
+        "zoom_index": 4,
+        "bounds": [
+          1787,
+          2510,
+          1787,
+          2510
+        ],
+        "camera_postcondition_verified": true,
+        "coverage_verified": false,
+        "native_elapsed_us": 19
+      }
+    }
+  },
+  "qualification": "PASS for one actual objective_siege hotspot placement: native settled/postcondition and changed original pixels agree",
+  "boundaries": {
+    "actual_battle_window_qualified": false,
+    "continuous_moving_target_follow_qualified": false,
+    "quiet_realm_overview_qualified": false,
+    "county_coverage_qualified": false,
+    "same_frame_with_gameplay_claim": false
+  },
+  "inputs_or_RPC_added_by_primary_review": 0
+}
