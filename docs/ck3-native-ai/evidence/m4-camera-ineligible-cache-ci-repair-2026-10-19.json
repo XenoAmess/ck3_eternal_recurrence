@@ -1,0 +1,116 @@
+{
+  "schema": "xar.m4.camera-ineligible-cache-ci-repair.v1",
+  "status": "source_focused_test_ready_master_CI_only",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T10:40:55.400696+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "historical_CI_failure": {
+    "workflow_run_id": 39236701504,
+    "job_id": 118007400350,
+    "step": 21,
+    "github_runner_machine_id": "unknown",
+    "excerpt": {
+      "path": "_runtime/ci-job-118007400350-failure-excerpt.json",
+      "bytes": 9265,
+      "sha256": "68293b3a95ae20827ba0800ce9c493cb5e6e52ae1ca8d0c7bb97844857be22a9"
+    },
+    "query_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "original_command": "python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p \"test_*route*unavailable*.py\"",
+    "original_result": "30 tests /0.685s, one failure at test_route_contact_readonly_unavailable.py line209: expected(commands,reads)=(1,1), observed(1,2).",
+    "node": "RouteContactReadonlyUnavailableTests.test_service_execute_and_auto_turn_return_observation_without_throwing",
+    "original_failure_preserved": true
+  },
+  "root_cause": {
+    "fixture": "FakeService.plan_turn supplies planning identity/route plan but no _auto_camera_hotspot_input; its worker is a schedule stub, and it does not implement the two camera projection methods.",
+    "previous_behavior": "The older ordinary path passed None to the stub worker without a presentation cache read. The post-business helper then added one take_internal_semantic_snapshot before discovering unavailable camera projection, changing the business route's one read into two.",
+    "classification": "A real unnecessary local cache/observer call for a plan with no presentation input. It was not a second Native request or a repeated route action. Do not claim an actual live-camera disable flag from this fixture.",
+    "flags": "Actual Service unconditionally creates a camera worker; no separate enable switch was introduced. The already-existing camera payload key is reused as the eligibility signal."
+  },
+  "patch": {
+    "source": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_current_payload_v1.py",
+      "bytes": 2776,
+      "sha256": "9253f40df09c8e38f676c9ae1ac4b610271e499e3d97348fe4e8644f2b5e5157",
+      "before_bytes": 2302,
+      "before_sha256": "3ff60d7a3c96eadf31a62cb4e625ebf917e0bf690ac8ce39d0a213ab69333f2c"
+    },
+    "test": {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py",
+      "bytes": 9077,
+      "sha256": "52e9e46518e8811e2ce6ba142d1655934cff3d49001aa08d09e0abe18ee69900",
+      "before_bytes": 8116,
+      "before_sha256": "239da3bb0b06ba9e8bd541068c596e9c46e3405673a7284787f32f6e473e3b58"
+    },
+    "change": "Before the cache reader, require planned._auto_camera_hotspot_input to be a Mapping and service._auto_camera_worker.schedule to be callable. Missing/ineligible presentation raises into the existing presentation-only unavailable handler.",
+    "active_behavior": "For a real eligible plan, the prior payload is only an eligibility witness. It never supplies new positions or gets a new date: one current-cache read still produces the entire post-business frame/armies/objectives/mandatory/build payload.",
+    "cost": "No cache read/observer/dispatch when input is absent or nonmapping, or worker is absent/noncallable. Eligible presentation retains one current-cache projection and existing Native guards; no closed-worker-state optimization is claimed.",
+    "shared_files": "No Service, NativeDriver, Native, frozen SDK or live source file changed in this phase.",
+    "future_minimal_input": "Replace only xar_autoplayer/bridge/auto_camera_current_payload_v1.py from prior2302B/3ff60d7a... to the exact2776B/9253f40d... source pin. No Service hunk, Native ABI, CMake or new package dependency."
+  },
+  "unchanged_original_test": {
+    "path": "ck3_autonomous_player/tests/unit/test_route_contact_readonly_unavailable.py",
+    "bytes": 12485,
+    "sha256": "947ba228cb1911c13dfe2bf53b022e079e9f513845e802ba124753116ec06d55",
+    "assertion": "(len(service.driver.commands), service.driver.reads) == (1,1) remains exactly as before.",
+    "replay_and_credit": "The one unavailable route command remains observed/acceptedFalse with failed history; its business credit and replay rules are untouched."
+  },
+  "actual_focused_run": {
+    "argv": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "ck3_autonomous_player/tests/unit/test_route_contact_readonly_unavailable.py::RouteContactReadonlyUnavailableTests::test_service_execute_and_auto_turn_return_observation_without_throwing",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py::test_ineligible_presentation_does_not_read_cache_or_replay_business",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py::test_eight_day_business_uses_current_positions_dates_and_build_without_query",
+      "ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py::test_same_frame_zero_day_action_remains_supported",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "environment_overrides": {
+      "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 2.6290944998618215,
+    "stdout": ".......                                                                  [100%]\n7 passed in 2.15s\n",
+    "stderr": "",
+    "tool": {
+      "chunk_id": "238747",
+      "exit_code": 0,
+      "wall_time_seconds": 2.6109744
+    },
+    "test_utc": null,
+    "test_utc_reason": "Runner captured argv/elapsed/exit/stdout; source observation time is not a test timestamp.",
+    "coverage": "Original failing node1 + absent/nonmapping input and absent/noncallable worker4 cases + enabled eight-day and same-frame zero-day2 cases: 7 passed in2.15s.",
+    "witness": "Ineligible cases require zero cache reads and no worker payload; enabled cases retain exactly one current read and current full positions/date. Existing pending business result survives with exactly one business execution.",
+    "scope": "One post-fix focused invocation only. Do not claim the Official30-test step or the old camera matrix reran locally; no new local test failure. The original CI failure is retained by the pinned excerpt."
+  },
+  "runtime_qualification": {
+    "adoption": "Master/next natural source maintenance only. No source replacement in active src10/C10C or added warm restart for this CI fix.",
+    "live_path": "The Root-reported current live plan has actual camera input and a real callable worker. That existing branch remains one current-cache read; this change does not qualify Native29 movement, settling or recorded pixels.",
+    "no_runtime_claim": "Current C10C/Native29 acceptance is owned by runtime's adopted source and actual receipts. This offline fix supplies no new Game/pixel/SAVE evidence.",
+    "old_evidence": "The prior18-pass implementation and earlier33+2+1 histories remain unchanged historical records."
+  },
+  "storage": {
+    "source_test_net_growth_bytes": 1435,
+    "total_net_limit_bytes": 16384,
+    "external_written_bytes": 0,
+    "allocated_bytes": null,
+    "producer_closed": true,
+    "producer_processes": 0,
+    "future_write_bytes": 0,
+    "physical_credit_bytes": 0,
+    "budget": "original other-research128MiB / original review unchanged"
+  },
+  "no_live_actions": {
+    "Game_RPC": 0,
+    "Desktop_calls": 0,
+    "live_Driver_reads": 0,
+    "SAVE_reads_or_exports": 0,
+    "Native_builds": 0,
+    "current_SDK_writes": 0
+  }
+}

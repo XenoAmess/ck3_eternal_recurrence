@@ -7,6 +7,13 @@ from collections.abc import Mapping
 def current_camera_payload_v1(service: object, planned: Mapping,
                               outcome: Mapping) -> dict:
     """Read the local cache once; never attach a new date to old army data."""
+    # A plan without presentation input was never eligible for the camera
+    # worker. Do not run cache observers merely to discover that afterwards.
+    if not isinstance(planned.get("_auto_camera_hotspot_input"), Mapping):
+        raise ValueError("camera presentation input unavailable")
+    worker = getattr(service, "_auto_camera_worker", None)
+    if not callable(getattr(worker, "schedule", None)):
+        raise ValueError("camera presentation worker unavailable")
     before = planned.get("planning_source_frame")
     if not isinstance(before, Mapping) or before.get("status") != "complete":
         raise ValueError("camera current cache lacks a complete planning identity")

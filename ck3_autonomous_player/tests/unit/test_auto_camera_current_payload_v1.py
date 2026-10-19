@@ -55,7 +55,7 @@ class Worker:
 
 
 def run_turn(after, *, before=None, driver=None, result_status="executed",
-             ending_date=None):
+             ending_date=None, presentation="enabled"):
     before = snapshot() if before is None else before
     driver = CacheDriver() if driver is None else driver
     service = GameplayBridgeService(driver)
@@ -63,6 +63,10 @@ def run_turn(after, *, before=None, driver=None, result_status="executed",
     planned = {"planning_source_frame": frame,
                "_auto_camera_hotspot_input": service._auto_camera_hotspot_input(before, frame),
                "plan": {"selected_step": "life-advance"}}
+    if presentation == "missing-input":
+        planned.pop("_auto_camera_hotspot_input")
+    elif presentation == "nonmapping-input":
+        planned["_auto_camera_hotspot_input"] = None
     original = copy.deepcopy(planned)
     service.plan_turn = lambda: planned
     calls = []
@@ -84,6 +88,10 @@ def run_turn(after, *, before=None, driver=None, result_status="executed",
     service._observe_wartime_family_cadence_after_turn_v1 = lambda *args: None
     worker = Worker()
     service._auto_camera_worker = worker
+    if presentation == "absent-worker":
+        service._auto_camera_worker = None
+    elif presentation == "noncallable-worker":
+        service._auto_camera_worker = type("DisabledWorker", (), {"schedule": None})()
     outcome = service.auto_turn()
     assert calls == ["business"]
     assert outcome["status"] == result_status and outcome["result"] is result
@@ -115,6 +123,15 @@ def test_same_frame_zero_day_action_remains_supported():
     assert driver.cache_reads == 1
     assert payloads[0]["source_frame"] == outcome["planning_source_frame"]
     assert outcome["camera_follow"]["status"] == "scheduled"
+
+
+@pytest.mark.parametrize("presentation", ["missing-input", "nonmapping-input",
+                                        "absent-worker", "noncallable-worker"])
+def test_ineligible_presentation_does_not_read_cache_or_replay_business(presentation):
+    outcome, payloads, driver = run_turn(snapshot(8, public=11, native=21),
+                                       presentation=presentation, result_status="pending")
+    assert driver.cache_reads == 0 and payloads == []
+    assert outcome["camera_follow"]["status"] == "unavailable"
 
 
 @pytest.mark.parametrize("kind", ["missing", "exception", "partial", "date-backward",
