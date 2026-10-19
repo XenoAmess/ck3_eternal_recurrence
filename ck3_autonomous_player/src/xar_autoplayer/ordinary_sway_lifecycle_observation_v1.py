@@ -16,10 +16,12 @@ from .sway_formal_consumer import LEDGER_FILE, _resolved_instance_identity, read
 READERS = (
     ("completion", "allow_private_active_scheme_sway_completion_query",
      "query_active_scheme_sway_completion_private_v1"),
-    ("termination", "allow_private_active_scheme_sway_completion_termination_query",
-     "query_active_scheme_sway_completion_termination_private_v1"),
+    # Keep the independent named read ahead of optional retained-end readers.
+    # A RED end reader still stops this bundle and remains visible below.
     ("opinion", "allow_private_active_scheme_sway_outcome_opinion_query",
      "query_active_scheme_sway_outcome_opinion_private_v1"),
+    ("termination", "allow_private_active_scheme_sway_completion_termination_query",
+     "query_active_scheme_sway_completion_termination_private_v1"),
 )
 
 

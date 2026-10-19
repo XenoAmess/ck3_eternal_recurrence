@@ -29,6 +29,7 @@ from ..faction_threat_response_inputs_v1 import (
     observe_faction_gift_stock_threat_v1,
 )
 from ..runtime import _process_identity
+from ..environment import process_creation_utc, same_process_creation_time
 from .driver import (
     BridgeUnavailableError,
     PreSubmissionRevisionMismatchError,
@@ -42,6 +43,33 @@ COLD_RECOVERY_STEP = "private-query-faction-gift-cold-recovery-v1"
 MINIMUM_GOLD_RESERVE_RAW = 10_000_000
 
 
+class FactionGiftPendingFrameReadyError(PreSubmissionRevisionMismatchError):
+    """A receipt-only planner wait observed a fresh, still-owned paused frame."""
+
+    def __init__(self, proof: Mapping[str, object]) -> None:
+        super().__init__("private faction pending receipt has a newer same-date paused frame")
+        self.readonly_faction_pending_frame_v1 = copy.deepcopy(dict(proof))
+
+
+def _pending_receipt_frame(snapshot: Mapping[str, object]) -> dict[str, object]:
+    actor = snapshot.get("played_character")
+    diagnostics = snapshot.get("diagnostics")
+    return {
+        "public_revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "actor_character_id": actor.get("character_id") if isinstance(actor, Mapping) else None,
+        "actor_alive": actor.get("alive") if isinstance(actor, Mapping) else None,
+        "paused": snapshot.get("paused"), "map_ready": snapshot.get("map_ready"),
+        "active_event_absent": snapshot.get("active_event") is None,
+        "pending_interaction_absent": snapshot.get("pending_character_interaction") is None,
+        "bridge_pid": diagnostics.get("bridge_pid") if isinstance(diagnostics, Mapping) else None,
+        "connection_generation": (diagnostics.get("connection_generation")
+                                  if isinstance(diagnostics, Mapping) else None),
+    }
+
+
 def _positive(value: object) -> int | None:
     return value if type(value) is int and value > 0 else None
 
@@ -52,9 +80,33 @@ def _runtime_identity(driver: object) -> tuple[int, str]:
         raise BridgeUnavailableError("private faction route lacks a live bridge PID")
     identity = _process_identity(pid)
     creation = identity.get("creation_date") if isinstance(identity, Mapping) else None
-    if not isinstance(creation, str) or not creation:
+    if not isinstance(creation, str) or not creation or creation in {"None", "null"}:
         raise BridgeUnavailableError("private faction route lacks exact CK3 process identity")
     return pid, creation
+
+
+def _same_pending_process(pid: int, creation: str, pending: Mapping[str, object]) -> bool:
+    """Keep raw evidence while comparing supported Windows birth encodings.
+
+    Exact historic spellings remain compatible. Unequal, unparseable birth
+    strings are unknown: they cannot authorize the cold recovery path.
+    """
+    source_pid, source_creation = pending.get("source_bridge_pid"), pending.get("source_bridge_creation_date")
+    if (not isinstance(creation, str) or not creation or creation in {"None", "null"}
+            or not isinstance(source_creation, str) or not source_creation
+            or source_creation in {"None", "null"}):
+        raise BridgeUnavailableError("private faction process birth comparison is unknown")
+    if (pid == source_pid and isinstance(source_creation, str) and source_creation
+            and creation == source_creation):
+        return True
+    if same_process_creation_time(creation, source_creation):
+        return pid == source_pid
+    try:
+        process_creation_utc(creation)
+        process_creation_utc(source_creation)
+    except (TypeError, ValueError, OverflowError) as error:
+        raise BridgeUnavailableError("private faction process birth comparison is unknown") from error
+    return False
 
 
 def _current_checkpoint(driver: object, snapshot: Mapping[str, object]) -> dict[str, object] | None:
@@ -109,13 +161,26 @@ def _wait_for_pending_paused_revision_v1(
     if not callable(waiter):
         raise BridgeUnavailableError("private faction pending frame has no bounded native wait")
     old_revision = snapshot.get("revision")
-    pre_revision = pending.get("pre_snapshot_revision")
+    pre_revision = pending.get("pre_native_snapshot_revision")
+    source_actor = snapshot.get("played_character")
+    source_diagnostics = snapshot.get("diagnostics")
     if not (
-        type(old_revision) is int and type(pre_revision) is int
+        type(old_revision) is int and old_revision > 0
+        and type(pre_revision) is int and pre_revision > 0
+        and type(snapshot.get("native_revision")) is int
+        and 0 < snapshot["native_revision"] <= pre_revision
         and snapshot.get("date_raw") == pending.get("pre_date_raw")
         and snapshot.get("episode_run_id") == pending.get("episode_run_id")
+        and isinstance(source_actor, Mapping)
+        and source_actor.get("character_id") == pending.get("pre_player_character_id")
+        and source_actor.get("alive") is True
         and snapshot.get("paused") is True
         and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and isinstance(source_diagnostics, Mapping)
+        and source_diagnostics.get("bridge_pid") == pending.get("source_bridge_pid")
+        and _positive(source_diagnostics.get("connection_generation")) is not None
     ):
         raise BridgeUnavailableError("private faction pending frame changed before receipt")
 
@@ -143,8 +208,8 @@ def _wait_for_pending_paused_revision_v1(
         )
 
     fresh = waiter(dict(snapshot), changed_or_ready, timeout_seconds=5.0)
-    source_actor = snapshot.get("played_character")
     fresh_actor = fresh.get("played_character") if isinstance(fresh, Mapping) else None
+    fresh_diagnostics = fresh.get("diagnostics") if isinstance(fresh, Mapping) else None
     if not (
         isinstance(fresh, Mapping)
         and type(fresh.get("revision")) is int
@@ -161,15 +226,29 @@ def _wait_for_pending_paused_revision_v1(
         and fresh.get("map_ready") is True
         and fresh.get("active_event") is None
         and fresh.get("pending_character_interaction") is None
+        and isinstance(fresh_diagnostics, Mapping)
+        and fresh_diagnostics.get("bridge_pid") == source_diagnostics["bridge_pid"]
+        and fresh_diagnostics.get("connection_generation") == source_diagnostics["connection_generation"]
     ):
         raise BridgeUnavailableError(
             "private faction pending same-date paused revision did not arrive"
         )
-    # native_auto_run already catches this exact pre-submission condition and
-    # performs one bounded readiness replan; no gameplay request was sent.
-    raise PreSubmissionRevisionMismatchError(
-        "private faction pending receipt has a newer same-date paused frame"
-    )
+    # The ordinary Service planning wrapper also consumes this typed proof.
+    # Replan the whole turn once; never relabel this old plan with fresh IDs.
+    # This wait has not sent either a gift submission or its receipt query.
+    raise FactionGiftPendingFrameReadyError({
+        "schema": "xar.faction-gift-pending-frame-ready/v1",
+        "phase": "planning_before_dispatch",
+        "pending_request_id": pending.get("request_id"),
+        "pending_status": pending.get("status"),
+        "source_bridge_pid": pending.get("source_bridge_pid"),
+        "source_bridge_creation_date": pending.get("source_bridge_creation_date"),
+        "pre_native_revision": pre_revision,
+        "source_frame": _pending_receipt_frame(snapshot),
+        "fresh_frame": _pending_receipt_frame(fresh),
+        "business_submission_attempted": False, "receipt_query_attempted": False,
+        "gift_submission_replayed": False,
+    })
 
 
 def plan_faction_gift_private_v1(
@@ -188,15 +267,12 @@ def plan_faction_gift_private_v1(
     pending = ledger.get("pending")
     if isinstance(pending, dict):
         pid, creation = _runtime_identity(driver)
-        same_process = (
-            pid == pending.get("source_bridge_pid")
-            and creation == pending.get("source_bridge_creation_date")
-        )
+        same_process = _same_pending_process(pid, creation, pending)
         step = RECEIPT_STEP if same_process else COLD_RECOVERY_STEP
         if same_process and not (
             type(snapshot.get("native_revision")) is int
             and snapshot["native_revision"]
-            > pending.get("pre_snapshot_revision", 0)
+            > pending.get("pre_native_snapshot_revision", 0)
         ):
             _wait_for_pending_paused_revision_v1(driver, snapshot, pending)
         return {**planned, "plan": {**plan,
@@ -343,9 +419,7 @@ def query_faction_gift_receipt_private_v1(
     driver: object, *, pending: Mapping[str, object], expected_revision: int,
 ) -> dict[str, object]:
     pid, creation = _runtime_identity(driver)
-    if (pid, creation) != (
-        pending.get("source_bridge_pid"), pending.get("source_bridge_creation_date")
-    ):
+    if not _same_pending_process(pid, creation, pending):
         raise BridgeUnavailableError("same-process faction receipt cannot cross CK3 process identity")
     before = driver.take_internal_semantic_snapshot()
     if before.get("revision") != expected_revision:
@@ -374,9 +448,7 @@ def query_faction_gift_cold_recovery_private_v1(
     driver: object, *, pending: Mapping[str, object], expected_revision: int,
 ) -> dict[str, object]:
     pid, creation = _runtime_identity(driver)
-    if (pid, creation) == (
-        pending.get("source_bridge_pid"), pending.get("source_bridge_creation_date")
-    ):
+    if _same_pending_process(pid, creation, pending):
         raise BridgeUnavailableError("cold faction recovery requires a replaced CK3 process")
     before = driver.take_internal_semantic_snapshot()
     if before.get("revision") != expected_revision:

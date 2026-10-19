@@ -12,6 +12,59 @@ _HEIR_PRECONDITION = "current heir relationship needs a paused living-player map
 _CAMPAIGN_ROOT_TYPED_ERROR = "application-main typed query failed or its snapshot changed"
 
 
+def _faction_pending_frame_ready(error):
+    from .faction_gift_formal_route_v1 import FactionGiftPendingFrameReadyError
+    if not isinstance(error, FactionGiftPendingFrameReadyError):
+        return None
+    proof = getattr(error, "readonly_faction_pending_frame_v1", None)
+    fields = {"schema", "phase", "pending_request_id", "pending_status",
+              "source_bridge_pid", "source_bridge_creation_date", "pre_native_revision",
+              "source_frame", "fresh_frame", "business_submission_attempted",
+              "receipt_query_attempted", "gift_submission_replayed"}
+    if (not isinstance(proof, dict) or set(proof) != fields
+            or proof.get("schema") != "xar.faction-gift-pending-frame-ready/v1"
+            or proof.get("phase") != "planning_before_dispatch"
+            or not isinstance(proof.get("pending_request_id"), str) or not proof["pending_request_id"]
+            or proof.get("pending_status") not in {"submission_started_unconfirmed",
+                "submitted_verification_pending", "restore_requery_required"}
+            or type(proof.get("source_bridge_pid")) is not int or proof["source_bridge_pid"] <= 0
+            or not isinstance(proof.get("source_bridge_creation_date"), str)
+            or not proof["source_bridge_creation_date"]
+            or type(proof.get("pre_native_revision")) is not int or proof["pre_native_revision"] <= 0
+            or any(proof.get(k) is not False for k in ("business_submission_attempted",
+                "receipt_query_attempted", "gift_submission_replayed"))):
+        return None
+    old, fresh = proof["source_frame"], proof["fresh_frame"]
+    frame_fields = {"public_revision", "native_revision", "date_raw", "episode_run_id",
+                    "actor_character_id", "actor_alive", "paused", "map_ready",
+                    "active_event_absent", "pending_interaction_absent", "bridge_pid",
+                    "connection_generation"}
+    for frame in (old, fresh):
+        if (not isinstance(frame, dict) or set(frame) != frame_fields
+                or any(type(frame.get(k)) is not int or frame[k] <= 0
+                       for k in ("public_revision", "native_revision", "actor_character_id",
+                                 "bridge_pid", "connection_generation"))
+                or type(frame.get("date_raw")) is not int or frame["date_raw"] < 0
+                or not isinstance(frame.get("episode_run_id"), str) or not frame["episode_run_id"]
+                or any(frame.get(k) is not True for k in ("actor_alive", "paused", "map_ready",
+                    "active_event_absent", "pending_interaction_absent"))):
+            return None
+    if (any(old[k] != fresh[k] for k in ("actor_character_id", "episode_run_id", "date_raw",
+                                      "bridge_pid", "connection_generation"))
+            or old["bridge_pid"] != proof["source_bridge_pid"]
+            or not old["native_revision"] <= proof["pre_native_revision"] < fresh["native_revision"]
+            or fresh["public_revision"] <= old["public_revision"]):
+        return None
+    return {"class": "faction_pending_receipt_paused_frame_ready",
+            "business_submission": False, "pending_request_id": proof["pending_request_id"],
+            "source_bridge_pid": proof["source_bridge_pid"],
+            "pre_native_revision": proof["pre_native_revision"],
+            "source_public_revision": old["public_revision"],
+            "fresh_public_revision": fresh["public_revision"],
+            "fresh_native_revision": fresh["native_revision"],
+            "receipt_query_sent": False, "gift_submission_replayed": False}
+
+
 def _campaign_root_executor_not_entered(error):
     """A failed read whose application-main executor never entered Game code."""
     request = error.native_request_frame
@@ -55,6 +108,9 @@ def _campaign_root_executor_not_entered(error):
 
 
 def classify_readonly_planning_error_v1(error):
+    ready = _faction_pending_frame_ready(error)
+    if ready is not None:
+        return ready
     if str(error) == _HEIR_PRECONDITION:
         return {"class": "heir_readonly_frame_precondition", "business_submission": False}
     if isinstance(error, PreSubmissionRevisionMismatchError):
