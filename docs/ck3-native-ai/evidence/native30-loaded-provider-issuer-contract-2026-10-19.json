@@ -1,0 +1,87 @@
+{
+  "schema": "xar.ck3.native30-loaded-provider-issuer-contract-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:36:29.757900+00:00",
+  "machine_id_source": "tools/ck3_live_run_id.py machine, executed by this proof producer",
+  "status": "SOFTWARE_ONLY_DEFAULT_OFF_UNWIRED",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "bytes": 19991,
+      "sha256": "5540d39a166b709479260a0665fcdd97be5cf27ce5043bcd6d637de55fbba799"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_loaded_provider_custody_v1.py",
+      "bytes": 13432,
+      "sha256": "308d8192461df92dc7988abea86539f1188da1e8802c0885a7a3859ab56354f2"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "bytes": 12223,
+      "sha256": "16b02ac78192d6811493914b020d2271b590513515c667973612928b0606a556"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-loaded-provider-provenance-audit-2026-10-19.json",
+      "bytes": 13270,
+      "sha256": "8c0a6fbe290a7cec447b11f2238f013818405b34a5544612da15daa2523b51d1"
+    }
+  ],
+  "interfaces": {
+    "preload": "prepare_canonical_cold_custody_v1(target=canonical_suspended_process, dll_path, expected_dll_sha256, machine_id, pipe_name, os_facade=None, enabled=False)",
+    "issue": "issue_loaded_native_provider_v1(custody, owner, driver, endpoint, transfer, os_facade=None, enabled=False)",
+    "invalidation": "invalidate_loaded_native_provider_v1(owner, reason=disconnect_or_close)",
+    "qualification_token": "Only existing M7 _LoadedNativeProviderV1 + original _LOADED_NATIVE_SEAL; no second public token",
+    "held_resources": "Private holder owns its target read duplicate, fixed-mode preload DLL handle and verified SDK duplicates; original runtime target/job handles remain borrowed and are never closed or terminated"
+  },
+  "focused_software_run": {
+    "cwd": "Z:/ck3_mod_rewrite/ck3_autonomous_player",
+    "command": "python -B -m pytest -q -o pythonpath=src tests/unit/test_native_loaded_provider_custody_v1.py",
+    "result": "7 passed in 1.45s",
+    "tool_chunk": "59acf3",
+    "coverage": [
+      "DefaultOFF, missing resource, base unimplemented OS facade, and public JSON resource/transfer: no mint; disabled/missing-transfer admission does no OS work.",
+      "Fixed-mode preload opener is the only DLL resource producer; canonical target must still be suspended; already-mapped same-basename DLL is rejected.",
+      "Integer kernel FILETIME preserved and exactly compared to supported raw CIM/ISO instant; non-representable seventh fractional digit stays unknown; equivalent +000/+480 accepted.",
+      "Positive full injected-readback chain issues only original M7 DTO, retains holder on owner, then invalidates before releasing four owned handles; borrowed runtime handle is never closed.",
+      "Twelve directed readback mutations reject wrong kernel peer/birth/image, source or transferred file ID changes, wrong full module path, same-basename ambiguity, wrong receiver, pipe-instance race, native-generation race and a closed preload handle.",
+      "Failed requalification removes old DTO/cache without dropping cleanup holder; a verified transfer followed by wrong-peer rejection still retains SDK duplicates for cleanup.",
+      "Unverified release keeps holder and handle list under owner while qualification is already cleared; no normal-close or runtime process claim is fabricated."
+    ],
+    "fixtures": "Canonical Python classes are allocated without starting their constructors; OS facade, handles, process/module/pipe observations are synthetic. No DLL, Game, Win32 API, real pipe or native query is opened."
+  },
+  "independent_source_review": {
+    "reviewer": "/root/g2_m7_lineage",
+    "scope": "One mint/invalidation/defaultmissing review of final pins, no test rerun and no shared source edits",
+    "result": "No additional concrete gap found within the guarded contract. Existing NativeProtocolState replaces hello dict; final generation/hello comparison catches normal ingest changes.",
+    "boundary": "M7 expressly preserves unknown until a real Win32 adapter, actual transfer and production caller are independently qualified."
+  },
+  "production_gap": {
+    "exact_unwired_boundary": "Canonical cold controller pre-load holder -> separate SDK process actual pipe-adoption hook; the controlled kernel-handle transfer/Win32 readback adapter at that boundary does not exist in this change.",
+    "default_facade": "Every base OS method raises NotImplementedError. enabled=True cannot produce custody with that facade, a CLI exit0, a path/hash JSON or a source-contract SHA.",
+    "future_required_hooks": [
+      "Install actual private inherited/DuplicateHandle custody at the cold boundary; no public JSON issuer.",
+      "After actual SDK peer/module/source readback, call the guarded issue function under canonical owner lock.",
+      "Wire actual disconnect/close/generation changes to invalidation before releasing owned resources.",
+      "Add 'bridge/native_loaded_provider_custody_v1.py' to successor_ui_pending_ledger_v1.owner_source_epoch_v1.names when it becomes an active qualification dependency."
+    ],
+    "current_C11_connected": false,
+    "actual_native30_loaded": false,
+    "actual_DTO_issued": false,
+    "actual_H_credit": false
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "Native_calls": 0,
+    "Windows_API_calls": 0,
+    "desktop_OBS_operations": 0,
+    "active_Driver_SAVE_reads": 0,
+    "current_C11_owner_controller_edits": 0,
+    "new_Native_builds": 0
+  },
+  "storage": {
+    "new_artifact_budget_bytes": 65536,
+    "new_source_test_proof_bytes": 33423,
+    "boundary": "Only two new independent leaves plus this small proof. Existing audit is a reference, no body/SDK/Game/media copies."
+  },
+  "limitation": "This is a source-ready guarded issuer contract and synthetic software qualification, not a functioning production Win32 issuer or deployment acceptance. Missing real evidence leaves H unknown and never blocks the existing ordinary root query."
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "xar.C12-source-composition-and-final-off-regression/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:01:16.764235+00:00",
+  "canonical_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+  "actual_minimal_driver_sha256": "65888f480a9cc8187f37ad2c44d8592fbf2df0e1843090f47e277ec1b7d8b5f1",
+  "tested_master_driver_sha256": "a7c09a146cef8973f6a04919dfccba702475542f47fa53e7aa9038699014ff73",
+  "four_driver_scopes_AST_identical_to_tested_source": true,
+  "final_after_replay_fix_related_regression": {
+    "files": 8,
+    "passed": 47,
+    "seconds": 5.57,
+    "exit_code": 0,
+    "reported_by": "performance_native",
+    "new_runtime_or_Game_calls": 0
+  },
+  "war_daily_watch_enabled": false,
+  "intra_day_native_event_or_actor_watch_claimed": false,
+  "actual_SDK_or_war_success_claimed": false
+}

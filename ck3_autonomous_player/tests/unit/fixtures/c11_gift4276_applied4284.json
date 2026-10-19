@@ -1,0 +1,293 @@
+{
+  "schema": "xar.c11-gift4276-applied4284-small-inputs/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:09:38.486609+00:00",
+  "business_source_commit": "4d9791c12019c4e86d745bee7d7ca3aaba4e415c",
+  "sources": [
+    {
+      "sequence": 4276,
+      "bytes": 60744,
+      "sha256": "0a1bc79c7dd2353db8d74e3688c05399a9bd058dcd314fd459efd47ec7f59810"
+    },
+    {
+      "sequence": 4284,
+      "bytes": 51474,
+      "sha256": "95ec51ccbbfc1c18f274643f9ee5f3c80575e1aabf7fd97425e649dab7d701ad"
+    }
+  ],
+  "pre_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:26",
+    "revision": 27,
+    "native_revision": 26,
+    "date_raw": 53189232,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-1bec95182886",
+    "connection_generation": 1,
+    "bridge_pid": 15512
+  },
+  "candidate": {
+    "status": "selected",
+    "reason": "one_budgeted_native_legal_faction_member",
+    "observation": {
+      "available": true,
+      "paused": true,
+      "snapshot_revision": 26,
+      "native_snapshot_revision": 26,
+      "observed_date_raw": 53189232,
+      "date_raw": 53189232,
+      "player_resources_query_complete": true,
+      "player_character_id": 40526,
+      "player_gold_raw": 29727866,
+      "player_gold_scale": 100000,
+      "source_faction_requery_complete": true,
+      "queried_source_faction_id": 33554460,
+      "source_faction_present": true,
+      "source_faction_target_character_id": 40526,
+      "source_faction_targeting_player": true,
+      "source_faction_at_war": false,
+      "source_faction_metrics_available": true,
+      "source_faction_power_raw": 11552100,
+      "source_faction_discontent_raw": 0,
+      "source_faction_metric_scale": 100000,
+      "recipient_identity_resolved": true,
+      "recipient_character_id": 34973,
+      "recipient_alive": true,
+      "recipient_is_ai": true,
+      "recipient_is_direct_landed_vassal": true,
+      "recipient_opinion_query_complete": true,
+      "recipient_opinion_of_player": -58,
+      "gift_opinion_present": false,
+      "gift_opinion_modifier_value": null,
+      "source_faction_leader_character_id": 34973,
+      "source_faction_member_character_ids": [
+        34973,
+        35899
+      ],
+      "gift_preview": {
+        "available": true,
+        "definition_key": "gift_interaction",
+        "definition_stable_hash": 2003662901,
+        "interaction_legal": true,
+        "auto_accept": true,
+        "gold_cost_raw": 10000000,
+        "gold_scale": 100000,
+        "opinion_delta": 9
+      }
+    },
+    "candidate_source": "exact_full_targeting_vector_native_selected_one_direct_member",
+    "public_capability_advertised": false,
+    "gift_submission_enabled": false,
+    "choice": {
+      "source_faction_id": 33554460,
+      "recipient_character_id": 34973,
+      "membership_role": "leader",
+      "snapshot_revision": 26,
+      "native_snapshot_revision": 26,
+      "date_raw": 53189232,
+      "player_character_id": 40526,
+      "definition_stable_hash": 2003662901,
+      "gold_cost_raw": 10000000,
+      "opinion_delta": 9,
+      "minimum_gold_reserve_raw": 10000000
+    }
+  },
+  "stock_threat": {
+    "status": "observed",
+    "observer_step": "query-player-faction-alerts-v1",
+    "same_frame_history_reused": false,
+    "source_faction_id": 33554460,
+    "recipient_character_id": 34973,
+    "snapshot_revision": 26,
+    "date_raw": 53189232,
+    "player_character_id": 40526,
+    "dangerous_response_ready": true,
+    "native_row": {
+      "faction_id": 33554460,
+      "faction_type_key": "liberty_faction",
+      "target_character_id": 40526,
+      "leader_character_id": 34973,
+      "leader_is_human": false,
+      "special_character_id": null,
+      "special_title_id": null,
+      "faction_at_war": false,
+      "faction_war_id": null,
+      "power": {
+        "raw": 11552100,
+        "scale": 100000
+      },
+      "power_threshold": {
+        "raw": 8000000,
+        "scale": 100000
+      },
+      "discontent": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "discontent_per_month": {
+        "raw": 700000,
+        "scale": 100000
+      },
+      "months_until_max_discontent": 15,
+      "character_member_ids": [
+        34973,
+        35899
+      ],
+      "county_member_title_ids": [],
+      "dangerous_by_stock_rule": true,
+      "danger_reason": "non_peasant_discontent_increasing"
+    },
+    "exact_ultimatum_timing_ready": false,
+    "faction_departure_or_threat_resolution": "not_inferred"
+  },
+  "war_priority": {
+    "schema": "xar.war-spending-priority.v1",
+    "read_only": true,
+    "defer_new_economic_construction": false,
+    "wars": [
+      {
+        "war_id": 16777278,
+        "primary_player_war": true,
+        "player_side": "defender",
+        "player_relative_war_score": 40,
+        "political_survival_stakes_v1": {
+          "status": "unavailable",
+          "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+          "reason": "current_primary_rebel_attacker_identity_unavailable"
+        },
+        "possible_defensive_target_title_ids": [
+          2488
+        ],
+        "target_stakes_v1": {
+          "current_root_available": true,
+          "primary_title_targeted": false,
+          "directly_held_target_title_ids": [],
+          "source": "same-native-frame root title identities; CB defeat transfer remains unverified"
+        },
+        "major_direct_title_targeted": false,
+        "defeat_title_transfer_verified": false,
+        "active_war_observed": true,
+        "war_resolution_verified": false,
+        "new_procurement_suppressed_by_score_policy": false,
+        "observed_hostile_siege_in_player_subrealm_army_ids": [],
+        "observed_primary_opponent_objective_occupation_province_ids": [],
+        "objective_control_projection_available": true,
+        "all_observed_own_raised_armies_currently_retreating": false,
+        "observed_player_raised_soldiers": 995,
+        "observed_enemy_raised_soldiers": 2525,
+        "raised_force_deficit": true,
+        "existing_operational_strength_balance_v1": {
+          "status": "available",
+          "war_id": 16777278,
+          "friendly_army_ids": [
+            33554800
+          ],
+          "enemy_army_ids": [
+            393,
+            33554439
+          ],
+          "friendly_current_soldiers": 995,
+          "enemy_current_soldiers": 2525,
+          "friendly_maximum_soldiers": 1423,
+          "enemy_maximum_soldiers": 3500,
+          "friendly_ai_base_power_raw": 3242700000,
+          "enemy_ai_base_power_raw": 7959400000,
+          "hostile_operational_overmatch": true,
+          "interpretation": "operational_routing_risk_not_battle_win_odds"
+        },
+        "protect_cash_reasons": []
+      }
+    ],
+    "count_scope": "observed raised armies; no unraised reserves or promised allies",
+    "cash_protection_priority_war_ids": [],
+    "cash_priority_does_not_assign_armies": true,
+    "primary_war_hostile_union_v1": {
+      "war_ids": [
+        16777278
+      ],
+      "unique_army_ids": [
+        393,
+        33554439
+      ],
+      "observed_current_soldiers": 2525,
+      "shared_player_raised_soldiers": 995,
+      "shared_force_deficit": true,
+      "future_or_unraised_reinforcements_bounded": false
+    },
+    "war_win_probability": null
+  },
+  "post_receipt": {
+    "schema_version": 1,
+    "status": "mitigated",
+    "request_id": "faction-gift-b00c2f683f3f46b2b4dd2a1b33993ff7",
+    "reason": null,
+    "post_snapshot_revision": 27,
+    "post_native_snapshot_revision": 27,
+    "post_observed_date_raw": 53189232,
+    "player_character_id": 40526,
+    "source_faction_id": 33554460,
+    "recipient_character_id": 34973,
+    "post_player_gold_raw": 19727866,
+    "post_recipient_opinion_of_player": -49,
+    "post_gift_opinion_present": true,
+    "post_gift_opinion_modifier_value": 9,
+    "source_faction_present": true,
+    "recipient_still_in_source_faction": true,
+    "faction_dissolved": false,
+    "recipient_left": false,
+    "mitigation_applied": true,
+    "threat_resolved": false,
+    "postcondition_verified": true
+  },
+  "post_financing_gap": {
+    "schema": "xar.war-financing-capability-gap.v1",
+    "source_frame": {
+      "played_character_id": 40526,
+      "native_revision": 27,
+      "date_raw": 53189232,
+      "snapshot_id": "native:27",
+      "revision": 28,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "trigger": "cash_shortfall_or_observed_war_crisis",
+    "crisis_war_ids": [],
+    "observed_treasury_raw": 19727866,
+    "ordinary_military_buffer_raw": 20000000,
+    "maximum_military_maintenance_status": "same_frame_observed",
+    "construction_intent_present": false,
+    "current_active_project_independently_observed": false,
+    "cancel_construction": {
+      "status": "native_interface_missing",
+      "reason": "stock GUI supports cancellation; current .4 adapter has no final CanCancel/refund quote/native receiver",
+      "refund_quote_raw": null,
+      "submit_planned": false
+    },
+    "legal_debt": {
+      "status": "current_build_terms_and_received_funds_unqualified",
+      "reason": "generic selected-decision Confirm exists in source; current .4 full loan terms, typed debt and attributable receipt remain unqualified",
+      "source_reviewed_confirm_route": {
+        "public_tool": "ck3_confirm_ingame_decision_outcome_v1",
+        "capability": "game.command.confirm-ingame-decision-outcome-v1",
+        "advertised_in_supplied_bridge_capabilities": false,
+        "decision_key": "borrow_from_holy_order_decision",
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "holy_order.0200",
+        "current_selected_legal_decision_verified": false,
+        "dispatch_or_expected_event_proves_received_funds": false
+      },
+      "current_build_full_terms_verified": false,
+      "typed_debt_readback_verified": false,
+      "independently_attributed_received_funds_verified": false,
+      "source_reviewed_debt_commit_option": "holy_order.0200.a",
+      "principal_quote_raw": null,
+      "submit_planned": false
+    },
+    "unreceived_funding_credited_raw": 0,
+    "selected_action": null,
+    "future_funding_receipts_must_keep_same_procurement_epoch": true,
+    "unknown_submission_must_not_be_replayed": true,
+    "continue_existing_war_action": true
+  },
+  "scope": "Original completed source fields only; no full snapshot/root/market reconstructed."
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "xar.C12-minimal-business-tree/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:59:13.381398+00:00",
+  "base": "4d9791c12019c4e86d745bee7d7ca3aaba4e415c",
+  "master_patch_base": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+  "canonical_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+  "tree": "32d41fe3d3fe9db238a128ed0df5bda11f1a8f90",
+  "ref": "refs/heads/runtime/robert-v20261019-c12-normal-continuation",
+  "changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_current_payload_v1.py",
+      "bytes": 2846,
+      "sha256": "e2a6cc9ae1a061a0676c3162838b61eb4b42ebaf025934bc27e42a5a2a57a52f",
+      "whole_leaf_equal_to_master_working_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "bytes": 25674,
+      "sha256": "90d80bc2602095cfbf81e58e737089df20cde5d4eddb1af3f4d7f2544b7e4310",
+      "whole_leaf_equal_to_master_working_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1619371,
+      "sha256": "65888f480a9cc8187f37ad2c44d8592fbf2df0e1843090f47e277ec1b7d8b5f1",
+      "whole_leaf_equal_to_master_working_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 871839,
+      "sha256": "b6e078c2397b355aac9bed24834ad4921c7083b477234d2d66438fd32933a3af",
+      "whole_leaf_equal_to_master_working_file": false
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_daily_watch_v1.py",
+      "bytes": 10115,
+      "sha256": "22d3406c346d753d11550ce1610f0b77c13bccec61d5d92345a09a50efcf0bdb",
+      "whole_leaf_equal_to_master_working_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/faction_gift_wartime_cash_v1.py",
+      "bytes": 9293,
+      "sha256": "911ef2f256cf597137f6b48692f6b2b64f19eebfb67732f3af6c75dc5076147a",
+      "whole_leaf_equal_to_master_working_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/pending_arrange_marriage_source_v1.py",
+      "bytes": 6389,
+      "sha256": "bc32dae00a6f53a1284a1ababbc00e76c471d40fcc6d25f8f7a24147833822e1",
+      "whole_leaf_equal_to_master_working_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/pending_interaction_fallback.py",
+      "bytes": 13315,
+      "sha256": "1b60333c70edec9e1deb233cf5d49ce77dfd51301ef22bbf216d25e12d3ec1f5",
+      "whole_leaf_equal_to_master_working_file": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1040143,
+      "sha256": "d59098e6e61357f0b63a2540db7511f4cba60db1813fd69df161d25c573b9d13",
+      "whole_leaf_equal_to_master_working_file": true
+    }
+  ],
+  "war_daily_watch_included_default_OFF": true,
+  "scope": "Only narrow qualified changes on actual C10C SDK; no whole master Service/Driver adoption, Native29 stays unchanged. Strategy/Service patches preserve unrelated actual frozen source. New land observation uses generic date-only a0 at speed1, not Army/contact-free/event watch. Future daily scope if present remains disabled.",
+  "actual_adoption_claimed": false,
+  "worktree_or_main_index_changed": false,
+  "Game_MCP_Native_calls": 0
+}

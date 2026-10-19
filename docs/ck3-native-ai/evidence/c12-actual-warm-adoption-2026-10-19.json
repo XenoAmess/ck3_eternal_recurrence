@@ -1,0 +1,98 @@
+{
+  "schema": "xar.C12-actual-sameGame-normal-source-warm-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T12:15:30.222677+00:00",
+  "business_source_commit": "d35b59325f48b981ddeca6db294f253e45cc9d48",
+  "old_clear": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\ACTUAL-CLEAR4893.json",
+    "bytes": 2572,
+    "sha256": "c68ce0251c739d4f23c49d8b28127d19d332cb3292b1c71ab905949d994f2a31"
+  },
+  "old_normal_closed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C11-OWNER-CLOSED.json",
+    "bytes": 865,
+    "sha256": "fa853a0d8105475416d26ba6f94187135210fc39a510cab3eb9398b55e480084"
+  },
+  "post_close": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c12-war4892-warm86\\POST-C11-CLOSE.json",
+    "bytes": 11178,
+    "sha256": "1c365511aa23a1d94c9f947a3f603e6e97360c90b1fe3feb10fe4a765329af15"
+  },
+  "new_sdk_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C12.json",
+    "bytes": 658,
+    "sha256": "4b542de882ea0c9f7c8c83662a7f4a23957013dcbb50307524410220c0159637"
+  },
+  "source_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C12.json",
+    "bytes": 404818,
+    "sha256": "5dbf04c175d0764026bada5565f2fda3364093f7fb502f82c72cccedfb67aa83"
+  },
+  "semantic": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4894-1-result.json",
+    "bytes": 59012,
+    "sha256": "28d991f93310e0b376e33c298bcc73255e8d01289d6588e9542b4e6803a1b756"
+  },
+  "capabilities": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4895-1-result.json",
+    "bytes": 61794,
+    "sha256": "ff3c9a00c4d0972a3ac26ec38021ec5132b5aba10a8c1bfae34065f922116012"
+  },
+  "warm_bound": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-C12-NORMAL-SOURCE-WARM-BOUND.json",
+    "bytes": 1517,
+    "sha256": "e07a7b8add670fbecabe33b42ab719ecb3552febcf466ca0f631684b36613afb"
+  },
+  "map_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C12.json",
+    "bytes": 2597,
+    "sha256": "586bd3abce721e15951e8556071cae726e371bcc77fe2926bbc7dcb1dac1e6b5"
+  },
+  "first_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\211ac3d1-5be2-4f23-9caa-94ce02aac657\\c12-current2020-first01-FROZEN-PAIR.json",
+    "bytes": 2822,
+    "sha256": "596ee31bcb027fe88fe41ec4586420351fadddb64b9501fbc2e8e6fe98574018"
+  },
+  "primary_review": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c12-primary-current-map-review-2026-10-19.json",
+    "bytes": 2158,
+    "sha256": "5ec7775c0189e1f1c0e5333f3bbad12058051da4f2c4fe5bedbc6a11b630c2a6"
+  },
+  "actual_App_argv": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-FRESH-SDK-ARGV.json",
+    "bytes": 3380,
+    "sha256": "a35f83e7a951da614317e013fc85b1163d50c919a793d4523da30851ee866163"
+  },
+  "actual_driver_mode": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-DRIVER-MODE-P37C12.json",
+    "bytes": 1139,
+    "sha256": "610c840e740e8bc4b6c6cc95371b98583a47563054a06f7552e34f9634eb6fbb"
+  },
+  "fresh_opening": {
+    "snapshot_id": "native:352",
+    "revision": 2,
+    "native_revision": 352,
+    "date_raw": 53192808,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-1bec95182886"
+  },
+  "driver_state_restore_kind": "same_pid_hot",
+  "completed_cycles": 2327,
+  "game_days": 2020,
+  "next_sequence": 4896,
+  "pending_cycle": null,
+  "ordinary_cycle_credit": 0,
+  "business_action_credit": 0,
+  "T0_date_raw": 53144328,
+  "endpoint_date_raw": 53407128,
+  "original_clock_anchor_utc": "2026-10-19T03:26:49.420926+00:00",
+  "Game_pid": 15512,
+  "Game_creation_filetime": 134368811928524228,
+  "Game_Native29_publisher_OBS_restarted": false,
+  "war_daily_watch_configured": false,
+  "scoped_speed_changed": false,
+  "unsupported_Sway_execution_query_mask_preserved": true,
+  "current_classifier_source_sha256": "0bff8fae24c072d5f05285ba62c503dfed408f8095690fb8dffec16fe72ec28b",
+  "initial_frame_and_map_actual_initial_frame_equal": true,
+  "old4892_or_other_action_replayed": false
+}

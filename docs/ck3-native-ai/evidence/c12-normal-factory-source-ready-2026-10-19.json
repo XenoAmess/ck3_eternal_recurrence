@@ -1,0 +1,18 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:46:19.873482+00:00",
+  "status": "SOURCE_ONLY_FROZEN_WAIT_ACTUAL_C12_INPUTS",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c12_normal_factory_v1.py",
+    "bytes": 5315,
+    "sha256": "f95e2d9449cb025c7396c454486e0015d0f8951c94c8bca0207980f921d2b7fb"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\c12-normal-factory-review86\\QUALIFICATION.json",
+    "bytes": 1688,
+    "sha256": "dd0a5f5e4ab6b25945f8f5af89d2c19b3d9a47fd06d2f39ce23b39aa9d998787"
+  },
+  "scope": "Reviewed normal factory with6 C12 current-view paths and retained physicalC11 display/score. Preserve Native29 unsupported execution-query mask; other actual private flags retain order. Boundary entirely sealed future clean seed/post-close.",
+  "cases": "Namespace AST and compile PASS; actual PRIVATE_FLAGS single execution disabled, termination/completion retained in order. No repeat warm matrix; actual C12 queue/startup composition pending.",
+  "RPC_or_live_writes": 0
+}

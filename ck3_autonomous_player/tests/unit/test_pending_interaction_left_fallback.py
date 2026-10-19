@@ -147,6 +147,39 @@ def test_missing_left_primitive_never_selects_right(fixture):
     assert choose(fixture, {"accept-pending-character-interaction"})["selected_step"] is None
 
 
+@pytest.mark.parametrize("source_known", [False, True])
+@pytest.mark.parametrize("missing", ["disabled", "unavailable", "missing", "no_command"])
+def test_unknown_and_offline_reviewed_left_unavailable_never_accept(
+    fixture, tmp_path, monkeypatch, source_known, missing,
+):
+    from xar_autoplayer import pending_interaction_source_registry as registry
+    snapshot, context, rows = fixture
+    context["definition"].update(canonical_key="synthetic_unknown_interaction", deterministic_key_hash=12)
+    known = {"classification": "offline-source-reviewed-synthetic", "reason": "source review"} if source_known else None
+    monkeypatch.setattr(registry, "load_source_reviewed_interaction_v1",
+        lambda *args: (known, {"status": "offline-source-reviewed" if source_known else "unknown"}))
+    actions = set(ACTIONS)
+    if missing == "disabled":
+        context["legality"]["reject"] = {"status": "available", "allowed": False, "reason": "native_reply_not_allowed"}
+    elif missing == "unavailable":
+        context["legality"]["reject"] = {"status": "unavailable", "allowed": None, "reason": "unobserved"}
+    elif missing == "missing":
+        del context["legality"]["reject"]
+    else:
+        actions.remove("reject-pending-character-interaction")
+    before = copy.deepcopy((snapshot, context, rows))
+    value = strategy.choose_one_life_turn(rows, snapshot=snapshot, action_steps=actions,
+        pending_interaction_registry_state_dir=tmp_path)
+    assert value["selected_step"] is None
+    capture = value["unhandled_interaction_fallback"]
+    assert capture["selection"]["action"] == "reject"
+    assert capture["selection"]["position"] == "left"
+    assert capture["registry_known"] is source_known
+    assert capture["reply_options"][1]["native_legality"]["allowed"] is True
+    assert capture["selection"]["action_reachable"] is (missing != "no_command")
+    assert (snapshot, context, rows) == before
+
+
 @pytest.mark.parametrize("field", ["native_revision", "revision", "date_raw", "instance_id"])
 def test_existing_exact_context_frame_and_original_id_guard(fixture, field):
     target = fixture[0]["pending_character_interaction"] if field == "instance_id" else fixture[0]

@@ -1,0 +1,122 @@
+{
+  "schema": "xar.war4892-retained-land-edge-fallback-source-proof.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 11:56:31 UTC",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; matches linked actual frozen packet and independent audit",
+  "scope": "Closed packets and repo/frozen src10 source only. No Game/RPC/live Driver/SAVE/Native build/hot SDK edit/queue ledger mutation/stage/commit.",
+  "actual_packet": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c11-war4892-blocked86/FROZEN.json",
+    "bytes": 11423,
+    "sha256": "3c7c85fc5971fd61d94f7dfd969b1ecbe4f13a87ce144c1e2f62711f7201df2e",
+    "actual_observed_at_utc": "2026-10-19T11:31:20.554936+00:00"
+  },
+  "actual": {
+    "AUTO": 4892,
+    "status": "blocked",
+    "selected_step": null,
+    "phase": "native_war_no_safe_exact_route",
+    "before_dispatch": true,
+    "completed_cycles": 2327,
+    "pending_cycle": 2328,
+    "native_revision": 351,
+    "public_revision": 352,
+    "date_raw": 53192808,
+    "actor": 40526,
+    "episode": "native-40526-1bec95182886",
+    "connection_generation": 1
+  },
+  "independent_audit": {
+    "path": "docs/ck3-native-ai/evidence/war4892-closed-route-wait-audit-2026-10-19.json",
+    "bytes": 10072,
+    "sha256": "e36bc6c98990ca50dcaadb59791cd29794120fc58602532aa1b7b8b39ae377a2"
+  },
+  "cause": "Accepted Halt canceled future tail [8757,2605,2604]; independent Native350->351 same-date SEM remains moving7 on [8757]. Full stop/contact-free not proven. Safe alternatives correctly rejected; existing retained-edge observation admits embarked4 only.",
+  "production": {
+    "strategy": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1040143,
+      "sha256": "d59098e6e61357f0b63a2540db7511f4cba60db1813fd69df161d25c573b9d13"
+    },
+    "function": {
+      "name": "_land_retained_unsafe_edge_one_day_watch_plan",
+      "line": 21648,
+      "end_line": 21750,
+      "ast_sha256": "2ca405aae66ea5c235853bb754c431484dde44c59fef1c8a96fb61f77e6f356f"
+    },
+    "callsite": "Only after all exact objective/eligible regroup alternatives were rejected; after old embarked watch and before old stationary wait. Original full battle/event/war planner priorities remain.",
+    "guards": [
+      "Exactly one owned controllable moving7 army, complete one-hop route; no combat/retreat/assault/event/interaction/modal/terminal/episode transition; paused alive player.",
+      "Original accepted same-owner/date/episode/connection Halt plus strictly later native frame and independently observed suffix cancellation.",
+      "Full active-war nonretreating hostile union exactly matches same-frame fresh horizon and audit; one-day contact remains unsafe; every alternative remains rejected.",
+      "All three native Arm/Status/Cancel capabilities and original life-one-day/set-speed-1/resume/pause steps."
+    ],
+    "selected_step": "life-advance-one-day",
+    "phase": "native_war_land_retained_unsafe_edge_one_day_watch",
+    "native_clock_scope": "exact_one_day_date_only_a0",
+    "native_watch_army_ids": [],
+    "in_day_army_event_actor_watch": false,
+    "maximum_days": 1,
+    "movement_or_halt_resubmitted": false,
+    "offensive_combat_permission": false,
+    "war_or_material_credit": false,
+    "risk": "Contact or defeat can occur in-day. Army/battle/event/actor readback follows at next paused frame, not aN strong watch/contact-free permission. Original modal/terminal/revision checks remain.",
+    "combination": "Strategy includes separately owned M2 marriage hunks. M5 edited only land-watch call/helper; no Driver edit."
+  },
+  "fixture": {
+    "path": "ck3_autonomous_player/tests/unit/fixtures/war4892_retained_land_edge_actual_v1.json",
+    "bytes": 34508,
+    "sha256": "6041c27c9eb4b3ed045f084ca1f6701815550ecef4b6b81cc0dbc8846c0b14bd"
+  },
+  "fixture_boundary": "Original immutable source pins are inside fixture.sources. No frame/army/ACK/native horizon rewritten. Large last_heartbeat omitted. AUTO indexes/history wrappers reconstructed, not a raw Driver dump. Ordinary integration models only prior already-observed war-overview handoff by patching that prerequisite consumer to None; unpatched absent overview remains RED. Old root4824 was not used or re-dated.",
+  "tests": {
+    "command": "python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_land_retained_unsafe_edge_watch_4892.py','ck3_autonomous_player/tests/unit/test_land_edge_date_only_clock_packet_v1.py','ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py','ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py']))",
+    "result": "20 passed in 2.83s",
+    "exit_code": 0,
+    "new_files": [
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_land_retained_unsafe_edge_watch_4892.py",
+        "bytes": 7500,
+        "sha256": "34e1e924f0f809d947ab56e8b827ed064340ff7ab001ea2d044c365ed96639df"
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_land_edge_date_only_clock_packet_v1.py",
+        "bytes": 5177,
+        "sha256": "aee17bca2569b4177ac001637d4363f03a9326614bd318ac05fddaae122d691e"
+      }
+    ],
+    "coverage": "Actual4892 before/after ordinary plan; unchanged route rejections; absent original prerequisite RED; no/rejected Halt, stale native/public/owner/episode/connection, missing suffix/extra tail, stationary/combat/retreat, modal/event/interaction, missing/new/unknown enemy, clock caps/steps, assault/multiple armies; real software packet and wrong native generation; old embarked/committed cases."
+  },
+  "clock": {
+    "frozen_src10_driver": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src10/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1612139,
+      "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"
+    },
+    "working_driver": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1620999,
+      "sha256": "aac5732f68f5e014e2672880f24c9bc22a1709576ab05950c82de4eb10123229"
+    },
+    "dispatch": "_execute_step_unrecorded passes exact_one_day=True, exact_one_day_proof_kind=None, exact_one_day_preferred_speed=1. Function AST SHA d7ee8a6c22f07ea4cb1a94043e0208f72fedebb4e278e1c9d9f31165492a7e49 equals frozen src10.",
+    "chain": "_execute_life_advance -> _advance_exact_day_with_sentinel -> real arm/stop validators; +24 date-only exact_one_day scope, empty watch IDs, original speed1.",
+    "working_qualification": "Native-owner future war_daily_watch is default OFF and is not used by this path. Hermetic software replaces Native returns/timing IO.",
+    "frozen_replay": "Also AST-extracted frozen src10 original exact-day method and original arm validator into the same hermetic Clock: original a0 packet/paused target PASS; wrong generation rejected. No frozen source edited.",
+    "packet": [
+      "set-speed-1",
+      "research-arm-tactical-daily-sentinel-v1-53192808-to-53192832-speed-1-mode-terminal-a-0",
+      "resume-map",
+      "research-query-tactical-daily-sentinel-v1"
+    ],
+    "software_post": {
+      "paused": true,
+      "date_raw": 53192832,
+      "arm_generation": 17,
+      "stop_generation": 17,
+      "army_count": 0,
+      "terminal_observed": false
+    },
+    "negative": "native tactical sentinel stop failed its generation/date/tick postcondition"
+  },
+  "adoption": "Source/software qualification only. Root/runtime/harness own later normal C12 warm adoption and queue recovery. No 4892 replay, live fallback, actual extra day, safety or battle outcome claimed.",
+  "storage": "New fixture, two tests, this proof and added strategy text remain under64KiB. Existing immutable inputs/M0 audit referenced rather than copied."
+}

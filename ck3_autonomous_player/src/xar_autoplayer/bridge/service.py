@@ -2020,95 +2020,99 @@ class GameplayBridgeService:
         # A submitted formal action can alter owner-side resources before the
         # semantic publisher replaces its pre-submit frame. Reconcile its
         # durable receipt source before any new opportunity collector reads it.
-        from .pending_material_publication_v1 import (
-            can_advance_for_publication_v1, classify_pending_material_v1,
-            same_publication_scope_v1,
-        )
-        from ..crown_authority_formal_consumer_v1 import read_crown_authority_state_v1
-        pending_state_dir = self._strategy_state_dir()
-        pending_material = None
-        # Existing terminal and foreground-window work must retain its
-        # priority over a pending governance publication fence. War defense
-        # similarly continues through the complete ordinary planner.
-        def pending_priority_flags(frame):
-            played_for_priority = frame.get("played_character")
-            modal_hint = frame.get("top_exclusive_modal_choice_hint")
-            war_result_observation = frame.get(WAR_RESULTS_WINDOW_V1_PUBLIC_KEYS[0])
-            foreground_window = (
-                frame.get("active_event") is not None
-                or frame.get("pending_character_interaction") is not None
-                or (isinstance(modal_hint, dict) and modal_hint.get("status") == "present")
-                or isinstance(frame.get("one_life_terminal_reason"), str)
-                or frame.get("one_life_terminal") is True
-                or (isinstance(played_for_priority, dict)
-                    and played_for_priority.get("alive") is False)
-                or war_results_window_presence_v1(war_result_observation) == "visible"
-                or isinstance(frame.get(WAR_RESULTS_WINDOW_V1_PUBLIC_KEYS[2]), dict)
-                or frame.get("war_results_window_v1_check_due") is True
+        pending_material_timing = start_army_timing("service.planner_pending_material")
+        try:
+            from .pending_material_publication_v1 import (
+                can_advance_for_publication_v1, classify_pending_material_v1,
+                same_publication_scope_v1,
             )
-            current_wars = frame.get("active_wars")
-            war_in_progress = isinstance(current_wars, list) and bool(current_wars)
-            return foreground_window, war_in_progress
+            from ..crown_authority_formal_consumer_v1 import read_crown_authority_state_v1
+            pending_state_dir = self._strategy_state_dir()
+            pending_material = None
+            # Existing terminal and foreground-window work must retain its
+            # priority over a pending governance publication fence. War defense
+            # similarly continues through the complete ordinary planner.
+            def pending_priority_flags(frame):
+                played_for_priority = frame.get("played_character")
+                modal_hint = frame.get("top_exclusive_modal_choice_hint")
+                war_result_observation = frame.get(WAR_RESULTS_WINDOW_V1_PUBLIC_KEYS[0])
+                foreground_window = (
+                    frame.get("active_event") is not None
+                    or frame.get("pending_character_interaction") is not None
+                    or (isinstance(modal_hint, dict) and modal_hint.get("status") == "present")
+                    or isinstance(frame.get("one_life_terminal_reason"), str)
+                    or frame.get("one_life_terminal") is True
+                    or (isinstance(played_for_priority, dict)
+                        and played_for_priority.get("alive") is False)
+                    or war_results_window_presence_v1(war_result_observation) == "visible"
+                    or isinstance(frame.get(WAR_RESULTS_WINDOW_V1_PUBLIC_KEYS[2]), dict)
+                    or frame.get("war_results_window_v1_check_due") is True
+                )
+                current_wars = frame.get("active_wars")
+                war_in_progress = isinstance(current_wars, list) and bool(current_wars)
+                return foreground_window, war_in_progress
 
-        foreground_window, war_in_progress = pending_priority_flags(snapshot)
-        if pending_state_dir is not None:
-            crown_state = read_crown_authority_state_v1(pending_state_dir)
-            construction_state = read_construction_ledger(pending_state_dir)
-            crown_pending = crown_state.get("pending")
-            construction_pending = construction_state.get("pending")
-            if isinstance(crown_pending, dict) or isinstance(construction_pending, dict):
-                material_pid = getattr(self.driver, "_session_bridge_pid", None)
-                material_birth = None
-                if isinstance(construction_pending, dict):
-                    from .domain_construction_private_transport_v1 import _identity
-                    material_pid, material_birth = _identity(self.driver)
-                def classify_material(frame):
-                    return classify_pending_material_v1(
-                        frame, crown=crown_pending, construction=construction_pending,
-                        bridge_pid=material_pid, bridge_creation_date=material_birth)
-                pending_material = classify_material(snapshot)
-                if (isinstance(pending_material, dict)
-                        and pending_material.get("status") == "await_publication"
-                        and not foreground_window and not war_in_progress):
-                    deadline = time.monotonic() + 5.0
-                    while pending_material.get("status") == "await_publication":
-                        remaining = deadline - time.monotonic()
-                        if remaining <= 0:
-                            break
-                        try:
-                            fresh = self.driver.wait_for_change(
-                                int(snapshot["revision"]), timeout_seconds=remaining)
-                        except BridgeUnavailableError:
-                            break
-                        if (not isinstance(fresh, dict)
-                                or not same_publication_scope_v1(snapshot, fresh)
-                                or (isinstance(construction_pending, dict)
-                                    and _identity(self.driver) != (material_pid, material_birth))):
-                            break
-                        # A public wrapper update can expose the resource delta
-                        # before the Native revision is republished. Keep waiting
-                        # through that intermediate frame within the same budget.
-                        snapshot = fresh
-                        foreground_window, war_in_progress = pending_priority_flags(snapshot)
-                        pending_material = classify_material(snapshot)
-                        if foreground_window or war_in_progress:
-                            break
-                if (isinstance(pending_material, dict)
-                        and pending_material.get("status") in {"await_publication", "ambiguous"}
-                        and not foreground_window and not war_in_progress):
-                    quiet = (pending_material["status"] == "await_publication"
-                             and can_advance_for_publication_v1(snapshot)
-                             and "life-advance-one-day" in available_steps)
-                    return {
-                        "snapshot_id": snapshot["snapshot_id"], "revision": snapshot["revision"],
-                        "planning_source_frame": self._observed_planning_source_frame(snapshot),
-                        "plan": {"policy": "pending-material-publication-v1",
-                                 "phase": "pending_material_publication_wait",
-                                 "selected_step": "life-advance-one-day" if quiet else None,
-                                 "reason": "await a fresh owner frame before another opportunity",
-                                 "read_only": not quiet, "business_credit": False,
-                                 "pending_material": pending_material},
-                    }
+            foreground_window, war_in_progress = pending_priority_flags(snapshot)
+            if pending_state_dir is not None:
+                crown_state = read_crown_authority_state_v1(pending_state_dir)
+                construction_state = read_construction_ledger(pending_state_dir)
+                crown_pending = crown_state.get("pending")
+                construction_pending = construction_state.get("pending")
+                if isinstance(crown_pending, dict) or isinstance(construction_pending, dict):
+                    material_pid = getattr(self.driver, "_session_bridge_pid", None)
+                    material_birth = None
+                    if isinstance(construction_pending, dict):
+                        from .domain_construction_private_transport_v1 import _identity
+                        material_pid, material_birth = _identity(self.driver)
+                    def classify_material(frame):
+                        return classify_pending_material_v1(
+                            frame, crown=crown_pending, construction=construction_pending,
+                            bridge_pid=material_pid, bridge_creation_date=material_birth)
+                    pending_material = classify_material(snapshot)
+                    if (isinstance(pending_material, dict)
+                            and pending_material.get("status") == "await_publication"
+                            and not foreground_window and not war_in_progress):
+                        deadline = time.monotonic() + 5.0
+                        while pending_material.get("status") == "await_publication":
+                            remaining = deadline - time.monotonic()
+                            if remaining <= 0:
+                                break
+                            try:
+                                fresh = self.driver.wait_for_change(
+                                    int(snapshot["revision"]), timeout_seconds=remaining)
+                            except BridgeUnavailableError:
+                                break
+                            if (not isinstance(fresh, dict)
+                                    or not same_publication_scope_v1(snapshot, fresh)
+                                    or (isinstance(construction_pending, dict)
+                                        and _identity(self.driver) != (material_pid, material_birth))):
+                                break
+                            # A public wrapper update can expose the resource delta
+                            # before the Native revision is republished. Keep waiting
+                            # through that intermediate frame within the same budget.
+                            snapshot = fresh
+                            foreground_window, war_in_progress = pending_priority_flags(snapshot)
+                            pending_material = classify_material(snapshot)
+                            if foreground_window or war_in_progress:
+                                break
+                    if (isinstance(pending_material, dict)
+                            and pending_material.get("status") in {"await_publication", "ambiguous"}
+                            and not foreground_window and not war_in_progress):
+                        quiet = (pending_material["status"] == "await_publication"
+                                 and can_advance_for_publication_v1(snapshot)
+                                 and "life-advance-one-day" in available_steps)
+                        return {
+                            "snapshot_id": snapshot["snapshot_id"], "revision": snapshot["revision"],
+                            "planning_source_frame": self._observed_planning_source_frame(snapshot),
+                            "plan": {"policy": "pending-material-publication-v1",
+                                     "phase": "pending_material_publication_wait",
+                                     "selected_step": "life-advance-one-day" if quiet else None,
+                                     "reason": "await a fresh owner frame before another opportunity",
+                                     "read_only": not quiet, "business_credit": False,
+                                     "pending_material": pending_material},
+                        }
+        finally:
+            finish_army_timing(pending_material_timing, step="plan-turn")
         # These getters filter already validated Native observations. They do
         # not turn the semantic cache into a fresh UI read, or rebind world DTOs.
         snapshot = dict(snapshot)
@@ -2755,7 +2759,8 @@ class GameplayBridgeService:
                 **joint,
                 "plan": {**joint_plan, "selected_step": "life-advance"},
             }
-            family = self._plan_private_family_opportunity_v1(
+            family = _timed_planning_call_v1(
+                "service.planner_family_consumer", self._plan_private_family_opportunity_v1,
                 family_input, family_snapshot,
             )
             family_plan = family.get("plan")
@@ -2840,7 +2845,8 @@ class GameplayBridgeService:
                 # Keep old receipts visible on ordinary war turns and feed a
                 # blocked war plan's same-frame building read to M5. Neither
                 # path admits a new spend or clears the selected war RED.
-                construction_result = plan_construction_private(
+                construction_result = _timed_planning_call_v1(
+                    "service.planner_construction_consumer", plan_construction_private,
                     self.driver, planned, construction_snapshot,
                     construction_history, available_steps,
                 )
@@ -2879,7 +2885,8 @@ class GameplayBridgeService:
                 else:
                     planned = construction_result
             family_snapshot = planned.pop("_private_family_marriage_snapshot_v1", None)
-            planned = self._plan_private_family_wartime_v1(
+            planned = _timed_planning_call_v1(
+                "service.planner_family_consumer", self._plan_private_family_wartime_v1,
                 planned, family_snapshot,
             )
             # LIFE's wartime priority return also needs to consume an already
@@ -2929,10 +2936,13 @@ class GameplayBridgeService:
             planned.pop("_private_construction_snapshot_v1", None)
             planned.pop("_private_construction_history_v1", None)
             planned = plan_release_formal(self.driver, observe_m5_wartime(planned), snapshot)
-            return finish_release_root_arbitration(
-                self._plan_private_feast_normal_v1(
-                    self._plan_private_crown_normal_v1(
-                        self._plan_private_council_normal_v1(planned, available_steps))))
+            return _timed_planning_call_v1(
+                "service.planner_governance_tail",
+                lambda: finish_release_root_arbitration(
+                    self._plan_private_feast_normal_v1(
+                        self._plan_private_crown_normal_v1(
+                            self._plan_private_council_normal_v1(planned, available_steps))))
+            )
         planned.pop("_private_lifestyle_scope_v1", None)
         planned.pop("_private_lifestyle_pending_v1", None)
         planned.pop("_private_lifestyle_war_frame_v1", None)
@@ -2959,7 +2969,8 @@ class GameplayBridgeService:
             and isinstance(construction_snapshot, dict)
             and isinstance(construction_history, list)
         ):
-            planned = plan_construction_private(
+            planned = _timed_planning_call_v1(
+                "service.planner_construction_consumer", plan_construction_private,
                 self.driver, planned, construction_snapshot,
                 construction_history, available_steps,
                 prewar_arbitration=prewar_arbitration,
@@ -2980,11 +2991,13 @@ class GameplayBridgeService:
         if (getattr(self.driver, "allow_private_family_marriage_formal_trial", False) is True
                 and isinstance(family_snapshot, dict)):
             if isinstance(family_snapshot.get("active_wars"), list) and family_snapshot["active_wars"]:
-                planned = self._plan_private_family_wartime_v1(
+                planned = _timed_planning_call_v1(
+                    "service.planner_family_consumer", self._plan_private_family_wartime_v1,
                     planned, family_snapshot,
                 )
             else:
-                planned = self._plan_private_family_opportunity_v1(
+                planned = _timed_planning_call_v1(
+                    "service.planner_family_consumer", self._plan_private_family_opportunity_v1,
                     planned, family_snapshot,
                     prewar_arbitration=prewar_arbitration,
                 )
@@ -3007,10 +3020,13 @@ class GameplayBridgeService:
         if getattr(self.driver, "allow_private_prisoner_ransom_action", False) is True:
             planned = plan_ransom_private(self.driver, planned, snapshot)
         planned = plan_release_formal(self.driver, planned, snapshot)
-        return finish_release_root_arbitration(
-            self._plan_private_feast_normal_v1(
-                self._plan_private_crown_normal_v1(
-                    self._plan_private_council_normal_v1(planned, available_steps))))
+        return _timed_planning_call_v1(
+            "service.planner_governance_tail",
+            lambda: finish_release_root_arbitration(
+                self._plan_private_feast_normal_v1(
+                    self._plan_private_crown_normal_v1(
+                        self._plan_private_council_normal_v1(planned, available_steps))))
+        )
 
     def _plan_private_feast_normal_v1(
         self, planned: dict[str, object],

@@ -334,6 +334,18 @@ def plan_faction_gift_private_v1(
                 "reason": "selected_faction_not_observed_stock_dangerous",
                 "new_gift_spending_authorized": False,
             }}}
+    from ..faction_gift_wartime_cash_v1 import observe_faction_gift_wartime_cash_v1
+    cash = observe_faction_gift_wartime_cash_v1(
+        driver, snapshot, candidate, root=root, history=history)
+    traced["faction_gift_wartime_cash_v1"] = cash
+    if cash.get("new_gift_spending_allowed") is not True:
+        # Keep the ordinary war/clock choice. A legal but deferred gift must
+        # not create a checkpoint/intent or turn the whole planner into RED.
+        return {**planned, "plan": {**traced,
+            "faction_gift_spending_deferred_v1": {
+                "reason": cash.get("reason"),
+                "new_gift_spending_authorized": False,
+            }}}
     checkpoint = _current_checkpoint(driver, snapshot)
     if checkpoint is None:
         if "save-checkpoint" not in available_steps:

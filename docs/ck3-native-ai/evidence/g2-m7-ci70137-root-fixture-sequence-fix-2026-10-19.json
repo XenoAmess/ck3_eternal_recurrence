@@ -1,0 +1,124 @@
+{
+  "schema": "xar.g2-m7-ci70137-root-fixture-sequence-fix.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T11:47:44.816242+00:00",
+  "machine_identity_source": {
+    "command": "python -B tools/ck3_live_run_id.py machine",
+    "output": "204280",
+    "value": "xenoamess-full-tower-eb9d2c1186"
+  },
+  "source_head": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+  "status": "TWO_DIRECTED_NODES_PASS_CI_RERUN_NOT_OBSERVED",
+  "ci_failure": {
+    "job_id": 118029158512,
+    "step": 57,
+    "source_commit": "70137a36ea18d6d9f84375bfbef181927a90a5f9",
+    "runner_machine_id": "unknown",
+    "query_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "excerpt": {
+      "path": "_runtime/ci-job-118029158512-failure-excerpt.json",
+      "bytes": 17486,
+      "sha256": "abf10a588ba401d952594b2c967d8102cdc187e81272a2577ac15dfe74769e68"
+    },
+    "source_output": "5eef85",
+    "observed_result": "2 failed, 28 passed, 29 subtests passed in 2.92s",
+    "classification": "New 70137 regression exposed by explicit campaign-root request identity; distinct from historical worker regression.",
+    "failure": "FakeDriver lacks _request_sequence; AttributeError occurs before primitive dispatch."
+  },
+  "cause_and_fix": {
+    "production_contract": [
+      "NativeHeadlessGameplayDriver constructor initializes _request_sequence to 0 (observed native_driver.py:2183).",
+      "The real campaign-root producer reads the next local sequence for an explicit protocol_request_id (observed :17510).",
+      "The original primitive increments _request_sequence once and consumes protocol_request_id (observed :12459-12465).",
+      "Native response query_sequence is independent; the existing synthetic native response remains 29."
+    ],
+    "fixture_only_changes": [
+      "Initialize FakeDriver._request_sequence to 0.",
+      "Make its primitive transport advance the local counter once and validate the forwarded request identity.",
+      "In both original failing nodes, retain the original query/cache/relationship/cross-frame assertions and add local sequence 1 plus full step-1 hexadecimal request-id assertions."
+    ],
+    "prohibited_shortcuts_not_used": [
+      "No production getattr/default fallback.",
+      "No deleted or weakened existing assertions.",
+      "No production Driver/source changes by M7.",
+      "No query replay or Game access."
+    ],
+    "original_test_sha256": "42fb3a71bfe03fd4bc48f341ea23911ea470bfe6d44ca03d1a44cc7fef84cff9",
+    "authored_test": {
+      "path": "ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py",
+      "bytes": 12987,
+      "sha256": "52f87208c80c6503418116b46f61149df0a547ad35c8a293d30d9b8fa45036da"
+    },
+    "reused_native_fixture": {
+      "path": "ck3_autonomous_player/tests/unit/family-root-cache-synthetic.json",
+      "bytes": 8689,
+      "sha256": "8d7c8b788ede83ecf5057bef7cb673750d7ca4929ef2485d9bb9203af165edd7"
+    },
+    "observed_production_source": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1619252,
+      "sha256": "aa8bcbe0e73c2db9075e92bdb3c55e4f992aec600c965704f4da699e5f0da131",
+      "ownership_note": "Read-only M7 observation; parallel NativeAgent owns other Driver spans. This is not a new runtime source freeze."
+    }
+  },
+  "verification": {
+    "started_utc": "2026-10-19T11:47:16.138672+00:00",
+    "finished_utc": "2026-10-19T11:47:18.026658+00:00",
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py::RealRootProducerChainTests::test_actual_public_driver_root_normalizer_cache_to_relationship_transport",
+      "ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py::RealRootProducerChainTests::test_actual_public_root_cross_frame_stops_before_cache_and_relationship"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.888,
+    "stdout": "..                                                                       [100%]\n2 passed in 1.36s\n",
+    "stderr": "",
+    "source_output": "4bef36",
+    "diff_check": {
+      "command": "git diff --check -- ck3_autonomous_player/tests/unit/test_family_root_reuse_public.py",
+      "exit_code": 0,
+      "source_output": "e71117"
+    },
+    "preserved_results": [
+      "Normal real root producer submits one root query, normalizes and caches native sequence 29; relationship transport consumes that cache and submits one relationship query.",
+      "Cross-frame real root producer submits one query, raises BridgeUnavailableError, leaves cache unset and submits no relationship query."
+    ],
+    "not_repeated": "Previously passed seven optional-root SDK nodes and broader matrices were not rerun; this proof grants only the two named nodes.",
+    "ci_after_fix": "not_observed"
+  },
+  "scope": {
+    "game_rpc": 0,
+    "game_process_or_desktop_access": 0,
+    "native_build": 0,
+    "active_driver_or_save_body_reads": 0,
+    "production_source_writes": 0,
+    "staged": false,
+    "committed": false
+  },
+  "storage": {
+    "path": "Z:/ck3_mod_rewrite",
+    "volume": "Z:",
+    "disk_usage": {
+      "total": 4096787476480,
+      "used": 3918479220736,
+      "free": 178308255744
+    },
+    "purpose": "source-only fixture edit and small proof; no D-volume or heavy-write admission",
+    "max_authored_bytes": 24576,
+    "policy": "docs/storage-retention-policy.json",
+    "checkpoint_scope": "task start and close; no heavy write; no reclamation or large artifacts"
+  },
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-17T11:47:44+00:00",
+    "reason": "Small diagnosis and qualification pins for the CI fixture repair; consolidate when superseded."
+  }
+}

@@ -41,6 +41,7 @@ class FakeDriver:
 
     def __init__(self, *, heir=50123):
         self.heir = heir
+        self._request_sequence = 0
         self.snapshot = {"snapshot_id": "native:72", "revision": 73,
                          "native_revision": 72, "date_raw": 53421696,
                          "episode_run_id": "fixture-ordinary-episode",
@@ -199,6 +200,11 @@ def real_root_producer_driver(cross_frame=False):
         if (step != native.QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP
                 or kwargs.get('include_native_command_history') is not False):
             raise RuntimeError('Unexpected actual root-query dispatch contract')
+        driver._request_sequence += 1
+        request_id = kwargs.get('protocol_request_id')
+        if not isinstance(request_id, str) or not request_id.startswith(
+                f'step-{driver._request_sequence}-'):
+            raise RuntimeError('Root request identity differs from primitive sequence')
         driver.primitive_queries.append((step, kwargs))
         return copy.deepcopy(envelope)
 
@@ -229,6 +235,9 @@ class RealRootProducerChainTests(unittest.TestCase):
         self.assertEqual(relation['root_query_sequence'], 29)
         self.assertEqual(relation['heir_character_id'], 98765)
         self.assertEqual(len(driver.primitive_queries), 1)
+        self.assertEqual(driver._request_sequence, 1)
+        self.assertRegex(driver.primitive_queries[0][1]['protocol_request_id'],
+                         r'\Astep-1-[0-9a-f]{12}\Z')
         self.assertEqual(len(driver.relation_calls), 1)
 
     def test_actual_public_root_cross_frame_stops_before_cache_and_relationship(self):
@@ -237,6 +246,9 @@ class RealRootProducerChainTests(unittest.TestCase):
             driver._execute_campaign_root_context_v1_query(expected_revision=73)
         self.assertIsNone(driver._campaign_root_context_query)
         self.assertEqual(len(driver.primitive_queries), 1)
+        self.assertEqual(driver._request_sequence, 1)
+        self.assertRegex(driver.primitive_queries[0][1]['protocol_request_id'],
+                         r'\Astep-1-[0-9a-f]{12}\Z')
         self.assertEqual(driver.relation_calls, [])
 
     def test_executed_functions_have_actual_imported_source_filenames(self):

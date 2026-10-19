@@ -1,0 +1,35 @@
+{
+  "schema": "xar.C11-prisoner4286-cold-epoch-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:17:18.641060+00:00",
+  "status": "SOFTWARE_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prisoner4286_cold_epoch_credit_v1.py",
+      "bytes": 10781,
+      "sha256": "b7cfcc1224d82be978f7d42d1d07efa4027eead28b749e3e6797df3bed887cde"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_prisoner4286_cold_epoch_v1.py",
+      "bytes": 7242,
+      "sha256": "fcd6d66f71c9cbb910b4236d94d28b3582208a995520518006a863eb9fe1e102"
+    }
+  ],
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\_runtime\\c11-prisoner4286-review85\\QUALIFICATION.json",
+    "bytes": 3469,
+    "sha256": "7ff8709679540a36758fca1865b088f5735497d5d6ba59fd3ebc4477f0fd4ac2"
+  },
+  "scope": "Only sealed AUTO4286 independent prisoner custody receipt, exact original ACK/known/plan/source and actual old/new Game, SAVE4234/coldSEM4235/currentNative27 provenance may substitute the one old/new Native revision comparison. Input body/known/ACK unchanged; all other original typed guards execute.",
+  "results": {
+    "original_RED_reproduced": true,
+    "real4286_positive": true,
+    "wrong_old_birth_rejected": true,
+    "wrong_ACK_rejected": true,
+    "same_epoch_delegates_original": true,
+    "actual_C11_AST_loader_final_classifier_entry_PASS": true
+  },
+  "credit": "Current target45172 free only; no new release, causal or command-cost credit. No AUTO/query/action replay. Independent SDK sidecar already pending=null/resolved=original receipt.",
+  "adoption": "Sole owner create-only new classifier/helper under finite1MiB card; existing install_result_classifier then reconsume_original_response are zeroRPC. Next original FULL max1 supplies one new MET, settles2035; actual new frontier determines following FULL.",
+  "RPC_or_live_writes": 0
+}

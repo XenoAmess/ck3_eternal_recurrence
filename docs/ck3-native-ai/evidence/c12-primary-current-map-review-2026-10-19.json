@@ -1,0 +1,40 @@
+{
+  "schema": "xar.c12.primary_current_map_review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewed_at_utc": "2026-10-19T12:12:59.940619+00:00",
+  "frame_captured_at_utc": "2026-10-19T12:12:00.174342Z",
+  "reviewer": "root, direct view_image of both original PNG files",
+  "source_files": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c12-current2020-first01-game.png",
+      "size_bytes": 1620221,
+      "sha256": "fe7a1bb1b3a9a52e6a90cfff95a77573284d718ab966fb237cd55e42b82e3731"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c12-current2020-first01-scene.png",
+      "size_bytes": 1513209,
+      "sha256": "99dc9c8f263bb7d0469ddd3793cd8960d1dd3c8b7971824a48c06eab4252fc40"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/recordings/211ac3d1-5be2-4f23-9caa-94ce02aac657/c12-current2020-first01-FROZEN-PAIR.json",
+      "size_bytes": 2822,
+      "sha256": "596ee31bcb027fe88fe41ec4586420351fadddb64b9501fbc2e8e6fe98574018"
+    }
+  ],
+  "visible_observations": [
+    "Both frames show the rendered paused CK3 map, with visible date 29 March 1072.",
+    "The map shows southern Italy and the Adriatic coast; army labels 2701 and 1181 are visible near the centre.",
+    "The young successor portrait is visible at lower left.",
+    "The scene adds the current state/decision panel on the right; no retired blue decision panel or film title is visible."
+  ],
+  "runtime_identity_from_frozen_pair_report": {
+    "game_pid": 15512,
+    "game_birth_filetime": 134368811928524228,
+    "obs_job_uuid": "211ac3d1-5be2-4f23-9caa-94ce02aac657"
+  },
+  "result": "GREEN: C12 actual current-map capture and recording presentation only",
+  "hotspot_follow_qualified_by_this_pair": false,
+  "battle_continuous_follow_qualified": false,
+  "quiet_realm_overview_qualified": false,
+  "inputs_sent": 0
+}

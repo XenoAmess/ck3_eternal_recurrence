@@ -53,7 +53,8 @@ def test_existing_normal_planner_stage_receipts_do_not_change_work(tmp_path, mon
         "service.planner_sway_staging", "service.planner_capabilities",
         "service.planner_history_rows", "service.planner_choose",
         "service.planner_public_plan_copy", "service.planner_snapshot_prepare",
-        "service.planner_succession_preflight"}
+        "service.planner_succession_preflight", "service.planner_pending_material",
+        "service.planner_governance_tail"}
     assert all(type(row["elapsed_ns"]) is int and row["elapsed_ns"] >= 0 for row in rows)
     assert all(set(row) == {"schema", "stage", "step", "elapsed_ns", "finished_at_utc",
                            "native_request_id"} for row in rows)

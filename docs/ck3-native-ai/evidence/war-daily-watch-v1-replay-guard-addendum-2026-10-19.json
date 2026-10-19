@@ -1,0 +1,67 @@
+{
+  "schema": "xar.war-daily-watch-replay-guard-addendum.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:58:14.102768+00:00",
+  "machine_evidence": "tools/ck3_live_run_id.py machine, actual subprocess readback",
+  "previous_immutable_seal": {
+    "path": "docs/ck3-native-ai/evidence/war-daily-watch-v1-software-qualification-2026-10-19.json",
+    "bytes": 9036,
+    "sha256": "9e35c6631f8fbfb608338c19de55b7d36dd8600b0e9eb2b11047d6a5391338f4"
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1621076,
+      "sha256": "a7c09a146cef8973f6a04919dfccba702475542f47fa53e7aa9038699014ff73"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_daily_watch_v1.py",
+      "bytes": 10115,
+      "sha256": "22d3406c346d753d11550ce1610f0b77c13bccec61d5d92345a09a50efcf0bdb"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_daily_watch_v1.py",
+      "bytes": 19893,
+      "sha256": "33659ed4b2937559972292c3b65b2a931155ec32f86a7763d770dd6ef03d94a5"
+    }
+  ],
+  "producer": {
+    "path": "tools/g2_saved_campaign/seal_war_daily_watch_replay_guard_20261019.py",
+    "bytes": 4187,
+    "sha256": "223fb983668d3096638ee9c2c75e4113cb99f8cb6fa37b014e24fef479fae51f"
+  },
+  "status": "SOFTWARE_READY_DEFAULT_OFF_LIVE_NOTRUN",
+  "real_red": {
+    "test": "test_restored_unknown_marker_blocks_generic_day_even_when_candidate_is_disabled",
+    "result": "1 failed in 3.04s: BridgeUnavailableError not raised; disabled replacement could advance generic day"
+  },
+  "change": "Remove only the allow flag from the existing once-per-Driver restored-history check; its pending latch applies regardless of candidate enablement.",
+  "history_handling": "Original history read under its lock, no copying/export, no Native RPC. No-marker default behavior is retained.",
+  "targeted_pass": {
+    "files": "ck3_autonomous_player/tests/unit/test_war_daily_watch_v1.py",
+    "nodes": [
+      "test_restored_unknown_marker_blocks_generic_day_even_when_candidate_is_disabled",
+      "test_existing_history_persists_unknown_marker_and_blocks_a_restored_candidate",
+      "test_default_off_and_constructor_requires_explicit_boolean"
+    ],
+    "actual_result": "3 passed in 2.24s, exit_code=0",
+    "diff_check": 0,
+    "full_46_matrix_rerun": false
+  },
+  "native_build": "NOTRUN",
+  "game_rpc": 0,
+  "current_game_sdk_speed_changes": 0,
+  "configuration": "allow_war_daily_watch_v1 remains False by default; fixed speed2 requires later live admission",
+  "storage": {
+    "source_limit_bytes": 65536,
+    "original_package_logical_plus_net_bytes": 55103,
+    "additional_test_bytes": 601,
+    "additional_driver_net_bytes": 77,
+    "new_addendum_producer_bytes": 4187,
+    "final_package_logical_plus_net_bytes": 62955,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "external_output_bytes": 0,
+    "future_writes_after_seal": 0
+  }
+}

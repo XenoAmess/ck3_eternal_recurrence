@@ -1,0 +1,190 @@
+{
+  "schema": "xar.ck3.c11-exact-day-wait-source-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:30:09Z",
+  "identity_source": "Fresh tools/ck3_live_run_id.py machine at audit close; existing C11 source and timing receipts independently carry the same machine_id.",
+  "status": "SOURCE_AUDIT_FROZEN_NO_RUNTIME_CHANGE",
+  "conclusion": "All eight observed C11 exact days used actual public speed1. The retained stock source defines speed1 as2 seconds/day. Most observed wait is after running was observed and before the next date was observed, rather than resume ACK or a fixed Python sleep. Faster independent war-daily observation needs a separately qualified SDK composition; do not change the existing contact-free gate or claim engine CPU is the cause.",
+  "roots": {
+    "N": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep",
+    "P": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01",
+    "actual_SDK": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src10",
+    "R26": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native26-performance01",
+    "R29": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native29-camera01",
+    "SDK91_native": "D:/codex-ck3-background-spill/ck3-sdk91/ck3_autonomous_player/native_bridge"
+  },
+  "C11_identity": {
+    "game_pid": 15512,
+    "game_creation_filetime": 134368811928524228,
+    "Native": 29,
+    "Native_DLL_sha256": "7e8534e03ec9cad039c99094aa6cb74b21cc6b8002d26d97e3a126e885a589c1",
+    "business_source_commit": "4d9791c12019c4e86d745bee7d7ca3aaba4e415c",
+    "existing_adoption": {
+      "root": "P",
+      "relative": "c11-native29-cold84/ACTUAL-COLD-READY.json",
+      "bytes": 4450,
+      "sha256": "53d39c582e7dfddf4e591cc583973c929e873478bafba873962e9746e5661f2a",
+      "scope": "Existing runtime-provided actual adoption locator; no new Game inspection. Native29 original closed source/build qualification is separately retained."
+    },
+    "SDK_inventory": {
+      "root": "P",
+      "relative": "SDK-FREEZE19-C10C.json",
+      "bytes": 403001,
+      "sha256": "bf3e67a153c5f8ffb1606fda9f56a073edbcaf7c9d1acd5e902a3802354f9263",
+      "Driver_entry": "/files/389",
+      "clock_observation_entry": "/files/272",
+      "scope": "C11 reuses this exact reference-c10c SDK inventory. Named entries and actual src10 leaves were read and compared; no full SDK hash scan."
+    }
+  },
+  "timing_inputs": [
+    {
+      "path": "docs/ck3-native-ai/evidence/c11-preparation-partial-performance01.json",
+      "bytes": 15946,
+      "sha256": "f68d28bebde0abdf3d39845d238d03df5e591c40aabfb591f149a3e6edb32154"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c11-exact-clock-owner-projection01.json",
+      "bytes": 9046,
+      "sha256": "60e2279c4f06280a6c3255b62b4ea556ec5afc8b12496335e81c877254dd4219"
+    }
+  ],
+  "timing_input_bytes": 24992,
+  "actual_window": {
+    "first_rpc_utc": "2026-10-19T11:07:30.373700Z",
+    "failed_control_end_utc": "2026-10-19T11:08:14.389747Z",
+    "settled_cycles": 24,
+    "actual_days": 8,
+    "wall_s": 44.016047,
+    "rpc_count": 49,
+    "rpc_total_s": 37.79556810017675,
+    "life_advance_s": 22.4778032,
+    "resume_to_paused_s": 21.9303999,
+    "nested_public_change_wait_s": 21.8391558,
+    "Game_process_CPU_s": 2.203125,
+    "limits": "Failed partial ending at pending AUTO4286; no terminal-clear or pending-cycle credit. Public wait is nested in resume and life. Game CPU is whole-process execution time, not main-thread simulation duration or Python CPU. Do not sum40 cumulative observations."
+  },
+  "phase_difference_columns": [
+    "AUTO", "actual_speed", "begin_to_running_s", "running_to_first_date_s", "first_date_to_paused_s", "paused_to_final_s", "cached_owner_epochs_running_to_date"
+  ],
+  "phase_difference_rows": [
+    [4242, 1, 0.0335251, 4.5197928, 0.4788757, 0.0016934, 280],
+    [4244, 1, 0.0327201, 2.2429291, 0.1151561, 0.0010549, 244],
+    [4248, 1, 0.1195894, 2.2508825, 0.0732141, 0.0008648, 262],
+    [4250, 1, 0.0321248, 2.2548299, 0.0745609, 0.0006955, 260],
+    [4252, 1, 0.0218129, 2.1913098, 0.2424984, 0.0008859, 262],
+    [4254, 1, 0.0226870, 2.2857517, 0.0756285, 0.0009029, 258],
+    [4258, 1, 0.0229659, 2.4554522, 0.0688542, 0.0007478, 292],
+    [4260, 1, 0.0223548, 2.3030366, 0.0689975, 0.0011195, 262]
+  ],
+  "phase_difference_totals_s": {
+    "begin_to_running": 0.3077800,
+    "running_to_first_date": 20.5039846,
+    "first_date_to_paused": 1.1977854,
+    "paused_to_final": 0.0079647,
+    "scope": "Subtract adjacent cumulative elapsed_ns within each of the8 observation groups. Observation construction starts before the narrower exact_clock_resume_to_paused timer; the sums therefore are not forced to equal that timer. UTC boundaries remain in the pinned ledger."
+  },
+  "observer_limits": {
+    "native_snapshot_monotonic_ms_null": "40/40; exact native-snapshot-to-Python publication latency cannot be recovered.",
+    "cached_heartbeat_age_ms_range": [16, 265],
+    "cached_owner_epoch_delta_sum_running_to_date": 2120,
+    "observer_read_in_progress": "False in40 phase samples; does not rule out work between samples.",
+    "interpretation": "Cached owner epochs advance substantially during the waits and heartbeats are not seconds old at sampled boundaries. Epochs are not render frames or daily ticks; this does not measure FPS, prove no background scheduling delay, or assign the residual to CPU. Cached owner date/paused can trail a newer semantic snapshot and must not replace it."
+  },
+  "stock_speed_source": {
+    "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/defines/00_defines.txt",
+    "bytes": 125400,
+    "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+    "lines": [3, 8],
+    "GAME_SPEED_TICKS_seconds_per_day": [2, 1, 0.5, 0.2, 0.0],
+    "provenance": "Existing P27 ACTUAL-P27-CLOCK-ATTRIBUTION.json/source_pins identifies this exact stock source. Current read-only same-path source SHA/size remains identical; first10 lines were inspected. No settings/profile or process memory was read.",
+    "meaning": "Speed1 has a nominal2-second per-day pace; speed2 one second, speed3 half-second, speed4 .2-second and speed5 zero fixed interval. The zero is an unpaced setting, not zero simulation cost. This is not a claim every actual speed5 day finishes below any time bound. Speed2 alone leaves no full-planning/query overhead headroom for<=1s/day."
+  },
+  "current_placement_evidence": {
+    "root": "N",
+    "relative": "robert30-v20261019-campaign01/runtime/ROOT-GAME-PLACEMENT-C11.json",
+    "bytes": 2968,
+    "sha256": "84bbdc90b2ad883400d32e09267e45233f53a08eb9a74e833dd0f5d8c1a345f2",
+    "observed_at_utc": "2026-10-19T11:01:52.853543+00:00",
+    "minimized": false,
+    "topmost": true,
+    "DWM_cloaked_flags": 2,
+    "background_desktop1": true,
+    "foreground_unchanged": true,
+    "limit": "Launch-placement evidence, not a fresh window/FPS sample at each timed RPC. Initial start_minimized=true cannot be used as the current minimized state. No existing independent C11 effective FPS/background-throttle settings sample was provided."
+  },
+  "actual_SDK_source_pins": [
+    {"root": "actual_SDK", "relative": "xar_autoplayer/bridge/native_driver.py", "bytes": 1612139, "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"},
+    {"root": "actual_SDK", "relative": "xar_autoplayer/bridge/clock_observation_timing_v1.py", "bytes": 11099, "sha256": "34ffbd45381675db60faeb0e36146508cd6234465690d48d7a507ef40e29bda0"}
+  ],
+  "SDK_call_chain": [
+    {"span": "native_driver.py:10931-10938", "finding": "Generic life-advance-one-day selects exact_one_day=True, proof_kind=None and preferred_speed=1. This is policy, not a Native speed ceiling."},
+    {"span": "native_driver.py:30179-30306", "finding": "Unknown/non-contact-free exact proof stays speed1. Separate strict generic noncombat or reader-watch branches may select5; retreat and other risk conditions are not made noncombat by this review. Existing contact-free route preferences/readiness remain unchanged."},
+    {"span": "native_driver.py:25336-25454", "finding": "Set requested speed, observe actual semantic speed, Arm start+24 with mode-terminal-a0, resume once, wait for paused or owner-bound modal, then validate Status/generation/date/ticks/pause. Current exact helper uses no watched armies."},
+    {"span": "native_driver.py:25476-25576", "finding": "Resume waits until running, a new owner-bound modal, or an actually armed native stop. Bounded retry is conditional; it is not a sleep that always consumes the retry period."},
+    {"span": "native_driver.py:1378-1385,25805-25846", "finding": "Condition.wait_for(public_revision>previous) wakes on notifications. The loop rechecks semantic predicates and remaining deadline; it contains no fixed2- or2.5-second sleep. Snapshot and observation costs remain within measured spans."},
+    {"span": "native_driver.py:29717-29796", "finding": "Generic progressed recognizes ordinary active_event, terminal reason, changed interaction, war/threat and date. The narrower modal helper intentionally excludes ordinary active_event/interaction and requires unchanged actor/connection/episode. Higher-speed war composition must preserve these distinct mandatory/owner boundaries rather than reuse the modal-only wait unexamined."},
+    {"span": "clock_observation_timing_v1.py:ClockObservationV1", "finding": "At most five cached-frame/process-CPU observations. It does not poll Game or control time. Counters are cumulative from observation start, not five independent clock costs."}
+  ],
+  "native_source_chain": {
+    "bridge": {"root": "N", "relative": "p26-all-lifestyle-frontier01/jobs/47f64e761c49/bridge.cpp", "bytes": 1600530, "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9", "spans": "15307 SubmitSetSpeed dispatch;14993-15009 immediate date/pause publication;15012-15060 maintenance heartbeat;29372 explicit10ms worker wait", "limit": "The10ms wait is not an upper bound on a loop doing other work. Date/pause publication already bypasses the250ms heartbeat; no source basis to charge each2.5s interval to that heartbeat."},
+    "actual4_adapter": {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/cb-candidates-native18-02/jobs/4518c82d25a8/ck3_12004_adapter.cpp", "bytes": 22054, "sha256": "44d924f7f7bb35f48e491f52ca31e0b54eab766a6654fb35287020c7e04c6560", "compile_receipt": "R26/build/jobs/aef2f3bf3255/attempt01/COMPILE-RESULT.json", "compile_receipt_sha256": "0220f749c8f32b85e3f52742e65c6573d0f250681d7276c2e98097412575c7ef", "finding": "190-193 bind actual4 Core/ReadCoreSnapshot and actual4 command addresses."},
+    "getter": {"root": "SDK91_native", "relative": "src/ck3_12004_abi_profile.cpp", "bytes": 12698, "sha256": "628d752540de8e4726ce0074f8f5c36e444158a9ed364c68f714ad48d886bcb8", "compile_receipt": "R26/build/jobs/040eb5a19407/attempt01/COMPILE-RESULT.json", "compile_receipt_sha256": "e17162a88661d6e89bb8abf831ec5f7a205ca8049792348e4af20adac5791aa2", "finding": "DecodeClockPrefix96-108 reads native speed0..4 from GameState+0x70 and publishes+1; raw date is+0x08, paused is Jomini+0x20. C11 observation speed1 is a semantic clock value, not merely an echoed setter request."},
+    "setter": {"root": "SDK91_native", "relative": "src/ck3_12002_commands.cpp", "bytes": 7628, "sha256": "8d5806d2b57dc8d115bc6cb52ca7e4b6374e6be4b546ab813ea3b3b889324c2a", "retained_recipe": "legacy recipe index native-p0383.obj /compile_jobs/382", "finding": "SubmitSetSpeed156-169 accepts public1..5, checks enabled/map-ready, stores TimeCommand.value=public_speed-1 and queues the native owned command. ACK alone is not a speed readback."},
+    "actual4_command_binder": {"root": "SDK91_native", "relative": "src/ck3_12004_snapshot_foundation.cpp", "bytes": 9642, "sha256": "73c712d4d7be7d2e8846810121fbe342bd72d27745035b60fe34b4f120927720", "retained_recipe": "legacy recipe index native-p0516.obj /compile_jobs/515", "finding": "BindCommandImage12004 lines10-25 uses actual4 command manager/owned queue and speed vtables, rather than adopting old executable identity."},
+    "shared_adapter_wrapper": {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/cb-candidates-native18-02/jobs/e2610533a068/ck3_12002_adapter.cpp", "bytes": 39858, "sha256": "2504e68f412dec9077e3a6f854cd9b19877c0a28792c583c4bf9d6c7c96b925d", "compile_receipt": "R26/build/jobs/972a23c10533/attempt01/COMPILE-RESULT.json", "compile_receipt_sha256": "fb4b936fe4bc29bc7572dbb8c16e73e15a483b5ba43ba2bb94219f13d2a39c5c", "finding": "Clock prefix speed/paused feeds snapshots; submit_set_speed256-257 calls the retained SubmitSetSpeed with actual4-bound commands/core. Do not confuse this newer compiled variant with older legacy adapter sources."}
+  },
+  "Native29_watch_boundary": {
+    "sentinel_source": {"root": "SDK91_native", "relative": "src/tactical_daily_sentinel_v1.cpp", "bytes": 43967, "sha256": "25f16c2d21bba1a040abff4bc2876366109dcfdcb70aa9307d7ecc9cbde889a5"},
+    "retained_direct_object": {"path": "D:/codex-ck3-background-spill/g2-native89-production01/jobs/c0338/native-p0338.obj", "sha256": "509b2ce18244d5e107a07cd0fd619643e5d085aff61e42338c2c2da4031eb734", "Native29_link_rsp_line": 191},
+    "existing_lineage_record": "docs/ck3-native-ai/evidence/native25-absolute-date-deadline-source-review-2026-10-19.json",
+    "historical_compile_machine_id": "unknown",
+    "current_retention_evidence": "Native29 exact closed build retains355 other direct objects and the Native26 runtime archive; c0338 path is explicitly present in its unchanged ordered link response. No Native binary was reread or rebuilt here.",
+    "Arm599_675": "Allows speed1..5 and positive whole-day absolute target. Zero-watch only terminal mode. Up to64 unique regular public CUnit IDs; bind world/Jomini/local player and initial Army/Combat fingerprints while paused. Request speed is echoed configuration, not an actual speed getter.",
+    "ReadArmyFingerprint158_206": "Requires real regular CUnit/internal identity and positive current province. Captures direct move target, combat ID and retreat flag; accepts an idle nonpositive direct-target row as no target. Does not prove complete unseen/new army inventory or mandatory event/actor identity.",
+    "after_tick795_881": "After original daily final stage returns, require previous date+24, same world, inspect actual native pause, compare each watched position/target/combat/retreat and old combat roster/terminal, trigger at target. No speed-specific branch or sleep. These are daily-boundary checks, not continuous intra-day contact monitoring.",
+    "pause354_386": "Same Jomini and local player; native SetPaused then actual paused-byte readback. Infrastructure failures remain failed.",
+    "mandatory_limit": "This native sentinel has no ordinary event-instance/interaction or played-character/episode watch in its request/evaluator. a0 does not watch Armies. Daily+24 hard stop alone is not a new proof of immediate mandatory/actor preemption before the original daily function returns. Keep Python owner/modal/event checks and normal full planning.",
+    "single_slot": "One generation-owned slot. Never Arm a second date watcher over an existing battle/watch transaction. Unknown ACK/generation cannot be replayed."
+  },
+  "prospective_war_daily_watch_proposal": {
+    "status": "PROPOSAL_ONLY_NOT_AUTHORED_OR_ADOPTED",
+    "scope": "Independent default-off war_daily_watch, initially explicit speed2 software/live arm; possible speed3 qualification later. Existing generic speed1, contact_free route3 and all existing4/5 A/B/readiness contracts retain their current behavior.",
+    "minimum_admission": [
+      "Same actual paused/map-ready/alive actor, episode, connection generation, date/native/public revision and complete current war/Army evidence; reject unresolved actions, assault, current combat, unsupported/unknown inventories or preexisting mandatory blocker.",
+      "Retreat/march/siege remain wartime observations. Build the complete required own/enemy regular Army watch set in canonical order. Do not truncate to fit64; unsupported/special CUnit, missing positive province, unknown set or overflow falls back to the existing path.",
+      "Actual setter readback must equal requested2/3. Arm once to exactly starting+24 with that complete watch set and its own scope. Reject wrong generation/start/target/mode/watch/speed or unexpected initial combat before resume; cancel only verified actual generation while legally paused.",
+      "End each day in actual native paused state, verify completed tick/date/zero overshoot or legal earlier boundary, then return to the complete ordinary planner. Arrival/contact/retreat/siege/war-loss logic is retained; this is no nonwar bypass."
+    ],
+    "mandatory_and_actor_preempt": "Reuse source-bound ordinary event/interaction/terminal and owner-transition detection as a distinct boundary. At target wait for the same native daily pause rather than issue a racing pause; before target, use legal current-owner pause/cancel with actual outcome and no action replay. Do not reuse modal-only predicate as complete coverage. Reuse existing generic deadline early-boundary corrections as source precedent, not as live qualification of this new scope.",
+    "Native_build_needed": "No new Native primitive is needed for a bounded same-day Army/date watch using the existing API. A stronger requirement to detect unobserved mandatory/played-actor changes natively before daily-return needs a separately sourced Native30 owner-pump/actor/event watch and its own budget. Existing29 does not grant that stronger guarantee.",
+    "SDK_adoption": "No current constructor/config specifically admits this war_daily_watch scope. A narrow source implementation and normal frozen SDK warm adoption are required; no Game restart/DLL replacement is required for the existing29 primitive. Do not mutate the current live Driver or reuse global route high-speed A/B.",
+    "requested_exclusive_source_scope": "Root can grant one new war_daily_watch_v1.py admission/receipt helper, the narrow NativeDriver one-day scope selection/Arm-wait validator seam, and existing Protocol fixture extensions. Keep Service/strategy/military decisions with their owners; do not edit their files merely to speed the clock.",
+    "minimum_software_negatives": [
+      "Default off/no dedicated admission remains old speed1; contact-free, battle and other scopes retain existing speeds.",
+      "Stale actor/date/native or public revision, changed episode/connection, preexisting event, incomplete Army set/unsupported CUnit/overflow, current combat/assault all refuse fast resume.",
+      "Setter ACK but wrong actual speed; malformed Arm/watch/generation/date; nonpaused ending, skipped daily date or overshoot; native Army unavailable/target/position/combat/retreat transition; zero-day ordinary event and death/succession owner change; unknown action result never retries.",
+      "Same exact input at1/2/3 uses the same game-day target and complete decision boundaries. Assert one Arm/resume/Status lifecycle and source-bound early cancel; do not write tests that simply echo the new predicate."
+    ],
+    "natural_AB_proposal_not_authorization": "After software/source freeze and explicit Root A/B approval, use only the next naturally selected eligible war observation day in one ordinary batch. Keep existing Arm/Status/clock timings and before/after ordinary metrics; collect actual speed, same generation/watch/+24, paused, zero overshoot, mandatory/contact outcomes and normal next planning. No benchmark RPC, restart, long pause or speed5 promotion. A missing eligibility day leaves this test not-run. State-dependent1-vs2 days are not a strict matched A/B and cannot grant all retreat/siege/event variants."
+  },
+  "work_performed": {
+    "Game_RPC_calls": 0,
+    "desktop_or_process_memory_reads": 0,
+    "live_Driver_or_SAVE_reads": 0,
+    "current_profile_settings_reads": 0,
+    "compilations_or_new_DLLs_EXEs": 0,
+    "production_source_changes": 0,
+    "speed_changes": 0,
+    "audit_helper": "tools/g2_saved_campaign/audit_c11_advance_wait_20261019.py",
+    "artifact_scope": "Small source audit/proposal only; no current Native29/camera/SDK mutation or repeated campaign/retreat study."
+  },
+  "storage": {
+    "repo_package_limit_bytes": 24576,
+    "parent": "existing other128MiB micro pool; storage coordinator acknowledged source-only budget",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "external_writes": 0,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit": 0
+  }
+}

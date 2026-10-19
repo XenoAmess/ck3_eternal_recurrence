@@ -1,0 +1,212 @@
+{
+  "schema": "xar.C11-gift-war-cash-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:28:25.455335+00:00",
+  "closed_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-prisoner4286-failure85\\FROZEN.json",
+    "bytes": 11940,
+    "sha256": "3b8b99f588845ea9cf95637b9861ea34f0240cf2480e515186eb74e45ecdfaac"
+  },
+  "business_source_commit": "4d9791c12019c4e86d745bee7d7ca3aaba4e415c",
+  "Game_identity_from_closed_manifest": {
+    "pid": 15512,
+    "creation_filetime": 134368811928524228
+  },
+  "original_sources": [
+    {
+      "sequence": 4276,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-prisoner4286-failure85\\p37-responses\\4276-1-result.json",
+      "bytes": 60744,
+      "sha256": "0a1bc79c7dd2353db8d74e3688c05399a9bd058dcd314fd459efd47ec7f59810"
+    },
+    {
+      "sequence": 4280,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-prisoner4286-failure85\\p37-responses\\4280-1-result.json",
+      "bytes": 26539,
+      "sha256": "9295185b8cc9edec04c19871e4faddc170ee0a67da79d3282c85608ad07a5123"
+    },
+    {
+      "sequence": 4282,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-prisoner4286-failure85\\p37-responses\\4282-1-result.json",
+      "bytes": 32693,
+      "sha256": "45e2d44ab575bcc1f6376389cd626609b9f047b30e577a0f6dde5754a02afd8b"
+    },
+    {
+      "sequence": 4284,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-prisoner4286-failure85\\p37-responses\\4284-1-result.json",
+      "bytes": 51474,
+      "sha256": "95ec51ccbbfc1c18f274643f9ee5f3c80575e1aabf7fd97425e649dab7d701ad"
+    }
+  ],
+  "actual_projection": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\fixtures\\c11_gift4276_applied4284.json",
+    "bytes": 10456,
+    "sha256": "a7195d300a69e0d1b68f0032a9122f18734e2dc9122e71cf9ff98f9d9395cdb5"
+  },
+  "actual_gift": {
+    "cost_raw": 10000000,
+    "scale": 100000,
+    "post_gold_raw": 19727866,
+    "opinion_delta": 9,
+    "threat_resolved": false,
+    "faction": 33554460,
+    "recipient": 34973
+  },
+  "observed_war": {
+    "id": 16777278,
+    "primary_defender": true,
+    "score": 40,
+    "possible_target_title_ids": [
+      2488
+    ],
+    "friendly_headcount": 995,
+    "enemy_headcount": 2525,
+    "battle_win_probability": null
+  },
+  "faction_stock_threat": {
+    "status": "observed",
+    "observer_step": "query-player-faction-alerts-v1",
+    "same_frame_history_reused": false,
+    "source_faction_id": 33554460,
+    "recipient_character_id": 34973,
+    "snapshot_revision": 26,
+    "date_raw": 53189232,
+    "player_character_id": 40526,
+    "dangerous_response_ready": true,
+    "native_row": {
+      "faction_id": 33554460,
+      "faction_type_key": "liberty_faction",
+      "target_character_id": 40526,
+      "leader_character_id": 34973,
+      "leader_is_human": false,
+      "special_character_id": null,
+      "special_title_id": null,
+      "faction_at_war": false,
+      "faction_war_id": null,
+      "power": {
+        "raw": 11552100,
+        "scale": 100000
+      },
+      "power_threshold": {
+        "raw": 8000000,
+        "scale": 100000
+      },
+      "discontent": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "discontent_per_month": {
+        "raw": 700000,
+        "scale": 100000
+      },
+      "months_until_max_discontent": 15,
+      "character_member_ids": [
+        34973,
+        35899
+      ],
+      "county_member_title_ids": [],
+      "dangerous_by_stock_rule": true,
+      "danger_reason": "non_peasant_discontent_increasing"
+    },
+    "exact_ultimatum_timing_ready": false,
+    "faction_departure_or_threat_resolution": "not_inferred"
+  },
+  "original_fixed_gift_reserve_raw": 10000000,
+  "post_frame_existing_military_buffer_raw": 20000000,
+  "new_policy_replay_of_actual_pre_subset": {
+    "schema": "xar.faction-gift-wartime-cash/v1",
+    "source_frame": {
+      "played_character_id": 40526,
+      "native_revision": 26,
+      "date_raw": 53189232,
+      "snapshot_id": "native:26",
+      "revision": 27,
+      "episode_run_id": "native-40526-1bec95182886"
+    },
+    "new_gift_spending_allowed": false,
+    "policy_floor_raw": 20000000,
+    "future_income_or_unreceived_financing_credited_raw": 0,
+    "thresholds_are_native_or_user_hard_limits": false,
+    "observed_treasury_raw": 29727866,
+    "gift_gold_cost_raw": 10000000,
+    "gold_after_gift_raw": 19727866,
+    "status": "defer_new_gift",
+    "reason": "wartime_gift_would_breach_military_cash_floor"
+  },
+  "full_snapshot_root_market_not_reconstructed": true,
+  "preserved_baseline_step": "life-advance",
+  "existing_pending_receipt_precedes_new_gate": true,
+  "tests": [
+    {
+      "stage": "initial_collection_import_error",
+      "exit_code": 2,
+      "chunk": "f42a9c"
+    },
+    {
+      "stage": "corrected_import",
+      "tests": 12,
+      "seconds": 1.37,
+      "exit_code": 0,
+      "chunk": "11d64c"
+    },
+    {
+      "stage": "final_with_reuse_wrapper",
+      "tests": 13,
+      "seconds": 1.4,
+      "exit_code": 0,
+      "chunk": "ea733d"
+    }
+  ],
+  "Game_MCP_OBS_calls": 0,
+  "live_Driver_SAVE_media_body_reads": 0,
+  "gift_or_checkpoint_submissions": 0,
+  "C11_runtime_modified": false,
+  "new_behavior_live_verified": false,
+  "storage_policy_version": "1.0.0",
+  "new_output_budget_bytes": 65536,
+  "C11_frozen_source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\faction_gift_policy_v1.py",
+      "bytes": 9308,
+      "sha256": "569526b7dea244704ae946da2892475058a3c5b2b8f310b75d0e3e2c88159f15"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\faction_gift_formal_candidate_v1.py",
+      "bytes": 7114,
+      "sha256": "63eac861d1449ac08a75fde33e8a0d6c7c11e101bbc2a716fba462890b75f9db"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\bridge\\faction_gift_formal_route_v1.py",
+      "bytes": 25000,
+      "sha256": "5e9d2ab946d92c34ccb3a794f16a62028d01f4572813168593a94eac43646b30"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\faction_threat_response_inputs_v1.py",
+      "bytes": 5103,
+      "sha256": "bf5d1bab01c6d8b98ee8578f81acdac7516299cbcf32a925f629aa275b6f8a6d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\wartime_construction_cash_v1.py",
+      "bytes": 16639,
+      "sha256": "9eb2f93a573e2c6f467e6ff478c50d9856350cb4c436b5403fd0dd70351b772e"
+    }
+  ],
+  "new_source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\faction_gift_wartime_cash_v1.py",
+      "bytes": 9293,
+      "sha256": "911ef2f256cf597137f6b48692f6b2b64f19eebfb67732f3af6c75dc5076147a"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\faction_gift_formal_route_v1.py",
+      "bytes": 25674,
+      "sha256": "90d80bc2602095cfbf81e58e737089df20cde5d4eddb1af3f4d7f2544b7e4310"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_faction_gift_wartime_cash_v1.py",
+      "bytes": 8796,
+      "sha256": "f1a2189e280120baba050219df0b54afb8b317f16df4ede4b3f372a94201ebf2"
+    }
+  ],
+  "boundary": "Exact payment/opinion from original submit plus independent receipt, not screenshot differences. No counterfactual victory, actual useful hire, direct title loss or imminent ultimatum inferred. Future deployment requires its own source/runtime receipt."
+}

@@ -1,0 +1,348 @@
+{
+  "schema": "xar.m4.planner-consumer-wall-stage-instrumentation.v1",
+  "status": "source_and_focused_contract_passed_not_current_sdk_adopted",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:43:27.945801+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py current_machine_id; Python metadata observation, tool chunk617bbb",
+  "purpose": "Split four previously unmeasured planner wall-time regions without changing planner observations, decisions or actions.",
+  "adopted_source_boundary": {
+    "actual_c11_freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C11.json",
+      "bytes": 404161,
+      "sha256": "f9d487961fe56b84f607a2d44e702a5a1161593145a209d7778eb95d27424890",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "at_utc": "2026-10-19T10:58:56.242628+00:00"
+    },
+    "actual_c11_sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 870575,
+        "sha256": "a5f45d9ed9308038ef213e891fe882cc8cba8ecfd7a5045e8444cfcd5b53a0dd"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\bridge\\army_query_timing.py",
+        "bytes": 2753,
+        "sha256": "593cb5e266c12277b8fed6b90069336cdd5ff292fdf29ef742e8fe98004c40ac"
+      }
+    ],
+    "whole_master_is_not_actual_c11": true,
+    "current_frozen_sdk_modified": false,
+    "native_modified": false,
+    "game_actions": 0,
+    "desktop_actions": 0,
+    "rpc_calls": 0
+  },
+  "observed_gap": {
+    "source": {
+      "path": "docs/ck3-native-ai/evidence/c11-first-complete-batch-performance01.json",
+      "bytes": 14484,
+      "sha256": "6e08d72778010778ad3444cc1684afce96493da656e235b73f6ab030cc5e7f07"
+    },
+    "scope": "FULL4293 closed complete30cycle/+31game_days",
+    "first_rpc_to_last_met_seconds": 34.322011,
+    "seconds_per_game_day": 1.107162,
+    "advance_count": 6,
+    "advance_speed_all": 5,
+    "planner_internal_seconds": 8.2393321,
+    "existing_known_inner_interval_union_seconds": 1.6533613204956055,
+    "internal_uncovered_wall_seconds": 6.585971117019653,
+    "interpretation": "Uncovered wall is not established CPU time or removable work. Nested stage totals cannot be summed.",
+    "no_new_performance_sample": true
+  },
+  "stages": [
+    {
+      "name": "service.planner_pending_material",
+      "sites": 1,
+      "scope": "Original pending-material imports, ledger/classification and conditional publication wait or early return.",
+      "actual_c11_lines": [
+        1993,
+        2081
+      ],
+      "implementation": "start_army_timing and try/finally around the unchanged block; finish step=plan-turn on normal return or original exception.",
+      "possible_wait_not_cpu": "The pre-existing publication wait is bounded at 5 seconds. No observation proves it caused the FULL4293 gap."
+    },
+    {
+      "name": "service.planner_construction_consumer",
+      "sites": 2,
+      "scope": "Original plan_construction_private calls on two planner branches.",
+      "actual_c11_lines": [
+        2808,
+        2927
+      ],
+      "implementation": "Existing _timed_planning_call_v1 with original callable and arguments."
+    },
+    {
+      "name": "service.planner_family_consumer",
+      "sites": 4,
+      "scope": "Original peaceful opportunity and wartime/opportunity family calls.",
+      "actual_c11_lines": [
+        2723,
+        2847,
+        2948,
+        2952
+      ],
+      "implementation": "Existing _timed_planning_call_v1; original gated branches and call order."
+    },
+    {
+      "name": "service.planner_governance_tail",
+      "sites": 2,
+      "scope": "Original council -> crown -> feast -> finish_release_root_arbitration returns.",
+      "actual_c11_lines": [
+        2897,
+        2975
+      ],
+      "implementation": "Existing _timed_planning_call_v1 around a lambda containing the original return expression and evaluation order."
+    }
+  ],
+  "source_integrity": {
+    "canonical_before": {
+      "path": "ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 873470,
+      "sha256": "bb1960b2f0eb2bf943f90100c8fe966ebb5adcd3409a157c3db863dbcb846b0f"
+    },
+    "final_files": [
+      {
+        "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+        "bytes": 874734,
+        "sha256": "4b420c22c3277cda843e5b4a290b543f3e63a765a49140d480f12cc8073b63b0",
+        "baseline_head_bytes": 873470,
+        "baseline_head_sha256": "bb1960b2f0eb2bf943f90100c8fe966ebb5adcd3409a157c3db863dbcb846b0f",
+        "net_bytes_vs_head": 1264
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_planner_consumer_timing_v1.py",
+        "bytes": 5723,
+        "sha256": "98713db5b902318b41e94ce97e981fabc6dee66a48a60169d4a376133ac5f760",
+        "baseline_head_bytes": 0,
+        "baseline_head_sha256": null,
+        "net_bytes_vs_head": 5723
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py",
+        "bytes": 4691,
+        "sha256": "f1af1ffb970a9dde33a0f2483477e201365dfcdecf689a347126fa9cd8a298a7",
+        "baseline_head_bytes": 4612,
+        "baseline_head_sha256": "902f495ef8ecb1cf014b5e393e6e586af711bb3e3de4fdb2f7bc9defebe1d406",
+        "net_bytes_vs_head": 79
+      }
+    ],
+    "inverse_validation": {
+      "nine_disjoint_anchor_replacements_restore_entire_canonical_baseline": true,
+      "restored_bytes": 873470,
+      "restored_sha256": "bb1960b2f0eb2bf943f90100c8fe966ebb5adcd3409a157c3db863dbcb846b0f",
+      "tool_chunk": "4a9cf7"
+    },
+    "actual_src10_anchors": [
+      {
+        "stage": "service.planner_pending_material",
+        "before_bytes": 5811,
+        "before_sha256": "62d62a21445737f721609b06b71fd498f846e777908b83412bad1c721643dd3c",
+        "after_bytes": 6355,
+        "after_sha256": "6b5b0a50980b51d3fa7eb36b325608d205b03d1b6355c62c285ebd1c53dcfc49",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 1993,
+        "canonical_before_line": 2023
+      },
+      {
+        "stage": "service.planner_family_consumer",
+        "before_bytes": 123,
+        "before_sha256": "5ee28de7c620d13d189a97f7bd700aa02aba398a9d39f6d5a8a89a7aecb21096",
+        "after_bytes": 199,
+        "after_sha256": "2eecc7704ca062395710b294af6c73adda18be2b1d3d810f4670e25bc9e01823",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2723,
+        "canonical_before_line": 2758
+      },
+      {
+        "stage": "service.planner_construction_consumer",
+        "before_bytes": 206,
+        "before_sha256": "b71ae6d443574dcf93019752b8953731739663ba964585d6b29d93b2edead88a",
+        "after_bytes": 292,
+        "after_sha256": "105ede5c79ad94d9b9c3adafd6b3d30374c98a6fb7b93d314dbb32749f7b06d6",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2808,
+        "canonical_before_line": 2843
+      },
+      {
+        "stage": "service.planner_family_consumer",
+        "before_bytes": 115,
+        "before_sha256": "3b2beb51dc42212f304fbd973c3d5f87676a2418a50d978e299814619add2aff",
+        "after_bytes": 191,
+        "after_sha256": "32622da457b2a78f4baaf03e37cdefd5deeb3b9b8e4e9a9cc9e225a880744bae",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2847,
+        "canonical_before_line": 2882
+      },
+      {
+        "stage": "service.planner_governance_tail",
+        "before_bytes": 249,
+        "before_sha256": "e5497f21b2b649d0550aace94c17a98e9dce6240f5ea97b1b0220b7db52f326c",
+        "after_bytes": 375,
+        "after_sha256": "d65a909b8f7bba9810e1289bec221a2dd08fababb20eccc2e54a2ab4fe81fe18",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2897,
+        "canonical_before_line": 2932
+      },
+      {
+        "stage": "service.planner_construction_consumer",
+        "before_bytes": 233,
+        "before_sha256": "943c3ebd795b8764577531be0fc10d17d885d1f64388fb110769f338116b087e",
+        "after_bytes": 315,
+        "after_sha256": "bd6625a95f13916acc4de712aa97cb5757fa710755374afee0ec6b825492cea0",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2927,
+        "canonical_before_line": 2962
+      },
+      {
+        "stage": "service.planner_family_consumer",
+        "before_bytes": 127,
+        "before_sha256": "9dcbbd3cfaf800445a231539ae17ac5637216a4b903325f175a1afe2af44f1bc",
+        "after_bytes": 207,
+        "after_sha256": "db4590333e2ebd9ff4f046624ae6091937f692f0167340e65dd71f4258b1a561",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2948,
+        "canonical_before_line": 2983
+      },
+      {
+        "stage": "service.planner_family_consumer",
+        "before_bytes": 190,
+        "before_sha256": "c5d04066b92dfa96dd758f167572df2ed53fe56024159fc0822d91a4925a95a9",
+        "after_bytes": 270,
+        "after_sha256": "d4cb09dcae24fc5e267d82a9b8020008efca88822336aa08be51a89178a843b8",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2952,
+        "canonical_before_line": 2987
+      },
+      {
+        "stage": "service.planner_governance_tail",
+        "before_bytes": 233,
+        "before_sha256": "6c5ec04ad8df8b253096d66dd18d17a48da56e0d13005c7f0600857639b1ed69",
+        "after_bytes": 347,
+        "after_sha256": "f67735cf7634c47357a06ab220bced41c0b378b2c6137541d8391aa6cee98643",
+        "actual_src10_same_bytes": true,
+        "actual_src10_line": 2975,
+        "canonical_before_line": 3010
+      }
+    ],
+    "ast_parse_all_three_files": "passed",
+    "git_diff_check": {
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "patch_preparation_history": "First unordered apply_patch failed atomically with no file write; the original SHA was rechecked, then sorted hunks applied. No test failure preceded focused PASS."
+  },
+  "behavior_contract": {
+    "new_business_observations": 0,
+    "new_cache_reads": 0,
+    "new_rpc_calls": 0,
+    "new_history_exports": 0,
+    "new_business_persistence": 0,
+    "changed_action_permissions": false,
+    "changed_guard_or_cache_policy": false,
+    "changed_calls_arguments_order_or_original_exception": false,
+    "timer_mechanism": "Reuse existing optional scalar army_query_timing and _timed_planning_call_v1. Without XAR_CK3_ARMY_TIMING_JSONL, disabled tokens emit no rows. With the existing sink enabled, new labels append bounded scalar JSONL diagnostics through existing lock/error handling.",
+    "no_claim_of_zero_diagnostic_io_when_enabled": true,
+    "recorded_payload": "Only scalar timing envelope; no snapshot or history body supplied.",
+    "aggregation": "Durations are inclusive wall intervals. Clip and union within planner_internal; never sum parent and child. Full attribution is not claimed.",
+    "other_unmeasured_regions": "Unwrapped holy-order/commander and other preflight/context/early-return work remain unknown."
+  },
+  "focused_validation": {
+    "test_at_utc": null,
+    "test_time_reason": "Actual subprocess did not record UTC; source observation time is not substituted.",
+    "argv": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "ck3_autonomous_player/tests/unit/test_planner_consumer_timing_v1.py",
+      "ck3_autonomous_player/tests/unit/test_route_contact_readonly_unavailable.py::RouteContactReadonlyUnavailableTests::test_service_execute_and_auto_turn_return_observation_without_throwing",
+      "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py::RealmMembershipServiceTests::test_actual_planning_public_copy_dispatch_and_vassal_loss",
+      "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py::RealmMembershipServiceTests::test_other_cycle_does_not_retain_or_copy_query_snapshot",
+      "-q",
+      "--tb=short",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "environment_overrides": {
+      "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+    },
+    "exit_code": 0,
+    "stdout": ".........                                                                [100%]\n9 passed in 2.34s\n",
+    "stderr": "",
+    "stdout_truncated": false,
+    "subprocess_elapsed_seconds": 2.9033256000839174,
+    "tool_receipt": {
+      "chunk_id": "600a18",
+      "exit_code": 0,
+      "wall_time_seconds": 2.8766296000000002
+    },
+    "first_and_only_focused_run": true,
+    "case_count": 9,
+    "case_groups": [
+      {
+        "cases": 2,
+        "proof": "Real service plan_turn life and army-query selections: on/off identical plans, counts and order; snapshot/view once; construction/family/council/crown/feast/arbitration once; four labels once when enabled and no mock receipts when disabled."
+      },
+      {
+        "cases": 4,
+        "proof": "Original RuntimeError object retained on pending/construction/family/crown failure; corresponding new stage finishes once, no extra snapshot."
+      },
+      {
+        "cases": 1,
+        "proof": "Unchanged original route-contact node preserves command/read assertion (1,1)."
+      },
+      {
+        "cases": 2,
+        "proof": "Unchanged original realm-membership nodes retain snapshot_calls 3 for plan+2AUTO, 1 for other-cycle, and STEP9/10 query assertions."
+      }
+    ],
+    "unchanged_original_test_files": [
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_route_contact_readonly_unavailable.py",
+        "bytes": 12485,
+        "sha256": "947ba228cb1911c13dfe2bf53b022e079e9f513845e802ba124753116ec06d55",
+        "same_bytes_as_HEAD": true
+      },
+      {
+        "path": "ck3_autonomous_player/tests/unit/test_realm_membership_service_v1.py",
+        "bytes": 7806,
+        "sha256": "965eb36d88e56c20c5d791af09b4623da92e89ad2bc1acb58e0e464083c98d5b",
+        "same_bytes_as_HEAD": true
+      }
+    ],
+    "strict_existing_timer_fixture": {
+      "path": "ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py",
+      "change": "Only exact expected stage set gains pending_material and governance_tail. This existing council fixture has construction/family gates off.",
+      "locally_run": false,
+      "reason": "Its tmp_path producer is outside this no-artifact scope; existing CI entry remains. No local full-file PASS claimed."
+    },
+    "full_ci_rerun": false,
+    "benchmark_run": false,
+    "external_artifact_bytes": 0
+  },
+  "adoption": {
+    "current_c11_unchanged": true,
+    "current_live_sdk_hot_swap": false,
+    "next": "Future normal Root SDK batch; actual attribution awaits natural adopted-source samples.",
+    "runtime_or_native_business_qualification": "none from this source/test task",
+    "current_game_speed_changed": false,
+    "funding_credit": 0
+  },
+  "storage": {
+    "scope": "repo-only source/test/proof, original other research128MiB",
+    "aggregate_hard_limit_bytes": 32768,
+    "source_test_net_added_bytes": 7066,
+    "proof_bytes": 15420,
+    "total_net_added_bytes": 22486,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "external_bytes": 0,
+    "producer_closed": true,
+    "future_write_bytes": 0,
+    "active_processes": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00"
+  }
+}

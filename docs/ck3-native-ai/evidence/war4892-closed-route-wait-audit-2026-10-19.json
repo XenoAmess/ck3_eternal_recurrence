@@ -1,0 +1,228 @@
+{
+  "schema": "xar.ck3.war4892-closed-route-wait-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T11:38:51.182686+00:00",
+  "machine_id_source": "Matches current tools/ck3_live_run_id.py machine observed in source-only issuer proof 2026-10-19T11:36:29Z",
+  "runtime_observation_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\FROZEN.json",
+    "bytes": 11423,
+    "sha256": "3c7c85fc5971fd61d94f7dfd969b1ecbe4f13a87ce144c1e2f62711f7201df2e",
+    "actual_observed_at_utc": "2026-10-19T11:31:20.554936+00:00"
+  },
+  "scope": "Closed responses and frozen SDK source only; no active Driver/SAVE, Game/Native/RPC/desktop operation, or strategy/service/route source edit.",
+  "pending": {
+    "completed_cycles": 2327,
+    "game_days": 2020,
+    "pending_cycle": 2328,
+    "pending_AUTO": 4892,
+    "next_sequence": 4893,
+    "original4892_replayed": false,
+    "blocked_classified_as_completed_AUTO": false
+  },
+  "actual_frame": {
+    "snapshot_id": "native:351",
+    "revision": 352,
+    "native_revision": 351,
+    "date_raw": 53192808,
+    "episode_run_id": "native-40526-1bec95182886"
+  },
+  "actual_army": {
+    "army_id": 33554800,
+    "owner_character_id": 40526,
+    "current_province_id": 2615,
+    "move_target_province_id": 8757,
+    "route_province_ids": [
+      8757
+    ],
+    "route_read_status": "complete_nonempty",
+    "controllable": true,
+    "army_state": "moving",
+    "army_state_code": 7,
+    "in_combat": false,
+    "retreating": false
+  },
+  "original_Halt": {
+    "auto_status": "executed",
+    "selected_step": "halt-army-33554800",
+    "accepted": true,
+    "war_action": {
+      "status": "halt_submitted",
+      "army_id": 33554800,
+      "submitted_date_raw": 53192808,
+      "submitted_native_revision": 350,
+      "submitted_connection_generation": 1,
+      "submitted_episode_run_id": "native-40526-1bec95182886",
+      "owner_character_id": 40526,
+      "original_current_province_id": 2615,
+      "original_move_target_province_id": 2604,
+      "original_route_province_ids": [
+        8757,
+        2605,
+        2604
+      ],
+      "postcondition_verified": false
+    },
+    "interpretation": "Submitted Halt is real. Independent next SEM observes original route suffix removed but first edge remains; ACK is not full stopping or contact-free permission."
+  },
+  "pending_Halt_boundary": {
+    "source": "strategy.py:21483-21564 _pending_unsafe_route_halt",
+    "field_comparison": "Original current/owner/episode/date/connection align; native350->351 and [8757,2605,2604]->[8757] with move_target8757, moving7 and complete_nonempty route match suffix-cancellation shape.",
+    "active_Driver_history_read": false,
+    "limitation": "This report does not invent a command-history index or read current Driver. Source/M5 replay must retain the original persisted command row; it cannot manufacture pending-Halt qualification from a short route alone."
+  },
+  "actual_contact": {
+    "target": 8757,
+    "horizon": {
+      "status": "available",
+      "date_raw": 53192808,
+      "snapshot_revision": 351,
+      "subject_army_id": 33554800,
+      "target_province_id": 8757,
+      "hostile_army_ids": [
+        393,
+        33554439
+      ],
+      "subject_route": {
+        "timeline_observable": true,
+        "army_id": 33554800,
+        "current_province_id": 2615,
+        "effective_origin_province_id": 8757,
+        "route_province_ids": [
+          8757
+        ],
+        "arrival_date_raws": [
+          53192832
+        ]
+      },
+      "hostile_routes": [
+        {
+          "timeline_observable": true,
+          "army_id": 393,
+          "current_province_id": 2610,
+          "effective_origin_province_id": 8757,
+          "route_province_ids": [
+            8757,
+            2615
+          ],
+          "arrival_date_raws": [
+            53192832,
+            53193072
+          ]
+        },
+        {
+          "timeline_observable": true,
+          "army_id": 33554439,
+          "current_province_id": 2610,
+          "effective_origin_province_id": 8757,
+          "route_province_ids": [
+            8757
+          ],
+          "arrival_date_raws": [
+            53192880
+          ]
+        }
+      ],
+      "horizon_start_date_raw": 53192808,
+      "horizon_end_date_raw": 53192832,
+      "one_day_contact_free": false,
+      "conflicts": [
+        {
+          "kind": "same_province",
+          "hostile_army_id": 393,
+          "province_id": 8757,
+          "overlap_start_date_raw": 53192832,
+          "overlap_end_date_raw": 53192832
+        },
+        {
+          "kind": "opposing_edge",
+          "hostile_army_id": 393,
+          "subject_from_province_id": 2615,
+          "subject_to_province_id": 8757,
+          "hostile_from_province_id": 8757,
+          "hostile_to_province_id": 2615,
+          "overlap_start_date_raw": 53192832,
+          "overlap_end_date_raw": 53192832
+        }
+      ]
+    },
+    "candidate_target": 2604,
+    "candidate_route": [
+      8757,
+      2605,
+      2604
+    ],
+    "interpretation": "Existing committed first edge and candidate objective both meet enemy393 at8757 at raw53192832 (+1day), with same-province/opposing-edge conflicts. Enemy current2610 does not establish a stationary safe hold at own2615."
+  },
+  "actual_war": {
+    "war_id": 16777278,
+    "side": "defender",
+    "player_relative_war_score": 2,
+    "friendly_current_soldiers": 1181,
+    "enemy_current_soldiers": 2701,
+    "interpretation": "Observed operational overmatch, not a battle win probability. Surrender legality is not a mandate; white peace/victory were unavailable and CB material terms remain unobserved."
+  },
+  "existing_wait_contract": {
+    "strategy": "strategy.py:21567-21620 retained-unsafe-edge watch currently requires embarked4, real pending Halt + suffix cancellation, fresh matching one-hop native horizon and exhausted unsafe routes. It explicitly permits contact and gives no offensive movement, full-stop, material or victory credit.",
+    "specific_gap": "Actual moving7 with an already-retained first edge fails the embarked4-only watch despite matching the distinct Halt/suffix evidence. M5 owns any narrow repair and tests; this report changes no predicates.",
+    "SDK": "NativeDriver10931-10938 generic life-advance-one-day uses exact_one_day=True; unlike a safe-route advancement it has no stationary-only admission and does not claim contact-free.",
+    "native_daily": "NativeDriver25093-25097,25336-25454 uses original native Arm/Status/Cancel and actual paused/+24 validation. New modal before target cancels the old generation and returns the real interruption, not a completed full day.",
+    "actual_advertised_caps": [
+      "game.command.research-arm-tactical-daily-sentinel-v1-N",
+      "game.command.research-query-tactical-daily-sentinel-v1",
+      "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N"
+    ],
+    "preservation": "Keep existing speed selection, +24 horizon, event/terminal/revision guards and after-observation. Do not issue a fresh Move or repeat Halt; one-day watch accepts possible in-day battle/defeat and must re-read actual army/battle state."
+  },
+  "delivered_to": [
+    "/root",
+    "/root/g2_m5_candidates",
+    "/root/runtime_v20261019"
+  ],
+  "implementation_owner": "/root/g2_m5_candidates",
+  "finite_recovery_owner": "/root/perf_harness",
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\strategy.py",
+      "bytes": 1032678,
+      "sha256": "ddc62e3093564f8b8126507ce7d0e2639a154ebffa15e6312a8fc74b45c9bf29"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src10\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1612139,
+      "sha256": "e19d1204f8b5782345548f022288b9e7fa9992295c171c2554246232457a412f"
+    }
+  ],
+  "closed_inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\4879-1-result.json",
+      "bytes": 38490,
+      "sha256": "65f7f4d02392f56f9e31f8a752eb1151cf2660c0cfb8ab06e941735337ed6741"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\p37-responses\\4881-1-result.json",
+      "bytes": 59331,
+      "sha256": "a3ae0286bce437d54c656ae7b6aa2d6e96c91b006e32faead335c4d19288b825"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\p37-responses\\4884-1-result.json",
+      "bytes": 49029,
+      "sha256": "8644e766fe5edab4e719a1e2b4c2e8efc78ffc722a0faa65a515513d4762c704"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\p37-responses\\4888-1-result.json",
+      "bytes": 48693,
+      "sha256": "1ed016a10b3f9597b6c801a22756bd2cfd6237eded425e63af72c70a23d44748"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\p37-responses\\4890-1-result.json",
+      "bytes": 54699,
+      "sha256": "05558394ecfcefb8728af52df1f6c0843a16431812e6a0155ce99d6476f9a465"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c11-war4892-blocked86\\p37-responses\\4892-1-result.json",
+      "bytes": 50148,
+      "sha256": "f1c21f6fbb69ee000c884ae884298dae0b0394d0e3663a81582d51c35ffb8431"
+    }
+  ],
+  "limitation": "No new fallback was run and no actual battle outcome, stopped army, safe day or extra game-day credit is claimed. Clearing pending alone is insufficient to fix the repeated ordinary-planner blockage."
+}
