@@ -1,0 +1,173 @@
+{
+  "schema": "xar.turn-bundle-owned-partition-copy-source/v1",
+  "status": "FROZEN_SOURCE_READY_FOCUSED_FUNCTIONAL_TESTS_PASSED_PENDING_INDEPENDENT_REVIEW",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:44:03Z",
+  "identity_command": "python -B tools/ck3_live_run_id.py machine",
+  "change": "Adopt one already detached local partition value instead of deep-copying it again. Keep every input branch clone, the default component copying contract and final public succession isolation.",
+  "source": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/turn_bundle_contract.py",
+    "before": {
+      "bytes": 27516,
+      "sha256": "0119ea8a1d41a0ab84ac6dd33f865b022f54595c8097bb6e55a70ba7bcff356a"
+    },
+    "after": {
+      "bytes": 27974,
+      "sha256": "d02a8e56a83494a9643d9ded350e125ad96d6d6922eef75132e37d711ed91acc"
+    },
+    "net_bytes": 458,
+    "new_helper": "_owned_partition_component",
+    "new_helper_lines": [
+      19,
+      26
+    ],
+    "one_changed_call": "build_turn_bundle_v1, original lines616-625",
+    "original_builder_AST": "39e2b7191e9e7fa729dc177f04879f50a7f0e945c77a8d45058c5b74565a4e12",
+    "candidate_builder_AST": "65530918f75dddb2d1082f0abf3f238ac7374f3da08ebaace2847f20a2d94033",
+    "all_other_original_functions_AST_unchanged": true,
+    "unchanged_AST": {
+      "_component": "9840302594c57b38953106ed239c1357c0aa7ed5ebd3e017e2e0e30b0af3f1db",
+      "_binding": "75890e8bebf191095b78db58003a899b3e92a212640528ba5953a77d2a7e1899",
+      "_territory_state": "ac21a08ff01a1b6f7904cc2c6c9426dcf01e788eecf17698dd97c2e58b7a4171"
+    },
+    "inverse": "Remove only the new helper and restore the one original _component('available', ...) call. Entire original source bytes restored with SHA0119ea8a...ff356a.",
+    "full_inverse_byte_equality": true
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/turn_bundle_contract.py",
+      "bytes": 27974,
+      "sha256": "d02a8e56a83494a9643d9ded350e125ad96d6d6922eef75132e37d711ed91acc",
+      "kind": "complete changed source leaf"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_turn_bundle_owned_partition_v1.py",
+      "bytes": 6286,
+      "sha256": "206ee3fa997f788fb3d7460146537409d616bec38f2780f4e8ca9828a6dd2763"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/turn-bundle-owned-partition-v1.patch",
+      "bytes": 1145,
+      "sha256": "6abf2471129bb5926fcfe96102b52bd004d41b805c7c1f5f1fe4ba1aa4194751"
+    }
+  ],
+  "call_path": {
+    "observed_source": "Repository canonical Python planner; source read only, no closed FULL reanalysis or runtime sample.",
+    "entry": "GameplayBridgeService._plan_turn_internal / nested plan_from_view, service.py original2730-2731",
+    "condition": "When the original same-frame risk_root is present, build_ordinary_player_risk_context_v1 calls build_turn_bundle_v1 at ordinary_player_risk_context_v1.py:101-103.",
+    "missing_root": "ordinary_player_risk_context_v1.py:91-92 returns typed unavailable immediately. This copying cost is not universal for every AUTO.",
+    "consumer": "Risk projection reads ruler.vitals, four alert values, binding and source at lines111-136. Public turn-bundle and succession consumers can also use the same builder.",
+    "isolated_from_M5_private_filter": true,
+    "frame_frequency_policy_or_action_changed": false
+  },
+  "ownership_and_alias": {
+    "preserved_input_clones": [
+      "titles_without_heir title clone at original597",
+      "titles_to_other_heirs row clone at original603",
+      "complete held_title_partition clone at original619"
+    ],
+    "removed": "The original _component call at616 deep-copied the already owned dict containing these three detached branches.",
+    "ownership": "The new value dictionary and all three mutable branches are created inside build_turn_bundle_v1. Their only additional references are locals that do not escape separately.",
+    "readonly_intermediate_consumers": [
+      "_territory_state original307-338 reads partition title rows and emits fresh summaries",
+      "player_vitals_contract._succession_risk202-225 reads partition.split_risk as a boolean"
+    ],
+    "final_isolation": "The original _component('available', succession_state) at703 is unchanged and still deep-copies the complete public succession result.",
+    "default_component": "Every other _component use retains the original validation and deepcopy.",
+    "why_not_borrow_source_rows": "Keeping the three initial independent clones preserves non-aliasing between title_heirs and titles_to_other_heirs/titles_without_heir. Borrowing the same input row into multiple branches before one final deepcopy would introduce observable aliases and is not implemented.",
+    "input_mutation_unchanged": true,
+    "cross_output_branch_alias_unchanged": true,
+    "caller_and_public_mutation_are_isolated": true
+  },
+  "preserved_semantics": {
+    "binding_validation": "Original paused/current snapshot/native revision/date/query-sequence checks unchanged.",
+    "validation": "Original partition, council, root, territory and vitals checks and unavailable branches unchanged.",
+    "result": "Complete public DTO equality and JSON equality verified with the original valid two-title fixture.",
+    "planner_candidates_actions": "No candidate, priority, speed, horizon, war, diplomacy or event logic changed.",
+    "dirty_once_unknown": "This leaf is a pure DTO builder. It performs no persistence, once-claim update, gameplay command, acknowledgement handling, or retry. All corresponding guards and the protected Driver snapshot deepcopy remain untouched.",
+    "Driver_or_Native_or_SAVE_touched": false,
+    "C18_runtime_or_frozen_C19_modified": false
+  },
+  "qualification": {
+    "level": "Portable repository-only functional tests and source inverse/AST/compile checks; no timing benchmark or live game qualification.",
+    "command": "python -B -m unittest -v ck3_autonomous_player.tests.unit.test_turn_bundle_owned_partition_v1",
+    "final": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "exit_code": 0,
+      "reported_runner_seconds": 0.017
+    },
+    "prior_pass": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "reported_runner_seconds": 0.019,
+      "reason_for_final_run": "Only changed the paired-baseline guard from Python-version-dependent AST hashing to an exact normalized function-source SHA for CI portability. Production code was unchanged."
+    },
+    "cases": [
+      "Complete old/new public dictionary and JSON equal; caller input unchanged; exactly one fewer deepcopy call on the existing valid fixture.",
+      "Old/new input and output detach in both directions; title_heirs and titles_to_other_heirs remain separately mutable, as do titles_without_heir and its title_heirs entry; ruler/succession primary-title copies remain separate.",
+      "Missing and stale binding preserve identical ValueError type/message; unavailable-root DTO and copy count remain identical."
+    ],
+    "fixture": {
+      "path": "ck3_autonomous_player/tests/unit/test_turn_bundle_v1.py",
+      "functions": [
+        "_snapshot",
+        "_root"
+      ],
+      "shape": "Existing valid fixture: two held titles, split heirs, council, two active wars. A second no-heir variation changes only an existing row field.",
+      "copied_or_new_fixture_bytes": 0
+    },
+    "baseline": "Reconstruct the former builder by reversing only its one changed call. Its normalized function-source SHA f8a0fdb73208fc5fecbba3bb05bdebbb5248e3e3d0a1e0c6fbd8d75375492acd must match before execution. This is a locked original implementation, not a mirror of the optimized logic.",
+    "copy_count_delta": -1,
+    "unavailable_copy_count_delta": 0,
+    "measured_runtime_speedup_seconds": null,
+    "no_large_benchmark": true,
+    "in_memory_compile": [
+      "production leaf",
+      "new test"
+    ],
+    "new_owned_helper_assert_nodes": 0,
+    "existing_unrelated_assertions_modified": false
+  },
+  "CI_portability": {
+    "designed_portable": true,
+    "required_inputs": "Only repository modules and the pre-existing test fixture functions.",
+    "no_D_or_local_runtime_dependency": true,
+    "no_Game_Driver_SAVE_or_OS_service_dependency": true,
+    "no_pytest_plugin_or_temp_directory_requirement": true,
+    "hash_guard": "Normalized source text rather than AST.dump avoids FunctionDef.type_params differences across supported Python minors.",
+    "actual_remote_CI": "Not run by this agent; Root owns integration and CI.",
+    "platform_claim": "Local focused tests passed on the recorded machine. This proof does not claim a separate Linux/remote CI run."
+  },
+  "performance_boundary": {
+    "removed_work": "One recursive pass over the owned partition dictionary, including its T title rows, S split-heir rows and U no-heir title values, per admitted builder invocation.",
+    "scale": "Linear work in those existing vectors. No full-history or full-semantic copy was removed.",
+    "actual_Robert_vector_sizes": "unknown; no Driver/body read or new observation was performed",
+    "frequency": "Conditional on the existing same-frame root path; do not multiply by all campaign days/AUTO cycles.",
+    "seconds_saved_or_target_achievement": null,
+    "no_end_to_end_wall_or_CPU_claim": true
+  },
+  "storage": {
+    "receipt": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/TURN-BUNDLE-OWNED-PARTITION-SOURCE64KiB-COMMITMENT01.json",
+    "receipt_bytes": 1541,
+    "receipt_sha256": "8f66a490720a3f9ad7eea860934e633e6b68fea0cde56f6f280fd7f6c69c3260",
+    "complete_retained_source_test_patch_proof_cap": 65536,
+    "complete_leaf_subtotal_before_this_proof": 35405,
+    "source_net_delta_bytes": 458,
+    "owned_scratch_bytes": 0,
+    "external_new_bytes": 0,
+    "bytecode_bytes": 0,
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  },
+  "independent_review": {
+    "requested_by_parent": "M5 or M1, readonly after producer freeze",
+    "status_at_freeze": "Pending independent source review",
+    "no_extra_matrix_requested": true
+  },
+  "adoption": "Canonical source fix only, not deployed to current SDK. Root owns commit, independent review acceptance and any future source adoption. Freeze after this proof."
+}

@@ -1265,3 +1265,5 @@ docs/ck3-native-ai/evidence/native30-attempt04-root-release-2026-10-20.json -tex
 docs/ck3-native-ai/evidence/native30-attempt04-actual-result-2026-10-20.json -text whitespace=cr-at-eol
 
 docs/ck3-native-ai/evidence/native30-attempt05-root-closed-review-2026-10-20.json -text whitespace=cr-at-eol
+
+docs/ck3-native-ai/evidence/turn-bundle-owned-partition-v1.patch -text whitespace=-blank-at-eol

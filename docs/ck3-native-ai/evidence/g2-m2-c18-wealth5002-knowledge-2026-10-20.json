@@ -1,0 +1,135 @@
+{
+  "Game_MCP_RPC_calls": 0,
+  "actual_loader": "exact",
+  "analysis": "Native0 pays the dynamic quote for safe30year modifiers/governorXP2. Native1 pays the same, uses great modifiers/tax0.2 if investor is already friend, otherwise authored75/25 random weights give great modifiers+friend or failed investment; governorXP4/-2 conditional. Preserve source quirk: nonfriend successful risky mason assigns great_religious_sculptor_investment_character_modifier, not great_mason. Native2 grants half the payment rounded up to5. All16 modifiers/3callees/2values preserved; duration30/goodtax0.1/greattax0.2. Native text says safe mason/risky jeweler, but opaque safe/risky flag and capital province identities are not decoded or promoted to a policy contract. After only AI kills a created/unlanded investor; the human branch can remove created flag. Actual first native0/render0 ACKtrue51->null and gold-10 are observed; prestige/stress89 unchanged. No capital/character modifier, governorXP, friendship, investor lifecycle or future tax readback; capitalincome and net long-term utility unknown. Investment utility needs existing war reserve inputs.",
+  "before_after": {
+    "after": {
+      "bytes": 3540,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\5866ad4f1bcf42a0948a1a645efebafe.after.json",
+      "sha256": "42334b5869344a2bafc96ddf2d4a96f423e5b226594aa5118932038b65793a46"
+    },
+    "before": {
+      "bytes": 7882,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\5866ad4f1bcf42a0948a1a645efebafe.before.json",
+      "sha256": "533445f25ef90ab59bde7b7f6beb27a75c2a49bb9ca5bf090afd5011364b0fd6"
+    },
+    "command_acknowledged": true,
+    "event_instance_advanced_verified": true,
+    "incident_id": "5866ad4f1bcf42a0948a1a645efebafe",
+    "replay_allowed": false
+  },
+  "binding": {
+    "actor_character_id": 40526,
+    "bridge_pid": 30852,
+    "connection_generation": 3,
+    "date_raw": 53273208,
+    "episode_run_id": "native-40526-1bec95182886",
+    "map_ready": true,
+    "native_revision": 4262,
+    "paused": true,
+    "revision": 1595,
+    "snapshot_id": "native:4262"
+  },
+  "canonical": [
+    {
+      "bytes": 50703,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\4c713eb7112c246c0e5c1fb4009c686f1e91dcd89932a3fc662cd5ff6ed0317e.json",
+      "sha256": "10af39a4fe69bddb5c4a134be2488cd240b3298c1f1557a533740441001e1b60"
+    },
+    {
+      "bytes": 1342,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\4c713eb7112c246c0e5c1fb4009c686f1e91dcd89932a3fc662cd5ff6ed0317e.json",
+      "sha256": "1db886be2ffc9563576df7a3daf92646958387408231ad5aa249776e78f13e2f"
+    }
+  ],
+  "current_typed_role_ids": {
+    "investor": 33626103,
+    "root": 40526
+  },
+  "definition_sha256": "792407b242fa0ba958a2656f323fe47d26d635078ae960b498fe72dc559df910",
+  "future_loader": "source_rebound",
+  "future_policy_inputs_missing": [
+    "native capital income and dynamic alternative quote",
+    "actual existing friend relation",
+    "current capital+character modifiers and stacking",
+    "current war reserve/commitments/emergency mercenary needs",
+    "governor status/trait and remaining benefit horizon"
+  ],
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "material_effects_verified": false,
+  "observed_at_utc": "2026-10-19T19:44:33.642309+00:00",
+  "observed_resource_deltas": {
+    "gold": {
+      "after_raw": 15761231,
+      "before_raw": 16761231,
+      "delta": -10.0,
+      "scale": 100000
+    },
+    "prestige": {
+      "after_raw": -9429050,
+      "before_raw": -9429050,
+      "delta": 0.0,
+      "scale": 100000
+    }
+  },
+  "observed_stress": [
+    89,
+    89
+  ],
+  "offline_future_calculated_id": 3545002,
+  "opaque_scope_identity_gaps": [
+    "capital:province",
+    "safe_investment:flag",
+    "risky_investment:flag",
+    "quarter:generic value payload identity"
+  ],
+  "projection": {
+    "bytes": 28869,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C18-EVENT-10355-CLOSED.json",
+    "sha256": "a9ebf8676093de7b0ba076db581242e95c63b8254a019ee8b5a3d1ed9949feb6"
+  },
+  "provenance": "Only named closed projection/incident files and exact stock definition,3callees,16modifiers,2dynamic values+3constants. No Game/SDK/Native/strategy mutation.",
+  "registry_contract_accepted": false,
+  "schema": "xar.m2-c18-event10355-wealth5002-source-closure/v1",
+  "selection": {
+    "ACK": true,
+    "actually_shown_native_indices": [
+      0,
+      1,
+      2
+    ],
+    "instance_transition": [
+      51,
+      null
+    ],
+    "native_option_index": 0,
+    "postcondition_verified": true,
+    "public_option_number": 1,
+    "rendered_index": 0
+  },
+  "source_SDK_changes": 0,
+  "source_binding": {
+    "calculated_event_id": 2545002,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "stewardship_wealth.5002",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 3,
+    "option_catalogue_sha256": "f877d74c287bd5dbd5a60f3d0aee2bc10c351ce72093903d03f1acee042b5f0e",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "1213e6a76a6c465e03a3e4a9177905902f9d3fb23cd751b911d34041e61881bf"
+  },
+  "source_cost_and_effect_boundary": "Source payment = capital monthly income*12*30*0.1/3, rounded up to5; one-time gain = half payment rounded up to5. These are authored formulas; current alternate native quote not observed. Native rendered text says mason/jeweler, but flags are not decoded. Safe mason source: capital tax_mult0.1/build_speed-0.1 and character build_gold_cost-0.05 for30years; no actual modifier, tax or building refund outcome verified.",
+  "source_lookup": "Named source absent from committed index; existing parser used exact in-memory path+SHA only.",
+  "storage": {
+    "allocated_bytes": null,
+    "future_bytes": 0,
+    "new_gross_bytes": 58666,
+    "physical_credit_bytes": 0,
+    "pool_bytes": 367501,
+    "pool_fingerprints": 13,
+    "prior_pool_bytes": 308835,
+    "prior_pool_fingerprints": 12,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  },
+  "synthetic_id_is_actual_observation": false
+}

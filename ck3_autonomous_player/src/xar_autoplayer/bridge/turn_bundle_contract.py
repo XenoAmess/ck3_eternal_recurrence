@@ -16,6 +16,16 @@ TURN_BUNDLE_V1_SCHEMA: Final = "xar.ck3.turn-bundle/v1"
 QUERY_TURN_BUNDLE_V1_TOOL: Final = "ck3_query_turn_bundle_v1"
 
 
+def _owned_partition_component(value: dict[str, object]) -> dict[str, object]:
+    """Adopt this builder's already detached partition, before public isolation.
+
+    Only the local partition below uses this: its three mutable branches have
+    independent clones. Territory and vitals only read it; the final public
+    succession component still deep-copies the complete value.
+    """
+    return {"status": "available", "value": value, "unavailable_reason": None}
+
+
 def _component(
     status: str,
     value: object = None,
@@ -613,8 +623,7 @@ def build_turn_bundle_v1(
             if split_risk
             else "single_successor"
         )
-        partition = _component(
-            "available",
+        partition = _owned_partition_component(
             {
                 "title_heirs": copy.deepcopy(held_title_partition),
                 "primary_heir_character_id": primary_heir_id,
