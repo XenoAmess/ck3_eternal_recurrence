@@ -2906,11 +2906,18 @@ def create_server(
                 raise
             from mcp.types import CallToolResult, TextContent
 
+            diagnostics = {diagnostic_key: diagnostic}
+            if diagnostic_key == "native_command_rejection":
+                from .campaign_root_retry_diagnostic_v1 import project_campaign_root_retry_diagnostic_v1
+
+                retry_diagnostic = project_campaign_root_retry_diagnostic_v1(error, diagnostic)
+                if retry_diagnostic is not None:
+                    diagnostics["campaign_root_readonly_retry_v1"] = retry_diagnostic
             return CallToolResult(
                 content=[TextContent(type="text", text=f"Error executing tool ck3_auto_turn: {error}")],
                 is_error=True,
                 structured_content={"error_type": type(error).__name__,
-                                    "diagnostics": {diagnostic_key: diagnostic}},
+                                    "diagnostics": diagnostics},
             )
         plan = payload.get("plan")
         result = payload.get("result")

@@ -1,0 +1,205 @@
+{
+  "schema": "xar.source20.minimal-warm-sdk-frozen-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:57:21.765346+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool329d4e; base machine verified in pinned624c inventory",
+  "status": "SOURCE_FROZEN_NOT_DEPLOYED",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source20_minimal_warm_sdk_v1.py",
+    "bytes": 20496,
+    "sha256": "712ca1e6b9f02c5e0e2339d0a2e473b7dab9f15bbd5f8cd2805d737dbb2e1f63"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_source20_minimal_warm_sdk_v1.py",
+    "bytes": 14284,
+    "sha256": "6c2fdaa39e0926b0260fdba9f7303315a26f903a403e0870541cc0ef9c14421c"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+    "bytes": 17222,
+    "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+  },
+  "entry": "prepare_source20_minimal_warm_sdk_v1.compose() returns changed6 bytes, complete1447 row manifest and proof in RAM.",
+  "base": {
+    "freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C18.json",
+      "bytes": 375083,
+      "sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b"
+    },
+    "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src15",
+    "business_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "files": 1445,
+    "source_bytes": 59052571,
+    "canonical_rows_JSON": {
+      "bytes": 371514,
+      "sha256": "20b02b77ebbe43b9f822717295ac377b9ca445d43b11429d1117f330cc8252f7"
+    },
+    "all1445_Git_mode_blob_size_checked": true,
+    "unchanged1441_body_SHA_authority": "Pinned actual624c inventory; not falsely rehashed this run. Original exporter rechecks frozen inputs before materialization."
+  },
+  "output": {
+    "complete_manifest": {
+      "file_count": 1447,
+      "source_bytes": 59065188,
+      "canonical_rows_JSON": {
+        "bytes": 371996,
+        "sha256": "7b62abe6c91e382af449b1c7057bf304d729db310ad88deea4861218c8379935"
+      },
+      "access": "compose() returns all1447 rows in RAM"
+    },
+    "changed_existing_leaves": 4,
+    "new_leaves": 2,
+    "unchanged_original_leaves": 1441,
+    "delta_row_source": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+      "bytes": 17222,
+      "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+    }
+  },
+  "family_fix_preserved": {
+    "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+    "bytes": 61273,
+    "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+    "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+    "git_mode": "100644"
+  },
+  "existing_frozen_inputs": {
+    "complete_paths_bytes_SHA_table_in": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+      "bytes": 17222,
+      "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+    },
+    "M5_final_authority": "docs/ck3-native-ai/evidence/source20-campaign-root-shared-budget-addendum-2026-10-20.json",
+    "MCP_final_authority": "docs/ck3-native-ai/evidence/source20-campaign-root-retry-budget-diagnostic-addendum-2026-10-20.json"
+  },
+  "qualification_scope": {
+    "full_detail_in": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+      "bytes": 17222,
+      "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+    },
+    "new_cross_package_check": {
+      "kind": "synthetic cross-package seam using actual unchanged Source15 exception and actual MCP diagnostic function",
+      "passed": true,
+      "shared_budget_first_true_second_false": true,
+      "replan_audit_not_fabricated": true,
+      "bounded_MCP_budget_decline": true,
+      "Game_Native_commands_or_reads": 0
+    },
+    "six_RAM_modules_and_other_Source15_imports": "PASS",
+    "all_three_transforms_inverse": "PASS",
+    "original_Service_retry_and_outer_loop": "UNCHANGED",
+    "owner_matrices_repeated": false
+  },
+  "shared_once_budget": {
+    "actual_existing_helper": "bridge/readonly_planning_retry_v1.py",
+    "claim_API": "claim_guarded_campaign_root_retry_v1",
+    "Service_three_gates": "claim_campaign_root_terminal_retry_v1",
+    "pure_recognition_separate": true,
+    "outer_loop_and_original_Service_retry_method": "unchanged",
+    "final_authority": "docs/ck3-native-ai/evidence/source20-campaign-root-shared-budget-addendum-2026-10-20.json",
+    "old31case_five_delta_proof": "withdrawn candidate history only"
+  },
+  "prospective_capacity": {
+    "status": "QUOTE_ONLY_NOT_CAPACITY_ADMISSION",
+    "logical_changed_source_each": 1171172,
+    "Git_retained_upper": 1314816,
+    "Git_largest_extra_temporary_upper": 884736,
+    "Git_refs_locks_dirs_extra_reserve": 65536,
+    "Git_conservative_peak_upper": 2265088,
+    "compression_credit": 0,
+    "Git_callback_requires": "stdin RAM payload; no extra disk source/full SDK alias; commit payload<=8192. Any different writer adds its actual peak before admission.",
+    "components": {
+      "Z_Git_uncompressed_alias_temp_refs_envelope": 2359296,
+      "D_dual_changed4096cluster_upper": 2367488,
+      "D_rich_JSON_MFT_and_FS_reserve": 4194304,
+      "D_compact_ROOTFINAL_envelope": 524288,
+      "D_controls_and_feeder_envelope": 409600,
+      "D_Task_specs_initial_metadata_logs_envelope": 262144,
+      "D_atomic_control_temp_envelope": 65536
+    },
+    "complete_stage_quote_upper": 10182656,
+    "Root_budget_ceiling_bytes": 12582912,
+    "budget_is_not_write_authorization": true,
+    "physical_allocated_bytes": null,
+    "closed_Driver_bytes": null,
+    "closed_Driver_copy": "Separate actual normal-close stat and existing Driver-budget card; not zero, not read or silently included in this source-stage quote.",
+    "feeder_controls_atomic": "400KiB includes then actual controls+feeder;64KiB is additional atomic temp. Final owner exact pins/peak must fit or quote rises; current controls not assumed installed."
+  },
+  "complete_Git_object_inventory_in": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+    "bytes": 17222,
+    "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+  },
+  "proposed_roots": {
+    "source_destination": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src17",
+    "reference_destination": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\reference-c20\\src",
+    "output_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c20-campaign-root-retry97\\immutable-source-export",
+    "authority": "runtime message; names only, absence/closed-state/capacity not inspected or admitted"
+  },
+  "Root_anchor_recipe": {
+    "call": "canonical_anchor_with_root_writer(Root_git_writer, anchor_ref=NEW_REF, root_release_sha256=exact_Root_release_SHA)",
+    "create_only_ref": "refs/heads/campaign/robert-v20261019-c20-campaign-root-retry-warm-01",
+    "parent": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "candidate_tree_RAM_model": "c868c9aa96fc012cd34f05e3fad6ebf7b8f3d8b8",
+    "object_recipe": "Six exact blobs + five child-first ancestor trees; full1447 metadata check; new commit-tree and create-only ref. No master/index/checkout changes.",
+    "source_run_executed": false,
+    "permission": "Root must read actual separate Git-object capacity/release; a SHA argument alone is not authorization."
+  },
+  "boundaries": {
+    "C19_M7_multiday_finite_source_bytes_included": false,
+    "canonical_master_Service_or_MCP_overlay": false,
+    "Source15_temporary_classifier_wrapper_included": false,
+    "Native_binary_ABI_or_qualification_changed": false,
+    "current_C18_modified": false,
+    "new_retry_beyond_shared_once_or_Native_reads": 0,
+    "runtime_Driver_SAVE_ledger_body_reads": 0,
+    "D_Git_Task_Game_RPC_writes": 0,
+    "actual_seconds_saved": null,
+    "actual_runtime_recovery_credit": false
+  },
+  "future_materialization": "Original immutable full-view exporter8b697; same Native29pin8ace and Hostd90 remain. Needs Root actual new business anchor, exact capacity card and then normal warm controls/inputs. No C19 Native30/M7 cold authority is imported.",
+  "storage": {
+    "source_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\COMPOSER-SOURCE20-64KiB-M6-RECEIPT128KiB-TEST128KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2428,
+      "sha256": "6b1d3056eaa215037e61a9c37360a1372e4bb3fa18c17ddba6cfb37c394f7f9e"
+    },
+    "complete_hard_bytes": 65536,
+    "owned_retained_files_excluding_this_plan": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source20_minimal_warm_sdk_v1.py",
+        "bytes": 20496,
+        "sha256": "712ca1e6b9f02c5e0e2339d0a2e473b7dab9f15bbd5f8cd2805d737dbb2e1f63"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_source20_minimal_warm_sdk_v1.py",
+        "bytes": 14284,
+        "sha256": "6c2fdaa39e0926b0260fdba9f7303315a26f903a403e0870541cc0ef9c14421c"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-minimal-warm-sdk-source-qualification-2026-10-20.json",
+        "bytes": 17222,
+        "sha256": "51d42bd50000f21eadad3158308a4061ddab26e1641c7ebc8bb3ad05c5e69d57"
+      }
+    ],
+    "total_retained_logical_including_this_plan": 62767,
+    "allocated_bytes": null,
+    "physical_release_credit_bytes": 0,
+    "source_test_owners_reused_in_place_not_doublecharged": [
+      "M0",
+      "M5",
+      "perf_harness"
+    ],
+    "new_scratch_bytes": 0,
+    "future_writes_after_freeze": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "small_record_review_at_utc": "2027-04-17T20:57:21.765346+00:00"
+  },
+  "remaining": [
+    "Root source review and actual create-only business anchor under separate Git capacity",
+    "Then actual C20 controls/feeder/Task/atomic exact pins and complete capacity card",
+    "Normal SDK close/new Source20 materialization and warm constructor by sole runtime owner",
+    "Actual bounded retry outcome/diagnostic/performance evidence; current C18 stays unchanged"
+  ]
+}

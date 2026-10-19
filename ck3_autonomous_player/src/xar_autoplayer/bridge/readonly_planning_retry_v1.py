@@ -66,7 +66,7 @@ def _faction_pending_frame_ready(error):
 
 
 def _campaign_root_executor_not_entered(error):
-    """A failed read whose application-main executor never entered Game code."""
+    """A read rejected before its typed campaign reader; admission may read Game state."""
     request = error.native_request_frame
     result = error.native_command_result_frame
     request_id = error.native_request_id
@@ -188,6 +188,23 @@ def classify_readonly_planning_error_v1(error):
     return {"class": "campaign_root_preflight_state_changed", "business_submission": False,
             "native_request_id": request_id, "source_native_revision": failure["request_native_revision"],
             "differing_fields": failure.get("differing_fields")}
+
+
+def claim_guarded_campaign_root_retry_v1():
+    """Share the outer planner's one remaining retry with a guarded inner read.
+
+    A directly selected readonly ROOT has no planning ContextVar; its existing
+    caller still owns its single try. Inside planning, even a later fresh-frame
+    decline consumes the budget so outer replanning cannot bypass that guard.
+    """
+    budget = _RETRY_BUDGET.get()
+    if budget is None:
+        return True
+    if (not isinstance(budget, dict) or type(budget.get("remaining")) is not int
+            or budget["remaining"] != 1 or not isinstance(budget.get("rejections"), list)):
+        return False
+    budget["remaining"] = 0
+    return True
 
 
 def retry_readonly_planning_once_v1(plan_once):

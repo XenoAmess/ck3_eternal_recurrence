@@ -1,0 +1,78 @@
+{
+  "schema": "xar.source20.campaign-root-retry-shared-budget-observability-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:51:17.154291+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; current readback xenoamess-full-tower-eb9d2c1186",
+  "status": "SOURCE_QUALIFIED_NOT_ADOPTED",
+  "focused_tests_passed": 1,
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 265420,
+      "sha256": "dccd6cc71b6a260d141c5483b82fface2f3a1e7bee49cac895ccd8cd1bbf9d72"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\campaign_root_retry_diagnostic_v1.py",
+      "bytes": 6111,
+      "sha256": "9c2a85ba1b00efd0a68ca3c92bb195dd15938223a91ad3abfdc794ebec41f4e9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_campaign_root_retry_mcp_observability_v1.py",
+      "bytes": 3340,
+      "sha256": "32770be8ebe15169c9418295f2cd11c068302bd2c1bc1f40c310c2d69c95a7e6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_campaign_root_retry_mcp_observability_v1.py",
+      "bytes": 14579,
+      "sha256": "4c68c78a53978f8e3ba2842306ad5f555ebcedbf6bb397f634d61af2c17b8049"
+    }
+  ],
+  "actual_Source15_MCP_transform": {
+    "base_sha256": "b4d2fab30a5c8cd8a0291c3759d9a0518b31df55698002d8ea6e7e64ad3bfb4a",
+    "base_bytes": 263923,
+    "candidate_bytes": 264359,
+    "candidate_sha256": "8b1c260f779dbd3e25770af75ed87de0cfd39200454c7662f611accfce92688f",
+    "span_count": 1,
+    "source_offset": 131103,
+    "inverse_bytes_and_AST_exact": true,
+    "original_error_content_and_native_diagnostic_preserved": true,
+    "new_helper": "xar_autoplayer/bridge/campaign_root_retry_diagnostic_v1.py",
+    "new_retry_or_Game_calls": 0,
+    "outputs_materialized": false
+  },
+  "actual_error_handler_AST_executed": false,
+  "unrelated_construction_transport_and_MCP_result_types_stubbed": true,
+  "JSON_limit_bytes": 2048,
+  "second_error_UTF8_limit_bytes": 512,
+  "known_failed_checks_limit": 16,
+  "retry_strategy_or_Native_calls_added": false,
+  "old_error_and_native_diagnostic_preserved": true,
+  "absent_evidence_does_not_prove_no_retry": true,
+  "large_frame_history_snapshot_projected": false,
+  "D_Git_Task_Game_RPC_Driver_SAVE_operations": 0,
+  "scratch_files": 0,
+  "source_card_sha256": "fbcc467fdece4f2edc7075b06a4f01bb63ad551e6f1e7bc67e9190039aaec00a",
+  "complete_source_cap_bytes": 327680,
+  "retained_bytes_excluding_this_proof": 295448,
+  "actual_Native_root_cause_or_runtime_success_claimed": false,
+  "record_review_at_utc": "2027-04-17T20:34:22+00:00",
+  "future_writes_after_freeze": 0,
+  "original_qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-campaign-root-retry-mcp-observability-2026-10-20.json",
+    "bytes": 2744,
+    "sha256": "d821fdd4705266b2d1c855286bb0c98e7b6cf13a11442e08ca0226783c3fe9f0"
+  },
+  "original_seven_tests_repeated": false,
+  "targeted_tests_passed": 1,
+  "optimized_mode": false,
+  "input_function_duplicates_rejected": "prior proof; not repeated in this increment",
+  "text_encoding_bounded_before_encode": "prior proof; not repeated in this increment",
+  "original_actual_handler_evidence_reused": true,
+  "prior_bounded_input_proof": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\source20-campaign-root-retry-mcp-bounded-input-addendum-2026-10-20.json",
+    "bytes": 3254,
+    "sha256": "3e3ec2ae12d2d8db78165b7d074561fefd02cf308babccf13cca7e82b864f78d"
+  },
+  "prior_targeted_tests_repeated": false,
+  "shared_budget_decline_reason_visible": true
+}
