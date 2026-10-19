@@ -1,0 +1,181 @@
+{
+  "schema": "xar.ck3.persistence-growth-observability-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:52:02.737174+00:00",
+  "base_commit": "dde6cc5f7dccb88ba48f34b5f0f6592e17cb3dd5",
+  "sourcepins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/persistence_growth_timing_v1.py",
+      "bytes": 2899,
+      "sha256": "4686d5ce3781a227febe3c0b76f39148f3bc0aabb9beba69902bb5d9ef23b9af"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_timing.py",
+      "bytes": 2753,
+      "sha256": "593cb5e266c12277b8fed6b90069336cdd5ff292fdf29ef742e8fe98004c40ac"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1611698,
+      "sha256": "7b58e526580d7b2b49f8472a6296aaae03fabe19c15bfc88b68f224a366509b8"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_persistence_growth_timing_v1.py",
+      "bytes": 5229,
+      "sha256": "2cc01f500c9e4928b40e4902e9adb654a79eb95eff743247119f9602d9c99349"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_driver_state_history_json.py",
+      "bytes": 5422,
+      "sha256": "c2cc73e18ab1c36a6c379ba13da183fecf70288a967b42f755f945f14cad0e97"
+    },
+    {
+      "path": "docs/ck3-native-ai/persistence-growth-observability-2026-10-19.md",
+      "bytes": 3395,
+      "sha256": "9ebeb374404ef42463bc6914af1782c1ca0c44885e623c9735ed2845b7ba5a9c"
+    }
+  ],
+  "callers": [
+    {
+      "line": 4854,
+      "reason_expression": "'invalidate_succession_expectation'"
+    },
+    {
+      "line": 4909,
+      "reason_expression": "'succession_expectation'"
+    },
+    {
+      "line": 6405,
+      "reason_expression": "'legacy_rollback_migration'"
+    },
+    {
+      "line": 11282,
+      "reason_expression": "'episode_seed'"
+    },
+    {
+      "line": 11977,
+      "reason_expression": "'playable_episode_binding'"
+    },
+    {
+      "line": 23060,
+      "reason_expression": "'managed_restore_marker'"
+    },
+    {
+      "line": 5084,
+      "reason_expression": "'episode_identity'"
+    },
+    {
+      "line": 6785,
+      "reason_expression": "'player_identity'"
+    },
+    {
+      "line": 11128,
+      "reason_expression": "('record_command:' + step)[:160]"
+    },
+    {
+      "line": 11201,
+      "reason_expression": "'marriage_outcome_prefix_edit'"
+    },
+    {
+      "line": 11733,
+      "reason_expression": "'bridge_adoption'"
+    },
+    {
+      "line": 22912,
+      "reason_expression": "'registered_restore_anchor'"
+    },
+    {
+      "line": 25883,
+      "reason_expression": "'close'"
+    }
+  ],
+  "machine_id_source": "tools/ck3_live_run_id.py current_machine_id (same helper as machine CLI)",
+  "status": "SOFTWARE_PATHS_PASS_NOT_LIVE_DEPLOYMENT_OR_THROUGHPUT",
+  "producer": "Codex performance_python: direct CPython unittest calls and AST/compile/sourcepin capture",
+  "checks": {
+    "initial_tests": {
+      "count": 3,
+      "elapsed_seconds": 0.007,
+      "result": "OK",
+      "names": [
+        "test_persistence_growth_timing_v1.PersistenceGrowthTimingTest.test_failed_write_interrupts_run_and_disabled_timing_keeps_bytes",
+        "test_persistence_growth_timing_v1.PersistenceGrowthTimingTest.test_full_candidate_run_churn_and_exact_history_lengths",
+        "test_driver_state_history_json.DriverStateHistoryJsonTest.test_actual_marriage_observation_invalidates_prior_row"
+      ]
+    },
+    "final_focused_tests": {
+      "count": 2,
+      "elapsed_seconds": 0.008,
+      "result": "OK",
+      "module": "test_persistence_growth_timing_v1",
+      "reason": "Root requested parent/encoding attempt ID association assertion; only these two paths rerun"
+    },
+    "test_command_python": "import sys,unittest; sys.path[:0]=['ck3_autonomous_player/src','ck3_autonomous_player/tests/unit']; s=unittest.defaultTestLoader.loadTestsFromName('test_persistence_growth_timing_v1'); r=unittest.TextTestRunner(verbosity=2).run(s); sys.exit(0 if r.wasSuccessful() else 1)",
+    "ast_and_compile": "PASS; five changed/new Python sources; no pyc writes",
+    "new_helper_and_test_ast_assert_nodes": 0,
+    "static_reason_caller_count": 13,
+    "normal_encoding_call_count": 5,
+    "candidate_run_sequence": [
+      0,
+      1,
+      2,
+      0,
+      1
+    ],
+    "closed_run_sequence": [
+      0,
+      0,
+      0,
+      2,
+      0
+    ],
+    "run_starts_sequence": [
+      0,
+      1,
+      1,
+      1,
+      2
+    ],
+    "failed_path_successes": [
+      1,
+      1,
+      2
+    ],
+    "failed_path_failures": [
+      0,
+      1,
+      1
+    ],
+    "failed_path_run_lengths": [
+      1,
+      0,
+      1
+    ],
+    "parent_encoding_id": "full parent persistence_attempt_id equals UTF8 child step and persistence_attempt_id; distinct synthetic start IDs",
+    "history_lengths": "exact existing history part and rowcount checked against tiny fixture JSON",
+    "disabled_timing": "identical encoded bytes; previous diagnostic success count unchanged"
+  },
+  "boundaries": {
+    "live_game_rpc_count": 0,
+    "live_save_count": 0,
+    "live_driver_body_reads": 0,
+    "benchmark_rpc_count": 0,
+    "external_package_writes": 0,
+    "actual_wal_appends": 0,
+    "candidate_is_wal_eligibility": false,
+    "wal_enabled": false,
+    "test_write_sink": "in-memory mock; no physical atomic write or fsync qualification",
+    "current_game_deployment": "not performed by producer; Root owns legal next SDK freeze",
+    "wall_seconds_per_actual_game_day": "not measured or qualified",
+    "counter_scope": "Driver_instance_timing_enabled_observations_only",
+    "extra_history_encode_hash_deepcopy": false
+  },
+  "storage": {
+    "pool": "existing repo-only 1MiB micro pool within shared research128MiB",
+    "external_bytes": 0,
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  }
+}

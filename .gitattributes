@@ -1138,3 +1138,8 @@ docs/ck3-native-ai/evidence/declaration-actor-next-families-source-2026-10-19.js
 docs/ck3-native-ai/evidence/c3-partial194-readonly-recovery-qualification01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/settled-readonly-dispatch-source-qualification01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c3-partial194-dispatch-ready-manifest01.json -text whitespace=cr-at-eol
+
+# Preserve reviewed long-term operating evidence and native source contract.
+ck3_autonomous_player/native_bridge/research/holy_order_loan_principal_12004_source_contract.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/g2-m5-independence-ultimatum-policy-2026-10-19.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-partial194-save61-actual-readback01.json -text whitespace=cr-at-eol

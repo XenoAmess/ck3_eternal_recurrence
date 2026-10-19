@@ -88,7 +88,8 @@ class DriverStateHistoryJsonTest(unittest.TestCase):
         })
         self.assertEqual(d._command_history[0]["result"]["marriage_result"]["status"],
                          "accepted_marriage")
-        d._persist_driver_state.assert_called_once_with()
+        d._persist_driver_state.assert_called_once_with(
+            persistence_reason="marriage_outcome_prefix_edit")
         self.assert_same_state(d)
 
     def test_restore_and_same_length_new_list_rebuild(self):

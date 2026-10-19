@@ -1819,7 +1819,7 @@ class GameplayBridgeService:
                     )
                     planned = {**planned, "plan": {
                         **plan, "event_material_postcondition": material}}
-            cap_campaign = getattr(self.driver, "cap_campaign_advance_plan_v1", None)
+            cap_campaign = getattr(getattr(self, "driver", None), "cap_campaign_advance_plan_v1", None)
             if callable(cap_campaign):
                 planned = cap_campaign(planned)
             return _timed_planning_call_v1(
@@ -5033,7 +5033,7 @@ class GameplayBridgeService:
     ) -> dict[str, object]:
         # Internal ordinary follow-up planners also use this dispatch path.
         # Normalize before the existing display/submission hook and storage.
-        cap_campaign = getattr(self.driver, "cap_campaign_advance_plan_v1", None)
+        cap_campaign = getattr(getattr(self, "driver", None), "cap_campaign_advance_plan_v1", None)
         if callable(cap_campaign):
             planned = cap_campaign(planned)
         plan = planned.get("plan")

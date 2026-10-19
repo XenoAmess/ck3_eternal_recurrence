@@ -1,0 +1,265 @@
+{
+  "schema": "xar.ordinary-planner-objective-priority-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:55:42.058311+00:00",
+  "campaign_id": "robert-first30-v20261019",
+  "policy_change_not_policy_neutral_performance": true,
+  "scope": "Closed small AUTO178-192 subset replay; no current game read or full declaration-set reconstruction.",
+  "source_sdk": {
+    "commit": "063531c4b2bc64f52b80a78b8a2b8e9f55112964",
+    "strategy": {
+      "bytes": 1032197,
+      "sha256": "4dc6d947f7280c42d7471d84975178e5cabf7a4815271cdee00a2f2bbb3b6193"
+    },
+    "root_supplied_freeze_manifest": {
+      "name": "SDK-FREEZE05.json",
+      "bytes": 399581,
+      "sha256": "5dd288c31a4c858143d2014d32927b94dac831fe690972ead8f0fecd73b31785"
+    }
+  },
+  "actual_cases": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\fixtures\\robert_v20261019_declaration_order_178_192.json",
+    "bytes": 10392,
+    "sha256": "405b6579e56166128da8afd6f60610e3c439b53b218514c9b9ea697a4b24e241"
+  },
+  "reviewed_static_source": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_claim.txt",
+      "bytes": 20230,
+      "sha256": "887bf0197401cb17cb4588978add556ab6b429bf55cb482e3e5f2d0e8351cfd4",
+      "first_line": 472,
+      "last_line": 487,
+      "numbered_excerpt": "472:\t\tcreate_title_and_vassal_change = {\n473:\t\t\ttype = conquest_claim\n474:\t\t\tsave_scope_as = change\n475:\t\t\tadd_claim_on_loss = yes\n476:\t\t}\n477:\t\t\n478:\t\t# Create a claim CB which is executed to handle title/vassal changes, in addition to being used to calculate Prestige awards for war participants.\n479:\t\tsetup_claim_cb = {\n480:\t\t\ttitles = target_titles\n481:\t\t\tattacker = scope:attacker\n482:\t\t\tdefender = scope:defender\n483:\t\t\tclaimant = scope:claimant\n484:\t\t\tchange = scope:change\n485:\t\t}\n486:\n487:\t\tresolve_title_and_vassal_change = scope:change"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\01_ep1_wars.txt",
+      "bytes": 16701,
+      "sha256": "21c1ab2e4fef36b869469bcc0d28b9c18efc026d63de62af708642cde289eb95",
+      "first_line": 441,
+      "last_line": 537,
+      "numbered_excerpt": "441:\ton_victory = {\n442:\t\tscope:attacker = { show_pow_release_message_effect = yes }\n443:\t\t\n444:\t\t# Legitimacy\n445:\t\tadd_legitimacy_attacker_victory_effect = yes\n446:\n447:\t\t#EP2 accolade glory gain for winning against higher ranked enemy\n448:\t\tscope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }\n449:\n450:\t\t# transfer artifacts\n451:\t\tscope:defender = {\n452:\t\t\tevery_character_artifact = {\n453:\t\t\t\tlimit = {\n454:\t\t\t\t\tOR = {\n455:\t\t\t\t\t\t# Standard relics.\n456:\t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n457:\t\t\t\t\t\t# Struggle relics.\n458:\t\t\t\t\t\t## The Bells of Santiago de Compostela.\n459:\t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n460:\t\t\t\t\t}\n461:\t\t\t\t}\n462:\t\t\t\tset_owner = {\n463:\t\t\t\t\ttarget = scope:attacker\n464:\t\t\t\t\thistory = {\n465:\t\t\t\t\t\ttype = conquest\n466:\t\t\t\t\t\tactor = scope:defender\n467:\t\t\t\t\t\trecipient = scope:attacker\n468:\t\t\t\t\t}\n469:\t\t\t\t}\n470:\t\t\t\tif = {\n471:\t\t\t\t\tlimit = {\n472:\t\t\t\t\t\tNOT = {\n473:\t\t\t\t\t\t\tscope:defender = { has_personal_artifact_claim = prev }\n474:\t\t\t\t\t\t}\n475:\t\t\t\t\t}\n476:\t\t\t\t\tscope:defender = { add_personal_artifact_claim = prev }\n477:\t\t\t\t}\n478:\t\t\t}\n479:\t\t\tevery_vassal_or_below = {\n480:\t\t\t\tlimit = {\n481:\t\t\t\t\tfaith != scope:attacker.faith\n482:\t\t\t\t}\n483:\t\t\t\tevery_character_artifact = {\n484:\t\t\t\t\tlimit = {\n485:\t\t\t\t\t\tOR = {\n486:\t\t\t\t\t\t\t# Standard relics.\n487:\t\t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n488:\t\t\t\t\t\t\t# Struggle relics.\n489:\t\t\t\t\t\t\t## The Bells of Santiago de Compostela.\n490:\t\t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n491:\t\t\t\t\t\t}\n492:\t\t\t\t\t}\n493:\t\t\t\t\tset_owner = {\n494:\t\t\t\t\t\ttarget = scope:attacker\n495:\t\t\t\t\t\thistory = {\n496:\t\t\t\t\t\t\ttype = conquest\n497:\t\t\t\t\t\t\tactor = scope:attacker\n498:\t\t\t\t\t\t\trecipient = scope:defender\n499:\t\t\t\t\t\t}\n500:\t\t\t\t\t}\n501:\t\t\t\t\tif = {\n502:\t\t\t\t\t\tlimit = {\n503:\t\t\t\t\t\t\tNOT = {\n504:\t\t\t\t\t\t\t\tscope:defender = { has_personal_artifact_claim = prev }\n505:\t\t\t\t\t\t\t}\n506:\t\t\t\t\t\t}\n507:\t\t\t\t\t\tscope:defender = { add_personal_artifact_claim = prev }\n508:\t\t\t\t\t}\n509:\t\t\t\t}\n510:\t\t\t}\n511:\t\t}\n512:\n513:\t\t# Prestige for the attacker's war allies\n514:\t\tadd_from_contribution_attackers = {\n515:\t\t\tprestige = major_prestige_value\n516:\t\t\topinion = {\n517:\t\t\t\tmodifier = contributed_in_war\n518:\t\t\t}\n519:\t\t}\n520:\n521:\t\t# Prestige for the defender's war allies\n522:\t\tadd_from_contribution_defenders = {\n523:\t\t\tprestige = major_prestige_value\n524:\t\t\topinion = {\n525:\t\t\t\tmodifier = contributed_in_war\n526:\t\t\t}\n527:\t\t}\n528:\n529:\t\t# Truce\n530:\t\tadd_truce_attacker_victory_effect = yes\n531:\n532:\t\t# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold\n533:\t\tlaamp_as_mercenary_payout_tooltip_effect = yes\n534:\n535:\t\t#Mandalas gain or lose piety/devotion depending on Decree\n536:\t\tmandala_war_victory_effects = yes\n537:\t}"
+    }
+  ],
+  "new_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1032577,
+      "sha256": "b92c9e0604ff85a17983636b310465cc974c0011f17a1e21fb18d749e35f1c7d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\declaration_objective_priority_v1.py",
+      "bytes": 1945,
+      "sha256": "921e0f08a517226785d5650b77a92fede9f46664dac4a555b6b21021c1b186e3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_declaration_objective_priority_v1.py",
+      "bytes": 5205,
+      "sha256": "91e1b91e7a16d285172c67c002d63582816c87cf5126b12efaa8f60e430d66af"
+    }
+  ],
+  "candidate_subset_replay": {
+    "unassessed_original_control": {
+      "declaration_id": "29373-54--1",
+      "target_character_id": 29373,
+      "casus_belli_index": 54,
+      "casus_belli_key": "reclaim_relic_artifact_war",
+      "configuration_index": -1,
+      "claimant_character_id": -1,
+      "target_title_ids": [],
+      "source": "native"
+    },
+    "unassessed_objective_policy": {
+      "declaration_id": "33388-11-0",
+      "target_character_id": 33388,
+      "casus_belli_index": 11,
+      "casus_belli_key": "claim_cb",
+      "configuration_index": 0,
+      "claimant_character_id": 31254,
+      "target_title_ids": [
+        7219
+      ],
+      "source": "native"
+    },
+    "all_eight_observed_power_original_control": {
+      "declaration_id": "26904-50--1",
+      "target_character_id": 26904,
+      "casus_belli_index": 50,
+      "casus_belli_key": "make_tributary_cb",
+      "configuration_index": -1,
+      "claimant_character_id": -1,
+      "target_title_ids": [],
+      "source": "native"
+    },
+    "all_eight_observed_power_objective_policy": {
+      "declaration_id": "33388-11-0",
+      "target_character_id": 33388,
+      "casus_belli_index": 11,
+      "casus_belli_key": "claim_cb",
+      "configuration_index": 0,
+      "claimant_character_id": 31254,
+      "target_title_ids": [
+        7219
+      ],
+      "source": "native"
+    }
+  },
+  "software_tests": [
+    {
+      "test": "test_declaration_objective_priority_v1.py",
+      "tests": 6,
+      "duration_seconds": 0.001,
+      "exit_code": 0,
+      "tool_chunk_id": "d54c73"
+    },
+    {
+      "test": "test_ordinary_prewar_force_admission_v2.py",
+      "tests": 41,
+      "duration_seconds": 1.42,
+      "exit_code": 0,
+      "tool_chunk_id": "aad988"
+    }
+  ],
+  "Game_MCP_OBS_calls": 0,
+  "gameplay_commands_submitted": 0,
+  "SAVE_Driver_media_body_reads": 0,
+  "declaration_or_title_transfer_credit_granted": false,
+  "runtime_deployment_verified": false,
+  "followup": "Root batch freeze/adoption; do not hot-patch running COW or replay194.",
+  "root_review_correction": {
+    "observed_at_utc": "2026-10-19T04:57:58.735184+00:00",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "reason": "Initial objective-before-evidence placement could starve a better assessed alternative. Only unassessed research ordering now consumes the objective after original evidence/power keys.",
+    "initial_candidate_history_preserved": true,
+    "initial_candidate_subset_replay_is_not_final": true,
+    "final_sources": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+        "bytes": 1032678,
+        "sha256": "ddc62e3093564f8b8126507ce7d0e2639a154ebffa15e6312a8fc74b45c9bf29"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\declaration_objective_priority_v1.py",
+        "bytes": 2018,
+        "sha256": "618aaec5cb6b13cb9f119fbc315ee609eefde954a02302fae5017a4fbccefdb9"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_declaration_objective_priority_v1.py",
+        "bytes": 5990,
+        "sha256": "12562287065003b84cc635524c3932ffc6b0ed0f9e2d31b09b6bc13f0d39198c"
+      }
+    ],
+    "final_candidate_subset_replay": {
+      "unassessed_original_control": {
+        "declaration_id": "29373-54--1",
+        "target_character_id": 29373,
+        "casus_belli_index": 54,
+        "casus_belli_key": "reclaim_relic_artifact_war",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "unassessed_objective_policy": {
+        "declaration_id": "33388-11-0",
+        "target_character_id": 33388,
+        "casus_belli_index": 11,
+        "casus_belli_key": "claim_cb",
+        "configuration_index": 0,
+        "claimant_character_id": 31254,
+        "target_title_ids": [
+          7219
+        ],
+        "source": "native"
+      },
+      "all_eight_observed_power_original_control": {
+        "declaration_id": "26904-50--1",
+        "target_character_id": 26904,
+        "casus_belli_index": 50,
+        "casus_belli_key": "make_tributary_cb",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "all_eight_observed_power_objective_policy": {
+        "declaration_id": "26904-50--1",
+        "target_character_id": 26904,
+        "casus_belli_index": 50,
+        "casus_belli_key": "make_tributary_cb",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      }
+    },
+    "unique_new_boundary": {
+      "player_claim": {
+        "declaration_id": "33388-11-0",
+        "target_character_id": 33388,
+        "casus_belli_index": 11,
+        "casus_belli_key": "claim_cb",
+        "configuration_index": 0,
+        "claimant_character_id": 31254,
+        "target_title_ids": [
+          7219
+        ],
+        "source": "native"
+      },
+      "claim_power": {
+        "target_character_id": 33388,
+        "effective_target_character_id": 38828,
+        "distance_raw": 62200000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 9742000000,
+        "target_network_contribution_raw": 1818000000,
+        "target_pre_adjustment_total_raw": 11560000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 11560000000,
+        "actual_power_ratio_raw": 224031,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      },
+      "alternative": {
+        "declaration_id": "26904-50--1",
+        "target_character_id": 26904,
+        "casus_belli_index": 50,
+        "casus_belli_key": "make_tributary_cb",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "alternative_power": {
+        "target_character_id": 26904,
+        "effective_target_character_id": 26904,
+        "distance_raw": 387600000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 2774000000,
+        "target_network_contribution_raw": 0,
+        "target_pre_adjustment_total_raw": 2774000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 2774000000,
+        "actual_power_ratio_raw": 53759,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      },
+      "selected_target_character_id": 26904,
+      "assertion": "Assessed adverse own claim cannot outrank the better assessed fallback."
+    },
+    "final_focused_test": {
+      "tests": 7,
+      "duration_seconds": 0.001,
+      "exit_code": 0,
+      "tool_chunk_id": "5b6ecd"
+    },
+    "previous_force41_not_rerun_after_narrowing": true,
+    "policy_neutral_performance_claim": false,
+    "declaration_credit_granted": false
+  }
+}

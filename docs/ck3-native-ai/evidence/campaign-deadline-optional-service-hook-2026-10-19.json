@@ -1,0 +1,44 @@
+{
+  "schema": "xar.ck3.campaign-deadline-optional-service-hook-fix/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:52:24.491461Z",
+  "identity_source": "fresh tools.ck3_live_run_id.current_machine_id readback",
+  "original_failure_preserved": {
+    "source": "Root report from M5 independence focused and populist1001 adjacent regression run",
+    "focused_passed": 17,
+    "adjacent_passed": 54,
+    "adjacent_failed": 1,
+    "failing_node": "ck3_autonomous_player/tests/unit/test_populist1001_cold_source_rebind.py::test_enabled_restore_hook_intercepts_unresolved_target_before_native",
+    "failure": "AttributeError before before_submit because the fixture intentionally constructs GameplayBridgeService with object.__new__ and no driver",
+    "original_run_repeated": false
+  },
+  "source_change": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+    "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e",
+    "lines": [1822, 5036],
+    "old": "getattr(self.driver, 'cap_campaign_advance_plan_v1', None)",
+    "new": "getattr(getattr(self, 'driver', None), 'cap_campaign_advance_plan_v1', None)",
+    "changed_lines": 2,
+    "constructed_driver_behavior_changed": false,
+    "cap_before_display_storage_and_dispatch_preserved": true,
+    "before_submit_interception_order_changed": false,
+    "strategies_or_native_driver_changed": false
+  },
+  "minimal_actual_verification": {
+    "runner": "py -B -m pytest -q with PYTHONPATH=ck3_autonomous_player/src;ck3_autonomous_player/tests/unit",
+    "nodes": [
+      "test_populist1001_cold_source_rebind.py::test_enabled_restore_hook_intercepts_unresolved_target_before_native",
+      "test_campaign_deadline_transport_v1.py::CampaignDeadlineCompoundTests::test_public_service_plan_hook_and_ab_mode_identity_are_preserved",
+      "test_campaign_deadline_transport_v1.py::CampaignDeadlineCompoundTests::test_actual_overshoot_is_rejected_and_default_driver_has_no_cap",
+      "test_campaign_deadline_transport_v1.py::CampaignDeadlineCompoundTests::test_endpoint_nested_ordinary_advance_never_resumes_or_claims_liveness"
+    ],
+    "passed": 4,
+    "failed": 0,
+    "seconds": 2.07,
+    "exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "full_matrix_repeated": false
+  },
+  "work_boundaries": {"live_RPC_calls": 0, "new_game_days": 0, "runtime_COW_changes": 0, "frozen_SDK_changes": 0, "Native26_changes": 0, "Driver_body_reads": 0},
+  "retention": {"policy_version": "1.0.0", "category": "record", "review_at_utc": "2027-04-17T04:52:24.491461Z", "large_artifacts_created": 0}
+}

@@ -1,0 +1,216 @@
+{
+  "schema": "xar.g2-m5-independence-ultimatum-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:49:17.690356+00:00",
+  "machine_identity_source": "python -B tools/ck3_live_run_id.py machine",
+  "scope": "repo/static installed source only; no Game/RPC/Driver/SAVE reads",
+  "source_pins": [
+    {
+      "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/factions/faction_demands.txt",
+      "bytes": 102190,
+      "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+    },
+    {
+      "path": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_war_effects.txt",
+      "bytes": 75993,
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b"
+    }
+  ],
+  "definitions": [
+    {
+      "definition_key": "faction_demand.0001",
+      "line_start": 124,
+      "line_end": 365,
+      "sha256": "cd59166f6becea0e42f07d12c77a5a4fdfb5a3dccb55b3131d3ad62245a639f0",
+      "complete_body": "faction_demand.0001 = {\r\n\ttype = letter_event\r\n\tsender = scope:faction_leader\r\n\topening = {\r\n\t\tdesc = \"FACTION_DEMAND_INDEPENDENCE\"\r\n\t}\r\n\tdesc = \"FACTION_DEMAND_INDEPENDENCE_DESC\"\r\n\t\r\n\ttrigger = {\r\n\t\t# May have ceased to exist by the time this triggers\r\n\t\texists = scope:faction\r\n\t}\r\n\r\n\timmediate = {\r\n\t\t# Grab our scope for loc.\r\n\t\tsave_scope_as = faction_target\r\n\t}\r\n\r\n\t# Accept.\r\n\toption = {\r\n\t\tname = \"FACTION_DEMAND_ACCEPT\"\r\n\r\n\t\t# This effect should always be placed here, _before_ all the other effects in the block.\r\n\t\ttrigger_event = { on_action = on_faction_demand_accepted }\r\n\r\n\t\troot = {\r\n\t\t\tsave_scope_as = faction_target\r\n\t\t\tadd_dread = medium_dread_loss\r\n\t\t\t# LEGITIMACY LOSS FOR ACCEPTING FACTION DEMANDS\r\n\t\t\tfaction_accept_demand_legitimacy_effect = yes\r\n\t\t}\r\n\t\t\r\n\t\tcreate_title_and_vassal_change = {\r\n\t\t\ttype = independency\r\n\t\t\tsave_scope_as = change\r\n\t\t\tadd_claim_on_loss = no\r\n\t\t}\r\n\r\n\t\tscope:faction = {\r\n\t\t\tevery_faction_member = {\r\n\t\t\t\tchange_liege_or_become_independent = {\r\n\t\t\t\t\tCHANGE = scope:change\r\n\t\t\t\t\tVASSAL = this\r\n\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\thidden_effect = {\r\n\t\t\t\t\tsave_scope_as = recipient # Ensuring it localizes correctly\r\n\t\t\t\t\tadd_truce_both_ways = {\r\n\t\t\t\t\t\tcharacter = root\r\n\t\t\t\t\t\tdays = 1825\r\n\t\t\t\t\t\tname = TRUCE_GRANT_INDEPENDENCE\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t# Struggle Catalysts.\r\n\t\t\t\t\tif = {\r\n\t\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\t\tis_important_or_vip_struggle_character = yes\r\n\t\t\t\t\t\t\tany_character_struggle = {\r\n\t\t\t\t\t\t\t\tinvolvement = involved\r\n\t\t\t\t\t\t\t\tactivate_struggle_catalyst_secondary_character_involvement_involved_trigger = {\r\n\t\t\t\t\t\t\t\t\tCATALYST = catalyst_gave_independence_to_powerful_diff_faith_culture_vassal\r\n\t\t\t\t\t\t\t\t\tCHAR = scope:recipient\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tevery_character_struggle = {\r\n\t\t\t\t\t\t\tinvolvement = involved\r\n\t\t\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\t\t\tactivate_struggle_catalyst_secondary_character_involvement_either_trigger = {\r\n\t\t\t\t\t\t\t\t\tCATALYST = catalyst_gave_independence_to_powerful_diff_faith_culture_vassal\r\n\t\t\t\t\t\t\t\t\tCHAR = scope:recipient\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\tactivate_struggle_catalyst = catalyst_gave_independence_to_powerful_diff_faith_culture_vassal\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\ttrigger_event = faction_demand.0002\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tresolve_title_and_vassal_change = scope:change\r\n\r\n\t\tadd_prestige = {\r\n\t\t\tvalue = medium_prestige_value\r\n\t\t\tmultiply = -1\r\n\t\t}\r\n\r\n\t\tai_chance = {\r\n\t\t\tbase = 1\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 99\r\n\t\t\t\tscope:faction = { faction_power >= 100 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power >= 125 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power >= 150 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power >= 200 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0.1\r\n\t\t\t\tany_ally = {\r\n\t\t\t\t\tNOR = {\r\n\t\t\t\t\t\ttarget_is_liege_or_above = root\r\n\t\t\t\t\t\ttarget_is_vassal_or_below = root\r\n\t\t\t\t\t}\r\n\t\t\t\t\tmax_military_strength > root.max_military_strength\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tcompare_modifier = {\r\n\t\t\t\tvalue = debt_level\r\n\t\t\t\tmultiplier = 25\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = -50\r\n\t\t\t\tis_at_war = no\r\n\t\t\t\tprimary_title.tier >= tier_kingdom\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = -150\r\n\t\t\t\tis_at_war = no\r\n\t\t\t\tprimary_title.tier >= tier_empire\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = -5000\r\n\t\t\t\tOR = {\r\n\t\t\t\t\tmpo_has_gok_mongol_empire_trigger = yes\r\n\t\t\t\t\thas_title = title:e_ilkhanate\r\n\t\t\t\t\thas_title = title:e_golden_horde\r\n\t\t\t\t\thas_title = title:e_chagatai\r\n\t\t\t\t\thas_title = title:e_red_horde\r\n\t\t\t\t\thas_title = title:e_white_horde\r\n\t\t\t\t\thas_title = title:e_aarlud_khanate\r\n\t\t\t\t\thas_title = title:e_togskol_khanate\r\n\t\t\t\t\thas_title = title:e_baruun_khanate\r\n\t\t\t\t\thas_title = title:e_great_yuan\r\n\t\t\t\t\thas_title = title:e_blue_horde\r\n\t\t\t\t\thas_title = title:e_omnod_dalai_khanate\r\n\t\t\t\t\thas_title = title:e_byzantium\r\n\t\t\t\t\thas_variable = conqueror\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 10000\r\n\t\t\t\tscope:faction_leader = { is_yes_men_enabled = yes }\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\r\n\t# Attempt to bribe.\r\n\toption = {\r\n\t\tname = \"FACTION_DEMAND_BRIBE_CO_EMPEROR\"\r\n\t\tshow_as_unavailable = { may_appoint_co_emperors_trigger = yes }\r\n\t\ttrigger = { faction_target_can_attempt_to_bribe_with_co_emperorship_trigger = yes }\r\n\r\n\t\t# Ping-pong the choice back to the target.\r\n\t\t## Laying out the consequences.\r\n\t\tshow_as_tooltip = {\r\n\t\t\trandom_list = {\r\n\t\t\t\t# They accept!\r\n\t\t\t\t100 = {\r\n\t\t\t\t\tdesc = faction_demand.0000.faction_leader_accepts\r\n\t\t\t\t\tshow_chance = no\r\n\t\t\t\t\tfaction_demand_counter_offer_co_rule_start_diarchy_effect = yes\r\n\t\t\t\t\tfaction_demand_independence_counter_offer_corule_accepted_effect = yes\r\n\t\t\t\t}\r\n\t\t\t\t# They decline.\r\n\t\t\t\t100 = {\r\n\t\t\t\t\tdesc = faction_demand.0000.faction_leader_rejects\r\n\t\t\t\t\tshow_chance = no\r\n\t\t\t\t\tfaction_demand_independence_rejected_effect = yes\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\t## And sorting the actual flow.\r\n\t\tscope:faction_leader = { trigger_event = faction_demand.0006 }\r\n\r\n\t\tai_chance = { liege_offer_co_emperorship_to_faction_leader_modifier = yes }\r\n\t}\r\n\r\n\t# Reject.\r\n\toption = {\r\n\t\tname = \"FACTION_DEMAND_REFUSE\"\r\n\r\n\t\tfaction_demand_independence_rejected_effect = yes\r\n\t\tscope:faction_leader = { trigger_event = faction_demand.0003 }\r\n\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tai_value_modifier = {\r\n\t\t\t\tai_boldness = 4.0\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power < 80 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 100\r\n\t\t\t\tscope:faction = { faction_power < 60 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 1000\r\n\t\t\t\tscope:faction = { faction_power < 40 }\r\n\t\t\t}\r\n\t\t\tcompare_modifier = {\r\n\t\t\t\tvalue = debt_level\r\n\t\t\t\tmultiplier = -25\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 5000\r\n\t\t\t\tOR = {\r\n\t\t\t\t\tmpo_has_gok_mongol_empire_trigger = yes\r\n\t\t\t\t\thas_title = title:e_ilkhanate\r\n\t\t\t\t\thas_title = title:e_golden_horde\r\n\t\t\t\t\thas_title = title:e_chagatai\r\n\t\t\t\t\thas_title = title:e_red_horde\r\n\t\t\t\t\thas_title = title:e_white_horde\r\n\t\t\t\t\thas_title = title:e_aarlud_khanate\r\n\t\t\t\t\thas_title = title:e_togskol_khanate\r\n\t\t\t\t\thas_title = title:e_baruun_khanate\r\n\t\t\t\t\thas_title = title:e_great_yuan\r\n\t\t\t\t\thas_title = title:e_blue_horde\r\n\t\t\t\t\thas_title = title:e_omnod_dalai_khanate\r\n\t\t\t\t\thas_title = title:e_byzantium\r\n\t\t\t\t\thas_variable = conqueror\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 10000\r\n\t\t\t\tscope:faction_leader = { is_no_men_enabled = yes }\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}"
+    },
+    {
+      "definition_key": "faction_demand.0003",
+      "line_start": 385,
+      "line_end": 404,
+      "sha256": "71443ff1bc42586336bd0caf1a7c9ddb76797c38437a3cdc292c795f9ca58ebe",
+      "complete_body": "faction_demand.0003 = {\r\n\ttype = letter_event\r\n\tsender = scope:faction_target\r\n\topening = {\r\n\t\tdesc = \"FACTION_DEMAND_INDEPENDENCE_REFUSED\"\r\n\t}\r\n\tdesc = \"FACTION_DEMAND_INDEPENDENCE_REFUSED_DESC\"\r\n\r\n\toption = {\r\n\t\tname = \"FACTION_DEMAND_REFUSED_OPT\"\r\n\t\tscope:faction = {\r\n\t\t\tfaction_start_war = {}\r\n\t\t\t\r\n\t\t\tevery_faction_member = {\r\n\t\t\t\tlimit = { this != scope:faction.faction_leader }\r\n\t\t\t\ttrigger_event = faction_demand.0004\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}"
+    },
+    {
+      "definition_key": "scripted_effect faction_demand_independence_rejected_effect",
+      "line_start": 90,
+      "line_end": 120,
+      "sha256": "6abfc987cafa3b9f84b5af06854668fc3823973b25fc41da6e618a01cd6dfb39",
+      "complete_body": "\r\nscripted_effect faction_demand_independence_rejected_effect = {\r\n\t# This effect should always be placed here, _before_ all the other effects in the block.\r\n\ttrigger_event = { on_action = on_faction_demand_rejected }\r\n\r\n\tshow_as_tooltip = {\r\n\t\tscope:faction = {\r\n\t\t\tcustom_tooltip = faction_starts_war.tt.replacement\r\n\t\t}\r\n\t}\r\n\t\r\n\tif = {\r\n\t\tlimit = {\r\n\t\t\tscope:faction = {\r\n\t\t\t\tfaction_is_type = independence_faction\r\n\t\t\t}\r\n\t\t}\r\n\t\tscope:faction = {\r\n\t\t\tevery_faction_member = {\r\n\t\t\t\tsave_scope_as = char_temp\r\n\t\t\t\tadd_clan_unity_interaction_effect = {\r\n\t\t\t\t\tCHARACTER = scope:char_temp\r\n\t\t\t\t\tTARGET = root\r\n\t\t\t\t\tVALUE = medium_unity_loss\r\n\t\t\t\t\tDESC = clan_unity_joined_independence_faction.desc\r\n\t\t\t\t\tREVERSE_NON_HOUSE_TARGET = no\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}"
+    },
+    {
+      "definition_key": "change_liege_or_become_independent",
+      "line_start": 1270,
+      "line_end": 1296,
+      "sha256": "ba4dbcb290562246a539ba0fa616e0dbc4a92f1e2da6cb25986f8734afea2e59",
+      "complete_body": "\r\nchange_liege_or_become_independent = {\r\n\t$CHANGE$ = { save_scope_as = change }\r\n\t$VASSAL$ = { save_scope_as = vassal }\r\n\tscope:vassal.liege = { save_scope_as = liege }\r\n\r\n\tif = {\r\n\t\tlimit = {\r\n\t\t\tscope:liege = {\r\n\t\t\t\ttop_liege = this\r\n\t\t\t}\r\n\t\t}\r\n\t\tscope:vassal = {\r\n\t\t\tbecomes_independent = {\r\n\t\t\t\tchange = scope:change\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\telse = {\r\n\t\tscope:vassal = {\r\n\t\t\tchange_liege = {\r\n\t\t\t\tliege = scope:liege.liege\r\n\t\t\t\tchange = scope:change\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}"
+    }
+  ],
+  "source_option_catalogue": [
+    {
+      "native_option_index": 0,
+      "source_name_keys": [
+        "FACTION_DEMAND_ACCEPT"
+      ],
+      "conditional_name_source": [],
+      "source_option": "option = {\r\n\t\tname = \"FACTION_DEMAND_ACCEPT\"\r\n\r\n\t\t# This effect should always be placed here, _before_ all the other effects in the block.\r\n\t\ttrigger_event = { on_action = on_faction_demand_accepted }\r\n\r\n\t\troot = {\r\n\t\t\tsave_scope_as = faction_target\r\n\t\t\tadd_dread = medium_dread_loss\r\n\t\t\t# LEGITIMACY LOSS FOR ACCEPTING FACTION DEMANDS\r\n\t\t\tfaction_accept_demand_legitimacy_effect = yes\r\n\t\t}\r\n\t\t\r\n\t\tcreate_title_and_vassal_change = {\r\n\t\t\ttype = independency\r\n\t\t\tsave_scope_as = change\r\n\t\t\tadd_claim_on_loss = no\r\n\t\t}\r\n\r\n\t\tscope:faction = {\r\n\t\t\tevery_faction_member = {\r\n\t\t\t\tchange_liege_or_become_independent = {\r\n\t\t\t\t\tCHANGE = scope:change\r\n\t\t\t\t\tVASSAL = this\r\n\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\thidden_effect = {\r\n\t\t\t\t\tsave_scope_as = recipient # Ensuring it localizes correctly\r\n\t\t\t\t\tadd_truce_both_ways = {\r\n\t\t\t\t\t\tcharacter = root\r\n\t\t\t\t\t\tdays = 1825\r\n\t\t\t\t\t\tname = TRUCE_GRANT_INDEPENDENCE\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\t# Struggle Catalysts.\r\n\t\t\t\t\tif = {\r\n\t\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\t\tis_important_or_vip_struggle_character = yes\r\n\t\t\t\t\t\t\tany_character_struggle = {\r\n\t\t\t\t\t\t\t\tinvolvement = involved\r\n\t\t\t\t\t\t\t\tactivate_struggle_catalyst_secondary_character_involvement_involved_trigger = {\r\n\t\t\t\t\t\t\t\t\tCATALYST = catalyst_gave_independence_to_powerful_diff_faith_culture_vassal\r\n\t\t\t\t\t\t\t\t\tCHAR = scope:recipient\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tevery_character_struggle = {\r\n\t\t\t\t\t\t\tinvolvement = involved\r\n\t\t\t\t\t\t\tlimit = {\r\n\t\t\t\t\t\t\t\tactivate_struggle_catalyst_secondary_character_involvement_either_trigger = {\r\n\t\t\t\t\t\t\t\t\tCATALYST = catalyst_gave_independence_to_powerful_diff_faith_culture_vassal\r\n\t\t\t\t\t\t\t\t\tCHAR = scope:recipient\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\tactivate_struggle_catalyst = catalyst_gave_independence_to_powerful_diff_faith_culture_vassal\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\ttrigger_event = faction_demand.0002\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tresolve_title_and_vassal_change = scope:change\r\n\r\n\t\tadd_prestige = {\r\n\t\t\tvalue = medium_prestige_value\r\n\t\t\tmultiply = -1\r\n\t\t}\r\n\r\n\t\tai_chance = {\r\n\t\t\tbase = 1\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 99\r\n\t\t\t\tscope:faction = { faction_power >= 100 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power >= 125 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power >= 150 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power >= 200 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tfactor = 0.1\r\n\t\t\t\tany_ally = {\r\n\t\t\t\t\tNOR = {\r\n\t\t\t\t\t\ttarget_is_liege_or_above = root\r\n\t\t\t\t\t\ttarget_is_vassal_or_below = root\r\n\t\t\t\t\t}\r\n\t\t\t\t\tmax_military_strength > root.max_military_strength\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tcompare_modifier = {\r\n\t\t\t\tvalue = debt_level\r\n\t\t\t\tmultiplier = 25\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = -50\r\n\t\t\t\tis_at_war = no\r\n\t\t\t\tprimary_title.tier >= tier_kingdom\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = -150\r\n\t\t\t\tis_at_war = no\r\n\t\t\t\tprimary_title.tier >= tier_empire\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = -5000\r\n\t\t\t\tOR = {\r\n\t\t\t\t\tmpo_has_gok_mongol_empire_trigger = yes\r\n\t\t\t\t\thas_title = title:e_ilkhanate\r\n\t\t\t\t\thas_title = title:e_golden_horde\r\n\t\t\t\t\thas_title = title:e_chagatai\r\n\t\t\t\t\thas_title = title:e_red_horde\r\n\t\t\t\t\thas_title = title:e_white_horde\r\n\t\t\t\t\thas_title = title:e_aarlud_khanate\r\n\t\t\t\t\thas_title = title:e_togskol_khanate\r\n\t\t\t\t\thas_title = title:e_baruun_khanate\r\n\t\t\t\t\thas_title = title:e_great_yuan\r\n\t\t\t\t\thas_title = title:e_blue_horde\r\n\t\t\t\t\thas_title = title:e_omnod_dalai_khanate\r\n\t\t\t\t\thas_title = title:e_byzantium\r\n\t\t\t\t\thas_variable = conqueror\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 10000\r\n\t\t\t\tscope:faction_leader = { is_yes_men_enabled = yes }\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+      "trigger": null,
+      "direct_effect_statements": [
+        {
+          "effect": "trigger_event",
+          "source_value": "{ on_action = on_faction_demand_accepted }"
+        },
+        {
+          "effect": "save_scope_as",
+          "source_value": "faction_target"
+        },
+        {
+          "effect": "add_dread",
+          "source_value": "medium_dread_loss"
+        },
+        {
+          "effect": "faction_accept_demand_legitimacy_effect",
+          "source_value": "yes"
+        },
+        {
+          "effect": "save_scope_as",
+          "source_value": "change"
+        },
+        {
+          "effect": "add_claim_on_loss",
+          "source_value": "no"
+        },
+        {
+          "effect": "change_liege_or_become_independent",
+          "source_value": "{"
+        },
+        {
+          "effect": "hidden_effect",
+          "source_value": "{"
+        },
+        {
+          "effect": "save_scope_as",
+          "source_value": "recipient # Ensuring it localizes correctly"
+        },
+        {
+          "effect": "add_truce_both_ways",
+          "source_value": "{"
+        },
+        {
+          "effect": "trigger_event",
+          "source_value": "faction_demand.0002"
+        },
+        {
+          "effect": "add_prestige",
+          "source_value": "{"
+        }
+      ]
+    },
+    {
+      "native_option_index": 1,
+      "source_name_keys": [
+        "FACTION_DEMAND_BRIBE_CO_EMPEROR"
+      ],
+      "conditional_name_source": [],
+      "source_option": "option = {\r\n\t\tname = \"FACTION_DEMAND_BRIBE_CO_EMPEROR\"\r\n\t\tshow_as_unavailable = { may_appoint_co_emperors_trigger = yes }\r\n\t\ttrigger = { faction_target_can_attempt_to_bribe_with_co_emperorship_trigger = yes }\r\n\r\n\t\t# Ping-pong the choice back to the target.\r\n\t\t## Laying out the consequences.\r\n\t\tshow_as_tooltip = {\r\n\t\t\trandom_list = {\r\n\t\t\t\t# They accept!\r\n\t\t\t\t100 = {\r\n\t\t\t\t\tdesc = faction_demand.0000.faction_leader_accepts\r\n\t\t\t\t\tshow_chance = no\r\n\t\t\t\t\tfaction_demand_counter_offer_co_rule_start_diarchy_effect = yes\r\n\t\t\t\t\tfaction_demand_independence_counter_offer_corule_accepted_effect = yes\r\n\t\t\t\t}\r\n\t\t\t\t# They decline.\r\n\t\t\t\t100 = {\r\n\t\t\t\t\tdesc = faction_demand.0000.faction_leader_rejects\r\n\t\t\t\t\tshow_chance = no\r\n\t\t\t\t\tfaction_demand_independence_rejected_effect = yes\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\t## And sorting the actual flow.\r\n\t\tscope:faction_leader = { trigger_event = faction_demand.0006 }\r\n\r\n\t\tai_chance = { liege_offer_co_emperorship_to_faction_leader_modifier = yes }\r\n\t}",
+      "trigger": "\t\ttrigger = { faction_target_can_attempt_to_bribe_with_co_emperorship_trigger = yes }",
+      "direct_effect_statements": [
+        {
+          "effect": "faction_demand_counter_offer_co_rule_start_diarchy_effect",
+          "source_value": "yes"
+        },
+        {
+          "effect": "faction_demand_independence_counter_offer_corule_accepted_effect",
+          "source_value": "yes"
+        },
+        {
+          "effect": "faction_demand_independence_rejected_effect",
+          "source_value": "yes"
+        }
+      ]
+    },
+    {
+      "native_option_index": 2,
+      "source_name_keys": [
+        "FACTION_DEMAND_REFUSE"
+      ],
+      "conditional_name_source": [],
+      "source_option": "option = {\r\n\t\tname = \"FACTION_DEMAND_REFUSE\"\r\n\r\n\t\tfaction_demand_independence_rejected_effect = yes\r\n\t\tscope:faction_leader = { trigger_event = faction_demand.0003 }\r\n\r\n\t\tai_chance = {\r\n\t\t\tbase = 100\r\n\t\t\tai_value_modifier = {\r\n\t\t\t\tai_boldness = 4.0\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 50\r\n\t\t\t\tscope:faction = { faction_power < 80 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 100\r\n\t\t\t\tscope:faction = { faction_power < 60 }\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 1000\r\n\t\t\t\tscope:faction = { faction_power < 40 }\r\n\t\t\t}\r\n\t\t\tcompare_modifier = {\r\n\t\t\t\tvalue = debt_level\r\n\t\t\t\tmultiplier = -25\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 5000\r\n\t\t\t\tOR = {\r\n\t\t\t\t\tmpo_has_gok_mongol_empire_trigger = yes\r\n\t\t\t\t\thas_title = title:e_ilkhanate\r\n\t\t\t\t\thas_title = title:e_golden_horde\r\n\t\t\t\t\thas_title = title:e_chagatai\r\n\t\t\t\t\thas_title = title:e_red_horde\r\n\t\t\t\t\thas_title = title:e_white_horde\r\n\t\t\t\t\thas_title = title:e_aarlud_khanate\r\n\t\t\t\t\thas_title = title:e_togskol_khanate\r\n\t\t\t\t\thas_title = title:e_baruun_khanate\r\n\t\t\t\t\thas_title = title:e_great_yuan\r\n\t\t\t\t\thas_title = title:e_blue_horde\r\n\t\t\t\t\thas_title = title:e_omnod_dalai_khanate\r\n\t\t\t\t\thas_title = title:e_byzantium\r\n\t\t\t\t\thas_variable = conqueror\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tmodifier = {\r\n\t\t\t\tadd = 10000\r\n\t\t\t\tscope:faction_leader = { is_no_men_enabled = yes }\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+      "trigger": null,
+      "direct_effect_statements": [
+        {
+          "effect": "faction_demand_independence_rejected_effect",
+          "source_value": "yes"
+        }
+      ]
+    }
+  ],
+  "option_catalogue_sha256": "6237b0c9f4e27ba6f1197d8cad68d41b58bfd64112cdb8705d80b626759f9192",
+  "hash_convention": "complete block returned by existing block parser; original CRLF from UTF-8 decode preserved",
+  "material_effects_verified": false,
+  "live_qualification": false,
+  "synthetic_test_boundary": "All later test frames, calculated IDs, instances, actors, and ACKs are synthetic.",
+  "not_claimed": [
+    "loaded definition bytes match installed source",
+    "faction member/title set",
+    "faction war already started",
+    "refusal will win",
+    "land already retained"
+  ],
+  "validation": {
+    "recorded_at_utc": "2026-10-19T04:53:01.164399+00:00",
+    "kind": "synthetic-only offline regression",
+    "runner_chunk_id": "275ae7",
+    "runner_result": {
+      "passed": 54,
+      "failed": 1,
+      "seconds": 3.76,
+      "new_policy_cases_passed": 17
+    },
+    "test_files": [
+      "test_independence0001_known_refusal.py",
+      "test_populist1001_known_refusal.py",
+      "test_populist1001_current_source_binding.py",
+      "test_populist1001_cold_source_rebind.py"
+    ],
+    "existing_failure": {
+      "test": "test_enabled_restore_hook_intercepts_unresolved_target_before_native",
+      "file": "test_populist1001_cold_source_rebind.py",
+      "error": "AttributeError: GameplayBridgeService has no attribute driver",
+      "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py:5036",
+      "ownership": "Root delegated follow-up to score15 owner; M5 does not modify Service or this old fixture"
+    },
+    "no_replay": true,
+    "business_success_inferred": false
+  },
+  "delivery_source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/independence0001_known_refusal_v1.py",
+      "bytes": 13863,
+      "sha256": "3d6eda9626bed5da21aa9b6f32990e6c24e4619482ad7e69e093a1d726ef5246"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/populist1001_known_refusal_v1.py",
+      "bytes": 17176,
+      "sha256": "d6521d96f3cdedec05ab28d34b4f62e38ff5185bb778d9f6923f28726b5e7f59"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_independence0001_known_refusal.py",
+      "bytes": 10353,
+      "sha256": "89c61b3f4f174cfa13064d9791b84253fc455181ce2d73bb398298b33f419785"
+    },
+    {
+      "path": "docs/ck3-native-ai/g2-m5-independence-ultimatum-policy-2026-10-19.md",
+      "bytes": 8204,
+      "sha256": "7a7f50a0ed509f66990b9196b3430a86868747b5d58d19d46823341492d1600c"
+    }
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "pool": "shared research repo-only small package",
+    "estimated_peak_upper_bound_bytes": 1048576,
+    "heavy_writes": false,
+    "temporary_source_export_script_removed": true,
+    "review_at_utc": "2027-04-17T04:51:51Z"
+  }
+}

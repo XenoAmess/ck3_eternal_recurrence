@@ -83,7 +83,7 @@ def test_actual_driver_service_fresh_only_hook_retain_and_frame_race(tmp_path, m
                     "succession_expectation": copy.deepcopy(self._succession_expectation),
                     "succession_reconciliation": copy.deepcopy(self._succession_reconciliation)}
 
-        def _persist_driver_state(self):
+        def _persist_driver_state(self, *, persistence_reason="unspecified"):
             self.persist_calls += 1
 
         def invalidate_succession_expectation_from_root_v1(self, result, *, expected_snapshot):

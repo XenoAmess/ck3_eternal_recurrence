@@ -553,7 +553,10 @@ def _preferred_native_declaration(
     declarations: object,
     *,
     war_entry_assessments: dict[int, dict[str, object]] | None = None,
+    actor_character_id: int | None = None,
 ) -> dict[str, object] | None:
+    from .declaration_objective_priority_v1 import native_declaration_objective_priority_v1
+
     if not isinstance(declarations, list):
         return None
     rows = [row for row in declarations if isinstance(row, dict)]
@@ -607,6 +610,13 @@ def _preferred_native_declaration(
         return (
             evidence_rank,
             *native_power_risk,
+            (
+                native_declaration_objective_priority_v1(
+                    row, actor_character_id=actor_character_id
+                )
+                if evidence_rank == 1
+                else 1
+            ),
             key_rank,
             title_count,
             stable_integer("target_character_id"),
@@ -15375,6 +15385,7 @@ def _choose_one_life_turn_core(
     declaration = _preferred_native_declaration(
         raw_declarations,
         war_entry_assessments=war_entry_assessment_rows,
+        actor_character_id=actor_character_id,
     )
     if isinstance(declaration, dict):
         declaration_target = declaration.get("target_character_id")
@@ -15478,7 +15489,9 @@ def _choose_one_life_turn_core(
                 and row["target_character_id"]
                 not in war_entry_assessment_rows
             ]
-            alternative = _preferred_native_declaration(unassessed)
+            alternative = _preferred_native_declaration(
+                unassessed, actor_character_id=actor_character_id
+            )
             alternative_target = (
                 alternative.get("target_character_id")
                 if isinstance(alternative, dict)

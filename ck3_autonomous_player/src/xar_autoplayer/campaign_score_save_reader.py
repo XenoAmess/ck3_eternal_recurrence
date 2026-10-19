@@ -185,6 +185,7 @@ class SaveProjection:
         self.pending, self.assignment = None, None
         self.token_count = 0
         self.selected_scalar_count, self.skipped_scalar_count = 0, 0
+        self.stream_complete = False
 
     def token(self, token):
         self.token_count += 1
@@ -254,6 +255,7 @@ class SaveProjection:
             self.pending = None
         if self.assignment is not None or self.path or self.active is not None:
             raise ValueError("melted stream ended inside a scope/value")
+        self.stream_complete = True
 
     def scalar(self, key, value):
         if not self.path and key not in self.root_keys:
@@ -530,6 +532,149 @@ def player_war_defence(character_fields, wars, *, actor):
     return own_defence, audit
 
 
+def audit_saved_county_membership_v1(projection, *, actor, house, dynasty,
+                                     county_baronies, source_id):
+    """Pure tri-state membership over complete saved records and explicit map.
+
+    Missing/cyclic references are unknown. A complete foreign title record
+    omitting its optional de_facto_liege is a foreign root, not a missing node.
+    An unmapped c_ key has unknown geography, never an assumed landless status.
+    """
+    titles, realm_cache, family_cache = projection.titles, {}, {}
+    key_counts = Counter(row.get("key") for row in titles.values())
+    maps = county_baronies if isinstance(county_baronies, dict) else {}
+    valid_maps = {key for key, rows in maps.items()
+                  if isinstance(key, str) and key.startswith("c_") and isinstance(rows, dict) and rows
+                  and all(isinstance(barony, str) and barony.startswith("b_")
+                          and type(province) is int and province > 0 for barony, province in rows.items())
+                  and len(set(rows.values())) == len(rows)}
+    province_owners, barony_owners = {}, {}
+    for key in valid_maps:
+        for barony, province in maps[key].items():
+            province_owners.setdefault(province, set()).add(key)
+            barony_owners.setdefault(barony, set()).add(key)
+    conflicted_maps = set().union(*(owners for owners in (*province_owners.values(), *barony_owners.values())
+                                    if len(owners) > 1))
+    valid_maps -= conflicted_maps
+
+    def realm(identity):
+        path, seen = [], set()
+        while identity not in realm_cache:
+            if identity in seen:
+                result = (None, "cyclic_de_facto_liege", identity)
+                break
+            if identity not in titles:
+                result = (None, "missing_de_facto_liege_title", identity)
+                break
+            seen.add(identity)
+            path.append(identity)
+            row = titles[identity]
+            if "nonunique:holder" in row or integer(row.get("holder")) is None:
+                result = (None, "title_holder_unavailable", identity)
+                break
+            if integer(row["holder"]) == actor:
+                result = (True, "held_by_player_on_title_chain", identity)
+                break
+            if "nonunique:de_facto_liege" in row:
+                result = (None, "conflicting_de_facto_liege", identity)
+                break
+            if "de_facto_liege" not in row:
+                result = (False, "complete_foreign_title_root", identity)
+                break
+            identity = integer(row["de_facto_liege"])
+            if identity is None:
+                result = (None, "invalid_de_facto_liege", path[-1])
+                break
+        else:
+            result = realm_cache[identity]
+        for node in path:
+            realm_cache[node] = result
+        return result
+
+    def family(holder):
+        if (holder is None or holder in projection.character_house_unknown
+                or holder not in projection.character_sources or house is None or dynasty is None):
+            return None, "holder_house_or_founding_anchor_unavailable"
+        start = projection.character_houses.get(holder)
+        if start is None:
+            return "0", "complete_character_without_house"
+        if start in family_cache:
+            return family_cache[start]
+        identity, path, seen = start, [], set()
+        while True:
+            if identity in family_cache:
+                result = family_cache[identity]
+                if path and result[0] == "0":
+                    result = (None, "parent_dynasty_disagrees")
+                break
+            if identity in seen:
+                result = (None, "cyclic_parent_house")
+                break
+            row = projection.houses.get(identity)
+            if row is None:
+                result = (None, "missing_house_on_ancestry")
+                break
+            seen.add(identity)
+            path.append(identity)
+            if any("nonunique:" + key in row for key in ("dynasty", "parent_dynasty_house")):
+                result = (None, "conflicting_house_ancestry")
+                break
+            observed_dynasty = integer(row.get("dynasty"))
+            if observed_dynasty is None:
+                result = (None, "house_dynasty_unavailable")
+                break
+            if observed_dynasty != dynasty:
+                result = ("0", "different_dynasty") if len(path) == 1 else (None, "parent_dynasty_disagrees")
+                break
+            if identity == house:
+                result = ("1", "founding_house_ancestry")
+                break
+            if "parent_dynasty_house" not in row:
+                result = ("0.5", "complete_other_house_root_in_dynasty")
+                break
+            identity = integer(row["parent_dynasty_house"])
+            if identity is None:
+                result = (None, "invalid_parent_house")
+                break
+        # Cache the start only: a different-dynasty endpoint is not the same
+        # proof for an earlier same-dynasty child, and must not poison its row.
+        family_cache[start] = result
+        return result
+
+    states = {}
+    for identity, row in titles.items():
+        key = row.get("key")
+        if isinstance(key, str) and key.startswith(("b_", "d_", "k_", "e_")):
+            continue
+        geography = isinstance(key, str) and key.startswith("c_") and key in valid_maps and key_counts[key] == 1
+        inside, realm_reason, terminal = realm(identity)
+        factor, family_reason = family(integer(row.get("holder")))
+        states[identity] = {"key": key, "geographic": True if geography else None,
+            "geography_reason": None if geography else "county_geography_or_unique_key_unavailable",
+            "in_player_realm": inside, "realm_reason": realm_reason, "realm_terminal_title_id": terminal,
+            "family_factor": factor, "family_reason": family_reason}
+    realm_known = [i for i, row in states.items() if row["geographic"] is True and row["in_player_realm"] is True]
+    realm_unknown = [i for i, row in states.items() if row["in_player_realm"] is not False
+                     and (row["geographic"] is not True or row["in_player_realm"] is None)]
+    family_known = [i for i, row in states.items() if row["geographic"] is True and row["family_factor"] not in {None, "0"}]
+    family_unknown = [i for i, row in states.items() if row["family_factor"] != "0"
+                      and (row["geographic"] is not True or row["family_factor"] is None)]
+    census_complete = (projection.stream_complete and projection.unknown_key_fields == 0
+                       and "landed_titles" in projection.root_keys)
+    def scope(known, unknown, ready=True):
+        return {"complete": census_complete and ready and not unknown,
+                "known_member_title_ids": sorted(known), "unknown_title_ids": sorted(unknown),
+                "count_lower": len(known), "count_upper": len(known) + len(unknown) if census_complete and ready else None}
+    return {"schema": "xar.ck3.saved-county-membership-audit/v1", "source_ref": source_id,
+            "date": projection.metadata.get("date"), "actor_id": actor,
+            "founding_house_id": house, "founding_dynasty_id": dynasty,
+            "title_census_complete": census_complete,
+            "geography_complete": census_complete and all(row["geographic"] is True for row in states.values()),
+            "realm": scope(realm_known, realm_unknown),
+            "dynasty": scope(family_known, family_unknown, house is not None and dynasty is not None),
+            "states": states}
+
+
 def project_metrics(projection: SaveProjection, *, actor: int, founder: int, source_id: str, static_context=None):
     """Saved state + explicit static map; incomplete occupation/fees stay bounded."""
     from decimal import localcontext
@@ -554,43 +699,18 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
             metrics["gold"] = observation("gold", value, source_id, f"living.{actor}.{key}")
             break
     title_by_key = {row.get("key"): identity for identity, row in projection.titles.items() if "key" in row}
-    def in_realm(identity):
-        seen = set()
-        while identity in projection.titles and identity not in seen:
-            seen.add(identity)
-            row = projection.titles[identity]
-            if integer(row.get("holder")) == actor:
-                return True
-            identity = integer(row.get("de_facto_liege"))
-        return False
-    counties = {identity: row for identity, row in projection.titles.items()
-                if str(row.get("key", "")).startswith("c_") and integer(row.get("holder")) is not None}
-    owned = {identity: row for identity, row in counties.items() if in_realm(identity)}
     static, static_pin = _static_context() if static_context is None else (static_context, static_context.get("metadata_pin"))
     h0 = static.get("founding_house_id", projection.character_houses.get(founder))
     dynasty = static.get("founding_dynasty_id", integer(projection.houses.get(h0, {}).get("dynasty")))
     actor_house = projection.character_houses.get(actor)
-    def family_factor(holder):
-        if (holder in projection.character_house_unknown or holder not in projection.character_sources
-                or h0 is None or dynasty is None):
-            return None
-        house_id = projection.character_houses.get(holder)
-        if house_id is not None and house_id not in projection.houses:
-            return None
-        row = projection.houses.get(house_id, {})
-        if any("nonunique:" + key in row for key in ("dynasty", "parent_dynasty_house")):
-            return None
-        if dynasty is None or integer(row.get("dynasty")) != dynasty:
-            return D(0)
-        seen = set()
-        while house_id is not None and house_id not in seen:
-            if house_id == h0:
-                return D(1)
-            seen.add(house_id)
-            house_id = integer(projection.houses.get(house_id, {}).get("parent_dynasty_house"))
-        return D(".5")
-    family_factors = {identity: family_factor(integer(row.get("holder"))) for identity, row in counties.items()}
-    family_unknown = [identity for identity, factor in family_factors.items() if factor is None]
+    membership = audit_saved_county_membership_v1(projection, actor=actor, house=h0, dynasty=dynasty,
+        county_baronies=static.get("county_baronies"), source_id=source_id)
+    states = membership["states"]
+    counties = {identity: projection.titles[identity] for identity, row in states.items() if row["geographic"] is True}
+    owned = {identity: row for identity, row in counties.items() if states[identity]["in_player_realm"] is True}
+    family_factors = {identity: None if states[identity]["family_factor"] is None
+                      else D(states[identity]["family_factor"]) for identity in counties}
+    family_unknown = membership["dynasty"]["unknown_title_ids"]
     same_dynasty = {identity: row for identity, row in counties.items()
                     if family_factors[identity] is not None and family_factors[identity] > 0}
     maps = static.get("county_baronies", {})
@@ -618,7 +738,8 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
             holding_rows.append({"barony": barony, "province_id": province, "holding_type": kind,
                                  "holder": integer(barony_title.get("holder"))})
         row = {"title_id": identity, "key": key, "holder": integer(title.get("holder")),
-               "in_player_realm": identity in owned,
+               "in_player_realm": states[identity]["in_player_realm"],
+               "realm_membership_complete": membership["realm"]["complete"],
                "same_dynasty": None if family_factors[identity] is None else identity in same_dynasty,
                "family_factor": None if family_factors[identity] is None else fmt(family_factors[identity]),
                "development": fmt(development) if development is not None else None,
@@ -638,7 +759,7 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
             unresolved.append(key + ":control")
         selected.append(row)
     realm_values = []
-    if all(identity in q_by_id and identity in controls for identity in owned):
+    if membership["realm"]["complete"] and all(identity in q_by_id and identity in controls for identity in owned):
         for identity in owned:
             realm_values.append(q_by_id[identity] * (D(".25") + D(".75") * controls[identity]))
         upper = sum(realm_values, D(0))
@@ -659,18 +780,19 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
     for row in static.get("baseline_counties", []):
         dev = numeric(row.get("development"))
         control = numeric(row.get("control"))
-        if dev is None or control is None:
+        if dev is None or control is None or row.get("realm_membership_complete", True) is not True:
             baseline_cap_known = False
             break
         qmin = 1 + D(".5") * min(dev / 20, D(2))
         multiplier = D(".25") + D(".75") * control / 100
         baseline_lower += qmin * multiplier / 2
         baseline_upper += (qmin + 1) * multiplier
-    if (dynasty is not None and not family_unknown and baseline_cap_known and baseline_lower > 0
+    dynasty_realm_ready = all(states[i]["in_player_realm"] is not None for i in same_dynasty)
+    if (membership["dynasty"]["complete"] and dynasty_realm_ready and baseline_cap_known and baseline_lower > 0
             and all(i in q_by_id for i in same_dynasty)):
         inside, outside = D(0), D(0)
         for identity, title in same_dynasty.items():
-            contribution = q_by_id[identity] * family_factor(integer(title.get("holder")))
+            contribution = q_by_id[identity] * family_factors[identity]
             if identity in owned:
                 inside += contribution
             else:
@@ -682,10 +804,12 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
             "宗族境外上限依开局Q范围保守计算")
     detail = {"actor_id": actor, "founder_character_id": founder,
               "actor_house_id": actor_house, "founder_house_id": h0, "dynasty_anchor_id": dynasty,
-              "realm_county_count": len(owned),
+              "realm_county_count": len(owned) if membership["realm"]["complete"] else None,
+              "known_realm_county_count": len(owned),
+              "county_membership_audit": membership,
               "realm_counties": [row for row in selected if row["in_player_realm"]],
               "dynasty_counties": [row for row in selected if row["same_dynasty"]],
-              "dynasty_county_count": None if family_unknown else len(same_dynasty),
+              "dynasty_county_count": len(same_dynasty) if membership["dynasty"]["complete"] else None,
               "known_dynasty_county_count": len(same_dynasty), "unresolved_family_county_ids": family_unknown,
               "founding_anchor_source": static.get("founding_anchor_source", source_id),
               "unresolved_county_inputs": unresolved,
@@ -718,11 +842,25 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
     if family_unknown:
         metrics["K_dynasty"]["unavailable_reason"] = "县持有人house存在冲突或固定T0锚未知；未将其当作宗族外0"
         metrics["dynasty_county_count"]["unavailable_reason"] = metrics["K_dynasty"]["unavailable_reason"]
-    for name, value in (("realm_county_count", len(owned)), ("dynasty_county_count", None if family_unknown else len(same_dynasty)),
+    for name, value in (("realm_county_count", detail["realm_county_count"]), ("dynasty_county_count", detail["dynasty_county_count"]),
                         ("house_anchor_id", h0), ("dynasty_anchor_id", dynasty)):
         if value is not None:
             ref = static.get("founding_anchor_source", source_id) if name in {"house_anchor_id", "dynasty_anchor_id"} else source_id
             metrics[name] = observation(name, value, ref, "fixed T0 anchor" if name in {"house_anchor_id", "dynasty_anchor_id"} else "deduplicated saved title/house identity")
+    for scope, name in (("realm", "realm_county_count"), ("dynasty", "dynasty_county_count")):
+        audit = membership[scope]
+        if not audit["complete"]:
+            metrics[name] = (bounded_observation(name, D(audit["count_lower"]), D(audit["count_upper"]),
+                source_id, "saved-county-membership-audit/v1:" + scope, "county_membership_incomplete")
+                if scope == "realm" and audit["count_upper"] is not None else observation(name, None, source_id,
+                    "saved-county-membership-audit/v1:" + scope, reason="county_census_or_founding_scope_unavailable"))
+    if not membership["realm"]["complete"]:
+        for name in ("Q_realm", "control_average"):
+            metrics[name] = observation(name, None, source_id, "saved-county-membership-audit/v1:realm",
+                                        reason="realm_county_membership_incomplete")
+    if not membership["dynasty"]["complete"] or not dynasty_realm_ready:
+        metrics["K_dynasty"] = observation("K_dynasty", None, source_id, "saved-county-membership-audit/v1:dynasty",
+                                          reason="dynasty_or_territorial_discount_membership_incomplete")
     saved_date = projection.metadata.get("date", "0.1.1")
     def date_parts(text):
         try:
@@ -744,6 +882,8 @@ def _project_metrics(projection, *, actor, founder, source_id, static_context=No
         metrics["Q_realm"]["additional_sources"] = additional
     facts = [{"label_zh": "本国实际统治县", "value_text": str(len(owned)), "source_refs": [source_id]},
              {"label_zh": "固定家族／宗族", "value_text": f"house {h0} / dynasty {dynasty}", "source_refs": [source_id]}]
+    if not membership["realm"]["complete"]:
+        facts[0]["value_text"] = f"已确认{len(owned)}县；成员关系未闭合，不能据此计算失地"
     if metrics["gold"]["availability"] == "observed":
         facts.insert(1, {"label_zh": "保存时金币", "value_text": metrics["gold"]["value"] + " 金",
                          "source_refs": [source_id]})

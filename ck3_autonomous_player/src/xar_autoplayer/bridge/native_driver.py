@@ -76,6 +76,7 @@ import uuid
 
 from ..environment import write_bytes_atomic, write_json_atomic
 from .army_query_timing import finish_army_timing, start_army_timing
+from .persistence_growth_timing_v1 import PersistenceGrowthTimingV1
 from .driver_state_history_json import (
     DriverStateHistoryJsonCache, driver_state_json_parts,
 )
@@ -4850,7 +4851,7 @@ class NativeHeadlessGameplayDriver:
             self._succession_expectation = decision["state"]["expectation"]
             self._succession_reconciliation = decision["state"]["reconciliation"]
             self._driver_state_dirty = True
-        self._persist_driver_state()
+        self._persist_driver_state(persistence_reason='invalidate_succession_expectation')
         diagnostic["persistence_attempted"] = True
         return diagnostic
 
@@ -4905,7 +4906,7 @@ class NativeHeadlessGameplayDriver:
             self._succession_expectation = copy.deepcopy(expectation)
             self._succession_reconciliation = None
             self._driver_state_dirty = True
-        self._persist_driver_state()
+        self._persist_driver_state(persistence_reason='succession_expectation')
         return copy.deepcopy(expectation)
 
     def reconcile_retained_succession_transition_v1(
@@ -5080,7 +5081,7 @@ class NativeHeadlessGameplayDriver:
             )
         )
         if identity_changed:
-            self._persist_driver_state()
+            self._persist_driver_state(persistence_reason='episode_identity')
         self._migrate_legacy_rollback_war_failures(snapshot)
 
         settlement = snapshot.get("one_life_settlement")
@@ -6401,7 +6402,7 @@ class NativeHeadlessGameplayDriver:
                 self._rollback_war_failures, completed
             )
             self._rollback_war_failures_migration_required = False
-        self._persist_driver_state()
+        self._persist_driver_state(persistence_reason='legacy_rollback_migration')
 
     def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int,
             army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None,
@@ -6781,7 +6782,7 @@ class NativeHeadlessGameplayDriver:
                 self._succession_expectation = None
                 self._succession_reconciliation = None
         if episode_rebind_performed:
-            self._persist_driver_state()
+            self._persist_driver_state(persistence_reason='player_identity')
         rebound = self.take_snapshot()
         if not (
             rebound.get("episode_character_id") == target
@@ -11128,6 +11129,8 @@ class NativeHeadlessGameplayDriver:
                 capture_failure_diagnostic=(
                     ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP),
                 save_request=save_request,
+                persistence_reason=("record_command:" + step)[:160],
+                timeline_append_candidate=ok and is_life_advance_step(step),
             )
 
     def _observe_arrange_marriage_outcome(
@@ -11195,7 +11198,7 @@ class NativeHeadlessGameplayDriver:
                 changed = True
                 break
         if changed:
-            self._persist_driver_state()
+            self._persist_driver_state(persistence_reason='marriage_outcome_prefix_edit')
 
     def _bind_new_episode_from_seed_snapshot(
         self,
@@ -11276,7 +11279,7 @@ class NativeHeadlessGameplayDriver:
             self._episode_transition = None
             self._episode_transition_error = None
             self._write_episode_transition(completed)
-        self._persist_driver_state()
+        self._persist_driver_state(persistence_reason='episode_seed')
         return True
 
     def _completed_terminal_result_locked(self) -> dict[str, object] | None:
@@ -11452,7 +11455,8 @@ class NativeHeadlessGameplayDriver:
         return payload
 
     def _encode_driver_state_locked(
-        self, *, persistence_step: str | None = None
+        self, *, persistence_step: str | None = None,
+        persistence_fields: dict[str, object] | None = None,
     ) -> bytes:
         """Encode the current locked state without cloning its full history."""
         rollback_war_failures = self._rollback_war_failures
@@ -11488,6 +11492,11 @@ class NativeHeadlessGameplayDriver:
             serialized_parts = driver_state_json_parts(
                 payload, self._driver_state_history_json,
             )
+            if persistence_fields is not None:
+                # Reuse the exact encoded history part; never re-encode it for
+                # diagnostics or substitute the whole Driver file's size.
+                persistence_fields["history_json_bytes"] = len(serialized_parts[1])
+                persistence_fields["history_rows"] = len(self._command_history)
         finally:
             if persistence_step is not None:
                 finish_army_timing(serialization_timing, step=persistence_step)
@@ -11501,7 +11510,10 @@ class NativeHeadlessGameplayDriver:
             return b"".join(serialized_parts) + b"\n"
         finally:
             if persistence_step is not None:
-                finish_army_timing(encoding_timing, step=persistence_step)
+                finish_army_timing(
+                    encoding_timing, step=persistence_step,
+                    persistence_fields=persistence_fields,
+                )
 
     def _managed_restore_request_state(
         self, transaction: dict[str, object]
@@ -11718,7 +11730,7 @@ class NativeHeadlessGameplayDriver:
             self._arrange_marriage_choices = []
             self._arrange_marriage_query_sequence = None
         if should_persist:
-            self._persist_driver_state()
+            self._persist_driver_state(persistence_reason='bridge_adoption')
 
     def _upgrade_checkpoint_anchor(self) -> None:
         """Attach a v2 history/episode anchor to an older hot-restored state."""
@@ -11962,7 +11974,7 @@ class NativeHeadlessGameplayDriver:
                 self._cold_candidate_rejection = rejection
             self._pending_cold_candidate = None
             self._managed_restore_transaction = None
-        self._persist_driver_state()
+        self._persist_driver_state(persistence_reason='playable_episode_binding')
 
         if rejection is None and self._succession_lifecycle.get("lifecycle") == "ordinary_campaign_succession":
             try:
@@ -11993,6 +12005,8 @@ class NativeHeadlessGameplayDriver:
     def _persist_driver_state(
         self, *, capture_failure_diagnostic: bool = False,
         save_request: tuple[dict[str, object], int, object, dict[str, object]] | None = None,
+        persistence_reason: str = "unspecified",
+        timeline_append_candidate: bool = False,
     ) -> dict[str, object] | None:
         save_receipt: dict[str, object] | None = (
             {
@@ -12013,6 +12027,14 @@ class NativeHeadlessGameplayDriver:
             f"persist-driver-state:{persistence_timing[2]}"
             if persistence_timing is not None
             else None
+        )
+        persistence_fields: dict[str, object] | None = (
+            {
+                "persistence_attempt_id": persistence_step,
+                "full_barrier_reason": persistence_reason[:160],
+                "persistence_outcome": "not_attempted",
+            }
+            if persistence_step is not None else None
         )
         try:
             write_lock_timing = (
@@ -12114,7 +12136,8 @@ class NativeHeadlessGameplayDriver:
                             encoded = self._encode_driver_state_locked()
                         else:
                             encoded = self._encode_driver_state_locked(
-                                persistence_step=persistence_step
+                                persistence_step=persistence_step,
+                                persistence_fields=persistence_fields,
                             )
                         self._driver_state_dirty = False
                     write_timing = (
@@ -12138,6 +12161,14 @@ class NativeHeadlessGameplayDriver:
                         if persistence_step is not None:
                             finish_army_timing(write_timing, step=persistence_step)
                 except (OSError, TypeError, ValueError) as error:
+                    if persistence_fields is not None:
+                        counters = getattr(self, "_persistence_growth_timing_v1", None)
+                        if counters is None:
+                            counters = self._persistence_growth_timing_v1 = PersistenceGrowthTimingV1()
+                        persistence_fields.update(counters.observe(
+                            candidate=timeline_append_candidate, succeeded=False,
+                            error_type=type(error).__name__,
+                        ))
                     # A gameplay command has already happened by this point.  Keep
                     # the live agent usable and surface persistence failure in
                     # capabilities instead of falsely reporting that the game
@@ -12166,6 +12197,13 @@ class NativeHeadlessGameplayDriver:
                         )
                         return save_receipt
                 else:
+                    if persistence_fields is not None:
+                        counters = getattr(self, "_persistence_growth_timing_v1", None)
+                        if counters is None:
+                            counters = self._persistence_growth_timing_v1 = PersistenceGrowthTimingV1()
+                        persistence_fields.update(counters.observe(
+                            candidate=timeline_append_candidate, succeeded=True,
+                        ))
                     with self._driver_state_lock:
                         self._driver_state_error = None
                         if getattr(self, "_natural_successor_persistence_unconfirmed", False):
@@ -12179,7 +12217,10 @@ class NativeHeadlessGameplayDriver:
                             save_receipt["reason"] = "save_binding_mismatch"
                         return save_receipt
         finally:
-            finish_army_timing(persistence_timing, step="persist-driver-state")
+            finish_army_timing(
+                persistence_timing, step="persist-driver-state",
+                persistence_fields=persistence_fields,
+            )
 
     def _preserve_ingame_ui_native_frame(
         self, request: dict[str, object], frame: dict[str, object],
@@ -22868,7 +22909,7 @@ class NativeHeadlessGameplayDriver:
                 self._rollback_war_failures = []
                 self._rollback_war_failures_migration_required = False
                 self._driver_state_dirty = True
-            self._persist_driver_state()
+            self._persist_driver_state(persistence_reason='registered_restore_anchor')
 
             restored = self.execute_step(
                 _RESTORE_CHECKPOINT_STEP,
@@ -23016,7 +23057,7 @@ class NativeHeadlessGameplayDriver:
         # This marker must reach disk before native-session can replace CK3.
         # The replacement hello may otherwise persist a new PID alongside the
         # still-untrimmed factual branch and make a daemon restart look hot.
-        self._persist_driver_state()
+        self._persist_driver_state(persistence_reason='managed_restore_marker')
         write_json_atomic(
             inbox_dir / f"{request_id}.json",
             {
@@ -25839,7 +25880,7 @@ class NativeHeadlessGameplayDriver:
                 )
             if not flush_driver_state:
                 break
-            self._persist_driver_state()
+            self._persist_driver_state(persistence_reason='close')
             with self._driver_state_lock:
                 if self._driver_state_error is not None:
                     break

@@ -1,0 +1,281 @@
+{
+  "schema": "xar.robert-v20261019-observed-declaration-order/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:34:47.077294+00:00",
+  "campaign_id": "robert-first30-v20261019",
+  "business_source_commit": "063531c4b2bc64f52b80a78b8a2b8e9f55112964",
+  "actor_character_id": 31254,
+  "source_frame": {
+    "snapshot_id": "native:98",
+    "native_revision": 98,
+    "date_raw": 53145792
+  },
+  "source_index": {
+    "name": "CLOSED-FRAGMENT-0161-0194-COMPACT48.json",
+    "bytes": 78837,
+    "sha256": "1b522bd23573b3bf3ac52875e731788da8567408c94831cdfc2ef4b2c3464601"
+  },
+  "scope": "Only eight existing same-frame AUTO declaration and native power rows; not the complete declaration set or a current game observation.",
+  "cases": [
+    {
+      "sequence": 178,
+      "source_sha256": "42e96b3d4a741379c170cf1122239b31771acde575a631b7d5aaa70223ca1cce",
+      "source_bytes": 17274,
+      "declaration": {
+        "declaration_id": "29373-54--1",
+        "target_character_id": 29373,
+        "casus_belli_index": 54,
+        "casus_belli_key": "reclaim_relic_artifact_war",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 29373,
+        "effective_target_character_id": 29373,
+        "distance_raw": 79900000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 2588000000,
+        "target_network_contribution_raw": 7370000000,
+        "target_pre_adjustment_total_raw": 9958000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 9958000000,
+        "actual_power_ratio_raw": 192984,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 180,
+      "source_sha256": "6ecf5ee6f2adbf41d798f970e9faae67890d249dbba286c08a44fc9ff7361d67",
+      "source_bytes": 21282,
+      "declaration": {
+        "declaration_id": "29732-54--1",
+        "target_character_id": 29732,
+        "casus_belli_index": 54,
+        "casus_belli_key": "reclaim_relic_artifact_war",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 29732,
+        "effective_target_character_id": 29732,
+        "distance_raw": 108800000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 5468000000,
+        "target_network_contribution_raw": 4310000000,
+        "target_pre_adjustment_total_raw": 9778000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 9778000000,
+        "actual_power_ratio_raw": 189496,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 182,
+      "source_sha256": "9392744a13975e1e8693be53eb932d113f54123288141747bd72d84c3aff1630",
+      "source_bytes": 21293,
+      "declaration": {
+        "declaration_id": "32563-54--1",
+        "target_character_id": 32563,
+        "casus_belli_index": 54,
+        "casus_belli_key": "reclaim_relic_artifact_war",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 32563,
+        "effective_target_character_id": 32563,
+        "distance_raw": 79900000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 10909800000,
+        "target_network_contribution_raw": 12224000000,
+        "target_pre_adjustment_total_raw": 23133800000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 23133800000,
+        "actual_power_ratio_raw": 448329,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 184,
+      "source_sha256": "da13f9dcb0ca95bdb042cd703b2c471b83d95ee494c26574f073b9e1c337910d",
+      "source_bytes": 21287,
+      "declaration": {
+        "declaration_id": "36058-54--1",
+        "target_character_id": 36058,
+        "casus_belli_index": 54,
+        "casus_belli_key": "reclaim_relic_artifact_war",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 36058,
+        "effective_target_character_id": 29732,
+        "distance_raw": 108800000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 5468000000,
+        "target_network_contribution_raw": 4310000000,
+        "target_pre_adjustment_total_raw": 9778000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 9778000000,
+        "actual_power_ratio_raw": 189496,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 186,
+      "source_sha256": "378fb7eae6a8f3388f04943811616ad9057151dc53fb3d88e71a5622a7e8217f",
+      "source_bytes": 21293,
+      "declaration": {
+        "declaration_id": "36723-54--1",
+        "target_character_id": 36723,
+        "casus_belli_index": 54,
+        "casus_belli_key": "reclaim_relic_artifact_war",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 36723,
+        "effective_target_character_id": 32563,
+        "distance_raw": 79900000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 10909800000,
+        "target_network_contribution_raw": 12224000000,
+        "target_pre_adjustment_total_raw": 23133800000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 23133800000,
+        "actual_power_ratio_raw": 448329,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 188,
+      "source_sha256": "365ceb738164f7298f2b83f99e693a98b1af92d7ef57ea0507dd73f117ed39aa",
+      "source_bytes": 21282,
+      "declaration": {
+        "declaration_id": "33388-11-0",
+        "target_character_id": 33388,
+        "casus_belli_index": 11,
+        "casus_belli_key": "claim_cb",
+        "configuration_index": 0,
+        "claimant_character_id": 31254,
+        "target_title_ids": [
+          7219
+        ],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 33388,
+        "effective_target_character_id": 38828,
+        "distance_raw": 62200000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 9742000000,
+        "target_network_contribution_raw": 1818000000,
+        "target_pre_adjustment_total_raw": 11560000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 11560000000,
+        "actual_power_ratio_raw": 224031,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 190,
+      "source_sha256": "a2aeb174cca7402bf3f56beff14eb114a971fc8174573552b1467d1ba832a45c",
+      "source_bytes": 21282,
+      "declaration": {
+        "declaration_id": "38828-11-0",
+        "target_character_id": 38828,
+        "casus_belli_index": 11,
+        "casus_belli_key": "claim_cb",
+        "configuration_index": 0,
+        "claimant_character_id": 31254,
+        "target_title_ids": [
+          7219
+        ],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 38828,
+        "effective_target_character_id": 38828,
+        "distance_raw": 62200000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 9742000000,
+        "target_network_contribution_raw": 1818000000,
+        "target_pre_adjustment_total_raw": 11560000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 11560000000,
+        "actual_power_ratio_raw": 224031,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    },
+    {
+      "sequence": 192,
+      "source_sha256": "39711824de3d3cb70fbc31900677a93ffbcb899ed221ff7f317bafd892361c61",
+      "source_bytes": 21250,
+      "declaration": {
+        "declaration_id": "26904-50--1",
+        "target_character_id": 26904,
+        "casus_belli_index": 50,
+        "casus_belli_key": "make_tributary_cb",
+        "configuration_index": -1,
+        "claimant_character_id": -1,
+        "target_title_ids": [],
+        "source": "native"
+      },
+      "result_assessment": {
+        "target_character_id": 26904,
+        "effective_target_character_id": 26904,
+        "distance_raw": 387600000,
+        "actor_power_base_raw": 3960000000,
+        "actor_network_contribution_raw": 1200000000,
+        "actor_power_total_raw": 5160000000,
+        "target_power_base_raw": 2774000000,
+        "target_network_contribution_raw": 0,
+        "target_pre_adjustment_total_raw": 2774000000,
+        "target_adjustment_delta_raw": 0,
+        "target_power_total_raw": 2774000000,
+        "actual_power_ratio_raw": 53759,
+        "target_ai_context_actor_entry_raw": 0,
+        "actor_ai_context_target_entry_raw": 0,
+        "native_flags_raw": 29
+      }
+    }
+  ]
+}

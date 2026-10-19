@@ -98,7 +98,9 @@ def intercept_unresolved_populist_restore_target_v1(planned, *, enabled=False):
 
 
 def choose_source_reviewed_populist_refusal_v1(plan, *, snapshot, action_steps):
-    """Change only the currently bound two-button, exact-source event."""
+    """Apply the narrow reviewed faction policies to their current native rows."""
+    from .independence0001_known_refusal_v1 import choose_source_reviewed_independence_refusal_v1
+    plan = choose_source_reviewed_independence_refusal_v1(plan, snapshot=snapshot, action_steps=action_steps)
     if not isinstance(plan, dict) or not isinstance(snapshot, dict):
         return plan
     capture = plan.get("unhandled_event_fallback")
