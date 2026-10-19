@@ -1267,3 +1267,5 @@ docs/ck3-native-ai/evidence/native30-attempt04-actual-result-2026-10-20.json -te
 docs/ck3-native-ai/evidence/native30-attempt05-root-closed-review-2026-10-20.json -text whitespace=cr-at-eol
 
 docs/ck3-native-ai/evidence/turn-bundle-owned-partition-v1.patch -text whitespace=-blank-at-eol
+
+tools/g2_saved_campaign/fixtures/route10416_closed_classifier_inputs_v1.json -text whitespace=cr-at-eol

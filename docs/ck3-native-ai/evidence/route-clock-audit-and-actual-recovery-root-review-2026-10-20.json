@@ -1,0 +1,102 @@
+{
+  "schema": "xar.root.route-clock-audit-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:33:56.813026+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; fresh Root tool b67828",
+  "source_commit_parent": "4b077bf7ea5a68ac16504a8636f6c812bfe4d98a",
+  "source_scope": "Reviewed source and actual small closure references; no world action or SDK deployment by this commit.",
+  "f94": {
+    "source_bytes": 64552,
+    "tests": "27 focused tests PASS; original complete10416 and10410 classified offline; see source proof.",
+    "independent_review": "construction_fix_review final noBlock and Root direct source/adapter review",
+    "proof_basis": "Only exact frozen Source15 control flow and strict original frame binding. No fabricated speed getter or Native receipt.",
+    "actual_recovery": "10417 install;10418 reconsume original10416;10419 fresh exact same-owner end MET;10420 FULLmax1/10421 pairedMET. Exactly one original day settled as4735. No action replay.",
+    "actual_closure": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c18-route10416-classifier-failure94/RECOVERY-CLOSED.json",
+      "bytes": 3390,
+      "sha256": "0f7937c1705a1526ec30b1a32174f6052faf5c11fae1ac13cd252ac37941ede1"
+    },
+    "runtime_adapter_scope": "Source15 only; future source cannot inherit this omission permission."
+  },
+  "persistent_same_speed_audit": {
+    "helper_bytes": 4934,
+    "sha256": "493573ea5525b6281f4530fb659c5ef95725b14e30b19a998a4b4e92d0b3a53c",
+    "change": "One reversible1522-byte success-branch insertion. Preserve complete compared frame as JSON scalar audit. Three real Native commands and four audit rows.",
+    "semantics": "status already_observed;submittedFalse;acceptedNone. Zero setter/query/ACK/world credit added.",
+    "functional_tests": "M0 three focused tests PASS50b77d; Root complete module10 tests PASS in0.065s00e58e.",
+    "independent_review": "performance_python noBlock: exact inverse, JSON scalar binding, no alias, fallback and original guards unchanged.",
+    "adoption": "Source only. Current Source15 not modified."
+  },
+  "c19_addon": {
+    "source_bytes": 44674,
+    "status": "SOURCE_READY_NO_NEW_ANCHOR_OR_EXPORT_BY_THIS_COMMIT",
+    "immutable_parent": "65f7749cd2114854a2631227f87ee83b7f93d5c9",
+    "rows_sha256": "443af4f80195dc413d5e7add1af7fbadcba65069b91675120226d182020f0abf",
+    "files": 1454,
+    "source_bytes_after_addon": 59177551,
+    "delta": "Only same-speed helper;1453 parent rows and all prior15 deltas unchanged; epoch3642 unchanged.",
+    "root_read": "Full producer and plan directly reviewed; separate create-only Git admission and writer release still required."
+  },
+  "current_campaign": {
+    "game_pid": 30852,
+    "source": "Source15;Native29;same recording",
+    "settled_cycles": 4748,
+    "settled_days_from_T0": 5427,
+    "date_raw": 53274576,
+    "pending_cycle": 4749,
+    "failed_auto": 10453,
+    "next10454_sent": false,
+    "f95": "Ordinary10422 settled four turns before F95. Existing readonly recovery10432/10433 succeeded: actions0,failed-query credit0,successionfalse. Ordinary10434 then settled nine turns before F96.",
+    "f96": "Same typed campaign root query terminal rejection with executor_enterfalse. Callback reached native admission/capture path, typed campaign reader did not enter; no business dispatch callback. Subgate remains unknown. No blind recovery loop.",
+    "f96_source": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c18-campaign10453-readonly-repeat96/FROZEN.json",
+      "bytes": 3946,
+      "sha256": "3646d8fd69258b0945a85200542c79c2e7de6dfe6eb21e3629a53776afd3eff4"
+    },
+    "original_wall_start_utc": "2026-10-19T03:26:49.420926Z",
+    "T0_raw": 53144328,
+    "target_raw": 53407128,
+    "target_days": 10950,
+    "current_seconds_per_game_day": null,
+    "performance": "Earlier first30-cycle/+90day FULL filesystem interval1.217554614s/day is historical, not current all-wall rate or causal optimization credit."
+  },
+  "native07": {
+    "actual": "FAILED closed before fixture execution; fixture01 compile/link succeeded. Missing canonical Defender broker stopped verified registration.",
+    "final_allocation_bytes": 706251512,
+    "task_unregistered": true,
+    "fixtures_executed": 0,
+    "qualification": "No continuous camera or idle realm overview runtime credit.",
+    "broker_readback": "Current1186 canonical policy APIs ERROR_PATH_NOT_FOUND3; exact Task folder inner FILE_NOT_FOUND2. Does not prove global never-installed or actual exclusion state.",
+    "next": "Review a machine-bound authorized registration channel; new finite08 contract must preserve07FAILED."
+  },
+  "ci": {
+    "commit": "0b5ebd7e40cba44ac940bc84b3479a73eb25d3fe",
+    "official_run": 39313980385,
+    "official_job": 118270549836,
+    "official": "success",
+    "linear_run": 39313980406,
+    "linear_job": 118270550200,
+    "linear": "success",
+    "observed_at_utc": "2026-10-19T20:29:37.209Z",
+    "runner_machine_id": "unknown",
+    "receipt": {
+      "path": "_runtime/official-ci-0b5ebd7e-final01.json",
+      "bytes": 2392,
+      "sha256": "00b97a6000bc723a5942922373069a3a041ae415c655e0ad332bb77e3078ec35"
+    },
+    "new_head_validation": "Not asserted; new source needs its own CI."
+  },
+  "g2": {
+    "closed_directions": "6/8",
+    "M6_current_natural_chain": "unknown",
+    "M7_actual_H": "unknown"
+  },
+  "storage": {
+    "root_scope": "post186 independent128KiB/f03059a2958fd57748303733dc0e5a71eb1d12da2cbc1bec9ce81c1c478ca19a",
+    "root_old512": "Full gross unknown; named audit current lower bound389905 is not budget headroom.",
+    "package_caps": "F94 complete64KiB;M0 complete32KiB;C19 addon96KiB;Defender diagnostic source worker existing scope.",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "record_review_at_utc": "2027-04-17T20:38:00Z",
+    "cleanup_or_reservation_refund": 0
+  }
+}

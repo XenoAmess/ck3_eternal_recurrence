@@ -2,7 +2,16 @@
 No action, native read, queue or credit persistence is performed here.
 """
 
-def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, initial_frame=None, game_pid=None):
+SOURCE15_SAME_SPEED_PINS = {
+    "driver_sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab",
+    "helper_sha256": "7ae8f53a2bbe1a241c8b6f3f00779cd199f6209155c371a962767b9a7d3a4185",
+    "freeze_sha256": "624c0a229abea3241474e31958bfe4b4102e970f7032f3fc9821273a15ee1d5b",
+    "driver_mode_sha256": "4a595a01ba95ca714883aa902d16440850c5e7cf5615f0ede3cafbc5f7ebe0e5",
+}
+
+
+def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, initial_frame=None, game_pid=None,
+                                           same_speed_source_proof=None):
     """Credit only the exact paused one-day clock with a complete same-frame hostile proof."""
     if not isinstance(body, dict):
         return None
@@ -207,19 +216,50 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
     refresh = inner.get("contact_refresh")
     if unavoidable and isinstance(refresh, dict):
         steps.append("pause-map")
-    require(isinstance(actions, list) and len(actions) == len(steps)
+    omitted_speed = (isinstance(actions, list) and len(actions) == len(steps) - 1
+                     and [row.get("step") if isinstance(row, dict) else None
+                          for row in actions] == steps[1:])
+    if omitted_speed:
+        proof = same_speed_source_proof
+        keys = ("snapshot_id", "revision", "native_revision", "date_raw",
+                "actor_character_id", "episode_run_id", "connection_generation", "bridge_pid")
+        source_binding = {key: binding.get(key) for key in keys}
+        require(type(proof) is dict
+                and proof.get("schema") == "g2.route-contact-same-speed-source/v1"
+                and proof.get("source_pins") == SOURCE15_SAME_SPEED_PINS
+                and proof.get("basis") == "pinned_source_unique_same_speed_branch"
+                and type(proof.get("requested_speed")) is int
+                and proof["requested_speed"] == speed_value
+                and type(proof.get("start_binding")) is dict
+                and proof.get("start_binding") == source_binding
+                and all(type(proof["start_binding"][key]) is type(value)
+                        for key, value in source_binding.items())
+                and all(type(source_binding[key]) is int and source_binding[key] > 0
+                        for key in ("revision", "native_revision", "date_raw", "actor_character_id",
+                                    "connection_generation", "bridge_pid"))
+                and isinstance(source_binding["episode_run_id"], str)
+                and bool(source_binding["episode_run_id"])
+                and source_binding["snapshot_id"] == f"native:{source_binding['native_revision']}",
+                "same-speed omission lacks exact source/frame qualification")
+        # No synthetic speed action/getter receipt is inserted. In these pinned
+        # sources this shape requires two matching complete paused speed frames.
+        # Native Arm.speed is request configuration, not an independent getter.
+    expected_steps = steps[1:] if omitted_speed else steps
+    arm_index = 0 if omitted_speed else 1
+    query_index = arm_index + 2
+    require(isinstance(actions, list) and len(actions) == len(expected_steps)
             and [row.get("step") if isinstance(row, dict) else None
-                 for row in actions] == steps
+                 for row in actions] == expected_steps
             and all(isinstance(row.get("result"), dict)
                     and row["result"].get("accepted") is True
                     and row["result"].get("step") == row["step"]
-                    for row in actions[1:])
+                    for row in actions[arm_index:])
             and isinstance(armed, dict) and isinstance(stopped, dict)
-            and actions[1]["result"].get("tactical_daily_sentinel") == armed
-            and actions[3]["result"].get("tactical_daily_sentinel") == stopped,
+            and actions[arm_index]["result"].get("tactical_daily_sentinel") == armed
+            and actions[query_index]["result"].get("tactical_daily_sentinel") == stopped,
             "native arm/resume/query receipts")
-    speed = actions[0].get("result")
-    require(isinstance(speed, dict) and (
+    speed = actions[0].get("result") if not omitted_speed else None
+    require(omitted_speed or isinstance(speed, dict) and (
         (speed.get("accepted") is True and speed.get("step") == f"set-speed-{speed_value}")
         or (speed.get("status") == "already_observed" and speed.get("submitted") is False
             and speed.get("accepted") is None and type(speed.get("observed_speed")) is int
