@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import errno
 from contextlib import contextmanager, nullcontext
+from contextvars import ContextVar
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -22,6 +24,27 @@ SCHEMA = "codex.task_bus.v1"
 SCREEN_RESOURCE = "ck3-screen:acquired"
 SCREEN_LEASE_MAX_AGE_SECONDS = 600
 SCREEN_CLOCK_SKEW_SECONDS = 10
+BUS_LOCK_WAIT_SECONDS = 10.0
+_LOCK_WAIT_SECONDS = ContextVar("task_bus_lock_wait_seconds", default=BUS_LOCK_WAIT_SECONDS)
+
+
+class BusBusy(Exception):
+    """Lock was not acquired: no protected read or mutation has run."""
+
+    def __init__(self, elapsed: float, attempts: int):
+        self.elapsed, self.attempts = elapsed, attempts
+        super().__init__("task bus lock is temporarily unavailable")
+
+
+@contextmanager
+def lock_wait_seconds(seconds: float):
+    if not 0 <= seconds <= 45:
+        raise ValueError("bus lock wait must be finite and 0..45 seconds")
+    token = _LOCK_WAIT_SECONDS.set(seconds)
+    try:
+        yield
+    finally:
+        _LOCK_WAIT_SECONDS.reset(token)
 TASK_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,95}")
 STATES = ("running", "waiting", "blocked", "done")
 DEFAULT_BUS = Path(
@@ -82,27 +105,50 @@ def bus_lock(bus: Path, *, require_existing: bool = False):
         handle.write(b"0")
         handle.flush()
     handle.seek(0)
-    if os.name == "nt":
-        import msvcrt
-
-        msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
-    else:
-        import fcntl
-
-        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+    acquired = False
+    started = time.monotonic()
+    wait_seconds = _LOCK_WAIT_SECONDS.get()
+    maximum_attempts = int(wait_seconds / .05) + 2
+    try:
+        # LK_LOCK itself retries ten times and then raises EDEADLK. That is
+        # lock unavailability, not evidence that the CAS owner changed.
+        for attempt in range(maximum_attempts):
+            if attempt and time.monotonic() - started >= wait_seconds:
+                raise BusBusy(time.monotonic() - started, attempt)
+            try:
+                handle.seek(0)
+                if os.name == "nt":
+                    import msvcrt
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                acquired = True
+                break
+            except OSError as error:
+                if error.errno not in {errno.EACCES, errno.EAGAIN, errno.EDEADLK}:
+                    raise
+                elapsed = time.monotonic() - started
+                if attempt == maximum_attempts - 1 or elapsed >= wait_seconds:
+                    raise BusBusy(elapsed, attempt + 1) from error
+                time.sleep(min(.05, wait_seconds - elapsed))
+    except BaseException:
+        handle.close()
+        raise
     try:
         yield
     finally:
-        handle.seek(0)
-        if os.name == "nt":
-            import msvcrt
-
-            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
-        else:
-            import fcntl
-
-            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
-        handle.close()
+        try:
+            if acquired:
+                handle.seek(0)
+                if os.name == "nt":
+                    import msvcrt
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        finally:
+            handle.close()
 
 
 def git_identity(repo: Path) -> dict[str, object]:
@@ -605,7 +651,7 @@ def command_poll(args: argparse.Namespace) -> None:
 def command_list(args: argparse.Namespace) -> None:
     tasks: list[dict[str, object]] = []
     now = datetime.now(timezone.utc)
-    with bus_lock(args.bus_dir):
+    with bus_lock(args.bus_dir, require_existing=getattr(args, "require_existing", False)):
         for path in sorted((args.bus_dir / "tasks").glob("*.json")):
             snapshot = read_json(path)
             if snapshot is None:
@@ -655,6 +701,8 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--bus-dir", type=Path, default=DEFAULT_BUS)
     result.add_argument("--expected-cli-sha256")
+    result.add_argument("--lock-wait-seconds", type=float, default=BUS_LOCK_WAIT_SECONDS,
+                        help="monotonic lock wait, 0..45 seconds; no protected work before lock")
     commands = result.add_subparsers(dest="command", required=True)
 
     register = commands.add_parser("register")
@@ -702,6 +750,7 @@ def parser() -> argparse.ArgumentParser:
 
     listing = commands.add_parser("list")
     listing.add_argument("--stale-after", type=int, default=15 * 60)
+    listing.add_argument("--require-existing", action="store_true")
     listing.set_defaults(handler=command_list)
 
     install = commands.add_parser("install")
@@ -715,7 +764,13 @@ def main(argv: list[str] | None = None) -> int:
     if getattr(args, "limit", 1) < 1:
         raise SystemExit("--limit must be positive")
     try:
-        args.handler(args)
+        with lock_wait_seconds(args.lock_wait_seconds):
+            args.handler(args)
+    except BusBusy as error:
+        print(json.dumps({"schema": SCHEMA, "ok": False, "code": "BUS_BUSY",
+            "lock_acquired": False, "protected_operation_started": False,
+            "elapsed_seconds": error.elapsed, "attempts": error.attempts}))
+        return 4
     except CompareConflict as error:
         print(json.dumps({
             "schema": SCHEMA, "ok": False, "code": "CAS_CONFLICT",

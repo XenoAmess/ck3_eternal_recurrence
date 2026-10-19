@@ -1,0 +1,60 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:29:27.608875+00:00",
+  "status": "PASS_SOURCE_ONLY_QUEUE_RELOCATION",
+  "frontier": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c13-auto6356-failure88\\display-closed\\CHECKPOINT6322-FRONTIER.json",
+    "bytes": 50167,
+    "sha256": "0052ae0b2dfc7858b53271022adde77ebb156c3bb34fd6b5fbec7ddc039470fd"
+  },
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_checkpoint6322_relocated_tail_v1.py",
+    "bytes": 3987,
+    "sha256": "9ef35202d3e899dc1576a422c5fe271ab77542a8b34420483037d0f2a54ea569"
+  },
+  "relocated_post_save_tail": {
+    "3034": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue-closed-C13-before-C15-6358\\CUMULATIVE-TURN-003034.json",
+      "bytes": 2780,
+      "sha256": "5b0525d077666b0424c45193e4f6f2a2f7f7f5ae77f9012f6de3237209b9249e"
+    },
+    "3035": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue-closed-C13-before-C15-6358\\CUMULATIVE-TURN-003035.json",
+      "bytes": 2092,
+      "sha256": "331538eebf9cd55c5f9f8f30c5139985a487511a794a39ba47196b999b492d86"
+    },
+    "3036": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue-closed-C13-before-C15-6358\\CUMULATIVE-TURN-003036.json",
+      "bytes": 2092,
+      "sha256": "715c0ed1372632b2f26497235e2b548f9e9bbe2a2db935f05abedf97ecaafc4a"
+    },
+    "3037": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue-closed-C13-before-C15-6358\\CUMULATIVE-TURN-003037.json",
+      "bytes": 2064,
+      "sha256": "68b16a5c312f13f2f3a28ad3d1adc2f3a3899237fb202150bb859d0c3009b633"
+    }
+  },
+  "files": [
+    {
+      "basename": "root_checkpoint6322_queue_contract_c15.py",
+      "bytes": 11561,
+      "sha256": "c4f82d67cbab8688d4325afe3ffa0c2fe3fd0572e875e1aaacf8d0185528e269"
+    },
+    {
+      "basename": "root_p37c15_cold_resume.py",
+      "bytes": 18715,
+      "sha256": "2db2f72ada9e059156ca5a199d1ad846721946eaff6269f3a317cdb7b37d87dc"
+    }
+  ],
+  "real_four_original_bodies_checked": true,
+  "archive_creation_or_existence_claimed": false,
+  "fixture_reader_mapping_only": true,
+  "original_and_relocated_projection_equal": true,
+  "original_loaded_contract_unchanged": true,
+  "cold_import_only_inverse_bytes_equal": true,
+  "negative_cases_rejected": [
+    "wrong_archive",
+    "wrong_original_SHA"
+  ],
+  "D_writes_or_Game_RPC": 0
+}

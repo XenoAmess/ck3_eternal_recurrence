@@ -1,0 +1,183 @@
+{
+  "schema": "xar.screen-bus-bounded-lock-wait-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:02:51.319228+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine, tool call concurrent proof capture",
+  "status": "SOURCE_AND_OWNED_TEMPORARY_LOCK_QUALIFIED; C15_ADOPTION_NOT_OBSERVED",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\codex_task_bus.py",
+      "bytes": 31763,
+      "sha256": "9198718f0f0931d93ed7f1557ca1cbedd1fa086a4a1cff210bca10404a305d7f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\screen_bus_lease_lock_wait_v1.py",
+      "bytes": 16526,
+      "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\test_screen_bus_lock_wait_v1.py",
+      "bytes": 7919,
+      "sha256": "49a85b050a05315c6ca988ae03808c1a938f9333adc19c75fe1c666bdcd86035"
+    }
+  ],
+  "old_cli": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\runtime-source-00a70009\\tools\\codex_task_bus.py",
+    "bytes": 29120,
+    "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+  },
+  "legacy_keeper": {
+    "path": "D:\\codex-ck3-background-spill\\ck3-sdk91\\promo\\ck3_native_war_ai\\integration\\screen_bus_lease.py",
+    "bytes": 15997,
+    "sha256": "4a8233bb640d0eeda67150da818f3898a1c9afb0229d54e4d0d39e7a932f27f0"
+  },
+  "unchanged_old_cli_function_asts": [
+    "_current_screen_owners",
+    "_fresh_screen_owner",
+    "_require_cli_pair",
+    "_require_cli_pin",
+    "_require_screen_bus_files",
+    "_unapplied_task_event",
+    "_unreleased_screen_records",
+    "append_event",
+    "command_heartbeat",
+    "command_install",
+    "command_notify",
+    "command_poll",
+    "command_register",
+    "command_release_screen_cas",
+    "command_status",
+    "git_identity",
+    "next_sequence",
+    "print_result",
+    "read_events",
+    "read_json",
+    "recipient",
+    "release_screen_cas",
+    "task_filename",
+    "task_id",
+    "task_path",
+    "update_task",
+    "utc_now",
+    "write_json_atomic"
+  ],
+  "changed_old_cli_function_asts": [
+    "bus_lock",
+    "command_list",
+    "main",
+    "parser"
+  ],
+  "keeper_transform": {
+    "exact_inverse_equal": true,
+    "source": ".task-tmp/prepare_keeper_lock_wait_source.py",
+    "only_semantic_changes": [
+      "One global CLI argv opts in --lock-wait-seconds 45",
+      "Two lease list calls add --require-existing"
+    ],
+    "unchanged": [
+      "owner/token/sequence/age/repo/head validation",
+      "one original heartbeat CAS and independent list readback",
+      "on any genuine mismatch stop immediately",
+      "original abort/journal/cleanup behavior",
+      "original per-command 60s ceiling"
+    ]
+  },
+  "behavior": {
+    "default_lock_wait_seconds": 10,
+    "keeper_opt_in_lock_wait_seconds": 45,
+    "backoff_seconds_max": 0.05,
+    "clock": "time.monotonic",
+    "attempt_bound": "int(wait_seconds/.05)+2, maximum902",
+    "busy_result": {
+      "exit_code": 4,
+      "code": "BUS_BUSY",
+      "lock_acquired": false,
+      "protected_operation_started": false
+    },
+    "conflict_result": {
+      "exit_code": 3,
+      "code": "CAS_CONFLICT"
+    },
+    "no_reacquisition_claim_while_waiting": true,
+    "no_pause_claim_while_waiting": true,
+    "quiesce_grace_candidate": "NOT_IMPLEMENTED_OR_REQUIRED_FOR_THIS_CLI_FIX"
+  },
+  "actual_tests": [
+    {
+      "command": "python -B -m unittest tools.test_screen_bus_lock_wait_v1",
+      "result": "6 PASS",
+      "seconds": 11.577,
+      "tool_chunks": [
+        "993b1d",
+        "f29c22"
+      ],
+      "owned_lock_mechanical": {
+        "elapsed_seconds": 11.040083500090986,
+        "child_exit": 0,
+        "protected_bus_bytes_unchanged": true,
+        "objects": "self-owned temporary bus directory, own base Python CLI child, own byte lock only",
+        "timeout_counterexample": "actual locked byte + invalid protected task JSON: typed BUS_BUSY, no parse, no bytes changed",
+        "cleanup": "TemporaryDirectory cleanup completed; no retained temporary paths or child handles"
+      },
+      "tested_cli_sha256": "9baf7aa8d61b5fc6a28fd79013b02416b6ab200938142b312d81cc6b2c203c85",
+      "test_file_at_run": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\test_screen_bus_lock_wait_v1.py",
+        "bytes": 7074,
+        "sha256": "b4a9ba1cb435e8ae099eab3ce15fcd05f9fa9a3e40bedfe72f5e2d6075af033e"
+      }
+    },
+    {
+      "command": "python -B -m unittest tools.test_codex_task_bus_cas.ScreenReleaseCasTests.test_cli_conflict_has_nonzero_structured_result_and_zero_write tools.test_codex_task_bus_cas.ScreenReleaseCasTests.test_screen_heartbeat_needs_exact_sequence_and_current_owner tools.test_codex_task_bus_cas.ScreenReleaseCasTests.test_two_concurrent_screen_claims_have_one_winner tools.test_codex_task_bus_cas.ScreenReleaseCasTests.test_each_screen_cli_call_rechecks_installed_source_bytes",
+      "result": "4 PASS",
+      "seconds": 0.349,
+      "tool_chunk": "5e60d5",
+      "tested_cli_sha256": "9baf7aa8d61b5fc6a28fd79013b02416b6ab200938142b312d81cc6b2c203c85",
+      "test_file_at_run": "existing four selected CAS cases, unchanged"
+    }
+  ],
+  "actual_failure_context": {
+    "supervisor_closed": {
+      "path": "runtime/ROOT-FRESH-SUPERVISOR-CLOSED-C11.json",
+      "bytes": 3347,
+      "sha256": "0479882a2209f179af85998e3b1c8731e1c19837fcc1f29af0b7bddc40d5c73c"
+    },
+    "chain": "keeper old LK_LOCK Errno36 -> LOST_OR_UNCERTAIN_STOP -> owned cleanup -> Game exit1; publisher QueryFullProcessImageNameW Win5 happened during cleanup, not an established first cause",
+    "bus_holder": "storage reported concurrent long critical section; exact lock owner/causality is handled separately by storage/root; not inferred from this test"
+  },
+  "adoption_recipe": [
+    "Sole runtime preserves old failed source/receipts. Root releases old exact screen lease through original pinned CLI/CAS; do not overwrite old 00a70009 or bypass release.",
+    "Create-only freeze new tools/codex_task_bus.py at a new explicit CLI source path (separate <=256KiB source-copy authorization). Install matching bytes into shared bus/bin only after no old screen owner remains; read both SHA back.",
+    "Freeze new screen_bus_lease_lock_wait_v1.py at explicit new keeper path, SHA012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780; cold supervisor KEEPER_PATH/SHA and ready source_cli/cli_sha/keeper fields bind these exact new files.",
+    "New screen claim uses new frozen/installed pair and fresh CAS. No old STARTED/Game tuple is reused. Keeper retains original predicates; only argv chooses bounded45s lock wait.",
+    "Run original owned cleanup on a real mismatch/timeout; no automatic heartbeat replay after transport ambiguity. No current Game/Native/desktop operation was executed by this source review."
+  ],
+  "boundaries": {
+    "current_or_old_runtime_files_modified": false,
+    "current_bus_calls": 0,
+    "Game_Native_MCP_calls": 0,
+    "desktop_OBS_calls": 0,
+    "C15_started": false,
+    "tracked_camera_WIP": "FROZEN_UNSTAGED_SEPARATE_SCOPE"
+  },
+  "scope": "new source/tests/evidence<=64KiB, one future source CLI copy separately<=256KiB",
+  "deadline_amendment": {
+    "observed_at_utc": "2026-10-19T14:06:57.457051+00:00",
+    "prior_evidence": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\screen-bus-bounded-lock-wait-2026-10-19.json",
+      "bytes": 6727,
+      "sha256": "32dc0eff00390d534fa8893532a63b27ecd6fbd36f05daf80fd69c35a3c6041e"
+    },
+    "prior_cli": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\codex_task_bus.py",
+      "bytes": 31625,
+      "sha256": "9baf7aa8d61b5fc6a28fd79013b02416b6ab200938142b312d81cc6b2c203c85"
+    },
+    "change": "Two lines reject at a later attempt before attempting lock if monotonic budget has elapsed; no late acquisition after the last sleep.",
+    "command": "python -B -m unittest tools.test_screen_bus_lock_wait_v1.ScreenLockWaitTests.test_deadline_reached_before_next_attempt_never_takes_new_lock",
+    "result": "1 PASS",
+    "seconds": 0.007,
+    "tool_chunk": "59ae68",
+    "tested_cli_sha256": "9198718f0f0931d93ed7f1557ca1cbedd1fa086a4a1cff210bca10404a305d7f",
+    "not_rerun": "Prior six cases including11s real owned mechanical and four CAS cases are preserved at their original pins. The only follow-up is the necessary deadline counterexample."
+  }
+}

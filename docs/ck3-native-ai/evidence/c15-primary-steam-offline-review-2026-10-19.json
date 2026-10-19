@@ -1,0 +1,21 @@
+{
+  "schema": "xar.Steam-offline.C15-primary-image-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:20:50.704248+00:00",
+  "status": "PASS_PRIMARY_OFFLINE_TEXT_REVIEW",
+  "reviewer": "/root",
+  "source_image": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c15-steam-offline89\\probe-1\\steam-moved.png",
+    "bytes": 750894,
+    "sha256": "5c4923e6a630deea2fcddaea92d9a9a111ceeff4c30e2bcc690d87d31355fa19"
+  },
+  "source_observed_at_utc": "2026-10-19T14:19:02Z",
+  "freshness_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c15-steam-offline89\\probe-1\\steam-frame-freshness.json",
+  "inspection": "Root directly viewed this immutable fresh moved-window PNG. The center states Steam is currently in offline mode and the bottom status reads offline mode. No OCR or desktop input.",
+  "freshness_boundary": "This is the new C15 movement capture supplied by the sole runtime owner, not a reused C11 screenshot. Runtime must bind its exact movement/freshness receipt and machine identity to the actual new launch.",
+  "authorized_scope": "Continue previously authorized C15 cold restore from actual SAVE6322 with all actual EXE/Native/new-process/checkpoint guards. This review does not prove Game launch, save loading, camera or performance success.",
+  "Steam_mode_changes_by_root": 0,
+  "personal_OBS_calls_by_root": 0,
+  "Game_MCP_desktop_calls_by_root": 0,
+  "retention": "Retain small review for C15 actual launch provenance; review by2026-11-18. Original PNG remains under its existing external admission."
+}

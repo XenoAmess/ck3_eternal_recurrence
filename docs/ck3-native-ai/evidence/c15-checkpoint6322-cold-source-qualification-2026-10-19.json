@@ -1,0 +1,109 @@
+{
+  "schema": "xar.c15.checkpoint6322-software-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:09:21.200605+00:00",
+  "status": "PASS_SOURCE_ONLY",
+  "positive": "real closed6322 frontier and exact abnormal closure",
+  "negatives_rejected": [
+    "future_live_date",
+    "future_counts",
+    "wrong_governance_frontier",
+    "wrong_old_Game"
+  ],
+  "seed_restored_cycles": 3023,
+  "seed_restored_date_raw": 53202384,
+  "checkpoint_saved_count": 35,
+  "historical_later_cycles": 3037,
+  "historical_later_date_raw": 53202696,
+  "original_snapshot_claimed": false,
+  "original_classes_and_top_functions_AST_equal_after_namespace": true,
+  "files": [
+    {
+      "basename": "root_p37c15_sdk_queue.py",
+      "bytes": 267955,
+      "sha256": "04d94805f25ef4ff95c02c161b62ca4eb09957e19949123f6d3191bd83b762e9"
+    },
+    {
+      "basename": "root_p37c15_mcp_entry.py",
+      "bytes": 12630,
+      "sha256": "0bf791d80bbe9509497f156acffab9d3752709955b74aa17a5ed111919b2b3f0"
+    },
+    {
+      "basename": "root_native_build_binding_p37c15.py",
+      "bytes": 4090,
+      "sha256": "6bd0b40792dcbd37f67f692190e9317ec8c60a425f148795b50d5acc876c2fe2"
+    },
+    {
+      "basename": "root_p37c15_automatic_natural_succession_handoff.py",
+      "bytes": 38624,
+      "sha256": "a95e9f7d099db0ded85093b2237125d277a26d2fbbb1e94618437f3ad12d9073"
+    },
+    {
+      "basename": "p51_resident_successor_adoption_c15.py",
+      "bytes": 24607,
+      "sha256": "6381a99e2f5efe870d4527ea416b1204c8a3612b1625329e11a3c83e16ad6cba"
+    },
+    {
+      "basename": "launch_sdk_p37c15_owner.py",
+      "bytes": 5464,
+      "sha256": "60ba203510d312ab1f0276fab95192b7296008eb11d2a0c3ce297a5a3a819a94"
+    },
+    {
+      "basename": "root_p37c15_cold_resume.py",
+      "bytes": 18714,
+      "sha256": "a11ed9e2a19c95f9b347c9cc577ecb8bfb48bc7f02e8c2a68b33c984015e0f03"
+    },
+    {
+      "basename": "root_checkpoint_bootstrap_c15.py",
+      "bytes": 10434,
+      "sha256": "f30d09028c8c9f0284e45c6f27d78431e5c2bcb27ec97961f8633ca33c8a4dbc"
+    },
+    {
+      "basename": "root_native29_supervisor_c15.py",
+      "bytes": 33346,
+      "sha256": "f94c9dafce9f5271a289cd311157e52381a91c57ca606b4f99448725a40177db"
+    },
+    {
+      "basename": "root_record_shutdown_c15.py",
+      "bytes": 6913,
+      "sha256": "5d2f399c056915133e8c7f78645388f089850e23630144e3ff664fae1f01c271"
+    },
+    {
+      "basename": "root_score_month_samples_c15.py",
+      "bytes": 7991,
+      "sha256": "80bf40298d70d7667e37748343b837e15c515cacdcdf5b0b3ecfbdfe5be7df73"
+    },
+    {
+      "basename": "root_c15_control_timing_adapter.py",
+      "bytes": 15044,
+      "sha256": "8de977bf27ff0f9c4dd325845daca5b60908d4ccebedd730a7048e1e10a5f3be"
+    },
+    {
+      "basename": "root_c15_queue_control_timing.py",
+      "bytes": 8642,
+      "sha256": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+    },
+    {
+      "basename": "root_screen_bus_lease_c15.py",
+      "bytes": 16526,
+      "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+    },
+    {
+      "basename": "root_checkpoint6322_cold_contract_c15.py",
+      "bytes": 10465,
+      "sha256": "e488b5c57144bf153898efdb24de0f2b14286cc46e4f71da118caf786e5fd4d2"
+    }
+  ],
+  "source_bytes": 481445,
+  "Driver_SAVE_bodies_or_process_calls": 0,
+  "future_actual_constructor_SEM_CAP_not_claimed": true,
+  "abnormal_closure": {
+    "status": "EXACT6322_ABNORMAL_CLOSURE_SOURCE_BOUND",
+    "publisher_child_numeric_exit_code": null,
+    "publisher_normal_STOP": false,
+    "publisher_owner_exit_code": 1,
+    "Game_exit_code": 1,
+    "recording_engine_exit_code": 0,
+    "future_material_or_old_action_credit": 0
+  }
+}

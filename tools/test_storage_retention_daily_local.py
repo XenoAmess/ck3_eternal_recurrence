@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -33,7 +34,7 @@ class LocalClock(datetime):
 class DailyLocalCalendarRegression(unittest.TestCase):
     def test_first_local_0400_not_suppressed_by_install_utc_day(self):
         # Only a new temporary fixture below this external candidate lane is mutated.
-        parent = Path(__file__).resolve().parent / 'fixture-work'
+        parent = Path(os.environ.get('XAR_STORAGE_LOCK_TEST_ROOT', str(Path(__file__).resolve().parent / 'fixture-work')))
         parent.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=parent) as temporary:
             root = Path(temporary).resolve()

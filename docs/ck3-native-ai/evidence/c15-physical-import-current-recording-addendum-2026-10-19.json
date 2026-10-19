@@ -1,0 +1,76 @@
+{
+  "schema": "xar.c15.physical-import-current-recording-source-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:38:11.858941+00:00",
+  "status": "SOFTWARE_PASS_NOT_ACTUAL_COLD_ADOPTION",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c15_display_imports_v1.py",
+    "bytes": 2576,
+    "sha256": "693f9349c8de0e564bc143cb96528bf844af8ff6ab01fa17b244b093d1561a78"
+  },
+  "outputs": [
+    {
+      "basename": "root_p37c15_sdk_queue.py",
+      "bytes": 267956,
+      "sha256": "30823cafc946b846fefd851b1ad65b9601fd8ba0d8d9cd388ecc1ae9867c236f"
+    },
+    {
+      "basename": "root_p37c15_mcp_entry.py",
+      "bytes": 12630,
+      "sha256": "b0a52546bd1639b75f5957dff8c81d7fec73df2d527f81ae93a549d138bb505f"
+    }
+  ],
+  "changes": {
+    "ImportFrom_modules": {
+      "root_p37c11_overlay_relay": "root_p37c15_overlay_relay",
+      "root_p37c11_compact_decision_feed": "root_p37c15_compact_decision_feed"
+    },
+    "import_counts": {
+      "Queue": 3,
+      "entry": 1
+    },
+    "single_recording_attach_pointer": {
+      "old": "ROOT-CURRENT-OBS-RECORDING-REQUESTED-C6.json",
+      "new": "ROOT-CURRENT-OBS-RECORDING-REQUESTED-C15.json"
+    }
+  },
+  "qualification": {
+    "source": {
+      "path": "Z:\\ck3_mod_rewrite\\_runtime\\c15-all-physical-imports-qualified88.json",
+      "bytes": 5323,
+      "sha256": "6b467fb6b82d67262ac97a35fcfea6b99d66d54029565665ef7d833d0da7d884"
+    },
+    "current_control_sources_compiled_and_namespaces_audited": 16,
+    "other_AST_fields_and_inverse_source_bytes_unchanged": true,
+    "remaining_old_physical_imports_or_current_views": [],
+    "handoff_callers_required_relay_kwargs_preserved": [
+      {
+        "line": 2358,
+        "call": "finish_deferred_ui_v1",
+        "keywords": [
+          "relay_compact",
+          "error_projection"
+        ]
+      },
+      {
+        "line": 2331,
+        "call": "automatic_handoff",
+        "keywords": [
+          "original_before",
+          "event",
+          "env",
+          "relay_compact",
+          "error_projection"
+        ]
+      }
+    ]
+  },
+  "retained": {
+    "old_C11_abnormal_closure_keys": "exact historical facts in both contracts",
+    "machine_id_1186": true,
+    "live_supervisor_fb1c_and_loaded_contract_e488": true,
+    "original_frontier_0052_and_relocation_eb781_evidence": true
+  },
+  "scope_limitations": "No D write/process/Game RPC; actual cold SEM/CAP and adoption are separate runtime evidence.",
+  "error_correction": "Initial cold namespace port covered _c11/-C11 but missed these p37c11 imports and the older C6 pointer."
+}

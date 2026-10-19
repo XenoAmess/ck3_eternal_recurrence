@@ -1,0 +1,26 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:16:43.879250+00:00",
+  "status": "SOURCE_ONLY_SUPERVISOR_NAMESPACE_CORRECTION_PASS",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_checkpoint6322_cold_v1.py",
+    "bytes": 13924,
+    "sha256": "8b22aaaef03c8b9ce0f1b64758d2acab22d92e46579b5dd2018f008a5a218bef"
+  },
+  "old_installed_supervisor": {
+    "bytes": 33346,
+    "sha256": "f94c9dafce9f5271a289cd311157e52381a91c57ca606b4f99448725a40177db"
+  },
+  "changed": [
+    {
+      "basename": "root_native29_supervisor_c15.py",
+      "bytes": 33336,
+      "sha256": "fb1c665b49b82b1424400a04224961f91c4a68621c9a3a6232637ebc02836611"
+    }
+  ],
+  "only_six_P37_import_status_paths_and_one_ready_path_changed": true,
+  "inverse_AST_equal": true,
+  "remaining_fourteen_PY_unchanged": true,
+  "old_installed_bytes_unchanged": true,
+  "Game_or_process_calls": 0
+}

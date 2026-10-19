@@ -1,0 +1,32 @@
+{
+  "schema": "xar.c15.primary-recording-and-cold-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:49:12.183214+00:00",
+  "recording_session": "c7f52534-431f-48f2-bef6-283aa5536933",
+  "primary_review": "Both original PNGs directly viewed; map and paused date 1073.5.2 visible; scene has current-state gray panel at right; no retired blue panel or film title.",
+  "images": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\c7f52534-431f-48f2-bef6-283aa5536933\\c15-saved2419-first01-game.png",
+      "bytes": 1616320,
+      "sha256": "d6c48f142f2908eb1169602666ce6f522396725c2299037a1986bd69b1ad3fc1",
+      "role": "game",
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\c7f52534-431f-48f2-bef6-283aa5536933\\c15-saved2419-first01-scene.png",
+      "bytes": 1481812,
+      "sha256": "0547924aa9a723857ee4f013e6170b803d95948e3898d175fbfb9e9e83954e49",
+      "role": "scene",
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "cold_bound_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-C15-NORMAL-COLD-BOUND.json",
+    "bytes": 1738,
+    "sha256": "c62455b1537475aa873f63a0864e14b20626ce82a387698f0b6ea9ebe5e1f65d"
+  },
+  "camera_limits": "Regional south-Italy/Sicily view, southern Sicily clipped; no whole-realm or continuous-follow qualification.",
+  "qualification_limits": "PNG review is presentation evidence. Native cold marker supplies business binding; first frame gives no new gameplay days or campaign success."
+}

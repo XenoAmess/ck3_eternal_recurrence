@@ -394,12 +394,30 @@ class ScreenReleaseCasTests(unittest.TestCase):
                   if bus_module.task_path(self.bus, task).is_file()]
         self.assertEqual(len(owners), 1)
 
-    def test_stale_or_future_owner_rejects_without_write(self) -> None:
+    def test_stale_owner_release_preserves_unresolved_business(self) -> None:
         now = datetime.now(timezone.utc)
-        for updated in (now - timedelta(seconds=601), now + timedelta(seconds=11)):
-            with self.subTest(updated=updated):
-                self.seed(TASK, updated=updated)
-                self.assert_conflict_without_write()
+        class FixedClock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return now if tz is not None else now.replace(tzinfo=None)
+        self.seed(TASK, updated=now - timedelta(seconds=601))
+        with mock.patch.object(bus_module, "datetime", FixedClock):
+            task, event = bus_module.release_screen_cas(self.bus, TASK, 10, summary="retired")
+        self.assertEqual(task["state"], "waiting")
+        self.assertEqual(task["resources"], [])
+        self.assertEqual(event["kind"], "status")
+        self.assertEqual(event["retirement"]["kind"], "expired-own-claim-released")
+        self.assertEqual(event["retirement"]["business_status"], "unresolved_red")
+
+    def test_future_owner_rejects_without_write(self) -> None:
+        now = datetime.now(timezone.utc)
+        class FixedClock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return now if tz is not None else now.replace(tzinfo=None)
+        self.seed(TASK, updated=now + timedelta(seconds=11))
+        with mock.patch.object(bus_module, "datetime", FixedClock):
+            self.assert_conflict_without_write()
 
     def test_wrong_task_and_missing_bus_do_not_create_task(self) -> None:
         before = self.bytes_before()

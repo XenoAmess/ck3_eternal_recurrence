@@ -1,0 +1,64 @@
+{
+  "schema": "xar.screen-bus-original-regression-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T14:43:07.063413+00:00",
+  "status": "PRODUCTION_919_UNCHANGED; BASIC_AND_NECESSARY_CAS_FIXTURE_CORRECTION_PASS",
+  "production": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\codex_task_bus.py",
+    "bytes": 31763,
+    "sha256": "9198718f0f0931d93ed7f1557ca1cbedd1fa086a4a1cff210bca10404a305d7f"
+  },
+  "keeper": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\screen_bus_lease_lock_wait_v1.py",
+    "bytes": 16526,
+    "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+  },
+  "fixture": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\test_codex_task_bus_cas.py",
+    "bytes": 26751,
+    "sha256": "11e5e33f80eb03752a176b1102088415336399c65ea844259fd5247edbc42268"
+  },
+  "source_contract": {
+    "old_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\runtime-source-00a70009\\tools\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "exact_ast_unchanged": [
+      "release_screen_cas",
+      "_fresh_screen_owner"
+    ],
+    "expired_exact_own_claim": "existing release contract retires resource while retaining task as waiting and business unresolved_red; does not mark business done",
+    "future_clock": "age below -10 seconds still raises CAS conflict with zero writes"
+  },
+  "original_failure_preserved": {
+    "command": "python -B -m unittest tools.test_codex_task_bus tools.test_codex_task_bus_cas",
+    "tool_chunk": "fef314",
+    "result": "basic import error because tools was absent from module path; CAS27 pass plus obsolete stale-case failure",
+    "correction": "Failure was the first now-601s expired-own-claim subcase, NOT the +11s future subcase and NOT established wallclock flakiness.",
+    "targeted_reproduction": "65ccdd retained; obsolete stale assertion fails in .061s"
+  },
+  "fixture_only_change": "Split obsolete combined test: expired own release requires waiting/resources empty/status event/unresolved_red retirement; future+11s uses a fixed clock and still requires conflict/no-write. No production change.",
+  "actual_tests": [
+    {
+      "command": "python -B -m unittest discover -s tools -p test_codex_task_bus.py",
+      "result": "4 PASS",
+      "seconds": 2.013,
+      "tool_chunk": "c9c180"
+    },
+    {
+      "command": "python -B -m unittest tools.test_codex_task_bus_cas.ScreenReleaseCasTests.test_stale_owner_release_preserves_unresolved_business tools.test_codex_task_bus_cas.ScreenReleaseCasTests.test_future_owner_rejects_without_write",
+      "result": "2 PASS",
+      "seconds": 0.067,
+      "tool_chunk": "0a319b"
+    }
+  ],
+  "not_rerun": "Other27 CAS cases were not repeated; prior6+4+1 source pins remain in original evidence and are not retconned.",
+  "isolation": {
+    "objects": "self-owned TemporaryDirectory buses and owned base Python CLI children only",
+    "actual_shared_bus_calls": 0,
+    "Game_Native_calls": 0,
+    "desktop_OBS_calls": 0,
+    "old_runtime_files_modified": false
+  }
+}

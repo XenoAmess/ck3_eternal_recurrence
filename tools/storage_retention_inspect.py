@@ -6,7 +6,6 @@ is the shared authority. Scheduling this command does not install automatic GC.
 from __future__ import annotations
 
 import argparse
-from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
@@ -15,6 +14,10 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+
+from codex_task_bus import BusBusy
+from storage_short_commit import (StorageConflict, exact_identity, prepare,
+                                  publish, snapshot_json)
 
 MAX_INPUT = 1024 * 1024
 REPO = Path(__file__).resolve().parents[1]
@@ -68,31 +71,6 @@ def evaluate_asset(asset: dict, policy: dict, observed: datetime) -> dict:
             "deletion_authorized": False, "next_action": "Review ownership, exact current paths, sources, protection, file identity and OS handles before any separate reclamation"}
 
 
-@contextmanager
-def local_lock(path: Path):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a+b") as stream:
-        stream.seek(0, 2)
-        if stream.tell() == 0:
-            stream.write(b"0")
-            stream.flush()
-        stream.seek(0)
-        if os.name == "nt":
-            import msvcrt
-            msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
-        else:
-            import fcntl
-            fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        try:
-            yield
-        finally:
-            stream.seek(0)
-            if os.name == "nt":
-                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
-            else:
-                fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
-
-
 def inspect(profile: dict, ledger: dict, policy: dict, machine: str, observed: datetime) -> dict:
     if profile["machine_id"] != machine or ledger["machine_id"] != machine:
         raise ValueError("Machine ID does not match actual execution machine")
@@ -140,19 +118,21 @@ def main(argv=None) -> int:
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--trigger", choices=("daily", "low-space", "task-start", "before-heavy-write", "task-close"), default="daily")
     args = parser.parse_args(argv)
-    policy = small_json(REPO / "docs/storage-retention-policy.json")
-    profile, ledger = small_json(args.profile), small_json(args.ledger)
     probe_python = Path(sys.executable)
     if probe_python.name.lower() == "pythonw.exe":
         probe_python = probe_python.with_name("python.exe")
     probe = subprocess.run([str(probe_python), "-B", str(REPO / "tools/ck3_live_run_id.py"), "machine"], capture_output=True, text=True, check=True,
                            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
     machine = probe.stdout.strip()
-    observed = datetime.now(timezone.utc)
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    with local_lock(args.output_dir / "inspection.lock"):
-        state_path = args.output_dir / "daily-state.json"
-        state = small_json(state_path) if state_path.exists() else {}
+    # All machine/volume/inventory/body/hash work is outside the commit lock.
+    # A conflicting metadata head causes a bounded re-prepare, never a replay
+    # of a long critical section or an inference that another owner died.
+    for attempt in range(3):
+        observed = datetime.now(timezone.utc)
+        state_path = args.output_dir / ("daily-state.json" if args.trigger == "daily" else "inspection-head.json")
+        snapshot = snapshot_json(state_path)
+        state = snapshot.value
         # The scheduler follows the execution machine calendar; asset expiry remains UTC.
         # Legacy UTC-only state intentionally does not suppress the first local-day run.
         local_observed = observed.astimezone()
@@ -161,22 +141,31 @@ def main(argv=None) -> int:
         if args.trigger == "daily" and state.get("machine_id") == machine and all(state.get(key) == value for key, value in daily_key.items()):
             print(json.dumps({"machine_id": machine, "state": "daily_inspection_already_recorded", "last_report": state.get("last_daily_report")}))
             return 0
+        inputs = (args.profile, args.ledger, REPO / "docs/storage-retention-policy.json")
+        guards = tuple((path, exact_identity(path)) for path in inputs)
+        policy = small_json(inputs[2])
+        profile, ledger = small_json(inputs[0]), small_json(inputs[1])
         report = inspect(profile, ledger, policy, machine, observed)
         report["trigger"] = args.trigger
         if args.trigger == "daily":
             report["daily_calendar"] = {"basis": "execution-machine-local-date", **daily_key}
-        report["input_pins"] = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in (args.profile, args.ledger, REPO / "docs/storage-retention-policy.json")}
+        report["input_pins"] = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}
         encoded = (json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
         if len(encoded) > policy["execution"]["inventory_report_max_bytes"]:
             raise ValueError("Report exceeds the shared 1 MiB limit")
         out = args.output_dir / (observed.strftime("%Y%m%dT%H%M%S%fZ") + "-" + args.trigger + ".json")
-        with out.open("xb") as stream:
-            stream.write(encoded)
-        if args.trigger == "daily":
-            state = {"machine_id": machine, **daily_key, "last_daily_report": str(out)}
-            state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+        state = ({"machine_id": machine, **daily_key, "last_daily_report": str(out)}
+                 if args.trigger == "daily" else {"machine_id": machine, "last_report": str(out)})
+        staged = prepare(snapshot, state, report=out, report_bytes=encoded, guards=guards)
+        try:
+            publish(staged, bus=args.output_dir / ".storage-commit", require_existing=False)
+        except (StorageConflict, BusBusy):
+            if attempt == 2:
+                raise
+            continue
         print(json.dumps({"machine_id": machine, "report": str(out), "counts": report["counts"], "deletions": 0}, ensure_ascii=False))
-    return 0
+        return 0
+    raise StorageConflict("inspection could not publish a stable metadata generation")
 
 
 if __name__ == "__main__":
