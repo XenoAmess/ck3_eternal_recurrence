@@ -1,0 +1,51 @@
+{
+  "schema": "xar.C6-faction515-local516-actual-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:59:27.105252+00:00",
+  "sources": {
+    "local516": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0516-1-result.json",
+      "bytes": 1701,
+      "sha256": "7a07d93f06bca0309bd3ed8e1cb68ff683d965bcdaf707ff83449e0ab2027729"
+    },
+    "normal_PLAN517": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0517-1-result.json",
+      "bytes": 78782,
+      "sha256": "7df0fe8ccb389f387b37d0aa409b9dfd9187182902c61caff0b285c5bdcaa184"
+    },
+    "gift_ledger_after516_517": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\faction-gift-pending-v1.json",
+      "bytes": 2359,
+      "sha256": "24268466d6c3a9c521885c9dee0aeaff7e035e9ec3f6d5af0862c54a3e9768a0"
+    }
+  },
+  "local516_status": "faction515_before_dispatch_cleared_for_readonly_PLAN",
+  "actual516_new_RPC_calls": 0,
+  "cycle_credit_from516": 0,
+  "actual_old515_replayed": false,
+  "settled_cycles": 219,
+  "game_days": 381,
+  "actual517_status": "normal PLAN completed; expected same-process receipt route NOT established",
+  "actual517_selected_step": "private-query-faction-gift-cold-recovery-v1",
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:419",
+    "revision": 352,
+    "native_revision": 419,
+    "date_raw": 53153472,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "connection_generation": 3,
+    "bridge_pid": 153556
+  },
+  "earlier_gift_request_id": "faction-gift-d29a273508614be4aa0fdfaba560667c",
+  "earlier_gift_status": "submitted_verification_pending",
+  "gift_ledger_bytes_unchanged": true,
+  "earlier_gift_material_success_inferred": false,
+  "518_or_cold_recovery_execution_authorized_by_this_evidence": false,
+  "same_physical_Game_context": "Root/runtime retained Game153556/birth134368602545256920; actual517 cold selection conflicts with that context.",
+  "identity_source_explanation": "runtime WMI/fallback can expose equivalent DMTF creation times with +480/+000; route compares raw strings. Actual517 returned creation string is unavailable, so this remains a source explanation, not a fabricated identity observation.",
+  "new_research_RPC_calls": 0,
+  "research_runtime_files_mutated": 0
+}

@@ -1,0 +1,101 @@
+{
+  "schema": "xar.C6-faction515-clear-PLAN-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:49:51.084089+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c6-faction515-failure73\\FROZEN.json",
+      "bytes": 5914,
+      "sha256": "d69a3998558f8220d70061bd162339f0f2f8e1fe991fce86df52c73eeb76d182"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c6-faction515-failure73\\context\\CONTEXT.json",
+      "bytes": 4973,
+      "sha256": "f0ec60d1288d2d297e3358ed6316b5222acd96491ccc314d44461894bd6c1e6c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C6.json",
+      "bytes": 402999,
+      "sha256": "680163f02a36944fc7c1c9c97f55aaa4816a184e46041889af0c475126b36d2f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src05\\xar_autoplayer\\bridge\\faction_gift_formal_route_v1.py",
+      "bytes": 20648,
+      "sha256": "e929b86b3dcfc7c1b481de6fb55889118ec0b12cc111bf2872bb5fe248ebdebc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src05\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867830,
+      "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src05\\xar_autoplayer\\faction_gift_pending_v1.py",
+      "bytes": 13656,
+      "sha256": "2152c3e2c7f48bad6864c06d43a6e32e731736a72e65df5b134250a156450293"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c6-faction515-failure73\\faction-gift-pending-v1.json",
+      "bytes": 2359,
+      "sha256": "24268466d6c3a9c521885c9dee0aeaff7e035e9ec3f6d5af0862c54a3e9768a0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-faction515-clear-review01\\SOURCE-CONTRACT.json",
+      "bytes": 2723,
+      "sha256": "a7b8ef43a4f3f4f016df6058dbb10c8f806badb2e1987c714a332cff49aa199f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_saved_campaign_preflight.py",
+      "bytes": 15049,
+      "sha256": "167f1840a25bbc62eb2fd032bb17e1e0183a6c14ad9a93745773d7d036b5909e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c6_faction515_predispatch_clear_v1.py",
+      "bytes": 7012,
+      "sha256": "89713c56b7492f960ccc7908cbf06071150218f4493b3e048a03e3940da43079"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c6_sdk_queue.py",
+      "bytes": 264839,
+      "sha256": "600703088920399e0d8c354ec283d84144c660cb9f761900df603e2077a2e63f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-faction515-clear-review01\\root_saved_campaign_preflight.py",
+      "bytes": 16899,
+      "sha256": "24a2dd46a69a206cccca9dab5a63a1bb2f1fe4f9693778a0e954e49165639500"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-faction515-clear-review01\\root_c6_faction515_predispatch_clear.py",
+      "bytes": 7012,
+      "sha256": "89713c56b7492f960ccc7908cbf06071150218f4493b3e048a03e3940da43079"
+    }
+  ],
+  "control": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-faction515-clear-review01\\root_saved_campaign_preflight.py",
+    "bytes": 16899,
+    "sha256": "24a2dd46a69a206cccca9dab5a63a1bb2f1fe4f9693778a0e954e49165639500"
+  },
+  "leaf": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-faction515-clear-review01\\root_c6_faction515_predispatch_clear.py",
+    "bytes": 7012,
+    "sha256": "89713c56b7492f960ccc7908cbf06071150218f4493b3e048a03e3940da43079"
+  },
+  "source_contract": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\c6-faction515-clear-review01\\SOURCE-CONTRACT.json",
+    "bytes": 2723,
+    "sha256": "a7b8ef43a4f3f4f016df6058dbb10c8f806badb2e1987c714a332cff49aa199f"
+  },
+  "actual_C6_outer_dispatch_and_Clean_before_after_used": true,
+  "516_new_RPC_calls": 0,
+  "517_software_PLAN_calls": 1,
+  "old_actual_route_newer_same_date_fixture_selects_independent_receipt": true,
+  "fixture_ledger_bytes_unchanged": true,
+  "state_only_pending_cycle_changed": true,
+  "negative_cases_rejected": [
+    "unknown_original",
+    "pending_changed",
+    "foreign_Game"
+  ],
+  "actual_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "actual517_success_claimed": false
+}

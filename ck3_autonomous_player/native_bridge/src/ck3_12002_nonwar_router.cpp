@@ -335,6 +335,7 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
   out.sway_completion = &ck3_12004::ExecuteSwayTerminalMailbox12004;
+  out.sway_completion_termination = &ExecuteSwayCompletionTerminationMailboxV1;
   out.sway_state = &ExecuteActiveSwayMailbox12002;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
   // Dedicated ACTION slot58; the unchanged state slot55 continues to admit

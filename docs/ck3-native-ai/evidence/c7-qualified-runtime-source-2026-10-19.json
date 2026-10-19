@@ -1,0 +1,40 @@
+{
+  "schema": "xar.c7-qualified-runtime-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:03:22.254967+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine",
+  "base_commit": "13eb02ce80249921b1ac1313507793c382e08448",
+  "runtime_source_commit": "8e1e59f073f239d266f5b59f57c65b5645658512",
+  "runtime_source_ref": "refs/heads/runtime/robert-v20261019-c7-long-run",
+  "runtime_source_tree": "e7c7e0f29f62d173a2c55b4e628e6b6537e9f7db",
+  "exact_changed_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "git_blob": "564660f5705878ce9a9b051e047e89eba25aa329",
+      "bytes": 25000,
+      "sha256": "5e9d2ab946d92c34ccb3a794f16a62028d01f4572813168593a94eac43646b30"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+      "git_blob": "cff42d3de6d432e492351b92fdbe0e5001aa69d7",
+      "bytes": 13443,
+      "sha256": "69ff7e9dc23dc6d06c2703e8c0f4a7475589cb91475b12f4e11e569234194414"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_lifecycle_observation_v1.py",
+      "git_blob": "2ef8336151b947cb71f0590d06d05ba89976fa3e",
+      "bytes": 6195,
+      "sha256": "69d9b1b390eaf830b97b6b8699d63764959d1eb8c4268b1f55fefe6e0044b43f"
+    }
+  ],
+  "strict_process_identity_helper": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/environment.py",
+    "sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582",
+    "changed": false
+  },
+  "master_branch_and_main_index_changed": false,
+  "M4_and_other_machine_GUI_changes_included": false,
+  "game_Native26_or_RPC_calls": 0,
+  "live_adoption": "pending actual C7 source freeze, independent reference and normal same-Game warm admission",
+  "Native_termination_executor_fix_included": false
+}

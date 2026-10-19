@@ -1221,3 +1221,6 @@ docs/ck3-native-ai/evidence/c5-estate255-readonly-recovery01.json -text whitespa
 docs/ck3-native-ai/evidence/c5-estate255-source-ready-manifest01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c6-completed-met286-software01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/p51-c6-shared-io-2026-10-19.json -text whitespace=cr-at-eol
+ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/faction-pending-paused-replan-2026-10-19.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c6-faction515-predispatch-software01.json -text whitespace=cr-at-eol

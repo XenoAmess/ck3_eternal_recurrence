@@ -1,0 +1,31 @@
+{
+  "schema": "xar.C6-faction515-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:51:20.636184+00:00",
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/c6_faction515_predispatch_clear_v1.py",
+      "bytes": 7012,
+      "sha256": "89713c56b7492f960ccc7908cbf06071150218f4493b3e048a03e3940da43079"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_c6_faction515_predispatch_v1.py",
+      "bytes": 14433,
+      "sha256": "889dd57d4ad50f3eec264662964a59ea89be30b01880e1918dfa69ed98b8ba3c"
+    },
+    {
+      "path": "docs/ck3-native-ai/c6-faction515-predispatch-recovery-2026-10-19.md",
+      "bytes": 3241,
+      "sha256": "9ae1d03e748c400d6afd640f17ccf24adcb6a93de6d19bb06eb59e1f444a09a5"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c6-faction515-predispatch-software01.json",
+      "bytes": 5362,
+      "sha256": "7292ef9b41633405d4b22a3e27be7c3b7398ea465f5d6941feaa5bb876e7637c"
+    }
+  ],
+  "software_status": "PASS",
+  "runtime_adoption": "pending actual516/517; software PLAN is explicitly a fixture",
+  "actual_RPC_calls": 0,
+  "runtime_files_mutated": 0
+}

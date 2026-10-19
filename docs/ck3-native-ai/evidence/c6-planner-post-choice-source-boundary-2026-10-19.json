@@ -1,0 +1,178 @@
+{
+  "schema": "xar.ck3.c6-planner-post-choice-source-boundary/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:59:37.258660+00:00",
+  "status": "NARROW_TIMING_CANDIDATE_SOURCE_ONLY",
+  "business_source_commit": "13eb02ce80249921b1ac1313507793c382e08448",
+  "source_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C6.json",
+    "bytes": 402999,
+    "sha256": "680163f02a36944fc7c1c9c97f55aaa4816a184e46041889af0c475126b36d2f"
+  },
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\project_c6_planner_source_20261019.py",
+    "bytes": 6357,
+    "sha256": "fee012d72f3345c089bbb02141e47ea1de2171c262826ab4725b833bbf18a2cb"
+  },
+  "actual_sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src05\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867830,
+      "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src05\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1612085,
+      "sha256": "f64d8c6478b37fe39a3baca6f7794b89a1e20072b443895b9e9e29de6158226f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src05\\xar_autoplayer\\bridge\\current_first_heir_relationship_private_transport.py",
+      "bytes": 27390,
+      "sha256": "0d7f1bbd38f75dea00ffd61492031942b82a432f44d19c27f7433ecba4e6c5c5"
+    }
+  ],
+  "closed_compact": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0287-0353-COMPACT72.json",
+    "bytes": 220024,
+    "sha256": "51f553dd034d5f29646996a3168a9d29591691a2a13bdf25e4b62d2b8eeffe9e"
+  },
+  "closed_trace": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\C6-CLOSED-STAGE-TRACE72.jsonl",
+    "bytes": 174365,
+    "sha256": "0b5f670097d91fa531ec371cf584ff37fba49d8c1a5b5a0d0fee5b9e759b96a2"
+  },
+  "metrics": {
+    "service.normal_plan_turn": {
+      "samples": 30,
+      "sum_ns": 8204236100,
+      "max_ns": 2246923900
+    },
+    "service.planner_capabilities": {
+      "samples": 102,
+      "sum_ns": 227130900,
+      "max_ns": 9783400
+    },
+    "service.planner_history_rows": {
+      "samples": 43,
+      "sum_ns": 12970900,
+      "max_ns": 931900
+    },
+    "service.planner_public_plan_copy": {
+      "samples": 30,
+      "sum_ns": 14596000,
+      "max_ns": 2000800
+    }
+  },
+  "hot_plan_windows": [
+    {
+      "normal_plan": {
+        "schema": "xar.ck3.army-query-timing.v1",
+        "stage": "service.normal_plan_turn",
+        "step": "plan-turn",
+        "elapsed_ns": 2246923900,
+        "finished_at_utc": "2026-10-19T06:38:12.422280+00:00",
+        "native_request_id": null
+      },
+      "choose": {
+        "schema": "xar.ck3.army-query-timing.v1",
+        "stage": "service.planner_choose",
+        "step": "plan-turn",
+        "elapsed_ns": 29066500,
+        "finished_at_utc": "2026-10-19T06:38:10.208369+00:00",
+        "native_request_id": null
+      },
+      "public_copy": {
+        "schema": "xar.ck3.army-query-timing.v1",
+        "stage": "service.planner_public_plan_copy",
+        "step": "plan-turn",
+        "elapsed_ns": 1032300,
+        "finished_at_utc": "2026-10-19T06:38:12.421972+00:00",
+        "native_request_id": null
+      },
+      "choose_to_copy_finish_seconds": 2.213603
+    },
+    {
+      "normal_plan": {
+        "schema": "xar.ck3.army-query-timing.v1",
+        "stage": "service.normal_plan_turn",
+        "step": "plan-turn",
+        "elapsed_ns": 704291700,
+        "finished_at_utc": "2026-10-19T06:38:34.814987+00:00",
+        "native_request_id": null
+      },
+      "choose": {
+        "schema": "xar.ck3.army-query-timing.v1",
+        "stage": "service.planner_choose",
+        "step": "plan-turn",
+        "elapsed_ns": 529900,
+        "finished_at_utc": "2026-10-19T06:38:34.186461+00:00",
+        "native_request_id": null
+      },
+      "public_copy": {
+        "schema": "xar.ck3.army-query-timing.v1",
+        "stage": "service.planner_public_plan_copy",
+        "step": "plan-turn",
+        "elapsed_ns": 1007100,
+        "finished_at_utc": "2026-10-19T06:38:34.814690+00:00",
+        "native_request_id": null
+      },
+      "choose_to_copy_finish_seconds": 0.628229
+    }
+  ],
+  "unread_RPC_rows": [
+    {
+      "sequence": 296,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0296-1-result.json",
+      "bytes": 617175,
+      "status": "oversized_not_observed"
+    },
+    {
+      "sequence": 328,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0328-1-result.json",
+      "bytes": 615953,
+      "status": "oversized_not_observed"
+    }
+  ],
+  "limits": [
+    "296/328 bodies remain oversized_not_observed; exact RPC timing and Native phases unknown",
+    "Trace request IDs null; sequence association only closed compact adjacency; nested/concurrent spans not additive",
+    "Four actor gates remain OFF; no profiling environment change"
+  ],
+  "source_findings": [
+    "Service1955-1976 prepares succession before choose2274. Trace large gap is after choose, not evidence that1974 prep is the seconds-scale cost.",
+    "Prepare1553-1580 already reuses complete same-frame successful root from owned history. Different public/native/date binding still requires current expectation evidence.",
+    "Service8046-8321 requires complete envelope/keyset/mirrors/provenance and before/after frame checks. Driver-cache helper103-166 returns only a small projection; substituting it would fail those guards.",
+    "NativeDriver3000-3013 reads semantic state;3044-3074 optionally exports history;4865-4917 freezes current expectation and persists. These are not redundant Nativequeries proven by this trace.",
+    "Internal collector2509-2520 already removes private history before helper deepcopy. Do not re-propose that fixed history-copy issue.",
+    "Prewar1830-1889 already deduplicates an exact same-frame tuple and replans after a newly published observation. No safe query removal identified.",
+    "plan_turn1796 runs internal planning;1798 then stage_ordinary_sway_v1;1825 public copy. Current total covers both unseparated trees."
+  ],
+  "only_next_patch": {
+    "helper": "existing Service._timed_planning_call_v1:641-650, try/finally with existing scalar sink",
+    "call_sites": [
+      {
+        "line": 1796,
+        "stage": "service.planner_internal",
+        "operation": "self._plan_turn_internal"
+      },
+      {
+        "line": 1798,
+        "stage": "service.planner_ordinary_sway",
+        "operation": "stage_ordinary_sway_v1(self,planned)"
+      }
+    ],
+    "purpose": "Separate the measured post-choice gap into internal collectors versus post-plan Sway observation before selecting a narrower provider. No cache/query/policy change.",
+    "optional_nested": "Only if needed: wrap1974 succession prep using the same helper; no new provider platform.",
+    "ownership": "Proposal only. Root schedules future Service owner/adoption; do not touch frozen src05, M6 observer, faction515/M5/harness."
+  },
+  "performance_claim": "No speedup measured; no direct duplicate-query optimization proven. Do not attribute observed seconds to CB, force, Native-only, history, capabilities or final public copy.",
+  "actions": {
+    "Game": 0,
+    "RPC": 0,
+    "compile": 0,
+    "source_mutations": 0,
+    "Driver_state_reads": 0,
+    "SAVE_reads": 0,
+    "closed_Native26_writes": 0
+  }
+}

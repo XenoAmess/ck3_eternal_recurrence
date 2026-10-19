@@ -492,7 +492,7 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
     native = whole_wire["result"]
     cold = mode == "cold"
     pid = 1200402 if cold else 1200401
-    creation = "fixture-process-2" if cold else "fixture-process-1"
+    creation = "20261019051054.525693+000" if cold else "20261019131054.525692+480"
     round_id = "R2" if cold else "R1"
     receipt = {
         "schema": "xar.faction-adopted-12004.gift-entrance.v1",
@@ -600,7 +600,7 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
             begin_faction_gift_submission_v1(
                 driver.state_dir, request_id=FIXTURE_GIFT_REQUEST_ID,
                 episode_run_id=before["episode_run_id"], source_round_id="R1",
-                source_bridge_pid=1200401, source_bridge_creation_date="fixture-process-1",
+                source_bridge_pid=1200401, source_bridge_creation_date="20261019131054.525692+480",
                 observation=preview_whole["result"]["native"]["observation"],
                 minimum_gold_reserve_raw=5000000,
                 checkpoint_sha256_before_submit=checkpoint["sha256"])

@@ -722,6 +722,24 @@ class GameplayBridgeService:
             **fields,
         }
 
+    def _plan_war_mercenary_with_current_cash_v1(
+        self, plan: dict[str, object], *, snapshot: dict[str, object],
+        history: list[dict[str, object]], bridge_capabilities: set[str],
+    ) -> dict[str, object]:
+        from ..war_mercenary_consumer_v1 import plan_war_mercenary_turn_v1
+        from .war_cash_private_transport_v1 import current_war_cash_observation_v1
+        from .war_contract import is_life_advance_step, parse_advance_route_contact_horizon_step
+
+        cash_input = {}
+        wars, step = snapshot.get("active_wars"), plan.get("selected_step")
+        if (isinstance(wars, list) and wars and snapshot.get("paused") is True
+                and snapshot.get("map_ready") is True and snapshot.get("active_event") is None
+                and snapshot.get("pending_character_interaction") is None
+                and (is_life_advance_step(step) or parse_advance_route_contact_horizon_step(step) is not None)):
+            cash_input = current_war_cash_observation_v1(self.driver, snapshot)
+        return plan_war_mercenary_turn_v1(self.driver, plan, snapshot=snapshot,
+            history=history, bridge_capabilities=bridge_capabilities, **cash_input)
+
     @staticmethod
     def _auto_camera_hotspot_input(
         snapshot: dict[str, object], source_frame: dict[str, object],
@@ -2290,10 +2308,8 @@ class GameplayBridgeService:
                     self.driver, plan, snapshot=planning_snapshot, history=history,
                     bridge_capabilities=set(bridge_capabilities),
                 )
-                from ..war_mercenary_consumer_v1 import plan_war_mercenary_turn_v1
-
-                plan = plan_war_mercenary_turn_v1(
-                    self.driver, plan, snapshot=planning_snapshot,
+                plan = self._plan_war_mercenary_with_current_cash_v1(
+                    plan, snapshot=planning_snapshot,
                     history=history, bridge_capabilities=set(bridge_capabilities),
                 )
             if getattr(

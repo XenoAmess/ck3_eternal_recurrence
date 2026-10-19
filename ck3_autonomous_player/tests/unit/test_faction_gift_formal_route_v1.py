@@ -1,3 +1,4 @@
+"""Synthetic faction frames and ACKs; no CK3 execution or live qualification."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -23,6 +24,7 @@ def snapshot(*, revision: int = 10, native_revision: int = 12) -> dict[str, obje
         "played_character": {"character_id": 32904, "alive": True},
         "episode_run_id": "native-32904-a", "active_event": None,
         "pending_character_interaction": None, "one_life_terminal_reason": None,
+        "diagnostics": {"bridge_pid": 12345, "connection_generation": 2},
     }
 
 
@@ -154,7 +156,7 @@ def pending(state: Path) -> dict[str, object]:
     return begin_faction_gift_submission_v1(
         state, request_id="gift-real-1", episode_run_id="native-32904-a",
         source_round_id="R742", source_bridge_pid=12345,
-        source_bridge_creation_date="old-process", observation=observation(),
+        source_bridge_creation_date="20261019131054.525692+480", observation=observation(),
         minimum_gold_reserve_raw=10_000_000,
         checkpoint_sha256_before_submit="a" * 64,
     )["pending"]
@@ -215,11 +217,11 @@ def test_pending_routes_by_exact_process_identity(monkeypatch, tmp_path: Path) -
     planned = {"snapshot_id": "s413", "revision": 413,
                "plan": {"selected_step": "life-advance"}}
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "old-process"})
+                        lambda pid: {"creation_date": "20261019131054.525692+480"})
     same = route.plan_faction_gift_private_v1(driver, planned, current, [], set())
     assert same["plan"]["selected_step"] == route.RECEIPT_STEP
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "new-process"})
+                        lambda pid: {"creation_date": "20261019051054.525693+000"})
     driver._session_bridge_pid = 23456
     driver.private_faction_round_id = "R744"
     cold = route.plan_faction_gift_private_v1(driver, planned, current, [], set())
@@ -231,13 +233,13 @@ def test_pending_same_public_revision_does_not_advance_date(
     monkeypatch, tmp_path: Path,
 ) -> None:
     old = pending(tmp_path)
-    current = snapshot(revision=413, native_revision=old["pre_snapshot_revision"])
-    fresh = snapshot(revision=414, native_revision=old["pre_snapshot_revision"] + 1)
+    current = snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"])
+    fresh = snapshot(revision=414, native_revision=old["pre_native_snapshot_revision"] + 1)
     driver = Driver(tmp_path, current)
     planned = {"snapshot_id": "s413", "revision": 413,
                "plan": {"selected_step": "life-advance"}}
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "old-process"})
+                        lambda pid: {"creation_date": "20261019131054.525692+480"})
     calls: list[tuple[int, float]] = []
 
     def native_wait(start, predicate, *, timeout_seconds):
@@ -271,11 +273,11 @@ def test_pending_same_revision_timeout_is_red_and_keeps_ledger(
     monkeypatch, tmp_path: Path,
 ) -> None:
     old = pending(tmp_path)
-    current = snapshot(revision=413, native_revision=old["pre_snapshot_revision"])
+    current = snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"])
     driver = Driver(tmp_path, current)
     driver._wait_for_snapshot = lambda start, predicate, *, timeout_seconds: start
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "old-process"})
+                        lambda pid: {"creation_date": "20261019131054.525692+480"})
 
     with pytest.raises(route.BridgeUnavailableError,
                        match="same-date paused revision did not arrive"):
@@ -295,7 +297,7 @@ def test_submit_persists_identity_before_accepting_pending_ack(monkeypatch, tmp_
         "episode_run_id": "native-32904-a",
     }
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "old-process"})
+                        lambda pid: {"creation_date": "20261019131054.525692+480"})
     driver.state.result = {
         "step": route.SUBMIT_STEP, "private_build": True, "advertised": False,
         "status": "submitted_verification_pending",
@@ -360,7 +362,7 @@ def test_cold_recovery_uses_independent_entity_facts_and_retires_applied_id(
         "episode_run_id": "native-32904-a",
     }
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "new-process"})
+                        lambda pid: {"creation_date": "20261019051054.525693+000"})
     post = {
         "available": True, "paused": True, "snapshot_revision": 2,
         "native_snapshot_revision": 3, "observed_date_raw": DATE,
@@ -392,7 +394,7 @@ def test_cold_unknown_is_red_and_keeps_pending(monkeypatch, tmp_path: Path) -> N
     driver._session_bridge_pid = 23456
     driver.private_faction_round_id = "R744"
     monkeypatch.setattr(route, "_process_identity",
-                        lambda pid: {"creation_date": "new-process"})
+                        lambda pid: {"creation_date": "20261019051054.525693+000"})
     driver.state.result = {
         "step": route.COLD_RECOVERY_STEP, "private_build": True,
         "advertised": False, "status": "independent_read_complete",
@@ -403,3 +405,204 @@ def test_cold_unknown_is_red_and_keeps_pending(monkeypatch, tmp_path: Path) -> N
             driver, pending=old, expected_revision=1,
         )
     assert read_faction_gift_ledger_v1(tmp_path)["pending"] is not None
+
+
+def _service_planning_wrapper():
+    """Use the actual consumer seam without constructing a live Driver."""
+    import ast
+    source = Path(__file__).parents[2] / "src/xar_autoplayer/bridge/service.py"
+    tree = ast.parse(source.read_text(encoding="utf-8-sig"))
+    service = next(n for n in tree.body if isinstance(n, ast.ClassDef)
+                   and n.name == "GameplayBridgeService")
+    wrapper = next(n for n in service.body if isinstance(n, ast.FunctionDef)
+                   and n.name == "_plan_turn_internal")
+    namespace = {"__package__": "xar_autoplayer.bridge"}
+    exec(compile(ast.Module(body=[wrapper], type_ignores=[]), str(source), "exec"), namespace)
+    return namespace["_plan_turn_internal"]
+
+
+def test_pending_ready_replans_whole_service_once_then_queries_original_receipt(
+    monkeypatch, tmp_path: Path,
+) -> None:
+    from types import SimpleNamespace
+    old = pending(tmp_path)
+    driver = Driver(tmp_path, snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"]))
+    fresh = snapshot(revision=414, native_revision=old["pre_native_snapshot_revision"] + 1)
+    monkeypatch.setattr(route, "_process_identity", lambda pid: {"creation_date": "20261019131054.525692+480"})
+    calls, waits = [], []
+    ledger_bytes = (tmp_path / "native-session/faction-gift-pending-v1.json").read_bytes()
+
+    def wait(start, predicate, *, timeout_seconds):
+        waits.append(timeout_seconds)
+        assert predicate(fresh)
+        driver.current = fresh
+        return fresh
+
+    def plan_once(**kwargs):
+        current = driver.take_internal_semantic_snapshot()
+        calls.append((current["revision"], current["native_revision"]))
+        return route.plan_faction_gift_private_v1(driver, {
+            "snapshot_id": current["snapshot_id"], "revision": current["revision"],
+            "plan": {"selected_step": "life-advance"}}, current, [], set())
+
+    driver._wait_for_snapshot = wait
+    planned = _service_planning_wrapper()(SimpleNamespace(
+        _plan_turn_internal_without_readonly_retry_v1=plan_once))
+    assert calls == [(413, 13), (414, 14)] and waits == [5.0]
+    assert planned["snapshot_id"] == "s414" and planned["revision"] == 414
+    assert planned["plan"]["selected_step"] == route.RECEIPT_STEP
+    assert planned["plan"]["faction_gift_pending_action"]["request_id"] == old["request_id"]
+    proof = planned["readonly_planning_replan_v1"]
+    assert proof["fresh_replans"] == 1 and proof["business_actions_replayed"] == 0
+    assert proof["original_rejections"][0]["class"] == "faction_pending_receipt_paused_frame_ready"
+    assert driver.endpoint.sent == []
+    assert (tmp_path / "native-session/faction-gift-pending-v1.json").read_bytes() == ledger_bytes
+
+    # An independent synthetic receipt, separate from ACK and the frame proof.
+    driver.state.result = {"step": route.RECEIPT_STEP, "status": "applied", "receipt": {
+        "schema_version": 1, "request_id": old["request_id"], "status": "mitigated",
+        "postcondition_verified": True, "mitigation_applied": True,
+        "source_faction_id": old["source_faction_id"], "recipient_character_id": old["recipient_character_id"],
+        "player_character_id": old["pre_player_character_id"],
+        "post_snapshot_revision": 14, "post_native_snapshot_revision": 14,
+        "post_observed_date_raw": DATE, "post_player_gold_raw": 17_500_000,
+        "post_gift_opinion_present": True, "post_gift_opinion_modifier_value": 25}}
+    result = route.query_faction_gift_receipt_private_v1(driver,
+        pending=planned["plan"]["faction_gift_pending_action"], expected_revision=planned["revision"])
+    assert result["status"] == "applied"
+    assert [sent["step"] for sent in driver.endpoint.sent] == [route.RECEIPT_STEP]
+    assert read_faction_gift_ledger_v1(tmp_path)["pending"] is None
+
+
+@pytest.mark.parametrize("change", ["actor", "date", "episode", "pid", "generation",
+                                   "regressed_native", "regressed_public", "timeout", "event"])
+def test_pending_wait_foreign_or_unready_frame_never_qualifies_for_replan(
+    monkeypatch, tmp_path: Path, change: str,
+) -> None:
+    from xar_autoplayer.bridge.readonly_planning_retry_v1 import retry_readonly_planning_once_v1
+    old = pending(tmp_path)
+    current = snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"])
+    fresh = snapshot(revision=414, native_revision=old["pre_native_snapshot_revision"] + 1)
+    if change == "actor":
+        fresh["played_character"] = {"character_id": 123, "alive": True}
+    elif change == "date":
+        fresh["date_raw"] += 24
+    elif change == "episode":
+        fresh["episode_run_id"] = "foreign-episode"
+    elif change == "pid":
+        fresh["diagnostics"]["bridge_pid"] += 1
+    elif change == "generation":
+        fresh["diagnostics"]["connection_generation"] += 1
+    elif change == "regressed_native":
+        fresh["native_revision"] = old["pre_native_snapshot_revision"] - 1
+    elif change == "regressed_public":
+        fresh["revision"] = current["revision"]
+    elif change == "timeout":
+        fresh = current
+    else:
+        fresh["active_event"] = {"instance_id": 1}
+    driver = Driver(tmp_path, current)
+    driver._wait_for_snapshot = lambda *args, **kwargs: fresh
+    monkeypatch.setattr(route, "_process_identity", lambda pid: {"creation_date": "20261019131054.525692+480"})
+    calls = []
+
+    def plan_once():
+        calls.append(1)
+        return route.plan_faction_gift_private_v1(driver, {
+            "snapshot_id": current["snapshot_id"], "revision": current["revision"],
+            "plan": {"selected_step": "life-advance"}}, current, [], set())
+
+    with pytest.raises(route.BridgeUnavailableError) as caught:
+        retry_readonly_planning_once_v1(plan_once)
+    assert not isinstance(caught.value, route.FactionGiftPendingFrameReadyError)
+    assert calls == [1] and driver.endpoint.sent == []
+    assert read_faction_gift_ledger_v1(tmp_path)["pending"] == old
+
+
+def test_untyped_or_altered_pending_ready_proof_is_not_retried(monkeypatch, tmp_path: Path) -> None:
+    from copy import deepcopy
+    from xar_autoplayer.bridge.readonly_planning_retry_v1 import classify_readonly_planning_error_v1
+    old = pending(tmp_path)
+    current = snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"])
+    fresh = snapshot(revision=414, native_revision=old["pre_native_snapshot_revision"] + 1)
+    driver = Driver(tmp_path, current)
+    driver._wait_for_snapshot = lambda *args, **kwargs: fresh
+    monkeypatch.setattr(route, "_process_identity", lambda pid: {"creation_date": "20261019131054.525692+480"})
+    with pytest.raises(route.FactionGiftPendingFrameReadyError) as caught:
+        route.plan_faction_gift_private_v1(driver, {"plan": {"selected_step": "life-advance"}},
+                                         current, [], set())
+    original = caught.value.readonly_faction_pending_frame_v1
+    assert classify_readonly_planning_error_v1(caught.value) is not None
+    assert classify_readonly_planning_error_v1(route.PreSubmissionRevisionMismatchError(str(caught.value))) is None
+    for mutation in ("business_submission_attempted", "receipt_query_attempted", "gift_submission_replayed"):
+        proof = deepcopy(original)
+        proof[mutation] = True
+        assert classify_readonly_planning_error_v1(route.FactionGiftPendingFrameReadyError(proof)) is None
+    unknown = deepcopy(original)
+    unknown["unreviewed"] = True
+    assert classify_readonly_planning_error_v1(route.FactionGiftPendingFrameReadyError(unknown)) is None
+
+
+def test_repeated_typed_ready_race_shares_existing_one_retry_budget(monkeypatch, tmp_path: Path) -> None:
+    from xar_autoplayer.bridge.readonly_planning_retry_v1 import retry_readonly_planning_once_v1
+    old = pending(tmp_path)
+    current = snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"])
+    fresh = snapshot(revision=414, native_revision=old["pre_native_snapshot_revision"] + 1)
+    driver = Driver(tmp_path, current)
+    driver._wait_for_snapshot = lambda *args, **kwargs: fresh
+    monkeypatch.setattr(route, "_process_identity", lambda pid: {"creation_date": "20261019131054.525692+480"})
+    calls = []
+
+    def plan_once():
+        calls.append(1)
+        return route.plan_faction_gift_private_v1(driver, {"plan": {"selected_step": "life-advance"}},
+                                                 current, [], set())
+
+    with pytest.raises(route.FactionGiftPendingFrameReadyError):
+        retry_readonly_planning_once_v1(plan_once)
+    assert calls == [1, 1] and driver.endpoint.sent == []
+    assert read_faction_gift_ledger_v1(tmp_path)["pending"] == old
+
+
+def test_equal_dmtf_birth_spellings_select_receipt_and_forbid_cold_query(monkeypatch, tmp_path: Path) -> None:
+    old = pending(tmp_path)
+    current = snapshot(revision=413, native_revision=old["pre_native_snapshot_revision"] + 1)
+    driver = Driver(tmp_path, current)
+    # Same physical instant: WMI local+480 versus Toolhelp UTC+000.
+    monkeypatch.setattr(route, "_process_identity", lambda pid: {"creation_date": "20261019051054.525692+000"})
+    before = (tmp_path / "native-session/faction-gift-pending-v1.json").read_bytes()
+    planned = route.plan_faction_gift_private_v1(driver, {
+        "snapshot_id": current["snapshot_id"], "revision": current["revision"],
+        "plan": {"selected_step": "life-advance"}}, current, [], set())
+    assert planned["plan"]["selected_step"] == route.RECEIPT_STEP
+    assert planned["plan"]["faction_gift_pending_action"]["source_bridge_creation_date"] == "20261019131054.525692+480"
+    # The same normalized comparison must guard the independent cold executor.
+    with pytest.raises(route.BridgeUnavailableError, match="requires a replaced CK3 process"):
+        route.query_faction_gift_cold_recovery_private_v1(driver, pending=old, expected_revision=413)
+    # And the receipt executor must permit this same birth, without submitting a gift.
+    driver.state.result = {"status": "not_applied"}
+    with pytest.raises(route.StepPostconditionError):
+        route.query_faction_gift_receipt_private_v1(driver, pending=old, expected_revision=413)
+    assert [row["step"] for row in driver.endpoint.sent] == [route.RECEIPT_STEP]
+    assert (tmp_path / "native-session/faction-gift-pending-v1.json").read_bytes() == before
+
+
+def test_different_microsecond_birth_is_a_new_process_even_at_same_pid():
+    old = {"source_bridge_pid": 12345, "source_bridge_creation_date": "20261019131054.525692+480"}
+    assert route._same_pending_process(12345, "20261019051054.525693+000", old) is False
+    assert route._same_pending_process(23456, "20261019051054.525692+000", old) is False
+    # Preserve exact historical synthetic/archived spellings, not a new parse claim.
+    assert route._same_pending_process(12345, "historic-process-marker", {
+        "source_bridge_pid": 12345, "source_bridge_creation_date": "historic-process-marker"}) is True
+
+
+@pytest.mark.parametrize("current,original", [
+    ("malformed", "20261019131054.525692+480"),
+    ("20261019051054.525692+000", None),
+    (None, "20261019131054.525692+480"),
+    ("None", "None"),
+])
+def test_unequal_or_missing_process_birth_is_unknown_not_cold(current, original):
+    with pytest.raises(route.BridgeUnavailableError, match="birth comparison is unknown"):
+        route._same_pending_process(12345, current, {
+            "source_bridge_pid": 12345, "source_bridge_creation_date": original})

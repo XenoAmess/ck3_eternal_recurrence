@@ -1,0 +1,209 @@
+{
+  "schema": "xar.faction-pending-paused-replan-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:01:38.318744+00:00",
+  "machine_identity_source": "python -B tools/ck3_live_run_id.py machine, 2026-10-19T07:00:44Z",
+  "frozen_business_source": "13eb02ce80249921b1ac1313507793c382e08448",
+  "roots": {
+    "closed_pack": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01",
+    "frozen_python": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src05/xar_autoplayer",
+    "closed_campaign_responses": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime"
+  },
+  "closed_pins": [
+    {
+      "relative_path": "c6-faction515-failure73/FROZEN.json",
+      "bytes": 5914,
+      "sha256": "d69a3998558f8220d70061bd162339f0f2f8e1fe991fce86df52c73eeb76d182"
+    },
+    {
+      "relative_path": "c6-faction515-failure73/context/CONTEXT.json",
+      "bytes": 4973,
+      "sha256": "f0ec60d1288d2d297e3358ed6316b5222acd96491ccc314d44461894bd6c1e6c"
+    },
+    {
+      "relative_path": "c6-faction515-failure73/context/0513-1-result.json",
+      "bytes": 97897,
+      "sha256": "08cd9dd3d4054d5d1a6e4beec192ad66dbe6518a440cd955336049be624dadb0"
+    },
+    {
+      "relative_path": "c6-faction515-failure73/0514-1-result.json",
+      "bytes": 1482,
+      "sha256": "469e931a36da9427d54cfdb5b5e0b39fba9bb35babe339f162ebc5d50522e680"
+    },
+    {
+      "relative_path": "c6-faction515-failure73/0515-1-result.json",
+      "bytes": 566,
+      "sha256": "02ded3fa1f5baedf28f43f3ca03e7d7ad4cf6058bdfad70736a3917b473c22eb"
+    },
+    {
+      "relative_path": "c6-faction515-failure73/faction-gift-pending-v1.json",
+      "bytes": 2359,
+      "sha256": "24268466d6c3a9c521885c9dee0aeaff7e035e9ec3f6d5af0862c54a3e9768a0"
+    },
+    {
+      "relative_path": "c6-faction515-failure73/PENDING-SIDECAR.json",
+      "bytes": 681,
+      "sha256": "06385e84a6f3c7252876fe51f144d1774f9895c3a479243fd83285a88ea29ba0"
+    },
+    {
+      "relative_path": "C6-GAME-OS-IDENTITY74.json",
+      "bytes": 1925,
+      "sha256": "da481c43cb010f9b1bf2318f3be024033308f5471f0407d8eb2157584853c461"
+    }
+  ],
+  "frozen_source_pins": [
+    {
+      "relative_path": "bridge/faction_gift_formal_route_v1.py",
+      "bytes": 20648,
+      "sha256": "e929b86b3dcfc7c1b481de6fb55889118ec0b12cc111bf2872bb5fe248ebdebc"
+    },
+    {
+      "relative_path": "bridge/readonly_planning_retry_v1.py",
+      "bytes": 9727,
+      "sha256": "7bcac02d6565c0d0d0335e4c833f30292049e1e316a11029eaa20a7ea4fd5f90"
+    },
+    {
+      "relative_path": "bridge/service.py",
+      "bytes": 867830,
+      "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"
+    },
+    {
+      "relative_path": "bridge/native_driver.py",
+      "bytes": 1612085,
+      "sha256": "f64d8c6478b37fe39a3baca6f7794b89a1e20072b443895b9e9e29de6158226f"
+    },
+    {
+      "relative_path": "runtime.py",
+      "bytes": 169403,
+      "sha256": "bfaadaaedf3d499339b5223d722930b20644fc090bc1b8a04f83e0eb8d5b2726"
+    },
+    {
+      "relative_path": "environment.py",
+      "bytes": 58031,
+      "sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582"
+    }
+  ],
+  "actual_517_pin": {
+    "relative_path": "p37-responses/0517-1-result.json",
+    "bytes": 78782,
+    "sha256": "7df0fe8ccb389f387b37d0aa409b9dfd9187182902c61caff0b285c5bdcaa184"
+  },
+  "actual": {
+    "gift_submission_sequence": 513,
+    "request_id": "faction-gift-d29a273508614be4aa0fdfaba560667c",
+    "ack": "submitted_verification_pending",
+    "executor_invocations": 1,
+    "pending_pre_snapshot_revision": 418,
+    "pending_pre_native_snapshot_revision": 418,
+    "metric514": {
+      "native_revision": 418,
+      "public_revision": 351,
+      "date_raw": 53153472,
+      "actor": 31254,
+      "episode": "native-31254-6271ac8cd441",
+      "bridge_pid": 153556
+    },
+    "error515": "private faction pending receipt has a newer same-date paused frame",
+    "plan517": {
+      "native_revision": 419,
+      "public_revision": 352,
+      "selected_step": "private-query-faction-gift-cold-recovery-v1"
+    },
+    "os_identity74": {
+      "at_utc": "2026-10-19T06:59:37.172210+00:00",
+      "raw_creation_date": "20261019131054.525692+480",
+      "kernel_creation_filetime": 134368602545256920,
+      "pid": 153556,
+      "alive": true,
+      "probe_matches_App_S_dependency_injection": false,
+      "producer_branch": "not_reported"
+    }
+  },
+  "source_inferences": {
+    "515": "Exact error exists only after successful same-date paused wait, during plan_turn before _execute_planned_turn/before_submit/_send. Gift ledger unchanged by this route; prior513 remains unresolved.",
+    "515_fresh_frame_lower_bounds": {
+      "native_revision_gt": 418,
+      "public_revision_gt": 351
+    },
+    "identity": "runtime WMI may use local+480; Toolhelp fallback emits UTC+000. All three old faction guards compare raw strings. This proves a format-dependent branch defect, not the exact unseen517 producer spelling.",
+    "517_actual_raw_creation_string": "not_captured; later standalone OS probe cannot reconstruct old App branch"
+  },
+  "fixes": [
+    "Typed successful receipt-only wait proof, fully checked by existing bounded one-fresh-plan consumer; no general mismatch retry.",
+    "Compare current native revision with pending.pre_native_snapshot_revision; preserve real public-domain values and original ledger.",
+    "Reuse strict Windows birth comparison in plan/receipt/cold; equal historical raw markers compatible, unequal malformed/None unknown blocks cold; preserve original raw."
+  ],
+  "validation": {
+    "scope": "All frame, process, ACK and material receipt tests are SYNTHETIC.",
+    "initial": {
+      "passed": 30,
+      "failed": 0,
+      "seconds": 2.63,
+      "runner_chunk": "6fe425"
+    },
+    "final_after_new_identity_behavior": {
+      "passed": 36,
+      "failed": 0,
+      "seconds": 2.69,
+      "runner_chunk": "0a687a"
+    },
+    "actual_three_file_command": "python -B -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py','ck3_autonomous_player/tests/test_readonly_planning_retry_v1.py','ck3_autonomous_player/tests/unit/test_faction_gift_pending_v1.py']))",
+    "whole_service_fixture_delta": "Only two creation-date markers changed to valid DMTF; no new matrix run.",
+    "CI": "Existing material/faction step already collects test_faction_gift_formal_route_v1.py; new proof/Service-wrapper cases are in that file."
+  },
+  "delivery_pins": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "bytes": 25000,
+      "sha256": "5e9d2ab946d92c34ccb3a794f16a62028d01f4572813168593a94eac43646b30"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+      "bytes": 13443,
+      "sha256": "69ff7e9dc23dc6d06c2703e8c0f4a7475589cb91475b12f4e11e569234194414"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+      "bytes": 29660,
+      "sha256": "1dfd1f53317cf6cbd3cbc731278859b03905f36c6ec6554dd5a952cb44f514c8"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/test_faction_adopted_whole_service_12004.py",
+      "bytes": 61430,
+      "sha256": "95816d8212e419c3d9de9663f96868077e7b65399b00d7645fcd3c2cdae5d450"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/faction-pending-paused-replan-2026-10-19.md",
+      "bytes": 8583,
+      "sha256": "0f09132e614eb80a8bcfd93a7c37deb75dc7f2f0d2f65500c106eaee9f9a8245"
+    }
+  ],
+  "boundaries": {
+    "Game_RPC_native_calls": 0,
+    "live_Driver_or_SAVE_reads": 0,
+    "Service_Driver_or_frozen_edits": 0,
+    "live_metadata_writes": 0,
+    "gift_replays": 0,
+    "current_SDK_adopted": false,
+    "live_qualification": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "shared_small_research_pool": true,
+    "estimated_peak_upper_bound_bytes": 1048576,
+    "heavy_writes": false,
+    "review_at_utc": "2027-04-17T07:00:44Z"
+  },
+  "existing_13eb_environment_dependency": {
+    "path": "xar_autoplayer/environment.py",
+    "bytes": 58031,
+    "sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582",
+    "workspace_bytes_equal_frozen13eb": true,
+    "helpers": [
+      "process_creation_utc",
+      "same_process_creation_time"
+    ],
+    "check_chunk": "12beb3",
+    "checked_at_utc": "2026-10-19T07:02:28.583117+00:00"
+  }
+}

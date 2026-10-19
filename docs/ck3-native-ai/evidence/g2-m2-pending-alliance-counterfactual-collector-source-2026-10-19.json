@@ -1,0 +1,88 @@
+{
+  "schema": "xar.g2.m2.pending-alliance-counterfactual-collector-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T06:38:56.064529+00:00",
+  "status": "AUTHORED_NOTRUN",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\pending_alliance_counterfactual_score_12004.hpp",
+      "bytes": 2649,
+      "sha256": "4a08e1605251858f2d6cdb38b30d3b0b23d6b55c435f8464957733c0f448f7b8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\pending_alliance_counterfactual_score_12004.cpp",
+      "bytes": 4733,
+      "sha256": "aeec0c1d712f6088b5f9b144ee7647eb7de01511ade4dec6067831f7e84e86aa"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\tests\\pending_alliance_counterfactual_score_12004_focus.cpp",
+      "bytes": 5222,
+      "sha256": "39e3c2e81202720edd5c014bd64e9276e4a43f4976f639cc5d14858721723c80"
+    }
+  ],
+  "frozen_source_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\research-plans\\g2-m2-inbound-alliance-12004-20261019\\plan.json",
+    "bytes": 4706,
+    "sha256": "fe68b621e1210c85f98b526a2f1a1d6ceee212c6c7b254b8078aba761e66d678"
+  },
+  "implementation": {
+    "native_entry": "existing exact .4 recipient raw getter307C440 only, through caller-owned guarded invoker",
+    "borrowed_context": "pending+18; match actual definition at pending18, actor2F0 and recipient2F4 before/after; no refresh/finalize/destroy",
+    "frame": "same owning-thread paused/map/native and public revisions/query/pump/PID/generation/full pending and character IDs; public != native accepted",
+    "result": "available only after actual invoker success, returned-original-out and same-frame checks; signedQ64 including negative/zero/>int32 preserved; unknown raw remains null",
+    "scope": "negotiate_alliance normal/direct current human recipient only; raw explicitly counterfactual_player_as_ai, actualAI final N/A; no utility or reply recommendation",
+    "integration": "Internal collector/DTO only; parent must wire owner callbacks and separately change serializer/Python contract after validation. No production registration performed."
+  },
+  "focus": {
+    "authored_scenes": 12,
+    "executed_scenes": 0,
+    "cases": [
+      "positive/negative/zero/wideQ64 values",
+      "signed-generation pending ID",
+      "wrong EXE/entry/human role",
+      "failed guarded memory/invoker",
+      "foreign returned pointer",
+      "native frame changes after one invocation"
+    ],
+    "entry": "RunPendingAllianceCounterfactualScoreFocus12004 (no main; includes only its new implementation for a future single-object focus)"
+  },
+  "compile": {
+    "compiler_started": false,
+    "vcvars_started": false,
+    "object_or_EXE_created": false,
+    "Root_conditional_allowance": "One unique child <=8MiB /c /W4 /WX only if existing research reservation has room; otherwise AUTHORED_NOTRUN",
+    "budget_owner_observation": "/root/storage_v20261019 reported current remaining bytes of shared research128MiB=null; no precise child binding exists. Global quota/closed logical bytes are not physical credit.",
+    "reason_not_run": "Conditional budget premise not proven; no compiler/new child created. Parent can admit one bounded object later."
+  },
+  "military_exact_leaf_lookup": {
+    "status": "NO_EXACT_12004_NAMED_ANCHOR_IN_BOUND_METADATA",
+    "checked_named_manifests": [
+      "army-family-12004/world-mapping/WORLD-PROFILE-SOURCE-CLOSED.json",
+      "existing-mcp-factories-12004/military-maa/FINITE-MANIFEST.json"
+    ],
+    "missing": [
+      "current_military_strength exact .4 canonical registration/callback",
+      "max_military_strength exact .4 canonical registration/callback"
+    ],
+    "new_EXE_bytes": 0,
+    "predicted_RVA_or_version_delta": false,
+    "next_request": "Only existing cache owner's two canonical .4 anchors and complete leaf <=256B each; no capture absent anchor."
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "source_and_small_record_only": true,
+    "physical_allocation_credit_created": false,
+    "allocated_bytes": "unknown; no physical credit inferred",
+    "compiled_child_bytes": 0,
+    "derived_review_at_utc": "2026-10-21T06:38:56.064529+00:00",
+    "record_review_at_utc": "2027-04-17T06:38:56.064529+00:00"
+  },
+  "boundaries": {
+    "Game_MCP_RPC_or_native_calls": 0,
+    "full_build_link_or_EXE": 0,
+    "shared_DTO_bridge_CMake_strategy_or_frozen_edits": 0,
+    "old_closure_or_plan_modified": false,
+    "new_behavior_or_live_qualification": false,
+    "G2_credit_added": 0
+  }
+}

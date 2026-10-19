@@ -191,7 +191,7 @@ jobs:
       - name: Test optional same-frame loan observations in war cash without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_cash_holy_order_loan_attach_v1.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_cash_holy_order_loan_attach_v1.py ck3_autonomous_player/tests/unit/test_war_cash_current_handoff_v1.py
       - name: Test service history export and same-packet warm attachment without CK3
         env:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src

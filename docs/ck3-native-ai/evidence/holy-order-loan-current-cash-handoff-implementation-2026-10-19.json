@@ -1,0 +1,185 @@
+{
+  "schema": "xar.m4-current-cash-handoff-implementation.v1",
+  "status": "SOURCE_IMPLEMENTED_SYNTHETIC_PYTHON_HANDOFF_PASS_NOT_RUNTIME_ADOPTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T07:05:20.293840+00:00",
+  "identity_source": "tools/ck3_live_run_id.py current_machine_id",
+  "observation_source": "Read-only SHA verification using pathlib.read_bytes in functions.exec/tools.exec_command; no live Driver imported or instantiated",
+  "proposal_reference": {
+    "path": "docs/ck3-native-ai/holy-order-loan-current-cash-handoff-proposal-2026-10-19.md",
+    "bytes": 13878,
+    "sha256": "34d44a3f3c99620b23682bd7b37f27408b0ddcfcbbd192aeb6fc025a8d0aa910"
+  },
+  "frozen_source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_private_transport_v1.py",
+      "bytes": 22800,
+      "sha256": "81ba0ca4c99b4f607f649712d996a63c0c044bff56a8e2fc4456f937c47f24c6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 868936,
+      "sha256": "1c412b2fc6c37f1778404e4836c70ce8f70f27b9036e9b883620011a974cf102"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_cash_current_handoff_v1.py",
+      "bytes": 13205,
+      "sha256": "7a0bf942dc8b701751bb2f0dba91209de71a5cf144b0dcb760b008a335f1ebc4"
+    }
+  ],
+  "implementation": {
+    "existing_query": "query-war-cash-current-resources-v1",
+    "query_return_point": "bridge/war_cash_private_transport_v1.py::query_war_cash_current_resources_private_v1",
+    "publication": "One ephemeral Driver memory observation; only normalized cash DTO plus actual source/closing planning frames; excludes payment extras/journal, world snapshot and history",
+    "invalidation": "Query begin replaces old observation with a unique in-flight marker; finally clears unfinished marker on failure. Closing failure or Q/P mismatch publishes no value. Marker identity prevents an older query from overwriting a newer observation.",
+    "service_call": "GameplayBridgeService._plan_war_mercenary_with_current_cash_v1, invoked at the existing ordinary war consumer call in _plan_turn_internal_without_readonly_retry_v1",
+    "service_gate": "Existing paused map, active war, no event/interaction and quiet life/route advance; mandatory and concrete action paths retain their existing behavior",
+    "service_read": "current_war_cash_observation_v1 only reads memory under existing Driver lock; passes cash_resources/cash_source_frame only when qualified, otherwise preserves original call signature",
+    "complete_identity": [
+      "snapshot_id",
+      "revision",
+      "native_revision",
+      "date_raw",
+      "actor_character_id",
+      "episode_run_id",
+      "bridge_pid",
+      "connection_generation"
+    ],
+    "strict_types": true,
+    "frame_semantics": "Q=query source, P=closing published semantic cache copy, S=current planning frame. Accept only complete typed Q==P==S; never re-label Q as P, force publication, increment a revision locally, or accept revision+1.",
+    "stale_observation": "P!=S, including Native revision rollback, clears the slot; a later return to old Q does not revive it",
+    "closing_reader": "Only already-existing take_internal_semantic_snapshot local semantic cache copy; missing reader/lock or absent loan leaf leaves no handoff. No endpoint/core query/force-refresh fallback.",
+    "unchanged": [
+      "construction policy",
+      "wallet and budgets",
+      "Native/CMake",
+      "NativeDriver source",
+      "current SDK/runtime deployment"
+    ],
+    "funding_credit_raw": 0,
+    "received_funds_verified": false,
+    "new_borrow_action": false
+  },
+  "validation": {
+    "focused_scope": "Memory-only fake endpoint through real generic/cash transport return point, actual Service helper call parameters and unchanged consumer _loan_financing_input",
+    "consumer_test_boundary": "The public plan_war_mercenary_turn_v1 call is a test probe that invokes the unchanged production _loan_financing_input. Full ordinary finance/ledger execution is not run.",
+    "test_history": "First focused file ran 24 cases. A new never-queried absent-slot/legacy-signature case was then added and only that node was run. No final whole-file 25-case rerun is claimed.",
+    "production_modules_unchanged_between_runs": true,
+    "first_run_test_file_sha256": null,
+    "first_run_test_file_sha256_reason": "Not captured before the one added test node; final frozen test-file SHA is recorded above",
+    "runs": [
+      {
+        "argv": [
+          "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "ck3_autonomous_player/tests/unit/test_war_cash_current_handoff_v1.py",
+          "-q",
+          "-p",
+          "no:cacheprovider"
+        ],
+        "tool_receipt": {
+          "tool": "functions.exec -> tools.exec_command",
+          "chunk_id": "850cd4",
+          "exit_code": 0,
+          "wall_time_seconds": 2.148154
+        },
+        "pytest_stdout": "24 passed in 1.76s",
+        "passed": 24,
+        "failed": 0,
+        "executed_at_utc": null,
+        "timestamp_boundary": "Tool receipt has no UTC start/end field; source-pin observation time is not presented as test execution time"
+      },
+      {
+        "argv": [
+          "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "-m",
+          "pytest",
+          "ck3_autonomous_player/tests/unit/test_war_cash_current_handoff_v1.py::test_never_queried_slot_preserves_legacy_service_call_signature",
+          "-q",
+          "-p",
+          "no:cacheprovider"
+        ],
+        "tool_receipt": {
+          "tool": "functions.exec -> tools.exec_command",
+          "chunk_id": "a0d800",
+          "exit_code": 0,
+          "wall_time_seconds": 2.1179477
+        },
+        "pytest_stdout": "1 passed in 1.78s",
+        "passed": 1,
+        "failed": 0,
+        "executed_at_utc": null,
+        "timestamp_boundary": "Tool receipt has no UTC start/end field; source-pin observation time is not presented as test execution time"
+      }
+    ],
+    "execution_environment": {
+      "parent_invocation": "py -B -c inline Python environment/subprocess wrapper",
+      "cwd": "Z:\\ck3_mod_rewrite",
+      "environment_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "PYTHONPATH": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src;Z:\\ck3_mod_rewrite"
+      },
+      "cacheprovider_disabled": true,
+      "tmp_path_or_artifact_fixtures": false,
+      "pytest_or_junit_log_files_written": false,
+      "output": "Small stdout/stderr tool receipts only"
+    },
+    "coverage": [
+      "transport Q!=closing P without re-labeling",
+      "closing P!=planning S",
+      "cross episode/PID/connection",
+      "strict boolean versus integer identity",
+      "Native rollback and no old-Q revival",
+      "missing reader or existing lock",
+      "closing exception isolates valid cash wire",
+      "failed/unknown next query invalidates previous slot without retry",
+      "malformed cash and generic pre/post mismatch",
+      "old Native absent loan wire compatibility",
+      "never-queried slot legacy signature compatibility",
+      "non-war/concrete order/event/interaction retain action and add no reads"
+    ],
+    "synthetic_count_assertions": {
+      "original_cash_query_fake_endpoint_sends": 1,
+      "original_generic_semantic_copies": 2,
+      "added_closing_local_cache_copies_when_reader_and_loan_available": 1,
+      "added_closing_cache_copies_when_no_reader_no_lock_or_absent_loan": 0,
+      "service_added_fake_endpoint_sends": 0,
+      "service_added_semantic_reads": 0,
+      "actual_game_rpc_calls": 0
+    },
+    "source_checks": {
+      "python_ast": "PASS",
+      "direct_trailing_whitespace": "PASS",
+      "git_diff_check_exit": 0
+    },
+    "failed_test_attempts": 0,
+    "tool_receipt_storage": "Conversation tool transcript; no external test receipt artifact was created"
+  },
+  "qualification_boundaries": {
+    "native_build_or_link": 0,
+    "native_or_game_execution": 0,
+    "live_driver_or_save_access": false,
+    "current_sdk_hot_swap": false,
+    "native26_or_current_runtime_adoption": false,
+    "real_native_principal_abi_or_quote_qualified": false,
+    "real_funding_or_debt_readback_qualified": false,
+    "performance_gain_claimed": false,
+    "future_natural_sample_cost_measurement_required": true
+  },
+  "storage": {
+    "source_three_file_net_increase_bytes": 18827,
+    "this_new_evidence_hard_limit_bytes": 12288,
+    "external_artifacts_created": 0,
+    "pool": "original other research 128 MiB; original review deadline unchanged",
+    "producer_closed": true,
+    "future_write_reserved_bytes": 0,
+    "processes_left_running": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "parent_budget_credit_bytes": 0
+  }
+}

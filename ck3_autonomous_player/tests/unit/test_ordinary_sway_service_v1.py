@@ -272,6 +272,69 @@ class NamedBaselineDriver(ClosedShapeDriver):
 
 
 class FullPlannerIntegration(unittest.TestCase):
+    def test_monthly_named_gain_reaches_real_consumers_before_termination_red(self):
+        # Real full planner/Service/ledger consumers; Native and OS are synthetic.
+        class TerminationRedDriver(NamedBaselineDriver):
+            def __init__(self, path):
+                super().__init__(path)
+                self.termination_reads = 0
+            def query_active_scheme_sway_outcome_opinion_private_v1(self, **arguments):
+                return {**super().query_active_scheme_sway_outcome_opinion_private_v1(**arguments),
+                        "status": "available", "queried_revision": self.revision,
+                        "queried_native_revision": self.native_revision}
+            def query_active_scheme_sway_completion_termination_private_v1(self, **arguments):
+                self.termination_reads += 1
+                self.trace.append(("termination", self.revision, self.in_planning))
+                assert arguments == {"expected_revision": self.revision,
+                    "target_character_id": self.target, "scheme_instance_id": 16777233,
+                    "after_sequence": 0}
+                raise BridgeUnavailableError("sway_termination_executor_unavailable")
+
+        with tempfile.TemporaryDirectory(prefix="sway-monthly-red-") as temp:
+            d = TerminationRedDriver(Path(temp)); s = service(d)
+            s.auto_turn(before_submit=overlay_for(d))
+            s.auto_turn()
+            original = copy.deepcopy(read_sway_ledger(d.state_dir)["resolved"])
+            baseline = original["material_intervention"]
+            self.assertFalse(baseline["scheme_sway_opinion"]["present"])
+            d.allow_private_active_scheme_sway_completion_termination_query = True
+            d.named_points = 25
+            d.date += 30 * 24; d.native_revision += 1; d.revision += 1
+            d.publish_root()
+            # Keep the fixture's peaceful declaration cooldown on this new frame.
+            frame = production.GameplayBridgeService._observed_planning_source_frame(d.frame())
+            cooldown = declaration_cd._new(frame)
+            cooldown.update(consecutive_no_war_rounds=2, cooldown_until_date_raw=d.date+720)
+            write_json_atomic(d.state_dir/declaration_cd.FILENAME, cooldown)
+            current_date, current_native = d.date, d.native_revision
+            previous_reads, previous_submits = d.opinion_reads, d.submits
+            refreshed = s.auto_turn(before_submit=overlay_for(d))
+            optional = refreshed["ordinary_sway_optional"]
+            observation = optional["result"]
+            self.assertEqual(optional["job"], "observe_applied")
+            self.assertEqual(observation["status"], "query_failed")
+            self.assertTrue(observation["same_frame"])
+            self.assertEqual(observation["reads"]["opinion"]["status"], "available")
+            self.assertEqual(observation["reads"]["opinion"]["read_date_raw"], current_date)
+            self.assertIn("sway_termination_executor_unavailable",
+                          observation["reads"]["termination"]["error"])
+            self.assertEqual((d.opinion_reads, d.termination_reads, d.submits),
+                             (previous_reads+1, 1, previous_submits))
+            final = read_sway_ledger(d.state_dir)["resolved"]
+            gain = final["first_named_gain_intervention"]
+            self.assertEqual(gain["source_date_raw"], current_date)
+            self.assertEqual(gain["source_native_revision"], current_native)
+            self.assertEqual(gain["baseline_source_date_raw"], baseline["source_date_raw"])
+            self.assertTrue(final["material_intervention"]["incremental_named_gain_observed"])
+            self.assertTrue(gain["next_turn_consumed"])
+            self.assertGreater(gain["following_native_revision"], current_native)
+            self.assertEqual(refreshed["sway_following_turn"]["first_named_gain_intervention"], gain)
+            for key in ("action_id", "native_receipt", "applied_instance_observation",
+                        "pre_capture_epoch", "post_capture_epoch", "post_date_raw"):
+                self.assertEqual(final[key], original[key])
+            self.assertFalse(final["terminal_intervention"]["instance_terminal_outcome_observed"])
+            self.assertIsNone(read_sway_ledger(d.state_dir)["pending"])
+
     def test_early_baseline_named_gain_and_exact_terminal_reach_ordinary_following(self):
         # Synthetic Native endpoints; later explicit reads do not qualify
         # automatic cadence, retained common-end capture or a natural outcome.

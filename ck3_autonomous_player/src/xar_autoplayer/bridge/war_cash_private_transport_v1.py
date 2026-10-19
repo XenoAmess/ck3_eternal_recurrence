@@ -16,6 +16,7 @@ from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 CURRENT_STEP = "query-war-cash-current-resources-v1"
 HOLY_ORDER_LOAN_KEY = "holy_order_loan_observation_v1"
 HOLY_ORDER_LOAN_SCHEMA = "xar.ck3.holy-order-loan-war-cash.v1"
+_CURRENT_OBSERVATION = "_war_cash_current_observation_v1"
 TERMINATION_PREFIX = "query-war-cash-termination-send-costs-v1-"
 OUTCOMES = ("enforce_demands", "surrender", "white_peace")
 MONTHLY_FLOW_SEMANTICS = {
@@ -225,6 +226,86 @@ def normalize_war_cash_current_resources_v1(value: object, *, snapshot: Mapping[
     return result
 
 
+def _cash_planning_frame(snapshot: object) -> dict[str, object] | None:
+    """Match the existing Service frame, including its required PID identity."""
+    if not isinstance(snapshot, Mapping):
+        return None
+    played, diagnostics = snapshot.get("played_character"), snapshot.get("diagnostics")
+    if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
+            or not isinstance(played, Mapping) or played.get("alive") is not True
+            or not isinstance(diagnostics, Mapping)):
+        return None
+    frame = {"schema": "xar.ck3.planning-source-frame/v1", "status": "complete",
+        "snapshot_id": snapshot.get("snapshot_id"), "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"), "date_raw": snapshot.get("date_raw"),
+        "actor_character_id": played.get("character_id"), "episode_run_id": snapshot.get("episode_run_id"),
+        "bridge_pid": diagnostics.get("bridge_pid"), "connection_generation": diagnostics.get("connection_generation")}
+    minima = {"revision": 0, "native_revision": 1, "date_raw": 0, "actor_character_id": 1,
+        "bridge_pid": 1, "connection_generation": 0}
+    if (any(type(frame[key]) is not int or frame[key] < minimum for key, minimum in minima.items())
+            or any(type(frame[key]) is not str or not frame[key] for key in ("snapshot_id", "episode_run_id"))):
+        return None
+    return frame
+
+
+def _same_cash_frame(left: object, right: object) -> bool:
+    return (isinstance(left, dict) and isinstance(right, dict) and left == right
+        and all(type(right.get(key)) is type(value) for key, value in left.items()))
+
+
+def _begin_current_cash_observation(driver: object) -> object:
+    lock = getattr(driver, "_driver_state_lock", None)
+    if lock is None:
+        return None
+    marker = object()
+    with lock:
+        setattr(driver, _CURRENT_OBSERVATION, marker)
+    return marker
+
+
+def _publish_current_cash_observation(driver: object, marker: object,
+    snapshot: Mapping[str, object], packet: dict[str, object]) -> None:
+    """Publish only this actual query's Q==P result; no extra Native request."""
+    if marker is None:
+        return
+    observation = None
+    try:
+        reader = getattr(driver, "take_internal_semantic_snapshot", None)
+        source = _cash_planning_frame(snapshot)
+        closing = (_cash_planning_frame(reader())
+            if HOLY_ORDER_LOAN_KEY in packet and callable(reader) else None)
+        if source is not None and _same_cash_frame(source, closing):
+            observation = {"source_frame": source, "closing_frame": closing,
+                "cash_resources": deepcopy(packet)}
+    except Exception:
+        # This optional local cache must not turn a valid cash response RED.
+        # An unavailable closing copy gives no freshness or funding credit.
+        observation = None
+    lock = getattr(driver, "_driver_state_lock", None)
+    if lock is not None:
+        with lock:
+            if getattr(driver, _CURRENT_OBSERVATION, None) is marker:
+                setattr(driver, _CURRENT_OBSERVATION, observation)
+
+
+def current_war_cash_observation_v1(driver: object, snapshot: Mapping[str, object]) -> dict[str, object]:
+    """Pure bounded handoff of an already obtained Q==P==S observation."""
+    lock = getattr(driver, "_driver_state_lock", None)
+    if lock is None:
+        return {}
+    with lock:
+        observed = getattr(driver, _CURRENT_OBSERVATION, None)
+        if not isinstance(observed, dict):
+            return {}
+        frame = _cash_planning_frame(snapshot)
+        if (frame is None or not _same_cash_frame(observed.get("source_frame"), frame)
+                or not _same_cash_frame(observed.get("closing_frame"), frame)):
+            setattr(driver, _CURRENT_OBSERVATION, None)
+            return {}
+        return {"cash_resources": deepcopy(observed["cash_resources"]),
+            "cash_source_frame": dict(frame)}
+
+
 def normalize_war_cash_termination_send_costs_v1(
     value: object, *, snapshot: Mapping[str, object], war_id: int, outcome: str,
 ) -> dict[str, object]:
@@ -252,22 +333,32 @@ def query_war_cash_current_resources_private_v1(driver: object, *, expected_revi
                                                timeout_seconds: float = 30.0,
                                                payment_sampling: str | None = None,
                                                payment_window_contract: str | None = None) -> dict[str, object]:
-    from .war_payment_observations_v1 import normalize_payment_extras, payment_request_fields
-    request_fields = payment_request_fields(payment_sampling, payment_window_contract)
-    if request_fields is not None:
-        source = private_g2_query_snapshot_v1(driver, include_native_command_history=False)
-        if private_native_build_identity(source) != CK3_12004:
-            raise BridgeUnavailableError("payment observer control requires exact CK3 1.20.0.4")
-    snapshot, result = read_private_g2_native_query_v1(
-        driver, permission="allow_private_war_cash_query", step=CURRENT_STEP,
-        expected_revision=expected_revision, timeout_seconds=timeout_seconds,
-        include_native_command_history=False, request_fields=request_fields)
+    marker = _begin_current_cash_observation(driver)
     try:
-        value = normalize_war_cash_current_resources_v1(result.get("war_cash_current_resources"), snapshot=snapshot)
-        extras = normalize_payment_extras(result, snapshot=snapshot, payment_sampling=payment_sampling)
-    except ValueError as error:
-        raise BridgeUnavailableError(str(error)) from error
-    return {**value, **private_g2_query_metadata_v1(snapshot), **extras}
+        from .war_payment_observations_v1 import normalize_payment_extras, payment_request_fields
+        request_fields = payment_request_fields(payment_sampling, payment_window_contract)
+        if request_fields is not None:
+            source = private_g2_query_snapshot_v1(driver, include_native_command_history=False)
+            if private_native_build_identity(source) != CK3_12004:
+                raise BridgeUnavailableError("payment observer control requires exact CK3 1.20.0.4")
+        snapshot, result = read_private_g2_native_query_v1(
+            driver, permission="allow_private_war_cash_query", step=CURRENT_STEP,
+            expected_revision=expected_revision, timeout_seconds=timeout_seconds,
+            include_native_command_history=False, request_fields=request_fields)
+        try:
+            value = normalize_war_cash_current_resources_v1(result.get("war_cash_current_resources"), snapshot=snapshot)
+            extras = normalize_payment_extras(result, snapshot=snapshot, payment_sampling=payment_sampling)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        packet = {**value, **private_g2_query_metadata_v1(snapshot)}
+        _publish_current_cash_observation(driver, marker, snapshot, packet)
+        return {**packet, **extras}
+    finally:
+        lock = getattr(driver, "_driver_state_lock", None)
+        if marker is not None and lock is not None:
+            with lock:
+                if getattr(driver, _CURRENT_OBSERVATION, None) is marker:
+                    setattr(driver, _CURRENT_OBSERVATION, None)
 
 
 def query_war_cash_termination_send_costs_private_v1(
