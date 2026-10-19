@@ -1,0 +1,80 @@
+{
+  "schema": "xar.succession-warm-publication-refresh-source.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; actual chunk 1a471d",
+  "observed_at_utc": {"start": "2026-10-19T06:03:07Z", "focused_test_complete": "2026-10-19T06:10:43Z"},
+  "actual_failure": {
+    "sequence": 255,
+    "started_at_utc": "2026-10-19T06:00:38.447748Z",
+    "ended_at_utc": "2026-10-19T06:00:38.503954Z",
+    "error": "retained estate differs from the current actor/episode sequence",
+    "root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c5-estate255-failure66",
+    "frozen_packet": {"name": "FROZEN.json", "bytes": 6295, "sha256": "2596ab289cc30be4befedb33d80ae653b406b69c10ac9d441aa96a4b498f90b8"},
+    "closed_projection": {"name": "CLOSED-ESTATE-VS-WARM-SEM.json", "bytes": 3521, "sha256": "8e6d02698856a4861a0f911564b0e1e9df32140cefa6cae716d61e4eaf6bd1b5", "observed_at_utc": "2026-10-19T06:03:57.807753Z", "active_Driver_read": false},
+    "original_result": {"name": "09-0255-1-result.json", "bytes": 563, "sha256": "2169d7152cc02bf3b59c39d72f8161fe5c5c5ac151b67bc66f6c537853b93d52"},
+    "callback_absence": {"name": "CALLBACK-ABSENCE.json", "bytes": 2054, "sha256": "d02174b0697491ded03f7e63845e5a7ec89643f5887b30f81744134abd79e652", "observed_at_utc": "2026-10-19T06:07:18.151393Z", "absence_alone_proves_no_business": false},
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "date_raw": 53146896,
+    "retained_binding": {"snapshot_id": "native:60", "revision": 61, "native_revision": 60},
+    "actual_warm_SEM252_binding": {"snapshot_id": "native:61", "revision": 2, "native_revision": 61},
+    "restore_kind": "same_pid_hot",
+    "physical_Game_pid": 153556,
+    "business_source_commit": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+    "original_AUTO_replayed": false,
+    "complete_cycle99_credit": false
+  },
+  "root_cause": {
+    "public_revision_scope": "NativeProtocolState instance-local counter starts at zero at native_driver.py:1077",
+    "same_pid_hot_restores_old_expectation": "native_driver.py:11639",
+    "same_domain_guard_correctly_rejects_unqualified_cross_domain_compare": true,
+    "actual_actor_episode_Native_or_date_regression": false,
+    "fresh_root_recorded_before_hook": "src04 execute_step9430 calls _record_command; original method appends complete root before return at11096; Service final fresh-root hook8318 then throws",
+    "selected_business_not_dispatched": "src04 auto_turn4771 plan_turn throws before4779 execute_planned/before_submit, combined with frozen callback absence",
+    "whole_AUTO_had_zero_Native_reads": false
+  },
+  "existing_recovery_route": {
+    "route": "original prepare reuses actual same-frame ok root from same-resident history, validated _planning_root_result skips fresh hook, original strict retain freezes current bundle",
+    "source_lines": "src04 Service1555-1581 and1626",
+    "queue_halt_can_be_bypassed": false,
+    "Root_harness_must_admit_new_numbered_readonly_PLAN": true,
+    "new_runtime_PLAN_observed_by_this_task": false,
+    "if_source_frame_changed": "original validation may refuse or reread; preserve real halt, no guessed AUTO retry"
+  },
+  "permanent_source_fix": {
+    "shared_change": "Native driver original fresh-root hook only; 9 insertions and2 deletions",
+    "helper": "same_pid_hot_publication_refresh_v1",
+    "required": ["original Driver restore kind is same_pid_hot", "strict public revision regression", "current living paused map", "same predecessor/played/episode character and run", "Native and date nonregression", "actual newly completed complete root passes original bundle and freeze", "original Driver lock current-publication and exact-pair CAS"],
+    "result": "clear only the two detached derived fields, dirty and original persist; next original prepare strictly retains actual fresh root",
+    "old_facts_resigned": false,
+    "old_same_domain_guard_changed": false,
+    "new_queries_or_actions": 0,
+    "terminal_or_partial_clears_original_pair": false,
+    "Service_or_live_runtime_changed": false
+  },
+  "source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {"bytes": 1612085, "sha256": "f64d8c6478b37fe39a3baca6f7794b89a1e20072b443895b9e9e29de6158226f"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_expectation_invalidation_v1.py": {"bytes": 3772, "sha256": "33a1905f3e142e7784165dc706d2be0749e9a74d4745c9c43fe975689c1ca3da"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_warm_publication_refresh_v1.py": {"bytes": 4040, "sha256": "31d0d331874e0d9fe1b626af3433392f6a5f30604aaa97551063a56bdd392294"},
+    "ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py": {"bytes": 7460, "sha256": "a93bfe5e10a68c31d5996869087448e37d1cc5ca9c29db67edead1afaba92d6b"}
+  },
+  "frozen_src04_pins": {
+    "root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src04/xar_autoplayer/bridge",
+    "native_driver.py": {"bytes": 1611698, "sha256": "7b58e526580d7b2b49f8472a6296aaae03fabe19c15bfc88b68f224a366509b8"},
+    "service.py": {"bytes": 867830, "sha256": "9a22d369ffc245c7a26439a55819461a5c296a4fce015d1cf0ba85f86055e81e"},
+    "succession_expectation_invalidation_v1.py": {"bytes": 3772, "sha256": "33a1905f3e142e7784165dc706d2be0749e9a74d4745c9c43fe975689c1ca3da"}
+  },
+  "software_validation": {
+    "command": "py -B -m pytest -q ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py",
+    "chunk": "2953f6", "tests_passed": 2, "seconds": 1.49, "exit_code": 0,
+    "actual_production_Driver_Service_methods": true,
+    "Native_material": "synthetic; observed revision domain values only; not a current estate observation",
+    "positive": ["fresh real-fixture root clears old pair and persists", "next prepare reuses same history root with zero extra root queries and strict retain", "history preserved", "repeat current publication does not clear twice", "old pure guard still rejects61to2"],
+    "negative": ["nonhot", "no public regression", "actor", "episode", "Native regression", "date regression", "terminal", "partial estate", "mixed root binding", "actual Driver terminal preserves original pair with zero writes"],
+    "prior_run": {"chunk": "55d565", "tests_passed": 1, "tests_failed": 1, "exit_code": 1, "reason": "helper also needed explicit complete estate readiness guard, although original Driver already checks it; added guard, final tests pass"},
+    "Driver_diffcheck": {"chunk": "56f37a", "exit_code": 0},
+    "old_M3_matrix_repeated": false
+  },
+  "operations": {"Game_MCP_desktop_calls": 0, "live_Driver_SAVE_reads": 0, "runtime_mutations": 0, "Native_builds": 0, "stage_commit_push_by_this_task": false, "runtime_deployment_or_natural_succession_credit": false},
+  "storage": {"policy_version": "1.0.0", "new_files_each_below_bytes": 20480, "heavy_writes": false, "files_deleted": 0, "record_review_at_utc": "2027-04-17T06:10:43Z"}
+}

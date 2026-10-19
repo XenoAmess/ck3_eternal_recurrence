@@ -4785,6 +4785,9 @@ class NativeHeadlessGameplayDriver:
         from .succession_expectation_invalidation_v1 import (
             invalidate_succession_state_from_root_v1,
         )
+        from .succession_warm_publication_refresh_v1 import (
+            same_pid_hot_publication_refresh_v1,
+        )
 
         def same_source(current: dict[str, object]) -> bool:
             keys = ("snapshot_id", "revision", "native_revision", "date_raw",
@@ -4837,8 +4840,12 @@ class NativeHeadlessGameplayDriver:
                 # likewise never erase the last observed estate.
                 return {"status": "not_applicable", "invalidated": False,
                         "refresh_required": False, "persistence_attempted": False}
-            decision = invalidate_succession_state_from_root_v1(
-                before, snapshot=current, campaign_root_result=campaign_root_result)
+            decision = same_pid_hot_publication_refresh_v1(
+                before, snapshot=current, campaign_root_result=campaign_root_result,
+                restore_kind=getattr(self, "_driver_state_restore_kind", None))
+            if decision is None:
+                decision = invalidate_succession_state_from_root_v1(
+                    before, snapshot=current, campaign_root_result=campaign_root_result)
             diagnostic = {key: value for key, value in decision.items() if key != "state"}
             diagnostic["persistence_attempted"] = False
             if not decision["invalidated"]:
