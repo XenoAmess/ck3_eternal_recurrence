@@ -1,0 +1,84 @@
+{
+  "schema": "xar.ck3.g2-m7-same-game-warm-lineage-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:49:16.854303+00:00",
+  "source_commit": "d761b3ceec7d255a91bcaaa345bf1025ecf61eb1",
+  "source_pins": [
+    {
+      "path": "tools/g2_saved_campaign/completed_metrics_warm_resume_v1.py",
+      "bytes": 17421,
+      "sha256": "ce55f449d2e9614dc368f2b5db4881e7c8e998428171424e43a2a12a4e2b8760"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1603757,
+      "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 19696,
+      "sha256": "61d34deec81004116e87470e111d0f33afee479e8a035ad3efa1d02ab7980f3f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21478,
+      "sha256": "c0efbfa6474aee2fde033953a7a0220aa5a74a4a9484b1daa4ed32d13fa8b0e4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 25383,
+      "sha256": "44fa2870a33723559551960a09c3d07bb848da0337bb9f18b9c9bfed77cbaa51"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/met110-warm-resume-software-qualification02.json",
+      "bytes": 2216,
+      "sha256": "ee0f14331b7d58734b85a19395e4c027722fd0584526752b83db4f0c770116c2"
+    }
+  ],
+  "basis": "Static source and existing software qualification only. No runtime invocation or new tests.",
+  "finite_adapter": {
+    "scope": "Original completed AUTO109/MET110 publication halt; retain47/pending48, consume existing MET once without RPC, next new sequence111.",
+    "lifecycle": "Actual verified absence proof bound to same machine/Game PID/birth; frozen manifest not rewritten.",
+    "goal": "Fresh paused map SEM actor/episode/date and exact campaign_goal_anchor checked.",
+    "CAP": "Requires restored=true, same_pid_hot, active_resumed, no driver/cold-candidate errors.",
+    "retained": "Existing driver state_dir is not rewritten/deleted by adapter; full_loop/governance/initial checkpoint cloned from exact retained state.",
+    "proof_authority": "No new successor ledger/Close/completion writer, epoch migration, cold token or checkpoint producer."
+  },
+  "driver_contract": {
+    "same_pid_hot": "native_driver.py:11449-11575 validates frozen lifecycle and restores command history, actor, episode, checkpoint, succession_expectation and campaign_goal.",
+    "reconciliation": "Ephemeral reconciliation reset is not by itself missing durable proof; terminal played_character_changed with retained expectation can rebuild via existing Service query_turn_bundle_v1 and reconcile_retained_succession_transition_v1. M3 source owner supplied that existing path.",
+    "proof_files": "App root is driver.state_dir; original resolved ledger, exact Close and paired completion remain separate proof files. Adapter does not archive, delete or re-sign them."
+  },
+  "source_epoch_boundary": {
+    "existing_rule": "App.ensure:78-103 resolved Game/source change uses only typed real-cold retirement. Ledger._checked:168-189 requires exact machine/source/Game.",
+    "hot_cannot_retire": "Same_pid_hot has no original driver cold projection and no replacement birth. Typed consumer cannot accept it.",
+    "changed_epoch_inputs": [
+      "bridge/service.py",
+      "strategy.py"
+    ],
+    "changed_in_commit": "063531c4",
+    "current_resolved_proof": "current_not_observed; parent confirms first18-day run has no inherited resolved evidence; no new blocker inferred.",
+    "future_rule": "Preserve exact old resolved/Close/completion evidence; do not relabel same Game hot restore as cold or authorize epoch migration."
+  },
+  "disposition": {
+    "current_new_source_problem": "NO_NEW lineage-input loss identified by this bounded static audit.",
+    "actual_new_SDK_SEM_CAP": "not_observed",
+    "actual_proof_byte_preservation": "not_observed; no existing resolved proof observed for this current run",
+    "actual_cold_restore": "not_observed",
+    "actual_natural_succession": "not_observed",
+    "new_government_credit": 0,
+    "M7": "in_progress",
+    "G2": "6/8 unchanged",
+    "new_Game_MCP_RPC": 0,
+    "new_SAVE_or_Driver_body_reads": 0,
+    "new_tests": 0,
+    "source_changes": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_after_utc": "2027-04-17T03:49:16.854Z",
+    "maximum_new_peak_bytes": 1048576,
+    "reason": "Small static warm-resume lineage index; actual adoption awaits natural small receipts."
+  }
+}

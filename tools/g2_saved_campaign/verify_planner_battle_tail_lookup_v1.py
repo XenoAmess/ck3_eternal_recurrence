@@ -92,8 +92,10 @@ def run(baseline_commit: str, machine_id: str) -> dict:
         before = _digest((rows, snapshot, armies))
         first = baseline(rows, snapshot, armies)
         second = candidate(rows, snapshot, armies)
-        assert first == second, name
-        assert _digest((rows, snapshot, armies)) == before, name + " mutated input"
+        if not (first == second):
+            raise AssertionError(name)
+        if not (_digest((rows, snapshot, armies)) == before):
+            raise AssertionError(name + " mutated input")
         # Exercise the complete ordinary chooser, not only this scan's result.
         settings = dict(snapshot=snapshot,
             action_steps={"life-advance", "life-advance-one-day", "save-checkpoint",
@@ -104,7 +106,8 @@ def run(baseline_commit: str, machine_id: str) -> dict:
             old_plan = strategy.choose_one_life_turn(rows, **settings)
         with patch.object(strategy, FUNCTION, candidate):
             new_plan = strategy.choose_one_life_turn(rows, **settings)
-        assert old_plan == new_plan, name + " ordinary plan differs"
+        if not (old_plan == new_plan):
+            raise AssertionError(name + " ordinary plan differs")
         checks.append({"case": name, "history_rows": len(rows),
             "same_battle_state": True, "same_complete_ordinary_plan": True,
             "input_unchanged": True, "state_sha256": _digest(first),

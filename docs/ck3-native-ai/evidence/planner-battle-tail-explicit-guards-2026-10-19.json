@@ -1,0 +1,81 @@
+{
+  "schema": "xar.planner-battle-tail-explicit-guards.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T03:54:49.078364+00:00",
+  "evidence_source": "source AST comparison and actual local Python -O subprocess fault injection",
+  "source_before": {
+    "path": "tools/g2_saved_campaign/verify_planner_battle_tail_lookup_v1.py",
+    "bytes": 9413,
+    "sha256": "e4792c5514f031733c33f1d59838ab13cf93f1f07dcb85376ae12f150bf7c450"
+  },
+  "source_after": {
+    "path": "tools/g2_saved_campaign/verify_planner_battle_tail_lookup_v1.py",
+    "bytes": 9521,
+    "sha256": "04fc1598815b092b541a9b0cc8a88e7af8a923332be94a96407e3d91230b34a7"
+  },
+  "mechanical_equivalence": {
+    "before_Assert_nodes": 3,
+    "after_Assert_nodes": 0,
+    "explicit_guards_reconstructed": 3,
+    "full_module_AST_equal_after_inverse_transform": true,
+    "condition_message_exception_type_and_success_path_preserved": true
+  },
+  "optimized_fault_probe": {
+    "exit_code": 0,
+    "optimize": 1,
+    "outcomes": [
+      {
+        "case": "battle_state_mismatch",
+        "rejected": true,
+        "type": "AssertionError",
+        "message": "guard-fixture"
+      },
+      {
+        "case": "input_mutation",
+        "rejected": true,
+        "type": "AssertionError",
+        "message": "guard-fixture mutated input"
+      },
+      {
+        "case": "ordinary_plan_mismatch",
+        "rejected": true,
+        "type": "AssertionError",
+        "message": "guard-fixture ordinary plan differs"
+      },
+      {
+        "case": "success",
+        "accepted": true,
+        "checks": 1,
+        "timing_measurements": 0
+      }
+    ],
+    "new_game_or_rpc_calls": 0,
+    "performance_matrix_rerun": false
+  },
+  "old_evidence_unchanged": [
+    {
+      "path": "docs/ck3-native-ai/evidence/planner-battle-tail-lookup-2026-10-19.json",
+      "bytes": 5697,
+      "sha256": "1e97942cb7726f7d721e198f510dfb1bb6aaef7646b598a582b5c05450fde96f"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/planner-battle-tail-lookup-validation-2026-10-19.json",
+      "bytes": 1957,
+      "sha256": "c0f4b61612688725fd12998b327cfb1e3e1fea1fa3e30b17414afae0a45c2347"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/planner-stage-timing-qualification-2026-10-19.json",
+      "bytes": 2296,
+      "sha256": "6902674f5b8d039093e169df3b469d086ba54c094b2831f90e1fe06f27a77d2a"
+    }
+  ],
+  "running_sdk_modified": false,
+  "new_game_or_rpc_calls": 0,
+  "performance_timings_rerun": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "output_limit_bytes": 1048576,
+    "deletions": 0,
+    "review_at_utc": "2027-04-17T03:54:49.078364+00:00"
+  }
+}

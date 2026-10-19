@@ -1,0 +1,38 @@
+{
+  "schema": "xar.first-heir-result-history-free-source-performance.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine actual read in this M3 task",
+  "observed_at_utc": {"start": "2026-10-19T03:46:04Z", "final": "2026-10-19T03:49:20Z"},
+  "runtime_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+  "receipt_basis": "Existing immutable closed CUMULATIVE-TURN-000015/000017/000021/000034 and four original response JSONs, each under 256 KiB; no new RPC",
+  "actor_character_id": 31254,
+  "episode_run_id": "native-31254-6271ac8cd441",
+  "game_pid_from_original_response": 214568,
+  "connection_generation_from_original_response": 2,
+  "pending_pair": {"heir_character_id": 40526, "candidate_character_id": 40408, "recipient_character_id": 33767},
+  "original_responses": [
+    {"relative_path": "p37-responses/0040-1-result.json", "bytes": 130151, "sha256": "2cc058b8151d85f9ff270172138218f2232f67918f4ea4e3fa60230e9cefe297", "started_at_utc": "2026-10-19T03:27:54.072700+00:00", "elapsed_seconds": 0.7392703001387417, "native_revision": 7, "last_checked_native_revision": null, "result_status": "pending", "material_result": false},
+    {"relative_path": "p37-responses/0046-1-result.json", "bytes": 130446, "sha256": "c2ef8ce5a31306ebcb7a3a993203253658ccef0e957c436c675da6a7a438c653", "started_at_utc": "2026-10-19T03:27:57.914135+00:00", "elapsed_seconds": 0.6205337001010776, "native_revision": 8, "last_checked_native_revision": 7, "result_status": "pending", "material_result": false},
+    {"relative_path": "p37-responses/0054-1-result.json", "bytes": 29884, "sha256": "cf5c8c673790d4735f00f8484ab837d9f446a9d6ae09d8b9ffb119552316f12e", "started_at_utc": "2026-10-19T03:28:02.874913+00:00", "elapsed_seconds": 0.40007370011880994, "native_revision": 18, "last_checked_native_revision": 8, "result_status": "pending", "material_result": false},
+    {"relative_path": "p37-responses/0081-1-result.json", "bytes": 30251, "sha256": "97f87564c38812ace66f88e9a4e2d81b39d7165e405f11a59ba1af39f97a51b2", "started_at_utc": "2026-10-19T03:28:41.750267+00:00", "elapsed_seconds": 0.44158650003373623, "native_revision": 24, "last_checked_native_revision": 18, "result_status": "betrothal", "material_result": true}
+  ],
+  "finding": {"three_pending_RPC_total_seconds": 1.7598777003586293, "same_revision_duplicate_proven": false, "same_day_is_not_same_revision": true, "query_frequency_changed": false, "horizon_changed": false, "actual_saved_seconds_claimed": null},
+  "source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/observed_heir_marriage_private_action_v1.py": {"bytes": 15087, "sha256": "4c338e2ed6317dc4c9c3db70e4df80b0fc6581ff65b2f3d441301030f40b3c05"},
+    "ck3_autonomous_player/tests/unit/test_observed_heir_marriage_private_action_v1.py": {"bytes": 17412, "sha256": "0e6804f731b6d417c7e4e8cf57aabf16cfe9cbb74094a06b5650b083481309cb"},
+    "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py": {"bytes": 58216, "sha256": "49f96c1d2e60dbfa56a6c2dff731612583408b876a3e4a8085b1a7cf363c530d"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {"bytes": 1603757, "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de"}
+  },
+  "validation": {
+    "command": "py -B -m pytest -q ck3_autonomous_player/tests/unit/test_observed_heir_marriage_private_action_v1.py",
+    "chunk": "d2b7af", "exit_code": 0, "tests_passed": 12, "seconds": 0.81,
+    "new_compound_cases": ["pending", "material_betrothal", "not_later_revision", "not_paused"],
+    "comparison": ["exact_return_or_original_error", "one_semantic_read_each", "same_native_payload_except_random_request_id", "same_native_command_count"],
+    "history_copy_count": {"original_default_snapshot": 1, "finite_snapshot": 0},
+    "timing_benchmark": false,
+    "earlier_focused_new_test": {"chunk": "e5f820", "exit_code": 0, "tests_passed": 1, "tests_deselected": 11}
+  },
+  "operations": {"new_game_native_mcp_desktop_calls": 0, "live_Driver_SAVE_media_reads": 0, "runtime_mutations": 0, "shared_Driver_service_edits": 0, "current_frozen_SDK063_adoption": false, "native_build": false, "stage_commit_push_by_this_task": false},
+  "boundary": "One transcript copy eliminated from a private internal accessor; complete public original responses remain. No end-to-end throughput, current runtime adoption, new inheritance, alliance or M7 credit.",
+  "storage": {"policy_version": "1.0.0", "new_outputs_below_bytes": 1048576, "heavy_writes": false, "deletions": 0, "record_review_at_utc": "2027-04-17T03:49:20Z"}
+}

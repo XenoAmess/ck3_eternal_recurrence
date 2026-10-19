@@ -1,0 +1,49 @@
+{
+  "schema": "xar-g2-m1-existing-month-inputs-research/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "actual py tools/ck3_live_run_id.py machine",
+  "observed_at_utc": "2026-10-19T03:52:53.981704+00:00",
+  "source_base_commit": "063531c4",
+  "implementation": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/campaign_score_existing_inputs_v1.py",
+    "sha256": "e2df61d71b60965b428861911cb9a685c3e661680fcd83a864436052c8725b0a",
+    "entry": "project_existing_month_inputs_v1",
+    "existing_frame_contract": "xar.ck3.planning-source-frame/v1 from GameplayBridgeService._observed_planning_source_frame",
+    "new_identity_builder": false,
+    "reused_cash_validator": "bridge.war_cash_private_transport_v1.normalize_war_cash_current_resources_v1",
+    "reused_realm_projection": "bridge.turn_bundle_contract.build_turn_bundle_v1",
+    "new_RPC_or_SAVE_calls": 0,
+    "runtime_COW_service_cadence_Native_edits": 0,
+    "deployed_or_current_MET_changed": false
+  },
+  "scoring_mapping": {
+    "player_monthly_gross_income.raw/100000": "gross_income:gold/month",
+    "player_monthly_total_expenses.raw/100000": "total_expenses:gold/month; includes military",
+    "military_expenses.current.gold_raw/100000": "military_current:gold/month; actor-global once across all wars",
+    "military_expenses.all_raised.gold_raw/100000": "military_all_raised:gold/month; actor-global current all-raised quote"
+  },
+  "production_gap": "MET currently does not receive existing DTO together with its original planning-source-frame; missing original frame returns unknown/null rather than rebinding an AUTO pre-state",
+  "realm_boundary": "Only same-frame native domain and directly-held geographic county diagnostics; no full-realm/dynasty scoring metric added",
+  "validation": {
+    "path": "ck3_autonomous_player/tests/unit/test_campaign_score_existing_inputs_v1.py",
+    "sha256": "bade3fe787a8c6187ed81634e115811af0d4543b7035340168f157da166cb835",
+    "command": "py -B -m unittest discover -s tests/unit -p test_campaign_score_existing_inputs_v1.py -v",
+    "cwd_relative": "ck3_autonomous_player",
+    "passes": 8,
+    "runs": 1,
+    "internal_seconds": 0.004,
+    "outer_seconds": 0.95764,
+    "exit_code": 0,
+    "existing_small_fixture": "ck3_autonomous_player/tests/fixtures/construction_cash_current_12004.json",
+    "fixture_original_response_sha256": "74bf07f2152a218fdb8d35847f62f899b257a03d2e282e6522ad203873b0a0b2",
+    "fixture_historical_machine_id": "unknown",
+    "identity_date_war_variants": "synthetic software inputs",
+    "current_live_cash_observed": false,
+    "old_matrix_repeated": false,
+    "business_or_G2_credit_added": 0
+  },
+  "operations": {"live_calls": 0, "active_Driver_or_SAVE_body_reads": 0, "compiles": 0, "staging_or_commits": 0},
+  "storage": {"policy_version": "1.0.0", "output_upper_bound_bytes": 65536, "heavy_writes": 0, "new_reservation_bytes": 0, "Z_total_bytes": 4096787476480, "Z_free_bytes": 178407550976, "source": "actual Python shutil.disk_usage('Z:/')", "atomic_or_heavy_admission_claimed": false, "record_review_days": 180},
+  "M1_status": "complete",
+  "G2_progress": "6/8"
+}

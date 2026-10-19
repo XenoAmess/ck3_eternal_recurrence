@@ -21,7 +21,8 @@ def _positive(value: object) -> bool:
 
 
 def _paused(driver: object) -> dict[str, object]:
-    snapshot = driver.take_snapshot()
+    finite_reader = getattr(driver, "take_snapshot_without_native_command_history", None)
+    snapshot = finite_reader() if callable(finite_reader) else driver.take_snapshot()
     played = snapshot.get("played_character")
     if (
         snapshot.get("paused") is not True

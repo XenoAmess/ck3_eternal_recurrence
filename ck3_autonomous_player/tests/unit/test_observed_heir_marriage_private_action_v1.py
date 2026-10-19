@@ -3,14 +3,17 @@
 from __future__ import annotations
 
 import json
+import copy
 from pathlib import Path
 import sys
+import threading
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.observed_heir_marriage_private_action_v1 import (
     ALLIANCE_RESULT_STEP, RESULT_STEP, SCHEMA, SUBMIT_STEP,
     query_observed_first_heir_marriage_alliance_result_private_v1,
@@ -77,6 +80,57 @@ def submit_result() -> dict[str, object]:
 
 
 class TransportTest(unittest.TestCase):
+    def test_history_free_result_preserves_semantic_reads_native_payload_and_guards(self) -> None:
+        class HistoryRow(dict):
+            copied = 0
+
+            def __deepcopy__(self, memo):
+                type(self).copied += 1
+                return copy.deepcopy(dict(self), memo)
+
+        class SnapshotDriver(FakeDriver):
+            take_snapshot = NativeHeadlessGameplayDriver.take_snapshot
+            take_snapshot_without_native_command_history = NativeHeadlessGameplayDriver.take_snapshot_without_native_command_history
+            _history_snapshot = NativeHeadlessGameplayDriver._history_snapshot
+
+            def __init__(self, snapshot, result, *, finite):
+                super().__init__([snapshot], result)
+                self._history_lock = threading.RLock()
+                self._driver_state_lock = threading.RLock()
+                self._command_history = [HistoryRow(command="original-read", result={"opaque": [1, 2, 3]})]
+                self._rollback_war_failures = []
+                self.semantic_reads = 0
+                if not finite:
+                    self.take_snapshot_without_native_command_history = None
+
+            def take_internal_semantic_snapshot(self):
+                self.semantic_reads += 1
+                return self.snapshots.pop(0)
+
+        pending = {"schema": SCHEMA, **submit_result()}
+        for status, snapshot in (("pending", frame(694)), ("betrothal", frame(694)),
+                                 ("pending", frame(693)),
+                                 ("pending", {**frame(694), "paused": False})):
+            observed = []
+            for finite in (False, True):
+                result = {"step": RESULT_STEP, "accepted": True, "private_build": True,
+                    "advertised": False, "status": status, "material_result": status == "betrothal",
+                    "cold_recovery": False, "pre_native_revision": 693, "post_native_revision": 694,
+                    "heir_character_id": 38822, "candidate_character_id": 16778038}
+                driver = SnapshotDriver(copy.deepcopy(snapshot), result, finite=finite)
+                HistoryRow.copied = 0
+                try:
+                    outcome = query_observed_first_heir_marriage_result_private_v1(driver, pending=pending)
+                except BridgeUnavailableError as error:
+                    outcome = (type(error).__name__, str(error))
+                payloads = [{key: value for key, value in row.items() if key != "request_id"}
+                            for row in driver.requests]
+                observed.append((outcome, driver.semantic_reads, payloads))
+                self.assertEqual(HistoryRow.copied, 0 if finite else 1)
+            with self.subTest(status=status, revision=snapshot["native_revision"], paused=snapshot["paused"]):
+                self.assertEqual(observed[0], observed[1])
+                self.assertEqual(observed[0][1], 1)
+
     def test_material_pair_reads_actual_alliance_in_both_directions(self) -> None:
         resolved = {"status": "betrothal", "material_result": True,
                     "heir_character_id": 38822,

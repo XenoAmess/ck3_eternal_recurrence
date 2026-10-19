@@ -1,0 +1,121 @@
+{
+  "schema": "xar.g2-m4-loan-decision-projection-source-and-fixture.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:49:53.573665+00:00",
+  "identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "status": "SOFTWARE_FIXTURE_PASS",
+  "command_argv": [
+    "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--noconftest",
+    "-o",
+    "addopts=",
+    "--basetemp",
+    "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-projection01\\tmp\\pytest",
+    "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_holy_order_loan_decision_observation_v1.py"
+  ],
+  "command_cwd": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-projection01",
+  "returncode": 0,
+  "seconds": 0.9323374999221414,
+  "test_log": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-loan-projection01\\PYTEST01.log",
+    "bytes": 101,
+    "sha256": "75826a33bb82f15fb37207e927260ca2b41fa72a0dca65cd7dc56285bd1d7551"
+  },
+  "test_summary": "....................                                                     [100%]\r\n20 passed in 0.57s\r\n",
+  "sources_before": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\holy_order_loan_decision_observation_v1.py",
+      "bytes": 5239,
+      "sha256": "8eb59b61bb45a996b0863ab2b48608760714edcfba33a4e57f2e2b1b450c58ca"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_holy_order_loan_decision_observation_v1.py",
+      "bytes": 4781,
+      "sha256": "ddaac193fd63abd08d4436acbfa321531947d812f86483eaa38c189061352c14"
+    }
+  ],
+  "sources_after": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\holy_order_loan_decision_observation_v1.py",
+      "bytes": 5239,
+      "sha256": "8eb59b61bb45a996b0863ab2b48608760714edcfba33a4e57f2e2b1b450c58ca"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_holy_order_loan_decision_observation_v1.py",
+      "bytes": 4781,
+      "sha256": "ddaac193fd63abd08d4436acbfa321531947d812f86483eaa38c189061352c14"
+    }
+  ],
+  "sources_unchanged": true,
+  "source_map_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p87-loan-actual-install-source-2026-10-18.json",
+      "bytes": 9049,
+      "sha256": "1a19aaadc0f643c156f1b6281decf66a812c02a89118543b8161a4761fda99af"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\g2-m4-provider-compile-2026-10-19.json",
+      "bytes": 192290,
+      "sha256": "c5f9cb56cfc2908ad00e8c38c93ae6b282c5b6bcc362c9a8f35d6d5241d69284"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_decision_costs_12004.cpp",
+      "bytes": 9450,
+      "sha256": "dad56980b7713c0e6ea03394e6ae1c216bd5b73c52fcacf716d052ead6787262"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\holy_order_loan_decision_costs_12004.hpp",
+      "bytes": 2091,
+      "sha256": "529539d86c67fa611a6ac26b268dfec45fe4602a12b2357c6e6f56eb53a23819"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ingame_decision_item_v1.cpp",
+      "bytes": 55175,
+      "sha256": "da0fcbe025ef1b409941378700e1b0434b504ffd9710c1bf288ebc9141116511"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_contract.py",
+      "bytes": 3535,
+      "sha256": "0799d9f586c87cccbe1d216f2d70a304a83b1a483e27a3b75abdb9cb25c86699"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_outcome_contract.py",
+      "bytes": 9452,
+      "sha256": "a082ceb1d04047df9e9140f45861cc0f30f698fd181e622fbcab964b7cfac77d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\event_window_context_contract.py",
+      "bytes": 25034,
+      "sha256": "c98985f1afe9196331e30c0f9b0cc2a7fadc9507ef6d3c2b77292bc82e619ef4"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\event_window_context_v1.cpp",
+      "bytes": 35586,
+      "sha256": "3d04eaba2f4bc62fd7f63172ffad45cd5858997c08223ea6e8a3f75c696ed832"
+    }
+  ],
+  "definition_source_boundary": "Reuse audited installed stock SHA and 2026-10-18 observation only; no fresh install/loading/actor eligibility claim",
+  "qualification": {
+    "synthetic_provider_values": true,
+    "game_or_rpc_or_desktop_access": false,
+    "compiler_or_exe_invocations": 0,
+    "native_reader_invocations": 0,
+    "public_route_or_planner_hook_added": false,
+    "principal_or_debt_qualified": false,
+    "loan_or_cancellation_or_received_funds": false,
+    "funding_credit_raw": 0
+  },
+  "storage_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M4-LOAN-PROJECTION-CHILD01.json",
+    "bytes": 2400,
+    "sha256": "89565ce59ec28473b3f425ccfc4093e6f0c77e8267b81ec50b29cd395cc8b5ca"
+  },
+  "external_derived_review_at_utc": "2026-10-21T03:48:40.352809+00:00",
+  "record_review_days": 180
+}

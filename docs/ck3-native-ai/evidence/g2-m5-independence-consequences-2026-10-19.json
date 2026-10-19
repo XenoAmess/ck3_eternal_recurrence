@@ -1,0 +1,302 @@
+{
+  "schema": "xar.g2-m5-independence-consequences-source.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:53:20.954737+00:00",
+  "actual_stock_source_root": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "source_hashes_match_reviewed_contract": true,
+  "actual_exe_read": false,
+  "current_game_loaded_definitions_verified": false,
+  "sources": [
+    {
+      "path": "common/casus_belli_types/00_civil_war.txt",
+      "actual_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_civil_war.txt",
+      "bytes": 61252,
+      "sha256": "a9f5d844413bd7acfd4d4b1611877ac34e78eb293f309c0e7a41f27aca3a0047",
+      "definitions": [
+        {
+          "definition_key": "independence_war",
+          "start_line": 1659,
+          "end_line": 1927,
+          "normalized_block_sha256": "992498367beecf350f81cc71d4ff4a6477970b4d991d1bd4d3ab4f979db9b159",
+          "block_representation": "UTF-8 without BOM, universal-newline LF",
+          "selected_source_lines": [
+            {
+              "line": 1738,
+              "text": "\t\t\tchange_liege_or_become_independent = {"
+            },
+            {
+              "line": 1740,
+              "text": "\t\t\t\tVASSAL = this"
+            }
+          ]
+        },
+        {
+          "definition_key": "independence_faction_war",
+          "start_line": 3,
+          "end_line": 411,
+          "normalized_block_sha256": "45c83d8f1242db71e96228db3fbf6b9783562fe566fec42bcf312738fa41b483",
+          "block_representation": "UTF-8 without BOM, universal-newline LF",
+          "selected_source_lines": [
+            {
+              "line": 7,
+              "text": "\ttarget_titles = independence_domain"
+            },
+            {
+              "line": 39,
+              "text": "\t\t\tlimit = { NOT = { exists = scope:attacker.joined_faction } }"
+            },
+            {
+              "line": 41,
+              "text": "\t\t\t\tevery_war_attacker = {"
+            },
+            {
+              "line": 43,
+              "text": "\t\t\t\t\t\tlimit = { NOT = { has_character_flag = should_become_independent } }"
+            },
+            {
+              "line": 44,
+              "text": "\t\t\t\t\t\tadd_character_flag = should_become_independent"
+            },
+            {
+              "line": 57,
+              "text": "\t\t\t\t\t\texists = joined_faction"
+            },
+            {
+              "line": 58,
+              "text": "\t\t\t\t\t\tjoined_faction = {"
+            },
+            {
+              "line": 73,
+              "text": "\t\t\t\t\t\texists = joined_faction"
+            },
+            {
+              "line": 74,
+              "text": "\t\t\t\t\t\tjoined_faction = {"
+            },
+            {
+              "line": 87,
+              "text": "\t\t\t\t\t\t\texists = scope:attacker.joined_faction"
+            },
+            {
+              "line": 88,
+              "text": "\t\t\t\t\t\t\tscope:attacker.joined_faction = {"
+            },
+            {
+              "line": 94,
+              "text": "\t\t\t\t\t\t\t\thas_character_flag = should_become_independent"
+            },
+            {
+              "line": 120,
+              "text": "\t\t\tlimit = { exists = scope:attacker.joined_faction }"
+            },
+            {
+              "line": 121,
+              "text": "\t\t\tscope:attacker.joined_faction = {"
+            },
+            {
+              "line": 122,
+              "text": "\t\t\t\tevery_faction_member = {"
+            },
+            {
+              "line": 123,
+              "text": "\t\t\t\t\tchange_liege_or_become_independent = {"
+            },
+            {
+              "line": 125,
+              "text": "\t\t\t\t\t\tVASSAL = this"
+            },
+            {
+              "line": 178,
+              "text": "\t\t\t\tevery_war_attacker = {"
+            },
+            {
+              "line": 180,
+              "text": "\t\t\t\t\t\tlimit = { has_character_flag = should_become_independent }"
+            },
+            {
+              "line": 182,
+              "text": "\t\t\t\t\t\tchange_liege_or_become_independent = {"
+            },
+            {
+              "line": 184,
+              "text": "\t\t\t\t\t\t\tVASSAL = this"
+            },
+            {
+              "line": 230,
+              "text": "\t\t\t\t\t\t\tremove_character_flag = should_become_independent"
+            },
+            {
+              "line": 270,
+              "text": "\t\t\t\t\t\t\texists = scope:attacker.joined_faction"
+            },
+            {
+              "line": 271,
+              "text": "\t\t\t\t\t\t\tscope:attacker.joined_faction = {"
+            },
+            {
+              "line": 277,
+              "text": "\t\t\t\t\t\t\t\thas_character_flag = should_become_independent"
+            },
+            {
+              "line": 336,
+              "text": "\t\t\t\t\t\t\texists = scope:attacker.joined_faction"
+            },
+            {
+              "line": 337,
+              "text": "\t\t\t\t\t\t\tscope:attacker.joined_faction = {"
+            },
+            {
+              "line": 343,
+              "text": "\t\t\t\t\t\t\t\thas_character_flag = should_become_independent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_war_effects.txt",
+      "actual_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_war_effects.txt",
+      "bytes": 75993,
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b",
+      "definitions": [
+        {
+          "definition_key": "change_liege_or_become_independent",
+          "start_line": 1271,
+          "end_line": 1296,
+          "normalized_block_sha256": "3b88e02daafe6d6219d6c9f6995103557636cebc53befa52107ff779b749fadf",
+          "block_representation": "UTF-8 without BOM, universal-newline LF",
+          "selected_source_lines": [
+            {
+              "line": 1271,
+              "text": "change_liege_or_become_independent = {"
+            },
+            {
+              "line": 1279,
+              "text": "\t\t\t\ttop_liege = this"
+            },
+            {
+              "line": 1283,
+              "text": "\t\t\tbecomes_independent = {"
+            },
+            {
+              "line": 1290,
+              "text": "\t\t\tchange_liege = {"
+            },
+            {
+              "line": 1291,
+              "text": "\t\t\t\tliege = scope:liege.liege"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/character_interactions/00_character_interactions.txt",
+      "actual_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_character_interactions.txt",
+      "bytes": 44927,
+      "sha256": "e66fc0ccaa69e84bb6b36c2c3a4cac1e8f8d871d70cf7234724a0150e2ff8a4b",
+      "definitions": [
+        {
+          "definition_key": "grant_independence_interaction",
+          "start_line": 1331,
+          "end_line": 1673,
+          "normalized_block_sha256": "dc414d47b536122722b22a7b5a58764abffcb559fea9b623670a84246508a852",
+          "block_representation": "UTF-8 without BOM, universal-newline LF",
+          "selected_source_lines": [
+            {
+              "line": 1348,
+              "text": "\t\tscope:recipient = {"
+            },
+            {
+              "line": 1358,
+              "text": "\t\t\ttop_liege = this"
+            },
+            {
+              "line": 1378,
+              "text": "\t\t\t\t\t\tscope:recipient = { government_has_flag = government_is_tribal }"
+            },
+            {
+              "line": 1472,
+              "text": "\t\tscope:recipient = {"
+            },
+            {
+              "line": 1538,
+              "text": "\t\t\t\tadd_claim_on_loss = yes"
+            },
+            {
+              "line": 1540,
+              "text": "\t\t\tbecomes_independent = {"
+            },
+            {
+              "line": 1627,
+              "text": "\t\t\tscope:recipient = {"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "candidate": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/independence_territorial_consequences_v1.py",
+    "sha256": "c0c9650d5832fbe3ad7485f298e88a814cedf836998fece06140c46bba97c660",
+    "production_consumers_added": false,
+    "rpc_or_game_calls": 0,
+    "strategy_or_permission_changes": 0,
+    "native25_or_runtime_cow_changes": 0
+  },
+  "validation": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "initial": {
+      "receipt": "985430",
+      "exit_code": 1,
+      "result": "2 failed, 9 passed in 0.71s",
+      "cause": "Expected EXE SHA constant uppercase versus existing occupation normalizer lowercase; false-unavailable only"
+    },
+    "diagnosis_receipts": [
+      "33c5ed",
+      "462cbe"
+    ],
+    "final": {
+      "receipt": "ac0ad8",
+      "exit_code": 0,
+      "result": "11 passed in 0.56s",
+      "wall_time_seconds": 0.9382098,
+      "tests": 11,
+      "test_file": "ck3_autonomous_player/tests/unit/test_independence_territorial_consequences_v1.py",
+      "test_sha256": "5fb871061a0ad5aff3bb45b0db16a5dcc5f7ffa0a9ca4c5716b35dffb7fa3286"
+    }
+  },
+  "known_semantics": {
+    "normal_independence_principal": "primary attacker",
+    "faction_independence_principals": "current joined_faction members; fallback only flagged war attackers when no joined faction",
+    "war_helper": "independence only if selected character current liege is independent; otherwise reparent to current liege.liege",
+    "direct_grant_independence_principal": "recipient; direct becomes_independent; distinct from war helper",
+    "target_ids_are_exact_effect_extent": false,
+    "material_after_engine_resolution_verified": false,
+    "g2_credit_added": false
+  },
+  "remaining_unknown": [
+    "loaded mod/script definition identity",
+    "current affected faction principals unless independently observed",
+    "full title extent of selected current subrealms",
+    "actual engine title/vassal result",
+    "current legal grant-independence interaction execution"
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "heavy_writes": 0,
+    "deletions": 0,
+    "volume_total_bytes": 4096787476480,
+    "volume_free_bytes": 178407534592,
+    "observation_source": "Python shutil.disk_usage; no atomic reservation or cross-machine extrapolation"
+  },
+  "source_extractor_history": [
+    {
+      "receipt": "5e6f1d",
+      "exit_code": 1,
+      "phase": "offline metadata extractor before output",
+      "cause": "Overescaped regex failed to locate independence_war; no product test or source contract failure"
+    }
+  ],
+  "source_head_at_closeout": "6ea03995aed49e6a9f4818273d91cbf529591ce0"
+}
