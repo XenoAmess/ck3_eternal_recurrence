@@ -1,0 +1,287 @@
+{
+  "schema": "ck3-faith-engine-episode01-user-success-handover-v1",
+  "status": "USER_CONFIRMED_SUCCESS",
+  "series_title": "CK3:信仰引擎",
+  "episode": 1,
+  "content_version": "V7",
+  "ck3_research_and_demonstration_version": "1.20.0.4",
+  "user_confirmation_source": {
+    "kind": "explicit_user_message_in_this_conversation",
+    "text": "信仰引擎一期成功了。你要去度假了。编写交接文档给后续接手的同事，到docs。",
+    "recorded_at_utc": "2026-10-19T18:27:14.814025+00:00",
+    "local_date": "2026-10-20"
+  },
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T18:22:33.967614+00:00",
+  "evidence_source": "Fresh bounded readback of final V7 media metadata and small source pins; D cover files SHA verified; no CK3/renderer/audio generation or full-media replay",
+  "source_basis_commit": "ab7e90cdcad8407aeb761f46207fad9455566e99",
+  "handover_document": "docs/handover/2026-10-20-faith-engine-episode01-success-handover.md",
+  "video": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\episode01-review.mp4",
+    "bytes": 149978004,
+    "sha256": "befe1a2293741c76dd5fcbbf64cd58a5889c9da4f63c88a5007551fdc89cabad"
+  },
+  "format": {
+    "width": 2560,
+    "height": 1440,
+    "fps": 30,
+    "total_frames": 79024,
+    "duration_seconds": 2634.133333333333,
+    "voice_cues": 136,
+    "subtitle_groups": 467,
+    "chapters": 17
+  },
+  "historical_production_evidence": {
+    "repository_path": "docs/ck3-native-ai/evidence/faith-power-v7-local-delivery-20261019.json",
+    "sha256": "86d8088824c4d13a6fb21cdd9b35098055e03d97066f750e1f787889a7a986c7",
+    "status_at_production": "LOCAL_ENCODED_REVIEW_PENDING_HUMAN",
+    "historical_flags_left_unchanged": true
+  },
+  "acceptance_scope": "The user explicitly confirmed episode success. Historical production review flags retain their original observation time; no full-watch method or publication action is invented and the finished episode is not reopened as a pending-acceptance task.",
+  "platform_publication": {
+    "agent_upload_performed": false,
+    "user_side_status": "not_provided",
+    "bilibili_url": null
+  },
+  "covers": {
+    "selected_option": "D",
+    "selected_name": "秘仪符刻",
+    "repository_provenance": "promo/ck3_faith_and_power/assets/covers/faith-engine-v4-d/provenance.json",
+    "ratios": [
+      {
+        "ratio": "16x9",
+        "width": 1664,
+        "height": 936,
+        "jpg": {
+          "file": "faith-engine-16x9.jpg",
+          "bytes": 621421,
+          "sha256": "3bbfca07601d7b84f3fe87a73a9f601443de0749ee5cc3a5c3a399e0d2dedc94"
+        },
+        "png": {
+          "file": "faith-engine-16x9.png",
+          "bytes": 2481190,
+          "sha256": "01995be3a18f1e810c7e01ace2684791e803052ff734a0d426ac35d282a07154"
+        }
+      },
+      {
+        "ratio": "4x3",
+        "width": 1448,
+        "height": 1086,
+        "jpg": {
+          "file": "faith-engine-4x3.jpg",
+          "bytes": 769751,
+          "sha256": "4d766e1794ef3793b74d29beb3266c1c7adca9e2f0a89c3b7b947a7557bbef20"
+        },
+        "png": {
+          "file": "faith-engine-4x3.png",
+          "bytes": 2693224,
+          "sha256": "1c0bfdc2b0ebc11bc143ff1bf1c0d666e0c642da72d165ef463287a22d4c5164"
+        }
+      }
+    ],
+    "all_four_options_archived": true,
+    "archive_provenance": "promo/ck3_faith_and_power/assets/covers/type-options-20261020/provenance.json"
+  },
+  "local_file_readback": [
+    {
+      "name": "video",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\episode01-review.mp4",
+      "exists": true,
+      "expected_bytes": 149978004,
+      "expected_sha256": "befe1a2293741c76dd5fcbbf64cd58a5889c9da4f63c88a5007551fdc89cabad",
+      "actual_bytes": 149978004,
+      "size_matches": true,
+      "hash_method": "producer SHA inherited; this readback checks existence/size only"
+    },
+    {
+      "name": "episode01.zh.srt",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\text\\episode01.zh.srt",
+      "exists": true,
+      "expected_bytes": 50564,
+      "expected_sha256": "d6b9f31303c7378600a755366ae909628b3b6f9f681ea016734a03f07fc7ebb8",
+      "actual_bytes": 50564,
+      "size_matches": true,
+      "sha256": "d6b9f31303c7378600a755366ae909628b3b6f9f681ea016734a03f07fc7ebb8",
+      "sha_matches": true
+    },
+    {
+      "name": "episode01.en.srt",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\text\\episode01.en.srt",
+      "exists": true,
+      "expected_bytes": 54438,
+      "expected_sha256": "9831f38eba6b37bb32e544ab0e72072fc9e47a3a5fb8666b06bffcce6141a341",
+      "actual_bytes": 54438,
+      "size_matches": true,
+      "sha256": "9831f38eba6b37bb32e544ab0e72072fc9e47a3a5fb8666b06bffcce6141a341",
+      "sha_matches": true
+    },
+    {
+      "name": "episode01.bilingual.srt",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\text\\episode01.bilingual.srt",
+      "exists": true,
+      "expected_bytes": 88766,
+      "expected_sha256": "adedb8f89ab7575b212329cbcd16e088e03beacf97e52b7bcd9a9ee0c0c7e3ea",
+      "actual_bytes": 88766,
+      "size_matches": true,
+      "sha256": "adedb8f89ab7575b212329cbcd16e088e03beacf97e52b7bcd9a9ee0c0c7e3ea",
+      "sha_matches": true
+    },
+    {
+      "name": "episode01-script.md",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\text\\episode01-script.md",
+      "exists": true,
+      "expected_bytes": 74044,
+      "expected_sha256": "440be75987d2d10407498789c9a09bd0ae067be481f850b06683fe9804078097",
+      "actual_bytes": 74044,
+      "size_matches": true,
+      "sha256": "440be75987d2d10407498789c9a09bd0ae067be481f850b06683fe9804078097",
+      "sha_matches": true
+    },
+    {
+      "name": "chapters_text",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\native-run\\derived\\direct\\text\\episode01.chapters.txt",
+      "exists": true,
+      "expected_bytes": 994,
+      "expected_sha256": "5e85dcf913465c309407cfbc855cb066836abd8647808522a027fa359273a985",
+      "actual_bytes": 994,
+      "size_matches": true,
+      "sha256": "5e85dcf913465c309407cfbc855cb066836abd8647808522a027fa359273a985",
+      "sha_matches": true
+    },
+    {
+      "name": "local_delivery",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\LOCAL-DELIVERY-a04.json",
+      "exists": true,
+      "expected_bytes": 15538,
+      "expected_sha256": "39de6c439df94998e88f2078a2da845aae1f34f3c918e4e14f3316b3bd838e03",
+      "actual_bytes": 15538,
+      "size_matches": true,
+      "sha256": "39de6c439df94998e88f2078a2da845aae1f34f3c918e4e14f3316b3bd838e03",
+      "sha_matches": true
+    },
+    {
+      "name": "capacity_closed",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\FULL-RENDER-CAPACITY-CLOSED-a04.json",
+      "exists": true,
+      "expected_bytes": 8023,
+      "expected_sha256": "b2b279c774dd9ef7bb2f675792d124dd6a6d8f88e76c18693632a493168c8677",
+      "actual_bytes": 8023,
+      "size_matches": true,
+      "sha256": "b2b279c774dd9ef7bb2f675792d124dd6a6d8f88e76c18693632a493168c8677",
+      "sha_matches": true
+    },
+    {
+      "name": "completed",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\completed-review.json",
+      "exists": true,
+      "expected_bytes": 6602,
+      "expected_sha256": "a72b7dad66fabff55f413b847d56479bbb5548cf33c72b42e34ac035a9a50824",
+      "actual_bytes": 6602,
+      "size_matches": true,
+      "sha256": "a72b7dad66fabff55f413b847d56479bbb5548cf33c72b42e34ac035a9a50824",
+      "sha_matches": true
+    },
+    {
+      "name": "selected_pixel_review",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a04\\audit\\v7-pixel-review-a04\\PIXEL-REVIEW-CLOSED-a04.json",
+      "exists": true,
+      "expected_bytes": 27704,
+      "expected_sha256": "53478c25df65dc0dc42143727fbbb562ef6f2d8f83b230613b78cdf88f166566",
+      "actual_bytes": 27704,
+      "size_matches": true,
+      "sha256": "53478c25df65dc0dc42143727fbbb562ef6f2d8f83b230613b78cdf88f166566",
+      "sha_matches": true
+    },
+    {
+      "name": "original_build_wait",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a03\\original-build-exit.json",
+      "exists": true,
+      "expected_bytes": 726,
+      "expected_sha256": "4cd667399e38596bc44603fe0ab9aa75fee862775df722f26cfebdc5bafbb8e8",
+      "actual_bytes": 726,
+      "size_matches": true,
+      "sha256": "4cd667399e38596bc44603fe0ab9aa75fee862775df722f26cfebdc5bafbb8e8",
+      "sha_matches": true
+    },
+    {
+      "name": "formal_input",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a03\\formal-input.final-a04.json",
+      "exists": true,
+      "expected_bytes": 1808670,
+      "expected_sha256": "66af0549a1344e4604a4e447947c45f1898af5accfe968c5115516353d02550f",
+      "actual_bytes": 1808670,
+      "size_matches": true,
+      "sha256": "66af0549a1344e4604a4e447947c45f1898af5accfe968c5115516353d02550f",
+      "sha_matches": true
+    },
+    {
+      "name": "text_review",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\text-freeze-a01\\NARRATION-FROZEN-a01.json",
+      "exists": true,
+      "expected_bytes": 2477,
+      "expected_sha256": "0d5ae80eab2866d6f5ef9245e9233dca8c7862762676ca96938f51a7e4a707fc",
+      "actual_bytes": 2477,
+      "size_matches": true,
+      "sha256": "0d5ae80eab2866d6f5ef9245e9233dca8c7862762676ca96938f51a7e4a707fc",
+      "sha_matches": true
+    },
+    {
+      "name": "16x9-png",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\assets\\covers\\faith-engine-v4-d\\faith-engine-16x9.png",
+      "exists": true,
+      "actual_bytes": 2481190,
+      "size_matches": true,
+      "sha256": "01995be3a18f1e810c7e01ace2684791e803052ff734a0d426ac35d282a07154",
+      "sha_matches": true
+    },
+    {
+      "name": "16x9-jpg",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\assets\\covers\\faith-engine-v4-d\\faith-engine-16x9.jpg",
+      "exists": true,
+      "actual_bytes": 621421,
+      "size_matches": true,
+      "sha256": "3bbfca07601d7b84f3fe87a73a9f601443de0749ee5cc3a5c3a399e0d2dedc94",
+      "sha_matches": true
+    },
+    {
+      "name": "16x9-prompt",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\assets\\covers\\faith-engine-v4-d\\prompts\\16x9.txt",
+      "exists": true,
+      "actual_bytes": 2537,
+      "size_matches": true,
+      "sha256": "116dafaf705674891132e9f8bfd780706010f84d3a1f0696fa3dd37895d1ecc7",
+      "sha_matches": true
+    },
+    {
+      "name": "4x3-png",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\assets\\covers\\faith-engine-v4-d\\faith-engine-4x3.png",
+      "exists": true,
+      "actual_bytes": 2693224,
+      "size_matches": true,
+      "sha256": "1c0bfdc2b0ebc11bc143ff1bf1c0d666e0c642da72d165ef463287a22d4c5164",
+      "sha_matches": true
+    },
+    {
+      "name": "4x3-jpg",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\assets\\covers\\faith-engine-v4-d\\faith-engine-4x3.jpg",
+      "exists": true,
+      "actual_bytes": 769751,
+      "size_matches": true,
+      "sha256": "4d766e1794ef3793b74d29beb3266c1c7adca9e2f0a89c3b7b947a7557bbef20",
+      "sha_matches": true
+    },
+    {
+      "name": "4x3-prompt",
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\assets\\covers\\faith-engine-v4-d\\prompts\\4x3.txt",
+      "exists": true,
+      "actual_bytes": 2645,
+      "size_matches": true,
+      "sha256": "ee2e9ff20c290251ee6b0270b62065e265d4cae21c3c07d99238faae92864c33",
+      "sha_matches": true
+    }
+  ],
+  "large_media_hash_or_decode_performed": false,
+  "new_game_tts_render_or_imagegen_performed": false,
+  "old_handover_superseded": "docs/handover/2026-10-19-faith-power-episode01-v6-handover.md",
+  "further_episode_started": false
+}

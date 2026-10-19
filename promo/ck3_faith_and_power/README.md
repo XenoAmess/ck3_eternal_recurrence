@@ -8,7 +8,7 @@
 
 **2026-10-20封面字体修订：** [历史v3的16:9／4:3封面与PNG](docs/cover-design.md#当前交付银白经书字v3)采用银白经书字、极细暗金边和少量幽青反光，去除血色斑驳及尖锐破损；沿用幽暗圣堂、人物、典籍与悬浮王冠的肃穆诡谲构图。v2保留为历史构图和本次编辑输入。
 
-**2026-10-19第一期V7本地审阅版已生成：[视频、字幕与研究入口](../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)。** 43:54.133，136段旁白、467组中英字幕、17章；新增开场免责声明与CK3 1.20.0.4版本说明，逐段核实信仰领袖／礼仪领袖并审校全文，最后修正两段画面。技术检查和所列抽帧通过，完整人工1倍速听看片与签收待审。[V6交接](../../docs/handover/2026-10-19-faith-power-episode01-v6-handover.md)保留为历史接手截点，V6后继实际完成见[交付记录](../../docs/ck3-native-ai/faith-and-power-episode01-value-v6-delivery.md)。
+**2026-10-20第一期已完成，用户明确确认“一期成功”。** 当前成片为[V7及配套字幕](../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)，43:54.133、136段旁白、467组中英字幕、17章，研究与演示版本CK3 1.20.0.4。后续同事从[一期成功后的维护交接](../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)开始；[用户确认与资产小索引](../../docs/ck3-native-ai/evidence/faith-engine-episode01-success-20261020.json)保存最新状态。旧V6缺图、旧排期和生产时待签收状态保留历史身份，不作为重开一期的阻塞项。
 
 **后续各期开工必读：[系列研究与讲解方法](docs/production-lessons.md)。** 从玩家目标出发，追清因果、权责和利益，比较完整方案，让观众能够自行推演，并把研究转成现有游玩智能体的能力。研究、写稿、拍摄和审片共用这套判断方法。
 

@@ -1,6 +1,8 @@
 # 宗教试拍的规划与证据接线
 
-**后续生产先读[系列研究与讲解方法](../docs/production-lessons.md)。** 先明确要支持的玩家决策、所需观测和因果验证，再编排声画；研究同时演进现有MCP与智能体。下述初始试拍／authoring状态保留各自历史身份，2026-10-19现行成果见[一期v5交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)；技术检查与讲解效果、实际听审分别记录。
+**2026-10-20当前状态：一期最终V7已获用户确认成功。** 接手从[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)和[V7交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)开始，生产复用以最终冻结输入为锚点。下文初期ProjectConfig/试拍planned和CAPTURE_PENDING不表示一期现在未完成，不触发重建整套生产链。
+
+**后续生产先读[系列研究与讲解方法](../docs/production-lessons.md)。** 先明确要支持的玩家决策、所需观测和因果验证，再编排声画；研究同时演进现有MCP与智能体。下述初始试拍／authoring状态保留各自历史身份，2026-10-19早期成果见[一期v5交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)；技术检查与讲解效果、实际听审分别记录。
 
 下文“全片无预算／未渲染”只描述2026-10-17初始试拍入口的当时状态；不是后继正式全片当前状态。v5沿既有formal/full入口取得独立容量准入，双向教改和采用已经有真实后态。新任务仍须核自己的当前来源与预算，不能复用已关闭场次的剩余额度。
 

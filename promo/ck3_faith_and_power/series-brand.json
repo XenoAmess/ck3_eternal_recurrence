@@ -23,5 +23,9 @@
     "16x9": "assets/covers/faith-engine-v4-d/faith-engine-16x9.jpg",
     "4x3": "assets/covers/faith-engine-v4-d/faith-engine-4x3.jpg"
   },
-  "design_archive_policy": "A/B/C/D四图及提示词全部在仓库作为选型存根，正式采用D。"
+  "design_archive_policy": "A/B/C/D四图及提示词全部在仓库作为选型存根，正式采用D。",
+  "episode01_status": "user_confirmed_success",
+  "episode01_content_version": "V7",
+  "latest_handover": "../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md",
+  "episode01_acceptance_record": "../../docs/ck3-native-ai/evidence/faith-engine-episode01-success-20261020.json"
 }
