@@ -1,0 +1,20 @@
+{
+  "schema": "xar.root.M6-receipt-durable-source-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:49:48.515735+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; Root b67828",
+  "source": "Receipt is persisted before independent observation. Source sidecar uses existing snapshots only; stored original and fresh recovery evidence remain separate.",
+  "independent_review": "construction_fix_review found and closed cross-episode slot reuse and ambiguous same-target instance recovery; final no further definite blocker.",
+  "qualification": "Final34 tests/7.64s678991; real atomic writer and fresh process reopen. Prior32PASS preserved. No power-loss/fsync or live CK3 SAVE qualification.",
+  "complete_participating_bytes": 84033,
+  "source_cap": 131072,
+  "scratch": "Only two exact newly-created roots removed; sampled peak57584, exact peakunknown; no existing business assets touched.",
+  "runtime": "Not deployed. Current40526-to34973 Start/benefit/terminal/following remains unknown. Zero new endpoint/query/snapshot/ABI/Native/Driver changes.",
+  "source20": "This commit does not adopt M6 into the minimal current warm recovery. Source20 candidate remains blocked pending shared outer/inner retry-budget correction.",
+  "saved_campaign": "10456 normal SAVE at raw53274576/day5427 successful. Cumulative count72/cache old checkpoint still needs separately qualified offline reconciliation; no new AUTO.",
+  "storage": {
+    "root_scope": "post186 independent128KiB/f03059a2958fd57748303733dc0e5a71eb1d12da2cbc1bec9ce81c1c478ca19a",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "record_review_at_utc": "2027-04-17T20:49:00Z"
+  }
+}

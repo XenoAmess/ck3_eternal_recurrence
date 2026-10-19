@@ -12,6 +12,7 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from .bridge.driver import BridgeUnavailableError
+from .bridge.active_scheme_sway_formal_private_transport import RECEIPT_SOURCE_KEY
 from .bridge.version_identity import CK3_12004
 from .environment import write_json_atomic
 
@@ -192,14 +193,95 @@ def _resolved_instance_identity(resolved: Mapping[str, object]) -> Mapping[str, 
     return observed
 
 
+def _receipt_source_matches_snapshot(source: object, snapshot: Mapping[str, object]) -> bool:
+    """Only a complete, unchanged session may compare receipt/read epochs."""
+    if not isinstance(source, Mapping) or source.get("schema") != "xar.ck3.sway-receipt-source-frame.v1":
+        return False
+    diagnostics = snapshot.get("diagnostics")
+    played = snapshot.get("played_character")
+    if not isinstance(diagnostics, Mapping) or not isinstance(played, Mapping):
+        return False
+    expected = {
+        "actor_character_id": played.get("character_id"),
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "bridge_pid": diagnostics.get("bridge_pid"),
+        "connection_generation": diagnostics.get("connection_generation"),
+        "date_raw": snapshot.get("date_raw"),
+    }
+    if (any(not _positive(expected[key]) for key in (
+            "actor_character_id", "bridge_pid", "connection_generation"))
+            or not isinstance(expected["episode_run_id"], str) or not expected["episode_run_id"]):
+        return False
+    return all(isinstance(source.get(name), Mapping)
+               and all(source[name].get(key) == value for key, value in expected.items())
+               for name in ("before", "after"))
+
+
+def _retained_receipt_matches_active(pending: Mapping[str, object],
+                                     read: Mapping[str, object],
+                                     snapshot: Mapping[str, object] | None) -> bool:
+    """Join a historical receipt to a fresh row without comparing their epochs."""
+    receipt = pending.get("native_applied_receipt")
+    if not isinstance(receipt, Mapping):
+        return False
+    full_id, generation = receipt.get("scheme_instance_id"), receipt.get("scheme_instance_generation")
+    actor, target = pending.get("actor_character_id"), pending.get("target_character_id")
+    episodes = {pending["episode_run_id"]} if isinstance(pending.get("episode_run_id"), str) and pending["episode_run_id"] else set()
+    source = pending.get("native_receipt_source")
+    if isinstance(source, Mapping):
+        for name in ("before", "after"):
+            frame = source.get(name)
+            if isinstance(frame, Mapping) and isinstance(frame.get("episode_run_id"), str) and frame["episode_run_id"]:
+                episodes.add(frame["episode_run_id"])
+    if (len(episodes) > 1 or (episodes and (
+            not isinstance(snapshot, Mapping) or snapshot.get("episode_run_id") not in episodes))):
+        return False
+    if (receipt.get("schema") != "active-scheme-sway-formal-private-v1"
+            or receipt.get("stage") != "applied" or receipt.get("postcondition_verified") is not True
+            or not isinstance(pending.get("action_id"), str) or not pending["action_id"]
+            or receipt.get("action_id") != pending.get("action_id")
+            or not _positive(actor) or not _positive(target) or actor == target
+            or receipt.get("exact_ck3_build") != "1.20.0.4"
+            or receipt.get("exe_sha256") != CK3_12004.executable_sha256
+            or read.get("exact_ck3_build") != receipt["exact_ck3_build"]
+            or read.get("exe_sha256") != receipt["exe_sha256"]
+            or type(full_id) is not int or not 0 < full_id < 0xFFFFFFFF
+            or type(generation) is not int or not 0 <= generation <= 255
+            or generation != full_id >> 24
+            or read.get("actor_character_id") != actor or read.get("target_character_id") != target
+            or any(key in receipt and receipt[key] != value for key, value in (
+                ("actor_character_id", actor), ("target_character_id", target)))
+            # These two epochs both belong to the retained original operation.
+            # The fresh read's epoch/date is deliberately not compared with it.
+            or not _positive(pending.get("pre_capture_epoch"))
+            or not _positive(receipt.get("post_capture_epoch"))
+            or receipt["post_capture_epoch"] <= pending["pre_capture_epoch"]
+            or type(receipt.get("post_date_raw")) is not int
+            or type(pending.get("pre_date_raw")) is not int
+            or receipt.get("post_date_raw") != pending.get("pre_date_raw")):
+        return False
+    rows = read.get("active_sway_instances")
+    return isinstance(rows, list) and len([
+        row for row in rows if isinstance(row, Mapping)
+        and all(type(row.get(key)) is int for key in (
+            "scheme_instance_id", "scheme_instance_generation", "target_character_id"))
+        and row.get("scheme_instance_id") == full_id
+        and row.get("scheme_instance_generation") == generation
+        and row.get("target_character_id") == target
+    ]) == 1
+
+
 def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
               read: Mapping[str, object], receipt: Mapping[str, object] | None,
-              state_dir: Path) -> dict[str, object]:
+               state_dir: Path, *, current_snapshot: Mapping[str, object] | None = None) -> dict[str, object]:
     if (read["matching_sway_active"] is not True
             or read["active_scheme_count"] < 1
             or (receipt is not None
                 and read["capture_epoch"] <= pending["pre_capture_epoch"])):
         raise BridgeUnavailableError("private Sway has no independent active-scheme postcondition")
+    if (receipt is None and "native_applied_receipt" in pending
+            and not _retained_receipt_matches_active(pending, read, current_snapshot)):
+        raise BridgeUnavailableError("private Sway retained receipt differs from the fresh exact instance")
     result = {
         "status": "applied", "postcondition_verified": True,
         "actor_character_id": pending["actor_character_id"],
@@ -212,6 +294,16 @@ def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
         "native_receipt": dict(receipt) if receipt is not None else None,
         "next_turn_consumed": False,
     }
+    if "native_applied_receipt" in pending:
+        if receipt is None:
+            # Keep the original receipt/source at its original date. Current
+            # binding comes from recovered_instance_observation below, never
+            # from relabelling the old receipt with the new session's epoch.
+            result["retained_native_applied_receipt"] = dict(pending["native_applied_receipt"])
+            if "native_receipt_source" in pending:
+                result["retained_native_receipt_source"] = pending["native_receipt_source"]
+        elif "native_receipt_source" in pending:
+            result["native_receipt_source"] = pending["native_receipt_source"]
     if isinstance(receipt, Mapping) and receipt.get("exact_ck3_build") == "1.20.0.4":
         # Retain the already completed independent read. A Native Start receipt
         # and a matching target alone must not credit a different scheme slot.
@@ -248,6 +340,10 @@ def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
         if isinstance(rows, list) and all(isinstance(row, Mapping) for row in rows):
             matching = [row for row in rows
                         if row.get("target_character_id") == pending["target_character_id"]]
+            retained = pending.get("native_applied_receipt")
+            if isinstance(retained, Mapping):
+                matching = [row for row in matching if all(row.get(key) == retained.get(key)
+                            for key in ("scheme_instance_id", "scheme_instance_generation"))]
             if len(matching) == 1:
                 row = matching[0]
                 instance_id, generation = row.get("scheme_instance_id"), row.get("scheme_instance_generation")
@@ -345,7 +441,11 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
                 or pending.get("target_character_id") != target_character_id):
             return {"status": "pending_other_actor_or_target", "pending": pending}
         if readback["matching_sway_active"] is True:
-            return _resolved(ledger, pending, readback, None, state_dir)
+            try:
+                return _resolved(ledger, pending, readback, None, state_dir, current_snapshot=snapshot)
+            except BridgeUnavailableError as error:
+                return {"status": "pending_recovery", "pending": pending,
+                        "postcondition_error": str(error), "postcondition_verified": False}
         return {"status": "pending_recovery", "pending": pending,
                 "postcondition_verified": False}
     resolved = ledger["resolved"]
@@ -374,6 +474,7 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
         "pre_date_raw": readback["date_raw"],
         "pre_native_revision": readback["queried_native_revision"],
         "pre_target_opinion_of_actor": readback["target_opinion_of_actor"],
+        **({"episode_run_id": snapshot["episode_run_id"]} if "episode_run_id" in snapshot else {}),
         **({"followup": followup} if followup is not None else {}),
     }
     # Durable intent precedes the native call.  If the call times out or the
@@ -395,9 +496,26 @@ def consume_sway_private_once(driver: object, *, target_character_id: int,
     except BridgeUnavailableError as error:
         return {"status": "receipt_pending", "pending": pending,
                 "receipt_error": str(error), "postcondition_verified": False}
+    receipt = dict(receipt)
+    source = receipt.pop(RECEIPT_SOURCE_KEY, None)
+    pending = {**pending, "stage": "postcondition_pending",
+               "native_applied_receipt": receipt}
+    # Save the unmodified receipt first. A later source-sidecar/write/read
+    # failure must not reduce the durable record back to a pending-only ACK.
+    _write(state_dir, {**ledger, "pending": pending})
+    if isinstance(source, Mapping):
+        pending = {**pending, "native_receipt_source": dict(source)}
+        _write(state_dir, {**ledger, "pending": pending})
     try:
-        _, after_read = _read_now(driver, target_character_id)
-        return _resolved(ledger, pending, after_read, receipt, state_dir)
+        after_snapshot, after_read = _read_now(driver, target_character_id)
+        comparison_receipt = receipt
+        if (receipt.get("exact_ck3_build") == "1.20.0.4"
+                and not _receipt_source_matches_snapshot(source, after_snapshot)):
+            # Source missing/changed: retain the receipt as history and bind the
+            # exact current row through fresh read-only recovery, not old epochs.
+            comparison_receipt = None
+        return _resolved(ledger, pending, after_read, comparison_receipt, state_dir,
+                         current_snapshot=after_snapshot)
     except BridgeUnavailableError as error:
         return {"status": "postcondition_pending", "pending": pending,
                 "native_receipt": receipt, "postcondition_error": str(error),
