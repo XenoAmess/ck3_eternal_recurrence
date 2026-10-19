@@ -1,0 +1,16 @@
+{
+  "schema": "g2.m6.closed-evidence-manifest/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "campaign_id": "robert-first30-v20261019",
+  "batch_id": "AUTO147-returned-consumer-execution-outer-settlement-pending",
+  "closed_at_utc": "2026-10-19T04:18:04.551908Z",
+  "scope": "Closed original returned AUTO147 plus earlier frozen baseline; queue classifier rejection and paired MET settlement remain separate",
+  "sources": [
+    {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto143-source-review01/state/active-scheme-sway-formal-private-v1.json", "bytes": 8653, "sha256": "48e0ad4d9731d111abbb8d99a6d617d80d9db79a1c373ad6d3c2717f34c07e28", "closed": true},
+    {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0147-1-result.json", "bytes": 160649, "sha256": "e5cf5bfc60024f0692cf9cecbc49ded543d294fb57d022a8552aa3877457ea75", "closed": true, "runtime_identity": {"Game_pid": 214568, "planning_connection_generation": 4, "actor_character_id": 31254, "episode_run_id": "native-31254-6271ac8cd441", "source": "/result/structured_content/planning_source_frame"}}
+  ],
+  "selections": [
+    {"source": 0, "pointer": "/resolved", "kind": "ledger_episode"},
+    {"source": 1, "pointer": "/result/structured_content", "kind": "ordinary_auto"}
+  ]
+}

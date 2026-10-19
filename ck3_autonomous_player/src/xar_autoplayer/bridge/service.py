@@ -564,6 +564,7 @@ from ..construction_formal_consumer import (
 from ..crown_authority_formal_consumer_v1 import (
     SUBMIT_STEP as PRIVATE_CROWN_SUBMIT_STEP,
     RECEIPT_STEP as PRIVATE_CROWN_RECEIPT_STEP,
+    _context as private_crown_source_context_v1,
     plan_crown_authority_private_v1,
     submit_crown_authority_private_v1,
     read_crown_authority_receipt_private_v1,
@@ -2256,6 +2257,9 @@ class GameplayBridgeService:
                              "selected_step": step,
                              "reason": "independently verify the durable pending action before new opportunities",
                              "crown_pending_action": pending if domain == "crown" else None,
+                             **({"crown_cold_recovery": pending.get("source_context") !=
+                                 private_crown_source_context_v1(self.driver, planning_snapshot)}
+                                if domain == "crown" else {}),
                              "construction_pending_action": pending if domain == "construction" else None,
                              "pending_material": pending_material},
                 }
@@ -8114,6 +8118,7 @@ class GameplayBridgeService:
                 "selected backend cannot query the campaign root context"
             )
         result = None
+        queried_root_now = False
         if _planning_root_result is not None:
             from .current_first_heir_relationship_private_transport import (
                 _same_frame_campaign_root_result,
@@ -8123,6 +8128,7 @@ class GameplayBridgeService:
                 _planning_root_result, snapshot,
             )
         if result is None:
+            queried_root_now = True
             result = self.execute_step(
                 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_STEP,
                 expected_revision=expected_revision,
@@ -8295,7 +8301,7 @@ class GameplayBridgeService:
             "date_raw": date_raw,
             "expected_revision": expected_revision,
         }
-        return {
+        response = {
             **result,
             "schema_version": 1,
             "status": normalized["status"],
@@ -8309,6 +8315,10 @@ class GameplayBridgeService:
             ],
             "campaign_root_context": normalized,
         }
+        invalidate = getattr(self.driver, "invalidate_succession_expectation_from_root_v1", None)
+        if queried_root_now and callable(invalidate):
+            invalidate(response, expected_snapshot=current)
+        return response
 
     def query_council_composition_candidates_v1(
         self,

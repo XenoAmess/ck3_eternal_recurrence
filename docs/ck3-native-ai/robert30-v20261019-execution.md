@@ -2,6 +2,10 @@
 
 用户在2026-10-19明确要求：后续评分结算片改为15秒，旧片不改；复盘首局并写入智能体；随后从1066重开罗贝尔三十年v20261019；继续性能优化及高并发G2研究。这一指令解除旧交接的“暂不开下一局”。
 
+**当前指针（2026-10-19T04:35:29Z现场边界，04:48Z汇总）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，新局已推进61实际日、74个完整周期；AUTO194只读月检完成，第二次决策发布失败，pending75/next195。最新正常SAVE仍是第30日，不能据此恢复后宣称保留61日。当前业务SDK为`063531c4`、Game214568/原birth、Native25；Native26已构建并完成离线检查，尚未加载。以下较早时点均保留为历史快照。
+
+用户追加要求以长期性能和实际游玩效果为优先，不追逐单次执行速度。阶段目标仍为≤1秒/实际游戏日、0.5秒为后继目标；完整运行账须包含查询、规划、持久化、中断及修复间隔。短连续窗口12日/5.978826秒只能定位潜力；已闭累计38日/3075.207607秒为80.926516秒/日，未达标，不能重置起点隐藏维护成本。来源见[墙钟账](evidence/robert-v20261019-closed-wall-ledger03.json)和[长期增长分析](robert-v20261019-long-term-growth-2026-10-19.md)。长期效果另核领土、财政与军费、战争后果和继承，不用完成动作数代替运营成绩。
+
 执行机器为 `machine_id: xenoamess-full-tower-eb9d2c1186`，本轮由 `tools/ck3_live_run_id.py machine` 实际读回；本节记录时间 `2026-10-19T02:07:20Z`（clock工具）。此时仍处于新局启动准备，**新Game、首次1066存档、普通推进均尚未发生**。后继运行事实另追加，不倒填本节。
 
 ## 已交付源码与复盘
@@ -84,3 +88,15 @@ WAL实验恢复修复及98项知识实际迁入观察已在 `b000c9a623eec88a48c
 同批Python候选还包括[有界JSON编码](driver-bounded-json-encoding-2026-10-19.md)、[等价历史尾扫与规划分层计时](planner-battle-tail-lookup-2026-10-19.md)、combat V3仅复制待修改的两层容器及完整递归重验、[owner响应单次编码](robert-v20261019-harness-performance.md)。各自资格保留字节、顺序、拒绝与隔离行为；局部CPU收益不换算为实际秒/日。本次维护不更换Native25，WAL仍default-off。
 
 [M6首次真实Start](g2-m6-first-natural-start-2026-10-19.md)已确认fullSchemeID2/generation0及随后8日普通推进，尚未观察first gain或自然terminal。精确Native25的1.20.0.4外层非战路由白名单遗漏completion-termination常量，虽然handler/serializer已链接，实际入口仍unsupported；本次SDK维护仅关闭该不支持的optional query flag，保留Start、completion、opinion及完整普通/战争规划。后继Native补gate单独验证，不热换当前Game。M7真实新局不等于cold或自然继承，G2仍6/8。
+
+## 04:48后继：连续稳定性与运营反馈合批
+
+同一`machine_id: xenoamess-full-tower-eb9d2c1186`。原MET110已一次消费，同PID暖接续通过，不重发AUTO109。其后117暖开场锚、130 Crown pending字段、143多callback和147目标日暂停发布先后暴露执行链缺口；[恢复源清单](evidence/c3-recovery-source-ready-manifest01.json)与[157–160实际采用](evidence/c3-clean160-actual-adoption-readback01.json)保留原错误、有限修复和业务完成范围。160采用后正常推进16完整周期，累计74周期/61日；194再次因旧publisher同parent固定文件名碰撞中断，尚未采用永久ordinal修复，不能把source-ready当运行已修好。
+
+194冻结来源为外置`D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto194-source-review01/META.json`，10,433B，SHA`6cf39a4277e95cf660840e2728c201fc779497cc0b16c237c03a99f06cc0d1aa`，观察时间`2026-10-19T04:35:29.426190Z`。existing Sway2/gen0在native98/raw53145792完成只读月检，pending为空、下次raw53146512；未新Start，普通fallback第二before-submit失败且未dispatch。只结算这个只读前缀，不重194、不计完整AUTO75。最新正常SAVE142仍raw53145048/第30日；精确清理后由原owner正常保存61日，再用实际SAVE响应构造续行输入，不能信旧累计state中的checkpoint字段。
+
+下一次正常维护一次采用[多callback发布修复](evidence/p51-auto143-subdecisions-2026-10-19.json)、[目标日原生暂停等待](evidence/campaign-clock-target-pause-publication-2026-10-19.json)、[Crown完整来源上下文](crown-pending-publication-context-contract-2026-10-19.md)、[月界财政/root采集](g2-m1-monthly-met-production-2026-10-19.md)和[新root使旧继承预期失效](ordinary-succession-operations-feedback-2026-10-19.md)。后两项不增加普通非月界查询；月界两次Native捕获分列，不能标成同一capture。Crown提升不被当作分割继承的未经证明补救。领土与宗族低频反馈继续复用正常checkpoint，缺失链不能按确定失地计。
+
+[Native26构建](native26-performance-build-2026-10-19.md)完成121/121对象、612 archive payload和离线JSON/CB/M6检查，DLL SHA`eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184`。当前仍Native25；actor gate默认关闭，四族历史耗时不能当当前收益。[M7具体cold方案](g2-m7-native26-cold-plan-2026-10-19.md)要求新SDK/新publisher精确绑定、最新SAVE/Driver/Sway侧车、实际新Game birth及新鲜Steam离线画面；旧receipt和captureEpoch保原来源，不重Start。M6仍无自然正收益/终态，M7无本次cold或自然继承完成信用，G2仍6/8。
+
+并发调整：runtime维持唯一现场owner；M0封存194并交永久发布修复；harness处理精确只读清理与下一bootstrap元数据；Native构建已闭场。M1继续补领土成员完整性，M3完成fresh-root失效接缝，M4继续军费借款本金getter，M5审主动割地后果消费，M6等自然生命周期，M7准备真实cold；Python性能线审自然持久化增长，存储线按统一策略低频监测。已有研究闭场，不重跑旧矩阵填并发。现有WAL仍关闭；完整Driver重写的成本随history增长，先记录自然屏障/候选连续段，再决定是否启用既有增量机制，不新造框架。

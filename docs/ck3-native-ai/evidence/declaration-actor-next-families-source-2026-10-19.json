@@ -1,0 +1,2349 @@
+{
+  "schema": "xar.declaration-actor-next-families-source-research.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:06:59.535968+00:00",
+  "status": "SOURCE_RESEARCH_ONLY_NOT_RULE_ADMISSION",
+  "game_common_actual_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common",
+  "native_cpp_rules_build_inputs_changed": false,
+  "game_rpc_compile_calls": 0,
+  "current_four_family_rules_sha256_unchanged": "e384744fd346fe35db1ad585a336402244de69172a5664ecec38cb28f8573f83",
+  "current_native26_121_object_build_changed": false,
+  "family_counts": {
+    "strict": 18,
+    "local_alias_pending": 4,
+    "deferred": 5
+  },
+  "families": [
+    {
+      "cb_key": "county_conquest_cb",
+      "definition_path": "casus_belli_types/00_conquest.txt",
+      "definition_source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "complete_referenced_nodes": [
+        "can_use_conquest_cbs_trigger",
+        "county_conquest_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "AND",
+        "NOT",
+        "OR",
+        "culture",
+        "government_has_flag",
+        "has_cultural_parameter",
+        "has_realm_law",
+        "rite",
+        "rite_has_parameter"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 12,
+        "key": "county_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 67443800,
+        "materialize_and_clear_ns": 807400
+      }
+    },
+    {
+      "cb_key": "duchy_conquest_cb",
+      "definition_path": "casus_belli_types/00_conquest.txt",
+      "definition_source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "complete_referenced_nodes": [
+        "can_use_conquest_cbs_trigger",
+        "duchy_conquest_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "AND",
+        "NOT",
+        "OR",
+        "culture",
+        "government_has_flag",
+        "has_cultural_parameter",
+        "has_realm_law",
+        "rite",
+        "rite_has_parameter"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 13,
+        "key": "duchy_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 74893100,
+        "materialize_and_clear_ns": 808500
+      }
+    },
+    {
+      "cb_key": "ducal_conquest_cb",
+      "definition_path": "casus_belli_types/00_conquest.txt",
+      "definition_source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "complete_referenced_nodes": [
+        "can_use_conquest_cbs_trigger",
+        "ducal_conquest_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "AND",
+        "NOR",
+        "OR",
+        "culture",
+        "government_has_flag",
+        "has_cultural_parameter",
+        "has_perk",
+        "has_realm_law",
+        "rite",
+        "rite_has_parameter"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 14,
+        "key": "ducal_conquest_cb",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 22200,
+        "materialize_and_clear_ns": 100
+      }
+    },
+    {
+      "cb_key": "ireland_laudabiliter_conquest_cb",
+      "definition_path": "casus_belli_types/00_conquest.txt",
+      "definition_source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "complete_referenced_nodes": [
+        "ireland_laudabiliter_conquest_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [
+        "attacker"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "exists",
+        "has_house_modifier",
+        "scope:attacker.house"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 15,
+        "key": "ireland_laudabiliter_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 68582200,
+        "materialize_and_clear_ns": 778900
+      }
+    },
+    {
+      "cb_key": "clan_invasion_war",
+      "definition_path": "casus_belli_types/00_invasion_war.txt",
+      "definition_source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "complete_referenced_nodes": [
+        "clan_invasion_war/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "NAND",
+        "NOT",
+        "always",
+        "government_has_flag",
+        "has_character_flag",
+        "has_house_unity_parameter",
+        "has_none_of_variables",
+        "house",
+        "limit",
+        "name",
+        "trigger_else",
+        "trigger_else_if",
+        "trigger_if"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 34,
+        "key": "clan_invasion_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 68568700,
+        "materialize_and_clear_ns": 820500
+      }
+    },
+    {
+      "cb_key": "imperial_reconquest_cb",
+      "definition_path": "casus_belli_types/00_dejure_war.txt",
+      "definition_source_sha256": "18c0d3647fd936b37e3d26e28980ec45657841414d6397667891ad2e73ac1f85",
+      "complete_referenced_nodes": [
+        "imperial_reconquest_cb/allowed_for_character",
+        "is_roman_emperor_excluding_byzantium_trigger"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [
+        "attacker"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "OR",
+        "has_title",
+        "scope:attacker"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 19,
+        "key": "imperial_reconquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 78471700,
+        "materialize_and_clear_ns": 840700
+      }
+    },
+    {
+      "cb_key": "pax_romana_invasion_war",
+      "definition_path": "casus_belli_types/00_invasion_war.txt",
+      "definition_source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "complete_referenced_nodes": [
+        "is_roman_emperor_excluding_byzantium_trigger",
+        "pax_romana_invasion_war/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "OR",
+        "any_owned_story",
+        "government_has_flag",
+        "has_title",
+        "prestige_level",
+        "type"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 37,
+        "key": "pax_romana_invasion_war",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 27200,
+        "materialize_and_clear_ns": 600
+      }
+    },
+    {
+      "cb_key": "nomadic_conquest_cb",
+      "definition_path": "casus_belli_types/00_nomadic_conquest.txt",
+      "definition_source_sha256": "5ad2a410a7263aa7e2f140b12894206802c4a8ce7905bd35a6abaca6e76af007",
+      "complete_referenced_nodes": [
+        "nomadic_conquest_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_realm_law_flag"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 38,
+        "key": "nomadic_conquest_cb",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 29900,
+        "materialize_and_clear_ns": 400
+      }
+    },
+    {
+      "cb_key": "nomadic_conquest_duchy_cb",
+      "definition_path": "casus_belli_types/00_nomadic_conquest.txt",
+      "definition_source_sha256": "5ad2a410a7263aa7e2f140b12894206802c4a8ce7905bd35a6abaca6e76af007",
+      "complete_referenced_nodes": [
+        "nomadic_conquest_duchy_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_realm_law_flag"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 39,
+        "key": "nomadic_conquest_duchy_cb",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 24400,
+        "materialize_and_clear_ns": 300
+      }
+    },
+    {
+      "cb_key": "mongol_invasion_war",
+      "definition_path": "casus_belli_types/00_invasion_war.txt",
+      "definition_source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "complete_referenced_nodes": [
+        "has_mpo_dlc_trigger",
+        "mongol_invasion_war/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "has_dlc_feature",
+        "prestige_level",
+        "this"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 35,
+        "key": "mongol_invasion_war",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 30500,
+        "materialize_and_clear_ns": 200
+      }
+    },
+    {
+      "cb_key": "mongol_realm_invasion_war",
+      "definition_path": "casus_belli_types/00_invasion_war.txt",
+      "definition_source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "complete_referenced_nodes": [
+        "mongol_realm_invasion_war/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "is_ai",
+        "prestige_level",
+        "this"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 36,
+        "key": "mongol_realm_invasion_war",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 25100,
+        "materialize_and_clear_ns": 200
+      }
+    },
+    {
+      "cb_key": "fp1_varangian_adventurer_conquest",
+      "definition_path": "casus_belli_types/01_fp1_wars.txt",
+      "definition_source_sha256": "8fcf8195d1b97c7b33777b0f1085c7f1d6477cf921a1fc933dad0d59778593ee",
+      "complete_referenced_nodes": [
+        "fp1_varangian_adventurer_conquest/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "AND",
+        "NOT",
+        "OR",
+        "amount",
+        "any_realm_county",
+        "calc_true_if",
+        "count",
+        "culture",
+        "geographical_region",
+        "government_has_flag",
+        "has_cultural_era_or_later",
+        "has_game_rule",
+        "has_innovation",
+        "has_trait",
+        "is_ai",
+        "title_province"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 55,
+        "key": "fp1_varangian_adventurer_conquest",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 69781300,
+        "materialize_and_clear_ns": 797000
+      }
+    },
+    {
+      "cb_key": "fp2_mediterranean_conquest_cb",
+      "definition_path": "casus_belli_types/03_fp2_wars.txt",
+      "definition_source_sha256": "1ad389c81813f5a3a7fdcae5ae8c176364f467ad5dc618649322233251dd7ca4",
+      "complete_referenced_nodes": [
+        "fp2_mediterranean_conquest_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [
+        "attacker"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "NOT",
+        "completely_controls",
+        "government_has_flag",
+        "has_house_modifier",
+        "house",
+        "is_landed",
+        "scope:attacker"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 58,
+        "key": "fp2_mediterranean_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 63451700,
+        "materialize_and_clear_ns": 782200
+      }
+    },
+    {
+      "cb_key": "japan_install_bloc_member_cb",
+      "definition_path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "complete_referenced_nodes": [
+        "has_tgp_dlc_trigger",
+        "japan_install_bloc_member_cb/allowed_for_character",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "OR",
+        "culture",
+        "custom_tooltip",
+        "exists",
+        "government_has_flag",
+        "has_cultural_tradition",
+        "has_dlc_feature",
+        "highest_held_title_tier",
+        "is_landed",
+        "text"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 110,
+        "key": "japan_install_bloc_member_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 54623700,
+        "materialize_and_clear_ns": 814400
+      }
+    },
+    {
+      "cb_key": "japan_soryo_conquest_county_landless_cb",
+      "definition_path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "complete_referenced_nodes": [
+        "government_is_japanese_trigger",
+        "has_tgp_dlc_trigger",
+        "japan_soryo_conquest_county_landless_cb/allowed_for_character",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "OR",
+        "culture",
+        "custom_tooltip",
+        "government_has_flag",
+        "has_cultural_tradition",
+        "has_dlc_feature",
+        "is_landed",
+        "text"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 111,
+        "key": "japan_soryo_conquest_county_landless_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 51778500,
+        "materialize_and_clear_ns": 783300
+      }
+    },
+    {
+      "cb_key": "japan_soryo_conquest_county_cb",
+      "definition_path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "complete_referenced_nodes": [
+        "has_tgp_dlc_trigger",
+        "japan_soryo_conquest_county_cb/allowed_for_character",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "OR",
+        "culture",
+        "custom_tooltip",
+        "government_has_flag",
+        "has_cultural_tradition",
+        "has_dlc_feature",
+        "is_landed",
+        "text"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 112,
+        "key": "japan_soryo_conquest_county_cb",
+        "evaluations": 13,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 33600,
+        "materialize_and_clear_ns": 100
+      }
+    },
+    {
+      "cb_key": "japan_demand_administrative_cb",
+      "definition_path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "complete_referenced_nodes": [
+        "japan_demand_administrative_cb/allowed_for_character",
+        "tgp_has_ceremonial_liege_title_trigger",
+        "tgp_is_ceremonial_liege_trigger",
+        "tgp_realm_has_ceremonial_liege_trigger"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "always",
+        "custom_tooltip",
+        "exists",
+        "government_has_flag",
+        "has_title",
+        "limit",
+        "text",
+        "this",
+        "top_liege",
+        "trigger_else",
+        "trigger_if"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 113,
+        "key": "japan_demand_administrative_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 54855400,
+        "materialize_and_clear_ns": 806800
+      }
+    },
+    {
+      "cb_key": "mandala_raze_capital_structure_cb",
+      "definition_path": "casus_belli_types/tgp_eastasia_wars.txt",
+      "definition_source_sha256": "e172a89deb2dc4606f782195155f5ce49da8e660a2c03cd1301603d65f5d7ab4",
+      "complete_referenced_nodes": [
+        "has_mandala_capital_trigger",
+        "has_tgp_dlc_trigger",
+        "mandala_raze_capital_structure_cb/allowed_for_character"
+      ],
+      "classification": "strict_actor_source_closure",
+      "named_scopes": [],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "capital_province",
+        "government_has_flag",
+        "has_building_with_flag",
+        "has_dlc_feature"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 125,
+        "key": "mandala_raze_capital_structure_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 36261800,
+        "materialize_and_clear_ns": 789000
+      }
+    },
+    {
+      "cb_key": "tribal_subjugation_cb",
+      "definition_path": "casus_belli_types/00_subjugation.txt",
+      "definition_source_sha256": "b755cca70950d95192080368228ea03d8df6889a0129a9962509d936e4f8f0bf",
+      "complete_referenced_nodes": [
+        "pam_is_antipope_trigger",
+        "tribal_subjugation_cb/allowed_for_character"
+      ],
+      "classification": "local_alias_needs_template_extension",
+      "named_scopes": [
+        "pam_antipope_holder_check"
+      ],
+      "context_tokens": [
+        "save_temporary_scope_as"
+      ],
+      "native_assignment_keys": [
+        "AND",
+        "NOR",
+        "NOT",
+        "OR",
+        "any_religious_head_challenger",
+        "faith",
+        "faith.religious_head",
+        "government_has_flag",
+        "government_has_mechanic",
+        "has_doctrine",
+        "has_variable",
+        "holder",
+        "house",
+        "save_temporary_scope_as"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 49,
+        "key": "tribal_subjugation_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 74299300,
+        "materialize_and_clear_ns": 800100
+      }
+    },
+    {
+      "cb_key": "invasion_war",
+      "definition_path": "casus_belli_types/00_invasion_war.txt",
+      "definition_source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "complete_referenced_nodes": [
+        "ai_should_get_extreme_conqueror_bonuses",
+        "invasion_war/allowed_for_character",
+        "is_house_head"
+      ],
+      "classification": "local_alias_needs_template_extension",
+      "named_scopes": [
+        "house_check"
+      ],
+      "context_tokens": [
+        "save_temporary_scope_as"
+      ],
+      "native_assignment_keys": [
+        "AND",
+        "NOT",
+        "OR",
+        "exists",
+        "government_has_flag",
+        "has_character_flag",
+        "has_character_modifier",
+        "has_house_head_parameter",
+        "has_variable",
+        "house",
+        "house_head",
+        "limit",
+        "rite",
+        "rite_has_parameter",
+        "save_temporary_scope_as",
+        "trigger_if"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 33,
+        "key": "invasion_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 71236600,
+        "materialize_and_clear_ns": 809400
+      }
+    },
+    {
+      "cb_key": "japan_bloc_war_cb",
+      "definition_path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "complete_referenced_nodes": [
+        "has_tgp_dlc_trigger",
+        "is_house_head",
+        "japan_bloc_war_cb/allowed_for_character",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "classification": "local_alias_needs_template_extension",
+      "named_scopes": [
+        "house_check"
+      ],
+      "context_tokens": [
+        "save_temporary_scope_as"
+      ],
+      "native_assignment_keys": [
+        "OR",
+        "any_held_title",
+        "culture",
+        "custom_tooltip",
+        "exists",
+        "government_has_flag",
+        "has_cultural_tradition",
+        "has_dlc_feature",
+        "house",
+        "house.house_confederation.leading_house",
+        "house_head",
+        "is_noble_family_title",
+        "limit",
+        "save_temporary_scope_as",
+        "text",
+        "trigger_if"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 119,
+        "key": "japan_bloc_war_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 63708700,
+        "materialize_and_clear_ns": 802000
+      }
+    },
+    {
+      "cb_key": "mandala_plunder_cb",
+      "definition_path": "casus_belli_types/tgp_eastasia_wars.txt",
+      "definition_source_sha256": "e172a89deb2dc4606f782195155f5ce49da8e660a2c03cd1301603d65f5d7ab4",
+      "complete_referenced_nodes": [
+        "has_tgp_dlc_trigger",
+        "is_house_head",
+        "mandala_plunder_cb/allowed_for_character"
+      ],
+      "classification": "local_alias_needs_template_extension",
+      "named_scopes": [
+        "house_check"
+      ],
+      "context_tokens": [
+        "save_temporary_scope_as"
+      ],
+      "native_assignment_keys": [
+        "exists",
+        "government_has_flag",
+        "has_dlc_feature",
+        "has_house_head_parameter",
+        "house",
+        "house_head",
+        "limit",
+        "save_temporary_scope_as",
+        "trigger_if"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 124,
+        "key": "mandala_plunder_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 40171200,
+        "materialize_and_clear_ns": 800100
+      }
+    },
+    {
+      "cb_key": "ep3_laamp_adventurer_county_invasion",
+      "definition_path": "casus_belli_types/07_ep3_wars.txt",
+      "definition_source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "complete_referenced_nodes": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger",
+        "ep3_laamp_adventurer_county_invasion/allowed_for_character",
+        "has_ep3_dlc_trigger"
+      ],
+      "classification": "deferred_context_not_closed",
+      "named_scopes": [
+        "defender"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_dlc_feature",
+        "is_landed",
+        "scope:defender.highest_held_title_tier"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 73,
+        "key": "ep3_laamp_adventurer_county_invasion",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 53529600,
+        "materialize_and_clear_ns": 796100
+      }
+    },
+    {
+      "cb_key": "ep3_laamp_adventurer_duchy_invasion",
+      "definition_path": "casus_belli_types/07_ep3_wars.txt",
+      "definition_source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "complete_referenced_nodes": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger",
+        "ep3_laamp_adventurer_duchy_invasion/allowed_for_character",
+        "has_ep3_dlc_trigger"
+      ],
+      "classification": "deferred_context_not_closed",
+      "named_scopes": [
+        "defender"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_dlc_feature",
+        "is_landed",
+        "scope:defender.highest_held_title_tier"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 74,
+        "key": "ep3_laamp_adventurer_duchy_invasion",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 55881600,
+        "materialize_and_clear_ns": 823300
+      }
+    },
+    {
+      "cb_key": "ep3_laamp_adventurer_kingdom_invasion",
+      "definition_path": "casus_belli_types/07_ep3_wars.txt",
+      "definition_source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "complete_referenced_nodes": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger",
+        "ep3_laamp_adventurer_kingdom_invasion/allowed_for_character",
+        "has_ep3_dlc_trigger"
+      ],
+      "classification": "deferred_context_not_closed",
+      "named_scopes": [
+        "defender"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_dlc_feature",
+        "is_landed",
+        "scope:defender.highest_held_title_tier"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 75,
+        "key": "ep3_laamp_adventurer_kingdom_invasion",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 57880600,
+        "materialize_and_clear_ns": 805400
+      }
+    },
+    {
+      "cb_key": "ep3_laamp_adventurer_empire_invasion",
+      "definition_path": "casus_belli_types/07_ep3_wars.txt",
+      "definition_source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "complete_referenced_nodes": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger",
+        "ep3_laamp_adventurer_empire_invasion/allowed_for_character",
+        "has_ep3_dlc_trigger"
+      ],
+      "classification": "deferred_context_not_closed",
+      "named_scopes": [
+        "defender"
+      ],
+      "context_tokens": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_dlc_feature",
+        "is_landed",
+        "scope:defender.highest_held_title_tier"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 76,
+        "key": "ep3_laamp_adventurer_empire_invasion",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 60034100,
+        "materialize_and_clear_ns": 825000
+      }
+    },
+    {
+      "cb_key": "mpo_nomad_invasion_cb",
+      "definition_path": "casus_belli_types/09_mpo_wars.txt",
+      "definition_source_sha256": "39a1bf3466a767c9a71d4d8a019def5fa3a80e0da0ca29b7a31b07d8831f85bd",
+      "complete_referenced_nodes": [
+        "has_any_good_relationship_with_character_trigger",
+        "has_any_mild_good_relationship_with_character_trigger",
+        "has_any_moderate_good_relationship_with_character_trigger",
+        "has_bad_season_nomadic_capital_root_trigger",
+        "is_gurkhan",
+        "mpo_nomad_invasion_cb/allowed_for_character",
+        "mpo_nomad_invasion_war_ai_trigger"
+      ],
+      "classification": "deferred_context_not_closed",
+      "named_scopes": [],
+      "context_tokens": [
+        "$CHARACTER$",
+        "$NOMAD$",
+        "$NOMAD$.current_military_strength",
+        "$NOMAD$.fifty_percent_of_current_gold",
+        "$NOMAD$.forty_percent_of_current_military_strength",
+        "$NOMAD$.house",
+        "$NOMAD$.seventy_percent_of_current_military_strength",
+        "prev",
+        "root"
+      ],
+      "native_assignment_keys": [
+        "$NOMAD$",
+        "AND",
+        "CHARACTER",
+        "NOMAD",
+        "NOR",
+        "NOT",
+        "OR",
+        "ai_boldness",
+        "ai_energy",
+        "ai_vengefulness",
+        "any_county_situation_sub_region",
+        "any_neighboring_realm_with_tributaries_owner",
+        "any_past_holder",
+        "capital_county",
+        "capital_province",
+        "count",
+        "current_military_strength",
+        "domicile",
+        "domicile.herd",
+        "exists",
+        "geographical_region",
+        "gold",
+        "government_has_flag",
+        "has_realm_law",
+        "has_relation_crush",
+        "has_relation_disciple",
+        "has_relation_elder",
+        "has_relation_friend",
+        "has_relation_guardian",
+        "has_relation_lover",
+        "has_relation_potential_friend",
+        "has_relation_potential_lover",
+        "has_relation_ward",
+        "has_truce",
+        "herd",
+        "house",
+        "in_diplomatic_range",
+        "is_ai",
+        "is_alive",
+        "is_allied_to",
+        "is_at_war",
+        "is_independent_ruler",
+        "is_landed",
+        "is_tributary",
+        "is_tributary_of",
+        "is_tributary_of_suzerain_or_above",
+        "limit",
+        "previous_holder",
+        "primary_title",
+        "seventy_percent_of_current_military_strength",
+        "situation:dynastic_cycle",
+        "situation_current_phase",
+        "situation_sub_region_has_county",
+        "sub_realm_size",
+        "sub_region_current_phase",
+        "this",
+        "time_since_death",
+        "title:e_byzantium.holder",
+        "title:h_china.holder",
+        "top_suzerain",
+        "trigger_if",
+        "years"
+      ],
+      "ambiguous_dependencies": [],
+      "actual_actor_predicate_no_observed": false,
+      "current_rules_admitted": false,
+      "historic_profile_row": {
+        "ordinal": 88,
+        "key": "mpo_nomad_invasion_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 45023600,
+        "materialize_and_clear_ns": 784500
+      }
+    }
+  ],
+  "dependency_nodes": [
+    {
+      "name": "county_conquest_cb/allowed_for_character",
+      "path": "casus_belli_types/00_conquest.txt",
+      "source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "token_sha256": "024892e9269aaba99c5e38913c0d586167e6b8e5fc6cb249b213eb44b97f0ca4",
+      "tokens": "can_use_conquest_cbs_trigger = yes NOT = { government_has_flag = government_is_landless_adventurer }",
+      "scripted_dependencies": [
+        "can_use_conquest_cbs_trigger"
+      ],
+      "native_assignment_keys": [
+        "NOT",
+        "government_has_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "can_use_conquest_cbs_trigger",
+      "path": "scripted_triggers/00_war_and_peace_triggers.txt",
+      "source_sha256": "cbe25f04d61a2f2899e29b15cd6aeffd1ffc33154655c965fd441f3727183545",
+      "token_sha256": "daf0eaca99db206f569693757c2f832e9856e24f29bffc4bc5274099cb37b0aa",
+      "tokens": "OR = { government_has_flag = government_is_tribal government_has_flag = government_is_clan government_has_flag = government_is_nomadic government_has_flag = government_is_steppe_admin rite = { rite_has_parameter = conquest_cb_enabled } culture = { has_cultural_parameter = can_use_conquest_cbs } AND = { government_has_flag = government_is_japan_feudal has_realm_law = imperial_expansion_law } }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "AND",
+        "OR",
+        "culture",
+        "government_has_flag",
+        "has_cultural_parameter",
+        "has_realm_law",
+        "rite",
+        "rite_has_parameter"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "duchy_conquest_cb/allowed_for_character",
+      "path": "casus_belli_types/00_conquest.txt",
+      "source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "token_sha256": "024892e9269aaba99c5e38913c0d586167e6b8e5fc6cb249b213eb44b97f0ca4",
+      "tokens": "can_use_conquest_cbs_trigger = yes NOT = { government_has_flag = government_is_landless_adventurer }",
+      "scripted_dependencies": [
+        "can_use_conquest_cbs_trigger"
+      ],
+      "native_assignment_keys": [
+        "NOT",
+        "government_has_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "ducal_conquest_cb/allowed_for_character",
+      "path": "casus_belli_types/00_conquest.txt",
+      "source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "token_sha256": "cc8fc84eb2ffa075d305c0fccf87ca9577c0e5e18d1b1e69cc92299b33bcdb79",
+      "tokens": "has_perk = ducal_conquest_perk can_use_conquest_cbs_trigger = no NOR = { government_has_flag = government_is_landless_adventurer government_has_flag = government_is_nomadic }",
+      "scripted_dependencies": [
+        "can_use_conquest_cbs_trigger"
+      ],
+      "native_assignment_keys": [
+        "NOR",
+        "government_has_flag",
+        "has_perk"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "ireland_laudabiliter_conquest_cb/allowed_for_character",
+      "path": "casus_belli_types/00_conquest.txt",
+      "source_sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38",
+      "token_sha256": "8e02442075181a219e15c53799c472c0a3b4bd976b37f91daf2d1d4f529a15ff",
+      "tokens": "exists = scope:attacker.house scope:attacker.house = { has_house_modifier = ireland_laudabiliter_modifier }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "exists",
+        "has_house_modifier",
+        "scope:attacker.house"
+      ],
+      "named_scopes": [
+        "attacker"
+      ]
+    },
+    {
+      "name": "clan_invasion_war/allowed_for_character",
+      "path": "casus_belli_types/00_invasion_war.txt",
+      "source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "token_sha256": "2ae47dd4e6e85b3184119e08da19b51c50164594319cc63f204c1f2adad5e25f",
+      "tokens": "government_has_flag = government_is_clan NAND = { house ?= { has_house_unity_parameter = unity_disable_invasions } } trigger_if = { limit = { house ?= { has_house_unity_parameter = unity_multiple_invasions } } NOT = { has_character_flag = unity_invasion_cooldown } } trigger_else_if = { limit = { house ?= { has_house_unity_parameter = unity_unlimited_invasions } } always = yes } trigger_else = { has_none_of_variables = { name = used_lifetime_invasion name = pending_lifetime_invasion } }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "NAND",
+        "NOT",
+        "always",
+        "government_has_flag",
+        "has_character_flag",
+        "has_house_unity_parameter",
+        "has_none_of_variables",
+        "house",
+        "limit",
+        "name",
+        "trigger_else",
+        "trigger_else_if",
+        "trigger_if"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "imperial_reconquest_cb/allowed_for_character",
+      "path": "casus_belli_types/00_dejure_war.txt",
+      "source_sha256": "18c0d3647fd936b37e3d26e28980ec45657841414d6397667891ad2e73ac1f85",
+      "token_sha256": "de3a54e531e83bfb56cacef4bcb1579f6318607d563580521f5c9456a5fea890",
+      "tokens": "scope:attacker = { is_roman_emperor_excluding_byzantium_trigger = yes }",
+      "scripted_dependencies": [
+        "is_roman_emperor_excluding_byzantium_trigger"
+      ],
+      "native_assignment_keys": [
+        "scope:attacker"
+      ],
+      "named_scopes": [
+        "attacker"
+      ]
+    },
+    {
+      "name": "is_roman_emperor_excluding_byzantium_trigger",
+      "path": "scripted_triggers/07_ep3_triggers.txt",
+      "source_sha256": "ddd632e2f0028568d59b9907bf9a63ca39c09201588f47d7491187c628d42eb7",
+      "token_sha256": "16f6bc763433beeeba3547b348b36f3d6d0ceb3cdb615dd9b4222da31c373ed6",
+      "tokens": "OR = { has_title = title:h_roman_empire has_title = title:h_eastern_roman_empire }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "OR",
+        "has_title"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "pax_romana_invasion_war/allowed_for_character",
+      "path": "casus_belli_types/00_invasion_war.txt",
+      "source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "token_sha256": "2d83b87140b07bb4c82491eccdb23702bd09c63a1a05c9db5b82e39e61434e56",
+      "tokens": "is_roman_emperor_excluding_byzantium_trigger = yes government_has_flag = government_is_administrative any_owned_story = { type = ep3_story_cycle_restoring_rome } prestige_level >= 1",
+      "scripted_dependencies": [
+        "is_roman_emperor_excluding_byzantium_trigger"
+      ],
+      "native_assignment_keys": [
+        "any_owned_story",
+        "government_has_flag",
+        "prestige_level",
+        "type"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "nomadic_conquest_cb/allowed_for_character",
+      "path": "casus_belli_types/00_nomadic_conquest.txt",
+      "source_sha256": "5ad2a410a7263aa7e2f140b12894206802c4a8ce7905bd35a6abaca6e76af007",
+      "token_sha256": "72b1c67b5c5dcdab2513ff2c62dd18e9bd872594089973d7db8107b85bffe157",
+      "tokens": "government_has_flag = government_is_nomadic has_realm_law_flag = access_to_nomadic_county_conquest",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_realm_law_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "nomadic_conquest_duchy_cb/allowed_for_character",
+      "path": "casus_belli_types/00_nomadic_conquest.txt",
+      "source_sha256": "5ad2a410a7263aa7e2f140b12894206802c4a8ce7905bd35a6abaca6e76af007",
+      "token_sha256": "d69223c9a1facab08dd5f6f709bb803b767901654089ba2340ec0e000d4e3b06",
+      "tokens": "government_has_flag = government_is_nomadic has_realm_law_flag = access_to_nomadic_duchy_conquest",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_realm_law_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "mongol_invasion_war/allowed_for_character",
+      "path": "casus_belli_types/00_invasion_war.txt",
+      "source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "token_sha256": "3ddd1b85b79e4d8038e4a82866d6bca89ebf13a413378c96bbf9012a8b86f2d2",
+      "tokens": "this = title:e_mongol_empire.holder prestige_level >= 1 has_mpo_dlc_trigger = no",
+      "scripted_dependencies": [
+        "has_mpo_dlc_trigger"
+      ],
+      "native_assignment_keys": [
+        "prestige_level",
+        "this"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_mpo_dlc_trigger",
+      "path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "source_sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+      "token_sha256": "1854466f6a72c9ba2bdf9c5ca6b7510c7ea1015c84e50f3136c492f46f9d985b",
+      "tokens": "has_dlc_feature = khans_of_the_steppe",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "has_dlc_feature"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "mongol_realm_invasion_war/allowed_for_character",
+      "path": "casus_belli_types/00_invasion_war.txt",
+      "source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "token_sha256": "7d428ecbfa95bfb212e1ace0ea6791663b725251ae9fcf775835c6ec74983aaf",
+      "tokens": "this = title:e_mongol_empire.holder is_ai = yes prestige_level >= 1",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "is_ai",
+        "prestige_level",
+        "this"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "fp1_varangian_adventurer_conquest/allowed_for_character",
+      "path": "casus_belli_types/01_fp1_wars.txt",
+      "source_sha256": "8fcf8195d1b97c7b33777b0f1085c7f1d6477cf921a1fc933dad0d59778593ee",
+      "token_sha256": "7b4b8af26c23e5bb6c6fecebe9896f8efba3479b6579e8cfd8832b8bef5c04ce",
+      "tokens": "culture = { has_innovation = innovation_varangian_adventurers NOT = { has_cultural_era_or_later = culture_era_early_medieval } } OR = { is_ai = no AND = { OR = { AND = { has_trait = ambitious calc_true_if = { amount >= 2 has_trait = greedy has_trait = brave has_trait = arrogant has_trait = adventurer } } has_game_rule = fp1_scandi_adventurers_apocalyptic } any_realm_county = { count = all title_province = { geographical_region = world_europe_north } } } } NOT = { government_has_flag = government_is_landless_adventurer }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "AND",
+        "NOT",
+        "OR",
+        "amount",
+        "any_realm_county",
+        "calc_true_if",
+        "count",
+        "culture",
+        "geographical_region",
+        "government_has_flag",
+        "has_cultural_era_or_later",
+        "has_game_rule",
+        "has_innovation",
+        "has_trait",
+        "is_ai",
+        "title_province"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "fp2_mediterranean_conquest_cb/allowed_for_character",
+      "path": "casus_belli_types/03_fp2_wars.txt",
+      "source_sha256": "1ad389c81813f5a3a7fdcae5ae8c176364f467ad5dc618649322233251dd7ca4",
+      "token_sha256": "70956d8ab01fafca94da3e8b4155b0f28fa668fad27388d5f89280ac00e24837",
+      "tokens": "scope:attacker = { is_landed = yes house ?= { has_house_modifier = fp2_controls_the_mediterranean_house_modifier } } completely_controls = title:d_mallorca completely_controls = title:d_sardinia completely_controls = title:d_sicily NOT = { government_has_flag = government_is_landless_adventurer }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "NOT",
+        "completely_controls",
+        "government_has_flag",
+        "has_house_modifier",
+        "house",
+        "is_landed",
+        "scope:attacker"
+      ],
+      "named_scopes": [
+        "attacker"
+      ]
+    },
+    {
+      "name": "japan_install_bloc_member_cb/allowed_for_character",
+      "path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "token_sha256": "083bae974120795f1da84354c2928dd8592b01e93b287e4bb7a72678dcb3e279",
+      "tokens": "has_tgp_dlc_trigger = yes is_landed = yes highest_held_title_tier >= tier_county tgp_soryo_or_bushido_trigger = yes exists = house.house_confederation",
+      "scripted_dependencies": [
+        "has_tgp_dlc_trigger",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "native_assignment_keys": [
+        "exists",
+        "highest_held_title_tier",
+        "is_landed"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "tgp_soryo_or_bushido_trigger",
+      "path": "scripted_triggers/10_tgp_japan_triggers.txt",
+      "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+      "token_sha256": "8ea9ae07f7f424894ad5d556680765c9a59ed83ffbee6a9a93dc2a8c9aad3a06",
+      "tokens": "custom_tooltip = { text = soryo_or_bushido_trigger OR = { government_has_flag = government_is_japan_feudal culture = { has_cultural_tradition = tradition_tgp_bushido } } }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "OR",
+        "culture",
+        "custom_tooltip",
+        "government_has_flag",
+        "has_cultural_tradition",
+        "text"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_tgp_dlc_trigger",
+      "path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "source_sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+      "token_sha256": "a9fb3dec7377860a99674234c1ed7e51b5f58dc9261e39b5ad4b40a5378d8927",
+      "tokens": "has_dlc_feature = all_under_heaven",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "has_dlc_feature"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "japan_soryo_conquest_county_landless_cb/allowed_for_character",
+      "path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "token_sha256": "c7db01908f1749567052da7b461e8f55b46be7439ccb8084c3967bf4e4dc0b82",
+      "tokens": "has_tgp_dlc_trigger = yes is_landed = no government_is_japanese_trigger = yes tgp_soryo_or_bushido_trigger = yes",
+      "scripted_dependencies": [
+        "government_is_japanese_trigger",
+        "has_tgp_dlc_trigger",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "native_assignment_keys": [
+        "is_landed"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "government_is_japanese_trigger",
+      "path": "scripted_triggers/10_tgp_japan_triggers.txt",
+      "source_sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+      "token_sha256": "27d730d31d9781079cdc9322f51280e1c6a6dd2b9ab4a111a5e71fd464a1af9d",
+      "tokens": "OR = { government_has_flag = government_is_japan_administrative government_has_flag = government_is_japan_feudal }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "OR",
+        "government_has_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "japan_soryo_conquest_county_cb/allowed_for_character",
+      "path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "token_sha256": "259760c437e1b2e84581d22137520e168eb936e71e32ca5e58552f701a3eaf2f",
+      "tokens": "has_tgp_dlc_trigger = yes is_landed = yes tgp_soryo_or_bushido_trigger = yes",
+      "scripted_dependencies": [
+        "has_tgp_dlc_trigger",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "native_assignment_keys": [
+        "is_landed"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "japan_demand_administrative_cb/allowed_for_character",
+      "path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "token_sha256": "7afa79abe018c9a73df46d08a191fccadbca36f8b9cc775602eebe9beba7cace",
+      "tokens": "government_has_flag = government_is_japan_administrative top_liege = { government_has_flag = government_is_japan_administrative } tgp_is_ceremonial_liege_trigger = no",
+      "scripted_dependencies": [
+        "tgp_is_ceremonial_liege_trigger"
+      ],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "top_liege"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "tgp_is_ceremonial_liege_trigger",
+      "path": "scripted_triggers/10_tgp_triggers.txt",
+      "source_sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c",
+      "token_sha256": "2a2d76c39d428f415f6023121a9db9d9517f19691e0068c1b158cc94ad9dbffd",
+      "tokens": "custom_tooltip = { text = tgp_is_ceremonial_liege_tt this != top_liege tgp_has_ceremonial_liege_title_trigger = yes }",
+      "scripted_dependencies": [
+        "tgp_has_ceremonial_liege_title_trigger"
+      ],
+      "native_assignment_keys": [
+        "custom_tooltip",
+        "text",
+        "this"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "tgp_has_ceremonial_liege_title_trigger",
+      "path": "scripted_triggers/10_tgp_triggers.txt",
+      "source_sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c",
+      "token_sha256": "5d9d035dc1a7942f3a2ae5ef4a770d5c2cdbcd67e956aa0e397432dca1160f6e",
+      "tokens": "trigger_if = { limit = { tgp_realm_has_ceremonial_liege_trigger = yes } custom_tooltip = { text = tgp_has_ceremonial_liege_title_tt has_title = top_liege.primary_title.var:administrative_ui_special_title } } trigger_else = { custom_tooltip = { text = tgp_has_ceremonial_liege_title_no_title_tt always = no } }",
+      "scripted_dependencies": [
+        "tgp_realm_has_ceremonial_liege_trigger"
+      ],
+      "native_assignment_keys": [
+        "always",
+        "custom_tooltip",
+        "has_title",
+        "limit",
+        "text",
+        "trigger_else",
+        "trigger_if"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "tgp_realm_has_ceremonial_liege_trigger",
+      "path": "scripted_triggers/10_tgp_triggers.txt",
+      "source_sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c",
+      "token_sha256": "076dbcbc52af7acefa8631822e7eb3955d583bda5ce19dd7883e381e6df9d6c1",
+      "tokens": "custom_tooltip = { text = tgp_realm_has_ceremonial_liege_tt exists = top_liege.primary_title.var:administrative_ui_special_title.holder }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "custom_tooltip",
+        "exists",
+        "text"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "mandala_raze_capital_structure_cb/allowed_for_character",
+      "path": "casus_belli_types/tgp_eastasia_wars.txt",
+      "source_sha256": "e172a89deb2dc4606f782195155f5ce49da8e660a2c03cd1301603d65f5d7ab4",
+      "token_sha256": "51168f3c848da9f0e1bbe2ecc3ed413c4420bfb9a95656363e59a34243558619",
+      "tokens": "has_tgp_dlc_trigger = yes government_has_flag = government_is_mandala has_mandala_capital_trigger = yes",
+      "scripted_dependencies": [
+        "has_mandala_capital_trigger",
+        "has_tgp_dlc_trigger"
+      ],
+      "native_assignment_keys": [
+        "government_has_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_mandala_capital_trigger",
+      "path": "scripted_triggers/tgp_mandala_triggers.txt",
+      "source_sha256": "cdc1e640f244936327d2f8274f157a87a57480ec40db3cbc9fbddd8deed0696b",
+      "token_sha256": "38dc0d66eaa4dbd0a45e3e911e467fb08e85f6f4436f75f05b2f9c78d183faf5",
+      "tokens": "capital_province ?= { has_building_with_flag = mandala_capital_building }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "capital_province",
+        "has_building_with_flag"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "tribal_subjugation_cb/allowed_for_character",
+      "path": "casus_belli_types/00_subjugation.txt",
+      "source_sha256": "b755cca70950d95192080368228ea03d8df6889a0129a9962509d936e4f8f0bf",
+      "token_sha256": "ef36d041028907ceb27b151315c5a08f10111198e2c708d83405af26bcff6774",
+      "tokens": "OR = { government_has_flag = government_is_tribal has_variable = koh_subjugation_cb_allowed AND = { OR = { faith.religious_head = this pam_is_antipope_trigger = yes } faith = { has_doctrine = doctrine_temporal_head } } faith = { has_doctrine = eastern_hostility_doctrine } house ?= { has_variable = subjugations_expanded } } NOR = { government_has_flag = government_is_landless_adventurer AND = { government_has_mechanic = administrative NOT = { house ?= { has_variable = subjugations_expanded } } } }",
+      "scripted_dependencies": [
+        "pam_is_antipope_trigger"
+      ],
+      "native_assignment_keys": [
+        "AND",
+        "NOR",
+        "NOT",
+        "OR",
+        "faith",
+        "faith.religious_head",
+        "government_has_flag",
+        "government_has_mechanic",
+        "has_doctrine",
+        "has_variable",
+        "house"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "pam_is_antipope_trigger",
+      "path": "scripted_triggers/pam_antipope_triggers.txt",
+      "source_sha256": "6457fd56e3ba27e1ca5a9cd7913322c1502806505d62c360da5b13d6acec038a",
+      "token_sha256": "7dab6669e04416122b81de68e6737ec4a583e7c4188688cc384c98a2438a4930",
+      "tokens": "save_temporary_scope_as = pam_antipope_holder_check faith = { any_religious_head_challenger = { holder ?= scope:pam_antipope_holder_check } }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "any_religious_head_challenger",
+        "faith",
+        "holder",
+        "save_temporary_scope_as"
+      ],
+      "named_scopes": [
+        "pam_antipope_holder_check"
+      ]
+    },
+    {
+      "name": "invasion_war/allowed_for_character",
+      "path": "casus_belli_types/00_invasion_war.txt",
+      "source_sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc",
+      "token_sha256": "0d394d6501cb58134d51c9efa3c6f25e68a1e40c114fc2402ab24075ecc7ebb9",
+      "tokens": "OR = { government_has_flag = government_is_tribal government_has_flag = government_is_nomadic rite = { rite_has_parameter = invasion_cb_enabled } has_character_flag = bp2_inspired_culture_for_conquest has_variable = mpo_desperate_stance_invasion_cb_enable_var ai_should_get_extreme_conqueror_bonuses = yes AND = { house ?= { has_house_head_parameter = has_mandala_invasion_cb } is_house_head = yes } } trigger_if = { limit = { ai_should_get_extreme_conqueror_bonuses = no } NOT = { has_character_flag = used_lifetime_invasion } } NOT = { government_has_flag = government_is_landless_adventurer }",
+      "scripted_dependencies": [
+        "ai_should_get_extreme_conqueror_bonuses",
+        "is_house_head"
+      ],
+      "native_assignment_keys": [
+        "AND",
+        "NOT",
+        "OR",
+        "government_has_flag",
+        "has_character_flag",
+        "has_house_head_parameter",
+        "has_variable",
+        "house",
+        "limit",
+        "rite",
+        "rite_has_parameter",
+        "trigger_if"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "ai_should_get_extreme_conqueror_bonuses",
+      "path": "scripted_triggers/00_ai_value_triggers.txt",
+      "source_sha256": "9196b7840b56233f871832140974d30c4957e79ebb960c8983e292a4477a8f3d",
+      "token_sha256": "3c16951a5c5d9858041206dec469b1635d18615b97fc06a4f4c6156ff097d215",
+      "tokens": "has_variable = conqueror has_character_modifier = ai_extreme_conqueror_modifier",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "has_character_modifier",
+        "has_variable"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "is_house_head",
+      "path": "scripted_triggers/00_dynasty_triggers.txt",
+      "source_sha256": "67aa08c89326d077ddec18db824f421d54fb31aaecc0d2b55efdf8b9c7c7e9c4",
+      "token_sha256": "636c8df4ca211abd2a7c4967ac947bab93ffe4eadc0708c88531f9d7a0c3baab",
+      "tokens": "trigger_if = { limit = { exists = this } save_temporary_scope_as = house_check house ?= { house_head = scope:house_check } }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "exists",
+        "house",
+        "house_head",
+        "limit",
+        "save_temporary_scope_as",
+        "trigger_if"
+      ],
+      "named_scopes": [
+        "house_check"
+      ]
+    },
+    {
+      "name": "japan_bloc_war_cb/allowed_for_character",
+      "path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "token_sha256": "1c0e256ddb93700cd6b3a8f1c2830244a9268579e01e2fe28219f8bb51a7b3eb",
+      "tokens": "has_tgp_dlc_trigger = yes tgp_soryo_or_bushido_trigger = yes is_house_head = yes house.house_confederation.leading_house ?= house any_held_title = { is_noble_family_title = yes }",
+      "scripted_dependencies": [
+        "has_tgp_dlc_trigger",
+        "is_house_head",
+        "tgp_soryo_or_bushido_trigger"
+      ],
+      "native_assignment_keys": [
+        "any_held_title",
+        "house.house_confederation.leading_house",
+        "is_noble_family_title"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "mandala_plunder_cb/allowed_for_character",
+      "path": "casus_belli_types/tgp_eastasia_wars.txt",
+      "source_sha256": "e172a89deb2dc4606f782195155f5ce49da8e660a2c03cd1301603d65f5d7ab4",
+      "token_sha256": "41727ea59c9cf90057d7592ce2cdd0b1db7d889ae79ceee3af3b812749f2a18a",
+      "tokens": "has_tgp_dlc_trigger = yes government_has_flag = government_is_mandala house ?= { has_house_head_parameter = can_use_plunder_for_contribution_cb } is_house_head = yes",
+      "scripted_dependencies": [
+        "has_tgp_dlc_trigger",
+        "is_house_head"
+      ],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "has_house_head_parameter",
+        "house"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "ep3_laamp_adventurer_county_invasion/allowed_for_character",
+      "path": "casus_belli_types/07_ep3_wars.txt",
+      "source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "token_sha256": "187b50580da46f7cd3c07fd20cd760d020ebf57bde4940803a97a2f28a84ff25",
+      "tokens": "ep3_adventurer_invasion_allowed_for_character_trigger = yes scope:defender.highest_held_title_tier >= tier_county",
+      "scripted_dependencies": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger"
+      ],
+      "native_assignment_keys": [
+        "scope:defender.highest_held_title_tier"
+      ],
+      "named_scopes": [
+        "defender"
+      ]
+    },
+    {
+      "name": "ep3_adventurer_invasion_allowed_for_character_trigger",
+      "path": "scripted_triggers/00_laamp_triggers.txt",
+      "source_sha256": "7f7c3b0c79a46d994a28bfbca10f958b7767f593be2720c128f981b326f1377b",
+      "token_sha256": "01083d9acd8a73a0b8508868ae23a9e16b83abbb63f9c3772e6a0d718f2cea68",
+      "tokens": "has_ep3_dlc_trigger = yes government_has_flag = government_is_landless_adventurer is_landed = no",
+      "scripted_dependencies": [
+        "has_ep3_dlc_trigger"
+      ],
+      "native_assignment_keys": [
+        "government_has_flag",
+        "is_landed"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_ep3_dlc_trigger",
+      "path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "source_sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+      "token_sha256": "0f16170e49fe4adc1dc1709413f188ed5e8b8c595319c6e60d7456e676022bc4",
+      "tokens": "has_dlc_feature = roads_to_power",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "has_dlc_feature"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "ep3_laamp_adventurer_duchy_invasion/allowed_for_character",
+      "path": "casus_belli_types/07_ep3_wars.txt",
+      "source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "token_sha256": "53e713896faa7e78ed4c09d450a28788f82fd23f20c32d35620cd1caf4420168",
+      "tokens": "ep3_adventurer_invasion_allowed_for_character_trigger = yes scope:defender.highest_held_title_tier >= tier_duchy",
+      "scripted_dependencies": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger"
+      ],
+      "native_assignment_keys": [
+        "scope:defender.highest_held_title_tier"
+      ],
+      "named_scopes": [
+        "defender"
+      ]
+    },
+    {
+      "name": "ep3_laamp_adventurer_kingdom_invasion/allowed_for_character",
+      "path": "casus_belli_types/07_ep3_wars.txt",
+      "source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "token_sha256": "731e5510a8e894d311840c9b32c6d8cd944c4e03023d5508db1b2eb6f319f977",
+      "tokens": "ep3_adventurer_invasion_allowed_for_character_trigger = yes scope:defender.highest_held_title_tier >= tier_kingdom",
+      "scripted_dependencies": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger"
+      ],
+      "native_assignment_keys": [
+        "scope:defender.highest_held_title_tier"
+      ],
+      "named_scopes": [
+        "defender"
+      ]
+    },
+    {
+      "name": "ep3_laamp_adventurer_empire_invasion/allowed_for_character",
+      "path": "casus_belli_types/07_ep3_wars.txt",
+      "source_sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027",
+      "token_sha256": "d5e9a76d4d2f1e70e6a29395cd7d305428dd56cb91384686caf6119b6fb3fed5",
+      "tokens": "ep3_adventurer_invasion_allowed_for_character_trigger = yes scope:defender.highest_held_title_tier >= tier_empire",
+      "scripted_dependencies": [
+        "ep3_adventurer_invasion_allowed_for_character_trigger"
+      ],
+      "native_assignment_keys": [
+        "scope:defender.highest_held_title_tier"
+      ],
+      "named_scopes": [
+        "defender"
+      ]
+    },
+    {
+      "name": "mpo_nomad_invasion_cb/allowed_for_character",
+      "path": "casus_belli_types/09_mpo_wars.txt",
+      "source_sha256": "39a1bf3466a767c9a71d4d8a019def5fa3a80e0da0ca29b7a31b07d8831f85bd",
+      "token_sha256": "70c5130ade3ce9e26516edb9432ece113972506c3dec9c91ba062c2daafce842",
+      "tokens": "is_independent_ruler = yes government_has_flag = government_is_nomadic trigger_if = { limit = { is_ai = yes } OR = { is_landed = no capital_county = { any_county_situation_sub_region = { situation_sub_region_has_county = prev sub_region_current_phase = situation_steppe_havsarsan_zud_season } } AND = { ai_boldness >= 50 capital_county = { has_bad_season_nomadic_capital_root_trigger = yes } } mpo_nomad_invasion_war_ai_trigger = { NOMAD = root } } trigger_if = { limit = { NOT = { capital_county = { any_county_situation_sub_region = { situation_sub_region_has_county = prev sub_region_current_phase = situation_steppe_havsarsan_zud_season } } } } NOT = { sub_realm_size > 40 } } }",
+      "scripted_dependencies": [
+        "has_bad_season_nomadic_capital_root_trigger",
+        "mpo_nomad_invasion_war_ai_trigger"
+      ],
+      "native_assignment_keys": [
+        "AND",
+        "NOMAD",
+        "NOT",
+        "OR",
+        "ai_boldness",
+        "any_county_situation_sub_region",
+        "capital_county",
+        "government_has_flag",
+        "is_ai",
+        "is_independent_ruler",
+        "is_landed",
+        "limit",
+        "situation_sub_region_has_county",
+        "sub_realm_size",
+        "sub_region_current_phase",
+        "trigger_if"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "mpo_nomad_invasion_war_ai_trigger",
+      "path": "scripted_triggers/mpo_scripted_triggers.txt",
+      "source_sha256": "5dbbf145a4890f33cf1c02694d9b8967388a5c033ae3e8c27a4a4aa80a398f79",
+      "token_sha256": "8a0e00e523cdb747b0ad34ef5ba587ad0110da46915102f7a5d056b4dc300912",
+      "tokens": "OR = { has_realm_law = nomadic_authority_3 has_realm_law = nomadic_authority_4 has_realm_law = nomadic_authority_5 } is_independent_ruler = yes is_at_war = no gold > 0 NOT = { has_realm_law = uncrowned } OR = { AND = { situation:dynastic_cycle ?= { situation_current_phase = situation_dynastic_cycle_phase_chaos } NOT = { exists = title:h_china.holder } capital_province = { geographical_region = world_steppe_east } } title:e_byzantium.holder ?= { in_diplomatic_range = $NOMAD$ NOR = { has_any_good_relationship_with_character_trigger = { CHARACTER = $NOMAD$ } is_allied_to = $NOMAD$ is_tributary_of = $NOMAD$ $NOMAD$ = { is_tributary_of_suzerain_or_above = prev } $NOMAD$ = { has_truce = prev } } current_military_strength < $NOMAD$.seventy_percent_of_current_military_strength OR = { gold <= $NOMAD$.fifty_percent_of_current_gold current_military_strength <= $NOMAD$.forty_percent_of_current_military_strength } } title:h_china.holder ?= { in_diplomatic_range = $NOMAD$ NOR = { has_any_good_relationship_with_character_trigger = { CHARACTER = $NOMAD$ } is_allied_to = $NOMAD$ is_tributary_of = $NOMAD$ $NOMAD$ = { is_tributary_of_suzerain_or_above = prev } $NOMAD$ = { has_truce = prev } } current_military_strength < $NOMAD$.seventy_percent_of_current_military_strength OR = { gold <= $NOMAD$.fifty_percent_of_current_gold current_military_strength <= $NOMAD$.forty_percent_of_current_military_strength } } capital_county ?= { any_county_situation_sub_region = { situation_sub_region_has_county = prev sub_region_current_phase = situation_steppe_havsarsan_zud_season } } AND = { is_landed = no domicile.herd >= 8000 } AND = { ai_energy > low_negative_ai_value is_gurkhan = no sub_realm_size <= 30 domicile ?= { herd <= two_thirds_max_herd_value } exists = $NOMAD$.house primary_title = { previous_holder ?= { house ?= $NOMAD$.house } any_past_holder = { count >= 2 NOT = { this = $NOMAD$ } house ?= $NOMAD$.house trigger_if = { limit = { is_alive = no } time_since_death = { years <= 120 } } } } } AND = { ai_vengefulness < low_positive_ai_value is_gurkhan = no any_neighboring_realm_with_tributaries_owner = { NOT = { is_tributary_of_suzerain_or_above = $NOMAD$ } OR = { AND = { government_has_flag = government_is_nomadic seventy_percent_of_current_military_strength >= $NOMAD$.current_military_strength NOR = { is_allied_to = $NOMAD$ has_truce = $NOMAD$ } } AND = { is_tributary = yes top_suzerain = { NOT = { this = $NOMAD$ } government_has_flag = government_is_nomadic seventy_percent_of_current_military_strength > $NOMAD$.current_military_strength NOR = { is_tributary_of = $NOMAD$ is_allied_to = $NOMAD$ has_truce = $NOMAD$ } } } } } } }",
+      "scripted_dependencies": [
+        "has_any_good_relationship_with_character_trigger",
+        "is_gurkhan"
+      ],
+      "native_assignment_keys": [
+        "$NOMAD$",
+        "AND",
+        "CHARACTER",
+        "NOR",
+        "NOT",
+        "OR",
+        "ai_energy",
+        "ai_vengefulness",
+        "any_county_situation_sub_region",
+        "any_neighboring_realm_with_tributaries_owner",
+        "any_past_holder",
+        "capital_county",
+        "capital_province",
+        "count",
+        "current_military_strength",
+        "domicile",
+        "domicile.herd",
+        "exists",
+        "geographical_region",
+        "gold",
+        "government_has_flag",
+        "has_realm_law",
+        "has_truce",
+        "herd",
+        "house",
+        "in_diplomatic_range",
+        "is_alive",
+        "is_allied_to",
+        "is_at_war",
+        "is_independent_ruler",
+        "is_landed",
+        "is_tributary",
+        "is_tributary_of",
+        "is_tributary_of_suzerain_or_above",
+        "limit",
+        "previous_holder",
+        "primary_title",
+        "seventy_percent_of_current_military_strength",
+        "situation:dynastic_cycle",
+        "situation_current_phase",
+        "situation_sub_region_has_county",
+        "sub_realm_size",
+        "sub_region_current_phase",
+        "this",
+        "time_since_death",
+        "title:e_byzantium.holder",
+        "title:h_china.holder",
+        "top_suzerain",
+        "trigger_if",
+        "years"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "is_gurkhan",
+      "path": "scripted_triggers/mpo_scripted_triggers.txt",
+      "source_sha256": "5dbbf145a4890f33cf1c02694d9b8967388a5c033ae3e8c27a4a4aa80a398f79",
+      "token_sha256": "a2700e7889b029ca4506e544b9ee22dbfba867f47f655e1426b106bbf41bbdb0",
+      "tokens": "trigger_if = { limit = { exists = situation:the_great_steppe } this = situation:the_great_steppe.situation_top_herd }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "exists",
+        "limit",
+        "this",
+        "trigger_if"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_any_good_relationship_with_character_trigger",
+      "path": "scripted_triggers/00_relation_triggers.txt",
+      "source_sha256": "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44",
+      "token_sha256": "cd67517151cdd6c65b95e973707404affe3a54c3898a506d11df477fa170d095",
+      "tokens": "OR = { has_any_mild_good_relationship_with_character_trigger = { CHARACTER = $CHARACTER$ } has_any_moderate_good_relationship_with_character_trigger = { CHARACTER = $CHARACTER$ } }",
+      "scripted_dependencies": [
+        "has_any_mild_good_relationship_with_character_trigger",
+        "has_any_moderate_good_relationship_with_character_trigger"
+      ],
+      "native_assignment_keys": [
+        "CHARACTER",
+        "OR"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_any_moderate_good_relationship_with_character_trigger",
+      "path": "scripted_triggers/00_relation_triggers.txt",
+      "source_sha256": "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44",
+      "token_sha256": "84d572fa462b8d868dfd2c49bec5b2066e3d231f86394d8efae8fc9fca59e9d5",
+      "tokens": "OR = { has_relation_lover = $CHARACTER$ has_relation_friend = $CHARACTER$ }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "OR",
+        "has_relation_friend",
+        "has_relation_lover"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_any_mild_good_relationship_with_character_trigger",
+      "path": "scripted_triggers/00_relation_triggers.txt",
+      "source_sha256": "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44",
+      "token_sha256": "702889139736dd87351cb0b412610af4bedd8c42a541d0f388a05def6db47ec1",
+      "tokens": "OR = { has_relation_potential_lover = $CHARACTER$ has_relation_crush = $CHARACTER$ has_relation_potential_friend = $CHARACTER$ has_relation_guardian = $CHARACTER$ has_relation_ward = $CHARACTER$ has_relation_elder = $CHARACTER$ has_relation_disciple = $CHARACTER$ }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "OR",
+        "has_relation_crush",
+        "has_relation_disciple",
+        "has_relation_elder",
+        "has_relation_guardian",
+        "has_relation_potential_friend",
+        "has_relation_potential_lover",
+        "has_relation_ward"
+      ],
+      "named_scopes": []
+    },
+    {
+      "name": "has_bad_season_nomadic_capital_root_trigger",
+      "path": "scripted_triggers/mpo_scripted_triggers.txt",
+      "source_sha256": "5dbbf145a4890f33cf1c02694d9b8967388a5c033ae3e8c27a4a4aa80a398f79",
+      "token_sha256": "b2036393a4ec59223e0e5ce197d1eb2c024a17e9d064262f40ead4ebf9cf2769",
+      "tokens": "any_county_situation_sub_region = { situation_sub_region_has_county = prev OR = { sub_region_current_phase = situation_steppe_white_zud_season sub_region_current_phase = situation_steppe_cold_zud_season sub_region_current_phase = situation_steppe_severe_drought_season sub_region_current_phase = situation_steppe_havsarsan_zud_season } }",
+      "scripted_dependencies": [],
+      "native_assignment_keys": [
+        "OR",
+        "any_county_situation_sub_region",
+        "situation_sub_region_has_county",
+        "sub_region_current_phase"
+      ],
+      "named_scopes": []
+    }
+  ],
+  "source_files": [
+    {
+      "path": "casus_belli_types/00_conquest.txt",
+      "bytes": 41829,
+      "sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38"
+    },
+    {
+      "path": "casus_belli_types/00_dejure_war.txt",
+      "bytes": 40675,
+      "sha256": "18c0d3647fd936b37e3d26e28980ec45657841414d6397667891ad2e73ac1f85"
+    },
+    {
+      "path": "casus_belli_types/00_invasion_war.txt",
+      "bytes": 53957,
+      "sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc"
+    },
+    {
+      "path": "casus_belli_types/00_nomadic_conquest.txt",
+      "bytes": 17531,
+      "sha256": "5ad2a410a7263aa7e2f140b12894206802c4a8ce7905bd35a6abaca6e76af007"
+    },
+    {
+      "path": "casus_belli_types/00_subjugation.txt",
+      "bytes": 15007,
+      "sha256": "b755cca70950d95192080368228ea03d8df6889a0129a9962509d936e4f8f0bf"
+    },
+    {
+      "path": "casus_belli_types/01_fp1_wars.txt",
+      "bytes": 35160,
+      "sha256": "8fcf8195d1b97c7b33777b0f1085c7f1d6477cf921a1fc933dad0d59778593ee"
+    },
+    {
+      "path": "casus_belli_types/03_fp2_wars.txt",
+      "bytes": 26995,
+      "sha256": "1ad389c81813f5a3a7fdcae5ae8c176364f467ad5dc618649322233251dd7ca4"
+    },
+    {
+      "path": "casus_belli_types/07_ep3_wars.txt",
+      "bytes": 179469,
+      "sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027"
+    },
+    {
+      "path": "casus_belli_types/09_mpo_wars.txt",
+      "bytes": 140700,
+      "sha256": "39a1bf3466a767c9a71d4d8a019def5fa3a80e0da0ca29b7a31b07d8831f85bd"
+    },
+    {
+      "path": "casus_belli_types/10_tgp_japan_wars.txt",
+      "bytes": 77732,
+      "sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16"
+    },
+    {
+      "path": "casus_belli_types/tgp_eastasia_wars.txt",
+      "bytes": 14551,
+      "sha256": "e172a89deb2dc4606f782195155f5ce49da8e660a2c03cd1301603d65f5d7ab4"
+    },
+    {
+      "path": "scripted_triggers/00_ai_value_triggers.txt",
+      "bytes": 9914,
+      "sha256": "9196b7840b56233f871832140974d30c4957e79ebb960c8983e292a4477a8f3d"
+    },
+    {
+      "path": "scripted_triggers/00_dynasty_triggers.txt",
+      "bytes": 4804,
+      "sha256": "67aa08c89326d077ddec18db824f421d54fb31aaecc0d2b55efdf8b9c7c7e9c4"
+    },
+    {
+      "path": "scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "bytes": 2631,
+      "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066"
+    },
+    {
+      "path": "scripted_triggers/00_laamp_triggers.txt",
+      "bytes": 26937,
+      "sha256": "7f7c3b0c79a46d994a28bfbca10f958b7767f593be2720c128f981b326f1377b"
+    },
+    {
+      "path": "scripted_triggers/00_relation_triggers.txt",
+      "bytes": 28552,
+      "sha256": "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44"
+    },
+    {
+      "path": "scripted_triggers/00_war_and_peace_triggers.txt",
+      "bytes": 31077,
+      "sha256": "cbe25f04d61a2f2899e29b15cd6aeffd1ffc33154655c965fd441f3727183545"
+    },
+    {
+      "path": "scripted_triggers/07_ep3_triggers.txt",
+      "bytes": 52819,
+      "sha256": "ddd632e2f0028568d59b9907bf9a63ca39c09201588f47d7491187c628d42eb7"
+    },
+    {
+      "path": "scripted_triggers/10_tgp_japan_triggers.txt",
+      "bytes": 22800,
+      "sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06"
+    },
+    {
+      "path": "scripted_triggers/10_tgp_triggers.txt",
+      "bytes": 29024,
+      "sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c"
+    },
+    {
+      "path": "scripted_triggers/mpo_scripted_triggers.txt",
+      "bytes": 50647,
+      "sha256": "5dbbf145a4890f33cf1c02694d9b8967388a5c033ae3e8c27a4a4aa80a398f79"
+    },
+    {
+      "path": "scripted_triggers/pam_antipope_triggers.txt",
+      "bytes": 7948,
+      "sha256": "6457fd56e3ba27e1ca5a9cd7913322c1502806505d62c360da5b13d6acec038a"
+    },
+    {
+      "path": "scripted_triggers/tgp_mandala_triggers.txt",
+      "bytes": 34235,
+      "sha256": "cdc1e640f244936327d2f8274f157a87a57480ec40db3cbc9fbddd8deed0696b"
+    }
+  ],
+  "feudal_definition": {
+    "path": "governments/00_government_types.txt",
+    "sha256": "f7f07123192eebf4053f917d8458639126ab42e2a7efa9176f43495a6275c86b",
+    "flags": [
+      "government_is_feudal",
+      "government_is_settled",
+      "may_elevate_co_monarch",
+      "government_uses_crown_authority",
+      "government_uses_domain_limit"
+    ],
+    "current_Robert_government_read": false
+  },
+  "parser_frontier": {
+    "trigger_definitions_indexed": 3842,
+    "cb_definitions_indexed": 126,
+    "parse_errors_outside_selected_closures": [
+      {
+        "path": "scripted_triggers/00_childhood_triggers.txt",
+        "error": "unexpected top-level token: ['@infant_upper_age_threshold_value', '=', '2']"
+      }
+    ]
+  },
+  "historical_profile": {
+    "source_machine_id": "unknown",
+    "source_machine_identity_verified": false,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\profile-output\\declarable-query.jsonl",
+    "window_offset": 2221633,
+    "window_bytes": 65536,
+    "window_sha256": "9765060dea7f43eb9e141b0702383eeb6672a0ea44f3378f7fc9a3b7f8720770",
+    "record_sha256": "88fca2fe1746dc583ba0b5663d1b2f90813a2822cb0856aa9c92153c9420de8b",
+    "recorded_unix_ns": 1792303765677712600,
+    "actor_character_id": 82925,
+    "date_raw": 53401728,
+    "total_ns": 4496534100,
+    "top_rows_by_evaluate_ns": [
+      {
+        "ordinal": 26,
+        "key": "hungarian_migration_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 320378200,
+        "materialize_and_clear_ns": 812600
+      },
+      {
+        "ordinal": 114,
+        "key": "japan_imperial_expansion_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 162717300,
+        "materialize_and_clear_ns": 817000
+      },
+      {
+        "ordinal": 47,
+        "key": "directed_great_holy_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 108878200,
+        "materialize_and_clear_ns": 824600
+      },
+      {
+        "ordinal": 115,
+        "key": "japan_imperial_reconquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 105777800,
+        "materialize_and_clear_ns": 797400
+      },
+      {
+        "ordinal": 11,
+        "key": "claim_cb",
+        "evaluations": 38211,
+        "available": 7,
+        "rows": 9,
+        "evaluate_ns": 100312100,
+        "materialize_and_clear_ns": 852300
+      },
+      {
+        "ordinal": 123,
+        "key": "pam_investiture_conflict_cb",
+        "evaluations": 38211,
+        "available": 260,
+        "rows": 260,
+        "evaluate_ns": 84288500,
+        "materialize_and_clear_ns": 981100
+      },
+      {
+        "ordinal": 44,
+        "key": "excommunication_war",
+        "evaluations": 38211,
+        "available": 1,
+        "rows": 1,
+        "evaluate_ns": 83613300,
+        "materialize_and_clear_ns": 827100
+      },
+      {
+        "ordinal": 67,
+        "key": "leg_demand_fealty_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 79104100,
+        "materialize_and_clear_ns": 792300
+      },
+      {
+        "ordinal": 122,
+        "key": "pam_antiking_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 78809700,
+        "materialize_and_clear_ns": 806400
+      },
+      {
+        "ordinal": 19,
+        "key": "imperial_reconquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 78471700,
+        "materialize_and_clear_ns": 840700
+      },
+      {
+        "ordinal": 22,
+        "key": "dissolve_empire_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 77871900,
+        "materialize_and_clear_ns": 809700
+      },
+      {
+        "ordinal": 13,
+        "key": "duchy_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 74893100,
+        "materialize_and_clear_ns": 808500
+      },
+      {
+        "ordinal": 49,
+        "key": "tribal_subjugation_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 74299300,
+        "materialize_and_clear_ns": 800100
+      },
+      {
+        "ordinal": 45,
+        "key": "flowery_war_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 73706900,
+        "materialize_and_clear_ns": 806500
+      },
+      {
+        "ordinal": 121,
+        "key": "pam_challenge_hof_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 72380800,
+        "materialize_and_clear_ns": 801800
+      },
+      {
+        "ordinal": 33,
+        "key": "invasion_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 71236600,
+        "materialize_and_clear_ns": 809400
+      },
+      {
+        "ordinal": 52,
+        "key": "vassalization_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 70698300,
+        "materialize_and_clear_ns": 798600
+      },
+      {
+        "ordinal": 65,
+        "key": "mythical_ancestor_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 70019500,
+        "materialize_and_clear_ns": 801800
+      },
+      {
+        "ordinal": 55,
+        "key": "fp1_varangian_adventurer_conquest",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 69781300,
+        "materialize_and_clear_ns": 797000
+      },
+      {
+        "ordinal": 105,
+        "key": "grand_campaign_kingdom_invasion_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 69082900,
+        "materialize_and_clear_ns": 797100
+      },
+      {
+        "ordinal": 117,
+        "key": "eradicate_house_cb",
+        "evaluations": 38211,
+        "available": 1,
+        "rows": 1,
+        "evaluate_ns": 68811100,
+        "materialize_and_clear_ns": 804000
+      },
+      {
+        "ordinal": 15,
+        "key": "ireland_laudabiliter_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 68582200,
+        "materialize_and_clear_ns": 778900
+      },
+      {
+        "ordinal": 34,
+        "key": "clan_invasion_war",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 68568700,
+        "materialize_and_clear_ns": 820500
+      },
+      {
+        "ordinal": 62,
+        "key": "fp3_free_house_member_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 68129300,
+        "materialize_and_clear_ns": 823200
+      },
+      {
+        "ordinal": 12,
+        "key": "county_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 67443800,
+        "materialize_and_clear_ns": 807400
+      },
+      {
+        "ordinal": 18,
+        "key": "individual_duchy_de_jure_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 66743400,
+        "materialize_and_clear_ns": 786900
+      },
+      {
+        "ordinal": 120,
+        "key": "pam_humiliation_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 65550500,
+        "materialize_and_clear_ns": 797500
+      },
+      {
+        "ordinal": 21,
+        "key": "dismantle_byz_pretender_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 63871600,
+        "materialize_and_clear_ns": 793500
+      },
+      {
+        "ordinal": 119,
+        "key": "japan_bloc_war_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 63708700,
+        "materialize_and_clear_ns": 802000
+      },
+      {
+        "ordinal": 58,
+        "key": "fp2_mediterranean_conquest_cb",
+        "evaluations": 38211,
+        "available": 0,
+        "rows": 0,
+        "evaluate_ns": 63451700,
+        "materialize_and_clear_ns": 782200
+      }
+    ],
+    "strict_family_calls": 420412,
+    "strict_family_evaluate_ns": 688904800,
+    "scope": "historical prioritization only; not current hardware facts or expected savings; available0 does not prove actor no"
+  },
+  "qualification_gaps": [
+    "loaded CB and scripted-trigger overrides, DLC and replace_path for every extra family",
+    "explicit whitelist review of new deterministic native keys",
+    "local temporary-scope alias ownership/admission for four local families",
+    "adventurer roots name defender; cannot use entire isolated actor trigger",
+    "MPO root/prev and parameterized dependencies remain unspecialized",
+    "future original native actor no and same-frame full/shadow ordered tuple equivalence"
+  ],
+  "producer_reference": {
+    "path": "tools/g2_saved_campaign/audit_declaration_actor_candidates_12004.py",
+    "sha256": "5a01c3bea0c7f81d1210b3c33ce2b20b870d6899b97a04459ee3b2e18ebb51d4",
+    "modified": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "micro_pool_limit_bytes": 1048576,
+    "heavy_writes": 0,
+    "deletions": 0,
+    "volume_total_bytes": 4096787476480,
+    "volume_free_bytes": 178405523456
+  },
+  "closeout": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T04:09:11.581616+00:00",
+    "volume_total_bytes": 4096787476480,
+    "volume_free_bytes": 178405261312,
+    "temporary_probe_exists": false,
+    "source": "Python Path.stat/exists and shutil.disk_usage; no independent heavy-write admission"
+  },
+  "non_product_attempts": [
+    {
+      "receipt": "c3a21a",
+      "exit_code": 1,
+      "reason": "Windows command length limit; inline extraction did not execute"
+    },
+    {
+      "receipt": "ffbc00",
+      "exit_code": 1,
+      "reason": "Ad hoc read-only count expression used invalid lambda syntax; no product mutation; unused count not claimed"
+    }
+  ]
+}

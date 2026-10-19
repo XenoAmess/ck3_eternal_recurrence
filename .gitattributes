@@ -1118,3 +1118,18 @@ docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/source-copyp
 docs/ck3-native-ai/evidence/episode04-r217-county-owner-entry-12004/index.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/ordered-source-delivery.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/county-primary-direct-owner-v2/integration.source.json -text whitespace=cr-at-eol
+
+# Preserve exact machine receipts and source manifests for Robert v20261019.
+docs/ck3-native-ai/evidence/c3-warm-life-opening-classifier-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-crown-priority-classifier-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-partial-sway143-recovery-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-native-deadline147-classifier-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-native-deadline147-actual-accepted-regression01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-143-147-local-recovery-readback01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-clean-classifier-four-paths-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-met153-metadata-clear-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-recovery-source-ready-manifest01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c3-clean160-actual-adoption-readback01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/native26-performance-build-qualification-2026-10-19.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/p51-auto143-subdecisions-2026-10-19.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/declaration-actor-next-families-source-2026-10-19.json -text whitespace=cr-at-eol

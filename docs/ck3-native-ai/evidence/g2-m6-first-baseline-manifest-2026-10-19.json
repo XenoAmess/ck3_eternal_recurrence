@@ -1,0 +1,15 @@
+{
+  "schema": "g2.m6.closed-evidence-manifest/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "campaign_id": "robert-first30-v20261019",
+  "batch_id": "auto143-partial-readonly-frozen",
+  "closed_at_utc": "2026-10-19T04:13:02.764407Z",
+  "scope": "Frozen partial readonly producer state; AUTO143 itself returned an error and is not a completed ordinary AUTO",
+  "sources": [
+    {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto143-source-review01/state/active-scheme-sway-formal-private-v1.json", "bytes": 8653, "sha256": "48e0ad4d9731d111abbb8d99a6d617d80d9db79a1c373ad6d3c2717f34c07e28", "closed": true, "runtime_identity": {"Game_pid": 214568, "Game_creation_filetime": 134368503807325674, "App_Queue_generation": "retained P37C3", "business_source_namespace": "src03", "identity_source": "M0 freeze META.json/source_binding"}},
+    {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto143-source-review01/state/ordinary-sway-schedule-v1.json", "bytes": 430, "sha256": "7ca7c35b3776ba5c674bd03d14b76f760417c7c9c34c65532bed25e07ceb956f", "closed": true},
+    {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto143-source-review01/META.json", "bytes": 8347, "sha256": "aa3bc5375873b8dcd5bd7c45d43d1ff5a010857482e62f8ede8d3d9a9b85099d", "closed": true},
+    {"path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto143-source-review01/p37-responses/0143-1-result.json", "bytes": 553, "sha256": "6b5644b10f62a4d8a7e08382ca1f2f587a34bc2e0c4336f48cc82bbd906122fb", "closed": true}
+  ],
+  "selections": [{"source": 0, "pointer": "/resolved", "kind": "ledger_episode"}]
+}

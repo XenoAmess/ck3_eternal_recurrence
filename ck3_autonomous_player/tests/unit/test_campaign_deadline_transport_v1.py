@@ -19,14 +19,15 @@ from ck3_autonomous_player.tests.unit.test_native_bridge_driver import (
 
 class CampaignDeadlineCompoundTests(unittest.TestCase):
     def driver(self, date="1066.10.10", *, battle=False, overshoot=False, initial_speed=1,
-               early_event_days=None):
+               early_event_days=None, deferred_native_pause=False):
         endpoint = FakeEndpoint()
         driver = n.NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint,
             command_timeout_seconds=.2, life_advance_timeout_seconds=.2)
         endpoint.publish(_hello("game.state.snapshot", "game.command.resume-map", "game.command.pause-map",
             *[f"game.command.set-speed-{speed}" for speed in range(1, 6)],
             n._TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY, n._TACTICAL_DAILY_SENTINEL_STATUS_CAPABILITY,
-            n._TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY))
+            n._TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY,
+            *([n.QUERY_WAR_RESULTS_WINDOW_CAPABILITY] if deferred_native_pause else [])))
         start = date_to_raw(date)
         players = [_army(501, in_combat=True)] if battle else []
         wars = [_war(allied_armies=players)] if battle else []
@@ -64,6 +65,8 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
                     pause_wrapper_called=not event_boundary, pause_observed=not event_boundary)
             elif step.startswith(n._TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX):
                 result["status"] = "canceled"
+            elif step == "pause-map" and deferred_native_pause:
+                result.update(accepted=False, status="rejected", error="CK3 map state is unavailable")
             endpoint.publish({"type": "command_result", "protocol_version": 1,
                 "request_id": frame["request_id"], "ok": True, "result": result})
             if step.startswith("set-speed-"):
@@ -74,11 +77,23 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
                 if early_event_days is not None:
                     state["paused"] = False
                     state["event"] = {"instance_id": 1, "option_count": 1}
+                elif deferred_native_pause:
+                    state["paused"] = False
                 state["revision"] += 1; publish()
             elif step == "pause-map":
                 state["paused"] = True
                 state["revision"] += 1; publish()
         endpoint.send_hook = answer
+        if deferred_native_pause:
+            original_wait = driver.state.wait_for_public_change
+            def publish_native_pause_after_date(revision, timeout):
+                if (state["arm"] is not None and state["date"] == state["arm"]["target_date_raw"]
+                        and not state["paused"]):
+                    state["paused"] = True
+                    state["revision"] += 1
+                    publish()
+                return original_wait(revision, timeout)
+            driver.state.wait_for_public_change = publish_native_pause_after_date
         self.addCleanup(driver.close)
         return driver, endpoint
 
@@ -234,6 +249,20 @@ class CampaignDeadlineCompoundTests(unittest.TestCase):
         with self.assertRaises(n.BridgeUnavailableError):
             driver.execute_step("life-advance", expected_revision=int(driver.take_snapshot()["revision"]))
         self.assertEqual(self.steps(endpoint).count("resume-map"), 1)
+
+    def test_native_target_date_publication_waits_for_native_pause_without_redundant_pause_command(self):
+        driver, endpoint = self.driver("1066.10.15", initial_speed=5, deferred_native_pause=True)
+        result = driver.execute_step("life-advance", expected_revision=int(driver.take_snapshot()["revision"]))
+        self.assertEqual(result["elapsed_days"], 8)
+        self.assertTrue(result["paused"])
+        proof = result["campaign_deadline_native_clock_v1"]
+        self.assertEqual(result["ending_date_raw"], proof["target_date_raw"])
+        self.assertEqual(proof["stopped"]["trigger_reasons"], ["date_deadline"])
+        self.assertTrue(proof["stopped"]["pause_observed"])
+        self.assertEqual(proof["stopped"]["overshoot_days"], 0)
+        self.assertIsNone(proof["early_boundary_cancel"])
+        self.assertEqual(self.steps(endpoint).count("resume-map"), 1)
+        self.assertNotIn("pause-map", self.steps(endpoint))
 
 
 if __name__ == "__main__":

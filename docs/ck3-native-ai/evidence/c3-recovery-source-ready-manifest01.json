@@ -1,0 +1,131 @@
+{
+  "schema": "xar.perf-harness-c3-recovery-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:33:08.068541+00:00",
+  "source_files_frozen": true,
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/prepare_c3_life_opening_classifier_v1.py",
+      "bytes": 11037,
+      "sha256": "3617850f00b88d947aad17ddd918d45b96b80041f5d4e7572dfcf67ffca781b7"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_c3_crown_pending_classifier_v1.py",
+      "bytes": 9748,
+      "sha256": "81cb6651d07057497fb6aedde51cb3b5ad7e47622309c968da2cc005a3e63d00"
+    },
+    {
+      "path": "tools/g2_saved_campaign/partial_sway_143_recovery_v1.py",
+      "bytes": 12102,
+      "sha256": "cbe0a03f292da586c3e2c2060754eb46322e7c8eb779c1ada4ed7492c90998e4"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_partial_sway_143_recovery_v1.py",
+      "bytes": 10484,
+      "sha256": "9fdc7d0b5a977d3c2529cb005c87cf386f6b2cb3a12a3001b704ccda9e52d16c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/campaign_deadline_clock_credit_v1.py",
+      "bytes": 9160,
+      "sha256": "102a2b94f742e14c9f9fb3fbbad14b3c21cf2e1a9ac7626e8ddce5d82fcbc883"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_campaign_deadline_clock_classifier_v1.py",
+      "bytes": 10647,
+      "sha256": "9ee80f86e3611bf520a0cc92cd77612501bc576f25f4b0caee6c26198ba076b6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/qualify_campaign_deadline_actual_accepted_v1.py",
+      "bytes": 3522,
+      "sha256": "911b0808a260efe819b1338128977d23dfe96ae0add49b8154651c2aa1d4f378"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_c3_clean_classifier_install_v1.py",
+      "bytes": 2869,
+      "sha256": "219a0997880da7ef3b2152d6287f2a2242c552ece85602eff9834c2e38199e2a"
+    },
+    {
+      "path": "tools/g2_saved_campaign/completed_metrics_metadata_clear_v1.py",
+      "bytes": 6030,
+      "sha256": "a3e765a6fa4e63cb3c7d3494047f816fe4eb4e103febf4050b8b1afc7fc98d5b"
+    },
+    {
+      "path": "tools/g2_saved_campaign/prepare_completed_metrics_metadata_clear_v1.py",
+      "bytes": 8500,
+      "sha256": "d4516e6f929d63c68657665d48e9822cbbbc3355edc5e774320d2cd5e659e09c"
+    },
+    {
+      "path": "docs/ck3-native-ai/c3-warm-lifestyle-classifier-recovery-2026-10-19.md",
+      "bytes": 3491,
+      "sha256": "43cade856c4d0270b98f1382ba3402cedc209df6f25f523a7d134dc4127a8dc5"
+    },
+    {
+      "path": "docs/ck3-native-ai/c3-crown-priority-classifier-recovery-2026-10-19.md",
+      "bytes": 3057,
+      "sha256": "d4698d9d3cbc63de0a898792dd4e2e5a5193e33763462215f24af51bd11bc2ed"
+    },
+    {
+      "path": "docs/ck3-native-ai/c3-partial-sway143-recovery-2026-10-19.md",
+      "bytes": 2820,
+      "sha256": "50bab61e3cd4d2ca4bd92471a7a038a4709b5149d3d32375b1460b2b10257722"
+    },
+    {
+      "path": "docs/ck3-native-ai/c3-native-deadline147-classifier-2026-10-19.md",
+      "bytes": 3982,
+      "sha256": "6d4d2b78a080f9eae6d76e4e30ac26c39daf6a91148d772969330d9728d5772f"
+    },
+    {
+      "path": "docs/ck3-native-ai/c3-clean-classifier-metadata-recovery-2026-10-19.md",
+      "bytes": 3493,
+      "sha256": "b71ac0beeca0a0ba5fdd247a4f6b03f3c516fdb54b81334e14be231d4fd932c0"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-warm-life-opening-classifier-qualification01.json",
+      "bytes": 5091,
+      "sha256": "eefcba7815187034c8bb7ed0b9eee73b475a01472019e77e72ea75a89b2469f4"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-crown-priority-classifier-qualification01.json",
+      "bytes": 5792,
+      "sha256": "8464a9e502d727f46664f6503f102f6d0f5364a06c9506401dceb9328f133a9c"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-local-classifier-recovery-readback01.json",
+      "bytes": 3168,
+      "sha256": "ca89a5cb3c3bbf545a62e489d3466585ece8f94f36d997a83f8083beb63f0a7d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-partial-sway143-recovery-qualification01.json",
+      "bytes": 3616,
+      "sha256": "c41b59338210291596c4e612fdcc2398ca0f4776e8bad26bd260a570d84e8ef6"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-native-deadline147-classifier-qualification01.json",
+      "bytes": 7476,
+      "sha256": "f7c4e7c9dc22c1561aa13a8e7113c6ca0ad082ba06829b5866f83b6cf25a1a8f"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-native-deadline147-actual-accepted-regression01.json",
+      "bytes": 3867,
+      "sha256": "719c5759837526ffd7644b3383dc32a0b7f85990ff3f64f8b415a3c6a4687cec"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-143-147-local-recovery-readback01.json",
+      "bytes": 9132,
+      "sha256": "a23af326500cfdc41c1dae6e89fc4245c93537acb02d42318d38600b6ffb706d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-clean-classifier-four-paths-qualification01.json",
+      "bytes": 1260,
+      "sha256": "0c10cf72c374a20b09b153d463f7e6314471dd1a5726a43dea5627a88718b6a7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c3-met153-metadata-clear-qualification01.json",
+      "bytes": 7434,
+      "sha256": "79fc8789cbc21e760622804976706c1c763ac9da0e50ac0deac3b90f1bf6668d"
+    }
+  ],
+  "total_bytes": 147778,
+  "not_staged_or_committed_by_subagent": true,
+  "scope": "Source-bound actual C3 opening117, Crown130, partial143, Native deadline147, clean4paths and local MET153 metadata clear."
+}

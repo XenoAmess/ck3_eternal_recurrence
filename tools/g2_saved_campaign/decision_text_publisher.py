@@ -20,6 +20,7 @@ SCHEMA = 'xar.ck3.decision-text-publisher/v1'
 ACK_SCHEMA = 'xar.ck3.decision-text-published/v1'
 TITLE = '智能体实时决策'
 LIMIT = 32768
+CALLBACK_PROTOCOL = 'xar.ck3.decision-subdecision/v1'
 
 def utc(): return datetime.now(timezone.utc).isoformat()
 
@@ -110,6 +111,74 @@ def validate_started(reference, *, game=None, machine_id=None, identity_reader=p
 def ack_path(started, source_reference):
     return Path(started['state_root']) / ('TEXT-PUBLISHED-' + source_reference['sha256'] + '.json')
 
+def callback_path(root, sequence, index):
+    if type(sequence) is not int or sequence < 1 or type(index) is not int or index < 1:
+        raise ValueError('Actual positive callback sequence/index required')
+    name = f'{sequence:04d}-0-plan.json' if index == 1 else f'{sequence:04d}-{index:04d}-0-plan.json'
+    return Path(root) / name
+
+def _callback_fingerprint(actual_observation):
+    digest = hashlib.sha256()
+    for chunk in json.JSONEncoder(ensure_ascii=False, sort_keys=True, separators=(',', ':')).iterencode(actual_observation):
+        digest.update(chunk.encode('utf-8'))
+    return digest.hexdigest()
+
+def _callback_identity(row, source):
+    """Each real callback keeps its parent and an independent immutable source."""
+    request = row['request']; sequence = request['parent_sequence']
+    index = request.get('callback_index', 1)
+    if Path(source).name != callback_path(Path(source).parent, sequence, index).name:
+        raise ValueError('Actual callback filename/index differs')
+    if 'callback_index' in request:
+        fingerprint = request.get('actual_observation_sha256')
+        if (request.get('callback_protocol') != CALLBACK_PROTOCOL
+                or not isinstance(fingerprint, str) or len(fingerprint) != 64
+                or any(c not in '0123456789abcdef' for c in fingerprint)):
+            raise ValueError('Actual callback source identity differs')
+
+def publish_callback_observation(row, publisher_started_pin, *, actual_observation,
+                                 timeout_seconds=5, identity_reader=process_identity, recording=True):
+    """Publish each real internal plan once, without replaying any business call."""
+    started = validate_started(publisher_started_pin, identity_reader=identity_reader, recording=recording)
+    config = checked(started['configuration']); request = row.get('request') or {}
+    sequence = request.get('parent_sequence'); body = (row.get('result') or {}).get('structured_content') or {}
+    if (row.get('source') != 'actual GameplayBridgeService.before_submit callback'
+            or body.get('selected_step') != actual_observation.get('selected_step')
+            or any(body.get(k) != actual_observation.get(k) for k in ('snapshot_id', 'revision'))):
+        raise ValueError('Actual Service observation does not bind this compact callback')
+    root = Path(started['session']) / 'p37-responses'
+    first = callback_path(root, sequence, 1)
+    lock = first.with_name(first.name + '.publish.lock')
+    lock_stream = lock.open('x')
+    try:
+        with lock_stream:
+            if (root / f'{sequence:04d}-1-result.json').exists():
+                raise FileExistsError('Parent request already has a result; no further callback or action replay')
+            fingerprint = _callback_fingerprint(actual_observation)
+            index = 1
+            while True:
+                output = callback_path(root, sequence, index)
+                if not output.exists():
+                    break
+                prior = read(output); part = prior.get('request') or {}
+                validate_observation(prior, output, config)
+                if part.get('callback_protocol') != CALLBACK_PROTOCOL:
+                    raise FileExistsError('Legacy single decision was already published; no action replay')
+                if part.get('actual_observation_sha256') == fingerprint:
+                    raise FileExistsError('This exact decision was already published; no action replay')
+                index += 1
+            updated = {**row, 'request': {**request, 'callback_protocol': CALLBACK_PROTOCOL,
+                'callback_index': index, 'actual_observation_sha256': fingerprint}}
+            validate_observation(updated, output, config)
+            if len(json.dumps(updated, ensure_ascii=False, separators=(',', ':')).encode()) > 16384:
+                raise ValueError('Actual callback display exceeded its admitted16KiB')
+            atomic(output, updated, new=True)
+            ack = wait_text_published(output, publisher_started_pin, timeout_seconds=timeout_seconds,
+                identity_reader=identity_reader, recording=recording)
+            return {'source_observation': pin(output), 'callback_index': index, 'text_published': ack}
+    finally:
+        lock.unlink(missing_ok=True)
+
 def enqueue_observation(source, started):
     source = Path(source).resolve(strict=True); session = Path(started['session']).resolve()
     if not source.is_relative_to(session): raise ValueError('Observation escaped actual publisher session')
@@ -170,7 +239,7 @@ def validate_observation(row, source, config):
         sequence = request.get('parent_sequence')
         if type(sequence) is not int or context.get('sequence') != sequence or context.get('tool') != 'ck3_auto_turn':
             raise ValueError('Before-submit observation is not the currently held auto-turn request')
-        if Path(source).name != f'{sequence:04d}-0-plan.json': raise ValueError('Actual callback source filename differs')
+        _callback_identity(row, source)
         game = config['game']
         if row.get('game_pid') != game['pid'] or row.get('game_creation_date') != game['creation_date']:
             raise ValueError('Actual callback belongs to another Game')

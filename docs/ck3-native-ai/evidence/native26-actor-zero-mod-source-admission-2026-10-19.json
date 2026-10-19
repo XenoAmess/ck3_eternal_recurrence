@@ -1,0 +1,1148 @@
+{
+  "schema": "xar.native26-actor-zero-mod-source-admission/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:57:52.351834+00:00",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\audit_native26_actor_loaded_sources_20261019.py",
+    "bytes": 8869,
+    "sha256": "439662a778bc5cddfc0b00988f6d858eb13ea38d7a36afbacc4d173a43d6c3a2"
+  },
+  "status": "CURRENT_ZERO_MOD_INSTALLATION_CLOSURE_VERIFIED_FUTURE_COLD_RECHECK_REQUIRED",
+  "current_run": {
+    "game_pid": 214568,
+    "creation_filetime": 134368503807325674,
+    "absence": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CLEAN-CAMPAIGN-MOD-ABSENCE-ACTUAL.json",
+      "bytes": 1714,
+      "sha256": "5b726ae874a7ecba8a725dad21bfeed46e52c8b701b0b0cfea0b67234ec1681a"
+    },
+    "launch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "bytes": 6016,
+      "sha256": "77659ba8311d1f14adc8678243e9c1c4d82f3d518b54fe331243d4ff5c60b1d1"
+    }
+  },
+  "executable": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "profile_settings": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\dlc_load.json",
+    "bytes": 48,
+    "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+  },
+  "enabled_mods": [],
+  "loaded_mods": [],
+  "settings": {
+    "enabled_mods": [],
+    "disabled_dlcs": []
+  },
+  "actor_source_audit": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\declaration-actor-candidate-source-audit-2026-10-19.json",
+    "bytes": 10260,
+    "sha256": "af641700d2dae86cba44b80a88cf97fa083f1de164eb04bf88bbf5ba0db67a46"
+  },
+  "actor_rules_sha256": "e384744fd346fe35db1ad585a336402244de69172a5664ecec38cb28f8573f83",
+  "rules": [
+    {
+      "key": "directed_great_holy_war",
+      "definition_source_sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33",
+      "actor_trigger_closure_sha256": "cd35c46378013f3ec8d8eeb10858ec08f0c62c38e32cfc845500bb0c3293d3bd"
+    },
+    {
+      "key": "hungarian_migration_cb",
+      "definition_source_sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa",
+      "actor_trigger_closure_sha256": "c5786c864a7e7f4aef8db9f24e6407498e6f5a4ff1cd03bc30a2defe014d23c6"
+    },
+    {
+      "key": "japan_imperial_expansion_cb",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "actor_trigger_closure_sha256": "14333d501c60cba83e8b7e0a2a0f5c81ffde37ff76f30166ef7a960f7256db03"
+    },
+    {
+      "key": "japan_imperial_reconquest_cb",
+      "definition_source_sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16",
+      "actor_trigger_closure_sha256": "4cb7450d34e16e156b08d20cadbf1594787c92582060e8ba2e7a613a9b685858"
+    }
+  ],
+  "effective_definition_sources": {
+    "hungarian_migration_cb": [
+      "casus_belli_types\\00_event_war.txt"
+    ],
+    "realm_law_use_imperial_policy_trigger": [
+      "scripted_triggers\\10_tgp_japan_triggers.txt"
+    ],
+    "suitable_faith_for_directed_ghw_trigger": [
+      "scripted_triggers\\00_great_holy_war_triggers.txt"
+    ],
+    "japan_imperial_reconquest_cb": [
+      "casus_belli_types\\10_tgp_japan_wars.txt"
+    ],
+    "government_is_japanese_trigger": [
+      "scripted_triggers\\10_tgp_japan_triggers.txt"
+    ],
+    "tgp_realm_has_ceremonial_liege_trigger": [
+      "scripted_triggers\\10_tgp_triggers.txt"
+    ],
+    "japan_imperial_expansion_cb_allowed_for_character_trigger": [
+      "scripted_triggers\\10_tgp_japan_triggers.txt"
+    ],
+    "has_tgp_dlc_trigger": [
+      "scripted_triggers\\00_has_dlc_scripted_triggers.txt"
+    ],
+    "directed_great_holy_war": [
+      "casus_belli_types\\00_religious_war.txt"
+    ],
+    "japan_imperial_reconquest_cb_allowed_for_character_trigger": [
+      "scripted_triggers\\10_tgp_japan_triggers.txt"
+    ],
+    "japan_imperial_expansion_cb": [
+      "casus_belli_types\\10_tgp_japan_wars.txt"
+    ]
+  },
+  "scanned_common_source_files": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_casus_belli_types.txt",
+      "bytes": 3778,
+      "sha256": "091b79f82d7d437668274f34511b2e9da002b623bdbe89579dadb1566ae45a9c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_civil_war.txt",
+      "bytes": 61252,
+      "sha256": "a9f5d844413bd7acfd4d4b1611877ac34e78eb293f309c0e7a41f27aca3a0047"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_claim.txt",
+      "bytes": 20230,
+      "sha256": "887bf0197401cb17cb4588978add556ab6b429bf55cb482e3e5f2d0e8351cfd4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_conquest.txt",
+      "bytes": 41829,
+      "sha256": "5d845c6b34b208434aab9749f7b8fc07726118c01bd5321b05acce8530fb8e38"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_dejure_war.txt",
+      "bytes": 40675,
+      "sha256": "18c0d3647fd936b37e3d26e28980ec45657841414d6397667891ad2e73ac1f85"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_dissolve_empire_cb.txt",
+      "bytes": 5870,
+      "sha256": "3f47c860d8b9fdfc4d10c327d602f6eaba9054632cad33775fc6ff74411b7125"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_event_war.txt",
+      "bytes": 97481,
+      "sha256": "48ab66002f287f0828cac3dcb3160248f49cc336ad335d838a4dd6c3563c0baa"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_invasion_war.txt",
+      "bytes": 53957,
+      "sha256": "4dc22705345fbe614f755d2b8510fd5e4dde51991e72d4d71f6faeafacd39abc"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_nomadic_conquest.txt",
+      "bytes": 17531,
+      "sha256": "5ad2a410a7263aa7e2f140b12894206802c4a8ce7905bd35a6abaca6e76af007"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_peasant_war_new.txt",
+      "bytes": 5930,
+      "sha256": "ae708bac6012add3f494d7c1f880cc7ddb4d7f993122889c195527ff23e410c8"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_religious_war.txt",
+      "bytes": 114768,
+      "sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_struggle_war.txt",
+      "bytes": 9129,
+      "sha256": "e600896ba46bd972bf5d5ffa040dfb338bf8459e00a745da262f6cef5b34527c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_subjugation.txt",
+      "bytes": 15007,
+      "sha256": "b755cca70950d95192080368228ea03d8df6889a0129a9962509d936e4f8f0bf"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_tributarize.txt",
+      "bytes": 19644,
+      "sha256": "087d6151be86546d4b1fcb600230534cb14c6a57ec2762e4efdb3ae98f9227c9"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_vassalization.txt",
+      "bytes": 9406,
+      "sha256": "b95049fb6beb1dbaa21b8862bacfb2564f734a33202fe1c3ec19ec7ee289c4eb"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\01_ep1_wars.txt",
+      "bytes": 16701,
+      "sha256": "21c1ab2e4fef36b869469bcc0d28b9c18efc026d63de62af708642cde289eb95"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\01_fp1_wars.txt",
+      "bytes": 35160,
+      "sha256": "8fcf8195d1b97c7b33777b0f1085c7f1d6477cf921a1fc933dad0d59778593ee"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\03_fp2_wars.txt",
+      "bytes": 26995,
+      "sha256": "1ad389c81813f5a3a7fdcae5ae8c176364f467ad5dc618649322233251dd7ca4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\05_fp3_wars.txt",
+      "bytes": 42478,
+      "sha256": "deb77511b6835aae514fa15c3f4037bad5029092c02052400e5a5e044adac1e0"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\06_ce1_wars.txt",
+      "bytes": 51924,
+      "sha256": "244e069a5c8c248482d46f67260ff44c4ba8446e8e47fbe5c59ad82850801344"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\07_ep3_admin_cbs.txt",
+      "bytes": 49724,
+      "sha256": "5774e3e8243bc8fbc9def6f51ce9b6e0291e0e26cae1b2423b7637b0590ff0ef"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\07_ep3_wars.txt",
+      "bytes": 179469,
+      "sha256": "ec5f8d964b2a5c76db9a96f12b0d81521246648c963437af62151e3bc4a18027"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\09_mpo_wars.txt",
+      "bytes": 140700,
+      "sha256": "39a1bf3466a767c9a71d4d8a019def5fa3a80e0da0ca29b7a31b07d8831f85bd"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\10_tgp_china_wars.txt",
+      "bytes": 83774,
+      "sha256": "55733135f61011b00547193ddd752c24e9455b788ebb84d828261534a07679a8"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\10_tgp_faction_wars.txt",
+      "bytes": 20386,
+      "sha256": "9a295ac43c02892795ed3c4e373eb1c510a5ea97205a8b546152bfbe5f471168"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\10_tgp_japan_wars.txt",
+      "bytes": 77732,
+      "sha256": "c4f77b37d01d5dfd5cf59312a125b1f4937a30b4f765937c08ad73237dba5f16"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\pam_wars.txt",
+      "bytes": 20575,
+      "sha256": "69aed3b778c12d4a7ba8cf6c18a9a9accef84fae619021f83478f4ca14f9d23b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\tgp_eastasia_wars.txt",
+      "bytes": 14551,
+      "sha256": "e172a89deb2dc4606f782195155f5ce49da8e660a2c03cd1301603d65f5d7ab4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_activity_triggers.txt",
+      "bytes": 17903,
+      "sha256": "d5d92dce687eddfd244c9750ba5a710f28b5f04759a89a312c07a1f94cd044f1"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_adultery_triggers.txt",
+      "bytes": 3049,
+      "sha256": "3ec85c42897b2298f4e52f44dd579be5b074c094bb7d9c8e79d8e414a53c2772"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_ai_acceptance_triggers.txt",
+      "bytes": 425,
+      "sha256": "be38bd08bab6be2bd02b37e569daffa61db81c4df933108e77f6e480d1740505"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_ai_value_triggers.txt",
+      "bytes": 9914,
+      "sha256": "9196b7840b56233f871832140974d30c4957e79ebb960c8983e292a4477a8f3d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_artifact_badge_triggers.txt",
+      "bytes": 165,
+      "sha256": "8c2a71ccee0162d77fdae0e9e390498f5e388b82b5143ac2464c78f47c9e3e94"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_artifact_triggers.txt",
+      "bytes": 63329,
+      "sha256": "ab6ae5dcb1db9e05574b9f635ba62a3303f307df5d0401cbd7d4672684170aeb"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_auto_character_triggers.txt",
+      "bytes": 602,
+      "sha256": "b21755b1f9367db3b936c0e2bc1879737e7ba0466ed0789c61c2bf0fcf8e56b5"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_available_for_events_triggers.txt",
+      "bytes": 27421,
+      "sha256": "fb94b3c340b0374ace5a90017e0e986941771510853bd6afa6fcb0a28d185f05"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_bastard_triggers.txt",
+      "bytes": 5911,
+      "sha256": "69e5b2049521ddb477271bd3dfadceee058a483c61858fd048ec918d18581acf"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_birth_triggers.txt",
+      "bytes": 2291,
+      "sha256": "9d5b2721a57766a108af6891e7dfcba0c89785b0646faf04081ef8c24773d5f2"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_board_game_scripted_triggers.txt",
+      "bytes": 2466,
+      "sha256": "ec8fa9a23b149d541b5218f931dea25b1bea8e3f34f17cd0d0103459a1435654"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_building_requirement_triggers.txt",
+      "bytes": 27603,
+      "sha256": "fe74b3125d4b3fe19a911ed71e3f55d1865cdc68c58ac165cb00e19b7b8c1bb1"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_childhood_triggers.txt",
+      "bytes": 8635,
+      "sha256": "cf5a68477bbfab4e9495a607b8c5c51455b49c54902c994518ae09fc9891996d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_clan_triggers.txt",
+      "bytes": 410,
+      "sha256": "02f70d4454691ae9f573f9fdb9f991f76b2d300aa62d17ce0c9b214e5ad2224a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_clothing_triggers.txt",
+      "bytes": 91491,
+      "sha256": "4c57211a58957c344ce7b2d5c92e66d6229c73ca3daf8459c80d241fedfa621f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_coa_triggers.txt",
+      "bytes": 14617,
+      "sha256": "4521ad6686709ebe578c34e5afc433c431bc720f7a0027d2e2065a490e747553"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_commander_triggers.txt",
+      "bytes": 716,
+      "sha256": "002bc49aff511bec74545cbaae386398b00a20096b4913c7c71a3b443ae6b08f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_compliment_triggers.txt",
+      "bytes": 916,
+      "sha256": "cac783dc5a231e407c1d2b26a18325144f0cbe982416513219a8c51550fe0f10"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_councillor_triggers.txt",
+      "bytes": 39155,
+      "sha256": "350a5e375d73e38cdd659fc3221fe8395ad6650b3fd244e03ee2342afc9a8f88"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_county_corruption_triggers.txt",
+      "bytes": 2129,
+      "sha256": "5e88d55e27e58095a3395e45440cfc846432f996c63a9bd385971fac549848a9"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_court_position_triggers.txt",
+      "bytes": 69893,
+      "sha256": "410ca0bed58976a985ee5f76c2b1b00b699f1d3167c3b37df24acd4242b8606a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_court_role_triggers.txt",
+      "bytes": 1890,
+      "sha256": "1799a1d32e46b0d668448f2711b1704155a7f5417ae7565fa0922248a961afe0"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_court_scheme_triggers.txt",
+      "bytes": 298,
+      "sha256": "b5b37e6387d41ebd945256550ae9af030082528f52dbb8b35324e08998d27b68"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_courtier_guest_management_triggers.txt",
+      "bytes": 22084,
+      "sha256": "6ff4bc8350d2f21372967e98cacbc4e1d367745f70e649a4f3ee25bdbd131382"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_crime_triggers.txt",
+      "bytes": 3171,
+      "sha256": "26229add02b79a8c5f1b37f02679d99f733d553a5362c338a7297fec25868807"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_crypto_religionist_triggers.txt",
+      "bytes": 447,
+      "sha256": "8e264d92e5f6c2a24d5fe6475fa1a5731b6b9b4696ec23f50a88a380d6670ea2"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_cultural_heritage_triggers.txt",
+      "bytes": 6814,
+      "sha256": "a805adabe14b2c7ee4387b0836531edc4f2493bd862475ea2841bb1a05e9bd84"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_cultural_triggers.txt",
+      "bytes": 19324,
+      "sha256": "acac6691ab34b89f492a149f7693cf34343a0301c9d99d67c032e9f01dede3de"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_death_management_triggers.txt",
+      "bytes": 3322,
+      "sha256": "f11a3575c908d2aadb558c3e8eee2748689c1b3639a505d6b6af36d32741531f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_diarchy_scripted_triggers.txt",
+      "bytes": 26300,
+      "sha256": "3995f62fe332f98ccecd39abf70a2a2574fbfb18c86f5d5d3c02a367fda0607a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_distance_triggers.txt",
+      "bytes": 1157,
+      "sha256": "6d1d3987bf56d1947aca3d66cb8a1fae9a2caaf44a453192485412568c189522"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_dynasty_triggers.txt",
+      "bytes": 4804,
+      "sha256": "67aa08c89326d077ddec18db824f421d54fb31aaecc0d2b55efdf8b9c7c7e9c4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_economic_triggers.txt",
+      "bytes": 3774,
+      "sha256": "78f65db9b684d4f6b61c6f8af87c64eed64dc004df9f48ec3cebc67482621325"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_education_triggers.txt",
+      "bytes": 8271,
+      "sha256": "2d68992606bbe69b43e38212e8279ff0973bca753f3e56fcc0502b9ffa7dcbb5"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_elective_triggers.txt",
+      "bytes": 8974,
+      "sha256": "9d20c6b162a13efb63ec352edde1e4868eae27a8cb32f8d849b68b3d4c96b457"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_empire_faith_gate_triggers.txt",
+      "bytes": 9070,
+      "sha256": "ebcd14f8743923e4c7745e470336742e5fbd5c73a4b85febf299c6422046adf6"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_faction_triggers.txt",
+      "bytes": 9625,
+      "sha256": "dd7b3a650b559b26959ed1708fc7cacd009d1cbb6735fa9d27905fb40570c517"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_family_triggers.txt",
+      "bytes": 7231,
+      "sha256": "84a29fd89590f880c719a2da79293dbbf6086cccfb355b71b212c854de067496"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_feast_activity_triggers.txt",
+      "bytes": 1565,
+      "sha256": "b6dde849ab49f66f78701b4f09e9090ee6e1d81b418ee077efef49c950dc2fba"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_food_scripted_triggers.txt",
+      "bytes": 2527,
+      "sha256": "1233b2ba1d033b3ebf3d93a5afc6a267e4151464fa70f4b58e69092cc49ed516"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_funeral_and_body_disposal_triggers.txt",
+      "bytes": 1487,
+      "sha256": "eaf033be141022ad45681f179b6df757c65deace6bac979a2c37f4cbf8a78039"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_game_rule_triggers.txt",
+      "bytes": 8694,
+      "sha256": "f5e1196c2ac733b2fa2ede15635d3699829921c4c5b826d916dab10d6334e0e4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_general_trait_triggers.txt",
+      "bytes": 28152,
+      "sha256": "92d8dd4868b9c5f83d66c7c2ea171bad3fc945ae0acc68d208a7d57ec360e75e"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_generic_event_sensibility_triggers.txt",
+      "bytes": 8252,
+      "sha256": "4e0ae2c2f3950387ffaf01079b0991703e3551061017fa339eeff59bba56cfb8"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_generic_struggle_scripted_triggers.txt",
+      "bytes": 14389,
+      "sha256": "9cce9f5527f35dc3e178d203cef6ce2c4b8a804f1d206790967bac0a4ad1b051"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_government_triggers.txt",
+      "bytes": 2157,
+      "sha256": "da4e97192bdfd77393c32792371a98370c1b86d19cefc53767460713bb1f0040"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_great_holy_war_triggers.txt",
+      "bytes": 4073,
+      "sha256": "7e449bcfa18bc02cf97cffff950d7b6f2d97aab7e0e93110db6c39d5e26505ba"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_has_dlc_scripted_triggers.txt",
+      "bytes": 2631,
+      "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_hunt_triggers.txt",
+      "bytes": 23263,
+      "sha256": "ba92e5f0e3bf14b89d6a7312f0036b2e392daebda1994bf02b9c69d7a379274a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_illustration_triggers.txt",
+      "bytes": 21196,
+      "sha256": "7a61f5f54ca3ac881ff4978c0a41395c5db42478ff1278058dc5c5258455c3f4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_important_actions_triggers.txt",
+      "bytes": 1040,
+      "sha256": "85802a83974610fc54b6c6e29304778090658b57d690f19eb19cf555e521f629"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_interaction_triggers.txt",
+      "bytes": 10011,
+      "sha256": "c0ec5a6d1446fe9e654549dfddf7bdde60123baf01f8747b66ae006025256ea7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_journey_triggers.txt",
+      "bytes": 4395,
+      "sha256": "a79a9b079feb7630dcef7f0c1ae43ec95092292f0c427027dee0f7c83cc6a4a7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_laamp_triggers.txt",
+      "bytes": 26937,
+      "sha256": "7f7c3b0c79a46d994a28bfbca10f958b7767f593be2720c128f981b326f1377b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_law_triggers.txt",
+      "bytes": 19172,
+      "sha256": "64d9f58fa6df54ee7cc7ac395ea742c026c144a7b8fe97a87c0c2aa1f486ba58"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_legal_triggers.txt",
+      "bytes": 4057,
+      "sha256": "a3559a6f0248f46b9ff88bc0314d8902f29076fd19a4e5ad691758a28a3c237d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_lifestyle_perk_triggers.txt",
+      "bytes": 2251,
+      "sha256": "be26830aff5ea33c87dc5e98f010f4b55ffc5d6735d191bc78ec805c5473969f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_lifestyle_triggers.txt",
+      "bytes": 9571,
+      "sha256": "aa28a7561e9ada14d9c954c47e85a57370b12178ddbb06791485a2b48257f942"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_major_decision_triggers.txt",
+      "bytes": 7134,
+      "sha256": "d8e9e79fbafe482ccd143aa79ea9fb6211077f5ed59bb3034dcccc0ffa52e98e"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_marriage_triggers.txt",
+      "bytes": 16965,
+      "sha256": "fdf17646126567ef399b9ac0cc2579b3dd80ba09f080d118bb147ef061a99c8b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_military_triggers.txt",
+      "bytes": 746,
+      "sha256": "a2488cee0861521d23bdc7d7aa094aa3a3dc6b141926d36924a92eb5d9848909"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_opinion_scripted_triggers.txt",
+      "bytes": 8013,
+      "sha256": "cc7a569beb424d4fcc0b3389b00d8dae01bd0aa45bbbc60a1730e7384dcca8e0"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_personality_trait_triggers.txt",
+      "bytes": 4969,
+      "sha256": "5996a2eeb8c65bdeb5607d630dd7dd5126215118f5f06dcfd86882b49a275690"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_personality_triggers.txt",
+      "bytes": 5035,
+      "sha256": "c938e624bad108a6799d8f39c3fe4a82c346b92f0889bed1f92258da28f54820"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_pet_triggers.txt",
+      "bytes": 2553,
+      "sha256": "13e4e38b5cb017818733c6e1ab335fbf199bd4ba1f5522369876b2ece60cd4e1"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_physical_appearance_triggers.txt",
+      "bytes": 806,
+      "sha256": "8552128c96773f0efd430726573cfde8da9d71b8e55d6c994efcd81a04f73761"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_pilgrimage_triggers.txt",
+      "bytes": 2851,
+      "sha256": "5d9058814175bcf018c659be2565f6f6edd3fa06bc2104d474f109cb12ec740a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_playdate_activity_triggers.txt",
+      "bytes": 340,
+      "sha256": "b71b9b41d99e0dbebda79485b25b75217206df752cdaddfe779c754987ac8909"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_province_triggers.txt",
+      "bytes": 56,
+      "sha256": "0b0ac9f30621ec289a98c4b3b2c4a29512ab613c8bde08803bf599bc8ca1f630"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_relation_triggers.txt",
+      "bytes": 28552,
+      "sha256": "973ed236b5544f56d20d11ff8f2a183527438c32e30ff973fae54b39ac2def44"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religion_faith_rite_triggers.txt",
+      "bytes": 11334,
+      "sha256": "060de99b4d026f3f2c9057c9403fcc3497a9e0e64a01a0c7e04d608964031a52"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_rich_presence_triggers.txt",
+      "bytes": 237,
+      "sha256": "ee3cf500d768c8456330c970f6a98be94e250b80994ccbd899d0689002b9915d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_roaming_activity_triggers.txt",
+      "bytes": 2126,
+      "sha256": "d255cf70238e2999b165c99757f9d5d3a2ca8f8841735e5e25cf1d357b69c423"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_romance_and_seduction_triggers.txt",
+      "bytes": 21664,
+      "sha256": "c2abea1571844479600ee47dd83102d0be770742a75be603f9c08532561eed92"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_scheme_befriend_triggers.txt",
+      "bytes": 1292,
+      "sha256": "75b413dca7a86ca03709c53e9895c5485c95922225de8d04e68bd767bab43f99"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_scheme_triggers.txt",
+      "bytes": 30356,
+      "sha256": "bf232b88b9dace14311a471149eac8390a44790963b4dedc4accf2d6bb2b8ffd"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_scripted_rule_triggers.txt",
+      "bytes": 5127,
+      "sha256": "907a1a7ef0f91b07c53cf7881fd8df0550b68ac46d66117aac2f74667e794c8c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_scripted_triggers.txt",
+      "bytes": 15071,
+      "sha256": "a0d06291c9b29dbeb29e855b8d9552f30b967238046ebbce45d997f730c41b5a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_secret_triggers.txt",
+      "bytes": 14411,
+      "sha256": "d551809d5a28a273307924f72e7fe6313ea4150ade59ee4e20bee40e07467cdb"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_secret_type_triggers.txt",
+      "bytes": 12114,
+      "sha256": "c9566141f6d19bc03d886dfc2918f50f09184840a81f3669b7d088c486a28629"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_sibling_triggers.txt",
+      "bytes": 265,
+      "sha256": "251875935241faf5724c207fd013d3cd8c390cbe87da0c00df56832f6708558d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_single_combat_scripted_triggers.txt",
+      "bytes": 2191,
+      "sha256": "c33741f69eae06a5b4bd88b204f58e523645c4a49e332b72fba829069851f7c6"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_statecraft_lifestyle_triggers.txt",
+      "bytes": 171,
+      "sha256": "c5221533dfcacb864d9e07e7f541584c0ea0dd35df42f360999cd11a713843cd"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_stress_triggers.txt",
+      "bytes": 9755,
+      "sha256": "8f4c71058d14980ca7252ae0cbb0f2ac7a8639cb3ce55267e4c39252358ca587"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_succession_triggers.txt",
+      "bytes": 2617,
+      "sha256": "bdb8a6b6441f8f7e4b22b98ea13b9c517173925e2fe78b051b21dd860630f810"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_task_contract_triggers.txt",
+      "bytes": 7452,
+      "sha256": "7b26bd5ffbf371d35269d1fa232a500427197f7d0686e3315f9ad3dc5951f778"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_terrain_triggers.txt",
+      "bytes": 1324,
+      "sha256": "149fb77102bbcbb04a5ce855724e2dfa5402eda2022362253fedc1f4d1459d60"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_title_triggers.txt",
+      "bytes": 4130,
+      "sha256": "c69f7c434082c04ec99f316059cb6e3fbbb324fda145bc4006553e08e9a6b518"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_travel_triggers.txt",
+      "bytes": 6800,
+      "sha256": "e93967b7a05575560d1ee44b3719e8a7ca0fdff449cf2550ea24c59c8f128b14"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_tutorial_triggers.txt",
+      "bytes": 325,
+      "sha256": "166346caf8e094c180bbb75a63e17944c06f9b547287919414435fa5b47c63d3"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_vassal_stance_triggers.txt",
+      "bytes": 2661,
+      "sha256": "5d884ff7da480a257858e3f0278565f7b221704ffda1b31e9b734f2ed94dd739"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_war_and_peace_triggers.txt",
+      "bytes": 31077,
+      "sha256": "cbe25f04d61a2f2899e29b15cd6aeffd1ffc33154655c965fd441f3727183545"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_weather_triggers.txt",
+      "bytes": 11643,
+      "sha256": "2cb9e9ad2be4848f8234763bda12c5962b8b312ae3a3e5da75dea440ffd3f193"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_witch_triggers.txt",
+      "bytes": 795,
+      "sha256": "f178e998df7419ce1e02e1b3bab462d432278084aeb6e093becd3873126881fd"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\01_bp1_filippa_scripted_triggers.txt",
+      "bytes": 847,
+      "sha256": "5fa2bdd0789150559de09dd8750d08cda41097165e16fc60fcde4d1156c71ee5"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\01_building_upgrade_triggers.txt",
+      "bytes": 709,
+      "sha256": "6fc4bc1adb0d41290449a99cc9602f6e50f1e3f8b53169baa8ada83c07b44d45"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\01_fp1_scripted_triggers.txt",
+      "bytes": 11091,
+      "sha256": "418889ae51330b21bb813e46da38151239ca791f88b126e38e8fc8e4174593a6"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\02_ep1_scripted_triggers.txt",
+      "bytes": 11893,
+      "sha256": "3f5a3ab1d3b0e832c6fbfb04b7c6bce2b1166ed578b18a7549d8acfc1bbd465d"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\03_bp1_scripted_triggers.txt",
+      "bytes": 8097,
+      "sha256": "32650c1bcf285b06868a84b79235cb3b98e1beb4caa66ed3aba18beba15ecf5f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\03_bp2_scripted_triggers.txt",
+      "bytes": 1874,
+      "sha256": "8d988c555332b84326530be369245f339ca79bf9820262eb046e699231d629d0"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\03_fp2_scripted_triggers.txt",
+      "bytes": 22125,
+      "sha256": "e65488f19ad2578d69394bfbfe403de34afcc243bdc2e5bc6dba946169d8da96"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\04_ep2_accolade_triggers.txt",
+      "bytes": 36064,
+      "sha256": "107cfa2332be501004bd95b66ea3311e4dd2c76128075865ace6154bed209051"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\04_ep2_tour_triggers.txt",
+      "bytes": 1834,
+      "sha256": "ef1859ace04a0fb8ed7fb61705a2db7ee6bd8732912330d60abda8f54da88e25"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\04_ep2_tournament_triggers.txt",
+      "bytes": 13542,
+      "sha256": "fdb6c5c1babcb5206e2b694597aa5d6810a9032a52cd8f92d070085f898144bd"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\04_ep2_wedding_triggers.txt",
+      "bytes": 2179,
+      "sha256": "d7401921e36171f45b6e4175077c89548494057c84005cb6aa2e0e8a5ef79093"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\05_bp2_hostage_triggers.txt",
+      "bytes": 9063,
+      "sha256": "9c4b7969ccb22be91dbcfe55750474dc510387426516338bcc9df08bb6835ebe"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\05_bp2_scripted_triggers.txt",
+      "bytes": 1254,
+      "sha256": "bd81fe33bd746e34b8c1f4aaf1df5fd29db4b673235815ebcda06e1796811051"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\05_bp2_triggers.txt",
+      "bytes": 1181,
+      "sha256": "11aa123291c6351a4f058f3522e32823487799d2b1a876f75086a287a5c2a4b8"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\06_bp3_triggers.txt",
+      "bytes": 6302,
+      "sha256": "ba027a36e3e4f4959fa6cc7f5a26f2f091d7cf0f8787ba069a2346d862cbfee3"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\06_ce1_epidemic_triggers.txt",
+      "bytes": 869,
+      "sha256": "a775d88c82ac78f4f9e6dd88a23daf02c67e6b07a4c8d02663973e6b6424c5ac"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\06_ce1_legend_triggers.txt",
+      "bytes": 3884,
+      "sha256": "3a0be6295c43155b943d6ef940fb6e92f4ec0a319f1557d737cb40c09dbd8bf6"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\06_ce1_legitimacy_triggers.txt",
+      "bytes": 935,
+      "sha256": "7b8ec719513adb46917aa6238721d128afca63e6baddc4efb9b46f71aa2befd7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\06_fp3_scripted_triggers.txt",
+      "bytes": 12853,
+      "sha256": "86eb79212a2a1392ace15a15633dfc94f646157fb6b90f739ac016ba4bafe861"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\07_ep3_petition_triggers.txt",
+      "bytes": 3890,
+      "sha256": "8a288f319aafc75f37fced2890dd6f149f1bf0635994f9a8fe0643cc44d923cb"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\07_ep3_triggers.txt",
+      "bytes": 52819,
+      "sha256": "ddd632e2f0028568d59b9907bf9a63ca39c09201588f47d7491187c628d42eb7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\07_frankokratia_triggers.txt",
+      "bytes": 17361,
+      "sha256": "594e8c47736791354c889c5fad7edcfc85ba6e345d1624223b0a39811c133a80"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\08_bp3_triggers.txt",
+      "bytes": 100,
+      "sha256": "e5f3bc5306b350dc93f0341ee22b87c9e32f806c97e5e2b37b0b816241cbde29"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\09_mpo_greatest_of_khans_triggers.txt",
+      "bytes": 10008,
+      "sha256": "2272b4bc1f7f5d5cbc4468bf217ed81ec660163ef56c853e20491744a01bdddd"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\09_mpo_settlement_issue_triggers.txt",
+      "bytes": 1469,
+      "sha256": "490d260d7e80e257a3fdbd9495b76d9ac81e3f07ef6cbc7baffbcb462a5bb2d9"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_ach_scripted_triggers.txt",
+      "bytes": 10938,
+      "sha256": "81788d152dc2608ad8f23285cac23c6981ea37e786bf7b38d0d94403697b012c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_dynastic_cycle_triggers.txt",
+      "bytes": 11035,
+      "sha256": "50660438058d3eb426adad1f644cf8abaa4e9446f3669d163535ae1a79be30b5"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_house_bloc_triggers.txt",
+      "bytes": 1021,
+      "sha256": "797ab99ac5f2be4b456ba6efd51b6ed43d8003f55ce430e87485e877980f8767"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_house_relation_triggers.txt",
+      "bytes": 5962,
+      "sha256": "fece4a169f347f37eb29256a52a586a2ec0e735bae09a3717912bf33fc2efde4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_japan_triggers.txt",
+      "bytes": 22800,
+      "sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_korea_triggers.txt",
+      "bytes": 154,
+      "sha256": "3dad3bb8b2c250be78a9898452891e5ce907ee747c9e256769318007fd749195"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_natural_disaster_triggers.txt",
+      "bytes": 3436,
+      "sha256": "54fd4dd2288c2ee0d20dce489887da916343a78e2ff9b5a6520386b9fab2e019"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\10_tgp_triggers.txt",
+      "bytes": 29024,
+      "sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\11_petition_head_of_faith_triggers.txt",
+      "bytes": 11796,
+      "sha256": "fc97363df17b7bdbe1b16a60e66dd15a7cdf3e3e93fe7fb3b1fffe1424217a88"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\20_health_balancing_triggers.txt",
+      "bytes": 1330,
+      "sha256": "f49dbca1527c18a63c02e964a3b441db9d3887d314fab8800aa761e6bc684110"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\20_health_triggers.txt",
+      "bytes": 23193,
+      "sha256": "2846f0591e692814a907bb111c161bb8124798af5a972bd2d3344de69799c883"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\clerical_chastity_triggers.txt",
+      "bytes": 1303,
+      "sha256": "a698c6ebd5de613d78dec9d65c688ecd12603d6e73c383b3da240513e195c627"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\great_project_triggers.txt",
+      "bytes": 570,
+      "sha256": "b6b88df2b986cd8656cd384e2aa7e91c1c1cf92de1b8545f4d415c2f6d1ab6cc"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\mpo_scripted_triggers.txt",
+      "bytes": 50647,
+      "sha256": "5dbbf145a4890f33cf1c02694d9b8967388a5c033ae3e8c27a4a4aa80a398f79"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\music_triggers.txt",
+      "bytes": 7419,
+      "sha256": "5b43a278213ae8ba8cf5ff88819370be3a2101224794f28846d012e07d0436af"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_antipope_triggers.txt",
+      "bytes": 7948,
+      "sha256": "6457fd56e3ba27e1ca5a9cd7913322c1502806505d62c360da5b13d6acec038a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_heresy_triggers.txt",
+      "bytes": 12376,
+      "sha256": "0c8dc94bce51a255eb21e8f0fab8e4f0cb1c1358b6e6d667c8b8537f487f59fc"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_saint_triggers.txt",
+      "bytes": 9151,
+      "sha256": "dd7fbd07e58363edd152570317c0b2d86d4d4ae4e31ba6c70325a3d700610b9b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_secular_faith_triggers.txt",
+      "bytes": 1635,
+      "sha256": "e16a34cccae2492e071b88cc587916e8cf2506f8f2b90a706f48786a35386932"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_spread_tenet_triggers.txt",
+      "bytes": 1867,
+      "sha256": "93c14ff69ee4a9bfd07e1f8c3eb6bf3e377622f05d1c91e91a51c10a2f89b756"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\passive_rite_learning_triggers.txt",
+      "bytes": 12365,
+      "sha256": "4cde80d60a415b5dfef815d656f1b07c6d4d1582edc09cded9a91ed503224885"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\sanctify_artifact_triggers.txt",
+      "bytes": 6803,
+      "sha256": "46eeef121b6ecaa89d9b36662503c7d9306cff5302acf0f8afa84eac29bcd51c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\tgp_imperial_examination_triggers.txt",
+      "bytes": 5004,
+      "sha256": "7a79f33ea4a9b85ccaa23d8eb4f937073c4c87c08649960d5801bc545f1e8309"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\tgp_mandala_task_contract_triggers.txt",
+      "bytes": 5551,
+      "sha256": "2c42d1e5522cbd045c1006e9243bf2aa0017a246b9d9685c42eab21dbf232183"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\tgp_mandala_triggers.txt",
+      "bytes": 34235,
+      "sha256": "cdc1e640f244936327d2f8274f157a87a57480ec40db3cbc9fbddd8deed0696b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\tgp_silk_road_triggers.txt",
+      "bytes": 1370,
+      "sha256": "545ff3a112469cab697a28e4145e0e1bbe0ca7c040ec28f6ed48b3bbb0802114"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\tgp_tribute_mission_triggers.txt",
+      "bytes": 5978,
+      "sha256": "63bde95b1afffc4186aefbc0c3eb57a09cf57b622a44c90163ef578f8bd3524f"
+    }
+  ],
+  "dlc_root": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc",
+  "dlc_metadata_file_count": 235,
+  "dlc_metadata_inventory_sha256": "3ae3fe638e61dce4068b5d8256f2220768a7a17355796fd2383454fcd379934e",
+  "dlc_descriptors": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc001_preorder\\dlc001.dlc",
+      "bytes": 264,
+      "sha256": "26f0300c05a0f13600c7affc6637f623cdf130050cadb009c081aa9787d6ed09"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc002_sp_day1\\dlc002.dlc",
+      "bytes": 256,
+      "sha256": "6cf462a73b11f17508b17475b77989d751ec67a4c7c790be5899dee24e28ee8c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc003_fp1\\dlc003.dlc",
+      "bytes": 234,
+      "sha256": "b36c37b70e11f52affc6d22458c6654a59033d6757a690b211f1e1cb45cd7e02"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc004_ep1\\dlc004.dlc",
+      "bytes": 231,
+      "sha256": "d39d0c95be092a99850dcafae90316e457b9059d7a77ee8a9c79c7aa484a4f4a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc005_fp2\\dlc005.dlc",
+      "bytes": 234,
+      "sha256": "c045849a8b71d22ba766e5ce9061aa7509bcbc10c8bd5b02d22a8a9680b4eb6a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc006_bp1\\dlc006.dlc",
+      "bytes": 232,
+      "sha256": "11debd589ca63cf5661ca3319aa321f35c77a34f441047445cbf932ee93dc901"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc007_ep2\\dlc007.dlc",
+      "bytes": 237,
+      "sha256": "a7f6cf8d6af1aa0ca2d3ede352100b1df64215ecc2d23c94088ed5dedc0f20e5"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc008_sp2\\dlc008.dlc",
+      "bytes": 238,
+      "sha256": "7b4620389d7c5cfda699b3d4fe8dc249cfcb9edcd887e47e6814099df9a16eb7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc009_bp2\\dlc009.dlc",
+      "bytes": 233,
+      "sha256": "0572eec211b1833410900ca29915c4b177ee4c12b41970428a1c6cd70700d6e0"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc010_fp3\\dlc010.dlc",
+      "bytes": 232,
+      "sha256": "b40f928e3fe8d7b4b303cb7f75710c2afaa404f6a6d274438396c4e9606cc9af"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc011_ce1\\dlc011.dlc",
+      "bytes": 235,
+      "sha256": "60b7007815a0e75c3476001e52a9f81e06f3ccfec54bf0959445c2eadc8d826b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc012_afr\\dlc012.dlc",
+      "bytes": 236,
+      "sha256": "16362178852dc4018f8bb28c7ec4ce50793e04757088d3d7eef2e90a0b5fafbe"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc013_sp3\\dlc013.dlc",
+      "bytes": 237,
+      "sha256": "0fc9eb18a059c30b73df2b8edf88c5138b2f11b9f8cf81a676b1a07a5cd4a295"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc014_ep3\\dlc014.dlc",
+      "bytes": 230,
+      "sha256": "cf896a36a257b0da28b6a8f44896f001ff11c9f28c34a70916a478e8440a24b2"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc015_bp3\\dlc015.dlc",
+      "bytes": 232,
+      "sha256": "233032883ef251102892ebfbc0be6f6ac1d728d993ed6ff50a6dfcfcec57b9ea"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc016_cp2\\dlc016.dlc",
+      "bytes": 237,
+      "sha256": "3762ae8efb5d3a2ba4d22ba1dbff619e44297960337d4bc16d5ebc27906dd725"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc017_cp3\\dlc017.dlc",
+      "bytes": 237,
+      "sha256": "63a96e92b626e52b2b3045625cee55bfff12a85ec3a75be062cda94410538ba1"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc018_cp4\\dlc018.dlc",
+      "bytes": 232,
+      "sha256": "bac8befdd772ae72d00c9613e2e114dcba84f48f51b57dc82247c39791403442"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc019_sp4\\dlc019.dlc",
+      "bytes": 238,
+      "sha256": "9f81f2d0ec72421a3c1027e81befe56a81aad3e0d4ad79351ebd42f4ff9aa6aa"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc020_ce2\\dlc020.dlc",
+      "bytes": 238,
+      "sha256": "7502af9c7d1520604c7c5b97cd3bf1cb6b460f74d029aaa030a0654a8f4d2c7a"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc021_bp4\\dlc021.dlc",
+      "bytes": 230,
+      "sha256": "d8a63874a4e76d995e8f76c07a1b87e2e5ecd375dcbb50369167235e1caad309"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc022_ep4\\dlc022.dlc",
+      "bytes": 232,
+      "sha256": "f5bd99a3a131854b205841e296fbc623e61cc58f0486aa3b4e8f8ef477eec6a8"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc023_cp5\\dlc023.dlc",
+      "bytes": 247,
+      "sha256": "22297c4b24d2465574257d7a9c474d0bce7e761b4685f1d377922963a8a57222"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc024_cp6\\dlc024.dlc",
+      "bytes": 233,
+      "sha256": "069258ca5b9de766c581f5de6e04622a8b6d2738cec1bad28e8cf3a7f9adbcd9"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc025_cp7\\dlc025.dlc",
+      "bytes": 239,
+      "sha256": "45e6f78aab704312695435e7c049800f4126b904b3f9573695b1c1fd063d8d35"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc026_cp8\\dlc026.dlc",
+      "bytes": 237,
+      "sha256": "480691694eacc216ca6920c3f2baf11f45be39814b276e1b6257abe0faf8128f"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc027_cp9\\dlc027.dlc",
+      "bytes": 241,
+      "sha256": "c27ac10ef013ce7299a55b0495a30f3c08d4472194d7d9524fc2fae79bf83a45"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc028_sp5\\dlc028.dlc",
+      "bytes": 239,
+      "sha256": "a213d547083a719049fde8ea819179ba35eab1ae5774f003141e5cb4ab04a128"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc029_mp1\\dlc029.dlc",
+      "bytes": 237,
+      "sha256": "0cee0c8d76dbb0a4fa686523340bd207d2bd166becc0d5f4aca3075b88bbd64c"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc030_ce3\\dlc030.dlc",
+      "bytes": 231,
+      "sha256": "e4adb9562c81613699fd6f3223c68bec4fc1ac0a8a0f25f6f684882c7be4af3e"
+    }
+  ],
+  "dlc_archives": [],
+  "dlc_cb_or_trigger_overrides": [],
+  "Game_or_Driver_or_native_or_desktop_calls": 0,
+  "current_Native25_changed": false,
+  "runtime_actor_gate_enabled": false,
+  "successor_adoption": "Before future cold launch re-read profile/source identity and resolve overrides again; bind the proof SHA in ACTOR_SOURCE_MANIFEST_SHA256 only for that admitted tuple, then actual same-frame shadow. No runtime ABI/business credit from this file audit.",
+  "missing_machine06_original": "Retained as machine_id unknown; not used as this admission's identity source."
+}

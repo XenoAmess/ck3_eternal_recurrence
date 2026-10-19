@@ -1,0 +1,117 @@
+{
+  "schema": "xar.c3-crown-priority-compatibility-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:05:29.343303+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_warm_life_classifier.py",
+      "bytes": 260358,
+      "sha256": "41e348591d7c3dd7f42d39daa71ee7ba8d0b857ca9a399fc5307228b6b126cb0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_sdk_queue.py",
+      "bytes": 263414,
+      "sha256": "18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0130-1-result.json",
+      "bytes": 46540,
+      "sha256": "ce6cc323f7be1c6c2aac637a0c53ca173d0fa2146f6acdff56fd16dc1d3c1ea5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-GOVERNANCE-RESULT-STATE.json",
+      "bytes": 6099,
+      "sha256": "9ab39b112dc0630ba4068c896c518712a73ef0858e1399d8a3a2dc0e93aad18c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED.json",
+      "bytes": 2266,
+      "sha256": "7f4757120c0858cedc0f03d33eeeb589644c043421a9510077cc0323cb68322c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "bytes": 6016,
+      "sha256": "77659ba8311d1f14adc8678243e9c1c4d82f3d518b54fe331243d4ff5c60b1d1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0117-1-result.json",
+      "bytes": 99595,
+      "sha256": "5d4b455ef083484755d7910bab7036de972961a321e943ceaaef79e8c2024de3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+      "bytes": 400612,
+      "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867186,
+      "sha256": "ea1acd1404d44bfba505999b8fe822130fdfefe8036ce0db72038f32ba59582d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\bridge\\pending_material_publication_v1.py",
+      "bytes": 5865,
+      "sha256": "8d3ad2b0aa6c029036e2800684ac57e1c0204d45740c47abe6ba46ed6f0ba917"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\crown_authority_formal_consumer_v1.py",
+      "bytes": 14198,
+      "sha256": "3b2afd8a93a4f82a20e3fd86396ac8bf83987303f3296a28e0b9578cd1420181"
+    }
+  ],
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\classifier-c3-crown-review01\\root_c3_crown_priority_classifier.py",
+    "bytes": 261745,
+    "sha256": "9da4445b22bf49c616ad190023655911a102c76d225c3052c662e58292c23a11"
+  },
+  "original_refusal": "ordinary Crown result rejected: receipt original ID/target/source/frame mismatch",
+  "original_function_AST_unchanged_except_final_dispatcher_name": true,
+  "projection": "Only a missing crown_cold_recovery flag is false when the source-bound full hot tuple proves it.",
+  "Native_receipt_mutated": false,
+  "original_complete_effect_validation_passed": true,
+  "negative_cases_rejected": [
+    "wrong_game",
+    "cold_source",
+    "extra_source_field",
+    "wrong_ID",
+    "wrong_target",
+    "stale_post_revision",
+    "wrong_debit",
+    "unverified_effect",
+    "wrong_episode"
+  ],
+  "original_LIFE117_behavior_unchanged": true,
+  "old_material_observation_with_only_metadata_projection_identical": true,
+  "observation": {
+    "schema": "g2.queue.ordinary-result-credit/v1",
+    "selected_step": "verify-realm-law-crown-v1-private",
+    "service_status": "executed",
+    "result_status": "enacted",
+    "submitted_pending": false,
+    "lifestyle_material_verified": false,
+    "existing_focus_verified": false,
+    "primitive_accepted": false,
+    "council_material_verified": false,
+    "construction_material_verified": false,
+    "construction_start_verified": false,
+    "construction_completion_verified": false,
+    "crown_material_verified": true,
+    "crown_receipt_nonmaterial": false,
+    "business_success_inferred": false,
+    "replay_allowed": false,
+    "category": "crown_material_verified",
+    "material_verified": true,
+    "effective_law_key": "crown_authority_1",
+    "source": "independent native enact receipt",
+    "action_request_id": "crown-formal-2215f5b0b90d415cb7d19ab7b2592f3d",
+    "requested_law_key": "crown_authority_1",
+    "post_public_revision": 55,
+    "post_native_revision": 55,
+    "post_proof_epoch": 55,
+    "post_date_raw": 53145048
+  },
+  "new_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "live_adopted": false,
+  "installation": "Owner copies identical bytes into runtime beside original battle/route helpers, then existing local install/reconsume original130."
+}

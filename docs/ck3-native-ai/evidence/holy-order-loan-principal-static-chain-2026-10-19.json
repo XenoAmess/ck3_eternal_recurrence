@@ -1,0 +1,290 @@
+{
+  "schema": "xar.holy-order-loan-principal-static-source-chain.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:34:07.210590+00:00",
+  "identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "status": "RETAINED_EXACT12004_STATIC_CHAIN_MAPPED_PROVIDER_PLAN_ONLY",
+  "mapping": {
+    "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\FAMILY-MAP.json",
+    "bytes": 118439,
+    "sha256": "fd13156ea8f553cddd989d0795ccf3fc624a819396ab8f5815e62f919c2ae4e8",
+    "original_machine_id": "unknown",
+    "original_started_utc": "2026-10-06T18:33:51.112346+00:00",
+    "manifest_identity": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\NAMED-MAPPER-MANIFEST.json",
+      "bytes": 2995,
+      "sha256": "aef04304e93918aee603eb1c246344b1f1b4058f81f65d0ed7c247b7ecb21aaf",
+      "old_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "new_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "source_baseline": "caa4adc3d1278e324cf4ec19774028e9b9138e28",
+      "original_machine_id": "unknown"
+    }
+  },
+  "mapped_native_spans": [
+    {
+      "id": "named_database",
+      "actual_rva": "0xa07970",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 87,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00A07970-00A079C7.bin",
+      "cache_bytes": 87,
+      "cache_sha256": "102bb8b1efe336311f297c4c6ec4f0f860db0307b6029f2b20259448cac18368",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\named_database-DETAIL.json",
+      "detail_sha256": "e750f39c9af692eafdaed8a23aec52dcf30019ffcbf5fa40d9e8612cd737461e"
+    },
+    {
+      "id": "named_lookup",
+      "actual_rva": "0xa07830",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 314,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00A07830-00A0796A.bin",
+      "cache_bytes": 314,
+      "cache_sha256": "003f2d5e0452c4e8eed1b2413042189aa44a48cee8f19e0c91ae2ccbb12a7dce",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\named_lookup-DETAIL.json",
+      "detail_sha256": "7502e4f56d67be5e766a799cfc8913b1dd78abbe786c6a7e43ab3852ec3af1be"
+    },
+    {
+      "id": "evaluate_named_fixed",
+      "actual_rva": "0x37542d0",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 393,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-037542D0-03754459.bin",
+      "cache_bytes": 393,
+      "cache_sha256": "478af1e63c69771f73801ef2767a865a631cfa8855dfe84b53e6b9811872e16b",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\evaluate_named_fixed-DETAIL.json",
+      "detail_sha256": "3f6becb6ba6ef0eab7a5e3436f28df231aaa6703ab9c099a13ede569da03fe9f"
+    },
+    {
+      "id": "clone_scope",
+      "actual_rva": "0x373acf0",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 233,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0373ACF0-0373ADD9.bin",
+      "cache_bytes": 233,
+      "cache_sha256": "dca2e2580f759ffd82fc7cbaee8bc6ccca9f56d178bddb15254deb35a19fed2f",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\clone_scope-DETAIL.json",
+      "detail_sha256": "921130c0b36137136f6dd85820860e311ccbd283bfa5db20de988e0c7fa44296"
+    },
+    {
+      "id": "construct_support118",
+      "actual_rva": "0x3736040",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 130,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-03736040-037360C2.bin",
+      "cache_bytes": 130,
+      "cache_sha256": "6b22391693cc2727ddf17ffc3c42d8635c57e2951578b08791d87469661a8bd0",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\construct_support118-DETAIL.json",
+      "detail_sha256": "073476b293d675e1089e56604fb6d54b7c33be9205bfc0cfbd624d650a512360"
+    },
+    {
+      "id": "construct_support2a8",
+      "actual_rva": "0x3735f90",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 171,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-03735F90-0373603B.bin",
+      "cache_bytes": 171,
+      "cache_sha256": "5ff930b2796eea845cf721d2e32fecdd7695ac59e4a0c8a64729902fe08c2218",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\construct_support2a8-DETAIL.json",
+      "detail_sha256": "69eb0c9d0faed87b448b818b267404fe77991f89221c36f8f9907620eb546b23"
+    },
+    {
+      "id": "destroy_scope_tail",
+      "actual_rva": "0x889700",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 118,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00889700-00889776.bin",
+      "cache_bytes": 118,
+      "cache_sha256": "0f1a84cdd95dd6db78e7a49d4fc754164bb8340f4374073dc71f7531d63c0db8",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\destroy_scope_tail-DETAIL.json",
+      "detail_sha256": "f6fd07ea5ecaa1ff3009c3207ed93eb945b7a59c01292f3182157f6cb3a7e472"
+    },
+    {
+      "id": "destroy_scope_rows",
+      "actual_rva": "0x889780",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 93,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-00889780-008897DD.bin",
+      "cache_bytes": 93,
+      "cache_sha256": "7156a7e95cb379797e67d986f4cdbe2936ee932f6dca093cdad0669de1994d10",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\destroy_scope_rows-DETAIL.json",
+      "detail_sha256": "a8cd4de2f94f8e9a2a3f0b7dbb66fe95641aba0c5ea6a3db46a5201c7a7e6554"
+    },
+    {
+      "id": "destroy_support_rows",
+      "actual_rva": "0x9d7340",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 91,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-009D7340-009D739B.bin",
+      "cache_bytes": 91,
+      "cache_sha256": "aa4776fb3557b78989a812e711139a2f4ae3b41b0f15894fd20f403d9115fc43",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\destroy_support_rows-DETAIL.json",
+      "detail_sha256": "82002b323f5c8a01fb88d1adc1ecdc44ffbea95664c2c6d729b0c945070d8d04"
+    },
+    {
+      "id": "intern_database",
+      "actual_rva": "0x3f79b00",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 233,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-03F79B00-03F79BE9.bin",
+      "cache_bytes": 233,
+      "cache_sha256": "ffecbd8eaa8b6f6d087cf4b0ae4a353c0f893abdcf4d5686fa21bc7325da931b",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\intern_database-DETAIL.json",
+      "detail_sha256": "0af29f971aef083f55ecc9f865869f2763c022b9c7f53dc4f3effb8aba2da00d"
+    },
+    {
+      "id": "intern_string",
+      "actual_rva": "0x3f79dd0",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 526,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-03F79DD0-03F79FDE.bin",
+      "cache_bytes": 526,
+      "cache_sha256": "6ebddcb94c4ecd8f1ab909eced23a1212f19b16eb010f647142551adb7700c52",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\intern_string-DETAIL.json",
+      "detail_sha256": "fa1c045e76e70f0c31972d39115cffe13d4be7fd921c99c4f0c415194072f780"
+    },
+    {
+      "id": "named_constructor_layout",
+      "actual_rva": "0x371d100",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 266,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0371D100-0371D20A.bin",
+      "cache_bytes": 266,
+      "cache_sha256": "fae1aefc6e46bc61e2cd97cd72b89a37ca5fd824250b7ae36d4f2e627f8f138b",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\named_constructor_layout-DETAIL.json",
+      "detail_sha256": "537649696fe4c0f122a93a9f6e47c5025f2240bb8fc807ffaa74a135d8b08664"
+    },
+    {
+      "id": "source_descriptor_layout",
+      "actual_rva": "0x258bd10",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 574,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-0258BD10-0258BF4E.bin",
+      "cache_bytes": 574,
+      "cache_sha256": "84898fc7309fe74de9ffab4d4ba55f55a13547b5c656c09512b9703e9fdfa8af",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\source_descriptor_layout-DETAIL.json",
+      "detail_sha256": "566c159222df10a42cff13f16e8dc0b110877867409c858adca404bc7bd97b35"
+    },
+    {
+      "id": "support_owner_layout",
+      "actual_rva": "0x3761680",
+      "status": "complete_instruction_span_normalized_equal",
+      "declared_bytes": 241,
+      "cache_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-03761680-03761771.bin",
+      "cache_bytes": 241,
+      "cache_sha256": "8704310c0a25147a4a54883e1a1877c13fcc7e4692d0c1a15473bc11c6466183",
+      "detail_path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\support_owner_layout-DETAIL.json",
+      "detail_sha256": "8c8974c3b5e6764dd9e2d065a2222c6cbda5225d972cfc2ca1855c2dbda39a4b"
+    }
+  ],
+  "repository_source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_prisoner_named.hpp",
+      "bytes": 3791,
+      "sha256": "a4a661e5d1d4e90047be3e37ff7ec0eec729a975f2a4c246d8f2d61082fca8d7"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_prisoner_named.cpp",
+      "bytes": 10464,
+      "sha256": "7b69d145c66deed24403921f1acf9c74cba27a7211ef4f8f8792d1fc46603b1b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_gift_opinion.cpp",
+      "bytes": 22179,
+      "sha256": "26a7a85f4cb8f1ec46779142e89d567cafab7d91b6b0ce3af0ef9f30aef95e95"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_family_break_penalty.cpp",
+      "bytes": 3777,
+      "sha256": "1001dd4070d88f326b66e6bc9e776c9226f3e9d4e3e020915088ded168ea0967"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/crown_authority_cooldown_observer_12004.cpp",
+      "bytes": 9261,
+      "sha256": "b16412068c05e68961b7bc18e72118638207b9cd22be248fae1f9af371077d5b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_religion_context_addons.cpp",
+      "bytes": 24496,
+      "sha256": "e0ba99a34214b07efb832136af60f75cd80c3f9a9f24a2856a5735ca99bb6dc4"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_holy_order_loan_amount.hpp",
+      "bytes": 4143,
+      "sha256": "518b785cd9e7dfea85c522b37abd0889b071dbc821939b0203690354c11e9ea2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_holy_order_loan_context.cpp",
+      "bytes": 11283,
+      "sha256": "c7935b0c6a4cd56f5f844b3fb7bbcdc9f0c614d9cf67e36b4520fd37f20f0f19"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/p87-loan-actual-install-source-2026-10-18.json",
+      "bytes": 9049,
+      "sha256": "1a19aaadc0f643c156f1b6281decf66a812c02a89118543b8161a4761fda99af"
+    },
+    {
+      "path": "docs/ck3-native-ai/m7-character-clock-calendar-deadline-12004.md",
+      "bytes": 32127,
+      "sha256": "e9b173fc43ca113e4d9dd51d0e8c3580e3bb41af279ba957631b69378f85bbcd"
+    }
+  ],
+  "target_source_identity": {
+    "game_version": "1.20.0.4",
+    "steam_build": "25734779",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "current_install_or_loaded_identity_read": false
+  },
+  "actual_fixed_wrapper": {
+    "begin_rva": "0x37542D0",
+    "end_rva": "0x3754459",
+    "bytes": 393,
+    "compiled_branch_pointer_offset": "0x70",
+    "compiled_callsite_rva": "0x375438F",
+    "compiled_virtual_slot": "0x30",
+    "constant_flag_offset": "0x7B",
+    "constant_payload_offset": "0x68",
+    "constant_missing_flag_returns_zero": true,
+    "return_contract": "RAX_equals_output_pointer",
+    "do_not_infer_compiled_from_old_7C_flag": true
+  },
+  "character_variable_bindings": {
+    "native_scope_dispatcher_rva": "0x370EAF0",
+    "identifier_table_rva": "0x3F8A7E0",
+    "identifier_lookup_rva": "0x3F8A660",
+    "identifier_name_rva": "0x3F8A6D0",
+    "character_scope_kind": 4,
+    "character_payload": "zero_extended_uint32_FullCharacterID",
+    "current_loan_variable_values_read": false
+  },
+  "temporal_semantics": {
+    "pre_decision_prospective_amount": "evaluate_loaded_holy_order_gold_value_in_played_character_root_without_Confirm",
+    "amount_to_loan_creation": "holy_order.0200_immediate_after_Confirm_one_day_character_variable",
+    "actual_principal_commit": "holy_order.0200.a_recomputes_value_then_set_up_loan_effect_and_lender_payment",
+    "variable_or_tooltip_is_payment": false,
+    "borrow_to_observe_quote_allowed": false
+  },
+  "remaining_qualification": [
+    "new_root_only_provider_implementation_and_explicit_scope_lifetime_owner",
+    "borrower_root_only_scope_not_qualified_by_existing_interaction_helper_alone",
+    "current_loaded_named_definition_identity_and_returned_raw_not_observed",
+    "typed_loan_variables_and_lender_debtor_relation_provider_not_implemented",
+    "event_choice_and_independent_debt_wallet_receipt_not_implemented"
+  ],
+  "execution": {
+    "fresh_exe_or_binary_capture": 0,
+    "game_or_native_rpc_or_desktop": 0,
+    "live_driver_or_save_reads": 0,
+    "compilations": 0,
+    "tests_or_fixture_reruns": 0,
+    "native26_or_service_changes": 0,
+    "new_production_code": 0,
+    "funding_credit_raw": 0
+  },
+  "storage": {
+    "repo_two_record_limit_bytes": 32768,
+    "new_external_package": false,
+    "new_global_reservation_bytes": 0,
+    "record_review_days": 180,
+    "future_write_reserved_bytes": 0
+  }
+}

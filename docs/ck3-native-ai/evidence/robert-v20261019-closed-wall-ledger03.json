@@ -1,0 +1,757 @@
+{
+  "schema": "xar.actual-runtime-fragment-wall.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:20:57.934821+00:00",
+  "campaign_id": "robert-first30-v20261019",
+  "evidence_layer": "actual sealed timestamps and chained native-date observations; not native/CPU attribution",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-BATCH-0008-COMPACT29.json",
+      "bytes": 11863,
+      "sha256": "4ff6d54429ce62464b7831cf6783602ab233022c0cc43b4760aa16ff74c4f452",
+      "business_source_commit": null
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-BATCH-0011-COMPACT30.json",
+      "bytes": 122512,
+      "sha256": "fb2415b1cbc179a78e8d013c7417c2fefaf65e65d3670e5aa435cbae1cfea06f",
+      "business_source_commit": null
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0077-0110-COMPACT41.json",
+      "bytes": 72508,
+      "sha256": "9a582c73e41b7cc658c3a4abe0f99e4d0dcbad5b8ca070216a8ef1eab3ac71f7",
+      "business_source_commit": "dc4b7d56787ac769c809d1ab0d7b6057be2377e6",
+      "owner_generation": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37B.json",
+        "bytes": 465,
+        "sha256": "4d2eac05d78d82da60f057dcd719810465041cfd7a5e132d7dd295c1ad878657"
+      },
+      "source_adoption": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37.json",
+        "bytes": 399506,
+        "sha256": "db68e72afa3ef6e562af656ad0b341471e4ee63f52e011405ff3ba3b22912c95"
+      },
+      "correction": {
+        "original_fragment": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0077-0110-COMPACT40.json",
+          "bytes": 70551,
+          "sha256": "d096aa65daeb6730438df0447ab35374ab3529ca90d7c380030597dbe8463f32"
+        },
+        "original_retained": true,
+        "reason": "40 owner_generation incorrectly pinned failed initialization P37 (21012/191092); actual historical AUTO77-110 used P37B231428/258172. RPC rows/timings/date projections unchanged."
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0111-0130-COMPACT40.json",
+      "bytes": 56493,
+      "sha256": "fdc93ca334b59d74f6e0656dc60c3c58190eab180124cc98bf8aa4790ad1bfdb",
+      "business_source_commit": "063531c4b2bc64f52b80a78b8a2b8e9f55112964",
+      "owner_generation": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C3.json",
+        "bytes": 465,
+        "sha256": "1ba6dc59fa8f176ded9fd9f00ba066c37528e528a3fc167d443a8960b6a9e47c"
+      },
+      "source_adoption": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+        "bytes": 400612,
+        "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0131-0143-COMPACT42.json",
+      "bytes": 26651,
+      "sha256": "0746e3d106efcb7ec351b6ad1b3f5c5ba1f20108afcc3c14d63da0f39ab7bb77",
+      "business_source_commit": "063531c4b2bc64f52b80a78b8a2b8e9f55112964",
+      "owner_generation": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C3.json",
+        "bytes": 465,
+        "sha256": "1ba6dc59fa8f176ded9fd9f00ba066c37528e528a3fc167d443a8960b6a9e47c"
+      },
+      "source_adoption": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+        "bytes": 400612,
+        "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0144-0147-COMPACT43.json",
+      "bytes": 18223,
+      "sha256": "69da1f0d610a165f511cd42490532699e5923bfea7be51025c16e4db4b504628",
+      "business_source_commit": "063531c4b2bc64f52b80a78b8a2b8e9f55112964",
+      "owner_generation": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C3.json",
+        "bytes": 465,
+        "sha256": "1ba6dc59fa8f176ded9fd9f00ba066c37528e528a3fc167d443a8960b6a9e47c"
+      },
+      "source_adoption": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+        "bytes": 400612,
+        "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+      }
+    }
+  ],
+  "windows": {
+    "entire_run_including_repairs": {
+      "started_at_utc": "2026-10-19T03:26:49.420926+00:00",
+      "ended_at_utc": "2026-10-19T04:18:04.628533+00:00",
+      "wall_seconds": 3075.207607,
+      "actual_days": 38.0,
+      "seconds_per_actual_day": 80.9265159736842,
+      "known_RPC_count": 126,
+      "known_RPC_sum_seconds": 79.52811979991384,
+      "unobserved_RPC_and_all_gaps_seconds": 2995.679487200086,
+      "RPC_groups": {
+        "query-war-results-window-v1": {
+          "count": 5,
+          "elapsed_seconds": 1.3893639999441803
+        },
+        "root_current_runtime_metrics": {
+          "count": 57,
+          "elapsed_seconds": 0.2256730010267347
+        },
+        "private-select-player-lifestyle-stock-focus-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.38085810001939535
+        },
+        "private-query-player-lifestyle-receipt-v1": {
+          "count": 1,
+          "elapsed_seconds": 2.3167336999904364
+        },
+        "ck3_take_semantic_snapshot_private_v1": {
+          "count": 6,
+          "elapsed_seconds": 0.13833729969337583
+        },
+        "ck3_save_checkpoint": {
+          "count": 4,
+          "elapsed_seconds": 9.634787599788979
+        },
+        "query-declarable-wars": {
+          "count": 4,
+          "elapsed_seconds": 14.506919100182131
+        },
+        "query-war-entry-assessments-*": {
+          "count": 24,
+          "elapsed_seconds": 2.462331599323079
+        },
+        "private-assign-councillor-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.4841076999437064
+        },
+        "query-observed-first-heir-marriage-result-v1-private": {
+          "count": 4,
+          "elapsed_seconds": 2.2014642003923655
+        },
+        "private-query-assign-councillor-receipt-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.2628952001687139
+        },
+        "ordinary-sway-opportunity-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.47170390002429485
+        },
+        "life-advance": {
+          "count": 6,
+          "elapsed_seconds": 39.09432709985413
+        },
+        "query-current-event-window-context-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.30865259980782866
+        },
+        "select-event-option-1": {
+          "count": 1,
+          "elapsed_seconds": 0.5711821001023054
+        },
+        "query-pending-character-interaction-context-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.3279184000566602
+        },
+        "reject-pending-character-interaction": {
+          "count": 1,
+          "elapsed_seconds": 0.39223770005628467
+        },
+        "ck3_get_capabilities": {
+          "count": 1,
+          "elapsed_seconds": 0.0057154998648911715
+        },
+        "query-campaign-root-context-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.5153490998782218
+        },
+        "enact-realm-law-crown-v1-private": {
+          "count": 2,
+          "elapsed_seconds": 1.2819103999063373
+        },
+        "verify-realm-law-crown-v1-private": {
+          "count": 2,
+          "elapsed_seconds": 0.5919407999608666
+        },
+        "ck3_auto_turn": {
+          "count": 1,
+          "elapsed_seconds": 1.9637106999289244
+        }
+      }
+    },
+    "new_SDK_including_repairs": {
+      "started_at_utc": "2026-10-19T03:54:19.068067+00:00",
+      "ended_at_utc": "2026-10-19T04:18:04.628533+00:00",
+      "wall_seconds": 1425.560466,
+      "actual_days": 20.0,
+      "seconds_per_actual_day": 71.2780233,
+      "known_RPC_count": 25,
+      "known_RPC_sum_seconds": 14.649575199000537,
+      "unobserved_RPC_and_all_gaps_seconds": 1410.9108908009994,
+      "RPC_groups": {
+        "query-war-results-window-v1": {
+          "count": 2,
+          "elapsed_seconds": 0.6294597999658436
+        },
+        "root_current_runtime_metrics": {
+          "count": 9,
+          "elapsed_seconds": 0.03647489985451102
+        },
+        "query-campaign-root-context-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.5153490998782218
+        },
+        "life-advance": {
+          "count": 3,
+          "elapsed_seconds": 4.707608299795538
+        },
+        "enact-realm-law-crown-v1-private": {
+          "count": 2,
+          "elapsed_seconds": 1.2819103999063373
+        },
+        "verify-realm-law-crown-v1-private": {
+          "count": 2,
+          "elapsed_seconds": 0.5919407999608666
+        },
+        "ck3_take_semantic_snapshot_private_v1": {
+          "count": 3,
+          "elapsed_seconds": 0.01294309995137155
+        },
+        "ck3_save_checkpoint": {
+          "count": 2,
+          "elapsed_seconds": 4.910178099758923
+        },
+        "ck3_auto_turn": {
+          "count": 1,
+          "elapsed_seconds": 1.9637106999289244
+        }
+      }
+    },
+    "continuous_subwindow_121:120": {
+      "started_at_utc": "2026-10-19T04:01:15.046321+00:00",
+      "ended_at_utc": "2026-10-19T04:01:21.025147+00:00",
+      "wall_seconds": 5.978826,
+      "actual_days": 12.0,
+      "seconds_per_actual_day": 0.4982355,
+      "known_RPC_count": 10,
+      "known_RPC_sum_seconds": 4.824474599678069,
+      "unobserved_RPC_and_all_gaps_seconds": 1.1543514003219304,
+      "RPC_groups": {
+        "root_current_runtime_metrics": {
+          "count": 5,
+          "elapsed_seconds": 0.020435799844563007
+        },
+        "life-advance": {
+          "count": 2,
+          "elapsed_seconds": 3.6999159997794777
+        },
+        "query-war-results-window-v1": {
+          "count": 1,
+          "elapsed_seconds": 0.1816124999895692
+        },
+        "enact-realm-law-crown-v1-private": {
+          "count": 1,
+          "elapsed_seconds": 0.6608818999957293
+        },
+        "verify-realm-law-crown-v1-private": {
+          "count": 1,
+          "elapsed_seconds": 0.2616284000687301
+        }
+      }
+    },
+    "continuous_subwindow_134:133": {
+      "started_at_utc": "2026-10-19T04:05:55.594424+00:00",
+      "ended_at_utc": "2026-10-19T04:06:04.239168+00:00",
+      "wall_seconds": 8.644744,
+      "actual_days": 0.0,
+      "seconds_per_actual_day": null,
+      "known_RPC_count": 10,
+      "known_RPC_sum_seconds": 7.846162599511445,
+      "unobserved_RPC_and_all_gaps_seconds": 0.7985814004885547,
+      "RPC_groups": {
+        "root_current_runtime_metrics": {
+          "count": 3,
+          "elapsed_seconds": 0.012133700074627995
+        },
+        "ck3_take_semantic_snapshot_private_v1": {
+          "count": 2,
+          "elapsed_seconds": 0.00879919994622469
+        },
+        "ck3_save_checkpoint": {
+          "count": 2,
+          "elapsed_seconds": 4.910178099758923
+        },
+        "enact-realm-law-crown-v1-private": {
+          "count": 1,
+          "elapsed_seconds": 0.6210284999106079
+        },
+        "verify-realm-law-crown-v1-private": {
+          "count": 1,
+          "elapsed_seconds": 0.33031239989213645
+        },
+        "ck3_auto_turn": {
+          "count": 1,
+          "elapsed_seconds": 1.9637106999289244
+        }
+      }
+    },
+    "continuous_subwindow_145:146": {
+      "started_at_utc": "2026-10-19T04:17:55.117383+00:00",
+      "ended_at_utc": "2026-10-19T04:18:04.628533+00:00",
+      "wall_seconds": 9.51115,
+      "actual_days": 8.0,
+      "seconds_per_actual_day": 1.18889375,
+      "known_RPC_count": 2,
+      "known_RPC_sum_seconds": 1.0118362000212073,
+      "unobserved_RPC_and_all_gaps_seconds": 8.499313799978793,
+      "RPC_groups": {
+        "ck3_take_semantic_snapshot_private_v1": {
+          "count": 1,
+          "elapsed_seconds": 0.004143900005146861
+        },
+        "life-advance": {
+          "count": 1,
+          "elapsed_seconds": 1.0076923000160605
+        }
+      }
+    }
+  },
+  "actual_date_endpoints": {
+    "initial": 53144328.0,
+    "new_SDK_opening": 53144760,
+    "last": 53145240,
+    "last_source_sequence": 147
+  },
+  "advance_RPC_observations": [
+    {
+      "sequence": 50,
+      "elapsed_seconds": 3.0005308999679983,
+      "starting_date_raw": 53144328,
+      "ending_date_raw": 53144520,
+      "actual_days": 8,
+      "clock_stopped": {
+        "state": "triggered",
+        "generation": 1,
+        "starting_date_raw": 53144328,
+        "target_date_raw": 53144520,
+        "last_observed_date_raw": 53144520,
+        "trigger_date_raw": 53144520,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 8,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "speed_configuration": null,
+      "active_event_source": null
+    },
+    {
+      "sequence": 74,
+      "elapsed_seconds": 30.314162000082433,
+      "starting_date_raw": 53144520,
+      "ending_date_raw": 53144568,
+      "actual_days": 2,
+      "clock_stopped": {
+        "state": "armed",
+        "generation": 2,
+        "starting_date_raw": 53144520,
+        "target_date_raw": 53144712,
+        "last_observed_date_raw": 53144568,
+        "trigger_date_raw": 0,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 2,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": {
+        "step": "research-cancel-tactical-daily-sentinel-v1-generation-2",
+        "accepted": true,
+        "status": "canceled",
+        "backend_id": "native-headless"
+      },
+      "speed_configuration": null,
+      "active_event_source": "native"
+    },
+    {
+      "sequence": 101,
+      "elapsed_seconds": 1.072025900008157,
+      "starting_date_raw": 53144568,
+      "ending_date_raw": 53144760,
+      "actual_days": 8,
+      "clock_stopped": {
+        "state": "triggered",
+        "generation": 3,
+        "starting_date_raw": 53144568,
+        "target_date_raw": 53144760,
+        "last_observed_date_raw": 53144760,
+        "trigger_date_raw": 53144760,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 8,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "speed_configuration": null,
+      "active_event_source": null
+    },
+    {
+      "sequence": 122,
+      "elapsed_seconds": 3.195157199865207,
+      "starting_date_raw": 53144760,
+      "ending_date_raw": 53144952,
+      "actual_days": 8,
+      "clock_stopped": {
+        "state": "triggered",
+        "generation": 4,
+        "starting_date_raw": 53144760,
+        "target_date_raw": 53144952,
+        "last_observed_date_raw": 53144952,
+        "trigger_date_raw": 53144952,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 8,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "speed_configuration": {
+        "status": "already_observed",
+        "submitted": false,
+        "observed_speed": 5,
+        "source_snapshot_id": "native:38",
+        "source_native_revision": 38,
+        "source_date_raw": 53144760
+      },
+      "active_event_source": null
+    },
+    {
+      "sequence": 126,
+      "elapsed_seconds": 0.5047587999142706,
+      "starting_date_raw": 53144952,
+      "ending_date_raw": 53145048,
+      "actual_days": 4,
+      "clock_stopped": {
+        "state": "triggered",
+        "generation": 5,
+        "starting_date_raw": 53144952,
+        "target_date_raw": 53145048,
+        "last_observed_date_raw": 53145048,
+        "trigger_date_raw": 53145048,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 4,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "speed_configuration": {
+        "status": "already_observed",
+        "submitted": false,
+        "observed_speed": 5,
+        "source_snapshot_id": "native:48",
+        "source_native_revision": 48,
+        "source_date_raw": 53144952
+      },
+      "active_event_source": null
+    },
+    {
+      "sequence": 147,
+      "elapsed_seconds": 1.0076923000160605,
+      "starting_date_raw": 53145048,
+      "ending_date_raw": 53145240,
+      "actual_days": 8,
+      "clock_stopped": {
+        "state": "triggered",
+        "generation": 6,
+        "starting_date_raw": 53145048,
+        "target_date_raw": 53145240,
+        "last_observed_date_raw": 53145240,
+        "trigger_date_raw": 53145240,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 8,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "speed_configuration": {
+        "status": "already_observed",
+        "submitted": false,
+        "observed_speed": 5,
+        "source_snapshot_id": "native:58",
+        "source_native_revision": 58,
+        "source_date_raw": 53145048
+      },
+      "active_event_source": null
+    }
+  ],
+  "identified_gap_endpoints": [
+    {
+      "context_reported_by_runtime": "old SDK maintenance endpoints",
+      "after_sequence": 110,
+      "before_sequence": 111,
+      "started_at_utc": "2026-10-19T03:28:54.889919+00:00",
+      "ended_at_utc": "2026-10-19T03:53:11.095279+00:00",
+      "seconds": 1456.20536,
+      "exact_cause_CPU_partition_available": false
+    },
+    {
+      "context_reported_by_runtime": "LIFE classifier repair endpoints",
+      "after_sequence": 114,
+      "before_sequence": 121,
+      "started_at_utc": "2026-10-19T03:54:20.305500+00:00",
+      "ended_at_utc": "2026-10-19T04:01:15.046321+00:00",
+      "seconds": 414.740821,
+      "exact_cause_CPU_partition_available": false
+    },
+    {
+      "context_reported_by_runtime": "Crown classifier repair endpoints",
+      "after_sequence": 120,
+      "before_sequence": 134,
+      "started_at_utc": "2026-10-19T04:01:21.025147+00:00",
+      "ended_at_utc": "2026-10-19T04:05:55.594424+00:00",
+      "seconds": 274.569277,
+      "exact_cause_CPU_partition_available": false
+    }
+  ],
+  "local_and_outer_control_rows": [
+    {
+      "sequence": 113,
+      "command": "full_loop",
+      "status": "bounded_loop_finished",
+      "ended_at_utc": null,
+      "client_error": null,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0113-1-result.json",
+        "bytes": 1158,
+        "sha256": "8efc05c734ec96c0ea0f713aaf8e54ac1f58d2e7204e75ac65c23a573502e5a7"
+      }
+    },
+    {
+      "sequence": 114,
+      "command": "full_loop",
+      "status": null,
+      "ended_at_utc": "2026-10-19T03:54:20.305500+00:00",
+      "client_error": "ordinary LIFE result rejected: opening actor/date/episode differs from the actual initial frame",
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0114-1-result.json",
+        "bytes": 434,
+        "sha256": "59cdd8f7da3c040f162f17cba2a3cb9186541ec4b72d71981f4680bb64f863f9"
+      }
+    },
+    {
+      "sequence": 118,
+      "command": "install_result_classifier",
+      "status": "classifier_installed",
+      "ended_at_utc": null,
+      "client_error": null,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0118-1-result.json",
+        "bytes": 813,
+        "sha256": "bc0322351305d69a043dc3e5b68284bf9093de9302e5f0a9da6292588ce0ff32"
+      }
+    },
+    {
+      "sequence": 119,
+      "command": "reconsume_original_response",
+      "status": "original_response_verified",
+      "ended_at_utc": null,
+      "client_error": null,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0119-1-result.json",
+        "bytes": 432,
+        "sha256": "ec87727fbae1535e51dd2f5e7278aa8e70cb4c86cc3868a16084efc4ed813d0c"
+      }
+    },
+    {
+      "sequence": 120,
+      "command": "full_loop",
+      "status": null,
+      "ended_at_utc": "2026-10-19T04:01:21.025147+00:00",
+      "client_error": "ordinary Crown result rejected: receipt original ID/target/source/frame mismatch",
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0120-1-result.json",
+        "bytes": 419,
+        "sha256": "880a8375920ca44006ce0cd530e263b2c9b495a42a9ae3be6becfd789e943d19"
+      }
+    },
+    {
+      "sequence": 131,
+      "command": "install_result_classifier",
+      "status": "classifier_installed",
+      "ended_at_utc": null,
+      "client_error": null,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0131-1-result.json",
+        "bytes": 823,
+        "sha256": "9054f18fe9fb7a4f92eb62198564a80a2d13481086f422a2c6f584533e717842"
+      }
+    },
+    {
+      "sequence": 132,
+      "command": "reconsume_original_response",
+      "status": "original_response_verified",
+      "ended_at_utc": null,
+      "client_error": null,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0132-1-result.json",
+        "bytes": 432,
+        "sha256": "c3eef960af1dd6e2dc911b4a91d4242e64eb67fbe02fcb66acb89028aaff3e5d"
+      }
+    },
+    {
+      "sequence": 133,
+      "command": "full_loop",
+      "status": null,
+      "ended_at_utc": "2026-10-19T04:06:04.239168+00:00",
+      "client_error": "SDK error; original result retained; no automatic retry",
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0133-1-result.json",
+        "bytes": 394,
+        "sha256": "5bbeaec12e368ed04fe2eda450b440c2798a68230eb1285aa1f4b72f83b07234"
+      }
+    },
+    {
+      "sequence": 144,
+      "command": "recover_partial_life_advance",
+      "status": "source_bound_partial_readonly_recapped",
+      "ended_at_utc": null,
+      "client_error": null,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0144-1-result.json",
+        "bytes": 599,
+        "sha256": "9849cbaf46af72d147534476aacbb5c05161381d46608b29c317cdc9b33659a6"
+      }
+    },
+    {
+      "sequence": 146,
+      "command": "full_loop",
+      "status": null,
+      "ended_at_utc": "2026-10-19T04:18:04.628533+00:00",
+      "client_error": "life-advance original composite/date/source postcondition not verified",
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0146-1-result.json",
+        "bytes": 409,
+        "sha256": "cbe1e24f08bb29e5a3d57d41f62af1997fdb00dedfbdb2f38e0f772ba77d45a6"
+      }
+    }
+  ],
+  "unobserved_source_rows": [
+    {
+      "sequence": 18,
+      "source_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0018-1-result.json",
+      "bytes": 2076840,
+      "body_read": false,
+      "status": "oversized_not_observed"
+    }
+  ],
+  "ordinary_event_fix_actual_qualification": "not exercised by new SDK advances: only date_deadline stop observed",
+  "phase_goal_entire_run_reached": false,
+  "phase_goal_new_SDK_reached": false,
+  "load_context": {
+    "native26_compilation_start_utc_reported_approx": "2026-10-19T04:08:00+00:00",
+    "source": "runtime owner report: up to two BELOW_NORMAL compilers; Game stays Native25",
+    "overlaps_current_closed_window": true,
+    "future_windows_must_retain_overlapping_load_and_wall": true
+  },
+  "limits": [
+    "all repairs and failed outer-control intervals remain in cumulative wall",
+    "continuous subwindows are separately labelled and cannot replace cumulative throughput",
+    "unknown response18 stays unread; residual combines it with gaps",
+    "latest open repair after the final closed endpoint is not yet measured",
+    "whole AUTO includes planning and persistence; no clock-only throughput claim",
+    "freeze and owner pins are preserved as supplied by compact, not re-read as full manifests"
+  ],
+  "game_native_or_RPC_calls": 0,
+  "Driver_or_SAVE_reads": 0,
+  "external_writes_bytes": 0,
+  "producer": {
+    "path": "tools/g2_saved_campaign/summarize_closed_runtime_fragments_v1.py",
+    "sha256": "dd294938df8dd59c427d1b1a33710ae59ca2a6b9635ebe5bb97798cb3590f78a"
+  },
+  "storage": {
+    "pool": "REPO-ONLY-MICROPOOL01, original shared research128MiB",
+    "producer_closed": true,
+    "future_writes_bytes": 0
+  }
+}

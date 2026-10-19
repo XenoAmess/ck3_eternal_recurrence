@@ -1,0 +1,54 @@
+{
+  "schema": "xar.ordinary-succession-operations-source-feedback.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine actual read in this M3 task",
+  "observed_at_utc": {"start": "2026-10-19T04:27:58Z", "final": "2026-10-19T04:41:00Z"},
+  "status": {"pure_leaf": "source_and_focused_software_ready", "Service_fresh_root_source_hook_implemented": true, "Driver_invalidation_source_API_implemented": true, "operating_facts_planner_consumed": false, "runtime_adopted": false, "actual_game_qualification": false, "M3": "complete_retained", "G2_complete": 6, "G2_total": 8},
+  "findings": {
+    "complete_planner_refresh_route_exists": true,
+    "goal_plan_consumes_actual_partition": false,
+    "goal_plan_focus": "marriage",
+    "native_Snapshot_has_estate_law_or_successor_vectors": false,
+    "same_published_frame_is_estate_epoch": false,
+    "deduplication_source": "bridge.cpp PublishSnapshot lines12660-12669; Snapshot default equality in game_contract.hpp lines2279-2310",
+    "existing_Crown_legal_does_not_prove_partition_benefit": true,
+    "Crown_policy_or_priority_changed": false,
+    "new_RPC_or_lower_observation_frequency": false
+  },
+  "source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/ordinary_succession_operating_context_v1.py": {"bytes": 8060, "sha256": "d8e4445b8d9ab9620cdad36c01bde377f820401976b1dceda6b9065ce68f372a"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_expectation_invalidation_v1.py": {"bytes": 3772, "sha256": "33a1905f3e142e7784165dc706d2be0749e9a74d4745c9c43fe975689c1ca3da"},
+    "ck3_autonomous_player/tests/unit/test_ordinary_succession_operating_context_v1.py": {"bytes": 3881, "sha256": "dd225f542f5f6d76d55e0ce76e16b26d77ae2a84a5520f3ad4163ffc20d6e054"},
+    "ck3_autonomous_player/tests/unit/test_succession_expectation_invalidation_v1.py": {"bytes": 8854, "sha256": "7ef70672754b6bbc09390efafeaf9d625dc4e5cc5edf257fbf11fdbd21d9b4ba"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {"bytes": 1608882, "sha256": "e4b6c7eaa907b11566dfe475819569fa193bb41131f1fc7ffb11782252dc3e4b"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": {"bytes": 867794, "sha256": "7cf837fe86c73b60f6dc36cd34511502fa8aec989f14f43b3f348451139c1d50"},
+    "ck3_autonomous_player/src/xar_autoplayer/strategy.py": {"bytes": 1032197, "sha256": "4dc6d947f7280c42d7471d84975178e5cabf7a4815271cdee00a2f2bbb3b6193"},
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp": {"bytes": 175382, "sha256": "6c300e7626bdf47fcafdfa4f51fcb70b56adf7c689d597db016d057ace960c2b"},
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp": {"bytes": 1602801, "sha256": "68ad29060e19a17727ab7b961a4efbe7f21f5f036ac252a9e6cd40b98ac833b1"}
+  },
+  "minimal_invalidation": {
+    "input": "caller-owned succession_transition_state_v1 plus completed current Service-normalized complete root result",
+    "compare": ["full normalized title rows", "primary title ID", "primary title first heir"],
+    "change_result": {"expectation": null, "reconciliation": null, "refresh_required": true},
+    "original_input_unchanged": true,
+    "implemented_Driver_guards": ["actual new completed root, not old planning-root reuse", "original Driver lock and exact-state/frame comparison", "existing protocol cache only under state lock, no new full observer or RPC", "original dirty/persist path outside state lock", "terminal or incomplete source preserves predecessor pair", "next original prepare/retain using existing root reuse"],
+    "Service_seam": "query_campaign_root_context_v1 after final validation/source/binding rendering and before return; only actual execute_step completion triggers API",
+    "Driver_API": "invalidate_succession_expectation_from_root_v1 immediately before original retain_succession_expectation_v1",
+    "persistence_claim": "original persistence attempt, no added durable/fsync guarantee",
+    "direct_Driver_query_coverage": "not implemented; caller must cover actual _execute_campaign_root_context_v1_query completion or declare Service-only boundary",
+    "unobserved_same_frame_mutations": "still not detectable without a real newer root or dedicated estate/law epoch"
+  },
+  "operating_feedback": {"planner_consumption": "source_only_not_integrated", "personal_estate_split_is_actual_realm_exit": false, "primary_title_heir_is_independently_qualified_player_heir": false, "law_change_inferred": false, "action_candidates": [], "priority_override": false},
+  "validation": {
+    "command": "py -B -m pytest -q ck3_autonomous_player/tests/unit/test_succession_expectation_invalidation_v1.py ck3_autonomous_player/tests/unit/test_ordinary_succession_operating_context_v1.py",
+    "chunk": "41fa5c", "tests_passed": 3, "seconds": 2.39, "exit_code": 0,
+    "invalidation_same_frame_cases": ["other-heir assignment changed", "held title removed", "primary title ID changed", "primary heir changed"],
+    "rejections": ["mixed root revision", "terminal state"],
+    "actual_Driver_Service_software_seam_cases": ["fresh unchanged root has zero writes", "old cache reuse has zero invalidation API calls and zero new query", "same published frame changed heir clears exact pair and persists once", "next original prepare reuses newest root with zero extra root query", "raced frame preserves pair and rejects without writes", "terminal preserves predecessor pair"],
+    "pure_feedback_cases": ["county split is personal estate only", "same rank title risk without exit claim", "added title and changed heir", "old frame", "active event", "another episode", "no primary heir"],
+    "original_M3_contract_rerun": false,
+    "prior_failures": [{"chunk": "be17c9", "exit_code": 1, "reason": "synthetic replacement primary ID needed native canonical title ordering; fixture corrected, original normalizer unchanged"}, {"chunk": "674ce3", "exit_code": 1, "reason": "synthetic planning cache must hold original Driver raw root, not Service-rendered result; fixture corrected, original validation unchanged"}]
+  },
+  "operations": {"Game_Native_MCP_desktop_calls": 0, "live_Driver_SAVE_media_or_new_game_receipt_reads": 0, "shared_Driver_narrow_API_edits": 1, "shared_Service_fresh_root_hook_edits": 1, "strategy_war_or_M4_Crown_branch_edits": 0, "runtime_mutations": 0, "new_ordinary_queries": 0, "stage_commit_push_by_this_task": false},
+  "storage": {"policy_version": "1.0.0", "outputs_below_bytes": 1048576, "heavy_writes": false, "files_deleted": 0, "record_review_at_utc": "2027-04-17T04:41:00Z"}
+}

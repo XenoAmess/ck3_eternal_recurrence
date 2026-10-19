@@ -1,0 +1,402 @@
+{
+  "schema": "xar.long-campaign-conditional-growth.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:38:04.583484+00:00",
+  "evidence_layer": "source inspection plus sealed metadata arithmetic; no new benchmark or game-throughput forecast",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-BATCH-0011-COMPACT30.json",
+      "bytes": 122512,
+      "sha256": "fb2415b1cbc179a78e8d013c7417c2fefaf65e65d3670e5aa435cbae1cfea06f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0131-0143-COMPACT42.json",
+      "bytes": 26651,
+      "sha256": "0746e3d106efcb7ec351b6ad1b3f5c5ba1f20108afcc3c14d63da0f39ab7bb77"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\CLOSED-FRAGMENT-0161-0194-COMPACT48.json",
+      "bytes": 78837,
+      "sha256": "1b522bd23573b3bf3ac52875e731788da8567408c94831cdfc2ef4b2c3464601"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0140-1-result.json",
+      "bytes": 14110,
+      "sha256": "0c480fbd329136f92dd4bcd0a8f9eaba5d660bbf967ea7409e7082331a9627a2"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0193-1-result.json",
+      "bytes": 14110,
+      "sha256": "d40c98fd93f29609f80e4f8ae8990da8e54253dbcfc863a5709cd27c7485a383"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0045-1-result.json",
+      "bytes": 9721,
+      "sha256": "363ef35e9831c27a4bd4e6b5f0c9d5ebb413262cc2fc47a9d031ca736ccc94c5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0136-1-result.json",
+      "bytes": 9724,
+      "sha256": "5672fe61027c3479e9dcebaace9fca9f2468f1c05da9812c05f3726ea70cb04c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0142-1-result.json",
+      "bytes": 9724,
+      "sha256": "558f9a276aef0c01b6557d622b71f7b5deca23ac6e70099a40b0ead00d45b8ea"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p63-r6-performance-and-normal-sdk-close-2026-10-18.json",
+      "bytes": 13748,
+      "sha256": "d9567fc34f86649b9b682a67a2fba50894c4ea11bda9092f662a9cf63fc473fb"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p50-root-history-lookup-performance-2026-10-18.json",
+      "bytes": 8419,
+      "sha256": "b65be4585222fc36ce0603423e37adda8cad1ddcee2d3c5283b39d1582ed36ce"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\planner-battle-tail-lookup-2026-10-19.json",
+      "bytes": 5697,
+      "sha256": "1e97942cb7726f7d721e198f510dfb1bb6aaef7646b598a582b5c05450fde96f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p67-p68-combat-query-archive-performance-2026-10-18.json",
+      "bytes": 13952,
+      "sha256": "ea5fbc8d1630886fa0b9a4576115ffe3ca0a0aaa0c06e4e93ae1aac3f3f6b6f6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\driver-barrier-policy-audit-2026-10-19.json",
+      "bytes": 14711,
+      "sha256": "199213d1d72ca131d88d2423ca37a4ed4f693d925bfa20e9c311ee5e3c9547d2"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/driver_state_history_json.py",
+      "bytes": 3584,
+      "sha256": "1ad843c2347e2e1b07c007aa9dd45d4011baa70253b07f7a16695fab3dd1fc46"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/combat_history_superseded_v1.py",
+      "bytes": 8679,
+      "sha256": "7abc5449138728a9ef869e27d2001a1a0290abc1e456ac3c35b00f20ddf51994"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_history_store.py",
+      "bytes": 8855,
+      "sha256": "22a46bdb75c4f70c8466c4d4b7a665992c75c0cb3aa7004f182965d1dfd5297d"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/driver_state_wal_v1.py",
+      "bytes": 20272,
+      "sha256": "fdca7355377e957bbbcffcef509988e3f34f488ef3340256dfdf7214534303c1"
+    },
+    {
+      "path": "ck3_autonomous_player/experimental/driver_state_wal_v1/bridge-native_driver.py.patch",
+      "bytes": 14432,
+      "sha256": "318612ca06da970f5d090ba92702056dac89c670be473faf34a37952db806be4"
+    }
+  ],
+  "current_actual_anchors": {
+    "day0_poststartup_Driver_file_bytes": 182228,
+    "day30_Driver_file_bytes": 545597,
+    "day61_Driver_file_bytes": 696451,
+    "day0_encoded_rows": 28,
+    "day30_two_encoded_row_observations": [
+      83,
+      91
+    ],
+    "first30_poststartup_growth_bytes_per_day": 12112.3,
+    "next31_growth_bytes_per_day": 4866.258064516129,
+    "whole_file_stat_is_not_heap_or_history_bytes": true,
+    "successful_query_backlog_can_remain_dirty_and_not_in_file_stat": true
+  },
+  "model": {
+    "formula": "F(D)=F61+g*(D-61); W8=k*F61+8*g*k*(k+1)/2, k=floor((D-61)/8)",
+    "scope": "conditional continuation of each separately observed growth rate; not a forecast, upper bound or current-policy A/B",
+    "rows": [
+      {
+        "growth_regime": "current_poststartup_day30_to61",
+        "target_actual_day": 1000,
+        "assumed_growth_bytes_per_day": 4866.258064516129,
+        "modelled_full_Driver_bytes": 5265867,
+        "modelled_full_Driver_MiB": 5.021922419148106,
+        "hypothetical_full_barriers_every_8_days_after_day61": 117,
+        "modelled_future_full_file_write_GiB": 0.3261668629523727,
+        "whole_file_above_256MiB_warning_only": false,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "current_poststartup_day30_to61",
+        "target_actual_day": 5000,
+        "assumed_growth_bytes_per_day": 4866.258064516129,
+        "modelled_full_Driver_bytes": 24730900,
+        "modelled_full_Driver_MiB": 23.585223751683387,
+        "hypothetical_full_barriers_every_8_days_after_day61": 617,
+        "modelled_future_full_file_write_GiB": 7.312599436560225,
+        "whole_file_above_256MiB_warning_only": false,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "current_poststartup_day30_to61",
+        "target_actual_day": 10000,
+        "assumed_growth_bytes_per_day": 4866.258064516129,
+        "modelled_full_Driver_bytes": 49062190,
+        "modelled_full_Driver_MiB": 46.78935041735249,
+        "hypothetical_full_barriers_every_8_days_after_day61": 1242,
+        "modelled_future_full_file_write_GiB": 28.792047623725185,
+        "whole_file_above_256MiB_warning_only": false,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "historical_R6_projected_war_window",
+        "target_actual_day": 1000,
+        "assumed_growth_bytes_per_day": 42819.230769230766,
+        "modelled_full_Driver_bytes": 40903709,
+        "modelled_full_Driver_MiB": 39.00881642561692,
+        "hypothetical_full_barriers_every_8_days_after_day61": 117,
+        "modelled_future_full_file_write_GiB": 2.278139784000814,
+        "whole_file_above_256MiB_warning_only": false,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "historical_R6_projected_war_window",
+        "target_actual_day": 5000,
+        "assumed_growth_bytes_per_day": 42819.230769230766,
+        "modelled_full_Driver_bytes": 212180632,
+        "modelled_full_Driver_MiB": 202.3512189571674,
+        "hypothetical_full_barriers_every_8_days_after_day61": 617,
+        "modelled_future_full_file_write_GiB": 61.22386893049742,
+        "whole_file_above_256MiB_warning_only": false,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "historical_R6_projected_war_window",
+        "target_actual_day": 10000,
+        "assumed_growth_bytes_per_day": 42819.230769230766,
+        "modelled_full_Driver_bytes": 426276786,
+        "modelled_full_Driver_MiB": 406.52922212160547,
+        "hypothetical_full_barriers_every_8_days_after_day61": 1242,
+        "modelled_future_full_file_write_GiB": 247.0643572972084,
+        "whole_file_above_256MiB_warning_only": true,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "historical_R5_legacy_heavy_window",
+        "target_actual_day": 1000,
+        "assumed_growth_bytes_per_day": 1354947.5806451612,
+        "modelled_full_Driver_bytes": 1272992229,
+        "modelled_full_Driver_MiB": 1214.0199939973893,
+        "hypothetical_full_barriers_every_8_days_after_day61": 117,
+        "modelled_future_full_file_write_GiB": 69.76268250546268,
+        "whole_file_above_256MiB_warning_only": true,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "historical_R5_legacy_heavy_window",
+        "target_actual_day": 5000,
+        "assumed_growth_bytes_per_day": 1354947.5806451612,
+        "modelled_full_Driver_bytes": 6692782552,
+        "modelled_full_Driver_MiB": 6382.7348249496945,
+        "hypothetical_full_barriers_every_8_days_after_day61": 617,
+        "modelled_future_full_file_write_GiB": 1925.0700986096035,
+        "whole_file_above_256MiB_warning_only": true,
+        "history_cache_threshold_actual_crossing_inferred": false
+      },
+      {
+        "growth_regime": "historical_R5_legacy_heavy_window",
+        "target_actual_day": 10000,
+        "assumed_growth_bytes_per_day": 1354947.5806451612,
+        "modelled_full_Driver_bytes": 13467520455,
+        "modelled_full_Driver_MiB": 12843.628363640077,
+        "hypothetical_full_barriers_every_8_days_after_day61": 1242,
+        "modelled_future_full_file_write_GiB": 7793.279188577025,
+        "whole_file_above_256MiB_warning_only": true,
+        "history_cache_threshold_actual_crossing_inferred": false
+      }
+    ],
+    "row_count_formula": "N(D)=N0+(N30-N0)*D/30; metadata range only, not a workload bound",
+    "row_count_rows": [
+      {
+        "target_actual_day": 1000,
+        "modelled_row_range": [
+          1862,
+          2128
+        ]
+      },
+      {
+        "target_actual_day": 5000,
+        "modelled_row_range": [
+          9195,
+          10528
+        ]
+      },
+      {
+        "target_actual_day": 10000,
+        "modelled_row_range": [
+          18362,
+          21028
+        ]
+      }
+    ],
+    "missing_inputs": [
+      "actual history-byte fraction of whole Driver",
+      "future war/action/query/restore rates",
+      "future full-barrier reasons/counts",
+      "actual storage throughput and concurrent load"
+    ],
+    "future_seconds_per_day_estimated": false
+  },
+  "structural_costs": {
+    "full_persistence": "O(F) write every barrier; accumulated writes quadratic when F grows linearly and barrier density stays positive",
+    "history_cache": "256MiB applies to command_history JSON, not whole Driver; above it every encode rebuilds complete JSON and leaves cache unretained",
+    "prefix_edits": "marriage outcome and combat history compaction invalidate the history JSON cache even below its size cap",
+    "planning": "internal planning view avoids public history deep copy; expansion creates outer rows and missing-result/restore scans remain O(N)",
+    "scan_observations_only": {
+      "root_profile_8853": [
+        {
+          "case": "recent_current_root",
+          "history_rows": 8853,
+          "same_result_object": true,
+          "baseline_helper_calls": {
+            "_effective_command": 8853,
+            "_effective_command_result": 242
+          },
+          "candidate_helper_calls": {
+            "_effective_command": 4,
+            "_effective_command_result": 2
+          },
+          "native_evaluations_baseline": 0,
+          "native_evaluations_candidate": 0,
+          "median_seconds_per_lookup": {
+            "baseline": 0.0005006240005604923,
+            "candidate": 1.1939997784793376e-06
+          },
+          "candidate_to_baseline_ratio": 0.002385023045524287
+        },
+        {
+          "case": "no_current_root",
+          "history_rows": 8853,
+          "same_result_object": true,
+          "baseline_helper_calls": {
+            "_effective_command": 8853,
+            "_effective_command_result": 240
+          },
+          "candidate_helper_calls": {
+            "_effective_command": 8853,
+            "_effective_command_result": 240
+          },
+          "native_evaluations_baseline": 0,
+          "native_evaluations_candidate": 0,
+          "median_seconds_per_lookup": {
+            "baseline": 0.0005521959997713565,
+            "candidate": 0.0005947579978965223
+          },
+          "candidate_to_baseline_ratio": 1.0770777009300847
+        },
+        {
+          "case": "snapshot_fallback",
+          "history_rows": 8853,
+          "same_result_object": true,
+          "baseline_helper_calls": {
+            "_effective_command": 8853,
+            "_effective_command_result": 240
+          },
+          "candidate_helper_calls": {
+            "_effective_command": 8853,
+            "_effective_command_result": 240
+          },
+          "native_evaluations_baseline": 0,
+          "native_evaluations_candidate": 0,
+          "median_seconds_per_lookup": {
+            "baseline": 0.0005495689995586872,
+            "candidate": 0.0005549349985085428
+          },
+          "candidate_to_baseline_ratio": 1.0097640131706203
+        }
+      ],
+      "battle_profile_8853_8857": [
+        {
+          "case": "no_advances_8853",
+          "predicate_calls": {
+            "baseline": 8853,
+            "candidate": 8853
+          },
+          "median_seconds_per_battle_state": {
+            "baseline": 0.005365829984657467,
+            "candidate": 0.005633999989368021
+          },
+          "repetitions": 7,
+          "calls_per_repetition": 10
+        },
+        {
+          "case": "recent_two_advances_8857",
+          "predicate_calls": {
+            "baseline": 8857,
+            "candidate": 4
+          },
+          "median_seconds_per_battle_state": {
+            "baseline": 0.0049538800027221445,
+            "candidate": 0.0005406499840319157
+          },
+          "repetitions": 7,
+          "calls_per_repetition": 10
+        }
+      ]
+    }
+  },
+  "combat_and_raw_evidence": {
+    "superseded_summary_lossless": false,
+    "no_additional_history_or_business_fields_removed": true,
+    "P67_single_complete_combat_body_bytes": 24986853,
+    "P67_single_MCP_response_bytes": 100646305,
+    "raw_MCP_storage_rate_historical_R6_bytes_per_day": 3806799.3846153845,
+    "R6_rate_times_10000_days_bytes_scenario_only": 38067993846.15385,
+    "excludes": [
+      "video",
+      "CK3 SAVE",
+      "sidecars",
+      "SDK generations",
+      "filesystem metadata"
+    ],
+    "P67_archive_count_gate_exhausted": true
+  },
+  "existing_WAL_review": {
+    "enabled_or_deployed_by_this_work": false,
+    "existing_generic_append_reused": true,
+    "delta_cap_bytes": 262144,
+    "journal_cap_bytes": 8388608,
+    "journal_write_is_bounded_whole_journal_atomic_replace": true,
+    "actual_mixed_barrier_benefit_gap": "full barrier resets v2; next append reads/hashes/re-writes complete sealed base. One append between full barriers saves no base write",
+    "succession_barrier": "Service prepares a changed frame expectation; Driver retain remains a full barrier, so count actual consecutive eligible append runs before adoption",
+    "minimum_existing_policy_gaps": [
+      "29-day, 5-day and month-clipped software eligibility cases using the current result contract",
+      "early-modal/zero-day/cancel/overshoot/wrong-generation negative cases",
+      "actual future source tuple adoption and natural timing; no present-game credit"
+    ],
+    "pre_marker_failed_full_barrier_gap": "an experimental requires_full_barrier flag is set before any requested full barrier; only a successful full base replacement clears it; _try refuses append while it is set",
+    "unchanged_full_barriers": [
+      "SAVE",
+      "restore/identity",
+      "once/pending/action receipts",
+      "unknown or failed actions",
+      "old-prefix edits",
+      "close"
+    ],
+    "qualification_recovery_matrix_repeated": false,
+    "adoption_priority": "stabilize execution chain now; qualify actual mixed-barrier benefit and existing multiday predicate before any later enablement"
+  },
+  "new_game_native_RPC_calls": 0,
+  "Driver_SAVE_body_reads": 0,
+  "external_writes_bytes": 0,
+  "historical_ledgers02_03_modified": false,
+  "producer": {
+    "path": "tools/g2_saved_campaign/model_long_campaign_growth_v1.py",
+    "sha256": "f9de3bdad98ebc68bf5c76d3fe1df7416304a8e03f689ee917b0282f4bccbb7c"
+  },
+  "storage": {
+    "pool": "REPO-ONLY-MICROPOOL01",
+    "producer_closed": true,
+    "future_writes_bytes": 0
+  }
+}

@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from xar_autoplayer.bridge import pending_material_publication_v1 as material
 from xar_autoplayer.bridge import faction_gift_formal_route_v1 as faction
@@ -33,6 +34,51 @@ def crown_pending():
 
 
 class PublicationFenceTests(unittest.TestCase):
+    def test_pending_crown_priority_preserves_original_exact_context_flag(self):
+        source = crown_pending()["source_context"]
+        cases = ((source, False), ({**source, "bridge_pid": 230673}, True),
+                 ({**source, "extra_context": "retained"}, True), (None, True))
+        for context, cold in cases:
+            with self.subTest(source_context=context), tempfile.TemporaryDirectory() as temporary:
+                state_dir = Path(temporary)
+                pending = {**crown_pending(), "source_context": context}
+                (state_dir / "crown-authority-formal-v1.json").write_text(
+                    json.dumps({"pending": pending, "resolved": None, "retry": None}), encoding="utf-8")
+                current = frame(revision=64, native_revision=62)
+
+                class Driver:
+                    _session_bridge_pid = 230672
+                    allow_private_realm_law_action = True
+                    allow_private_activity_feast_lifecycle_observation = False
+
+                    def take_internal_semantic_snapshot(self):
+                        return current
+
+                    def _with_internal_planning_view(self, snapshot, callback):
+                        return callback(snapshot, [])
+
+                    def wait_for_change(self, *args, **kwargs):
+                        raise AssertionError("already published receipt requires no wait")
+
+                driver = Driver()
+                driver.state_dir = state_dir
+                service = object.__new__(service_module.GameplayBridgeService)
+                service.driver = driver
+                service.capabilities = lambda: {}
+                service._strategy_state_dir = lambda: state_dir
+                service._prepare_succession_transition_v1 = lambda snapshot, steps, **kwargs: snapshot
+                with patch.object(service_module, "action_step_set", return_value={"life-advance-one-day"}), \
+                        patch.object(service_module, "plan_one_life_window_priority_v1", return_value=None), \
+                        patch.object(service_module, "read_one_life_strategy", return_value={"episodes": []}), \
+                        patch.object(service_module, "choose_one_life_turn", side_effect=AssertionError(
+                            "new opportunity strategy must not precede the original receipt")):
+                    planned = service._plan_turn_internal_without_readonly_retry_v1()
+                plan = planned["plan"]
+                self.assertEqual(plan["selected_step"], service_module.PRIVATE_CROWN_RECEIPT_STEP)
+                self.assertEqual(plan["crown_pending_action"], pending)
+                self.assertIs(plan["crown_cold_recovery"], cold)
+                self.assertIs(plan["pending_material"]["business_credit"], False)
+
     def test_actual_crown_action_receipt_precedes_any_new_opportunity_query(self):
         before = frame()
         intermediate = frame(revision=63, prestige=93035710)

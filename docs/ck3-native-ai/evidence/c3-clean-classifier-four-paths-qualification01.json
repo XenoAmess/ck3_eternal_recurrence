@@ -1,0 +1,24 @@
+{
+  "schema": "xar.c3-clean-classifier-install-four-literals/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:25:52.561251+00:00",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_clean_classifier_install.py",
+    "bytes": 6339,
+    "sha256": "38dca9aac1fdb40a56ef3308fb8adb80e6d9c917c0d968b347e69b85a0d1cca6"
+  },
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\classifier-c3-clean-paths-review01\\root_p37_clean_classifier_install.py",
+    "bytes": 6346,
+    "sha256": "66886d41d07e374b038051d7eee85a0fdb364eddc3292a1a5fd407997e4dceca"
+  },
+  "changes": {
+    "ROOT-P37-KNOWN-OWNER-LIFECYCLE-PIN.json": "ROOT-P37C3-KNOWN-OWNER-LIFECYCLE-PIN.json",
+    "ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37.json": "ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C3.json",
+    "ROOT-FINAL-SDK-FREEZE-P37.json": "ROOT-FINAL-SDK-FREEZE-P37C.json",
+    "ROOT-ACTUAL-DRIVER-MODE-P37.json": "ROOT-ACTUAL-DRIVER-MODE-P37C3.json"
+  },
+  "AST_except_four_path_literals_identical": true,
+  "new_RPC_calls": 0,
+  "runtime_mutations": 0
+}

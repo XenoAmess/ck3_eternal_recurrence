@@ -1,0 +1,156 @@
+{
+  "schema": "xar.ck3.g2-m1-monthly-met-production-research/v1",
+  "status": "SOURCE_AND_SOFTWARE_READY_NOT_RUNTIME_ADOPTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_id_source": "tools/ck3_live_run_id.py machine, actual readback in this turn",
+  "source_audited_at_utc": "2026-10-19T04:34:58.302149+00:00",
+  "closed_at_utc": "2026-10-19T04:36:19.213119+00:00",
+  "base_head": "d74afbf395301c8546d861d6130902b425deab32",
+  "runtime_adopted": false,
+  "runtime_owner_confirmation": {
+    "source": "runtime_v20261019 agent message in this session; read-only ownership confirmation",
+    "root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+    "entry": "root_p37c3_mcp_entry.py::root_current_runtime_metrics",
+    "cadence_helper": "root_score_month_samples.py::candidate",
+    "paired_persistence": "root_p37c3_sdk_queue.py:2232-2236",
+    "active_sdk": "src03/063531c4",
+    "new_collector_used_by_active_sdk": false,
+    "next_adoption_owner": "Root/runtime; exact HEAD source freeze and actual readback required",
+    "runtime_files_modified_by_this_agent": []
+  },
+  "ownership": {
+    "new_collector_and_targeted_test": "M1",
+    "service_and_runtime": "Root/runtime owner, unchanged by M1",
+    "existing_cadence_and_pure_mapper": "unchanged",
+    "native": "existing shared source, read-only audit only"
+  },
+  "api": {
+    "name": "collect_monthly_met_candidate_v1",
+    "inputs": ["service", "start_date", "machine_id", "campaign_anchor", "months=360"],
+    "outputs": ["current semantic snapshot", "optional exact-slot candidate"],
+    "accepts_prior_AUTO_snapshot": false,
+    "initial_SEM_failure": "existing MET exception contract; no fabricated sample",
+    "off_slot_or_unpaused": {"collector_SEM_reads": 1, "readonly_query_invocations": 0},
+    "available_exact_slot": {
+      "collector_SEM_reads_at_most": 3,
+      "existing_cash_query_invocations_at_most": 1,
+      "existing_public_root_query_invocations_at_most": 1,
+      "same_native_capture": false,
+      "cash_capture_epoch": null,
+      "root_capture_epoch": null,
+      "epoch_reason": "existing DTOs do not expose the original execution pump_epoch",
+      "native_request_send_counter": null,
+      "new_RPC_calls_in_candidate": null,
+      "new_SAVE_exports": 0,
+      "retry_count": 0
+    },
+    "failure_guards": [
+      "Missing query method: unknown, no invocation",
+      "Existing UnsupportedStepError before submission: unknown; other supported query may continue",
+      "Bridge/transport/result/format failure: stop bundle, no subsequent query or retry",
+      "Snapshot/public/native/date/actor/episode/PID/generation drift: stop bundle, old DTO rejected",
+      "Closing SEM unavailable: all optional DTOs rejected",
+      "Final frame off slot or no longer paused: no month sample",
+      "No private permission enabled by collector"
+    ],
+    "preserved_existing_contract": "xar.ck3.planning-source-frame/v1",
+    "new_generic_identity_builder": false,
+    "queue_pairing_and_response_Game_pins_still_required": true
+  },
+  "source_audit": {
+    "cash_native_path": "bridge.cpp RunWarCashCurrentResourcesQuery12003 actual4 branch -> ExecuteWarCashCurrentResources12004, independent envelope/ticket",
+    "root_native_path": "bridge.cpp RunTypedQuery12002 -> ExecuteTypedQuery12002 campaign branch, independent envelope/ticket",
+    "mailbox_guards": "EnterQueryMailbox/CaptureQuerySnapshot/FinishQueryMailbox compare paused expected Snapshot; each query owns a separate execution stamp",
+    "revision_is_not_epoch": "CaptureTypedFrame12002.snapshot_revision = expected_snapshot_revision; PublishSnapshot retains revision for unchanged Snapshot",
+    "python_cash": "g2_private_query_transport.read_private_g2_native_query_v1 before/after _binding; existing cash normalizer exact build/scope/v2 arithmetic",
+    "python_root": "GameplayBridgeService.query_campaign_root_context_v1 validates original queried triple, provenance, binding and closing frame",
+    "actual_rate_mapping": {
+      "gross_income": "player_monthly_gross_income.raw / 100000, gold/month",
+      "total_expenses": "player_monthly_total_expenses.raw / 100000, gold/month; includes military",
+      "military_current": "military_expenses.current.gold_raw / 100000, actor owned once across all wars",
+      "military_all_raised": "military_expenses.all_raised.gold_raw / 100000, same actor scope; no future-cost upper claim"
+    },
+    "realm_current_scope": "native domain size/limit and geographic directly held county/partition exposure diagnostics only",
+    "still_unknown": ["due_commitments", "P_quality", "continuation_legal", "backup_heirs", "Q_realm", "K_dynasty", "realm_county_count", "dynasty_county_count"],
+    "service_dirty_when_full_file_pin_read": true,
+    "pins_are_observed_audit_source_bytes_not_runtime_deployment": true
+  },
+  "low_frequency_realm_dynasty_feedback": {
+    "implemented_this_turn": false,
+    "existing_sources": [
+      "fresh public campaign-root direct holdings/domain diagnostics",
+      "protected existing checkpoint SAVE + campaign_score_save_reader.locked_save/melt_projection/SaveProjection/project_metrics",
+      "actual v20261019 T0 source pins and fixed founding anchor"
+    ],
+    "proposed_cadence": "yearly plus succession, own-war terminal result or fresh direct-domain loss; asynchronous, deduplicate same SAVE SHA, collapse pending work",
+    "new_monthly_SAVE_or_melt_files_required": false,
+    "retained_projection": "small source-bound county/holder/house/realm/founding-dynasty/Q/K summary and change sets; no full melt/history",
+    "producer_gaps": [
+      "Reader in_realm currently returns false for missing/cyclic liege chains; must audit membership completeness before declaring realm loss",
+      "Confirm geographic county eligibility from source-bound current map; c_ prefix alone admits dynamic landless family titles",
+      "Preserve holder/house/parent-house conflicts and incomplete occupation as unknown/bounds",
+      "Existing checkpoint ownership and source/retention receipt must be supplied by runtime/storage owner"
+    ],
+    "native_full_realm_or_dynasty_roster_available": false
+  },
+  "validation": {
+    "kind": "offline fake-driver orchestration only",
+    "command": "py -m unittest discover -s ck3_autonomous_player/tests/unit -p test_campaign_score_monthly_met_v1.py -v",
+    "tests": 7,
+    "runs": 1,
+    "exit_code": 0,
+    "internal_seconds": 0.005,
+    "outer_seconds": 0.9212702,
+    "cases": [
+      "fresh month001: four rates + domain, anchor preserved, no full realm substitution",
+      "no slot or unpaused: one SEM accessor and zero queries",
+      "absent query methods: unknown without blocking",
+      "known cash permission refusal: root remains usable",
+      "mid-bundle public revision/connection generation change: root skipped, old cash rejected",
+      "unknown inflight timeout: stable SEM does not justify next query, zero retry",
+      "closing semantic frame unavailable: no optional metric promoted"
+    ],
+    "fixture_identity": "synthetic software rewrites of existing small cash/root fixtures; historical cash fixture machine_id unknown",
+    "candidate_fixture_bytes_upper_bound_asserted": 32768,
+    "actual_Native_or_business_acceptance_claimed": false,
+    "old_matrix_repeated": false
+  },
+  "pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/campaign_score_monthly_met_v1.py": {"bytes": 6340, "sha256": "e1320a89bef5a0d8a5ebe8bc4af45f26845078a3365d10db7976e7a832fa0a8b"},
+    "ck3_autonomous_player/tests/unit/test_campaign_score_monthly_met_v1.py": {"bytes": 9003, "sha256": "bc7e1baee1fdfbf9fd37bfa0b3bc96096e6c66438e6a954a19c7e95a4ebf857f"},
+    "docs/ck3-native-ai/g2-m1-monthly-met-production-2026-10-19.md": {"bytes": 9650, "sha256": "de56df320baa71aeb6f6e69f20d788ea490a14c6065c93b4feaae6199afc5281"},
+    "ck3_autonomous_player/src/xar_autoplayer/campaign_score_existing_inputs_v1.py": {"bytes": 8951, "sha256": "e2df61d71b60965b428861911cb9a685c3e661680fcd83a864436052c8725b0a"},
+    "ck3_autonomous_player/src/xar_autoplayer/campaign_score_cadence_v1.py": {"bytes": 8776, "sha256": "ae507020d789853bf7c7c849d590037bf69c2d039ce8b10e62e46946b5c7e929"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/g2_private_query_transport.py": {"bytes": 4533, "sha256": "02db15ca2b070f814df06cad10da2bb9b4c8e2e1aec621f9228a5ab12f971315"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_private_transport_v1.py": {"bytes": 11901, "sha256": "e33f43c54fe4fa0960383065931a1b2179b8b40b706393f628a94dbb6b6d4249"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py": {"bytes": 867485, "sha256": "c1bfbfd9a3bfa938dd02f5bd00c16a9500c3fc1a1343104ccb91a824f5081d9d"},
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py": {"bytes": 1603757, "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de"},
+    "ck3_autonomous_player/native_bridge/src/ck3_12002_query_mailbox.cpp": {"bytes": 7274, "sha256": "81f5fd3f73808720226b6721aea95f3fea9c69c1557f611334c97067fc9ca641"},
+    "ck3_autonomous_player/native_bridge/src/bridge.cpp": {"bytes": 1602801, "sha256": "68ad29060e19a17727ab7b961a4efbe7f21f5f036ac252a9e6cd40b98ac833b1"},
+    "ck3_autonomous_player/src/xar_autoplayer/campaign_score_save_reader.py": {"bytes": 40660, "sha256": "f10eaae7d7ede43e97afd2a2e7d8621714d9d5220f80b968821ecdea13f285fc"}
+  },
+  "execution_limits": {
+    "live_RPC_calls_this_turn": 0,
+    "live_Driver_reads": 0,
+    "SAVE_scans_or_copies": 0,
+    "Native_compiles": 0,
+    "current_COW_edits": 0,
+    "new_files": 4,
+    "stage_or_commit": false,
+    "G2_completed_milestones": "6/8 unchanged",
+    "M1_historical_complete": true
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json v1.0.0",
+    "budget": "Root existing shared research remaining 128MiB; no additional reservation",
+    "new_four_file_bytes_limit": 65536,
+    "logical_bytes": 35300,
+    "allocated_bytes": null,
+    "Z_disk_observed_total_bytes": 4096787476480,
+    "Z_disk_observed_free_bytes": 178400665600,
+    "capacity_observation_is_reservation": false,
+    "record_review_due_utc": "2027-04-17T04:36:19.213119+00:00",
+    "producer_closed": true,
+    "future_heavy_output_bytes": 0
+  }
+}

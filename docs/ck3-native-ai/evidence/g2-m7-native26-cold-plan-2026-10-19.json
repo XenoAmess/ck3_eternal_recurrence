@@ -1,0 +1,586 @@
+{
+  "schema": "xar.ck3.g2-m7-native26-cold-continuation-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:39:48.121704+00:00",
+  "source_head": "d74afbf395301c8546d861d6130902b425deab32",
+  "pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_checkpoint_lineage_v1.py",
+      "bytes": 25383,
+      "sha256": "44fa2870a33723559551960a09c3d07bb848da0337bb9f18b9c9bfed77cbaa51",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21478,
+      "sha256": "c0efbfa6474aee2fde033953a7a0220aa5a74a4a9484b1daa4ed32d13fa8b0e4",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 19696,
+      "sha256": "61d34deec81004116e87470e111d0f33afee479e8a035ad3efa1d02ab7980f3f",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1607693,
+      "sha256": "f0d0b47b101993084608cead332ea5e876a730dbd30a21034162a19e15b164b5",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "bytes": 76078,
+      "sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/cold_checkpoint_validator.py",
+      "bytes": 4766,
+      "sha256": "d89180d9abbcffcd71a33387826b751e31ecd7709683576e35cbb5358d4509a3",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/cli.py",
+      "bytes": 60497,
+      "sha256": "1498f1f32dbe95c356900fd1f8e306725ed4c652124a3d786758a4a36efb2f3f",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "tools/g2_saved_campaign/completed_metrics_warm_resume_v1.py",
+      "bytes": 17421,
+      "sha256": "ce55f449d2e9614dc368f2b5db4881e7c8e998428171424e43a2a12a4e2b8760",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native26-performance-build-qualification-2026-10-19.json",
+      "bytes": 8382,
+      "sha256": "cfc710197d5de1735e1f6d3f30674bfeaeda8ab06235aaf6cec211f2ea13e41c",
+      "basis": "read-only current source/qualification; not future SDK freeze"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0142-1-result.json",
+      "bytes": 9724,
+      "sha256": "558f9a276aef0c01b6557d622b71f7b5deca23ac6e70099a40b0ead00d45b8ea",
+      "record_machine_id": "unknown",
+      "record_utc": "2026-10-19T04:06:02.117851+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0141-1-result.json",
+      "bytes": 56840,
+      "sha256": "73120a479fb44015c58fcd73ec3f76a6780c953c9091ea2b98a3e145528760e3",
+      "record_machine_id": "unknown",
+      "record_utc": "2026-10-19T04:05:59.629954+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0150-1-result.json",
+      "bytes": 1160,
+      "sha256": "568dbf1362cc9609b4afcd76f2d95d374dd89c115b61584dcecd7c41d65b4d69",
+      "record_machine_id": "unknown",
+      "record_utc": null
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0153-1-result.json",
+      "bytes": 1371,
+      "sha256": "b144a3ad7e27c4413e59f05601f9e2eb36be38dfe77bf11dff706c8f3aabda32",
+      "record_machine_id": "unknown",
+      "record_utc": "2026-10-19T04:25:53.014324+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto143-source-review01\\META.json",
+      "bytes": 8347,
+      "sha256": "aa3bc5375873b8dcd5bd7c45d43d1ff5a010857482e62f8ede8d3d9a9b85099d",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T04:13:02.764407+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_native_build_binding_p37c.py",
+      "bytes": 4071,
+      "sha256": "e838fd23446bcb619161017fb9db72dc9c1622d1fe7b587bfa6055016bc285ca"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto194-source-review01\\META.json",
+      "bytes": 10433,
+      "sha256": "6cf39a4277e95cf660840e2728c201fc779497cc0b16c237c03a99f06cc0d1aa",
+      "record_machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "record_utc": "2026-10-19T04:35:29.426190+00:00"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py",
+      "bytes": 27237,
+      "sha256": "fa27a839036564f762d18969265c2baae33d5b8e517ee9d01d0ceb7393394dc8",
+      "basis": "M6 source owner reviewed existing capture/receipt contract; collector pins current source only"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/g2_private_query_transport.py",
+      "bytes": 4533,
+      "sha256": "02db15ca2b070f814df06cad10da2bb9b4c8e2e1aec621f9228a5ab12f971315",
+      "basis": "M6 source owner reviewed existing capture/receipt contract; collector pins current source only"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_service_v1.py",
+      "bytes": 9219,
+      "sha256": "3f45b4c07dd79a8279605c438a57fa7cdc819a7900a642953f9c3e0fd93d8321",
+      "basis": "M6 source owner reviewed existing capture/receipt contract; collector pins current source only"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_lifecycle_observation_v1.py",
+      "bytes": 6043,
+      "sha256": "acd42963f529b680166d439d433e226ff213c5f5d4c07c04e1251923e2d168b4",
+      "basis": "M6 source owner reviewed existing capture/receipt contract; collector pins current source only"
+    }
+  ],
+  "latest_read_normal_SAVE": {
+    "checkpoint": {
+      "status": "saved",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 68489298,
+      "sha256": "9321fd08c107079cf01dc8797e8a5c5006261b90a225a91dc8d9b503e4a4904b",
+      "date_raw": 53145048,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": null,
+        "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+        "source": "absent_by_verified_xar_mod_not_loaded",
+        "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+      },
+      "history_index": 91,
+      "episode_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441"
+    },
+    "driver_state_replace_receipt": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "replaced",
+      "write_replace_returned": true,
+      "save_binding_verified": true,
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\xar-g2-robert30-v20261019-campaign01",
+        "bridge_pid": 214568,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": null,
+          "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+          "source": "absent_by_verified_xar_mod_not_loaded",
+          "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+        },
+        "campaign_goal": {
+          "format_version": 1,
+          "goal_key": "dynasty_continuity",
+          "campaign_id": "native-31254-6271ac8cd441",
+          "origin_character_id": 31254,
+          "current_character_id": 31254,
+          "progress": {
+            "reconciled_successions": 0,
+            "last_succession": null
+          }
+        }
+      },
+      "binding_contract": "one_life_episode_identity_v1",
+      "checkpoint_episode_projection": null,
+      "missing_checkpoint_binding_fields": [],
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\xar-g2-robert30-v20261019-campaign01",
+        "bridge_pid": 214568,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "save_history_index": 91,
+      "checkpoint": {
+        "status": "saved",
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 68489298,
+        "sha256": "9321fd08c107079cf01dc8797e8a5c5006261b90a225a91dc8d9b503e4a4904b",
+        "date_raw": 53145048,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": null,
+          "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+          "source": "absent_by_verified_xar_mod_not_loaded",
+          "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+        },
+        "history_index": 91,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-6271ac8cd441"
+      },
+      "encoded_history_rows": 91,
+      "driver_state_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\driver-state.json"
+    },
+    "episode_seed": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 68936116,
+      "sha256": "381e832bb3122b1c544d5bcd505eb86b4d40456a4d37969bcf208714d0aa88f4",
+      "date_raw": 53144328,
+      "character_id": 31254,
+      "source_run_id": "native-31254-6271ac8cd441",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    }
+  },
+  "SAVE_frame": {
+    "snapshot_id": "native:57",
+    "revision": 21,
+    "native_revision": 57,
+    "date_raw": 53145048,
+    "paused": true,
+    "map_ready": true,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-6271ac8cd441",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    }
+  },
+  "closed_boundary": {
+    "cumulative_cycles": 58,
+    "actual_calendar_days": 38,
+    "actual_end_date_raw": 53145240,
+    "actual_end_frame": {
+      "snapshot_id": "native:68",
+      "revision": 32,
+      "native_revision": 68,
+      "date_raw": 53145240,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441"
+    },
+    "next_sequence": 152
+  },
+  "last_read_MET": {
+    "campaign_score_sample_candidate": null,
+    "snapshot_id": "native:68",
+    "revision": 32,
+    "native_revision": 68,
+    "date_raw": 53145240,
+    "paused": true,
+    "map_ready": true,
+    "actor_character_id": 31254,
+    "actor_alive": true,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "connection_generation": 4,
+    "war_count": 0,
+    "driver_state_bytes": 577961,
+    "army_strengths_profile": null,
+    "army_strengths_query_sequence": null,
+    "army_strength_result_write_v1": null
+  },
+  "sway_day30_packet": {
+    "source_binding": {
+      "runtime": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime",
+      "SDK_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03",
+      "game_pid": 214568,
+      "game_creation_filetime": 134368503807325680,
+      "App_queue": "retained P37C3",
+      "original_AUTO_sequence": 143
+    },
+    "files": [
+      {
+        "original_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\active-scheme-sway-formal-private-v1.json",
+        "frozen_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto143-source-review01\\state\\active-scheme-sway-formal-private-v1.json",
+        "bytes": 8653,
+        "sha256": "48e0ad4d9731d111abbb8d99a6d617d80d9db79a1c373ad6d3c2717f34c07e28",
+        "frozen_at_utc": "2026-10-19T04:13:02.764407+00:00"
+      },
+      {
+        "original_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\ordinary-sway-schedule-v1.json",
+        "frozen_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto143-source-review01\\state\\ordinary-sway-schedule-v1.json",
+        "bytes": 430,
+        "sha256": "7ca7c35b3776ba5c674bd03d14b76f760417c7c9c34c65532bed25e07ceb956f",
+        "frozen_at_utc": "2026-10-19T04:13:02.764407+00:00"
+      }
+    ],
+    "ledger_pending": null,
+    "actual_instance": {
+      "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+      "actor_character_id": 31254,
+      "target_character_id": 33946,
+      "scheme_instance_id": 2,
+      "scheme_instance_generation": 0,
+      "source_native_revision": 58,
+      "source_date_raw": 53145048,
+      "tracked_instance_active": true,
+      "target_opinion_of_actor": 17,
+      "scheme_sway_opinion": {
+        "observed": true,
+        "present": false,
+        "value": null
+      },
+      "sway_blocker_opinion": {
+        "observed": true,
+        "present": false,
+        "value": null
+      },
+      "dedicated_benefit_observed": false
+    },
+    "schedule": {
+      "actor_character_id": 31254,
+      "last_target_character_id": 33946,
+      "no_operation_count": 0,
+      "last_check_date_raw": 53145048,
+      "next_check_date_raw": 53145768,
+      "frontier_membership": [
+        33946,
+        34232,
+        34973,
+        35899,
+        36445,
+        45458,
+        45464
+      ],
+      "last_observation_attempt_action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+      "last_terminal_action_id": null,
+      "last_job_kind": "observe_applied"
+    }
+  },
+  "Native26": {
+    "observed_at_utc": "2026-10-19T04:19:30.409434+00:00",
+    "status": "BUILD_AND_OFFLINE_PASS_NOT_DEPLOYED",
+    "candidate_DLL": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native26-performance01\\build\\native26.dll",
+      "bytes": 18442752,
+      "sha256": "eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184"
+    },
+    "baseline_DLL": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-prewar-v2-mailbox-native25-01\\final01\\native.dll",
+      "bytes": 18442240,
+      "sha256": "a1448baa860a88826cbb9ae50ab67c93506560f2772c0515e4ef51e934002f40"
+    },
+    "production_DLL_loaded": false,
+    "export_names_and_ordinals_equal_baseline": true,
+    "offline_results": {
+      "JSON": "nine original synthetic cases, original production bodies, actual Native26 DTO header closure; bytes equal",
+      "CB": "original callback/candidate/order fixture linked to actual rebuilt declarations object and runtime archive; pass",
+      "M6": "exact .4 gate and production dispatcher, original R5 argument/recorder spy; missing-recorder/suffix/execution/invalidation guards pass; no native terminal occurrence inferred"
+    },
+    "actor_gate_default": "OFF; future cold process must freshly admit actual loaded sources and shadow before adoption"
+  },
+  "Z_capacity": {
+    "total": 4096787476480,
+    "used": 3918386999296,
+    "free": 178400477184
+  },
+  "status": "SOURCE_PLAN_ONLY_NOT_EXECUTED",
+  "boundary": {
+    "latest_normal_SAVE_days": 30,
+    "latest_observed_days": 61,
+    "latest_observed_raw": 53145792,
+    "unsaved_day_gap": 31,
+    "completed_cycles": 74,
+    "pending_global_turn": 75,
+    "pending_AUTO": 194,
+    "next_sequence": 195,
+    "natural_current_boundary_SAVE": "not_observed; Root plans exact194 cleanup then normal saved/no-pending maintenance boundary. No M7 RPC added.",
+    "prior_boundary_38": "150/151/153 are retained historical source pins, not current stop point.",
+    "current_resolved_proof": "current_not_observed; no proof created by this plan"
+  },
+  "entry": {
+    "preferred": "Fresh generation NativeBridgeLaunchConfig, original native-session --cold-start-checkpoint / cold_start_checkpoint=True, existing prepared profile/pipe and latest exact xar_checkpoint pair; original Driver cold adoption.",
+    "existing_MCP": "ck3_restore_checkpoint(expected_revision) hands existing daemon its restore request; existing daemon config is not an automatic Native26 switch.",
+    "avoid": [
+      "New Robert/Game selector or start-next-episode/T0 seed",
+      "MET110 finite 47/pending48 same_pid_hot factory",
+      "Old Native25 binder with build/native26.dll basename and old literal P37C/Native22 inputs"
+    ],
+    "hard_constraints": [
+      "Persist original pipe; Driver loader and cold-start validator compare exact pipe.",
+      "Keep ordinary lifecycle/profile/environment unchanged for source/DLL-only maintenance; lifecycle includes environment SHA.",
+      "New Native26 DLL/exports/delivery/source-freeze, launch/clean/SDK freeze/binding identities must agree; retain old evidence untouched.",
+      "Old binder requires native.dll basename. Either exact-byte new-generation native.dll copy under storage admission or a narrow exact Native26 binder; never overwrite old25 pin."
+    ]
+  },
+  "required_minimal_package": [
+    "Original owner settled/no-pending boundary summary, paired actual SEM/MET, unique next sequence and honest metadata/action status",
+    "New normal SAVE checkpoint SHA/size/date/history-index plus complete driver_state_replace_receipt and untrimmed matching Driver/SAVE owned by original consumer",
+    "Full campaign goal/campaignID/origin/current/progress, ordinary lifecycle/environment SHA, original immutable T0 seed separately",
+    "Old actual machine/Game birth/image and source, actual exit/normal-or-forced receipt, new exact SDK/Native26 freeze and actual new process birth/EXE/DLL bind",
+    "Sway ledger and schedule frozen with selected latest SAVE boundary; original Start/fullID/gen/date/cadence retained",
+    "Only if actually present: exact resolved ledger/Close-or-independent-clear/full-title proof/old source epoch and Game identity/completed-checkpoint sidecar from same actual SAVE; immutable byte pins"
+  ],
+  "resolved_contract": {
+    "supports": "Current typed consumer allows Python owner_epoch change only through actual Driver cold projection, exact SAVE/Driver/goal, old full/title/Close proof and true replacement birth. DLLhash is not a checkpoint key; new DLL adoption needs its own exact binder/launch evidence.",
+    "keys": [
+      "sha256",
+      "size",
+      "date_raw",
+      "history_index",
+      "episode_character_id",
+      "episode_run_id"
+    ],
+    "cannot_retire": [
+      "pending",
+      "handoff_unverified",
+      "Close UNKNOWN",
+      "missing independent clear",
+      "same_pid_hot",
+      "client JSON or queue cold_readiness_verified"
+    ],
+    "archive": "Content-address exact ledger bytes and file-fsync/readback before canonical retirement; preserve Close/completion packet. Failure retains true evidence and authorizes no replay.",
+    "environment_limit": "Ordinary rebinder changes lifecycle in saved checkpoint. An existing resolved completion also requires full saved checkpoint object equality, so that rebinder is not a universal resolved-proof environment migration.",
+    "checked_changed": false
+  },
+  "sway_owner_source_conclusion": {
+    "source": "/root/g2_m6_lifecycle source review 2026-10-19; no extra test or runtime query requested",
+    "sidecars": [
+      "state/active-scheme-sway-formal-private-v1.json",
+      "state/ordinary-sway-schedule-v1.json"
+    ],
+    "not_bound_in_leaf": [
+      "DLL hash",
+      "SDK source epoch",
+      "exact SAVE",
+      "Game birth",
+      "campaign goal"
+    ],
+    "outer_qualification": "Same-campaign exact SAVE/Driver/actor/goal/newbirth comes from original cold owner. Do not overwrite newer day38 ledger with old day30 packet or relabel old receipt sources.",
+    "old_Start_replay_allowed": false,
+    "real_cold_provider": "not_observed; future same-fullID/gen native observation required, old terminal ring not presumed retained",
+    "historical_day30_next_scheduled_raw": 53145768,
+    "latest_day61_next_scheduled_raw": 53146512,
+    "legacy_capture_epoch_policy": "Old applied evidence internally checks pre_capture < receipt.post_capture <= resolved.post_capture and same action/fullID/gen/.4 EXE. No new-process epoch monotonicity requirement. Preserve all old evidence/UNKNOWN; do not Start again.",
+    "fresh_monthly_observation": "Completion and opinion DTO have no captureEpoch. Existing private transport uses new UUID/current expected native revision/paused alive frame/equal before-after binding; normalizers check actor,target,fullID,native revision,date,exact EXE/build. Service replaces latest observation only; original Start/first_gain remain.",
+    "fresh_binding_limit": "Private-query binding does not explicitly include Game birth,DLL,Python epoch. Same-campaign exact-SAVE/new-owner qualification remains outer cold-owner duty; unavailable/absent/reused remains true gap, never old-ring evidence."
+  },
+  "reuse": {
+    "M7": "Existing pure/registered consumer software qualification and same-Game warm facts remain their original scope; no full matrix rerun.",
+    "Native26": "Build/offline/ABI/JSON/CB/M6 route facts only; no loaded-provider/business/performance credit.",
+    "M6": "Existing actual Start/day30 baseline/day38 following source pins retained; no gain/terminal or cold credit."
+  },
+  "actual_acceptance_to_observe_later": [
+    "Actual replacement PID differs from old PID, new Game birth and exact Native26 DLL bind with same CK3 EXE/build; existing restore-row rejects equal PID even if birth differs.",
+    "SEM date/actor equals selected latest SAVE, original episode and full goal preserved",
+    "CAP restored=true, cold_checkpoint, active_resumed, no rejection; active_new/same_pid_hot/readiness Boolean do not qualify",
+    "Original normal next plan/result consumes goal, then normal checkpoint; no M7-specific action injected",
+    "Resolved retirement/natural inheritance credited only if that actual branch happens; no manufactured ledger"
+  ],
+  "collector_actions": {
+    "new_Game_Native_MCP_desktop_calls": 0,
+    "new_SAVE_or_Driver_body_reads": 0,
+    "new_tests_or_compile": 0,
+    "source_changes": 0,
+    "Game_stopped": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_after_utc": "2027-04-17T04:39:48.121754+00:00",
+    "maximum_new_peak_bytes": 1048576,
+    "heavy_write_admitted": false,
+    "reason": "Small read-only maintenance plan; current checkpoint gap and candidate source inputs await natural boundary and future exact admission."
+  },
+  "initial_source_observation_utc": "2026-10-19T04:38:15.881626+00:00",
+  "latest_boundary_delta_194": {
+    "source_binding": {
+      "runtime": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime",
+      "SDK_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03",
+      "game_pid": 214568,
+      "game_creation_filetime": 134368503807325674,
+      "App_queue": "retained P37C3",
+      "original_AUTO_sequence": 194
+    },
+    "owner_reported": {
+      "completed_cycles": 74,
+      "elapsed_game_days": 61,
+      "pending_global_turn": 75,
+      "pending_AUTO": 194,
+      "next_sequence": 195
+    },
+    "original_error": {
+      "request": {
+        "sequence": 194,
+        "tool": "ck3_auto_turn",
+        "arguments": {},
+        "source": "Root's bounded full_loop; unique new request"
+      },
+      "ended_at_utc": "2026-10-19T04:33:10.323100+00:00",
+      "is_error": true
+    },
+    "sway_readonly_instance": {
+      "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+      "actor_character_id": 31254,
+      "target_character_id": 33946,
+      "scheme_instance_id": 2,
+      "scheme_instance_generation": 0,
+      "source_native_revision": 98,
+      "source_date_raw": 53145792,
+      "tracked_instance_active": true,
+      "target_opinion_of_actor": 17,
+      "scheme_sway_opinion": {
+        "observed": true,
+        "present": false,
+        "value": null
+      },
+      "sway_blocker_opinion": {
+        "observed": true,
+        "present": false,
+        "value": null
+      },
+      "dedicated_benefit_observed": false
+    },
+    "schedule": {
+      "actor_character_id": 31254,
+      "last_target_character_id": 33946,
+      "no_operation_count": 0,
+      "last_check_date_raw": 53145792,
+      "next_check_date_raw": 53146512,
+      "frontier_membership": [
+        33946,
+        34232,
+        34973,
+        35899,
+        36445,
+        45458,
+        45464
+      ],
+      "last_observation_attempt_action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+      "last_terminal_action_id": null,
+      "last_job_kind": "observe_applied"
+    },
+    "ledger_pending": null,
+    "control_flow": {
+      "throw": "Frozen compact feed existing same sequence-0-plan file after internal ordinary fallback enters before_submit",
+      "first_before_submit_published": true,
+      "optional_branch": "observe_applied existing-instance read-only lifecycle",
+      "following_ordinary_plan_reenters_before_submit": true,
+      "following_ordinary_driver_dispatch_occurred": false,
+      "new_Sway_submit_from194": false,
+      "readonly_native_observations_did_occur": true,
+      "following_selected_step_persisted": false,
+      "optional_summary_return_value_retained": false
+    },
+    "sidecar_pins": [
+      {
+        "original_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\active-scheme-sway-formal-private-v1.json",
+        "frozen_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto194-source-review01\\state\\active-scheme-sway-formal-private-v1.json",
+        "bytes": 8808,
+        "sha256": "54829a6fc69bfec57fed58754ea35e382806c6f9dcac4b62ec33edafd7a8458f",
+        "frozen_at_utc": "2026-10-19T04:35:29.426190+00:00"
+      },
+      {
+        "original_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\ordinary-sway-schedule-v1.json",
+        "frozen_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto194-source-review01\\state\\ordinary-sway-schedule-v1.json",
+        "bytes": 430,
+        "sha256": "8b6073f661ea19894d06222f29aa4d47111a4f8291a51b64c50d11932b904d1c",
+        "frozen_at_utc": "2026-10-19T04:35:29.426190+00:00"
+      }
+    ]
+  },
+  "M6_source_conclusion_observed_utc": "2026-10-19T04:40:41.284069+00:00"
+}

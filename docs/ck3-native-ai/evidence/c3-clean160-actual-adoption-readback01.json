@@ -1,0 +1,132 @@
+{
+  "schema": "xar.c3-clean160-actual-readback/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:36:29.804418+00:00",
+  "sources_and_results": [
+    {
+      "original_response": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0157-1-result.json",
+        "bytes": 2827,
+        "sha256": "18c04de8b8eadf3ca6ebecf18d336883e8e836fdee16fc989be818d3d6e40150"
+      },
+      "request": {
+        "sequence": 157,
+        "command": "clear_zero_rpc_preflight_rejection",
+        "arguments": {
+          "recovery_kind": "completed_metrics153_metadata154"
+        }
+      },
+      "is_error": false,
+      "client_error": null,
+      "status": "completed_readonly_metrics_metadata_halt_cleared",
+      "new_MCP_or_native_calls": 0,
+      "new_game_day_credit": 0,
+      "completed_cycles": 58,
+      "counts_unchanged": true
+    },
+    {
+      "original_response": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0158-1-result.json",
+        "bytes": 51338,
+        "sha256": "d97267009a375a833789ba2cf60d4692367ca270578ffc2abd7fe720d2282a53"
+      },
+      "request": {
+        "sequence": 158,
+        "tool": "ck3_take_semantic_snapshot_private_v1",
+        "arguments": {}
+      },
+      "is_error": false,
+      "client_error": null,
+      "source": "injected-dll-named-pipe",
+      "date_raw": 53145240,
+      "native_revision": 68,
+      "paused": true,
+      "map_ready": true,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "actor_character_id": 31254,
+      "connection_generation": 4
+    },
+    {
+      "original_response": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0159-1-result.json",
+        "bytes": 1372,
+        "sha256": "921679897d574b15525edab4dfc24ac2bbefb2276b87e69fb21f67f49cb2ede3"
+      },
+      "request": {
+        "sequence": 159,
+        "tool": "root_current_runtime_metrics",
+        "arguments": {}
+      },
+      "is_error": false,
+      "client_error": null,
+      "date_raw": 53145240,
+      "native_revision": 68,
+      "paused": true,
+      "map_ready": true,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441",
+      "connection_generation": 4
+    },
+    {
+      "original_response": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0160-1-result.json",
+        "bytes": 1610,
+        "sha256": "062a8f12b9f9831e6db6d11f13ac908b019eae6899c01f9a74b6d482a1e4bfef"
+      },
+      "request": {
+        "sequence": 160,
+        "command": "install_result_classifier",
+        "arguments": {
+          "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_native_deadline_classifier_v2.py",
+          "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991",
+          "clean_paused_proof": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C3-CLEAN-CLASSIFIER-05-PROOF-ATTEMPT02.json",
+            "sha256": "f9d2cd2d45dae355b7bbbfa9d24e677c06397da2e676a8384f80f05a53560568"
+          }
+        }
+      },
+      "is_error": false,
+      "client_error": null,
+      "status": "classifier_installed",
+      "mode": "proactive_clean_paused",
+      "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_native_deadline_classifier_v2.py",
+      "new_MCP_or_native_calls": 0,
+      "clean_paused_proof": {
+        "proof": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-P37C3-CLEAN-CLASSIFIER-05-PROOF-ATTEMPT02.json",
+        "proof_sha256": "f9d2cd2d45dae355b7bbbfa9d24e677c06397da2e676a8384f80f05a53560568",
+        "actual_frame": {
+          "snapshot_id": "native:68",
+          "revision": 32,
+          "native_revision": 68,
+          "date_raw": 53145240,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441"
+        },
+        "completed_cycles": 58,
+        "new_MCP_or_native_calls": 0,
+        "original_action_replayed": false
+      }
+    },
+    {
+      "original_response": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0161-1-result.json",
+        "bytes": 394,
+        "sha256": "49249fef7399670c348cc9aa9aa22918997387c2859611f8cd90555107a73dfa"
+      },
+      "request": {
+        "sequence": 161,
+        "command": "full_loop",
+        "arguments": {
+          "max_turns": 30
+        }
+      },
+      "is_error": null,
+      "client_error": "SDK error; original result retained; no automatic retry",
+      "body_keys": []
+    }
+  ],
+  "new_MCP_calls_by_auditor": 0,
+  "operator": "runtime_v20261019",
+  "prior_ready25_files_changed": false
+}

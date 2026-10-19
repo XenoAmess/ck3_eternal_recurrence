@@ -1,0 +1,62 @@
+{
+  "schema": "xar.c3-local-classifier-recovery-readback/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:08:00.056594+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0119-1-result.json",
+      "bytes": 432,
+      "sha256": "ec87727fbae1535e51dd2f5e7278aa8e70cb4c86cc3868a16084efc4ed813d0c",
+      "actual_result": {
+        "status": "original_response_verified",
+        "original_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0117-1-result.json",
+        "new_MCP_or_native_calls": 0,
+        "original_action_replayed": false,
+        "can_continue_full_loop": true
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0131-1-result.json",
+      "bytes": 823,
+      "sha256": "9054f18fe9fb7a4f92eb62198564a80a2d13481086f422a2c6f584533e717842",
+      "actual_result": {
+        "status": "classifier_installed",
+        "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_crown_priority_classifier.py",
+        "sha256": "9da4445b22bf49c616ad190023655911a102c76d225c3052c662e58292c23a11",
+        "original_response_reconsumed": false,
+        "original_action_replayed": false,
+        "new_MCP_or_native_calls": 0,
+        "mode": "halted_original_recovery",
+        "clean_paused_proof": null,
+        "halt_preserved": true
+      }
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0132-1-result.json",
+      "bytes": 432,
+      "sha256": "c3eef960af1dd6e2dc911b4a91d4242e64eb67fbe02fcb66acb89028aaff3e5d",
+      "actual_result": {
+        "status": "original_response_verified",
+        "original_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0130-1-result.json",
+        "new_MCP_or_native_calls": 0,
+        "original_action_replayed": false,
+        "can_continue_full_loop": true
+      }
+    }
+  ],
+  "old_governance_input": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-GOVERNANCE-RESULT-STATE.json",
+    "bytes": 6099,
+    "sha256": "9ab39b112dc0630ba4068c896c518712a73ef0858e1399d8a3a2dc0e93aad18c",
+    "original_bytes_currently_readable": false,
+    "reason": "Normal subsequent reconsume and settle replaced the mutable sidecar before preservation; no original raw cache survives.",
+    "remaining_evidence": [
+      "original AUTO130 plan.pending",
+      "original AUTO128 submission",
+      "software qualification recorded during exact-input availability"
+    ],
+    "reconstructed_or_homonymous_replacement_created": false
+  },
+  "new_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0
+}

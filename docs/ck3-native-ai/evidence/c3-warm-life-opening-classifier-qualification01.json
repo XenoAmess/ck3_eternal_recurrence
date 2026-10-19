@@ -1,0 +1,103 @@
+{
+  "schema": "xar.c3-warm-life-opening-classifier-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T03:58:58.046870+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_canonical_result_classifier.py",
+      "bytes": 258872,
+      "sha256": "f857613afc0872bffeb6d772025afa0feb76e259d8478e14ccf79f8e7732ecbc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_sdk_queue.py",
+      "bytes": 263414,
+      "sha256": "18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0117-1-result.json",
+      "bytes": 99595,
+      "sha256": "5d4b455ef083484755d7910bab7036de972961a321e943ceaaef79e8c2024de3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0111-1-result.json",
+      "bytes": 51073,
+      "sha256": "6450bd8ca1b1002a02a9cbb8f5c2c26d34d0d009f27b4bb1c400643b85fa5246"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED.json",
+      "bytes": 2266,
+      "sha256": "7f4757120c0858cedc0f03d33eeeb589644c043421a9510077cc0323cb68322c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "bytes": 6016,
+      "sha256": "77659ba8311d1f14adc8678243e9c1c4d82f3d518b54fe331243d4ff5c60b1d1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-COMPLETED-MET-WARM-BOUND.json",
+      "bytes": 645,
+      "sha256": "46e1b37295faf07ea082e531dc8006634d5dee330b3f4f533b85ff299a32fdc6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C3.json",
+      "bytes": 657,
+      "sha256": "21ced79f0bdea1393bc4c9db3e953f19a7a69c69654541a3b80df012ef753519"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-GOVERNANCE-RESULT-STATE.json",
+      "bytes": 842,
+      "sha256": "48f85591829f4bfd51a7874f8519511b63d03f2b5edf92109b79fdf5339bd546"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0115-1-result.json",
+      "bytes": 15742,
+      "sha256": "bded37cdd3dbb346bb579fb3dd42f2fed184707f8f1b648b58532005c2f1d34e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+      "bytes": 400612,
+      "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+    }
+  ],
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\classifier-c3-warm-review01\\root_c3_warm_life_opening_classifier.py",
+    "bytes": 260358,
+    "sha256": "41e348591d7c3dd7f42d39daa71ee7ba8d0b857ca9a399fc5307228b6b126cb0"
+  },
+  "old_refusal_reproduced": "ordinary LIFE result rejected: opening actor/date/episode differs from the actual initial frame",
+  "original_functions_AST_unchanged_except_dispatcher_name": true,
+  "original_effect_result_with_actual_warm_frame_identical": true,
+  "wrong_inputs_rejected": [
+    "wrong_game",
+    "wrong_source_date",
+    "wrong_episode",
+    "missing_focus",
+    "negative_XP",
+    "wrong_result_date"
+  ],
+  "non_LIFE_actual115_identical": true,
+  "same_Game": {
+    "pid": 214568,
+    "creation_filetime": 134368503807325674,
+    "birth_binding_scope": "actual retained C3 owner and SEM/pair pins; pure classifier API carries PID only"
+  },
+  "T0_map_and_month_anchor_mutated": false,
+  "new_Game_Native_MCP_calls": 0,
+  "runtime_files_mutated": 0,
+  "live_adopted": false,
+  "expected_observation": {
+    "schema": "g2.queue.ordinary-result-credit/v1",
+    "selected_step": "query-campaign-root-context-v1",
+    "service_status": "executed",
+    "result_status": "available",
+    "submitted_pending": false,
+    "lifestyle_material_verified": false,
+    "existing_focus_verified": true,
+    "primitive_accepted": false,
+    "business_success_inferred": false,
+    "replay_allowed": false,
+    "category": "lifestyle_existing_focus_verified",
+    "target_key": "martial_authority_focus",
+    "episode_run_id": "native-31254-6271ac8cd441"
+  }
+}

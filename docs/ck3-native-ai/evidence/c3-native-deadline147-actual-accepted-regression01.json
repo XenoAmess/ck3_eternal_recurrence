@@ -1,0 +1,87 @@
+{
+  "schema": "xar.c3-deadline-actual-accepted-regression/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:26:14.959492+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+      "bytes": 400612,
+      "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_sdk_queue.py",
+      "bytes": 263414,
+      "sha256": "18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_crown_priority_classifier.py",
+      "bytes": 261745,
+      "sha256": "9da4445b22bf49c616ad190023655911a102c76d225c3052c662e58292c23a11"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\classifier-c3-deadline-review05\\root_c3_native_deadline_classifier.py",
+      "bytes": 260311,
+      "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED.json",
+      "bytes": 2266,
+      "sha256": "7f4757120c0858cedc0f03d33eeeb589644c043421a9510077cc0323cb68322c"
+    }
+  ],
+  "actual_cases": [
+    {
+      "original": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0122-1-result.json",
+        "bytes": 110151,
+        "sha256": "3e38afd2d3bc1e0d0288521eb3da9dd72ea25c204008419ddf50c8c7f4b84cbd"
+      },
+      "actual_elapsed_days": 8,
+      "all_actions_accepted": true,
+      "full_dispatcher_result_identical": true,
+      "observation": {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "life-advance",
+        "service_status": "executed",
+        "result_status": "postcondition",
+        "category": "existing_clock_advance_observed",
+        "typed_nonmaterial_observation": true,
+        "submitted_pending": false,
+        "primitive_accepted": false,
+        "actual_date_delta_raw": 192,
+        "actual_elapsed_days": 8,
+        "paired_after_metrics_still_required": true,
+        "business_success_inferred": false,
+        "replay_allowed": false
+      }
+    },
+    {
+      "original": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0126-1-result.json",
+        "bytes": 110881,
+        "sha256": "e7f32d42e7ae4466f1275ebbdf36a84be597bacfacc5cf114dd997023bf0674d"
+      },
+      "actual_elapsed_days": 4,
+      "all_actions_accepted": true,
+      "full_dispatcher_result_identical": true,
+      "observation": {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "life-advance",
+        "service_status": "executed",
+        "result_status": "postcondition",
+        "category": "existing_clock_advance_observed",
+        "typed_nonmaterial_observation": true,
+        "submitted_pending": false,
+        "primitive_accepted": false,
+        "actual_date_delta_raw": 96,
+        "actual_elapsed_days": 4,
+        "paired_after_metrics_still_required": true,
+        "business_success_inferred": false,
+        "replay_allowed": false
+      }
+    }
+  ],
+  "new_Game_Native_MCP_calls": 0,
+  "runtime_mutations": 0,
+  "candidate_bytes_unchanged": true
+}

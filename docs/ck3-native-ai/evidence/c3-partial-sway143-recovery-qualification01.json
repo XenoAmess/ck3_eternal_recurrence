@@ -1,0 +1,95 @@
+{
+  "schema": "xar.partial-sway143-recap-software-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:16:54.989427+00:00",
+  "old_dynamic_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37_known_pause_recovery_control.py",
+    "bytes": 18258,
+    "sha256": "d55bd086e34c60d5f79b1e525ad33532c7d1ca88000bd4582be0baaa70e4605e"
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto143-source-review01\\META.json",
+      "bytes": 8347,
+      "sha256": "aa3bc5375873b8dcd5bd7c45d43d1ff5a010857482e62f8ede8d3d9a9b85099d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\closed-before143-recovery42\\FROZEN.json",
+      "bytes": 2217,
+      "sha256": "17408142447876e064edec68152e13b09d86146a5e197277e7af47eb94ec5b05"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\partial_sway_143_recovery_v1.py",
+      "bytes": 12102,
+      "sha256": "cbe0a03f292da586c3e2c2060754eb46322e7c8eb779c1ada4ed7492c90998e4"
+    }
+  ],
+  "candidate_files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\partial143-recovery-review01\\root_p37_known_pause_recovery_control.py",
+      "bytes": 18797,
+      "sha256": "bfc3de2ca01045e8ce544f027b573dc4f5f0279709a073cb46306b1e4a556824"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\partial143-recovery-review01\\root_p37c3_partial_sway_recap.py",
+      "bytes": 12102,
+      "sha256": "cbe0a03f292da586c3e2c2060754eb46322e7c8eb779c1ada4ed7492c90998e4"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\partial143-recovery-review01\\ROOT-P37C3-PARTIAL143-ADMISSION.json",
+      "bytes": 800,
+      "sha256": "3ea56d0c18ec5d255eacb046b3a33377c34e2e9b1613cd499324bb46386f06d6"
+    }
+  ],
+  "old_recovery_function_AST_unchanged_except_one_leading_specific_dispatch": true,
+  "actual143_source_and_failed57_state_bound": true,
+  "cases": [
+    {
+      "case": "actual143_source_fake_one_fresh_SEM",
+      "status": "PASS",
+      "fake_readonly_calls": 1,
+      "AUTO_or_action_calls": 0,
+      "complete_cycles": 57,
+      "next_sequence": 146,
+      "counts_unchanged": true,
+      "ordinary_cycle_credit": 0,
+      "game_day_credit": 0
+    },
+    {
+      "case": "changed_birth",
+      "rejected": true,
+      "fake_readonly_calls": 0
+    },
+    {
+      "case": "changed_complete_count",
+      "rejected": true,
+      "fake_readonly_calls": 0
+    },
+    {
+      "case": "unknown_original",
+      "rejected": true,
+      "fake_readonly_calls": 0
+    },
+    {
+      "case": "changed_fresh_date",
+      "rejected": true,
+      "fake_readonly_calls": 1
+    },
+    {
+      "case": "changed_connection",
+      "rejected": true,
+      "fake_readonly_calls": 1
+    }
+  ],
+  "new_actual_Game_MCP_Native_calls": 0,
+  "runtime_files_mutated": 0,
+  "live_adopted": false,
+  "fresh_SEM_in_qualification": "explicit fake session; actual one fresh SEM remains required",
+  "next_control": {
+    "sequence": 144,
+    "command": "recover_partial_life_advance",
+    "arguments": {
+      "recovery_kind": "partial_sway_readonly_143"
+    }
+  }
+}

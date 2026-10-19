@@ -1,0 +1,118 @@
+{
+  "schema": "xar.p51-auto143-subdecision-source-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:23:12.215682+00:00",
+  "status": "ACTUAL_FAILURE_FROZEN_FUTURE_PAIRED_SOURCE_READY",
+  "actual_frozen_proof": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-auto143-source-review01\\META.json",
+    "bytes": 8347,
+    "sha256": "aa3bc5375873b8dcd5bd7c45d43d1ff5a010857482e62f8ede8d3d9a9b85099d"
+  },
+  "original_AUTO_sequence": 143,
+  "root_cause": "One public AUTO can publish optional Sway and then an ordinary fallback before-submit plan. P51 reused one parent-sequence-0-plan filename, and its second real callback was rejected as an apparent replay.",
+  "actual_partial_scope": {
+    "throw": "root_p37_compact_decision_feed.publish_before_submit existing same sequence-0-plan file",
+    "first_before_submit_published": true,
+    "optional_branch": "observe_applied existing-instance read-only lifecycle",
+    "following_ordinary_plan_reenters_before_submit": true,
+    "following_ordinary_driver_dispatch_occurred": false,
+    "new_Sway_submit_from143": false,
+    "readonly_native_observations_did_occur": true,
+    "following_selected_step_persisted": false,
+    "optional_summary_return_value_retained": false
+  },
+  "actual_named_observation": {
+    "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+    "actor_character_id": 31254,
+    "target_character_id": 33946,
+    "scheme_instance_id": 2,
+    "scheme_instance_generation": 0,
+    "source_native_revision": 58,
+    "source_date_raw": 53145048,
+    "tracked_instance_active": true,
+    "target_opinion_of_actor": 17,
+    "scheme_sway_opinion": {
+      "observed": true,
+      "present": false,
+      "value": null
+    },
+    "sway_blocker_opinion": {
+      "observed": true,
+      "present": false,
+      "value": null
+    },
+    "dedicated_benefit_observed": false
+  },
+  "current_recovery_owner": "perf_harness source-bound local partial read-only transition; runtime is the sole actual operator. This file does not grant full AUTO completion or ordinary fallback credit.",
+  "permanent_change": "Preserve the first callback name, give each following actual callback an ordinal source filename and hash of its actual Service observation. Refuse the same observation again and refuse more callbacks after the parent result exists. Extend the paired child filename check; keep existing stage order and exact TEXT_PUBLISHED gate.",
+  "candidate_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-subdecisions-review01\\REVIEW.json",
+    "bytes": 2591,
+    "sha256": "91ab0ea7ea4526978cd7586e0314336952c24a395c2eca94b61bf119103c91ab"
+  },
+  "candidate_files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-subdecisions-review01\\root_p37_compact_decision_feed.py",
+      "bytes": 7768,
+      "sha256": "fcab030c71031a3d45543a2afcc9aebc9b150b3ff57f842888c8b72bdca10f48",
+      "relative_path": "root_p37_compact_decision_feed.py"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-subdecisions-review01\\presentation\\g2_saved_campaign\\decision_text_publisher.py",
+      "bytes": 26240,
+      "sha256": "a4d539ea3e69899756529b99f6c804cac5c7ce05a6c694cc4ef375ba6d7fb659",
+      "relative_path": "presentation/g2_saved_campaign/decision_text_publisher.py"
+    }
+  ],
+  "source_qualification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-subdecisions-review01\\SOURCE-QUALIFICATION.json",
+    "bytes": 890,
+    "sha256": "ce50c48a77965b57fbef3e4fb49170ec7a33c35d402603d616f6dbf4fb04e00a"
+  },
+  "repository_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\decision_text_publisher.py",
+      "bytes": 26240,
+      "sha256": "a4d539ea3e69899756529b99f6c804cac5c7ce05a6c694cc4ef375ba6d7fb659"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\migrate_p51_subdecisions.py",
+      "bytes": 4947,
+      "sha256": "28a5386f99fbf791d3cef2fdfee930bd9baafffe72efae13a3e2041c7de3df4e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_decision_text_subdecisions.py",
+      "bytes": 5158,
+      "sha256": "c40251b5ee75a9c2514f44f74be5eb11138f988fe8007209640135a89561778a"
+    }
+  ],
+  "qualification": {
+    "new_focused_tests": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "source": "tools/g2_saved_campaign/test_decision_text_subdecisions.py"
+    },
+    "existing_publisher_source_tests": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "view_unchanged": {
+      "path": "tools/g2_saved_campaign/decision_text_view.py",
+      "sha256": "f21be0a985954f71b0ca7a4b3e4a11c0a4d568c80bee0b9874ad59dcfea79571"
+    },
+    "new_ACK_chain_platform": false
+  },
+  "scope_limits": [
+    "The frozen live child273652 remains on originale969 source; neither it nor its Game/OBS/SDK is restarted or patched here.",
+    "The paired candidate requires a normal future publisher/recording source freeze and actual STARTED binding. Do not copy its source over a live frozen process.",
+    "Original143 error and immutable publication history remain; same-parent ordinal support is not permission to retry143.",
+    "This source qualification proves local publication semantics, not actual Game execution, OBS draw, or a new Sway success."
+  ],
+  "Game_OBS_Desktop_Native_calls_by_this_agent": 0,
+  "new_runtime_processes": 0,
+  "live_candidate_adopted": false,
+  "new_G2_business_credit": 0
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "xar.crown-pending-publication-context-contract.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:06:47.929504+00:00",
+  "identity_source": "tools/ck3_live_run_id.py:current_machine_id",
+  "actual_closed_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0130-1-result.json",
+    "bytes": 46540,
+    "sha256": "ce6cc323f7be1c6c2aac637a0c53ca173d0fa2146f6acdff56fd16dc1d3c1ea5"
+  },
+  "actual_action_id": "crown-formal-2215f5b0b90d415cb7d19ab7b2592f3d",
+  "law_key": "crown_authority_1",
+  "actor_character_id": 31254,
+  "source_context": {
+    "bridge_pid": 214568,
+    "episode_run_id": "native-31254-6271ac8cd441"
+  },
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:55",
+    "revision": 19,
+    "native_revision": 55,
+    "date_raw": 53145048,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-6271ac8cd441",
+    "connection_generation": 4,
+    "bridge_pid": 214568
+  },
+  "pending_material_summary": {
+    "status": "ready",
+    "domain": "crown",
+    "pre_native_revision": 54,
+    "observed_native_revision": 55,
+    "same_process": true,
+    "business_credit": false
+  },
+  "actual_checks": {
+    "same_original_action_id": true,
+    "same_requested_effective_law": true,
+    "same_actor": true,
+    "same_episode": true,
+    "exact_original_context_equal": true,
+    "same_complete_pending": true,
+    "publication_same_process_ready": true,
+    "source_revision_54": true,
+    "new_native_revision_55": true,
+    "same_date": true,
+    "material_enacted_observed": true,
+    "exact_currency_debit": true,
+    "only_missing_legacy_flag": true
+  },
+  "actual_charges": {
+    "ack": [
+      {
+        "currency_key": "prestige",
+        "cost_raw": 22000000,
+        "pre_balance_raw": 220250260,
+        "post_balance_raw": 0
+      }
+    ],
+    "receipt": [
+      {
+        "currency_key": "prestige",
+        "cost_raw": 22000000,
+        "pre_balance_raw": 220250260,
+        "post_balance_raw": 198250260
+      }
+    ]
+  },
+  "source_interpretation": "Legacy classifier requires crown_cold_recovery is False; SDK priority branch omitted it. Actual exact original context proves hot. Receipt public_revision is compared with Native revision in the original transport, not app-public19.",
+  "sdk_source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867186,
+      "sha256": "ea1acd1404d44bfba505999b8fe822130fdfefe8036ce0db72038f32ba59582d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\bridge\\pending_material_publication_v1.py",
+      "bytes": 5865,
+      "sha256": "8d3ad2b0aa6c029036e2800684ac57e1c0204d45740c47abe6ba46ed6f0ba917"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\crown_authority_formal_consumer_v1.py",
+      "bytes": 14198,
+      "sha256": "3b2afd8a93a4f82a20e3fd86396ac8bf83987303f3296a28e0b9578cd1420181"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\bridge\\realm_law_formal_private_transport.py",
+      "bytes": 15534,
+      "sha256": "6f54b30fde3c068bbb5427bd1d9b36cda2326b5487cb42dbfa30d687c105e6a9"
+    }
+  ],
+  "canonical_sources_before_test": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867485,
+      "sha256": "c1bfbfd9a3bfa938dd02f5bd00c16a9500c3fc1a1343104ccb91a824f5081d9d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_material_publication_portable.py",
+      "bytes": 11563,
+      "sha256": "0e48643ba850b44193ca8746df79f4f4dc812f539294f17840329276a4439447"
+    }
+  ],
+  "canonical_sources_after_test": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 867485,
+      "sha256": "c1bfbfd9a3bfa938dd02f5bd00c16a9500c3fc1a1343104ccb91a824f5081d9d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_material_publication_portable.py",
+      "bytes": 11563,
+      "sha256": "0e48643ba850b44193ca8746df79f4f4dc812f539294f17840329276a4439447"
+    }
+  ],
+  "canonical_sources_unchanged_during_test": true,
+  "source_context_helper": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\crown_authority_formal_consumer_v1.py",
+    "bytes": 14198,
+    "sha256": "3b2afd8a93a4f82a20e3fd86396ac8bf83987303f3296a28e0b9578cd1420181"
+  },
+  "command_argv": [
+    "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--noconftest",
+    "-o",
+    "addopts=",
+    "--basetemp",
+    "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-crown-contract01\\tmp\\pytest",
+    "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_material_publication_portable.py::PublicationFenceTests::test_pending_crown_priority_preserves_original_exact_context_flag"
+  ],
+  "command_cwd": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-crown-contract01",
+  "returncode": 0,
+  "seconds": 1.7725991001352668,
+  "log": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\m4-crown-contract01\\PYTEST01.log",
+    "bytes": 100,
+    "sha256": "dd050e4f4fa7fa968db04cc03025f0d2d7105483b361d48bcfed6646359dc5d8"
+  },
+  "test_summary": ".                                                                        [100%]\r\n1 passed in 1.29s\r\n",
+  "status": "SINGLE_CONTRACT_PASS",
+  "qualification": {
+    "synthetic_service_scenes": [
+      "exact_hot_context",
+      "different_pid",
+      "extra_context_key",
+      "missing_context"
+    ],
+    "new_rpc_or_game_or_desktop_operations": 0,
+    "runtime_sdk_modified": false,
+    "new_native_material_credit": false,
+    "submission_replay": false,
+    "strategy_or_query_frequency_or_action_changes": false
+  },
+  "storage_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\M4-CROWN-CONTRACT-CHILD01.json",
+    "bytes": 2537,
+    "sha256": "f0aa31317d206a7195e1ab520cdec03bbc628fe12e4ac3c0fdfe3982ee430073"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "xar.c3-native-deadline-classifier-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:24:55.628622+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_crown_priority_classifier.py",
+      "bytes": 261745,
+      "sha256": "9da4445b22bf49c616ad190023655911a102c76d225c3052c662e58292c23a11"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0147-1-result.json",
+      "bytes": 160649,
+      "sha256": "e5cf5bfc60024f0692cf9cecbc49ded543d294fb57d022a8552aa3877457ea75"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_sdk_queue.py",
+      "bytes": 263414,
+      "sha256": "18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-GOVERNANCE-RESULT-STATE.json",
+      "bytes": 467,
+      "sha256": "a78b85f93226e2241be6ca827764038e01e966bbbab508f8e87fc50e80c883f6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED.json",
+      "bytes": 2266,
+      "sha256": "7f4757120c0858cedc0f03d33eeeb589644c043421a9510077cc0323cb68322c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "bytes": 6016,
+      "sha256": "77659ba8311d1f14adc8678243e9c1c4d82f3d518b54fe331243d4ff5c60b1d1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C.json",
+      "bytes": 400612,
+      "sha256": "65746fbef5a5f3cfcb191f3687a1a093a9b7c36dd4d39209c9de250d38058c19"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\campaign_deadline_clock_credit_v1.py",
+      "bytes": 9160,
+      "sha256": "102a2b94f742e14c9f9fb3fbbad14b3c21cf2e1a9ac7626e8ddce5d82fcbc883"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0117-1-result.json",
+      "bytes": 99595,
+      "sha256": "5d4b455ef083484755d7910bab7036de972961a321e943ceaaef79e8c2024de3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0130-1-result.json",
+      "bytes": 46540,
+      "sha256": "ce6cc323f7be1c6c2aac637a0c53ca173d0fa2146f6acdff56fd16dc1d3c1ea5"
+    }
+  ],
+  "frozen_native_validator": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src03\\xar_autoplayer\\bridge\\native_driver.py",
+    "sha256": "27cad6e04f885d98cd438535dcae905831b619deb5c1232a2f5d7ea0bcc966de"
+  },
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\classifier-c3-deadline-review05\\root_c3_native_deadline_classifier.py",
+    "bytes": 260311,
+    "sha256": "d47350282ad422978bac99653aa5757a5d72d6af10fb690e615592a3ff825991"
+  },
+  "leaf": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\classifier-c3-deadline-review05\\root_campaign_deadline_clock_credit_v2.py",
+    "bytes": 9160,
+    "sha256": "102a2b94f742e14c9f9fb3fbbad14b3c21cf2e1a9ac7626e8ddce5d82fcbc883"
+  },
+  "original_refusal": "life-advance original composite/date/source postcondition not verified",
+  "original_AST_unchanged_except_clock_name": true,
+  "raw_AUTO147_unchanged": true,
+  "observation": {
+    "schema": "g2.queue.ordinary-result-credit/v1",
+    "selected_step": "life-advance",
+    "service_status": "executed",
+    "result_status": "postcondition",
+    "category": "existing_clock_advance_observed",
+    "typed_nonmaterial_observation": true,
+    "submitted_pending": false,
+    "primitive_accepted": false,
+    "actual_date_delta_raw": 192,
+    "actual_elapsed_days": 8,
+    "paired_after_metrics_still_required": true,
+    "business_success_inferred": false,
+    "replay_allowed": false,
+    "native_deadline_observed": true,
+    "rejected_redundant_pause_action": {
+      "step": "pause-map",
+      "result": {
+        "step": "pause-map",
+        "accepted": false,
+        "status": "rejected",
+        "error": "CK3 map state is unavailable"
+      }
+    },
+    "rejected_pause_command_succeeded": false,
+    "native_deadline_proof": {
+      "schema": "xar.ck3.campaign-native-date-clock/v1",
+      "scope": "campaign_date_deadline",
+      "starting_date_raw": 53145048,
+      "target_date_raw": 53145240,
+      "armed": {
+        "state": "armed",
+        "generation": 6,
+        "starting_date_raw": 53145048,
+        "target_date_raw": 53145240,
+        "last_observed_date_raw": 53145048,
+        "trigger_date_raw": 0,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "stopped": {
+        "state": "triggered",
+        "generation": 6,
+        "starting_date_raw": 53145048,
+        "target_date_raw": 53145240,
+        "last_observed_date_raw": 53145240,
+        "trigger_date_raw": 53145240,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 8,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "early_boundary_cancel": null,
+      "speed_configuration": {
+        "status": "already_observed",
+        "submitted": false,
+        "observed_speed": 5,
+        "source_snapshot_id": "native:58",
+        "source_native_revision": 58,
+        "source_date_raw": 53145048
+      },
+      "exact_one_day_qualification_claimed": false
+    }
+  },
+  "negative_cases_rejected": [
+    "generation",
+    "target",
+    "ticks",
+    "overshoot",
+    "pause_not_observed",
+    "wrong_episode",
+    "wrong_actor",
+    "wrong_date",
+    "resume_unknown",
+    "pause_other_error",
+    "extra_action",
+    "final_not_paused"
+  ],
+  "LIFE117_Crown130_identical": true,
+  "original_allaccepted_clock_fixture_identical": true,
+  "new_Game_Native_MCP_calls": 0,
+  "runtime_mutations": 0,
+  "live_adopted": false
+}

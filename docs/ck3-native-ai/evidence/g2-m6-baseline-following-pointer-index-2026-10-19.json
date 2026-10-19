@@ -1,0 +1,221 @@
+{
+  "schema": "g2.m6.closed-evidence-pointer-index/v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "campaign_id": "robert-first30-v20261019",
+  "batch_id": "AUTO147-returned-consumer-execution-outer-settlement-pending",
+  "closed_at_utc": "2026-10-19T04:18:04.551908Z",
+  "collected_at_utc": "2026-10-19T04:19:56.989477+00:00",
+  "sources": [
+    {
+      "pin": {
+        "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-auto143-source-review01/state/active-scheme-sway-formal-private-v1.json",
+        "bytes": 8653,
+        "sha256": "48e0ad4d9731d111abbb8d99a6d617d80d9db79a1c373ad6d3c2717f34c07e28",
+        "closed": true
+      },
+      "state": "pin_verified"
+    },
+    {
+      "pin": {
+        "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-responses/0147-1-result.json",
+        "bytes": 160649,
+        "sha256": "e5cf5bfc60024f0692cf9cecbc49ded543d294fb57d022a8552aa3877457ea75",
+        "closed": true,
+        "runtime_identity": {
+          "Game_pid": 214568,
+          "planning_connection_generation": 4,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-6271ac8cd441",
+          "source": "/result/structured_content/planning_source_frame"
+        }
+      },
+      "state": "pin_verified"
+    }
+  ],
+  "groups": [
+    {
+      "group_id": "83a7cc43fe767fba0aa45a6cd4cab946818de9982b86b64865f879f7debb5508",
+      "identity": {
+        "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+        "actor_character_id": 31254,
+        "target_character_id": 33946,
+        "scheme_instance_id": 2,
+        "scheme_instance_generation": 0
+      },
+      "observations": [
+        {
+          "kind": "material_intervention",
+          "measurement": {
+            "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+            "actor_character_id": 31254,
+            "target_character_id": 33946,
+            "scheme_instance_id": 2,
+            "scheme_instance_generation": 0,
+            "exact_ck3_build": "1.20.0.4",
+            "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "source_native_revision": 58,
+            "source_date_raw": 53145048,
+            "scheme_sway_opinion": {
+              "observed": true,
+              "present": false,
+              "value": null
+            },
+            "previous_scheme_sway_opinion": null,
+            "sway_blocker_opinion": {
+              "observed": true,
+              "present": false,
+              "value": null
+            },
+            "tracked_instance_active": true,
+            "dedicated_benefit_observed": false,
+            "incremental_named_gain_observed": false,
+            "instance_terminal_outcome_observed": false,
+            "native_status_key": "continue",
+            "terminal_cause_observed": false,
+            "terminal_cause": "unknown",
+            "completion_source_native_revision": 58
+          },
+          "occurrences": [
+            {
+              "source": 0,
+              "pointer": "/resolved/material_intervention",
+              "record_sha256": "cc4f7c0fbf68a646f24cdb6a4ce47899ef5ed4bfd20cf47c2becb7c2d9683f18",
+              "consumption": {
+                "next_turn_consumed": false
+              },
+              "ordinary_auto": null
+            },
+            {
+              "source": 1,
+              "pointer": "/result/structured_content/sway_following_turn/material_intervention",
+              "record_sha256": "a1a945c095a3257854596e0d983b42c5f4f5eda406219f82c254cb80964a18a2",
+              "consumption": {
+                "next_turn_consumed": true,
+                "following_native_revision": 68,
+                "following_date_raw": 53145240
+              },
+              "ordinary_auto": {
+                "status": "executed",
+                "selected_step": "life-advance",
+                "planning_source_frame": {
+                  "schema": "xar.ck3.planning-source-frame/v1",
+                  "status": "complete",
+                  "snapshot_id": "native:58",
+                  "revision": 22,
+                  "native_revision": 58,
+                  "date_raw": 53145048,
+                  "actor_character_id": 31254,
+                  "episode_run_id": "native-31254-6271ac8cd441",
+                  "connection_generation": 4,
+                  "bridge_pid": 214568
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "terminal_intervention",
+          "measurement": {
+            "action_id": "sway-88765ff2258b45f88acb5eeabc1f63c2",
+            "actor_character_id": 31254,
+            "target_character_id": 33946,
+            "scheme_instance_id": 2,
+            "scheme_instance_generation": 0,
+            "exact_ck3_build": "1.20.0.4",
+            "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+            "source_native_revision": 58,
+            "source_date_raw": 53145048,
+            "tracked_instance_active": true,
+            "instance_terminal_outcome_observed": false,
+            "native_status_key": "continue",
+            "terminal_cause_observed": false,
+            "terminal_cause": "unknown"
+          },
+          "occurrences": [
+            {
+              "source": 0,
+              "pointer": "/resolved/terminal_intervention",
+              "record_sha256": "ed44b949704504c182c52493c006cc0ea1e15e454251d4fea663bfe87061cbe9",
+              "consumption": {
+                "next_turn_consumed": true,
+                "following_native_revision": 18,
+                "following_date_raw": 53144520
+              },
+              "ordinary_auto": null
+            },
+            {
+              "source": 1,
+              "pointer": "/result/structured_content/sway_following_turn/terminal_intervention",
+              "record_sha256": "ed44b949704504c182c52493c006cc0ea1e15e454251d4fea663bfe87061cbe9",
+              "consumption": {
+                "next_turn_consumed": true,
+                "following_native_revision": 18,
+                "following_date_raw": 53144520
+              },
+              "ordinary_auto": {
+                "status": "executed",
+                "selected_step": "life-advance",
+                "planning_source_frame": {
+                  "schema": "xar.ck3.planning-source-frame/v1",
+                  "status": "complete",
+                  "snapshot_id": "native:58",
+                  "revision": 22,
+                  "native_revision": 58,
+                  "date_raw": 53145048,
+                  "actor_character_id": 31254,
+                  "episode_run_id": "native-31254-6271ac8cd441",
+                  "connection_generation": 4,
+                  "bridge_pid": 214568
+                }
+              }
+            }
+          ]
+        },
+        {
+          "kind": "applied_episode_reference",
+          "strict_Start_validation": "not_performed",
+          "occurrences": [
+            {
+              "source": 0,
+              "pointer": "/resolved",
+              "receipt_pointer": "/resolved/native_receipt",
+              "ordinary_auto": null
+            },
+            {
+              "source": 1,
+              "pointer": "/result/structured_content/sway_following_turn",
+              "receipt_pointer": "/result/structured_content/sway_following_turn/native_receipt",
+              "ordinary_auto": {
+                "status": "executed",
+                "selected_step": "life-advance",
+                "planning_source_frame": {
+                  "schema": "xar.ck3.planning-source-frame/v1",
+                  "status": "complete",
+                  "snapshot_id": "native:58",
+                  "revision": 22,
+                  "native_revision": 58,
+                  "date_raw": 53145048,
+                  "actor_character_id": 31254,
+                  "episode_run_id": "native-31254-6271ac8cd441",
+                  "connection_generation": 4,
+                  "bridge_pid": 214568
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "issues": [],
+  "G2_M6_credit_awarded": false,
+  "evidence_packet_ready": "not_evaluated",
+  "Game_MCP_SDK_calls": 0,
+  "boundary": "Producer facts and pinned pointers only; no natural cause, same-connection, useful outcome or actual following independently inferred",
+  "manifest": {
+    "path": "docs\\ck3-native-ai\\evidence\\g2-m6-baseline-following-manifest-2026-10-19.json",
+    "bytes": 1373,
+    "sha256": "2e54b5b3bb34f4f039115f69060979aa90eed14a767588952fd984b15cbbc2dd"
+  }
+}

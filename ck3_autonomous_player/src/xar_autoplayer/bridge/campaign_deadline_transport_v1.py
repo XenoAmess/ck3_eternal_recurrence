@@ -43,8 +43,13 @@ def advance_campaign_deadline_v1(driver, starting: dict, *, target_date_raw: int
             sentinel_scope="campaign_date_deadline")
         current = driver._resume_life_advance(current, actions, native_stop_target_date_raw=target_date_raw)
         current = driver._wait_for_life_advance_snapshot(current,
-            lambda value: value.get("paused") is True or n._life_advance_progressed(
-                value, starting, horizon_days_override=(target_date_raw-start)//24),
+            # Date publication can precede the same daily callback's native
+            # pause publication. At the target, let that armed callback own
+            # the pause; only earlier genuine boundaries need Python pause.
+            lambda value: value.get("paused") is True or (
+                type(value.get("date_raw")) is int and value["date_raw"] < target_date_raw
+                and n._life_advance_progressed(value, starting,
+                    horizon_days_override=(target_date_raw-start)//24)),
             timeout_seconds=driver.life_advance_timeout_seconds)
         if current.get("paused") is not True:
             current = driver._pause_life_advance(current, actions)

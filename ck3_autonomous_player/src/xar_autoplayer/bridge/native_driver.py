@@ -4772,6 +4772,88 @@ class NativeHeadlessGameplayDriver:
             self, request_id=request_id, expected_revision=expected_revision,
         )
 
+    def invalidate_succession_expectation_from_root_v1(
+        self, campaign_root_result: dict[str, object], *,
+        expected_snapshot: dict[str, object],
+    ) -> dict[str, object]:
+        """Clear a changed estate after an actual completed root; never query.
+
+        Public revision alone is not an estate epoch. Apply only while this
+        exact living episode/frame and both retained fields still match.
+        """
+        from .succession_expectation_invalidation_v1 import (
+            invalidate_succession_state_from_root_v1,
+        )
+
+        def same_source(current: dict[str, object]) -> bool:
+            keys = ("snapshot_id", "revision", "native_revision", "date_raw",
+                    "episode_run_id", "episode_character_id")
+            return (all(current.get(key) == expected_snapshot.get(key) for key in keys)
+                    and current.get("played_character", {}).get("character_id")
+                    == expected_snapshot.get("played_character", {}).get("character_id")
+                    and all(current.get("diagnostics", {}).get(key)
+                            == expected_snapshot.get("diagnostics", {}).get(key)
+                            for key in ("bridge_pid", "connection_generation")))
+
+        with self._driver_state_lock:
+            if self._succession_expectation is None:
+                return {"status": "not_applicable", "invalidated": False,
+                        "refresh_required": False, "persistence_attempted": False}
+        # Reuse the original Service's independent post-read frame. A new full
+        # observer could persist relationship metadata and invert the existing
+        # write-lock -> state-lock order. The protocol publication and episode
+        # below independently recheck this frame under the original state lock.
+        current = expected_snapshot
+
+        def same_locked_publication() -> bool:
+            native = self.state.semantic_snapshot()
+            return (all(native.get(key) == expected_snapshot.get(key) for key in (
+                        "snapshot_id", "revision", "native_revision", "date_raw"))
+                    and native.get("played_character", {}).get("character_id")
+                    == expected_snapshot.get("played_character", {}).get("character_id")
+                    and all(native.get("diagnostics", {}).get(key)
+                            == expected_snapshot.get("diagnostics", {}).get(key)
+                            for key in ("bridge_pid", "connection_generation"))
+                    and self._episode_character_id == expected_snapshot.get("episode_character_id")
+                    and self._episode_run_id == expected_snapshot.get("episode_run_id"))
+
+        with self._driver_state_lock:
+            before = {"expectation": copy.deepcopy(self._succession_expectation),
+                      "reconciliation": copy.deepcopy(self._succession_reconciliation)}
+            if not same_source(current) or not same_locked_publication():
+                raise PreSubmissionRevisionMismatchError(
+                    "estate invalidation crossed the completed campaign-root frame")
+            root = campaign_root_result.get("campaign_root_context", {})
+            if (current.get("one_life_terminal") is not False
+                    or current.get("one_life_terminal_reason") is not None
+                    or current.get("played_character", {}).get("alive") is not True
+                    or current.get("episode_character_id")
+                    != current.get("played_character", {}).get("character_id")
+                    or root.get("status") != "available"
+                    or root.get("readiness", {}).get("held_title_partition_ready") is not True):
+                # Natural transition still needs the original predecessor
+                # expectation for full reconciliation; unavailable reads must
+                # likewise never erase the last observed estate.
+                return {"status": "not_applicable", "invalidated": False,
+                        "refresh_required": False, "persistence_attempted": False}
+            decision = invalidate_succession_state_from_root_v1(
+                before, snapshot=current, campaign_root_result=campaign_root_result)
+            diagnostic = {key: value for key, value in decision.items() if key != "state"}
+            diagnostic["persistence_attempted"] = False
+            if not decision["invalidated"]:
+                return diagnostic
+            if (not same_locked_publication()
+                    or self._succession_expectation != before["expectation"]
+                    or self._succession_reconciliation != before["reconciliation"]):
+                raise PreSubmissionRevisionMismatchError(
+                    "estate invalidation lost its current frame or retained state")
+            self._succession_expectation = decision["state"]["expectation"]
+            self._succession_reconciliation = decision["state"]["reconciliation"]
+            self._driver_state_dirty = True
+        self._persist_driver_state()
+        diagnostic["persistence_attempted"] = True
+        return diagnostic
+
     def retain_succession_expectation_v1(
         self,
         turn_bundle: dict[str, object],

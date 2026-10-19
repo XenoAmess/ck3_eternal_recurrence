@@ -1,0 +1,67 @@
+{
+  "schema": "xar.runtime-sdk-wall-window-anchor.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:00:13.600091+00:00",
+  "evidence_layer": "already closed small RPC receipts plus Root-reported SDK maintenance boundary; no new RPC",
+  "source_rows": [
+    {
+      "sequence": 115,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0115-1-result.json",
+        "bytes": 15742,
+        "sha256": "bded37cdd3dbb346bb579fb3dd42f2fed184707f8f1b648b58532005c2f1d34e"
+      },
+      "started_at_utc": "2026-10-19T03:54:19.068067+00:00",
+      "ended_at_utc": "2026-10-19T03:54:19.515908+00:00",
+      "selected_step": "query-war-results-window-v1",
+      "status": "executed"
+    },
+    {
+      "sequence": 117,
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0117-1-result.json",
+        "bytes": 99595,
+        "sha256": "5d4b455ef083484755d7910bab7036de972961a321e943ceaaef79e8c2024de3"
+      },
+      "started_at_utc": "2026-10-19T03:54:19.708937+00:00",
+      "ended_at_utc": "2026-10-19T03:54:20.224283+00:00",
+      "selected_step": "query-campaign-root-context-v1",
+      "status": "executed"
+    }
+  ],
+  "full_run_window": {
+    "first_AUTO_started_at_utc": "2026-10-19T03:26:49.420926+00:00",
+    "last_observed_closed_RPC_ended_at_utc": "2026-10-19T03:54:20.224283+00:00",
+    "wall_seconds": 1650.803357,
+    "actual_days_recomputed": null,
+    "seconds_per_actual_day": null,
+    "gaps_included": true
+  },
+  "new_SDK_window": {
+    "first_AUTO_sequence": 115,
+    "first_AUTO_started_at_utc": "2026-10-19T03:54:19.068067+00:00",
+    "last_observed_closed_RPC_ended_at_utc": "2026-10-19T03:54:20.224283+00:00",
+    "wall_seconds": 1.156216,
+    "advance_receipts_observed": 0,
+    "seconds_per_actual_day": null,
+    "early_event_wait_qualification": false,
+    "classifier_repair_after_117_must_remain_in_window": true
+  },
+  "adoption_provenance": {
+    "boundary_source": "Root reports C3 111SEM/112CAP same_pid_hot and first new AUTO115",
+    "Root_reported_commit": "063531c4",
+    "frozen_SDK_pin_independently_read": false
+  },
+  "limits": [
+    "115 and117 are queries; they do not establish game advancement or clock-fix acceptance",
+    "later classifier repair and open batch remain to be included at their next closed boundary"
+  ],
+  "game_native_or_RPC_calls": 0,
+  "Driver_or_SAVE_reads": 0,
+  "external_writes_bytes": 0,
+  "storage": {
+    "pool": "REPO-ONLY-MICROPOOL01; original other research128MiB",
+    "producer_closed": true,
+    "unconsumed_planned_writes_bytes": 0
+  }
+}

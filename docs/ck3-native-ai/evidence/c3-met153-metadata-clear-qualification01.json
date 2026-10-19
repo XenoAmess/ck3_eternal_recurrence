@@ -1,0 +1,148 @@
+{
+  "schema": "xar.c3-met153-metadata-clear-software-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T04:31:41.311088+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_saved_campaign_preflight.py",
+      "bytes": 7467,
+      "sha256": "45276ddc18cfeb1823f4eb0ff682a1e2b55e883c95384a5db889177a91f53f23"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\completed_metrics_metadata_clear_v1.py",
+      "bytes": 6030,
+      "sha256": "a3e765a6fa4e63cb3c7d3494047f816fe4eb4e103febf4050b8b1afc7fc98d5b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_sdk_queue.py",
+      "bytes": 263414,
+      "sha256": "18bfcbe93b17c625b80fa2701a29e44229f2a554b5daee75c32544c677e9c2b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "bytes": 6016,
+      "sha256": "77659ba8311d1f14adc8678243e9c1c4d82f3d518b54fe331243d4ff5c60b1d1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0148-1-result.json",
+      "bytes": 825,
+      "sha256": "80c9de3c0227bd03dedf14417684856b8d8365a0fa24efc2ef4437060b1b0833"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0153-1-result.json",
+      "bytes": 1371,
+      "sha256": "b144a3ad7e27c4413e59f05601f9e2eb36be38dfe77bf11dff706c8f3aabda32"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0154-1-result.json",
+      "bytes": 905,
+      "sha256": "bb904b1550f94aa24210f4aac577f01b6dfa711556fd7881a560f3c2d42f6012"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0155-1-result.json",
+      "bytes": 406,
+      "sha256": "21b77720a9a9708102c3fb5b2916886ac0418bccfa417b174d99279da412acaf"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0156-1-result.json",
+      "bytes": 411,
+      "sha256": "0157df7b7e20a1478edfdae39b32b07c9ecd522692f25f1b9fe9e46efc6e0948"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "bytes": 3357,
+      "sha256": "cf67a0c6f5d266e0bc49800a7242e59fd14ef0071eab89a8f788f1f9d17b5140"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CURRENT-HALT-P37.json",
+      "bytes": 678,
+      "sha256": "05b239d4e8306ea9b356650f7fdc7dc455af826c83dde786f86061d2a1466907"
+    }
+  ],
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\met153-metadata-clear-review01\\root_saved_campaign_preflight.py",
+    "bytes": 8397,
+    "sha256": "353c93a6de3896859618b417db223b2f94849fb88313b439c226c004396b2289"
+  },
+  "leaf": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\met153-metadata-clear-review01\\root_completed_metrics153_metadata_clear.py",
+    "bytes": 6030,
+    "sha256": "a3e765a6fa4e63cb3c7d3494047f816fe4eb4e103febf4050b8b1afc7fc98d5b"
+  },
+  "original_preflight_AST_unchanged_except_name": true,
+  "negative_cases_rejected": [
+    "wrong_sequence",
+    "wrong_live_pin",
+    "pending_cycle",
+    "original_unknown",
+    "wrong_cause",
+    "wrong_birth"
+  ],
+  "receipt": {
+    "schema": "xar.c3-completed-metrics-metadata-clear/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-19T04:31:41.293107+00:00",
+    "status": "completed_readonly_metrics_metadata_halt_cleared",
+    "sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0148-1-result.json",
+        "bytes": 825,
+        "sha256": "80c9de3c0227bd03dedf14417684856b8d8365a0fa24efc2ef4437060b1b0833"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0153-1-result.json",
+        "bytes": 1371,
+        "sha256": "b144a3ad7e27c4413e59f05601f9e2eb36be38dfe77bf11dff706c8f3aabda32"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0154-1-result.json",
+        "bytes": 905,
+        "sha256": "bb904b1550f94aa24210f4aac577f01b6dfa711556fd7881a560f3c2d42f6012"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0155-1-result.json",
+        "bytes": 406,
+        "sha256": "21b77720a9a9708102c3fb5b2916886ac0418bccfa417b174d99279da412acaf"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0156-1-result.json",
+        "bytes": 411,
+        "sha256": "0157df7b7e20a1478edfdae39b32b07c9ecd522692f25f1b9fe9e46efc6e0948"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+        "bytes": 3357,
+        "sha256": "cf67a0c6f5d266e0bc49800a7242e59fd14ef0071eab89a8f788f1f9d17b5140"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CURRENT-HALT-P37.json",
+        "bytes": 678,
+        "sha256": "05b239d4e8306ea9b356650f7fdc7dc455af826c83dde786f86061d2a1466907"
+      }
+    ],
+    "completed_cycles": 58,
+    "current_classifier": {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\root_p37c3_native_deadline_classifier.py",
+      "sha256": "025c08f7e7f6453e38e244b5ecdbaa595edb6f74864efd97084fcc84e325e2b0"
+    },
+    "actual_frame": {
+      "snapshot_id": "native:68",
+      "revision": 32,
+      "native_revision": 68,
+      "date_raw": 53145240,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-6271ac8cd441"
+    },
+    "original_successful_MET_reissued": false,
+    "original_action_replayed": false,
+    "new_MCP_or_native_calls": 0,
+    "new_business_credit": 0,
+    "new_game_day_credit": 0,
+    "counts_unchanged": true,
+    "fresh_SEM_MET_still_required_for_clean_install": true
+  },
+  "fake_session_call_count": 0,
+  "runtime_mutations": 0,
+  "new_RPC_calls": 0,
+  "live_adopted": false
+}

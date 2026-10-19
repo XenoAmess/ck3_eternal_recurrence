@@ -22,3 +22,7 @@
 真实源码缺陷在新date-only等待谓词：它只接纳paused或`_life_advance_new_modal_hint`，而后者**明确在active_event/pending interaction存在时返回None**。因此普通native事件已发布但paused尚false时仍会等到timeout。修复改用原generic的`_life_advance_progressed`并传实际cap horizon，完整保留普通事件、交互、terminal、war/threat、modal及日期边界；不增加查询、不改public revision、不重resume，也不把2日写成请求的8日。停止后仍独立读Status，对原armed generation合法cancel，事件交后续原策略处理。
 
 同输入实际Driver→Protocol软件复现将timeout缩为0.15秒：旧0.162654秒、新0.001488秒，**6条原生命令顺序完全相同**，2日/event/paused/target/progress/cancel关键语义相同，均一次resume，事件未被选择。9项定向测试通过，含“只有不足horizon的日期进展、没有合法事件/其他原边界时不得冒充早停”的负例。登记时间`2026-10-19T03:39:25.957740Z`；这证明去掉了可复现的无效等待，实际新tuple的收益仍由下一冻结后的原始compact/timing验证，未追认当前freeze已经采用。raw-only诊断hint不改变public revision的另一类等待未在本包扩大施工，不将理论分支作为当前新局继续的门禁。
+
+后继真实AUTO147暴露了上段修复过宽的日期分支：目标日先发布，原生每日回调的暂停状态稍后发布，Python在两次发布之间再次提交`pause-map`，收到`CK3 map state is unavailable`拒绝。原生Arm/Status仍独立证明raw53145048→53145240、8日、generation6、date_deadline、零过冲、实际原生暂停；拒绝ACK保留，不能把它改写成成功。[源审及同输入回执](evidence/campaign-clock-target-pause-publication-2026-10-19.json)绑定实际采用的src03/063531c4，未把当前工作树当成现场源码。
+
+最窄后继修复只让**目标日之前**的原有事件等合法边界触发Python暂停；到达目标日后继续等待同一次Arm所属原生回调发布暂停。相同实际Driver→Protocol软件输入重现旧4命令中的暂停拒绝，新3命令为Arm、resume、Status，完整原生clock证明及关键结果相同、仅一次resume，未增加RPC。10项定向测试通过；AUTO74提前事件、无合法边界不冒充早停、错speed拒绝和月界/终点用例保留。`machine_id: xenoamess-full-tower-eb9d2c1186`，登记时间`2026-10-19T04:22:52.179124Z`。这是后继源码资格，未热改冻结SDK、未重放147、未声称已取得对应实机修复结果或达到1秒/日。
