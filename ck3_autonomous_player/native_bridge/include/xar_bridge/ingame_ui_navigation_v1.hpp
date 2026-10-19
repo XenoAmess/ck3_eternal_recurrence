@@ -28,7 +28,7 @@ inline constexpr std::uintptr_t kUiOpenViewRvaV1 = 0xA79200;
 inline constexpr std::uintptr_t kUiOpenViewDataRvaV1 = 0xA79700;
 inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
-enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7, holy_site_creation=8, holding=9, personal_beliefs=10, rite_creation=11,clerical_interaction=12 };
+enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7, holy_site_creation=8, holding=9, personal_beliefs=10, rite_creation=11,clerical_interaction=12,tooltips=13 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
   hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12, open_faith=13,
@@ -37,7 +37,7 @@ enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, sele
   select_relic_artifact=100, set_relic_slot=101, enshrine_relic=102, remove_relic=103,
   open_holding=200, open_personal_beliefs=201, select_presentation_tab=202,
   open_rite_core_picker=203, hover_presentation_tooltip=204, leave_presentation_tooltip=205, show_building_details=206, open_building_track=207, close_presentation_window=208,
-  open_clerical_preview=209,close_clerical_preview=210 };
+  open_clerical_preview=209,close_clerical_preview=210,close_tooltips=211 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
 struct CombatUiGeometryV1 {

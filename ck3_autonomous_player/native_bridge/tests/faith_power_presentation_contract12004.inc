@@ -1,6 +1,17 @@
+inline void FaithPowerContractNeed12004(bool value){if(!value)throw "presentation contract failed";}
 // Included by the existing navigation fixture; no engine/desktop/native calls.
 void FaithPowerPresentationContractFixture12004() {
   using namespace xar::ck3_11906;
+  {const auto need=[](bool okay){if(!okay)throw "global tooltip finite contract failed";};
+    IngameUiRequestV1 q{};
+    need(ParseIngameUiRequestV1(R"({"window_kind":"tooltips","subject_id":0})",true,q));
+    need(q.window_kind==IngameUiWindowKindV1::tooltips);
+    need(!ParseIngameUiRequestV1(R"({"window_kind":"tooltips","subject_id":0,"operation":"close_tooltips"})",false,q));
+    need(ParseIngameUiRequestV1(R"({"window_kind":"tooltips","subject_id":0,"operation":"close_tooltips","presentation_receipt":"0123456789abcdef0123456789abcdef"})",false,q));
+    need(!ParseIngameUiRequestV1(R"({"window_kind":"tooltips","subject_id":1})",true,q));
+    need(!ParseIngameUiRequestV1(R"({"window_kind":"tooltips","subject_id":0,"presentation_index":0})",true,q));
+    need(!ParseIngameUiRequestV1(R"({"window_kind":"tooltips","subject_id":0,"presentation_tab":""})",true,q));
+  }
   { // New assertions explicitly survive NDEBUG. No engine or callback executes.
     const auto require=[](bool value){if(!value)throw "clerical preview/visible core-slot finite contract failed";};
     const std::string receipt="0123456789abcdef0123456789abcdef";
@@ -46,8 +57,8 @@ void FaithPowerPresentationContractFixture12004() {
     // Slot key remains an independent native/draft/GUI observation; no fabricated definition key.
   }
   IngameUiRequestV1 r{};
-  assert(ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"presentation_tab":""})",true,r));
-  assert(r.presentation_requested&&r.subject_id==0);
+  FaithPowerContractNeed12004(ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"presentation_tab":""})",true,r));
+  FaithPowerContractNeed12004(r.presentation_requested&&r.subject_id==0);
   // Preserve the original legal empty marker above; reject non-string, duplicate,
   // nested and escaped selectors rather than changing shared string semantics.
   IngameUiRequestV1 rejected{};
@@ -58,28 +69,28 @@ void FaithPowerPresentationContractFixture12004() {
       R"({"window_kind":"faith","subject_id":0,"presentation_tab":"beliefs","presentation_tab":""})",
       R"({"window_kind":"faith","subject_id":0,"nested":{"presentation_tab":""}})",
       R"({"window_kind":"faith","subject_id":0,"presentation_tab":"holy\u005fsites"})"}})
-    assert(!ParseIngameUiRequestV1(malformed,true,rejected));
+    FaithPowerContractNeed12004(!ParseIngameUiRequestV1(malformed,true,rejected));
 
-  assert(IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12004,r)==PresentationUiEnabled12004());
-  assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,r));
+  FaithPowerContractNeed12004(IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12004,r)==PresentationUiEnabled12004());
+  FaithPowerContractNeed12004(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,r));
   IngameUiResultV1 failed{};failed.unavailable_reason="fixture_owner_not_admitted";
   const auto early=SerializeIngameUiResultV1(r,failed,7);
-  assert(early.find("\"presentation_ui\":{")!=std::string::npos);
-  assert(early.find("\"unavailable_reason\":\"fixture_owner_not_admitted\"")!=std::string::npos);
-  assert(early.find("\"source_bound\":false")!=std::string::npos);
+  FaithPowerContractNeed12004(early.find("\"presentation_ui\":{")!=std::string::npos);
+  FaithPowerContractNeed12004(early.find("\"unavailable_reason\":\"fixture_owner_not_admitted\"")!=std::string::npos);
+  FaithPowerContractNeed12004(early.find("\"source_bound\":false")!=std::string::npos);
   failed.presentation_ui.source_bound=true;failed.presentation_ui.cache_complete=true;
   failed.presentation_ui.hover_source_matches=true;failed.presentation_ui.cache_texts.push_back({"x","stale","x"});
   const auto invalidated=SerializeIngameUiResultV1(r,failed,7);
-  assert(invalidated.find("\"source_bound\":false")!=std::string::npos&&invalidated.find("\"cache_complete\":false")!=std::string::npos);
-  assert(invalidated.find("\"cache_texts\":[]")!=std::string::npos);
-  assert(ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0})",true,r));
-  assert(!r.presentation_requested&&SerializeIngameUiResultV1(r,failed,7).find("presentation_ui")==std::string::npos);
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":0,"operation":"open_holding"})",false,r));
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"construct"})",false,r));
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"show_building_details","presentation_target":"holding_building"})",false,r));
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"operation":"hover_presentation_tooltip","presentation_target":"rite_core_tenet_slot"})",false,r));
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"presentation_tab":"rites"})",true,r));
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"personal_beliefs","subject_id":1,"presentation_target":"faith_core_tenet"})",true,r));
+  FaithPowerContractNeed12004(invalidated.find("\"source_bound\":false")!=std::string::npos&&invalidated.find("\"cache_complete\":false")!=std::string::npos);
+  FaithPowerContractNeed12004(invalidated.find("\"cache_texts\":[]")!=std::string::npos);
+  FaithPowerContractNeed12004(ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0})",true,r));
+  FaithPowerContractNeed12004(!r.presentation_requested&&SerializeIngameUiResultV1(r,failed,7).find("presentation_ui")==std::string::npos);
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":0,"operation":"open_holding"})",false,r));
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"construct"})",false,r));
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"show_building_details","presentation_target":"holding_building"})",false,r));
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"operation":"hover_presentation_tooltip","presentation_target":"rite_core_tenet_slot"})",false,r));
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"faith","subject_id":0,"presentation_tab":"rites"})",true,r));
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"personal_beliefs","subject_id":1,"presentation_target":"faith_core_tenet"})",true,r));
   const std::array<std::pair<std::string_view,std::uint32_t>,7>operations{{
     {R"({"window_kind":"holding","subject_id":1,"operation":"open_holding"})",200},
     {R"({"window_kind":"personal_beliefs","subject_id":1,"operation":"open_personal_beliefs"})",201},
@@ -88,15 +99,15 @@ void FaithPowerPresentationContractFixture12004() {
     {R"({"window_kind":"faith","subject_id":0,"operation":"hover_presentation_tooltip","presentation_target":"faith_core_tenet"})",204},
     {R"({"window_kind":"faith","subject_id":0,"operation":"leave_presentation_tooltip","presentation_target":"faith_core_tenet","presentation_receipt":"0123456789abcdef0123456789abcdef"})",205},
     {R"({"window_kind":"holding","subject_id":1,"operation":"show_building_details","presentation_target":"holding_building_preview"})",206}}};
-  for(const auto&[json,op]:operations){assert(ParseIngameUiRequestV1(json,false,r));assert(static_cast<std::uint32_t>(r.operation)==op);}
-  assert(ParseIngameUiRequestV1(R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window"})",false,r));
-  assert(static_cast<std::uint32_t>(r.operation)==208);
+  for(const auto&[json,op]:operations){FaithPowerContractNeed12004(ParseIngameUiRequestV1(json,false,r));FaithPowerContractNeed12004(static_cast<std::uint32_t>(r.operation)==op);}
+  FaithPowerContractNeed12004(ParseIngameUiRequestV1(R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window"})",false,r));
+  FaithPowerContractNeed12004(static_cast<std::uint32_t>(r.operation)==208);
   for(const auto invalid:std::array<std::string_view,4>{{
       R"({"window_kind":"holding","subject_id":15893,"operation":"close_presentation_window"})",
       R"({"window_kind":"personal_beliefs","subject_id":0,"operation":"close_presentation_window"})",
       R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window","presentation_tab":""})",
       R"({"window_kind":"personal_beliefs","subject_id":15893,"operation":"close_presentation_window","presentation_index":0})"}})
-    assert(!ParseIngameUiRequestV1(invalid,false,r));
+    FaithPowerContractNeed12004(!ParseIngameUiRequestV1(invalid,false,r));
   PresentationPanel12004 p{};p.tree.root_available=true;
   const auto row=[&](std::string path,std::string name,bool visible=true,bool enabled=true){
     NamedGuiWidgetInspectionV1 x{};x.child_path=path;x.runtime_name=name;x.effective_visible=visible;x.enabled=enabled;p.tree.widgets.push_back(x);p.tree.widget_count=p.tree.widgets.size();};
@@ -105,17 +116,17 @@ void FaithPowerPresentationContractFixture12004() {
   row("0/0/0/1","doctrine_group_icon"); // Core icon is not a separate doctrine carrier.
   row("1","unrelated_popup");row("1/0","doctrine_group_bg");row("2","tab_holy_sites",false);
   FaithPowerPresentationObservationV1 v{};std::vector<PresentationSourceRow12004>sources;
-  assert(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==1&&v.targets[0].kind=="faith_core_tenet");
-  assert(PresentationActiveTab12004(r,p)==std::optional<std::string>("beliefs"));
-  p.tree.widgets.back().effective_visible=true;assert(!PresentationActiveTab12004(r,p));
+  FaithPowerContractNeed12004(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==1&&v.targets[0].kind=="faith_core_tenet");
+  FaithPowerContractNeed12004(PresentationActiveTab12004(r,p)==std::optional<std::string>("beliefs"));
+  p.tree.widgets.back().effective_visible=true;FaithPowerContractNeed12004(!PresentationActiveTab12004(r,p));
   p={};r.window_kind=IngameUiWindowKindV1::rite_creation;
   row("0","left_side");row("0/0","tenets_grid");row("0/0/0","");row("0/0/0/0","");row("0/0/0/0/0","");row("0/0/0/0/0/0","tenet_name");
   row("1","tenet_selection");row("1/0","");row("1/0/0","");row("1/0/0/0","");row("1/0/0/0/0","tenet_name");
-  assert(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==2);
-  assert(v.targets[0].kind=="rite_core_tenet_slot"&&v.targets[1].kind=="rite_core_tenet_choice");
-  assert(v.targets[0].index==0&&v.targets[1].index==0);
-  assert(PresentationCoreClickPath12004(p,0)==std::optional<std::string>("0/0/0"));
-  assert(!PresentationCoreClickPath12004(p,1));
+  FaithPowerContractNeed12004(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==2);
+  FaithPowerContractNeed12004(v.targets[0].kind=="rite_core_tenet_slot"&&v.targets[1].kind=="rite_core_tenet_choice");
+  FaithPowerContractNeed12004(v.targets[0].index==0&&v.targets[1].index==0);
+  FaithPowerContractNeed12004(PresentationCoreClickPath12004(p,0)==std::optional<std::string>("0/0/0"));
+  FaithPowerContractNeed12004(!PresentationCoreClickPath12004(p,1));
   p={};r.window_kind=IngameUiWindowKindV1::holding;
   row("0","buildings_grid");row("0/0","building_button");
   row("1","special_building");row("1/0","building_button",true,false);
@@ -126,18 +137,18 @@ void FaithPowerPresentationContractFixture12004() {
     throw "production census omitted the actual stock special carrier or admitted an unrelated/hidden carrier";
   p={};r.window_kind=IngameUiWindowKindV1::personal_beliefs;
   row("0","personal_tenets_tutorial_uses_this");row("0/0","");
-  assert(PresentationCensus12004(r,p,sources,v)&&v.targets.empty());
-  assert(ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"open_building_track","presentation_target":"holding_building","presentation_index":0})",false,r));
-  assert(static_cast<std::uint32_t>(r.operation)==207);
-  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"open_building_track","presentation_target":"holding_building_preview"})",false,r));
+  FaithPowerContractNeed12004(PresentationCensus12004(r,p,sources,v)&&v.targets.empty());
+  FaithPowerContractNeed12004(ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"open_building_track","presentation_target":"holding_building","presentation_index":0})",false,r));
+  FaithPowerContractNeed12004(static_cast<std::uint32_t>(r.operation)==207);
+  FaithPowerContractNeed12004(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"open_building_track","presentation_target":"holding_building_preview"})",false,r));
   // New condition target is hover-only; old ShowDetails/track actions stay finite.
   for(const auto op:{"hover_presentation_tooltip","query"}){
     const std::string json="{\"window_kind\":\"holding\",\"subject_id\":1503,\"operation\":\""+std::string(op)+"\",\"presentation_target\":\"holding_construct_conditions\",\"presentation_index\":0}";
-    assert(ParseIngameUiRequestV1(json,std::string_view(op)=="query",r));
+    FaithPowerContractNeed12004(ParseIngameUiRequestV1(json,std::string_view(op)=="query",r));
   }
   for(const auto op:{"show_building_details","open_building_track"}){
     const std::string json="{\"window_kind\":\"holding\",\"subject_id\":1503,\"operation\":\""+std::string(op)+"\",\"presentation_target\":\"holding_construct_conditions\",\"presentation_index\":0}";
-    assert(!ParseIngameUiRequestV1(json,false,r));
+    FaithPowerContractNeed12004(!ParseIngameUiRequestV1(json,false,r));
   }
   p={};r={};r.window_kind=IngameUiWindowKindV1::holding;r.presentation_requested=true;
   p.tracks_visible=p.tracks_enabled=true;p.tracks_root=reinterpret_cast<void*>(0x10000);
@@ -147,9 +158,9 @@ void FaithPowerPresentationContractFixture12004() {
   auto&b=button.standard_click_binding_12004;b.button_base_slot13=b.primary_group=true;b.callbacks.resize(2);
   for(auto&cb:b.callbacks){cb.indirect_target_3aa30e0=cb.expression_descriptor_3a9f960=true;}
   b.callbacks[0].expression_3a9f960.final_target_38_rva=0x12B3390;b.callbacks[1].expression_3a9f960.final_target_38_rva=0x12345;
-  p.tracks_tree.widgets={grid,header,button};assert(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==1&&v.targets[0].kind=="holding_construct_conditions"&&!v.targets[0].enabled);
-  auto duplicate=button;duplicate.child_path="0/0/1";p.tracks_tree.widgets.push_back(duplicate);assert(!PresentationCensus12004(r,p,sources,v));
-  p.tracks_tree.widgets.pop_back();p.tracks_tree.widgets.back().effective_visible=false;assert(PresentationCensus12004(r,p,sources,v)&&v.targets.empty());
+  p.tracks_tree.widgets={grid,header,button};FaithPowerContractNeed12004(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==1&&v.targets[0].kind=="holding_construct_conditions"&&!v.targets[0].enabled);
+  auto duplicate=button;duplicate.child_path="0/0/1";p.tracks_tree.widgets.push_back(duplicate);FaithPowerContractNeed12004(!PresentationCensus12004(r,p,sources,v));
+  p.tracks_tree.widgets.pop_back();p.tracks_tree.widgets.back().effective_visible=false;FaithPowerContractNeed12004(PresentationCensus12004(r,p,sources,v)&&v.targets.empty());
     // Anonymous personal carriers remain unknown; never reuse Faith's name.
   std::cout<<"finite presentation parser/zero/legacy/earlyfailure/response-only core census/source-neighborhood policy PASS; no engine or pixels\n";
 }
@@ -173,26 +184,26 @@ void FaithPowerPresentationPositionFrameFixture12004(unsigned char*image,std::ui
  auto*saved=presentation_position_mailbox12004;presentation_position_mailbox12004=&mailbox;
  ZhongguoScoreboardNativeEnvironmentV1 env{};env.module_base=base;
  PresentationPositionFrame12004 first{},next{};
- assert(ReadPresentationPositionFrame12004(env,first)&&first.actor==actor&&first.date==date&&first.paused==1);
- put(jomini.data(),kJominiPausedOffset,no);assert(!ReadPresentationPositionFrame12004(env,next));put(jomini.data(),kJominiPausedOffset,yes);
- put(tls.data(),kMainThreadTlsMarkerOffset,no);assert(!ReadPresentationPositionFrame12004(env,next));put(tls.data(),kMainThreadTlsMarkerOffset,yes);
- mailbox.owner_thread_id.store(0);assert(!ReadPresentationPositionFrame12004(env,next));mailbox.owner_thread_id.store(GetCurrentThreadId());
- mailbox.stop_requested.store(true);assert(!ReadPresentationPositionFrame12004(env,next));mailbox.stop_requested.store(false);
- ++date;put(game.data(),kGameStateDateRawOffset,date);assert(ReadPresentationPositionFrame12004(env,next)&&next!=first);
- initialized=0;assert(!ReadPresentationPositionFrame12004(env,next));initialized=1;
+ FaithPowerContractNeed12004(ReadPresentationPositionFrame12004(env,first)&&first.actor==actor&&first.date==date&&first.paused==1);
+ put(jomini.data(),kJominiPausedOffset,no);FaithPowerContractNeed12004(!ReadPresentationPositionFrame12004(env,next));put(jomini.data(),kJominiPausedOffset,yes);
+ put(tls.data(),kMainThreadTlsMarkerOffset,no);FaithPowerContractNeed12004(!ReadPresentationPositionFrame12004(env,next));put(tls.data(),kMainThreadTlsMarkerOffset,yes);
+ mailbox.owner_thread_id.store(0);FaithPowerContractNeed12004(!ReadPresentationPositionFrame12004(env,next));mailbox.owner_thread_id.store(GetCurrentThreadId());
+ mailbox.stop_requested.store(true);FaithPowerContractNeed12004(!ReadPresentationPositionFrame12004(env,next));mailbox.stop_requested.store(false);
+ ++date;put(game.data(),kGameStateDateRawOffset,date);FaithPowerContractNeed12004(ReadPresentationPositionFrame12004(env,next)&&next!=first);
+ initialized=0;FaithPowerContractNeed12004(!ReadPresentationPositionFrame12004(env,next));initialized=1;
  const auto old_connection=presentation_position_connection12004.load();
  const auto old_thread=presentation_position_thread12004.load();
  auto old_lease=std::move(presentation_position_lease12004);
  presentation_position_lease12004={};presentation_position_lease12004.active=true;
  presentation_position_lease12004.nonce="11111111111111111111111111111111";presentation_position_lease12004.updates=1;
  std::string stale_reason;
- assert(!PresentationTooltipPositionReceipt12004("22222222222222222222222222222222",stale_reason)&&
+ FaithPowerContractNeed12004(!PresentationTooltipPositionReceipt12004("22222222222222222222222222222222",stale_reason)&&
      presentation_position_lease12004.active&&presentation_position_lease12004.nonce=="11111111111111111111111111111111");
  presentation_position_lease12004.generation=7;presentation_position_lease12004.binding.gui.context=jomini.data();
  presentation_position_thread12004.store(GetCurrentThreadId());presentation_position_connection12004.store(0);
  std::uint64_t point=123;
- assert(!PresentationTooltipPositionOverride12004(jomini.data(),point)&&point==123&&!presentation_position_lease12004.active);
- assert(std::string_view(presentation_position_lease12004.failure)=="presentation_tooltip_position_connection_closed_or_changed");
+ FaithPowerContractNeed12004(!PresentationTooltipPositionOverride12004(jomini.data(),point)&&point==123&&!presentation_position_lease12004.active);
+ FaithPowerContractNeed12004(std::string_view(presentation_position_lease12004.failure)=="presentation_tooltip_position_connection_closed_or_changed");
  presentation_position_lease12004=std::move(old_lease);presentation_position_thread12004.store(old_thread);
  presentation_position_connection12004.store(old_connection);
  presentation_position_mailbox12004=saved;position_fixture_tls12004=nullptr;
@@ -202,7 +213,7 @@ void FaithPowerPresentationPositionFrameFixture12004(unsigned char*image,std::ui
 // Offline production-reader fixture; native functions and providers never run.
 void FaithPowerBuildingReceiverFixture12004(){
  using namespace xar::ck3_11906;
- auto*image=static_cast<unsigned char*>(VirtualAlloc(nullptr,0x61C5000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));assert(image);
+ auto*image=static_cast<unsigned char*>(VirtualAlloc(nullptr,0x61C5000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));FaithPowerContractNeed12004(image);
  const auto put=[](void*p,std::size_t o,const auto&v){std::memcpy(static_cast<unsigned char*>(p)+o,&v,sizeof(v));};
  const auto digit=[](char c){return c<='9'?c-'0':c-'a'+10;};
  for(const auto&p:kPresentationReceiverPins12004)for(std::size_t i=0;i<std::strlen(p.hex)/2;++i)image[p.rva+i]=static_cast<unsigned char>((digit(p.hex[2*i])<<4)|digit(p.hex[2*i+1]));
@@ -224,11 +235,11 @@ void FaithPowerBuildingReceiverFixture12004(){
  put(image,xar::ck3_12004::kUiIdlerRootSlotRva12004V1,jomini_owner);put(jomini_owner,0x10,gfxp);put(gfxp,0x88,handlerp);
  put(handlerp,0x40,jomini_owner);put(nativep,0x98,jomini_owner);
  ZhongguoScoreboardNativeEnvironmentV1 owner_env{};owner_env.module_base=base;void*actual_owner=nullptr;
- assert(jomini_owner!=guip&&ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner)&&actual_owner==jomini_owner);
- put(nativep,0x98,guip);assert(!ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner));put(nativep,0x98,jomini_owner);
- put(handlerp,0x40,guip);assert(!ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner));put(handlerp,0x40,jomini_owner);
- put(gfxp,0x88,guip);assert(!ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner));put(gfxp,0x88,handlerp);
- assert(ReadPresentationOuterOwner12004(owner_env,handlerp,nullptr,actual_owner)&&actual_owner==jomini_owner);
+ FaithPowerContractNeed12004(jomini_owner!=guip&&ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner)&&actual_owner==jomini_owner);
+ put(nativep,0x98,guip);FaithPowerContractNeed12004(!ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner));put(nativep,0x98,jomini_owner);
+ put(handlerp,0x40,guip);FaithPowerContractNeed12004(!ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner));put(handlerp,0x40,jomini_owner);
+ put(gfxp,0x88,guip);FaithPowerContractNeed12004(!ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner));put(gfxp,0x88,handlerp);
+ FaithPowerContractNeed12004(ReadPresentationOuterOwner12004(owner_env,handlerp,nullptr,actual_owner)&&actual_owner==jomini_owner);
 
  put(image,0x5D56864,declaration);std::uint32_t secondtype=2;put(image,0x5D20B98,secondtype);put(image,0x5C6A9C0,registryp);put(registryp,0x20,typesp);put(registryp,0x2C,three);
  void*widgetvt=image+0x4310000;put(rootp,0,widgetvt);put(widgetp,0,widgetvt);put(rootp,0xD8,guip);put(widgetp,0xD8,guip);put(rootp,0xF0,childp);put(rootp,0xFC,one);put(widgetp,0xE8,rootp);
@@ -243,45 +254,45 @@ void FaithPowerBuildingReceiverFixture12004(){
  fixture_army_root_available=true;fixture_tooltip_tree=true;fixture_army_root=rootp;fixture_supplies=widgetp;
  PresentationBuildingReceiver12004 observed{};std::string why;
  const auto read=[&](bool ispotential){return ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",ispotential,observed,why);};
- assert(read(true)&&observed.row==rowp&&observed.building_key=="temple_01");
- std::int8_t unsupported=3;put(entryp,0x40,unsupported);assert(!read(true));put(entryp,0x40,mode1);
- put(cbp,0x1C,one);assert(!read(true));std::int32_t zero=0;put(cbp,0x1C,zero);
- void*wrong=rootp;put(rowp,0,wrong);assert(!read(true));put(rowp,0,viewp);
- rows[0]=widgetp;assert(!read(true));rows[0]=rowp;
- void*converter=image+0x100;put(types.data()+0x130,0xE8,converter);assert(read(true));put(types.data()+0x130,0xF0,converter);assert(!read(true));void*nil=nullptr;put(types.data()+0x130,0xE8,nil);put(types.data()+0x130,0xF0,nil);
+ FaithPowerContractNeed12004(read(true)&&observed.row==rowp&&observed.building_key=="temple_01");
+ std::int8_t unsupported=3;put(entryp,0x40,unsupported);FaithPowerContractNeed12004(!read(true));put(entryp,0x40,mode1);
+ put(cbp,0x1C,one);FaithPowerContractNeed12004(!read(true));std::int32_t zero=0;put(cbp,0x1C,zero);
+ void*wrong=rootp;put(rowp,0,wrong);FaithPowerContractNeed12004(!read(true));put(rowp,0,viewp);
+ rows[0]=widgetp;FaithPowerContractNeed12004(!read(true));rows[0]=rowp;
+ void*converter=image+0x100;put(types.data()+0x130,0xE8,converter);FaithPowerContractNeed12004(read(true));put(types.data()+0x130,0xF0,converter);FaithPowerContractNeed12004(!read(true));void*nil=nullptr;put(types.data()+0x130,0xE8,nil);put(types.data()+0x130,0xF0,nil);
  // Original Construct receiver is observed only; never invoke its callback.
  std::memcpy(image+0x12B3390,kPresentationConstructTooltipPin12004.data(),kPresentationConstructTooltipPin12004.size());
  std::int32_t construct_callbacks=2;put(widgetp,0x404,construct_callbacks);fn=image+0x12B3390;put(cbp,0x48,fn);
- assert(!read(true));assert(ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
- construct_callbacks=1;put(widgetp,0x404,construct_callbacks);assert(!ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
+ FaithPowerContractNeed12004(!read(true));FaithPowerContractNeed12004(ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
+ construct_callbacks=1;put(widgetp,0x404,construct_callbacks);FaithPowerContractNeed12004(!ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
  fn=image+0x12B3260;put(cbp,0x48,fn);
   // Exact loaded TypeDescriptor needs its relocated VA, all suffix pins stay exact.
  for(const auto&pin:kPresentationDetailPins12004)for(std::size_t i=0;i<std::strlen(pin.hex)/2;++i)image[pin.rva+i]=static_cast<unsigned char>((digit(pin.hex[2*i])<<4)|digit(pin.hex[2*i+1]));
- std::uintptr_t relocated_type_info=base+0x44210A0;put(image,0x5769298,relocated_type_info);assert(PresentationDetailSourcePins12004(e));
- std::uintptr_t wrong_type_info=relocated_type_info+8;put(image,0x5769298,wrong_type_info);assert(!PresentationDetailSourcePins12004(e));put(image,0x5769298,relocated_type_info);
- image[0x5769298+16]^=1;assert(!PresentationDetailSourcePins12004(e));image[0x5769298+16]^=1;assert(PresentationDetailSourcePins12004(e));
+ std::uintptr_t relocated_type_info=base+0x44210A0;put(image,0x5769298,relocated_type_info);FaithPowerContractNeed12004(PresentationDetailSourcePins12004(e));
+ std::uintptr_t wrong_type_info=relocated_type_info+8;put(image,0x5769298,wrong_type_info);FaithPowerContractNeed12004(!PresentationDetailSourcePins12004(e));put(image,0x5769298,relocated_type_info);
+ image[0x5769298+16]^=1;FaithPowerContractNeed12004(!PresentationDetailSourcePins12004(e));image[0x5769298+16]^=1;FaithPowerContractNeed12004(PresentationDetailSourcePins12004(e));
  // Original rect consumer never reads a root's cumulative114. Zero/NaN in
  // that unused field must not reject otherwise valid source geometry.
  std::array<unsigned char,0x140>geometry_source{},geometry_root{};void*geometry_rootp=geometry_root.data();float scale=1,zero_scale=0;
  put(geometry_source.data(),0xD8,guip);put(geometry_source.data(),0xE8,geometry_rootp);put(geometry_source.data(),0x110,scale);put(geometry_source.data(),0x114,scale);
  put(geometry_rootp,0xD8,guip);put(geometry_rootp,0x110,scale);std::vector<PresentationPositionAncestor12004>ancestors;std::string geometry_why;
- assert(ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));
- put(geometry_source.data(),0x114,zero_scale);assert(!ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));put(geometry_source.data(),0x114,scale);
- auto unused_nan=(std::numeric_limits<float>::quiet_NaN)();put(geometry_rootp,0x114,unused_nan);assert(ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));
+ FaithPowerContractNeed12004(ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));
+ put(geometry_source.data(),0x114,zero_scale);FaithPowerContractNeed12004(!ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));put(geometry_source.data(),0x114,scale);
+ auto unused_nan=(std::numeric_limits<float>::quiet_NaN)();put(geometry_rootp,0x114,unused_nan);FaithPowerContractNeed12004(ReadPresentationPositionAncestors12004(geometry_source.data(),guip,ancestors,&geometry_why));
   // Test the actual loaded-method admission without calling an engine function.
  for(const auto&p:kPresentationPersonalClosePins12004)for(std::size_t i=0;i<std::strlen(p.hex)/2;++i)image[p.rva+i]=static_cast<unsigned char>((digit(p.hex[2*i])<<4)|digit(p.hex[2*i+1]));
  std::array<unsigned char,8>close_window{};void*personal_vt=image+0x4592C08;
  put(close_window.data(),0,personal_vt);
  for(const auto&pair:std::array<std::pair<std::size_t,std::uintptr_t>,4>{{{0x88,0x17E1130},{0x20,0x110B0E0},{0x38,0x2160380},{0x50,0xAED360}}}){void*fn=image+pair.second;put(personal_vt,pair.first,fn);}
- assert(PresentationPersonalCloseSlots12004(base,close_window.data()));
- void*wrong_close=image+0x17E1110;put(personal_vt,0x88,wrong_close);assert(!PresentationPersonalCloseSlots12004(base,close_window.data()));
+ FaithPowerContractNeed12004(PresentationPersonalCloseSlots12004(base,close_window.data()));
+ void*wrong_close=image+0x17E1110;put(personal_vt,0x88,wrong_close);FaithPowerContractNeed12004(!PresentationPersonalCloseSlots12004(base,close_window.data()));
  void*normal_close=image+0x17E1130;put(personal_vt,0x88,normal_close);
- image[0x17E1130]^=1;assert(!PresentationPersonalCloseSlots12004(base,close_window.data()));image[0x17E1130]^=1;
+ image[0x17E1130]^=1;FaithPowerContractNeed12004(!PresentationPersonalCloseSlots12004(base,close_window.data()));image[0x17E1130]^=1;
   // Installed-row ownership is array membership; row[0] is its group, not view.
  rowp=slot.data();void*owned=slot.data(),*groupowner=static_cast<unsigned char*>(viewp)+0x100;
  put(viewp,0x100,owned);put(viewp,0x108,one);put(viewp,0x10C,one);put(rowp,0,groupowner);put(rowp,8,building);put(entryp,0,rowp);
  declaration=2;put(entryp,0x48,declaration);put(cbp,0x58,declaration);fn=image+0x12B2610;put(cbp,0x48,fn);
- assert(read(false)&&observed.row_owner_raw==groupowner&&observed.row_owner_raw!=viewp);
+ FaithPowerContractNeed12004(read(false)&&observed.row_owner_raw==groupowner&&observed.row_owner_raw!=viewp);
  // Actual R27 ordinary and special buttons use the original mode0 fallback.
  // Explicit failures keep these new acceptance checks active with NDEBUG.
  const auto verify_receiver=[](bool ok,const char*why){if(!ok)throw why;};
@@ -295,6 +306,34 @@ void FaithPowerBuildingReceiverFixture12004(){
  put(special_row,0,groupowner);put(special_row,8,building);put(entryp,0,special_row);
  verify_receiver(read(false)&&observed.row==special_row&&observed.building_key=="temple_01",
      "production receiver did not bind exact owned special row");
+ // Actual R30: installed current is real; optional next is canonical Null.
+ // Explicit failures survive NDEBUG independently of older fixture assertions.
+ std::array<unsigned char,64>null_definition{},null_alias{};
+ void*nullp=null_definition.data(),*nullvt=image+0x48AC828;std::uint32_t null_magic=0x4E756C6C,null_ordinal=0xFFFFFFFFU;
+ std::uint32_t null_hash=0;std::uint64_t null_size=0,null_capacity=15;
+ put(nullp,0,nullvt);put(nullp,0x10,null_ordinal);put(nullp,0x14,null_hash);put(nullp,0x28,null_size);put(nullp,0x30,null_capacity);put(nullp,0x38,null_magic);
+ put(image,0x5D1E320,nullp);put(special_row,0x10,nullp);
+ verify_receiver(read(false)&&observed.building_key=="temple_01"&&observed.next_building==nullp&&observed.next_building_key.empty(),
+     "exact canonical stock Null next must remain an optional empty identity");
+ std::string null_key="stale";
+ verify_receiver(PresentationBuildingDefinition12004(base,nullp,null_key,true)&&null_key.empty(),"stock Null optional key must be empty");
+ verify_receiver(!PresentationBuildingDefinition12004(base,nullp,null_key),"a required definition must reject stock Null");
+ verify_receiver(!PresentationBuildingDefinition12004(base,nullptr,null_key),"a required definition must reject nullptr");
+ null_alias=null_definition;
+ verify_receiver(!PresentationBuildingDefinition12004(base,null_alias.data(),null_key,true),"noncanonical Null-shaped object must be rejected");
+ for(const auto offset:std::array<std::size_t,7>{0,0x10,0x14,0x18,0x28,0x30,0x38}){
+   null_definition[offset]^=1;
+   verify_receiver(!PresentationBuildingDefinition12004(base,nullp,null_key,true),"mutated stock Null identity field must be rejected");
+   null_definition[offset]^=1;
+ }
+ image[0x12B04EF]^=1;
+ verify_receiver(!PresentationBuildingDefinition12004(base,nullp,null_key,true),"stock Null source operand mismatch must be rejected");
+ image[0x12B04EF]^=1;
+ auto saved_size=size;size=0;put(building,0x28,size);
+ verify_receiver(!PresentationBuildingDefinition12004(base,building,null_key,true),"ordinary ObDG empty key must remain rejected");
+ size=saved_size;put(building,0x28,size);
+ verify_receiver(PresentationBuildingDefinition12004(base,building,null_key)&&null_key=="temple_01","ordinary nonempty entity identity must stay valid");
+ void*empty_next=nullptr;put(special_row,0x10,empty_next);
  put(entryp,0,special_row+1);
  verify_receiver(!read(false),"special receiver admitted a non-owned row alias");
  put(entryp,0,special_row);image[0xC41480]^=1;
@@ -349,11 +388,11 @@ void FaithPowerBuildingReceiverFixture12004(){
  verify_receiver(read(false)&&observed.model_sources.size()==1,
      "existing direct local receiver changed after inherited fixture");
 
- put(entryp,0,widgetp);assert(!read(false));put(entryp,0,rowp);
- auto&rpin=kPresentationReceiverPins12004[0];const auto original=image[rpin.rva];image[rpin.rva]^=1;assert(!read(false));image[rpin.rva]=original;
+ put(entryp,0,widgetp);FaithPowerContractNeed12004(!read(false));put(entryp,0,rowp);
+ auto&rpin=kPresentationReceiverPins12004[0];const auto original=image[rpin.rva];image[rpin.rva]^=1;FaithPowerContractNeed12004(!read(false));image[rpin.rva]=original;
  fixture_army_root_available=false;fixture_tooltip_tree=false;fixture_army_root=nullptr;fixture_supplies=nullptr;
  FaithPowerPresentationPositionFrameFixture12004(image,base);
- assert(VirtualFree(image,0,MEM_RELEASE));
+ FaithPowerContractNeed12004(VirtualFree(image,0,MEM_RELEASE));
  std::cout<<"production building direct-row reader/model/type/fallback/preparation/layout/pin fixture PASS; no engine/provider calls\n";
 }
 

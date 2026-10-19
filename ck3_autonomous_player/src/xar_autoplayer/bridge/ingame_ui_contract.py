@@ -17,7 +17,7 @@ from .religion_presentation_ui_contract import (
     requested as presentation_requested, request_fields as presentation_request_fields,
     tooltip_query as presentation_tooltip_query, normalize_presentation_result,
 )
-KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "clerical_interaction"}
+KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army", "open_holy_site":"holy_site",
@@ -116,7 +116,7 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
                             army_tooltip_kind: str | None = None) -> None:
     if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):
         raise ValueError("native UI exact build has no migrated presentation route")
-    if kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction"} or operation in PRESENTATION_OPERATIONS:
+    if kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips"} or operation in PRESENTATION_OPERATIONS:
         if build != CK3_12004 or kind not in PRESENTATION_ROOTS or army_tooltip_kind is not None:
             raise ValueError("finite presentation requires exact 1.20.0.4")
         return
@@ -341,7 +341,8 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                         or confirm.get("native_can_confirm")is not True
                         or confirm.get("parameter_holy_site_id")!=subject_id or confirm.get("selected_holy_site_id")!=subject_id):
                     raise ValueError("original Confirm attempt lacked actual key/parameter/entry and regular native legality")
-    if unopened_current_select_ack or absent_presentation_query:
+    global_tooltip_stack = expected_build == CK3_12004 and kind == "tooltips"
+    if unopened_current_select_ack or absent_presentation_query or global_tooltip_stack:
         if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") != expected_window:
             raise ValueError("unopened army ACK must keep an empty target-window census")
     elif value["available"] and (not tree["root_available"] or count < 1 or tree.get("scope_root_name") != value.get("window_name")):
@@ -354,7 +355,7 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             n=widget.get(key)
             if isinstance(n,bool) or not isinstance(n,int) or n<0:
                 raise ValueError("native census widget integer malformed")
-    if value["available"] and not unopened_current_select_ack and not absent_presentation_query and (widgets[0]["runtime_name"]!=value["window_name"] or widgets[0]["depth"]!=0 or
+    if value["available"] and not unopened_current_select_ack and not absent_presentation_query and not global_tooltip_stack and (widgets[0]["runtime_name"]!=value["window_name"] or widgets[0]["depth"]!=0 or
                                widgets[0]["effective_visible"]!=value["effective_visible"]):
         raise ValueError("native census root differs from target-window observation")
     if value.get("knights_list_scope") != "military_eligible_not_active_combat_roster":

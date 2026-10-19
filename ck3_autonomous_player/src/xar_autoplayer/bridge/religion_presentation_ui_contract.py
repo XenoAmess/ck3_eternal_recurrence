@@ -10,16 +10,16 @@ import hashlib
 from typing import Literal
 from .clerical_preview_ui_contract import KEYS as CLERICAL_KEYS, validate_request as validate_clerical_request, normalize as normalize_clerical_result
 
-PresentationWindowKind = Literal["faith", "holding", "personal_beliefs", "rite_creation", "clerical_interaction"]
+PresentationWindowKind = Literal["faith", "holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips"]
 PresentationTarget = Literal["faith_core_tenet", "faith_doctrine", "personal_tenet",
     "rite_core_tenet_choice", "rite_core_tenet_slot", "holding_building", "holding_building_preview", "holding_construct_conditions", "clerical_puppet", "external_clerical_puppet"]
 PresentationTab = Literal["", "beliefs", "holy_sites", "tenets", "doctrines"]
 PresentationOperation = Literal["query", "open_holding", "open_personal_beliefs",
     "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip",
-    "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview"]
+    "leave_presentation_tooltip", "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview", "close_tooltips"]
 
 WINDOW_ROOTS = {"faith": "faith_window", "holding": "holding_view",
-    "personal_beliefs": "window_personal_beliefs", "rite_creation": "rite_creation_window", "clerical_interaction": "character_interaction_confirmation_window"}
+    "personal_beliefs": "window_personal_beliefs", "rite_creation": "rite_creation_window", "clerical_interaction": "character_interaction_confirmation_window", "tooltips": "tooltip_stack"}
 TARGET_KIND = {"faith_core_tenet": "faith", "faith_doctrine": "faith",
     "personal_tenet": "personal_beliefs", "rite_core_tenet_choice": "rite_creation", "rite_core_tenet_slot": "rite_creation",
     "holding_building": "holding", "holding_building_preview": "holding",
@@ -28,13 +28,13 @@ RESPONSE_TARGET_KIND = {**TARGET_KIND, "rite_core_tenet_slot": "rite_creation"}
 TABS = {"faith": {"beliefs", "holy_sites"}, "personal_beliefs": {"tenets", "doctrines"}}
 NEW_OPERATIONS = {"open_holding", "open_personal_beliefs", "select_presentation_tab",
     "open_rite_core_picker", "hover_presentation_tooltip", "leave_presentation_tooltip",
-    "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview"}
+    "show_building_details", "open_building_track", "close_presentation_window", "open_clerical_preview", "close_clerical_preview", "close_tooltips"}
 _RECEIPT = re.compile(r"[0-9a-f]{32}\Z")
 
 
 def requested(operation: str, kind: str, *, presentation_target=None,
         presentation_index=None, presentation_tab=None, presentation_receipt=None) -> bool:
-    return (operation in NEW_OPERATIONS or kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction"}
+    return (operation in NEW_OPERATIONS or kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips"}
         or any(value is not None for value in (presentation_target, presentation_index,
             presentation_tab, presentation_receipt)))
 
@@ -74,6 +74,12 @@ def request_fields(operation: str, kind: str, subject_id: int, *, presentation_t
         raise ValueError("tooltip observation requires its actual ProvinceID or CharacterID")
     if tab and tab not in TABS.get(kind, set()):
         raise ValueError("presentation tab belongs to another typed window")
+    if kind == "tooltips":
+        if subject_id != 0 or any(values[k] is not None for k in ("presentation_target", "presentation_index", "presentation_tab")):
+            raise ValueError("global tooltip manager has no caller subject, target, index or tab")
+        if operation not in {"query", "close_tooltips"} or (operation == "close_tooltips" and presentation_receipt is None):
+            raise ValueError("global tooltip clear requires its independent stack query receipt")
+        return {key: value for key, value in values.items() if value is not None}
     if kind == "clerical_interaction":
         validate_clerical_request(operation, subject_id, values)
         return {key: value for key, value in values.items() if value is not None}
@@ -121,7 +127,7 @@ def validated_call_fields(operation: str, kind: str, subject_id: int, **fields) 
     """Public presentation wrapper cannot become a route for unrelated UI ops."""
     if kind not in WINDOW_ROOTS or operation not in NEW_OPERATIONS | {"query"}:
         raise ValueError("this wrapper admits only the finite presentation operation/window table")
-    if operation == "query" and all(value is None for value in fields.values()):
+    if operation == "query" and kind != "tooltips" and all(value is None for value in fields.values()):
         fields["presentation_tab"] = ""  # Explicit presence marker, also for valid Faith0.
     return request_fields(operation, kind, subject_id, **fields)
 
@@ -138,6 +144,11 @@ def normalize_presentation_result(value: dict, *, operation: str, kind: str, sub
             raise ValueError("unsolicited presentation observation on a legacy request")
         return
     request_fields(operation, kind, subject_id, **fields)
+    if kind == "tooltips":
+        if not isinstance(leaf, dict) or leaf.get("schema") != "ck3-presentation-ui-v1":
+            raise ValueError("global tooltip stack native leaf is missing")
+        normalize_tooltip_stack_result(value, leaf, operation=operation, receipt=presentation_receipt)
+        return
     if not isinstance(leaf, dict) or leaf.get("schema") != "ck3-presentation-ui-v1":
         raise ValueError("finite presentation native leaf is unavailable; old generic window output is insufficient")
     flags = ("requested", "available", "source_bound", "tab_observed", "picker_observed",
@@ -296,3 +307,48 @@ def normalize_holding_tracks_result(leaf: dict, kind: str) -> None:
     if tracks["effective_visible"] is True and (not tracks["owner_bound"] or tracks["root_exists"] is not True
             or leaf["source_bound"] is not True or leaf["post_window_visible"] is not True):
         raise ValueError("holding tracks visible state lacks the owned source and visible main holding")
+
+
+def normalize_tooltip_stack_result(value: dict, leaf: dict, *, operation: str, receipt) -> None:
+    """Observe global stack state without granting any typed tooltip text/source."""
+    sample = leaf.get("tooltip_clear")
+    keys = {"available", "cleared", "phase", "active_count", "deferred", "locked", "source_null"}
+    if not isinstance(sample, dict) or set(sample) != keys:
+        raise ValueError("global tooltip stack observation is missing")
+    if any(type(sample[k]) is not bool for k in ("available", "cleared")) or sample["available"] != leaf["available"]:
+        raise ValueError("global tooltip stack availability differs")
+    if sample["phase"] not in {"", "observed", "pending", "cleared"}:
+        raise ValueError("global tooltip phase is invalid")
+    if any(leaf[k] for k in ("source_bound", "hover_source_matches", "tooltip_root_visible",
+            "tooltip_stack_observed", "leave_observed", "cache_complete", "rendered_pixels_observed")):
+        raise ValueError("global tooltip clear cannot grant typed source/text/pixels")
+    if any(leaf[k] is not None for k in ("subject_id", "target_kind", "target_index", "post_window_visible")) or leaf["cache_texts"] or leaf["targets"]:
+        raise ValueError("global tooltip clear cannot invent a target/window subject")
+    if sample["cleared"] and (not leaf["available"] or operation != "query"):
+        raise ValueError("tooltip clear ACK/unavailable cannot prove clearance")
+    if not leaf["available"]:
+        return
+    native_receipt = leaf["receipt_id"]
+    if not isinstance(native_receipt, str) or _RECEIPT.fullmatch(native_receipt) is None:
+        raise ValueError("global tooltip receipt is missing")
+    first, later = leaf["action_owner_epoch"], leaf["observation_owner_epoch"]
+    if operation == "close_tooltips":
+        if (native_receipt != receipt or sample["phase"] != "pending" or sample["cleared"]
+                or first is None or later is not None or sample["active_count"] is not None
+                or sample["deferred"] is not None or sample["locked"] or sample["source_null"]
+                or not value["dispatch_invoked"] or not value["native_dispatch_attempted"]
+                or not value["verification_pending"]):
+            raise ValueError("global tooltip action must remain an unknown postcondition ACK")
+        return
+    count = sample["active_count"]
+    if type(count) is not int or not 0 <= count <= 32 or type(sample["deferred"]) is not bool or later is None:
+        raise ValueError("global tooltip stack header is not independently observed")
+    if any(not isinstance(sample[k], list) or len(sample[k]) != count
+            or any(type(v) is not bool for v in sample[k]) for k in ("locked", "source_null")):
+        raise ValueError("global tooltip stack row flags are malformed")
+    if receipt is None:
+        if sample["phase"] != "observed" or sample["cleared"] or first is not None:
+            raise ValueError("initial stack observation cannot claim an earlier clearance")
+    elif (native_receipt != receipt or first is None or later <= first
+            or sample["phase"] != "cleared" or not sample["cleared"] or count != 0 or sample["deferred"]):
+        raise ValueError("clearance needs a later exact receipt, reset deferred flag and empty stack")

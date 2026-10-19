@@ -902,6 +902,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
   else if(kind=="personal_beliefs")r.window_kind=IngameUiWindowKindV1::personal_beliefs;
   else if(kind=="rite_creation")r.window_kind=IngameUiWindowKindV1::rite_creation;
   else if(kind=="clerical_interaction")r.window_kind=IngameUiWindowKindV1::clerical_interaction;
+  else if(kind=="tooltips")r.window_kind=IngameUiWindowKindV1::tooltips;
   else return false;
   if(!bridge::JsonUnsignedField(json,"subject_id",id) || id>(std::numeric_limits<std::uint32_t>::max)())return false;
   r.subject_id=static_cast<std::uint32_t>(id);
@@ -941,6 +942,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
     else if(operation=="close_presentation_window")r.operation=IngameUiOperationV1::close_presentation_window;
     else if(operation=="open_clerical_preview")r.operation=IngameUiOperationV1::open_clerical_preview;
     else if(operation=="close_clerical_preview")r.operation=IngameUiOperationV1::close_clerical_preview;
+    else if(operation=="close_tooltips")r.operation=IngameUiOperationV1::close_tooltips;
     else return false;
   }
   if(ck3_12004::religion::relic_actions::IsOperation(static_cast<std::uint32_t>(r.operation))){
@@ -980,7 +982,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
 }
 std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
   switch(k){case IngameUiWindowKindV1::character:return "character_window";case IngameUiWindowKindV1::army:return "army_window";
-    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";case IngameUiWindowKindV1::faith:return "faith_window";case IngameUiWindowKindV1::holy_site_creation:return "holy_site_creation_window";case IngameUiWindowKindV1::holding:return "holding_view";case IngameUiWindowKindV1::personal_beliefs:return "window_personal_beliefs";case IngameUiWindowKindV1::rite_creation:return "rite_creation_window";case IngameUiWindowKindV1::clerical_interaction:return "character_interaction_confirmation_window";default:return "unavailable";}
+    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";case IngameUiWindowKindV1::faith:return "faith_window";case IngameUiWindowKindV1::holy_site_creation:return "holy_site_creation_window";case IngameUiWindowKindV1::holding:return "holding_view";case IngameUiWindowKindV1::personal_beliefs:return "window_personal_beliefs";case IngameUiWindowKindV1::rite_creation:return "rite_creation_window";case IngameUiWindowKindV1::clerical_interaction:return "character_interaction_confirmation_window";case IngameUiWindowKindV1::tooltips:return "tooltip_stack";default:return "unavailable";}
 }
 bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
                                 IngameUiGuiOwnerBindingV1 &out) noexcept {
@@ -1741,7 +1743,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   std::ostringstream o;o<<std::boolalpha<<std::setprecision(std::numeric_limits<float>::max_digits10);
   o<<"{\"schema\":\"ck3-ingame-ui-window-v1\",\"accepted\":"<<v.available<<",\"available\":"<<v.available
    <<",\"status\":\""<<v.status<<"\",\"window_kind\":\"";
-  constexpr std::array<std::string_view,13> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption","faith","holy_site_creation","holding","personal_beliefs","rite_creation","clerical_interaction"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
+  constexpr std::array<std::string_view,14> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption","faith","holy_site_creation","holding","personal_beliefs","rite_creation","clerical_interaction","tooltips"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
    <<"\",\"window_name\":\""<<IngameUiWindowNameV1(r.window_kind)<<"\",\"requested_subject_id\":"<<r.subject_id
    <<",\"window_exists\":"<<v.window_exists<<",\"effective_visible\":"<<v.effective_visible<<",\"enabled\":"<<v.enabled
    <<",\"subject_id_available\":"<<v.subject_id_available<<",\"current_subject_id\":"<<v.current_subject_id

@@ -56,8 +56,8 @@ bool ReadPresentationTracks12004(const ZhongguoScoreboardNativeEnvironmentV1&env
     t.selection_category_id=category;t.selection_mode=mode;t.selection_action_raw=action;
     void*selected=nullptr,*selected2=nullptr;std::string key,key2;
     if(!Value(p.window,0x630,selected)||!Value(p.window,0x630,selected2)||selected!=selected2){why="presentation_tracks_selected_definition_changed";return false;}
-    const bool known=selected&&PresentationBuildingDefinition12004(selected,key);
-    const bool known2=selected2&&PresentationBuildingDefinition12004(selected2,key2);
+    const bool known=selected&&PresentationBuildingDefinition12004(env.module_base,selected,key);
+    const bool known2=selected2&&PresentationBuildingDefinition12004(env.module_base,selected2,key2);
     if(known!=known2||(known&&key!=key2)){why="presentation_tracks_selected_definition_identity_changed";return false;}
     if(!Value(p.window,0x630,selected2)||selected2!=selected||!Value(p.window,0xEF4,category2)||!Value(p.window,0xEF0,mode2)||!Value(p.window,0xEF8,action2)||category2!=category||mode2!=mode||action2!=action){why="presentation_tracks_selection_changed_after_identity";return false;}
     p.tracks_selected_building=selected;if(known&&!key.empty())t.selected_building_key=key;
@@ -327,6 +327,7 @@ bool InvokePresentationPersonalClose12004(std::uintptr_t base,void*window,bool&a
 #endif
 }
 #include "faith_power_clerical_preview12004.inc"
+#include "tooltip_stack_clear12004.inc"
 bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,const IngameUiRequestV1&r,
     const game::Snapshot&snapshot,const MainThreadExecutionStampV1&stamp,
     const IngameUiGuiOwnerBindingV1&gui,void*handler,IngameUiResultV1&out) {
@@ -336,6 +337,8 @@ bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
   try{
     const auto operation=static_cast<std::uint32_t>(r.operation);
     if(operation>=200&&operation!=204&&operation!=205)CancelPresentationTooltipPosition12004();
+    if(r.window_kind==IngameUiWindowKindV1::tooltips)
+      return ExecuteTooltipStack12004(env,r,snapshot,stamp,gui,handler,out);
     if(r.window_kind==IngameUiWindowKindV1::clerical_interaction)
       return ExecuteClericalPreview12004(env,r,snapshot,stamp,gui,handler,out);
     if(operation==204||operation==205||(operation==0&&!r.presentation_receipt.empty())){

@@ -135,3 +135,13 @@ R24的原游戏、public、host和keeper均实际正常退出，CAS11953已释�
 ## R25实际边界与后继冷修
 
 机器 `4-8e1c2f1861` 的P14编译/导航夹具通过没有覆盖恢复后延迟挂载路径的定位hook安装。R25实际保留个人页成功、地产source pin拒绝及提示未派发等分别结果；加载态ASLR语义、实际启动分支和有限个人正常关闭来源见[R25冷修专题](faith-power-r25-cold-corrections12004-v6.md)。后继op208源码已接既有MCP/owner通路，Python合同通过；新DLL、独立hidden后验及提示像素仍待实机。规划应按当次可用性选择路线，不能把历史成功或源码存在当作当前Can。
+
+## R30 非零 Null 定义与锁定提示的原版清理（2026-10-19）
+
+`machine_id: 4-8e1c2f1861`，观察于2026-10-19T06:57:18Z，exact EXE沿本页固定SHA。R30新鲜Mecca census下的单次有限只读探针为142读／3,946 B，双bookend相同，无原生调用、写入或输入。当前 `holy_site_great_mosque_of_mecca_01` 的普通ObDG、vtable、ordinal98与manager成员身份均有效；next却是合法的非零canonical Null，而非普通CBuildingType。该对象vtableRVA=`0x48AC828`、magic=`0x4E756C6C`、ordinalFFFFFFFF、hash0、size0/cap15、inlineNUL，精确来自`[base+0x5D1E320]`。原版`0x12B04EF`的7B RIP load绑定该global。
+
+最小冷修只在optional定义位允许这个精确canonical对象，核原source operand、global、vtable和全部Null字段并双读；普通ObDG非空key路径保留。Potential/ShowDetails与selected实体仍要求真正非空定义，不将空槽或Null记作已选建筑。显式失败fixture覆盖仿造Null、七字段错、source pin错、required拒绝及真实实体仍通过。原探针和候选来源见外置`resume-20261019/research/r30-building-definition-a09/cold-fix-a02/DELIVERY-a02.json`，2,645 B／SHA `8888f3b238614321705b610fd1d4266c2456d4cd9a842147457ce09eb1f4d820`。R30原hover在派发前拒绝，仍没有建筑正文像素；修复源码不追认原场成功。
+
+原 `leave` 只清hover，不关闭已锁定的其他提示。R30的继承说提示遮住own教士确认页，原open/query/close/hidden资格不能补足被遮挡正文。原版 `game/gui/preload/tooltip.gui` 的CloseAllTooltips动作注册链为 `0x36F21→0xAB5500→0xA8F4E0`；noarg bool wrapper只发延后清理，GUI update `0x3AB26B0`消费`+42C`并经`0x3AA8620`隐藏原roots／清count。新有限路由仍用既有faith-power query/present工具，`window_kind=tooltips,subject_id=0`，拒绝target/index/tab或任意GUI动作。先独立query取nonce，再一次`close_tooltips`，最后同nonce的更晚owner query必须读到deferred0/count0及原roots双读hidden，才称cleared。ACK仅pending，未知不重发；不会直接写GUI标记，也不降低typed tooltip source/top_locked/text join。
+
+有限原字节spans与注册/MCP合同检查见外置`resume-20261019/tooltip-readback-research/r30-locked-tooltip-clear-a01/a02/DELIVERY.actual.json`，7,427 B／SHA `b404af7c1f341e17a1e32d9a66455c84016e7f4d7882373f8426912788626aa6`。两修复停场后已合入，27项Python/MCP检查实际通过（native transport仍为合成）。P18实际编译／唯一导航fixture和R31真实清栈／建筑正文均待完成，不能由静态源链取得新实机资格。

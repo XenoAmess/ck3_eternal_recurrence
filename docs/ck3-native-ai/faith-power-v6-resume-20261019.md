@@ -55,3 +55,49 @@ Root又直接审阅SC03伊斯兰完整核心、SC27以实际Najaf地点页作锚
 R28未完成正常关闭：原hold在04:41:01.413Z到期，原public返回2、原host返回1；正常关闭query/prepare完成后，continue在派发前因host已退出而拒绝。原native stop/shutdown记录CK3 exit1、Job active1→0、tree_gone/cleanup_proven/ok均真、contract_errors空。原normalfalse、retained signaledfalse/exitnull均保留，不能补写成自然退出或OS0。keeper原wait0、allocator原wait0后，04:57:15.711Z实际CAS12102释放resources[]。对原件执行现有一般闭场helper（优化模式仍有效）确认closed_session/native_cleanup_closed和previous-shared-managed-session通过，无需改协议、无需套用failed-query专用入口。证据为外置 `L28/root-screen-release-a01.json`、`resume-20261019/tooltip-readback-research/r28-failed-close-review-a01/REVIEW.actual.json`；源文件与精确路径均在小回执中。
 
 现场释放后正常fetch/rebase至远端 `dde6cc5f7dccb88ba48f34b5f0f6592e17cb3dd5`，再应用上述两项呈现补丁和来源知识。应用后检查发现旧测试仍将新支持的核心槽位hover列作拒绝，已将该例移入允许域；现有呈现检查与新增默认预览检查共19项全部通过（合成transport，未运行游戏）。原生编译、独立窗口显隐及像素资格仍待新P17/R29实际记录。
+
+## P17、R29与R30实际续作（2026-10-19 UTC）
+
+P17实际结果属于 `machine_id: 4-8e1c2f1861`，clean源码 `fe3f664fb974fac06f3796171d659be871b21825`，父基线 `6ebbffcdebe3e30353513e0984572ebc701daa2e`。2026-10-19T05:14:25Z原build wait0，05:16:25Z唯一导航fixture原wait0，05:16:43Z封Q。现有MSVC Release/jobs8两个目标实际编译103个CXX单元、3次link；无另调configure/ALL或旧矩阵。Q与同字节seal17,960B、SHA `e0a2f6a3fa89f00ee604dcbec48de1cd1dbcc30293cbedebb04b495b8db9c3d2`。新immutable DLL14,731,776B、SHA `0a109089a3d97e5f179e255e74dc50413ebf9df44ea677140ab0f8fbfffa6350`；输入manifest996,041B、SHA `ef79be47117c141b145e25068c84510ba5c1901eaa2b92f5260a0c81dd889b29`。同管理员WMI实际回执16212B、SHA `0ce431d71dbfe11870fcebde41e0523e950c3b96eae56bcabbe257820773aa98` 核精确nav EXE路径。Root独立收口retained含guard21,522,150B/future0。源代码编译与合成fixture仍不代替实际窗口/正文/业务。
+
+R28最终容量为531,410,944B含262144guard/future0，5个精确新根的metadata统计，不是物理删除或腾出空间。新R29准入另给2,153,775,104B，raw0、48张各最多8MiB，静态PNG/原生与profile/keeper分别预算；P17旧future仅替换一次为actual retained。新准入时项目upper48,991,654,809B低于quota51,177,672,294B，freshfree111,136,763,904B高于92,153,925,222B需求（继续保留16GiB系统增长与其他任务保守额度）。作者128MiB、研究和Root各16MiB只续同一累计额度到08:07:48Z，不补回已用容量、不重置旧素材TTL。正式完整渲染仍需另给新grant。
+
+fe3f664的Official CI 39202480157在step40失败，不能写成全CI绿色。原日志定位四项服务历史测试的SmallNativeDriver跳过生产构造、缺少 `_succession_expectation`，调用来自先前3ee916c已有root invalidation；生产构造实际初始化该字段。本次26路径未改该fixture/driver/service。2026-10-19T05:28Z核远端已包含59a0cb4125df5b47a890eac7589608adb8619cad，仅为fixture补两字段；保持运行源码冻结，闭场后正常整合。有限原日志/来源回执见 `resume-20261019/tooltip-readback-research/ci39202480157-a01/REVIEW.actual.json`。CI worker `machine_id: unknown`，不得外推为此机器；未为它重跑整个矩阵。
+
+R29薄materializer直接绑定P17的实际Q/seal/DLL/编译manifest，而非将旧qualification改写commit。新冻结policy只增加同Rite0的未确认pluralistic前置、两项剩余核心slot0悬停、两种默认傀儡确认页与原receipt后验，及d_papacy一个camera定位key。目标角色通过已有campaign root的court chaplain实际incumbent及实际title/holder读取，禁止硬填角色ID；camera呈现不标作只读，候选身份不代表is_shown或业务资格。Root对13个有限准入正反例实际验证通过（含优化模式），不授实机信用。
+## R29 未运行收口（2026-10-19，待下一次实际停场后入库）
+
+容量闭账实际观察 `2026-10-19T06:03:16.671959Z`，5 个精确新根保守占用 8,593,408 B，加 65,536 B 收口余量后为 **8,658,944 B**、future0。回执 `L29/CAPTURE-CAPACITY-CLOSED-a01.json` 2,968 B、SHA `22a3f4a38d6d6408f3cb4c1209725f1814d71c1805eded2213b7e02d2e1f87d0`；未删除文件。
+
+原生 nonce 首次 a01 虽有变化像素，但临时 register 缺少 CLI SHA 参数而被拒；执行者已明确纠正其依赖操作仍继续的错误。a01 保留为 lease 失败，Root 不授启动资格。后继 a02 先单独取得 register 12126，inspect 确认唯一 owner、无 CK3、无 recorder，再单独采两张 raw。Root 直接读回 `b68f94bbc908` 与 `eaf19d98165d`，第二张 Steam 底栏“离线模式”清楚；原工具只在报告记 UTC，标签本身只显示 nonce，旧 11:05 冻结时钟仍保留。Root 补注 `ROOT-NATIVE-NONCE-DIRECT-REVIEW-a02.json` 2,517 B、SHA `a68f3dd164778758a8626a9e1f56257ecc55f2a7bc03c870e9c96f995085ab0f` 绑定当前 machine_id、lease、inspect、原报告与两张原图，不声称 Steam 后端或整桌面恢复。
+
+新 R30 使用 a03 common/state/source leaf；Root 实审 producer 全部 diff 只有 HERE、common、state 三路径，policy/adapter 与 R29 已审字节完全相同，F 母档保持原 pin。新准入 `R30-D1-STATIC-CAPTURE-ADMISSION-a01.json` 5,976 B、SHA `8c4bcf350f3cf9fe075ee59f393ca0f72f263609b3bddcab30279eca52f2a2cf`，以 R29 实际保留替换旧未来一次后，含新拍摄峰值的项目上界 49,000,313,753 B < quota 51,177,672,294 B；free111,120,486,400 B >= required92,153,925,222 B。Root 分别实际完成 materialize、public prepare、public plan，均退出 0，plan blockers=[]；回执 `capture-d1-a03/METADATA-READBACK-P17-a01.json` 3,377 B、SHA `542588738c9c3e7a5ab1d59c64c589a9341ca9ab7da87e8f81816bdc29589a18`。此时尚未 allocate/run，仍不能声称 P17 新 GUI 实机通过。
+
+机器 `4-8e1c2f1861`。R29 分配后未启动 host、native session、CK3 或录制；600 秒空闲期限于 `2026-10-19T05:33:20.724180Z` 结束。原 allocator 实际 Popen wait 为 0（同秒 `.993792Z`），原 keeper wait 为 0；CAS 12120 为 `status/resources=[]`，最终 admin DONE 12121 为 `completed/resources=[]`。现有 allocated-unrun helper 单次生成包，公共验证器在 `05:57:33Z` 返回 `previous-shared-allocated-unrun-idle`、实际进程 blockers=[]。正常关闭与业务信用均为 false，不能从未启动推导 CK3 退出码 0。
+
+原件：`resume-20261019/r29-unrun-closure-a01/ALLOCATED-UNRUN.actual.json`（4,288 B，SHA `0bd16558ac493e2fc209acb401720cdeac54ee5ba9958095b272dce5a95b5357`）；`PUBLIC-CONSUMER-READY.actual.json`（6,534 B，SHA `e96d4d6525103205efd52f954ea3e41b68b0acbbf0c0c8e840eea562726755ab`）。后继沿既有 `--previous-failure-close` 消费这份未运行包，不复用已过期分配。
+
+R29 的窗口位移检查虽有 edge changed，但两图哈希与 R28 相同，画面时钟停在 11:05，不能当作实时离线实证。现有 recovery 于 `05:31:29.918Z` 返回 `stale_or_unavailable`；合成白色 banner 不算原生显示变化。后续使用已有 `tools/steam_offline_nonce_capture.py`，按桌面恢复专题直接审阅第二张未裁切、未合成原图的实际 nonce 与 Steam 离线标识；尚未据此追认桌面整体或时钟恢复。以上只记录已发生结果，R30 新准入、启动与呈现结果仍待实际回读。
+
+
+# R30 实际观察与 P18 冷修准备（停场后入库）
+
+machine_id：`4-8e1c2f1861`。本段只记录实际观察，未完成的编译、补拍及全片审阅分别保留。
+
+P17权限证据勘误（2026-10-19T07:19Z）：原Root收口的 evidence_source误称“SYSTEM readback”。原Defender回执实际为 `admin_token=true`、`same administrative token and WMI client for before/after`、精确nav EXE已在排除列表，无SYSTEM SID或broker证明。管理员实际回读仍成立；不得将此追认为SYSTEM身份。原收口与原pins保留，追加 `NATIVE-P17-DEFENDER-ERRATUM-a01.json`，编译／fixture／容量结论不变，也未新改系统设置。待入库P17摘要中的SYSTEM一词须以此勘误解释。
+
+R30 原生 host 于 2026-10-19T06:27:19Z 启动；CK3 PID24688、creation `20261019062732.180820+000`。来源冻结为 clean `fe3f664fb974fac06f3796171d659be871b21825`，沿 P17 原始 qualification 与 immutable DLL，无 saved-campaign-inject-after-load、无录制或新世界 Confirm。约 06:33:16Z 地图就绪；最终 07:07:40Z 独立快照仍为 revision3/native2、actor31254/date53144328、paused、eventnull、piety20000，07:08:54Z religion 仍为 Faith13/Religion8/current Rite0/main Rite0。没有推进日期或新存档。
+
+Steam 离线启动采用实际20px可逆位移和现有32hex review消费者，同时单列原工具的局限：旧边缘哈希及11:05背景时钟仍可重复，位移/合成banner本身不证明新鲜。R30独占lease12130内，原生窗口挑战两张未合成全桌面分别实际显示 `c73a4000ab68` 与 `11e38eb6ecc8`，Root直接审阅第二张的“离线模式”。补注 `ROOT-NATIVE-NONCE-SUPPLEMENT-a01.json`（3,914 B，SHA `cfd61986090f51525dda08dac6c07d7693a23c6906158914693ce79fcbd5574e`）绑定原对图、nonce报告、当次独占、无阻塞进程、冻结argv和32hex review `d2643527a7973be9a250e40e2d8fe236`。没有伪造位移报告、没有追认 Steam 后端或整桌面时钟恢复。
+
+两张可用原图分别为 06:35:51Z 顺应（4,659,103 B，SHA `1fe9e1d702083602c2a1de4016f9bdd5060c092b62adadf7c4a8de3b93e7968d`）与06:38:25Z继承说（4,666,054 B，SHA `ddde58ae2deb4d1201e67cec52ea194704ea3f61c7d5a3447338cc328d8ec471`）。可见核心正文、罗马礼允许／禁止状态及分别标注的个人分支；原 tooltip 底部页脚接近桌面边界，不称全 tooltip 无裁切。继承说的实际红字为“你只能选择一种基督论信条”，不能解释为需要合性论。卡片为未确认草稿，975／325是当次报价。typed tooltip 的 top_locked/来源 join 仍 RED，不能因原图可读而追认绑定绿色。最终图索引 `L30/ORIGINAL-GUI-CAPTURE-INDEX-a03.json` 为 batch_final，仅两张可教学原图。
+
+作者 a29 对个人分支做小裁切，顺应止于完整研习礼仪20天行并标“个人信条（节选）”；继承说从“如果是个人信条”开始，去掉前一段+5残行。Root直接看两张组合图后封 `ROOT-SELECTED-PIXELS-REVIEW-a05.json`（3,000 B，SHA `59abf6d466c178de11de297819964890e0d77445609ee4f66aa8bf2f839c398e`）。只接受这三句的完整 a29 增量，135旁白／460双语组／76,832帧不变，全片真人1倍速看听仍未执行。
+
+九建筑仍无可用正文。麦加真实当前建筑为 `holy_site_great_mosque_of_mecca_01`，继承ready provider来源守卫已越过，之后被 definition_identity 拒绝。经 Root 单次批准的有限只读探针于06:57:18Z按新鲜census读取142次／3,946 B，无原生调用／写入／输入，双bookend一致：当前实体的 ObDG、vtable、ordinal98和manager成员身份均有效；next精确等stock canonicalNull，magic=`0x4E756C6C`、vtableRVA=`0x48AC828`、ordinalFFFFFFFF、hash0、size0/cap15、inlineNUL。原校验误拒绝非零Null。冷修候选只在optional定义位识别精确canonical slot及Null形状；normal非空实体守卫不改，potential/ShowDetails及selected实体仍要求非空。候选 patch 8,331 B，SHA `270eab44bf3e78f108a226613ca65793edd7117795aedff98fb1b155a962c5cf`，未编译／未实机。
+
+own court-chaplain58490从当次campaign root实际取得，默认query→open→独立visible→close→独立hidden原生链成立，六选项全off、kind0，无Send。但06:45:11Z与06:46:44Z两原图均受旧继承说locked提示框遮挡，不计作互动正文。external候选30490仅来自当次相邻31531的实际liege，不能据此称其教宗；07:04:01Z默认query被 `clerical_preview_default_context_not_qualified` 拒绝，receiptnull、dispatchfalse、未open。旧 `d_papacy` 定位实际title_key_not_found。Root核原版landed_titles:68真实key为 `k_papal_state`，SHA `fc8ea76e8bcc8c3aa8557dfb7226dc75b4aee8830e906c434754599ab8c75f55`；下一场先原生map实际holder再核default，不能猜ID。有限来源小件 `EXTERNAL-CLERICAL-TARGET-SOURCE-a01.json`（2,600 B，SHA `7aad5d5bed6d3922a5860f0ba781d53c9e578d7704084a70ad83ce32a10413ec`）。
+
+原版 CloseAllTooltips 源链已离线闭合：注册 `0x36F21`绑定 `0xAB5500`，16B noarg bool wrapper进入`0xA8F4E0`设置原生deferred标记，GUI update最终调用`0x3AA8620`清栈。冷修仅通过现有faith-power MCP呈现路由新增tooltips/subject0有限query→一次close_tooltips→独立后帧deferred0/count0/旧root隐藏；ACK不算清除，未知不重试，不改变typed来源join，不直接写GUI内存。候选 patch 75,942 B，SHA `968fa4b00609cd40507ed4cebcd25a5bb46916713e72c74fb866ac129bd0ed0b`；3项聚焦Python/MCP实过，原生编译／fixture／清栈实机后验待P18。未使用桌面ESC或鼠标替代MCP。
+
+R30于07:11Z起进入正常收场，07:24:06Z原host wait1/RED查询失败保留；独立原HANDLE与CaseClient retained均实际OS0、normal_close_qualified=true、Job0→0及控制清理通过，原public session35243实际wait0。keeper原wait0、allocator原session77496实际wait0后，于07:25:24Z实际CAS12162 DONE/resources=[]。07:26:49Z容量闭账为504,303,616 B（含262,144 B guard）／future0，五精确新根仅metadata统计，没有执行删除。PREDECESSOR-READY现有公共消费者实际返回previous-shared-managed-session、failure_close=null；host1没有改成0。全部停场后才ff远端到9bfaad8f5c32bf8b1d480b147792e5c0e172e9b9并合入两最小补丁，27项优化模式Python合同／注册MCP检查实际通过；原生编译、fixture及R31补拍仍待新准入。

@@ -39,6 +39,14 @@ struct FaithPowerPresentationObservationV1 {
    std::optional<ck3_12004::clerical_preview::Context> window_context;
  };
  std::optional<ClericalPreview> clerical_preview;
+ struct TooltipClear {
+   bool available=false,cleared=false;
+   std::string phase;
+   std::optional<std::int32_t> active_count;
+   std::optional<bool> deferred;
+   std::vector<bool> locked,source_null;
+ };
+ std::optional<TooltipClear> tooltip_clear;
  bool hover_source_matches=false,tooltip_stack_observed=false,tooltip_root_visible=false;
  std::optional<std::int32_t> tooltip_active_count,tooltip_top_locked;
  bool leave_observed=false,cache_complete=false,rendered_pixels_observed=false;

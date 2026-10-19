@@ -28,10 +28,32 @@ struct PresentationBuildingReceiver12004 {
   std::vector<PresentationReceiverModelSource12004>model_sources;
   bool operator==(const PresentationBuildingReceiver12004&)const=default;
 };
-bool PresentationBuildingDefinition12004(void*building,std::string&key) {
-  key.clear();if(!building)return true;
+bool PresentationBuildingDefinition12004(std::uintptr_t base,void*building,std::string&key,bool optional=false) {
+  key.clear();if(!building)return optional;
   std::uint32_t magic=0;std::uint64_t size=0,capacity=0;void*data=nullptr;
-  if(!Value(building,0x38,magic)||magic!=0x4744624FU||!Value(building,0x28,size)||!Value(building,0x30,capacity)||
+  if(!Value(building,0x38,magic))return false;
+  if(magic!=0x4744624FU){
+    // R30: the exact stock Null is a nonzero optional definition, not ObDG.
+    // Original 12B04EF's immutable RIP operand targets this canonical slot.
+    constexpr std::array<unsigned char,7>source_pin{0x48,0x8B,0x05,0x2A,0xDE,0xA6,0x04};
+    std::array<unsigned char,7>source{};
+    if(!optional||magic!=0x4E756C6CU||!Read(reinterpret_cast<void*>(base+0x12B04EF),source.data(),source.size())||source!=source_pin)return false;
+    struct NullShape {
+      std::uintptr_t vtable=0;std::uint32_t ordinal=0,hash=0,magic=0;
+      std::uint64_t size=0,capacity=0;std::uint8_t terminator=1;
+      bool operator==(const NullShape&)const=default;
+    };
+    const auto capture=[&](NullShape&s){void*canonical=nullptr;
+      return Slot(base+0x5D1E320,canonical)&&canonical==building&&
+          Value(building,0,s.vtable)&&s.vtable==base+0x48AC828&&
+          Value(building,0x10,s.ordinal)&&s.ordinal==0xFFFFFFFFU&&
+          Value(building,0x14,s.hash)&&s.hash==0&&Value(building,0x38,s.magic)&&s.magic==0x4E756C6CU&&
+          Value(building,0x28,s.size)&&s.size==0&&Value(building,0x30,s.capacity)&&s.capacity==15&&
+          Value(building,0x18,s.terminator)&&s.terminator==0;
+    };
+    NullShape first{},last{};return capture(first)&&capture(last)&&first==last;
+  }
+  if(!Value(building,0x28,size)||!Value(building,0x30,capacity)||
       !size||size>160||size>capacity||(capacity<16&&capacity!=15))return false;
   data=static_cast<unsigned char*>(building)+0x18;
   if(capacity>=16&&(!Value(building,0x18,data)||!data))return false;
@@ -146,7 +168,7 @@ bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvi
   if(potential){
     if(v.row_owner_raw!=panel.window||!v.building||!Value(v.row,0x10,v.mode)||!Value(v.building,0x6FFE8,v.category))return fail("presentation_potential_row_view_or_definition_unverified");
   }else if(!Value(v.row,0x10,v.next_building)||!Value(v.row,0x18,v.mode)||!Value(v.row,0x1C,v.category))return fail("presentation_building_slot_fields_unreadable");
-  if(!PresentationBuildingDefinition12004(v.building,v.building_key)||!PresentationBuildingDefinition12004(v.next_building,v.next_building_key))return fail("presentation_building_definition_identity_unverified");
+  if(!PresentationBuildingDefinition12004(env.module_base,v.building,v.building_key,!potential)||!PresentationBuildingDefinition12004(env.module_base,v.next_building,v.next_building_key,true))return fail("presentation_building_definition_identity_unverified");
   why.clear();return true;
 }
 bool ReadPresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvironmentV1&env,

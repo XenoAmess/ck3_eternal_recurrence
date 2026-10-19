@@ -10,7 +10,7 @@ bool PresentationRequested12004(const IngameUiRequestV1 &r) noexcept {
 }
 bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
-  if(!PresentationRequested12004(r)||(k!=7&&k!=9&&k!=10&&k!=11&&k!=12)||r.subject_id==0xFFFFFFFFU||
+  if(!PresentationRequested12004(r)||(k!=7&&k!=9&&k!=10&&k!=11&&k!=12&&k!=13)||r.subject_id==0xFFFFFFFFU||
       (k==9&&r.subject_id>0x7FFFFFFFU)||r.presentation_index>=128||
       !r.army_tooltip_kind.empty()||!r.army_tooltip_receipt.empty()||r.holy_site_decision_explicit||
       r.relic_action_explicit||r.relic_action!=ck3_12004::religion::relic_actions::Request{}||
@@ -19,6 +19,10 @@ bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
       r.appointment.requested_title_id||r.appointment.candidate_offset||r.appointment.candidate_limit!=32||
       r.appointment.breakdown_character_id||r.appointment.diagnostic_character_id)return false;
   const auto&t=r.presentation_target;const auto&tab=r.presentation_tab;
+  if(k==13)return r.subject_id==0&&t.empty()&&tab.empty()&&!r.presentation_index&&
+      !r.presentation_index_explicit&&!r.presentation_tab_explicit&&
+      ((o==0&&(r.presentation_receipt.empty()||ArmyTooltipNonceValid(r.presentation_receipt)))||
+       (o==211&&ArmyTooltipNonceValid(r.presentation_receipt)));
   if(k==12)return r.subject_id>0&&(t=="clerical_puppet"||t=="external_clerical_puppet")&&
       !r.presentation_index_explicit&&!r.presentation_tab_explicit&&!r.presentation_index&&tab.empty()&&
       ((o==0&&(r.presentation_receipt.empty()||ArmyTooltipNonceValid(r.presentation_receipt)))||
@@ -121,6 +125,14 @@ void SerializePresentationUi12004(std::ostringstream&o,const FaithPowerPresentat
     o<<"{\"index\":"<<x.index<<",\"kind\":\""<<JsonEscape(x.kind)<<"\",\"runtime_name\":\""<<JsonEscape(x.runtime_name)<<"\",\"definition_key\":";text(x.definition_key);
     o<<",\"label\":";text(x.label);o<<",\"effective_visible\":"<<x.effective_visible<<",\"enabled\":"<<x.enabled<<'}';}
   o<<']';
+  if(v.tooltip_clear){const auto&t=*v.tooltip_clear;
+    o<<",\"tooltip_clear\":{\"available\":"<<(t.available&&v.available)<<",\"cleared\":"<<t.cleared
+      <<",\"phase\":\""<<JsonEscape(t.phase)<<"\",\"active_count\":";scalar(t.active_count);
+    o<<",\"deferred\":";scalar(t.deferred);o<<",\"locked\":[";
+    for(std::size_t i=0;i<t.locked.size();++i){if(i)o<<',';o<<static_cast<bool>(t.locked[i]);}
+    o<<"],\"source_null\":[";
+    for(std::size_t i=0;i<t.source_null.size();++i){if(i)o<<',';o<<static_cast<bool>(t.source_null[i]);}o<<"]}";
+  }
   if(v.clerical_preview){const auto&c=*v.clerical_preview;
     o<<",\"clerical_preview\":{\"available\":"<<(c.available&&v.available)<<",\"root_bound\":"<<c.root_bound
       <<",\"window_visible\":";scalar(c.window_visible);
