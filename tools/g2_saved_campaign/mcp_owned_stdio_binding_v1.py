@@ -184,6 +184,9 @@ def bind_owned_stdio_v1(*, inherited_custody, expected_server, startupinfo, enab
     Startup handles must already be inheritable OWNED receiver resources. This
     binder does not reopen a PID/file, infer source custody, or mint a provider.
     Caller must use the actual App receiver ACK before releasing sender copies.
+    The exact command must directly execute that App. Forwarding launchers (for
+    example Windows venv python.exe) are unqualified: a different peer PID is a
+    real refusal, never permission to adopt the launcher's descendant instead.
     """
     if enabled is not True:
         return None

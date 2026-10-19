@@ -275,13 +275,18 @@ def _spawn(api, resources, role, *, decoy_handle, use_mcp=False, wrong_parent=Fa
         parent_source=resources.handles["target"] if wrong_parent and role=="Queue" else api.reads.current()
         handles["parent"]=api.duplicate(parent_source,inherit=True,access=0x1000|0x100000)
         startup=subprocess.STARTUPINFO(lpAttributeList={"handle_list":list(handles.values())})
-        command=[sys.executable,"-B","-X","utf8",str(Path(__file__).resolve()),
+        if __package__:
+            from .owned_python_launch_v1 import owned_python_launch_v1
+        else:
+            from owned_python_launch_v1 import owned_python_launch_v1
+        executable,env=owned_python_launch_v1()
+        command=[executable,"-B","-X","utf8",str(Path(__file__).resolve()),
                  "--internal-owned-child",role,json.dumps({"handles":handles,"pipe":name,
                  "decoy":decoy_handle,"wrong_parent":wrong_parent},separators=(",",":"))]
         if not use_mcp:
             process=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,startupinfo=startup,close_fds=True,
-                creationflags=subprocess.CREATE_NO_WINDOW)
+                creationflags=subprocess.CREATE_NO_WINDOW,env=env)
             child=_Child(process,int(process._handle))
         else:
             import asyncio
@@ -289,11 +294,11 @@ def _spawn(api, resources, role, *, decoy_handle, use_mcp=False, wrong_parent=Fa
             import mcp.os.win32.utilities as utilities
             from sdk_process_custody import retain_mcp_stdio_process
             loop=asyncio.new_event_loop()
-            capture=retain_mcp_stdio_process(stdio,expected_executable=sys.executable)
+            capture=retain_mcp_stdio_process(stdio,expected_executable=executable)
             async def create():
                 observed=await capture.__aenter__()
                 with _mcp_single_creation_inheritance(startup,command):
-                    process=await stdio._create_platform_compatible_process(command[0],command[1:])
+                    process=await stdio._create_platform_compatible_process(command[0],command[1:],env=env)
                 generation=observed.generation
                 _require(generation is not None,"MCP actual child handle was not retained")
                 return process,generation._handle

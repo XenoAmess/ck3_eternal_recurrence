@@ -1,0 +1,156 @@
+{
+  "schema": "xar.g2.m7.ci62-direct-python-owned-fixture-fix/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:35:01.340460+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool 2e2563",
+  "original_CI_failure": {
+    "machine_id": "unknown",
+    "path": "_runtime/ci-job-118130248462-failure-excerpt.json",
+    "bytes": 45049,
+    "sha256": "47e3c5da345a7fe11ea060c8fbec989520c195b3b4e61f2fcb22855cfd97c858",
+    "commit": "a45fa372b6c51cbf64ffc4400b6844333b6b626d",
+    "step": 62,
+    "failed": 5,
+    "passed": 10,
+    "classification": "New actual CI regression; not attributed to an older worker. Original RED retained. CI runner identity is not inferred from its paths. Earlier local PASS only proved the earlier machine/interpreter setup."
+  },
+  "owned_reproduction": {
+    "tool": "6276ec",
+    "observed_at_utc": "2026-10-19T15:31:14.786524+00:00",
+    "parent_pid": 40036,
+    "parent_sys_executable": "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "actual_GetModuleFileNameW_and_sys_base_executable": "C:/Users/xenoa/AppData/Local/Programs/Python/Python313/python.exe",
+    "venv_launch": {
+      "returned_PID": 237840,
+      "actual_interpreter_PID": 273668,
+      "equal": false,
+      "normal_exit": 0
+    },
+    "direct_base_launch": {
+      "returned_PID": 254680,
+      "actual_interpreter_PID": 254680,
+      "equal": true,
+      "normal_exit": 0
+    },
+    "observation": "Only two harmless self-created Python children were launched and normally closed. Their own reported PID plus current GetModuleFileNameW prove the forwarding launcher split. No existing PID was adopted."
+  },
+  "change": {
+    "selector": "Fixture-only owned_python_launch_v1 reads current GetModuleFileNameW and requires samefile with sys._base_executable. No PATH/descendant lookup. Explicit current sys.path/PYTHONPATH preserve dependency provenance under the direct interpreter.",
+    "fixtures": "Private four-role chain and async/fallback/real-stock owned tests use selected direct executable for both creation and retained expected executable. Exact peer==retained child==returned PID, parent birth, inherited allowlist, FileID/hash, original shared Job table and cleanup remain enforced.",
+    "production": "Production binder does not silently rewrite the caller command. Its docstring now makes direct execution an adoption precondition. Windows venv forwarding command is unqualified; mismatched peer refuses instead of adopting arbitrary descendants.",
+    "receiver_independence": "No receiver module is imported or required by this fix. Separate fresh-process verification substituted exact a45 original custody/DTO/Windows code objects before tests. No current runtime/global MCP modules were changed."
+  },
+  "validation": {
+    "launcher": "tools/.venv/Scripts/python.exe",
+    "opt_in": "XAR_OWNED_STOCK_MCP_TEST=1",
+    "nodes": [
+      "tools/g2_saved_campaign/test_owned_python_launch_v1.py",
+      "tools/g2_saved_campaign/test_private_handle_chain_v1.py",
+      "tools/g2_saved_campaign/test_mcp_owned_stdio_binding_v1.py"
+    ],
+    "working_tree_result": {
+      "tool": "4d91aa",
+      "passed": 17,
+      "subtests_passed": 6,
+      "seconds": 10.25
+    },
+    "original_a45_module_result": {
+      "start_tool": "ddc7e8",
+      "end_tool": "851377",
+      "passed": 17,
+      "subtests_passed": 6,
+      "seconds": 9.52
+    },
+    "exact_owned_examples_with_original_modules": [
+      {
+        "kind": "direct",
+        "pid": 145640,
+        "actual_pid": 145640,
+        "creation_filetime": "134368976141710494",
+        "same_dependency_origin": true,
+        "exit_code": 0
+      },
+      {
+        "kind": "async",
+        "pid": 82052,
+        "creation_filetime": "134368976223788293",
+        "payload": "A",
+        "exit_code": 0
+      },
+      {
+        "kind": "stock_fallback",
+        "pid": 210032,
+        "creation_filetime": "134368976223712318",
+        "payload": "B",
+        "exit_code": 0
+      },
+      {
+        "kind": "real_stock_MCP_Job",
+        "pid": 155408,
+        "creation_filetime": "134368976225417042",
+        "payload": "R",
+        "exit_code": 0,
+        "child_in_exact_job": true,
+        "original_job_entry_removed": true,
+        "job_handle_closed": true,
+        "closed_handle_error": 6
+      }
+    ],
+    "stock_dependency_SHA_guards": "Unchanged and passed in both runs; no installed dependency edit or global monkeypatch.",
+    "checks": "restricted git diff --check PASS"
+  },
+  "scope": {
+    "current_Game_MCP_Job_or_desktop_access": false,
+    "owned_real_stock_Job_test": true,
+    "production_custody_issued": false,
+    "H_credit": 0,
+    "stage_or_commit": false
+  },
+  "storage": {
+    "path": "Z:/ck3_mod_rewrite",
+    "volume": "Z:",
+    "observed_at_utc": "2026-10-19T15:30:41.467786+00:00",
+    "free_bytes": 178243121152,
+    "hard_cap_bytes": 16384,
+    "purpose": "source-only fix; not D-volume admission"
+  },
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/owned_python_launch_v1.py",
+      "bytes": 1835,
+      "sha256": "e2d020469e0f0b033de93927f3bc8e7ed79d5829b4159c4cb14313ff9f5ce05c",
+      "new_full_or_added_plus_removed_bytes": 1835
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_owned_python_launch_v1.py",
+      "bytes": 2801,
+      "sha256": "761c8ff81416583da261b28caf508a33803ac394e3b799c371a1393bc52d0eab",
+      "new_full_or_added_plus_removed_bytes": 2801
+    },
+    {
+      "path": "tools/g2_saved_campaign/private_handle_chain_v1.py",
+      "bytes": 24859,
+      "sha256": "9114fdab5247091141cc19148e15f85e5202dc41bdd1ec29f2b91869b1eb6327",
+      "new_full_or_added_plus_removed_bytes": 887
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_mcp_owned_stdio_binding_v1.py",
+      "bytes": 17348,
+      "sha256": "fad492aaaa78c43fd4e083ddcfb8f27dce870ef087e44accd8d2e3ea2b412a4d",
+      "new_full_or_added_plus_removed_bytes": 1569
+    },
+    {
+      "path": "tools/g2_saved_campaign/mcp_owned_stdio_binding_v1.py",
+      "bytes": 11206,
+      "sha256": "a893edf1c792e73ce9e405c6d6f3e83de8adb4e89eaac8e21b8f805db6c01f08",
+      "new_full_or_added_plus_removed_bytes": 239
+    }
+  ],
+  "budget": {
+    "new_and_changed_source_test_bytes": 7331,
+    "count_method": "new leaves full plus all added and removed source lines versus a45; unchanged context excluded",
+    "review_bytes": 6454,
+    "total_bytes": 13785,
+    "hard_cap_bytes": 16384
+  }
+}

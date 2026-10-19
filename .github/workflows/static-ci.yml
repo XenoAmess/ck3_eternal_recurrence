@@ -278,7 +278,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
           XAR_OWNED_STOCK_MCP_TEST: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_private_handle_chain_v1.py tools/g2_saved_campaign/test_mcp_owned_stdio_binding_v1.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_owned_python_launch_v1.py tools/g2_saved_campaign/test_private_handle_chain_v1.py tools/g2_saved_campaign/test_mcp_owned_stdio_binding_v1.py
       - name: Verify recorded SDK28 source reconstruction without runtime inputs
         run: python -B -X utf8 docs/ck3-native-ai/research/sdk28-public-source-delta-20261017/source_delta_recipe.py verify --repo . --git-only --public-commit 79055bb2fc2559f4fe270ec3971591c78b59e0c8
       - name: Preserve decision history growth evidence

@@ -16,6 +16,7 @@ import mcp.client.stdio as stock
 import mcp.os.win32.utilities as windows
 
 from tools.g2_saved_campaign import mcp_owned_stdio_binding_v1 as binding
+from tools.g2_saved_campaign.owned_python_launch_v1 import owned_python_launch_v1
 
 RUNS = []
 CHILD = "import os,sys,json,msvcrt; a=msvcrt.open_osfhandle(int(sys.argv[1]),os.O_RDONLY); b=msvcrt.open_osfhandle(int(sys.argv[2]),os.O_WRONLY); data=os.read(a,1).decode(); os.close(a); os.close(b); print(json.dumps({'pid':os.getpid(),'payload':data}),flush=True); sys.stdin.readline()"
@@ -159,8 +160,8 @@ class OwnedProcessTests(unittest.TestCase):
         async def one(label, use_fallback):
             fds,handles=self.handles(label);opened.append((fds,handles))
             startup=subprocess.STARTUPINFO(lpAttributeList={"handle_list":handles})
-            command=[sys.executable,"-B","-c",CHILD,*map(str,handles)]
-            env=dict(os.environ)
+            executable,env=owned_python_launch_v1()
+            command=[executable,"-B","-c",CHILD,*map(str,handles)]
             a=assemble(s,u,command=command,env=env,startup=startup,
                 custody=SimpleNamespace(closed=False,_owned=handles),
                 async_open=fallback if use_fallback else None)
@@ -170,7 +171,7 @@ class OwnedProcessTests(unittest.TestCase):
                 line=await child.stdout.receive()
                 observed=json.loads(line)
                 self.assertEqual(observed,{"pid":child.pid,"payload":label})
-                generation=RetainedProcessGeneration.capture(child.pid,expected_executable=sys.executable)
+                generation=RetainedProcessGeneration.capture(child.pid,expected_executable=executable)
                 self.assertEqual(a.created_child.pid,child.pid)
                 self.assertIsNone(a.creation_error)
                 self.assertIn(child,u._process_jobs)
@@ -205,12 +206,13 @@ class OwnedProcessTests(unittest.TestCase):
             s,u=fake_modules();sentinel=RuntimeError("injected Job setup marker")
             def fail_job():raise sentinel
             u.__dict__["_create_job_object"]=fail_job
-            command=[sys.executable,"-B","-c","import sys; sys.stdin.readline()"]
-            a=assemble(s,u,command=command,env=dict(os.environ),
+            executable,env=owned_python_launch_v1()
+            command=[executable,"-B","-c","import sys; sys.stdin.readline()"]
+            a=assemble(s,u,command=command,env=env,
                 startup=subprocess.STARTUPINFO(lpAttributeList={"handle_list":[]}),
                 custody=SimpleNamespace(closed=False,_owned=[]))
             with self.assertRaises(RuntimeError) as seen:
-                await a.private_stdio._create_platform_compatible_process(command[0],command[1:],env=dict(os.environ))
+                await a.private_stdio._create_platform_compatible_process(command[0],command[1:],env=env)
             self.assertIs(seen.exception,sentinel)
             self.assertIs(a.creation_error,sentinel)
             child=a.created_child
@@ -252,12 +254,13 @@ class RealStockOwnedTest(unittest.TestCase):
         resource=object.__new__(custody._PreloadCustodyV1)
         resource.seal,resource.closed,resource._owned=custody._RESOURCE_SEAL,False,handles
         program="import os,sys,json,msvcrt; a=msvcrt.open_osfhandle(int(sys.argv[1]),os.O_RDONLY); b=msvcrt.open_osfhandle(int(sys.argv[2]),os.O_WRONLY); payload=os.read(a,1).decode(); os.close(a); os.close(b); print(json.dumps({'jsonrpc':'2.0','method':'owned_ready','params':{'pid':os.getpid(),'payload':payload}}),flush=True); sys.stdin.read()"
-        params=stock.StdioServerParameters(command=sys.executable,args=["-B","-c",program,*map(str,handles)])
+        executable,env=owned_python_launch_v1()
+        params=stock.StdioServerParameters(command=executable,args=["-B","-c",program,*map(str,handles)],env=env)
         owned=binding.bind_owned_stdio_v1(inherited_custody=resource,expected_server=params,
             startupinfo=subprocess.STARTUPINFO(lpAttributeList={"handle_list":handles}),enabled=True)
         record={"real_stock_MCP":True,"existing_runtime_access":False,"production_custody":False}
         async def run():
-            async with retain_mcp_stdio_process(owned.private_stdio,expected_executable=sys.executable) as capture:
+            async with retain_mcp_stdio_process(owned.private_stdio,expected_executable=executable) as capture:
                 async with owned.stdio_client(params) as (read,write):
                     with anyio.fail_after(10):message=await read.receive()
                     self.assertEqual(message.message.method,"owned_ready")
