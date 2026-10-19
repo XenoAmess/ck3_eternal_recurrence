@@ -1,0 +1,235 @@
+{
+  "schema": "native30-existing-config-inventory-only-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:35:28.217276+00:00",
+  "status": "INVENTORY_ONLY_ORIGINAL_SOURCE_MACRO_GUARD_STILL_RED",
+  "production_guard_relaxed": false,
+  "inventory_only_known_missing_macros": [
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1=1"
+  ],
+  "graph_targets": 12,
+  "compile_rows": 995,
+  "source_count": 995,
+  "index": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\index-2026-10-19T16-06-05-0514.json",
+    "bytes": 1213,
+    "sha256": "aaf4d931930c2f6ba8cdfaaadc636f44fc6a2c6a9fc886c2f9667b8c18f8f4ee"
+  },
+  "target_fileapi": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_native_layout_report_v1-Release-19cf72bdf6ca057b69e4.json",
+      "bytes": 13883,
+      "sha256": "0d82af95eea06c4e897ce31383ee4c4bcb6957624924b4fd6caeebd660a7c2ac"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_main_thread_query_mailbox_v1_test-Release-3c5f795771817523661b.json",
+      "bytes": 4695,
+      "sha256": "0e29b3745b6e37508296027769e432064af00b0688eacb3656db521f0c5ecbea"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_player_faction_alerts_v1_mailbox_test-Release-4e69a9dc34536c61fffd.json",
+      "bytes": 3205,
+      "sha256": "f95f2404f64f1cb48ed0d8450467215b369a399d92754ec2fd80de2df4dc5080"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_12004_faction_adopted_whole_test-Release-dce7eb7727193e2e97d1.json",
+      "bytes": 105565,
+      "sha256": "10898df445c04f6a4ab7b7fc67af4c161aca8ea11c67d1f76dc18a6c0c852e9e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_bridge_protocol-Release-0e97996059db188c2111.json",
+      "bytes": 2442,
+      "sha256": "6c5751a00ba0e94d89f0304481e48e17c3bc6680f0d31706dfcd44cd8e305d7d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-85c8a204965cb34c972f.json",
+      "bytes": 116879,
+      "sha256": "56b8fccd85879036ba91e0bc6af127c680219cadc9034ec275d3c1fa410ab4e6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_runtime-Release-826151d8594179eefa9b.json",
+      "bytes": 166472,
+      "sha256": "4cfca6d2c8ac2d52bab2d3d2bbae519ece024d58e6dae4954acab260ef7bdfa9"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_subrealm_v1_test-Release-3e93298d5e9f12b684bc.json",
+      "bytes": 4475,
+      "sha256": "6978898100bef9f9be9fc5beb56bbe72e6397acd11b753fc3d765d38c708d56b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_geometry_v1_test-Release-d881b56e02b39164ee68.json",
+      "bytes": 3650,
+      "sha256": "195c05a51c75fb3174abe299fd1e91766729d925f207e946a81d6db9169d9469"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_follow_pending_v1_test-Release-e05850bec8b8db4593ba.json",
+      "bytes": 3843,
+      "sha256": "4edf08abe60cc83d07e4886f8f1fd2d875841cad2a2b0088b2a102ebe7999766"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_settle_diagnostics_v1_test-Release-6d938b79be271aa6a69c.json",
+      "bytes": 3674,
+      "sha256": "a8160752dcdd0b5a0a622e16509f8bae6e6ecfbc17f45437acc8a2382471e436"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_tracking_v1_test-Release-80d33ba54edff5deb580.json",
+      "bytes": 3614,
+      "sha256": "71f2a989342aa1d1f255da38ab5ef1fb7a91c53abb6d6a0e17ee109410a99204"
+    }
+  ],
+  "zero_outputs": {
+    "selected_object_outputs": 995,
+    "selected_artifacts": 23,
+    "all_selected_outputs_absent": true,
+    "compiler_probes": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\4.3.1-msvc1\\CMakeDetermineCompilerABI_CXX.bin",
+        "bytes": 52224,
+        "sha256": "e9d776f0acbb8c1fd629a137e1c81b23a9c499fcb8ee9fd349ecd228e7165c00"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\ShowIncludes\\main.obj",
+        "bytes": 648,
+        "sha256": "27b73fcdefaa1bb85be667e7f5f9b66c89b057c70a4da803a78cb86344aa40d8"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\4.3.1-msvc1\\CompilerIdCXX\\CMakeCXXCompilerId.exe",
+        "bytes": 108032,
+        "sha256": "a58fb6a851995060312f3308719c8a741493a3a1520ccd5078ac4d846ec44f57"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\4.3.1-msvc1\\CompilerIdCXX\\CMakeCXXCompilerId.obj",
+        "bytes": 2032,
+        "sha256": "7f4941a6d5884fd338852a703eac930e594cad0f7506c86daa2edc3ea02a2f1f"
+      }
+    ],
+    "show_includes_probe_sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\ShowIncludes\\main.c",
+        "bytes": 33,
+        "sha256": "cdfab295fc8e12c3ecfb6982f99058f032ee8284926ad71a829e70ea3bf02549"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\ShowIncludes\\foo.h",
+        "bytes": 2,
+        "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+      }
+    ]
+  },
+  "cache": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeCache.txt",
+    "bytes": 45204,
+    "sha256": "6b380724afeebaea4a47b4d16a0e7fccb2e286ffdaf1d0f90635614aad0362df"
+  },
+  "ninja": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\build.ninja",
+    "bytes": 15419372,
+    "sha256": "15cc9c7521173f4790ae8e5b292163bf37a6f507f241dbb29fb1dfaf331651fb"
+  },
+  "compile_commands": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\compile_commands.json",
+    "bytes": 11961866,
+    "sha256": "b9babc63c11ee7fed36ac0d9d7050ccbb8b52ba5fc46b9bd71ae3cba01ffdbc8"
+  },
+  "tool_pins": {
+    "vcvars64": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+      "bytes": 39,
+      "sha256": "6b516d8fcf543c14b2d861e1f45661e0029230fe0dc48e86ce78522801822209"
+    },
+    "cmake": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+      "bytes": 14392928,
+      "sha256": "87fafbe6507d4b23c38ccaf72a1859219d070acb57ef0160332df10945d2dfac"
+    },
+    "ninja": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+      "bytes": 3776568,
+      "sha256": "9546466f0feca6d62d7d4ea9b7fbc381f8e302cb7f02f4ce327a39d8577bb293"
+    },
+    "cl": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+      "bytes": 893288,
+      "sha256": "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640"
+    },
+    "link": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\link.exe",
+      "bytes": 3701128,
+      "sha256": "610aae3d74a66fa5ef54cac5df8ea8bcbb1fdd2a3db9087eb92088bd395eaf34"
+    },
+    "lib": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\lib.exe",
+      "bytes": 23416,
+      "sha256": "782b0f66bc46159e008d2e9f2efa0e9212c8d0a468d0c610630d5c724a44adc6"
+    },
+    "dumpbin": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\dumpbin.exe",
+      "bytes": 23376,
+      "sha256": "ef58d7f394120709d84444296e534a17ee3f0decb493284568d81c0b96805169"
+    },
+    "vctip": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\vctip.exe",
+      "bytes": 514528,
+      "sha256": "7775ba4e0e0b03de15caefc1b92e63acc0a3dd9e388648f5489c777dfdbaadc8"
+    },
+    "mspdbsrv": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\mspdbsrv.exe",
+      "bytes": 192352,
+      "sha256": "439c02be41dec1f19f8a276cbbdedba318cd1e33c65e34b5ced347bdf1a78ca9"
+    }
+  },
+  "MSVC_script_review": [
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+      "bytes": 39,
+      "sha256": "6b516d8fcf543c14b2d861e1f45661e0029230fe0dc48e86ce78522801822209",
+      "relevant_line_total": 1,
+      "relevant_lines_first8": [
+        "@call \"%~dp0vcvarsall.bat\" x64 %*"
+      ],
+      "projection_truncated": false
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat",
+      "bytes": 10163,
+      "sha256": "693b4a30c7379e84d2675101a8d47178cf62f45df2e2f09be5c206107e9c9ca2",
+      "relevant_line_total": 104,
+      "relevant_lines_first8": [
+        "set __VCVARSALL_STORE=",
+        "set __VCVARSALL_WINSDK=",
+        "set __VCVARSALL_PARSE_ERROR=",
+        "set __VCVARSALL_TARGET_ARCH=",
+        "set __VCVARSALL_HOST_ARCH=",
+        "set __VCVARSALL_VER=",
+        "set __VCVARSALL_PARSE_ERROR=0",
+        "set \"__VCVARSALL_ARGS_LIST=%*\""
+      ],
+      "projection_truncated": true
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat",
+      "bytes": 11526,
+      "sha256": "a7815e85d636828e5cf70fe4235b11fcb41750896a4d2d60756b43bacaf4f0b2",
+      "relevant_line_total": 40,
+      "relevant_lines_first8": [
+        "@REM prior to VSDevCmd.bat being executed. This is disabled by default",
+        "        @echo [DEBUG:%~n0] Writing pre-initialization environment to %temp%\\dd_vsdevcmd18_preinit_env.log",
+        "        set > %temp%\\dd_vsdevcmd18_preinit_env.log",
+        "set __vscmd_vsdevcmd_errcount=0",
+        "call \"%~dp0vsdevcmd\\core\\vsdevcmd_start.bat\"",
+        "@REM This section processes known scripts under vsdevcmd\\core.",
+        "@REM leaf node scripts should be placed in vsdevcmd\\ext, instead.",
+        "if EXIST \"%VS180COMNTOOLS%VsDevCmd\\core\\dotnet.bat\" call :call_script_helper core\\dotnet.bat"
+      ],
+      "projection_truncated": true
+    }
+  ],
+  "cache_configuration_lines": [
+    "CMAKE_BUILD_TYPE:STRING=Release",
+    "CMAKE_CXX_FLAGS_DEBUG:STRING=/Ob0 /Od /RTC1",
+    "CMAKE_CXX_FLAGS_RELEASE:STRING=/O2 /Ob2 /DNDEBUG"
+  ],
+  "configure_or_build_started": false,
+  "old_inputs_written": false
+}

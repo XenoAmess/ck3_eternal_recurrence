@@ -1,0 +1,43 @@
+{
+  "schema": "native30-msvc-auxiliary-file-binding-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:44:09.603972+00:00",
+  "binding": {
+    "compiler": {
+      "canonical_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+      "file_id": {
+        "volume_serial": "5669105749829453645",
+        "file_id": "e0320c00000006000000000000000000"
+      },
+      "sha256": "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640",
+      "bytes": 893288
+    },
+    "auxiliaries": {
+      "vctip.exe": {
+        "canonical_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\vctip.exe",
+        "file_id": {
+          "volume_serial": "5669105749829453645",
+          "file_id": "0c330c00000006000000000000000000"
+        },
+        "sha256": "7775ba4e0e0b03de15caefc1b92e63acc0a3dd9e388648f5489c777dfdbaadc8",
+        "bytes": 514528
+      },
+      "mspdbsrv.exe": {
+        "canonical_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\mspdbsrv.exe",
+        "file_id": {
+          "volume_serial": "5669105749829453645",
+          "file_id": "f8320c00000006000000000000000000"
+        },
+        "sha256": "439c02be41dec1f19f8a276cbbdedba318cd1e33c65e34b5ced347bdf1a78ca9",
+        "bytes": 192352
+      }
+    }
+  },
+  "prior_owned_process_evidence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner01\\owner-spec\\CONFIGURE-OWNED-DIAG01.json",
+    "bytes": 5958,
+    "sha256": "506ea1764db2cf9113d4407b3565fac3f4d5bd7a61d7cef5b418b7e2129239cd"
+  },
+  "process_started_or_terminated": false,
+  "CPlusPlus_qualification": "NOTRUN"
+}

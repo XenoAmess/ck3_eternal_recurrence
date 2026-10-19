@@ -1,0 +1,94 @@
+{
+  "schema": "native30-actual-source-macro-delta-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:29:51.952710+00:00",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "prior_preflight_failure": "required source macro missing: xar_ck3_12002_runtime:src/ck3_12002.cpp",
+  "differences": [
+    {
+      "key": "xar_ck3_bridge:src/bridge.cpp",
+      "target_fileapi": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-85c8a204965cb34c972f.json",
+        "bytes": 116879,
+        "sha256": "56b8fccd85879036ba91e0bc6af127c680219cadc9034ec275d3c1fa410ab4e6"
+      },
+      "expected_count": 86,
+      "actual_count": 94,
+      "missing": [],
+      "extra": [
+        "NOMINMAX",
+        "UNICODE",
+        "WIN32_LEAN_AND_MEAN",
+        "XAR_CK3_ENABLE_CAMERA_TRACKING_V1=1",
+        "XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1=1",
+        "XAR_CK3_ENABLE_PLAYER_HEIR_CANDIDATE12004_V1=1",
+        "_UNICODE",
+        "xar_ck3_bridge_EXPORTS"
+      ],
+      "compile_fragments": [
+        "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc",
+        "/W4 /WX /permissive-"
+      ]
+    },
+    {
+      "key": "xar_ck3_12002_runtime:src/ck3_12002.cpp",
+      "target_fileapi": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_runtime-Release-826151d8594179eefa9b.json",
+        "bytes": 166472,
+        "sha256": "4cfca6d2c8ac2d52bab2d3d2bbae519ece024d58e6dae4954acab260ef7bdfa9"
+      },
+      "expected_count": 69,
+      "actual_count": 77,
+      "missing": [
+        "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1",
+        "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1=1"
+      ],
+      "extra": [
+        "NOMINMAX",
+        "UNICODE",
+        "WIN32_LEAN_AND_MEAN",
+        "XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1=1",
+        "XAR_CK3_ENABLE_PLAYER_HEIR_CANDIDATE12004_V1=1",
+        "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1=1",
+        "XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1=1",
+        "XAR_ENABLE_PREWAR_FORCE_COALITION_V2=1",
+        "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=1",
+        "_UNICODE"
+      ],
+      "compile_fragments": [
+        "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc"
+      ]
+    },
+    {
+      "key": "xar_bridge_protocol:src/protocol.cpp",
+      "target_fileapi": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_bridge_protocol-Release-0e97996059db188c2111.json",
+        "bytes": 2442,
+        "sha256": "6c5751a00ba0e94d89f0304481e48e17c3bc6680f0d31706dfcd44cd8e305d7d"
+      },
+      "expected_count": 0,
+      "actual_count": 4,
+      "missing": [],
+      "extra": [
+        "NOMINMAX",
+        "UNICODE",
+        "WIN32_LEAN_AND_MEAN",
+        "_UNICODE"
+      ],
+      "compile_fragments": [
+        "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD",
+        "/W4",
+        "/permissive-",
+        "/EHsc"
+      ]
+    }
+  ],
+  "configure_or_build_started": false,
+  "old_inputs_written": false
+}

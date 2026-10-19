@@ -1,0 +1,120 @@
+{
+  "schema": "native30-resume-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:03:28.261514+00:00",
+  "identity_source": "Fresh tools/ck3_live_run_id.py machine; existing exact source/tool proofs carry same machine_id.",
+  "status": "SOURCE_READY_CPP_NOTRUN_NO_TASK",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-resume-auxiliary-repair-plan-2026-10-19.json",
+    "bytes": 11538,
+    "sha256": "256c9421357dba213cec9f6bd9cb473c9aa324c93c8b2245967c38c5cc61aca5"
+  },
+  "files_before_this_record": [
+    {
+      "path": "tools/g2_saved_campaign/build_native30_resume_20261019.py",
+      "bytes": 23704,
+      "sha256": "d4298f56dba6eabd8ccd0b95ba15eea090be55f51917149a4b3e279b177ee968"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_resume_guard_20261019.py",
+      "bytes": 16747,
+      "sha256": "97330a4086bf13df858708935226cb8f6838294c6f5ac51eec8ee2767b925e5d"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_msvc_auxiliary_policy_20261019.py",
+      "bytes": 11014,
+      "sha256": "5236ebbc53fb640567c2af31fe21ca375a43bfb908efc258f9ba0004746a255d"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_runtime_source_macro_restore_20261019.cmake",
+      "bytes": 807,
+      "sha256": "e99511202bab46b24e37b9cf4b1e9d31eb6e9ce3612bf8f078dba131f05d2e02"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_msvc_auxiliary_policy_20261019.py",
+      "bytes": 7042,
+      "sha256": "06833bcfd510135c866be323c2828e757df64cd7dba7fbeec8da0c55599f2510"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_resume_contract_20261019.py",
+      "bytes": 9208,
+      "sha256": "6f95cc0590137ca9a1e7e6b825d7329491d5a0df50bd698179345e6e06ddfce5"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_resume_source_20261019.py",
+      "bytes": 13008,
+      "sha256": "ffeab7bab2ff9cf43a06654a7c23ae4872275c1999bd5b89a960ef2743be0d82"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-configured-tree-macro-delta-2026-10-19.json",
+      "bytes": 3379,
+      "sha256": "0f62cadafec64d896bb7db61434c021be4b035a9df277800c34eb9fc0170375d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json",
+      "bytes": 11682,
+      "sha256": "0e0ca135fc5b3fa5edba470e5b736e11f0e3f7a187ba55c770d249adc8c08be4"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json",
+      "bytes": 1879,
+      "sha256": "cfd0302f1a0cd2800cb203fd8228725b20757146276b7847ebe5d3cc68e5d69e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-resume-auxiliary-repair-plan-2026-10-19.json",
+      "bytes": 11538,
+      "sha256": "256c9421357dba213cec9f6bd9cb473c9aa324c93c8b2245967c38c5cc61aca5"
+    }
+  ],
+  "tests": {
+    "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_msvc_auxiliary_policy_20261019 tools.g2_saved_campaign.test_native30_resume_contract_20261019 -q",
+    "last_actual_result": "43 PASS in0.028s",
+    "tool_exec": "405836",
+    "qualification": "Pure finite admission/argv/archive bytes and owned-cleanup mocks; no compiler, actual process termination or C++ business qualification.",
+    "previous_actual_runs": [
+      "16PASS0.001s/5d14db",
+      "24PASS0.017s/45b58e",
+      "42PASS0.018s/58659d"
+    ],
+    "authoring_RED_preserved": [
+      "3194c3 missing bracket SyntaxError, fixed before tests",
+      "cb2b2b original full preflight RED missing2macros",
+      "9585f3 macro projection missing hydration KeyError",
+      "f37b83 unclassified ShowIncludes compilerprobe",
+      "33a2ac bounded script projection limit"
+    ]
+  },
+  "independent_review": "M1 read-only exact704 include-chain review: these2main-TU definitions do not change shared layout/inline ABI; existing router/mailbox/Bridge source definitions unchanged. Scope limited to2macros, not612TU or actualCPP. M0 confirms frozen c0 native_build checks metadata root absence only; no budgetroot-absent requirement.",
+  "historical_claims_preserved": "Original root exit0/configuredtrue did not close ownedJob; old attempt remainsFAILED. New cleanup explicitcontract is prospective. Old5355 immutable files and failed evidence remain protected.",
+  "source_budget_hard_bytes": 131072,
+  "old_stable_Task_helpers_not_charged_again": [
+    {
+      "path": "tools/g2_saved_campaign/prepare_native30_build_task_20261019.py",
+      "bytes": 3616,
+      "sha256": "52be59c2c06fac527037560e9e275977bc0ab28096cb8e4e9e72a4b9cb49becb"
+    },
+    {
+      "path": "tools/g2_saved_campaign/inspect_native30_build_task_20261019.py",
+      "bytes": 2730,
+      "sha256": "780d6293d67e9e6b57328e4a1e4e0f4e81518c7c60469db7788141bedaae96d0"
+    },
+    {
+      "path": "tools/g2_saved_campaign/diagnose_native30_owned_configure_20261019.py",
+      "bytes": 6807,
+      "sha256": "81845501cca249ff07c494ac98f1ea21f3347d6b8d2aeb0dc571e94f46db00ce"
+    },
+    {
+      "path": "tools/g2_saved_campaign/stop_native30_owned_configure_20261019.py",
+      "bytes": 8150,
+      "sha256": "bd4f9d27453bac49ebdf9b1c7b26047c73a92bf4ef0335e1a3ce72080619622a"
+    }
+  ],
+  "configure_or_build_started": false,
+  "Task_prepared_or_registered": false,
+  "Game_calls": 0,
+  "DLL_loaded": false,
+  "new_external_files": 0,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "native30-separate-resume-source-plan-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:03:28.261514+00:00",
+  "status": "SOURCE_READY_NOT_EXECUTION_ADMISSION",
+  "root": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01",
+  "attempt_root": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/attempt02",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "producer": {
+    "path": "tools/g2_saved_campaign/build_native30_resume_20261019.py",
+    "bytes": 23704,
+    "sha256": "d4298f56dba6eabd8ccd0b95ba15eea090be55f51917149a4b3e279b177ee968"
+  },
+  "files": [
+    "tools/g2_saved_campaign/build_native30_resume_20261019.py",
+    "tools/g2_saved_campaign/native30_resume_guard_20261019.py",
+    "tools/g2_saved_campaign/native30_msvc_auxiliary_policy_20261019.py",
+    "tools/g2_saved_campaign/native30_runtime_source_macro_restore_20261019.cmake",
+    "tools/g2_saved_campaign/test_native30_msvc_auxiliary_policy_20261019.py",
+    "tools/g2_saved_campaign/test_native30_resume_contract_20261019.py",
+    "tools/g2_saved_campaign/seal_native30_resume_source_20261019.py",
+    "docs/ck3-native-ai/evidence/native30-configured-tree-macro-delta-2026-10-19.json",
+    "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json",
+    "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json",
+    "docs/ck3-native-ai/evidence/native30-resume-auxiliary-repair-plan-2026-10-19.json",
+    "docs/ck3-native-ai/evidence/native30-resume-auxiliary-repair-source-ready-2026-10-19.json"
+  ],
+  "helper_pins": {
+    "tools/g2_saved_campaign/build_native30_resume_20261019.py": "d4298f56dba6eabd8ccd0b95ba15eea090be55f51917149a4b3e279b177ee968",
+    "tools/g2_saved_campaign/native30_resume_guard_20261019.py": "97330a4086bf13df858708935226cb8f6838294c6f5ac51eec8ee2767b925e5d",
+    "tools/g2_saved_campaign/native30_msvc_auxiliary_policy_20261019.py": "5236ebbc53fb640567c2af31fe21ca375a43bfb908efc258f9ba0004746a255d",
+    "tools/g2_saved_campaign/native30_runtime_source_macro_restore_20261019.cmake": "e99511202bab46b24e37b9cf4b1e9d31eb6e9ce3612bf8f078dba131f05d2e02",
+    "docs/ck3-native-ai/evidence/native30-configured-tree-macro-delta-2026-10-19.json": "0f62cadafec64d896bb7db61434c021be4b035a9df277800c34eb9fc0170375d",
+    "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json": "0e0ca135fc5b3fa5edba470e5b736e11f0e3f7a187ba55c770d249adc8c08be4",
+    "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json": "cfd0302f1a0cd2800cb203fd8228725b20757146276b7847ebe5d3cc68e5d69e",
+    "tools/g2_saved_campaign/build_native30_wholeclean_20261019.py": "db51b7e5b37083cf803f4b1611dd714dec197f4e0c559a688d22781f2ef07c00",
+    "docs/ck3-native-ai/evidence/native30-wholeclean-producer-plan-2026-10-19.json": "d9a44fc874bd253425626712eb17131f6986de5db17b74c5200b53cea3932bdb",
+    "docs/ck3-native-ai/evidence/native29-production-compile-macro-provenance-2026-10-19.json": "ccffb26fe48e49bae5045cc25cc58a24c1f0ca2cc5d8db0f84d0fcbb8f4b1e8d"
+  },
+  "inventory": {
+    "path": "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json",
+    "bytes": 11682,
+    "sha256": "0e0ca135fc5b3fa5edba470e5b736e11f0e3f7a187ba55c770d249adc8c08be4"
+  },
+  "auxiliary_binding": {
+    "path": "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json",
+    "bytes": 1879,
+    "sha256": "cfd0302f1a0cd2800cb203fd8228725b20757146276b7847ebe5d3cc68e5d69e"
+  },
+  "overlay": {
+    "path": "tools/g2_saved_campaign/native30_runtime_source_macro_restore_20261019.cmake",
+    "bytes": 807,
+    "sha256": "e99511202bab46b24e37b9cf4b1e9d31eb6e9ce3612bf8f078dba131f05d2e02"
+  },
+  "prior_closed_sha256": "5b9b052bc07c25fa55ef0c11186324257ef6b2cf099c5084eb6fdf175bdfd7c4",
+  "budget": {
+    "aggregate_hard_bytes": 1610612736,
+    "source_charged_cap_bytes": 100663296,
+    "metadata_cap_bytes": 83886080,
+    "TEMP_cap_bytes": 402653184,
+    "prior_retained_allocation_bytes": 117360240,
+    "prior_retained_eof_bytes": 104821563,
+    "new_independent_reservation_bytes": 0,
+    "charge": "max(aggregate EOF, aggregate AllocationSize)",
+    "model": "Old retained source/configuration/evidence plus all attempt02 and generated build writes coexist under the same original 1.5GiB hold. No prior-retained or helper-cleanup physical credit. Hard caps and phase reserve256MiB may stop a build; 1.5GiB is an admitted upper bound, not a measured future peak."
+  },
+  "protected": [
+    "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/source",
+    "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/evidence"
+  ],
+  "mutable_after_new_release": [
+    "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/build",
+    "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/attempt02"
+  ],
+  "reuse_contract": [
+    "Actual immutable Git704 Native+four-tools freeze:5355 files/58356261 logical bytes; rehash and compare Git blobs before any write and after production/fixtures. No old Native26/29 objects or archive reuse.",
+    "Actual selected graph has12 targets/995 compile rows;995 object outputs and23 artifacts absent. Preflight rechecks all absences and rejects binaries outside bounded identified CMake compiler probes.",
+    "Before reconfigure, snapshot all selected old target descriptors/cache and the exact selected compile/link contract into attempt02. Old source and failed evidence remain byte-identical.",
+    "One explicit CMAKE_PROJECT_INCLUDE deferred overlay appends the two M1-audited definitions only for runtime/src/ck3_12002.cpp. Reconfigure is necessary for those definitions; no probe-only Release reconfigure.",
+    "After reconfigure enforce the original full macro/source/ABI guards, all original XAR/options/Release cache values, exact selected source set and argv. Only two unique /D additions on that one source are permitted; link/archive/artifact semantics stay identical.",
+    "Runtime69 old definitions describe one representative TU, not all612 historical TUs. Other selected compile commands are preserved byte/order except the explicitly permitted two additions. No protocol XAR leakage."
+  ],
+  "auxiliary_cleanup_contract": [
+    "A retained root must be signaled and exit0 before a1s grace, then inspect only the newly created exact own Job, at most16 members.",
+    "Validate all members first against actual compiler-directory canonical path+FileID(volume+128bit ID)+SHA256 for only vctip.exe/mspdbsrv.exe; retain process handles with birth and recheck IsProcessInJob before termination.",
+    "Original root exit, forced helper termination and actual final Job0 are separate fields. Unknown member/changed membership/nonzero root/timeout is failure. No basename-only matching or global process enumeration.",
+    "Failure may stop only that exact newly created Job. Backend initialization failure still takes this failure cleanup path. Cleanup failure keeps actual nonzero/unknown owned count and future-writesunknown, never a fabricated closed0.",
+    "This new contract does not requalify old KeyboardInterrupt FAILED attempt. No hotpatch or old execute monkeypatch."
+  ],
+  "pipeline": [
+    "revalidate all committed code/source/tool/card pins and absent attempt02",
+    "reconfigure with exact explicit overlay; FileAPI/full guards/995argv comparison",
+    "build only bridge+runtime+protocol with<=4 BELOW_NORMAL workers/noMP; all TEMP root-owned",
+    "after production root and ownJob exit, sequentially build/register exactEXE/readback/run each of the original9 fixtures; noALL/duplicateBridge",
+    "actual Ninja dependency closure,5 exports,component members/payloads/map,immutable-source/evidence and noPDB/ILK checks",
+    "new RESULT/FILES-CLOSED inventories aggregate root; preserve RED and stop after single failure"
+  ],
+  "M3_artifacts": {
+    "runtime_sources": [
+      "src/ck3_12004_player_heir_candidate_v1.cpp",
+      "src/campaign_player_heir_candidate_component12004_v1.cpp",
+      "src/campaign_player_heir_candidate_component12004_v1_serializer.cpp"
+    ],
+    "PUBLIC_defines_runtime_and_bridge": [
+      "XAR_CK3_ENABLE_PLAYER_HEIR_CANDIDATE12004_V1=1",
+      "XAR_CK3_ENABLE_CAMPAIGN_ROOT_PLAYER_HEIR_CANDIDATE12004_V1=1"
+    ],
+    "archive": "Each fresh clean object selected exactly once; its sole named archive payload has identical byte length+SHA. No stub activation credit from names alone.",
+    "map": "Original Read/ReadForCampaignRoot/AppendToCanonicalRoot plus BindImage. No new exports; actual loaded provider/H remainsunknown. Reuse unchanged prior4+19 Native/7+23SDK source audit, do not rerun whole matrix."
+  },
+  "additional_map_symbols": [
+    "?BindImage@player_heir_candidate_v1@ck3_12004"
+  ],
+  "new_admission_required_fields": [
+    "status=ADMITTED",
+    "machine_id",
+    "root",
+    "attempt_root",
+    "hard_bytes=1610612736",
+    "source_charge_cap_bytes=100663296",
+    "jobs integer1..4",
+    "source_commit=704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+    "implementation_commit=fullnewGitcommit",
+    "producer_sha256",
+    "plan_sha256",
+    "aggregate_includes_prior_retained=true",
+    "prior_retained_allocation_bytes=117360240",
+    "new_reservation_bytes=0",
+    "deadline_utc",
+    "minimum_free_bytes>=2147483648 plus storage reserved growth",
+    "quota_remaining_bytes>=hard_bytes"
+  ],
+  "execute_argv_after_commit_card_and_Root_release": [
+    "py",
+    "-B",
+    "tools/g2_saved_campaign/build_native30_resume_20261019.py",
+    "--plan",
+    "docs/ck3-native-ai/evidence/native30-resume-auxiliary-repair-plan-2026-10-19.json",
+    "--admission",
+    "<new-exact-card-path>",
+    "--admission-sha256",
+    "<new-full-card-SHA256>",
+    "--execute"
+  ],
+  "prospective_Task": {
+    "new_owner_spec_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/native30-build-owner02/owner-spec",
+    "reuse_frozen_bootstrap": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/native30-build-owner01/interactive_task_owner_v1.py",
+    "bootstrap_sha256": "c0d76a7064996cafd7412f8f39ba2bb5c5cb6271627246b84e946c00bafb864f",
+    "role": "native_build",
+    "stage": "tools/g2_saved_campaign/build_native30_resume_20261019.py",
+    "stage_args": [
+      "--plan",
+      "docs/ck3-native-ai/evidence/native30-resume-auxiliary-repair-plan-2026-10-19.json",
+      "--admission",
+      "<same-exact-card-path>",
+      "--admission-sha256",
+      "<same-full-card-SHA256>",
+      "--execute"
+    ],
+    "contract": "No spec/card placeholders written now. New absent owner-spec/new TaskName, same SID/session/InteractiveToken; bootstrap leases exact stage and admission. Native budgetroot may exist; producer alone requires attempt02absent. New owner metadata needs a separate bounded storage card. Root reads exact preparedspec before register/run release. No Task.Stop or blind retry."
+  },
+  "execution_limits": "CMake may generate/execute its compiler probes under child cap. Project fixture EXEs require exact existing Defender registration plus actual verified_requested_paths before execution. No new system setting, injector, Game/OBS/MCP access, DLL load, speed/SDK/flags change.",
+  "CPlusPlus_qualification": "NOTRUN",
+  "heavy_admission": "PENDING_NEW_AGGREGATE_CARD",
+  "current_Runtime_changes": 0,
+  "future_source_writes_after_seal": 0
+}
