@@ -1,0 +1,47 @@
+{
+  "schema": "xar.root-source-package-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T20:06:14.219314+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; same ongoing Root receipt8f725e",
+  "storage": {
+    "scope": "post-root186 new128KiB, not old Root512",
+    "card": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/ROOT-POST186-SOURCE128KiB-NATIVE07-META128MiB-INTERNAL-CONTRACT01.json",
+    "sha256": "f03059a2958fd57748303733dc0e5a71eb1d12da2cbc1bec9ce81c1c478ca19a",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  },
+  "native07": {
+    "source_files": 10,
+    "complete_bytes": 98201,
+    "status": "SOURCE_READY_CPP_NOTRUN",
+    "independent_reviews": "M1 and M3 final readonly noBlock; includes all219 regen inputs,2 physical globs,original cwd and manifest bytes,4 explicit snapshot-f entries,owned MSVC init and immutable production/Defender/final guards",
+    "focused_tests": {
+      "count": 16,
+      "elapsed_seconds": 0.032,
+      "actual_tool_receipt": "19571c",
+      "scope": "owner actual Windows mock/AST tests; no actual C++ qualification"
+    },
+    "metadata_erratum": "Frozen ready.tests.actual is truncated to a quote and16 by its original command parsing. It is preserved; the actual runner result above is the complete count. Plan Task.contract prose says owner06 while the executable owner_spec path is owner07; only the actual exact07SPEC and unique Task may be launched.",
+    "runtime_admission": "pending independent capacity card and Root full SPEC read; no launch by this source commit"
+  },
+  "m7_transition": {
+    "complete_bytes": 104159,
+    "independent_review": "M3 original finite06-chain and health_policy_review exact metadata narrowing noBlock; old exporter unchanged",
+    "metadata_label": "Native30 continuous hotspot tracking and idle realm overview",
+    "label_basis": "Root-authored external pin description, not a DLL/compiler string or qualification proof",
+    "new_test_nodes": 5,
+    "new_subtests": 15,
+    "prior_13tests_40subtests": "retained separate history, not repeated",
+    "actual06_status": "FAILED remains rejected",
+    "actual07_support": false,
+    "H": "unknown"
+  },
+  "c19_controls": {
+    "complete_bytes_including_existing_local_history": 64598,
+    "status": "SOURCE_ONLY",
+    "independent_review": "M1 final public-chain noBlock after two concrete label guard blockers were fixed",
+    "whole_public_cross": "Only synthetic document reads replaced; actual loader/contract/resume06/canonical enabled/port/timing/19-leaf graph all ran. FAILED06 rejected before canonical. No actual Native qualification.",
+    "future_gate": "Actual07 schema still needs finite transition support. Known Source15 same-speed omitted-row compatibility must be resolved for the future cold SDK; old source-only plans and65f anchor remain history. No C19 D export or cold adoption."
+  },
+  "current_game": "Same Source15/Game30852/Native29 remains paused after actual AUTO10416 one-day execution; source packages do not replay it, settle4735, clear pending or restart any process",
+  "old_Root512_accounting": "Frozen except already-held CI8KiB scope. Named audit lower bound383084B covers46 root139..186 helpers,34root records and3CI groups; full old gross still unknown, not marked closed."
+}

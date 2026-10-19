@@ -1,0 +1,93 @@
+{
+  "schema": "xar.ck3.native30-exact-metadata-description-source-addendum/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T19:48:43Z",
+  "status": "SOURCE_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "authorization": "Root explicitly fixed the future target pin native_build_label to the exact description below. Native owner/harness source review found no such DLL/compiler field in original02/06; this is authored version metadata, never compiled-string proof or qualification.",
+  "native_build_label": "Native30 continuous hotspot tracking and idle realm overview",
+  "storage": {
+    "total_source_cap_bytes": 106496,
+    "increase_bytes": 8192,
+    "receipt": {
+      "owner_reported_location": "B/M7-TRANSITION104KiB-C19-CONTROLS64KiB-ROUTECONTACT10416-SOURCE64KiB-COMMITMENTS01.json",
+      "bytes": 2507,
+      "sha256": "3fb3b198e310f07722002d08bc15eb29b59d1a29401bafdb28d57b9d03c28013"
+    },
+    "provenance": "Storage owner registered scopes.M7_metadata_contract_exact_description before source edits. Owner-reported receipt only; this agent made no D read."
+  },
+  "changed_sources": [
+    {
+      "path": "tools/g2_saved_campaign/native29_to30_export_contract_v1.py",
+      "bytes": 15568,
+      "sha256": "76b1cc507f2d9600c01d0961c214bd3b9110c26c0784608b27a3ef428610a9e2"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_export_transition_v1.py",
+      "bytes": 23109,
+      "sha256": "a540da9994244e2a1201bbc7168e04e8e3a191ab4f31630ba44bad0683a881f6"
+    }
+  ],
+  "preserved_history": [
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-native29-to30-export-transition-source-ready-2026-10-20.json",
+      "bytes": 11928,
+      "sha256": "1f2aca090f08b5778970288dd30e3dca523e00edf605af92d9ee1f97cb987ca2"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m7-native29-to30-resume06-transition-source-ready-2026-10-20.json",
+      "bytes": 7794,
+      "sha256": "4cf3dee35604f5c2c303cb3eb604a215751569ea787707793dbf9ec87ccdec5e"
+    }
+  ],
+  "unchanged_sources": {
+    "adapter": "8824/2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298",
+    "loader": "3824/edbe75a62f80d17a0e74998b96834844bcbf75f1caab7ea5468b3caa32dbb709",
+    "resume06_helper": "13571/d9e5dc3c22f3b1fc58f1ab7b93de4f7ccb480c3ed938fdc6b2375d11a814f555",
+    "resume06_test": "13852/9f47c142ef469834a675b71310e1eba3993e19bb2c909995c0b8ca3f745c35cb",
+    "original_exporter": "22964/8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432"
+  },
+  "finite_diff": "NATIVE30_BUILD_LABEL is the exact Root description. The old slug regex/token grammar is replaced with equality to that constant and the existing placeholder/fixture-word rejection remains. Target pin and card still must contain exactly the same label. SHA/source704/EXE/wire/machine/phase/Job/source_fixture/old Native29/exporter guards are unchanged. The corpus uses this description in its invented pin/card, and expected metadata outputs match.",
+  "inverse_check": {
+    "tool_result": "123b69",
+    "contract_reconstructed_sha256": "129e3e07afc397b27d20b85df6c671bf78d61756d1976cada0aa9bb31f97e466",
+    "test_reconstructed_sha256": "eb369a930b96570df2baa781f9a5895e888d51404b400ed74dff27aeb6cbfe9c",
+    "method": "In memory, remove only the new constant/comment, inverse only the label condition/message, remove the one new crosscase and inverse the three corpus/assertion substitutions. Both exact previous frozen SHA values match; no Git operation or file rewrite."
+  },
+  "validation": {
+    "tool_result": "ace722",
+    "tests_passed": 5,
+    "subtests_passed": 15,
+    "elapsed_seconds": 0.83,
+    "nodes": [
+      "NativeTransitionTests.test_root_metadata_description_crosses_pin_card_and_result_without_qualification_credit",
+      "NativeTransitionTests.test_positive_pure_metadata_keeps_both_sources_and_fixture_is_unadmitted",
+      "NativeTransitionTests.test_wrong_binding_or_admission_rejected",
+      "NativeTransitionTests.test_original_validator_and_complete_core_with_private_memory_facade",
+      "ResumeFixtureChainTests.test_actual_schema_reaches_unchanged_validator_and_complete_memory_core"
+    ],
+    "scope": "Only new label boundary and necessary affected positives/deep label negatives; prior13/40 suite not rerun. Explicit -B pytest, private MemoryFS only.",
+    "crosscase": "Exact authored description crosses synthetic target pin -> admitted card -> returned metadata unchanged with source_fixture=true and loaded-provider creditfalse. Re-pinned negative documents reject old slug, trailing-space typo, placeholder/fixture labels, different card description, and marked synthetic target. The human description proves no actual Native qualification."
+  },
+  "limits": {
+    "actual06_status": "FAILED as reported by Native owner; still refused",
+    "actual06_result": {
+      "bytes": 4880,
+      "sha256": "469220b30bc68fe74d3b7075bf4ef9907bca7bbd9b782575a3df9c84e2da3923",
+      "read_by_this_agent": false
+    },
+    "fixtures06_pass_credit": 0,
+    "resume07_supported": false,
+    "actual_transition_outputs": 0,
+    "Native_or_SDK_or_Game_or_Task_calls": 0,
+    "D_IO": false,
+    "Git_operations": false,
+    "wholeclean_history_preserved": true,
+    "H": "unknown",
+    "runtime_admitted": false
+  },
+  "package_accounting": "Before this addendum98470 bytes inclusive of six current source/tests and both unchanged historical proofs. Final exact sum and addendum SHA are supplied by closing Python readback; cap106496.",
+  "retention": {
+    "review_at_utc": "2027-04-17T19:47:44Z",
+    "reason": "Small metadata grammar correction and historical qualification boundary; review under source-policy180-day rule."
+  }
+}

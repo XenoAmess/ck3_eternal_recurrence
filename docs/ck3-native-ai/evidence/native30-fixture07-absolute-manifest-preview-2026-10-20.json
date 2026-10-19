@@ -1,0 +1,38 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T19:41:26.809204+00:00",
+  "end_utc": "2026-10-19T19:41:27.523179+00:00",
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "-C",
+    "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build",
+    "-f",
+    "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\build.ninja",
+    "-n",
+    "-d",
+    "explain",
+    "xar_ck3_bridge",
+    "xar_ck3_12002_runtime",
+    "xar_bridge_protocol"
+  ],
+  "cwd": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build",
+  "tool": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "bytes": 3776568,
+    "sha256": "9546466f0feca6d62d7d4ea9b7fbc381f8e302cb7f02f4ce327a39d8577bb293"
+  },
+  "owned_pid": 237448,
+  "exit_code": 0,
+  "forced_exact_child": false,
+  "output_total_bytes": 123,
+  "retained_tail": "ninja: Entering directory `D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build'\r\nninja: no work to do.\r\n",
+  "manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\build.ninja",
+    "bytes": 15398163,
+    "before_SHA": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4",
+    "after_SHA": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4"
+  },
+  "scope": "Authorized absolute original -f preview only; no snapshot has been created or qualified.",
+  "R_Task_CMake_compiler_Game_writes": 0,
+  "future_writes": 0
+}

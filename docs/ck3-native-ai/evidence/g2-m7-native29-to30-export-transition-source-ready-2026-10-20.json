@@ -1,0 +1,168 @@
+{
+  "schema": "xar.g2.m7.native29-to30-export-transition-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:08:18.787747+00:00",
+  "machine_source": {
+    "command": "python -B tools/ck3_live_run_id.py machine",
+    "tool_chunk": "278d24",
+    "actual_readback": "xenoamess-full-tower-eb9d2c1186"
+  },
+  "status": "SOURCE_QUALIFIED_SYNTHETIC_ONLY_NOT_ADOPTED",
+  "actual_Native30_qualified": false,
+  "actual_transition_created": false,
+  "current_C18_runtime_changed": false,
+  "actual_H": "unknown",
+  "storage": {
+    "policy": "docs/storage-retention-policy.json v1.0.0; read tool7d6296",
+    "admission": {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/FUTURE-NATIVE-TRANSITION64KiB-C19-CONTROLS48KiB-SOURCE-COMMITMENTS01.json",
+      "bytes": 2622,
+      "sha256": "0f49189c28759dd7fd6e5c822a7ee056c4673d37f2140a86c5f5ba19f850af95",
+      "source": "storage_v20261019 message: Root-approved short-ledger registration before source writes. Agent did not read/write D:",
+      "scope_bytes": 65536
+    },
+    "start": {
+      "at_utc": "2026-10-19T18:56:44.764089+00:00",
+      "disk_usage_target": "Z:/ck3_mod_rewrite",
+      "volume": "Z:",
+      "free_bytes": 178205704192,
+      "source": "tool7d6296"
+    },
+    "close": {
+      "at_utc": "2026-10-19T19:08:18.787747+00:00",
+      "disk_usage_target": "Z:/ck3_mod_rewrite",
+      "volume": "Z:",
+      "free_bytes": 178201706496,
+      "source": "toolbb71ae"
+    },
+    "capacity_scope": "Small Z: source package only. Free-space reads are not D: admission or an atomic reservation. No Native artifact/SDK output is materialized.",
+    "source_test_bytes": 48178,
+    "proof_bytes": 11928,
+    "total_package_bytes": 60106,
+    "hard_bytes": 65536
+  },
+  "unchanged_exporter": {
+    "path": "tools/g2_saved_campaign/export_immutable_sdk_views_v1.py",
+    "bytes": 22964,
+    "sha256": "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432",
+    "source": "Actual source read/hash tool7d6296; every adapter construction and final checks repeat the exact byte guard",
+    "disk_copies_created": 0,
+    "source_modified": false
+  },
+  "implementation": {
+    "contract": "Pure pinned-byte documents with duplicate-key/nonfinite JSON rejection. Fixed evidence names; Native29 base/card fields remain unchanged. Native30 requires original native30-wholeclean-result-v1 status BUILT_FIXTURES_PASS_NOT_DEPLOYED, actual phase identities/times, returncode 0 and owned_active_after 0, all nine exact fixture targets/argv and layout postcheck, matching DLL artifact/source commit/freeze, same supported EXE/build/wire/layout binding and card refs. FAILED/RUNNING/zero fixtures/placeholders/foreign machine/cross-EXE input reject.",
+    "adapter": "Reads only the exact old 22964-byte exporter source. Compiles original imports/constants/functions into a new private namespace; skips only the known sys.path bootstrap, module docstring and __main__ dispatch. No installed module or global validate_inputs is patched. Original validate_inputs code remains unchanged and performs original Native29/Host/Git-tree/NTFS/capacity checks.",
+    "permitted_AST_changes": {
+      "validated_context_handoff": 1,
+      "native_metadata_values": 2,
+      "provenance_records": 3,
+      "records": [
+        "ATTEMPT.json",
+        "SOURCE/REFERENCE-FREEZE.json via the original manifest loop",
+        "COMPLETE.json"
+      ],
+      "inverse": "Undo permitted signature/context/metadata edits, then compare the entire export function AST exactly with the frozen original. Every other edit or seam count mismatch rejects."
+    },
+    "context_guard": "Original validate_base return and arguments are retained by identity plus unchanged repr snapshots. Export is once-only under adapter lock; foreign/mutated context or arguments refuse before first mkdir.",
+    "output_semantics": "Only new SOURCE/REFERENCE manifest native label/SHA switch to qualified target30. Original context.base, context.native29, card.native_pin_sha256, and original old freeze are preserved. New metadata adds explicit native_transition refs to both sources. runtime_admitted remains false; native_consumer_closure_review_pending remains true; no loaded-provider DTO or custody seal is issued.",
+    "entry": "export_native30_views_v1(args, execute=False) returns DISABLED before input IO. Explicit execution first reads/validates only bounded JSON evidence, then calls the original validator and exact transformed core. All transition/old admission checks precede the original first mkdir. Original exporter CLI/default path is untouched.",
+    "no_current_materialization": "No new SDK/base/transition output, real Native pin, deployment artifact, current C18 source/control or actual Native04 result was read/written by these tests."
+  },
+  "api": {
+    "contract_module": "tools/g2_saved_campaign/native29_to30_export_contract_v1.py",
+    "parse": "parse_document_v1(raw: bytes, reference: {path,bytes,sha256}) -> PinnedNativeDocumentV1; .value/.reference return fresh parsed data.",
+    "validate": "validate_native_transition_v1(*,base_freeze,base_native_pin,evidence,capacity,machine_id,source_fixture=False,now=None) -> NativeTransitionV1",
+    "evidence_names": [
+      "target_native_pin",
+      "build_result",
+      "production_delivery",
+      "source_freeze",
+      "build_plan",
+      "compatibility",
+      "base_exe_binding",
+      "target_exe_binding"
+    ],
+    "return_shape": {
+      "target_native": "Property dict with native_build_label and native_dll_sha256 only; not the whole native pin.",
+      "manifest_metadata": "Property dict with original base/native29 and all target refs, source_fixture, runtime_admitted:false, actual_loaded_provider_issued:false.",
+      "source_fixture": "Bool. Explicit True may model source fixtures but production adapter refuses it."
+    },
+    "loader_module": "tools/g2_saved_campaign/export_native30_immutable_sdk_views_v1.py",
+    "loader": "read_native_transition_v1(*,base_freeze_ref,base_native_ref,capacity_ref,machine_id,source_fixture=False): reads bounded JSON refs, obtains fixed evidence refs from capacity.native_transition, invokes the same pure contract.",
+    "capacity_addition": "Existing v1 schema/status/native_pin_sha256/base_freeze_sha256 stay bound to original29. Extra native_transition uses schema xar.ck3.native29-to30-transition/v1, from_generation29/to_generation30, target_native_build_label, source_commit and all eight exact evidence refs.",
+    "EXE_and_wire_projection": "Explicit source-owner documents use xar.ck3.native-executable-binding/v1 with machine_id, native_pin ref, game_executable{sha256,bytes,version:'1.20.0.4',architecture:'x64'}, wire_contract{protocol_version:1,campaign_root_envelope_fields:seven original fields}, native_layout_id:'ck3-1.20.0.4'; target also cites matching source_freeze. Compatibility document xar.ck3.native29-to30-compatibility/v1 pins both binding docs plus build_result/delivery/source_freeze. These are source/metadata binding projections, not an alternate Native RESULT or loaded-custody issuer.",
+    "future_input_requirement": "Actual source owner must supply these exact closed evidence/backlink projections with the new admitted card. Missing legacy fields are not guessed or silently migrated. An actual raw receipt schema change requires explicit source review/adapter update."
+  },
+  "qualification": {
+    "final": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "start_utc": "2026-10-19T19:07:58.245281+00:00",
+      "tool_chunk": "1adf5c",
+      "caller": "tools/.venv/Scripts/python.exe -B -X utf8",
+      "node": "tools/g2_saved_campaign/test_native30_export_transition_v1.py",
+      "result": "9 passed, 24 subtests passed in 0.84s",
+      "exit_code": 0
+    },
+    "prior": [
+      {
+        "tool_chunk": "8fe835",
+        "result": "8 passed, 21 subtests passed in 0.66s",
+        "scope": "Initial synthetic core/contract suite before deeper backlink-repinned negatives"
+      },
+      {
+        "tool_chunk": "41883e",
+        "result": "9 passed, 23 subtests passed in 0.83s",
+        "scope": "Repinned negative guards and private namespace/core coverage before final typed counter case"
+      }
+    ],
+    "positive": "Purported PASS receipts are entirely invented in the test corpus. Private memory FS/Git lookup/NTFS facades execute the actual original validator and complete transformed core, producing two in-memory source views and metadata with target30 plus base29 refs. Original Native29 context remains unchanged, original validator code is the same object, and all old file/namespace sources remain byte-identical.",
+    "negative": "FAILED/zero fixtures/RUNNING/missing or duplicate fixture/nonzero or bool returncode/unclosed phase/bad argv/missing layout postcheck/foreign machine/placeholder/expired or rebound card/cross-EXE/wire/source/explicit fixture; JSON hash or duplicate key; frozen-source change; wrong pre-output AST; foreign/mutated arguments/context/replayed ready. Deeper binding negatives repair outer backlink hashes so the intended guard is reached.",
+    "before_mkdir": "Failed Native30 qualification is exercised through the new public entry with only private input-document facades. Adapter construction is poisoned and never reached. Original Native29 mismatch and mutated ready contexts also produce zero memory mkdir/write operations.",
+    "separation": "Synthetic receipt validation and virtual export do not prove any actual fixture executed, Native30 built, artifact exists, DLL loaded, runtime admitted, or H observed.",
+    "actual_calls": {
+      "new_processes": 0,
+      "Game_RPC": 0,
+      "current_Game_MCP_Job": 0,
+      "D_path_reads_or_writes": 0,
+      "Git_commands": 0,
+      "Task_operations": 0,
+      "DLL_or_EXE_body_reads": 0,
+      "OS_NTFS_identity_calls": 0,
+      "real_export_output_writes": 0
+    },
+    "allowed_reads": "Four small Z: source files, exact old exporter source, project policy and stable machine identity. Source/byte/AST reads are not Native artifact reads."
+  },
+  "remaining": [
+    "Native04 currently FAILED before fixtures per Root; this package never fills an actual PASS or target DLL hash.",
+    "Future source owner supplies closed actual build/fixture/artifact/source/executable/wire evidence and a new capacity card binding both native sources, target SDK commit/roots and metadata overhead. No old base/card is rewritten.",
+    "Materialize only future create-only outputs under separate real admission; currentSource15 familyd8bb and current C18 FULL remain unaffected.",
+    "Actual next-cold launch, same held pre-load DLL/custody chain, Native source/capability/EXE gates, fresh runtime birth/Steam/then-SAVE and loaded-provider qualification remain separate. This metadata transition gives no H or M7 breadth credit."
+  ],
+  "files": [
+    {
+      "path": "tools/g2_saved_campaign/native29_to30_export_contract_v1.py",
+      "bytes": 14357,
+      "sha256": "01513090dff778d5aad566cf740214504a6d2eeae7b2ce1548acc2389c76bb91"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_export_adapter_v1.py",
+      "bytes": 8824,
+      "sha256": "2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298"
+    },
+    {
+      "path": "tools/g2_saved_campaign/export_native30_immutable_sdk_views_v1.py",
+      "bytes": 3750,
+      "sha256": "6fff517a40656a854d22703e20a40ebbb72857822ab2912fd9962b1217963417"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_export_transition_v1.py",
+      "bytes": 21247,
+      "sha256": "eb369a930b96570df2baa781f9a5895e888d51404b400ed74dff27aeb6cbfe9c"
+    }
+  ],
+  "retention": {
+    "category": "record",
+    "review_after_days": 180,
+    "purpose": "Consolidate this bounded source package after actual qualified Native transition. No raw Native or runtime asset copies were created."
+  }
+}

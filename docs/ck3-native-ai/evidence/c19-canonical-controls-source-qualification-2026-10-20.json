@@ -1,0 +1,184 @@
+{
+  "schema": "xar.C19-true-canonical-controls-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:11:27.124547+00:00",
+  "status": "SOURCE_READY_TRUE_GRAPH_NATIVE30_ACTUAL_REFS_REQUIRED",
+  "files": {
+    "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c19_canonical_controls_v1.py": {
+      "bytes": 13241,
+      "sha256": "9ee87a910f755cefe3e94be6037b0f3a426dddbcef9c1fab384ab035ebb3f53e"
+    },
+    "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c19_canonical_controls_v1.py": {
+      "bytes": 10130,
+      "sha256": "8f50021a450cd8799f8924a3225d2dec5b815b2fabf0c805250fe9a967b56ff1"
+    }
+  },
+  "in_memory_graph": {
+    "root_p37c19_sdk_queue.py": {
+      "bytes": 268814,
+      "sha256": "125250da2387a6953d6627465bc535e9578f1ccb340665cafe78be3e88c33d8e"
+    },
+    "root_p37c19_mcp_entry.py": {
+      "bytes": 12896,
+      "sha256": "09b238226f6a52b24d9e20a2539543c3f5780687902a4648cd658a5e8298f341"
+    },
+    "root_native_build_binding_p37c19.py": {
+      "bytes": 4090,
+      "sha256": "889453d66b3382fb775ed97f44544223680863ae2fce532fcdeb866179668829"
+    },
+    "root_p37c19_automatic_natural_succession_handoff.py": {
+      "bytes": 38747,
+      "sha256": "74712f65f3cab01cbe7094e764c39703ca5ae64b543daa974d2122d92ef55b4a"
+    },
+    "p51_resident_successor_adoption_c19.py": {
+      "bytes": 24607,
+      "sha256": "7d77616edcd5219caa78951b8c443c112a9d49001b5d190f702819ace527a422"
+    },
+    "launch_sdk_p37c19_owner.py": {
+      "bytes": 6420,
+      "sha256": "a51944a8f9f60c188c4cd6a0383026d0207425d19809533ccf41748e4d39082e"
+    },
+    "root_p37c19_cold_resume.py": {
+      "bytes": 19296,
+      "sha256": "b1c04d0216883b68dd473281be6883ecdbfc70b4fcca5bc7686d917dd6b9a1e9"
+    },
+    "root_checkpoint_bootstrap_c19.py": {
+      "bytes": 11023,
+      "sha256": "4156cebc8d6b3eb4f8a947ca0da8effce565dfba9ea5819381d2d3751feab5bb"
+    },
+    "root_native30_supervisor_c19.py": {
+      "bytes": 34773,
+      "sha256": "01d62a9334990a0815b4692a4e520de92876f3f15117e44be28c82087b6dc52c"
+    },
+    "root_record_shutdown_c19.py": {
+      "bytes": 6913,
+      "sha256": "65ec838693a78e5bbd2d848154f7f012ad3f65add4dd54d1e32dd11dcc426b40"
+    },
+    "root_score_month_samples_c19.py": {
+      "bytes": 7991,
+      "sha256": "a5bec50fdf3181537e07c096dcb1e0e7df9e2088121d7e236336394f99f9b430"
+    },
+    "root_c19_control_timing_adapter.py": {
+      "bytes": 15044,
+      "sha256": "56c2ac6386dd1dab1988fb6033341ec1e39222b95b88b69e09fd46e4470942ae"
+    },
+    "root_c19_queue_control_timing.py": {
+      "bytes": 8642,
+      "sha256": "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+    },
+    "root_screen_bus_lease_c19.py": {
+      "bytes": 16526,
+      "sha256": "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+    },
+    "root_checkpoint6397_cold_contract_c19.py": {
+      "bytes": 10481,
+      "sha256": "4df3ef85870a7f9580e1aa2b07c625b222e98d7607cfae4a39eeccd0d3e63e9a"
+    },
+    "root_c19_canonical_outer.py": {
+      "bytes": 13371,
+      "sha256": "4b131cd225711fc00416569f4def2701b693258b078bac4ad74fec1c396d2be7"
+    },
+    "root_c19_normal_checkpoint_inputs.py": {
+      "bytes": 6167,
+      "sha256": "5997f823d648a5e6a373421fc77edd2852045f40c0ca6c15860f9f02ab5068ad"
+    },
+    "full_batch_timing_v1.py": {
+      "bytes": 7638,
+      "sha256": "197e4308b7d0f5a70a8c3474ec0b58581997f3e60bfc2d8414c668dae07c8e0b"
+    },
+    "full_lifecycle_timing_v1.py": {
+      "bytes": 2480,
+      "sha256": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+    }
+  },
+  "new_cross_seam_tests": 5,
+  "old_57_custody_or_12_timing_matrix_repeated": false,
+  "report": {
+    "source_only": true,
+    "source_fixture": true,
+    "outputs_materialized": false,
+    "canonical_enabled": true,
+    "FULL_wall_and_rows": true,
+    "control_probe_enabled": false,
+    "WAL_policy_default": false,
+    "WAL_requested_policy": {
+      "enable_driver_state_wal_v1": true
+    },
+    "actual_C18_pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P37C18.json",
+      "bytes": 464,
+      "sha256": "7d4837eaac0c9f09999417641deba18d4e2796e6ef7f96731e37ca13aa404a6a"
+    },
+    "old_Game": {
+      "pid": 30852,
+      "creation_filetime": 134368995759027619
+    },
+    "normal_closure_kind": "EXACT_C18_NORMAL_CHECKPOINT_FOR_C19",
+    "original_outer_hunks_reused": {
+      "root_checkpoint_bootstrap_c17.py": 4,
+      "root_p37c17_cold_resume.py": 2,
+      "root_native30_supervisor_c17.py": 10,
+      "launch_sdk_p37c17_owner.py": 3,
+      "root_p37c17_sdk_queue.py": 5,
+      "root_p37c17_mcp_entry.py": 3
+    },
+    "new_seams": {
+      "root_c19_canonical_outer.py": 3,
+      "root_p37c19_sdk_queue.py": 6,
+      "root_p37c19_automatic_natural_succession_handoff.py": 1,
+      "unapplied_C19_feeder_timing": 4
+    },
+    "unapplied_feeder_timing": {
+      "bytes": 33380,
+      "sha256": "8611efe4a3a68c21d15ddad3b778de534eab20954e46a4690e2f545d09dd309d",
+      "not_an_admitted_cold_feeder": true,
+      "source_baseline": "512925bd435c77d9b767adef08b25c3893b2c8c5f642f94e22f4e9dfcab35428"
+    },
+    "business_plan": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c19-combined-cold-sdk-source-plan-2026-10-20.json",
+      "sha256": "c2e58f17950012ec8717fef262a590b26a117e7523080c179128ba79995a7a84",
+      "complete_files": 1454,
+      "rows_sha256": "a91c8952d863eafbf433b1aa4fedec5ad42f8edfe0da4f14a3b29de972649b10",
+      "actual_H": "unknown"
+    },
+    "remaining": [
+      "future Native30 actual qualification transition and exact export card",
+      "then-current SAVE/clean seed/normal C18 SDK+Game+record+publisher closure",
+      "new Game launch/record/Root pixels; never reuse C16 PID/UUID facts",
+      "final C19 cold feeder admission and launcher lineage; current warm admission is not cold authority"
+    ]
+  },
+  "final_entry_pins_count": 19,
+  "final_entry_pins_sha256": "f141bc2b12501009b75b1b56ed6fe727944812a58d9f1d40d8dfea243680b90e",
+  "source_input_pins": {
+    "prepare_canonical_c17_outer_sources_v1.py": "e0713f8a56e3a2be280d140d4f3246d35af84222990bc353d6b268a7d1049ffe",
+    "canonical_c17_outer_binding_v1.py": "e4d45ed0e48f8ed9d30269592bcde5cc64948e983b194320a286316e20a1300a",
+    "c17_normal_checkpoint_inputs_v1.py": "bb1ea3b4ec49a96b62d90883477c21d5124214caff030d36198606b8adb03154",
+    "prepare_full_batch_timing_sources_v1.py": "112d4154a4ac39261749c2be0be0097f1b8c188b7905cbd97091dc89765ef1a8",
+    "full_batch_timing_v1.py": "197e4308b7d0f5a70a8c3474ec0b58581997f3e60bfc2d8414c668dae07c8e0b",
+    "full_lifecycle_timing_v1.py": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+  },
+  "native_transition_tool_pins": {
+    "native29_to30_export_contract_v1.py": "01513090dff778d5aad566cf740214504a6d2eeae7b2ce1548acc2389c76bb91",
+    "export_native30_immutable_sdk_views_v1.py": "6fff517a40656a854d22703e20a40ebbb72857822ab2912fd9962b1217963417",
+    "native30_export_adapter_v1.py": "2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298"
+  },
+  "target_Native30_qualified": false,
+  "actual_H": "unknown",
+  "outputs_materialized": false,
+  "scratch_files": 0,
+  "Game_Native_MCP_Task_calls": 0,
+  "external_writes": 0,
+  "limitations": [
+    "future Native30 real qualified references required by public producer; current FAILED/0fixture is not qualified",
+    "future C19 cold feeder actual admission/launcher remains then-actual finite attachment; timing-only candidate is separate",
+    "C16 API/record/score algorithms retained as source; new Game/record/Root pixels must bind actual new identities",
+    "source epoch model is business-source proof only; no runtime custody or elapsed savings claimed"
+  ],
+  "unpublished_WIP_finalized_once": {
+    "bytes": 7854,
+    "sha256": "52520412824b1eb85fd41cda22ea71d20e76e7929a4b0c0bededa637dfbedb63",
+    "old_bytes_retained": false,
+    "first_pending_qualification_retained": "_runtime/c19-canonical-controls-qualification01.json"
+  }
+}

@@ -1,0 +1,130 @@
+{
+ "machine_id": "xenoamess-full-tower-eb9d2c1186",
+ "observed_at_utc": "2026-10-19T19:52:48.836273+00:00",
+ "files": {
+  "prepare_c19_canonical_controls_v1.py": [
+   13648,
+   "c30470805d70ae52cb50a37f969a6b3ec6c85ea69135051a7889e8fc7ee5c4f3"
+  ],
+  "qualify_c19_native_dependency_refresh_v1.py": [
+   11794,
+   "06b914f10ce9977205894954ad4d32581f93b2d2e0fd7eb7a4ec846d5e5005c5"
+  ]
+ },
+ "producer_inverse_sha256": "349b801e093454fcb5cf69c5ed06df162e0d88d5af3c45263a7518175d90f237",
+ "fixture_source_pins": {
+  "test_native30_export_transition_v1.py": "a540da9994244e2a1201bbc7168e04e8e3a191ab4f31630ba44bad0683a881f6",
+  "test_native30_resume_fixture_chain_v1.py": "9f47c142ef469834a675b71310e1eba3993e19bb2c909995c0b8ca3f745c35cb"
+ },
+ "dependency_pins": {
+  "native29_to30_export_contract_v1.py": "76b1cc507f2d9600c01d0961c214bd3b9110c26c0784608b27a3ef428610a9e2",
+  "export_native30_immutable_sdk_views_v1.py": "edbe75a62f80d17a0e74998b96834844bcbf75f1caab7ea5468b3caa32dbb709",
+  "native30_resume_fixture_chain_v1.py": "d9e5dc3c22f3b1fc58f1ab7b93de4f7ccb480c3ed938fdc6b2375d11a814f555",
+  "native30_export_adapter_v1.py": "2d4074379371ed91bc38ff0fc532521e277ba2795faad1fd8e9c6dd2593c5298"
+ },
+ "root_metadata_label": "Native30 continuous hotspot tracking and idle realm overview",
+ "new_whole_public_crosscase_passed": 1,
+ "graph": {
+  "root_p37c19_sdk_queue.py": [
+   268814,
+   "125250da2387a6953d6627465bc535e9578f1ccb340665cafe78be3e88c33d8e"
+  ],
+  "root_p37c19_mcp_entry.py": [
+   12896,
+   "09b238226f6a52b24d9e20a2539543c3f5780687902a4648cd658a5e8298f341"
+  ],
+  "root_native_build_binding_p37c19.py": [
+   4090,
+   "889453d66b3382fb775ed97f44544223680863ae2fce532fcdeb866179668829"
+  ],
+  "root_p37c19_automatic_natural_succession_handoff.py": [
+   38747,
+   "74712f65f3cab01cbe7094e764c39703ca5ae64b543daa974d2122d92ef55b4a"
+  ],
+  "p51_resident_successor_adoption_c19.py": [
+   24607,
+   "7d77616edcd5219caa78951b8c443c112a9d49001b5d190f702819ace527a422"
+  ],
+  "launch_sdk_p37c19_owner.py": [
+   6420,
+   "a51944a8f9f60c188c4cd6a0383026d0207425d19809533ccf41748e4d39082e"
+  ],
+  "root_p37c19_cold_resume.py": [
+   19316,
+   "e019394b47f983a0cc8c2126fd90ca344c87d2d868611c67b8164e2f8a11a4f2"
+  ],
+  "root_checkpoint_bootstrap_c19.py": [
+   11023,
+   "4156cebc8d6b3eb4f8a947ca0da8effce565dfba9ea5819381d2d3751feab5bb"
+  ],
+  "root_native30_supervisor_c19.py": [
+   34773,
+   "01d62a9334990a0815b4692a4e520de92876f3f15117e44be28c82087b6dc52c"
+  ],
+  "root_record_shutdown_c19.py": [
+   6913,
+   "65ec838693a78e5bbd2d848154f7f012ad3f65add4dd54d1e32dd11dcc426b40"
+  ],
+  "root_score_month_samples_c19.py": [
+   7991,
+   "a5bec50fdf3181537e07c096dcb1e0e7df9e2088121d7e236336394f99f9b430"
+  ],
+  "root_c19_control_timing_adapter.py": [
+   15044,
+   "56c2ac6386dd1dab1988fb6033341ec1e39222b95b88b69e09fd46e4470942ae"
+  ],
+  "root_c19_queue_control_timing.py": [
+   8642,
+   "3950b3ce7ca1d4de401ba8e176d962c92187c2ad6fd280621e57d1f8f205d96c"
+  ],
+  "root_screen_bus_lease_c19.py": [
+   16526,
+   "012bb0a2aec9475ca8689bf42adc2e6c2431161814f7531f0710dbb633348780"
+  ],
+  "root_checkpoint6397_cold_contract_c19.py": [
+   10481,
+   "4df3ef85870a7f9580e1aa2b07c625b222e98d7607cfae4a39eeccd0d3e63e9a"
+  ],
+  "root_c19_canonical_outer.py": [
+   13371,
+   "4b131cd225711fc00416569f4def2701b693258b078bac4ad74fec1c396d2be7"
+  ],
+  "root_c19_normal_checkpoint_inputs.py": [
+   6167,
+   "5997f823d648a5e6a373421fc77edd2852045f40c0ca6c15860f9f02ab5068ad"
+  ],
+  "full_batch_timing_v1.py": [
+   7638,
+   "197e4308b7d0f5a70a8c3474ec0b58581997f3e60bfc2d8414c668dae07c8e0b"
+  ],
+  "full_lifecycle_timing_v1.py": [
+   2480,
+   "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+  ]
+ },
+ "graph_bytes": 515939,
+ "graph_materialized": false,
+ "real_loader_contract_and_enabled_creator": true,
+ "JSON_reads_simulated": 34,
+ "source_fixture_false_forwarded": true,
+ "synthetic_FAILED06_graph_rejected": true,
+ "synthetic_receipts_only": true,
+ "actual_Native_qualification": false,
+ "old_5_57_12_2_and_label_leaf_cases_repeated": false,
+ "schema": "xar.C19-whole-public-graph-label-crosscase/v1",
+ "machine_id_source": "tools/ck3_live_run_id.py machine; current task readback",
+ "canonical_unchanged_sha256": "e0713f8a56e3a2be280d140d4f3246d35af84222990bc353d6b268a7d1049ffe",
+ "metadata_authority": "Root target_native_pin description; not a DLL compiled field",
+ "simulation_boundary": "Only loader._read_document supplies pinned invented JSON documents; validator and canonical creator spies wrap their unchanged real bodies.",
+ "prior_label_leaf_proof_sha256": "ce65e58f238cf7bb01b2b491aaec51d444fabb559701b624e5a5688a45984e9a",
+ "prior_label_leaf_scope": "Local label guard only; it did not prove the next canonical callee. Retained as history, superseded for whole-chain readiness.",
+ "M7_metadata_proof_sha256": "c8f2fb9c0b5618ab34d14a28729207b8efcbc18158b35e6de64a6c64b79dc587",
+ "capacity_card_sha256": "3fb3b198e310f07722002d08bc15eb29b59d1a29401bafdb28d57b9d03c28013",
+ "actual_H": "unknown",
+ "actual_Native07_supported": false,
+ "external_D_writes": 0,
+ "Task_Game_Native_calls": 0,
+ "WIP_failure": "Fixture package import preceded pinned loader path bootstrap; failed before public graph call. Import order corrected; WIP bytes not retained.",
+ "retained_history_bytes": 33824,
+ "complete_package_bytes": 64598
+}

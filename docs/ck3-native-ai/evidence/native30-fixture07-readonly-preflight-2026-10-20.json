@@ -1,0 +1,84 @@
+{
+  "schema": "native30-fixture07-readonly-preflight-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T19:56:36.966365+00:00",
+  "end_utc": "2026-10-19T19:56:43.231234+00:00",
+  "seconds": 6.264867699937895,
+  "status": "ALL_EXISTING_INPUTS_PASS_SNAPSHOT_NOT_CREATED",
+  "producer": {
+    "path": "tools/g2_saved_campaign/qualify_native30_fixture07_20261020.py",
+    "bytes": 37100,
+    "sha256": "b22eb598dbfdc01359dd1e15c65132b0fbb37bab23840df3b15b2e8ce32df4ae"
+  },
+  "source_count": 5355,
+  "selected_rows": 995,
+  "targets": 12,
+  "production_rows": 978,
+  "retained_SHA_FileID_leases": 983,
+  "configured_inputs": {
+    "manifest": "08e6c2926dc58c4f103f76d906b86f893f33da489ef996696db9a4bc1543a9f4",
+    "rules": "1d3b91567dd7612acf3d98ee7a5018d77e923b6d89dcee75d00f89968097250c",
+    "inputs": "8934e4696de8bddb5b1c31d20baf451460a3b45a6a4ea3dc2c0b8b00f1865c9e",
+    "glob_script": "95290fbffd2c73b478fe1ee86dd65f3a5824c7515cdcddc885cb298d8aa2ec52"
+  },
+  "glob": {
+    "script": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\CMakeFiles\\VerifyGlobs.cmake",
+      "bytes": 69509,
+      "mtime_ns": 1792425949112918300,
+      "sha256": "95290fbffd2c73b478fe1ee86dd65f3a5824c7515cdcddc885cb298d8aa2ec52"
+    },
+    "families": [
+      {
+        "pattern": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/source/ck3_autonomous_player/native_bridge/src/ck3_12002*.cpp",
+        "entries": 294,
+        "ordered_paths_sha256": "c3e8821cd1ae128a01954763718d1a7f85b61f0be242e48fe83a017f46d98cc4",
+        "equal": true
+      },
+      {
+        "pattern": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-native30-camera01/source/ck3_autonomous_player/native_bridge/src/ck3_12002_*_test.cpp",
+        "entries": 143,
+        "ordered_paths_sha256": "0163c57bca077795d5d0097550d6945ba1aa6ed9d81c28aeec461cb31a0bdc1c",
+        "equal": true
+      }
+    ],
+    "script_executed": false
+  },
+  "regeneration_input_count": 219,
+  "component_budget_actual": {
+    "utc": "2026-10-19T19:56:41.128582+00:00",
+    "eof": 656115548,
+    "allocation": 670742624,
+    "source": 69409880,
+    "metadata": 78976712,
+    "temporary": 0,
+    "raced": 0
+  },
+  "metadata_component_quote": {
+    "existing_charged_bytes": 78976712,
+    "snapshot_charged_upper_bytes": 16777216,
+    "two_command_logs_charged_upper_bytes": 16777216,
+    "all_other_new_evidence_logs_and_close_upper_bytes": 16777216,
+    "cap_bytes": 134217728,
+    "charge": "sum per-file max(EOF,AllocationSize); snapshot upper includes cluster tail",
+    "projected_upper_bytes": 129308360
+  },
+  "absolute_original_Ninja_preview": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture07-absolute-manifest-preview-2026-10-20.json",
+    "bytes": 1695,
+    "sha256": "2477b41a363f94788212c029cae560ef8bb5bed4eee9d0732946f3f47f97d8ea"
+  },
+  "preview_is_not_future_snapshot_qualification": true,
+  "current_fixture_source": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\native30-fixture04\\camera_tracking_v1_test.cpp",
+  "leases_closed_after_check": true,
+  "snapshot_copy_commands_NoWork_9fixtures": "NOTRUN; require formal newcard/Task release",
+  "prior_budget_seal_RED_preserved": {
+    "tool": "exec e4cbd7",
+    "current_metadata": 78976712,
+    "old_cap": 83886080,
+    "projected_metadata": 129308360,
+    "fact": "Sealer refused old80 before writing plan/proof; Root then authorized explicit new07 metadata128, total1.5G/source96/TEMP384 unchanged. No R/Task/compiler writes."
+  },
+  "R_Task_CPP_Game_writes": 0,
+  "future_writes": 0
+}
