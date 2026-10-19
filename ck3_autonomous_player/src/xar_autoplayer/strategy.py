@@ -21810,8 +21810,11 @@ def _stationary_excluded_siege_one_day_watch_plan(
         and _public_cunit_int(siege_rejection.get("besieging_army_id")) not in {None, army_id}
         and isinstance(contribution, dict) and contribution.get("status") == "excluded"
         and contribution.get("public_unit_id") == army_id
-        and contribution.get("native_carmy_id") == army.get("native_carmy_id")
-        and _native_int(army.get("native_carmy_id")) is not None
+        # Ordinary Army DTOs expose the public ID. The existing contribution
+        # consumer binds its native CArmy through this province's occurrences.
+        and _native_int(contribution.get("native_carmy_id")) is not None
+        and _native_int(contribution.get("native_carmy_id")) > 0
+        and contribution.get("matches_current_selection") is False
         and contribution.get("reason") == "measured_native_province_qualification"
         and route_rejections == [{"target_province_id": province_id,
             "status": "current_exact_siege_rejected", "siege_status": "not_player_besieging"}]
