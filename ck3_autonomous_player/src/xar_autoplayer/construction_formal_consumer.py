@@ -274,14 +274,26 @@ def plan_construction_private(
             next_plan["construction_private_query"] = query
         return {**planned, "plan": next_plan}
 
+    def optional_spend_deferred(reason: str, *, query: object = None) -> dict[str, object]:
+        # A missing optional quote cannot veto the ordinary planner's action.
+        # Pending submissions and changed query frames retain their own guards.
+        next_plan = {**plan, "construction_spending_deferred_v1": {
+            "status": "source_unavailable", "reason": reason,
+            "deferred_domain": "new_building_upgrade_or_holding",
+            "original_selected_step": original_step,
+            "business_submission": False,
+        }}
+        if query is not None:
+            next_plan["construction_private_query"] = query
+        return {**planned, "plan": next_plan}
+
     state_dir = getattr(driver, "state_dir", None)
     if not isinstance(state_dir, Path):
         if not new_action_admitted:
             return planned
         if prewar:
             return prewar_unchanged("durable_state_unavailable")
-        return {**planned, "plan": {**plan, "selected_step": None,
-                                    "reason": "construction trial lacks durable state_dir"}}
+        return optional_spend_deferred("construction trial lacks durable state_dir")
     ledger = read_construction_ledger(state_dir)
     episode = snapshot.get("episode_run_id")
     cash_observation = None
@@ -550,8 +562,8 @@ def plan_construction_private(
         if ROOT_QUERY_STEP not in available_steps:
             if prewar:
                 return prewar_unchanged("feudal_root_query_unavailable")
-            return {**planned, "plan": {**plan, "selected_step": None,
-                "reason": "construction trial needs same-frame public feudal root query"}}
+            return optional_spend_deferred(
+                "construction trial needs same-frame public feudal root query")
         return {**planned, "plan": {**plan, "selected_step": ROOT_QUERY_STEP,
             "phase": "construction_feudal_scope_query",
             **({"construction_prewar_arbitration": {
@@ -618,6 +630,24 @@ def plan_construction_private(
             return clan_deferred("native Clan construction source unavailable", query=query)
         if prewar:
             return prewar_unchanged("construction_source_red", query=query)
+        source, ending = query.get("source_frame"), query.get("ending_frame")
+        played = snapshot.get("played_character")
+        if (query.get("status") == "source_red"
+                and isinstance(source, Mapping) and isinstance(ending, Mapping)
+                and snapshot.get("revision") == planned.get("revision")
+                and all(key in source and key in snapshot
+                        and source[key] == snapshot[key]
+                        for key in ("snapshot_id", "revision", "native_revision",
+                                    "date_raw", "episode_run_id"))
+                and isinstance(played, Mapping)
+                and type(played.get("character_id")) is int
+                and played["character_id"] > 0
+                and source.get("actor_character_id") == played.get("character_id")
+                and all(key in ending and ending[key] == snapshot.get(key)
+                        for key in ("snapshot_id", "revision", "episode_run_id"))):
+            return optional_spend_deferred(
+                "private construction source unavailable; defer optional spending",
+                query=query)
         return {**planned, "plan": {**plan, "selected_step": None,
             "construction_private_query": query,
             "reason": "private construction source unavailable; preserve RED"}}

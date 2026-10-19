@@ -27,6 +27,17 @@ class DriverStateHistoryJsonCache:
         self._last_row: dict[str, object] | None = None
         self._encoded = bytearray()
 
+    def has_unchanged_encoded_prefix(self, history: list[dict[str, object]]) -> bool:
+        """Use the existing owner invalidation contract as a WAL barrier gate.
+
+        An invalidated/uncached, replaced or shortened history must be encoded
+        in full before new deltas. This does not hash or scan the old history.
+        """
+        return bool(history is self._history and len(history) >= self._count
+                    and (not self._count or (
+                        history[0] is self._first_row
+                        and history[self._count - 1] is self._last_row)))
+
     def encode(self, history: list[dict[str, object]]) -> bytes | bytearray:
         """Return a locked, owned buffer; callers must copy it before unlock."""
         if (

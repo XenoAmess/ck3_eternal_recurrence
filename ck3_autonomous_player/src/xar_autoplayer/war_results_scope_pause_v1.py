@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import re
+from time import monotonic
 
 
 _REASON = re.compile(
@@ -15,6 +16,7 @@ _REASON = re.compile(
     r"end_date_raw=(\d+);begin_paused=true;end_paused=false;"
     r"owner_boundary_admitted=true\Z"
 )
+_PAUSE_OBSERVATION_SECONDS = 1.5
 
 
 def _completed_transition(result: object) -> bool:
@@ -74,6 +76,45 @@ def _frame(snapshot: object) -> dict[str, object]:
     }
 
 
+def _observation_stop_reason(snapshot: object, source: Mapping[str, object],
+                             baseline: Mapping[str, object]) -> str | None:
+    """End a read-only wait on a paused map or an invalidated owner scope."""
+    if not isinstance(snapshot, Mapping):
+        return "snapshot_unavailable"
+    current = _frame(snapshot)
+    if (type(source.get("native_revision")) is not int
+            or source["native_revision"] <= 0
+            or type(source.get("date_raw")) is not int
+            or type(source.get("actor_character_id")) is not int
+            or source["actor_character_id"] <= 0
+            or not isinstance(source.get("episode_run_id"), str) or not source["episode_run_id"]
+            or type(source.get("connection_generation")) is not int
+            or type(current.get("bridge_pid")) is not int or current["bridge_pid"] <= 0
+            or current["bridge_pid"] != current.get("hello_pid")
+            or current["bridge_pid"] != baseline.get("bridge_pid")
+            or any(current.get(key) != source.get(key) for key in (
+                "actor_character_id", "episode_run_id", "connection_generation"))):
+        return "owner_scope_changed_or_unknown"
+    if any(type(current.get(key)) is not int or type(baseline.get(key)) is not int
+           or current[key] < baseline[key] for key in ("revision", "native_revision", "date_raw")):
+        return "frame_regressed_or_unknown"
+    if current["native_revision"] < source["native_revision"] or current["date_raw"] < source["date_raw"]:
+        return "source_frame_regressed"
+    if snapshot.get("map_ready") is not True:
+        return "map_not_ready"
+    played = snapshot.get("played_character")
+    if (snapshot.get("one_life_terminal") is True or snapshot.get("one_life_terminal_reason") is not None
+            or snapshot.get("episode_identity_pending") is True
+            or isinstance(played, Mapping) and played.get("alive") is False):
+        return "lifecycle_boundary"
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    if (snapshot.get("active_event") is not None
+            or snapshot.get("pending_character_interaction") is not None
+            or isinstance(hint, Mapping) and hint.get("status") == "present"):
+        return "new_player_decision"
+    return "paused" if snapshot.get("paused") is True else None
+
+
 def pause_after_war_results_scope_transition_v1(driver: object, result: object) -> dict[str, object] | None:
     """Return only pause/requery evidence; preserve the original close result."""
     if not _completed_transition(result):
@@ -93,6 +134,7 @@ def pause_after_war_results_scope_transition_v1(driver: object, result: object) 
         "close_replayed": False, "close_action_credit": False,
         "fresh_war_results_query_required": True,
         "pause_attempted": False, "pause_result": None,
+        "wait_attempted": False,
     }
     reader = getattr(driver, "take_internal_semantic_snapshot", None)
     pause = getattr(driver, "execute_step", None)
@@ -100,13 +142,53 @@ def pause_after_war_results_scope_transition_v1(driver: object, result: object) 
         evidence["failure"] = "pause_or_semantic_reader_unavailable"
         return evidence
     try:
-        before = _frame(reader())
+        before_raw = reader()
+        before = _frame(before_raw)
         evidence["before_pause"] = before
+        before_reason = _observation_stop_reason(before_raw, source, before)
+        # A new decision does not prevent the existing one safety pause. It
+        # only prevents waiting past that boundary or doing any further work.
+        if before_reason not in (None, "paused", "new_player_decision", "lifecycle_boundary"):
+            evidence["observation_stop_reason"] = before_reason
+            evidence["failure"] = "same_owner_paused_map_not_observed"
+            return evidence
         if before.get("paused") is False:
             evidence["pause_attempted"] = True
             evidence["pause_result"] = pause("pause-map", expected_revision=None)
-        after = _frame(reader())
+        after_raw = reader()
+        after = _frame(after_raw)
         evidence["after_pause"] = after
+        reason = _observation_stop_reason(after_raw, source, before)
+        if after.get("paused") is True and reason in ("new_player_decision", "lifecycle_boundary"):
+            # Preserve the existing immediate pause acknowledgement contract;
+            # this status grants no decision handling or window-close credit.
+            reason = "paused"
+        if reason is None:
+            # Observe the already submitted pause. This existing internal wait
+            # reads semantic frames without another action or history export.
+            waiter = getattr(driver, "_wait_for_life_advance_snapshot", None)
+            if callable(waiter):
+                evidence.update(wait_attempted=True, wait_budget_seconds=_PAUSE_OBSERVATION_SECONDS,
+                                immediate_after_pause=dict(after), observed_frame_count=0)
+                baseline = after
+                started = monotonic()
+
+                def stop(current: object) -> bool:
+                    nonlocal reason
+                    evidence["observed_frame_count"] += 1
+                    reason = _observation_stop_reason(current, source, baseline)
+                    return reason is not None
+
+                try:
+                    after_raw = waiter(after_raw, stop, timeout_seconds=_PAUSE_OBSERVATION_SECONDS)
+                finally:
+                    evidence["wait_elapsed_seconds"] = max(0.0, monotonic() - started)
+                after = _frame(after_raw)
+                evidence["after_pause"] = after
+                reason = _observation_stop_reason(after_raw, source, baseline) or "timeout"
+            else:
+                reason = "internal_pause_observer_unavailable"
+        evidence["observation_stop_reason"] = reason
     except Exception as error:
         # Keep the exact original callback uncertainty visible to the caller.
         # A failed pause is never interpreted as a completed close.
@@ -123,7 +205,7 @@ def pause_after_war_results_scope_transition_v1(driver: object, result: object) 
         and type(after.get("date_raw")) is int
         and after["date_raw"] >= source["date_raw"]
     )
-    if after.get("paused") is True and after.get("map_ready") is True and same_owner:
+    if reason == "paused" and after.get("paused") is True and after.get("map_ready") is True and same_owner:
         evidence["status"] = "paused_same_owner_requery_required"
     else:
         evidence["failure"] = "same_owner_paused_map_not_observed"

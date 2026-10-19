@@ -1,6 +1,6 @@
-"""Two reviewed .4 letters: reuse source knowledge, never an execution contract.
+"""Finite reviewed .4 letters: source knowledge, never an execution contract.
 
-Current native role IDs are retained; opaque activity/faith/tenet payloads stay
+Current native role IDs are retained; opaque activity/scheme/flag payloads stay
 unknown. Source and GUI file hashes prove installed source, not loaded GUI bytes.
 """
 from __future__ import annotations
@@ -12,8 +12,9 @@ from pathlib import Path, PurePosixPath
 from .builds import SUPPORTED_CK3_EXE_SHA256
 
 
-KEYS = frozenset({"faction_demand.0101", "ecumenical_council_events.0082"})
+KEYS = frozenset({"faction_demand.0101", "ecumenical_council_events.0082", "sway_ongoing.1003"})
 POLICY = "two-reviewed-letter-source-shapes-12004-v1"
+SWAY_POLICY = "sway1003-reviewed-letter-source-shapes-12004-v1"
 GUI_SOURCES = {
     "gui/event_windows/letter_event.gui":
         "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
@@ -33,6 +34,12 @@ REVIEWS = {
         "source_sha256": "194d12e1fe54b015d6f89ef15c4d435e80ea6b3bf4c453623d2240de29c4a559",
         "definition_sha256": "27b9f85792a014009245ae2733a361f0154536590bdb3f45b67cdced3a662df9",
         "option_catalogue_sha256": "80ad6cd429d44d7a785575f7417d3a8bb06c4a51b574ebc8f8cbb0acf9fe771a",
+    },
+    "sway_ongoing.1003": {
+        "source_relative": "events/scheme_events/sway_scheme/sway_ongoing_events.txt", "count": 1,
+        "source_sha256": "cac2328a721aae13c5c60dbe81eccdf83cd8bf06eca1f51f247a098c0f435adc",
+        "definition_sha256": "e3446738b3d835048bbcecf8bc8791fdc0bd96fdf4952d984314ee963c7c6295",
+        "option_catalogue_sha256": "cb16650d3b41b5c0ff0fe3365712fa89aaf1ccf70f5a165c253f34d3f824d8a8",
     },
 }
 
@@ -82,11 +89,12 @@ def _opaque(row, kind, raw):
 
 
 def reviewed_letter_source_rebind_shape_v1(capture, facts, current):
-    """Validate exact source plus the fresh observed role *shape* of two keys.
+    """Validate exact source plus the fresh observed role *shape* of finite keys.
 
     This is deliberately independent of old timeline contracts and old role IDs.
     A council letter has no mutating option: unknown non-character payload IDs
     remain explicit and are never used to evaluate doctrine, faith or benefit.
+    Sway's empty acknowledgement grants no scheme identity or progress credit.
     """
     from .event_offline_analysis import _fingerprint, _source_rebind_root_shape
 
@@ -158,6 +166,23 @@ def reviewed_letter_source_rebind_shape_v1(capture, facts, current):
         }
         if ids["faction_target_character_id"] != actor or ids["faction_leader_character_id"] == actor:
             raise ValueError("reviewed liberty current target/leader semantics differ")
+    elif key == "sway_ongoing.1003":
+        required = {"owner", "target", "compliment_receiver", "scheme",
+                    "evaluated_compliment_type", "compliment_outcome"}
+        optional = {"artifact", "friend"}
+        if not required <= set(roles) <= required | optional:
+            raise ValueError("reviewed sway saved roles differ")
+        ids = {name + "_character_id": _identity(roles[name], "character", 4, "character_id")
+               for name in ("owner", "target", "compliment_receiver", "friend") if name in roles}
+        if (ids["owner_character_id"] != actor or ids["target_character_id"] == actor
+                or ids["compliment_receiver_character_id"] == actor):
+            raise ValueError("reviewed sway current owner/target/receiver semantics differ")
+        opaque = {"scheme": ("scheme", 9), "artifact": ("artifact", 31),
+                  "evaluated_compliment_type": ("flag", 3), "compliment_outcome": ("flag", 3)}
+        for name, (kind, raw) in opaque.items():
+            if name in roles:
+                _opaque(roles[name], kind, raw)
+                gaps.append({"role": name, "type_key": kind, "typed_identity_verified": False})
     else:
         required = {"activity", "host", "province", "activity_location", "root_scope",
                     "ec_council", "ec_council_faith", "ec_reporter"}
@@ -176,7 +201,8 @@ def reviewed_letter_source_rebind_shape_v1(capture, facts, current):
             if name in roles:
                 _opaque(roles[name], kind, raw)
                 gaps.append({"role": name, "type_key": kind, "typed_identity_verified": False})
-    return {**shape, "source_rebind_policy": POLICY, "reviewed_letter_key": key,
+    return {**shape, "source_rebind_policy": SWAY_POLICY if key == "sway_ongoing.1003" else POLICY,
+            "reviewed_letter_key": key,
             "knowledge_scope": "exact_definition_source_and_current_native_role_type_shape_only",
             "current_role_identities": ids, "scope_identity_gaps": gaps,
             "gui_source_sha256": dict(GUI_SOURCES), "loaded_gui_bytes_verified": False,

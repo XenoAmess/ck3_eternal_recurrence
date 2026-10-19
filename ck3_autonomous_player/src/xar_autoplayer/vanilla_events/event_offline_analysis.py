@@ -405,7 +405,7 @@ def load_source_reviewed_event_v1(state_dir, capture):
                 facts, _ = read_json(known["source_facts"]["path"])
                 populist_letter = current["event_definition_key"] == "faction_demand.1001"
                 reviewed_letter = current["event_definition_key"] in {
-                    "faction_demand.0101", "ecumenical_council_events.0082"}
+                    "faction_demand.0101", "ecumenical_council_events.0082", "sway_ongoing.1003"}
                 if reviewed_letter:
                     from .reviewed_letter_source_rebind_v1 import reviewed_letter_source_rebind_shape_v1
                     shape = reviewed_letter_source_rebind_shape_v1(capture, facts, current)
