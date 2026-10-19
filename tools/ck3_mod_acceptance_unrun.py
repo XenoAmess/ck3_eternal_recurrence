@@ -91,7 +91,13 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
          and done['task']['last_sequence']==done['event']['sequence'] and done['task']['state']=='done'
          and release==done and closed_lease(keeper,done,task),'Actual allocated-unrun CAS then admin DONE differs')
     current=[x for x in bus_packet.get('tasks',[]) if x.get('task_id')==task]
-    need(len(current)==1 and current[0]==done['task'],'Current allocated-unrun task readback differs')
+    # The canonical list command adds only age_seconds/stale to raw task files.
+    # Keep every original field exact, and reject undeclared or invalid extras.
+    original=done['task'];snapshot=current[0] if len(current)==1 else {}
+    need(len(current)==1 and set(snapshot)==set(original)|{'age_seconds','stale'}
+         and {key:snapshot[key] for key in original}==original
+         and type(snapshot['age_seconds']) is int and snapshot['age_seconds']>=0
+         and snapshot['stale'] is False,'Current allocated-unrun task readback differs')
     import psutil
     inventory=runtime_process_inventory(psutil,os.getpid())
     need(not inventory['blockers'],'Allocated-unrun predecessor process still running: '+repr(inventory['blockers']))
@@ -107,7 +113,7 @@ def _write(path,value):
     return pin(path)
 def build_bundle(args):
     import ck3_live_run_id as ids
-    from ck3_mod_acceptance_allocate import read_failed_runtime_release
+    from ck3_mod_acceptance_allocate import read_failed_runtime_release, current_screen_absent
     live=args.previous_live.resolve();keeper=args.keeper_root.resolve();freeze=_read(live/'frozen-argv.json')
     machine=ids.current_machine_id();taskpath=args.task_bus_root/'tasks'/(freeze['screen_task']+'.json');task=_read(taskpath)
     journal=args.task_bus_root/'events.jsonl';size=journal.stat().st_size;start=max(0,size-65536)
@@ -137,7 +143,10 @@ def build_bundle(args):
         'counter':ids.default_state_root()/machine/freeze['mod_key']/'counter.json'}
     row.update({k:pin(v) for k,v in paths.items()});bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
-    verdict=validate_allocated_unrun(live,freeze,Path(bundle['path']),keeper,release,{'tasks':[task]})
+    bus=args.task_bus_root/'bin/codex_task_bus.py'
+    packet=current_screen_absent(Path(freeze['lease_anchor']),args.task_bus_root,
+        freeze['files'][str(bus.resolve())]['sha256'],None)
+    verdict=validate_allocated_unrun(live,freeze,Path(bundle['path']),keeper,release,packet)
     return {'bundle':bundle,'previous_release':proofs['admin_done'],'validation':verdict,'SDK_or_launch':False}
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--previous-live',type=Path,required=True)
