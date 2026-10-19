@@ -10,7 +10,6 @@ import uuid
 
 from .bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
 from .vanilla_events.unhandled_fallback import _write_new_json
-from .mandatory_choice_policy_v1 import select_existing_native_choice_v1
 
 
 SCHEMA = "xar.pending-interaction-left-reply/v1"
@@ -52,30 +51,6 @@ PENDING_INTERACTION_REPLY_REGISTRY_V1 = {
 
 
 
-def _first_enabled_interaction_reply_v1(snapshot, context, rows, action_steps):
-    diagnostics = snapshot.get("diagnostics")
-    binding = {key: snapshot.get(key) for key in (
-        "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id",
-    )}
-    if isinstance(diagnostics, dict):
-        binding.update({key: diagnostics.get(key) for key in ("bridge_pid", "connection_generation")})
-    legality = context.get("legality")
-    choices = []
-    for row in rows:
-        legal = legality.get(row["action"]) if isinstance(legality, dict) else None
-        choices.append({"choice_id": row["action"], "visible": True, "is_choice": True,
-            "rendered_index": row["rendered_index"], "label": None,
-            "enabled": isinstance(legal, dict) and legal.get("status") == "available" and legal.get("allowed") is True,
-            "native_legality": copy.deepcopy(legal), "source_GUI_button": row["button"],
-            "existing_typed_action": {"step": row["step"], "available": row["step"] in set(action_steps or ())}})
-    return select_existing_native_choice_v1({"window_type": "pending_character_interaction",
-        "window_id": context.get("pending_interaction_id"), "frame_binding": binding,
-        "native_mandatory_status": "not_inferred_from_interaction_presence",
-        "presentation_order_proof": {"kind": "source_bound_stock_interaction_GUI_order",
-            "source": GUI_LEFT_REPLY["source"], "sha256": GUI_LEFT_REPLY["sha256"], "lines": GUI_LEFT_REPLY["lines"]},
-        "choices": choices}, expected_frame=binding)
-
-
 def plan_pending_interaction_left_reply_v1(*, snapshot, context, original_plan, action_steps, registry_state_dir=None):
     """Use current native legality with authored GUI order, never accept by default."""
     if not isinstance(snapshot, dict) or not isinstance(context, dict):
@@ -106,17 +81,8 @@ def plan_pending_interaction_left_reply_v1(*, snapshot, context, original_plan, 
                 else GUI_LEFT_REPLY["normal_channel"][0] if notification is False else None)
     if selected is None:
         return None
-    presentation_decision = None
-    # Dedicated reviewed policies keep priority. Source-reviewed knowledge is
-    # an annotation, while the user's current first-enabled policy still orders it.
-    if known is None or str(known.get("classification", "")).startswith("offline-source-reviewed"):
-        rows = ([GUI_LEFT_REPLY["auto_accept_channel"]] if notification is True
-                else GUI_LEFT_REPLY["normal_channel"])
-        presentation_decision = _first_enabled_interaction_reply_v1(snapshot, context, rows, action_steps)
-        ordered_ids = presentation_decision.get("evidence", {}).get("ordered_eligible_choice_ids", [])
-        selected_id = presentation_decision.get("selected_choice_id") or (ordered_ids[0] if ordered_ids else None)
-        if selected_id is not None:
-            selected = next(row for row in rows if row["action"] == selected_id)
+    # Notification continuation is the authored left reply. A disabled/missing
+    # reject channel is a diagnosis, never permission to switch to right accept.
     action, step = selected["action"], selected["step"]
     legality = context.get("legality")
     legal = legality.get(action) if isinstance(legality, dict) else None
@@ -131,7 +97,7 @@ def plan_pending_interaction_left_reply_v1(*, snapshot, context, original_plan, 
     for field in ("connection_generation", "bridge_pid"):
         binding[field] = snapshot.get(field, diagnostics.get(field) if isinstance(diagnostics, dict) else None)
     capture = {"schema": SCHEMA, "kind": "pending_character_interaction",
-        "policy": "user-authorized-native-gui-first-enabled-reply" if presentation_decision is not None else "user-authorized-native-gui-left-reply", "pending_interaction_id": pending_id,
+        "policy": "user-authorized-native-gui-left-reply", "pending_interaction_id": pending_id,
         "interaction_definition_key": key, "binding": binding, "context": copy.deepcopy(context),
         "gui_binding": copy.deepcopy(GUI_LEFT_REPLY),
         "reply_options": [{**row, "native_legality": copy.deepcopy(legality.get(row["action"])) if isinstance(legality, dict) else None}
@@ -139,18 +105,17 @@ def plan_pending_interaction_left_reply_v1(*, snapshot, context, original_plan, 
         "selection": {**copy.deepcopy(selected), "native_legal": enabled, "action_reachable": reachable},
         "registry_known": known is not None, "reviewed_rule": copy.deepcopy(known),
         "offline_registry_audit": offline_registry_audit,
-        "presented_choice_policy": copy.deepcopy(presentation_decision),
+        "presented_choice_policy": None,
         "offline_followup_required": known is None, "original_plan": copy.deepcopy(original_plan),
         "semantic_optimal": False, "native_ai_equivalent": False}
     classification = known["classification"] if known is not None else "uncovered_pending_character_interaction"
     return {"policy": "one-life-turn-v1",
-        "phase": ("pending_character_interaction_enabled_presentation_fallback" if presentation_decision is not None and action == "accept"
-                  else "pending_character_interaction_reviewed_left_reply" if known is not None
+        "phase": ("pending_character_interaction_reviewed_left_reply" if known is not None
                   else "pending_character_interaction_left_fallback") if enabled and reachable
                  else "pending_character_interaction_left_disabled" if not enabled
                  else "pending_character_interaction_left_unsupported",
         "selected_step": step if enabled and reachable else None,
-        "reason": (presentation_decision["reason"] if presentation_decision is not None else known["reason"] if known is not None else "Capture this unfamiliar native request, then choose its first visible enabled reply in source-proved GUI order through MCP under the owner's continuation policy.")
+        "reason": (known["reason"] if known is not None else "Capture this unfamiliar native request, then choose the source-proved GUI left reply through MCP under the owner's continuation policy.")
                   if enabled and reachable else "The selected native reply is unavailable; preserve the actual choice list and mechanism diagnosis.",
         "pending_character_interaction": copy.deepcopy(pending),
         "decision": {"classification": classification, "registry_known": known is not None,

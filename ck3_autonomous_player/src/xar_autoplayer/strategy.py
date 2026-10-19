@@ -2859,6 +2859,8 @@ def _degraded_pending_interaction_decision(
         if isinstance(definition_key, str)
         else None
     )
+    from .pending_arrange_marriage_source_v1 import source_reviewed_arrange_marriage_evidence_v1
+    marriage_allowlist_evidence = source_reviewed_arrange_marriage_evidence_v1(context, marriage_allowlist_evidence)
     marriage_contract_gaps = (
         _arrange_marriage_reject_contract_gaps(context)
         if isinstance(marriage_allowlist_evidence, dict)
@@ -3055,8 +3057,8 @@ def _degraded_pending_interaction_decision(
                             "ck3-1.19.0.6-exact-grant-vassal-reject-only-v1"
                             if classification == "known_grant_vassal_reject_only"
                             else (
-                                "ck3-1.19.0.6-explicit-marriage-special-reject-"
-                                "only-v1"
+                                marriage_allowlist_evidence.get("source_policy",
+                                    "ck3-1.19.0.6-explicit-marriage-special-reject-only-v1")
                                 if classification == "known_marriage_special"
                                 else (
                                     "ck3-1.19.0.6-explicit-ordinary-"
@@ -7922,7 +7924,19 @@ def choose_one_life_turn(
         plan = choose_source_reviewed_populist_refusal_v1(
             plan, snapshot=snapshot, action_steps=steps)
 
-    if (plan.get("selected_step") is None
+    from .pending_arrange_marriage_source_v1 import (
+        is_blocked_arrange_marriage_reply_v1, continue_without_blocked_marriage_reply_v1)
+
+    blocked_marriage_reply = is_blocked_arrange_marriage_reply_v1(plan)
+    if blocked_marriage_reply:
+        plan = continue_without_blocked_marriage_reply_v1(
+            plan, snapshot=snapshot, action_steps=steps,
+            choose_ordinary=lambda projection, ordinary_steps: _choose_one_life_turn_core(
+                commands, snapshot=projection, action_steps=ordinary_steps,
+                bridge_capabilities=capabilities, next_run_plan=next_run_plan,
+                battle_speed_readiness=battle_speed_readiness))
+
+    if (not blocked_marriage_reply and plan.get("selected_step") is None
             and isinstance(plan.get("phase"), str) and plan["phase"].startswith("pending_")
             and not isinstance(plan.get("unhandled_interaction_fallback"), dict)):
         from .pending_interaction_fallback import plan_pending_interaction_left_reply_v1
@@ -13708,6 +13722,17 @@ def _choose_one_life_turn_core(
                     )
                     if retained_edge_watch is not None:
                         return retained_edge_watch
+                    land_edge_watch = _land_retained_unsafe_edge_one_day_watch_plan(
+                        rows, snapshot, pursuit_army, passive_route_audit,
+                        controlled_armies=controlled_armies,
+                        active_assaults=active_assaults,
+                        route_rejections=route_rejections,
+                        available_steps=available_steps,
+                        available_capabilities=available_capabilities,
+                        war_summary=war_summary,
+                    )
+                    if land_edge_watch is not None:
+                        return land_edge_watch
                     defensive_risk_day = _stationary_timeline_unavailable_defensive_one_day_plan(
                         rows, snapshot, pursuit_army,
                         current_province_id=current_province_id,
@@ -21617,6 +21642,111 @@ def _retained_unsafe_edge_one_day_watch_plan(
         },
         "route_rejections": route_rejections,
         "active_wars": war_summary,
+    }
+
+
+def _land_retained_unsafe_edge_one_day_watch_plan(
+    commands: list[dict[str, object]], snapshot: dict[str, object],
+    army: object, audit: object, *, controlled_armies: list[dict[str, object]],
+    active_assaults: list[dict[str, object]], route_rejections: list[dict[str, object]],
+    available_steps: set[str], available_capabilities: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Observe a real post-Halt retained land edge after safe exits are exhausted."""
+    if not isinstance(snapshot, dict) or not isinstance(army, dict) or not isinstance(audit, dict):
+        return None
+    player = snapshot.get("played_character")
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    wars = snapshot.get("active_wars")
+    army_id = _public_cunit_int(army.get("army_id"))
+    route = army.get("route_province_ids")
+    required_caps = {
+        "game.command.research-arm-tactical-daily-sentinel-v1-N",
+        "game.command.research-query-tactical-daily-sentinel-v1",
+        "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+    }
+    if not (
+        snapshot.get("paused") is True and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and snapshot.get("one_life_terminal") is not True
+        and snapshot.get("episode_identity_pending") is not True
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and isinstance(player, dict) and player.get("alive") is True
+        and isinstance(controlled_armies, list) and len(controlled_armies) == 1
+        and controlled_armies[0] is army
+        and army_id is not None and army.get("controllable") is True
+        and army.get("owner_character_id") == player.get("character_id")
+        and army.get("army_state") == "moving" and army.get("army_state_code") == 7
+        and army.get("in_combat") is False and army.get("retreating") is False
+        and army.get("route_read_status") == "complete_nonempty"
+        and isinstance(route, list) and len(route) == 1
+        and type(route[0]) is int and route[0] > 0
+        and army.get("move_target_province_id") == route[0]
+        and isinstance(wars, list) and bool(wars) and not active_assaults
+        and required_caps <= available_capabilities
+        and {"life-advance-one-day", "set-speed-1", "resume-map", "pause-map"} <= available_steps
+        and isinstance(route_rejections, list) and bool(route_rejections)
+        and all(isinstance(item, dict) and item.get("status") in {
+            "blocked", "unsafe", "contact_timeline_unsafe"
+        } for item in route_rejections)
+        and audit.get("contact_policy") == "blocked_without_qualified_combat_permission"
+    ):
+        return None
+    hostile_ids: set[int] = set()
+    for war in wars:
+        if not isinstance(war, dict) or not isinstance(war.get("enemy_armies"), list):
+            return None
+        for enemy in war["enemy_armies"]:
+            if not isinstance(enemy, dict):
+                return None
+            if enemy.get("retreating") is True:
+                continue
+            enemy_id = _public_cunit_int(enemy.get("army_id"))
+            if enemy_id is None:
+                return None
+            hostile_ids.add(enemy_id)
+    if not 0 < len(hostile_ids) <= MAX_ROUTE_CONTACT_HOSTILE_IDS:
+        return None
+    pending = _pending_unsafe_route_halt(commands, snapshot, army_id=army_id)
+    if not (isinstance(pending, dict)
+            and pending.get("suffix_cancellation_observed") is True
+            and pending.get("current_edge_retained") is True):
+        return None
+    horizon = _fresh_route_contact_horizon(
+        commands, snapshot, army_id=army_id,
+        origin_province_id=army.get("current_province_id"),
+        target_province_id=route[0], hostile_army_ids=tuple(sorted(hostile_ids)),
+        route_province_ids=route,
+    )
+    if not (isinstance(horizon, dict) and horizon == audit.get("contact_horizon")
+            and horizon.get("status") == "available"
+            and horizon.get("one_day_contact_free") is False
+            and isinstance(horizon.get("conflicts"), list) and bool(horizon["conflicts"])):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_land_retained_unsafe_edge_one_day_watch",
+        "selected_step": "life-advance-one-day",
+        "reason": "the original native Halt canceled the future tail, but a fresh readback retains the first land edge and every safe replan was rejected; observe one native-stopped day of possible contact, then re-read army, battle and event state",
+        "retained_edge_watch": {
+            "army_id": army_id, "current_province_id": army.get("current_province_id"),
+            "target_province_id": route[0], "route_province_ids": list(route),
+            "hostile_army_ids": sorted(hostile_ids), "halt_submission": pending,
+            "contact_horizon": horizon, "source_snapshot_id": snapshot.get("snapshot_id"),
+            "source_public_revision": snapshot.get("revision"),
+            "source_native_revision": snapshot.get("native_revision"),
+            "source_date_raw": snapshot.get("date_raw"),
+            "contact_free_proven": False, "contact_status": "unsafe",
+            "in_day_contact_or_defeat_possible": True, "movement_resubmitted": False,
+            "offensive_combat_permission": False, "war_or_material_credit": False,
+            "maximum_observation_days": 1,
+            "native_clock_scope": "exact_one_day_date_only_a0",
+            "native_watch_army_ids": [],
+            "in_day_army_event_actor_watch": False,
+            "next_paused_frame_army_event_actor_read_required": True,
+        },
+        "route_rejections": route_rejections, "active_wars": war_summary,
     }
 
 

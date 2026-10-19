@@ -1924,7 +1924,15 @@ class NativeHeadlessGameplayDriver:
         war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
         episode_projection: str = "one_life",
         allow_private_prewar_force_coalition_query: bool = False,
+        allow_war_daily_watch_v1: bool = False,
     ) -> None:
+        if type(allow_war_daily_watch_v1) is not bool:
+            raise ValueError("war daily watch permission must be an explicit boolean")
+        # Software candidate only: its speed-two scope never grants route or
+        # battle A/B readiness. A failed/unknown attempt stays latched here.
+        self._allow_war_daily_watch_v1 = allow_war_daily_watch_v1
+        self._war_daily_watch_pending_v1 = False
+        self._war_daily_watch_history_checked_v1 = False
         if type(allow_private_prewar_force_coalition_query) is not bool:
             raise ValueError("private prewar force/coalition permission must be an explicit boolean")
         self.allow_private_prewar_force_coalition_query = allow_private_prewar_force_coalition_query
@@ -25066,6 +25074,26 @@ class NativeHeadlessGameplayDriver:
             # Reuse the exact-day end condition for the observed stationary
             # siege; other one-day policies keep their existing contracts.
             exact_one_day = True
+        from .war_daily_watch_v1 import select_war_daily_watch_v1, unresolved_history_v1
+        # A restored unknown timeline action remains unsafe even when this
+        # candidate is OFF: disabling it cannot authorize generic replay.
+        if not getattr(self, "_war_daily_watch_history_checked_v1", False):
+            with self._history_lock:
+                if unresolved_history_v1(self._command_history):
+                    self._war_daily_watch_pending_v1 = True
+            self._war_daily_watch_history_checked_v1 = True
+        war_daily_watch = select_war_daily_watch_v1(
+            starting, enabled=getattr(self, "_allow_war_daily_watch_v1", False),
+            exact_one_day=exact_one_day, result_step=result_step,
+            proof_kind=exact_one_day_proof_kind,
+            bridge_capabilities=bridge_capabilities, action_steps=primitive_steps,
+            assault_in_progress=bool(open_assaults or unresolved_assaults
+                                     or _player_assault_in_progress(starting)),
+        )
+        if getattr(self, "_war_daily_watch_pending_v1", False):
+            raise BridgeUnavailableError("war daily watch previous attempt is unresolved; replay is forbidden")
+        if war_daily_watch is not None:
+            timeline_speed, timeline_policy = 2, "war_daily_watch_v1"
         speed_step = f"set-speed-{timeline_speed}"
         if speed_step not in self.capabilities()["action_steps"]:
             raise BridgeUnavailableError(
@@ -25092,9 +25120,17 @@ class NativeHeadlessGameplayDriver:
             reached_progress_postcondition = True
         elif (exact_one_day and _TACTICAL_DAILY_SENTINEL_REQUIRED_CAPABILITIES
                 <= bridge_capabilities):
-            current, sentinel_receipt = self._advance_exact_day_with_sentinel(
-                starting, speed=timeline_speed, actions=actions
-            )
+            if war_daily_watch is not None:
+                self._war_daily_watch_pending_v1 = True
+            if war_daily_watch is None:
+                current, sentinel_receipt = self._advance_exact_day_with_sentinel(
+                    starting, speed=timeline_speed, actions=actions)
+            else:
+                current, sentinel_receipt = self._advance_exact_day_with_sentinel(
+                    starting, speed=timeline_speed, actions=actions,
+                    war_daily_watch=war_daily_watch)
+            if war_daily_watch is not None:
+                self._war_daily_watch_pending_v1 = False
             reached_progress_postcondition = True
         else:
             speed_result = self._execute_composite_primitive(
@@ -25158,6 +25194,8 @@ class NativeHeadlessGameplayDriver:
                 )
         else:
             progress_status = "postcondition"
+        if war_daily_watch is not None and sentinel_receipt.get("boundary_interrupted") is not None:
+            progress_status = "boundary_interrupted"
 
         modal_interrupt_hint = _life_advance_new_modal_hint(current, starting)
         if (modal_interrupt_hint is not None
@@ -25327,6 +25365,15 @@ class NativeHeadlessGameplayDriver:
             )
         if sentinel_receipt is not None:
             result["exact_day_native_clock"] = sentinel_receipt
+            if war_daily_watch is not None:
+                result["war_daily_watch_v1"] = {
+                    "scope": "war_daily_watch_v1", "speed": 2,
+                    "watch_army_ids": list(war_daily_watch.watch_army_ids),
+                    "roster_basis": "all_published_player_allied_enemy_regular_cunits",
+                    "physical_inventory_completeness_claimed": False,
+                    "native_intra_day_event_actor_watch_claimed": False,
+                    "live_qualification_claimed": False,
+                }
         if campaign_deadline is not None:
             result["campaign_deadline_v1"] = campaign_deadline
         if campaign_clock_receipt is not None:
@@ -25339,16 +25386,20 @@ class NativeHeadlessGameplayDriver:
         *,
         speed: int,
         actions: list[dict[str, object]],
+        war_daily_watch: object | None = None,
     ) -> tuple[dict[str, object], dict[str, object]]:
         """Stop the actual daily callback before polling can pass another day."""
         starting_date_raw = _date_raw(starting, "exact-day starting snapshot")
         target_date_raw = starting_date_raw + 24
+        watch_army_ids = (() if war_daily_watch is None else war_daily_watch.watch_army_ids)
         arm_step = (
             f"{_TACTICAL_DAILY_SENTINEL_ARM_PREFIX}{starting_date_raw}"
-            f"-to-{target_date_raw}-speed-{speed}-mode-terminal-a-0"
+            f"-to-{target_date_raw}-speed-{speed}-mode-terminal-a-{len(watch_army_ids)}"
+            + ("-" + "-".join(str(army_id) for army_id in watch_army_ids) if watch_army_ids else "")
         )
         current = starting
         arm_status: dict[str, object] | None = None
+        cancel_attempted = False
         try:
             speed_step = f"set-speed-{speed}"
             speed_result = self._execute_composite_primitive(speed_step, current)
@@ -25360,6 +25411,8 @@ class NativeHeadlessGameplayDriver:
             )
             if current.get("speed") != speed:
                 raise BridgeUnavailableError("exact-day clock did not observe its speed")
+            if war_daily_watch is not None and not war_daily_watch.ready_to_arm(current):
+                raise BridgeUnavailableError("war daily watch owner/roster changed before arm")
             arm_result = self._execute_primitive_step(
                 arm_step,
                 expected_revision=None,
@@ -25374,8 +25427,8 @@ class NativeHeadlessGameplayDriver:
                 arm_result, arm_status, arm_step=arm_step,
                 starting_date_raw=starting_date_raw,
                 target_date_raw=target_date_raw, speed=speed,
-                mode="terminal_or_sentinel", watch_army_ids=(),
-                sentinel_scope="exact_one_day",
+                mode="terminal_or_sentinel", watch_army_ids=watch_army_ids,
+                sentinel_scope=("exact_one_day" if war_daily_watch is None else "war_daily_watch_v1"),
             )
             from .clock_observation_timing_v1 import (
                 start_clock_observation_v1, finish_clock_observation_v1,
@@ -25383,25 +25436,55 @@ class NativeHeadlessGameplayDriver:
             clock_observation = start_clock_observation_v1(self, current)
             clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")
             try:
-                current = self._resume_life_advance(
-                    current, actions, native_stop_target_date_raw=target_date_raw
-                )
-                current = self._wait_for_life_advance_snapshot(
-                    current, lambda snapshot: snapshot.get("paused") is True
-                    or _life_advance_new_modal_hint(snapshot, starting) is not None,
-                    timeout_seconds=self.life_advance_timeout_seconds,
-                )
+                if war_daily_watch is not None:
+                    from .war_daily_watch_v1 import resume_once_v1
+                    current = resume_once_v1(self, starting, war_daily_watch, actions)
+                else:
+                    current = self._resume_life_advance(
+                        current, actions, native_stop_target_date_raw=target_date_raw
+                    )
+                    current = self._wait_for_life_advance_snapshot(
+                        current, lambda snapshot: snapshot.get("paused") is True
+                        or _life_advance_new_modal_hint(snapshot, starting) is not None,
+                        timeout_seconds=self.life_advance_timeout_seconds,
+                    )
             finally:
                 finish_clock_observation_v1(self, clock_observation, current)
                 finish_army_timing(clock_wait_timing, step="life-advance",
                     date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
+            if war_daily_watch is not None:
+                if not war_daily_watch.same_owner(current):
+                    raise BridgeUnavailableError("war daily watch actor/episode/connection boundary; no replay")
+                boundary = war_daily_watch.boundary(current)
+                if boundary not in (None, "active_event", "pending_interaction", "exclusive_modal_or_unknown"):
+                    raise BridgeUnavailableError("war daily watch ending frame is unavailable")
+                if boundary is not None and _date_raw(current, "war watch boundary") < target_date_raw:
+                    current = self._pause_life_advance(current, actions)
+                    cancel_step = f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}{arm_status['generation']}"
+                    cancel_attempted = True
+                    canceled = self._execute_primitive_step(cancel_step, expected_revision=None,
+                        required_capability=_TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY,
+                        internal_semantic_snapshot=True)
+                    actions.append({"step": cancel_step, "result": canceled})
+                    if (canceled.get("step") != cancel_step or canceled.get("accepted") is not True
+                            or canceled.get("status") != "canceled"):
+                        raise BridgeUnavailableError("war daily watch boundary cancel unverified; no replay")
+                    fresh = self.take_internal_semantic_snapshot()
+                    if (not war_daily_watch.same_owner(fresh) or fresh.get("paused") is not True
+                            or fresh.get("date_raw") != current.get("date_raw")
+                            or war_daily_watch.boundary(fresh) != boundary):
+                        raise BridgeUnavailableError("war daily watch boundary changed after cancel")
+                    return fresh, {"armed": arm_status, "boundary_interrupted": boundary,
+                                   "canceled": canceled, "scope": "war_daily_watch_v1"}
+                if type(current.get("speed")) is not int or current["speed"] != speed:
+                    raise BridgeUnavailableError("war daily watch ending speed readback changed")
             if (_life_advance_new_modal_hint(current, starting) is not None
                     and current.get("paused") is not True):
                 current = self._pause_life_advance(current, actions)
             if current.get("paused") is not True:
                 raise BridgeUnavailableError("exact-day native clock did not stop the map")
             modal = _life_advance_new_modal_hint(current, starting)
-            if (modal is not None and _date_raw(current, "exact-day modal interrupt")
+            if (war_daily_watch is None and modal is not None and _date_raw(current, "exact-day modal interrupt")
                     < target_date_raw):
                 # Cancel the still armed exact-day sentinel before returning a
                 # zero-day UI interruption.  A missing cancel ACK remains an
@@ -25449,15 +25532,18 @@ class NativeHeadlessGameplayDriver:
                 target_date_raw=target_date_raw,
                 ending_date_raw=ending_date_raw,
                 elapsed_days=(ending_date_raw - starting_date_raw) // 24,
-                speed=speed, mode="terminal_or_sentinel", watch_army_ids=(),
+                speed=speed, mode="terminal_or_sentinel", watch_army_ids=watch_army_ids,
             )
             return current, {"armed": arm_status, "stopped": status}
-        except Exception:
+        except Exception as original_error:
             try:
+                cleanup_frame = self.take_internal_semantic_snapshot()
+                if war_daily_watch is not None and not war_daily_watch.same_connection(cleanup_frame):
+                    raise BridgeUnavailableError("war daily watch cleanup connection changed; no command replay")
                 self._pause_life_advance(
-                    self.take_internal_semantic_snapshot(), actions
+                    cleanup_frame, actions
                 )
-                if arm_status is not None:
+                if arm_status is not None and not cancel_attempted:
                     cancel_step = (
                         f"{_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX}"
                         f"{arm_status['generation']}"
@@ -25471,6 +25557,18 @@ class NativeHeadlessGameplayDriver:
             except Exception as cleanup_error:
                 actions.append({"step": "exact-day-clock-cleanup",
                                 "error": str(cleanup_error)})
+            if war_daily_watch is not None:
+                raise StepPostconditionError(
+                    f"war daily watch unresolved; never replay: {original_error}",
+                    selected_step="life-advance-one-day", step_result={
+                        "schema": "xar.war-daily-watch-unresolved.v1", "never_replay": True,
+                        "owner": list(war_daily_watch.owner), "starting_date_raw": starting_date_raw,
+                        "target_date_raw": target_date_raw, "watch_army_ids": list(watch_army_ids),
+                        "armed": arm_status, "actions": actions,
+                        "original_error_type": type(original_error).__name__,
+                        "original_error": str(original_error),
+                        "native_request_id": getattr(original_error, "request_id", None),
+                    }) from original_error
             raise
 
     def _resume_life_advance(
@@ -29298,7 +29396,7 @@ def _validate_tactical_daily_sentinel_arm(
             or sentinel_scope == "route_contact_window"
             or (
                 sentinel_scope
-                in {"committed_route", "stationary_objective_hold", "exact_one_day", "campaign_date_deadline"}
+                in {"committed_route", "stationary_objective_hold", "exact_one_day", "campaign_date_deadline", "war_daily_watch_v1"}
                 and combat_count == 0
             )
         )
