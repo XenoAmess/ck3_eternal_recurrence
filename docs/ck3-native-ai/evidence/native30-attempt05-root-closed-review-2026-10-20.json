@@ -1,0 +1,31 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:24:54.790193+00:00",
+  "machine_source": "Fresh tools/ck3_live_run_id.py machine, Root8f725e",
+  "spec_sha256": "1e6a2be09101fbd2a32c98ee37c57d156055fa74494edce066a69c6223c39e3f",
+  "root_release_tools": [
+    "b32e6f full SPEC",
+    "a2569a independent SPEC/bootstrap/stage hash"
+  ],
+  "task": "XARG2ManagedOwner-028fad85da114ebe8748de863b241b48",
+  "actual_started_utc": "2026-10-19T19:13:26.587094Z",
+  "status": "FAILED_PRE_NATIVE_WRITE",
+  "actual_closed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner05\\owner-spec\\CLOSED.json",
+    "bytes": 745,
+    "sha256": "ac8997e339d97bb8288a23d8ce411e66c4b46f46e9060da97a6151e4c4034da2"
+  },
+  "stderr": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner05\\owner-spec\\stage.stderr.log",
+    "bytes": 1380,
+    "sha256": "9e7460b60a47f7c654378fba371d310e81da4acc14bc724631c58da5cf20f38c"
+  },
+  "failure": "Historical CMake FileAPI target JSON basename absent after real04 configuration; production source/binaries unchanged. No attempt05 Native directory, configuration or fixture work.",
+  "stage_exit": 1,
+  "bootstrap_exit": 1,
+  "Job_active_after": 0,
+  "forced": false,
+  "exact_task_unregistered_utc": "2026-10-19T19:14:21.443104Z",
+  "unregister_tool": "407231",
+  "next06": "Read frozen original02 semantic graph; fresh current04 FileAPI for all artifacts; whole read-only preflight before new attempt. No CMake reconfiguration or new source copy. No05 success credit."
+}

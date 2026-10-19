@@ -1,0 +1,112 @@
+{
+  "Game_MCP_RPC_calls": 0,
+  "actual_loader": "exact",
+  "analysis": "Source option0 adds freeman to court, conditional grateful opinion25 when root is not arrogant else insult opinion-10, and shy-conditioned stress. Option1 adds symbolic medium_gold_value, target county independent farmlands1825days (control growth factor-0.50, development growth0.25, symbolic fertility), makes freeman disappear and has paranoid-conditioned stress. Option2 gives target county control+20 if below100 else personal ownership modifier1825days/control growth factor0.25, makes freeman disappear, with generous/humble/content/just-conditioned stress. Immediate generates farmer age20..30 with stewardship base10..12, education_stewardship_2/intellect_good_2/diligent; generated final stats are not read back. After silent disappearance applies only when freeman alive/unlanded and root is_ai=yes; the played actor is not assumed AI. Actual ACK and46->null are observed; player gold/prestige/stress unchanged. Court membership, farmer stats/opinion/alive status, title ownership/control and modifiers were not independently observed. Text sale is not proof of actual title transfer; no grant_title statement is in this event.",
+  "before_after": {
+    "after": {
+      "bytes": 3541,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\5f497e9a067442baa8af7dcc1e9cd5a7.after.json",
+      "sha256": "82f317e98602f90100a15d67041cfc3ea912806b68df567bd9bc9b7e0166d0e1"
+    },
+    "before": {
+      "bytes": 7695,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\5f497e9a067442baa8af7dcc1e9cd5a7.before.json",
+      "sha256": "087f729378e828db9d71d61dafc28d6924cff57ce3ec9d57c787eadd86579e73"
+    },
+    "command_acknowledged": true,
+    "event_instance_advanced_verified": true,
+    "incident_id": "5f497e9a067442baa8af7dcc1e9cd5a7",
+    "replay_allowed": false
+  },
+  "binding": {
+    "actor_character_id": 40526,
+    "bridge_pid": 30852,
+    "connection_generation": 3,
+    "date_raw": 53262264,
+    "episode_run_id": "native-40526-1bec95182886",
+    "map_ready": true,
+    "native_revision": 3658,
+    "paused": true,
+    "revision": 991,
+    "snapshot_id": "native:3658"
+  },
+  "canonical": [
+    {
+      "bytes": 19292,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\ed4a0f4760a3e2973590dc0eec925b6440ae12b47d7b811ca234613ea526cd75.json",
+      "sha256": "b444670dc569bbdc1a4e2259d0d31050c44f6551963d34be9a8fcbbd583671a2"
+    },
+    {
+      "bytes": 1342,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\ed4a0f4760a3e2973590dc0eec925b6440ae12b47d7b811ca234613ea526cd75.json",
+      "sha256": "cc9d2514eed3e7dde4ae4295d9b9c2f0ea066a477d1426452b7aedbcde90a244"
+    }
+  ],
+  "definition_sha256": "194ae6fbdbfb09bc345fd35f72c3bccfbe8f4e70c774e6748635953a02ddc5ed",
+  "future_loader": "source_rebound",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "material_effects_verified": false,
+  "observed_at_utc": "2026-10-19T19:21:29.858202+00:00",
+  "observed_resource_deltas": {
+    "gold": {
+      "after_raw": 15465652,
+      "before_raw": 15465652,
+      "delta": 0.0,
+      "scale": 100000
+    },
+    "prestige": {
+      "after_raw": -13465010,
+      "before_raw": -13465010,
+      "delta": 0.0,
+      "scale": 100000
+    }
+  },
+  "observed_stress": [
+    170,
+    170
+  ],
+  "offline_future_calculated_id": 3541051,
+  "projection": {
+    "bytes": 28391,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C18-EVENT-9987-CLOSED.json",
+    "sha256": "d5a00c1c195dd755903b38cea24225229f15245fdb46c4354191ea0db5394b3c"
+  },
+  "provenance": "Only named closed projection/incident files and exact stock source/callee/modifier definitions; production source index and all SDK/Native/strategy files unchanged.",
+  "registry_contract_accepted": false,
+  "schema": "xar.m2-c18-event9987-source-closure/v1",
+  "selection": {
+    "ACK": true,
+    "instance_transition": [
+      46,
+      null
+    ],
+    "native_option_index": 0,
+    "postcondition_verified": true,
+    "public_option_number": 1,
+    "rendered_index": 0
+  },
+  "source_SDK_changes": 0,
+  "source_binding": {
+    "calculated_event_id": 2541051,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "stewardship_wealth.1051",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 3,
+    "option_catalogue_sha256": "f1fa7b7228d6be0daa4b32fd8250381dc03e5053778496431808160d49b543dc",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "1213e6a76a6c465e03a3e4a9177905902f9d3fb23cd751b911d34041e61881bf"
+  },
+  "source_lookup": "Named source absent from committed event index; an exact in-memory path+content-SHA entry drove the existing parser; no persisted source-index or loader changes.",
+  "storage": {
+    "allocated_bytes": null,
+    "future_bytes": 0,
+    "new_gross_bytes": 26288,
+    "physical_credit_bytes": 0,
+    "pool_bytes": 277378,
+    "pool_fingerprints": 11,
+    "prior_pool_bytes": 251090,
+    "prior_pool_fingerprints": 10,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  },
+  "synthetic_id_is_actual_observation": false
+}

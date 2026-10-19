@@ -1,0 +1,43 @@
+{
+  "schema": "native30-fixture06-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:20:32.744233+00:00",
+  "status": "SOURCE_READY_CPP_NOTRUN",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture06-current-config-plan-2026-10-20.json",
+    "bytes": 11522,
+    "sha256": "bcd65529fe49d640cac9f96c173a83de70049826f032123ed33600b7272128de"
+  },
+  "actual_readonly_preflight": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture06-actual-readonly-preflight-2026-10-20.json",
+    "bytes": 8362,
+    "sha256": "2044f198238e6c0e88ee5423edcbc5020c0d151329e8d5b67c194e1479c47685"
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+      "bytes": 30440,
+      "sha256": "5c4daf123f7190e39763ced851bffa3b47b8f63509c20fc87e64bf8d46594de8"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_fixture06_current_graph_20261020.py",
+      "bytes": 5020,
+      "sha256": "c9675aeb720c4614f6e0abde02308e2937df873a9a98171e6222207190ca4257"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_fixture06_source_20261020.py",
+      "bytes": 12938,
+      "sha256": "01c32a4fc82713e9bf4c2c66fe57d9a5b311df8cb78da0aff40c76f4859fef8d"
+    }
+  ],
+  "tests": {
+    "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_fixture06_current_graph_20261020 -q",
+    "actual": "9PASS/0.069s/d6a456"
+  },
+  "source_cap_bytes": 98304,
+  "CPP_changes": 0,
+  "R_Task_Game_writes": 0,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_release_credit_bytes": 0
+}

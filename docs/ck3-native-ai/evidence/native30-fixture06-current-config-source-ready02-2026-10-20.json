@@ -1,0 +1,60 @@
+{
+  "schema": "native30-fixture06-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:22:08.942978+00:00",
+  "status": "SOURCE_READY_CPP_NOTRUN",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture06-current-config-plan02-2026-10-20.json",
+    "bytes": 11814,
+    "sha256": "3eb5b1e69fca1ba184ea4255357a7495cda032c86194e19d272ed019d9426f69"
+  },
+  "actual_readonly_preflight": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture06-actual-readonly-preflight02-2026-10-20.json",
+    "bytes": 8516,
+    "sha256": "e5e5fc0a687a01f8bd8285938afa15a9d7f8610a07f2fe3aa4c6ace8cb017389"
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+      "bytes": 30698,
+      "sha256": "7908118294206e46c1c0ca29503f772e5011e5b2bf53253ec94dd9125561ce7c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_fixture06_current_graph_20261020.py",
+      "bytes": 5020,
+      "sha256": "c9675aeb720c4614f6e0abde02308e2937df873a9a98171e6222207190ca4257"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_fixture06_source_20261020.py",
+      "bytes": 13566,
+      "sha256": "03657ab0fb9692801b313166904f1123520dcca5e4722ba5f1e22186c05365b5"
+    }
+  ],
+  "earlier_readonly_records_preserved": [
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-fixture06-current-config-plan-2026-10-20.json",
+      "bytes": 11522,
+      "sha256": "bcd65529fe49d640cac9f96c173a83de70049826f032123ed33600b7272128de"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-fixture06-current-config-source-ready-2026-10-20.json",
+      "bytes": 1612,
+      "sha256": "06e629399caf9913c96c732bb48facf78bccaa4e8d33cb07233ea24ade48a6d7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/native30-fixture06-actual-readonly-preflight-2026-10-20.json",
+      "bytes": 8362,
+      "sha256": "2044f198238e6c0e88ee5423edcbc5020c0d151329e8d5b67c194e1479c47685"
+    }
+  ],
+  "tests": {
+    "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_fixture06_current_graph_20261020 -q",
+    "actual": "9PASS/0.069s/d6a456+summary-only"
+  },
+  "source_cap_bytes": 98304,
+  "CPP_changes": 0,
+  "R_Task_Game_writes": 0,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_release_credit_bytes": 0
+}

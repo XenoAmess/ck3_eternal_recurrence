@@ -1,0 +1,35 @@
+{
+  "schema": "xar.m5-private-copy-boundary-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T19:13:32Z",
+  "machine_time_source": "python -B tools/ck3_live_run_id.py machine; clock.curr_time",
+  "source": {
+    "file": "ck3_autonomous_player/src/xar_autoplayer/m5_formal_proposal_collector.py",
+    "before_bytes": 36095,
+    "before_sha256": "27e24743ebe5a5b33e049a88406a683ec3b8201208970d35c8664f7d9693c5cf",
+    "bytes": 36154,
+    "sha256": "6488c6f3ab6d930e37d8f9730285214ebbc700a8a6ec968124826b81b1c8172e",
+    "function": "plan_m5_formal_query_only",
+    "reason": "Source15 Service2626-2657 restores owned private_history_views into planned. Collector402 previously deepcopied all planned before406-409 discarded private views. Move this existing filter before deepcopy; public detachment remains.",
+    "reversible_hunk": "@@ -402,9 +402,9 @@\n-    result = deepcopy(dict(planned))\n-    plan = result.get(\"plan\")\n+    # Runner-private views are discarded here; detach only the public result.\n+    cleaned = deepcopy({\n+        key: value for key, value in dict(planned).items()\n+        if not key.startswith(\"_private_\")\n+    })\n+    plan = cleaned.get(\"plan\")\n     if not isinstance(plan, Mapping):\n         raise ValueError(\"M5 formal collector lacks a baseline plan\")\n-    cleaned = {\n-        key: value for key, value in result.items()\n-        if not key.startswith(\"_private_\")\n-    }\n     baseline = deepcopy(dict(plan))",
+    "scope": "Only this prefix changes. No helper/platform, policy, query-frequency, dirty/binding, candidate pruning, cache B/C or family typed changes. D Source15 and frozen C19 inputs not written."
+  },
+  "test": {
+    "file": "ck3_autonomous_player/tests/unit/test_m5_collector_private_copy_boundary.py",
+    "bytes": 4743,
+    "sha256": "995ff4282a0bae29d05db88fca0bf8ae6e0764d8c9faa6a7ae7394e0e1a90366",
+    "command": "python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_m5_collector_private_copy_boundary.py']))",
+    "result": "3 passed in1.59s. Afterwards only an unused pytest import was removed; test functions unchanged.",
+    "coverage": "Private deepcopy bombs are never touched; public nested values stay detached and shared public aliases preserved. Full candidate collector vs original-prefix shadow matches selected query, paused RED, invalid revision, absent plan, None source and typed binding error; reader-call counts match0/1. Private deepcopy side effects are deliberately outside this equivalence contract.",
+    "qualification": "Synthetic software only; no runtime throughput or Native-only speed claim, Game/RPC/activeDriver/SAVE read, deployment or benchmark.",
+    "git_diff_check": "production file exit0"
+  },
+  "storage": {
+    "card": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/M5-A48KiB-M7-TRANSITION96KiB-SOURCE-COMMITMENTS01.json",
+    "card_sha256": "761185e7a3bc992cfe77f832692b64b3502110f27e28715213794b18a122fcca",
+    "complete_cap_bytes": 49152,
+    "future_bytes": 0,
+    "physical_allocated_bytes": "unknown",
+    "retention": "Current future-source adoption and regression evidence;180-day review under repository policy; no cleanup or raw duplicate."
+  }
+}

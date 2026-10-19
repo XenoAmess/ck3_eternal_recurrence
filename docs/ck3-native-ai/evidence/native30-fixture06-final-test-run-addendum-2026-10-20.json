@@ -1,0 +1,13 @@
+{
+  "schema": "native30-fixture06-final-software-test-run-addendum-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:22:08.942978+00:00",
+  "source": "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+  "source_sha256": "7908118294206e46c1c0ca29503f772e5011e5b2bf53253ec94dd9125561ce7c",
+  "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_fixture06_current_graph_20261020 -q",
+  "final_actual": {"passed": 9, "failed": 0, "seconds": 0.060, "tool_exec": "31f1e5"},
+  "earlier_actual": {"passed": 9, "failed": 0, "seconds": 0.069, "tool_exec": "d6a456"},
+  "correction": "The sealed ready02 argument retained the earlier test label plus summary-only. The final source was actually rerun as31f1e5 before the final full read-only preflight. This addendum supplies its precise timing; original records remain unchanged.",
+  "CPP_or_Task_qualification": "NOTRUN",
+  "future_writes": 0
+}

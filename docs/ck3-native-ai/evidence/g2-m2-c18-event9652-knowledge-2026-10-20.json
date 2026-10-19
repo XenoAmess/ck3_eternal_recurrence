@@ -1,0 +1,111 @@
+{
+  "Game_MCP_RPC_calls": 0,
+  "actual_loader": "exact",
+  "analysis": "All3 native source options preserved. Native0 grants source stewardshipXP and a weighted stewardship duel: larger payment or smaller payment+prestige loss; weights/modifiers are not a measured probability. Native1 conditionally increases feudal tax obligation plus angry opinion-10 and trait-conditioned stress. Native2 conditionally reduces taxes+friend relation or grants friendliness20. Actual player gold+10/prestige-150/stress unchanged are separately observed; XP, tax contract, relation and random-roll/toast remain unobserved. The resource pattern is consistent with the smaller-payment branch, not an observed roll.",
+  "before_after": {
+    "after": {
+      "bytes": 3540,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\db166209de914e33ba56f0ad8dbbeca5.after.json",
+      "sha256": "6870492bb28d5cadb2b17f9ee7a14b9c8d86173e00351a4f071cd9af8a17b053"
+    },
+    "before": {
+      "bytes": 6792,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\db166209de914e33ba56f0ad8dbbeca5.before.json",
+      "sha256": "d2e0a0d47d62135b8ed2cce985e00e7b9fa58432e67043bcc9e55a3449730f64"
+    },
+    "command_acknowledged": true,
+    "event_instance_advanced_verified": true,
+    "incident_id": "db166209de914e33ba56f0ad8dbbeca5",
+    "replay_allowed": false
+  },
+  "binding": {
+    "actor_character_id": 40526,
+    "bridge_pid": 30852,
+    "connection_generation": 3,
+    "date_raw": 53251296,
+    "episode_run_id": "native-40526-1bec95182886",
+    "map_ready": true,
+    "native_revision": 3066,
+    "paused": true,
+    "revision": 399,
+    "snapshot_id": "native:3066"
+  },
+  "canonical": [
+    {
+      "bytes": 13818,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\83415b6b252939e89079adb39275de80ff6d366de7690c09795f0b3b8a044a97.json",
+      "sha256": "597cabad131abcff357278511b5873c6f576c91c10ab91cf4ef8bb7093cf746f"
+    },
+    {
+      "bytes": 1426,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\83415b6b252939e89079adb39275de80ff6d366de7690c09795f0b3b8a044a97.json",
+      "sha256": "dfb7353b5b67438a443eeca255c8f4a3ee68b756685f70041e00a14119e90b6d"
+    }
+  ],
+  "definition_sha256": "af7b8f40c30ad4d4758b53676c9fe7e68e77a3a99d58885302cc997b911b61c9",
+  "future_loader": "source_rebound",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "material_effects_verified": false,
+  "observed_at_utc": "2026-10-19T19:08:18.416891+00:00",
+  "observed_resource_deltas": {
+    "gold": {
+      "after_raw": 14030221,
+      "before_raw": 13030221,
+      "delta": 10.0,
+      "scale": 100000
+    },
+    "prestige": {
+      "after_raw": -17550560,
+      "before_raw": -2550560,
+      "delta": -150.0,
+      "scale": 100000
+    }
+  },
+  "observed_stress": [
+    170,
+    170
+  ],
+  "offline_future_calculated_id": 3655021,
+  "projection": {
+    "bytes": 26119,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C18-EVENT-9652-CLOSED.json",
+    "sha256": "5bc8cf1d076ce77ee339b16d34dc586f7f4cc44f7866cfe40aeb1ac87c1ad609"
+  },
+  "provenance": "Only named closed projection/incident files and exact stock source; existing loader. No Game queries.",
+  "registry_contract_accepted": false,
+  "schema": "xar.m2-c18-event9652-source-closure/v1",
+  "selection": {
+    "ACK": true,
+    "instance_transition": [
+      45,
+      null
+    ],
+    "native_option_index": 0,
+    "postcondition_verified": true,
+    "public_option_number": 1,
+    "rendered_index": 0
+  },
+  "source_SDK_changes": 0,
+  "source_binding": {
+    "calculated_event_id": 2655021,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "stewardship_duty.5021",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 3,
+    "option_catalogue_sha256": "d5c0b37d7dbd022bdc2d8a906cc594ba3f7cd503c03caaa3ede058f0f833dda2",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac"
+  },
+  "storage": {
+    "allocated_bytes": null,
+    "future_bytes": 0,
+    "new_gross_bytes": 20137,
+    "physical_credit_bytes": 0,
+    "pool_bytes": 251090,
+    "pool_fingerprints": 10,
+    "prior_pool_bytes": 230953,
+    "prior_pool_fingerprints": 9,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  },
+  "synthetic_id_is_actual_observation": false
+}

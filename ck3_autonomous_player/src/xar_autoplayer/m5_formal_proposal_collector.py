@@ -399,14 +399,14 @@ def plan_m5_formal_query_only(
 ) -> dict[str, object]:
     """Read one private frame and route its proved formal domain choice."""
 
-    result = deepcopy(dict(planned))
-    plan = result.get("plan")
+    # Runner-private views are discarded here; detach only the public result.
+    cleaned = deepcopy({
+        key: value for key, value in dict(planned).items()
+        if not key.startswith("_private_")
+    })
+    plan = cleaned.get("plan")
     if not isinstance(plan, Mapping):
         raise ValueError("M5 formal collector lacks a baseline plan")
-    cleaned = {
-        key: value for key, value in result.items()
-        if not key.startswith("_private_")
-    }
     baseline = deepcopy(dict(plan))
 
     # The only bound source producer is the peaceful building + faction-gift

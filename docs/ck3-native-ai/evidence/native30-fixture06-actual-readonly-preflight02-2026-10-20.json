@@ -1,0 +1,198 @@
+{
+  "schema": "native30-fixture06-actual-readonly-preflight-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "start_utc": "2026-10-19T19:22:02.338087+00:00",
+  "end_utc": "2026-10-19T19:22:08.506725+00:00",
+  "elapsed_seconds": 6.1686535000335425,
+  "status": "PASS_TO_FIRST_NATIVE_WRITE_BOUNDARY",
+  "producer": {
+    "path": "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+    "bytes": 30698,
+    "sha256": "7908118294206e46c1c0ca29503f772e5011e5b2bf53253ec94dd9125561ce7c"
+  },
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "capacity_observation_only_not_new_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FIXTURE-ATTEMPT05-ADMITTED01.json",
+    "bytes": 4158,
+    "sha256": "9a2378abc3d4b69016422c17f2af162c5815c711be3b15688fe9873bb190eba4"
+  },
+  "frozen_source_files": 5355,
+  "selected_compile_rows": 995,
+  "current_target_count": 12,
+  "production_compile_rows": 978,
+  "production_by_target": {
+    "xar_ck3_bridge": 336,
+    "xar_ck3_12002_runtime": 641,
+    "xar_bridge_protocol": 1
+  },
+  "retained_output_SHA_FileID_count": 983,
+  "retained_obj_count": 978,
+  "strict_graph_delta": {
+    "selected_commands": 995,
+    "production_and_other_fixture_argv_identical": true,
+    "old_fixture_argv": [
+      "C:\\PROGRA~1\\MICROS~2\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+      "/nologo",
+      "/TP",
+      "-DNOMINMAX",
+      "-DUNICODE",
+      "-DWIN32_LEAN_AND_MEAN",
+      "-D_UNICODE",
+      "-ID:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\ck3_autonomous_player\\native_bridge\\include",
+      "/DWIN32",
+      "/D_WINDOWS",
+      "/EHsc",
+      "/O2",
+      "/Ob2",
+      "/DNDEBUG",
+      "-std:c++20",
+      "-MD",
+      "/W4",
+      "/WX",
+      "/Gy",
+      "/permissive-",
+      "/EHsc",
+      "/utf-8",
+      "/UNDEBUG",
+      "/FoCMakeFiles\\xar_ck3_camera_tracking_v1_test.dir\\src\\camera_tracking_v1_test.cpp.obj",
+      "/FdCMakeFiles\\xar_ck3_camera_tracking_v1_test.dir\\",
+      "/FS",
+      "-c",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\ck3_autonomous_player\\native_bridge\\src\\camera_tracking_v1_test.cpp"
+    ],
+    "new_fixture_argv": [
+      "C:\\PROGRA~1\\MICROS~2\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+      "/nologo",
+      "/TP",
+      "-DNOMINMAX",
+      "-DUNICODE",
+      "-DWIN32_LEAN_AND_MEAN",
+      "-D_UNICODE",
+      "-ID:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\source\\ck3_autonomous_player\\native_bridge\\include",
+      "/DWIN32",
+      "/D_WINDOWS",
+      "/EHsc",
+      "/O2",
+      "/Ob2",
+      "/DNDEBUG",
+      "-std:c++20",
+      "-MD",
+      "/W4",
+      "/WX",
+      "/Gy",
+      "/permissive-",
+      "/EHsc",
+      "/utf-8",
+      "/UNDEBUG",
+      "/FoCMakeFiles\\xar_ck3_camera_tracking_v1_test.dir\\native30-fixture04\\camera_tracking_v1_test.cpp.obj",
+      "/FdCMakeFiles\\xar_ck3_camera_tracking_v1_test.dir\\",
+      "/FS",
+      "-c",
+      "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\native30-fixture04\\camera_tracking_v1_test.cpp"
+    ]
+  },
+  "current_FileAPI": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_native_layout_report_v1-Release-19cf72bdf6ca057b69e4.json",
+      "bytes": 13883,
+      "sha256": "0d82af95eea06c4e897ce31383ee4c4bcb6957624924b4fd6caeebd660a7c2ac"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_main_thread_query_mailbox_v1_test-Release-3c5f795771817523661b.json",
+      "bytes": 4695,
+      "sha256": "0e29b3745b6e37508296027769e432064af00b0688eacb3656db521f0c5ecbea"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_player_faction_alerts_v1_mailbox_test-Release-4e69a9dc34536c61fffd.json",
+      "bytes": 3205,
+      "sha256": "f95f2404f64f1cb48ed0d8450467215b369a399d92754ec2fd80de2df4dc5080"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_12004_faction_adopted_whole_test-Release-a49c54c111fdd3793981.json",
+      "bytes": 105565,
+      "sha256": "a0310e3bebbb90961bce51abe1c80d443dd26b6b120c8b0af3595434f4f9db0d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_bridge_protocol-Release-0e97996059db188c2111.json",
+      "bytes": 2442,
+      "sha256": "6c5751a00ba0e94d89f0304481e48e17c3bc6680f0d31706dfcd44cd8e305d7d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_12002_runtime-Release-63bfb56edfe825fc37d7.json",
+      "bytes": 177243,
+      "sha256": "d4f06be6043c9a6c20fea403da305d952f5f4a48a2dfa12d804cfb49491393d8"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-85c8a204965cb34c972f.json",
+      "bytes": 116879,
+      "sha256": "56b8fccd85879036ba91e0bc6af127c680219cadc9034ec275d3c1fa410ab4e6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_subrealm_v1_test-Release-3e93298d5e9f12b684bc.json",
+      "bytes": 4475,
+      "sha256": "6978898100bef9f9be9fc5beb56bbe72e6397acd11b753fc3d765d38c708d56b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_realm_camera_geometry_v1_test-Release-d881b56e02b39164ee68.json",
+      "bytes": 3650,
+      "sha256": "195c05a51c75fb3174abe299fd1e91766729d925f207e946a81d6db9169d9469"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_follow_pending_v1_test-Release-e05850bec8b8db4593ba.json",
+      "bytes": 3843,
+      "sha256": "4edf08abe60cc83d07e4886f8f1fd2d875841cad2a2b0088b2a102ebe7999766"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_settle_diagnostics_v1_test-Release-6d938b79be271aa6a69c.json",
+      "bytes": 3674,
+      "sha256": "a8160752dcdd0b5a0a622e16509f8bae6e6ecfbc17f45437acc8a2382471e436"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_camera_tracking_v1_test-Release-fb646d242f2762ef9005.json",
+      "bytes": 4143,
+      "sha256": "7de0a7dcc140fae601ebd4158dbaa1368eeb873a7cf90c18cf12496109890d73"
+    }
+  ],
+  "known_not_generated": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\xar_ck3_bridge.pdb",
+      "role": "known_not_generated",
+      "observed_absent": true,
+      "prior_closed_inventory_absent": true,
+      "FileAPI_prediction": {
+        "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-85c8a204965cb34c972f.json",
+        "bytes": 116879,
+        "sha256": "56b8fccd85879036ba91e0bc6af127c680219cadc9034ec275d3c1fa410ab4e6"
+      },
+      "actual_link": {
+        "source_log": {
+          "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\actual-generated-commands.log",
+          "bytes": 5650066,
+          "sha256": "35d50d64e941086ac18df500f5c313c637ae95456672a9b77b0e01db97585316"
+        },
+        "line": 981,
+        "line_sha256": "5745fdd72cee9597e61bbbd58c503434b2c5c9ea12cdfeb5c4c752086cdb2753",
+        "line_bytes": 620,
+        "link_options": {
+          "out": [
+            "xar_ck3_bridge.dll"
+          ],
+          "pdb": [
+            "xar_ck3_bridge.pdb"
+          ],
+          "incremental": [
+            "no",
+            "no"
+          ]
+        }
+      }
+    }
+  ],
+  "protected_failed_evidence_files": 52,
+  "readonly_leases_closed_after_check": true,
+  "first_Native_write": "ATTEMPT.mkdir follows shared preflight only in execute; NOTRUN here",
+  "configure_build_Task_Game_calls": 0,
+  "R_writes": 0,
+  "future_writes": 0
+}

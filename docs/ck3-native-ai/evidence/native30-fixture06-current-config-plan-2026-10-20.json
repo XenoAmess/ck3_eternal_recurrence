@@ -1,0 +1,179 @@
+{
+  "schema": "native30-fixture06-current-config-plan-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:19:59.912887+00:00",
+  "status": "SOURCE_READY_NOT_EXECUTION_ADMISSION",
+  "root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01",
+  "attempt_root": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt06",
+  "producer": {
+    "path": "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+    "bytes": 30440,
+    "sha256": "5c4daf123f7190e39763ced851bffa3b47b8f63509c20fc87e64bf8d46594de8"
+  },
+  "files": [
+    "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+    "tools/g2_saved_campaign/test_native30_fixture06_current_graph_20261020.py",
+    "tools/g2_saved_campaign/seal_native30_fixture06_source_20261020.py",
+    "docs/ck3-native-ai/evidence/native30-fixture06-current-config-plan-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-fixture06-actual-readonly-preflight-2026-10-20.json",
+    "docs/ck3-native-ai/evidence/native30-fixture06-current-config-source-ready-2026-10-20.json"
+  ],
+  "helper_pins": {
+    "ck3_autonomous_player/native_bridge/src/camera_tracking_v1_test.cpp": "6393d0168cdf4ffc4b701c4a349dacc1d7ed3cac51ec8fece409d245e35ed9c1",
+    "tools/g2_saved_campaign/build_native30_resume_20261019.py": "d4298f56dba6eabd8ccd0b95ba15eea090be55f51917149a4b3e279b177ee968",
+    "tools/g2_saved_campaign/native30_resume_guard_20261019.py": "97330a4086bf13df858708935226cb8f6838294c6f5ac51eec8ee2767b925e5d",
+    "tools/g2_saved_campaign/native30_msvc_auxiliary_policy_20261019.py": "5236ebbc53fb640567c2af31fe21ca375a43bfb908efc258f9ba0004746a255d",
+    "tools/g2_saved_campaign/build_native30_wholeclean_20261019.py": "db51b7e5b37083cf803f4b1611dd714dec197f4e0c559a688d22781f2ef07c00",
+    "docs/ck3-native-ai/evidence/native30-wholeclean-producer-plan-2026-10-19.json": "d9a44fc874bd253425626712eb17131f6986de5db17b74c5200b53cea3932bdb",
+    "docs/ck3-native-ai/evidence/native29-production-compile-macro-provenance-2026-10-19.json": "ccffb26fe48e49bae5045cc25cc58a24c1f0ca2cc5d8db0f84d0fcbb8f4b1e8d",
+    "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json": "0e0ca135fc5b3fa5edba470e5b736e11f0e3f7a187ba55c770d249adc8c08be4",
+    "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json": "cfd0302f1a0cd2800cb203fd8228725b20757146276b7847ebe5d3cc68e5d69e"
+  },
+  "prior_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\RESULT.json",
+      "bytes": 18031,
+      "sha256": "463ecf78743479acbb4315868e8901478bc2837a93e3f8c0edde1ffb14430cb6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\FILES-CLOSED.json",
+      "bytes": 1349215,
+      "sha256": "e4fe151c3c4648cdd27297eba25c11dfc5f861d6f2fd1fc09e70dd9cf0f382e1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\selected-fileapi-graph.json",
+      "bytes": 6186111,
+      "sha256": "5fce8ce90b7acb8cec9925557a87598dbfa907a0011dda551eba1d975b02e565"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\runtime-source-macro-restore.cmake",
+      "bytes": 807,
+      "sha256": "e99511202bab46b24e37b9cf4b1e9d31eb6e9ce3612bf8f078dba131f05d2e02"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt02\\actual-generated-commands.log",
+      "bytes": 5650066,
+      "sha256": "35d50d64e941086ac18df500f5c313c637ae95456672a9b77b0e01db97585316"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\evidence\\FILES-CLOSED.json",
+      "bytes": 1162955,
+      "sha256": "5b9b052bc07c25fa55ef0c11186324257ef6b2cf099c5084eb6fdf175bdfd7c4"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\evidence\\source-freeze.json",
+      "bytes": 1560447,
+      "sha256": "648b3ff2e7cd01f6e8c46490dc78a457fbcf716af17dcc78a45c8c1c356ec590"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\RESULT.json",
+      "bytes": 6654,
+      "sha256": "5fa7bd16db79891064aedb7347dbbd19fddf0dd360b926201ddd7f817af92c38"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\FILES-CLOSED.json",
+      "bytes": 1350382,
+      "sha256": "91286e073a1b8566e7515cb17b2f0673288c590b5ecbdb8b8037242c4ce30a4e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\fixture-only-override.cmake",
+      "bytes": 1277,
+      "sha256": "50e9c204233573558bd6b11789240e6fdf7ebbc043f2c098e34804fee35f3db6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\build\\native30-fixture04\\camera_tracking_v1_test.cpp",
+      "bytes": 2647,
+      "sha256": "6393d0168cdf4ffc4b701c4a349dacc1d7ed3cac51ec8fece409d245e35ed9c1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner04\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "9ea77b19db536fde6ec71460470a938e32b40e3eba5da9cbb524efc93bd253c5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner04\\owner-spec\\argv-difference02.json",
+      "bytes": 1325,
+      "sha256": "238a2df4439e4906e172acf8a492476ba44605ae2e0fc170ab60e46d380c1b06"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner05\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "ac8997e339d97bb8288a23d8ce411e66c4b46f46e9060da97a6151e4c4034da2"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner05\\owner-spec\\stage.stderr.log",
+      "bytes": 1380,
+      "sha256": "9e7460b60a47f7c654378fba371d310e81da4acc14bc724631c58da5cf20f38c"
+    }
+  ],
+  "inventory": "docs/ck3-native-ai/evidence/native30-existing-config-output-inventory-2026-10-19.json",
+  "binding": "docs/ck3-native-ai/evidence/native30-msvc-auxiliary-file-binding-2026-10-19.json",
+  "budget": {
+    "same_aggregate_hard_bytes": 1610612736,
+    "prior_retained_allocation_bytes": 662128560,
+    "new_reservation_bytes": 0,
+    "source_cap_bytes": 100663296,
+    "metadata_cap_bytes": 83886080,
+    "TEMP_cap_bytes": 402653184,
+    "phase_reserve_bytes": 268435456,
+    "jobs": "int1..4 BELOW_NORMAL/noMP",
+    "charge": "oldretained+allnewwrites under max(aggregate EOF,AllocationSize)",
+    "physical_credit_bytes": 0
+  },
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "new_reservation_bytes": 0,
+  "old_failure_preserved": {
+    "04": {
+      "status": "FAILED_PRESERVED",
+      "error": "fixture flags/includes/tool changed beyond source/object paths",
+      "configure_root_exit": 0,
+      "owned_active_after": 0,
+      "fixture_builds": 0,
+      "production_recompiled": false,
+      "unregistered_at_utc": "2026-10-19T18:56:20.067052+00:00",
+      "Task": "XARG2ManagedOwner-2fd22e9a31ef43c29407323d7f8b5cfa",
+      "actual_projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner04\\owner-spec\\argv-difference02.json",
+        "bytes": 1325,
+        "sha256": "238a2df4439e4906e172acf8a492476ba44605ae2e0fc170ab60e46d380c1b06"
+      },
+      "cause": "Both row.output are absolute and both /Fo command tokens relative;04 normalized string spellings instead of resolving the token under row.directory. Exactly one token differed; other27 were identical."
+    },
+    "05": "FAILED before mkdir/configure/fixture: obsolete original FileAPI basename; stage1/bootstrap1/Job0, exactunregister19:14:21.443104Z, Native attempt05 absent"
+  },
+  "scope": [
+    "No configure, new generated fixture or override. Use actual04 root0 configured tree and fixed COPY04/overlay04. Only newattempt06 evidence/TEMP; no production rebuild or relink.",
+    "Historical authority is the pinned original02 graph995 selected rows/12 semantic link contracts, exact production output provenance and closed metadata. Do not reopen obsolete FileAPI reply names from that historical graph.",
+    "Fresh base.graph is the only current FileAPI/targets/artifacts authority. Full source/include/system/mandatory/macros/assertions graph validation and strict original02→current04 all995 ordered argv/all12 link/artifact equality remain; only the admitted camera fixture source/object paths normalize.",
+    "Same exact5355 Git704 blobs and977 production objects plus DLL/lib/map SHA/FileID/read-only/no-delete leases; current FileAPI files leased too. Failed04 fixed source,overlay,RESULT protected; failed05 metadata preserved. Input unknown or drift fails closed.",
+    "One shared preflight function is run to the first Native write boundary both during source qualification and final execution. Source preflight uses the still-valid old05 card for capacity observation only; it does not admit06 or bypass final newcard/commit validation.",
+    "Actual execution first Ninja production -n must report no work, then all9 named fixtures sequentially, actual exactDefender verified_requested_paths, retained assertions/WX, layoutreport postchecker, dependency paths,5exports,unique3component archivepayloads/required map symbols,whole noPDB/ILK and final immutable inputs."
+  ],
+  "unchanged_noPDB_contract": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture04-nopdb-plan-2026-10-19.json",
+    "bytes": 13138,
+    "sha256": "80ec3a5de3dc304ff163ee5b3300a7bc2340d641fabc35212bd65629391fc118"
+  },
+  "execution_argv_after_commit_card_Rootrelease": [
+    "py",
+    "-B",
+    "tools/g2_saved_campaign/qualify_native30_fixture06_20261020.py",
+    "--plan",
+    "docs/ck3-native-ai/evidence/native30-fixture06-current-config-plan-2026-10-20.json",
+    "--admission",
+    "<new exact card>",
+    "--admission-sha256",
+    "<new exact SHA>",
+    "--execute"
+  ],
+  "new_Task": {
+    "owner_spec": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner06\\owner-spec",
+    "prepare_module": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\interactive_task_owner_c16.py",
+    "bootstrap": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner01\\interactive_task_owner_v1.py",
+    "both_source_SHA": "c0d76a7064996cafd7412f8f39ba2bb5c5cb6271627246b84e946c00bafb864f",
+    "contract": "Existing independent c0module/c0bootstrap; noaf9/nocopy/nohardlink. Newmetadata card, create-only owner06/absentspec, native_build role, canonical backslashadmissionargv. Root directSPECread then register→readback→runonce. Actualexit/Job0 beforeunregister."
+  },
+  "qualification": "Read-only actual preflight and focused software tests only; no06 compiler/fixture/Defender/Game qualification. Old02/04/05 FAILED remain unchanged.",
+  "Native_Task_Game_started": false,
+  "future_source_writes_after_seal": 0
+}
