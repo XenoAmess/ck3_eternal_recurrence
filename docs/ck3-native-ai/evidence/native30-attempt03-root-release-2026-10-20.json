@@ -1,0 +1,39 @@
+{
+  "schema": "xar.native30-fixture03-root-execution-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:11:21.801251+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine tool8f725e",
+  "SPEC": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner03\\owner-spec\\SPEC.json",
+    "bytes": 2062,
+    "sha256": "b4149e345dfd6ce918982daa335aed91d897a4416bcc062d8196ceac11ad653b"
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner01\\interactive_task_owner_v1.py",
+      "bytes": 26268,
+      "sha256": "c0d76a7064996cafd7412f8f39ba2bb5c5cb6271627246b84e946c00bafb864f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_native30_fixture03_20261019.py",
+      "bytes": 24116,
+      "sha256": "8304a9ad5a970d1cfd2e1a1ce428abee51d2c3e3bb5961e7907b14a674de1d31"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\native30-fixture03-qualification-plan-2026-10-19.json",
+      "bytes": 10814,
+      "sha256": "c638458c8c840071aca86f779463a3e86ec9acb0341422ed5f0cb9e896763e6b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-FIXTURE-ATTEMPT03-ADMITTED01.json",
+      "bytes": 2818,
+      "sha256": "799f6b87af203af254d8ec4a0373aabe43d4c28d735f6eff2259a87d0601bf1e"
+    }
+  ],
+  "direct_SPEC_review_tool": "204fe6",
+  "qualification": "29 focused source tests PASS; M1 and M3 independent source reviews no blocking; actual original producer.validate_card+baseline PASS",
+  "release": "Unique performance_native operator may register exact Task, inspect actual action/readback, run once, preserve actual STARTED/RESULT/CLOSED and unregister only after genuine closedJob0. No second writer.",
+  "scope": "Fixtures only, production977 outputs held read-only and ninja no-work required; jobs4/BelowNormal, existing same1.5GiB including659564464 retained; no Game/SDK/OBS/desktop/CAS changes or deployment",
+  "Game_source_boundary": "Current Game remains Native29; attempt02 FAILED retained. Nine actual fixtures and complete artifact evidence required before offlinequalified; actual camera behavior still unproven.",
+  "new_Source_or_capacity_gate": false
+}

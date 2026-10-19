@@ -1,0 +1,93 @@
+{
+  "Game_MCP_RPC_calls": 0,
+  "SDK_source_changes": 0,
+  "actor_character_id": 40526,
+  "actual_choice": {
+    "ACK": true,
+    "native_option_index": 0,
+    "postcondition_verified": true,
+    "public_option_number": 1,
+    "rendered_index": 0,
+    "window_transition": [
+      33,
+      null
+    ]
+  },
+  "actual_game_pid": 30852,
+  "baseline": {
+    "rejected_entries": [],
+    "status": "unknown"
+  },
+  "before_after": {
+    "after": {
+      "bytes": 3533,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\24f160974b634043bdd5bfde104e1fa4.after.json",
+      "sha256": "ee63b3ae815423773f45c3b099a8476c0a34d91e1050691b117f1359138fdd4b"
+    },
+    "before": {
+      "bytes": 6012,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\24f160974b634043bdd5bfde104e1fa4.before.json",
+      "sha256": "9bbc2c995205d35796b6f6497515830b49306808b8fa34996f8a12fc44173e22"
+    },
+    "command_acknowledged": true,
+    "event_instance_advanced_verified": true,
+    "incident_id": "24f160974b634043bdd5bfde104e1fa4",
+    "replay_allowed": false
+  },
+  "canonical": [
+    {
+      "bytes": 10217,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\5dd386bdd50b00af382ee0e75956343096edd7babf8aacf88f6dca4be4013901.json",
+      "sha256": "cc275e1e09cab0397e5a01371692eaa292d911d58f515f3a0aae45c899df69c1"
+    },
+    {
+      "bytes": 1372,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\5dd386bdd50b00af382ee0e75956343096edd7babf8aacf88f6dca4be4013901.json",
+      "sha256": "e529493ba7df249cb88f5c86ee85058cca25b4469dd764525ea776e03d2e0c4d"
+    }
+  ],
+  "connection_generation": 2,
+  "episode_run_id": "native-40526-1bec95182886",
+  "loader_validation": {
+    "current_binding_mode": "exact",
+    "current_calculated_id": 3991110,
+    "synthetic_binding_mode": "source_rebound",
+    "synthetic_future_calculated_id": 4991110,
+    "synthetic_is_actual_observation": false
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "material_effects_verified": false,
+  "observed_at_utc": "2026-10-19T18:13:20.283037+00:00",
+  "projection": {
+    "bytes": 22191,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-8972-CLOSED.json",
+    "sha256": "05f7494f1c0fef47fcb35effb36ae7689a1e5e732a5fe4d99ca135e5d0c68e52"
+  },
+  "provenance": "Closed C17 projection, stock source/callees and offline loader; zero Game queries",
+  "registry_contract_accepted": false,
+  "runtime_SDK_label": "C17",
+  "schema": "xar.g2-m2-c17-health1110-source-closure/v1",
+  "scripted_effect_source": {
+    "effect_sha256": {
+      "recover_from_disease_effect": "643d59d6f52b5da3f8031bf035fae16c5293bd42948f78d523dc8fbc1fc4fd0f",
+      "remove_disease_treatment_effect": "1e9cd7a97e7af2160e439bd8a4174e20aa6ce2223659e5d654aacdefdea84e86"
+    },
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\20_health_effects.txt",
+    "sha256": "abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db"
+  },
+  "source_definition_sha256": "1e81eade1dbda2acc0d970e9ac89332d6ec15c85a600862dc190adfe838c6c90",
+  "source_effect_boundary": "Recovery/cleanup precede the button; option is tooltip only. After:10% scarred/XP5..15. Trait/modifier/health/immunity unobserved; no physician-treatment causation claim.",
+  "storage": {
+    "allocated_bytes": null,
+    "future_bytes": 0,
+    "new_binding_fingerprints": 1,
+    "new_gross_bytes": 15808,
+    "physical_credit_bytes": 0,
+    "pool_cumulative_binding_fingerprints": 2,
+    "pool_cumulative_new_gross_bytes": 74408,
+    "prior_pool_new_gross_bytes": 58600,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "same_campaign_C16_C17_authorized_by_Root": true,
+    "subcap_bytes": 16384
+  }
+}

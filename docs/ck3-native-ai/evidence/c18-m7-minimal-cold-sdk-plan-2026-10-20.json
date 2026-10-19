@@ -1,0 +1,167 @@
+{
+  "schema": "xar.c18.m7-minimal-cold-sdk-source-plan/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:05:04.451159+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine toolfa8b66",
+  "status": "FROZEN_SOURCE_ONLY_DEFAULT_OFF_FUTURE_NORMAL_COLD_NOT_CURRENT_C17",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c18_m7_cold_sdk_v1.py",
+    "bytes": 13208,
+    "sha256": "657050c6368e3f704452d0781adcc1515dec16c981f7af37d51917c024a3eaf6"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c18_m7_cold_sdk_v1.py",
+    "bytes": 8891,
+    "sha256": "3431cd4bb50eecb98b88ea9c54cc6ee2b55cfc82573f9c33335d9ae4d03e72b5"
+  },
+  "qualification": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c18-m7-minimal-cold-sdk-qualification-2026-10-20.json",
+    "bytes": 45511,
+    "sha256": "f7b415cba9949ce283984ef1cff03e9689e0503acf59e42f80187f059e78b0f4"
+  },
+  "base": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C17.json",
+    "bytes": 375058,
+    "sha256": "abea90e330961720d50ec433de215bfe151c2d3c35688fc0ac03cbf73d5e8b86"
+  },
+  "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src14",
+  "business_base": "04a87c1ec6fd4a0d59e6237af3158ce797c7cbe4",
+  "complete_candidate": {
+    "file_count": 1452,
+    "source_bytes": 59154183,
+    "canonical_rows_JSON": {
+      "bytes": 373215,
+      "sha256": "a7e2cbb33613ab6c69e7690103b84411481508103a2f08cdaf7c4eab21cd6633"
+    },
+    "basis": "Exact full1445-row original manifest plus twelve-leaf delta; no full master overlay."
+  },
+  "access": "prepare_c18_m7_cold_sdk_v1.compose() returns exact changed bytes, all1452 source rows and complete delta/closure proof. No materializer or activation CLI exists.",
+  "scope": {
+    "new_independent_leaves": 7,
+    "existing_leaves_with_exact_inverse_hunks": 5,
+    "unchanged_original_leaves": 1440,
+    "each_changed_leaf_logical_bytes": 2006539,
+    "prospective_dual_changed_logical_bytes": 4013078,
+    "prospective_dual4096cluster_data_upper_bytes": 4055040,
+    "forecast_is_not_storage_admission_or_allocation_measurement": true,
+    "Driver": {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1638658,
+      "sha256": "330caa34eba442c0764c628499e979600bda2d58ea51b365cb4e4829b3db13ed",
+      "git_blob_sha1": "b7d8194d15ff9bc796fd2ea1569d81a7d104c721",
+      "git_mode": "100644"
+    },
+    "Driver_M7_only": "70137 actual rootrequest/projection/cache four hunks, then6db custody callback/ingest/adopt/close four hunks; unique exact context and inverse restores entire prior bytes.",
+    "unchanged_WAL_speed": "All persistence/record/eligible/history/scalar/day-sentinel method ASTs equal actualcc60; helper and native_session leaves unchanged.",
+    "Driver_changed_methods_equal_367_donor_AST": true,
+    "Runtime_rootparser_owner_epoch_leaves_equal_367_donor_bytes": true,
+    "all_static_internal_imports_present_in_full_manifest": true,
+    "Service_strategy_publicMCP_ledger_checked_camera_Native_bytes_changed": false
+  },
+  "qualification_detail": {
+    "tool_start": "1fcc1b",
+    "tool_completion": "b24f8d",
+    "test_count": 57,
+    "result": "PASS",
+    "runner_seconds": 0.153,
+    "new_children": 0,
+    "fixtures": "Mock OS/Native readbacks only; no four-child/kernel/DLL test rerun.",
+    "epoch": {
+      "mode": "Exact composed source digest used only as scoped detached-owner fixture model",
+      "digest": "f47e6240d51324e384e9a17c73c6219275cad3f8864ebe5d159e9032ee53ee40",
+      "actual_C18_filesystem_source_authority_qualified": false
+    },
+    "historical_guard_failure": {
+      "tool_chunk": "ef1122",
+      "reason": "Allowed-function list initially named heartbeat; original6db disconnect exception is actually in _ingest. Read source and corrected that exact allowlist item; original hunk guards unchanged, no output or runtime action occurred."
+    }
+  },
+  "inherited_creator_guard": {
+    "source": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\canonical_native_provider_chain_v1.py",
+      "bytes": 15181,
+      "sha256": "54475da0a10dce93fe306880df502e977cd41c056195b3a429bd7465e79a1ef4"
+    },
+    "test": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_canonical_native_provider_chain_v1.py",
+      "bytes": 28145,
+      "sha256": "2b094c01d3a85befffa97dac26c2761dd435a1904f3640283c2c7c08f2b8b7f6"
+    },
+    "source_donor": "36717710ccebefa1c893fc6f7471869e5b9a8f77",
+    "prior_guard_proof": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\g2-m7-c17-no-site-direct-script-guard-2026-10-19.json",
+      "bytes": 3096,
+      "sha256": "a2d5e78ef791d4fd6b43dd285682f12193680abded9adeb518caf2db2b864517"
+    },
+    "unchanged": "Exact first direct script operand; only -B/-u/-S/-X utf8 prefix; reject forwarding image mismatch/-c/-m/unknown/duplicates. Source-only inherited contract, no new creator/kernel success claimed."
+  },
+  "future_cold_contract": {
+    "activation_default": false,
+    "requires_new_named_capacity_card": true,
+    "no_historical_F90_exception": true,
+    "then_bound_only": [
+      "machine/Game full birth/actual EXE and qualified DLL",
+      "normal SAVE and normal close",
+      "actual actor/episode/date/recording",
+      "actual source epoch",
+      "real pre-resume retained lease/absence/module/native-peer/generation",
+      "actual supervisor creates SDKowner creates Queue creates App"
+    ],
+    "normal_controller_identity": "Same original _PreloadCustodyV1/_RESOURCE_SEAL, received source_verified remainsFalse; only original unique loaded DTO issuer. No JSON/callback bool qualification.",
+    "then_native_data": "Only naturally produced optional root component under the unchanged original root query. No extra Native query.",
+    "fixed_original_baseline_D0": 174,
+    "future_actor_hardcoded": false,
+    "actual_H": "unknown",
+    "actual_score_or_breadth_credit": 0,
+    "Native30_bytes_or_qualification_from_this_task": 0,
+    "current_C17_gate_or_task_changes": 0
+  },
+  "storage": {
+    "source_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C18-M7-MINIMAL-SDK-COMPOSITION-SOURCE128KiB-COMMITMENT01.json",
+      "bytes": 1523,
+      "sha256": "34c9c1828d3802e99a9370c92f816bed83f66ff34c379a27001afa9b445a0867"
+    },
+    "aggregate_gross_cap_bytes": 131072,
+    "owned_retained_source_proof_and_helpers": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c18_m7_cold_sdk_v1.py",
+        "bytes": 13208,
+        "sha256": "657050c6368e3f704452d0781adcc1515dec16c981f7af37d51917c024a3eaf6"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c18_m7_cold_sdk_v1.py",
+        "bytes": 8891,
+        "sha256": "3431cd4bb50eecb98b88ea9c54cc6ee2b55cfc82573f9c33335d9ae4d03e72b5"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c18-m7-minimal-cold-sdk-qualification-2026-10-20.json",
+        "bytes": 45511,
+        "sha256": "f7b415cba9949ce283984ef1cff03e9689e0503acf59e42f80187f059e78b0f4"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\_runtime\\c18_m7_composer_inspect.py",
+        "bytes": 916,
+        "sha256": "2be482a651988c1ac6773a7e2c6e273dc6b9af02314878db32da11e165a7d874"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\_runtime\\c18_m7_composer_finalize.py",
+        "bytes": 6885,
+        "sha256": "9ad360e8703c14ff638915878df223587e46e177d07e7d54fe16250a83047201"
+      }
+    ],
+    "owned_fixture_files_retained": 0,
+    "old_source_and_test_inputs_reused_not_copied": true,
+    "total_retained_logical_bytes_including_this_plan": 83781,
+    "allocated_bytes": null,
+    "D_SDK_export_Git_Task_Game_or_DriverSAVE_writes": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837+00:00",
+    "small_proof_review_days": 180
+  },
+  "remaining": [
+    "Root review/commit frozen sources",
+    "Future independent cold sources/canonical business anchor and exact capacity admission",
+    "Real then-bound cold custody and Native qualification",
+    "Natural optional-root observation and original M7 breadth assessment"
+  ]
+}

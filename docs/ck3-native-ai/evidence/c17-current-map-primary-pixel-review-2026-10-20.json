@@ -1,0 +1,71 @@
+{
+  "schema": "xar.c17-current-map-primary-pixel-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:01:02.387128+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine tool8f725e",
+  "capture_at_utc": "2026-10-19T17:58:56Z",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c17-currentmap01-game.png",
+      "bytes": 1612478,
+      "sha256": "cc4f797fc34b2a6f9e48f3aede7e723252e74d7d0de28a51e612342a434bb1f1",
+      "original_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c17-currentmap01-scene.png",
+      "bytes": 1471029,
+      "sha256": "926cb7272cc6179c3a77ed00dec2f39f38f996bbf528a9456b754c2ca2bdd88b",
+      "original_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c17-currentmap01-FROZEN-PAIR.json",
+      "bytes": 2800,
+      "sha256": "c5073c37087d1ba95bf44feb2629d555fc30fbd36eb9f52e65838fa57cd1a9f3"
+    }
+  ],
+  "Root_direct_view": "Both original game and scene images viewed through view_image; no capture, Game/MCP, mouse or keyboard action by Root",
+  "visible_readback": {
+    "current_game_date": "1076.5.1",
+    "paused_banner": true,
+    "map_and_HUD_visible": true,
+    "Sicily_and_south_Italy_visible": true,
+    "scene_current_gray_decision_panel_right": true,
+    "legacy_left_blue_decision_panel_present": false,
+    "film_or_session_title_on_panel": false
+  },
+  "actual_sem_cap_source": {
+    "path": "c17-performance-warm92/ACTUAL-WARM-SEM-CAP-C17.json",
+    "bytes": 3959,
+    "sha256": "0837ee0d5839455b8f180168d66c1345d868c3c0019066e15bd01cabf7b376f8",
+    "SEM": 8892,
+    "CAP": 8893,
+    "same_pid_hot_restored_active_resumed": true,
+    "error": null,
+    "Game_pid": 30852,
+    "Game_birth": "134368995759027619",
+    "Native_revision": 1787,
+    "public_revision": 2,
+    "actor": 40526,
+    "raw_date": 53228640,
+    "settled_cycles": 4013,
+    "actual_days": 3513,
+    "SAVE_count": 47,
+    "zero_new_cycle_day_credit": true,
+    "NEXT": 8894
+  },
+  "qualification": "Current normal map/scene pixel gate PASS; release original ordinary FULL using actual next sequence and then durable feeder",
+  "not_proven": [
+    "continuous hotspot tracking",
+    "all actual realm counties polygon coverage",
+    "WAL constructor flag readback or actual journal entries",
+    "M7 H/custody",
+    "Native30 adoption",
+    "one_second_per_day"
+  ]
+}

@@ -1250,3 +1250,7 @@ docs/ck3-native-ai/evidence/c11-primary-steam-offline-review-2026-10-19.json -te
 docs/ck3-native-ai/evidence/c11-native29-actual-cold-adoption-2026-10-19.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c12-actual-warm-adoption-2026-10-19.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/g2-m1-c12-quiet5873-failure-audit-2026-10-19.md -text whitespace=-blank-at-eof
+
+docs/ck3-native-ai/evidence/c17-actual-warm-sem-cap-2026-10-20.json -text whitespace=cr-at-eol
+
+docs/ck3-native-ai/evidence/c17-actual-warm-ready-2026-10-20.json -text whitespace=cr-at-eol

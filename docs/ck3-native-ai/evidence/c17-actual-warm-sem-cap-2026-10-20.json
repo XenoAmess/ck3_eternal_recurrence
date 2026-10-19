@@ -1,0 +1,74 @@
+{
+  "schema": "xar.C17-actual-normal-warm-SEM-CAP/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:59:47.550279+00:00",
+  "status": "ACTUAL_NORMAL_SDK_WARM_SEM_CAP_PASS_MAP_PENDING",
+  "semantic": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8892-1-result.json",
+    "bytes": 51918,
+    "sha256": "c9983d5490a5ec1525128679ab9becb2bc0d3aa40c439398a737835415f29233"
+  },
+  "capabilities": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8893-1-result.json",
+    "bytes": 58544,
+    "sha256": "d0d7db5e8849c91ba92f21ec89ad871719efc5879325370607d24fdc7f265dd8"
+  },
+  "native_session_control": {
+    "configured": true,
+    "queue_dir": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\bridge",
+    "restore_checkpoint": true,
+    "driver_state_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\driver-state.json",
+    "driver_state_restored": true,
+    "driver_state_error": null,
+    "driver_state_restore_kind": "same_pid_hot",
+    "episode_binding_state": "active_resumed",
+    "cold_candidate_rejection": null,
+    "episode_transition": null,
+    "episode_transition_error": null
+  },
+  "warm_bound": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\ROOT-C17-NORMAL-SOURCE-WARM-BOUND.json",
+    "bytes": 1538,
+    "sha256": "b9df00bd22b2135f2927ac05b633943f5f21acb0d2bfae9df58a50f54f61fdb8"
+  },
+  "completed_cycles": 4013,
+  "campaign_days": 3513,
+  "date_raw": 53228640,
+  "actual_Game": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH-C16.json",
+    "bytes": 6239,
+    "sha256": "aa8cec5de512f78cc5dbb343c569cdf24091508fa33f19d62d16ea1e622c68bd"
+  },
+  "actual_SDK_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37C17.json",
+    "bytes": 657,
+    "sha256": "207036897f24cb20a47bbe806b80a220208064450d1c39d792daf00b719eaa25"
+  },
+  "actual_mode": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-ACTUAL-DRIVER-MODE-P37C17.json",
+    "bytes": 1139,
+    "sha256": "ceb4239a2c933cf04b3ec15267304e74232365c9077ca19b57eb14e34987696c"
+  },
+  "SDK_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C17.json",
+    "bytes": 375058,
+    "sha256": "abea90e330961720d50ec433de215bfe151c2d3c35688fc0ac03cbf73d5e8b86"
+  },
+  "Task_spec": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c17-performance-warm92\\tasks\\spec-sdk_owner\\SPEC.json",
+    "bytes": 2896,
+    "sha256": "1d8da39278d9497ec5316ab542c259d5df6bf674b0b976aea4f2129ae7c508f6"
+  },
+  "Task_STARTED": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c17-performance-warm92\\tasks\\spec-sdk_owner\\STARTED.json",
+    "bytes": 1320,
+    "sha256": "3e722d6c841ad7a478ef3e98a11afc2719e4249def780b29a8f1f4ddac9c48cb"
+  },
+  "WAL_requested_env": "1",
+  "WAL_constructor_property_public_field": "not_exposed",
+  "WAL_actual_journal_append_observed": false,
+  "new_cycle_or_day_credit": 0,
+  "Game_Native_recording_restarted": false,
+  "next_sequence": 8894,
+  "original_total_wall_anchor_UTC": "2026-10-19T03:26:49.420926+00:00"
+}
