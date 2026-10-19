@@ -1,0 +1,122 @@
+{
+  "schema": "xar.C16-actual-and-Native30-first-failure-root-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:45:24.115046+00:00",
+  "identity_source": "tools/ck3_live_run_id.py machine actual tool62967f, 2026-10-19T16:38Z approximate; exact small receipt SHA reads root140 tool2987db",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-checkpoint6397-cold90\\ACTUAL-COLD-READY.json",
+      "bytes": 4852,
+      "sha256": "d917f7131cc34d91b3d656e8fcb1d4378c13a1057e358b5b9cd74d52081283c1",
+      "observed_at_utc": "2026-10-19T16:18:05.177799+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-checkpoint6397-cold90\\ACTUAL-DURABLE-FOUR-TASK-ADOPTED-C16.json",
+      "bytes": 9982,
+      "sha256": "22cbbd67dabf09112f97f6f7ebd2e48a96fe3a47808c48d093da1a03bc354c01",
+      "observed_at_utc": "2026-10-19T16:23:03.468429+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-WHOLECLEAN-CHILD-CLOSED-PROOF02.json",
+      "bytes": 2315,
+      "sha256": "255c9db8a5b37545d19fbf567d77211f643ea0d3385dee3c328c9d8439f067b4",
+      "observed_at_utc": "2026-10-19T16:31:19.253709+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\evidence\\RESULT.json",
+      "bytes": 1434,
+      "sha256": "9413327bd553655c5bbfaf5214e7102f3c6c78e0aba7567102a2a116a8d6e92f"
+    }
+  ],
+  "C16": {
+    "cold_actual_observed_at_utc": "2026-10-19T16:18:05.177799+00:00",
+    "task_actual_observed_at_utc": "2026-10-19T16:23:03.468429+00:00",
+    "Game": {
+      "pid": 30852,
+      "creation_filetime": "134368995759027619"
+    },
+    "native_generation": "Native29; Native30 is not loaded",
+    "SEM6875_and_CAP6876": "Actual cold checkpoint restored; active resumed binding; original save/day/actor and lineage guards passed.",
+    "actual_restore_frontier": {
+      "cycles": 3039,
+      "campaign_days": 2433,
+      "save_count": 35
+    },
+    "durability": "Four independent same-SID interactive Tasks retain their own bootstrap/stage/Job. The exact eight held generations were alive at the source observation; this is not a new liveness query.",
+    "scheduler": "Actual GetInstances Count=0 is preserved. Kernel birth/Wait0/exit-code observations establish liveness; no inferred Count=1.",
+    "tool_abort_on_Game_tested": false,
+    "old_unknown_AUTO6874_replayed": false,
+    "old_unsaved_tail_credited_after_restore": false,
+    "original_goal": {
+      "start_raw": 53144328,
+      "end_raw": 53407128,
+      "days": 10950,
+      "fixed_D0": 174,
+      "original_player": 31254
+    },
+    "current_player_at_referenced_restore": 40526,
+    "all_wall_anchor_utc": "2026-10-19T03:26:49.420926Z",
+    "later_runtime_message": {
+      "source": "/root/runtime_v20261019 message received after 2026-10-19T16:37:38Z",
+      "closed_cycles": 3669,
+      "campaign_days": 2795,
+      "raw_date": 53211408,
+      "latest_saved_count": 38,
+      "latest_saved_days": 2707,
+      "scope": "Sole runtime report; Root did not open current Driver or SAVE bodies."
+    },
+    "SAVE_availability": "SAVE6397 and later SAVE7503 were each replaced by subsequent natural saves. Their closed receipts remain historical evidence; their original bodies are no longer readable at the rolling save path.",
+    "primary_reviews": [
+      "c16-primary-steam-offline-review-2026-10-19.json",
+      "c16-primary-clean-startup-review-2026-10-19.json",
+      "c16-primary-recording-cold-review-2026-10-19.json"
+    ],
+    "continuous_hotspot_follow_or_full_realm_camera_qualified": false
+  },
+  "Native30_first_attempt": {
+    "status": "FAILED",
+    "start_utc": "2026-10-19T15:58:53.434924+00:00",
+    "end_utc": "2026-10-19T16:16:55.582869+00:00",
+    "configure_command_root_exit": 0,
+    "failure": "The original producer waited for its whole configure Job to empty after root exit. Owned MSVC auxiliary processes kept it active. A controlled single console CTRL_C entered the original KeyboardInterrupt failure/Job cleanup path.",
+    "error": {
+      "type": "KeyboardInterrupt",
+      "text": ""
+    },
+    "production_compile_completed": false,
+    "production_qualification": false,
+    "Game_calls": 0,
+    "DLL_loaded": false,
+    "stage_exit": 1,
+    "bootstrap_exit": 1,
+    "final_owned_Job_active": 0,
+    "forced_outer_Job_cleanup": false,
+    "Task_unregister": {
+      "tool_chunk": "ec6ef4",
+      "observed_at_utc": "2026-10-19T16:17:41.336589Z",
+      "task_name": "XARG2ManagedOwner-e6918210388449f4818eef89496baef2",
+      "lastresult": 1,
+      "instances": 0,
+      "absent_after": true,
+      "provenance": "Nativeowner exact tool receipt reported to Root; no added D receipt"
+    },
+    "final_EOF_bytes": 104821563,
+    "final_allocated_bytes": 117360240,
+    "future_writes_bytes": 0,
+    "original_aggregate_reservation_bytes": 1610612736,
+    "physical_release_credit_bytes": 0,
+    "next_attempt_admitted_by_this_record": false,
+    "next_step": "New pinned producer with explicit owned auxiliary cleanup policy and single-TU two-macro restoration; retain old failure/source/config, revalidate source and output inventory, obtain fresh same-aggregate admission before a new Task."
+  },
+  "performance": {
+    "one_second_per_game_day_achieved": false,
+    "full_lifecycle_timing": "Source ready, future adoption; no current runtime wall or speedup credit."
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_after_days": 180,
+    "original_storage_review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "review_deadline_reset": false
+  }
+}

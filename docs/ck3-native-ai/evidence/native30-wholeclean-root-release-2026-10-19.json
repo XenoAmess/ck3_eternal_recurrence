@@ -1,0 +1,23 @@
+{
+  "schema": "xar.root.native30-wholeclean-task-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:58:40Z",
+  "identity_source": "Root tool4ce71c, tools/ck3_live_run_id.py machine; exact card/spec direct read and SHA verification toolbd07d7",
+  "source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "producer_sha256": "db51b7e5b37083cf803f4b1611dd714dec197f4e0c559a688d22781f2ef07c00",
+  "plan_sha256": "d9a44fc874bd253425626712eb17131f6986de5db17b74c5200b53cea3932bdb",
+  "admission_path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/NATIVE30-WHOLECLEAN-CHILD01.json",
+  "admission_sha256": "994bc8923275f7925f3dce8aa049a7b6a82e040998ff54e68214b26294adb43e",
+  "spec_path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/native30-build-owner01/owner-spec/SPEC.json",
+  "spec_sha256": "14f9ef19709a710a298f3275df61a2288b2beaf5c55ec5e1aa000fc799156152",
+  "task": "XARG2ManagedOwner-e6918210388449f4818eef89496baef2",
+  "principal": {"sid":"S-1-5-21-2908730481-166481001-1318755029-1001","session":1,"logon_type":3,"run_level":0},
+  "authorized": "One exact same-user register, actual-definition readback and run; source-pinned wholeclean production and9 sequential fixtures. No Task.Stop, restarts or replay. Exact unregister only after actual normal exit and owned Job0. Failure preserves original RED and stops.",
+  "caps": {"whole_bytes":1610612736,"source_charge_bytes":100663296,"metadata_bytes":83886080,"temporary_bytes":402653184,"jobs":4,"priority":"BELOW_NORMAL","MP":false},
+  "boundaries": "No Game, OBS, MCP, injection or production DLL load. Fixture EXEs require exact Defender actual verified readback. Source/graph readiness is not C++ or live camera qualification.",
+  "mechanical_tests": 11,
+  "independent_source_wiring_review": "M1 no definite interface/path finding; no C++ execution by reviewer",
+  "actual_registration_compile_and_live_results": "Not asserted by this release record; obtain subsequent exact Task and producer receipts.",
+  "C16_small_source_final_scope": {"C16_bytes":1572864,"minor_pool_bytes":2097152,"category":"within original code3 unused balance","old2MiB_runtime_and_old64GiB_pins_changed":false},
+  "retention": {"category":"record","purpose":"Reconcile exact build release with actual Task/producer terminal result","review_at_utc":"2026-10-20T01:48:56.993837Z"}
+}
