@@ -1257,3 +1257,5 @@ docs/ck3-native-ai/evidence/c17-actual-warm-ready-2026-10-20.json -text whitespa
 
 ck3_autonomous_player/tests/unit/fixtures/alliance9421_closed_pair_v1.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c17-alliance9421-root-review-2026-10-20.json -text whitespace=cr-at-eol
+
+docs/ck3-native-ai/evidence/c19-bounded-multiday-wal-v1.patch -text whitespace=-blank-at-eol

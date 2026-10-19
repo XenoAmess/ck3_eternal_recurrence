@@ -1,0 +1,25 @@
+--- a/xar_autoplayer/bridge/native_driver.py
++++ b/xar_autoplayer/bridge/native_driver.py
+@@ -12083,6 +12083,10 @@
+             return None
+ 
+     def _route_horizon_wal_eligible_v1(self, step: str, result: object) -> bool:
++        if step == "life-advance":
++            from .bounded_multiday_wal_v1 import eligible_bounded_multiday_delta_v1
++            return eligible_bounded_multiday_delta_v1(step, result, expected_owner=(
++                self._session_bridge_pid, self._episode_character_id, self._episode_run_id))
+         # Reuse the exact-day native clock proof. Generic life-advance,
+         # interrupted/multi-day and UNKNOWN outcomes always use a full barrier.
+         parsed = (step == "life-advance-one-day"
+@@ -25657,6 +25661,11 @@
+             result["campaign_deadline_v1"] = campaign_deadline
+         if campaign_clock_receipt is not None:
+             result["campaign_deadline_native_clock_v1"] = campaign_clock_receipt
++            if getattr(self, "allow_driver_state_wal_v1", False):
++                from .bounded_multiday_wal_v1 import OWNER_KEY, owner_proof_v1
++                owner_proof = owner_proof_v1(starting, current)
++                if owner_proof is not None:
++                    result[OWNER_KEY] = owner_proof
+         return result
+ 
+     def _advance_exact_day_with_sentinel(

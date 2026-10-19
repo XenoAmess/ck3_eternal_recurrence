@@ -1,0 +1,27 @@
+{
+  "applied_to_workspace": false,
+  "base_bytes": 28093,
+  "base_sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f",
+  "candidate_bytes": 28542,
+  "candidate_sha256": "2d4a046d969ab3d0d076e460936e8cf4cf605e1f90cbe34f9bb963e0e6240d1e",
+  "edits": [
+    {
+      "after": "                finite_c19 = current[\"event_definition_key\"] in {\n                    \"coming_of_age.0004\", \"pam_decision_events.0018\"}\n                if finite_c19:\n                    from .c19_finite_source_rebind_v1 import c19_finite_source_rebind_shape_v1\n                    shape = c19_finite_source_rebind_shape_v1(capture, facts, current)\n                elif reviewed_letter:\n",
+      "before": "                if reviewed_letter:\n"
+    },
+    {
+      "after": "\"binding_mode\": (\"c19_finite_source_rebound\" if finite_c19 else\n                                     \"reviewed_letter_source_rebound\" if reviewed_letter else",
+      "before": "\"binding_mode\": (\"reviewed_letter_source_rebound\" if reviewed_letter else"
+    },
+    {
+      "after": "\"semantic_decision_ready\")} if reviewed_letter or finite_c19 else {}),",
+      "before": "\"semantic_decision_ready\")} if reviewed_letter else {}),"
+    }
+  ],
+  "future_composition_only": true,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:33:40.372223+00:00",
+  "provenance": "Root SOURCE96KiB; exact frozen1003 base file; in-memory application and byte-identical reversal",
+  "schema": "xar.c19-source-only-exact-reversible-hunks/v1",
+  "source_path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/event_offline_analysis.py"
+}

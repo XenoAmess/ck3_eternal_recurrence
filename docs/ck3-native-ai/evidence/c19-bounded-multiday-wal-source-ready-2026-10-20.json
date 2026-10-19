@@ -1,0 +1,268 @@
+{
+  "schema": "xar.c19-bounded-multiday-wal-source-candidate/v1",
+  "status": "FROZEN_SOURCE_ONLY_FOCUSED_MEMORY_QUALIFIED_NOT_RUNTIME_ADOPTED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:27:36Z",
+  "machine_identity_command": "python -B tools/ck3_live_run_id.py machine",
+  "purpose": "Extend storage eligibility to an already completed and fully verified bounded campaign date deadline. Do not change planning, timeline speed, requested horizon, native observation, actions, or game-day accounting.",
+  "ownership": {
+    "source_candidate_only": true,
+    "root_owns_future_composition_and_commit": true,
+    "canonical_driver_modified": false,
+    "canonical_wal_modified": false,
+    "current_sdk_modified": false,
+    "C18_frozen_inputs_modified": false,
+    "task_or_game_modified": false,
+    "git_mutation": false,
+    "actual_D_writes": 0,
+    "driver_or_save_body_reads": 0,
+    "new_game_rpc": 0,
+    "new_os_observations": 0,
+    "no_temporary_SDK_or_full_Driver_source_copy": true
+  },
+  "source_basis": {
+    "runtime_freeze": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/ROOT-FINAL-SDK-FREEZE-P37C17.json",
+      "bytes": 375058,
+      "sha256": "abea90e330961720d50ec433de215bfe151c2d3c35688fc0ac03cbf73d5e8b86"
+    },
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src14",
+    "driver": {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1637048,
+      "sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab"
+    },
+    "wal": {
+      "relative": "xar_autoplayer/bridge/driver_state_wal_v1.py",
+      "bytes": 23998,
+      "sha256": "8a738446148f33dd92d0e3489dfb002c675fb50b23e00320df11cbfad855324d",
+      "modified": false
+    },
+    "deadline_transport": {
+      "relative": "xar_autoplayer/bridge/campaign_deadline_transport_v1.py",
+      "bytes": 7375,
+      "sha256": "476df8524de496c1e87d8ac4f127654eb1e41a1fb870914bbb2f8c3dbe8e4940",
+      "modified": false
+    },
+    "current_limit": "Driver _route_horizon_wal_eligible_v1 L12085-12093 only accepts life-advance-one-day or parsed route horizon; original WAL eligible_route_horizon_delta L62-100 also requires exactly one day and exact_day_native_clock. The journal format itself is independent of the number of game days."
+  },
+  "delivered_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/bounded_multiday_wal_v1.py",
+      "bytes": 8955,
+      "sha256": "d23eb5a4110663911f5b291e5044de1b8db29d56016806873d4e6f4ff3fd0c3e"
+    },
+    {
+      "path": "tools/g2_saved_campaign/bounded_multiday_wal_source_v1.py",
+      "bytes": 3527,
+      "sha256": "a3717e6a64c0f53f1841f329c39c00f8853aeef083b5c1b0066a661fb0a2a3a4"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_bounded_multiday_wal_source_v1.py",
+      "bytes": 21395,
+      "sha256": "e08e9b3a38a2a50951cba5ace884bee00f3959d3ec2c377a9e8296b67d39fad5"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c19-bounded-multiday-wal-v1.patch",
+      "bytes": 1326,
+      "sha256": "961b61451dd3ce4da0d286b3bf30e2540128250953937669ded88a3c2923f212"
+    }
+  ],
+  "overlay": {
+    "producer_API": "transform_driver_bytes_v1(original_bytes) -> candidate_bytes; reverse_driver_bytes_v1(candidate_bytes) -> original_bytes; patch_text_v1(original_bytes) -> unified patch. These functions do not perform I/O.",
+    "required_original_method_AST": {
+      "_route_horizon_wal_eligible_v1": "cb937d06c693c2bfb1dda91ecf9a135f3e0c3a0ae82495d674368981219702af",
+      "_execute_life_advance": "81037745838e1486194a50fa73bcd1086f55489b027bad23f77a1695dd62f1e4"
+    },
+    "candidate_method_AST": {
+      "_route_horizon_wal_eligible_v1": "1eb59fc8ac684a23e79110e9ac8d2debf80300b0c75422d41fd1bb8e4de9bdab",
+      "_execute_life_advance": "695eb6c47eeb38898d3d5af397c5f8dfc98e277a8d1524bd0890feb7b653121d"
+    },
+    "in_memory_candidate_full_driver": {
+      "bytes": 1637650,
+      "sha256": "97416b0b3fb3c124d4af90690c986b63157f5e7d325478eb55f8ad638fa7b5ed",
+      "net_source_bytes": 602,
+      "written_to_disk": false
+    },
+    "changes": [
+      "At _route_horizon_wal_eligible_v1, add only a life-advance branch invoking the new storage predicate with the existing Driver PID/episode scope.",
+      "After the existing campaign_deadline_native_clock_v1 result assignment, conditionally capture tiny owner provenance from the already available starting/current frames when the existing WAL writer flag is true.",
+      "Keep the entire original one-day/route block, record/persist/append functions, history cache, WAL implementation, cold readers, native/session/custody/camera methods and all other source bytes unchanged."
+    ],
+    "exact_inverse_bytes_equal": true,
+    "inverse_full_sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab",
+    "all_other_method_AST_equal": true,
+    "future_port_rule": "A future composed C19 may contain unrelated changes only if both required method fingerprints and source anchors still match. Otherwise refuse and re-review. Never overwrite an entire current Driver from this source basis.",
+    "patch_applied_to_any_Driver": false,
+    "source_default_off": "The existing writer admission/default is unchanged. With writer disabled, no owner proof is added and the original business result remains unchanged. This candidate is not installed in any running SDK."
+  },
+  "owner_provenance": {
+    "result_key": "driver_state_wal_multiday_owner_v1",
+    "schema": "xar.ck3.driver-wal-multiday-owner/v1",
+    "source": "existing_native_timeline_frames",
+    "no_extra_snapshot_or_RPC": true,
+    "no_cross_frame_or_cross_call_cache": true,
+    "no_json_or_hash_for_collection": true,
+    "frame_requirements": [
+      "plain native-headless injected-DLL dict",
+      "connected exact CK3 1.20.0.4 hello/version/SHA",
+      "living played actor equals episode character",
+      "paused ready map on both endpoints",
+      "strict positive integer public/native revision/date/local player/PID/connection generation",
+      "native snapshot ID matches native revision",
+      "nonempty episode_run_id"
+    ],
+    "same_owner_fields": [
+      "actor_id",
+      "episode_character_id",
+      "episode_run_id",
+      "local_player_id",
+      "bridge_pid",
+      "connection_generation",
+      "game_version",
+      "executable_sha256"
+    ],
+    "source_binding": "Both endpoints carry existing public/native revision, snapshot_id and date. End native revision must increase; public revision cannot regress. Their dates must equal the result start/end. Current Driver PID/episode character/episode run must also match the proof.",
+    "mutation_contract": "Only immutable scalar values are copied into fresh small dictionaries. The caller frames are unchanged and later caller mutation cannot alter the proof.",
+    "missing_or_foreign": "No proof or no eligible append; original full barrier remains. Ending date alone never establishes same owner."
+  },
+  "storage_eligibility": {
+    "command": "life-advance only; old life-advance-one-day/route branches stay unchanged",
+    "days": "Strict integer 1..45; elapsed_days == requested_horizon_days; end == start + 24*n.",
+    "result": [
+      "paused true",
+      "progress_status postcondition",
+      "final_screen map_hud",
+      "no active_event/pending interaction/event_resolution/ordinary events",
+      "strict original policy speed 1..5"
+    ],
+    "clock": [
+      "campaign-native-date-clock/v1 schema and campaign_date_deadline scope",
+      "not an exact-one-day qualification claim",
+      "campaign deadline target equals end",
+      "no early_boundary_cancel",
+      "armed and stopped same positive generation/start/target/mode/speed",
+      "date-only army/combat watch counts zero",
+      "no abnormal or terminal observation",
+      "stopped state triggered, exactly n daily ticks, last/trigger date equals target",
+      "date_deadline-only reason and flags=1",
+      "signed target delta/overshoot/intermediate pause all zero",
+      "native pause wrapper and pause observation true"
+    ],
+    "not_admitted": [
+      "missing or malformed typed owner proof",
+      "foreign actor/episode/PID/connection/build",
+      "partial or early stop even if paused",
+      "resolved or unresolved event",
+      "native pause/contact/terminal/abnormal trigger",
+      "unknown/noninteger/bool counters",
+      "date/target/generation/speed mismatch",
+      "zero days or more than 45 days"
+    ],
+    "gameplay_policy_changed": false,
+    "requested_horizon_or_speed_changed": false,
+    "one_day_splitting_for_WAL": false
+  },
+  "preserved_existing_guards": {
+    "append_function": "Actual src14 _try_persist_driver_state_wal_append_v1 L12115-12206 remains byte-identical.",
+    "prefix": "Existing encoded history object/prefix identity and cache invalidation guard are unchanged; no full-history rescan/hash was added for this feature.",
+    "all_delta_rows": "Every uncommitted row must still be ok and either the original deferred read-only whitelist or a qualified clock. Continuous indices and the full hash chain remain mandatory.",
+    "metadata": "Every non-history scalar field must still equal its previous committed state. Episode/checkpoint/campaign/lifecycle changes remain full barriers.",
+    "barriers": [
+      "SAVE",
+      "restore",
+      "failed or UNKNOWN mutating action",
+      "sticky failed persistence barrier",
+      "rewritten or replaced historical prefix",
+      "capacity overflow",
+      "noneligible rows"
+    ],
+    "capacities": {
+      "delta_bytes": 262144,
+      "journal_bytes": 8388608
+    },
+    "cold": "Original sealed base/version, pair identity/hash, missing/malformed pair rejection, consolidation markers and closed materialization rules are unchanged.",
+    "once": "No once/custody/readiness method or companion file is changed, read, cleared or replayed by the candidate.",
+    "durability": "Existing atomic write-and-replace contract only; no new fsync or power-loss durability claim. A journal append rewrites the bounded journal document, not an unbounded log or constant-time disk append."
+  },
+  "qualification": {
+    "level": "Synthetic pure-memory source integration. Exact immutable src14 record/eligibility/persist/append/encode methods are compiled into an in-memory subclass. Actual immutable src14 WAL functions are used against dictionary-backed path/write primitives. No native Driver constructor, live endpoint or filesystem state store is started.",
+    "final_command": "python -B -m unittest -v tools.g2_saved_campaign.test_bounded_multiday_wal_source_v1",
+    "final_result": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "reported_runner_seconds": 18.449,
+      "exit_code": 0
+    },
+    "prior_run": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "reported_runner_seconds": 16.793,
+      "reason_for_final_run": "Added explicit event_resolution rejection plus one journal-publication failure/sticky/full-barrier recovery case; no repeated historical WAL matrix."
+    },
+    "pass_cases": [
+      "Exact full Driver inverse and all other method AST equality; changed/double-applied baseline refuses.",
+      "Typed owner capture rejects foreign/reconnected/incomplete frames and does not alias or mutate inputs.",
+      "1,6,8,45 completed days accepted; 0/46 and malformed/bool/early/mismatched proofs rejected.",
+      "Exact emitted result-tail AST adds provenance only when existing writer is enabled; default-off result equality.",
+      "Real record/persist path activates once, then preserves the identical sealed base across 6-day and 45-day appends with intervening read-only history.",
+      "Actual cold replay equals the complete full-state dictionary including all history rows and provenance; missing journal and tampered row index reject.",
+      "Writer off, changed scalar metadata or replaced history prefix cause complete full-state barriers without lost history.",
+      "SAVE, failed once action and unknown result after injected full-write failure retain sticky barrier and complete history; opaque UNKNOWN once bytes remain untouched.",
+      "Existing bounded delta capacity overflow falls back to full history.",
+      "Injected journal publication failure retains dirty/sticky/error and the recorded row once; subsequent explicit full barrier preserves all rows without replay."
+    ],
+    "write_failure_boundary": "The new journal failure case injects before publication; it does not newly qualify every crash/power-loss/after-replace failure mode. Existing source/cold contracts and prior WAL qualifications are preserved rather than rerun or expanded.",
+    "once_boundary": "Opaque memory sentinel preservation and unchanged source are not a new real once-companion custody or managed cold-start qualification.",
+    "compilation": "Helper, producer, test and transformed Driver compiled in memory; helper/producer contain no Assert nodes. Unit test assertions are unittest checks.",
+    "no_Game_RPC": 0,
+    "no_new_live_samples": 0,
+    "no_D_or_tempSDK_writes": 0,
+    "no_actual_cold_or_SAVE": 0,
+    "no_large_fixture_or_benchmark": 0,
+    "actual_WAL_append_observed": false,
+    "actual_seconds_saved": null
+  },
+  "expected_benefit_boundary": {
+    "closed_basis": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/p37-queue/C17-FIRST-FULL8894-CLOSED-TIMING.json",
+      "bytes": 21994,
+      "sha256": "c8d1ebebb635319f6d2838c017f20fd72faa5f6faaa6ccb20dcc297607b046bf"
+    },
+    "selected_only_potential_run_lengths": [
+      1,
+      7,
+      2
+    ],
+    "conditional_later_large_rewrites_replaceable_upper_bound": 7,
+    "activation_cost": "Each run still reads/hashes/parses and seals a full base on first activation. Singleton runs may cost more. Council and other full barriers, changed metadata/prefix, missing owner proof and byte caps can shorten or eliminate these selected-only runs.",
+    "complete_real_row_eligibility": "Not established. Existing C17 rows predate this typed provenance, and no original AUTO body was reread.",
+    "current_whole_batch_FS_seconds": 116.6596589,
+    "current_actual_days": 75,
+    "exact_FULL_monotonic_seconds": "unknown",
+    "known_7_of_10_life_AUTO_seconds": 43.38055879925378,
+    "mixed_unallocated_seconds": 51.783212800513795,
+    "attribution": "The mixed residual includes four missing AUTO timings, all MET and Queue/relay/guard/FS work. It is not Driver, Native, disk or CPU time. No seconds/day improvement is inferred.",
+    "global_wall_anchor": "2026-10-19T03:26:49.420926Z",
+    "global_maintenance_zero_day_failures_and_restarts_retained": true
+  },
+  "storage": {
+    "admission": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/FUTURE-C19-WAL128KiB-C18-FULL64KiB-SOURCE-COMMITMENTS01.json",
+    "admission_bytes": 1780,
+    "admission_sha256": "64dce0a40a6b4ccf1208d6f18ce3d0b9b9d29845b0853a7a6239f88b8a57fa2e",
+    "cap_bytes": 131072,
+    "scope": "Existing code3 spare finite hold; not minor/other128/runtime/native allocation.",
+    "new_leaf_subtotal_before_this_proof": 35203,
+    "owned_scratch_bytes": 0,
+    "external_bytes": 0,
+    "full_candidate_Driver_bytes_written": 0,
+    "bytecode_bytes": 0,
+    "producer_closed": true,
+    "future_writes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0
+  },
+  "next_action": "Freeze. Root may review and compose during a separately admitted future C19 source/deployment stage. No current SDK activation, predicate hot-patch, gameplay replay, extra timing RPC or runtime qualification is authorized by this proof."
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "xar.future-full-batch-timing-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:44:29.757346+00:00",
+  "status": "SOURCE_READY_UNAPPLIED_DEFAULT_OFF",
+  "scope": "future canonical cold timing seams; actual C18 alliance warm untouched",
+  "files": {
+    "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\full_batch_timing_v1.py": {
+      "bytes": 7602,
+      "sha256": "9e5d28f6829edef6f348d889d6790fdcdd70209e3e60c3abb9447d890fddc37e"
+    },
+    "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_full_batch_timing_sources_v1.py": {
+      "bytes": 7282,
+      "sha256": "112d4154a4ac39261749c2be0be0097f1b8c188b7905cbd97091dc89765ef1a8"
+    },
+    "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_full_batch_timing_sources_v1.py": {
+      "bytes": 12581,
+      "sha256": "19c8e03f4b91802455245921a932c5b419897c4a4b0bb53fcb4c815edc1ddb11"
+    }
+  },
+  "sources_in_memory": {
+    "root_p37c17_sdk_queue.py": {
+      "bytes": 268864,
+      "sha256": "881858f5d3d6ec08fb86fbbc07e3b433522f8249f1fbbe46f438ce529dd17d0a"
+    },
+    "root_p37c17_automatic_natural_succession_handoff.py": {
+      "bytes": 38747,
+      "sha256": "b973a428216d001476ff8690df9244ba31290d69ba78c96a6e9faf16a56ce6d7"
+    },
+    "root_p37c17_same_game_loop_feeder92.py": {
+      "bytes": 33380,
+      "sha256": "0d04be3e32ee62218826ff40b45c6f17182e63892b02f3fee3c0b87eb4ff037c"
+    },
+    "full_batch_timing_v1.py": {
+      "bytes": 7602,
+      "sha256": "9e5d28f6829edef6f348d889d6790fdcdd70209e3e60c3abb9447d890fddc37e"
+    },
+    "full_lifecycle_timing_v1.py": {
+      "bytes": 2480,
+      "sha256": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+    }
+  },
+  "frozen_lifecycle_dependency": {
+    "bytes": 2480,
+    "sha256": "dcbb92b3852123a24dac29f35f182eea6a731a46104d1837478c2990052a32ca"
+  },
+  "canonical_outer_producer": "e0713f8a56e3a2be280d140d4f3246d35af84222990bc353d6b268a7d1049ffe",
+  "actual_feeder": "512925bd435c77d9b767adef08b25c3893b2c8c5f642f94e22f4e9dfcab35428",
+  "focused_tests": 12,
+  "source_inverse_bytes_and_AST": true,
+  "scratch_files": 0,
+  "existing_control_probe_enabled": false,
+  "Native_Service_clocks_added": 0,
+  "new_IO_sinks": 0,
+  "external_writes": 0,
+  "Game_Native_MCP_Task_calls": 0,
+  "limitations": [
+    "FULL wall null for following/restart or failed original validation",
+    "row interval end derives from existing mono+elapsed, not a new clock",
+    "failed FULL keeps row summary only on original error receipt; never becomes a successful batch",
+    "residual is mixed outer/control/I-O/wait time; CPU/Native attribution remains null",
+    "future namespace/cold admission and D output card require then-actual inputs"
+  ]
+}

@@ -1,0 +1,334 @@
+{
+  "schema": "xar.g2-m2-c19-finite-source-rebind-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:44:21.232Z",
+  "provenance": "Root future SOURCE96KiB authorization; closed actual C17/C16 captures with only calculated IDs changed offline; exact installed stock source/GUI hashes validated by the candidate; existing real loader composed in memory.",
+  "status": "SOURCE_QUALIFIED_RUNTIME_NOT_APPLIED",
+  "future_runtime_target": "C19",
+  "frozen_source_pins_unchanged": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "bytes": 28093,
+      "sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/reviewed_letter_source_rebind_v1.py",
+      "bytes": 12122,
+      "sha256": "24d7937aa3d6be34adb1da9fb67eb5536e9494c4615dac810f98f6fae10c98f9"
+    }
+  ],
+  "new_source_test_hunks": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/c19_finite_source_rebind_v1.py",
+      "bytes": 10456,
+      "sha256": "153cec501dfbfa6e24d754204f68dd5e5aec4ebe95b6379c3615ff22474a3837"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_c19_finite_source_rebind_v1.py",
+      "bytes": 13986,
+      "sha256": "de8b57b5de50178d7484eeccabef65b7322c6661b1861f3c52f4c2128bac4129"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/g2-m2-c19-finite-source-rebind-hunks-2026-10-20.json",
+      "bytes": 1660,
+      "sha256": "95bddc5a7be1d9464ba569c4ca9de87473e59564a014f578f0e0cad8ddf5c17b"
+    }
+  ],
+  "candidate_source_sha256": "2d4a046d969ab3d0d076e460936e8cf4cf605e1f90cbe34f9bb963e0e6240d1e",
+  "actual_closed_context_qualifications": [
+    {
+      "key": "coming_of_age.0004",
+      "actual_capture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\62d7956cfff145c5a1ac5acd07b8f495.before.json",
+        "bytes": 6575,
+        "sha256": "4963f9716b4c5f33c0341527612cb597afa3e78d5dce365dbb03e1750463c942"
+      },
+      "original_calculated_id": 2810004,
+      "offline_synthetic_calculated_id": 3810004,
+      "synthetic_id_is_actual_observation": false,
+      "baseline": {
+        "status": "unknown",
+        "binding_mode": null,
+        "rejected_entries": [
+          {
+            "entry": "f558daba4241679a814cedc525250a326a70ec680801a38ed47320fe582e91fa.json",
+            "reason": "source-declared event root differs"
+          }
+        ]
+      },
+      "candidate": {
+        "binding_mode": "c19_finite_source_rebound",
+        "shape": {
+          "source_rebind_policy": "c19-two-exact-source-knowledge-shapes-12004-v1",
+          "actor_character_id": 40526,
+          "source_declared_type": null,
+          "source_type_inferred_from_scalar": false,
+          "current_role_identities": {
+            "friend_character_id": 40270,
+            "victim_character_id": 40694,
+            "educated_child_character_id": 40526,
+            "relative_character_id": 40526
+          },
+          "scope_identity_gaps": [
+            {
+              "role": "new_memory",
+              "type_key": "character_memory",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "education_memory",
+              "type_key": "character_memory",
+              "typed_identity_verified": false
+            }
+          ],
+          "knowledge_scope": "exact_source_and_current_native_character_scope_shapes_only",
+          "gui_source_sha256": {
+            "gui/event_windows/character_event.gui": "b0c3efdd81d08e4682c6bdfa9c4fff76351083359b642e9420b8b9d389c6f2e9",
+            "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+          },
+          "loaded_gui_bytes_verified": false,
+          "execution_contract_qualified": false,
+          "semantic_decision_ready": false
+        },
+        "registry_contract_accepted": false,
+        "material_effects_verified": false
+      }
+    },
+    {
+      "key": "pam_decision_events.0018",
+      "actual_capture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\30a05cd6001c47afa6427d7a9f5d5c9f.before.json",
+        "bytes": 5156,
+        "sha256": "25bb8364b3dd6ac8c36d0907affca0ec1048fcf8a03d704efd90cc71a8f63662"
+      },
+      "original_calculated_id": 2240018,
+      "offline_synthetic_calculated_id": 3240018,
+      "synthetic_id_is_actual_observation": false,
+      "baseline": {
+        "status": "unknown",
+        "binding_mode": null,
+        "rejected_entries": [
+          {
+            "entry": "43a8b70bb63c6d4a4e181f1ec11fa6f816345bb1a6d8b2594eb0d8bebee64517.json",
+            "reason": "source-declared event root differs"
+          }
+        ]
+      },
+      "candidate": {
+        "binding_mode": "c19_finite_source_rebound",
+        "shape": {
+          "source_rebind_policy": "c19-two-exact-source-knowledge-shapes-12004-v1",
+          "actor_character_id": 40526,
+          "source_declared_type": "letter_event",
+          "source_type_inferred_from_scalar": false,
+          "current_role_identities": {
+            "hof_scope_character_id": 30490
+          },
+          "scope_identity_gaps": [
+            {
+              "role": "puppeteer",
+              "type_key": "character",
+              "typed_identity_verified": false,
+              "identity_status": "null"
+            }
+          ],
+          "knowledge_scope": "exact_source_and_current_native_character_scope_shapes_only",
+          "gui_source_sha256": {
+            "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+            "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+          },
+          "loaded_gui_bytes_verified": false,
+          "execution_contract_qualified": false,
+          "semantic_decision_ready": false
+        },
+        "registry_contract_accepted": false,
+        "material_effects_verified": false
+      }
+    },
+    {
+      "key": "sway_ongoing.1003",
+      "actual_capture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\059d7661ba484d5989e1a7e87fbf6fda.before.json",
+        "bytes": 7402,
+        "sha256": "6af7ad6645770f2d105a460f804cbe0092074880feb4aa17a60083d5ea8fe1c4"
+      },
+      "original_calculated_id": 3631003,
+      "offline_synthetic_calculated_id": 4631003,
+      "synthetic_id_is_actual_observation": false,
+      "baseline": {
+        "status": "offline-source-reviewed",
+        "binding_mode": "reviewed_letter_source_rebound",
+        "rejected_entries": []
+      },
+      "candidate": {
+        "binding_mode": "reviewed_letter_source_rebound",
+        "shape": {
+          "source_event_type": "letter_event",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity_kind": "character",
+          "actor_character_id": 40526,
+          "source_rebind_policy": "sway1003-reviewed-letter-source-shapes-12004-v1",
+          "reviewed_letter_key": "sway_ongoing.1003",
+          "knowledge_scope": "exact_definition_source_and_current_native_role_type_shape_only",
+          "current_role_identities": {
+            "owner_character_id": 40526,
+            "target_character_id": 34973,
+            "compliment_receiver_character_id": 34973,
+            "friend_character_id": 40695
+          },
+          "scope_identity_gaps": [
+            {
+              "role": "scheme",
+              "type_key": "scheme",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "artifact",
+              "type_key": "artifact",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "evaluated_compliment_type",
+              "type_key": "flag",
+              "typed_identity_verified": false
+            },
+            {
+              "role": "compliment_outcome",
+              "type_key": "flag",
+              "typed_identity_verified": false
+            }
+          ],
+          "gui_source_sha256": {
+            "gui/event_windows/letter_event.gui": "eb141a50868cd0f32cb9327630a895024edaa9e7580ab4520be88032bfc4ee8c",
+            "gui/shared/event_windows.gui": "6756fed934b15e20f2e9460a891c5b40f0012e6f8f51ac6ae45a018fd9a82639"
+          },
+          "loaded_gui_bytes_verified": false,
+          "execution_contract_qualified": false,
+          "semantic_decision_ready": false
+        },
+        "registry_contract_accepted": false,
+        "material_effects_verified": false
+      }
+    }
+  ],
+  "admission_boundary": [
+    "Only coming_of_age.0004's exact omitted-type definition and pam_decision_events.0018's exact letter definition are added. Unrelated omitted-type and letter events retain the generic rejection.",
+    "Every finite path binds exact build/EXE/native backend, source path/SHA, complete definition SHA and options catalogue, installed GUI SHA, unique same-frame native root and option mapping, and the two actually observed role shapes.",
+    "The root/actor comes from fresh typed native character identity. No scalar event-type default, null puppeteer, old role payload or opaque memory payload supplies a player identity.",
+    "Knowledge only: no loaded GUI-byte verification, executable registry contract, optimal option policy, material outcome or live cold-load business qualification.",
+    "Current baseline files and all current SDK/Native artifacts remain unchanged. All source composition was in memory; no build, deployment, restart, query or action occurred."
+  ],
+  "future_composition": {
+    "base": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/event_offline_analysis.py",
+    "require_base_sha256": "f76ee3f2bb7fb3951da5a4e75533c72fb48a3eff01f860cd31a9518c5766c52f",
+    "exact_reversible_hunks": "docs/ck3-native-ai/evidence/g2-m2-c19-finite-source-rebind-hunks-2026-10-20.json",
+    "add_source": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/c19_finite_source_rebind_v1.py",
+    "require_candidate_sha256": "2d4a046d969ab3d0d076e460936e8cf4cf605e1f90cbe34f9bb963e0e6240d1e",
+    "dispatch_keys": [
+      "coming_of_age.0004",
+      "pam_decision_events.0018"
+    ],
+    "candidate_binding_mode": "c19_finite_source_rebound",
+    "bytes_reversal_qualified": true,
+    "physical_SDK_materialization": "not started; requires its own later admitted composition",
+    "composer_must_reject_other_base_bytes": true
+  },
+  "tests": {
+    "final_command": "python -B -X utf8 -c exec(__import__('base64').b64decode('aW1wb3J0IHN5cwpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKc3lzLnBhdGguaW5zZXJ0KDAsc3RyKFBhdGgoJ2NrM19hdXRvbm9tb3VzX3BsYXllci9zcmMnKS5yZXNvbHZlKCkpKQppbXBvcnQgcHl0ZXN0CnJhaXNlIFN5c3RlbUV4aXQocHl0ZXN0Lm1haW4oWyctcScsJy1wJywnbm86Y2FjaGVwcm92aWRlcicsJy0tYmFzZXRlbXA9LnRhc2stdG1wL20yYzE5LXNjaGVtYScsJ2NrM19hdXRvbm9tb3VzX3BsYXllci90ZXN0cy91bml0L3Rlc3RfYzE5X2Zpbml0ZV9zb3VyY2VfcmViaW5kX3YxLnB5JywnLWsnLCdzb3VyY2VfR1VJX2ZyYW1lX2FuZF9uYXRpdmVfcm9sZV9kcmlmdCddKSkK'))",
+    "final_result": "2 passed, 8 deselected in 0.67s; both finite keys' drift tests include schema_version True and 1.0",
+    "first_authored_test_result": "9 passed in 0.69s before adding qualification support for already composed bytes; both test temp sets retained and charged.",
+    "first_test_source_sha256": null,
+    "final_test_source_sha256": "de8b57b5de50178d7484eeccabef65b7322c6661b1861f3c52f4c2128bac4129",
+    "coverage": "Both finite positives; fresh roles; source/GUI/frame/provider/readiness/role/option drift; fabricated null/memory identity; strict bool/int distinctions; foreign implicit and letter rejection; exact hunk reversal and already-composed-byte qualification without double patch. Post-review exact integer schema_version guard rejects True and 1.0.",
+    "standalone_Game_install_required": false,
+    "live_queries": 0,
+    "prior_full_test_result": {
+      "result": "10 passed in 0.72s",
+      "helper_sha256": "637b89a0fddfe5bba42d3feab1c06622606203558e2e9b21a0e260db3bc31f5c",
+      "test_sha256": "82f621fa1a7da5a0636d8cfc2a244792d4c0e1421c3843be72e3b06135c396d8",
+      "qualification": "before review correction; not a rerun of the final helper"
+    }
+  },
+  "source_knowledge_package": {
+    "path": "docs/ck3-native-ai/evidence/g2-m2-c17-batch9081-9303-knowledge-2026-10-20.json",
+    "bytes": 28213,
+    "sha256": "6686d2342b4ce25d58fdfe8913ea404c9fe422c54842158d43fbb10d9224979d",
+    "historical_cold_rebind_gaps_remain_recorded": true,
+    "modified_by_this_qualification": false
+  },
+  "storage": {
+    "independent_scope": "M2-FUTURE-COLD-COMING0004-PAM0018-SOURCE96KiB-COMMITMENT01.json",
+    "scope_sha256": "49a9a2a06b424c50076cc4f259de570effe7c6df18304c1b428d3e3eb6752c1f",
+    "cap_bytes": 98304,
+    "new_source_test_hunks_bytes": 26102,
+    "test_temp": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-c19-finite-tests-20261020",
+        "files": 52,
+        "bytes": 25183
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\g2-m2-c19-finite-tests-20261020-v2",
+        "files": 52,
+        "bytes": 25273
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\.task-tmp\\m2c19-schema",
+        "files": 12,
+        "bytes": 4984
+      }
+    ],
+    "proof_bytes": 15698,
+    "new_gross_bytes": 97240,
+    "net_retained_bytes": 97240,
+    "ordinary_knowledge_pool_additional_bytes": 0,
+    "ordinary_knowledge_pool_unchanged_bytes": 200048,
+    "future_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "test_temp_retention_hours": 48,
+    "small_record_retention_days": 180,
+    "accounting": "Complete final helper/tests/hunks, this corrected same-name proof and all three retained fixture sets are charged; earlier proof SHA/result preserved as history, without a duplicate file. Frozen sources/closed inputs/knowledge were not copied."
+  },
+  "current_SDK_mutations": 0,
+  "Game_MCP_RPC_calls": 0,
+  "builds": 0,
+  "producer_stopped_after_source_qualification": true,
+  "initial_observed_at_utc": "2026-10-19T18:38:15.013Z",
+  "review_correction": {
+    "reviewer": "g2_m1_entities",
+    "authorization": "Root requested a minimal guard/test correction within the original complete96KiB cap, with this same qualification updated and no duplicate proof.",
+    "defect": "schema_version != 1 admitted Python bool True and float 1.0.",
+    "fix": "Require type(context.get('schema_version')) is int as well as value1.",
+    "prior_proof": {
+      "bytes": 14464,
+      "sha256": "00145556708a0d3686f00ee93b17dea6ff0b545b755753b43c3916d22c2296cd",
+      "historical_bytes_replaced_by_authorized_correction": true
+    },
+    "prior_packet_new_gross_bytes": 90739,
+    "real_closed_context_offline_requalification": [
+      {
+        "key": "coming_of_age.0004",
+        "actual_schema_version_type": "int",
+        "integer1_candidate_known": true,
+        "bad_version_types_rejected": [
+          "bool",
+          "float"
+        ]
+      },
+      {
+        "key": "pam_decision_events.0018",
+        "actual_schema_version_type": "int",
+        "integer1_candidate_known": true,
+        "bad_version_types_rejected": [
+          "bool",
+          "float"
+        ]
+      }
+    ],
+    "frozen_base_and_1003_and_hunks_unchanged": true
+  }
+}
