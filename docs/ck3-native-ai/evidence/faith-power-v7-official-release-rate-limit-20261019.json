@@ -1,0 +1,114 @@
+{
+  "schema": "faith-power-official-release-rate-limit-fallback-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-19T13:16:14.634807+00:00",
+  "source_base_commit": "00a9aa256f289905ca80eb9d65e06b49a21f3b11",
+  "original_failure": {
+    "exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a01\\original-build-exit.json",
+      "bytes": 726,
+      "sha256": "ab52e9c9e8f7c74bf8700f799f914e95c809d8529eb68ff41bde490a0e2f379e"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a01\\original-build.stderr.log",
+      "bytes": 2159,
+      "sha256": "fdf555ee9738e25f7c4b0dcd7f8d7f47db9a0b4b2f63fbab9188c06cae778869"
+    },
+    "process": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\production-plan\\visual-repair-build-a01\\original-build-process.json",
+      "bytes": 2361,
+      "sha256": "f55b84576e748c69ad1bbf624fb46a841db5f4cc61c3b97f051be71fdbf97ec1"
+    },
+    "actual_Popen_wait_exit_code": 1,
+    "pid": 7584,
+    "last_line": "urllib.error.HTTPError: HTTP Error 403: rate limit exceeded",
+    "boundary": "Original traceback retains status and reason only; original response headers/body were not retained and are not reconstructed. New fallback independently requires its own current status/header/body qualification.",
+    "output_directory": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v7-production-a01\\full-final-a02",
+    "observed_children": [
+      "storage-admission.json"
+    ]
+  },
+  "source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\integration\\src\\faith_power_promo\\production.py",
+    "bytes": 33011,
+    "sha256": "a6e45404db573da40f8aeaa69e5ad9daa8e33c56da6e48944e180093c8c5264d"
+  },
+  "tests": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\integration\\tests\\test_production_runtime.py",
+    "bytes": 8791,
+    "sha256": "363633cb7aeb5e7e9d70383ae899493d602faa005daab9522aca853985d95c07"
+  },
+  "fallback_contract": {
+    "endpoint": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest",
+    "anonymous_first": true,
+    "fallback_only": "HTTP429, or HTTP403 with X-RateLimit-Remaining exactly0, or body explicitly stating primary/secondary rate limit exceeded. Bounded error body <=65536 bytes.",
+    "other_HTTP_or_transport_errors": "Preserve failure without fallback",
+    "gh_argv": [
+      "gh",
+      "api",
+      "--hostname",
+      "github.com",
+      "--method",
+      "GET",
+      "--header",
+      "Accept:application/vnd.github+json",
+      "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+    ],
+    "audit": "Existing command()/run_command stores argv/stdout/stderr. Anonymous status/body retained before CLI; fresh-runtime.release.transport records method and original status.",
+    "gh_nonzero_or_invalid_JSON": "Preserve failure",
+    "credentials": "No token read, printed, or passed in argv; CLI uses existing configuration.",
+    "installed_release_and_tool_guard_text_byte_identical": true,
+    "guard_scope": "Installed final tag; exactly one wheel; direct_url URL and SHA; existing help/version/tool-bound checks. Existing separate RECORD qualification remains unchanged.",
+    "new_install_or_version_upgrade": false
+  },
+  "focused_validation": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\release-transport-a04\\focused-tests.actual.json",
+      "bytes": 3080,
+      "sha256": "3b6cb16b2c6b69ec316ea58d36ea5f6177893a8dab2a8df3fd4c4251246f6d8c"
+    },
+    "stdout": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\release-transport-a04\\focused-tests.stdout.log",
+      "bytes": 105,
+      "sha256": "ff39152f3f5812ec879957efd4b24595d32458c033c19b4d6ee1e6e651f65742"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\research\\release-transport-a04\\focused-tests.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "exit_code": 0,
+    "summary": "8 passed, 15 subtests passed in 0.30s",
+    "actual_original_test_wait_observed": true,
+    "network_calls": "Mocked only, no live fallback acceptance claimed",
+    "coverage": [
+      "anonymous HTTP success",
+      "403 zero remaining",
+      "403 explicit primary/secondary rate-limit body",
+      "429",
+      "ordinary403 and401/404/500 rejection",
+      "bad HTTP JSON",
+      "gh nonzero",
+      "gh invalid JSON/nonobject",
+      "installed tag/multiple wheel/URL/SHA mismatch rejection",
+      "fresh runtime retains transport/original status"
+    ]
+  },
+  "same_endpoint_prior_qualification_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v7-20261019\\voice-plan\\qualify_v7_tools_a01.py",
+    "bytes": 9076,
+    "sha256": "7f1d07064bacac565eb6d0c865729234c43fcb9fdb49ef7526b06afdf935c6af"
+  },
+  "official_CI_discovery": {
+    "path": ".github/workflows/static-ci.yml",
+    "line": 186,
+    "command": "python -B -X utf8 -m unittest discover -s promo/ck3_faith_and_power/integration/tests -p \"test_*.py\" -v",
+    "new_test_file_is_discovered": true,
+    "new_official_CI_result_claimed": false
+  },
+  "git_diff_check_exit_code": 0,
+  "render_or_TTS_or_game_or_screen_started": false,
+  "formal_common_and_media_sources_modified": false,
+  "production_resume_pending_parent_review": true,
+  "commit_or_push_by_this_agent": false
+}

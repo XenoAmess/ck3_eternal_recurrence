@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import sys
 import traceback
+import urllib.error
 import urllib.request
 
 from xar_promo.model import ProjectConfig
@@ -101,6 +102,45 @@ def project(script, cues=None, *, sample=False):
     return config
 
 
+def _official_latest_release(destination, machine):
+    """Retain authenticated CLI evidence only after explicit anonymous rate limiting."""
+    request = urllib.request.Request(LATEST, headers={"Accept": "application/vnd.github+json",
+                                                     "User-Agent": "ck3-faith-production"})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            release = json.load(response)
+            transport = {"method": "urllib", "anonymous_http_status": response.status}
+    except urllib.error.HTTPError as error:
+        if error.code not in (403, 429):
+            raise
+        body = error.read(65537)
+        if len(body) > 65536:
+            raise ValueError("Official API error body exceeds the bounded diagnostic") from error
+        text = body.decode("utf-8", errors="replace")
+        remaining = error.headers.get("X-RateLimit-Remaining")
+        limited = (remaining is not None and remaining.strip() == "0"
+                   or "rate limit exceeded" in text.casefold()
+                   or "exceeded a secondary rate limit" in text.casefold())
+        if error.code != 429 and not limited:
+            raise
+        diagnostic = write(Path(destination) / "official-latest-anonymous-rate-limit.json", {
+            "machine_id": machine, "url": LATEST, "observed_at_utc": now(), "http_status": error.code,
+            "reason": str(error.reason), "rate_limit_remaining": remaining, "body": text,
+        })
+        label = "official-latest-gh-api"
+        result = command(["gh", "api", "--hostname", "github.com", "--method", "GET",
+                          "--header", "Accept:application/vnd.github+json",
+                          LATEST.removeprefix("https://api.github.com/")], destination, label)
+        if result.returncode != 0:
+            raise RuntimeError("Official latest release gh api failed; see command audit") from error
+        release = json.loads(result.stdout)
+        transport = {"method": "gh-api", "anonymous_http_status": error.code,
+                     "anonymous_error": pin(diagnostic), "command_label": label}
+    if not isinstance(release, dict):
+        raise ValueError("Official latest release must be a JSON object")
+    return release, transport
+
+
 def fresh_runtime(repo, runtime, destination):
     """Read official latest Release, exact installed wheel, help and tool bytes."""
     machine = subprocess.check_output(
@@ -108,10 +148,7 @@ def fresh_runtime(repo, runtime, destination):
         text=True, encoding="utf-8").strip()
     if runtime.get("machine_id") != machine:
         raise ValueError("Runtime input belongs to another machine")
-    request = urllib.request.Request(LATEST, headers={"Accept": "application/vnd.github+json",
-                                                     "User-Agent": "ck3-faith-production"})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        release = json.load(response)
+    release, transport = _official_latest_release(destination, machine)
     dist = metadata.distribution("xar-promo-toolchain")
     direct = json.loads(dist.read_text("direct_url.json") or "null")
     wheels = [r for r in release["assets"] if r["name"].endswith(".whl")]
@@ -140,7 +177,8 @@ def fresh_runtime(repo, runtime, destination):
               "observed_at_utc": now(), "evidence_source": "fresh official API/direct_url/interpreter/help/executable observations",
               "python": {"path": sys.executable, "version": sys.version},
               "release": {"url": LATEST, "tag": release["tag_name"],
-                          "published_at": release["published_at"], "wheel": wheel},
+                          "published_at": release["published_at"], "wheel": wheel,
+                          "transport": transport},
               "installed": {"version": dist.version, "direct_url": direct, "commands": results},
               "tools": tools, "game_started": False, "screen_owner_created": False}
     write(Path(destination) / "fresh-runtime.json", record)
