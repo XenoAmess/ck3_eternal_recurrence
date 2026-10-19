@@ -1,0 +1,26 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:42:35.845023+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine, Root tool8f725e",
+  "source_read": "Root tool841938 recovery source9cc77c, tool1ed3a8 actualenv proof3254d672",
+  "finding": "No source block in corrected reducer; original Queue owns frame, exact one SEM9423 and zero action/cycle credit. Previous e614 qualification incorrectly injected frame absent from actual env. It was never installed/executed.",
+  "execution_order": "Runtime proceeded using earlier exact9422/9423 authorization before this final Root read; no retroactive release time is claimed.",
+  "reported_actual": "9422 native_query_not_sent_observed_pending_cleared;4262cycles/day4153/raw53244000,NEXT9424. C17 normal SDK close0/0 Job0;Game and recording unchanged. Runtime originals retained externally.",
+  "actual_evidence": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c17-alliance9421-failure93/ACTUAL-RECOVERY-9422-CLOSED.json",
+    "bytes": 2470,
+    "sha256": "97ed595cea0ddb01ab9d7b00e1da9bcd4db3780d05455c63988ab47eb5caac5b"
+  },
+  "qualifications": [
+    {
+      "path": "docs/ck3-native-ai/evidence/c17-alliance9421-recovery-qualification93-2026-10-20.json",
+      "bytes": 1304,
+      "sha256": "0b9262e94e40492b3c9da73a3caf4b9d78f9fb900722089a0ea3dab43aa1d714"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/c17-alliance9421-recovery-qualification94-2026-10-20.json",
+      "bytes": 1933,
+      "sha256": "3254d672c05fa86c2622b9d9d28d6129ae2eda74c8ddefcefe2c346f98fafdff"
+    }
+  ]
+}

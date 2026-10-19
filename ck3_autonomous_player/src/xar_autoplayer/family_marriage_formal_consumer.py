@@ -148,7 +148,7 @@ def _rejected_candidates(resolved: Mapping[str, object]) -> frozenset[int]:
 
 def _plan_existing_resolution(
     driver: object, planned: dict[str, object], plan: dict[str, object],
-    resolved: dict[str, object],
+    resolved: dict[str, object], snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     pid, creation = bridge_process_identity(driver)
     if (pid, creation) != (resolved.get("post_bridge_pid"),
@@ -170,6 +170,27 @@ def _plan_existing_resolution(
     source_pending = resolved.get("source_pending")
     recipient = (source_pending.get("recipient_character_id")
                  if isinstance(source_pending, dict) else None)
+    played = snapshot.get("played_character")
+    if (isinstance(source_pending, dict)
+            and source_pending.get("schema") == SCHEMA
+            and resolved.get("status") in {"marriage", "betrothal"}
+            and resolved.get("material_result") is True
+            and isinstance(played, Mapping)
+            and _positive(played.get("character_id"))
+            and recipient == source_pending.get("played_character_id") == played["character_id"]
+            and isinstance(snapshot.get("episode_run_id"), str)
+            and bool(snapshot["episode_run_id"])
+            and source_pending.get("episode_run_id") == resolved.get("episode_run_id")
+                == snapshot["episode_run_id"]
+            and all(_positive(resolved.get(key))
+                    and resolved[key] == source_pending.get(key)
+                    for key in ("heir_character_id", "candidate_character_id"))
+            and resolved["heir_character_id"] != resolved["candidate_character_id"]):
+        # The proposal recipient can legitimately be the player. Preserve the
+        # material marriage; its self-alliance follow-up has no other ruler to read.
+        return {**planned, "plan": {**plan,
+            "family_marriage_result_consumed": resolved,
+            "family_marriage_alliance_status": "not_applicable_self_recipient"}}
     alliance = resolved.get("alliance_result")
     if (resolved.get("status") in {"marriage", "betrothal"}
             and _positive(recipient)
@@ -615,7 +636,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                 and bridge_process_identity(driver) != (
                     resolved.get("post_bridge_pid"),
                     resolved.get("post_bridge_creation_date"))):
-            return _plan_existing_resolution(driver, planned, plan, resolved)
+            return _plan_existing_resolution(driver, planned, plan, resolved, snapshot)
         return {**planned, "plan": {**plan,
             "family_marriage_status": "current_first_heir_relation_unavailable",
             "family_marriage_current_relationship": relation}}
@@ -660,7 +681,7 @@ def plan_family_marriage_private(driver: object, planned: dict[str, object],
                     **plan,
                     "family_marriage_current_relationship": deepcopy(relation),
                 }
-            return _plan_existing_resolution(driver, planned, observed_plan, resolved)
+            return _plan_existing_resolution(driver, planned, observed_plan, resolved, snapshot)
     if relation is not None and _relation_has_partner(relation):
         return {**planned, "plan": {**plan,
             "family_marriage_status": "current_first_heir_already_partnered",

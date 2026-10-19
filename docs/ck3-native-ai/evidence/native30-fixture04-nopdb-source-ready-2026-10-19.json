@@ -1,0 +1,71 @@
+{
+  "schema": "native30-fixture04-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:20:56.139135+00:00",
+  "machine_identity_source": "Fresh tools/ck3_live_run_id.py machine",
+  "status": "SOURCE_READY_CPP_NOTRUN",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture04-nopdb-plan-2026-10-19.json",
+    "bytes": 13138,
+    "sha256": "80ec3a5de3dc304ff163ee5b3300a7bc2340d641fabc35212bd65629391fc118"
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture04_20261019.py",
+      "bytes": 27464,
+      "sha256": "90757ab85f19bbd834210070f37dd12c0753c79c5b8d6de1ca882765bc585eec"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_fixture04_override_20261019.cmake",
+      "bytes": 1277,
+      "sha256": "50e9c204233573558bd6b11789240e6fdf7ebbc043f2c098e34804fee35f3db6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_fixture04_nopdb_20261019.py",
+      "bytes": 5505,
+      "sha256": "e6cd19dd41b77b458e3df3f1808f634b336b197a60c1f78f72c13634df090d15"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_fixture04_source_20261019.py",
+      "bytes": 12292,
+      "sha256": "30c6475466924a4d7e5928e584a9f2c46f971a26e6db7f2fbda85109562b613c"
+    }
+  ],
+  "fixed_fixture_unchanged_input": {
+    "path": "ck3_autonomous_player/native_bridge/src/camera_tracking_v1_test.cpp",
+    "bytes": 2647,
+    "sha256": "6393d0168cdf4ffc4b701c4a349dacc1d7ed3cac51ec8fece409d245e35ed9c1"
+  },
+  "tests": {
+    "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_fixture04_nopdb_20261019 -q",
+    "actual": "20PASS/0.083s",
+    "tool_exec": "c49790",
+    "earlier": [
+      "19PASS/0.086s/1faec0",
+      "20PASS/0.087s/aec934"
+    ],
+    "scope": "No-debug exactlink, predicted-vs-real PDB, missing DLL/lib, foreign/otherPDB, outsidebuild, actual closed command, AST equivalence for retained source/argv/final guards and admission. Pure tests; no compiler/process termination/Task/Defender or Game."
+  },
+  "03_failure_preserved": {
+    "stderr": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner03\\owner-spec\\stage.stderr.log",
+      "bytes": 1236,
+      "sha256": "40b29d0f22fed64f7b389cb0303043a0a4d05b9251322c4a8f03a9edaf77a605"
+    },
+    "CLOSED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner03\\owner-spec\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "9f53fe6c77dda5456ce8f6d6899985e64d64594e567b715e426e773d29d92f4c"
+    },
+    "Task_unregistered_tool": "5d152b",
+    "Native_result_missing": "pre-mkdir failure; never synthesize one"
+  },
+  "source64KiB_cap": 65536,
+  "CPP_changes": 0,
+  "old_sources_modified": 0,
+  "new_external_files": 0,
+  "Task_or_Native_started": false,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "xar.alliance9421-closed-pair-fixture/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "original": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c17-alliance9421-failure93\\family.json",
+    "bytes": 18756,
+    "sha256": "9c59b81c129be9f0f502c2812599cd44d281cc0e7cd6b718c6d553952312d147"
+  },
+  "projection": "/resolved fixed scalar keys and /resolved/source_pending fixed scalar keys; unchanged original values. Episode history and large value projection omitted.",
+  "resolved": {
+    "status": "marriage",
+    "material_result": true,
+    "episode_run_id": "native-40526-1bec95182886",
+    "heir_character_id": 40695,
+    "candidate_character_id": 76700,
+    "post_native_revision": 2668,
+    "post_bridge_pid": 30852,
+    "post_bridge_creation_date": "20261020000615.902761+480",
+    "cold_recovery": false,
+    "source_pending": {
+      "schema": "xar.ck3.observed-first-heir-marriage-private-action.v1",
+      "status": "receipt_pending",
+      "material_result": false,
+      "pre_native_revision": 2658,
+      "source_date_raw": 53243808,
+      "played_character_id": 40526,
+      "heir_character_id": 40695,
+      "candidate_character_id": 76700,
+      "recipient_character_id": 40526,
+      "preproposal_played_has_recipient_alliance": null,
+      "preproposal_realm_alliance_attempt_if_accepted": false,
+      "episode_run_id": "native-40526-1bec95182886",
+      "source_bridge_pid": 30852,
+      "source_bridge_creation_date": "20261020000615.902761+480"
+    }
+  }
+}

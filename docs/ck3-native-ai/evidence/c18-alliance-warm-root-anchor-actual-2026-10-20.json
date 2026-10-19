@@ -1,0 +1,30 @@
+{
+  "schema": "xar.c18-alliance-warm-root-anchor-actual/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:34:54.029507+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine tool8f725e",
+  "root_release": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c18-alliance-warm-root-release-2026-10-20.json",
+    "bytes": 1948,
+    "sha256": "c98f336b97d766b8684b697c56f07280e12c6a42646a625e1490184d52275a99"
+  },
+  "result": {
+    "business_source_commit": "0e8a190bf3e5ec187e7bc30d76310585922a0b50",
+    "business_source_ref": "refs/heads/campaign/robert-v20261019-c18-alliance-warm-01",
+    "parent": "04a87c1ec6fd4a0d59e6237af3158ce797c7cbe4",
+    "complete_manifest": {
+      "file_count": 1445,
+      "source_bytes": 59052571,
+      "canonical_rows_JSON": {
+        "bytes": 371514,
+        "sha256": "20b02b77ebbe43b9f822717295ac377b9ca445d43b11429d1117f330cc8252f7"
+      },
+      "all_rows_available": "compose() second return value"
+    },
+    "master_index_worktree_changed": false
+  },
+  "Git_conservative_cluster_charge_bytes": 40960,
+  "Git_one_temp_plus_retained_upper_bytes": 69465,
+  "loose_objects_charged": 6,
+  "charge_note": "Existing loose outputs counted conservatively; one temp bound by input+8192, atomic rename does not duplicate data; shared MFT reserve remains."
+}

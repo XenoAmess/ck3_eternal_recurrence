@@ -1,0 +1,54 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:35:33.887862+00:00",
+  "status": "SOURCE_QUALIFIED_WAITING_ROOT_RELEASE",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c17_alliance9421_not_sent_v1.py",
+    "bytes": 14352,
+    "sha256": "9cc77cf3e352772b10b2826a80d96522901ef9f0a7b091bfd2129db966c5c658"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c17_alliance9421_not_sent_v1.py",
+    "bytes": 8672,
+    "sha256": "89b8ed479d6d0b7d56fd97234cecf777ee8abda5390340386aefcb3b198dfae3"
+  },
+  "sources": {
+    "root_p37c17_alliance9421_not_sent.py": {
+      "bytes": 14352,
+      "sha256": "9cc77cf3e352772b10b2826a80d96522901ef9f0a7b091bfd2129db966c5c658"
+    },
+    "root_p37_known_pause_recovery_control.py": {
+      "bytes": 19333,
+      "sha256": "d507d3295a035a631f28ed1961be6f80b8a0609dc20ef230cf1f313acb3eb2e0"
+    }
+  },
+  "supersedes_failed_qualification": {
+    "path": "_runtime/c17-alliance9421-qualified93.json",
+    "sha256": "0b9262e94e40492b3c9da73a3caf4b9d78f9fb900722089a0ea3dab43aa1d714",
+    "reason": "old fixture injected frame missing from real Queue recovery env; no runtime install/RPC"
+  },
+  "actual_entry_env_keys": [
+    "INBOX",
+    "OUTBOX",
+    "Q",
+    "REPLY_RESERVE",
+    "SEMANTIC",
+    "atomic",
+    "decoded",
+    "now",
+    "read",
+    "sha256"
+  ],
+  "actual_frame_reducer_ast_sha256": "4c5e1528aa5b72cc5d71646ac33c3238d830280c26735a38a3313eb44dddf364",
+  "checks": [
+    "actual closed F93 guards",
+    "actual Queue recovery method/env expression and actual frame reducer with frozen SDK lifecycle normalizer; one SEM positive",
+    "wrong birth before RPC reject",
+    "wrong date/SEM error retain intent",
+    "nonself tuple reject",
+    "original dispatcher inverse bytes"
+  ],
+  "D_writes": 0,
+  "Game_Native_MCP_Task_calls": 0,
+  "fixture_calls_are_in_memory_only": true
+}

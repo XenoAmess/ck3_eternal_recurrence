@@ -1254,3 +1254,6 @@ docs/ck3-native-ai/evidence/g2-m1-c12-quiet5873-failure-audit-2026-10-19.md -tex
 docs/ck3-native-ai/evidence/c17-actual-warm-sem-cap-2026-10-20.json -text whitespace=cr-at-eol
 
 docs/ck3-native-ai/evidence/c17-actual-warm-ready-2026-10-20.json -text whitespace=cr-at-eol
+
+ck3_autonomous_player/tests/unit/fixtures/alliance9421_closed_pair_v1.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/c17-alliance9421-root-review-2026-10-20.json -text whitespace=cr-at-eol

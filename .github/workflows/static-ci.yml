@@ -287,12 +287,12 @@ jobs:
       - name: Test native build recovery guards without CK3 or MSVC
         env:
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m unittest tools.g2_saved_campaign.test_native30_msvc_auxiliary_policy_20261019 tools.g2_saved_campaign.test_native30_resume_contract_20261019 tools.g2_saved_campaign.test_native30_fixture03_contract_20261019 -q
+        run: python -B -X utf8 -m unittest tools.g2_saved_campaign.test_native30_msvc_auxiliary_policy_20261019 tools.g2_saved_campaign.test_native30_resume_contract_20261019 tools.g2_saved_campaign.test_native30_fixture03_contract_20261019 tools.g2_saved_campaign.test_native30_fixture04_nopdb_20261019 -q
       - name: Test construction deferral, letter rebinding and future stress decision guards without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_construction_optional_source_8890.py ck3_autonomous_player/tests/unit/test_reviewed_letter_source_rebind_v1.py ck3_autonomous_player/tests/unit/test_journaller_stress_relief_v1.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_construction_optional_source_8890.py ck3_autonomous_player/tests/unit/test_reviewed_letter_source_rebind_v1.py ck3_autonomous_player/tests/unit/test_journaller_stress_relief_v1.py ck3_autonomous_player/tests/unit/test_family_self_alliance_9421.py
       - name: Verify recorded SDK28 source reconstruction without runtime inputs
         run: python -B -X utf8 docs/ck3-native-ai/research/sdk28-public-source-delta-20261017/source_delta_recipe.py verify --repo . --git-only --public-commit 79055bb2fc2559f4fe270ec3971591c78b59e0c8
       - name: Preserve decision history growth evidence

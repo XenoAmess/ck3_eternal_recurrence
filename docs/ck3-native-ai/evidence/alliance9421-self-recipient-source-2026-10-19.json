@@ -1,0 +1,61 @@
+{
+  "schema": "xar.alliance9421-self-recipient-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewed_utc": "2026-10-19T18:26:09Z",
+  "identity_source": "python -B tools/ck3_live_run_id.py machine; clock.curr_time",
+  "actual_source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src14",
+  "closed_input": {
+    "packet": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c17-alliance9421-failure93/FROZEN.json",
+    "packet_bytes": 8203,
+    "packet_sha256": "8840f19efd6143fbbf805219cec96320495ea77f9e3e2e276471fa198bd7c3e5",
+    "family_bytes": 18756,
+    "family_sha256": "9c59b81c129be9f0f502c2812599cd44d281cc0e7cd6b718c6d553952312d147",
+    "auto9421_bytes": 548,
+    "auto9421_sha256": "b4a963c5a43e197b926f245777314c555cbd52d8e273ab42b986d85c8af825ae",
+    "callback9421_bytes": 861,
+    "callback9421_sha256": "4bd9ac3eb9f3ab4a2c3c5380bf8b34ac4b5ec62315d0c28b2ba7134e155cdd78",
+    "facts": "Resolved marriage/material_result=true/current episode native-40526-1bec95182886/actor40526/heir40695/candidate76700/recipient40526. Source proposal schema and pair match; source_pending.material_result=false is its original receipt_pending status. Old31254 is archived episode_history, not this proposal.",
+    "self_scope": "Recipient is the player; no different ruler exists for this particular player-recipient alliance follow-up. No claim about all external alliances or new alliance/marriage effects."
+  },
+  "failure_boundary": {
+    "actual_service_sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8",
+    "actual_driver_sha256": "cc60c9af670c37ef2085f66d07db17a2bd309660fcb60c05a5340df7720874ab",
+    "actual_transport_sha256": "4c338e2ed6317dc4c9c3db70e4df80b0fc6581ff65b2f3d441301030f40b3c05",
+    "path": "Service5514-5520 dispatches query_family_marriage_alliance_result_private. Consumer1038-1054 reads and matches ledger/resolved, then calls Driver4572-4583. Transport253-279 reads paused snapshot and rejects recipient==played at275, raising exact error279. Native _command/send starts280; consumer alliance ledger write starts1072 after a successful result.",
+    "interpretation": "Python selected-query dispatch occurred after actual callback. This exact exception proves no alliance native command/send and no alliance-result ledger write in this query. Do not infer zero planning Native reads or zero earlier planner bookkeeping from callback presence/absence. Do not replay original proposal or query or classify this is_error as blocked.",
+    "asymmetry": "Planner149-184 originally required only positive recipient, status and warm PID; transport correctly rejects self at275. The fix excludes only a fully bound self follow-up."
+  },
+  "candidate": {
+    "file": "ck3_autonomous_player/src/xar_autoplayer/family_marriage_formal_consumer.py",
+    "before_bytes": 59889,
+    "before_sha256": "1e8f19eafca8b83601de84c74fb30f40b173932570587cacd15be590d72f357c",
+    "bytes": 61273,
+    "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+    "change": "Pass snapshot at both private _plan_existing_resolution calls. After the original cold-process branch, require positive current actor==source played==recipient, matching nonempty snapshot/resolved/source episodes, exact source schema, material marriage/betrothal, two matching positive distinct partner IDs. Only then preserve original ordinary plan and annotate family_marriage_alliance_status=not_applicable_self_recipient beside unchanged material result.",
+    "limits": "Foreign/missing actor/episode/schema/material/pair receives no not-applicable credit. Original cold and transport guards remain. No source ledger repair, alliance_result fabrication, marriage re-submit, new dependency, Service/Driver/Native edit or runtime mutation.",
+    "currently_adopted": false
+  },
+  "qualification": {
+    "test": "ck3_autonomous_player/tests/unit/test_family_self_alliance_9421.py",
+    "test_bytes": 5274,
+    "test_sha256": "0a9db56c86c6b20a54df760c61e85bd4709cef06a3aeb25cd9760c5155fab4f3",
+    "fixture": "ck3_autonomous_player/tests/unit/fixtures/alliance9421_closed_pair_v1.json",
+    "fixture_bytes": 1616,
+    "fixture_sha256": "4c9ad8a76f74921c857c6a14615774675a6db02253264b364a03fb72abd93e7d",
+    "command": "python -B -X utf8 -c __import__('sys').path.insert(0,'ck3_autonomous_player/src');__import__('sys').exit(__import__('pytest').main(['-q','-p','no:cacheprovider','ck3_autonomous_player/tests/unit/test_family_self_alliance_9421.py']))",
+    "result": "13 passed in2.12s. Current self keeps original material and ordinary action. Nine binding negatives cannot claim self not applicable. External recipient still selects original alliance read; cold identity still selects material recheck; original transport rejects self before endpoint access. Service.auto dispatches ordinary life-advance once/callback once and retains byte-identical ledger.",
+    "actual_service": "Load exact src14 Service source in module memory with candidate consumer, run same test -k real_service:1 passed/12 deselected in0.50s. No file/runtime replacement.",
+    "fixture_boundary": "Original F93 scalar pair fields are unchanged projections. Snapshot wrapper, baseline chooser, process identity provider, endpoint and ordinary execution are explicitly synthetic. This is software/source qualification, not a new in-game marriage or alliance observation.",
+    "diff_check": "git diff --check production file exit0",
+    "Game_RPC_live_Driver_SAVE_reads": 0,
+    "source_or_test_changes_to_old_files": "Only the named consumer changed; tests and small fixture are new. No staging/commit."
+  },
+  "knowledge": "Proposal recipients can be the player for an internal marriage. Material marriage, projected alliance intent and an actual alliance observation are separate. A self-only optional follow-up must not halt ordinary full planning, and metadata must never invent an alliance receipt.",
+  "storage": {
+    "root_authorized_complete_cap_bytes": 98304,
+    "scope": "Original64KiB increased by32KiB, not a separate96KiB pool. Complete production source plus new test/fixture/proof counted.",
+    "future_writes_after_final_freeze": 0,
+    "physical_allocated_bytes": "unknown",
+    "review": "Current P0/source adoption;180-day review under repository storage policy; no cleanup or raw duplicate."
+  }
+}

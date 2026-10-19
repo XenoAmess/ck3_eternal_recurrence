@@ -1,0 +1,580 @@
+{
+  "schema": "xar.g2-m2-c17-batch9081-9303-source-closure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:28:50.537Z",
+  "provenance": "Exact closed projections and their incident pins; current installed source SHA and existing offline loaders; no live Driver/SAVE or Game queries.",
+  "runtime_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime",
+  "physical_game_pid": 30852,
+  "runtime_SDK_label": "C17",
+  "episode_run_id": "native-40526-1bec95182886",
+  "connection_generation": 2,
+  "event_knowledge": [
+    {
+      "auto": 9081,
+      "key": "coming_of_age.0004",
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9081-CLOSED.json",
+        "bytes": 23803,
+        "sha256": "82aa4f2cdb9f08562542ed9a0dce72d4f49f14aade506707f7a7a371aee6f1a1"
+      },
+      "incident_id": "62d7956cfff145c5a1ac5acd07b8f495",
+      "before_sha256": "4963f9716b4c5f33c0341527612cb597afa3e78d5dce365dbb03e1750463c942",
+      "after_sha256": "32cb7af3f6ce5641a53ffef741743c54ff3558305181bed43ce5f68a7361dd9e",
+      "ACK": true,
+      "post": {
+        "old_event_instance_id": 34,
+        "new_event_instance_id": null,
+        "postcondition_verified": true
+      },
+      "choice": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "public_option_number": 1
+      },
+      "binding": {
+        "ck3_build": "1.20.0.4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "event_definition_key": "coming_of_age.0004",
+        "calculated_event_id": 2810004,
+        "native_option_count": 1,
+        "source_sha256": "fb2c0e3d52b9f625ebd128195c3bf622d656c49ef1aba91fb13c93569998a4ba",
+        "option_catalogue_sha256": "c2726c0e89e3ea49a9e6a8ca84eb63fd793b0d61133fbe30136aed632553890c"
+      },
+      "definition_sha256": "e35e1c26f89b5b0adeba4c9ad0ddd3f12bb6f2ba836fb6c359bd1ad2de248215",
+      "canonical": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\f558daba4241679a814cedc525250a326a70ec680801a38ed47320fe582e91fa.json",
+          "bytes": 13206,
+          "sha256": "89932594e95f9f4502c28548a652b785e75138272166c42ee8dd850e4098fece"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\f558daba4241679a814cedc525250a326a70ec680801a38ed47320fe582e91fa.json",
+          "bytes": 1411,
+          "sha256": "a0a48b8560a41cb2f0c309bdafcaf23f33c5e5f26f9013c170d6aa4993a53e09"
+        }
+      ],
+      "baseline": {
+        "status": "unknown",
+        "rejected_entries": []
+      },
+      "actual_loader": "exact",
+      "synthetic_future_loader": {
+        "status": "unknown",
+        "binding_mode": null,
+        "rejected_entries": [
+          {
+            "entry": "f558daba4241679a814cedc525250a326a70ec680801a38ed47320fe582e91fa.json",
+            "reason": "source-declared event root differs"
+          }
+        ]
+      },
+      "analysis": "Sole option acknowledges. Immediate resolves education_intrigue ranks from points and conditional boosts, relations/memories and education wrap-up; after grants conditional hold-court grace. Actual rank/education traits unobserved. Default event type is implicit; generic cold-ID rebind currently rejects this source."
+    },
+    {
+      "auto": 9136,
+      "key": "health.3001",
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9136-CLOSED.json",
+        "bytes": 32030,
+        "sha256": "c0fa243efa3a6c929f306008b54ab500b0ab53f70c5468e24e34df60bd004883"
+      },
+      "incident_id": "f7f1931e076c4678bcb947704aff02a3",
+      "before_sha256": "36ca1016f0b60b64f0a53a491f51cbaabb2357741ce2006557b975c6720bbf76",
+      "after_sha256": "723893c2992f86644cbff091d1e1b575e6f33dfb379759dc5bd358ba076d49b5",
+      "ACK": true,
+      "post": {
+        "old_event_instance_id": 37,
+        "new_event_instance_id": null,
+        "postcondition_verified": true
+      },
+      "choice": {
+        "rendered_index": 0,
+        "native_option_index": 1,
+        "public_option_number": 2
+      },
+      "binding": {
+        "ck3_build": "1.20.0.4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "event_definition_key": "health.3001",
+        "calculated_event_id": 3993001,
+        "native_option_count": 5,
+        "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212",
+        "option_catalogue_sha256": "3a2c7fd4410d388e1c3d424bea21b9a9f92f361bf0ee7c85dd2f1e9c3386fc03"
+      },
+      "definition_sha256": "6618f5745d230e77601befb837cab8baec6755feef8c7785eee106bd6397c299",
+      "canonical": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\c0ab65c0dd799a49453610e1abc6fe9500b5b066899bb672e2d9230459937365.json",
+          "bytes": 26026,
+          "sha256": "d4eec682f3ca0db8264f4a2d8a2537ebf5373b4e9699c6e44edd00659a792453"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\c0ab65c0dd799a49453610e1abc6fe9500b5b066899bb672e2d9230459937365.json",
+          "bytes": 1372,
+          "sha256": "135b5fc2ba457287ad1b28791eebd50b5a8d27a7b5dd6db281cdf55b95ca125f"
+        }
+      ],
+      "baseline": {
+        "status": "unknown",
+        "rejected_entries": []
+      },
+      "actual_loader": "exact",
+      "synthetic_future_loader": {
+        "status": "offline-source-reviewed",
+        "binding_mode": "source_rebound",
+        "rejected_entries": []
+      },
+      "analysis": "All five native options reviewed: excellent/high/low/mystic candidates and refusal. Actual selected high candidate76700 for player40526 with sick_character40408; observed gold decreases50. Appointment, piety, hook/traits and treatment are not inferred from ACK. Existing extended contract does not authorize this scope variant."
+    },
+    {
+      "auto": 9157,
+      "key": "stewardship_duty.0001",
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9157-CLOSED.json",
+        "bytes": 27090,
+        "sha256": "dbbf101f2701d85d687ebcb39c2765a52e378bf02747f4c8151a0159c62f9a48"
+      },
+      "incident_id": "8384de98277642548130f80aae98cfbc",
+      "before_sha256": "fffa0a419b79da3ebaffab27eecac5721cbd32b0bcb5a19effa7c09a53d6dce6",
+      "after_sha256": "41d235203dc37e69c997dd4eb89f82e4cecbb188e5c9135914827b81b8acd03a",
+      "ACK": true,
+      "post": {
+        "old_event_instance_id": 39,
+        "new_event_instance_id": null,
+        "postcondition_verified": true
+      },
+      "choice": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "public_option_number": 1
+      },
+      "binding": {
+        "ck3_build": "1.20.0.4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "event_definition_key": "stewardship_duty.0001",
+        "calculated_event_id": 2650001,
+        "native_option_count": 3,
+        "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+        "option_catalogue_sha256": "3aec494860cd8c457bced54cbdbde0db0df509ba9f83a198f82091b5a3acb58f"
+      },
+      "definition_sha256": "7856aace9a252f225305c6a4d238d3e31f90a0ea7b5a3746b5a509f87dcbb674",
+      "canonical": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\17291574746beb046deb5ab0823308dd911c7a9ac718671fe967d96e43c2262c.json",
+          "bytes": 14120,
+          "sha256": "a1dc89fa1af10962732d1b4f31f208a75c4c4f6316626d2dbbd492e7399f05af"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\17291574746beb046deb5ab0823308dd911c7a9ac718671fe967d96e43c2262c.json",
+          "bytes": 1426,
+          "sha256": "208b5c8fd557a282b1e1413b730e4991cb0c48270452f6223368f46b6358fdf5"
+        }
+      ],
+      "baseline": {
+        "status": "unknown",
+        "rejected_entries": []
+      },
+      "actual_loader": "exact",
+      "synthetic_future_loader": {
+        "status": "offline-source-reviewed",
+        "binding_mode": "source_rebound",
+        "rejected_entries": []
+      },
+      "analysis": "All three options reviewed. First makes a source stewardship duel/random-list: potential XP/prestige/arguer opinions, weighted success/failure, plus conditional stress. Other options favor one arguer with opinion and trait-conditioned stress. No random outcome, XP or opinions observed."
+    },
+    {
+      "auto": 9240,
+      "key": "pam_decision_events.0018",
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9240-CLOSED.json",
+        "bytes": 20017,
+        "sha256": "2a0321aa2b3bd2afcdb753cb80f10d8ea620366c4f62c67d2c1e8cb847673d95"
+      },
+      "incident_id": "30a05cd6001c47afa6427d7a9f5d5c9f",
+      "before_sha256": "25bb8364b3dd6ac8c36d0907affca0ec1048fcf8a03d704efd90cc71a8f63662",
+      "after_sha256": "a7bf48dc2e4b14f010993b278c1995dcd78d40981e696038b2709d4b4ce55b83",
+      "ACK": true,
+      "post": {
+        "old_event_instance_id": 42,
+        "new_event_instance_id": null,
+        "postcondition_verified": true
+      },
+      "choice": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "public_option_number": 1
+      },
+      "binding": {
+        "ck3_build": "1.20.0.4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "event_definition_key": "pam_decision_events.0018",
+        "calculated_event_id": 2240018,
+        "native_option_count": 1,
+        "source_sha256": "8282ca575f87e165771eb51608a296911eaa27ab93228ee48649917665484b78",
+        "option_catalogue_sha256": "cfb4f2399de9aa3d91f15ad15d58a518f23fa01c31d1c4b9de529d86d596e4d9"
+      },
+      "definition_sha256": "7ecc2a0f34290ff8377d5ebbd76ae29c908e1e19be9c85e05a9b7d6da6c22878",
+      "canonical": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\c66e79f349dc01005322a8ddea1262fea8ab88853a29b79b30f1476a861e4af8.json",
+          "bytes": 3632,
+          "sha256": "c609c8f946e865b985d53ab4d9682df09dc285e4531d6785cf4101a7a60a69da"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\c66e79f349dc01005322a8ddea1262fea8ab88853a29b79b30f1476a861e4af8.json",
+          "bytes": 1401,
+          "sha256": "50f42052f6c03a06d0f218216705a67d643d9314f3fbcea89396bc1661ba26e8"
+        }
+      ],
+      "baseline": {
+        "status": "unknown",
+        "rejected_entries": [
+          {
+            "entry": "43a8b70bb63c6d4a4e181f1ec11fa6f816345bb1a6d8b2594eb0d8bebee64517.json",
+            "reason": "source-declared event root differs"
+          }
+        ]
+      },
+      "actual_loader": "exact",
+      "synthetic_future_loader": {
+        "status": "unknown",
+        "binding_mode": null,
+        "rejected_entries": [
+          {
+            "entry": "43a8b70bb63c6d4a4e181f1ec11fa6f816345bb1a6d8b2594eb0d8bebee64517.json",
+            "reason": "source-declared event root differs"
+          }
+        ]
+      },
+      "analysis": "Source-known old letter re-bound exactly. Sole option show_as_tooltip only: conditional armed_pilgrimages/struggle_submission rite tenet text. No actual doctrine/faith effect is established by the option or ACK. Generic cold-ID letter rebind remains unavailable."
+    },
+    {
+      "auto": 9250,
+      "key": "epidemic_events.1060",
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9250-CLOSED.json",
+        "bytes": 24907,
+        "sha256": "c3f2ce6a284fa05f7803d1ef004b6f8d67339e6171307a66512e34c4fc20a344"
+      },
+      "incident_id": "8027a9f894204a079a6386ff955b4b10",
+      "before_sha256": "77b5e142985d945dd5098903b1be50e8de150f866537b9b80ac88930f1fb90f6",
+      "after_sha256": "e669abbdd7daa0cc0152064d86b492eca0633748b3ec27934c78f2c87d54db21",
+      "ACK": true,
+      "post": {
+        "old_event_instance_id": 43,
+        "new_event_instance_id": null,
+        "postcondition_verified": true
+      },
+      "choice": {
+        "rendered_index": 0,
+        "native_option_index": 1,
+        "public_option_number": 2
+      },
+      "binding": {
+        "ck3_build": "1.20.0.4",
+        "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+        "event_definition_key": "epidemic_events.1060",
+        "calculated_event_id": 5421060,
+        "native_option_count": 3,
+        "source_sha256": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950",
+        "option_catalogue_sha256": "d58e799b33920af02882427d49a8d7b73644ef6652412c2648287fd634226591"
+      },
+      "definition_sha256": "2895539d87cbfef73086362d26fc8fd7a8ada85ca52a6d81909fe0a4ae7a5f53",
+      "canonical": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\ba564c3a8187c1df46b3f1bcefebcb6c80a835307154c9705b9a5f52e5544481.json",
+          "bytes": 13605,
+          "sha256": "9a37199068c3aad5374beb5e672f538d44dfc6c56a1ec71bc9b66f23f262606d"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\ba564c3a8187c1df46b3f1bcefebcb6c80a835307154c9705b9a5f52e5544481.json",
+          "bytes": 1393,
+          "sha256": "8eaf4e2f7ae09f6595bcf19dca9406c807d5f27c901269b4908120b9ac139624"
+        }
+      ],
+      "baseline": {
+        "status": "unknown",
+        "rejected_entries": []
+      },
+      "actual_loader": "exact",
+      "synthetic_future_loader": {
+        "status": "offline-source-reviewed",
+        "binding_mode": "source_rebound",
+        "rejected_entries": []
+      },
+      "analysis": "All three native options reviewed, preserving piety requirement and county/story/epidemic scopes. Selected native1 gives infected counties rampant_witch_trials10y plus trait-conditioned stress. Other options source divine_guidance/piety or witch_trials_slowed; no county modifier/story outcome observed."
+    }
+  ],
+  "interaction_knowledge": {
+    "auto": 9279,
+    "key": "request_clerical_chastity_interaction",
+    "projection": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-INTERACTION-9279-CLOSED.json",
+      "bytes": 36739,
+      "sha256": "0255ae04e1d16da6d01be82d1d93491ff7275d63f580e48695df85145f07a1f0"
+    },
+    "baseline": {
+      "status": "unknown",
+      "rejected_entries": []
+    },
+    "canonical": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\facts\\9f201d9bf301a7bc0a3007ee1faf0889154d6775975562fb374dfe9e9d7b9ea7.json",
+        "bytes": 18312,
+        "sha256": "913fffb495ad984d6a24f22ff794186a2e9264bb98bdb22b5b576b2f89791172"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\9f201d9bf301a7bc0a3007ee1faf0889154d6775975562fb374dfe9e9d7b9ea7.json",
+        "bytes": 1523,
+        "sha256": "7ac173bff9676190df7e839ab1c87c7731dcfc0df0d728e6431fb9c0a5ff2eb1"
+      }
+    ],
+    "loader": {
+      "status": "offline-source-reviewed",
+      "fingerprint": "9f201d9bf301a7bc0a3007ee1faf0889154d6775975562fb374dfe9e9d7b9ea7",
+      "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\9f201d9bf301a7bc0a3007ee1faf0889154d6775975562fb374dfe9e9d7b9ea7.json",
+      "entry_sha256": "7ac173bff9676190df7e839ab1c87c7731dcfc0df0d728e6431fb9c0a5ff2eb1",
+      "source_sha256": "9a7470b42d2f9bfed8a71932014a4c2f8d6fdcc24277f99f79238c5703010b8a",
+      "gui_sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0",
+      "material_effects_verified": false
+    },
+    "roles": {
+      "actor_character_id": 65586,
+      "recipient_character_id": 40526,
+      "secondary_actor_character_id": -1,
+      "secondary_recipient_character_id": -1,
+      "intermediary_character_id": -1
+    },
+    "choice": {
+      "position": "left",
+      "rendered_index": 0,
+      "button": "reject_button",
+      "action": "reject",
+      "onclick": "CharacterInteractionNotificationWindow.Reject",
+      "enabled": "CharacterInteractionNotificationWindow.CanReject",
+      "step": "reject-pending-character-interaction",
+      "native_legal": true,
+      "action_reachable": true
+    },
+    "reply_result": {
+      "status": "rejected",
+      "instance_id": -150994923,
+      "sender_character_id": 65586
+    },
+    "remaining_pending": null,
+    "command_ACK_field": "not_projected",
+    "original_pending_advanced_verified": null,
+    "analysis": "All source branches retained. Accept conditionally spends hook/puppet piety, grants vow5y, delayed event1825d, opinion/stress/fulfillment and optional stipend. Decline gives recipient medium_piety_loss, minor_stress_gain and spurned_clerical_counsel_opinion toward puppet_or_actor; human cooldown3y. Scripted magnitudes, actual piety/opinion/modifier outcomes and native AI utility remain unknown. User left policy only."
+  },
+  "reuse_without_new_facts": [
+    {
+      "key": "marriage_effect.2001",
+      "knowledge": "source_rebound",
+      "fingerprint": "b81b7d00008c4ab04d56360a8e48e2477f583bf56d70f6b83d18bf3a725ebefb",
+      "entrySHA": "64541668641755d6132e819b2cbf7f07ee91919262db73d37c5e7c485fc427e9",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\marriage_effect_events.txt",
+      "sourceSHA": "a6b9e37be40df1fae1a3954e78a6987580ede31eca353f7d0feaf17f54ba2923",
+      "choice": [
+        0,
+        0,
+        1
+      ],
+      "post": [
+        35,
+        null,
+        true
+      ],
+      "ACK": true,
+      "auto": 9104,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9104-CLOSED.json",
+        "bytes": 26064,
+        "sha256": "03de341f1be62aece244487122b7afe1f197788261d3e443028cd72bb3bfbea6"
+      }
+    },
+    {
+      "key": "health.2201",
+      "knowledge": "source_rebound",
+      "fingerprint": "60765a745b718279774198b35c5a9cea453ed09630162bacc24b5992c8ec4a36",
+      "entrySHA": "dadce866ac1112b6b1359fd857453671bd08861fa10d86c45205e45bd60f6ad1",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt",
+      "sourceSHA": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212",
+      "choice": [
+        0,
+        5,
+        6
+      ],
+      "post": [
+        36,
+        null,
+        true
+      ],
+      "ACK": true,
+      "auto": 9122,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9122-CLOSED.json",
+        "bytes": 28347,
+        "sha256": "8bca0a6a5c98d761a809deb94fe1ac62ff4db4ff77adc0ec7995c02f544e465d"
+      }
+    },
+    {
+      "key": "death_management.1000",
+      "knowledge": "source_rebound",
+      "fingerprint": "4c7aa9932114d7afccd1445456a23af4658464fd40bd5460ad2126a9597b624e",
+      "entrySHA": "da25ec5b31abb1b17fafd437426f352369f0d0d6e99a7d9c2610c5d4f7a64c96",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+      "sourceSHA": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59",
+      "choice": [
+        0,
+        1,
+        2
+      ],
+      "post": [
+        38,
+        null,
+        true
+      ],
+      "ACK": true,
+      "auto": 9151,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9151-CLOSED.json",
+        "bytes": 28826,
+        "sha256": "53a93c0f86fc43df7fbfe66aceb1d72c4541ce656c33482da6bcffc9c3bbe3a5"
+      }
+    },
+    {
+      "key": "pam_bull_events.0004",
+      "knowledge": "direct_registry_recommended",
+      "failed_checks": [],
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\pam_bull_events.txt",
+      "sourceSHA": "596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937",
+      "choice": [
+        0,
+        0,
+        1
+      ],
+      "post": [
+        40,
+        null,
+        true
+      ],
+      "ACK": "not_projected",
+      "auto": 9171,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9171-CLOSED.json",
+        "bytes": 20788,
+        "sha256": "a8a91b8ecfd437a1a076fa145111c2f561644cc736dbc251d2f3ca79ad013fbe"
+      }
+    },
+    {
+      "key": "heresy_light.0010",
+      "knowledge": "source_rebound",
+      "fingerprint": "6c2ae93a5d62bd765c0f896446b7f62cf1c3ad1203013df118aef3e05f9ac0e2",
+      "entrySHA": "d1defd0fe36c4f6d6b158f7ec23d4ef463876ceacd22cfd88c8547c9e7f096e6",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\pam\\heresy\\pam_heresy_light_events.txt",
+      "sourceSHA": "b3bd7432cfb8b58de1cf10f9d67a3bb1e0f49d813091bb4e4cb20c7e03111a19",
+      "choice": [
+        0,
+        0,
+        1
+      ],
+      "post": [
+        41,
+        null,
+        true
+      ],
+      "ACK": true,
+      "auto": 9226,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9226-CLOSED.json",
+        "bytes": 33108,
+        "sha256": "18b6b894cdbcb8e32b8a7ee30927f6d6aaa04d1d0a26f5e81212fd7ccb17a174"
+      }
+    },
+    {
+      "key": "epidemic_events.0110",
+      "knowledge": "direct_registry_recommended",
+      "failed_checks": [],
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\dlc\\ce1\\epidemic_events.txt",
+      "sourceSHA": "a1cf48aba07e121618f1190d5b8cf590d985fca5a32dff16d28f9a826ff0b950",
+      "choice": [
+        1,
+        2,
+        3
+      ],
+      "post": [
+        44,
+        null,
+        true
+      ],
+      "ACK": "not_projected",
+      "auto": 9303,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-EVENT-9303-CLOSED.json",
+        "bytes": 17644,
+        "sha256": "c9517d4ed40b44d3c1fcf14f12a9e4dde76043fd2eba792b2ab0f055e740f926"
+      }
+    },
+    {
+      "key": "negotiate_alliance_interaction",
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_alliance.txt",
+      "sourceSHA": "11e852967499e73c8bfbf9d6fe222278db66bb88cb674ea04f3758c86f35f1b4",
+      "knowledge": "offline-source-reviewed",
+      "fingerprint": "c2f58c1ca55fc93b52ed3b2ae574a4480e381f40708c376ca06a140f65e21c2c",
+      "entrySHA": "c8399771d5afefdccda73b076f35c09cd3c8b1827a727abe6a50b9eb56207366",
+      "selected": "reject",
+      "reply_status": "rejected",
+      "remaining": null,
+      "auto": 9175,
+      "projection": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C17-INTERACTION-9175-CLOSED.json",
+        "bytes": 40179,
+        "sha256": "7306c5da155bc76a4ee081ae136c6d6ddb454bd8ce7cfd577d7f4b5a0d7d209f"
+      }
+    }
+  ],
+  "distinctions": [
+    "ACK and event-instance transitions verify selection only. Source effects and symbolic scripted-effect values retain scopes and conditions.",
+    "health3001 actual player wallet 17266518 to12266518 (scale100000) costs50; sick_character40408 and selected high candidate76700. This differs from earlier self40526/physician16825061 and third-party40695 chains.",
+    "marriage2001 saved spouse40408, health2201 sick40408, and death1000 dead_character40408 are actual native event roles. No independent alive, court-position or treatment outcome DTO is invented.",
+    "coming_of_age0004 source resolves intrigue education before its empty acknowledgement; actual education trait/rank is not read back.",
+    "pam0018 is tooltip-only conditional rite-tenet text. Unknown faith/doctrine payloads and actual tenet effects are not inferred.",
+    "stewardship0001 weighted outcomes and epidemic1060 county modifiers remain source definitions with no material postcondition credit.",
+    "Interaction projections expose rejected status and remaining pending null; a separate command_ACK flag and original_pending_advanced_verified are not projected. They remain unobserved."
+  ],
+  "cold_rebind_gaps": [
+    "coming_of_age.0004: implicit source event type rejected by generic character-only guard",
+    "pam_decision_events.0018: reviewed old letter source is exact-known but generic letter root rebind rejected"
+  ],
+  "cold_rebind_next_step": "Root was given the two exact-key source/shape cases and asked to authorize finite source/tests dispatch in a subsequent freeze. Current source guards and live SDK are unchanged; the three explicit character definitions already pass synthetic cold-ID rebind.",
+  "registry_contract_accepted": false,
+  "material_effects_verified": false,
+  "semantic_optimal": false,
+  "Game_MCP_RPC_calls": 0,
+  "source_code_changes": 0,
+  "SDK_builds": 0,
+  "new_helpers": 0,
+  "storage": {
+    "pool": "same-campaign C16+C17 1MiB/32-binding-fingerprint pool",
+    "review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "previous_pool_new_gross_bytes": 74408,
+    "previous_pool_binding_fingerprints": 2,
+    "new_binding_fingerprints": 6,
+    "pool_cumulative_binding_fingerprints": 8,
+    "canonical_file_count": 12,
+    "canonical_bytes": 97427,
+    "proof_bytes": 28213,
+    "new_gross_bytes": 125640,
+    "pool_cumulative_new_gross_bytes": 200048,
+    "future_bytes": 0,
+    "allocated_bytes": null,
+    "physical_credit_bytes": 0,
+    "small_record_retention_days": 180,
+    "accounting": "Only canonical facts/entries and this proof are newly retained; exact closed inputs and existing known facts were read without copies. No helper, test/build output or SDK artifact was created."
+  }
+}

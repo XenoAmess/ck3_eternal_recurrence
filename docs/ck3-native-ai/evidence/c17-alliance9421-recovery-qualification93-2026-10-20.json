@@ -1,0 +1,36 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:30:16.848467+00:00",
+  "status": "SOURCE_QUALIFIED_WAITING_ROOT_RELEASE",
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\c17_alliance9421_not_sent_v1.py",
+    "bytes": 13849,
+    "sha256": "e614841412abc529dbe67c0cd9cade543c4f8062153df07956faa4dfa6580933"
+  },
+  "qualifier": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c17_alliance9421_not_sent_v1.py",
+    "bytes": 6285,
+    "sha256": "0ee09b4ebb17a2757f6dd353491fc291f308ee3d4762400f2f4afc92de1522b1"
+  },
+  "sources": {
+    "root_p37c17_alliance9421_not_sent.py": {
+      "bytes": 13849,
+      "sha256": "e614841412abc529dbe67c0cd9cade543c4f8062153df07956faa4dfa6580933"
+    },
+    "root_p37_known_pause_recovery_control.py": {
+      "bytes": 19333,
+      "sha256": "d507d3295a035a631f28ed1961be6f80b8a0609dc20ef230cf1f313acb3eb2e0"
+    }
+  },
+  "checks": [
+    "actual closed F93 guards",
+    "one SEM positive; exact pending-only/zero-credit projection",
+    "wrong birth before RPC reject",
+    "wrong date/SEM error retain intent",
+    "nonself tuple reject",
+    "original dispatcher inverse bytes"
+  ],
+  "D_writes": 0,
+  "Game_Native_MCP_Task_calls": 0,
+  "fixture_calls_are_in_memory_only": true
+}

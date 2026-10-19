@@ -1,0 +1,86 @@
+{
+  "schema": "xar.c18.alliance-one-leaf-warm-sdk/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:30:52.249118+00:00",
+  "status": "SOURCE_COMPOSITION_QUALIFIED_NOT_ADOPTED",
+  "base_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C17.json",
+    "bytes": 375058,
+    "sha256": "abea90e330961720d50ec433de215bfe151c2d3c35688fc0ac03cbf73d5e8b86"
+  },
+  "base_business_commit": "04a87c1ec6fd4a0d59e6237af3158ce797c7cbe4",
+  "base_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src14",
+  "all1445_actual_base_content_verified": true,
+  "complete_manifest": {
+    "file_count": 1445,
+    "source_bytes": 59052571,
+    "canonical_rows_JSON": {
+      "bytes": 371514,
+      "sha256": "20b02b77ebbe43b9f822717295ac377b9ca445d43b11429d1117f330cc8252f7"
+    },
+    "all_rows_available": "compose() second return value"
+  },
+  "delta": {
+    "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+    "before": {
+      "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 59889,
+      "sha256": "1e8f19eafca8b83601de84c74fb30f40b173932570587cacd15be590d72f357c",
+      "git_blob_sha1": "c9f6c69157254178b2def1f480a8c23e7537f310",
+      "git_mode": "100644"
+    },
+    "after": {
+      "relative": "xar_autoplayer/family_marriage_formal_consumer.py",
+      "bytes": 61273,
+      "sha256": "d8bbaa3c469f10f974b43335f8505913ae292c4f9b487dddf3e8da1a3c93deaf",
+      "git_blob_sha1": "292e7f8e07edd721a9540bcc08c5a0854a729a67",
+      "git_mode": "100644"
+    },
+    "net_bytes": 1384,
+    "exact_patch": {
+      "bytes": 3775,
+      "sha256": "b67a6827212dc1bf4a4aaf37aeca917e53f308da48b8503a3dff85ee877cc73e"
+    },
+    "hunk_count": 4,
+    "full_inverse_bytes_equal": true
+  },
+  "changed_function_ASTs": [
+    "_plan_existing_resolution",
+    "plan_family_marriage_private"
+  ],
+  "imports_equal": true,
+  "other1444_leaves_unchanged": true,
+  "prospective_dual_changed_logical_bytes": 122546,
+  "prospective_dual4096cluster_allocation_upper_bytes": 122880,
+  "preserved": [
+    "actual Drivercc60/WAL/same-speed",
+    "Native29",
+    "Service/strategy/transports",
+    "all existing ledgers",
+    "M2/M5/M6 fixes"
+  ],
+  "root_owned_anchor_ref": "refs/heads/campaign/robert-v20261019-c18-alliance-warm-01",
+  "Git_D_SDK_Task_Game_DriverSAVE_body_writes": 0,
+  "current_C17_new_gates": 0,
+  "future_M7": "Old frozen C18 M7 proposal is future C19 only and must rebase on this family fix; do not overwrite it or deploy its old src14 baseline.",
+  "qualification": {
+    "kind": "Full actual1445 content/blob verification, exact reversible four hunks, two-method AST/import guard, compile and actual source14 dependency import",
+    "status": "PASS",
+    "business_matrix_repeated": false,
+    "new_business_tests": 0,
+    "existing_M5_proof": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\alliance9421-self-recipient-source-2026-10-19.json",
+      "bytes": 6458,
+      "sha256": "fdbc6eafc2ef4cfc9719ce8a867a4269c2f4015d3e0220cac570a681f33e6879"
+    },
+    "existing_M5_results": "13 focused PASS; actual source14 Service5b49 in-memory production path1 PASS",
+    "loaded_production_module_count": 450,
+    "unchanged_production_imports_only_actual_source14": true,
+    "new_children": 0,
+    "Task_Game_RPC_calls": 0,
+    "Driver_SAVE_ledger_body_reads": 0,
+    "D_Git_output_writes": 0,
+    "retained_test_scratch_files": 0,
+    "real_alliance_or_marriage_credit": 0
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "xar.c18-alliance-warm-root-preanchor-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T18:34:50.571315+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine tool8f725e",
+  "preanchor_card": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\C18-ALLIANCE-WARM8MiB-PREANCHOR-ADMITTED01.json",
+    "bytes": 5676,
+    "sha256": "a11a598c8dd47a4b179f35c8dc22bb3a6336493cb300f7409c297cfcc5e9c8f8"
+  },
+  "source_plan": {
+    "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c18-alliance-warm-sdk-plan-2026-10-20.json",
+    "bytes": 10329,
+    "sha256": "cf1dda287d0cfbd29506130c27cecdc68f92a46d4fc31d11fd11c5f94be4de9a"
+  },
+  "producer": {
+    "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c18_alliance_warm_sdk_v1.py",
+    "bytes": 8642,
+    "sha256": "e63f92f1501ecd7adb7b43c6ffe27784ac95957e6e31d29f3fdccca827262f96"
+  },
+  "scope": "Root-only create-only single family leaf canonical tree over04a87c/actualsrc14;1445complete rows. No index/checkout/master/D output by recipe.",
+  "source_qualification": "M5 13 focused+1 actualsrc14Service integrationPASS, M3 independent currentactor/episode/materialpair/selfrecipient guard review, composer full1445/AST/inverse/importguardPASS",
+  "cap_bytes": 8388608,
+  "Git_Z_cap": 1048576,
+  "exact_D_export_gate": "Actual returned canonical commit must bind a fresh exporter card before SDK/control/Driver writes.",
+  "execution_gate": "Exact9421 query-not-sent recovery and normal SDKclose then closedstat, qualified normalwarm inputs; keep Game30852/Native29/record2b8912 unchanged; SEM/CAP and new map review before FULL. No replay.",
+  "not_granted": [
+    "currentold e614 recovery candidate with missing env frame",
+    "M7 H",
+    "Native30deployment",
+    "one_second/day"
+  ],
+  "allwall_anchor_utc": "2026-10-19T03:26:49.420926Z",
+  "goal_endpoint_raw": 53407128
+}
