@@ -1,0 +1,49 @@
+{
+  "schema": "xar.robert-v20261019-operating-integration/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T05:00:12Z",
+  "canonical_commit_pushed": "6ebbffcdebe3e30353513e0984572ebc701daa2e",
+  "scope": "Natural persistence growth scalars, complete saved-county membership, source-reviewed independence refusal, safe unassessed actor-owned claim priority, optional Service cap seam",
+  "qualification": {
+    "related_integrated_tests": {"passed": 100, "seconds": 6.50, "tool_chunk": "050338", "exit_code": 0},
+    "final_strategy_and_original_force_admission": {"passed": 48, "seconds": 1.34, "tool_chunk": "afe504", "exit_code": 0},
+    "source_files_in_commit_including_gitattributes": 31,
+    "index_bytes_equal_reviewed_sources": true,
+    "source_check_tool_chunk": "d494b5",
+    "push_tool_chunk": "9c6d23",
+    "root_fixture_adapter": "M3 Driver test's persistence mock now accepts the diagnostic persistence_reason keyword; its business assertions are unchanged.",
+    "CXX_root_getter": "source-contract only; not compiled, linked, registered or loaded"
+  },
+  "important_strategy_boundary": {
+    "initial_candidate_problem": "Putting objective before evidence could starve a better assessed alternative.",
+    "final_rule": "Objective priority only breaks ties for unassessed targets, after original evidence and native power ordering.",
+    "requires": "native exact claim_cb, positive actor-owned claimant and valid nonempty target titles",
+    "all_legal_candidates_retained": true,
+    "force_and_final_legality_unchanged": true,
+    "actual_small_subset_first_research_old_new": [29373, 33388],
+    "actual_small_subset_all_assessed_old_new": [26904, 26904],
+    "fixture_is_full_declaration_set": false,
+    "new_live_declaration_or_territory_credit": false
+  },
+  "runtime_boundary_reported_by_sole_owner": {
+    "source": "runtime_v20261019 messages and PACK/saved61-cold-seed51/FINAL-C3-DRIVER-CLOSE52.json; root did not query Game",
+    "actual_game_days_saved": 61,
+    "settled_cycles": 74,
+    "checkpoint_response_sequence": 197,
+    "checkpoint_history_index": 122,
+    "checkpoint_bytes": 70300340,
+    "checkpoint_sha256": "cb385a8fd4be62b6e553a4d0a5575d50886e8d894dc8ed83173d9ae851d4075d",
+    "C3_Queue_and_App_exit_codes": [0, 0],
+    "OBS_and_publisher_exit_codes": [0, 0],
+    "Game_exit_code": 1,
+    "Game_close_forced_after_WM_CLOSE_timeout": true,
+    "Game_normal_exit_qualified": false,
+    "new_Native26_cold_qualified": false,
+    "G2_complete": "6/8"
+  },
+  "limits": [
+    "The 148 test cases are software checks, not 148 game actions.",
+    "No new deployment, sustained throughput, natural terminal, succession or land-retention claim is made by this source integration.",
+    "The original first-AUTO cumulative wall-clock anchor remains unchanged."
+  ]
+}

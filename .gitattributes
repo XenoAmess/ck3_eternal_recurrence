@@ -1143,3 +1143,8 @@ docs/ck3-native-ai/evidence/c3-partial194-dispatch-ready-manifest01.json -text w
 ck3_autonomous_player/native_bridge/research/holy_order_loan_principal_12004_source_contract.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/g2-m5-independence-ultimatum-policy-2026-10-19.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/c3-partial194-save61-actual-readback01.json -text whitespace=cr-at-eol
+
+# Preserve exact saved61 cold bootstrap source and software receipts.
+docs/ck3-native-ai/evidence/saved61-cold-admission-blueprint01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/saved61-cold-phase-software-qualification01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/saved61-cold-source-ready-manifest01.json -text whitespace=cr-at-eol

@@ -1,0 +1,89 @@
+{
+  "schema": "xar.saved61-normal-cold-queue/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "DO_NOT_EXECUTE": "Blueprint only. All REQUIRED fields must be actual owner observations before admission.",
+  "seed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\COLD-CUMULATIVE-LOOP-SEED.json",
+    "bytes": 4000,
+    "sha256": "13ace44626932920b7558ac7c74e5f648e697d291aa1d84a6671d166be4efdbc"
+  },
+  "save_response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+    "bytes": 9676,
+    "sha256": "b59bbd30235fd0273cd11b0fbab05ceaa5d635f8e9cdfcfb3d66995b64778b71"
+  },
+  "cold_prelaunch": {
+    "path": "REQUIRED_ACTUAL_CANONICAL_PRELAUNCH_RECEIPT",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "governance": {
+    "path": "REQUIRED_ACTUAL_CLOSED74_GOVERNANCE_SIDECAR",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "new_game": {
+    "pid": "REQUIRED_NEW_GAME_PID",
+    "creation_filetime": "REQUIRED_KERNEL_BIRTH",
+    "creation_date": "REQUIRED_CREATION_DATE"
+  },
+  "old_sdk_closed": {
+    "path": "REQUIRED_ACTUAL_ACTUAL_C3_OWNER_CLOSED",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "old_sdk_pair": {
+    "path": "REQUIRED_ACTUAL_ACTUAL_C3_PAIR_GENERATIONS",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "publisher_started": {
+    "path": "REQUIRED_ACTUAL_ACTUAL_C4_PUBLISHER_STARTED",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "mod_absence": {
+    "path": "REQUIRED_ACTUAL_ACTUAL_NEW_GAME_MOD_ABSENCE",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "sdk_freeze": {
+    "path": "REQUIRED_ACTUAL_ROOT-FINAL-SDK-FREEZE-P37C4.json",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "classifier_pin": {
+    "path": "REQUIRED_ACTUAL_ROOT-P37C4-CLASSIFIER-PIN.json",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "queue_source": {
+    "path": "REQUIRED_ACTUAL_root_p37c4_sdk_queue.py",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "entry_source": {
+    "path": "REQUIRED_ACTUAL_root_p37c4_mcp_entry.py",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "native_binding_source": {
+    "path": "REQUIRED_ACTUAL_root_native_build_binding_p37c4.py",
+    "bytes": "REQUIRED_ACTUAL_BYTE_COUNT",
+    "sha256": "REQUIRED_ACTUAL_SHA256"
+  },
+  "current_map_admission": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-CAMPAIGN-MAP-ADMITTED-C4.json",
+  "next_sequence": 198,
+  "cold_prelaunch_receipt_fields": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "validator_api": "xar_autoplayer.native_session.validate_cold_start_checkpoint_for_pipe",
+    "validation": "ACTUAL_UNMODIFIED_CANONICAL_VALIDATOR_RETURN",
+    "driver_state": "ACTUAL_PRELAUNCH_DRIVER_PATH_BYTES_SHA_EQUALS_FINAL_CLOSE",
+    "final_driver_close": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\saved61-cold-seed51\\FINAL-C3-DRIVER-CLOSE52.json",
+      "bytes": 2569,
+      "sha256": "80f948193aac3cd62380d8603f04543705a158c662e6f70ae65b7e957e0b9bad"
+    },
+    "sidecars": "ACTUAL_TWO_PRELAUNCH_SWAY_PATH_BYTES_SHA_EQUALS_SAVED61_FROZEN_SIDECARS"
+  }
+}

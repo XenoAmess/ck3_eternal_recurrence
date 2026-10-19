@@ -2,7 +2,7 @@
 
 用户在2026-10-19明确要求：后续评分结算片改为15秒，旧片不改；复盘首局并写入智能体；随后从1066重开罗贝尔三十年v20261019；继续性能优化及高并发G2研究。这一指令解除旧交接的“暂不开下一局”。
 
-**当前指针（2026-10-19T04:35:29Z现场边界，04:45:43Z汇总）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，新局已推进61实际日、74个完整周期；AUTO194只读月检完成，第二次决策发布失败，pending75/next195。最新正常SAVE仍是第30日，不能据此恢复后宣称保留61日。当前业务SDK为`063531c4`、Game214568/原birth、Native25；Native26已构建并完成离线检查，尚未加载。以下较早时点均保留为历史快照。
+**当前指针（2026-10-19T04:56:11Z闭场边界，05:04:08Z汇总）**：`machine_id: xenoamess-full-tower-eb9d2c1186`，新局61实际日、74个完整周期已正常保存，194只读前缀已精确清理、无pending；197 SAVE为70,300,340B/history122/SHA`cb385a8fd4be62b6e553a4d0a5575d50886e8d894dc8ed83173d9ae851d4075d`。C3 Queue/App、OBS和publisher均实际0退出；Game214568正常关闭超时后由受管job清理，实际forced exit1/gone，不授正常退出。C4业务源已固定`6ebbffcdebe3e30353513e0984572ebc701daa2e`并提取src04/独立reference，Native26同SHA复制已备，尚无本次新Game或cold通过。以下较早时点均保留为历史快照。
 
 用户追加要求以长期性能和实际游玩效果为优先，不追逐单次执行速度。阶段目标仍为≤1秒/实际游戏日、0.5秒为后继目标；完整运行账须包含查询、规划、持久化、中断及修复间隔。短连续窗口12日/5.978826秒只能定位潜力；已闭累计38日/3075.207607秒为80.926516秒/日，未达标，不能重置起点隐藏维护成本。来源见[墙钟账](evidence/robert-v20261019-closed-wall-ledger03.json)和[长期增长分析](robert-v20261019-long-term-growth-2026-10-19.md)。长期效果另核领土、财政与军费、战争后果和继承，不用完成动作数代替运营成绩。
 
@@ -100,3 +100,13 @@ WAL实验恢复修复及98项知识实际迁入观察已在 `b000c9a623eec88a48c
 [Native26构建](native26-performance-build-2026-10-19.md)完成121/121对象、612 archive payload和离线JSON/CB/M6检查，DLL SHA`eaee4443f083ae5055232b908fdb5c6555aa75084801fd24654224b090032184`。当前仍Native25；actor gate默认关闭，四族历史耗时不能当当前收益。[M7具体cold方案](g2-m7-native26-cold-plan-2026-10-19.md)要求新SDK/新publisher精确绑定、最新SAVE/Driver/Sway侧车、实际新Game birth及新鲜Steam离线画面；旧receipt和captureEpoch保原来源，不重Start。M6仍无自然正收益/终态，M7无本次cold或自然继承完成信用，G2仍6/8。
 
 并发调整：runtime维持唯一现场owner；M0封存194并交永久发布修复；harness处理精确只读清理与下一bootstrap元数据；Native构建已闭场。M1继续补领土成员完整性，M3完成fresh-root失效接缝，M4继续军费借款本金getter，M5审主动割地后果消费，M6等自然生命周期，M7准备真实cold；Python性能线审自然持久化增长，存储线按统一策略低频监测。已有研究闭场，不重跑旧矩阵填并发。现有WAL仍关闭；完整Driver重写的成本随history增长，先记录自然屏障/候选连续段，再决定是否启用既有增量机制，不新造框架。
+
+## 05:04后继：最新保存边界与固定采用批次
+
+同一`machine_id: xenoamess-full-tower-eb9d2c1186`。195精确partial仅清理194已完成的只读月检，0新RPC、不增完整周期；196新SEM与197正常SAVE覆盖raw53145792/61日，197实际耗时2.196801秒。旧loop的day30 checkpoint字段保历史，由真实196/197构造seed74、SAVE计数4→5、dirty=false。原SDK正常关闭后的完整Driver为880,726B，保存history anchor仍122；来源`PACK/saved61-cold-seed51/FINAL-C3-DRIVER-CLOSE52.json`，2,569B，SHA`80f948193aac3cd62380d8603f04543705a158c662e6f70ae65b7e957e0b9bad`。旧Game forced1、SDK双0、录像解绑0、publisher0分别记录；不能用保存通过升级游戏退出质量。实际195/197小回读见[后验](evidence/c3-partial194-save61-actual-readback01.json)。
+
+本轮已推公共源为`3ee916c4`、`dde6cc5f`、最终业务`6ebbffcd`。[集成后验](evidence/robert-v20261019-operating-integration02.json)记录100项相关检查与48项最终策略/原force门通过。持久化观测复用现成history字节与行数，candidate只代表成功timeline家族，不代表WAL资格。[领土成员审计](g2-m1-save-membership-completeness-2026-10-19.md)让缺链/环/地理或宗族未知保持unknown。[独立最后通牒策略](g2-m5-independence-ultimatum-policy-2026-10-19.md)严格绑定已分析来源与当前合法拒绝项，不把拒绝当胜利；[实际宣战研究顺序修复](ordinary-planner-objective-priority-2026-10-19.md)仅提前尚未评估的玩家本人头衔claim，保原evidence/power排序，不让坏claim遮蔽更好的已评估机会。M4本金getter仅research源合同，未编译、未入Native26。
+
+C4实际冻结为`PACK/SDK-FREEZE07-C4.json`，401,940B，SHA`4c10e6505a4e48c9d6655d81d80c80eef10ea92808490bca8540fb540338505e`，另有独立reference；两者都取canonical 6ebb Git对象。Native26同SHA18,442,752B复制为`PACK/native26-c4/native.dll`。保持原profile/pipe/environment/goal，原Native25临时关闭的M6 termination query flag恢复；四族actor gate仍OFF，其唯一admission在启动环境读取，普通shadow不能补绑来源，不能授这部分实机提速。
+
+Root已审`PACK/C4-COMBINED-MAINTENANCE-PLAN51.json`（6,453B，SHA`e1a889ff1a1ebd74b9c5b1a35b6ba460007c4fb0487879fe83c1cc788fcac9f0`）并授权唯一runtime owner执行一次维护。M7对最终seed/完整Driver/Sway侧车和薄factory给出源码范围no-gap，未来SEM/CAP在软件资格中仍明确为fake。新physical opening/map取实际cold day61，T0评分/月点和逻辑终点raw53407128保持；不复用MET110一次性factory。新Game birth、fresh Steam离线、cold_checkpoint/restored/active_resumed、配对publisher/noMove OBS及后续普通规划仍待实际结果，不以准备代替完成。全部维护墙钟仍归首AUTO03:26:49.420926Z起点。
