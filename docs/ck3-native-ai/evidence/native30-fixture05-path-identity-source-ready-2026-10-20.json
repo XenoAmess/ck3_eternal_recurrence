@@ -1,0 +1,52 @@
+{
+  "schema": "native30-fixture05-source-ready-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T19:04:25.413974+00:00",
+  "identity_source": "fresh tools/ck3_live_run_id.py machine",
+  "status": "SOURCE_READY_CPP_NOTRUN",
+  "plan": {
+    "path": "docs/ck3-native-ai/evidence/native30-fixture05-path-identity-plan-2026-10-20.json",
+    "bytes": 12163,
+    "sha256": "ef2ef4edb5d90662b58cc0c54e6ff2e3c7177c52a283cd89a827b80aed267da7"
+  },
+  "sources": [
+    {
+      "path": "tools/g2_saved_campaign/qualify_native30_fixture05_20261020.py",
+      "bytes": 29924,
+      "sha256": "e9693fa104cbc845816477cbba0aa46c9a7234de4914f7cbddcebcf44611a1bb"
+    },
+    {
+      "path": "tools/g2_saved_campaign/native30_fixture05_override_20261020.cmake",
+      "bytes": 1277,
+      "sha256": "5d0e2109bd5925f8a2c81f8980f14e54ff7c30a65f087900b2bf422bb6271bbd"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_native30_fixture05_paths_20261020.py",
+      "bytes": 6302,
+      "sha256": "f3103512b1abee171c9d25ca8d62d7b4dbb5694bb367b63ca3524346f1843f54"
+    },
+    {
+      "path": "tools/g2_saved_campaign/seal_native30_fixture05_source_20261020.py",
+      "bytes": 9302,
+      "sha256": "c2a5194417870665be4ce70b6617a6e8c852bf98726fd7aa1078bd71c160273e"
+    }
+  ],
+  "tests": {
+    "command": "py -B -m unittest tools.g2_saved_campaign.test_native30_fixture05_paths_20261020 -q",
+    "actual": "17PASS/0.193s/ab3600",
+    "scope": "Only new path/graph negative tests and retained-guard AST checks; no C++ or real auxiliary cleanup credit."
+  },
+  "actual_closed04_path_pair_software_check": "PASS: same newly strict normalizer on the two exact fixture rows from named original02 graph and current compile_commands; no configuration/build executed",
+  "04_failed_preserved": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-native30-camera01\\attempt04\\RESULT.json",
+    "bytes": 6654,
+    "sha256": "5fa7bd16db79891064aedb7347dbbd19fddf0dd360b926201ddd7f817af92c38"
+  },
+  "source64KiB_cap": 65536,
+  "new_CPP_changes": 0,
+  "old_sources_modified": 0,
+  "external_Native_Task_writes": 0,
+  "future_writes": 0,
+  "allocated_bytes": null,
+  "physical_credit_bytes": 0
+}

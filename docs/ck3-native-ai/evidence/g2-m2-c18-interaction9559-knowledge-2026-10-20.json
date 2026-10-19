@@ -1,0 +1,75 @@
+{
+  "analysis": "Complete definition/send-option/AI branches and both direct effect callees retained. Accept changes rite and conditionally court/domain/capital, favor hook and endowment. Decline annoyed_opinion -10 is recipient-is_ai conditioned; do not apply it to played40526 without observing that branch. Numeric35160-selected mapping, actual exchange quote and religion/opinion outcomes remain unknown. Authored-left user policy only.",
+  "binding": {
+    "actor_character_id": 40526,
+    "bridge_pid": 30852,
+    "connection_generation": 3,
+    "date_raw": 53248152,
+    "episode_run_id": "native-40526-1bec95182886",
+    "map_ready": true,
+    "native_revision": 2896,
+    "paused": true,
+    "revision": 229,
+    "snapshot_id": "native:2896"
+  },
+  "callee_source_sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+  "canonical": [
+    {
+      "bytes": 26135,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\facts\\707943ceb652af95209bf14fbcc96e2fee46710a875ef62d2673afff940e9ea3.json",
+      "sha256": "d81e6df2fa7541d495cb91ad570db7437aa71e44b774f34daf9cb72b3c92eb57"
+    },
+    {
+      "bytes": 1360,
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\interaction-source-registry\\707943ceb652af95209bf14fbcc96e2fee46710a875ef62d2673afff940e9ea3.json",
+      "sha256": "06d6e49bdc96afa57d26519565c6ac5485e857e17540556fc27225be0cdb5f7c"
+    }
+  ],
+  "command_ACK_field": "not_projected",
+  "key": "sway_ruler_to_my_rite_interaction",
+  "loader_known_after_publish": true,
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "material_effects_verified": false,
+  "new_Game_RPC": 0,
+  "observed_at_utc": "2026-10-19T19:04:48.275260+00:00",
+  "old_pending_id": 654311456,
+  "original_pending_advanced_verified": null,
+  "projection": {
+    "bytes": 38673,
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C18-INTERACTION-9559-CLOSED.json",
+    "sha256": "eff761771f8fa358be6b3eb34d3f57c2f8afd6b9d6d2090a5ef9bf971cb6aa37"
+  },
+  "provenance": "Closed projection; exact current source/callee/GUI SHA; existing offline loader. No new Game queries.",
+  "registry_contract_accepted": false,
+  "remaining_pending": null,
+  "reply_status": "rejected",
+  "roles": {
+    "actor_character_id": 65586,
+    "intermediary_character_id": -1,
+    "recipient_character_id": 40526,
+    "secondary_actor_character_id": -1,
+    "secondary_recipient_character_id": -1
+  },
+  "runtime_source_changes": 0,
+  "schema": "xar.m2-c18-9559-source-closure/v1",
+  "selected_numeric_option": {
+    "canonical_mapping": "unknown",
+    "native_index": 1,
+    "numeric_flag_identifier": 35160
+  },
+  "source_sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+  "storage": {
+    "allocated_bytes": null,
+    "case_cap": 32768,
+    "future_bytes": 0,
+    "initial_24KiB_preflight_insufficient": true,
+    "new_gross_bytes": 30905,
+    "physical_credit_bytes": 0,
+    "pool_bytes": 230953,
+    "pool_fingerprints": 9,
+    "preflight_producer_writes": 0,
+    "prior_pool_bytes": 200048,
+    "prior_pool_fingerprints": 8,
+    "review_at_utc": "2026-10-20T01:48:56.993837Z"
+  }
+}
