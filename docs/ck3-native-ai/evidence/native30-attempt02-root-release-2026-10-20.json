@@ -1,0 +1,44 @@
+{
+  "schema": "xar.root.native30-attempt02-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T17:12:02.854032+00:00",
+  "identity_source": "Root actual machine read62967f; exact new card/spec direct SHA and full read tool ee6730",
+  "implementation_commit": "f17196cd5557e3b56d61f5f2291d4b9e5da1c0ee",
+  "Native_source_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-19-robert-v20261019-storage01\\NATIVE30-RESUME-ATTEMPT02-CHILD01.json",
+    "bytes": 2679,
+    "sha256": "1022b3367c59edbb938a2ab7115e198e0ddc92227e4239c83d3e66142e6b64c3"
+  },
+  "spec": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\native30-build-owner02\\owner-spec\\SPEC.json",
+    "bytes": 2049,
+    "sha256": "5abce5888f916dd5c32f66d9ab9944b7650796b0c90ed20791dad729c9d6113c"
+  },
+  "Task": "XARG2ManagedOwner-04b897ba4fbf4a67bbd43113f296684e",
+  "authorization": "One register, actual definition readback and run for this exact new Task/spec. New prospective owned MSVC auxiliary cleanup policy applies; old FAILED result remains failed.",
+  "review": "M0 read-only review found no remaining blocking issue in retained root exit, all-member validation, own-Job failure cleanup or source/output reuse guards. This is source review, not actual MSVC or C++ qualification.",
+  "limits": {
+    "aggregate_bytes": 1610612736,
+    "prior_retained_allocation_bytes": 117360240,
+    "new_reservation_bytes": 0,
+    "workers": 4,
+    "priority": "BELOW_NORMAL",
+    "MP": false,
+    "source_cap_bytes": 100663296,
+    "metadata_cap_bytes": 83886080,
+    "TEMP_cap_bytes": 402653184
+  },
+  "execution_boundary": "No Game/OBS/MCP/injection or production DLL load. Exact project EXE Defender actual readback before each fixture. Preserve any failure and stop; no blind retry. Exact unregister only after verified owned process exit and Job0; failed exit remains failed.",
+  "prepare_failures": [
+    "Missing parent container before SPEC/Task/Native writes.",
+    "Slash mismatch after unregistered SPEC write; rejected SPEC retained separately."
+  ],
+  "actual_CPP_success_or_camera_live_asserted": false,
+  "retention": {
+    "category": "record",
+    "review_after_days": 180,
+    "original_storage_review_at_utc": "2026-10-20T01:48:56.993837Z",
+    "deadline_reset": false
+  }
+}

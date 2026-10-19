@@ -1,0 +1,38 @@
+{
+  "admission": {
+    "schema": "xar.C16-war8496-feeder/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "first_control_sequence": 8500,
+    "actual_recovery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-war-results8495-failure91\\ACTUAL-RECOVERY-8496-CLOSED.json",
+      "bytes": 3196,
+      "sha256": "c1250d3b6011f3e6c9efb6c7cc286cafce3ce2a2902c4a54bf504094b345a6a8"
+    }
+  },
+  "qualification": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "utc": "2026-10-19T17:05:24.119139+00:00",
+    "D_writes": 0,
+    "Game_RPC": 0,
+    "checks": [
+      "actual closed recovery/admission PASS",
+      "original main/publish/all other functions AST equal",
+      "finite reducer actual positive/wrong Game reject; original window/T0/cycles preserved"
+    ],
+    "sources": {
+      "root_p37c16_same_game_loop_feeder91.py": {
+        "bytes": 32125,
+        "sha256": "32bc95e2445abc166674d09303841c949d166f3515bedf0b37f1b98d279bbdf3"
+      },
+      "root_continuity_window_c16_91.py": {
+        "bytes": 30043,
+        "sha256": "1a88dce22fcad172dd3579e24d44bb61575e0125c43116a57c95a8cb98e0365d"
+      },
+      "launch_c16_feeder91.py": {
+        "bytes": 2459,
+        "sha256": "a434b90f8dc25efc3c0573d78343d2f056a9eb2aae49a39dc20baf50f7d190ac"
+      }
+    },
+    "source_bytes": 64627
+  }
+}

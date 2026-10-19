@@ -1,0 +1,59 @@
+{
+  "schema": "xar.C16-F91-actual-recovery-and-follow-inputs/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "utc": "2026-10-19T17:03:45.669229+00:00",
+  "response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8496-1-result.json",
+    "bytes": 913,
+    "sha256": "14b7294d4ada42eb4354817bc6afb475ff04638c54cfd24e9fa1f6dba98e42f9"
+  },
+  "audit": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\WAR-RESULTS8495-OBSERVATION-8496.json",
+    "bytes": 5831,
+    "sha256": "46cf595a4a6b2c2984159d8f21cc2928799d35fed32f161f8a26542f147f6e5c"
+  },
+  "final_SEM": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8499-1-result.json",
+    "bytes": 60287,
+    "sha256": "272e8ff33d78678870c30f05b4beea4e6545bf470ffce49766108e864e8cb83d"
+  },
+  "old_feeder_task_closed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-checkpoint6397-cold90\\tasks\\spec-feeder02\\CLOSED.json",
+    "bytes": 745,
+    "sha256": "2c36153528f6a2c2510d4dda79d96db75c4340812a73898fff1a873b016ef950"
+  },
+  "old_ledger": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-war-results8495-failure91\\CONTINUITY-BEFORE-8496-RESUME.json",
+    "bytes": 6238,
+    "sha256": "f6e5c7ce985089b518e4003e532640845ee78728e3e79a0fe6e8f9b9378e53c2"
+  },
+  "new_FULL8500_request": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-requests\\8500-1-result.json",
+    "bytes": 69,
+    "sha256": "16dff9d8ff9402f2ce3ee409b13b1880ca0e3d1bc2219b694b7f9ac4809f1fca"
+  },
+  "completed_at_recovery": 3828,
+  "date_raw_after_readonly_recovery": 53217072,
+  "ordinary_cycle_credit": 0,
+  "ui_closure_credit": 0,
+  "source_adoption": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c16-war-results8495-failure91\\SOURCE-ADOPTED-8495.json",
+    "bytes": 1105,
+    "sha256": "5e15fcd5704f886fe71b21a3c39287a8b0f79a882e851878b505cc240055c969"
+  },
+  "actual_SDK_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\ROOT-FINAL-SDK-FREEZE-P37C16.json",
+    "bytes": 375121,
+    "sha256": "4d609077db641724096d019d970839e974e293fa07f39a6b369343163647e6b9"
+  },
+  "actual_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-v20261019-candidate\\src13",
+  "Driver_row_from_actual_full_freeze": {
+    "relative": "xar_autoplayer/bridge/native_driver.py",
+    "bytes": 1620598,
+    "sha256": "db9f8fb05483146abe1bea7c00d5ec4c53e5fc6a9c370133ba7e8ff7ebedb3da",
+    "git_blob_sha1": "a64ef509d48648e418fe7a98484aa93cb5be96d9",
+    "git_mode": "100644"
+  },
+  "Game_RPC_added_by_this_seal": 0,
+  "current_Driver_or_SAVE_body_read": false
+}

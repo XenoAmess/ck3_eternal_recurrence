@@ -1,0 +1,93 @@
+{
+  "schema": "xar.c16.war-results8495-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "utc": "2026-10-19T16:58:02.811335+00:00",
+  "source_only": true,
+  "actual_Game_RPC": 0,
+  "D_writes": 0,
+  "actual_input_pins": {
+    "state.json": {
+      "bytes": 8466,
+      "sha256": "3e3e13c6521e92a61c939e418bb0b642250ace7c4040add858bc4f3d3eb14dba"
+    },
+    "auto8495.json": {
+      "bytes": 19980,
+      "sha256": "7cb2ed83a6342107ca399c97e81995b90fdbdde56b0b938c2e455bc85fa7e14b"
+    },
+    "plan8495.json": {
+      "bytes": 775,
+      "sha256": "e40735a056623d6d22baf85dee97c08cc03b2675c6319919b7f07d31c4cd39f1"
+    },
+    "governance-exact.json": {
+      "bytes": 887,
+      "sha256": "848541b534654de29f91c004900b0128a92f2d48600e59be21a4c8e2bd8016d4"
+    },
+    "CONTROL-AND-METADATA-SUPPLEMENT.json": {
+      "bytes": 2749,
+      "sha256": "17b877f70049be89e6de127ba2274f2f280454e04d57e51d2b3565c48d575300"
+    }
+  },
+  "outputs": {
+    "root_p37c16_war_results8495_reconcile.py": {
+      "bytes": 19613,
+      "sha256": "87cb9ad6c65e68075cc8895c42c17ef8f03beb4dc276e90789dc2aae90da53f7"
+    },
+    "root_p37_known_pause_recovery_control.py": {
+      "bytes": 19064,
+      "sha256": "6516da06c567527cb724aefac52337dc3ff33ba86dd49f32f04fb52dfa1286b5"
+    }
+  },
+  "results": [
+    {
+      "case": "clear_observation",
+      "PASS": true,
+      "calls": [
+        "ck3_take_semantic_snapshot_private_v1",
+        "ck3_query_war_results_window_v1",
+        "ck3_take_semantic_snapshot_private_v1"
+      ],
+      "actual_Game_RPC": 0,
+      "fixture_only": true
+    },
+    {
+      "case": "visible_hold",
+      "PASS": true,
+      "calls": [
+        "ck3_take_semantic_snapshot_private_v1",
+        "ck3_query_war_results_window_v1",
+        "ck3_take_semantic_snapshot_private_v1"
+      ],
+      "actual_Game_RPC": 0,
+      "fixture_only": true
+    },
+    {
+      "case": "foreign_first",
+      "PASS": true,
+      "calls": [
+        "ck3_take_semantic_snapshot_private_v1"
+      ],
+      "actual_Game_RPC": 0,
+      "fixture_only": true
+    },
+    {
+      "case": "missing_latch",
+      "PASS": true,
+      "calls": [
+        "ck3_take_semantic_snapshot_private_v1",
+        "ck3_query_war_results_window_v1",
+        "ck3_take_semantic_snapshot_private_v1"
+      ],
+      "actual_Game_RPC": 0,
+      "fixture_only": true
+    },
+    {
+      "case": "wrong_original_owner_receipt",
+      "PASS": true,
+      "actual_Game_RPC": 0
+    }
+  ],
+  "dispatcher_change": "one exact-kind lazy branch; inverse byte-identical to bfc3de2c original",
+  "actual_MRO_fact": "Fresh cold ready -> Clean.check_before3730 rejects halted; local3430 bypasses tool check",
+  "current_context": "unique child CURRENT written before each original session.call_tool; correct C16 relay",
+  "limits": "all child replies are synthetic; actual query/SEM adoption belongs solely to runtime"
+}

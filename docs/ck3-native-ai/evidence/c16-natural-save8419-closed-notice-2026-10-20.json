@@ -1,0 +1,64 @@
+{
+  "schema": "xar.C16-new-automatic-calendar-checkpoint-observed/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T16:44:35.922653+00:00",
+  "checkpoint": {
+    "status": "saved",
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 99784359,
+    "sha256": "54ed8cf0a879f3ac39fce42ab5a14f56879721ed34c27c9818a3483665128603",
+    "date_raw": 53215872,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": null,
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "dbcb5ea688435677d945cef9fc9c73c31d01d229ec060c3a951e53701bf33b57"
+    },
+    "history_index": 3298,
+    "episode_character_id": 40526,
+    "episode_run_id": "native-40526-1bec95182886"
+  },
+  "actual_saved_checkpoint_source": {
+    "global_turn": 3791,
+    "semantic_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8418-1-result.json",
+    "save_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8419-1-result.json"
+  },
+  "sources": {
+    "semantic_response": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8418-1-result.json",
+      "bytes": 58791,
+      "sha256": "271c8c2ca108275248cd73cf791f1fb97ecd9387ccb54eff4d05dfd3c15bd59c"
+    },
+    "save_response": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-responses\\8419-1-result.json",
+      "bytes": 10283,
+      "sha256": "e47616722fb46e6832fd438ba0ac8f0bd74d77d4b770a3414f5fd229b5e7e261"
+    }
+  },
+  "loop_checkpoint_saved_count": 41,
+  "actual_Game_generation": {
+    "pid": 30852,
+    "creation_filetime": 134368995759027619,
+    "creation_date": "20261019160615.902761+000"
+  },
+  "SAVE_body_identity_metadata_only": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 99784359,
+    "file_id": 281474988852756,
+    "volume_device": 6505083400996699863,
+    "mtime_ns": 1792428160518408600,
+    "SHA256_source": "original successful Native SAVE receipt; observer did not hash body"
+  },
+  "observed_current_settled_cycles": 3828,
+  "saved_global_turn": 3791,
+  "prior_mutable_SAVE_body_availability": "earlier6397/7503 bodies overwritten by later legitimate automatic SAVE; original small responses remain historical, old bodies not readable by old hashes",
+  "SAVE_or_Driver_body_read_by_observer": false,
+  "ordinary_actions_replayed": false,
+  "T0_date_raw": 53144328,
+  "current_state_not_claimed_exact_SAVE_time_snapshot": true
+}

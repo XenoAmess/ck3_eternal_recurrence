@@ -1,0 +1,42 @@
+{
+  "schema": "xar.primary.C16-realm42-frozen-pixel-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-19T17:15:43.511886+00:00",
+  "identity_source": "Root machine actual62967f; SHA/manifest read571446; direct tools.view_image(original) of both files",
+  "original_frame_at_utc": "2026-10-19T17:02:15.867840Z",
+  "manifest_sha256": "eff3ead041f219fe9a96ea9ded717e7df44bb6593680142a103630187238bd7c",
+  "Game": {
+    "pid": 30852,
+    "creation_filetime": "134368995759027619"
+  },
+  "images": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c16-realm42-current01-game.png",
+      "bytes": 1586246,
+      "sha256": "e114c67d69bbf32ca5e5ab95b0e4ead41aeef538750818e61d5db7966752d095",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\recordings\\2b8912a6-757d-46a4-a8ae-b7702a730a90\\c16-realm42-current01-scene.png",
+      "bytes": 1450324,
+      "sha256": "6e16e80e2f8a2eeb2d815725482a68f100ab28d17139c604b85b4aeb34933c62",
+      "dimensions": [
+        1280,
+        720
+      ]
+    }
+  ],
+  "pixels": "Paused map date1075-01-04. Whole Sicily and southern mainland Italy fit inside the game image. Right gray current-decision panel is visible in scene; no film title or retired blue decision panel. This is a single frozen view.",
+  "native_reference": "AUTO8495 reported realm request42,8 counties,zoom13,settled/postcondition true,coverage false; this is the original Native receipt, not a new query at image time.",
+  "whole_realm_geometry_qualified": false,
+  "reason": "No same-frame eight-county polygon/ownership closure was independently matched to every visible border; Native coverage remains false.",
+  "continuous_hotspot_follow_qualified": false,
+  "Root_Game_or_desktop_calls": 0,
+  "retention": {
+    "category": "record",
+    "review_after_days": 180
+  }
+}
