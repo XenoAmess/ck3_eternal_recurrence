@@ -29,8 +29,8 @@ def _filetime_text(ticks):
         raise ValueError("exact integer kernel FILETIME required")
     seconds, fraction = divmod(ticks, 10000000)
     instant = datetime(1601, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=seconds)
-    # Preserve all seven 100 ns digits. The frozen contract deliberately refuses
-    # non-microsecond instants instead of silently truncating the seventh digit.
+    # Preserve all seven 100 ns digits; local custody checks the integer exactly.
+    # Global microsecond identity consumers retain their separate strict limits.
     return instant.strftime("%Y-%m-%dT%H:%M:%S") + f".{fraction:07d}Z"
 
 
@@ -173,9 +173,12 @@ class WindowsNativeCustodyFacadeV1(contract._CustodyOSFacadeV1):
         return self._os().current_process_id()
 
     def transfer_readback(self, resource, transfer, owner):
-        # This gap is deliberate. Neither a numeric HANDLE nor a matching JSON
-        # tuple proves continuous canonical-controller -> SDK inheritance.
-        raise NotImplementedError("canonical controller-to-SDK private handle transfer is not implemented")
+        record = getattr(self,"_received_preloads_v1",{}).get(resource)
+        if record is None or record is not transfer:
+            raise NotImplementedError("canonical controller-to-SDK private handle transfer is not implemented")
+        from .native_loaded_provider_receiver_v1 import _verified_transfer_v1
+        with owner.lock, self._lock:
+            return _verified_transfer_v1(self,record,owner)
 
     def close_owned_handle(self, handle):
         """Pre-adoption abort, or release after custody cleared its owner DTO.
@@ -186,9 +189,15 @@ class WindowsNativeCustodyFacadeV1(contract._CustodyOSFacadeV1):
         with self._lock:
             if handle not in self._owned:
                 raise ValueError("refusing to close borrowed or unknown handle")
+            for record in getattr(self,"_received_preloads_v1",{}).values():
+                if handle in record.holder._owned:
+                    record.active = False
             self._os().close_handle(handle)
             self._owned.pop(handle)
             self._files.pop(handle, None)
+            for holder in tuple(getattr(self,"_received_preloads_v1",{})):
+                if not any(h in self._owned for h in holder._owned):
+                    self._received_preloads_v1.pop(holder)
 
     def close_all_owned(self):
         """Pre-adoption abort only; not an installed qualification invalidator."""
@@ -246,6 +255,9 @@ class _Win32ReadsV1:
         self.mapped_name = bind(self.p,"GetMappedFileNameW",[H,P,w.LPWSTR,D],D)
         self.pipe_info = bind(self.k,"GetNamedPipeInfo",[H,c.POINTER(D),P,P,P],w.BOOL)
         self.pipe_pid = bind(self.k,"GetNamedPipeClientProcessId",[H,c.POINTER(D)],w.BOOL)
+        self.server_pid = bind(self.k,"GetNamedPipeServerProcessId",[H,c.POINTER(D)],w.BOOL)
+        self.handle_info = bind(self.k,"GetHandleInformation",[H,c.POINTER(D)],w.BOOL)
+        self.handle_flags = bind(self.k,"SetHandleInformation",[H,D,D],w.BOOL)
         class FileID(c.Structure):
             _fields_=[("volume",c.c_ulonglong),("identity",c.c_ubyte*16)]
         class FT(c.Structure):
@@ -359,6 +371,27 @@ class _Win32ReadsV1:
 
     def current_process_id(self):
         return int(self.pid())
+
+    def accept_inherited_handle(self, handle):
+        handle=self._handle(handle);flags=self.w.DWORD()
+        self._ok(self.handle_info(handle,self.c.byref(flags)),"inherited handle flags")
+        if not flags.value&1:raise ValueError("handle was not inherited")
+        self._ok(self.handle_flags(handle,1,0),"clear inherited handle flag")
+        return handle
+
+    def private_parent_pid(self, handle):
+        handle=self._handle(handle);flags=self.w.DWORD();pid=self.w.DWORD()
+        self._ok(self.pipe_info(handle,self.c.byref(flags),None,None,None),"private client pipe")
+        if flags.value&1:raise ValueError("private handoff requires an owned client end")
+        self._ok(self.server_pid(handle,self.c.byref(pid)),"private parent pipe PID")
+        if not pid.value:raise ValueError("private parent PID unavailable")
+        return int(pid.value)
+
+    def wait_zero(self, handle):
+        state=int(self.wait(self._handle(handle),0))
+        if state==0xffffffff:raise self.c.WinError(self.c.get_last_error(),"received resource wait")
+        if state not in (0,0x102):raise ValueError("unexpected received resource wait")
+        return state
 
     def close_handle(self, handle):
         self._ok(self.close(self._handle(handle)),"CloseHandle(owned)")

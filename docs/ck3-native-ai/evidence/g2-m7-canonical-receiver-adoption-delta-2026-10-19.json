@@ -1,0 +1,74 @@
+{
+  "schema": "xar.g2-m7.canonical-receiver-adoption-delta.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-19T14:58:55.568Z",
+  "base_commit": "a45fa372b6c51cbf64ffc4400b6844333b6b626d",
+  "status": "READ_ONLY_DELTA_AWAITING_CI62_AND_REVIEW",
+  "scope": "Source frozen; <=8KiB delta. No current runtime/Job/MCP/Game connection or new process.",
+  "reuse": {
+    "transport": "private_handle_chain_v1 + mcp_owned_stdio_binding_v1 (a45fa372). Owned stock Job/normal cleanup passed; not production custody.",
+    "custody": "native_loaded_provider_custody_v1.py / 5540d39a166b709479260a0665fcdd97be5cf27ce5043bcd6d637de55fbba799",
+    "adapter": "native_loaded_provider_windows_v1.py / 34ed125fd8325f785846c6be4a139ac0e1270db5dbdd0f35f6a2b36b2a1fcfaf",
+    "consumer": "player_heir_candidate_component_v1.py / 16b02ac78192d6811493914b020d2271b590513515c667973612928b0606a556",
+    "prior": "native30-exact-birth-private-transfer-plan-2026-10-19.json; g2-m7-owned-mcp-creator-binding-source-ready-2026-10-19.json. Reuse their contracts; CI62 result not independently observed here.",
+    "readback": "e63964 existing types/pins; 0ca3a1+ce66a2 actual runtime create/resume/inject points."
+  },
+  "changes": [
+    {
+      "span": "runtime.py:_create_suspended_process2313-2346; before either resume branch",
+      "implement": "On its actual returned _SuspendedWindowsProcess prepare existing custody ONCE before _resume_with_native_bridge2695 or _resume_then_inject_after_saved_load2736. Hold fixed DLL lease through original inject2717/2797; never reopen after load to reconstruct origin.",
+      "runtime_only": "Future canonical supervisor must really create/retain SDK owner -> Queue. They are currently separate launches. At normal maintenance, unique runtime proves pre-load target integer birth/image, DLL hash/FileID and actual children; JSON/old receipts cannot authorize."
+    },
+    {
+      "span": "New private bridge/native_loaded_provider_receiver_v1.py at Queue/App bootstrap",
+      "implement": "receive_inherited_preload_v1 verifies actual parent pipe/held parent/root-revoke handles and every returned-child/kernel-peer pairing. Clear inheritance; re-read PID/integer FILETIME/image/live and same held file FileID/volume/hash/size. Handle argv/env only locates resources.",
+      "holder": "Construct the EXISTING _PreloadCustodyV1 with existing _RESOURCE_SEAL internally. Reuse _ProcessReadbackV1.creation_filetime and _DLLReadbackV1. Add private controller/received role to that holder, not a second provider token/seal.",
+      "required_delta": "_issue_locked345 currently dereferences controller target._process_handle. That Python object cannot cross App. Received role has no local borrowed original; do not forge a suspended object or call an owned received duplicate borrowed.",
+      "facade": "Add PRIVATE verified-handoff lease registration: inherited owned file/target with DOS/NT/FileID lease, no reopen. Current _lease accepts only local fixed opener. Raw HANDLE+claimed share boolean must not register.",
+      "transfer": "Implement transfer_readback only for accepted local receiver state: source_resource IS this local holder; bind actual receiver owner/PID/owned handles. Remote Python object identity is never transported.",
+      "software": "These receiver/role/lease/peer/cleanup pieces can be implemented with owned fixtures. Actual canonical pre-load continuity remains runtime evidence."
+    },
+    {
+      "span": "Future Queue callsite; sdk_process_custody.py:retain_mcp_stdio_process264",
+      "implement": "Bind legitimate received holder, frozen server parameters and selective owned STARTUPINFO via bind_owned_stdio_v1; pass binding.private_stdio to existing retain hook and use binding.stdio_client. Original stock Job/shared weak table and cleanup stay authoritative.",
+      "keep": "Keep sender lease until receiver ACK. Preserve exact child/unknown on failure; no replacement App spawn. No installed-module mutation or current C13/C14 retrofit."
+    },
+    {
+      "span": "custody._process126-144; existing _LoadedNativeProviderV1 and candidate consumer185-191",
+      "implement": "CANDIDATE ONLY: validate integer FILETIME against deterministic full ISO7, bypassing the microsecond parser. Compare held controller/receiver exact PID+FILETIME+image. Append exact game_creation_filetime to the EXISTING DTO under _LOADED_NATIVE_SEAL; absent exact field -> unknown.",
+      "consumer": "Use owner-held accepted custody exact integer identity instead of candidate's CIM comparison. Keep full ISO7 game_birth query label. Do not change global environment parser/same_game_identity, ledger/_checked or T0/D0.",
+      "cost": "Birth/hash/peer qualification once per accepted connection. Missing optional component keeps zero new work/RPC. Eligible uses need reliable local revocation checking; cheap held-parent/root-event waits or an audited watcher/lock must be explicit, not claimed zero OS work."
+    },
+    {
+      "span": "install_successor_ui_app_owner_v1:325; existing optional root projection hook",
+      "implement": "App entry privately passes received holder into canonical owner installation. Once real Native connection is ready, invoke existing issuer under owner lock before first eligible optional projection; otherwise defer. No client JSON parameter or new Native query.",
+      "guards": "Actual driver.endpoint + bind_server_endpoint; kernel peer; exact held Game birth; unique full module/FileID; actual DLL hash; generation/pipe/owner/Service. Missing chain/peer/component stays Hunknown. Source SHA never replaces DLL hash.",
+      "native_only": "A future normally frozen provider/component must actually load and observe a same-frame living candidate. Mock/source readiness is not actual H or complete backup domain."
+    },
+    {
+      "span": "Driver endpoint disconnect callback; _adopt_bridge_session generation replacement; owner close",
+      "implement": "Narrow wrappers preserve original state.mark_disconnected. Clear EXISTING DTO/cache FIRST via invalidate_loaded_native_provider_v1, then only owned resources. Root event or parent death must revoke too; a stale Python valid flag is insufficient.",
+      "fail_closed": "Unknown close retains strong holder. Never close borrowed target/job/SDK pipe or terminate a process from observer. New generation requalifies; absent reliable revocation -> no issuance.",
+      "epoch": "Only when integrated add receiver/custody/adapter/binding guards to owner_source_epoch names. Do not rewrite current frozen epochs/ledgers."
+    }
+  ],
+  "acceptance": {
+    "software_next": "Owned receiver normal/wrong-peer; exact last-digit birth difference; private role/lease refusal; only existing DTO/seal; unknown/missing fail closed; clear provider/cache before close. Reuse creator tests, no government matrix.",
+    "unique_runtime_next": "One normal authorized maintenance must prove actual canonical spawn chain, pre-load continuous DLL lease/full integer Game birth, receiver ACKs, Native module/pipe/generation and first original ordinary root component/mapper result. No new Game/forced death/replay/extra query for this design.",
+    "boundary": "Grant only actual closed receipt scope. Preserve UNKNOWN/pending business. Keep founding D0=174 and original T0/end; H stays unknown and original M7 breadth in_progress."
+  },
+  "execution": {
+    "source_edits": 0,
+    "tests": 0,
+    "new_processes": 0,
+    "Game_RPC": 0,
+    "Job_calls": 0,
+    "current_runtime_connections": 0,
+    "stage": false,
+    "commit": false
+  },
+  "retention": {
+    "review_by_utc": "2026-11-18T14:55:00Z",
+    "reason": "Implementation delta; consolidate after receiver review."
+  }
+}

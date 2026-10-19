@@ -1,0 +1,143 @@
+{
+  "schema": "xar.g2-m2-historical-known-event-reuse/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:28:56.306277+00:00",
+  "historical_projection": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\p37-queue\\C15-EVENT-6710-CLOSED.json",
+    "bytes": 28168,
+    "sha256": "bff9943fb1a0b918dc71c1fd86c358335bc6ed4d4b71e42e0fb980bc94fc4b65"
+  },
+  "historical_tail": {
+    "global_turn": 3193,
+    "AUTO": 6710,
+    "date_raw": 53203848,
+    "SAVE6397_restored_frontier_credit": false
+  },
+  "event": {
+    "key": "faction_demand.0101",
+    "calculated_id": 4430101,
+    "instance_id": 19,
+    "actor_character_id": 40526,
+    "faction_id": 33554460,
+    "faction_leader_character_id": 35899,
+    "first_shown_native_index": 0,
+    "rendered_index": 0
+  },
+  "actual_before": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\3d1f746abdc64b5498f3c2d40d39afb5.before.json",
+    "bytes": 9919,
+    "sha256": "182b0f12a0902e2c4cc75125c552e4bde097ccb9eb4f132ddaacbc31289822a8"
+  },
+  "actual_after": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\unhandled-events\\3d1f746abdc64b5498f3c2d40d39afb5.after.json",
+    "bytes": 3533,
+    "sha256": "2c11b4b5e666ce13347b6e33158421c7c111f5e4b7f4c82bab7c17226daaf5d5"
+  },
+  "existing_entry": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\bf3ff1869667c6e5938442dd6ef5b397c547ca0e8953dd4e8bbeb3e41eed2e72.json",
+    "bytes": 1284,
+    "sha256": "a7db37be16c84824c5cb809d52c90c583ab6396e8dc57d27ae2821010b1b9b01"
+  },
+  "existing_facts": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\evidence\\event-source-registry\\facts\\bf3ff1869667c6e5938442dd6ef5b397c547ca0e8953dd4e8bbeb3e41eed2e72.json",
+    "bytes": 12234,
+    "sha256": "3ce1a3256be83bf5198a7b4ca019207d73f55114e8e817c75141dc210cb26265"
+  },
+  "source_file": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+    "bytes": 102190,
+    "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+  },
+  "source_binding": {
+    "calculated_event_id": 4350101,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "faction_demand.0101",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 3,
+    "option_catalogue_sha256": "fe3f9e729592133fed0faaa4b4b57b0051183a1450bcdb85d37627700f017ea6",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+  },
+  "all_existing_options": [
+    {
+      "native_index": 0,
+      "source_name_keys": [
+        "FACTION_DEMAND_ACCEPT"
+      ],
+      "source_option_sha256": "f87fbc9556345c7c2aecfd9500cbe00309fbc3bf8b5999130760c5bcaa0f105b"
+    },
+    {
+      "native_index": 1,
+      "source_name_keys": [
+        "FACTION_DEMAND_BRIBE_CO_EMPEROR"
+      ],
+      "source_option_sha256": "e12a3078693a389a2b4f8e039bd2898f4839bbb82798cbf3646c1b62c48e473a"
+    },
+    {
+      "native_index": 2,
+      "source_name_keys": [
+        "FACTION_DEMAND_REFUSE"
+      ],
+      "source_option_sha256": "088887500aa9a1394555292273b502919ad6fcf628682d8d2c2fcd25b4b41979"
+    }
+  ],
+  "source_review": {
+    "scope": "Existing complete liberty-demand analysis reused unchanged; liberty, not independence.",
+    "native0": "FACTION_DEMAND_ACCEPT: accepted-demand on_action before/after, medium dread loss, legitimacy callee, authority -1, prestige -200, recent_liberty_faction_war10y, leader0102 notification, destroy faction, meritocratic-regent callee.",
+    "native1": "FACTION_DEMAND_BRIBE_CO_EMPEROR: trigger-gated counteroffer; tooltip acceptance/rejection branches; actual flow leader0106. Not shown in this historical frame.",
+    "native2": "FACTION_DEMAND_REFUSE: liberty-rejected callee and leader0103 after1day. Shown rendered1, not selected.",
+    "qualification": "No new source analysis, registry entry or execution qualification; conditional callees remain source knowledge."
+  },
+  "current_loader": {
+    "status": "offline-source-reviewed",
+    "binding_mode": "reviewed_letter_source_rebound",
+    "fresh_binding": {
+      "ck3_build": "1.20.0.4",
+      "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+      "event_definition_key": "faction_demand.0101",
+      "calculated_event_id": 4430101,
+      "native_option_count": 3,
+      "source_sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd",
+      "option_catalogue_sha256": "fe3f9e729592133fed0faaa4b4b57b0051183a1450bcdb85d37627700f017ea6"
+    },
+    "source_rebind_policy": "two-reviewed-letter-source-shapes-12004-v1",
+    "current_role_identities": {
+      "faction_id": 33554460,
+      "faction_leader_character_id": 35899,
+      "faction_target_character_id": 40526
+    },
+    "scope_identity_gaps": [],
+    "execution_contract_qualified": false,
+    "registry_contract_accepted": false
+  },
+  "actual_receipt": {
+    "command_acknowledged": true,
+    "event_instance_advanced_verified": true,
+    "old_instance": 19,
+    "new_instance": null,
+    "starting_snapshot_id": "native:167",
+    "ending_snapshot_id": "native:168",
+    "prestige_before_raw": 10134470,
+    "prestige_after_raw": -9865530,
+    "scale": 100000,
+    "historical_observed_prestige_delta": -200,
+    "authority_change_observed": false,
+    "current_restored_material_credit": false,
+    "semantic_optimal": false,
+    "ordinary_registry_gap": "registered_contract_requires_extended_consumer"
+  },
+  "storage": {
+    "limit_bytes": 24576,
+    "source_supplement_pool": true,
+    "new_state_registry_fact_bytes": 0,
+    "allocated_remaining": null,
+    "physical_credit_bytes": 0,
+    "future_growth_bytes": 0,
+    "derived_retention_hours": 48,
+    "record_retention_days": 180
+  },
+  "Game_RPC_calls": 0,
+  "active_Driver_SAVE_reads": 0,
+  "SDK_Native_strategy_changes": 0
+}

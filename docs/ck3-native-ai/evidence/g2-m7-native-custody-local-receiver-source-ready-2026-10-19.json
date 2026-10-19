@@ -1,0 +1,183 @@
+{
+  "schema": "xar.g2.m7.local-receiver-source-ready/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:40:04.131845+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool 2e2563",
+  "status": "LOCAL_KERNEL_RECEIVER_READY_CANONICAL_ORIGIN_UNQUALIFIED",
+  "scope": {
+    "Root_authorized_source_test_review_hard_bytes": 49152,
+    "current_Game_MCP_Job_or_desktop_access": false,
+    "owned_kernel_child_and_private_pipe_only": true,
+    "Native_builds_or_new_DLLs": 0,
+    "Game_RPC": 0,
+    "active_Driver_SAVE_reads": 0,
+    "Service_or_cpp_bridge_or_camera_edits": false,
+    "stage_or_commit": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "policy_source": [
+      "docs/storage-retention-policy.md",
+      "docs/storage-retention-policy.json"
+    ],
+    "policy_readback_tool": "83e22e",
+    "task_start": {
+      "tool": "848bbb",
+      "path": "Z:/ck3_mod_rewrite",
+      "volume": "Z:",
+      "observed_at_utc": "2026-10-19T15:06:10.336762Z",
+      "free_bytes": 178239881216
+    },
+    "task_close": {
+      "tool": "eb5673",
+      "path": "Z:/ck3_mod_rewrite",
+      "volume": "Z:",
+      "observed_at_utc": "2026-10-19T15:38:44.152349+00:00",
+      "free_bytes": 178242195456
+    },
+    "interpretation": "Source-only small-write check; neither a D-volume admission nor an atomic reservation. The single tiny self-created temporary lease and its private directory were cleaned by the owned test. No heavy output or cleanup of other tasks was performed; concurrent free-space change is not attributed to this task.",
+    "record_review_after_days": 180,
+    "record_is_not_permanently_protected": true,
+    "tracked_source_retention": "Normal source maintenance, not local automatic deletion. No test process or untracked fixture binary remains."
+  },
+  "implemented": {
+    "one_holder": "Reuse the existing _PreloadCustodyV1 and _RESOURCE_SEAL. Controller role retains its actual canonical suspended target. Received role has target=None and cannot borrow or reconstruct a controller's local object. No second score/qualification token exists.",
+    "receiver": "Default-OFF receive_inherited_preload_v1 accepts four local handle locations plus a caller-owned private client endpoint. Exact enabled Windows facade checks actual inherited flags and clears inheritance, retained target/parent kernel identities, actual client-end server PID, root-event liveness, same held FileID/volume/fullpath/hash and before/after parent/root continuity. It registers only the same local verified holder and local receiver object.",
+    "transfer": "Windows facade transfer_readback recognizes only its exact registered record, owner and current receiver PID. Public dict/foreign owner/closed resource cannot substitute. Parent birth/peer, target/FileID/hash and root revocation are freshly checked under owner then facade locks. A new received holder remains source-unqualified regardless of local success.",
+    "cleanup": "Original holder.close clears owner qualification/cache before CloseHandle, closes only acquired local duplicates/private control resources and retains any unknown release for retry. Registry entries disappear after all their handles close. Actual runtime process/job/native-server handles are never owned or closed here.",
+    "exact_birth": "Local kernel type accepts full ISO7 only if integer FILETIME matches exactly, including the seventh 100ns digit. Original CIM/microsecond strings still must equal exact FILETIME; no rounding/float/current-timezone fallback. Global environment parser remains unchanged. Existing _LoadedNativeProviderV1 appends optional game_creation_filetime; the unique issuer carries the validated exact integer.",
+    "source_guard": "Received holder starts _preload_source_verified=False. Unique existing issuer explicitly refuses it before Native endpoint/module observation. No source-promotion API was implemented. Local staging success is not canonical preload origin or Native adoption."
+  },
+  "defaults_and_behavior": {
+    "missing_or_disabled": "Receiver disabled returns unavailable/default_off with zero OS calls. Windows facade and original issuer remain default OFF. No production caller, runtime connection or ordinary-query hook was added.",
+    "actual_changes_when_explicitly_enabled": [
+      "Full exact ISO7 kernel births no longer lose 100ns precision inside custody-only validation.",
+      "Original DTO can carry optional exact integer FILETIME without changing old positional constructors.",
+      "Locally inherited resources can be staged, bound to the actual App owner type and re-observed through the same Windows facade; canonical origin still blocks issuance.",
+      "Root/parent revocation or identity change clears owner qualification before owned cleanup; release failures remain visibly retained."
+    ],
+    "old_component_parser_and_mapper": "No parser, fixed-D0 guard or candidate scoring behavior changed. The optional DTO field does not grant H. Existing WMI/CIM consumer still cannot prove a non-microsecond birth and therefore remains unknown. D0=174, T0 and original campaign are untouched."
+  },
+  "validation": {
+    "first_software_run": {
+      "tool": "5527d7",
+      "passed": 28,
+      "owned_opt_in_skipped": 1,
+      "seconds": 2.44
+    },
+    "owned_plus_directed_contracts": {
+      "tool": "e2c80d",
+      "caller": "tools/.venv/Scripts/python.exe",
+      "opt_in": "XAR_M7_RECEIVER_OWNED=1",
+      "passed": 29,
+      "subtests_passed": 24,
+      "seconds": 3.78
+    },
+    "exact_DTO_and_original_parser_compatibility": {
+      "tool": "9d0d57",
+      "passed": 9,
+      "subtests_passed": 19,
+      "seconds": 2.7
+    },
+    "negative_branches": [
+      "default OFF and public JSON claims before OS",
+      "wrong parent peer and non-inherited resource",
+      "foreign owner/record and closed holder",
+      "root already revoked and revoked during held-file observation",
+      "parent birth change",
+      "unknown CloseHandle retains same cleanup holder",
+      "same wall time/truncated microsecond/unknown birth cannot match exact 100ns",
+      "actual client/server pipe-end discrimination"
+    ],
+    "actual_owned_kernel": {
+      "observed_at_utc": "2026-10-19T15:36:04.794004+00:00",
+      "parent_fixture_pid": 184396,
+      "target_exact_creation_filetime": "134368977645746868",
+      "target_exact_ISO7": "2026-10-19T15:36:04.5746868Z",
+      "child_pid": 119500,
+      "child_exact_creation_filetime": "134368977673639503",
+      "actual_private_peer_equals_returned_child": true,
+      "source_role": "received",
+      "source_verified": false,
+      "tiny_held_lease_sha256": "43b41331c2b6c5d41333924dceca197ed604a0ca04245b6feb13402471390731",
+      "Native_provider_issued": false,
+      "revocation": "Root manually signaled only its owned event. Fresh transfer failed; a software sentinel qualification/cache was cleared before all five actual owned CloseHandle calls. Sentinel was not a minted DTO.",
+      "child_owned_handles_closed": 5,
+      "child_owned_remaining": 0,
+      "child_exit_code": 0,
+      "parent_owned_remaining": 0,
+      "parent_temporary_mappings_remaining": 0,
+      "no_MCP_or_Job_created": true
+    },
+    "post_test_edits": "Only unused imports and explanatory custody docstring changed after these runs; no tested behavior changed.",
+    "diff_check": "Restricted git diff --check PASS"
+  },
+  "explicit_missing_production_work": [
+    "Actual canonical suspended-target pre-load source custody must survive the exact supervisor to owner to Queue to MCPApp creation chain. This receiver proves local resource continuity only; it has no canonical origin promotion and intentionally cannot issue a provider.",
+    "Future real bootstrap must use the retained selective-handle creator and actual ACK/peer bindings at every hop. Inherited handle integers or JSON cannot recreate a canonical holder/DTO or supply missing temporal pre-load evidence.",
+    "No production startup install, Native server adoption, disconnect invalidation or normal-cold launch hook was installed. Native30/actual loaded DLL adoption remains separate future evidence.",
+    "Candidate consumer's exact-kernel birth comparison still needs a future trusted holder-backed input; global WMI/CIM microsecond identity is not rounded or relaxed here.",
+    "Before production activation, owner_source_epoch_v1 must register custody, Windows facade and receiver dependency leaves. Its current tuple still lacks these three; no current runtime epoch or freeze was edited."
+  ],
+  "qualified_credit": {
+    "actual_H": "unknown",
+    "canonical_production_provider": "unissued",
+    "M7_multi_ruler_seed_government_breadth": "incomplete",
+    "current_Game_adoption": "not_performed"
+  },
+  "dependency": {
+    "path": "tools/g2_saved_campaign/owned_python_launch_v1.py",
+    "purpose": "Owned test child uses the strict direct-interpreter fixture selector from the separate CI62 fix, avoiding Windows venv forwarding PID ambiguity. It is not a production command rewrite."
+  },
+  "files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_receiver_v1.py",
+      "bytes": 8968,
+      "sha256": "336ab6516c12ce4358a48ebd7772262eb401b94d4f155abf007d2ae0c6d50ba5",
+      "new_full_or_added_plus_removed_bytes": 8968
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_loaded_provider_receiver_v1.py",
+      "bytes": 17167,
+      "sha256": "bb1f020022389a079e78e0188c2701b0663e3c1fbcdaaa19addcd316ae736146",
+      "new_full_or_added_plus_removed_bytes": 17167
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_custody_v1.py",
+      "bytes": 20931,
+      "sha256": "f368a5d1f27c915bfe4a02a5994ce63b07f9fe2d9f3a1cd9ac7bfe486175ab5e",
+      "new_full_or_added_plus_removed_bytes": 1710
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_loaded_provider_windows_v1.py",
+      "bytes": 20371,
+      "sha256": "fd6f581ce13c22e18eff50729d9dc11a95e8b6b9a861fd6e33244a341911731b",
+      "new_full_or_added_plus_removed_bytes": 2794
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_heir_candidate_component_v1.py",
+      "bytes": 12269,
+      "sha256": "906df99600ccaa608058bea5f43f5e641d502f35c80468219403804effadd7ad",
+      "new_full_or_added_plus_removed_bytes": 46
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_loaded_provider_windows_v1.py",
+      "bytes": 12687,
+      "sha256": "b0a2202190d8b50ea28d9c3871ae47edd451de34c4a556c35af14e2f6821d9a3",
+      "new_full_or_added_plus_removed_bytes": 436
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_native_loaded_provider_custody_v1.py",
+      "bytes": 14431,
+      "sha256": "44d4e49c13a8d1623a12e9c505116f35beab61b549e3310a815550a38ad85bd5",
+      "new_full_or_added_plus_removed_bytes": 999
+    }
+  ],
+  "budget": {
+    "new_and_changed_source_test_bytes": 32120,
+    "count_method": "New leaves full, existing leaves all added plus removed lines versus a45; unchanged context excluded",
+    "review_bytes": 11238,
+    "total_bytes": 43358,
+    "hard_cap_bytes": 49152
+  }
+}

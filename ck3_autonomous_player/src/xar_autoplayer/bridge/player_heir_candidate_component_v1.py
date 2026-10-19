@@ -53,6 +53,7 @@ class _LoadedNativeProviderV1:
     pipe_name: str
     native_dll_sha256: str
     seal: object
+    game_creation_filetime: int | None = None
 
 
 def _integer(value, low, high):

@@ -159,6 +159,7 @@ class GuardedIssuerTests(unittest.TestCase):
         self.assertEqual(provider.native_dll_sha256, DLL_SHA)
         self.assertEqual((provider.game_pid, provider.connection_generation), (123, 3))
         self.assertEqual(provider.game_birth, "20261019051054.525692+000")
+        self.assertEqual(provider.game_creation_filetime, FILETIME)
         self.assertIs(owner._player_heir_loaded_custody_v1, resource)
         self.assertEqual(f.closed, [])
         f.owner = owner
@@ -170,6 +171,21 @@ class GuardedIssuerTests(unittest.TestCase):
         self.assertIsNone(owner._player_heir_loaded_custody_v1)
         custody.invalidate_loaded_native_provider_v1(owner)
         self.assertEqual(len(f.closed), 4)
+
+    def test_local_exact_100ns_type_is_carried_without_rounding_global_identity(self):
+        from xar_autoplayer.bridge.native_loaded_provider_windows_v1 import _filetime_text
+        from xar_autoplayer.environment import process_creation_utc
+        f,target,owner,driver,endpoint=context()
+        f.game=replace(f.game,creation_filetime=FILETIME+1,creation_date=_filetime_text(FILETIME+1))
+        resource=prepare(f,target)
+        self.assertIsNotNone(resource)
+        f.loaded,target.resumed=True,True
+        self.assertTrue(issue(resource,owner,driver,endpoint,f).issued)
+        provider=owner._player_heir_loaded_provider_v1
+        self.assertEqual(provider.game_creation_filetime,FILETIME+1)
+        self.assertEqual(provider.game_birth,"2026-10-19T05:10:54.5256921Z")
+        with self.assertRaises(ValueError):process_creation_utc(provider.game_birth)
+        custody.invalidate_loaded_native_provider_v1(owner)
 
     def test_preload_rejects_posthoc_or_ambiguous_sources_before_any_issuance(self):
         def resumed(f,t): t.resumed = True

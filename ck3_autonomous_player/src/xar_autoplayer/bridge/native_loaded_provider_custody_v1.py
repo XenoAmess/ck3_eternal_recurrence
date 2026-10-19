@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import re
 from contextlib import nullcontext
 import os
 from pathlib import PureWindowsPath
@@ -130,9 +131,13 @@ def _process(value):
     _require(type(value.creation_filetime) is int and 0 < value.creation_filetime < 2**64,
              "integer kernel FILETIME required")
     _require(isinstance(value.creation_date, str), "original OS birth string required")
-    instant = process_creation_utc(value.creation_date)
+    full = re.fullmatch(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\.(\d{7})Z",value.creation_date)
+    instant = (datetime.strptime(full[1],"%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+               if full else process_creation_utc(value.creation_date))
     delta = instant - datetime(1601, 1, 1, tzinfo=timezone.utc)
     ticks = ((delta.days * 86400 + delta.seconds) * 1000000 + delta.microseconds) * 10
+    if full:
+        ticks += int(full[2])
     _require(ticks == value.creation_filetime, "OS birth encoding cannot represent exact kernel FILETIME")
     _path(value.executable)
     return value
@@ -171,12 +176,16 @@ def _modules(facade, handle):
 class _PreloadCustodyV1:
     """Resource holder only; it is neither a score token nor serializable proof."""
     def __init__(self, *, target, facade, process_handle, dll_handle, process, dll,
-                 machine_id, pipe_name, seal):
+                 machine_id, pipe_name, seal, source_role="controller"):
         _require(seal is _RESOURCE_SEAL, "internal resource producer required")
         self.target, self.facade = target, facade
         self.process_handle, self.dll_handle = process_handle, dll_handle
         self.process, self.dll = process, dll
         self.machine_id, self.pipe_name, self.seal = machine_id, pipe_name, seal
+        _require(source_role in ("controller","received"),"unknown custody role")
+        _require(source_role != "received" or target is None,"received custody has no local controller original")
+        self.source_role = source_role
+        self._preload_source_verified = source_role == "controller"
         self.owner = self.transfer = None
         self.closed = False
         self.last_error = None
@@ -298,7 +307,8 @@ def issue_loaded_native_provider_v1(*, custody, owner, driver, endpoint, transfe
 
     transfer is an opaque actual handle-transfer operation object, never a JSON
     tuple or claimed exit status. The future canonical adapter must independently
-    verify it. No transfer adapter or production caller exists in this change.
+    verify it. Local receiver staging is not canonical preload-origin proof;
+    no production caller or source-promotion path exists in this change.
     """
     if enabled is not True:
         _clear_current_issued(owner)
@@ -319,6 +329,8 @@ def _issue_locked(*, custody, owner, driver, endpoint, transfer, os_facade):
         from . import player_heir_candidate_component_v1 as component
         _require(isinstance(custody, _PreloadCustodyV1) and custody.seal is _RESOURCE_SEAL
                  and custody.closed is False, "pre-load resource missing or closed")
+        _require(custody._preload_source_verified is True,
+                 "received canonical preload continuity is not qualified")
         _require(custody.owner is None or custody.owner is owner, "resource belongs to another SDK owner")
         current = getattr(owner, "_player_heir_loaded_custody_v1", None)
         _require(current is None or current is custody, "previous custody must be normally released first")
@@ -342,7 +354,8 @@ def _issue_locked(*, custody, owner, driver, endpoint, transfer, os_facade):
                  and received.process_handle != received.dll_handle,
                  "canonical live preload-to-SDK handle transfer unverified")
         for owned in (received.process_handle, received.dll_handle):
-            _require(owned != custody.target._process_handle, "runtime original handle must remain borrowed")
+            original = custody.target._process_handle if custody.source_role == "controller" else None
+            _require(owned != original, "runtime original handle must remain borrowed")
             if owned not in custody._owned:
                 custody._owned.append(owned)
         # Once transfer ownership is proved, even a later observer refusal must
@@ -388,7 +401,8 @@ def _issue_locked(*, custody, owner, driver, endpoint, transfer, os_facade):
         # Single qualification token: reuse M7's existing private DTO and seal.
         provider = component._LoadedNativeProviderV1(owner, driver, owner.machine,
             custody.process.pid, custody.process.creation_date, custody.process.executable,
-            generation, driver.pipe_name, custody.dll.sha256, component._LOADED_NATIVE_SEAL)
+            generation, driver.pipe_name, custody.dll.sha256, component._LOADED_NATIVE_SEAL,
+            game_creation_filetime=custody.process.creation_filetime)
         owner._player_heir_loaded_provider_v1 = provider
         owner._player_heir_game_identity_cache_v1 = None
         return CustodyIssueResultV1(True, "software_contract_qualified_no_production_adapter")

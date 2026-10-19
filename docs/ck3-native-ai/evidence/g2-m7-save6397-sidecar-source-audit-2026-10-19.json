@@ -1,0 +1,100 @@
+{
+  "schema": "xar.g2.m7.save6397-sidecar-source-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19T15:30:12.516836+00:00",
+  "machine_source": "tools/ck3_live_run_id.py machine; tool 2e2563",
+  "source_index": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-session-interruption90/CLOSED-SIDECARS-INDEX.json",
+    "bytes": 5060,
+    "sha256": "d13bc138b5c38f67c81328e153e99b5983964e4ea817281431b91ddab2254bd5",
+    "original_observed_at_utc": "2026-10-19T15:27:56.857243+00:00",
+    "independent_readback_tools": [
+      "709aba",
+      "919be2"
+    ]
+  },
+  "saved_frontier": {
+    "SAVE_sequence": 6397,
+    "date_raw": 53202720,
+    "day": 2433,
+    "cycles": 3039,
+    "history_index": 2083,
+    "sha256": "417b06a63310cf3c59544394024b387a3fc2700dced3c08b42aa5980bfeb27cb",
+    "source": "tools/g2_saved_campaign/checkpoint6397_saved_frontier_v1.py fixed pins; original Driver/SAVE body not read"
+  },
+  "historical_tail": {
+    "relative_to_source_index": "POST-SAVE6397-HISTORICAL-TAIL234.json",
+    "bytes": 36135,
+    "sha256": "0f6acfccdbb27fcc999bd91148cddc5c9196edd9f503dadd9d9cca426a0b68a8",
+    "settled_cycles": 234,
+    "days": 71,
+    "actual_event_choice": {
+      "global_turn": 3193,
+      "AUTO": 6710,
+      "step": "select-event-option-1",
+      "date_raw": 53203848
+    },
+    "unknown_AUTO": 6874,
+    "replay_allowed": false,
+    "current_credit": 0
+  },
+  "sidecars": {
+    "gift": {
+      "bytes": 257,
+      "sha256": "47b63483f700c7c2d0daa55420759c4d6f7f4a7f49cb01273db483f33c522a0c",
+      "pending": null,
+      "equals_prior_C15_cold_input": true
+    },
+    "sway": {
+      "bytes": 10285,
+      "sha256": "a2d8b030b1e3c559540581f5187f74da23d9c8168af3abba0098e6ce969da178",
+      "pending": null,
+      "equals_prior_C15_cold_input": true,
+      "actor": 31254,
+      "target": 33946,
+      "latest_source_date_raw": 53186400
+    },
+    "sway_schedule": {
+      "bytes": 390,
+      "sha256": "4ad36f1d700806315259ecec91b80fdcb8b266e9198c5319cdd78df9bef6dab0",
+      "equals_prior_C15_cold_input": true,
+      "actor": 40526,
+      "last_check_date_raw": 53196912,
+      "next_check_date_raw": 53197632
+    },
+    "UI_pending": {
+      "state_root": "absent",
+      "native_session": "absent"
+    },
+    "UI_completion": {
+      "bytes": 6886,
+      "sha256": "370843e4af78593788fa5d29460b12dd3b623182f7cc11bec70ac0a439c15927",
+      "checkpoint_date_raw": 53186880,
+      "checkpoint_sha256": "1b0fb1055ff02601b7a84e65e63cf1b0dd9fc859f269fc9e761ee3d40ccac341",
+      "old_Game_PID": 153556,
+      "native_session_copy": "absent",
+      "is_SAVE6397_completion": false
+    }
+  },
+  "decisions": {
+    "knowledge": "Keep source-bound vanilla definitions, registry and event-choice analysis as reusable research. Preserve original machine/EXE/definition SHA/instance provenance. Old ACK, disappearance, action result and settled counts are not restored-state facts. Do not copy future per-instance once/queue markers into the saved branch.",
+    "gift": "Preserve exact null-pending bytes and both historical applied request IDs for deduplication. No resubmission or new current benefit follows. These bytes equal prior cold input; no new tail gift pending is observed in this bounded index.",
+    "sway": "Both exact files equal prior cold input. All retained source dates and schedule deadlines precede SAVE6397. Keep old action/fullID/generation/capture/native provenance, without restart, cooldown reset or current gain credit. Resolved action actor31254 differs from restored40526: ordinary_sway_schedule_v1.py:86-111 does not adopt it as the current actor's applied instance. Fresh ordinary same-frame root observations own current eligibility.",
+    "UI": "Closed pending files are absent. Keep the old completion as historical evidence; do not rewrite checkpoint/date/source epoch or treat it as SAVE6397 proof. SuccessorUIAppOwner.ensure:83-95 consults completion only when an actual resolved pending record requires retirement. New pending/UNKNOWN state cannot be conjured, cleared or reauthorized from this old completion.",
+    "goal_and_counters": "Use F89 true3039 state plus actual6394 zero-credit recovery/6395SEM/6397SAVE reconstruction. Preserve origin31254/campaign native-31254-6271ac8cd441/current40526/reconciled1/T0 53144328. F90 future3273 and pending6874 do not supply the saved seed. Unknown6874 is historical and cannot be replayed. No additional succession or tail event-choice credit.",
+    "boundary_limit": "These are post-exit closed bytes, not a fabricated SAVE-time snapshot. Carry is justified by exact prior-cold equality and retained source dates before SAVE. Original canonical cold validator/owner guards and actual new cold SEM/CAP still apply. No cold qualification, actual H or G2 breadth is granted. The old6322 readonly-tail conclusion is not reused."
+  },
+  "operations": {
+    "Game_RPC": 0,
+    "OS_Game_reads": 0,
+    "Driver_or_SAVE_body_reads": 0,
+    "sidecar_writes": 0,
+    "new_matrix": 0
+  },
+  "storage": {
+    "path": "Z:/ck3_mod_rewrite",
+    "volume": "Z:",
+    "free_bytes_scope": "earlier receiver-phase source-only admission; not D-volume admission",
+    "hard_cap_bytes": 8192
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schema": "xar.c15-auto6393-readonly-planning-source-proof.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-19 14:58:10 UTC",
+  "machine_id_source": "tools/ck3_live_run_id.py machine; matches frozen source packets",
+  "scope": "Closed immutable packets, actual frozen Python source and source-only qualification. No Game/RPC/active Driver/SAVE, original query/AUTO replay, current SDK/queue edit, stage or commit.",
+  "failure_packet": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-auto6393-failure89/FROZEN.json",
+    "bytes": 7312,
+    "sha256": "79f5b03bd5d624cb9f66aa9c802a4cf1399793a1a02134957da3448e9793938a"
+  },
+  "callback_packet": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-auto6393-failure89/CALLBACK6393-PREFIX.json",
+    "bytes": 11794,
+    "sha256": "54e89511454595520990c9b90f42c21a79ad0d1957217425c66c0b2ca9bf5ad4"
+  },
+  "actual_source_commit": "d804be64838b25c234ef1f805d8e641e4f677450",
+  "actual_error": {
+    "AUTO": 6393,
+    "original_response_bytes": 2033,
+    "original_response_sha256": "a663f81606692c56d97b7dbee4385167512593008ea2b26a02cc8c98eb7870fe",
+    "is_error": true,
+    "error_type": "_NativeCommandRejectedError",
+    "native_request_id": "step-30-7745727a1700",
+    "native_step": "query-campaign-root-context-v1",
+    "native_error": "state_changed",
+    "stage": "preflight_native_snapshot_read_failed",
+    "expected_native_revision": 25,
+    "worker_native_revision": 25,
+    "worker_ready": true,
+    "previous_present": true,
+    "read_attempted": true,
+    "observed_read": false,
+    "observed_scalars": null,
+    "differing_fields": null
+  },
+  "interpretation": "Native returned an explicit rejection after attempting the preflight read; it is not a timeout or an unknown world write. No observed scalar tuple exists, so state_changed does not establish a changed actor/date/value or a transient cause. The root query body may not be treated as successfully observed.",
+  "current_frame": {
+    "snapshot_id": "native:25",
+    "native_revision": 25,
+    "revision": 26,
+    "date_raw": 53202720,
+    "Game_pid": 115472,
+    "actor": 40526,
+    "episode": "native-40526-1bec95182886",
+    "connection_generation": 1,
+    "paused": true,
+    "map_ready": true
+  },
+  "queue_at_failure": {
+    "completed_cycles": 3039,
+    "game_days": 2433,
+    "pending_cycle": 3040,
+    "pending_AUTO": 6393,
+    "NEXT": 6394,
+    "original_AUTO_replayed": false,
+    "error_does_not_mean_status_blocked": true
+  },
+  "source_pins": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src13/xar_autoplayer/bridge/service.py",
+      "bytes": 877777,
+      "sha256": "5b49eaf311269230aeb046e9f61ccb829aa4392c627b23f0878e14f42c3883f8"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-v20261019-candidate/src13/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1620598,
+      "sha256": "db9f8fb05483146abe1bea7c00d5ec4c53e5fc6a9c370133ba7e8ff7ebedb3da"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/root_p37c15_mcp_entry.py",
+      "bytes": 12630,
+      "sha256": "b0a52546bd1639b75f5957dff8c81d7fec73df2d527f81ae93a549d138bb505f"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/root_p37c15_compact_decision_feed.py",
+      "bytes": 7776,
+      "sha256": "748d4f04146237e363d325ca78169a22ce64fb13367489c2afb92c127172e70d"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime/presentation-c15/g2_saved_campaign/decision_text_publisher.py",
+      "bytes": 29409,
+      "sha256": "38438b9b50896e8050f6c864c78a11291750a33bd7d0f73a5e0bde0130008bbe"
+    }
+  ],
+  "dispatch_boundary": {
+    "callback_observation": "Actual6393-0-plan.json, ordinal6393-0002-0-plan.json and publication lock are absent in closed callback packet.",
+    "exact_chain": "Entry33/97 binds publish_before_submit. Compact feed92-124 has no skip and invokes publisher. Publisher201-240 atomically creates the first plan and waits publication ACK before returning. No Native Driver call occurs in these publication functions.",
+    "source_deduction": "Service4933 plan_turn precedes4942 execute. Successful selected dispatch must pass5240 before_submit and publish the compact plan first. Publication errors would stop with their own error before a Native selected query. Combined with actual Native rejection and callback absence,6393 failed during planning before any selected business dispatch. Existing planner bookkeeping is not rolled back.",
+    "limitations": "Absence alone was not treated as proof; it was joined to the exact mandatory publisher source. No claim of zero planner-side file mutation, no world-outcome credit."
+  },
+  "existing_retry_boundary": {
+    "source": "Service5666-5674 admits only the two legacy campaign-root error strings; this state_changed is excluded before existing fresh-root retry.",
+    "existing_fresh_guard": "Service5807-5935 requires a newer public/native paused frame, unchanged actor/date/episode/war/army/connection and only one failed root history item. No generic state_changed whitelist is added.",
+    "production_change": false,
+    "rule": "Do not broaden state_changed or retry unknown writes. A later production change, if repeated evidence requires it, must bind exact root operation, typed preflight read-failed stage, observed_readfalse and explicit Native rejection, then reuse finite fresh-frame checks."
+  },
+  "authorized_current_recovery": {
+    "owner": "sole runtime with existing harness handler; no new recovery leaf or warm SDK",
+    "condition": "Use the existing exact readonly-planning-precondition branch, fresh semantic read bound to same Game115472/actor40526/episode/date53202720/pausedmap and nonregressing public/native frame. Clear only pending3040 with zero cycle/day credit; preserve3039/day2433 and all business ledgers.",
+    "followup": "New complete ordinary PLAN after fresh evidence; never resend6393 or directly replay its root query. If freshSEM fails or new PLAN repeats the same source failure, stop repeating that operation and inspect the exact reader input.",
+    "actual_recovery_observed": true
+  },
+  "durable_operating_lesson": "An explicitly rejected read can support finite freshSEM -> zero-credit queue recovery -> new complete PLAN after source/identity closure. It does not justify unlimited read retries, query replay, promoting cached values to current observations, restarting the SDK for a single failure, or laundering error as blocked/executed.",
+  "storage": "Sole permanent evidence under8KiB; originals referenced.",
+  "actual_readback_at_utc": "2026-10-19T15:06:38.344285+00:00",
+  "actual_recovery": {
+    "packet": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p51-fresh1066-v20261019-prepare01/c15-checkpoint6322-cold-source88/READONLY6394-RECOVERY-AND-SAVE6397-ACTUAL.json",
+      "bytes": 9708,
+      "sha256": "f1047b76b6bc8f92b38c24cf5d221816676f32033dfb63475e339f004d615ec8"
+    },
+    "observed": "6394 recovered with0credit/0actions, exactly1freshSEM6395. Same paused actor/date/native25/public26. New6396 PLAN selected query-army-strengths-v1.6397 checkpoint saved/binding verified, replacement returned, notfsync. No SDK/warm/query replay. PLAN success does not prove root body reran.",
+    "plan6396": {
+      "relative_to_runtime_entry_parent": "p37-responses/6396-1-result.json",
+      "bytes": 43372,
+      "sha256": "a05eb4b9d24ee8c6d5e1dbecc736748a8d476cd211bc31c102b6d253a854ea0a"
+    }
+  },
+  "existing_handler": {
+    "runtime_filename": "root_p37_campaign_root_preflight_unreadable_readonly.py",
+    "bytes": 4321,
+    "sha256": "c441e12b64a69ecbf7828b144132352c3534c57bf65ed16df7e4754c36158a8a"
+  }
+}

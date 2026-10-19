@@ -116,9 +116,14 @@ class WindowsAdapterContractTests(unittest.TestCase):
         self.assertEqual(game.creation_filetime,FILETIME)
         self.assertEqual(game.creation_date,"2026-10-19T05:10:54.5256920Z")
         self.assertEqual(adapter._filetime_text(FILETIME+1),"2026-10-19T05:10:54.5256921Z")
+        exact=contract._ProcessReadbackV1(901,FILETIME+1,
+            adapter._filetime_text(FILETIME+1),IMAGE,True)
+        self.assertIs(contract._process(exact),exact)
+        from xar_autoplayer.environment import process_creation_utc
+        with self.assertRaises(ValueError):process_creation_utc(exact.creation_date)
         with self.assertRaises(ValueError):
             contract._process(contract._ProcessReadbackV1(901,FILETIME+1,
-                adapter._filetime_text(FILETIME+1),IMAGE,True))
+                game.creation_date,IMAGE,True))
 
     def test_peer_comes_from_bound_current_server_and_never_owns_its_handle(self):
         fake=FakeAPI();value=adapter.WindowsNativeCustodyFacadeV1(enabled=True,_api=fake)
