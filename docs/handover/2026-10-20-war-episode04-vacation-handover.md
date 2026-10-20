@@ -1,6 +1,6 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
-更新时间：2026-10-20 09:50–10:05（Asia/Shanghai）。执行者 `/root`；`machine_id: desktop-3fevhd2-1c74096080`，已用 `tools/ck3_live_run_id.py machine` 当场读回。下面的安装、路径、进程、权限、磁盘与实机事实只属于这台机器。
+现场观察时间：2026-10-20 09:48–09:56（Asia/Shanghai），文件于同日补齐。执行者 `/root`；`machine_id: desktop-3fevhd2-1c74096080`，已用 `tools/ck3_live_run_id.py machine` 当场读回。下面的安装、路径、进程、权限、磁盘与实机事实只属于这台机器。
 
 **战争四期尚未完成，不能报为成片交付。** 当前是研究 10/14、业务 7/11、正式动态镜头 0/11、正式 A/B/C 0/3。已有可剪原片和方法草稿；本轮最新可直接审阅的实物是约 55 秒分兵／合兵／登船章节。R219 续拍失败，已保存，但没有通过正常闭场验收。
 
@@ -99,7 +99,7 @@ C:/ck3-war-episode04-research-20261004-a01/native-build-a38-a01/
 
 已集成研究／历史失败包于 master `435bcf9d61884caba846d1e8756a6243fdcf2d4c`：R218 两次失败、正常闭场、R217 27 秒插片、v2 合同、a38 小资格等。源码与知识可供其他机器使用；SYSTEM 排除、Steam 离线和本地实机结果不可跨机外推。
 
-本轮 fetch 观察到 master `befd887f0`（以当次完整 SHA 与父提交为准），native tree 为 `797ebc88524ed0012969eb358ffb489c0bc89434`，**不同于 a38 的 a288 树**。接手改用最新源码时必须按变化重新构建／绑定；不能把旧 a38 资格冒充新 master 的 native 资格。
+本轮 fetch 观察到 master `befd887f06b562da057024ff1acaa8b6cb898217`，native tree 为 `797ebc88524ed0012969eb358ffb489c0bc89434`，**不同于 a38 的 a288 树**。接手改用最新源码时必须按变化重新构建／绑定；不能把旧 a38 资格冒充新 master 的 native 资格。
 
 exact 3e 的官方 CI 曾在实验 WAL 补丁 setup 阶段失败；生产 public Driver 未安装该实验，未发现其直接阻断本次 R219。远端后来修了 WAL 上下文，本机另一候选的 6 个测试通过只绑定那份候选，不能外推到不同字节的远端补丁。整个 CI 的终态仍应按 exact commit 查询。
 
@@ -133,6 +133,8 @@ R194-R196-SPLIT-MERGE-BOARDING-55s-REVIEW-DRAFT-a02.mp4
 另有 R217 27 秒插片，明确标注“损失来源仍待验证”，见[专题插片入口](../ck3-native-ai/episode04-r217-county-owner-entry-12004.md)。旧约 33:14.867 方法粗剪曾产出，但本轮未重新定位精确 manifest，不能拿别的文件代替；仓库另有 `review02/full69-method-preview-a02/README.md` 的 **32:26.867** 方法版，二者不是同一影片。旧 Review01 的 OneDrive 上传记录也不是新版成片交付，缺机器 ID 的历史记录按 `unknown` 处理。
 
 新 run 先查询 `xar_promo_toolchain` 最新正式 Release；55 秒章历史使用 v0.3.0，不能把它永久当“最新”。历史 wheel SHA、输入、字幕和回执已固定，旧 attempt 不用新版重新解释。完成的成片按既定 OneDrive 客户端流程仅放指定视频，不能把全部素材或项目一起同步。
+
+背景音乐的**音频本体已在 master**：[quiet-courtly-tension.wav](../../promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav)。本轮对上述 master 的 Git tree 读回为 30,726,160 B，Git blob `f5bf616ef2897521ec92a0445fa5ec68a4e76607`，不是只有路径说明或 LFS 指针；本轮没有重新哈希音频。接手剪辑可直接复用仓库中的音频。
 
 ## 录制与现场操作注意
 
