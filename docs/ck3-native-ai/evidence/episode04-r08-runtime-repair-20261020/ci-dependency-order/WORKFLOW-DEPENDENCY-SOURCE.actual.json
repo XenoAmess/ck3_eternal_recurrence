@@ -1,0 +1,67 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:42:24.419115+00:00",
+  "exact_head": "f960a1b4b46efa5359e403c9d308b2a808a2f7d0",
+  "repository_path": ".github/workflows/static-ci.yml",
+  "blob_bytes": 68345,
+  "blob_sha256": "46b72b5bd165097079fc8ece309ce2b30539366d1eff4adbde13e57961c9f7e4",
+  "matching_lines": [
+    {
+      "number": 102,
+      "text": "      - name: Test public R08 single writer opportunity refusals"
+    },
+    {
+      "number": 175,
+      "text": "          python -m pip install mcp==2.0.0 pytest==9.1.1"
+    },
+    {
+      "number": 177,
+      "text": "          python -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py"
+    },
+    {
+      "number": 179,
+      "text": "          python -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py"
+    },
+    {
+      "number": 217,
+      "text": "        run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_value_analysis_mcp.py"
+    },
+    {
+      "number": 219,
+      "text": "        run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_v4_clarifications_mcp.py"
+    },
+    {
+      "number": 249,
+      "text": "          python -X utf8 -m unittest discover -s ck3_autonomous_player/tests -p \"test_gameplay_mcp_packet_reader_warm.py\""
+    },
+    {
+      "number": 255,
+      "text": "        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py ck3_autonomous_player/tests/unit/test_army_auto_scalar_projection_v1.py ck3_autonomous_player/tests/unit/test_army_private_auto_scalar_ab_v1.py ck3_autonomous_player/tests/unit/test_native_negative_route_regroup.py ck3_autonomous_player/tests/unit/test_clock_observation_timing_v1.py ck3_autonomous_player/tests/unit/test_planner_stage_timing_v1.py ck3_autonomous_player/tests/unit/test_planner_consumer_timing_v1.py ck3_autonomous_player/tests/unit/test_mcp_war_daily_watch_config_v1.py ck3_autonomous_player/tests/unit/test_planner_prep_timing_v1.py ck3_autonomous_player/tests/unit/test_native_kernel32_cache.py ck3_autonomous_player/tests/unit/test_p51_successor_relay_binding_v1.py ck3_autonomous_player/tests/unit/test_p51_resident_successor_adoption_v1.py ck3_autonomous_player/tests/unit/test_contact_free_exact_route_speed_trial_v1.py ck3_autonomous_player/tests/unit/test_battle_reader_exact_speed.py ck3_autonomous_player/tests/unit/test_defender_refuge_candidates.py ck3_autonomous_player/tests/unit/test_arrived_refuge_lifecycle.py ck3_autonomous_player/tests/unit/test_retreating_only_committed_route.py ck3_autonomous_player/tests/unit/test_event_history_free.py ck3_autonomous_player/tests/unit/test_native_assault_lifecycle_scan_reuse_v1.py ck3_autonomous_player/tests/unit/test_recent_command_index_no_materialization_v1.py ck3_autonomous_player/tests/unit/test_raiktor_history_factory_v1.py ck3_autonomous_player/tests/unit/test_forecast_history_factory_v1.py ck3_autonomous_player/tests/unit/test_rendezvous_history_factory_v1.py ck3_autonomous_player/tests/unit/test_origin_history_factory_v1.py ck3_autonomous_player/tests/unit/test_war_termination_history_read_guard.py ck3_autonomous_player/tests/unit/test_assault_holding_history_projection_copy.py"
+    },
+    {
+      "number": 265,
+      "text": "        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py ck3_autonomous_player/tests/unit/test_war_crisis_spend_down_v1.py ck3_autonomous_player/tests/unit/test_war_political_survival_stakes_v1.py ck3_autonomous_player/tests/unit/test_wartime_construction_cash_v1.py ck3_autonomous_player/tests/unit/test_war_financing_capability_gap_v1.py ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py ck3_autonomous_player/tests/unit/test_war_safe_rendezvous_v1.py ck3_autonomous_player/tests/unit/test_war_forced_retreat_observation_v1.py"
+    },
+    {
+      "number": 274,
+      "text": "        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_combat_history_superseded_v1.py ck3_autonomous_player/tests/unit/test_combat_simulation_inputs_bridge.py ck3_autonomous_player/tests/unit/test_combat_phase_inputs_v3_bridge.py ck3_autonomous_player/tests/unit/test_combat_query_mcp_result.py ck3_autonomous_player/tests/unit/test_mercenary_query_mcp_result.py"
+    },
+    {
+      "number": 317,
+      "text": "        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_land_route_timeline_unavailable_v1.py tests/unit/test_land_route_halt_outcome.py ck3_autonomous_player/tests/unit/test_move_unknown_ack_recovery.py ck3_autonomous_player/tests/unit/test_route_window_advance_outcome.py ck3_autonomous_player/tests/unit/test_optional_war_ui_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_first_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_window_priority.py ck3_autonomous_player/tests/unit/test_war_declared_overview_priority.py ck3_autonomous_player/tests/unit/test_war_results_startup_baseline.py ck3_autonomous_player/tests/unit/test_route_clock_popup_outcome.py ck3_autonomous_player/tests/unit/test_route_stationary_outcome.py ck3_autonomous_player/tests/unit/test_route_unavoidable_outcome.py ck3_autonomous_player/tests/unit/test_battle_route_modal_classifier_v1.py tests/unit/test_paused_clock_popup_readback_v1.py ck3_autonomous_player/tests/unit/test_natural_paused_decision_boundary.py ck3_autonomous_player/tests/unit/test_sentinel_partial_recovery.py ck3_autonomous_player/tests/unit/test_stationary_defensive_risk_v1.py ck3_autonomous_player/tests/unit/test_land_retained_unsafe_edge_watch_4892.py ck3_autonomous_player/tests/unit/test_land_edge_date_only_clock_packet_v1.py ck3_autonomous_player/tests/unit/test_war_daily_watch_v1.py ck3_autonomous_player/tests/unit/test_war_termination_query_cadence_v1.py ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py ck3_autonomous_player/tests/test_realm_overview_camera.py ck3_autonomous_player/tests/unit/test_auto_camera_async.py ck3_autonomous_player/tests/unit/test_auto_camera_current_payload_v1.py ck3_autonomous_player/tests/unit/test_camera_target_backoff_v1.py ck3_autonomous_player/tests/unit/test_auto_camera_pre_advance_v1.py ck3_autonomous_player/tests/unit/test_stationary_excluded_siege_watch_6343.py ck3_autonomous_player/tests/unit/test_populist1001_current_source_binding.py ck3_autonomous_player/tests/unit/test_populist1001_known_refusal.py ck3_autonomous_player/tests/unit/test_war_declared_overview_latch_reconciliation.py ck3_autonomous_player/tests/unit/test_war_results_close_latch_reconciliation.py ck3_autonomous_player/tests/unit/test_move_error_bounded_readback.py ck3_autonomous_player/tests/unit/test_observed_move_intent.py ck3_autonomous_player/tests/unit/test_driver_state_write_timing_phases.py ck3_autonomous_player/tests/unit/test_routed_siege_stance.py ck3_autonomous_player/tests/unit/test_mcp_route_contact_speed_config.py ck3_autonomous_player/tests/unit/test_war_results_scope_transition_pause.py ck3_autonomous_player/tests/unit/test_war_results_scope_transition_chain.py ck3_autonomous_player/tests/unit/test_war_results_scope_connection.py tools/test_ck3_obs_capture_mutable_replace.py"
+    },
+    {
+      "number": 328,
+      "text": "        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_owned_python_launch_v1.py tools/g2_saved_campaign/test_private_handle_chain_v1.py tools/g2_saved_campaign/test_mcp_owned_stdio_binding_v1.py"
+    },
+    {
+      "number": 348,
+      "text": "        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/qualify_campaign_root_retry_mcp_observability_v1.py -k \"not actual_handler and not exact_source_inverse\""
+    },
+    {
+      "number": 467,
+      "text": "          python -B -X utf8 tools/test_ck3_mod_acceptance_initial_plan_failure_hold.py --host-source ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+    }
+  ],
+  "source": "local Git object read; no checkout or fetch"
+}

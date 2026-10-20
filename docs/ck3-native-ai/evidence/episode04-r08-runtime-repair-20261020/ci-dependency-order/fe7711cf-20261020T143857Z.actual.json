@@ -1,0 +1,96 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:39:02.823632+00:00",
+  "exact_head": "fe7711cfce559fbac25062b415d854c850141b51",
+  "runs": [
+    {
+      "id": 39439609175,
+      "name": "Official Runner CI",
+      "head_sha": "fe7711cfce559fbac25062b415d854c850141b51",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-20T14:29:00Z",
+      "updated_at": "2026-10-20T14:30:36Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39439609175",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 118685682011,
+          "name": "static",
+          "status": "completed",
+          "conclusion": "failure",
+          "completed_steps": 147,
+          "total_steps": 147,
+          "selected_steps": [
+            {
+              "number": 20,
+              "name": "Test public R08 single writer opportunity refusals",
+              "status": "completed",
+              "conclusion": "failure",
+              "started_at": "2026-10-20T14:30:22Z",
+              "completed_at": "2026-10-20T14:30:31Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39439609143,
+      "name": "Linear history",
+      "head_sha": "fe7711cfce559fbac25062b415d854c850141b51",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-20T14:29:00Z",
+      "updated_at": "2026-10-20T14:30:01Z",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39439609143",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 118685681614,
+          "name": "No new merge commits",
+          "status": "completed",
+          "conclusion": "success",
+          "completed_steps": 5,
+          "total_steps": 5,
+          "selected_steps": []
+        }
+      ]
+    }
+  ],
+  "both_present": true,
+  "both_terminal": true,
+  "both_success": false,
+  "response_pins": [
+    {
+      "endpoint": "actions/runs",
+      "fields": {
+        "head_sha": "fe7711cfce559fbac25062b415d854c850141b51",
+        "per_page": 10
+      },
+      "response_bytes": 26512,
+      "response_sha256": "9f1c30f29c4336f51a95d1f1965d2d7c128f37391784902b76de970c3771645a"
+    },
+    {
+      "endpoint": "actions/runs/39439609175/jobs",
+      "fields": {
+        "per_page": 100
+      },
+      "response_bytes": 29367,
+      "response_sha256": "a56f64e2cc2c21b1cca99facdc28746fef4124e186d6aad8bbd67a529a0b81fe"
+    },
+    {
+      "endpoint": "actions/runs/39439609143/jobs",
+      "fields": {
+        "per_page": 100
+      },
+      "response_bytes": 1789,
+      "response_sha256": "5088cf9ba39c93cf8dc149e8dd6ee7d593a14553c3382912be6d4221f0d9124d"
+    }
+  ],
+  "scope_hard_stop_utc": "2026-10-20T14:45:00+00:00",
+  "maximum_snapshots_per_head": 2,
+  "worktree_source_writes": false,
+  "workflow_dispatch_rerun": false,
+  "tests_build_game_SDK_download": 0,
+  "native_compile_or_R08_business_qualification_inferred": false
+}

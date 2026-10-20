@@ -1,0 +1,120 @@
+2026-10-20T14:38:16.4881029Z ##[group]Run python -B -X utf8 tools/test_r08_writer_one_day.py
+2026-10-20T14:38:16.4881581Z [36;1mpython -B -X utf8 tools/test_r08_writer_one_day.py[0m
+2026-10-20T14:38:16.4881967Z [36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%[0m
+2026-10-20T14:38:16.4882371Z [36;1mpython -B -X utf8 tools/test_r08_writer_cleanup_integration.py[0m
+2026-10-20T14:38:16.4882792Z [36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%[0m
+2026-10-20T14:38:16.4883163Z [36;1mpython -B -X utf8 tools/test_r08_writer_save_gate.py[0m
+2026-10-20T14:38:16.4883521Z [36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%[0m
+2026-10-20T14:38:16.4883880Z [36;1mpython -B -X utf8 tools/test_r08_runtime_entry_smoke.py[0m
+2026-10-20T14:38:16.4884466Z [36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%[0m
+2026-10-20T14:38:16.4884840Z [36;1mpython -B -X utf8 tools/test_r08_cleanup_and_sampling.py[0m
+2026-10-20T14:38:16.4885208Z [36;1mif not "%errorlevel%"=="0" exit /b %errorlevel%[0m
+2026-10-20T14:38:16.4919687Z shell: C:\Windows\system32\cmd.EXE /D /E:ON /V:OFF /S /C "CALL "{0}""
+2026-10-20T14:38:16.4920042Z env:
+2026-10-20T14:38:16.4920216Z   GIT_CONFIG_COUNT: 1
+2026-10-20T14:38:16.4920435Z   GIT_CONFIG_KEY_0: core.longpaths
+2026-10-20T14:38:16.4920684Z   GIT_CONFIG_VALUE_0: true
+2026-10-20T14:38:16.4920895Z   TEMP: D:\a\_temp
+2026-10-20T14:38:16.4921077Z   TMP: D:\a\_temp
+2026-10-20T14:38:16.4921282Z   PIP_CACHE_DIR: D:\a\_temp\pip-cache
+2026-10-20T14:38:16.4921577Z   PYTHONPYCACHEPREFIX: D:\a\_temp\python-bytecode
+2026-10-20T14:38:16.4921871Z   XDG_CACHE_HOME: D:\a\_temp\cache
+2026-10-20T14:38:16.4922178Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.13.16\x64
+2026-10-20T14:38:16.4922625Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.13.16\x64/lib/pkgconfig
+2026-10-20T14:38:16.4923072Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.16\x64
+2026-10-20T14:38:16.4923463Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.16\x64
+2026-10-20T14:38:16.4923851Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.13.16\x64
+2026-10-20T14:38:16.4924153Z ##[endgroup]
+2026-10-20T14:38:17.7098927Z .....
+2026-10-20T14:38:17.7099363Z ----------------------------------------------------------------------
+2026-10-20T14:38:17.7099781Z Ran 5 tests in 1.035s
+2026-10-20T14:38:17.7099947Z 
+2026-10-20T14:38:17.7100034Z OK
+2026-10-20T14:38:18.8773871Z .
+2026-10-20T14:38:18.8774466Z ----------------------------------------------------------------------
+2026-10-20T14:38:18.8774971Z Ran 1 test in 0.015s
+2026-10-20T14:38:18.8775141Z 
+2026-10-20T14:38:18.8775229Z OK
+2026-10-20T14:38:19.9858315Z .
+2026-10-20T14:38:19.9858945Z ----------------------------------------------------------------------
+2026-10-20T14:38:19.9859681Z Ran 1 test in 0.001s
+2026-10-20T14:38:19.9859920Z 
+2026-10-20T14:38:19.9860046Z OK
+2026-10-20T14:38:28.5013767Z .FFF
+2026-10-20T14:38:28.5014209Z ======================================================================
+2026-10-20T14:38:28.5015522Z FAIL: test_complete_environment_positive_control_reaches_native_boundary (__main__.RuntimeEntrySmoke.test_complete_environment_positive_control_reaches_native_boundary)
+2026-10-20T14:38:28.5017123Z ----------------------------------------------------------------------
+2026-10-20T14:38:28.5017682Z Traceback (most recent call last):
+2026-10-20T14:38:28.5027407Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_r08_runtime_entry_smoke.py", line 175, in test_complete_environment_positive_control_reaches_native_boundary
+2026-10-20T14:38:28.5028790Z     self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+2026-10-20T14:38:28.5029416Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-20T14:38:28.5029972Z AssertionError: 1 != 0 : Traceback (most recent call last):
+2026-10-20T14:38:28.5033810Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src\xar_autoplayer\bridge\mcp_server.py", line 1659, in create_server
+2026-10-20T14:38:28.5035001Z     from mcp.server import MCPServer
+2026-10-20T14:38:28.5035467Z ModuleNotFoundError: No module named 'mcp'
+2026-10-20T14:38:28.5035797Z 
+2026-10-20T14:38:28.5036097Z The above exception was the direct cause of the following exception:
+2026-10-20T14:38:28.5036546Z 
+2026-10-20T14:38:28.5036693Z Traceback (most recent call last):
+2026-10-20T14:38:28.5037196Z   File "<string>", line 70, in <module>
+2026-10-20T14:38:28.5037622Z     server=create_server(driver)
+2026-10-20T14:38:28.5039088Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src\xar_autoplayer\bridge\mcp_server.py", line 1662, in create_server
+2026-10-20T14:38:28.5040184Z     raise RuntimeError(
+2026-10-20T14:38:28.5040999Z         "MCP mode requires the optional dependency: pip install 'mcp==2.0.0'"
+2026-10-20T14:38:28.5041596Z     ) from error
+2026-10-20T14:38:28.5042138Z RuntimeError: MCP mode requires the optional dependency: pip install 'mcp==2.0.0'
+2026-10-20T14:38:28.5042768Z 
+2026-10-20T14:38:28.5042775Z 
+2026-10-20T14:38:28.5042953Z ======================================================================
+2026-10-20T14:38:28.5044257Z FAIL: test_full_declared_environment_reaches_registered_tool_native_boundary (__main__.RuntimeEntrySmoke.test_full_declared_environment_reaches_registered_tool_native_boundary)
+2026-10-20T14:38:28.5045629Z ----------------------------------------------------------------------
+2026-10-20T14:38:28.5046121Z Traceback (most recent call last):
+2026-10-20T14:38:28.5047267Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_r08_runtime_entry_smoke.py", line 160, in test_full_declared_environment_reaches_registered_tool_native_boundary
+2026-10-20T14:38:28.5048670Z     self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+2026-10-20T14:38:28.5049333Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-20T14:38:28.5049898Z AssertionError: 1 != 0 : Traceback (most recent call last):
+2026-10-20T14:38:28.5051142Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src\xar_autoplayer\bridge\mcp_server.py", line 1659, in create_server
+2026-10-20T14:38:28.5052240Z     from mcp.server import MCPServer
+2026-10-20T14:38:28.5052704Z ModuleNotFoundError: No module named 'mcp'
+2026-10-20T14:38:28.5053037Z 
+2026-10-20T14:38:28.5053337Z The above exception was the direct cause of the following exception:
+2026-10-20T14:38:28.5053806Z 
+2026-10-20T14:38:28.5053965Z Traceback (most recent call last):
+2026-10-20T14:38:28.5054430Z   File "<string>", line 70, in <module>
+2026-10-20T14:38:28.5055149Z     server=create_server(driver)
+2026-10-20T14:38:28.5056638Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src\xar_autoplayer\bridge\mcp_server.py", line 1662, in create_server
+2026-10-20T14:38:28.5057756Z     raise RuntimeError(
+2026-10-20T14:38:28.5058279Z         "MCP mode requires the optional dependency: pip install 'mcp==2.0.0'"
+2026-10-20T14:38:28.5058867Z     ) from error
+2026-10-20T14:38:28.5059394Z RuntimeError: MCP mode requires the optional dependency: pip install 'mcp==2.0.0'
+2026-10-20T14:38:28.5059966Z 
+2026-10-20T14:38:28.5059973Z 
+2026-10-20T14:38:28.5060148Z ======================================================================
+2026-10-20T14:38:28.5061552Z FAIL: test_published_r0222_missing_repository_root_is_detected_before_native_send (__main__.RuntimeEntrySmoke.test_published_r0222_missing_repository_root_is_detected_before_native_send)
+2026-10-20T14:38:28.5062896Z ----------------------------------------------------------------------
+2026-10-20T14:38:28.5063416Z Traceback (most recent call last):
+2026-10-20T14:38:28.5064591Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\tools\test_r08_runtime_entry_smoke.py", line 168, in test_published_r0222_missing_repository_root_is_detected_before_native_send
+2026-10-20T14:38:28.5066089Z     self.assertEqual(result.returncode,2,result.stdout+result.stderr)
+2026-10-20T14:38:28.5067708Z     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-20T14:38:28.5068382Z AssertionError: 1 != 2 : Traceback (most recent call last):
+2026-10-20T14:38:28.5069563Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src\xar_autoplayer\bridge\mcp_server.py", line 1659, in create_server
+2026-10-20T14:38:28.5070549Z     from mcp.server import MCPServer
+2026-10-20T14:38:28.5071014Z ModuleNotFoundError: No module named 'mcp'
+2026-10-20T14:38:28.5071319Z 
+2026-10-20T14:38:28.5071603Z The above exception was the direct cause of the following exception:
+2026-10-20T14:38:28.5072051Z 
+2026-10-20T14:38:28.5072194Z Traceback (most recent call last):
+2026-10-20T14:38:28.5072860Z   File "<string>", line 70, in <module>
+2026-10-20T14:38:28.5073290Z     server=create_server(driver)
+2026-10-20T14:38:28.5074309Z   File "D:\a\ck3_eternal_recurrence\ck3_eternal_recurrence\ck3_autonomous_player\src\xar_autoplayer\bridge\mcp_server.py", line 1662, in create_server
+2026-10-20T14:38:28.5075352Z     raise RuntimeError(
+2026-10-20T14:38:28.5075850Z         "MCP mode requires the optional dependency: pip install 'mcp==2.0.0'"
+2026-10-20T14:38:28.5076787Z     ) from error
+2026-10-20T14:38:28.5077318Z RuntimeError: MCP mode requires the optional dependency: pip install 'mcp==2.0.0'
+2026-10-20T14:38:28.5077841Z 
+2026-10-20T14:38:28.5077847Z 
+2026-10-20T14:38:28.5078076Z ----------------------------------------------------------------------
+2026-10-20T14:38:28.5078577Z Ran 4 tests in 8.400s
+2026-10-20T14:38:28.5078777Z 
+2026-10-20T14:38:28.5078890Z FAILED (failures=3)
+2026-10-20T14:38:28.5192022Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:42:24.497965+00:00",
+  "cause": "Actual failed-step log: MCP missing before registered-tool smoke; parent actor test passed",
+  "runner_python": "3.13.16 from actual log; no observed Python-version incompatibility",
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ci-r08-runtime-fix-log-a01\\R08-CI-DEPENDENCIES-BEFORE-SMOKE.candidate.patch",
+    "bytes": 1585,
+    "sha256": "786f8f696f1d049dbfc2de853c74f27ae9d86283eae73eb15d1835e93f4f77ed"
+  },
+  "original_log_excerpt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ci-r08-runtime-fix-log-a01\\FAILED-STEP-EXCERPT.actual.log",
+    "bytes": 9935,
+    "sha256": "f39aafd6b50ac5d28f1010c6ac90c6ed5a24a9e671f184991bdebf14d3a3711b"
+  },
+  "source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ci-r08-runtime-fix-log-a01\\WORKFLOW-DEPENDENCY-SOURCE.actual.json",
+    "bytes": 9316,
+    "sha256": "8042870f1c7e1f60adec56b0c09d007e4f6ca56d59bbcf5906878cba258a9dd5"
+  },
+  "change": "Move existing identical pinned mcp==2.0.0 pytest==9.1.1 installation+error guard from later public-CUnit step to start of R08 step; no added package/version or test skip",
+  "check_argv": [
+    "git",
+    "-C",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+    "apply",
+    "--check",
+    "--whitespace=error",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ci-r08-runtime-fix-log-a01\\R08-CI-DEPENDENCIES-BEFORE-SMOKE.candidate.patch"
+  ],
+  "check_original_returncode": 0,
+  "check_stdout": "",
+  "check_stderr": "",
+  "validation": "Read-only patch check only. Requires new exact-head official CI after approved integration; no local test rerun/download/install.",
+  "diagnostic_attempt": "First gh client refused terminal ANSI escape output before providing body; one successful retrieval with --allow-escape-sequences, only f960 job; no fe log read",
+  "D_W_source_writes": false,
+  "SDK_game_CI_rerun_download_tool": false
+}

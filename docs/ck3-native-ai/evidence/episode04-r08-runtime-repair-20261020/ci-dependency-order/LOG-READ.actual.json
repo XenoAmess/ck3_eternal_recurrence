@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:41:03.397949+00:00",
+  "exact_head": "f960a1b4b46efa5359e403c9d308b2a808a2f7d0",
+  "run_id": 39440759734,
+  "job_id": 118689639628,
+  "original_argv": [
+    "gh",
+    "api",
+    "--allow-escape-sequences",
+    "--method",
+    "GET",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/118689639628/logs"
+  ],
+  "original_process_returncode": 0,
+  "original_job_log_response_bytes": 105372,
+  "original_job_log_response_sha256": "55c4688579502aac36f7000d7b63aff875c28613d783f79eeb1d78c6f1d97420",
+  "retained_excerpt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ci-r08-runtime-fix-log-a01\\FAILED-STEP-EXCERPT.actual.log",
+    "bytes": 9935,
+    "sha256": "f39aafd6b50ac5d28f1010c6ac90c6ed5a24a9e671f184991bdebf14d3a3711b",
+    "source_line_start_1based": 957,
+    "source_line_end_exclusive_1based": 1077
+  },
+  "excerpt_role": "Original contiguous failed-step log byte content decoded UTF8/reencoded; full response only hashed in memory",
+  "worktree_changes": false,
+  "CI_rerun": false,
+  "SDK_game_tool_download": false
+}

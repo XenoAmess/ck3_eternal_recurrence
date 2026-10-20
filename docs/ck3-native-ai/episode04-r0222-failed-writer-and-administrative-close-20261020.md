@@ -23,3 +23,9 @@ Root 后来在独立 `case-output-root-normalclose-a01` 完成 6 条行政 rows�
 ## 归档字节更正
 
 首次公开提交 `fe7711cf` 的部分复制件被 Git 文本规则从 CRLF 规范化为 LF。原始来源一直保留；后继提交从这些原件恢复精确字节，并为本专题两个证据目录登记 `-text`。旧提交保留，未修改历史 SDK 结果或重新执行动作。逐文件前后大小、SHA 和来源见[更正回执](evidence/episode04-r08-runtime-repair-20261020/BYTE-PRESERVATION-CORRECTION.actual.json)。
+
+## 远端 CI 依赖顺序
+
+`fe7711cf`、`f960a1b4` 的 Official CI 在新增 R08 测试步骤失败，Linear 通过。唯一读取的 f960 原日志明确为 `mcp` 尚未安装；父 actor 测试通过，三项 MCP 测试在导入时失败。本次只把原有 pinned 安装移到首次 MCP smoke 之前，包版本和全部测试保留；新 exact CI 终态另记。见[原日志及修复](evidence/episode04-r08-runtime-repair-20261020/ci-dependency-order/ROOT-CI-ORDER-FIX.actual.json)。
+
+后继执行源码已明确冻结在 `bc638510`（公开 archive tag），其 R08 修复与 master 相同，Native 树保持 `6b91`。master 合入的远端 `d622` 原生变动不能由此追认为已编译，选择与差集回执单列，不混作当前 DLL 的新资格。
