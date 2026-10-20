@@ -1,0 +1,63 @@
+{
+  "schema": "xar.e04.r06.current_ready_contract_pure_check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:23:11.147563+00:00",
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "scope-N-65",
+      "expected_accept": true,
+      "actual_accept": true,
+      "PASS": true,
+      "error": null
+    },
+    {
+      "name": "scope-N-256",
+      "expected_accept": true,
+      "actual_accept": true,
+      "PASS": true,
+      "error": null
+    },
+    {
+      "name": "scope-N-257",
+      "expected_accept": false,
+      "actual_accept": false,
+      "PASS": true,
+      "error": "finite worker bound"
+    },
+    {
+      "name": "65-actual-armed-IDs-admitted-under-N65",
+      "expected_accept": true,
+      "actual_accept": true,
+      "PASS": true,
+      "error": null
+    },
+    {
+      "name": "65-actual-armed-IDs-rejected-under-N64",
+      "expected_accept": false,
+      "actual_accept": false,
+      "PASS": true,
+      "error": "actual finite owned worker set armed"
+    },
+    {
+      "name": "duplicate-numeric-TIDs-rejected",
+      "expected_accept": false,
+      "actual_accept": false,
+      "PASS": true,
+      "error": "actual finite owned worker set armed"
+    },
+    {
+      "name": "different-process-FILETIME-rejected",
+      "expected_accept": false,
+      "actual_accept": false,
+      "PASS": true,
+      "error": "ready exact owner/generation/slot mismatch"
+    }
+  ],
+  "synthetic_only": true,
+  "native_execution": false,
+  "OS_thread_census": false,
+  "debugger_observed_generation_qualification": false,
+  "actual_READY_or_ADD_qualified": false,
+  "scope": "Current Python launch contract accepts explicit N65; actual native accumulated-generation cap remains independently authoritative"
+}

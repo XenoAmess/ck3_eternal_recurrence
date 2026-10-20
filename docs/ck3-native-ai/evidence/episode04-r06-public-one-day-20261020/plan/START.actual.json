@@ -1,0 +1,37 @@
+{
+  "observed_at_utc": "2026-10-20T06:17:19.505039+00:00",
+  "machine": {
+    "returncode": 0,
+    "stdout": "desktop-3fevhd2-1c74096080\n",
+    "stderr": ""
+  },
+  "head": {
+    "returncode": 0,
+    "stdout": "93b27601aed449515b69aabed62e1af7cc61c1fc\n",
+    "stderr": ""
+  },
+  "status": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "bus_register": {
+    "returncode": 0,
+    "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"task_id\": \"e04-r06-minimal-plan-20261020-a01\",\n    \"state\": \"running\",\n    \"summary\": \"Read-only R06 minimal single-day plan\",\n    \"next_step\": \"Inspect R215 baseline and current producer contracts\",\n    \"resources\": [],\n    \"updated_at_utc\": \"2026-10-20T06:17:23.264900+00:00\",\n    \"pid\": 32372,\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"head\": \"93b27601aed449515b69aabed62e1af7cc61c1fc\",\n      \"branch\": \"master\",\n      \"dirty_entries\": 0\n    },\n    \"last_sequence\": 7280\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 7280,\n    \"event_id\": \"4e16bed718164e86a5663c7d3a173b64\",\n    \"timestamp_utc\": \"2026-10-20T06:17:23.275563+00:00\",\n    \"kind\": \"registered\",\n    \"task_id\": \"e04-r06-minimal-plan-20261020-a01\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"running\",\n    \"summary\": \"Read-only R06 minimal single-day plan\",\n    \"next_step\": \"Inspect R215 baseline and current producer contracts\",\n    \"resources\": [],\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"head\": \"93b27601aed449515b69aabed62e1af7cc61c1fc\",\n      \"branch\": \"master\",\n      \"dirty_entries\": 0\n    }\n  }\n}\n",
+    "stderr": ""
+  },
+  "capacity_observation": {
+    "C:/": {
+      "total": 511133945856,
+      "used": 429601497088,
+      "free": 81532448768
+    },
+    "D:/": {
+      "total": 500090007552,
+      "used": 478402035712,
+      "free": 21687971840
+    }
+  },
+  "write_budget_bytes": 262144,
+  "reservation_scope": "parent-managed next-r06-a01 C only; no independent reservation"
+}

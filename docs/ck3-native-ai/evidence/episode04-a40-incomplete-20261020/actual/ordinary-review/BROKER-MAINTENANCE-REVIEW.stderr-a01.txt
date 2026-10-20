@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\next-r06-a01\native-plan\maintain_a40_broker_root.py", line 113, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\next-r06-a01\native-plan\maintain_a40_broker_root.py", line 60, in main
+    lease=hold.enter_context(safety.lock_file(str(path),owner_sid=OWNER));content=lease.read_bytes(20000)
+  File "C:\Program Files\XAR CK3 Project EXE Broker\runtime\Lib\contextlib.py", line 530, in enter_context
+    result = _enter(cm)
+  File "C:\Program Files\XAR CK3 Project EXE Broker\runtime\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Program Files\XAR CK3 Project EXE Broker\native_safety.py", line 239, in _lock
+    lease = _Lease(self, records, expected_owner=owner_sid, directory=directory)
+  File "C:\Program Files\XAR CK3 Project EXE Broker\native_safety.py", line 120, in __init__
+    descriptor_proof(records[-1][2]["security"], expected_owner=expected_owner,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     allowed_writers=(expected_owner, SYSTEM_SID, ADMIN_SID))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\XAR CK3 Project EXE Broker\native_safety.py", line 97, in descriptor_proof
+    raise SafetyError("DACL permits an untrusted writer")
+native_safety.SafetyError: DACL permits an untrusted writer

@@ -1,0 +1,92 @@
+{
+  "schema": "xar.e04.r06.independent_review_fix.source_only.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:32:50.710558+00:00",
+  "review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-independent-review\\R06-INDEPENDENT-REVIEW.actual.json",
+    "bytes": 6719,
+    "sha256": "7c49f2e87326bfec932010d9d0955a318e71108ac33bdc2c892bfaf09beb6209"
+  },
+  "changes": [
+    "At final Probe.start, exact admitted observer payload SHA is rehashed and compared to the Q/SYSTEM identity, with stable file/path metadata.",
+    "The same pinned admission and each3+1 OS snapshot are revalidated after camera coordination; the300s limit is unchanged.",
+    "Both checks precede the once-claim and Popen; failure leaves launch_claimed=false and issues no worker or day."
+  ],
+  "actual_new_focused": {
+    "cases": 18,
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.070s\n\nOK\n"
+  },
+  "rejection_variants": [
+    "test_same_path_rebuilt_observer_is_rejected_at_final_launch_boundary",
+    "test_camera_wait_does_not_extend_admission_ttl_or_reach_exe_launch"
+  ],
+  "actual_R04_route_regression": {
+    "cases": 1,
+    "returncode": 0,
+    "command": "tools/test_r04_county_entry.py R219Regression.test_public_readiness_hook_has_explicit_seven_day_contract",
+    "evidence": "actual direct exec result in this task"
+  },
+  "source_files": [
+    {
+      "repo_relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "bytes": 1558,
+      "sha256": "2975be79f41b16c6a46b5481cc450b31e8a730a6fbe6c83d7c98b1567c7b654e"
+    },
+    {
+      "repo_relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "bytes": 15277,
+      "sha256": "2a61c8b102cd6fb3a2bb14dd87a4d3782aa5c7c6b5677bdbe528cab00c0551c7"
+    },
+    {
+      "repo_relative_path": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "bytes": 43202,
+      "sha256": "dac885b28df0d18c1d1eef31e4aae73518ab95fe19e3ddd00f690e84e2260c36"
+    },
+    {
+      "repo_relative_path": "tools/test_r06_refill_one_day.py",
+      "bytes": 13955,
+      "sha256": "a3739f4bd470cf2da09a4a440e62dd4c50aad1ae0ae9e632e547ab4e10987476"
+    }
+  ],
+  "evidence_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\IMPLEMENTATION-CHECK.pre-review-fix.actual.json",
+      "bytes": 1855,
+      "sha256": "b0e720786f515249f254f4e211230a855bb7f039de888b8a495db2cbdc2b21bc"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\IMPLEMENTATION-CHECK.actual.json",
+      "bytes": 1857,
+      "sha256": "2739d24d5002d6c133a98f37601e3fa8ffa57e289fc21faf042e41523df1a85f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\ROOT-IMPLEMENTED-R06-CONFIG.md",
+      "bytes": 6060,
+      "sha256": "107b0e93205ba2e2ddc830b0ba9f4639fb624a5824670850f0666aaa8a406cd5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\IMPLEMENTED-CASE-INPUTS.template.json",
+      "bytes": 3681,
+      "sha256": "43abf296045b9eee82c29b6ba6abd74c42903cd5e8cff29d7fb9493f40b9bb9d"
+    }
+  ],
+  "syntax_JSON_diff_check": "PASS",
+  "game_execution": false,
+  "SDK_calls": 0,
+  "screen_calls": 0,
+  "native_builds": 0,
+  "native_or_producer_dependency_edits": 0,
+  "actual_project_EXE_payload_reads": 0,
+  "fixture_payload_only_for_rejection_tests": true,
+  "save_payload_reads": 0,
+  "commits": 0,
+  "capacity_state": "Root reports time-blocked/game0; metadata/source-only fix",
+  "actual_READY_ADD_full_R06_credit": false,
+  "free_bytes_at_close": {
+    "C:/": 81096093696,
+    "D:/": 21687529472
+  },
+  "review_at_utc": "2026-10-20T08:00:00Z"
+}

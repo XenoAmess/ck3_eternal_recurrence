@@ -1,0 +1,510 @@
+{
+  "schema": "xar.e04.a40-incomplete-small-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T07:44:32.643773+00:00",
+  "status": "PREPARED_EXACT_COPYPLAN_NOT_NATIVE_QUALIFICATION",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "repository_destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020",
+  "copy_total_bytes": 313892,
+  "copy_file_count": 35,
+  "copy": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-FIRST-FAILURE.actual-a01.json",
+        "bytes": 8029,
+        "sha256": "dd9b428687c87137fc02a827f24e22eea95c5ebd139b8e8026de51db52b0cfc1"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-FIRST-FAILURE.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-ORDINARY-REVIEW.actual-a01.json",
+        "bytes": 2259,
+        "sha256": "c8c4287cbb9b27bc0d612bcaffd106151473697db65c2581a8d5367c2076c083"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/BROKER-MAINTENANCE-ORDINARY-REVIEW.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-REVIEW-INPUT-SOURCE-ACL-BEFORE.actual-a01.json",
+        "bytes": 6024,
+        "sha256": "f94d17dc6bfed055e0abcba31a357ac1095bca92a9856c53ff6048f15b1dee16"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-REVIEW-INPUT-SOURCE-ACL-BEFORE.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-REVIEW-INPUT-SOURCE-ACL-AFTER.actual-a01.json",
+        "bytes": 4818,
+        "sha256": "18f338f79e772dbc969531eaa32832d65f5ff3ca02a51e5f06c3b7e0b00c039f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-REVIEW-INPUT-SOURCE-ACL-AFTER.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-NATIVE-LAUNCH-INTENT.actual-a01.json",
+        "bytes": 5844,
+        "sha256": "63b70da8058b4754f9d7b1ae3a8b56eb7eb91ad8f7f1c2dfae39ab52a5e094aa"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/BROKER-MAINTENANCE-NATIVE-LAUNCH-INTENT.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-NATIVE-LAUNCH-RESULT.actual-a01.json",
+        "bytes": 6396,
+        "sha256": "21f835b11f76f0cbe3a59044c032c6cc4e61e068c3b046ff15d1585dd4f895d2"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/BROKER-MAINTENANCE-NATIVE-LAUNCH-RESULT.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+        "bytes": 12374,
+        "sha256": "f00c9d4f73aba8135d760f0a8ebd95dd24fe4090c1e8f32eedd23fa76415d3d7"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+      "classification": "ACTUAL",
+      "purpose": "Original machine-bound observation; success is limited to the fact actually recorded",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stdout-a01.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stdout-a01.txt",
+      "classification": "ACTUAL",
+      "purpose": "Both ordinary attempts, including first source-ACL rejection and second review-only success",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stderr-a01.txt",
+        "bytes": 1551,
+        "sha256": "d897667d46e00bc86a46c1dc72d23760932523c11ef3d03568ffb93bbff86531"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stderr-a01.txt",
+      "classification": "ACTUAL",
+      "purpose": "Both ordinary attempts, including first source-ACL rejection and second review-only success",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stdout-a02.txt",
+        "bytes": 6386,
+        "sha256": "51cdb85486434f9773416de92a2cc9dba72c571699ee7bb0bc8f6e1c39b04a9d"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stdout-a02.txt",
+      "classification": "ACTUAL",
+      "purpose": "Both ordinary attempts, including first source-ACL rejection and second review-only success",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stderr-a02.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stderr-a02.txt",
+      "classification": "ACTUAL",
+      "purpose": "Both ordinary attempts, including first source-ACL rejection and second review-only success",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\native-msvc-result.json",
+        "bytes": 1929,
+        "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/native-msvc-result.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\result.actual.json",
+        "bytes": 18198,
+        "sha256": "1e6f14fe3eb2d8f310cb7a7963e8f18502133a59fc92fa98b73d51661f863dce"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/phase-result.actual.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\intent.actual.json",
+        "bytes": 17478,
+        "sha256": "5fbaa90f0d05e345d48cda9a749fd3b81e7304cc65cf62eb214195d213a6103f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/phase-intent.actual.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\manifest.json",
+        "bytes": 3630,
+        "sha256": "60174d622849921cfb7df3354ec14d5389650a770f6b02e6e28f8f5ad3007014"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/manifest.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\receipt.json",
+        "bytes": 5443,
+        "sha256": "dce3df11055a4643d7d7dd365a8194bd65db7be6060e3cbf8db366d4dfb1d452"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/receipt.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\protected-worker-receipt.json",
+        "bytes": 1174,
+        "sha256": "7faa5acb8209834e81732b6cad5ea003e6347b57d136e169ea0540f68681fa32"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/protected-worker-receipt.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-policy.json",
+        "bytes": 1088,
+        "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/installed-policy.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-manifest.json",
+        "bytes": 1120,
+        "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/installed-manifest.json",
+      "classification": "ACTUAL",
+      "purpose": "Original producer or exact failed SYSTEM evidence; not a qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+        "bytes": 58673,
+        "sha256": "ccd37a27ae1812810510d7e14cb232e9a183b8c44201ad5ac69feca2f7ffa759"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+      "classification": "ACTUAL",
+      "purpose": "Original CMake target object ties artifact, compile settings and source inputs",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "classification": "ACTUAL",
+      "purpose": "Original CMake target object ties artifact, compile settings and source inputs",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "classification": "ACTUAL",
+      "purpose": "Original CMake target object ties artifact, compile settings and source inputs",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "classification": "ACTUAL",
+      "purpose": "Original CMake target object ties artifact, compile settings and source inputs",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\A40-PRODUCER-PLAN.prepared-a02.json",
+        "bytes": 46163,
+        "sha256": "dfeeeaa1c6e44d566eead3add3578317cd79e97302d1cb11ea7fe9db5748e5a0"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/A40-PRODUCER-PLAN.prepared-a02.json",
+      "classification": "PREPARED",
+      "purpose": "Frozen plan or historical execution admission; not current unused capacity or successful qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 32273,
+        "sha256": "fc704e0e9705d1e15160979faf6982f4a4b2e434810b172d899e8954d99f144b"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/admission/A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "classification": "ACTUAL_ADMISSION_ONLY",
+      "purpose": "Frozen plan or historical execution admission; not current unused capacity or successful qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+        "bytes": 9066,
+        "sha256": "7b9e55a91f0f06dd533ffe93a007e2e81a9fb1e46bdbe5440b5f17c0f3ace33f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/maintain_a40_broker_root.py",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\launch_a40_admin_maintenance.py",
+        "bytes": 6561,
+        "sha256": "18668e95fd2a3ac404623735ea3fee05f707776d40e924f21795bbc9da3cd45f"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/launch_a40_admin_maintenance.py",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\harden_a40_review_inputs.py",
+        "bytes": 3961,
+        "sha256": "d9eef4cf0a5815536394d6bb7433dd542d0dfd43cfc045ba5a3891c83c54ed4d"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/harden_a40_review_inputs.py",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\resume_a40_after_root_maintenance.py",
+        "bytes": 5013,
+        "sha256": "7b9b1cfa7e39b75c3f061728d6445b2bb474d0e630b044e608e407b964676bdb"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/resume_a40_after_root_maintenance.py",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+        "bytes": 1157,
+        "sha256": "9b8d2f551b4b2c305d551522008cd19d2e3aa0fdc932d425bcacdba96b4da1d1"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+        "bytes": 1119,
+        "sha256": "80670b731a5e173301117546de4ffbf4b770e681cb264fbed596ecf611d5e6a6"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-EXACT-A40-ROOT-REVIEW.candidate-a01.json",
+        "bytes": 2878,
+        "sha256": "c04117ff3a051cd499d0817fd920012954b7548e35f40062777b73c2189ece57"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/BROKER-EXACT-A40-ROOT-REVIEW.candidate-a01.json",
+      "classification": "PREPARED_NOT_INSTALLED",
+      "purpose": "Reviewed candidate or bounded helper; copying source does not execute it or grant maintenance",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\NATIVE-INPUT-DIFF.actual.json",
+        "bytes": 17609,
+        "sha256": "5499118a2839f86cdd6800f6d22d443d888aad1d8163fa8ed7f22155a64cfb60"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/source/NATIVE-INPUT-DIFF.actual.json",
+      "classification": "ACTUAL_SOURCE_AUDIT_ONLY",
+      "purpose": "Source/dependency comparison; no runtime or business qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\WORKER-SOURCE-COMPARISON.actual-a01.json",
+        "bytes": 8486,
+        "sha256": "21957d8b5544a5632d0b9909fc0a536598363f492c03148e3ae1ee90bc308b56"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/source/WORKER-SOURCE-COMPARISON.actual-a01.json",
+      "classification": "ACTUAL_SOURCE_AUDIT_ONLY",
+      "purpose": "Source/dependency comparison; no runtime or business qualification",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-closeout\\README-A40-INCOMPLETE.prepared-a01.md",
+        "bytes": 2807,
+        "sha256": "761d4df97b2542e28e415a5f69ceb9e01c5964fb8144a46b3c27665c3e11e845"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/README.md",
+      "classification": "PREPARED_EDITORIAL",
+      "purpose": "Editorial explanation explicitly separated from original evidence",
+      "verification": "fresh small-file bytes and SHA256; copy exact original bytes without rewrite"
+    }
+  ],
+  "pin_only_retained_originals": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\stdout.txt",
+        "bytes": 101694,
+        "sha256": "20251ab90d162c3ce172543495a0a11552ed269c67915ee7ad9236413d67d28e"
+      },
+      "verification": "exact pin from preserved original failure receipt; not rehashed in closeout",
+      "reason": "Original retained at C source; avoid duplicate derived/log/runtime data"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "verification": "exact pin from preserved original failure receipt; not rehashed in closeout",
+      "reason": "Original retained at C source; avoid duplicate derived/log/runtime data"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\msvc-configure.log",
+        "bytes": 921,
+        "sha256": "4077afac7aec5696a23c8651454194a054ab38a847ac7cd44ef5e140994dc01e"
+      },
+      "verification": "exact pin from preserved original failure receipt; not rehashed in closeout",
+      "reason": "Original retained at C source; avoid duplicate derived/log/runtime data"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\msvc-build.log",
+        "bytes": 85918,
+        "sha256": "df63204cd5f307d29a6418bbc6fecf35d1505336281ae973d71da059d8331e3e"
+      },
+      "verification": "exact pin from preserved original failure receipt; not rehashed in closeout",
+      "reason": "Original retained at C source; avoid duplicate derived/log/runtime data"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\compile_commands.json",
+        "bytes": 4545719,
+        "sha256": "df7f1dbe3a895ac447a6dd135cb0d720b1deabcd7a88b3fa7699c319d1d29721"
+      },
+      "verification": "exact pin from preserved original failure receipt; not rehashed in closeout",
+      "reason": "Original retained at C source; avoid duplicate derived/log/runtime data"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-runtime-seal.json",
+        "bytes": 95324,
+        "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2"
+      },
+      "verification": "exact pin from preserved original failure receipt; not rehashed in closeout",
+      "reason": "Original retained at C source; avoid duplicate derived/log/runtime data"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+        "bytes": 14397440,
+        "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+      },
+      "target": "xar_ck3_bridge",
+      "status": "COMPILED_NOT_QUALIFIED",
+      "verification": "original actual artifact pin from first failure; not rehashed or copied during closeout",
+      "reason": "Retained binary for a future separately admitted same-byte no-work continuation"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+      },
+      "target": "xar_ck3_bridge_injector",
+      "status": "COMPILED_NOT_QUALIFIED",
+      "verification": "original actual artifact pin from first failure; not rehashed or copied during closeout",
+      "reason": "Retained binary for a future separately admitted same-byte no-work continuation"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+      },
+      "target": "xar_ck3_bridge_host",
+      "status": "COMPILED_NOT_QUALIFIED",
+      "verification": "original actual artifact pin from first failure; not rehashed or copied during closeout",
+      "reason": "Retained binary for a future separately admitted same-byte no-work continuation"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+        "bytes": 658944,
+        "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332"
+      },
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "status": "COMPILED_NOT_QUALIFIED",
+      "verification": "original actual artifact pin from first failure; not rehashed or copied during closeout",
+      "reason": "Retained binary for a future separately admitted same-byte no-work continuation"
+    }
+  ],
+  "source_production_status": "SOURCE_AND_COMPILED_NOT_QUALIFIED",
+  "qualification_granted": false,
+  "repository_modified": false,
+  "originals_modified_or_moved": false,
+  "binaries_copied_or_executed": false,
+  "remaining_scope_closed_by_Root": [
+    "SYSTEM retry",
+    "UI finite cold",
+    "worker-live build",
+    "V5 build and two finite cases"
+  ],
+  "apply_contract": "Root verifies source bytes/SHA and copies only listed original small bytes to each destination; no JSON rewriting, no fabricated replacement report, no helper execution."
+}

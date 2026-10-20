@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.r06-reserve-transaction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:19:28.786798+00:00",
+  "reserve": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+    "bytes": 4981,
+    "sha256": "8e7a1cac2ee78bf22f30b988f4282228a825b7a0cc6a73ca075fde26a9cdffd4"
+  },
+  "ledger_after": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 256408,
+    "sha256": "7a9d1ecfed85041ddf90c0f48f6523f3066944514d622f39136f2ec92d20f0d4"
+  },
+  "old_carry_only_claim_unchanged": true,
+  "native_scene_execution_admitted": false,
+  "atomic_coordinator_lock_used": true,
+  "physical_or_unused_credit_bytes": 0
+}

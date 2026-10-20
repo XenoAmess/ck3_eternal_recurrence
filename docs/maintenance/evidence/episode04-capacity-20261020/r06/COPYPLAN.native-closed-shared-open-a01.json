@@ -1,0 +1,89 @@
+{
+  "schema": "xar.e04.r06-native-closed-small-capacity-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:43:22.109858+00:00",
+  "owner": "/root",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FRESH-CAPACITY-PROPOSAL.actual-a01.json",
+      "bytes": 5194,
+      "sha256": "ad2a2e6f53d6f32ae11c76a195809d811d62cad2f7fef8796f1bb52e5e9ca85b",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-FRESH-CAPACITY-PROPOSAL.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+      "bytes": 4981,
+      "sha256": "8e7a1cac2ee78bf22f30b988f4282228a825b7a0cc6a73ca075fde26a9cdffd4",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-TRANSACTION.actual-a01.json",
+      "bytes": 774,
+      "sha256": "9328a91d09eefcac7026b56298532a8a1f42c567b8b92f0b529cd6fe9f732509",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-FINITE-RESERVE-TRANSACTION.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-UNALLOCATED-SCENE-RESERVATION-REVOKED.actual-a01.json",
+      "bytes": 1468,
+      "sha256": "84baa298cc8490ea84e6a657e154f5f818b327e8197f86edcde090bdec435b44",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-UNALLOCATED-SCENE-RESERVATION-REVOKED.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 32273,
+      "sha256": "fc704e0e9705d1e15160979faf6982f4a4b2e434810b172d899e8954d99f144b",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/A40-C-NATIVE-SOURCE-BOUND.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-NEW-SCENE-TIME-BLOCKED.actual-a01.json",
+      "bytes": 4419,
+      "sha256": "930a1a1e381e451c0ce2a682fb48e355d51b2f86cb48ce33180dc999542b514d",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-NEW-SCENE-TIME-BLOCKED.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 11632,
+      "sha256": "f8a14bf0ee703ece88137d63f87a07d1c64a6a2013c7a7732cdf66d19325ae6c",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-SETTLE-TRANSACTION.actual-a01.json",
+      "bytes": 951,
+      "sha256": "df697a07b9aed08c47accf8e0ea4a8b79e9622c70b9335559ed1345262ab7b90",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/A40-NATIVE-INCOMPLETE-SETTLE-TRANSACTION.actual-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\R06-CAPACITY-CHECKPOINT.native-closed-shared-open-a01.json",
+      "bytes": 3921,
+      "sha256": "164982af13b28c9a9c63d55d36ff988c1ccfaa56dc92ef1de640dc0498a121e7",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-CAPACITY-CHECKPOINT.native-closed-shared-open-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\CURRENT-CLAIM-SNAPSHOT.native-closed-shared-open-a01.json",
+      "bytes": 5150,
+      "sha256": "cec9642eeee0847e193ecfa019de0cd35e5063e76be35f250d43090b8b0ae2b2",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/CURRENT-CLAIM-SNAPSHOT.native-closed-shared-open-a01.json"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\README.md",
+      "bytes": 1338,
+      "sha256": "b1e6d7b1adeb4953bc2f446aa5536abb1445bb523dbe124ca2dcbb25141a4389",
+      "repo_relative_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/README.md"
+    }
+  ],
+  "selected_file_count": 11,
+  "selected_source_bytes": 72101,
+  "native_qualification_granted": false,
+  "shared_still_open": true,
+  "shared_remaining_future_bytes": 134217728,
+  "legacy_C_carry_bytes_unchanged": 42132678,
+  "native_failure_and_ACL_recovery_originals_separately_owned_by_native_prepare": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+    "bytes": 12374,
+    "sha256": "f00c9d4f73aba8135d760f0a8ebd95dd24fe4090c1e8f32eedd23fa76415d3d7"
+  },
+  "replaces_old_receipts": false,
+  "copies_any_binary_media_save_or_full_ledger": false,
+  "physical_or_unused_credit_bytes": 0,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z"
+}

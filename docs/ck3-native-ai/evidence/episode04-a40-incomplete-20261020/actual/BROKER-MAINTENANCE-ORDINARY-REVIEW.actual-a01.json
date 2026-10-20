@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.a40-ordinary-maintenance-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:19:34.614187+00:00",
+  "status": "SOURCE_HARDENED_ORDINARY_REVIEW_PASS_ADMIN_APPLY_STILL_PENDING",
+  "source_entry": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+    "bytes": 9066,
+    "sha256": "7b9e55a91f0f06dd533ffe93a007e2e81a9fb1e46bdbe5440b5f17c0f3ace33f"
+  },
+  "source_ACL_before": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-REVIEW-INPUT-SOURCE-ACL-BEFORE.actual-a01.json",
+    "bytes": 6024,
+    "sha256": "f94d17dc6bfed055e0abcba31a357ac1095bca92a9856c53ff6048f15b1dee16"
+  },
+  "source_ACL_after": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-REVIEW-INPUT-SOURCE-ACL-AFTER.actual-a01.json",
+    "bytes": 4818,
+    "sha256": "18f338f79e772dbc969531eaa32832d65f5ff3ca02a51e5f06c3b7e0b00c039f"
+  },
+  "first_refused_review_stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stderr-a01.txt",
+    "bytes": 1551,
+    "sha256": "d897667d46e00bc86a46c1dc72d23760932523c11ef3d03568ffb93bbff86531"
+  },
+  "review_stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stdout-a02.txt",
+    "bytes": 6386,
+    "sha256": "51cdb85486434f9773416de92a2cc9dba72c571699ee7bb0bc8f6e1c39b04a9d"
+  },
+  "review_stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stderr-a02.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "exact_unchanged_sealed_file_count": 729,
+  "actual_admin_apply_performed_by_this_executor": false,
+  "installed_write_performed_by_this_executor": false,
+  "SYSTEM_registration_qualified": false,
+  "original_production_build_unchanged": true,
+  "remaining_required_stages": [
+    "actual exact-root admin maintenance",
+    "public producer no-work/SYSTEM retry",
+    "UI finite cold",
+    "worker live producer/SYSTEM build-only",
+    "worker V5 producer/SYSTEM and two finite cold cases"
+  ]
+}

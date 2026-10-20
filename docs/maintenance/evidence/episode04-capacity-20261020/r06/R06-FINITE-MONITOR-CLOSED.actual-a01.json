@@ -1,0 +1,64 @@
+{
+  "schema": "xar.e04.r06-owned-finite-volume-monitor-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:55:03.628401+00:00",
+  "original_ownership": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\FINITE-VOLUME-MONITOR-OWNED.actual.json",
+    "bytes": 559,
+    "sha256": "38579d1077c1ea9b76fea9cc1b175fb7a7c94b280b04a39a0d7099929a7bb5d0"
+  },
+  "original_exec_session_id": 59383,
+  "original_process_exit_code": 0,
+  "original_stdout_terminal": {
+    "monitor_stopped": true,
+    "exact_stop_flag_present": true
+  },
+  "postexit_identity_readback": "Original owned monitor PID no longer exists.",
+  "frozen_monitor_log": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\FINITE-VOLUME-MONITOR.actual.jsonl",
+    "bytes": 177855,
+    "sha256": "78be57eaf560e0e808b0ff27e78d1dff904464b19c66391597f1001c3a051e14"
+  },
+  "sample_count": 157,
+  "alarm_samples": [],
+  "last_actual_sample": {
+    "schema": "xar.e04.r06-finite-volume-monitor.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T07:54:26.470682+00:00",
+    "volumes": {
+      "C:/": {
+        "volume": "C:/",
+        "observed_at_utc": "2026-10-20T07:54:26.470340+00:00",
+        "total_bytes": 511133945856,
+        "free_bytes": 81092820992,
+        "available_to_caller_bytes": 81092820992,
+        "total_free_bytes": 81092820992,
+        "entire_volume_used_allocation_upper_bound_bytes": 430041124864,
+        "source": "Windows GetDiskFreeSpaceExW"
+      },
+      "D:/": {
+        "volume": "D:/",
+        "observed_at_utc": "2026-10-20T07:54:26.470340+00:00",
+        "total_bytes": 500090007552,
+        "free_bytes": 21686788096,
+        "available_to_caller_bytes": 21686788096,
+        "total_free_bytes": 21686788096,
+        "entire_volume_used_allocation_upper_bound_bytes": 478403219456,
+        "source": "Windows GetDiskFreeSpaceExW"
+      }
+    },
+    "C_known_future_bytes": 134217728,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25946154182,
+    "C_floor_margin_bytes": 55146666810,
+    "C_projected_whole_volume_upper_bound_bytes": 434512442566,
+    "C408GiB_quota_margin_bytes": 3574221626,
+    "D_floor_margin_bytes": 77733888,
+    "quota_deadline_utc": "2026-10-20T08:00:00Z",
+    "payload_read_bytes": 0,
+    "SDK_game_screen_actions": 0,
+    "alarms": []
+  },
+  "screen_SDK_game_actions": 0,
+  "other_processes_terminated": 0
+}

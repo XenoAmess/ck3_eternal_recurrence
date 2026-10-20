@@ -1,0 +1,23 @@
+{
+  "schema": "xar.e04.capacity-serialized-settlement-transaction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:41:45.590456+00:00",
+  "settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 11632,
+    "sha256": "f8a14bf0ee703ece88137d63f87a07d1c64a6a2013c7a7732cdf66d19325ae6c"
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 258921,
+    "sha256": "be0637a52c681f0daab94f160e3062ef93cf50581e963c16692fb50738f8473f"
+  },
+  "ledger_after": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 259424,
+    "sha256": "56c36b42a754ef48b35c833de6b396f3df1303dcab254ecec47afb18637b6424"
+  },
+  "known_C_future_bytes_after": 134217728,
+  "legacy_C_bytes_after": 42132678,
+  "physical_free_credit_bytes": 0
+}

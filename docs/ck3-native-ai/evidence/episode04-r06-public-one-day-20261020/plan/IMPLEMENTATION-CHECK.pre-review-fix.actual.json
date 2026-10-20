@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.r06.public_implementation_source_check.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:50:28.594229+00:00",
+  "files": [
+    {
+      "repo_relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "bytes": 1558,
+      "sha256": "2975be79f41b16c6a46b5481cc450b31e8a730a6fbe6c83d7c98b1567c7b654e"
+    },
+    {
+      "repo_relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "bytes": 15277,
+      "sha256": "2a61c8b102cd6fb3a2bb14dd87a4d3782aa5c7c6b5677bdbe528cab00c0551c7"
+    },
+    {
+      "repo_relative_path": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "bytes": 40275,
+      "sha256": "43cc9de764423c0be29bab0702e423b103de14aeb2cbcbae963d0e6aa2ce5480"
+    },
+    {
+      "repo_relative_path": "tools/test_r06_refill_one_day.py",
+      "bytes": 10099,
+      "sha256": "b62add9dbd861cf64412cd5d51ae42dc7986d9a87ec3198d1dc16b3997941b6d"
+    }
+  ],
+  "added_focused": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.050s\n\nOK\n",
+    "cases": 16
+  },
+  "existing_R04_route_regression": {
+    "cases": 1,
+    "returncode": 0,
+    "command": "tools/test_r04_county_entry.py R219Regression.test_public_readiness_hook_has_explicit_seven_day_contract",
+    "evidence": "actual direct exec result in this task"
+  },
+  "diff_check_returncode": 0,
+  "syntax_and_JSON_checks": "PASS",
+  "source_only": true,
+  "game_launches": 0,
+  "SDK_calls": 0,
+  "screen_calls": 0,
+  "EXE_payload_reads": 0,
+  "native_builds": 0,
+  "commits": 0,
+  "actual_a40_READY_ADD_or_full_R06_qualified": false,
+  "canonical_camera_protocol": true,
+  "terminal": "R06-REFILL-TERMINAL.json"
+}

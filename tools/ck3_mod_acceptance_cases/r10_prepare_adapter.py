@@ -86,9 +86,14 @@ def validate_contract(context):
     need(context['case_contract'].get('schema') == 'xar.e04.r10-common-preparation.v1',
          'R10 common preparation contract differs')
     value = context.get('case_inputs', {})
+    need(not (value.get('r04_county_entry') is not None and value.get('r06_refill_one_day') is not None),
+         'R04 and R06 are mutually exclusive')
     if value.get('r04_county_entry') is not None:
         from . import r04_county_entry
         r04_county_entry.validate_contract(context)
+    if value.get('r06_refill_one_day') is not None:
+        from . import r06_refill_one_day
+        r06_refill_one_day.validate_contract(context)
     if not value:
         return
     for key in ('army_id', 'war_id', 'goal_province_id', 'staging_province_id'):
@@ -239,6 +244,9 @@ def run_case(context, client):
     if values.get('r04_county_entry') is not None:
         from . import r04_county_entry
         result['r04_county_entry'] = r04_county_entry.run_case(context, client)
+    if values.get('r06_refill_one_day') is not None:
+        from . import r06_refill_one_day
+        result['r06_refill_one_day'] = r06_refill_one_day.run_case(context, client)
     return result
 
 
@@ -255,4 +263,7 @@ def verify_case(context):
     if context.get('case_inputs', {}).get('r04_county_entry') is not None:
         from . import r04_county_entry
         verified['r04_county_entry'] = r04_county_entry.verify_case(context)
+    if context.get('case_inputs', {}).get('r06_refill_one_day') is not None:
+        from . import r06_refill_one_day
+        verified['r06_refill_one_day'] = r06_refill_one_day.verify_case(context)
     return verified

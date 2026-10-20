@@ -1,0 +1,57 @@
+{
+  "poll": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task_id": "e04-r06-minimal-plan-20261020-a01",
+    "previous_cursor": 64,
+    "acknowledged_cursor": 94,
+    "remaining": 7163,
+    "recent_relevant_events": []
+  },
+  "list": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "tasks": [
+      {
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "93b27601aed449515b69aabed62e1af7cc61c1fc"
+        },
+        "last_sequence": 7281,
+        "next_step": "bind_exact_a40_plan_fresh_then_actualQ_runtime_before_scene",
+        "pid": 32372,
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "e04-capacity-reservations"
+        ],
+        "schema": "codex.task_bus.v1",
+        "state": "waiting",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080_R06_3.375GiB_reserved_metadata128_only_no_native_scene_execution_408GiB08Z",
+        "task_id": "e04-capacity-next-r06-20261020-a01",
+        "updated_at_utc": "2026-10-20T06:20:17.450889+00:00",
+        "age_seconds": 21,
+        "stale": false
+      },
+      {
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "93b27601aed449515b69aabed62e1af7cc61c1fc"
+        },
+        "last_sequence": 7280,
+        "next_step": "Inspect R215 baseline and current producer contracts",
+        "pid": 32372,
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "running",
+        "summary": "Read-only R06 minimal single-day plan",
+        "task_id": "e04-r06-minimal-plan-20261020-a01",
+        "updated_at_utc": "2026-10-20T06:17:23.264900+00:00",
+        "age_seconds": 195,
+        "stale": false
+      }
+    ]
+  }
+}

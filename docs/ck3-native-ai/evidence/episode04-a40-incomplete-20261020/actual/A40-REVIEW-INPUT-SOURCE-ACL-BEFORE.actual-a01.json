@@ -1,0 +1,168 @@
+{
+  "schema": "xar.e04.a40-source-input-prehardening.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:12:12.657996+00:00",
+  "actual_token": {
+    "sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+    "admin": false
+  },
+  "scope": "Exactly three user-owned review inputs. No root/directory ACL, installed broker, task, UAC, Defender or EXE changes.",
+  "before": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+      "pin": {
+        "bytes": 9066,
+        "sha256": "7b9e55a91f0f06dd533ffe93a007e2e81a9fb1e46bdbe5440b5f17c0f3ace33f"
+      },
+      "state": {
+        "attributes": 32,
+        "file_type": 1,
+        "final_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+        "file_id": [
+          13886423844274364792,
+          "bead1200000004000000000000000000"
+        ],
+        "size": 9066,
+        "mtime_ns": 1792480048124498200,
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 33796,
+          "dacl_protected": false,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 1179817,
+              "sid": "S-1-5-32-545"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 1245631,
+              "sid": "S-1-5-11"
+            }
+          ],
+          "dacl_hex": "020060000400000000101800ff011f000102000000000005200000002002000000101400ff011f0001010000000000051200000000101800a90012000102000000000005200000002102000000101400bf01130001010000000000050b000000"
+        }
+      },
+      "restore_sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001G:S-1-5-21-4063940640-1897558599-686929869-513D:AI(A;ID;FA;;;BA)(A;ID;FA;;;SY)(A;ID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+      "pin": {
+        "bytes": 1157,
+        "sha256": "9b8d2f551b4b2c305d551522008cd19d2e3aa0fdc932d425bcacdba96b4da1d1"
+      },
+      "state": {
+        "attributes": 32,
+        "file_type": 1,
+        "final_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+        "file_id": [
+          13886423844274364792,
+          "b0ad1200000002000000000000000000"
+        ],
+        "size": 1157,
+        "mtime_ns": 1792479495879142000,
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 33796,
+          "dacl_protected": false,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 1179817,
+              "sid": "S-1-5-32-545"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 1245631,
+              "sid": "S-1-5-11"
+            }
+          ],
+          "dacl_hex": "020060000400000000101800ff011f000102000000000005200000002002000000101400ff011f0001010000000000051200000000101800a90012000102000000000005200000002102000000101400bf01130001010000000000050b000000"
+        }
+      },
+      "restore_sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001G:S-1-5-21-4063940640-1897558599-686929869-513D:AI(A;ID;FA;;;BA)(A;ID;FA;;;SY)(A;ID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+      "pin": {
+        "bytes": 1119,
+        "sha256": "80670b731a5e173301117546de4ffbf4b770e681cb264fbed596ecf611d5e6a6"
+      },
+      "state": {
+        "attributes": 32,
+        "file_type": 1,
+        "final_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+        "file_id": [
+          13886423844274364792,
+          "b1ad1200000002000000000000000000"
+        ],
+        "size": 1119,
+        "mtime_ns": 1792479495891135400,
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 33796,
+          "dacl_protected": false,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 1179817,
+              "sid": "S-1-5-32-545"
+            },
+            {
+              "type": 0,
+              "flags": 16,
+              "mask": 1245631,
+              "sid": "S-1-5-11"
+            }
+          ],
+          "dacl_hex": "020060000400000000101800ff011f000102000000000005200000002002000000101400ff011f0001010000000000051200000000101800a90012000102000000000005200000002102000000101400bf01130001010000000000050b000000"
+        }
+      },
+      "restore_sddl": "O:S-1-5-21-4063940640-1897558599-686929869-1001G:S-1-5-21-4063940640-1897558599-686929869-513D:AI(A;ID;FA;;;BA)(A;ID;FA;;;SY)(A;ID;0x1200a9;;;BU)(A;ID;0x1301bf;;;AU)"
+    }
+  ]
+}

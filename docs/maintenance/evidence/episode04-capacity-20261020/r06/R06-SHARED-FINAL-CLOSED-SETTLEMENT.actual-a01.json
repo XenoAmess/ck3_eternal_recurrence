@@ -1,0 +1,125 @@
+{
+  "schema": "xar.e04.r06-shared-final-purpose-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:55:03.664608+00:00",
+  "owner": "/root",
+  "source_head_at_close": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "root_close_reference": "Root-20261020T0754Z-70files-exact-copied-close-shared-monitor-bus",
+  "native_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 11632,
+    "sha256": "f8a14bf0ee703ece88137d63f87a07d1c64a6a2013c7a7732cdf66d19325ae6c"
+  },
+  "native_qualification_granted": false,
+  "scene_time_blocked": true,
+  "scene_run_id_allocated": false,
+  "game_execution_admitted": false,
+  "shared_actual_measurement_before_final_receipts": {
+    "observed_at_utc": "2026-10-20T07:55:03.664411+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+    "excludes": [
+      "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01"
+    ],
+    "logical_bytes": 724901,
+    "files": 84,
+    "ceiling_bytes": 134217728,
+    "logical_margin_bytes": 133492827,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "shared_old_reserved_peak_bytes": 134217728,
+  "shared_remaining_future_bytes": 0,
+  "known_C_future_bytes_after": 0,
+  "D_heavy_future_bytes": 0,
+  "remaining_heavy_write_bytes": 0,
+  "old_legacy_C_carry_bytes_unchanged": 42132678,
+  "old_carry_only_claim_not_modified": true,
+  "all_active_balances_before": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-next-r06-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 259424,
+    "sha256": "56c36b42a754ef48b35c833de6b396f3df1303dcab254ecec47afb18637b6424"
+  },
+  "owned_monitor_closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-MONITOR-CLOSED.actual-a01.json",
+    "bytes": 2465,
+    "sha256": "0b9d2df2bc2e85313b7226c28066046d424558064f3d19de85be7b1e244cdedd"
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T07:55:03.664433+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81092665344,
+      "available_to_caller_bytes": 81092665344,
+      "total_free_bytes": 81092665344,
+      "entire_volume_used_allocation_upper_bound_bytes": 430041280512,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T07:55:03.664433+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21686788096,
+      "available_to_caller_bytes": 21686788096,
+      "total_free_bytes": 21686788096,
+      "entire_volume_used_allocation_upper_bound_bytes": 478403219456,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_required_free_including_legacy_system_safety_bytes": 25811936454,
+  "C_floor_margin_bytes": 55280728890,
+  "C408GiB_quota_margin_bytes": 3708283706,
+  "D_floor_margin_bytes": 77733888,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "quota_renewed": false,
+  "physical_or_unused_credit_bytes": 0,
+  "retained_actuals_already_inside_whole_volume_used": true,
+  "necessary_baseline_native_artifacts_installed_config_ACL_recovery_inputs_deleted": false,
+  "retention": {
+    "category": "mixed-small-records",
+    "purpose": "Root exact source/evidence integration, handover and bounded category review; source ACL restoration inputs remain individually referenced by native closure.",
+    "mixed_category_review_at_utc": "2026-10-22T07:55:03.664608+00:00",
+    "record_default_expires_at_utc": "2027-04-18T07:55:03.664608+00:00",
+    "existing_native_and_baseline_protections_unchanged": true,
+    "automatic_renewal": false,
+    "closed_is_not_whole_tree_delete_authorization": true
+  },
+  "postclose_small_finalization": "Only this bounded closure/transaction and immutable claim/checkpoint/copyplan finalize the closing shared pool; at most256KiB new metadata, no new heavy scope or pool."
+}

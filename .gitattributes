@@ -1286,3 +1286,8 @@ docs/ck3-native-ai/evidence/episode04-r0217-20261020/** -text whitespace=cr-at-e
 docs/maintenance/evidence/episode04-capacity-20261020/** -text whitespace=cr-at-eol
 promo/ck3_faith_and_power/episode02/research/first-four-integrated-5608ccf35/** -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/** -text whitespace=cr-at-eol
+
+# Preserve exact R06 source review and incomplete A40 machine evidence.
+docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/** -text whitespace=-blank-at-eol,cr-at-eol

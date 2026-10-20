@@ -1,0 +1,234 @@
+{
+  "schema": "xar.e04.a40-incomplete-offline-attempt-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:34:27.994869+00:00",
+  "status": "CLOSED_INCOMPLETE_OS_UAC_1223_NO_NATIVE_QUALIFICATION",
+  "objective_achieved": false,
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "first_SYSTEM_failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-FIRST-FAILURE.actual-a01.json",
+    "bytes": 8029,
+    "sha256": "dd9b428687c87137fc02a827f24e22eea95c5ebd139b8e8026de51db52b0cfc1"
+  },
+  "native_OS_runas_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-NATIVE-LAUNCH-RESULT.actual-a01.json",
+    "bytes": 6396,
+    "sha256": "21f835b11f76f0cbe3a59044c032c6cc4e61e068c3b046ff15d1585dd4f895d2"
+  },
+  "ordinary_maintenance_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-ORDINARY-REVIEW.actual-a01.json",
+    "bytes": 2259,
+    "sha256": "c8c4287cbb9b27bc0d612bcaffd106151473697db65c2581a8d5367c2076c083"
+  },
+  "current_installed_readback": {
+    "policy": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+      "bytes": 1088,
+      "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+    },
+    "installation_manifest": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\installation-manifest.json",
+      "bytes": 1120,
+      "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+    },
+    "runtime_seal": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime-seal.json",
+      "bytes": 95324,
+      "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2"
+    },
+    "all_match_pre_maintenance_bytes": true
+  },
+  "selected_scope_terminal": {
+    "main_production_compile_link": "SUCCEEDED; four linked artifacts preserved",
+    "main_public_producer": "EXIT1_AT_SYSTEM_REGISTRATION_ROOT_SCOPE_REJECTION",
+    "main_exact_SYSTEM3": "NOT_QUALIFIED",
+    "exact_root_admin_maintenance": "NATIVE_RUNAS_OS1223; no child handle or maintenance receipt",
+    "public_no_work_resume": "NOT_EXECUTED",
+    "UI_finite_cold": "NOT_EXECUTED",
+    "worker_live_build_SYSTEM": "NOT_EXECUTED",
+    "worker_V5_build_SYSTEM_and_two_finite_cases": "NOT_EXECUTED",
+    "scene_game_SDK_live_observer": "NOT_STARTED_BY_THIS_EXECUTOR"
+  },
+  "production_linked_artifacts": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+        "bytes": 58673,
+        "sha256": "ccd37a27ae1812810510d7e14cb232e9a183b8c44201ad5ac69feca2f7ffa759"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "bytes": 658944,
+      "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      }
+    }
+  ],
+  "qualification_granted": false,
+  "remaining_heavy_write_bytes": 0,
+  "remaining_bytes_scope": "This terminated attempt schedules no further write; unfinished selected qualification stages remain listed above and require actual OS/admin state plus a fresh valid admission before continuation. This is not a successful full-scope closure.",
+  "owned_writer_snapshot": {
+    "observed_at_utc": "2026-10-20T07:34:27.994869+00:00",
+    "matching_owned_active_processes": [],
+    "owned_writer_count_excluding_this_metadata_observer": 0,
+    "current_fixed_SYSTEM_task": {
+      "running_instances": 0,
+      "state": 3,
+      "last_task_result": 0,
+      "definition_and_ACL": {
+        "task_xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <SecurityDescriptor>O:BAG:BAD:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GRGX;;;S-1-5-21-4063940640-1897558599-686929869-1001)</SecurityDescriptor>\r\n    <Description>Only declared local CK3 project executable Defender path exclusions.</Description>\r\n    <URI>\\XAR CK3 Project EXE Broker\\RegisterDeclaredProjectExecutables</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-5-18</UserId>\r\n      <RunLevel>HighestAvailable</RunLevel>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT4M</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>Queue</MultipleInstancesPolicy>\r\n    <IdleSettings>\r\n      <Duration>PT10M</Duration>\r\n      <WaitTimeout>PT1H</WaitTimeout>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers />\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe</Command>\r\n      <Arguments>-I -S -B \"C:\\Program Files\\XAR CK3 Project EXE Broker\\broker_bootstrap.py\" --config \"C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json\"</Arguments>\r\n      <WorkingDirectory>C:\\Program Files\\XAR CK3 Project EXE Broker</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>",
+        "action": {
+          "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe",
+          "arguments": "-I -S -B \"C:\\Program Files\\XAR CK3 Project EXE Broker\\broker_bootstrap.py\" --config \"C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json\"",
+          "working_directory": "C:\\Program Files\\XAR CK3 Project EXE Broker"
+        },
+        "principal": {
+          "user_id": "S-1-5-18",
+          "logon_type": 5,
+          "run_level": 1
+        },
+        "task_acl": {
+          "owner_sid": "S-1-5-32-544",
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 1179817,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            }
+          ],
+          "sddl": "O:BAD:PAI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-4063940640-1897558599-686929869-1001)"
+        },
+        "folder_acl": {
+          "owner_sid": "S-1-5-32-544",
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 1179817,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            }
+          ],
+          "sddl": "O:BAD:PAI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-4063940640-1897558599-686929869-1001)"
+        },
+        "triggers_count": 0,
+        "allow_demand_start": true,
+        "multiple_instances": 1
+      }
+    },
+    "unattributed_hidden_processes": [],
+    "read_errors": [
+      "Original producer PID28044 creation FILETIME was not captured while alive; its original Popen terminal exit1 is preserved, not guessed from reused PID.",
+      "Original compiler/CMake/Ninja descendant PID+creation times were not separately captured; successful synchronous build return is retained in actual producer result.",
+      "Fixed SYSTEM broker does not expose PID/creation FILETIME in its protected result; current fixed task actual running_instances=0 readback is preserved.",
+      "Maintenance ordinary parent PID/creation FILETIME was not captured in its original launch receipt; native result and tool session11237 terminal exit1 are preserved. OS runas returned false/1223 with no child handle, so no administrator child PID/FILETIME is fabricated."
+    ],
+    "closure_observer": {
+      "pid": 34940,
+      "creation_filetime": 134369552667135188,
+      "role": "this small read-only closure observer; terminates after writing receipt"
+    },
+    "global_process_absence_asserted": false
+  },
+  "owned_original_lifecycle": {
+    "producer": {
+      "pid": 28044,
+      "creation_filetime": null,
+      "exit_code": 1,
+      "phase_result": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\result.actual.json",
+        "bytes": 18198,
+        "sha256": "1e6f14fe3eb2d8f310cb7a7963e8f18502133a59fc92fa98b73d51661f863dce"
+      }
+    },
+    "administrator_child": {
+      "pid": null,
+      "creation_filetime": null,
+      "native_call_succeeded": false,
+      "win32_error": 1223
+    },
+    "maintenance_parent": {
+      "pid": null,
+      "creation_filetime": null,
+      "tool_session_id": 11237,
+      "tool_terminal_exit_code": 1
+    }
+  },
+  "aggregate_actual_bytes_observed_before_this_small_receipt": 407667565,
+  "aggregate_peak_bytes_known": 407667565,
+  "retention": {
+    "policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "policy_version": "1.0.0",
+    "purpose_review_at_utc": "2026-10-20T08:00:00Z",
+    "protected_until_utc": "2026-10-20T08:00:00Z",
+    "protection_reason": "Only current successful production bytes and one exact unresolved broker-root/UAC evidence set; supports no-recompile continuation and restoration of three source ACLs. Review without automatic renewal.",
+    "build_default_expires_at_utc": "2026-11-03T07:34:27.994869+00:00",
+    "small_record_default_expires_at_utc": "2027-04-18T07:34:27.994869+00:00",
+    "expired_is_candidate_not_delete_authorization": true,
+    "availability": "Original C artifacts/logs and all small source/OS evidence remain readable; no deletion/move or substitute evidence created."
+  },
+  "capacity_or_ledger_mutation_performed": false,
+  "physical_free_credit_claimed": false
+}

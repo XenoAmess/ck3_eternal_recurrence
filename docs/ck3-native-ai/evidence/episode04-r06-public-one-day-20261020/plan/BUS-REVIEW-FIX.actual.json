@@ -1,0 +1,139 @@
+{
+  "schema": "xar.e04.r06.review_fix.taskbus_receipt.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:31:45.635727+00:00",
+  "registration": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 7296,
+    "event_id": "b71afd9dcab54237bb797a665614de40",
+    "timestamp_utc": "2026-10-20T07:31:43.485469+00:00",
+    "kind": "registered",
+    "task_id": "e04-r06-public-review-fix-20261020-a01",
+    "to": [
+      "*"
+    ],
+    "state": "running",
+    "summary": "Source_only_fix_actual_observer_SHA_and_postcamera300s_TTL_18focused_1route_PASS",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+      "branch": "master",
+      "dirty_entries": 4
+    }
+  },
+  "poll_summary": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task_id": "e04-r06-public-review-fix-20261020-a01",
+    "previous_cursor": 0,
+    "acknowledged_cursor": 1,
+    "remaining": 7267
+  },
+  "recent_active_tasks_at_list": [
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 4,
+        "head": "93b27601aed449515b69aabed62e1af7cc61c1fc"
+      },
+      "last_sequence": 7295,
+      "next_step": "Await_actual_SYSTEM_UI_worker_completion_then_exact_settle_no_game",
+      "pid": 20436,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "e04-capacity-reservations"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "machine_id:desktop-3fevhd2-1c74096080_native1GiB_shared128MiB_future_scene_TIME_BLOCKED_08Z_fixed",
+      "task_id": "e04-capacity-next-r06-20261020-a01",
+      "updated_at_utc": "2026-10-20T07:31:17.648170+00:00",
+      "age_seconds": 26,
+      "stale": false
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 4,
+        "head": "93b27601aed449515b69aabed62e1af7cc61c1fc"
+      },
+      "last_sequence": 7290,
+      "next_step": "Root-review-exact-broker-root-enrollment-reuse-linked-bytes-no-rebuild",
+      "pid": 17004,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [
+        "native-a40:C:/ck3-e04-resume-20261020-a01/next-r06-a01/native-build-a40-a01"
+      ],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "machine_id:desktop-3fevhd2-1c74096080-a40-production-built-SYSTEM-rejected-unlisted-root-no-project-EXE-run",
+      "task_id": "e04-r06-native-prepare-20261020",
+      "updated_at_utc": "2026-10-20T06:57:10.773562+00:00",
+      "age_seconds": 2073,
+      "stale": true
+    },
+    {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 4,
+        "head": "93b27601aed449515b69aabed62e1af7cc61c1fc"
+      },
+      "last_sequence": 7296,
+      "next_step": "",
+      "pid": 27508,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "running",
+      "summary": "Source_only_fix_actual_observer_SHA_and_postcamera300s_TTL_18focused_1route_PASS",
+      "task_id": "e04-r06-public-review-fix-20261020-a01",
+      "updated_at_utc": "2026-10-20T07:31:43.473871+00:00",
+      "age_seconds": 0,
+      "stale": false
+    }
+  ],
+  "completion": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "schema": "codex.task_bus.v1",
+      "task_id": "e04-r06-public-review-fix-20261020-a01",
+      "state": "done",
+      "summary": "Both_independent_review_rejections_fixed_18focused_1R04_PASS_no_game_native_edits_commit",
+      "next_step": "Root_final_source_only_review_and_commit",
+      "resources": [],
+      "updated_at_utc": "2026-10-20T07:31:45.566690+00:00",
+      "pid": 20108,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+        "branch": "master",
+        "dirty_entries": 4
+      },
+      "last_sequence": 7297
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 7297,
+      "event_id": "8aa3a16f4520499f906888535c84e690",
+      "timestamp_utc": "2026-10-20T07:31:45.568185+00:00",
+      "kind": "completed",
+      "task_id": "e04-r06-public-review-fix-20261020-a01",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "Both_independent_review_rejections_fixed_18focused_1R04_PASS_no_game_native_edits_commit",
+      "next_step": "Root_final_source_only_review_and_commit",
+      "resources": [],
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+        "branch": "master",
+        "dirty_entries": 4
+      }
+    }
+  }
+}

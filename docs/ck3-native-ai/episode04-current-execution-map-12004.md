@@ -1,5 +1,9 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-20 07:54 UTC：R06 源码与 A40 真实未完成边界
+
+`machine_id: desktop-3fevhd2-1c74096080`。[公共单日入口与A40专题](episode04-r06-public-one-day-and-a40-boundary-20261020.md)：R06专项18/18、R04路由1/1、通用适配器25/25通过；A40编译完成，但精确根目录未登记，原生提权返回1223、没有新资格。新R06场次在有限时间窗内提交前拒绝，未分配run、未启动游戏/录制。研究10/14、业务7/11、动态0/11、ABC0/3保持。下方R0217与36秒插片实证继续有效，不能将本轮源码视为新ADD。
+
 ## 2026-10-20 04:50 UTC：R0217正常闭场与新增83秒原片
 
 05:23 UTC补记，同一`machine_id: desktop-3fevhd2-1c74096080`：已进一步产出[36秒字幕审阅插片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md)，连续本场raw0–30秒＋6秒小计/未知结论卡，一次新片AV/PTS通过。Root五张字幕图直接审阅完成，完整1×/clean仍未授；所有执行future预留现为0、历史42MB仅carry-only，容量bus7274资源空。

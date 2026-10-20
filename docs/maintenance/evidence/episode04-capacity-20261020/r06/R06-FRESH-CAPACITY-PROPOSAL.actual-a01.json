@@ -1,0 +1,115 @@
+{
+  "schema": "xar.e04.r06-next-finite-capacity-proposal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:14:21.319495+00:00",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "proposal_only": true,
+  "reservation_written": false,
+  "heavy_write_execution_admitted": false,
+  "game_execution_admitted": false,
+  "run_id_allocated": false,
+  "scope_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+  "proposed_component_peak_bytes": {
+    "native_a40": 1073741824,
+    "scene_profile_and_userdirs": 805306368,
+    "scene_driver": 1073741824,
+    "scene_raw": 268435456,
+    "scene_other": 268435456,
+    "all_thread_shared_metadata": 134217728
+  },
+  "proposed_new_total_future_bytes": 3623878656,
+  "current_active_balances": [
+    {
+      "task_id": "e04-capacity-resume-20261020-a01",
+      "carry_only": true,
+      "known_future": {
+        "C:/": 0,
+        "D:/": 0
+      },
+      "legacy": {
+        "C:/": 42132678,
+        "D:/": 0
+      }
+    }
+  ],
+  "existing_known_future_bytes_by_volume": {
+    "C:/": 0,
+    "D:/": 0
+  },
+  "legacy_unreconciled_conservative_balance_by_volume": {
+    "C:/": 42132678,
+    "D:/": 0
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T06:14:21.319267+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81535668224,
+      "available_to_caller_bytes": 81535668224,
+      "total_free_bytes": 81535668224,
+      "entire_volume_used_allocation_upper_bound_bytes": 429598277632,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T06:14:21.319267+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21687980032,
+      "available_to_caller_bytes": 21687980032,
+      "total_free_bytes": 21687980032,
+      "entire_volume_used_allocation_upper_bound_bytes": 478402027520,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_required_free_with_proposed_scope_system_safety_legacy_bytes": 29435815110,
+  "C_floor_margin_bytes": 52099853114,
+  "C_projected_whole_volume_used_upper_bound_including_new_future_legacy_system_bytes": 437559256262,
+  "C_finite_quota_bytes": 438086664192,
+  "C_quota_margin_bytes": 527407930,
+  "quota_metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "D_new_heavy_write_bytes": 0,
+  "D_required_free_including_128MiB_system_20GiB_safety_bytes": 21609054208,
+  "D_floor_margin_bytes": 78925824,
+  "normal_close_and_cleanup_hard_deadline_utc": "2026-10-20T08:00:00Z",
+  "remaining_hard_deadline_seconds": 6338.681,
+  "minimum_scene_launch_reserve_seconds": 2100,
+  "minimum_normal_close_cleanup_reserve_seconds": 1020,
+  "latest_transition_to_normal_close_utc": "2026-10-20T07:43:00Z",
+  "capacity_all_components_reserve_fits": true,
+  "time_before_08Z_has_2100seconds_before_any_build_elapsed": true,
+  "next_steps": [
+    "If Root adopts the fresh budget, atomically reserve new3.375GiB once in a separate next-R06 claim; keep old42,132,678B carry-only claim unchanged.",
+    "Freeze exact a40 source/tree/producer plan/output root then issue native-only source-bound admission within existing1GiB hold.",
+    "After actual production qualification and current runtime pins, bind one scene exact component paths and source, leaving run ID unallocated until public allocator.",
+    "Immediately before scene admission and game launch, freshly recompute budget and time. Reserve1020s for normal-close+cleanup; if total readiness window insufficient, offline-source closure only.",
+    "New shared128MiB covers all current threads exact next-root metadata, excluding separate native/scene roots. Closed old shared/media/native/scenes are already within volume used and receive no repeat future or credit."
+  ],
+  "root_authorization": "2026-10-20 Root authorized fresh bounded reopening for next R06 only if C408GiB/safety actual fit, no deadline extension beyond08Z, no D heavy; first provide scope proposal, native_prepare/research_next remain read-only pending exact subcaps.",
+  "fresh_process_census": {
+    "source": "psutil process_iter pid/name/cmdline",
+    "processes": [],
+    "read_errors": []
+  },
+  "storage_policy_document": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+    "bytes": 17121,
+    "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+  },
+  "storage_policy_parameters": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_asset_index_read_no_deletion": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "expired_asset_or_protected_baseline_deleted": false,
+  "automatic_quota_or_protection_renewal": false
+}

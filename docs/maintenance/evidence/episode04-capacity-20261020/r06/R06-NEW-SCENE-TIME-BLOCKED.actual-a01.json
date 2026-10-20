@@ -1,0 +1,115 @@
+{
+  "schema": "xar.e04.r06-new-scene-time-blocked-offline-only.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:19:46.180773+00:00",
+  "source_head_at_observation": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "source": "Current public acceptance readiness policy source pin, original Root08Z boundary and close budgets, exact ledger and fresh psutil/Windows volume observation",
+  "admitted": false,
+  "game_execution_admitted": false,
+  "new_scene_execution_admitted": false,
+  "new_scene_future_bytes": 0,
+  "run_id_allocated": false,
+  "time_status": "BLOCKED_INSUFFICIENT_COMPLETE_READINESS_PLUS_NORMAL_CLOSE_CLEANUP_WINDOW",
+  "hard_deadline_utc": "2026-10-20T08:00:00Z",
+  "remaining_deadline_seconds": 2413.819,
+  "current_public_minimum_readiness_seconds": 1800,
+  "normal_close_reserve_seconds": 900,
+  "cleanup_save_reserve_seconds": 120,
+  "minimum_full_startup_plus_close_window_seconds": 2820,
+  "shortfall_seconds_before_any_runtime_prepare_or_R06_observation": 406.181,
+  "map_ready_deadline_utc": "2026-10-20T07:25:00Z",
+  "minimum_room_at_actual_MapReady_seconds": 2100,
+  "map_ready_time_is_not_latest_launch_time": true,
+  "public_readiness_policy_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+    "bytes": 55999,
+    "sha256": "978168c2ef49c104e9a94c98b84122684997dea2ac8f7acc3b480ad14634f3db"
+  },
+  "policy_id": "future-readiness-minimum-2026-10-15",
+  "policy_source_label": "explicit-user-instruction-2026-10-15",
+  "same_machine_prior_readiness_example": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0217\\case-output\\readiness-window.json",
+    "bytes": 1634,
+    "sha256": "b9b4f3b06989e27e33e4efc2d2a421a738bc3e77639a30059d87c371fd1616e5"
+  },
+  "prior_actual_short_readiness_is_not_future_timing_guarantee": true,
+  "root_conditional_instruction_applied": "Root explicitly required offline source closure only, no new scene if time/capacity insufficient; no extension of original408GiB/08Z.",
+  "ongoing_selected_native_offline_stages_not_revoked": true,
+  "native_future_bytes_unchanged": 1073741824,
+  "shared_future_bytes_unchanged": 134217728,
+  "all_active_balances_unchanged": {
+    "known_future": {
+      "C:/": 1207959552,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-next-r06-20261020-a01",
+        "known_future": {
+          "C:/": 1207959552,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T07:19:46.180792+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81099919360,
+      "available_to_caller_bytes": 81099919360,
+      "total_free_bytes": 81099919360,
+      "entire_volume_used_allocation_upper_bound_bytes": 430034026496,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T07:19:46.180792+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21687541760,
+      "available_to_caller_bytes": 21687541760,
+      "total_free_bytes": 21687541760,
+      "entire_volume_used_allocation_upper_bound_bytes": 478402465792,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C408GiB_quota_margin_bytes": 2507578170,
+  "D_floor_margin_bytes": 78487552,
+  "budget_block_cause_is_time_not_volume": true,
+  "fresh_CK3_FFmpeg_census": {
+    "processes": [],
+    "read_errors": []
+  },
+  "source_SDK_screen_game_actions": 0,
+  "counter_or_allocator_writes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "original_scene_reservation_revocation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-UNALLOCATED-SCENE-RESERVATION-REVOKED.actual-a01.json",
+    "bytes": 1468,
+    "sha256": "84baa298cc8490ea84e6a657e154f5f818b327e8197f86edcde090bdec435b44"
+  },
+  "quota_or_protection_renewal": false,
+  "necessary_baselines_or_original_failures_deleted": false
+}

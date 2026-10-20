@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.unallocated-scene-reserve-revocation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:34:40.546349+00:00",
+  "root_authorization": "Root explicitly permitted revoking unallocated/unexecuted2.25GiB reserve-only scene to protect native1GiB within original408GiB/08Z. Native actual close then fresh reissue requires07:25 MapReady time gate.",
+  "initial_reserve": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+    "bytes": 4981,
+    "sha256": "8e7a1cac2ee78bf22f30b988f4282228a825b7a0cc6a73ca075fde26a9cdffd4"
+  },
+  "scene_candidate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01",
+  "run_id_allocated": false,
+  "scene_execution_ever_admitted": false,
+  "scene_heavy_write_started": false,
+  "scene_reserved_future_before_bytes": 2415919104,
+  "scene_reserved_future_after_bytes": 0,
+  "known_C_future_before_bytes": 3623878656,
+  "known_C_future_after_bytes": 1207959552,
+  "legacy_C_bytes_unchanged": 42132678,
+  "reason": "Before build only about503MiB extra quota headroom with full3.375GiB hold. Release entirely unexecuted scene hold before admitting bounded1GiB main+worker build stages, then reevaluate scene from actual closed build and fresh remaining time.",
+  "physical_or_unused_credit_bytes": 0,
+  "quota_or_deadline_extended": false,
+  "new_scene_admission_automatically_authorized": false
+}

@@ -1,0 +1,431 @@
+{
+  "schema": "xar.e04.r06.source-only.exact-copy.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:54:21.535662+00:00",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "qualification": false,
+  "new_game_started": false,
+  "copies": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-FIRST-FAILURE.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-FIRST-FAILURE.actual-a01.json",
+      "bytes": 8029,
+      "sha256": "dd9b428687c87137fc02a827f24e22eea95c5ebd139b8e8026de51db52b0cfc1"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-ORDINARY-REVIEW.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/BROKER-MAINTENANCE-ORDINARY-REVIEW.actual-a01.json",
+      "bytes": 2259,
+      "sha256": "c8c4287cbb9b27bc0d612bcaffd106151473697db65c2581a8d5367c2076c083"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-REVIEW-INPUT-SOURCE-ACL-BEFORE.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-REVIEW-INPUT-SOURCE-ACL-BEFORE.actual-a01.json",
+      "bytes": 6024,
+      "sha256": "f94d17dc6bfed055e0abcba31a357ac1095bca92a9856c53ff6048f15b1dee16"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-REVIEW-INPUT-SOURCE-ACL-AFTER.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-REVIEW-INPUT-SOURCE-ACL-AFTER.actual-a01.json",
+      "bytes": 4818,
+      "sha256": "18f338f79e772dbc969531eaa32832d65f5ff3ca02a51e5f06c3b7e0b00c039f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-NATIVE-LAUNCH-INTENT.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/BROKER-MAINTENANCE-NATIVE-LAUNCH-INTENT.actual-a01.json",
+      "bytes": 5844,
+      "sha256": "63b70da8058b4754f9d7b1ae3a8b56eb7eb91ad8f7f1c2dfae39ab52a5e094aa"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-NATIVE-LAUNCH-RESULT.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/BROKER-MAINTENANCE-NATIVE-LAUNCH-RESULT.actual-a01.json",
+      "bytes": 6396,
+      "sha256": "21f835b11f76f0cbe3a59044c032c6cc4e61e068c3b046ff15d1585dd4f895d2"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+      "bytes": 12374,
+      "sha256": "f00c9d4f73aba8135d760f0a8ebd95dd24fe4090c1e8f32eedd23fa76415d3d7"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stdout-a01.txt",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stdout-a01.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stderr-a01.txt",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stderr-a01.txt",
+      "bytes": 1551,
+      "sha256": "d897667d46e00bc86a46c1dc72d23760932523c11ef3d03568ffb93bbff86531"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stdout-a02.txt",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stdout-a02.txt",
+      "bytes": 6386,
+      "sha256": "51cdb85486434f9773416de92a2cc9dba72c571699ee7bb0bc8f6e1c39b04a9d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\BROKER-MAINTENANCE-REVIEW.stderr-a02.txt",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/ordinary-review/BROKER-MAINTENANCE-REVIEW.stderr-a02.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\native-msvc-result.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/native-msvc-result.json",
+      "bytes": 1929,
+      "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\result.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/phase-result.actual.json",
+      "bytes": 18198,
+      "sha256": "1e6f14fe3eb2d8f310cb7a7963e8f18502133a59fc92fa98b73d51661f863dce"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\intent.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/phase-intent.actual.json",
+      "bytes": 17478,
+      "sha256": "5fbaa90f0d05e345d48cda9a749fd3b81e7304cc65cf62eb214195d213a6103f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\manifest.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/manifest.json",
+      "bytes": 3630,
+      "sha256": "60174d622849921cfb7df3354ec14d5389650a770f6b02e6e28f8f5ad3007014"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\receipt.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/receipt.json",
+      "bytes": 5443,
+      "sha256": "dce3df11055a4643d7d7dd365a8194bd65db7be6060e3cbf8db366d4dfb1d452"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\protected-worker-receipt.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/protected-worker-receipt.json",
+      "bytes": 1174,
+      "sha256": "7faa5acb8209834e81732b6cad5ea003e6347b57d136e169ea0540f68681fa32"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-policy.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/installed-policy.json",
+      "bytes": 1088,
+      "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-manifest.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/defender/installed-manifest.json",
+      "bytes": 1120,
+      "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+      "bytes": 58673,
+      "sha256": "ccd37a27ae1812810510d7e14cb232e9a183b8c44201ad5ac69feca2f7ffa759"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "bytes": 3209,
+      "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "bytes": 3180,
+      "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/production/file-api/target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "bytes": 7996,
+      "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\A40-PRODUCER-PLAN.prepared-a02.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/A40-PRODUCER-PLAN.prepared-a02.json",
+      "bytes": 46163,
+      "sha256": "dfeeeaa1c6e44d566eead3add3578317cd79e97302d1cb11ea7fe9db5748e5a0"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/admission/A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 32273,
+      "sha256": "fc704e0e9705d1e15160979faf6982f4a4b2e434810b172d899e8954d99f144b"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/maintain_a40_broker_root.py",
+      "bytes": 9066,
+      "sha256": "7b9e55a91f0f06dd533ffe93a007e2e81a9fb1e46bdbe5440b5f17c0f3ace33f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\launch_a40_admin_maintenance.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/launch_a40_admin_maintenance.py",
+      "bytes": 6561,
+      "sha256": "18668e95fd2a3ac404623735ea3fee05f707776d40e924f21795bbc9da3cd45f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\harden_a40_review_inputs.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/harden_a40_review_inputs.py",
+      "bytes": 3961,
+      "sha256": "d9eef4cf0a5815536394d6bb7433dd542d0dfd43cfc045ba5a3891c83c54ed4d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\resume_a40_after_root_maintenance.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/resume_a40_after_root_maintenance.py",
+      "bytes": 5013,
+      "sha256": "7b9b1cfa7e39b75c3f061728d6445b2bb474d0e630b044e608e407b964676bdb"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+      "bytes": 1157,
+      "sha256": "9b8d2f551b4b2c305d551522008cd19d2e3aa0fdc932d425bcacdba96b4da1d1"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+      "bytes": 1119,
+      "sha256": "80670b731a5e173301117546de4ffbf4b770e681cb264fbed596ecf611d5e6a6"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-EXACT-A40-ROOT-REVIEW.candidate-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/prepared/BROKER-EXACT-A40-ROOT-REVIEW.candidate-a01.json",
+      "bytes": 2878,
+      "sha256": "c04117ff3a051cd499d0817fd920012954b7548e35f40062777b73c2189ece57"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\NATIVE-INPUT-DIFF.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/source/NATIVE-INPUT-DIFF.actual.json",
+      "bytes": 17609,
+      "sha256": "5499118a2839f86cdd6800f6d22d443d888aad1d8163fa8ed7f22155a64cfb60"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\WORKER-SOURCE-COMPARISON.actual-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/actual/source/WORKER-SOURCE-COMPARISON.actual-a01.json",
+      "bytes": 8486,
+      "sha256": "21957d8b5544a5632d0b9909fc0a536598363f492c03148e3ae1ee90bc308b56"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-closeout\\README-A40-INCOMPLETE.prepared-a01.md",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/README.md",
+      "bytes": 2807,
+      "sha256": "761d4df97b2542e28e415a5f69ceb9e01c5964fb8144a46b3c27665c3e11e845"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-closeout\\A40-SMALL-COPYPLAN.prepared-a01.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/COPYPLAN.prepared-a01.json",
+      "bytes": 29878,
+      "sha256": "5a7e6028f036b27b91f03e0b92df4326e83f31cecb7a3195b0e1528b6dfab319"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-closeout\\README-A40-INCOMPLETE.prepared-a01.md",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-a40-incomplete-20261020/README.md",
+      "bytes": 2807,
+      "sha256": "761d4df97b2542e28e415a5f69ceb9e01c5964fb8144a46b3c27665c3e11e845"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FRESH-CAPACITY-PROPOSAL.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-FRESH-CAPACITY-PROPOSAL.actual-a01.json",
+      "bytes": 5194,
+      "sha256": "ad2a2e6f53d6f32ae11c76a195809d811d62cad2f7fef8796f1bb52e5e9ca85b"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+      "bytes": 4981,
+      "sha256": "8e7a1cac2ee78bf22f30b988f4282228a825b7a0cc6a73ca075fde26a9cdffd4"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-TRANSACTION.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-FINITE-RESERVE-TRANSACTION.actual-a01.json",
+      "bytes": 774,
+      "sha256": "9328a91d09eefcac7026b56298532a8a1f42c567b8b92f0b529cd6fe9f732509"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-UNALLOCATED-SCENE-RESERVATION-REVOKED.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-UNALLOCATED-SCENE-RESERVATION-REVOKED.actual-a01.json",
+      "bytes": 1468,
+      "sha256": "84baa298cc8490ea84e6a657e154f5f818b327e8197f86edcde090bdec435b44"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 32273,
+      "sha256": "fc704e0e9705d1e15160979faf6982f4a4b2e434810b172d899e8954d99f144b"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-NEW-SCENE-TIME-BLOCKED.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-NEW-SCENE-TIME-BLOCKED.actual-a01.json",
+      "bytes": 4419,
+      "sha256": "930a1a1e381e451c0ce2a682fb48e355d51b2f86cb48ce33180dc999542b514d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 11632,
+      "sha256": "f8a14bf0ee703ece88137d63f87a07d1c64a6a2013c7a7732cdf66d19325ae6c"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-SETTLE-TRANSACTION.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/A40-NATIVE-INCOMPLETE-SETTLE-TRANSACTION.actual-a01.json",
+      "bytes": 951,
+      "sha256": "df697a07b9aed08c47accf8e0ea4a8b79e9622c70b9335559ed1345262ab7b90"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\R06-CAPACITY-CHECKPOINT.native-closed-shared-open-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/R06-CAPACITY-CHECKPOINT.native-closed-shared-open-a01.json",
+      "bytes": 3921,
+      "sha256": "164982af13b28c9a9c63d55d36ff988c1ccfaa56dc92ef1de640dc0498a121e7"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\CURRENT-CLAIM-SNAPSHOT.native-closed-shared-open-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/CURRENT-CLAIM-SNAPSHOT.native-closed-shared-open-a01.json",
+      "bytes": 5150,
+      "sha256": "cec9642eeee0847e193ecfa019de0cd35e5063e76be35f250d43090b8b0ae2b2"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\README.md",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/README.md",
+      "bytes": 1338,
+      "sha256": "b1e6d7b1adeb4953bc2f446aa5536abb1445bb523dbe124ca2dcbb25141a4389"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity-archive-a01\\COPYPLAN.actual-a01.json",
+      "repository_path": "docs/maintenance/evidence/episode04-capacity-20261020/r06/COPYPLAN.native-closed-shared-open-a01.json",
+      "bytes": 5111,
+      "sha256": "30ae234b46bdd2e3331781c0b7fbcf79dbd37b49806cd8a38c4a6a7c7f815177"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\audit_sources.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/audit_sources.py",
+      "bytes": 10602,
+      "sha256": "135d0c800323e48b85a2fb4c18bca993b497eab2ac6dc959a4cb59e5bc3c3a97"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\BUS-CHECK.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/BUS-CHECK.actual.json",
+      "bytes": 1857,
+      "sha256": "9ef99ecb079e26ad7e4f91c7f146cca0ed3eace9a8ca9c51405492d961c405dc"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\BUS-REVIEW-FIX.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/BUS-REVIEW-FIX.actual.json",
+      "bytes": 4837,
+      "sha256": "671b7e276ed0adcdf5779f342569bbb5166bfaa2b9fd836bc83e95d8a476472a"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\bus_finish_review_fix.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/bus_finish_review_fix.py",
+      "bytes": 1656,
+      "sha256": "06580fdde328afe3869ea4dfe80d3afb71de05eac7ff7107619a595096b3b9b1"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\check_ready_contract.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/check_ready_contract.py",
+      "bytes": 3579,
+      "sha256": "2000457c4620d98fa15846266165ae9964cc34515baa847cbfdd8f6929ef36d8"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\DELIVERY.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/DELIVERY.actual.json",
+      "bytes": 3087,
+      "sha256": "bb3c01f8a70d9ea90acb017cbf36e7020ab5e0684d353afce2215ce4e720a91e"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\IMPLEMENTATION-CHECK.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/IMPLEMENTATION-CHECK.actual.json",
+      "bytes": 1857,
+      "sha256": "2739d24d5002d6c133a98f37601e3fa8ffa57e289fc21faf042e41523df1a85f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\IMPLEMENTATION-CHECK.pre-review-fix.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/IMPLEMENTATION-CHECK.pre-review-fix.actual.json",
+      "bytes": 1855,
+      "sha256": "b0e720786f515249f254f4e211230a855bb7f039de888b8a495db2cbdc2b21bc"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\IMPLEMENTED-CASE-INPUTS.template.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/IMPLEMENTED-CASE-INPUTS.template.json",
+      "bytes": 3681,
+      "sha256": "43abf296045b9eee82c29b6ba6abd74c42903cd5e8cff29d7fb9493f40b9bb9d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\INDEPENDENT-REVIEW-FIX.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/INDEPENDENT-REVIEW-FIX.actual.json",
+      "bytes": 3778,
+      "sha256": "0805f08a2f66532f8b08c7ac3d02f9cfb1f018a8d5426eecd18be303f5369cc3"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\inspect_r06.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/inspect_r06.py",
+      "bytes": 3219,
+      "sha256": "cea2bdcaf01d89471752cc2dadd40de8d3cd5ec059aa282fa5a55978d8642506"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\make_implementation_delivery.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/make_implementation_delivery.py",
+      "bytes": 3665,
+      "sha256": "460f3a0d0a581834c696ba54f952d9527c70c4d183d7350906d523433b222e85"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\PURE-CONTRACT-CHECK.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/PURE-CONTRACT-CHECK.actual.json",
+      "bytes": 1819,
+      "sha256": "80191f6091f1d2f454a9c14efd19f90b66f2a86a8cd3ca1d4fea7530a0fc7655"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\R06-ADAPTER-CONTRACT.UNIMPLEMENTED.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/R06-ADAPTER-CONTRACT.UNIMPLEMENTED.json",
+      "bytes": 4510,
+      "sha256": "135f90a269f1445688299f3a50aadfdadb83e0e8f176e7fa664d276bcda68045"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\R06-MINIMAL-PLAN.md",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/R06-MINIMAL-PLAN.md",
+      "bytes": 11086,
+      "sha256": "c8c9db680e87508f278e6abdae3daa6da2597c1a1f6783f2c8ca3a8efb4b5088"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\ROOT-IMPLEMENTED-R06-CONFIG.md",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/ROOT-IMPLEMENTED-R06-CONFIG.md",
+      "bytes": 6060,
+      "sha256": "107b0e93205ba2e2ddc830b0ba9f4639fb624a5824670850f0666aaa8a406cd5"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\seal_r06.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/seal_r06.py",
+      "bytes": 2750,
+      "sha256": "0055f37e572eb024ac15f6f3b08766910e00dd569f600039435781ceaa230b4d"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\seal_review_fix.py",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/seal_review_fix.py",
+      "bytes": 3231,
+      "sha256": "eca3e652dece8367748c23f6c2fe6f3b2c7c3fc132ab1e6e0cb2b7b0647769a5"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\SOURCE-AUDIT.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/SOURCE-AUDIT.actual.json",
+      "bytes": 39894,
+      "sha256": "6096c8870c99b4925c1e2e75e35b67d9de92eaa1763156072fc8ceaea9dd34ba"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\r06-plan\\START.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/plan/START.actual.json",
+      "bytes": 2249,
+      "sha256": "f2b3d7f4fb1a4b5b9c8cc3e0dd05a5f3aa8155a24a7225c41b31d1cea938efbb"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r06-independent-review\\R06-INDEPENDENT-REVIEW.actual.json",
+      "repository_path": "docs/ck3-native-ai/evidence/episode04-r06-public-one-day-20261020/R06-INDEPENDENT-REVIEW.actual.json",
+      "bytes": 6719,
+      "sha256": "7c49f2e87326bfec932010d9d0955a318e71108ac33bdc2c892bfaf09beb6209"
+    }
+  ]
+}

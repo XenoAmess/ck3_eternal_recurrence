@@ -1,0 +1,43 @@
+{
+  "schema": "xar.e04.a40-exact-broker-root-enrollment-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:58:15.939581+00:00",
+  "status": "REVIEW_ONLY_NOT_INSTALLED",
+  "failure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-FIRST-FAILURE.actual-a01.json",
+    "bytes": 8029,
+    "sha256": "dd9b428687c87137fc02a827f24e22eea95c5ebd139b8e8026de51db52b0cfc1"
+  },
+  "before_policy": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "before_installation_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-manifest.json",
+    "bytes": 1120,
+    "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+  },
+  "runtime_seal_unchanged": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-runtime-seal.json",
+    "bytes": 95324,
+    "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2"
+  },
+  "candidate_policy": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+    "bytes": 1157,
+    "sha256": "9b8d2f551b4b2c305d551522008cd19d2e3aa0fdc932d425bcacdba96b4da1d1"
+  },
+  "candidate_installation_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+    "bytes": 1119,
+    "sha256": "80670b731a5e173301117546de4ffbf4b770e681cb264fbed596ecf611d5e6a6"
+  },
+  "only_new_allowed_build_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+  "allowed_external_source_roots_unchanged": true,
+  "runtime_code_task_action_principal_triggers_seal_unchanged": true,
+  "no_installed_file_writes": true,
+  "no_admin_actions": true,
+  "policy_shape_parse_passed": true,
+  "required_execution_contract": "Root review/adopt exact bytes. An authorized native administrator maintenance entry must preserve protected ACL/owner, archive originals, recheck exact before pins and all unchanged scope, write only these two protected config leaves, actual-read-back both bytes/ACL/owner and fixed task identity; then ordinary public client re-register the original exact built artifact manifest and accept only new SYSTEM verified result. No guard bypass, broad C allowlist, CMake rewrite, or production recompilation."
+}

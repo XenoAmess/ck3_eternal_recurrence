@@ -1,0 +1,137 @@
+{
+  "schema": "xar.e04.a40-source-input-prehardening.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:12:12.657996+00:00",
+  "actual_token": {
+    "sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+    "admin": false
+  },
+  "scope": "Exactly three user-owned review inputs. No root/directory ACL, installed broker, task, UAC, Defender or EXE changes.",
+  "status": "THREE_EXACT_INPUTS_PROTECTED_AND_FRESH_READONLY_LEASES_VERIFIED",
+  "after": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+      "state": {
+        "attributes": 32,
+        "file_type": 1,
+        "final_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+        "file_id": [
+          13886423844274364792,
+          "bead1200000004000000000000000000"
+        ],
+        "size": 9066,
+        "mtime_ns": 1792480048124498200,
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 37892,
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            }
+          ],
+          "dacl_hex": "020058000300000000002400ff011f0001050000000000051500000020d03af247721a71cdb7f128e903000000001400ff011f0001010000000000051200000000001800ff011f0001020000000000052000000020020000"
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+      "state": {
+        "attributes": 32,
+        "file_type": 1,
+        "final_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+        "file_id": [
+          13886423844274364792,
+          "b0ad1200000002000000000000000000"
+        ],
+        "size": 1157,
+        "mtime_ns": 1792479495879142000,
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 37892,
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            }
+          ],
+          "dacl_hex": "020058000300000000002400ff011f0001050000000000051500000020d03af247721a71cdb7f128e903000000001400ff011f0001010000000000051200000000001800ff011f0001020000000000052000000020020000"
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+      "state": {
+        "attributes": 32,
+        "file_type": 1,
+        "final_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+        "file_id": [
+          13886423844274364792,
+          "b1ad1200000002000000000000000000"
+        ],
+        "size": 1119,
+        "mtime_ns": 1792479495891135400,
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 37892,
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            }
+          ],
+          "dacl_hex": "020058000300000000002400ff011f0001050000000000051500000020d03af247721a71cdb7f128e903000000001400ff011f0001010000000000051200000000001800ff011f0001020000000000052000000020020000"
+        }
+      }
+    }
+  ],
+  "Root_must_hold_final_readonly_source_leases_through_elevated_child": true
+}

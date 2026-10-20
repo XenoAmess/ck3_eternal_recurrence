@@ -1,0 +1,179 @@
+{
+  "schema": "xar.e04.r06.native-input-diff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:19:58.416633+00:00",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "previous_native_build_source_head": "43fd32670897f657da681cf0a94d162e3135a89c",
+  "previous_native_tree": "28dda02c23eda2efdc0a09c8a9cba122dd06cca9",
+  "raw_production_inputs_identical": false,
+  "reason": "CMakeLists.txt, bridge.cpp and ingame_ui_navigation_v1.cpp exact source bytes differ. OFF-gated branches are not an executed preprocessor/build equivalence proof or an authorization to bypass source-bound guards.",
+  "paths": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "old_blob": "581ca1d8447851a94462e26ce9a48244224a9c7f",
+      "new_blob": "bec24130ad8c2b17d72be97f4dd40f1c00f65b34"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake",
+      "old_blob": "b908e99393db0bb815d31e525939095c4691bd3d",
+      "new_blob": "383f6913aa4a251fade1fae8c70ece513e9673ee"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/finite_production_object_link_support.cmake",
+      "old_blob": null,
+      "new_blob": "f80b27dee1de878b87c46bb654b7109b90e32a4f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/pilgrimage_full10_baseline_host_fixture.cmake",
+      "old_blob": null,
+      "new_blob": "98aaac95b4d33bb823703fb2718476cd0dff9f15"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake",
+      "old_blob": "978e5eb6bd1d6a4b735537febfc0b514bf8ccfdf",
+      "new_blob": "3663b7091a119018623b5fceb554302f4528354e"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/character_knight_effectiveness12004.hpp",
+      "old_blob": null,
+      "new_blob": "9a04dcdabbc9af4bc418557961bb7a2e9b9864d9"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/character_knight_effectiveness12004_owned_string.hpp",
+      "old_blob": null,
+      "new_blob": "9cb673e4aafcad2952ed7532ad52e274325337ec"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/character_skill_effect12004_mailbox.hpp",
+      "old_blob": "b9b3a10b096d9d69e322db1fad4fe0d2ba77b76f",
+      "new_blob": "1e10fcf0ef6419044e151a5448b0b8ad16f37337"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_inventory_close_ledger12004.hpp",
+      "old_blob": null,
+      "new_blob": "db62878941d7a5a69e15a3a36b271f968bc9dfb5"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_inventory_close_post12004.hpp",
+      "old_blob": null,
+      "new_blob": "d067b27a1b6b136f162e9dd47d48243b131513a2"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_inventory_window12004_transport.hpp",
+      "old_blob": "4625f646a03b25f628dd8c7b54e9b62ec0a04279",
+      "new_blob": "1e5d5d2d110580e7af7938fe5af9902022703a58"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/player_inventory_window_native12004.hpp",
+      "old_blob": "f0c9036305daa3f026fc7717ca28187209b12654",
+      "new_blob": "6cee002b47e4734f1d7ff410fe43ad38812caba0"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "old_blob": "4ac025a20b1546b3bef1d89304df8f89d76c94fe",
+      "new_blob": "c174d95bf04e4058fa51f54c8469189cfb8d2184"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "old_blob": "518fca02ba4276fa6ba48f90ed142afa5acb0d5a",
+      "new_blob": "b9a5350f2ec7c18907758487832e0562e0fe7b7e"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_core.inc",
+      "old_blob": null,
+      "new_blob": "30e647db53152a0c5c9642d557187390e7839db5"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_json.inc",
+      "old_blob": null,
+      "new_blob": "395179ffb9c6e43b11ee598e9a1d3499102d9a2b"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_native.inc",
+      "old_blob": null,
+      "new_blob": "407a2d296e8769ce2634615ad8d25053e620e80b"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_pins.inc",
+      "old_blob": null,
+      "new_blob": "bbca3e7ccd92cbc93d9097b01b9aca65a57358b4"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_knight_effectiveness12004_request.inc",
+      "old_blob": null,
+      "new_blob": "bfb158fa759069db72aff673b65eb1aff9e2eab6"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_skill_effect12004.cpp",
+      "old_blob": "b8721f7f0cf97001144123f3a9376a5831d25f5a",
+      "new_blob": "17d0b7144a7fc0dd2a32da1d14a740497e509117"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_skill_effect12004_json.cpp",
+      "old_blob": "93d4584e585df00fbedcc667742a837a8babef8f",
+      "new_blob": "17d57ec4f94830bc5ded04ea49442094f17dd611"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_skill_effect12004_mailbox.cpp",
+      "old_blob": "5937c2c18c4ac1363c1f9074496fcc331b501527",
+      "new_blob": "af44f36bedf71a5e4535a158390c11b9e1244799"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_skill_effect12004_native.cpp",
+      "old_blob": "ecd1c72bc1159ba66e7e443fbdc7d075418b59d6",
+      "new_blob": "a538d949890f7e5b9a7ca3d7f4d22ada2330e2a1"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/character_skill_effect12004_request.cpp",
+      "old_blob": "d55cb736b16bcfbde4986ea35c72a08d07b91a3f",
+      "new_blob": "ff0df9b8bddb525edf58c0a5d432b48a74b3491c"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+      "old_blob": "c49a8c7a10a7b54830ecc7ad23fe2e7b9b65e3e8",
+      "new_blob": "3c9eb48ce5a1bf31822ea9221c77884b09866be1"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/player_inventory_close12004.inc",
+      "old_blob": null,
+      "new_blob": "b306d84d1244ff7e2e3fdaf32f51014bfce428c4"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/player_inventory_window12004_json.cpp",
+      "old_blob": "919811bf8eb2cd4f86324e84043c934207f9d74a",
+      "new_blob": "7900fdec90f736c2a37db8b50f354d217b402d7e"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/player_inventory_window12004_transport.cpp",
+      "old_blob": "d5d292b14c27ad08d91c306610eec1d5012f4c35",
+      "new_blob": "dfad5466113b0d7d6c103f537842aeefeae35c2f"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tests/b11_stage5_owned/baseline_activity_typed_full_cost_v1.cpp",
+      "old_blob": null,
+      "new_blob": "e4c9597d4e5e8d2c2423e2e6e763774a1e82ee08"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tests/character_knight_effectiveness12004_factory_fixture.cpp",
+      "old_blob": null,
+      "new_blob": "8fb0822c256844d7a8a4440e0846483301edfcb8"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tests/character_knight_effectiveness12004_owned_fixture.cpp",
+      "old_blob": null,
+      "new_blob": "d168991d86a4e0bd87dafcb24f6e602ad15b5846"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tests/player_inventory_close_owned_test.cpp",
+      "old_blob": null,
+      "new_blob": "82b4ff46546911dd63c85ed1833f341aa933142e"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tests/player_inventory_close_wire_owned_test.cpp",
+      "old_blob": null,
+      "new_blob": "4b73e8cf97b44c1c1c9a24ca0e4bf5111544b5a4"
+    }
+  ],
+  "focused_production_diff": "diff --git a/ck3_autonomous_player/native_bridge/CMakeLists.txt b/ck3_autonomous_player/native_bridge/CMakeLists.txt\nindex 581ca1d84..bec24130a 100644\n--- a/ck3_autonomous_player/native_bridge/CMakeLists.txt\n+++ b/ck3_autonomous_player/native_bridge/CMakeLists.txt\n@@ -10100,2 +10100,8 @@ include(cmake/player_inventory_window12004.cmake)\n # Finite B11 composition consumers; no production behavior change.\n include(cmake/b11_minimal_consumers.cmake)\n+\n+# Retained exact original reader and source-immutable finite link support.\n+if(BUILD_TESTING)\n+  include(cmake/pilgrimage_full10_baseline_host_fixture.cmake)\n+endif()\n+include(cmake/finite_production_object_link_support.cmake)\ndiff --git a/ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake b/ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake\nindex b908e9939..383f6913a 100644\n--- a/ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake\n+++ b/ck3_autonomous_player/native_bridge/cmake/character_skill_effect12004.cmake\n@@ -1,3 +1,3 @@\n-﻿# Reusable exact4 one-actor skill/devotion/original-text READ observer only.\n+# Reusable exact4 one-actor skill/devotion/original-text READ observer only.\n option(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1\n   \"Compile exact4 character skill effect readonly observer (unqualified default OFF)\" OFF)\n@@ -36,2 +36,28 @@ if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)\n   endif()\n endif()\n+\n+# Fixed actual-Character knight total/original-text observer. Reuses the five\n+# existing production TUs, the same default-OFF actor compile flag and the same\n+# typed owner executor. The new SDK capability remains independently opt-in.\n+if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1 AND BUILD_TESTING)\n+  add_executable(xar_ck3_character_knight_effectiveness12004_owned_fixture EXCLUDE_FROM_ALL\n+    tests/character_knight_effectiveness12004_owned_fixture.cpp\n+    src/character_skill_effect12004.cpp\n+    src/character_skill_effect12004_json.cpp\n+    src/character_skill_effect12004_request.cpp)\n+  target_link_libraries(xar_ck3_character_knight_effectiveness12004_owned_fixture PRIVATE xar_bridge_protocol)\n+  add_executable(xar_ck3_character_knight_effectiveness12004_factory_fixture EXCLUDE_FROM_ALL\n+    tests/character_knight_effectiveness12004_factory_fixture.cpp\n+    src/character_skill_effect12004_native.cpp)\n+  target_compile_definitions(xar_ck3_character_knight_effectiveness12004_factory_fixture PRIVATE\n+    XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1=1)\n+  foreach(_knight_target IN ITEMS xar_ck3_character_knight_effectiveness12004_owned_fixture\n+      xar_ck3_character_knight_effectiveness12004_factory_fixture)\n+    target_compile_features(${_knight_target} PRIVATE cxx_std_20)\n+    target_include_directories(${_knight_target} PRIVATE include src research)\n+    target_compile_definitions(${_knight_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)\n+    if(MSVC)\n+      target_compile_options(${_knight_target} PRIVATE /UNDEBUG /Od /GL- /W4 /permissive- /EHsc /utf-8)\n+    endif()\n+  endforeach()\n+endif()\ndiff --git a/ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake b/ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake\nindex 978e5eb6b..3663b7091 100644\n--- a/ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake\n+++ b/ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake\n@@ -1,4 +1,4 @@\n ﻿option(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1\n-  \"Compile exact4 current-player inventory read/normal-open/independent-post\" OFF)\n+  \"Compile exact4 current-player inventory read/open/close/independent-post\" OFF)\n if(XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1)\n   if(NOT WIN32)\n@@ -24,7 +24,16 @@ if(BUILD_TESTING)\n   target_compile_features(xar_ck3_12004_player_inventory_window_wire_owned_fixture PRIVATE cxx_std_20)\n   target_include_directories(xar_ck3_12004_player_inventory_window_wire_owned_fixture PRIVATE include)\n+  add_executable(xar_ck3_12004_player_inventory_close_owned_fixture EXCLUDE_FROM_ALL\n+    tests/player_inventory_close_owned_test.cpp)\n+  target_compile_features(xar_ck3_12004_player_inventory_close_owned_fixture PRIVATE cxx_std_20)\n+  target_include_directories(xar_ck3_12004_player_inventory_close_owned_fixture PRIVATE include)\n+  add_executable(xar_ck3_12004_player_inventory_close_wire_owned_fixture EXCLUDE_FROM_ALL\n+    tests/player_inventory_close_wire_owned_test.cpp src/player_inventory_window12004_json.cpp)\n+  target_compile_features(xar_ck3_12004_player_inventory_close_wire_owned_fixture PRIVATE cxx_std_20)\n+  target_include_directories(xar_ck3_12004_player_inventory_close_wire_owned_fixture PRIVATE include)\n   if(MSVC)\n-    foreach(_t xar_ck3_12004_player_inventory_open_post_owned_fixture xar_ck3_12004_player_inventory_window_wire_owned_fixture)\n-      target_compile_options(${_t} PRIVATE /UNDEBUG /Od /EHsc /utf-8)\n+    foreach(_t xar_ck3_12004_player_inventory_open_post_owned_fixture xar_ck3_12004_player_inventory_window_wire_owned_fixture\n+        xar_ck3_12004_player_inventory_close_owned_fixture xar_ck3_12004_player_inventory_close_wire_owned_fixture)\n+      target_compile_options(${_t} PRIVATE /UNDEBUG /Od /GL- /EHsc /utf-8)\n       target_compile_definitions(${_t} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)\n     endforeach()\ndiff --git a/ck3_autonomous_player/native_bridge/src/bridge.cpp b/ck3_autonomous_player/native_bridge/src/bridge.cpp\nindex 518fca02b..b9a5350f2 100644\n--- a/ck3_autonomous_player/native_bridge/src/bridge.cpp\n+++ b/ck3_autonomous_player/native_bridge/src/bridge.cpp\n@@ -15752,5 +15752,5 @@ void RunConnectedSession(\n #endif\n #if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)\n-        if (step == xar::ck3_12004::character_skill_effects::kStep) {\n+        if (xar::ck3_12004::character_skill_effects::IsStep(step)) {\n           std::string response, failure;\n           xar::ck3_12004::character_skill_effects::Handle(\ndiff --git a/ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp b/ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp\nindex c49a8c7a1..3c9eb48ce 100644\n--- a/ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp\n+++ b/ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp\n@@ -716,4 +716,5 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,\n #include \"faith_power_presentation_receiver_pins12004.inc\"\n #include \"faith_power_presentation_ui12004.inc\"\n+#include \"player_inventory_close12004.inc\"\n #include \"faith_power_tooltip_position_lease12004.inc\"\n } // namespace\n@@ -932,5 +933,5 @@ inventory_open12004::Inputs InventoryWindowInputs12004(\n   out.context=&adapter;out.read_admission=&ReadInventoryWindowAdmission12004;\n   out.claim_once=&ClaimInventoryWindowIntent12004;out.owner_mailbox_sequence=in.owner_mailbox_sequence;\n-  out.enabled=in.open_enabled;out.loaded_gui_sources_bound=in.loaded_gui_sources_verified;\n+  out.enabled=in.open_enabled||in.close_enabled;out.loaded_gui_sources_bound=in.loaded_gui_sources_verified;\n   // These canonical hashes are supplied only after the worker's real fixed\n   // managed-profile verifier plus the extra actual stock inventory file check.\n@@ -953,4 +954,7 @@ bool ReadPlayerInventoryWindowNative12004(const ZhongguoScoreboardNativeEnvironm\n     code_pins=inventory_open12004::Source(env);\n     const bool ok=inventory_open12004::Read(env,inputs,admission,state,reason);\n+    if(in.close_enabled&&(!ok||!inventory_close12004::LoadedCloseSlots(env,state.view))){\n+      code_pins=false;reason=\"inventory_close_loaded_method_or_slots_unverified\";return false;\n+    }\n     out=inventory_open12004::Project(state);return ok;\n   }catch(...){reason=\"inventory_native_read_exception\";return false;}\n@@ -970,4 +974,18 @@ PlayerInventoryWindowNativeResult12004 OpenPlayerInventoryWindowNative12004(\n   }catch(...){out.status=\"inventory_native_open_adapter_exception\";return out;}\n }\n+PlayerInventoryWindowNativeResult12004 ClosePlayerInventoryWindowNative12004(\n+    const ZhongguoScoreboardNativeEnvironmentV1& env,const PlayerInventoryWindowNativeInputs12004& in) noexcept {\n+  PlayerInventoryWindowNativeResult12004 out{};out.status=\"inventory_close_private_disabled\";\n+  try {\n+    InventoryWindowCallbackAdapter12004 adapter{};const auto owner=InventoryWindowInputs12004(adapter,in);\n+    inventory_close12004::Inputs inputs{};inputs.owner=owner;inputs.explicit_close_enabled=in.close_enabled;\n+    inputs.ledger_context=&adapter;inputs.claim_close_once=&ClaimInventoryWindowIntent12004;\n+    const auto result=inventory_close12004::Close(env,inputs);\n+    out.before=inventory_open12004::Project(result.before);\n+    out.code_pins_verified=result.before.view&&inventory_close12004::LoadedCloseSlots(env,result.before.view);\n+    out.once_consumed=result.once_consumed;out.invoked=result.invoked;out.call_returned=result.call_returned;\n+    out.needs_recovery=result.needs_recovery;out.status=result.status;return out;\n+  }catch(...){out.status=\"inventory_native_close_adapter_exception\";return out;}\n+}\n #endif"
+}

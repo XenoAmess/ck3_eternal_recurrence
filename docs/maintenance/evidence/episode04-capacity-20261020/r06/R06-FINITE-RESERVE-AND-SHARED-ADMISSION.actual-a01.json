@@ -1,0 +1,103 @@
+{
+  "schema": "xar.e04.r06-next-reserve-only-and-shared-metadata-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:19:28.786798+00:00",
+  "budget_status": "GREEN",
+  "reservation_admitted": true,
+  "admitted": true,
+  "heavy_write_execution_admitted": false,
+  "native_build_execution_admitted": false,
+  "scene_execution_admitted": false,
+  "game_execution_admitted": false,
+  "shared_metadata_execution_admitted": true,
+  "scope_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+  "native_candidate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+  "scene_candidate_root_unallocated": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01",
+  "run_id_allocated": false,
+  "source_head_candidate_only": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree_candidate_only": "fee86631356f556271445157523c62abfd62951e",
+  "source_bound_subcaps_required": true,
+  "component_ceiling_bytes": {
+    "native_a40": 1073741824,
+    "scene_profile": 805306368,
+    "scene_driver": 1073741824,
+    "scene_raw": 268435456,
+    "scene_other": 268435456,
+    "shared_metadata": 134217728
+  },
+  "native_future_bytes": 1073741824,
+  "scene_future_bytes": 2415919104,
+  "shared_future_bytes": 134217728,
+  "aggregate_new_future_bytes": 3623878656,
+  "existing_legacy_C_balance_held_in_old_claim_bytes": 42132678,
+  "legacy_carried_by_task_id": "e04-capacity-resume-20261020-a01",
+  "new_claim_does_not_add_legacy_again": true,
+  "shared_aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+  "shared_aggregate_excludes": [
+    "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+    "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01"
+  ],
+  "shared_aggregate_ceiling_bytes": 134217728,
+  "all_threads_shared_metadata_collective_not_per_thread": true,
+  "shared_metadata_scope": "Small source-bound plans, runtime and case metadata, diagnostics and receipts only. No native build outputs, profile or media production before distinct subcaps. Native prepare subroot<=256KiB within the collective128MiB.",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T06:19:28.786382+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81529630720,
+      "available_to_caller_bytes": 81529630720,
+      "total_free_bytes": 81529630720,
+      "entire_volume_used_allocation_upper_bound_bytes": 429604315136,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T06:19:28.786382+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21687971840,
+      "available_to_caller_bytes": 21687971840,
+      "total_free_bytes": 21687971840,
+      "entire_volume_used_allocation_upper_bound_bytes": 478402035712,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_required_free_bytes": 29435815110,
+  "C_free_margin_bytes": 52093815610,
+  "C_projected_whole_volume_upper_bound_with_all_future_legacy_system_bytes": 437565293766,
+  "C_quota_margin_bytes": 521370426,
+  "finite_C_quota_bytes": 438086664192,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "quota_metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "D_heavy_write_execution_admitted": false,
+  "D_new_heavy_write_bytes": 0,
+  "D_floor_margin_bytes": 78917632,
+  "scene_normal_close_cleanup_hard_deadline_utc": "2026-10-20T08:00:00Z",
+  "minimum_normal_close_cleanup_reserve_seconds": 1020,
+  "minimum_scene_readiness_time_remaining_seconds": 2100,
+  "latest_normal_close_transition_utc": "2026-10-20T07:43:00Z",
+  "remaining_deadline_seconds": 6031.213,
+  "actual_native_qualification_not_yet_present": true,
+  "actual_runtime_not_yet_bound": true,
+  "proposal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FRESH-CAPACITY-PROPOSAL.actual-a01.json",
+    "bytes": 5194,
+    "sha256": "ad2a2e6f53d6f32ae11c76a195809d811d62cad2f7fef8796f1bb52e5e9ca85b"
+  },
+  "storage_policy_parameters": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "permanent_asset_index_read_no_deletion": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "root_authorization": "2026-10-20 Root authorized fresh bounded reopening only when C408GiB/safety fits: a40<=1GiB, one R06 scene2.25GiB, collective shared128MiB, deadline08Z unchanged, D heavy0. This receipt reserves once and admits metadata only, prior to exact producer/runtime subcaps.",
+  "physical_or_unused_credit_bytes": 0,
+  "closed_old_scopes_reissued": false,
+  "protected_baselines_deleted": false,
+  "automatic_quota_or_protection_renewal": false
+}

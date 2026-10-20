@@ -1,0 +1,163 @@
+{
+  "schema": "xar.e04.a40-native-runas-maintenance-launch.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:25:14.281125+00:00",
+  "parent_token": {
+    "sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+    "admin": false
+  },
+  "argv": [
+    "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe",
+    "-I",
+    "-S",
+    "-B",
+    "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+    "--expected-helper-sha256",
+    "7b9e55a91f0f06dd533ffe93a007e2e81a9fb1e46bdbe5440b5f17c0f3ace33f",
+    "--apply"
+  ],
+  "scope": "One reviewed fixed two-leaf maintenance; no arbitrary command or directory. No game/SDK/project-output EXE execution.",
+  "actual_child_exit_code": null,
+  "status": "PENDING_NATIVE_ADMIN_CHILD",
+  "source_facts": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+      "file_id": [
+        13886423844274364792,
+        "bead1200000004000000000000000000"
+      ],
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+        "bytes": 9066,
+        "sha256": "7b9e55a91f0f06dd533ffe93a007e2e81a9fb1e46bdbe5440b5f17c0f3ace33f"
+      },
+      "descriptor": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\maintain_a40_broker_root.py",
+        "file_id": [
+          13886423844274364792,
+          "bead1200000004000000000000000000"
+        ],
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 37892,
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            }
+          ],
+          "dacl_hex": "020058000300000000002400ff011f0001050000000000051500000020d03af247721a71cdb7f128e903000000001400ff011f0001010000000000051200000000001800ff011f0001020000000000052000000020020000"
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+      "file_id": [
+        13886423844274364792,
+        "b0ad1200000002000000000000000000"
+      ],
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+        "bytes": 1157,
+        "sha256": "9b8d2f551b4b2c305d551522008cd19d2e3aa0fdc932d425bcacdba96b4da1d1"
+      },
+      "descriptor": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-POLICY-EXACT-A40-ROOT.candidate-a01.json",
+        "file_id": [
+          13886423844274364792,
+          "b0ad1200000002000000000000000000"
+        ],
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 37892,
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            }
+          ],
+          "dacl_hex": "020058000300000000002400ff011f0001050000000000051500000020d03af247721a71cdb7f128e903000000001400ff011f0001010000000000051200000000001800ff011f0001020000000000052000000020020000"
+        }
+      }
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+      "file_id": [
+        13886423844274364792,
+        "b1ad1200000002000000000000000000"
+      ],
+      "pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+        "bytes": 1119,
+        "sha256": "80670b731a5e173301117546de4ffbf4b770e681cb264fbed596ecf611d5e6a6"
+      },
+      "descriptor": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\BROKER-INSTALLATION-MANIFEST-EXACT-A40-ROOT.candidate-a01.json",
+        "file_id": [
+          13886423844274364792,
+          "b1ad1200000002000000000000000000"
+        ],
+        "security": {
+          "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+          "dacl_present": true,
+          "control": 37892,
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            }
+          ],
+          "dacl_hex": "020058000300000000002400ff011f0001050000000000051500000020d03af247721a71cdb7f128e903000000001400ff011f0001010000000000051200000000001800ff011f0001020000000000052000000020020000"
+        }
+      }
+    }
+  ],
+  "held_source_count": 3
+}

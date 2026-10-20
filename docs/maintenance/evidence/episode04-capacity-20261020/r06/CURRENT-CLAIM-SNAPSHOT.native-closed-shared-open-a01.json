@@ -1,0 +1,132 @@
+{
+  "schema": "xar.e04.r06-capacity-native-closed-current-claim-snapshot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:43:22.002804+00:00",
+  "source_ledger": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 259424,
+    "sha256": "56c36b42a754ef48b35c833de6b396f3df1303dcab254ecec47afb18637b6424"
+  },
+  "current_claim": {
+    "state": "active",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "task_id": "e04-capacity-next-r06-20261020-a01",
+    "owner": "/root",
+    "at_utc": "2026-10-20T06:19:28.786798+00:00",
+    "review_at_utc": "2026-10-20T08:00:00Z",
+    "phase_kind": "native-incomplete-closed-scene-time-blocked-shared-metadata-only",
+    "reservation_metric": "future_additional_bytes_by_volume",
+    "reserved_future_bytes_by_volume": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "other_unspent_reservations_bytes_by_volume": {
+      "C:/": 0,
+      "D:/": 0
+    },
+    "legacy_counted_across_claims_by_task": "e04-capacity-resume-20261020-a01",
+    "native_a40_remaining_future_bytes": 0,
+    "scene_remaining_future_bytes": 0,
+    "shared_remaining_future_bytes": 134217728,
+    "native_build_execution_admitted": false,
+    "scene_execution_admitted": false,
+    "game_execution_admitted": false,
+    "shared_metadata_execution_admitted": true,
+    "heavy_write_execution_admitted_components": [],
+    "source_bound_subcaps_required": true,
+    "scope_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+    "approved_candidate_roots": {
+      "native_a40": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+      "scene_unallocated": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01"
+    },
+    "shared_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+    "shared_accounting_excludes": [
+      "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01"
+    ],
+    "component_ceiling_bytes": {
+      "native_a40": 1073741824,
+      "scene_profile": 805306368,
+      "scene_driver": 1073741824,
+      "scene_raw": 268435456,
+      "scene_other": 268435456,
+      "shared_metadata": 134217728
+    },
+    "reserve_admission": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+      "bytes": 4981,
+      "sha256": "8e7a1cac2ee78bf22f30b988f4282228a825b7a0cc6a73ca075fde26a9cdffd4"
+    },
+    "physical_cleanup_or_unused_credit_bytes": 0,
+    "scene_state": "time-blocked-unallocated-no-game-no-future",
+    "scene_reservation_revocation": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-UNALLOCATED-SCENE-RESERVATION-REVOKED.actual-a01.json",
+      "bytes": 1468,
+      "sha256": "84baa298cc8490ea84e6a657e154f5f818b327e8197f86edcde090bdec435b44"
+    },
+    "native_source_bound_capacity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "bytes": 32273,
+      "sha256": "fc704e0e9705d1e15160979faf6982f4a4b2e434810b172d899e8954d99f144b"
+    },
+    "native_a40_state": "closed-incomplete-unexecuted-selected-stages-cancelled-no-Q",
+    "native_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "producer_plan": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\A40-PRODUCER-PLAN.prepared-a02.json",
+      "bytes": 46163,
+      "sha256": "dfeeeaa1c6e44d566eead3add3578317cd79e97302d1cb11ea7fe9db5748e5a0"
+    },
+    "scene_time_blocked": true,
+    "scene_time_block_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\R06-NEW-SCENE-TIME-BLOCKED.actual-a01.json",
+      "bytes": 4419,
+      "sha256": "930a1a1e381e451c0ce2a682fb48e355d51b2f86cb48ce33180dc999542b514d"
+    },
+    "native_a40_settlement": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+      "bytes": 11632,
+      "sha256": "f8a14bf0ee703ece88137d63f87a07d1c64a6a2013c7a7732cdf66d19325ae6c"
+    },
+    "native_qualification_granted": false
+  },
+  "all_active_balances": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-next-r06-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "current_state": "native-incomplete-closed-no-Q-scene-time-blocked-shared-finalization-open",
+  "old_legacy_carry_is_not_dropped_or_reissued": true,
+  "historical_admissions_are_not_current_execution_authority": true
+}

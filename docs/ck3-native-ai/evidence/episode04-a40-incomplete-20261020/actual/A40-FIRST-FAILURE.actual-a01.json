@@ -1,0 +1,148 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:57:01.772793+00:00",
+  "schema": "xar.e04.a40-system-root-admission-failure.v1",
+  "status": "PRODUCTION_BUILD_SUCCEEDED_SYSTEM_ROOT_SCOPE_REJECTED",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\A40-PRODUCER-PLAN.prepared-a02.json",
+    "bytes": 46163,
+    "sha256": "dfeeeaa1c6e44d566eead3add3578317cd79e97302d1cb11ea7fe9db5748e5a0"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 32273,
+    "sha256": "fc704e0e9705d1e15160979faf6982f4a4b2e434810b172d899e8954d99f144b"
+  },
+  "producer_exit_code": 1,
+  "production_build_succeeded": true,
+  "production_linked_artifacts": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+        "bytes": 58673,
+        "sha256": "ccd37a27ae1812810510d7e14cb232e9a183b8c44201ad5ac69feca2f7ffa759"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "bytes": 658944,
+      "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332",
+      "file_api_target": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      }
+    }
+  ],
+  "phase": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\result.actual.json",
+    "bytes": 18198,
+    "sha256": "1e6f14fe3eb2d8f310cb7a7963e8f18502133a59fc92fa98b73d51661f863dce"
+  },
+  "phase_intent": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\intent.actual.json",
+    "bytes": 17478,
+    "sha256": "5fbaa90f0d05e345d48cda9a749fd3b81e7304cc65cf62eb214195d213a6103f"
+  },
+  "phase_stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\stdout.txt",
+    "bytes": 101694,
+    "sha256": "20251ab90d162c3ce172543495a0a11552ed269c67915ee7ad9236413d67d28e"
+  },
+  "phase_stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "producer_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\native-msvc-result.json",
+    "bytes": 1929,
+    "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+  },
+  "configure_log": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\msvc-configure.log",
+    "bytes": 921,
+    "sha256": "4077afac7aec5696a23c8651454194a054ab38a847ac7cd44ef5e140994dc01e"
+  },
+  "build_log": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\msvc-build.log",
+    "bytes": 85918,
+    "sha256": "df63204cd5f307d29a6418bbc6fecf35d1505336281ae973d71da059d8331e3e"
+  },
+  "compile_commands": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\compile_commands.json",
+    "bytes": 4545719,
+    "sha256": "df7f1dbe3a895ac447a6dd135cb0d720b1deabcd7a88b3fa7699c319d1d29721"
+  },
+  "manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\manifest.json",
+    "bytes": 3630,
+    "sha256": "60174d622849921cfb7df3354ec14d5389650a770f6b02e6e28f8f5ad3007014"
+  },
+  "client_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\receipt.json",
+    "bytes": 5443,
+    "sha256": "dce3df11055a4643d7d7dd365a8194bd65db7be6060e3cbf8db366d4dfb1d452"
+  },
+  "actual_protected_SYSTEM_rejection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\protected-worker-receipt.json",
+    "bytes": 1174,
+    "sha256": "7faa5acb8209834e81732b6cad5ea003e6347b57d136e169ea0540f68681fa32"
+  },
+  "installed_policy_before": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "installed_manifest_before": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-manifest.json",
+    "bytes": 1120,
+    "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+  },
+  "installed_runtime_seal_before": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\defender-exe-exclusions\\20261020T065344Z-fbf6a525\\broker-proof-6566fc95b8174fd9b56ad15ec4fbf490\\installed-runtime-seal.json",
+    "bytes": 95324,
+    "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2"
+  },
+  "underlying_error": "Build/output is outside configured project build roots",
+  "underlying_error_stage": "producer-validation",
+  "outer_client_error": "Protected result EXE rows differ from exact requested rows",
+  "settings_mutation_calls": 0,
+  "SYSTEM_verified": false,
+  "UI_cold_executed": false,
+  "worker_build_executed": false,
+  "any_project_EXE_executed": false,
+  "current_root_bytes": 407622072,
+  "aggregate_peak_bytes": 407603874,
+  "qualification_granted": false,
+  "next_scope": "Keep same byte-identical production outputs; diagnose installed broker allowed-build-root contract, no broad drive allowlist and no CMake/native rewrite."
+}

@@ -1,0 +1,117 @@
+{
+  "schema": "xar.e04.r06.independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:11:37.910092+00:00",
+  "source": "Readonly four-source review with only exact delegated prepare/launcher call-chain reads; no tests/SDK/game/screen/EXE payload reads/builds or repository writes",
+  "reviewed_source_pins": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T07:06:58.611671+00:00",
+    "source": "Read-only exact four-source copies for independent review; taskbus register/poll/list actual0",
+    "files": [
+      {
+        "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+        "bytes": 1558,
+        "sha256": "2975be79f41b16c6a46b5481cc450b31e8a730a6fbe6c83d7c98b1567c7b654e",
+        "local_review_copy": "C:\\ck3-e04-resume-20261020-a01\\r06-independent-review\\r10_prepare.json"
+      },
+      {
+        "relative_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+        "bytes": 15277,
+        "sha256": "2a61c8b102cd6fb3a2bb14dd87a4d3782aa5c7c6b5677bdbe528cab00c0551c7",
+        "local_review_copy": "C:\\ck3-e04-resume-20261020-a01\\r06-independent-review\\r10_prepare_adapter.py"
+      },
+      {
+        "relative_path": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+        "bytes": 40275,
+        "sha256": "43cc9de764423c0be29bab0702e423b103de14aeb2cbcbae963d0e6aa2ce5480",
+        "local_review_copy": "C:\\ck3-e04-resume-20261020-a01\\r06-independent-review\\r06_refill_one_day.py"
+      },
+      {
+        "relative_path": "tools/test_r06_refill_one_day.py",
+        "bytes": 10099,
+        "sha256": "b62add9dbd861cf64412cd5d51ae42dc7986d9a87ec3198d1dc16b3997941b6d",
+        "local_review_copy": "C:\\ck3-e04-resume-20261020-a01\\r06-independent-review\\test_r06_refill_one_day.py"
+      }
+    ]
+  },
+  "relevant_dependency_pins": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/prepare_live_refill_add.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\prepare_live_refill_add.py",
+        "bytes": 22265,
+        "sha256": "d83aa0b26718d2eec154185018b29b7de5d07863280da11e3d5155ee94d314fc"
+      },
+      "line_ranges": [
+        [
+          202,
+          204
+        ],
+        [
+          239,
+          250
+        ]
+      ]
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/launch_live_refill_add.py",
+      "file": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\launch_live_refill_add.py",
+        "bytes": 8752,
+        "sha256": "e6959d2818db6dd458740dcd1a9d2a48e1b94d194e455a66e03f2b602fc2224b"
+      },
+      "line_ranges": [
+        [
+          21,
+          60
+        ],
+        [
+          80,
+          95
+        ]
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P1",
+      "file": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "lines": [
+        125,
+        129,
+        510,
+        512
+      ],
+      "title": "Qualified observer SHA is checked only inside old receipts, not against the file launched",
+      "trigger": "After actual Q/build/SYSTEM evidence is frozen, overwrite or rebuild the same named observer path. The settings still name the old SHA. verify_producer sees an existing file and finds the old path/SHA in the old Q and SYSTEM, so it accepts; the launcher then Popen executes the changed bytes.",
+      "confirmed_call_chain": "R06 verifies exe.name and is_file then recursively matches stored path/SHA in Q/SYSTEM. prepare_live_refill_add.py explicitly records exe_content_rehashed_here=False. launch_live_refill_add.py only hashes PREPARED and launches native_argv[0] without rehashing that observer.",
+      "minimum_fix": "Immediately before observer launch, hash only the exact admitted observer path and compare its bytes/SHA with the Q/SYSTEM-bound identity. Rechecking only at initial verify_producer leaves the intervening camera wait open to the same drift. No whole EXE directory scan or guard exception is needed."
+    },
+    {
+      "priority": "P2",
+      "file": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "lines": [
+        450,
+        489,
+        497,
+        510,
+        512
+      ],
+      "title": "Census/admission may expire during the later canonical camera wait",
+      "trigger": "Supply actual fresh admission and complete3+1 samples at line450. Keep the paused native frame unchanged, but start the canonical camera after301 seconds of the allowed600-second wait. The normal2100-second room can still be ample. Launch proceeds with metadata that validate_admission would now reject as older than300 seconds.",
+      "confirmed_call_chain": "validate_admission checks each sample age and admission age only before full preparation and camera-awaiting. After camera signal, the code checks frame identity/revision then launches. Existing prepare/launcher validation checks scope and argv but has no prepared-age or census-age guard.",
+      "minimum_fix": "Repeat validate_admission against the pinned same admission immediately after canonical camera completion and immediately before claiming/starting the observer. Expired evidence must stop before launch/Arm; preserve the existing300-second limit and obtain genuinely new evidence in any subsequent authorized attempt."
+    }
+  ],
+  "review_boundary": "Only concrete triggerable defects reported. Other reviewed control paths are not promoted to actual runtime qualification; prior16focused+1R04 facts are not recounted as new tests.",
+  "specific_control_observations": [
+    "One exact_day call; original Arm/Resume claims and unknown-clock state retained; no second exact_day or unknown-action retry located in this reviewed path.",
+    "Post-exit guarded normal calls require actual paired() and exclude Arm/Resume/modal mutation; cleanup deliberately restores original public queue for pause/cancel/OFF/Save.",
+    "Save is after require_restored_for_save; launch_claimed with no verified restoration withholds Save, including a Popen exception with process=None.",
+    "Three plus fourth snapshot completeness/freshness/OS generation rows and positive reserve are checked; the confirmed issue is their age at later launch, not missing initial reserve validation."
+  ],
+  "tests_run": 0,
+  "repository_mutation": false,
+  "helper_mutation": false,
+  "actual_a40_READY_ADD_credit": false
+}

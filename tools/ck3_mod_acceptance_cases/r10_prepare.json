@@ -1,6 +1,6 @@
 {
   "schema": "xar.e04.r10-common-preparation.v1",
-  "scope": "normal source readiness pilot with optional explicit R04 county observation through the same common CaseClient",
+  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county or R06 refill observation through the same common CaseClient",
   "formal_ABC_executor_implemented": false,
   "formal_ABC_arm": false,
   "normal_Save_performed_by_case": false,
@@ -13,6 +13,18 @@
     "camera_marker": "before-action-camera-{awaiting,started}.json",
     "normal_close_owner": "shared entry/CaseClient",
     "R04_entire_card_closed": false
+  },
+  "optional_r06_refill_one_day": {
+    "settings": "case_inputs.r06_refill_one_day",
+    "maximum_actual_days": 1,
+    "maximum_Move_attempts": 0,
+    "maximum_observer_launches": 1,
+    "native_window_ms": 30000,
+    "requires_actual_worker_READY": true,
+    "requires_source_bound_native_qualification": true,
+    "coordination": "r06-before-observer-{awaiting,started}.json",
+    "normal_close_owner": "shared entry/CaseClient",
+    "full_R06_qualified": false
   },
   "pending": [
     "Root common S0 selection and normal Save after actual route/site pilot",

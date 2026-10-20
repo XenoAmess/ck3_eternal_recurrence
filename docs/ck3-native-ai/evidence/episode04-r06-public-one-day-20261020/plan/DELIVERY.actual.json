@@ -1,0 +1,94 @@
+{
+  "schema": "xar.e04.r06.minimal_readonly_plan_delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T06:26:44.307000+00:00",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "public_actor_status": "EXACT_IMPLEMENTATION_GAP_IDENTIFIED_NOT_IMPLEMENTED",
+  "selected_single_save_sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+  "source_original_pins_rechecked": true,
+  "saved_payload_read_or_rehashed": false,
+  "EXE_payload_reads": 0,
+  "SDK_calls": 0,
+  "game_launches": 0,
+  "screen_calls": 0,
+  "DR_calls": 0,
+  "repo_edits": 0,
+  "D_writes": 0,
+  "capacity_scope": "parent collective128MiB metadata; this package<=256KiB; native/game/scene execution not admitted here",
+  "package_ceiling_bytes": 262144,
+  "pinned_files_bytes": 81565,
+  "files": [
+    {
+      "name": "audit_sources.py",
+      "bytes": 10602,
+      "sha256": "135d0c800323e48b85a2fb4c18bca993b497eab2ac6dc959a4cb59e5bc3c3a97"
+    },
+    {
+      "name": "BUS-CHECK.actual.json",
+      "bytes": 1857,
+      "sha256": "9ef99ecb079e26ad7e4f91c7f146cca0ed3eace9a8ca9c51405492d961c405dc"
+    },
+    {
+      "name": "check_ready_contract.py",
+      "bytes": 3579,
+      "sha256": "2000457c4620d98fa15846266165ae9964cc34515baa847cbfdd8f6929ef36d8"
+    },
+    {
+      "name": "inspect_r06.py",
+      "bytes": 3219,
+      "sha256": "cea2bdcaf01d89471752cc2dadd40de8d3cd5ec059aa282fa5a55978d8642506"
+    },
+    {
+      "name": "PURE-CONTRACT-CHECK.actual.json",
+      "bytes": 1819,
+      "sha256": "80191f6091f1d2f454a9c14efd19f90b66f2a86a8cd3ca1d4fea7530a0fc7655"
+    },
+    {
+      "name": "R06-ADAPTER-CONTRACT.UNIMPLEMENTED.json",
+      "bytes": 4510,
+      "sha256": "135f90a269f1445688299f3a50aadfdadb83e0e8f176e7fa664d276bcda68045"
+    },
+    {
+      "name": "R06-MINIMAL-PLAN.md",
+      "bytes": 11086,
+      "sha256": "c8c9db680e87508f278e6abdae3daa6da2597c1a1f6783f2c8ca3a8efb4b5088"
+    },
+    {
+      "name": "seal_r06.py",
+      "bytes": 2750,
+      "sha256": "0055f37e572eb024ac15f6f3b08766910e00dd569f600039435781ceaa230b4d"
+    },
+    {
+      "name": "SOURCE-AUDIT.actual.json",
+      "bytes": 39894,
+      "sha256": "6096c8870c99b4925c1e2e75e35b67d9de92eaa1763156072fc8ceaea9dd34ba"
+    },
+    {
+      "name": "START.actual.json",
+      "bytes": 2249,
+      "sha256": "f2b3d7f4fb1a4b5b9c8cc3e0dd05a5f3aa8155a24a7225c41b31d1cea938efbb"
+    }
+  ],
+  "capacity_at_close": {
+    "C:/": {
+      "total": 511133945856,
+      "used": 429604577280,
+      "free": 81529368576
+    },
+    "D:/": {
+      "total": 500090007552,
+      "used": 478402179072,
+      "free": 21687828480
+    }
+  },
+  "review_at_utc": "2026-10-20T08:00:00Z",
+  "automatic_renewal": false,
+  "retention_reason": "Small source-bound plan needed for the one Root-owned R06 continuation; review after integration or deadline",
+  "all_future_READY_ADD_business_or_full_card_credit": false,
+  "pure_contract_checks": {
+    "status": "PASS",
+    "cases": 7,
+    "actual_native_qualification": false
+  }
+}

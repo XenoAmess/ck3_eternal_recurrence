@@ -1,0 +1,229 @@
+{
+  "schema": "xar.e04.a40-native-incomplete-cancelled-purpose-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:41:45.530845+00:00",
+  "source": "Exact stopped owner attempt closure, original terminal results, independent bounded Path.stat/FileStandardInfo metadata measurement and fresh Windows volumes; Root cancellation of remaining selected stages.",
+  "remaining_stage_cancellation_authority": "Root-explicit-cancel-unexecuted-SYSTEM-retry-UI-worker-V5-after-OS1223",
+  "closure_due_to_original_authorization_expiry": false,
+  "owner_attempt_closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+    "bytes": 12374,
+    "sha256": "f00c9d4f73aba8135d760f0a8ebd95dd24fe4090c1e8f32eedd23fa76415d3d7"
+  },
+  "status": "CLOSED_INCOMPLETE_REMAINING_SELECTED_STAGES_CANCELLED_NO_NATIVE_QUALIFICATION",
+  "objective_achieved": false,
+  "native_qualification_granted": false,
+  "selected_scope_terminal": {
+    "main_production_compile_link": "SUCCEEDED; four linked artifacts preserved",
+    "main_public_producer": "EXIT1_AT_SYSTEM_REGISTRATION_ROOT_SCOPE_REJECTION",
+    "main_exact_SYSTEM3": "NOT_QUALIFIED",
+    "exact_root_admin_maintenance": "NATIVE_RUNAS_OS1223; no child handle or maintenance receipt",
+    "public_no_work_resume": "NOT_EXECUTED",
+    "UI_finite_cold": "NOT_EXECUTED",
+    "worker_live_build_SYSTEM": "NOT_EXECUTED",
+    "worker_V5_build_SYSTEM_and_two_finite_cases": "NOT_EXECUTED",
+    "scene_game_SDK_live_observer": "NOT_STARTED_BY_THIS_EXECUTOR"
+  },
+  "unexecuted_selected_stages_cancelled": true,
+  "actual_native_aggregate": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T07:41:45.530469+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+    "logical_bytes": 407679939,
+    "allocated_unique_bytes": 410566320,
+    "files": 1501,
+    "allocation_source": "Path.stat stable identity and Windows FileStandardInfo AllocationSize",
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true,
+    "elapsed_seconds": 0.49
+  },
+  "owned_writer_observation": {
+    "observed_at_utc": "2026-10-20T07:34:27.994869+00:00",
+    "matching_owned_active_processes": [],
+    "owned_writer_count_excluding_this_metadata_observer": 0,
+    "current_fixed_SYSTEM_task": {
+      "running_instances": 0,
+      "state": 3,
+      "last_task_result": 0,
+      "definition_and_ACL": {
+        "task_xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <SecurityDescriptor>O:BAG:BAD:P(A;;GA;;;SY)(A;;GA;;;BA)(A;;GRGX;;;S-1-5-21-4063940640-1897558599-686929869-1001)</SecurityDescriptor>\r\n    <Description>Only declared local CK3 project executable Defender path exclusions.</Description>\r\n    <URI>\\XAR CK3 Project EXE Broker\\RegisterDeclaredProjectExecutables</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-5-18</UserId>\r\n      <RunLevel>HighestAvailable</RunLevel>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT4M</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>Queue</MultipleInstancesPolicy>\r\n    <IdleSettings>\r\n      <Duration>PT10M</Duration>\r\n      <WaitTimeout>PT1H</WaitTimeout>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers />\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe</Command>\r\n      <Arguments>-I -S -B \"C:\\Program Files\\XAR CK3 Project EXE Broker\\broker_bootstrap.py\" --config \"C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json\"</Arguments>\r\n      <WorkingDirectory>C:\\Program Files\\XAR CK3 Project EXE Broker</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>",
+        "action": {
+          "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe",
+          "arguments": "-I -S -B \"C:\\Program Files\\XAR CK3 Project EXE Broker\\broker_bootstrap.py\" --config \"C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json\"",
+          "working_directory": "C:\\Program Files\\XAR CK3 Project EXE Broker"
+        },
+        "principal": {
+          "user_id": "S-1-5-18",
+          "logon_type": 5,
+          "run_level": 1
+        },
+        "task_acl": {
+          "owner_sid": "S-1-5-32-544",
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 1179817,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            }
+          ],
+          "sddl": "O:BAD:PAI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-4063940640-1897558599-686929869-1001)"
+        },
+        "folder_acl": {
+          "owner_sid": "S-1-5-32-544",
+          "dacl_protected": true,
+          "aces": [
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-18"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 2032127,
+              "sid": "S-1-5-32-544"
+            },
+            {
+              "type": 0,
+              "flags": 0,
+              "mask": 1179817,
+              "sid": "S-1-5-21-4063940640-1897558599-686929869-1001"
+            }
+          ],
+          "sddl": "O:BAD:PAI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-4063940640-1897558599-686929869-1001)"
+        },
+        "triggers_count": 0,
+        "allow_demand_start": true,
+        "multiple_instances": 1
+      }
+    },
+    "unattributed_hidden_processes": [],
+    "read_errors": [
+      "Original producer PID28044 creation FILETIME was not captured while alive; its original Popen terminal exit1 is preserved, not guessed from reused PID.",
+      "Original compiler/CMake/Ninja descendant PID+creation times were not separately captured; successful synchronous build return is retained in actual producer result.",
+      "Fixed SYSTEM broker does not expose PID/creation FILETIME in its protected result; current fixed task actual running_instances=0 readback is preserved.",
+      "Maintenance ordinary parent PID/creation FILETIME was not captured in its original launch receipt; native result and tool session11237 terminal exit1 are preserved. OS runas returned false/1223 with no child handle, so no administrator child PID/FILETIME is fabricated."
+    ],
+    "closure_observer": {
+      "pid": 34940,
+      "creation_filetime": 134369552667135188,
+      "role": "this small read-only closure observer; terminates after writing receipt"
+    },
+    "global_process_absence_asserted": false
+  },
+  "historical_process_identity_read_errors_preserved": [
+    "Original producer PID28044 creation FILETIME was not captured while alive; its original Popen terminal exit1 is preserved, not guessed from reused PID.",
+    "Original compiler/CMake/Ninja descendant PID+creation times were not separately captured; successful synchronous build return is retained in actual producer result.",
+    "Fixed SYSTEM broker does not expose PID/creation FILETIME in its protected result; current fixed task actual running_instances=0 readback is preserved.",
+    "Maintenance ordinary parent PID/creation FILETIME was not captured in its original launch receipt; native result and tool session11237 terminal exit1 are preserved. OS runas returned false/1223 with no child handle, so no administrator child PID/FILETIME is fabricated."
+  ],
+  "null_historical_birth_time_not_replaced_by_zero_or_guessed_identity": true,
+  "remaining_heavy_write_bytes": 0,
+  "reserved_native_future_before_bytes": 1073741824,
+  "reserved_native_future_after_bytes": 0,
+  "shared_future_bytes_unchanged": 134217728,
+  "scene_future_bytes_unchanged": 0,
+  "all_active_balances_before": {
+    "known_future": {
+      "C:/": 1207959552,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-next-r06-20261020-a01",
+        "known_future": {
+          "C:/": 1207959552,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "old_legacy_C_future_unchanged_bytes": 42132678,
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 258921,
+    "sha256": "be0637a52c681f0daab94f160e3062ef93cf50581e963c16692fb50738f8473f"
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T07:41:45.530662+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81092218880,
+      "available_to_caller_bytes": 81092218880,
+      "total_free_bytes": 81092218880,
+      "entire_volume_used_allocation_upper_bound_bytes": 430041726976,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T07:41:45.530662+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21687525376,
+      "available_to_caller_bytes": 21687525376,
+      "total_free_bytes": 21687525376,
+      "entire_volume_used_allocation_upper_bound_bytes": 478402482176,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C_quota_margin_bytes_after_native_settlement": 3573619514,
+  "D_floor_margin_bytes": 78471168,
+  "retained_actual_already_in_whole_volume_used": true,
+  "physical_reclamation_credit_bytes": 0,
+  "unused_credit_added_to_free_bytes": 0,
+  "source_installed_policy_or_original_failure_mutations": 0,
+  "retention_unchanged": {
+    "policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "policy_version": "1.0.0",
+    "purpose_review_at_utc": "2026-10-20T08:00:00Z",
+    "protected_until_utc": "2026-10-20T08:00:00Z",
+    "protection_reason": "Only current successful production bytes and one exact unresolved broker-root/UAC evidence set; supports no-recompile continuation and restoration of three source ACLs. Review without automatic renewal.",
+    "build_default_expires_at_utc": "2026-11-03T07:34:27.994869+00:00",
+    "small_record_default_expires_at_utc": "2027-04-18T07:34:27.994869+00:00",
+    "expired_is_candidate_not_delete_authorization": true,
+    "availability": "Original C artifacts/logs and all small source/OS evidence remain readable; no deletion/move or substitute evidence created."
+  },
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "quota_or_protection_renewed": false,
+  "future_continuation_requires_new_fresh_source_bound_admission": true
+}

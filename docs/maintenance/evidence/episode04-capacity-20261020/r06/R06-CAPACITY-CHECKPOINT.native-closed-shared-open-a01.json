@@ -1,0 +1,114 @@
+{
+  "schema": "xar.e04.r06-native-closed-shared-open-capacity-checkpoint.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T07:43:22.002804+00:00",
+  "source_head_at_observation": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "source_ledger": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 259424,
+    "sha256": "56c36b42a754ef48b35c833de6b396f3df1303dcab254ecec47afb18637b6424"
+  },
+  "active_balances": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-next-r06-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "native_qualification_granted": false,
+  "native_terminal": "compiled-linked-bytes-retained-SYSTEM-scope-rejected-native-UAC1223-unexecuted-stages-cancelled",
+  "native_actual": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T07:41:45.530469+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+    "logical_bytes": 407679939,
+    "allocated_unique_bytes": 410566320,
+    "files": 1501,
+    "allocation_source": "Path.stat stable identity and Windows FileStandardInfo AllocationSize",
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true,
+    "elapsed_seconds": 0.49
+  },
+  "native_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\capacity\\A40-NATIVE-INCOMPLETE-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 11632,
+    "sha256": "f8a14bf0ee703ece88137d63f87a07d1c64a6a2013c7a7732cdf66d19325ae6c"
+  },
+  "scene_run_allocated": false,
+  "scene_time_blocked": true,
+  "scene_execution_admitted": false,
+  "game_execution_admitted": false,
+  "shared_finalization_pool_open_bytes": 134217728,
+  "shared_current_measurement": {
+    "observed_at_utc": "2026-10-20T07:43:22.070350+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01",
+    "excludes": [
+      "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+      "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\scene-a01"
+    ],
+    "logical_bytes": 627024,
+    "files": 74,
+    "ceiling_bytes": 134217728,
+    "logical_margin_bytes": 133590704,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T07:43:22.002823+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81091506176,
+      "available_to_caller_bytes": 81091506176,
+      "total_free_bytes": 81091506176,
+      "entire_volume_used_allocation_upper_bound_bytes": 430042439680,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T07:43:22.002823+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21687525376,
+      "available_to_caller_bytes": 21687525376,
+      "total_free_bytes": 21687525376,
+      "entire_volume_used_allocation_upper_bound_bytes": 478402482176,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "C408GiB_quota_margin_bytes": 3572906810,
+  "D_floor_margin_bytes": 78471168,
+  "quota_review_at_utc": "2026-10-20T08:00:00Z",
+  "quota_renewed": false,
+  "physical_or_unused_credit_bytes": 0,
+  "original_built_artifacts_installed_policy_source_ACL_recovery_inputs_deleted_or_changed": false,
+  "history_admissions_do_not_grant_new_execution": true
+}
