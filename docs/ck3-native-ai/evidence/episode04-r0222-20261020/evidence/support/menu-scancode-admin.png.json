@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "observed_at_utc": "2026-10-20T13:58:58.450182+00:00",
+  "pid": 16468,
+  "create_time": 1792502982.969314,
+  "hwnd": 407830720,
+  "focus_hwnd": 407830720,
+  "LANGID": 1033,
+  "action": "One Esc after actual English/focus check; direct GUI review still required",
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "source_image_size": [
+    2560,
+    1440
+  ],
+  "image": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\quit-r0222-a02\\menu-scancode-admin.png",
+  "normal_close_qualified": false
+}

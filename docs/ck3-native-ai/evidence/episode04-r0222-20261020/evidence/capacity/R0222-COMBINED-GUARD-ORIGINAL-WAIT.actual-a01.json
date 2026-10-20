@@ -1,0 +1,24 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:06:29.508436+00:00",
+  "exec_session_id": 78180,
+  "actual_original_wait_returncode": 0,
+  "actual_original_exec_wait_observed": true,
+  "stop_flag": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R08-ACTUAL-UNSPENT-GUARD.STOP",
+    "bytes": 99,
+    "sha256": "fb4535355f070a72af2ca7d15984f12801f1ef6056e78bcf0669677dfe67fb8a"
+  },
+  "last_stdout_exit": {
+    "at_utc": "2026-10-20T14:04:51.964736+00:00",
+    "guard_exited": true,
+    "exact_stop_flag_present": true
+  },
+  "stdout_returned_by_tool_was_truncated": true,
+  "complete_journal_parts_retained_without_copying_or_hashing": true,
+  "journal_paths": [
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R08-ACTUAL-UNSPENT-GUARD.actual-part0001.jsonl",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R08-ACTUAL-UNSPENT-GUARD.actual-part0002.jsonl"
+  ],
+  "claim_of_automatic_game_pause": false
+}

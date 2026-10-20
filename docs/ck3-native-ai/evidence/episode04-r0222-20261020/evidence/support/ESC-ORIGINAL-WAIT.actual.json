@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T13:58:06.100363+00:00",
+  "started_at_utc": "2026-10-20T13:58:05.155277+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261020-a01/quit_menu_scancode_a01.py",
+    "--ready",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\ready-context.json",
+    "--client-inspect",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\quit-r0222-a02\\CLIENT-INSPECT.actual.json",
+    "--output",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\quit-r0222-a02\\menu-scancode-original.png"
+  ],
+  "pid": 32188,
+  "actual_original_popen_wait": true,
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"C:\\ck3-e04-resume-20261020-a01\\quit_menu_scancode_a01.py\", line 28, in <module>\n    runpy.run_path('C:/ck3-e04-resume-20261020-a01/open_actual_quit_menu.py',run_name='__main__')\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:/ck3-e04-resume-20261020-a01/open_actual_quit_menu.py\", line 9, in <module>\n    ready=json.loads(a.ready.read_bytes());L=a.ready.parent;f=json.loads((L/'frozen-argv.json').read_bytes());i=json.loads(a.client_inspect.read_bytes());request=json.loads((L/'case-output/normal-quit-awaiting.json').read_bytes())\n                                                                                                                                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\pathlib\\__init__.py\", line 777, in read_bytes\n    with self.open(mode='rb', buffering=0) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\pathlib\\__init__.py\", line 771, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\ck3-e04-resume-20261020-a01\\\\r08-scene-a01\\\\driver-runs\\\\desktop-3fevhd2-1c74096080--vanilla--R0222\\\\case-output\\\\normal-quit-awaiting.json'\n"
+}

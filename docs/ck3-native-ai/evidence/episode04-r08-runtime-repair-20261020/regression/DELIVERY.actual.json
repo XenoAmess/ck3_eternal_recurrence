@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:12:22.551276+00:00",
+  "total_lane_bytes_before_delivery": 92523,
+  "ceiling_bytes": 131072,
+  "source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\SOURCE-INDEX.actual.json",
+    "bytes": 8158,
+    "sha256": "15d998ef811cbeaf30106c0d0e6e20f5a24beb953d2f877f9041289e4ba9e152"
+  },
+  "audit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\AUDIT.md",
+    "bytes": 9147,
+    "sha256": "aaf11e80abe3cf3bc08bdbc5a3f9c75a808e603bc99c336f6a8a7219137cb1b9"
+  },
+  "test_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\R08-RUNTIME-REGRESSION.candidate.patch",
+    "bytes": 23869,
+    "sha256": "54d531f6f119be4abeebfbe238e0306d22f703d156279338c6c3f112298cc28b"
+  },
+  "test_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_runtime_entry_smoke.py",
+      "bytes": 14778,
+      "sha256": "4d801cb1dd19570e2fb7e78ec2b3af785a41f9b5104aee561966a967c5fce668"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_cleanup_and_sampling.py",
+      "bytes": 8190,
+      "sha256": "4457c5a60c3ac2f3f6018e88dfe64814eebdaa98b2d399c2e970bf3d0ae23b69"
+    }
+  ],
+  "final_receipts": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\candidate-payment-a03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1989,
+      "sha256": "6aa25b3ca471b587cec26c16dea795d49b9cce7396c5d68b253ab29ad1421e8c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\helper-candidate-a02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1617,
+      "sha256": "36f2ae52771a4ef895335d03c629e5f2e3f33b85f3625aba18c3b33fef0f24a9"
+    }
+  ],
+  "D_tracked_clean": true,
+  "W_written": false,
+  "native_sdk_game_UI": false,
+  "remaining_tests_or_background_processes": 0,
+  "a03_review_scope": "exact diff/source and original author two-test log; no repeated suite"
+}

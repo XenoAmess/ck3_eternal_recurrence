@@ -1,0 +1,108 @@
+{
+  "schema": "xar.e04.r0222-payment-source-command-support.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T13:53:46.452917+00:00",
+  "source_head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+  "compiled_native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "source_provenance": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-reuse-qualification-a01\\CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json",
+    "bytes": 24448,
+    "sha256": "6b0aa118de42ccefe71c18d0f3ff46c72292244d2261060131600975f87b727b"
+  },
+  "sources": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_observer_research_sampling_12004.hpp",
+        "bytes": 2880,
+        "sha256": "79b03692cc9d87f6f9c4cdcd74f0445db31929d0daed020d24f70f482909cf53"
+      },
+      "lines": [
+        26,
+        30
+      ],
+      "fact": "Policy defaults enabled=false, clear_completed=true, epoch=active=0"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\war_payment_window_12004.cpp",
+        "bytes": 10357,
+        "sha256": "66d311b72913e55eb37c0b6d76a8b04515001a6d273f372d79a296ed19e9a639"
+      },
+      "lines": [
+        23,
+        82
+      ],
+      "fact": "Configure calls StopLocked and disables journal; SetEnabled(true) only after explicit enable checks"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_payment_observations_v1.py",
+        "bytes": 25762,
+        "sha256": "115eb258e2e4ab958743e065a0c0b6da70adaddab307d8ae1bc0677d75a88f88"
+      },
+      "lines": [
+        362,
+        371
+      ],
+      "fact": "tools import occurs while constructing request fields"
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+        "bytes": 22800,
+        "sha256": "81ba0ca4c99b4f607f649712d996a63c0c044bff56a8e2fc4456f937c47f24c6"
+      },
+      "lines": [
+        332,
+        347
+      ],
+      "fact": "request field construction precedes native query submission"
+    }
+  ],
+  "source_default_payment_OFF": true,
+  "actual_payment_OFF_readback": null,
+  "wire": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\native-report.native-wire.jsonl",
+    "before": {
+      "dev": 13886423844274364792,
+      "ino": 1125899908752117,
+      "size": 44510794,
+      "mtime_ns": 1792504426200003200
+    },
+    "after": {
+      "dev": 13886423844274364792,
+      "ino": 1125899908752117,
+      "size": 44510794,
+      "mtime_ns": 1792504426200003200
+    },
+    "captured_prefix_bytes": 44510794,
+    "complete_captured_prefix": true,
+    "response_payloads_not_decoded": true,
+    "incoming_lines_skipped": 5739,
+    "outbound_commands": 11,
+    "outbound_commands_only_sha256": "16cd1868aad5155ee7b140842c42b0162f9b09f9bdeb29e8d2987f2894e0df5e",
+    "command_type_step_counts": {
+      "ping:": 1,
+      "execute_step:query-campaign-root-context-v1": 1,
+      "execute_step:query-army-strengths-v1": 1,
+      "execute_step:query-army-commander-candidates-v1-for-army-0": 1,
+      "execute_step:query-war-cash-current-resources-v1": 1,
+      "execute_step:query-war-occupation-targets-v1-1": 1,
+      "execute_step:pause-map": 2,
+      "execute_step:research-query-tactical-daily-sentinel-v1": 1,
+      "execute_step:disable-army-observer-research-sampling-v1": 1,
+      "execute_step:query-army-observer-research-sampling-v1": 1
+    },
+    "payment_control_commands": [],
+    "no_enable_command_in_captured_prefix": true,
+    "append_after_capture_not_covered": false
+  },
+  "errors": [],
+  "no_observer_or_day_inferred_from_source": false,
+  "native_or_SDK_requests_performed": 0,
+  "game_or_source_modified": false,
+  "failed_terminal_preserved": true,
+  "actual_payment_OFF_claimed": false,
+  "remaining_heavy_write_bytes": 0,
+  "retention_review_utc": "2026-10-20T14:15:00Z"
+}

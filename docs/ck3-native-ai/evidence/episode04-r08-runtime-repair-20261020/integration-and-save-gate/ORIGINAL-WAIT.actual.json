@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T14:10:31.119031+00:00",
+  "observed_at_utc": "2026-10-20T14:10:33.388867+00:00",
+  "original_popen_pid": 28804,
+  "original_popen_wait": 0,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\run_integration_candidate_test.py",
+    "child"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01",
+  "source": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\test_r08_writer_cleanup_integration.py",
+      "bytes": 5719,
+      "sha256": "4d15209054fdb73e4e101a556372c42c7e878461fbcd193563ad055bd7fc280e"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\integration-test-a01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a03\\integration-test-a01\\stderr.log",
+    "bytes": 521,
+    "sha256": "4ee06022dc8a339817dd6af8d1b676b84f07a99e25d4097676293618dff69519"
+  },
+  "sdk_executed": false,
+  "native_qualification": false,
+  "original_R0222_terminal_not_modified": true
+}

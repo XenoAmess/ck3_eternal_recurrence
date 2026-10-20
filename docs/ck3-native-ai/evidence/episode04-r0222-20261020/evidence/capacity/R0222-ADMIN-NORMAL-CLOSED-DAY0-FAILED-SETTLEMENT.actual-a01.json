@@ -1,0 +1,202 @@
+{
+  "schema": "xar.e04.r0222-admin-normal-closed-day0-failed-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:06:31.742867+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0222",
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01",
+  "base_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R08-ACTUALRUN-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 13936,
+    "sha256": "560ecee81da5d80800479e08b6886ba5cf989f1eb956f2ac6cdb3c7476bde62e"
+  },
+  "typed_originals": {
+    "administrative_normal_close": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output-root-normalclose-a01\\normal-close-result.json",
+      "bytes": 9651,
+      "sha256": "95e603ff029375b17a969e356fdac31574ebc873371368531074ffe7799d387c"
+    },
+    "Root_administrative_closed_before_keeper": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\ROOT-ADMIN-CLOSED-BEFORE-KEEPER.actual.json",
+      "bytes": 1424,
+      "sha256": "665751ed62df659acf1056c895b64cb651ba76525ff37004430f1ca62139d162"
+    },
+    "host_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\host-original-process-exit.json",
+      "bytes": 243,
+      "sha256": "e8061e7cf440a968a86ca408e86293c8d3217a214fc998e9eec70a88d9feef08"
+    },
+    "keeper_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\keeper-actual-parent-exit.json",
+      "bytes": 598,
+      "sha256": "58ef05267463a08bf34a6c86a43413a90f6524098b8bdbb6274652b0d7bcc1d9"
+    },
+    "allocator_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\allocate-exec-a04\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1540,
+      "sha256": "93de27be940ffeade176b07faf5867a460bd859eba7ab03e9c69ed359b0c25d5"
+    },
+    "public_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\run-exec-a04\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1190,
+      "sha256": "f1035e8978a4a773187936885d6ebd3c633848336f025a18a343224cad32db9a"
+    },
+    "administrative_normal_close_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\root-admin-normal-close-exec-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 815,
+      "sha256": "aafe9327ac2c7d7b6907e03b16670ac9dde47c5fd853b36c727a561829e6b841"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\SCREEN-RELEASE.actual-a01.json",
+      "bytes": 1233,
+      "sha256": "f2f77f1321df2797d58721217d6fdc7ae0a40c4062f85f87f3152163c71d0ad8"
+    },
+    "original_failed_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output\\R08-WRITER-TERMINAL.json",
+      "bytes": 426,
+      "sha256": "1e3d04429f8f5b21f99027a379bdeb652323f3499c1550206a735057ed1d4d2f"
+    },
+    "combined_guard_original_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R0222-COMBINED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1038,
+      "sha256": "58db8a1f3725c3bd73e50c8e23dbe379fe5c23a471b6c3813c32de2aeeef0b2b"
+    },
+    "keeper_identity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\keeper-process.json",
+      "bytes": 717,
+      "sha256": "49c1935a68b3ff1941e880fcccfa91001eb05d7fa56a9562b90a9877e18c4e6b"
+    },
+    "guard_identity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\R08-ACTUAL-UNSPENT-GUARD-OWNED.actual-a01.json",
+      "bytes": 1752,
+      "sha256": "eee85f8d7a93a6a5356086d2d6aa0b13b8e9281a0771e3c343083186b4295a4c"
+    }
+  },
+  "administrative_normal_close_qualified": true,
+  "original_public_wait_returncode": 2,
+  "original_host_wait_returncode": 1,
+  "actual_days": 0,
+  "observer_started": false,
+  "payment_OFFclear": null,
+  "original_R08_cleanup_pass": false,
+  "business_pass": false,
+  "full_R08_qualified": false,
+  "original_terminal_unchanged": true,
+  "keeper_allocator_original_wait0": true,
+  "screen_release_sequence": 7549,
+  "owned_current_census": [
+    {
+      "pid": 16468,
+      "expected_creation_time": 1792502982.969314,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 30260,
+      "expected_creation_time": 1792502450.4784052,
+      "owned_identity_absent": true
+    },
+    {
+      "pid": 37864,
+      "expected_creation_time": 1792502657.1550584,
+      "owned_identity_absent": true
+    }
+  ],
+  "ffmpeg_ffprobe_census": [],
+  "process_read_errors": [],
+  "global_process_absence_claimed": false,
+  "complete_closed_measurements": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T14:06:30.746356+00:00",
+      "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01",
+      "components": {
+        "profile": {
+          "logical_bytes": 453171945,
+          "allocated_unique_bytes": 461912184,
+          "files": 3897,
+          "ceiling_bytes": 671088640
+        },
+        "driver": {
+          "logical_bytes": 202723469,
+          "allocated_unique_bytes": 202938960,
+          "files": 195,
+          "ceiling_bytes": 335544320
+        },
+        "raw": {
+          "logical_bytes": 0,
+          "allocated_unique_bytes": 0,
+          "files": 0,
+          "ceiling_bytes": 0
+        },
+        "other": {
+          "logical_bytes": 29418793,
+          "allocated_unique_bytes": 29598512,
+          "files": 225,
+          "ceiling_bytes": 67108864
+        }
+      },
+      "metadata_coverage_complete": true,
+      "errors": [],
+      "errors_count": 0,
+      "elapsed_seconds": 0.871,
+      "logical_total_bytes": 685314207,
+      "allocated_unique_total_bytes": 694449656,
+      "live_measurement_not_atomic_snapshot": true,
+      "payload_body_bytes_read": 0,
+      "SDK_game_screen_actions": 0
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T14:06:31.742292+00:00",
+      "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01",
+      "components": {
+        "profile": {
+          "logical_bytes": 453171945,
+          "allocated_unique_bytes": 461912184,
+          "files": 3897,
+          "ceiling_bytes": 671088640
+        },
+        "driver": {
+          "logical_bytes": 202723469,
+          "allocated_unique_bytes": 202938960,
+          "files": 195,
+          "ceiling_bytes": 335544320
+        },
+        "raw": {
+          "logical_bytes": 0,
+          "allocated_unique_bytes": 0,
+          "files": 0,
+          "ceiling_bytes": 0
+        },
+        "other": {
+          "logical_bytes": 29418793,
+          "allocated_unique_bytes": 29598512,
+          "files": 225,
+          "ceiling_bytes": 67108864
+        }
+      },
+      "metadata_coverage_complete": true,
+      "errors": [],
+      "errors_count": 0,
+      "elapsed_seconds": 0.994,
+      "logical_total_bytes": 685314207,
+      "allocated_unique_total_bytes": 694449656,
+      "live_measurement_not_atomic_snapshot": true,
+      "payload_body_bytes_read": 0,
+      "SDK_game_screen_actions": 0
+    }
+  ],
+  "scene_unspent_before_bytes": 388427617,
+  "scene_unspent_after_bytes": 0,
+  "all_actual_scene_bytes_remain_inside_whole_volume_used": true,
+  "physical_or_unused_credit_bytes": 0,
+  "legacy42132678_system4GiB_not_released": true,
+  "shared128_still_open_until_utc": "2026-10-20T14:15:00Z",
+  "retention_reason": "Preserve bounded day0 preadmission failure, unknown payment OFF, administrative normal GUI close, exact original waits and release; no blanket permanent profile protection.",
+  "purpose_review_at_utc": "2026-10-22T14:00:00Z",
+  "automatic_renewal": false,
+  "scheme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r08-1415-a01\\settle_r0222_actual_closed_a01.py",
+    "bytes": 7753,
+    "sha256": "0bceedae763c778fb22300b55a698a8058b79839e1fba866f2c1d8f7048ce38c"
+  }
+}

@@ -76,7 +76,7 @@ class PublicHook(unittest.TestCase):
             self.assertFalse((Path(root)/'r08-writer-control').exists())
             with self.assertRaisesRegex(ValueError,'OFF-clear'):c.normal_close('pending')
             other.normal_close('other-case');self.assertEqual(other.closed,['other-case'])
-            gate.off_clear=True;c.normal_close('restored');self.assertEqual(c.closed,['restored'])
+            gate.off_clear=True;gate.save_verified=True;c.normal_close('restored');self.assertEqual(c.closed,['restored'])
             gate.restored=False
             with self.assertRaises(ValueError):c.normal_close('attached')
 

@@ -71,3 +71,31 @@ receipt is never promoted to one-life or full R08 qualification.
 exact-day, restoration, OFF/clear and Save separately; `full_R08_qualified` and
 `business_pass` remain false. Deterministic tests exercise routing and refusal
 behavior; they do not qualify native code, a machine gate or a live opportunity.
+
+## 2026-10-20 R0222 source-only follow-up
+
+The optional boolean `natural_phase_enable_once_authorized` defaults to `false`.
+Before opening a new payment window, the actor reads natural-phase sampling;
+when OFF it requires explicit once-enable authorization, submits once, then
+independently reads available ON/idle state. Unknown controls are never replayed.
+
+Cleanup independently attempts payment OFF/clear and all nine Army sampling
+families OFF/clear even after a clock diagnostic error. A literal native
+never-armed idle generation0/speed0 leaf is accepted only before observer claim.
+Malformed or active state keeps Save/Quit withheld. Available independent OFF
+readbacks, restored observer, and quiescent clock precede one Save. The close
+gate additionally requires `save_verified`, set only after a successful Save
+and independent same-date endpoint; unknown Save/after result cannot authorize
+Quit. These are source contracts, not R0222 runtime success or full R08 credit.
+
+
+## R0222 对运行边界的实证补注（2026-10-20）
+
+适用于人工读取本专题的游玩/研究智能体；`machine_id: desktop-3fevhd2-1c74096080`，实证 source39e59acc，原件13:29–14:03Z。对应[本场专题](episode04-r0222-failed-writer-and-administrative-close-20261020.md)。原文描述的是设计流程，不是每次执行都已走完的保证；这些研究 Markdown 不会被 runtime 自动读取或执行。
+
+- 研究源码/小测试通过不证明 runtime Python import 可用。R0222 的首次 payment query 在 native request 构造前报缺少 `tools`，当场不能把该查询当作已读取 payment 状态或可安全重放。
+- actor 终态与后续行政闭场是不同事实。原 actor day/OFFclear/Save 必须保留；后续成功的行政 Save、OS/native 退出或关闭资格不回填原 actor、不生成业务信用。
+- 缺失/形状不合的 sentinel speed 应按真实 malformed refusal 保留，不能拿“看起来仍暂停”替代严格 idle 证明。现有 source 下实际拒绝与后续 fix/test 候选分别记载；候选 Save gate 也必须独立验证，不提前宣称已实机修复。
+- 九族 sampling、独立 supply journal、payment window 是不同开关。source 默认 payment OFF 与无 enable command 的 wire-prefix 支持有限的“未 enable”结论；独立 payment OFF/clear 仍 unknown 时必须保留 null。
+- 普通 `native_campaign` Save 的 episode null 保留为 null；不得捏造 one-life。OS0/native0、原 host/public 退出码、独立 admin Popen、keeper/allocator 与 screen CAS 分别记录。
+- 原 quit/menu 和 manual-review helper 对路径有固定合同。R0222 通过外置 exact-path 副本处理实际行政目录；没有修改原 helper，不能把该次适配泛化成公共 custom-output 支持。manualreview 旧失败无本地 stderr 原件时，明确引用 Root transcript，不生成假原件。

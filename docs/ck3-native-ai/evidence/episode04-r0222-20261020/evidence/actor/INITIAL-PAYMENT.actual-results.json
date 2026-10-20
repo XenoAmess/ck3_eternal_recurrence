@@ -1,0 +1,22 @@
+{
+  "rows": [
+    {
+      "id": "r08-pilot-a01-2-initial-payment",
+      "plan": {
+        "id": "r08-pilot-a01-2-initial-payment",
+        "tool": "ck3_query_war_cash_current_resources_private_v1",
+        "args": {
+          "expected_revision": 3,
+          "payment_sampling": "query"
+        },
+        "fresh_revision": false,
+        "continue_on_error": true
+      },
+      "started_at": "2026-10-20T13:36:19.889499+00:00",
+      "ok": false,
+      "error": "RuntimeError: MCP tool ck3_query_war_cash_current_resources_private_v1 returned an error: Error executing tool ck3_query_war_cash_current_resources_private_v1: No module named 'tools'",
+      "finished_at": "2026-10-20T13:36:20.104638+00:00"
+    }
+  ],
+  "business_PASS_inferred": false
+}

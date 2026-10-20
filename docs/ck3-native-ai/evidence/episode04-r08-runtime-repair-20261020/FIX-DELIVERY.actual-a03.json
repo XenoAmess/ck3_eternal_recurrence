@@ -1,0 +1,35 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:13:30Z",
+  "scope": "SOURCE_ONLY_CANDIDATE_NO_LIVE_QUALIFICATION",
+  "source_repo": "D:/workspace/ck3_eternal_recurrence",
+  "source_head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+  "D_and_W_modified_by_this_task": false,
+  "sdk_screen_game_actions_executed": false,
+  "original_failed_R0222_terminal_unchanged": true,
+  "payment_OFF_actual_R0222": null,
+  "full_R08_qualified": false,
+  "patch": {
+    "path": "fix-candidate-a03/R08-FAILURE-FIX.candidate.patch",
+    "bytes": 24382,
+    "sha256": "00a7724ab9004b0aa3337a30ce617715763c616d58485b63fa4f2e190fd10543",
+    "git_apply_check_whitespace_error_exit_code": 0
+  },
+  "focused": {
+    "path": "fix-candidate-a03/integration-test-a01/ORIGINAL-WAIT.actual.json",
+    "bytes": 1723,
+    "sha256": "5d1cfb776a38cde1f90776558a7b60694f8fea518a08bf6093ab7c4e2908682d",
+    "original_popen_pid": 28804,
+    "original_popen_wait": 0,
+    "tests": 2,
+    "Save_unknown_and_after_unknown_subcases": 2
+  },
+  "save_gate_test": {
+    "bytes": 3448,
+    "sha256": "4d766f76e72348ed95db6b67d09c1b78f3c7ff13d8e0b1b453a97637088e8156"
+  },
+  "independent_regressions": "../r08-runtime-regression-a01/DELIVERY.actual.json",
+  "independent_tests_scope": "4 real subprocess + 6 helper tests against a02; a03 Save gate tested separately above",
+  "integration_note": "Original independent-test patch has CRLF whitespace-check failure; preserve it and use separately pinned LF patch when supplied. CI/docs integration remains Root integrator work.",
+  "retention": "Review with Root source integration; original live failure/administrative closure are separate evidence, not replaced. No future scene admission."
+}

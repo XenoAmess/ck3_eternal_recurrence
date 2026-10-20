@@ -100,7 +100,17 @@ jobs:
       - name: Test public post-allocation refill capacity scope
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_r06_scope.py
       - name: Test public R08 single writer opportunity refusals
-        run: python -B -X utf8 tools/test_r08_writer_one_day.py
+        run: |
+          python -B -X utf8 tools/test_r08_writer_one_day.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_r08_writer_cleanup_integration.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_r08_writer_save_gate.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_r08_runtime_entry_smoke.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_r08_cleanup_and_sampling.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test lossless bounded target-proof CLI serialization
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py TargetProofCliSerialization
       - name: Test supervisor admission refusal predecessor closure

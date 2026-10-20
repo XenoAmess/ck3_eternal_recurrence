@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:01:10.477507+00:00",
+  "source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_manual_quit_review.py",
+    "bytes": 6253,
+    "sha256": "16691b3358e9e23c95d9a1cfafca3bbe3034a3e04dc4dcf0b2125a968102fbaf"
+  },
+  "adapted": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\root-admin-cleanup-a01\\manual_quit_review_r0222.py",
+    "bytes": 6510,
+    "sha256": "874017f74ac2144f3c23e149c89fb8b7e4bd373fe16dee52758d8ceb7e73db77"
+  },
+  "change": "Accept only the exact actual administrative CaseClient output path; preserve all reviewer, live/run/PID, deadline, image, source-mapping and foreground validation and create-only output. Original helper rejected custom CaseClient directory before writing review.",
+  "gui_input_by_preparer": 0
+}

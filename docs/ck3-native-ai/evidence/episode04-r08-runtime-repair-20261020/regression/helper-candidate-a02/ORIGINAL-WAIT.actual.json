@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:08:00.985339+00:00",
+  "started_at_utc": "2026-10-20T14:07:58.775625+00:00",
+  "pid": 17620,
+  "original_popen_wait_returncode": 0,
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_cleanup_and_sampling.py",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence",
+    "-v",
+    "--actor-path",
+    "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/r08-live-plan-a01/fix-candidate-a02/r08_writer_one_day.py"
+  ],
+  "elapsed_seconds": 2.2097149998880923,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\helper-candidate-a02\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\helper-candidate-a02\\stderr.log",
+    "bytes": 1177,
+    "sha256": "9b51ec0ea6b25e1eb5529a2f4af8a324f5c480b20d6feccdf1144676e86fc1f3"
+  },
+  "test_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-runtime-regression-a01\\test_r08_cleanup_and_sampling.py",
+    "bytes": 8190,
+    "sha256": "4457c5a60c3ac2f3f6018e88dfe64814eebdaa98b2d399c2e970bf3d0ae23b69"
+  },
+  "actual_sdk_game_ui_native_exe_calls": 0,
+  "interpretation": "Offline substituted endpoint only. Old-source failure is preserved; no live credit."
+}

@@ -218,3 +218,16 @@ R219 前台冲突只做了 Win32 聚焦及一次最小化，没有关闭或 susp
 造成这轮拖延的主要执行问题是：把研究和工具修复串成所有拍摄／剪辑的大前置；真实入口预检没有覆盖分盘与相机接线；没有及时把已过业务素材转成章节；用研究比例替代了用户关心的影片进展。后续汇报应分别给“新合格连续镜头／可审章节时长／剩余研究缺口”，避免再把准备工作堆成完成度。
 
 这份交接不宣称完成本期，不要求接手者重做已有结论，也不把当前未验事实包装成 GREEN。
+
+
+## 2026-10-20 R0222 day0 失败、后续行政正常闭场补注
+
+machine_id=`desktop-3fevhd2-1c74096080`，原件观察 13:29–14:03Z，14:05Z 起离线整理。R0222 source39e59acc/native compile treefee86631；S=`C:/ck3-e04-resume-20261020-a01/r08-scene-a01`。初次 payment query 的 `No module named 'tools'` 与 cleanup sentinel speed malformed 均保留；原 actor RESULT/TERMINAL 仍 day0/OFFfalse/Savefalse/R08false。
+
+Root 后续独立行政目录 6 rows 均 ok，普通 Save74,272,517B/b1aab6da…cf657/date53149056；九族 OFFclear=true，payment OFF 独立读回仍 null。源默认关闭+已有 wire prefix 无 enable 不冒充 OFF 读回。行政 retained CK3 OS0/native0/normalclosequalifiedtrue；原 host1/public2 不改，另 Rootclose31288wait0、keeper30260/allocator27740wait0、CAS7548→7549 done/resources[]。不授 one-life、R08或影片完成。
+
+专题与小证据候选：`N/r0222-evidence-a01`，N=`C:/ck3-e04-resume-20261020-a01/r06-resume-a02`。ROOTADMIN/native-report 仅原件 pin+明确 derived projections，不复制 Save/PNG/raw。旧 quit-menu requestdir FileNotFound 的原 wait1 保留；manualreview 的 custom-output 拒绝仅 Root transcript 支持、无独立本地 stderr；后续 exact-path 外置适配不等于原公共 helper 支持 custom output。fix/test 候选、Save gate a03 未实机验收与本场事实分开。
+
+正式3/11、研究10/14、业务7/11、B0/2、ABC0/3 不变。下一批只能用经审阅的新 source/runtime 与新的有限容量/现场准入；本记录不授权重放 R0222、不提供新 SDK/UI/构建动作。
+
+源码修复已纳入本次提交：导入、完整 idle0、natural-phase ON 前置、两类独立 OFF 与 Save 验证退出闸；最终工作树17个针对性方法通过，首次稀疏夹具缺失和一次定向重跑单列保存。详见[R08修复验证](../ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/FINAL-WORKTREE-VALIDATION.actual.json)。全R08实机、付款归因与新镜头仍未授；正式3/11不变。

@@ -30,7 +30,8 @@ def settings(value):
                 'expected_source_save_sha256', 'profile_limit_bytes', 'driver_limit_bytes',
                 'deadline_utc', 'prefix', 'payment_enable_once_authorized'}
     defaults = dict(admission_timeout_seconds=600, normal_close_reserve=900,
-                    cleanup_save_reserve=120, poll_seconds=.25)
+                    cleanup_save_reserve=120, poll_seconds=.25,
+                    natural_phase_enable_once_authorized=False)
     need(type(value) is dict and required <= set(value) and set(value) <= required | set(defaults),
          'Explicit complete R08 one-opportunity settings required')
     a = SimpleNamespace(**{**defaults, **value})
@@ -41,6 +42,7 @@ def settings(value):
              'Exact R08 source identity required: ' + name)
     need(re.fullmatch('r08-[a-z0-9-]{1,55}', a.prefix or '') is not None, 'Unique bounded R08 prefix required')
     need(type(a.payment_enable_once_authorized) is bool, 'Explicit payment enable decision required')
+    need(type(a.natural_phase_enable_once_authorized) is bool, 'Explicit natural-phase enable decision required')
     need(type(a.admission_timeout_seconds) in (int, float) and 0 < a.admission_timeout_seconds <= 900
          and type(a.poll_seconds) in (int, float) and .05 <= a.poll_seconds <= 1,
          'Finite R08 admission wait required')
@@ -65,9 +67,10 @@ class CloseGate:
     def __init__(self, client):
         self.restored = True
         self.off_clear = False
+        self.save_verified = False
         original = client.normal_close
         def guarded(disposition):
-            need(self.restored and self.off_clear, 'R08 restore/OFF-clear unproved; normal Quit withheld')
+            need(self.restored and self.off_clear and self.save_verified, 'R08 restore/OFF-clear/Save unproved; normal Quit withheld')
             return original(disposition)
         client.normal_close = guarded
 
@@ -142,10 +145,119 @@ def wait_admission(context, client, a, collected, identity, *, clock=time.monoto
     raise TimeoutError('R08 Root admission absent; no observer/day submitted')
 
 
+
+def normalize_cleanup_clock(raw, *, observer_claimed):
+    """Accept native's literal never-armed zero state only before our claim."""
+    from xar_autoplayer.bridge.native_driver import _normalize_tactical_daily_sentinel_status
+    idle = dict(state='idle', generation=0, starting_date_raw=0, target_date_raw=0,
+        last_observed_date_raw=0, trigger_date_raw=0, speed=0, mode='decision_epoch',
+        army_count=0, combat_count=0, completed_daily_ticks=0, intermediate_pause_count=0,
+        trigger_flags=0, trigger_reasons=[], signed_date_delta_from_target_raw=0,
+        overshoot_days=-1, pause_wrapper_called=False, pause_observed=False,
+        terminal_observed=False, abnormal=False)
+    if observer_claimed is False and type(raw) is dict and set(raw)==set(idle) and all(
+        type(raw[k]) is type(v) and raw[k]==v for k,v in idle.items()):
+        return dict(raw)
+    return _normalize_tactical_daily_sentinel_status(raw)
+
+
+def cleanup_clock(call, *, observer_claimed):
+    status=normalize_cleanup_clock(call('cleanup-clock','ck3_execute_step',
+        dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'],
+        observer_claimed=observer_claimed)
+    if status['state']=='armed':
+        call('cleanup-cancel-clock','ck3_execute_step',dict(
+            step='research-cancel-tactical-daily-sentinel-v1-generation-'+str(status['generation']),expected_revision=None))
+        status=normalize_cleanup_clock(call('cleanup-clock-independent','ck3_execute_step',
+            dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'],
+            observer_claimed=True)
+    need(status['state'] in ('idle','triggered','failed'), 'Clock quiescence unknown; Save withheld')
+    return status
+
+
+def sampling_control(call, snapshot, label, family, enabled=None):
+    from xar_autoplayer.bridge.army_observer_research_sampling_control import normalize_result, STATE_KEY
+    frame=snapshot(label+'-frame')
+    args=dict(observer_family=family,expected_revision=frame['revision'])
+    if enabled is None:
+        tool='ck3_query_army_observer_research_sampling_v1'
+        step='query-army-observer-research-sampling-v1'
+    else:
+        args['enabled']=enabled
+        tool='ck3_set_army_observer_research_sampling_v1'
+        step=('enable' if enabled else 'disable')+'-army-observer-research-sampling-v1'
+    body=call(label,tool,args)
+    raw={k:body[k] for k in ('step','accepted','status',STATE_KEY,'backend_id')}
+    return normalize_result(raw,expected_step=step,observer_family=family)[STATE_KEY]
+
+
+def prepare_natural_phase(call, snapshot, *, enable_once_authorized):
+    state=sampling_control(call,snapshot,'natural-phase-initial','natural_phase')['natural_phase']
+    if state['capture_enabled'] is not True:
+        need(enable_once_authorized is True, 'Natural-phase OFF: no explicit once-enable authorization')
+        sampling_control(call,snapshot,'natural-phase-enable-once','natural_phase',True)
+        state=sampling_control(call,snapshot,'natural-phase-independent-on','natural_phase')['natural_phase']
+    need(state['installed'] is True and state['available'] is True and state['capture_enabled'] is True
+        and state['busy'] is False and state['active_captures']==0,
+        'Payment enable requires independent available idle natural-phase ON')
+    return state
+
+
+def cleanup_writer_window(call, snapshot, payment, gate, *, observer_claimed, expected_start_date_raw):
+    """Converge independent OFFs even after an error; never replay an unknown action."""
+    cleanup=dict(OFFclear=False,Save=False,native_restore_verified=gate.restored,
+        payment_OFFclear=False,army_families_OFFclear=False,clock_quiescent=False)
+    errors=[];actual_days=None
+    def attempt(label, action):
+        try:return True,action()
+        except BaseException as error:
+            errors.append(label+': '+type(error).__name__+': '+str(error))
+            return False,None
+    if not gate.restored:
+        errors.append('cleanup: Observer restore/detach unproved; OFF/Save/Quit withheld; retain original controller session')
+        return cleanup,errors,actual_days
+    paused,_=attempt('cleanup-pause',lambda:call('cleanup-pause','ck3_execute_step',dict(step='pause-map',expected_revision=None)))
+    clock_ok,status=attempt('cleanup-clock',lambda:cleanup_clock(call,observer_claimed=observer_claimed))
+    cleanup['clock_quiescent']=clock_ok
+    if status is not None:cleanup['clock_status']=status
+    attempt('payment-disable-once',lambda:payment('payment-disable-once','disable'))
+    def payment_off():
+        off=payment('payment-independent-off','query')['sampling']
+        need(off['available'] is True and off['capture_enabled'] is False and off['busy'] is False and off['clear_completed'] is True
+            and off['active_captures']==0 and off['retained_records']==0,'Independent payment OFF/clear unavailable')
+        cleanup['payment_OFFclear']=True
+    attempt('payment-independent-off',payment_off)
+    attempt('army-families-disable-once',lambda:sampling_control(call,snapshot,'army-families-disable-once','all',False))
+    def army_off():
+        rows=sampling_control(call,snapshot,'army-families-independent-off','all')
+        need(len(rows)==9 and all(v['installed'] is True and v['available'] is True
+            and v['capture_enabled'] is False and v['busy'] is False
+            and v['clear_completed'] is True and v['active_captures']==0 and v['retained_records']==0
+            for v in rows.values()),'Independent all-family OFF/clear unavailable')
+        cleanup['army_families_OFFclear']=True
+    attempt('army-families-independent-off',army_off)
+    cleanup['OFFclear']=cleanup['payment_OFFclear'] and cleanup['army_families_OFFclear']
+    gate.off_clear=cleanup['OFFclear'] and paused and clock_ok
+    if gate.off_clear:
+        def save_once():
+            nonlocal actual_days
+            before=snapshot('Save-before')
+            saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
+            after=snapshot('Save-independent-after')
+            ck=saved.get('checkpoint') or {}
+            cleanup.update(Save_result=saved,independent_after=after,
+                Save=ck.get('status')=='saved' and ck.get('date_raw')==before['date_raw']==after['date_raw'])
+            need(cleanup['Save'],'Ordinary Save/independent date unproved')
+            gate.save_verified=True
+            delta=after['date_raw']-expected_start_date_raw
+            if delta in (0,24):actual_days=delta//24
+        attempt('Save-once',save_once)
+    return cleanup,errors,actual_days
+
+
 def run_case(context, client):
     from ck3_live_run_id import current_machine_id
     from xar_autoplayer.bridge.war_payment_observations_v1 import normalize_payment_extras, JOURNAL_KEY
-    from xar_autoplayer.bridge.native_driver import _normalize_tactical_daily_sentinel_status
     a = validate_contract(context)
     repo=Path(context['repo_root']).resolve(); output=Path(client.output)
     machine=current_machine_id()
@@ -181,6 +293,7 @@ def run_case(context, client):
         initial=payment('initial-payment','query')
         if initial['sampling']['capture_enabled'] is not True:
             need(a.payment_enable_once_authorized,'Payment OFF: no explicit once-enable authorization')
+            prepare_natural_phase(call,snapshot,enable_once_authorized=a.natural_phase_enable_once_authorized)
             payment('payment-enable-once','enable')
         need(payment('payment-independent-on','query')['sampling']['capture_enabled'] is True,
              'Independent payment ON unavailable')
@@ -231,32 +344,11 @@ def run_case(context, client):
     except BaseException as error:
         result.update(status='STOPPED_ERROR_PRESERVED_NO_REPLAY',error=type(error).__name__+': '+str(error))
     finally:
-        cleanup=dict(OFFclear=False,Save=False,native_restore_verified=gate.restored)
-        try:
-            need(gate.restored,'Observer restore/detach unproved; OFF/Save/Quit withheld; retain original controller session')
-            call('cleanup-pause','ck3_execute_step',dict(step='pause-map',expected_revision=None))
-            status=_normalize_tactical_daily_sentinel_status(call('cleanup-clock','ck3_execute_step',
-                dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'])
-            if status['state']=='armed':
-                call('cleanup-cancel-clock','ck3_execute_step',dict(step='research-cancel-tactical-daily-sentinel-v1-generation-'+str(status['generation']),expected_revision=None))
-                stopped=_normalize_tactical_daily_sentinel_status(call('cleanup-clock-independent','ck3_execute_step',
-                    dict(step='research-query-tactical-daily-sentinel-v1',expected_revision=None))['tactical_daily_sentinel'])
-                need(stopped['state']!='armed','Original clock still armed; Save withheld')
-            payment('payment-disable-once','disable')
-            off=payment('payment-independent-off','query')['sampling']
-            gate.off_clear=off['capture_enabled'] is False and off['busy'] is False and off['clear_completed'] is True and off['active_captures']==0 and off['retained_records']==0
-            need(gate.off_clear,'Independent payment OFF/clear unavailable')
-            cleanup['OFFclear']=True
-            before=snapshot('Save-before')
-            saved=call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']))
-            after=snapshot('Save-independent-after')
-            ck=saved.get('checkpoint') or {}
-            cleanup.update(Save_result=saved,independent_after=after,
-                Save=ck.get('status')=='saved' and ck.get('date_raw')==before['date_raw']==after['date_raw'])
-            delta=after['date_raw']-a.expected_start_date_raw
-            if delta in (0,24):result['actual_days']=delta//24
-        except BaseException as error:
-            result['errors'].append('cleanup: '+type(error).__name__+': '+str(error))
+        claimed=(output/'r08-writer-control/observer-start.once.json').exists()
+        cleanup,errors,actual_days=cleanup_writer_window(call,snapshot,payment,gate,
+            observer_claimed=claimed,expected_start_date_raw=a.expected_start_date_raw)
+        result['errors'].extend(errors)
+        if actual_days is not None:result['actual_days']=actual_days
         result.update(cleanup=cleanup,native_restore_verified=gate.restored,normal_close_owned_by_shared_entry=True)
         client.checkpoint('R08-WRITER-RESULT',result)
         client.checkpoint('R08-WRITER-TERMINAL',dict(machine_id=machine,run_id=context['run_id'],

@@ -1,0 +1,160 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:08:46.702857+00:00",
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output-root-normalclose-a01\\ROOT-ADMINISTRATIVE-CLEANUP.json",
+      "bytes": 471758,
+      "sha256": "40888f375c5fc0ae427b7fc4108408837cfc9e22ce6d6dca99010c978d24820e",
+      "mtime_ns": 1792504631513797600,
+      "st_ino": 562949955335916,
+      "st_dev": 13886423844274364792
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\case-output-root-normalclose-a01\\ROOT-ADMINISTRATIVE-CLOSURE.json",
+      "bytes": 10708,
+      "sha256": "178dc33edb44053c1c0205328a6008ec48bbf330c4fecfe31c193213ec00672d",
+      "mtime_ns": 1792504875897740300,
+      "st_ino": 562949955336014,
+      "st_dev": 13886423844274364792
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\native-report.json",
+      "bytes": 14833097,
+      "sha256": "c01a7b246b60df276d7f0adb464dd8c81188a42b389c588d4b5b4f10856725be",
+      "mtime_ns": 1792504875686845200,
+      "st_ino": 1407374885462760,
+      "st_dev": 13886423844274364792
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\root-admin-normal-close-exec-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 815,
+      "sha256": "aafe9327ac2c7d7b6907e03b16670ac9dde47c5fd853b36c727a561829e6b841",
+      "mtime_ns": 1792504876010675600,
+      "st_ino": 844424932046672,
+      "st_dev": 13886423844274364792
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0222\\keeper-actual-parent-exit.json",
+      "bytes": 598,
+      "sha256": "58ef05267463a08bf34a6c86a43413a90f6524098b8bdbb6274652b0d7bcc1d9",
+      "mtime_ns": 1792504974027444800,
+      "st_ino": 562949955336031,
+      "st_dev": 13886423844274364792
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\root-admin-cleanup-a01\\save\\stdout.json",
+      "bytes": 2283,
+      "sha256": "95a80a03f271e0e133ba2b5e51da6ce30702f444bdb56eafaa2fa15cdc932258",
+      "mtime_ns": 1792504437547599300,
+      "st_ino": 562949955335868,
+      "st_dev": 13886423844274364792
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-scene-a01\\root-admin-cleanup-a01\\off\\stdout.json",
+      "bytes": 2747,
+      "sha256": "f76f36cdf5be9b3dd73bdd6cc8b4c90681d18c90247b3324913ceb563e86d034",
+      "mtime_ns": 1792504398200919200,
+      "st_ino": 562949955335852,
+      "st_dev": 13886423844274364792
+    }
+  ],
+  "taskbus": {
+    "poll_bytes": 5754733,
+    "poll_sha256": "2bd2f2127740d68ca3d59f10f002b332c36bc8fc0feb255d568e55a8f4fa39b8",
+    "acknowledged_cursor": 7554,
+    "remaining": 0,
+    "current_events": [
+      {
+        "event_id": "f45c2102963141beb8b2e1f626299d51",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "heartbeat",
+        "next_step": "Fresh complete capacity tail and immediateRED alerts; Root sole game owner; settle only after typed normalclose and original monitorwait",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "e04-capacity-reservations"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7552,
+        "state": "running",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080 actualR0222_singlecombined78180_1GiBhardcaps_dynamicunspent_RootRUNsubmitted132916_1330stage_1415hard_nofilm",
+        "task_id": "e04-capacity-r08-1415-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:06:30.953655+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "172940963f044daea1b2a8d03e82dcc7",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "registered",
+        "next_step": "Await_public_exactlayout_and_available_OFF_corrections",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "r08-failure-fix-review-metadata"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7553,
+        "state": "running",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080_readonly_R08_fix_patch6cc_review_two_minimal_corrections_noSDK_no_duplicate_smoke",
+        "task_id": "e04-r08-failure-fix-independent-review-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:06:56.893585+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "eace392d445f4d46ad41f13bf3f74cea",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "kind": "heartbeat",
+        "next_step": "Fresh complete capacity tail and immediateRED alerts; Root sole game owner; settle only after typed normalclose and original monitorwait",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [
+          "e04-capacity-reservations"
+        ],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7554,
+        "state": "running",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080 actualR0222_singlecombined78180_1GiBhardcaps_dynamicunspent_RootRUNsubmitted132916_1330stage_1415hard_nofilm",
+        "task_id": "e04-capacity-r08-1415-20261020-a01",
+        "timestamp_utc": "2026-10-20T14:08:01.845553+00:00",
+        "to": [
+          "*"
+        ]
+      }
+    ],
+    "own_registry": [
+      {
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "39e59acce6624edbc30322e4797d2e421c0a44aa"
+        },
+        "last_sequence": 7551,
+        "next_step": "",
+        "pid": 36176,
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "running",
+        "summary": "R0222_failed_actor_and_later_administrative_normalclose_small_evidence_only_no_source_SDK_UI_build",
+        "task_id": "e04-r0222-evidence-20261020-a01",
+        "updated_at_utc": "2026-10-20T14:05:25.602234+00:00",
+        "age_seconds": 200,
+        "stale": false
+      }
+    ]
+  }
+}

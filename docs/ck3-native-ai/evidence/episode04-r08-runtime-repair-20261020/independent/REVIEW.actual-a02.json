@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.r08-failure-fix-independent-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T14:08:54.078799+00:00",
+  "source_head": "39e59acce6624edbc30322e4797d2e421c0a44aa",
+  "final_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a02\\R08-FAILURE-FIX.candidate.patch",
+    "bytes": 19536,
+    "sha256": "b49fc547869a0a3d46e0c8fdff20eed6d0e5389fa87b7c392713ef2f67715be5"
+  },
+  "candidate_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a02\\CANDIDATE.actual-a01.json",
+    "bytes": 1873,
+    "sha256": "ac1d6b72aaadd648e2dd233101699813a71c84dc0aaf076ba7be3ff0661db53e"
+  },
+  "prior_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-failure-fix-independent-review-a01\\REVIEW.actual-a01.json",
+    "bytes": 2705,
+    "sha256": "28374070028554f6da033c3f6bfd8921e7fed1359317b5b946529262c66a74cc"
+  },
+  "candidate_actor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a02\\r08_writer_one_day.py",
+    "bytes": 22903,
+    "sha256": "2501c5707fa5ba4d9fe3ef72017a89bf5e86ad0656177358f92e044000c37df5"
+  },
+  "candidate_payment_module": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-live-plan-a01\\fix-candidate-a02\\war_payment_observations_v1.py",
+    "bytes": 25750,
+    "sha256": "b4a49efbb6e409001050aaf9ff8208bc73e9c0608f7161f2840fdf70c786c11b"
+  },
+  "status": "READONLY_CODE_REVIEW_NO_REMAINING_BLOCKER",
+  "resolved_findings": {
+    "IMPORT_EXACT_LAYOUT": "The clean_imports ancestor-path addition was removed entirely. Payment code uses existing ck3_live_run_id import supplied by the reviewed public runtime tools path; real subprocess import reachability remains owned by research_next smoke.",
+    "OBSERVABLE_INDEPENDENT_OFF": "Payment independent OFF requires sampling.available True; each of all nine independent Army query rows requires installed and available True in addition to OFF/idle/cleared/zero counters."
+  },
+  "safety_boundaries": [
+    "No observer claim: exact full-field/type native never-armed idle0 accepted only in this cleanup adapter; common strict normalizer unchanged.",
+    "Unknown observer Popen claim: original claim survives; gate.restored False returns before OFF/Save/Quit.",
+    "Explicit once-authorized natural phase is independently observed ON/available/idle before new payment enable.",
+    "Cleanup attempts payment disable/query then all-nine disable/query once each after restore; errors are retained independently.",
+    "Clock query/cancel failure does not suppress safe OFF attempts, but pause/clock proof is additionally required for Save and guarded Quit.",
+    "Save errors remain recorded. Existing CloseGate does not add a Save-success prerequisite; no overall cleanup or business PASS is manufactured."
+  ],
+  "smoke_tests_performed_here": 0,
+  "smoke_owner": "research_next actual parent actor and registered MCP child; separate actual receipt",
+  "SDK_or_native_requests_performed": 0,
+  "game_actions": 0,
+  "source_files_modified": 0,
+  "original_failed_terminal_modified": false,
+  "new_native_or_live_qualification": false,
+  "remaining_heavy_write_bytes": 0,
+  "retention_review_utc": "2026-10-20T14:15:00Z"
+}
