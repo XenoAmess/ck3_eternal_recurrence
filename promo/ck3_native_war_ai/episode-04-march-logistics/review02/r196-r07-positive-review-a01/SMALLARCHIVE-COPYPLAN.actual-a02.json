@@ -1,0 +1,177 @@
+{
+  "schema": "xar.e04.R196-minimal-R07-only-copyplan.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:19:13.388336+00:00",
+  "status": "PLAN_ONLY_NO_COPY_OR_GIT_WRITE",
+  "suggested_repo_target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01",
+  "files": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\AI-ALL52-REVIEW.actual-a01.json",
+        "bytes": 53483,
+        "sha256": "5200092b8c63ccc396eec6ea3973189cba808d5abf448612b847060c43546169"
+      },
+      "target_name": "AI-ALL52-REVIEW.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\RECOMMENDATION.actual.md",
+        "bytes": 1524,
+        "sha256": "1b4b5c1c520597de3bcb648035dadd666903329355410bc9190e8defc81f768b"
+      },
+      "target_name": "RECOMMENDATION.actual.md"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\EXTRACTION.actual.json",
+        "bytes": 20892,
+        "sha256": "61e0c7905af307f680165b0de808d5c45690156ea61d1e522559573985842acd"
+      },
+      "target_name": "EXTRACTION.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\POST-WAIT-CRC-PTS-OWNED0.actual.json",
+        "bytes": 1451,
+        "sha256": "a1adb07b0ca1fd7ccf171d04657645c3cda283aad7f24abf3f02d5452ce4929a"
+      },
+      "target_name": "POST-WAIT-CRC-PTS-OWNED0.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\source-frame-PTS.actual.csv",
+        "bytes": 14127,
+        "sha256": "bf3bdb11974d2df371b8f588e4fa9954b1a4508ac430a805c1b8f731d3f7b782"
+      },
+      "target_name": "source-frame-PTS.actual.csv"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ffmpeg-stderr.actual.log.gz",
+        "bytes": 8467,
+        "sha256": "eb2470024a7bd879e877182fd4576c22aca1cbf5e74ead27a0ad969791af9833"
+      },
+      "target_name": "ffmpeg-stderr.actual.log.gz"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\COMMAND.actual.json",
+        "bytes": 884,
+        "sha256": "6e80bbede50efd7740b74c7d94a4a8ffb9a19eb18be1f0458a93791785f91d01"
+      },
+      "target_name": "COMMAND.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\OWNED-PROCESS.actual.json",
+        "bytes": 91,
+        "sha256": "0975d518a66191c26108346a6429195343ad645c5e3e30371b0c2a7fef8009a9"
+      },
+      "target_name": "OWNED-PROCESS.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\SOURCE-STAT-BEFORE.actual.json",
+        "bytes": 233,
+        "sha256": "cf1877cfd1f99d043cd1d8535450fe0eb0cb262ccdcc75ef82aa7527524881f9"
+      },
+      "target_name": "SOURCE-STAT-BEFORE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\LATEST-RELEASE.actual.json",
+        "bytes": 303,
+        "sha256": "671ced078e357d47a02c4efc6f4427652af79c5b01472fcb767ef3e733b94b5d"
+      },
+      "target_name": "LATEST-RELEASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ONCE-CLAIM.actual.json",
+        "bytes": 964,
+        "sha256": "fdd774f0aa307b09f30234d96ca178e9a846488b2799af52c8f1fc5a95669212"
+      },
+      "target_name": "ONCE-CLAIM.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\image-dimensions.actual.jsonl",
+        "bytes": 9454,
+        "sha256": "85a05978be368f6dc4ae04d6d4f3b9f18495617042895f23e2bc0a867b1f2f4f"
+      },
+      "target_name": "image-dimensions.actual.jsonl"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\usage-by-sheet.actual.csv",
+        "bytes": 1626,
+        "sha256": "2cab421093e0caa39f51994f878974bf2796be13c4b678fd933431029e78ca7f"
+      },
+      "target_name": "usage-by-sheet.actual.csv"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\R07-ONCE-CONTACT-PROPOSAL.prepared-a02.json",
+        "bytes": 4605,
+        "sha256": "a1de433acab2ad62953b07d7ee7cc57f2dff595fabcc4e2248e5082c6e691b4a"
+      },
+      "target_name": "preparation/R07-ONCE-CONTACT-PROPOSAL.prepared-a02.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\r07_once_contacts.prepared-a02.py",
+        "bytes": 10430,
+        "sha256": "64e02dcd8968b157006cd0eef88554875d9352cbdaa98c568ea8f20ea9c58406"
+      },
+      "target_name": "preparation/r07_once_contacts.prepared-a02.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\R07-ONCE-CONTACT-PROPOSAL.prepared-a01.json",
+        "bytes": 8663,
+        "sha256": "56cb993bcdf9775f84205383364b5c06363130d676debf91a6f3be8ed1e35684"
+      },
+      "target_name": "preparation/R07-ONCE-CONTACT-PROPOSAL.prepared-a01.json"
+    }
+  ],
+  "total_source_bytes": 137197,
+  "excluded": [
+    "All52 JPEG bodies/reference-only exactpins retained in EXTRACTION",
+    "Raw MKV/old PNG/MP4/FFmpeg binaries",
+    "Other old run or whole movie bodies"
+  ],
+  "already_in_repo_sources": [
+    "docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json",
+    "docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/PRODUCTION-PAIR-REPLAY.actual-a01.json",
+    "docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json"
+  ],
+  "formal_credit": false,
+  "prior_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\SMALLARCHIVE-COPYPLAN.actual-a01.json",
+    "bytes": 6886,
+    "sha256": "22f88c2b3e47fd2f6351561d739cdef46eb37ba7c845ae8213d18708ebe15841"
+  },
+  "Root_formal_receipt": "To be separately appended by Root; not yet part of this agent producer seal",
+  "already_in_repo_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\root-research-decision.actual.json",
+      "bytes": 2371,
+      "sha256": "1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\PRODUCTION-PAIR-REPLAY.actual-a01.json",
+      "bytes": 16094,
+      "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\CLOSED-PAIR-ASSESSMENT.actual-a01.json",
+      "bytes": 1815,
+      "sha256": "244fa8729f92773e2abdf81d66a0e5da29a594a7eb9d88cb156ca0665245686b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\media-shot-facts.actual.json",
+      "bytes": 20836,
+      "sha256": "26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403"
+    }
+  ]
+}

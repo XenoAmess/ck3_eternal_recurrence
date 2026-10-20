@@ -1,0 +1,47 @@
+{
+  "schema": "xar.e04.parent-entry-archive-copyplan-root-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:14:56.669127+00:00",
+  "base_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-publish-prep-a01\\EXACT-COPYPLAN.a01.prepared.json",
+    "bytes": 20802,
+    "sha256": "955d1ffff69363c6bd7b7df36fef08a24a56681e7bc2e44361ce2b31aa658d12"
+  },
+  "base_immutable": true,
+  "additional_files": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\INVENTORY.actual.md",
+        "bytes": 3791,
+        "sha256": "ec39ed411fd5bda779fec3768600455af86f94ff2e605d9d57bc61460ce66d97"
+      },
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/capacity/INVENTORY.actual.md"
+    }
+  ],
+  "replace_authored_document": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-publish-prep-a01\\TOPIC.a03.candidate.md",
+      "bytes": 4275,
+      "sha256": "a82079be082f1a17d654f08261fde3ae6be41741266845083035b5147c53dce4"
+    },
+    "destination": "docs/ck3-native-ai/episode04-r08-parent-entry-candidate-and-cold-boundary-20261020.md"
+  },
+  "exact_source_copy_bytes": 328560,
+  "Root_instruction_source": "Parent /root collaboration message: review line21 two EXEs typo; actual staticlib+cold EXE; inventory local overrun1054B",
+  "old_independent_review_bytes_unchanged": true,
+  "Defender_target_EXEs": 1,
+  "static_library_targets": 1,
+  "actual_compiler_runs": 0,
+  "inventory_local_overrun_reported_bytes": 1054,
+  "inventory_agent_summary_received": true,
+  "inventory_independent_receipt_received": false,
+  "W_growth_upper_bound_bytes": 434176,
+  "receipt_ceiling_bytes": 262144,
+  "combined_C_upper_bound_bytes": 696320,
+  "D_W_Git_writes": false,
+  "new_Git_execution_admitted": false,
+  "formal_dynamic": "4/11",
+  "R07_credit": false,
+  "owned_processes_remaining": 0,
+  "current_prepare_hard_stop_utc": "2026-10-20T17:15:00Z"
+}

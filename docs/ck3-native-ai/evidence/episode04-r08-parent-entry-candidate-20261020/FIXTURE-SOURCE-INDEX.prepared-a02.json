@@ -1,0 +1,127 @@
+{
+  "schema": "xar.parent-entry.a04-and-native-fixture-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:08:02.197222+00:00",
+  "status": "SOURCE_FROZEN_NO_NATIVE_BUILD_OR_EXECUTION",
+  "base_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "base_native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+  "a03_contract_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\SOURCE-CONTRACT.prepared-a03.json",
+    "bytes": 8869,
+    "sha256": "e53c2e9f260194cf5e317bd35b42c784fc1ddb54f2676ef6dcf5a071d7df0176"
+  },
+  "a04_correction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PLAYER-ID-CORRECTION.actual-a01.json",
+    "bytes": 1233,
+    "sha256": "176c5560ac2f51d4e79705b4d9f0d033842d7d3524e07e78547edce55167c984"
+  },
+  "a04_core_delta": "Only local_player_id!=full_id changed to independently nonzero local_player_id; actual R223 values1/33388. a03 core directory remains byte-exact.",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\CMakeLists.txt",
+      "bytes": 926,
+      "sha256": "4f166c10b7e79f7d7572355217b5a7f778a0e31dc049c282356c61d389d12140",
+      "relative_path": "candidate-a04/CMakeLists.txt"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.asm",
+      "bytes": 3802,
+      "sha256": "99f2033b67195e25d5173a42dfeaaefff38d5b040e7aaa9df4b497894a367ead",
+      "relative_path": "candidate-a04/parent_entry_opportunity_12004.asm"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.cpp",
+      "bytes": 9338,
+      "sha256": "c70668a4e999732f7f6b57a54b01d12c76faf4e78fd280b6dcf0beba1bd2310f",
+      "relative_path": "candidate-a04/parent_entry_opportunity_12004.cpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.hpp",
+      "bytes": 4111,
+      "sha256": "25363ef0f3deb17f5afd0a1660d894b87fd632652e19092ae02e7a0ff6bc4e75",
+      "relative_path": "candidate-a04/parent_entry_opportunity_12004.hpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\CMakeLists.txt",
+      "bytes": 1099,
+      "sha256": "b445d4cb940f83bbf7fb44021576e786771b98b7573fcbe568a43f8a3d31e272",
+      "relative_path": "fixture-a02/CMakeLists.txt"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\cold_main.cpp",
+      "bytes": 11191,
+      "sha256": "bde171b9a5c1814aae90338d9b3257d10dabd3451450d5b381e0d276856f667a",
+      "relative_path": "fixture-a02/cold_main.cpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_call.asm",
+      "bytes": 5007,
+      "sha256": "b850bf87690f871d36471e085526283167dd08d9401464b78b584d45de53638c",
+      "relative_path": "fixture-a02/fixture_call.asm"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_core.cpp",
+      "bytes": 4300,
+      "sha256": "2e856c7fe225ed59ac87f0abee0c70b8fa0c4dd845a3a41d48ab0da8ddabfe9a",
+      "relative_path": "fixture-a02/fixture_core.cpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_shared.hpp",
+      "bytes": 1008,
+      "sha256": "6bdab8d54af36108e3f99b57b06104a449919d920a1d8f874d2113b3b71c8483",
+      "relative_path": "fixture-a02/fixture_shared.hpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\prepare_unwind_cases.py",
+      "bytes": 4858,
+      "sha256": "4264836cecc98b0473e02a97e8c9a5a2d3237c70baf9249c254db635a9cad048",
+      "relative_path": "fixture-a02/prepare_unwind_cases.py"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\check_core_a04.py",
+      "bytes": 15753,
+      "sha256": "04a1ae8c0c90339de47043f8edce83bdf273e796a2f25092077aad408ffeb52e",
+      "relative_path": "check_core_a04.py"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\check_fixture_source_a02.py",
+      "bytes": 4097,
+      "sha256": "7aecb7577f0423fd39767986c61c0ef21af719fe90c97c786fa87a4458c6ecac",
+      "relative_path": "check_fixture_source_a02.py"
+    }
+  ],
+  "source_total_bytes": 65490,
+  "focused_Python_source_checks": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-source-checks-a03\\ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1339,
+    "sha256": "ab17575338f36f21f4eac636cea642698e887389be13eee49f1a5f7e290f8513"
+  },
+  "focused_unique_Python_checks": 20,
+  "native_compiler_runs": 0,
+  "native_fixture_runs": 0,
+  "actual_OS_unwind_or_ABI_pass": false,
+  "fixture_private_owner_seed": true,
+  "native_fixture_modes": [
+    "--describe",
+    "--abi",
+    "--state-routes",
+    "--unwind CASEFILE"
+  ],
+  "real_Install_Restore_qualification": false,
+  "implemented_source_scope": [
+    "real ASM caller/native body register, XMM, x87/MXCSR, stack and return sentinels",
+    "real original-body count, >128foreign then target, defaultOFF",
+    "compiled core ArmOnce/OFF-busy, invalid/readfail/overflow routes through explicit private owner fixture",
+    "real concurrent ASM entry/OFF stress; exact stalled producer is injected state, not scheduler proof",
+    "own-project-EXE bounded code decoder emits each actual instruction PC; real RtlVirtualUnwind mode consumes its cases"
+  ],
+  "unimplemented_or_unqualified": [
+    "actual compiler/linker acceptance",
+    "real emitted bytes and all OS unwind results",
+    "full installer protect/write/flush/rollback failure fixture and real global-quiescence installation",
+    "AVX/AVX512 upper-state sentinels beyond untouched-code source proof",
+    "public startup-install/late-owner-arm integration and global peer-thread barrier",
+    "new SYSTEM exact EXE setting/readback",
+    "any game, military, payer, c/d writer or fullR08 qualification"
+  ]
+}

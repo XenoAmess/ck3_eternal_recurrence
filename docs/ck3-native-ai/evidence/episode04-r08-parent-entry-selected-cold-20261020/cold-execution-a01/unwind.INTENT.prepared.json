@@ -1,0 +1,109 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T17:35:15.683711+00:00",
+  "argv": [
+    "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+    "--unwind",
+    "desktop-3fevhd2-1c74096080",
+    "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt"
+  ],
+  "capacity": {
+    "path": "C:\\w\\e04parenta01\\capacity\\PARENT-ENTRY-NATIVE64-1800-SOURCE-BOUND.actual-a04-COLD.json",
+    "bytes": 17321,
+    "sha256": "343e18ac071236fc6024a082b44deaaf37d5eb546fdb1089a560264433945e01"
+  },
+  "producer_plan": {
+    "path": "C:\\w\\e04parenta01\\source-repair-a01\\PARENT-FINAL-PRODUCER-PLAN.prepared-a03.json",
+    "bytes": 15641,
+    "sha256": "f2460e1c7f2988bdfabdf198c407ebf60025e6fcae519ff6fb6b70bf239282f8"
+  },
+  "fresh": {
+    "path": "C:\\w\\e04parenta01\\cold-execution-a01\\unwind.fresh.stdout.json",
+    "bytes": 2867,
+    "sha256": "3c9f11a7722941c3c6fb47fe4c786f181e9239258ced8cfed80b283c114337d1"
+  },
+  "execution_gate": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\EXECUTION-GATE.actual.json",
+    "bytes": 1338,
+    "sha256": "5696a3d1d7c6ff2f87436a8baa347242c6fc789a3251095a5c3f48e2baebce99"
+  },
+  "Root_SYSTEM_review": {
+    "path": "C:\\w\\e04parenta01\\ROOT-SYSTEM-REVIEW.actual.json",
+    "bytes": 1990,
+    "sha256": "fa9f0907794f9b8c1d7dc0a454e52593fcfd9d5f9d9ec258fce605f39bc0c363"
+  },
+  "registered_EXE": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+    "sha256": "5e43a0640410655ccebc6caa4f14294d5e6b7eb8cbc35146713ce7acd99f3fa6",
+    "size": 61952,
+    "target": "parent_entry_opportunity_cold",
+    "target_id": "parent_entry_opportunity_cold::@6890427a1f51a3e7e1df"
+  },
+  "EXE_stat_identity": {
+    "dev": 13886423844274364792,
+    "ino": 1125899908084867,
+    "size": 61952,
+    "mtime_ns": 1792517346291499600
+  },
+  "timeout_seconds": 20,
+  "local_before": {
+    "source": {
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+      "logical_bytes": 61342,
+      "files": 14,
+      "complete": true
+    },
+    "build": {
+      "root": "C:\\w\\e04parenta01",
+      "logical_bytes": 3426473,
+      "files": 253,
+      "complete": true
+    },
+    "fixed_protocol_charge_bytes": 33554432
+  },
+  "extra": {
+    "generator": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\prepare_unwind_cases.py",
+      "bytes": 4858,
+      "sha256": "4264836cecc98b0473e02a97e8c9a5a2d3237c70baf9249c254db635a9cad048"
+    },
+    "boundaries": {
+      "path": "C:\\w\\e04parenta01\\build-a03\\UNWIND-BOUNDARIES.actual.json",
+      "bytes": 1593,
+      "sha256": "d6c5ac474c948bd3a481abc8baed0a2c3348012ab404e3cbc5fc1060fdb3bdfa"
+    },
+    "case_file": {
+      "path": "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt",
+      "bytes": 1026,
+      "sha256": "d5a557f42baaf2837a8f768fa28b5fdab6eace70beaa73107f26dae6fdd80b94"
+    },
+    "two_decoded_spans": [
+      {
+        "function": "thunk",
+        "rva": 36224,
+        "file_offset": 33152,
+        "bytes": 403,
+        "sha256": "fc026585eca1762be549a7f3d8c3e1447f0a65d02be87bb92302a521860f8e96",
+        "instruction_count": 80,
+        "last_instruction_hex": "ff251d300000"
+      },
+      {
+        "function": "prefix",
+        "rva": 36627,
+        "file_offset": 33555,
+        "bytes": 42,
+        "sha256": "f3c592a477cc376b36814b9b3fdc1dba0269d63e209b67c98f08adf0438df605",
+        "instruction_count": 10,
+        "last_instruction_hex": "ff642408"
+      }
+    ],
+    "registered_EXE": {
+      "path": "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "sha256": "5e43a0640410655ccebc6caa4f14294d5e6b7eb8cbc35146713ce7acd99f3fa6",
+      "size": 61952,
+      "target": "parent_entry_opportunity_cold",
+      "target_id": "parent_entry_opportunity_cold::@6890427a1f51a3e7e1df"
+    },
+    "scope": "synthetic CONTEXT at every decoded instruction PC; no CPU single-step or real game Install/Restore qualification"
+  }
+}

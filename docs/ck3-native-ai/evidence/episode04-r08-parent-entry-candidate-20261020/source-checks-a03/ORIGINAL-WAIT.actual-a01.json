@@ -1,0 +1,35 @@
+{
+  "schema": "xar.e04.parent-source-check-original-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T16:39:03.604128+00:00",
+  "observed_at_utc": "2026-10-20T16:39:03.803784+00:00",
+  "original_popen": true,
+  "original_wait": true,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\check_candidate.py"
+  ],
+  "pid": 30924,
+  "creation_time_100ns": 134369879436058720,
+  "creation_read_error": null,
+  "exit_code": 1,
+  "elapsed_seconds": 0.1996625999454409,
+  "focused_unique_tests_expected": 12,
+  "native_build": false,
+  "native_cold": false,
+  "native_OS_unwind_qualified": false,
+  "SDK_game_DR_EXE_body_reads": false,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\source-checks-a03\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\source-checks-a03\\stderr.log",
+    "bytes": 470,
+    "sha256": "8901d91fd812ffd0e503310e0fa5a2fc082981329e06d6d45d241f8d4fd2f05b"
+  }
+}

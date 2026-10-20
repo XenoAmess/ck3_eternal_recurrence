@@ -1,0 +1,1639 @@
+{
+  "schema": "xar.e04.R196-all52-actual-AI-visual-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:16:02.426779+00:00",
+  "reviewer": "/root/media_chapter",
+  "review_source": "Actual per-image view_image returns in this agent turn; no code visual classifier/OCR",
+  "extraction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\EXTRACTION.actual.json",
+    "bytes": 20892,
+    "sha256": "61e0c7905af307f680165b0de808d5c45690156ea61d1e522559573985842acd"
+  },
+  "technical_postwait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\POST-WAIT-CRC-PTS-OWNED0.actual.json",
+    "bytes": 1451,
+    "sha256": "a1adb07b0ca1fd7ccf171d04657645c3cda283aad7f24abf3f02d5452ce4929a"
+  },
+  "all_sheets_viewed": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "all_materialized_source_cells_viewed": 823,
+  "source_global_frames_half_open": [
+    960,
+    1783
+  ],
+  "source_PTS_first_last": [
+    32,
+    59.4
+  ],
+  "last_frame_exclusive_end_seconds": 59.43333333333333,
+  "sheets": [
+    {
+      "sheet": 0,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-000.jpg",
+        "bytes": 35926,
+        "sha256": "21c87548fc9d50612c94b963403e2066b12a2fb7518f037d42f7f02787d56553"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        960,
+        976
+      ],
+      "local_frames_half_open": [
+        0,
+        16
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        32000,
+        32500
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 1,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-001.jpg",
+        "bytes": 36019,
+        "sha256": "28dd91627d38ca27b86986f476e2400581184548b16a423e2028ef4b126da875"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        976,
+        992
+      ],
+      "local_frames_half_open": [
+        16,
+        32
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        32533,
+        33033
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 2,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-002.jpg",
+        "bytes": 35941,
+        "sha256": "f7b2185867cee1939a19b86c1c6969838d9e7061cf39efcb5a152cd052f05b43"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        992,
+        1008
+      ],
+      "local_frames_half_open": [
+        32,
+        48
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        33067,
+        33567
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 3,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-003.jpg",
+        "bytes": 36059,
+        "sha256": "06e9443c8709a9f8c107738bf3cccd7b602d033b0bbf17d039a7cd9ea288a550"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1008,
+        1024
+      ],
+      "local_frames_half_open": [
+        48,
+        64
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        33600,
+        34100
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 4,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-004.jpg",
+        "bytes": 36069,
+        "sha256": "088cd1c6329849b347ae44539f764e9d5f415530a4eee9939313102441c3b403"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1024,
+        1040
+      ],
+      "local_frames_half_open": [
+        64,
+        80
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        34133,
+        34633
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 5,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-005.jpg",
+        "bytes": 36020,
+        "sha256": "f23b0808770423a3eee660b784098758c4d9e81ce9b7f845a28d19301b72eefc"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1040,
+        1056
+      ],
+      "local_frames_half_open": [
+        80,
+        96
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        34667,
+        35167
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 6,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-006.jpg",
+        "bytes": 36127,
+        "sha256": "ffa8349f42ff541daf64b8a2b3dbb12942b6d8edbb094342aeba11fc7a461923"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1056,
+        1072
+      ],
+      "local_frames_half_open": [
+        96,
+        112
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        35200,
+        35700
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 7,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-007.jpg",
+        "bytes": 36177,
+        "sha256": "33437f349f52dc6d2897ccc81dddf5bec8a02537d3a0273339997402df0eacaf"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1072,
+        1088
+      ],
+      "local_frames_half_open": [
+        112,
+        128
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        35733,
+        36233
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 8,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-008.jpg",
+        "bytes": 36278,
+        "sha256": "069e2837c6e89a17a6fe3cd38c4d80c660daf8eaa634338b86865f02e991cab3"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1088,
+        1104
+      ],
+      "local_frames_half_open": [
+        128,
+        144
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        36267,
+        36767
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 9,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-009.jpg",
+        "bytes": 36245,
+        "sha256": "390d2e72626791ace35f9f0f78935e7445cf19de022029ffb0873dfdbe9eb492"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1104,
+        1120
+      ],
+      "local_frames_half_open": [
+        144,
+        160
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        36800,
+        37300
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 10,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-010.jpg",
+        "bytes": 36298,
+        "sha256": "fa2bd0849ab5f3eede7a093afa35b976244991435a62289cd59b40063e8cfe94"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1120,
+        1136
+      ],
+      "local_frames_half_open": [
+        160,
+        176
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        37333,
+        37833
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 11,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-011.jpg",
+        "bytes": 36183,
+        "sha256": "4c4151d8bffcd5b233a16fb48ea3c8e03fb572aac2406082c05c79214f73fe03"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1136,
+        1152
+      ],
+      "local_frames_half_open": [
+        176,
+        192
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        37867,
+        38367
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 12,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-012.jpg",
+        "bytes": 36040,
+        "sha256": "a2db7541f89aee03947570ddf9358af72ad07662a5ca8cf6dc29a035ad9b767e"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1152,
+        1168
+      ],
+      "local_frames_half_open": [
+        192,
+        208
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        38400,
+        38900
+      ],
+      "observation": "Fixed map and selected army panel, land camp presentation; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 13,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-013.jpg",
+        "bytes": 35828,
+        "sha256": "7c7e3c5623cc64424ff3fb5d6516d0c6b193929856d39adfe202fa9a8672e05b"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1168,
+        1184
+      ],
+      "local_frames_half_open": [
+        208,
+        224
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        38933,
+        39433
+      ],
+      "observation": "Army panel presentation changes within/adjacent this sheet; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 14,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-014.jpg",
+        "bytes": 36500,
+        "sha256": "12ce9147946fb1376ba3dec92dd597205e1a19b3da63adfab740e7411f38c85d"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1184,
+        1200
+      ],
+      "local_frames_half_open": [
+        224,
+        240
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        39467,
+        39967
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 15,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-015.jpg",
+        "bytes": 36590,
+        "sha256": "fc0f9d23a9f4a9ba2271475621330c3cbf3dd2ff4d6f6a5061b390acbe53c930"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1200,
+        1216
+      ],
+      "local_frames_half_open": [
+        240,
+        256
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        40000,
+        40500
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 16,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-016.jpg",
+        "bytes": 36591,
+        "sha256": "1681e105e2b520c82242b87503054548c5b3b2ebb6e69f2fe831deb5a31dabed"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1216,
+        1232
+      ],
+      "local_frames_half_open": [
+        256,
+        272
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        40533,
+        41033
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 17,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-017.jpg",
+        "bytes": 36568,
+        "sha256": "765701aea3b8ddc8d9849168935c6a627d7adc6995f3b6197fff2cd59e8597d3"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1232,
+        1248
+      ],
+      "local_frames_half_open": [
+        272,
+        288
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        41067,
+        41567
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 18,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-018.jpg",
+        "bytes": 36557,
+        "sha256": "7ccf4862ee0ac3d7d4bdb3f55e5ece379fc584993a46c5fceae5422d5d9a56f9"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1248,
+        1264
+      ],
+      "local_frames_half_open": [
+        288,
+        304
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        41600,
+        42100
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 19,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-019.jpg",
+        "bytes": 36595,
+        "sha256": "d2388ee0cb6e3140b5606666ffb5d2cbe61eb96ff7c40d38fe545061c524c9a4"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1264,
+        1280
+      ],
+      "local_frames_half_open": [
+        304,
+        320
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        42133,
+        42633
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 20,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-020.jpg",
+        "bytes": 36594,
+        "sha256": "c7b1bd4a2173f78adb362c80f814cadddeaaaca48b1e7073054a930410dde7ad"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1280,
+        1296
+      ],
+      "local_frames_half_open": [
+        320,
+        336
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        42667,
+        43167
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 21,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-021.jpg",
+        "bytes": 36627,
+        "sha256": "5f94172f93e9c46c9a7ab0ce81eb29ca56304ede2e92a07b44a7427b5dbc057a"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1296,
+        1312
+      ],
+      "local_frames_half_open": [
+        336,
+        352
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        43200,
+        43700
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 22,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-022.jpg",
+        "bytes": 36591,
+        "sha256": "717d399155854080c2a7be13eaa8542cf91c4853dad558d0485b51daee863377"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1312,
+        1328
+      ],
+      "local_frames_half_open": [
+        352,
+        368
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        43733,
+        44233
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 23,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-023.jpg",
+        "bytes": 36556,
+        "sha256": "92fe22c5bc2bede9ed8b9a1f90695b068684eff1589be6bf59368d7a774d7a62"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1328,
+        1344
+      ],
+      "local_frames_half_open": [
+        368,
+        384
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        44267,
+        44767
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 24,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-024.jpg",
+        "bytes": 36550,
+        "sha256": "b5a34bd48ff3631618e43aece4efee307bdd5b9ad7d6d544285df1b588f1b061"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1344,
+        1360
+      ],
+      "local_frames_half_open": [
+        384,
+        400
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        44800,
+        45300
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 25,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-025.jpg",
+        "bytes": 36601,
+        "sha256": "d0ce6b8a2051dba33be5dcd5ce96358f3d1f24efa092ac570c6d12fd11a749a5"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1360,
+        1376
+      ],
+      "local_frames_half_open": [
+        400,
+        416
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        45333,
+        45833
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 26,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-026.jpg",
+        "bytes": 36608,
+        "sha256": "c447649b6e5079f8dc8c7932b4b92382b13f9c99df3f84c455a6091d83494ea8"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1376,
+        1392
+      ],
+      "local_frames_half_open": [
+        416,
+        432
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        45867,
+        46367
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 27,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-027.jpg",
+        "bytes": 36579,
+        "sha256": "d64c36ea0eaab84b89794899ba0bda35ce9f9c94f54a41ceea9c1822dfc40fb1"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1392,
+        1408
+      ],
+      "local_frames_half_open": [
+        432,
+        448
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        46400,
+        46900
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 28,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-028.jpg",
+        "bytes": 36584,
+        "sha256": "836a2964d2d5af8f0721108f588273857a8defde6116cd3647a798449377465a"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1408,
+        1424
+      ],
+      "local_frames_half_open": [
+        448,
+        464
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        46933,
+        47433
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 29,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-029.jpg",
+        "bytes": 36625,
+        "sha256": "b0058e82fdc589f58cc5d235b86256fa4836b64565e26f4c67cc07b63cb93b51"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1424,
+        1440
+      ],
+      "local_frames_half_open": [
+        464,
+        480
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        47467,
+        47967
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 30,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-030.jpg",
+        "bytes": 36553,
+        "sha256": "c89fe5d01db6bfb2168624221d6d6545d7c4d559bfcdcb7d6816a903a7b37258"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1440,
+        1456
+      ],
+      "local_frames_half_open": [
+        480,
+        496
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        48000,
+        48500
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 31,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-031.jpg",
+        "bytes": 36573,
+        "sha256": "a227cf38e1736d9d70bf4fe3fb24b2de30cec6b4b48facf2a763b3de9d3938aa"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1456,
+        1472
+      ],
+      "local_frames_half_open": [
+        496,
+        512
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        48533,
+        49033
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 32,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-032.jpg",
+        "bytes": 36530,
+        "sha256": "07867ca7731ac7964b6e9e42c9e48b0ad0f3f8f7b6116cf70c9acc27df5a380a"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1472,
+        1488
+      ],
+      "local_frames_half_open": [
+        512,
+        528
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        49067,
+        49567
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 33,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-033.jpg",
+        "bytes": 36598,
+        "sha256": "1f12bfeef96b875569e1f679e5e005417def3bd9cdeb0ca1b278541a67d602de"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1488,
+        1504
+      ],
+      "local_frames_half_open": [
+        528,
+        544
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        49600,
+        50100
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 34,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-034.jpg",
+        "bytes": 36652,
+        "sha256": "71cb38c2dfef19d9323c237a9ce8d80a331c134fa45842cbb94956e3d4986917"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1504,
+        1520
+      ],
+      "local_frames_half_open": [
+        544,
+        560
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        50133,
+        50633
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 35,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-035.jpg",
+        "bytes": 36639,
+        "sha256": "185f8d6ac887edcc58f775561a914c565e74c9cd988b9859ccda7ebc9e4f0e9a"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1520,
+        1536
+      ],
+      "local_frames_half_open": [
+        560,
+        576
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        50667,
+        51167
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 36,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-036.jpg",
+        "bytes": 36578,
+        "sha256": "8fae6b1b9c3cfec21f0506ee00d7b8e2f646b3b56b829d63c1434d906490df54"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1536,
+        1552
+      ],
+      "local_frames_half_open": [
+        576,
+        592
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        51200,
+        51700
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 37,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-037.jpg",
+        "bytes": 36599,
+        "sha256": "810acb76452aca592b8d0883eb898d73df53b683f2dcc32c4e3188df9edd8e5b"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1552,
+        1568
+      ],
+      "local_frames_half_open": [
+        592,
+        608
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        51733,
+        52233
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 38,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-038.jpg",
+        "bytes": 36672,
+        "sha256": "48fa532e0c9862032693559de0034905b01c9d07d34dc33f4626d464f0d831d0"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1568,
+        1584
+      ],
+      "local_frames_half_open": [
+        608,
+        624
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        52267,
+        52767
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 39,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-039.jpg",
+        "bytes": 36599,
+        "sha256": "98c6e430f2dec427e51f85c6c850f3c3a5a1f8c188117894bb97584908e06659"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1584,
+        1600
+      ],
+      "local_frames_half_open": [
+        624,
+        640
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        52800,
+        53300
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 40,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-040.jpg",
+        "bytes": 36580,
+        "sha256": "c87d273d5fd6204b8f62a0c37a392bf0031f8c923f90dbf8e419c4ea8387a232"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1600,
+        1616
+      ],
+      "local_frames_half_open": [
+        640,
+        656
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        53333,
+        53833
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 41,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-041.jpg",
+        "bytes": 36560,
+        "sha256": "e4d15cb20983e8d377b9dc30e28a7ff4d8952cc90dbcbac5dde7463d2bf0912d"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1616,
+        1632
+      ],
+      "local_frames_half_open": [
+        656,
+        672
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        53867,
+        54367
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 42,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-042.jpg",
+        "bytes": 36654,
+        "sha256": "405028881569178e0426f1daa80134b1b9604d317e449194481022efab08b774"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1632,
+        1648
+      ],
+      "local_frames_half_open": [
+        672,
+        688
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        54400,
+        54900
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 43,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-043.jpg",
+        "bytes": 36593,
+        "sha256": "f2d816f2c9139334b94a11960fb8531f61ca5d0200c499497e83f91e85c66b88"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1648,
+        1664
+      ],
+      "local_frames_half_open": [
+        688,
+        704
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        54933,
+        55433
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 44,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-044.jpg",
+        "bytes": 36606,
+        "sha256": "3b221e025a058c265e8a259777518421707e8e663859c0d1ac9d9c5ab7fa5f05"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1664,
+        1680
+      ],
+      "local_frames_half_open": [
+        704,
+        720
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        55467,
+        55967
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 45,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-045.jpg",
+        "bytes": 36526,
+        "sha256": "586ead74f4c785720a4064ff7912298d455711663abbaa11779f9581133f43d4"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1680,
+        1696
+      ],
+      "local_frames_half_open": [
+        720,
+        736
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        56000,
+        56500
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 46,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-046.jpg",
+        "bytes": 36523,
+        "sha256": "c74adf0c4ee6ee8b52ca12a3e70b1d0b69f587695896fa6b6735dd9f0e1ae4ee"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1696,
+        1712
+      ],
+      "local_frames_half_open": [
+        736,
+        752
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        56533,
+        57033
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 47,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-047.jpg",
+        "bytes": 36558,
+        "sha256": "a14c4eb2b900e4514a72a0a073c39d9a63d1d3edc7e3b9278fa0840c5ff22d72"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1712,
+        1728
+      ],
+      "local_frames_half_open": [
+        752,
+        768
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        57067,
+        57567
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 48,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-048.jpg",
+        "bytes": 36579,
+        "sha256": "2343af74f38b7644da7a6416b038e38121b40cb44c25b36c8a4f2c46f5c4e04d"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1728,
+        1744
+      ],
+      "local_frames_half_open": [
+        768,
+        784
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        57600,
+        58100
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 49,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-049.jpg",
+        "bytes": 36717,
+        "sha256": "5373f7caf04047268feba2f2109f11e55c4e9acb7f9a4e127584718009845246"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1744,
+        1760
+      ],
+      "local_frames_half_open": [
+        784,
+        800
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        58133,
+        58633
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 50,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-050.jpg",
+        "bytes": 36752,
+        "sha256": "a797c24c8b4b20a2676b717dd171671c583233700228e5a8f804df75e1b1224d"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1760,
+        1776
+      ],
+      "local_frames_half_open": [
+        800,
+        816
+      ],
+      "valid_cells": 16,
+      "source_PTS_ticks_first_last": [
+        58667,
+        59167
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 0,
+      "tiny_glyphs_fully_readable": false
+    },
+    {
+      "sheet": 51,
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\contact-051.jpg",
+        "bytes": 19130,
+        "sha256": "06666a817de0fb0eba7679b37ac72026ee0ef5a4fb4c7c1787d246933b6243ba"
+      },
+      "actual_viewed": true,
+      "reviewer": "/root/media_chapter",
+      "tool": "functions tools.view_image detail original",
+      "global_frames_half_open": [
+        1776,
+        1783
+      ],
+      "local_frames_half_open": [
+        816,
+        823
+      ],
+      "valid_cells": 7,
+      "source_PTS_ticks_first_last": [
+        59200,
+        59400
+      ],
+      "observation": "Fixed map and selected army panel with ships presentation, stable poststate; no external/modal/hover/blue/title occlusion visible.",
+      "padding_cells_excluded": 9,
+      "tiny_glyphs_fully_readable": false
+    }
+  ],
+  "actual_fullres_viewed_this_lane": [
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-02.png",
+        "bytes": 1248017,
+        "sha256": "a781135a078774245aa9ebbd6bbf0ee794c8572b41734ed9ea82f5e65f06483f"
+      },
+      "frame_index": 1050,
+      "PTS_seconds": 35.0,
+      "tool": "functions tools.view_image detail original",
+      "reviewed_by": "/root/media_chapter"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-03.png",
+        "bytes": 1253538,
+        "sha256": "eddf51bf7d2d8996aa3c91534a1c3d0af752bb177b20be5096971f060ad3d920"
+      },
+      "frame_index": 1140,
+      "PTS_seconds": 38.0,
+      "tool": "functions tools.view_image detail original",
+      "reviewed_by": "/root/media_chapter"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-04.png",
+        "bytes": 1243141,
+        "sha256": "5d629dd2ae20707b9c4687039ee1b48c37bf18d820a570ce78df2898d537242a"
+      },
+      "frame_index": 1230,
+      "PTS_seconds": 41.0,
+      "tool": "functions tools.view_image detail original",
+      "reviewed_by": "/root/media_chapter"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-05.png",
+        "bytes": 1248196,
+        "sha256": "981a30aa18a2cd39a3dced4653c7e4513af69a570ec38a55177a707e45e0bdc0"
+      },
+      "frame_index": 1320,
+      "PTS_seconds": 44.0,
+      "tool": "functions tools.view_image detail original",
+      "reviewed_by": "/root/media_chapter"
+    }
+  ],
+  "fullres_observation": {
+    "at_35_and38": "Selected army1162, supply300/300, gold260,1067Mar25,landcamp/encamped panel.",
+    "at_41_and44": "Selected army1162, supply300/300,gold257,1067Mar26,ships/embarked panel.",
+    "screen_layout": "CK3 client map and ArmyWindow. No desktop/title/legacyblue/modal/hover occlusion in these four originals.",
+    "top_global_1163_is_not_selected_army_1162": true
+  },
+  "visible_structure_bracket": {
+    "before_global_frame": 1167,
+    "before_source_PTS": 38.9,
+    "after_global_frame": 1184,
+    "after_source_PTS": 39.467,
+    "notation": "(38.900,39.467]",
+    "basis": "Actual sheet012 last camp presentation and sheet014 first ships presentation; sheet013 contains change. Conservative visual bracket only.",
+    "precise_native_callback_PTS": null
+  },
+  "readable_date_gold_bracket": {
+    "source_PTS": [
+      38,
+      41
+    ],
+    "gold_labels": [
+      260,
+      257
+    ],
+    "dates": [
+      "1067-03-25",
+      "1067-03-26"
+    ],
+    "basis": "Two existing original-resolution source frames directly reviewed this turn; not refined from240x135 thumbnails."
+  },
+  "typed_clean_claim": {
+    "type": "AI_ALL_CONTINUOUS_FRAME_THUMBNAIL_REVIEW_PLUS_KEY_ORIGINAL_RESOLUTION",
+    "scope": "Source frames960..1782 inclusive only; clean here means no visible external/legacyblue/title/modal/hover/black-frame obstruction at full-frame thumbnail scale, with four key original resolutions for necessary readouts.",
+    "passed": true,
+    "all_original_resolution_frames_readable": false,
+    "unreviewed_source_outside_window_not_certified": true,
+    "review_at_real_time_1x": false,
+    "human_review": false,
+    "Root_viewed_all52": false,
+    "final_movie_signoff": false
+  },
+  "candidate": {
+    "theme": "R07",
+    "status": "RECOMMENDED_BOUNDED_POSITIVE_PENDING_ROOT_ADJUDICATION",
+    "raw_seconds_half_open": [
+      32,
+      52
+    ],
+    "global_frames_half_open": [
+      960,
+      1560
+    ],
+    "frame_count": 600,
+    "original_speed": true,
+    "pre_seconds_from_structure_bracket": [
+      6.9,
+      7.467
+    ],
+    "post_seconds_from_structure_bracket": [
+      12.533,
+      13.1
+    ],
+    "original_M_planned_pre_seconds": [
+      6,
+      10
+    ],
+    "original_M_planned_post_seconds": [
+      8,
+      15
+    ],
+    "native_association": "Same run R0196/Army18; actual day31 boarding and account writer are independently qualified by pinned production pair/research adoption. No UTC-to-PTS interpolation.",
+    "permitted_wording_zh": "这一次军队真正登船后，原生支付链核到个人账户31254实际扣款3金币。画面显示陆营变为船面板，金币标签260变为257；这不是所有军队的固定费率。",
+    "not_in_shot": [
+      "Pre-Move sea warning or source-bound quote",
+      "Exact encoded PTS of native payment callback",
+      "Seven-day original v1 control design",
+      "Military maintenance, commander causality or universal fee",
+      "A second Halt action or another run causal sequence"
+    ]
+  },
+  "historical_scope": {
+    "adopted_R07_v2": true,
+    "original_v1_qualified": false,
+    "original_v1_unmet": [
+      "7 actual-day ceiling",
+      "avoid economic settlement opportunities"
+    ],
+    "quote": null,
+    "precise_payment_PTS": null,
+    "whole_card_all_variants": false
+  },
+  "Root_actual_review_attribution": {
+    "source": "/root messages in this task",
+    "directly_viewed_existing_fullres": [
+      38,
+      41
+    ],
+    "directly_viewed_new_contacts_at_freeze": [],
+    "observation": "Root read260→257,Mar25→26,Army1162 camp→ships, no oldblue/title/modal/occlusion in these two fullres. No all52/human1x claim.",
+    "later_Root_keysheet_review_must_be_separate_receipt": true
+  },
+  "formal_theme_credit": false,
+  "formal_counts_mutated": false,
+  "old_fullraw_QA_repeated": false,
+  "new_fullres": false,
+  "remaining_heavy": 0
+}

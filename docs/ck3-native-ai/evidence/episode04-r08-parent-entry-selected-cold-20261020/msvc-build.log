@@ -1,0 +1,71 @@
+[1/8] Building ASM_MASM object candidate-core\CMakeFiles\xar_parent_entry_opportunity_12004.dir\parent_entry_opportunity_12004.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\candidate-a04\parent_entry_opportunity_12004.asm
+[2/8] Building CXX object candidate-core\CMakeFiles\xar_parent_entry_opportunity_12004.dir\parent_entry_opportunity_12004.cpp.obj
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\candidate-a04\parent_entry_opportunity_12004.hpp(31): warning C4324: “xar::ck3_12004::parent_entry::WireState”: 由于对齐说明符，结构被填充
+[3/8] Building CXX object CMakeFiles\parent_entry_opportunity_cold.dir\cold_main.cpp.obj
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\../candidate-a04/parent_entry_opportunity_12004.hpp(31): warning C4324: “xar::ck3_12004::parent_entry::WireState”: 由于对齐说明符，结构被填充
+[4/8] Building ASM_MASM object CMakeFiles\parent_entry_opportunity_cold.dir\fixture_call.asm.obj
+FAILED: [code=1] CMakeFiles/parent_entry_opportunity_cold.dir/fixture_call.asm.obj 
+C:\PROGRA~1\MICROS~1\18\COMMUN~1\VC\Tools\MSVC\1451~1.362\bin\Hostx64\x64\ml64.exe -DXAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004=1   -c -Fo CMakeFiles\parent_entry_opportunity_cold.dir\fixture_call.asm.obj C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(68) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(69) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(70) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(71) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(72) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(73) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(74) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(75) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(76) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(77) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(78) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(79) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(80) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(81) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(82) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(83) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(105) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(138) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(139) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(140) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(141) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(142) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(143) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(144) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(145) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(146) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(147) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(148) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(149) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(150) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(151) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(152) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(153) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(154) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(155) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(156) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(157) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(158) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(159) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(160) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(161) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(162) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(163) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(164) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(165) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(166) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(167) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(168) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(169) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(171) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(173) : error A2022:instruction operands must be the same size
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_call.asm(175) : error A2022:instruction operands must be the same size
+[5/8] Building CXX object CMakeFiles\parent_entry_opportunity_cold.dir\fixture_core.cpp.obj
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\../candidate-a04/parent_entry_opportunity_12004.hpp(31): warning C4324: “xar::ck3_12004::parent_entry::WireState”: 由于对齐说明符，结构被填充
+ninja: build stopped: subcommand failed.

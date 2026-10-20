@@ -1,0 +1,337 @@
+{
+  "schema": "xar.e04.parent-entry-coherent-surrogate-producer-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T17:24:00.937297+00:00",
+  "prepared_only": true,
+  "execution_admitted_by_this_plan": false,
+  "base_head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "base_native_tree": "6b91a527758357c1844bf9eb5647c1063ad7fdd8",
+  "source_kind": "unpublished unchanged core-a04 + original fixture-a02 C++ + type-annotated fixture-a03 ASM; not compiled Git HEAD",
+  "source_index": {
+    "path": "C:\\w\\e04parenta01\\source-repair-a01\\REPAIR-DIAGNOSIS.actual-a01.json",
+    "bytes": 2556,
+    "sha256": "1fa66e1a58d5ef69483c2dfc1399de05a80f395ff65fc3733641e6aaf906b6df"
+  },
+  "source_root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+  "build_root": "C:\\w\\e04parenta01",
+  "both_roots_actual_absent": false,
+  "source_copy": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\CMakeLists.txt",
+      "bytes": 926,
+      "sha256": "4f166c10b7e79f7d7572355217b5a7f778a0e31dc049c282356c61d389d12140",
+      "relative_path": "candidate-a04/CMakeLists.txt"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.asm",
+      "bytes": 3802,
+      "sha256": "99f2033b67195e25d5173a42dfeaaefff38d5b040e7aaa9df4b497894a367ead",
+      "relative_path": "candidate-a04/parent_entry_opportunity_12004.asm"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.cpp",
+      "bytes": 9338,
+      "sha256": "c70668a4e999732f7f6b57a54b01d12c76faf4e78fd280b6dcf0beba1bd2310f",
+      "relative_path": "candidate-a04/parent_entry_opportunity_12004.cpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.hpp",
+      "bytes": 4111,
+      "sha256": "25363ef0f3deb17f5afd0a1660d894b87fd632652e19092ae02e7a0ff6bc4e75",
+      "relative_path": "candidate-a04/parent_entry_opportunity_12004.hpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\CMakeLists.txt",
+      "bytes": 1099,
+      "sha256": "b445d4cb940f83bbf7fb44021576e786771b98b7573fcbe568a43f8a3d31e272",
+      "relative_path": "fixture-a02/CMakeLists.txt"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\cold_main.cpp",
+      "bytes": 11191,
+      "sha256": "bde171b9a5c1814aae90338d9b3257d10dabd3451450d5b381e0d276856f667a",
+      "relative_path": "fixture-a02/cold_main.cpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_call.asm",
+      "bytes": 5007,
+      "sha256": "b850bf87690f871d36471e085526283167dd08d9401464b78b584d45de53638c",
+      "relative_path": "fixture-a02/fixture_call.asm"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_core.cpp",
+      "bytes": 4300,
+      "sha256": "2e856c7fe225ed59ac87f0abee0c70b8fa0c4dd845a3a41d48ab0da8ddabfe9a",
+      "relative_path": "fixture-a02/fixture_core.cpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_shared.hpp",
+      "bytes": 1008,
+      "sha256": "6bdab8d54af36108e3f99b57b06104a449919d920a1d8f874d2113b3b71c8483",
+      "relative_path": "fixture-a02/fixture_shared.hpp"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\prepare_unwind_cases.py",
+      "bytes": 4858,
+      "sha256": "4264836cecc98b0473e02a97e8c9a5a2d3237c70baf9249c254db635a9cad048",
+      "relative_path": "fixture-a02/prepare_unwind_cases.py"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\source-repair-a01\\fixture_call.asm",
+      "bytes": 5595,
+      "sha256": "915bf07a3d0b0754680ae50bc2a986604e7ab99df027f5f37c3acca09609d365",
+      "relative_path": "fixture-a03/fixture_call.asm"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\source-repair-a01\\CMakeLists.txt",
+      "bytes": 1129,
+      "sha256": "ab491a17f842d1f98fdce85ce5c0df400f315f2c5d7c4c8ff9ccdc714cf40b5f",
+      "relative_path": "fixture-a03/CMakeLists.txt"
+    }
+  ],
+  "source_copy_bytes": 52364,
+  "entry_dependencies": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "bytes": 13321,
+      "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+      "bytes": 26973,
+      "sha256": "67c6021fcd5af209f409957fe045cfbc890da4eda72baf9a5bdf5b0c58d4701b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\freeze_build_sources.py",
+      "bytes": 2576,
+      "sha256": "ab1579cbfe42e73e4ff87004e5be2f83784fdf331bbb48e8b064dacfbd3bd79a"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\source-repair-a01\\verify_system_gate_a03.py",
+      "bytes": 2436,
+      "sha256": "2c66da0c190135f1c8bfe62d0ac24ebb98afc28c2a237d3fc31ec474c4a654a6"
+    }
+  ],
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "legal_build_roots": [
+    "C:\\ck3-war-episode04-research-20261004-a01",
+    "D:/workspace/ck3_eternal_recurrence",
+    "C:/w"
+  ],
+  "legal_external_source_roots": [
+    "C:\\ck3-war-episode04-research-20261004-a01"
+  ],
+  "fixed_protocol_roots": [
+    "C:/Program Files/XAR CK3 Project EXE Broker/inbox",
+    "C:/Program Files/XAR CK3 Project EXE Broker/private-frozen",
+    "C:/Program Files/XAR CK3 Project EXE Broker/receipts"
+  ],
+  "budget": {
+    "aggregate_ceiling_bytes": 67108864,
+    "fixed_protocol_growth_ceiling_bytes": 33554432,
+    "source_freeze_and_manifest_ceiling_bytes": 131072,
+    "new_build_root_ceiling_bytes": 33423360,
+    "sum_closed": true,
+    "estimated_output_peak_bytes": 8388608,
+    "estimate_not_actual": true,
+    "unknown_protected_growth_not_zero": true
+  },
+  "phase_argv": {
+    "MSVC-build-and-ordinary-SYSTEM": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "--source-dir",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a03",
+      "--build-dir",
+      "C:\\w\\e04parenta01\\build-a03",
+      "--configuration",
+      "Release",
+      "--jobs",
+      "2",
+      "--defender-external-candidate",
+      "e04-parent-entry-opportunity-12004",
+      "--cmake-define",
+      "XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004=ON",
+      "--cmake-define",
+      "XAR_BUILD_PARENT_ENTRY_SYNTHETIC_COLD=ON",
+      "--cmake-define",
+      "CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY",
+      "--configure",
+      "--build",
+      "--target",
+      "xar_parent_entry_opportunity_12004",
+      "parent_entry_opportunity_cold"
+    ],
+    "exact-SYSTEM-receipt": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\w\\e04parenta01\\source-repair-a01\\verify_system_gate_a03.py",
+      "--build-root",
+      "C:\\w\\e04parenta01\\build-a03"
+    ],
+    "cold-describe": [
+      "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "--describe",
+      "desktop-3fevhd2-1c74096080"
+    ],
+    "derive-own-EXE-unwind-boundaries": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\prepare_unwind_cases.py",
+      "--exe",
+      "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "--manifest",
+      "LATE_BOUND_REPORT_DEFENDER_MANIFEST",
+      "--description",
+      "C:\\w\\e04parenta01\\build-a03\\cold-describe.stdout.json",
+      "--output",
+      "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt",
+      "--receipt",
+      "C:\\w\\e04parenta01\\build-a03\\UNWIND-BOUNDARIES.actual.json",
+      "--build-root",
+      "C:\\w\\e04parenta01\\build-a03"
+    ],
+    "cold-ABI": [
+      "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "--abi",
+      "desktop-3fevhd2-1c74096080"
+    ],
+    "cold-state-and-concurrent-OFF": [
+      "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "--state-routes",
+      "desktop-3fevhd2-1c74096080"
+    ],
+    "cold-real-Windows-unwind": [
+      "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "--unwind",
+      "desktop-3fevhd2-1c74096080",
+      "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt"
+    ]
+  },
+  "late_bound_values": [
+    "this final plan SHA",
+    "actual source-bound execution cap path/SHA if capacity chooses another immutable leaf",
+    "actual producer-report defender manifest path"
+  ],
+  "phase_requirements": [
+    "Root explicit stage adoption plus actual source-bound GREEN cap; financial-only reservation is insufficient",
+    "fresh all-active-claims, volumes, local roots and protocol budget before every stage; capacity-provided exact helper/fresh pin bound in each Popen intent",
+    "all logs/temp/cache/artifacts/receipts written only to new build root/source root as scoped; old P input stays read-only after17:15",
+    "MSVC public producer automatically performs ordinary broker request after both targets genuinely build; exact SYSTEM readback before first fixture EXE",
+    "retain original Popen handle/PID/create-time and wait for every compiler/producer/EXE; a task ACK or source test is not qualification",
+    "before unwind EXE: verify exact case file SHA/size against UNWIND-BOUNDARIES receipt, bind receipt SHA plus registered EXE SHA and both complete decoded spans/counts in original execution intent; re-stat/readback unchanged",
+    "decode only the own new fixture EXE bounded function spans, not CK3 or existing binaries; helper is not an OS-pass result",
+    "no automatic retry or suppressed failure; preserve actual failure and allow only Root-approved bounded same-root diagnosis"
+  ],
+  "selected_native_scope": [
+    "static library compiler acceptance",
+    "synthetic actual ABI/callonce/stack/flags-image/XMM/x87-MXCSR/return",
+    "foreign257 and defaultOFF",
+    "actual core state routes + private Identity/prefix guard fixture",
+    "concurrent ASM/OFF stress",
+    "actual RtlVirtualUnwind each decoded instruction boundary"
+  ],
+  "explicitly_not_qualified": [
+    "real game Install/Restore or VirtualProtect/Flush/rollback-failure fixture",
+    "actual all-peer-thread quiescence and new public startup/late-arm integration",
+    "AVX upper-state sentinels",
+    "entry full ID/clock read",
+    "any payment/military/payer/cadence/cd writer/fullR08 business"
+  ],
+  "core_a03_preserved": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\SOURCE-CONTRACT.prepared-a03.json",
+    "bytes": 8869,
+    "sha256": "e53c2e9f260194cf5e317bd35b42c784fc1ddb54f2676ef6dcf5a071d7df0176"
+  },
+  "a04_player_id_correction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PLAYER-ID-CORRECTION.actual-a01.json",
+    "bytes": 1233,
+    "sha256": "176c5560ac2f51d4e79705b4d9f0d033842d7d3524e07e78547edce55167c984"
+  },
+  "source_checks": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-source-checks-a03\\ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1339,
+    "sha256": "ab17575338f36f21f4eac636cea642698e887389be13eee49f1a5f7e290f8513"
+  },
+  "actual_native_builds": 0,
+  "actual_project_EXE_runs": 0,
+  "actual_SYSTEM_changes": 0,
+  "game_SDK_Steam_DR_actions": 0,
+  "revision": "fixture-a03 explicit operand widths after first actual MASM failure",
+  "previous_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PARENT-FINAL-PRODUCER-PLAN.prepared-a01.json",
+    "bytes": 12638,
+    "sha256": "71666fd4960b8c909dcbc2ed569d81c6efd5fb1e10be0cdfbe8fc269320eff28"
+  },
+  "first_failed_attempt": [
+    {
+      "path": "C:\\w\\e04parenta01\\native-msvc-result.json",
+      "bytes": 1511,
+      "sha256": "c25ddeb7b0c1c9e04168041a7bd41ed4f86a3d96980833cf1a542b8c147886bd"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\msvc-build.log",
+      "bytes": 10828,
+      "sha256": "fde543a542d70dae68bdba5f11b9cfe3420f8aef10cc3a932ea6ddeb54db595a"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\msvc-configure.log",
+      "bytes": 738,
+      "sha256": "35ba20c4e5c6991f05f384c39cdc780472bd9abf901a94a45f878f584539ae00"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\build-execution-a02\\ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 2037,
+      "sha256": "42a77c9e8bea86b5475398563f7218d4ca05b439d26330552b0cfb42edd4fc4f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 5020,
+      "sha256": "22ab7e2633b27f2f80c32f3c8b86792f8202cc467922654bce6288af55142a14"
+    }
+  ],
+  "production_build_root": "C:\\w\\e04parenta01\\build-a03",
+  "new_build_subroot_must_be_absent": true,
+  "source_extension_only": [
+    "fixture-a03/fixture_call.asm",
+    "fixture-a03/CMakeLists.txt"
+  ],
+  "initial_source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 5020,
+    "sha256": "22ab7e2633b27f2f80c32f3c8b86792f8202cc467922654bce6288af55142a14"
+  },
+  "source_extension_manifest": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\SOURCE-MANIFEST.actual-a02.json",
+  "source_extension_contract": "Preserve all original10 source bytes and first manifest. Copy only2 new files after fresh source-bound adoption; new explicit supplemental manifest binds both generations.",
+  "configure_semantics": "New build-a03 is genuine configure/build, not object-cache relocation or no-work; original failed tree retained unchanged.",
+  "declared_project_EXE": "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+  "candidate_patch": {
+    "path": "C:\\w\\e04parenta01\\source-repair-a01\\EXPLICIT-OPERAND-WIDTH.candidate.patch",
+    "bytes": 6268,
+    "sha256": "9ba1e79cd49cc9db62d1201e77216596dc35c506df871598f8e53b27c2e44f79"
+  },
+  "original_objects_reused": false,
+  "bounded_retry": "one Root-adopted type-only correction, not automatic rerun; first failure immutable",
+  "previous_width_plan": {
+    "path": "C:\\w\\e04parenta01\\source-repair-a01\\PARENT-FINAL-PRODUCER-PLAN.prepared-a02.json",
+    "bytes": 15342,
+    "sha256": "598921fa4103bbdc2604235ada32445baa3d7e80bd238da780861073025dbffa"
+  },
+  "exact_gate_revision": "Only exact root changes from Cw to Cw/build-a03. All actual SYSTEM/file bindings preserved; old helper unchanged."
+}

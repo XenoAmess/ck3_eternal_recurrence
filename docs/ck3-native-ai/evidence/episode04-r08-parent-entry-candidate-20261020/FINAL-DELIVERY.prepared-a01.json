@@ -1,0 +1,31 @@
+{
+  "schema": "xar.parent-entry.source-only-final-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:09:13.743770+00:00",
+  "source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\FIXTURE-SOURCE-INDEX.prepared-a02.json",
+    "bytes": 6498,
+    "sha256": "b82ba099ea83fdb5efb8913c35539ad8d2784494ab98e9714e2aeb9a48cd836c"
+  },
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PARENT-FINAL-PRODUCER-PLAN.prepared-a01.json",
+    "bytes": 12638,
+    "sha256": "71666fd4960b8c909dcbc2ed569d81c6efd5fb1e10be0cdfbe8fc269320eff28"
+  },
+  "candidate_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PARENT-A04-AND-FIXTURE-A02.candidate.patch",
+    "bytes": 68589,
+    "sha256": "7c0f956d6cc482f8886e5a76dac02b06f69682e40607a627d4574d34fc23bef2"
+  },
+  "status": "SOURCE_READY_FOR_INDEPENDENT_REVIEW_NO_BUILD_OR_OS_QUALIFICATION",
+  "source_unique_checks": 20,
+  "native_compiler_executions": 0,
+  "native_cold_executions": 0,
+  "SYSTEM_exclusions_set": 0,
+  "ordinary_or_game_qualification": false,
+  "a03_originals_untouched": true,
+  "a04_local_player1_fullID33388_fix": true,
+  "fixture_a01_originals_untouched": true,
+  "future_current_source_reuse_not_authorized": true,
+  "full_Install_Restore_fixture_missing": true
+}

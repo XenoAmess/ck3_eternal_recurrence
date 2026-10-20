@@ -1,0 +1,186 @@
+{
+  "schema": "xar.e04.event-callsite-test-and-CI-finite-close.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:53:55.807180+00:00",
+  "published_head": "e37d3b2abc19e42e6d3c2343df6e71311318321d",
+  "publication": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\test-fixture-publish-a01\\PUBLISHED.actual.json",
+    "bytes": 9542,
+    "sha256": "82fffe04def3537ff6a5bc05d524ce81275fd6b7db95c6f3424d84f6041dcf20"
+  },
+  "independent_Git_settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\capacity\\EVENT-CALLSITE-TEST-GIT-C256K-D16M-CLOSED-SETTLEMENT.actual-a01.json",
+    "bytes": 6461,
+    "sha256": "4ab9e7cfe08a2879bf8508f1a88a7d7beaeacc3a1f877f917ea2fdb202fbaf57"
+  },
+  "exact_workflows": [
+    {
+      "id": 39458388808,
+      "status": "completed",
+      "conclusion": "success",
+      "updated_at": "2026-10-20T16:33:39Z"
+    },
+    {
+      "id": 39458388810,
+      "status": "completed",
+      "conclusion": "success",
+      "updated_at": "2026-10-20T16:53:37Z"
+    }
+  ],
+  "workflow_observed_at_utc": "2026-10-20T16:53:40.928507+00:00",
+  "both_workflows_terminal": true,
+  "both_workflows_success": true,
+  "official_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39458388810",
+  "linear_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39458388808",
+  "W_growth_at_publication_bytes": 32758,
+  "D_checkout": false,
+  "new_test_runs": 0,
+  "old_failed_CI_overwritten": false,
+  "manual_workflow_reruns": 0,
+  "whole_job_logs_read_or_retained": 0,
+  "native_SDK_build_game_or_media_actions": 0,
+  "CI_original_Popen_waits_retained": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\test-fixture-publish-a01\\CI-OBSERVATIONS.actual.jsonl",
+    "bytes": 16807,
+    "sha256": "07570eb198648413cebfb2e291fb6d2ee4ff46c73c778819f05f283ac067f68b"
+  },
+  "Git_original_Popen_waits_retained": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\test-fixture-publish-a01\\ORIGINAL-WAITS.actual.jsonl",
+    "bytes": 57140,
+    "sha256": "fe276d3d0935fa89037fd9c453b80da494265490c14c6282901a90c07d6a5403"
+  },
+  "sparse_apply_and_connection_reset_rejections_preserved": true,
+  "CI_or_Git_owned_processes_remaining": 0,
+  "remaining_Git_heavy_or_CI_query_scope": 0,
+  "hard_deadline_utc": "2026-10-20T17:15:00Z",
+  "taskbus_state": "done",
+  "taskbus_own": [
+    {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+      },
+      "last_sequence": 7625,
+      "next_step": "",
+      "pid": 31084,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "Event_fixture_published_exact_CI_both_SUCCESS_Git_remaining0",
+      "task_id": "e04-event-callsite-test-publish-1715-20261020-a01",
+      "updated_at_utc": "2026-10-20T16:53:54.804032+00:00",
+      "age_seconds": 0,
+      "stale": false
+    }
+  ],
+  "taskbus_cursor": 7625,
+  "taskbus_remaining": 0,
+  "taskbus_close_original_waits": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "started_at_utc": "2026-10-20T16:53:53.753147+00:00",
+      "observed_at_utc": "2026-10-20T16:53:54.863177+00:00",
+      "argv": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "D:/workspace/.codex-task-bus/bin/codex_task_bus.py",
+        "status",
+        "--task",
+        "e04-event-callsite-test-publish-1715-20261020-a01",
+        "--state",
+        "done",
+        "--summary",
+        "Event_fixture_published_exact_CI_both_SUCCESS_Git_remaining0"
+      ],
+      "pid": 31084,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 1259,
+      "stdout_sha256": "7e07bced2e96994d043f42c798b916d5aeb29a88e7452e62d90888f9bbbf8f2c"
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "started_at_utc": "2026-10-20T16:53:54.863295+00:00",
+      "observed_at_utc": "2026-10-20T16:53:55.231335+00:00",
+      "argv": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "D:/workspace/.codex-task-bus/bin/codex_task_bus.py",
+        "poll",
+        "--task",
+        "e04-event-callsite-test-publish-1715-20261020-a01",
+        "--ack",
+        "--limit",
+        "10000"
+      ],
+      "pid": 32772,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 2870,
+      "stdout_sha256": "271f17b3a0fcf327bf1a1729973a6b1647a1a269604e2ea566433ac6e51e971d"
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "started_at_utc": "2026-10-20T16:53:55.231529+00:00",
+      "observed_at_utc": "2026-10-20T16:53:55.803519+00:00",
+      "argv": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "D:/workspace/.codex-task-bus/bin/codex_task_bus.py",
+        "list"
+      ],
+      "pid": 20548,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "stdout_bytes": 661030,
+      "stdout_sha256": "da02dd5cde221f46e458ecbeb38adb3bcff39ea2f5a9d1b87964662d37e0f158"
+    }
+  ],
+  "manifest": [
+    {
+      "relative_path": "CI-OBSERVATIONS.actual.jsonl",
+      "bytes": 16807,
+      "sha256": "07570eb198648413cebfb2e291fb6d2ee4ff46c73c778819f05f283ac067f68b"
+    },
+    {
+      "relative_path": "close_ci.py",
+      "bytes": 4525,
+      "sha256": "3de379c71c28bcd1e86ac245edda5f5327bfca83115f107f570457e38785ec48"
+    },
+    {
+      "relative_path": "finish_after_remote_reset.py",
+      "bytes": 3712,
+      "sha256": "2f7939d1e173caeb4959f8538b43e9e21c48b17c7b95d8fd5f865d17bce10e0c"
+    },
+    {
+      "relative_path": "ORIGINAL-WAITS.actual.jsonl",
+      "bytes": 57140,
+      "sha256": "fe276d3d0935fa89037fd9c453b80da494265490c14c6282901a90c07d6a5403"
+    },
+    {
+      "relative_path": "poll_ci.py",
+      "bytes": 2419,
+      "sha256": "3bd72494d33c725ea2f300a948fda8514c7521027ff93b046aba6923355441b3"
+    },
+    {
+      "relative_path": "publish_test.py",
+      "bytes": 10475,
+      "sha256": "f17250513eaf2fb168ae0b744d0a7442ec92cfff22380068abdb6298867838c3"
+    },
+    {
+      "relative_path": "PUBLISHED.actual.json",
+      "bytes": 9542,
+      "sha256": "82fffe04def3537ff6a5bc05d524ce81275fd6b7db95c6f3424d84f6041dcf20"
+    }
+  ],
+  "receipt_root_ceiling_bytes": 131072,
+  "receipt_root_bytes_including_close": 111019
+}

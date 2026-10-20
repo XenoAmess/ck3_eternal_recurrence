@@ -1,0 +1,236 @@
+{
+  "schema": "xar.e04.R07-R196-once-visual5-PROPOSAL.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T17:03:31.555293+00:00",
+  "status": "PROPOSAL_ONLY_NOT_EXECUTED",
+  "output_root": "C:/ck3-e04-resume-20261020-a01/r07-r196-source-visual5-a01",
+  "hard_deadline_utc": "2026-10-20T18:00:00Z",
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\r07_once_contacts.prepared.py",
+    "bytes": 10432,
+    "sha256": "b7ebe180e0ce03163f50611a3a4c54cee851289394f74bb394ef6bd5e02037a0"
+  },
+  "existing_proven_geometry_runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-1615-a01\\r09-geometry-review-a01\\r09_a02_runner.py",
+    "bytes": 10118,
+    "sha256": "5477e8cc450764e01a673301ace6ca1ba42f83dc72f82d1bdfd37772aeda7560"
+  },
+  "retained_source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+    "bytes": 49062501,
+    "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9"
+  },
+  "retained_source_stat": {
+    "bytes": 49062501,
+    "mtime_ns": 1792204609193863600,
+    "st_dev": 7220568048185129294,
+    "st_ino": 562949956322860
+  },
+  "source_stat_observed_at_utc": "2026-10-20T17:00:26.764449+00:00",
+  "raw_body_opened_for_preparation": false,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-nostdin",
+    "-hide_banner",
+    "-nostats",
+    "-loglevel",
+    "info",
+    "-threads",
+    "1",
+    "-filter_threads",
+    "1",
+    "-filter_complex_threads",
+    "1",
+    "-copyts",
+    "-ss",
+    "36",
+    "-t",
+    "23.434",
+    "-i",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+    "-an",
+    "-sn",
+    "-dn",
+    "-vf",
+    "trim=start_frame=0:end_frame=703,showinfo@source=checksum=0,scale=240:135:flags=area,pad=240:153:0:0:color=black,drawtext=fontfile=consola.ttf:text='k%{n} PTS=%{pts}':fontcolor=white:fontsize=10:x=3:y=137,tile=4x4:nb_frames=16:color=black",
+    "-c:v",
+    "mjpeg",
+    "-q:v",
+    "18",
+    "-threads:v",
+    "1",
+    "-fps_mode",
+    "vfr",
+    "-frames:v",
+    "44",
+    "-f",
+    "image2pipe",
+    "pipe:1"
+  ],
+  "cwd": "C:/Windows/Fonts",
+  "source_frames_half_open": [
+    1080,
+    1783
+  ],
+  "source_seconds_half_open": [
+    36,
+    59.43333333333333
+  ],
+  "source_frames": 703,
+  "sheets": 44,
+  "last_sheet": {
+    "source_frames_half_open": [
+      1768,
+      1783
+    ],
+    "valid_cells": 15,
+    "padding_cells": 1
+  },
+  "input_accurate_seek": "Input -ss36 with -copyts retains source PTS; -t23.434 bounds read, filter retains first703 decoded frames. Any actual first PTS other than36.000/end59.400, missing/duplicated trace, count mismatch is preserved failure, no automatic retry.",
+  "labels": "k is local selected-window ordinal0..702; source ordinal=1080+k only after actual firstPTS36000 and ordered33/34ms trace verified. PTS label is retained source timestamp; not UTC or native callback.",
+  "expected_sheet_dimensions": [
+    960,
+    608
+  ],
+  "effective_label_band_pixels": 17,
+  "cell_source": [
+    240,
+    135
+  ],
+  "layout": [
+    4,
+    4
+  ],
+  "JPEG_q": 18,
+  "cap": {
+    "total_bytes": 5242880,
+    "contacts_bytes": 4194304,
+    "metadata_bytes": 262144,
+    "conditional_fullres_bytes": 262144,
+    "spare_bytes": 524288
+  },
+  "estimated_contacts_bytes": [
+    1200000,
+    2400000
+  ],
+  "estimated_metadata_bytes_max": 196608,
+  "total_peak_hard_bytes": 5242880,
+  "new_fullres": false,
+  "existing_fullres_reference_only": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-02.png",
+        "bytes": 1248017,
+        "sha256": "a781135a078774245aa9ebbd6bbf0ee794c8572b41734ed9ea82f5e65f06483f"
+      },
+      "frame_index": 1050,
+      "PTS_seconds": 35.0,
+      "visible_calendar": "1067-03-25",
+      "army_panel_visible": true,
+      "displayed_strength_label": 1162,
+      "displayed_attrition_label": "1%",
+      "displayed_supply_label": "300/300",
+      "displayed_top_gold_label": 260,
+      "army_panel_background": "land camp",
+      "pause_label_visible": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-03.png",
+        "bytes": 1253538,
+        "sha256": "eddf51bf7d2d8996aa3c91534a1c3d0af752bb177b20be5096971f060ad3d920"
+      },
+      "frame_index": 1140,
+      "PTS_seconds": 38.0,
+      "visible_calendar": "1067-03-25",
+      "army_panel_visible": true,
+      "displayed_strength_label": 1162,
+      "displayed_attrition_label": "1%",
+      "displayed_supply_label": "300/300",
+      "displayed_top_gold_label": 260,
+      "army_panel_background": "land camp",
+      "pause_label_visible": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-04.png",
+        "bytes": 1243141,
+        "sha256": "5d629dd2ae20707b9c4687039ee1b48c37bf18d820a570ce78df2898d537242a"
+      },
+      "frame_index": 1230,
+      "PTS_seconds": 41.0,
+      "visible_calendar": "1067-03-26",
+      "army_panel_visible": true,
+      "displayed_strength_label": 1162,
+      "displayed_attrition_label": "0%",
+      "displayed_supply_label": "300/300",
+      "displayed_top_gold_label": 257,
+      "army_panel_background": "ships",
+      "pause_label_visible": true
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\sample-05.png",
+        "bytes": 1248196,
+        "sha256": "981a30aa18a2cd39a3dced4653c7e4513af69a570ec38a55177a707e45e0bdc0"
+      },
+      "frame_index": 1320,
+      "PTS_seconds": 44.0,
+      "visible_calendar": "1067-03-26",
+      "army_panel_visible": true,
+      "displayed_strength_label": 1162,
+      "displayed_attrition_label": "0%",
+      "displayed_supply_label": "300/300",
+      "displayed_top_gold_label": 257,
+      "army_panel_background": "ships",
+      "pause_label_visible": true
+    }
+  ],
+  "existing_raw_QA": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json",
+    "bytes": 20836,
+    "sha256": "26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403",
+    "frames": 2369,
+    "fps": "30/1",
+    "geometry": [
+      1280,
+      720
+    ],
+    "full_available_AV_decode_exit": 0,
+    "audio_streams": 0,
+    "PTS_regressions": 0,
+    "max_positive_PTS_gap_seconds": 0.034000000000006025,
+    "repeat_old_QA": false
+  },
+  "review_window_pre_post": {
+    "visual_bracket_seconds": "(38,41]",
+    "pre_seconds_range": [
+      2,
+      5
+    ],
+    "stable_post_seconds_range": [
+      18.43333333333333,
+      21.43333333333333
+    ],
+    "original_M_planned_pre_seconds": [
+      6,
+      10
+    ],
+    "pre_deficit_disclosed": true,
+    "post_can_later_trim_to_8_15_after_actual_visual_review": true,
+    "precise_native_callback_PTS": null
+  },
+  "one_pass_rules": [
+    "One source and one FFmpeg Popen, BELOW_NORMAL,threads1, no concurrent FFmpeg.",
+    "Fresh source-bound cap must bind this recipe/runner/output/source/window and actual Root execution grant. Financial-only reservation is not execution admission.",
+    "Read-only latest formal gh release receipt before source Popen; no downloads.",
+    "No ffprobe, raw bodyhash/copy, full79s AV recheck, TTS, movie output, SDK or game.",
+    "Read actual JPEG dimensions before960x608 assertion; lossless gzip stderr plus actual frame/PTS CSV and per-sheet byte usage; every nextJPEG exact bytes checked before commit.",
+    "Contacts4MiB/metadata256KiB/total5MiB are hard; reserve closure metadata and stop before18:00. Preserve original Popen wait and honest partial, no retry.",
+    "Review all actual valid contact cells + existing fullres; thumbnails may show structure only. Do not claim all original glyphs readable, human1x or formal theme before Root adjudication."
+  ],
+  "current_scope": "This file and runner are preparation metadata under P64KiB/hard17:15 only. No outputroot created and no FFmpeg invoked. R05 remains inventory-only.",
+  "formal_theme_credit": false,
+  "execution_authorized": false,
+  "conditional_new_fullres": false
+}

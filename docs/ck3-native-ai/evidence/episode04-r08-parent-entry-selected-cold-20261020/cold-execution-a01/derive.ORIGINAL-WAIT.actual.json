@@ -1,0 +1,57 @@
+{
+  "pid": 17188,
+  "creation_time_100ns": 134369913128974446,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T17:35:12.895973+00:00",
+  "observed_at_utc": "2026-10-20T17:35:13.730862+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\prepare_unwind_cases.py",
+    "--exe",
+    "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+    "--manifest",
+    "C:\\w\\e04parenta01\\build-a03\\defender-exe-exclusions\\20261020T172906Z-9c6c140e\\manifest.json",
+    "--description",
+    "C:\\w\\e04parenta01\\build-a03\\cold-describe.stdout.json",
+    "--output",
+    "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt",
+    "--receipt",
+    "C:\\w\\e04parenta01\\build-a03\\UNWIND-BOUNDARIES.actual.json",
+    "--build-root",
+    "C:\\w\\e04parenta01\\build-a03"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "guard_error": null,
+  "stdout": {
+    "path": "C:\\w\\e04parenta01\\cold-execution-a01\\derive.stdout.log",
+    "bytes": 1414,
+    "sha256": "9a88ab82e9158f3032d04ddb5cc82f9d2d132fc084102f2ef1cc5d0514bef599"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04parenta01\\cold-execution-a01\\derive.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "local_after": {
+    "source": {
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+      "logical_bytes": 61342,
+      "files": 14,
+      "complete": true
+    },
+    "build": {
+      "root": "C:\\w\\e04parenta01",
+      "logical_bytes": 3405014,
+      "files": 235,
+      "complete": true
+    },
+    "fixed_protocol_charge_bytes": 33554432
+  },
+  "EXE_stat_unchanged": true,
+  "no_game_contact": true
+}

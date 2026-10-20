@@ -1,0 +1,66 @@
+{
+  "pid": 29144,
+  "creation_time_100ns": 134369903407184415,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02",
+    "--build-dir",
+    "C:\\w\\e04parenta01",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "2",
+    "--defender-external-candidate",
+    "e04-parent-entry-opportunity-12004",
+    "--cmake-define",
+    "XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004=ON",
+    "--cmake-define",
+    "XAR_BUILD_PARENT_ENTRY_SYNTHETIC_COLD=ON",
+    "--cmake-define",
+    "CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY",
+    "--configure",
+    "--build",
+    "--target",
+    "xar_parent_entry_opportunity_12004",
+    "parent_entry_opportunity_cold"
+  ],
+  "started_at_utc": "2026-10-20T17:19:00.717497+00:00",
+  "observed_at_utc": "2026-10-20T17:19:12.188277+00:00",
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 1,
+  "guard_error": null,
+  "source_peak_observed_bytes": 50660,
+  "build_peak_observed_bytes": 1143442,
+  "fixed_protocol_charge_bytes": 33554432,
+  "source_final": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+    "logical_bytes": 50660,
+    "files": 11,
+    "complete": true
+  },
+  "build_final": {
+    "root": "C:\\w\\e04parenta01",
+    "logical_bytes": 1143442,
+    "files": 68,
+    "complete": true
+  },
+  "project_EXE_executions": 0,
+  "no_global_absence_claim": true,
+  "stdout": {
+    "path": "C:\\w\\e04parenta01\\build-execution-a02\\stdout.log",
+    "bytes": 12841,
+    "sha256": "13e15e091b093498c4576c302d340af8e2bdb813f065b01d3808d63d39e885ac"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04parenta01\\build-execution-a02\\stderr.log",
+    "bytes": 315,
+    "sha256": "2ddd12d3b1dad989a5756ed2ecae92221c18de4ca99c3fee4e6c659b1bed1a53"
+  }
+}

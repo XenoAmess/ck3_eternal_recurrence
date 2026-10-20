@@ -1,0 +1,32 @@
+{
+  "schema": "xar.native.msvc-build.v1",
+  "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a03",
+  "build_dir": "C:\\w\\e04parenta01\\build-a03",
+  "configuration": "Release",
+  "jobs": 2,
+  "targets": [
+    "xar_parent_entry_opportunity_12004",
+    "parent_entry_opportunity_cold"
+  ],
+  "tools": {
+    "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+  },
+  "local_ck3_contacted": false,
+  "temporary_dir": "C:\\w\\e04parenta01\\build-a03\\.msvc-temp",
+  "python_cache": "C:\\w\\e04parenta01\\build-a03\\.python-cache",
+  "configured": true,
+  "built": true,
+  "dependency_prefix_mode": "direct-2052-cp936",
+  "status": "built",
+  "build_succeeded": true,
+  "defender_exclusions": {
+    "status": "verified",
+    "manifest": "C:\\w\\e04parenta01\\build-a03\\defender-exe-exclusions\\20261020T172906Z-9c6c140e\\manifest.json",
+    "receipt": "C:\\w\\e04parenta01\\build-a03\\defender-exe-exclusions\\20261020T172906Z-9c6c140e\\receipt.json",
+    "receipt_sha256": "a263f694e9cbc639ccd266b7b479a2c11a4d840e190540021726df0a95eacbe4",
+    "error": null
+  }
+}

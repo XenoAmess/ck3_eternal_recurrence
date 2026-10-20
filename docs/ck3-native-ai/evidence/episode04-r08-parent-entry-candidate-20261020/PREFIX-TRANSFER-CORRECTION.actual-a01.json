@@ -1,0 +1,21 @@
+{
+  "schema": "xar.e04.parent-prefix-non-epilogue-transfer-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:44:22.754671+00:00",
+  "old": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\rejected-a02\\parent_entry_opportunity_12004.asm",
+    "bytes": 3278,
+    "sha256": "c1ca3f8329e04549871a2263ef6cb05450f62cadf595e592bcec14f01c585b4d"
+  },
+  "new": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate\\parent_entry_opportunity_12004.asm",
+    "bytes": 3802,
+    "sha256": "99f2033b67195e25d5173a42dfeaaefff38d5b040e7aaa9df4b497894a367ead"
+  },
+  "reason": "Independent source review: prefix FF25 at still allocated entryRSP-A8 may be recognized as epilogue and omit full UWOP. Use explicit non-REX.W FF642408 ModRM01 stack-indirect transfer, preserving R11/flags/RSP.",
+  "primary_source": "https://raw.githubusercontent.com/dotnet/runtime/main/src/coreclr/unwinder/amd64/unwinder.cpp",
+  "inference_from_published_unwinder_algorithm": true,
+  "actual_OS_unwind_failure_observed": false,
+  "actual_machine_code_or_RtlVirtualUnwind_test": false,
+  "original_prefix_first16B_unchanged": true
+}

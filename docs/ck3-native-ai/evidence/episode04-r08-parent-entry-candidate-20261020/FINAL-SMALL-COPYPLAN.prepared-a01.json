@@ -1,0 +1,246 @@
+{
+  "schema": "xar.parent-entry.small-source-evidence-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:10:38.253523+00:00",
+  "copy_only_no_apply_build_or_runtime_change": true,
+  "copy": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\CMakeLists.txt",
+      "bytes": 926,
+      "sha256": "4f166c10b7e79f7d7572355217b5a7f778a0e31dc049c282356c61d389d12140",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/candidate-a04/CMakeLists.txt",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.asm",
+      "bytes": 3802,
+      "sha256": "99f2033b67195e25d5173a42dfeaaefff38d5b040e7aaa9df4b497894a367ead",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/candidate-a04/parent_entry_opportunity_12004.asm",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.cpp",
+      "bytes": 9338,
+      "sha256": "c70668a4e999732f7f6b57a54b01d12c76faf4e78fd280b6dcf0beba1bd2310f",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/candidate-a04/parent_entry_opportunity_12004.cpp",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate-a04\\parent_entry_opportunity_12004.hpp",
+      "bytes": 4111,
+      "sha256": "25363ef0f3deb17f5afd0a1660d894b87fd632652e19092ae02e7a0ff6bc4e75",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/candidate-a04/parent_entry_opportunity_12004.hpp",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\CMakeLists.txt",
+      "bytes": 1099,
+      "sha256": "b445d4cb940f83bbf7fb44021576e786771b98b7573fcbe568a43f8a3d31e272",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/fixture-a02/CMakeLists.txt",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\cold_main.cpp",
+      "bytes": 11191,
+      "sha256": "bde171b9a5c1814aae90338d9b3257d10dabd3451450d5b381e0d276856f667a",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/fixture-a02/cold_main.cpp",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_call.asm",
+      "bytes": 5007,
+      "sha256": "b850bf87690f871d36471e085526283167dd08d9401464b78b584d45de53638c",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/fixture-a02/fixture_call.asm",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_core.cpp",
+      "bytes": 4300,
+      "sha256": "2e856c7fe225ed59ac87f0abee0c70b8fa0c4dd845a3a41d48ab0da8ddabfe9a",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/fixture-a02/fixture_core.cpp",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\fixture_shared.hpp",
+      "bytes": 1008,
+      "sha256": "6bdab8d54af36108e3f99b57b06104a449919d920a1d8f874d2113b3b71c8483",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/fixture-a02/fixture_shared.hpp",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-a02\\prepare_unwind_cases.py",
+      "bytes": 4858,
+      "sha256": "4264836cecc98b0473e02a97e8c9a5a2d3237c70baf9249c254db635a9cad048",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/fixture-a02/prepare_unwind_cases.py",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\check_core_a04.py",
+      "bytes": 15753,
+      "sha256": "04a1ae8c0c90339de47043f8edce83bdf273e796a2f25092077aad408ffeb52e",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/check_core_a04.py",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\check_fixture_source_a02.py",
+      "bytes": 4097,
+      "sha256": "7aecb7577f0423fd39767986c61c0ef21af719fe90c97c786fa87a4458c6ecac",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source/check_fixture_source_a02.py",
+      "role": "SOURCE_ONLY_NOT_BUILT_NOT_INSTALLED"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\FINAL-DELIVERY.prepared-a01.json",
+      "bytes": 1441,
+      "sha256": "447c62e0d9783755046446666236dd002c1d2d2d243363518a362d10e9d8cc5c",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/FINAL-DELIVERY.prepared-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\FIXTURE-SOURCE-INDEX.prepared-a02.json",
+      "bytes": 6498,
+      "sha256": "b82ba099ea83fdb5efb8913c35539ad8d2784494ab98e9714e2aeb9a48cd836c",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/FIXTURE-SOURCE-INDEX.prepared-a02.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PARENT-A04-AND-FIXTURE-A02.candidate.patch",
+      "bytes": 68589,
+      "sha256": "7c0f956d6cc482f8886e5a76dac02b06f69682e40607a627d4574d34fc23bef2",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/PARENT-A04-AND-FIXTURE-A02.candidate.patch",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PARENT-FINAL-PRODUCER-PLAN.prepared-a01.json",
+      "bytes": 12638,
+      "sha256": "71666fd4960b8c909dcbc2ed569d81c6efd5fb1e10be0cdfbe8fc269320eff28",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/PARENT-FINAL-PRODUCER-PLAN.prepared-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PLAYER-ID-CORRECTION.actual-a01.json",
+      "bytes": 1233,
+      "sha256": "176c5560ac2f51d4e79705b4d9f0d033842d7d3524e07e78547edce55167c984",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/PLAYER-ID-CORRECTION.actual-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\INDIRECT-TAIL-CORRECTION.actual-a01.json",
+      "bytes": 1116,
+      "sha256": "d75ec65f2559c21d7248d5645e8d8d9471a05e1dfce2b241d6594a9ea426ab5a",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/INDIRECT-TAIL-CORRECTION.actual-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PREFIX-TRANSFER-CORRECTION.actual-a01.json",
+      "bytes": 1247,
+      "sha256": "0e832f910a0fc090454a13525671ac1a698bfc587e77189396d83947af522c75",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/PREFIX-TRANSFER-CORRECTION.actual-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\SOURCE-CONTRACT.prepared-a03.json",
+      "bytes": 8869,
+      "sha256": "e53c2e9f260194cf5e317bd35b42c784fc1ddb54f2676ef6dcf5a071d7df0176",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/SOURCE-CONTRACT.prepared-a03.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\PARENT-ENTRY-SOURCE.candidate-a03.patch",
+      "bytes": 45581,
+      "sha256": "6ffb5694e20025296b606f34650eacd0a5a8ef9b6714ce3b80a18e4c590fdb0e",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/PARENT-ENTRY-SOURCE.candidate-a03.patch",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\freeze_build_sources.py",
+      "bytes": 2576,
+      "sha256": "ab1579cbfe42e73e4ff87004e5be2f83784fdf331bbb48e8b064dacfbd3bd79a",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/freeze_build_sources.py",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\verify_system_gate.py",
+      "bytes": 2426,
+      "sha256": "2adadb9083dcde4bce9fa29a520fc9e2cf0f7442d3eec236cc66eed916cfc3c0",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/verify_system_gate.py",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-source-checks-a03\\INTENT.prepared-a01.json",
+      "bytes": 3756,
+      "sha256": "48c9afafa5a463093eaa13343bc784b4bdee70a166a463721385d33d1283ea20",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/fixture-source-checks-a03/INTENT.prepared-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-source-checks-a03\\ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1339,
+      "sha256": "ab17575338f36f21f4eac636cea642698e887389be13eee49f1a5f7e290f8513",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/fixture-source-checks-a03/ORIGINAL-WAIT.actual-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-source-checks-a03\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/fixture-source-checks-a03/stdout.log",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\fixture-source-checks-a03\\stderr.log",
+      "bytes": 3284,
+      "sha256": "50f11961a97769ed4df6b1b3adf77073789a5c6168bce776a8e6b0bde1c9dca4",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/fixture-source-checks-a03/stderr.log",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\source-checks-a03\\ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1314,
+      "sha256": "b8adc190b7caf4b50c5d99d7c39cc8e9ddde29f84a9ca2d0eefecb6fc2b2548f",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source-checks-a03/ORIGINAL-WAIT.actual-a01.json",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\source-checks-a03\\stderr.log",
+      "bytes": 470,
+      "sha256": "8901d91fd812ffd0e503310e0fa5a2fc082981329e06d6d45d241f8d4fd2f05b",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/source-checks-a03/stderr.log",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\rejected-a03\\check_candidate.py",
+      "bytes": 14002,
+      "sha256": "dc8a56cb7c787fd881b3909146eb5eb1702dabdc767f0a634b8765faf0318138",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/rejected-a03/check_candidate.py",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\rejected-a01\\parent_entry_opportunity_12004.asm",
+      "bytes": 3207,
+      "sha256": "f08f837bd10132ba3eb9d0b18312c341e5998070c535062a8cf4930699ad3524",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/rejected-a01/parent_entry_opportunity_12004.asm",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\rejected-a02\\parent_entry_opportunity_12004.asm",
+      "bytes": 3278,
+      "sha256": "c1ca3f8329e04549871a2263ef6cb05450f62cadf595e592bcec14f01c585b4d",
+      "destination": "docs/ck3-native-ai/evidence/episode04-r08-parent-entry-candidate-20261020/rejected-a02/parent_entry_opportunity_12004.asm",
+      "role": "original_source_evidence_or_prepared_helper_never_native_qualification"
+    }
+  ],
+  "file_count": 32,
+  "payload_bytes": 248354,
+  "final_selected_core": "candidate-a04",
+  "final_selected_fixture": "fixture-a02",
+  "known_old_a03_player_guard_defect_preserved": true,
+  "candidate_patch_is_unapplied_research_source": true,
+  "native_build_or_OS_qualification": false,
+  "independent_review_refs": [
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-independent-review-a01\\FINAL-INDEPENDENT-REVIEW.actual-a01.json",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-independent-review-a01\\MANAGED-INSTALL-WINDOW-GAP.actual-a01.json"
+  ],
+  "latest_research_fixture_review": "Root/research_next final delta review separate; never rewrite original review receipt",
+  "install_restore_and_public_integration_gap": true,
+  "retention_review_due_utc": "2026-10-21T17:15:00Z"
+}

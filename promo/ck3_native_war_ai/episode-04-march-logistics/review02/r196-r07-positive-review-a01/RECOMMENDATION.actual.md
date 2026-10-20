@@ -1,0 +1,7 @@
+# R196 bounded R07 source recommendation
+
+machine_id desktop-3fevhd2-1c74096080; observed 2026-10-20T17:16:02.426779+00:00. Actual AI review covers all52 contact sheets/823 valid cells, globalframes[960,1783),sourcePTS32.000..59.400, plus four existing1280x720 originals35/38/41/44s. No external/legacyblue/title/modal/hover/black-frame obstruction seen;9 black padding cells are excluded. Small glyphs are not certified across823 original frames. Root directly reviewed38/41s originals, not all52. No human1x or final-film signoff.
+
+Recommend Root accept only R07 bounded positive raw[32,52),600frames: camp→ships and same-run source-qualified personal SUB3. Conservative structural bracket(38.900,39.467]; date/gold readable bracket remains(38,41], nativepaymentPTSnull. Pre6.9–7.467s,post12.533–13.1s meet originalM planned framing. Native epoch/window3 writer3/gateway4/transition5, Army18/province1032,payer31254,300000/Q100000,account26010399→25710399. Root adoptedv2; v1seven-day/avoid-economy stillfalse, no source-bound quote/warning in this clip. No maintenance/rate/commander cause/Halt claim. No formal count is changed by this recommendation.
+
+Existing media fullAV/PTS pass reused; only this bounded visual extraction is new. Original Popen23632 wait0; independent gzipCRC/hash/sourcePTS/owned0 receipt is retained. No rawhash/probe/copy/newfullres/video/game/SDK. Key new sheets012/013/014/037/051 are references for Root; extraction manifest carries every JPEG pin and valid frame/PTS bounds.

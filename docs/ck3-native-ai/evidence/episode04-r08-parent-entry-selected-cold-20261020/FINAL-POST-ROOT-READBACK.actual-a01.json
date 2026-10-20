@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.parent-entry-post-Root-small-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:40:41.731682+00:00",
+  "Root_limited_acceptance": {
+    "path": "C:\\w\\e04parenta01\\ROOT-LIMITED-COLD-ACCEPTANCE.actual.json",
+    "bytes": 4939,
+    "sha256": "7df0c831b89a52acc020328726dcb58d0f722b619444fef0b9abe0c8faefe95f"
+  },
+  "Root_helper_current_pin_only": {
+    "path": "C:\\w\\e04parenta01\\root_accept_cold.py",
+    "bytes": 3552,
+    "sha256": "4d5a50b349904c8baf1ae5d092db73977862c35826e492130ccef4c53fabc322"
+  },
+  "Root_helper_not_copied": true,
+  "Root_helper_source_note": "Root reports one no-op dead assertion removed after actual verification; original acceptance receipt and original source/case/stream pins remain primary. Current helper pin is not relabelled as pre-execution source.",
+  "Root_limited_acceptance_pair_actual_bytes": 8491,
+  "Root_pair_prior_estimate_bytes": 8192,
+  "Root_pair_estimate_exceeded": true,
+  "source": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+    "logical_bytes": 61342,
+    "files": 14,
+    "complete": true,
+    "body_reads": 0
+  },
+  "build_measurement_before_this_readback_and_a02_copyplan": {
+    "root": "C:\\w\\e04parenta01",
+    "logical_bytes": 3510106,
+    "files": 266,
+    "complete": true,
+    "body_reads": 0
+  },
+  "component_build_ceiling_bytes": 33423360,
+  "fixed_protocol_charge_bytes": 33554432,
+  "remaining_heavy_write_bytes": 0,
+  "Root_no_more_Cw_writes_message_received": true,
+  "capacity_final_independent_post_write_measurement_pending": true
+}

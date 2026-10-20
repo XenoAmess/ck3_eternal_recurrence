@@ -1,0 +1,36 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-20T17:10:16.293802+00:00",
+  "status": "SOURCE_ONLY_REVIEW_ACTIONABLE_FINDINGS_CORRECTED_NO_NATIVE_QUALIFICATION",
+  "author_final_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\FIXTURE-SOURCE-INDEX.prepared-a02.json",
+    "bytes": 6498,
+    "sha256": "b82ba099ea83fdb5efb8913c35539ad8d2784494ab98e9714e2aeb9a48cd836c"
+  },
+  "report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-cold-review-a01\\INDEPENDENT-REVIEW.md",
+    "bytes": 3740,
+    "sha256": "5e8b33705e3417c0e704169dbea3dbe46bc2456b7e26cb59508c4ceaf7062e16"
+  },
+  "evidence": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-cold-review-a01\\REVIEW-SOURCE-EVIDENCE.actual.json",
+    "bytes": 24749,
+    "sha256": "45d71bc86bf76869ed1a69f2fff7251f09efc3476813b5c16ac997b0d8412d92"
+  },
+  "findings_fixed": [
+    "localPlayer/fullID guard a04",
+    "all seeded NV unwind assertions fixture-a02",
+    "prefix-read reachability fixture-a02"
+  ],
+  "coverage_strengthened": "COUNTS/ranges/order/duplicate checks added; external exact case/EXE-span binding still required",
+  "blocking_for_source_preservation": [],
+  "actual_native_compile": 0,
+  "actual_native_cold": 0,
+  "actual_OS_unwind_pass": false,
+  "actual_Install_Restore_pass": false,
+  "full_R08": false,
+  "D_W_changes": 0,
+  "Git_commands": 0,
+  "maximum_root_bytes": 65536,
+  "scope_hard_stop_utc": "2026-10-20T17:15:00Z"
+}

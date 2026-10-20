@@ -1,0 +1,85 @@
+{
+  "schema": "xar.e04.parent-entry-source-supplement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:28:55.094202+00:00",
+  "capacity": {
+    "path": "C:\\w\\e04parenta01\\capacity\\PARENT-ENTRY-NATIVE64-1800-SOURCE-BOUND.actual-a03.json",
+    "bytes": 15145,
+    "sha256": "1fe19fe6593e9ed47f436c33e330953dc6a2493ecfb258255dfedd56816c90f6"
+  },
+  "producer_plan": {
+    "path": "C:\\w\\e04parenta01\\source-repair-a01\\PARENT-FINAL-PRODUCER-PLAN.prepared-a03.json",
+    "bytes": 15641,
+    "sha256": "f2460e1c7f2988bdfabdf198c407ebf60025e6fcae519ff6fb6b70bf239282f8"
+  },
+  "initial_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 5020,
+    "sha256": "22ab7e2633b27f2f80c32f3c8b86792f8202cc467922654bce6288af55142a14"
+  },
+  "old10_source_files_preserved": true,
+  "core_a04_unchanged": true,
+  "files": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\candidate-a04\\CMakeLists.txt",
+      "bytes": 926,
+      "sha256": "4f166c10b7e79f7d7572355217b5a7f778a0e31dc049c282356c61d389d12140"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\candidate-a04\\parent_entry_opportunity_12004.asm",
+      "bytes": 3802,
+      "sha256": "99f2033b67195e25d5173a42dfeaaefff38d5b040e7aaa9df4b497894a367ead"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\candidate-a04\\parent_entry_opportunity_12004.cpp",
+      "bytes": 9338,
+      "sha256": "c70668a4e999732f7f6b57a54b01d12c76faf4e78fd280b6dcf0beba1bd2310f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\candidate-a04\\parent_entry_opportunity_12004.hpp",
+      "bytes": 4111,
+      "sha256": "25363ef0f3deb17f5afd0a1660d894b87fd632652e19092ae02e7a0ff6bc4e75"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\CMakeLists.txt",
+      "bytes": 1099,
+      "sha256": "b445d4cb940f83bbf7fb44021576e786771b98b7573fcbe568a43f8a3d31e272"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\cold_main.cpp",
+      "bytes": 11191,
+      "sha256": "bde171b9a5c1814aae90338d9b3257d10dabd3451450d5b381e0d276856f667a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\fixture_call.asm",
+      "bytes": 5007,
+      "sha256": "b850bf87690f871d36471e085526283167dd08d9401464b78b584d45de53638c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\fixture_core.cpp",
+      "bytes": 4300,
+      "sha256": "2e856c7fe225ed59ac87f0abee0c70b8fa0c4dd845a3a41d48ab0da8ddabfe9a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\fixture_shared.hpp",
+      "bytes": 1008,
+      "sha256": "6bdab8d54af36108e3f99b57b06104a449919d920a1d8f874d2113b3b71c8483"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\prepare_unwind_cases.py",
+      "bytes": 4858,
+      "sha256": "4264836cecc98b0473e02a97e8c9a5a2d3237c70baf9249c254db635a9cad048"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a03\\fixture_call.asm",
+      "bytes": 5595,
+      "sha256": "915bf07a3d0b0754680ae50bc2a986604e7ab99df027f5f37c3acca09609d365"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a03\\CMakeLists.txt",
+      "bytes": 1129,
+      "sha256": "ab491a17f842d1f98fdce85ce5c0df400f315f2c5d7c4c8ff9ccdc714cf40b5f"
+    }
+  ],
+  "not_a_compiled_source_receipt": true
+}

@@ -1,0 +1,23 @@
+[1/8] Building ASM_MASM object candidate-core\CMakeFiles\xar_parent_entry_opportunity_12004.dir\parent_entry_opportunity_12004.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\candidate-a04\parent_entry_opportunity_12004.asm
+[2/8] Building CXX object candidate-core\CMakeFiles\xar_parent_entry_opportunity_12004.dir\parent_entry_opportunity_12004.cpp.obj
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\candidate-a04\parent_entry_opportunity_12004.hpp(31): warning C4324: “xar::ck3_12004::parent_entry::WireState”: 由于对齐说明符，结构被填充
+[3/8] Building CXX object CMakeFiles\parent_entry_opportunity_cold.dir\C_\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\cold_main.cpp.obj
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\../candidate-a04/parent_entry_opportunity_12004.hpp(31): warning C4324: “xar::ck3_12004::parent_entry::WireState”: 由于对齐说明符，结构被填充
+[4/8] Building ASM_MASM object CMakeFiles\parent_entry_opportunity_cold.dir\fixture_call.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a03\fixture_call.asm
+[5/8] Building ASM_MASM object CMakeFiles\parent_entry_opportunity_cold.dir\C_\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\candidate-a04\parent_entry_opportunity_12004.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\candidate-a04\parent_entry_opportunity_12004.asm
+[6/8] Linking CXX static library candidate-core\xar_parent_entry_opportunity_12004.lib
+[7/8] Building CXX object CMakeFiles\parent_entry_opportunity_cold.dir\C_\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\fixture_core.cpp.obj
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-entry-source-p01\fixture-a02\../candidate-a04/parent_entry_opportunity_12004.hpp(31): warning C4324: “xar::ck3_12004::parent_entry::WireState”: 由于对齐说明符，结构被填充
+[8/8] Linking CXX executable parent_entry_opportunity_cold.exe

@@ -1,0 +1,66 @@
+{
+  "pid": 25684,
+  "creation_time_100ns": 134369909359186474,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a03",
+    "--build-dir",
+    "C:\\w\\e04parenta01\\build-a03",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "2",
+    "--defender-external-candidate",
+    "e04-parent-entry-opportunity-12004",
+    "--cmake-define",
+    "XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004=ON",
+    "--cmake-define",
+    "XAR_BUILD_PARENT_ENTRY_SYNTHETIC_COLD=ON",
+    "--cmake-define",
+    "CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY",
+    "--configure",
+    "--build",
+    "--target",
+    "xar_parent_entry_opportunity_12004",
+    "parent_entry_opportunity_cold"
+  ],
+  "started_at_utc": "2026-10-20T17:28:55.917750+00:00",
+  "observed_at_utc": "2026-10-20T17:29:39.644228+00:00",
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "guard_error": null,
+  "source_peak_observed_bytes": 61342,
+  "build_peak_observed_bytes": 5668991,
+  "fixed_protocol_charge_bytes": 33554432,
+  "source_final": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+    "logical_bytes": 61342,
+    "files": 14,
+    "complete": true
+  },
+  "build_final": {
+    "root": "C:\\w\\e04parenta01",
+    "logical_bytes": 3327281,
+    "files": 200,
+    "complete": true
+  },
+  "project_EXE_executions": 0,
+  "no_global_absence_claim": true,
+  "stdout": {
+    "path": "C:\\w\\e04parenta01\\build-execution-a03\\stdout.log",
+    "bytes": 6200,
+    "sha256": "7c76def608b47f6a6427fd1a3923de3a5ea9824ff513f131d45a98760b28d427"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04parenta01\\build-execution-a03\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "pid": 33288,
+  "creation_time_100ns": 134369909858900169,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T17:29:45.889091+00:00",
+  "observed_at_utc": "2026-10-20T17:29:46.151168+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parenta01\\source-repair-a01\\verify_system_gate_a03.py",
+    "--build-root",
+    "C:\\w\\e04parenta01\\build-a03"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\w\\e04parenta01\\exact-SYSTEM-receipt-a03\\gate.stdout.log",
+    "bytes": 165,
+    "sha256": "ead33ee90abecefb1f3578d717b477cf382fdf88d0d6ab55e5c059c90389cd88"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04parenta01\\exact-SYSTEM-receipt-a03\\gate.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "project_EXE_executions": 0
+}

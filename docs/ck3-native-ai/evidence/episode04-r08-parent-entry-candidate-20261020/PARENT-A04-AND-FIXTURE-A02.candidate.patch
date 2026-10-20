@@ -1,0 +1,1374 @@
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/candidate-a04/CMakeLists.txt
+@@ -0,0 +1,17 @@
++cmake_minimum_required(VERSION 3.20)
++project(xar_parent_entry_opportunity_source_candidate LANGUAGES CXX)
++option(XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004 "Unqualified parent-entry candidate" OFF)
++if(XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004)
++  if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
++    message(FATAL_ERROR "This candidate requires qualified MSVC x64/MASM")
++  endif()
++  enable_language(ASM_MASM)
++  add_library(xar_parent_entry_opportunity_12004 STATIC
++    parent_entry_opportunity_12004.cpp parent_entry_opportunity_12004.asm)
++  target_compile_features(xar_parent_entry_opportunity_12004 PRIVATE cxx_std_17)
++  target_compile_definitions(xar_parent_entry_opportunity_12004 PRIVATE
++    XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004=1)
++  target_compile_options(xar_parent_entry_opportunity_12004 PRIVATE
++    $<$<COMPILE_LANGUAGE:CXX>:/W4>)
++  # No bridge/host startup registration, no automatic installation/arming.
++endif()
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/candidate-a04/parent_entry_opportunity_12004.asm
+@@ -0,0 +1,134 @@
++; SOURCE CANDIDATE ONLY: must qualify actual machine code and unwind at every
++; instruction boundary before deployment. No guessed C++ original signature.
++OPTION CASEMAP:NONE
++EXTERN XarParentEntryState12004:BYTE
++EXTERN XarParentEntryContinuation12004:QWORD
++EXTERN XarParentEntryOriginalPrefixTarget12004:QWORD
++PUBLIC XarParentEntryThunk12004
++PUBLIC XarParentEntryOriginalPrefix12004
++.code
++XarParentEntryThunk12004 PROC FRAME
++  push rbp
++  .pushreg rbp
++  pushfq
++  .allocstack 8
++  lea rsp,[rsp-40h]
++  .allocstack 40h
++  lea rbp,[rsp]
++  .setframe rbp,0
++  .endprolog
++  ; No instruction above changes RFLAGS. No CALL or XMM/x87/AVX instruction
++  ; occurs anywhere in this thunk. Original argument/home slots are untouched.
++  mov [rbp+00h],rax
++  mov [rbp+08h],rcx
++  mov [rbp+10h],rdx
++  mov [rbp+18h],r8
++  mov [rbp+20h],r9
++  mov [rbp+28h],r10
++  mov [rbp+30h],r11
++  lea r11,XarParentEntryState12004
++  lock inc qword ptr [r11+100h]
++  cmp qword ptr [r11+00h],0
++  je parent_done
++  cmp rdx,[r11+08h]
++  je parent_matching
++  lock inc qword ptr [r11+40h]
++  jnz parent_done
++  mov qword ptr [r11+108h],1
++  jmp parent_done
++parent_matching:
++  lock inc qword ptr [r11+48h]
++  jnz parent_claim
++  mov qword ptr [r11+108h],1
++parent_claim:
++  xor eax,eax
++  mov ecx,1
++  lock cmpxchg qword ptr [r11+58h],rcx
++  je parent_capture
++  lock inc qword ptr [r11+50h]
++  jnz parent_done
++  mov qword ptr [r11+108h],1
++  jmp parent_done
++parent_capture:
++  mov rax,[rbp+00h]
++  mov [r11+60h],rax
++  mov rax,[rbp+08h]
++  mov [r11+68h],rax
++  mov rax,[rbp+10h]
++  mov [r11+70h],rax
++  mov rax,[rbp+18h]
++  mov [r11+78h],rax
++  mov rax,[rbp+20h]
++  mov [r11+80h],rax
++  mov rax,[rbp+28h]
++  mov [r11+88h],rax
++  mov rax,[rbp+30h]
++  mov [r11+90h],rax
++  mov [r11+98h],rbx
++  mov rax,[rbp+48h]
++  mov [r11+0a0h],rax
++  mov [r11+0a8h],rsi
++  mov [r11+0b0h],rdi
++  mov [r11+0b8h],r12
++  mov [r11+0c0h],r13
++  mov [r11+0c8h],r14
++  mov [r11+0d0h],r15
++  lea rax,[rbp+50h]
++  mov [r11+0d8h],rax
++  mov rax,[rbp+40h]
++  mov [r11+0e0h],rax
++  mov rax,[rbp+50h]
++  mov [r11+0e8h],rax
++  mov rax,gs:[48h]
++  mov [r11+0f0h],rax
++  rdtsc
++  shl rdx,32
++  or rax,rdx
++  mov [r11+0f8h],rax
++  ; x86-64 ordinary stores precede this aligned ready-store. Snapshot must first
++  ; turn enabled OFF and observe active_thunks==0 using interlocked operations.
++  mov qword ptr [r11+58h],2
++parent_done:
++  lock dec qword ptr [r11+100h]
++  mov rax,[rbp+00h]
++  mov rcx,[rbp+08h]
++  mov rdx,[rbp+10h]
++  mov r8,[rbp+18h]
++  mov r9,[rbp+20h]
++  mov r10,[rbp+28h]
++  mov r11,[rbp+30h]
++  ; At POPFQ, ordinary unwind must recover RSP from frame-RBP. At POP RBP and
++  ; JMP the standard epilogue is recognizable. This exact boundary behavior is
++  ; a required future RtlVirtualUnwind cold, not a claim made by Python tests.
++  lea rsp,[rbp+40h]
++  popfq
++  pop rbp
++  jmp qword ptr [XarParentEntryOriginalPrefixTarget12004]
++XarParentEntryThunk12004 ENDP
++
++XarParentEntryOriginalPrefix12004 PROC FRAME
++  mov rax,rsp
++  push rbx
++  .pushreg rbx
++  push rbp
++  .pushreg rbp
++  sub rsp,98h
++  .allocstack 98h
++  mov [rax-20h],r14
++  .savereg r14,88h
++  .endprolog
++  ; Exact original first16B must be checked after assembly. No dynamic allocated
++  ; trampoline and no return-address substitution. Body executes exactly once.
++  ; This transfer still owns the full original frame. It MUST NOT look like
++  ; an epilogue. Preserve R11 using private outgoing shadow slots, untouched
++  ; by the held parent before any nested callee owns them. Input home slots
++  ; begin at entryRSP+8, far above these newly allocated frame slots.
++  mov [rsp+10h],r11
++  mov r11,qword ptr [XarParentEntryContinuation12004]
++  mov [rsp+08h],r11
++  mov r11,[rsp+10h]
++  ; FF /4, ModRM01, SIB(RSP),disp8=08, deliberately NO REX.W.
++  ; JMP qword ptr [RSP+08h] is not a Version1 recognized epilogue branch.
++  db 0ffh,064h,024h,008h
++XarParentEntryOriginalPrefix12004 ENDP
++END
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/candidate-a04/parent_entry_opportunity_12004.cpp
+@@ -0,0 +1,192 @@
++#include "parent_entry_opportunity_12004.hpp"
++#include <cstring>
++#include <mutex>
++#if !defined(XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004)
++#error Parent entry source candidate requires explicit default-OFF build opt-in
++#endif
++
++extern "C" {
++xar::ck3_12004::parent_entry::WireState XarParentEntryState12004{};
++std::uintptr_t XarParentEntryContinuation12004=0;
++extern void (*const XarParentEntryOriginalPrefixTarget12004)()=&XarParentEntryOriginalPrefix12004;
++}
++namespace xar::ck3_12004::parent_entry {
++namespace {
++std::mutex mutex;
++Admission owner{};
++Environment environment{};
++std::array<std::uint8_t,16> patch{};
++bool owned=false,patch_may_be_present=false,armed_once=false,identity_before=false;
++DWORD original_protection=0;
++constexpr std::uint64_t kMaximumPointer=0x00007fffffffffffULL;
++bool Pointer(std::uint64_t p,std::size_t n=1) noexcept {
++  return p>=0x10000 && n && p<=kMaximumPointer-(n-1);
++}
++template<class T> bool ReadAt(std::uintptr_t p,T&v) noexcept {
++  return Pointer(p,sizeof v)&&environment.read&&
++    environment.read(environment.context,p,&v,sizeof v);
++}
++LONG64 Atomic(volatile LONG64&v) noexcept {return InterlockedCompareExchange64(&v,0,0);}
++bool Identity() noexcept {
++  std::uint32_t id=0,magic=0,day=0;
++  std::uint64_t death=0,a=0,b=0,state=0,recheck=0,date=0;
++  FILETIME created{},exited{},kernel{},user{};
++  if(GetCurrentProcessId()!=owner.pid||
++     reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr))!=owner.module_base||
++     !GetProcessTimes(GetCurrentProcess(),&created,&exited,&kernel,&user))return false;
++  const auto actual_created=(std::uint64_t(created.dwHighDateTime)<<32)|created.dwLowDateTime;
++  return actual_created==owner.process_create_time_100ns&&
++    ReadAt(owner.character+0x18,id)&&id==owner.full_id&&
++    ReadAt(owner.character+0x1c,magic)&&magic==0x43686172&&
++    ReadAt(owner.character+0x1d0,death)&&death==0&&
++    ReadAt(owner.character+0x1c0,a)&&ReadAt(owner.character+0x1c0,b)&&
++    a==b&&a==owner.context&&
++    ReadAt(owner.module_base+0x5C68C50,state)&&state==owner.game_state&&
++    ReadAt(state+8,date)&&ReadAt(state+0x9c,day)&&
++    ReadAt(owner.module_base+0x5C68C50,recheck)&&recheck==state&&
++    static_cast<std::uint32_t>(date)>=owner.date_raw&&
++    static_cast<std::uint32_t>(date)<=owner.date_raw+24&&
++    day>=owner.absolute_day&&day<=owner.absolute_day+1;
++}
++bool ReadPrefix(std::array<std::uint8_t,16>&v) noexcept {
++  return ReadAt(owner.module_base+kEntryRva,v);
++}
++bool CopyPrefix(const std::array<std::uint8_t,16>&v) noexcept {
++  __try {std::memcpy(reinterpret_cast<void*>(owner.module_base+kEntryRva),v.data(),v.size());return true;}
++  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
++}
++bool Restore() noexcept {
++  if(!patch_may_be_present)return true;
++  std::array<std::uint8_t,16> current{};
++  if(!ReadPrefix(current)||(current!=patch&&current!=kPrefix))return false;
++  auto*target=reinterpret_cast<void*>(owner.module_base+kEntryRva);
++  DWORD temporary=0,ignored=0;
++  if(!VirtualProtect(target,16,PAGE_EXECUTE_READWRITE,&temporary))return false;
++  const bool copied=CopyPrefix(kPrefix);
++  const bool flushed=FlushInstructionCache(GetCurrentProcess(),target,16)!=FALSE;
++  const bool protected_again=VirtualProtect(target,16,original_protection,&ignored)!=FALSE;
++  std::array<std::uint8_t,16> actual{};
++  if(!copied||!flushed||!protected_again||!ReadPrefix(actual)||actual!=kPrefix)return false;
++  patch_may_be_present=false;
++  return true;
++}
++}
++bool Install(const Admission&a,const Environment&e) noexcept {
++  try {
++    const std::lock_guard lock(mutex);
++    if(owned||!e.all_reachable_threads_quiescent||!e.read||
++       !a.ordinary_null_owner||!a.explicit_entry_hook_admission||
++       a.machine_id.empty()||a.executable_sha256!=kExeSha||!a.pid||
++       !a.process_create_time_100ns||!a.generation||!a.window||!a.payment_epoch||
++       !a.full_id||!a.local_player_id||!Pointer(a.character,0x1d8)||!Pointer(a.context)||
++       !Pointer(a.game_state,0xa0)||!Pointer(a.module_base,102518784)||
++       a.date_raw>UINT32_MAX-24||a.absolute_day>UINT32_MAX-1)return false;
++    owner=a;environment=e;
++    std::array<std::uint8_t,16> current{};
++    if(!Identity()||!ReadPrefix(current)||current!=kPrefix)return false;
++    // Static ASM copied prefix has its own compiler-generated pdata/xdata.
++    // Reject any actual emitted bytes differing from the held16B anchor.
++    std::array<std::uint8_t,16> emitted{};
++    if(!ReadAt(reinterpret_cast<std::uintptr_t>(&XarParentEntryOriginalPrefix12004),emitted)||
++       emitted!=kPrefix)return false;
++    HMODULE pinned=nullptr;
++    if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
++        reinterpret_cast<LPCWSTR>(&XarParentEntryThunk12004),&pinned))return false;
++    XarParentEntryContinuation12004=a.module_base+kEntryRva+16;
++    patch.fill(0x90);patch[0]=0xff;patch[1]=0x25;
++    std::memset(patch.data()+2,0,4);
++    const auto destination=reinterpret_cast<std::uintptr_t>(&XarParentEntryThunk12004);
++    std::memcpy(patch.data()+6,&destination,sizeof destination);
++    auto&wire=XarParentEntryState12004;
++    wire.target_character=a.character;wire.admitted_full_id=a.full_id;
++    wire.epoch=a.payment_epoch;wire.generation=a.generation;wire.window=a.window;
++    wire.admission_date=a.date_raw;wire.admission_absolute_day=a.absolute_day;
++    auto*target=reinterpret_cast<void*>(a.module_base+kEntryRva);
++    if(!VirtualProtect(target,16,PAGE_EXECUTE_READWRITE,&original_protection))return false;
++    // Ownership is retained before the first byte can possibly be changed.
++    owned=true;patch_may_be_present=true;
++    const bool copied=CopyPrefix(patch);
++    const bool flushed=FlushInstructionCache(GetCurrentProcess(),target,16)!=FALSE;
++    DWORD ignored=0;
++    const bool protected_again=VirtualProtect(target,16,original_protection,&ignored)!=FALSE;
++    if(!copied||!flushed||!protected_again||!ReadPrefix(current)||current!=patch){
++      if(Restore())owned=false;
++      return false;
++    }
++    return true; // installed but runtime OFF
++  }catch(...){return false;}
++}
++bool ArmOnce() noexcept {
++  try {
++    const std::lock_guard lock(mutex);
++    if(!owned||!patch_may_be_present||armed_once||!Identity())return false;
++    std::array<std::uint8_t,16> current{};
++    if(!ReadPrefix(current)||current!=patch)return false;
++    auto&wire=XarParentEntryState12004;
++    if(Atomic(wire.enabled)||Atomic(wire.active_thunks)||Atomic(wire.frame_state))return false;
++    // No reset/rearm route. All immutable configuration was set before publish.
++    identity_before=true;armed_once=true;
++    InterlockedExchange64(&wire.enabled,1);
++    return true;
++  }catch(...){return false;}
++}
++bool StopAndSnapshot(Snapshot&out) noexcept {
++  try {
++    const std::lock_guard lock(mutex);
++    auto&wire=XarParentEntryState12004;
++    InterlockedExchange64(&wire.enabled,0); // unconditional safe OFF first
++    out={};
++    if(!owned)return false;
++    out.owner=owner;
++    if(!armed_once){out.status=Snapshot::Status::not_armed;return false;}
++    out.identity_before_verified=identity_before;
++    if(Atomic(wire.active_thunks)){
++      out.status=Snapshot::Status::busy;out.producer_busy=true;return false;
++    }
++    std::array<std::uint8_t,16> current{};
++    if(!ReadPrefix(current)||current!=patch){
++      out.status=Snapshot::Status::invalid_wire_state;return false;
++    }
++    const auto state=Atomic(wire.frame_state);
++    const auto overflow=Atomic(wire.counter_overflow);
++    if((state!=0&&state!=2)||(overflow!=0&&overflow!=1)){
++      out.status=Snapshot::Status::invalid_wire_state;return false;
++    }
++    out.raw_foreign_counter_bits=static_cast<std::uint64_t>(Atomic(wire.foreign_count));
++    out.raw_matching_counter_bits=static_cast<std::uint64_t>(Atomic(wire.matching_pointer_count));
++    out.raw_dropped_counter_bits=static_cast<std::uint64_t>(Atomic(wire.dropped_matching_count));
++    if(state==2)out.frame=wire.frame;
++    const bool frame_consistent=state==0||
++      (out.frame->rdx==owner.character&&Pointer(out.frame->rsp,sizeof(std::uint64_t)));
++    const bool counts_consistent=overflow||
++      (state==0?(*out.raw_matching_counter_bits==0&&*out.raw_dropped_counter_bits==0):
++       (*out.raw_matching_counter_bits>0&&
++        *out.raw_dropped_counter_bits==*out.raw_matching_counter_bits-1));
++    if(!frame_consistent||!counts_consistent){
++      out.status=Snapshot::Status::invalid_wire_state;return false;
++    }
++    if(!overflow){
++      out.foreign_count=out.raw_foreign_counter_bits;
++      out.matching_pointer_count=out.raw_matching_counter_bits;
++      out.dropped_matching_count=out.raw_dropped_counter_bits;
++    }
++    out.counter_overflow=overflow!=0;
++    out.frame_state=static_cast<std::uint64_t>(state);
++    out.identity_after_verified=Identity();out.stopped=true;out.producer_busy=false;
++    out.status=Snapshot::Status::stopped;
++    return true; // capture closed, NOT a target-ID-at-entry/business PASS
++  }catch(...){return false;}
++}
++bool Uninstall(bool quiescent) noexcept {
++  try {
++    const std::lock_guard lock(mutex);
++    InterlockedExchange64(&XarParentEntryState12004.enabled,0);
++    if(!quiescent||Atomic(XarParentEntryState12004.active_thunks))return false;
++    if(!owned)return true;
++    if(!Restore())return false;
++    owned=false;
++    // Static code remains pinned even after success; do not unload on a guess.
++    return true;
++  }catch(...){return false;}
++}
++}
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/candidate-a04/parent_entry_opportunity_12004.hpp
+@@ -0,0 +1,88 @@
++#pragma once
++// SOURCE CANDIDATE ONLY. No public startup/command is connected to this API.
++#include <array>
++#include <cstddef>
++#include <cstdint>
++#include <string>
++#include <optional>
++#include <string_view>
++#include <windows.h>
++
++namespace xar::ck3_12004::parent_entry {
++inline constexpr std::uintptr_t kEntryRva = 0x28F7840;
++inline constexpr std::array<std::uint8_t,16> kPrefix{
++  0x48,0x8b,0xc4,0x53,0x55,0x48,0x81,0xec,0x98,0,0,0,0x4c,0x89,0x70,0xe0};
++inline constexpr std::string_view kExeSha =
++  "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518";
++
++// All are raw ENTRY inputs; none is the function's return value or a payer.
++struct EntryFrame {
++  std::uint64_t rax,rcx,rdx,r8,r9,r10,r11,rbx,rbp,rsi,rdi,r12,r13,r14,r15;
++  std::uint64_t rsp,rflags,native_return,tid,tsc_not_serialized;
++};
++struct alignas(64) WireState {
++  volatile LONG64 enabled=0;
++  std::uint64_t target_character=0,admitted_full_id=0,epoch=0,generation=0,window=0;
++  std::uint64_t admission_date=0,admission_absolute_day=0;
++  volatile LONG64 foreign_count=0,matching_pointer_count=0,dropped_matching_count=0;
++  volatile LONG64 frame_state=0; // 0 empty;1 one producer writing;2 immutable ready
++  EntryFrame frame{};
++  volatile LONG64 active_thunks=0,counter_overflow=0;
++};
++static_assert(sizeof(EntryFrame)==160);
++static_assert(offsetof(WireState,frame)==0x60);
++static_assert(offsetof(WireState,active_thunks)==0x100);
++static_assert(offsetof(WireState,counter_overflow)==0x108);
++
++using Read = bool (*)(void*,std::uintptr_t,void*,std::size_t) noexcept;
++struct Admission {
++  std::string machine_id,executable_sha256;
++  std::uintptr_t module_base=0,character=0,context=0,game_state=0;
++  std::uint64_t process_create_time_100ns=0,generation=0,window=0,payment_epoch=0;
++  std::uint64_t date_raw=0,absolute_day=0;
++  std::uint32_t pid=0,full_id=0,local_player_id=0;
++  bool ordinary_null_owner=false,explicit_entry_hook_admission=false;
++};
++struct Environment {
++  void* context=nullptr;
++  Read read=nullptr;
++  // Existing startup may supply this ONLY while all possible executors of the
++  // patched prefix are proved quiescent. A boolean is not that external proof.
++  bool all_reachable_threads_quiescent=false;
++};
++struct Snapshot {
++  enum class Status { not_owned,not_armed,busy,invalid_wire_state,stopped };
++  Status status=Status::not_owned;
++  std::optional<Admission> owner;
++  std::optional<std::uint64_t> foreign_count,matching_pointer_count,dropped_matching_count;
++  std::optional<std::uint64_t> raw_foreign_counter_bits,raw_matching_counter_bits,raw_dropped_counter_bits;
++  std::optional<std::uint64_t> frame_state;
++  std::optional<EntryFrame> frame;
++  std::optional<bool> counter_overflow,producer_busy;
++  bool identity_before_verified=false,identity_after_verified=false,stopped=false;
++  // The entry thunk deliberately does not dereference Character or game state.
++  // These remain false even if pre/post admission identity joins succeed.
++  bool full_id_read_at_entry=false,native_clock_read_at_entry=false;
++  std::optional<std::uint32_t> full_id_at_entry;
++  std::optional<std::uint64_t> native_clock_at_entry;
++  bool actual_payment=false,military_producer=false,payer_identified=false;
++};
++// One arm/window per process; no resetting an old frame under a possible entry.
++// Default-off build and runtime. Install leaves enabled=0.
++bool Install(const Admission&,const Environment&) noexcept;
++bool ArmOnce() noexcept;
++// OFF is attempted even when identity readback fails. A busy producer returns
++// false with stopped=false; it must be read back, never guessed complete.
++bool StopAndSnapshot(Snapshot&) noexcept;
++// Optional restoration needs real global quiescence; on failure keep ownership,
++// static thunk/trampoline and pinned module. Normal exit can retain OFF hook.
++bool Uninstall(bool all_reachable_threads_quiescent) noexcept;
++}
++
++extern "C" {
++extern xar::ck3_12004::parent_entry::WireState XarParentEntryState12004;
++extern std::uintptr_t XarParentEntryContinuation12004;
++void XarParentEntryThunk12004();
++void XarParentEntryOriginalPrefix12004();
++extern void (*const XarParentEntryOriginalPrefixTarget12004)();
++}
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/fixture-a02/CMakeLists.txt
+@@ -0,0 +1,17 @@
++cmake_minimum_required(VERSION 3.20)
++project(xar_parent_entry_synthetic_cold LANGUAGES CXX ASM_MASM)
++if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
++  message(FATAL_ERROR "MSVC x64 required")
++endif()
++option(XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004 "Explicit candidate opt-in" OFF)
++option(XAR_BUILD_PARENT_ENTRY_SYNTHETIC_COLD "No-game fixture opt-in" OFF)
++if(NOT XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004 OR NOT XAR_BUILD_PARENT_ENTRY_SYNTHETIC_COLD)
++  message(FATAL_ERROR "Both explicit opt-ins required; no default installation")
++endif()
++add_subdirectory(../candidate-a04 candidate-core)
++add_executable(parent_entry_opportunity_cold cold_main.cpp fixture_core.cpp
++  fixture_call.asm ../candidate-a04/parent_entry_opportunity_12004.asm)
++target_compile_features(parent_entry_opportunity_cold PRIVATE cxx_std_17)
++add_dependencies(parent_entry_opportunity_cold xar_parent_entry_opportunity_12004)
++target_compile_definitions(parent_entry_opportunity_cold PRIVATE XAR_ENABLE_PARENT_ENTRY_OPPORTUNITY_12004=1)
++target_compile_options(parent_entry_opportunity_cold PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W4>)
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/fixture-a02/cold_main.cpp
+@@ -0,0 +1,164 @@
++#include "fixture_shared.hpp"
++#include <algorithm>
++#include <atomic>
++#include <cstring>
++#include <fstream>
++#include <iostream>
++#include <string>
++#include <thread>
++#include <stdexcept>
++#include <utility>
++#include <set>
++#include <vector>
++extern "C" {
++alignas(16) ParentFixtureSeen ParentFixtureBodySeen{};
++alignas(16) unsigned char ParentFixtureInputXmm[16][16]{};
++alignas(16) unsigned char ParentFixtureReturnXmm[16]{};
++alignas(16) unsigned char ParentFixtureFxBefore[512]{},ParentFixtureFxAfter[512]{};
++alignas(16) unsigned char ParentFixtureReturnedXmm[16]{};
++std::uint64_t ParentFixtureCallEntryRsp=0,ParentFixtureCallRbp=0;
++std::uint64_t ParentFixtureReturnedRax=0,ParentFixtureReturnedRsp=0;
++volatile LONG64 ParentFixtureBodyCalls=0;
++void (*ParentFixtureCallTarget)()=&XarParentEntryThunk12004;
++std::uint64_t ParentFixtureTarget();
++}
++namespace pe=xar::ck3_12004::parent_entry;
++void Require(bool value,const char*message){if(!value)throw std::runtime_error(message);}
++void Seed(){Require(ParentFixtureSeed(ParentFixtureTarget()),"private fixture seed failed");
++  XarParentEntryContinuation12004=reinterpret_cast<std::uintptr_t>(&ParentFixtureBody);
++  for(unsigned i=0;i<16;++i){for(unsigned j=0;j<16;++j)ParentFixtureInputXmm[i][j]=static_cast<unsigned char>(i*13+j);
++    ParentFixtureReturnXmm[i]=static_cast<unsigned char>(0xf0+i);}
++  InterlockedExchange64(&ParentFixtureBodyCalls,0);
++}
++void ABI(){
++  Seed();Require(pe::ArmOnce(),"arm failed");ParentFixtureInvoke(ParentFixtureTarget());
++  pe::Snapshot out;Require(pe::StopAndSnapshot(out)&&out.stopped&&out.frame.has_value(),"snapshot incomplete");
++  const auto&f=*out.frame;const auto&b=ParentFixtureBodySeen;
++  Require(f.rax==0xaaaa&&f.rcx==0x1111&&f.rdx==ParentFixtureTarget()&&
++    f.r8==0xeeeeeeeefffffff9ULL&&f.r9==0x9999&&f.r10==0xa0a0&&f.r11==0xb0b0,"volatile input changed");
++  Require(f.rbx==0xbbbb&&f.rbp==ParentFixtureCallRbp&&f.rsi==0x5151&&f.rdi==0xd1d1&&
++    f.r12==0x1212&&f.r13==0x1313&&f.r14==0x1414&&f.r15==0x1515,"nonvolatile entry changed");
++  Require(f.rsp==ParentFixtureCallEntryRsp&&(f.rflags&0xcd5)==(0xed7&0xcd5),"entry stack or user flags changed");
++  Require(f.native_return==reinterpret_cast<std::uintptr_t>(&ParentFixtureAfterCall)&&f.tid==GetCurrentThreadId(),"actual native return slot/TID changed");
++  Require(b.rax==f.rsp&&b.rcx==f.rcx&&b.rdx==f.rdx&&b.r8==f.r8&&b.r9==f.r9&&
++    b.r10==f.r10&&b.r11==f.r11&&b.rbx==f.rbx&&b.rbp==f.rbp&&b.rsi==f.rsi&&b.rdi==f.rdi&&
++    b.r12==f.r12&&b.r13==f.r13&&b.r14==f.r14&&b.r15==f.r15,"native body inputs changed");
++  Require(b.rsp==f.rsp-0xa8&&b.fifth==0x5555&&b.sixth==0x6666,"prefix stack/input stack args changed");
++  Require(std::memcmp(b.xmm,ParentFixtureInputXmm,sizeof b.xmm)==0,"XMM input changed");
++  Require(std::memcmp(ParentFixtureFxBefore,ParentFixtureFxAfter,160)==0,"x87/MXCSR changed");
++  Require(ParentFixtureReturnedRax==0xd00dfeed11223344ULL&&
++    ParentFixtureReturnedRsp==f.rsp+8&&std::memcmp(ParentFixtureReturnedXmm,ParentFixtureReturnXmm,16)==0,"return ABI changed");
++  Require(ParentFixtureBodyCalls==1&&out.matching_pointer_count==1&&out.dropped_matching_count==0,"original not exactly once");
++  Require(std::memcmp(reinterpret_cast<const void*>(&XarParentEntryOriginalPrefix12004),pe::kPrefix.data(),16)==0,"emitted first16B differs");
++}
++void ForeignAndDefaultOff(){
++  Seed();ParentFixtureInvoke(ParentFixtureTarget());
++  Require(XarParentEntryState12004.frame_state==0&&XarParentEntryState12004.matching_pointer_count==0&&ParentFixtureBodyCalls==1,"defaultOFF collects or skips original");
++  Seed();Require(pe::ArmOnce(),"arm foreign test");
++  for(unsigned i=0;i<257;++i)ParentFixtureInvoke(ParentFixtureTarget()+8);
++  Require(XarParentEntryState12004.frame_state==0,"foreign consumed first frame");
++  ParentFixtureInvoke(ParentFixtureTarget());pe::Snapshot out;
++  Require(pe::StopAndSnapshot(out)&&out.foreign_count==257&&out.matching_pointer_count==1&&ParentFixtureBodyCalls==258,"foreign budget or original count wrong");
++}
++void StateRoutes(){
++  Require(ParentFixtureAdmissionGuardTest(),"native local player1/Character33388 guard regression");
++  Seed();Require(pe::ArmOnce()&&!pe::ArmOnce(),"rearm accepted");
++  InterlockedExchange64(&XarParentEntryState12004.active_thunks,1);pe::Snapshot busy;
++  Require(!pe::StopAndSnapshot(busy)&&!busy.stopped&&busy.producer_busy==true&&!busy.foreign_count,"injected busy falsely closed");
++  Require(XarParentEntryState12004.enabled==0,"OFF not attempted before busy refusal");
++  InterlockedExchange64(&XarParentEntryState12004.active_thunks,0);pe::Snapshot done;
++  Require(pe::StopAndSnapshot(done)&&done.stopped,"busy completion readback failed");
++  Require(!pe::Uninstall(false),"unproven quiescence unpatch accepted");
++  Seed();Require(pe::ArmOnce(),"arm overflow");InterlockedExchange64(&XarParentEntryState12004.foreign_count,-1);
++  ParentFixtureInvoke(ParentFixtureTarget()+8);pe::Snapshot overflow;
++  Require(pe::StopAndSnapshot(overflow)&&overflow.counter_overflow==true&&!overflow.foreign_count&&overflow.raw_foreign_counter_bits==0,"counter wrap became fake zero");
++  Seed();Require(pe::ArmOnce(),"arm corrupt");InterlockedExchange64(&XarParentEntryState12004.frame_state,3);pe::Snapshot corrupt;
++  Require(!pe::StopAndSnapshot(corrupt)&&!corrupt.stopped&&!corrupt.matching_pointer_count,"corrupt state falsely stopped");
++  Seed();Require(pe::ArmOnce(),"arm read fault");ParentFixtureReadFailure(true);pe::Snapshot fault;
++  Require(!pe::StopAndSnapshot(fault)&&!fault.stopped&&!fault.foreign_count&&XarParentEntryState12004.enabled==0,"read fault produced false clean");
++  ParentFixtureReadFailure(false);
++}
++void ConcurrentOff(){
++  Seed();Require(pe::ArmOnce(),"arm concurrent");
++  std::atomic<unsigned> ready{0};std::atomic<bool> go{false};std::vector<std::thread> workers;
++  for(unsigned i=0;i<8;++i)workers.emplace_back([&,i]{++ready;while(!go.load())SwitchToThread();
++    for(unsigned j=0;j<512;++j)ParentFixtureInvoke(ParentFixtureTarget()+(i?8:0));});
++  while(ready.load()!=8)SwitchToThread();go=true;Sleep(1);
++  pe::Snapshot first;const bool closed_during_calls=pe::StopAndSnapshot(first);
++  if(!closed_during_calls)Require(!first.stopped&&!first.foreign_count,"concurrent unknown not null");
++  for(auto&t:workers)t.join();pe::Snapshot final;Require(pe::StopAndSnapshot(final)&&final.stopped,"concurrent closure failed");
++  Require(ParentFixtureBodyCalls==4096&&XarParentEntryState12004.active_thunks==0,"concurrent original execution lost");
++  // Scheduling may leave zero target entries before OFF. Keep that real outcome;
++  // this checks integrity/OFF, not guaranteed occurrence or every interleaving.
++}
++bool SafeUnwind(DWORD64 base,DWORD64 pc,PRUNTIME_FUNCTION fn,CONTEXT&c) noexcept {
++  __try {PVOID handler=nullptr;DWORD64 frame=0;
++    RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,pc,fn,&c,&handler,&frame,nullptr);return true;
++  }__except(EXCEPTION_EXECUTE_HANDLER){return false;}
++}
++void Describe(){
++  const auto image=reinterpret_cast<DWORD64>(GetModuleHandleW(nullptr));
++  std::cout<<"{\"image_base\":"<<image;
++  for(const auto item:{std::pair<const char*,void*>{"thunk",reinterpret_cast<void*>(&XarParentEntryThunk12004)},
++                       {"prefix",reinterpret_cast<void*>(&XarParentEntryOriginalPrefix12004)}}){
++    DWORD64 base=0;auto*f=RtlLookupFunctionEntry(reinterpret_cast<DWORD64>(item.second),&base,nullptr);
++    Require(f&&base==image,"function entry missing");
++    std::cout<<",\""<<item.first<<"\":{\"rva\":"<<f->BeginAddress<<",\"bytes\":"<<f->EndAddress-f->BeginAddress<<"}";
++  }std::cout<<"}\n";
++}
++unsigned UnwindCases(const char*path){
++  std::ifstream input(path);Require(input.good(),"case file unavailable");
++  std::string header,tkey,pkey;unsigned expected_t=0,expected_p=0,bytes_t=0,bytes_p=0;
++  Require(bool(input>>header>>tkey>>expected_t>>bytes_t>>pkey>>expected_p>>bytes_p)&&
++    header=="COUNTS"&&tkey=="T"&&pkey=="P"&&expected_t>0&&expected_p>0&&expected_t+expected_p<=1024,"missing decoder counts");
++  std::set<std::pair<std::string,unsigned>> visited;unsigned seen_t=0,seen_p=0,last_t=0,last_p=0;bool started_p=false;
++  std::string kind;unsigned offset=0,frame_mode=0,count=0;int delta=0;
++  while(input>>kind>>std::hex>>offset>>std::dec>>delta>>frame_mode){
++    Require(kind=="T"||kind=="P","bad case kind");Require(++count<=1024,"case overflow");
++    Require(visited.emplace(kind,offset).second,"duplicate instruction PC");
++    if(kind=="T"){
++      Require(!started_p&&(seen_t==0?offset==0:offset>last_t),"thunk coverage order");last_t=offset;++seen_t;
++    }else{
++      started_p=true;Require(seen_p==0?offset==0:offset>last_p,"prefix coverage order");last_p=offset;++seen_p;
++    }
++    auto*address=kind=="T"?reinterpret_cast<void*>(&XarParentEntryThunk12004):reinterpret_cast<void*>(&XarParentEntryOriginalPrefix12004);
++    DWORD64 base=0;auto*f=RtlLookupFunctionEntry(reinterpret_cast<DWORD64>(address),&base,nullptr);
++    Require(f&&offset<f->EndAddress-f->BeginAddress,"case outside function");
++    Require(f->EndAddress-f->BeginAddress==(kind=="T"?bytes_t:bytes_p),"decoder function range differs");
++    alignas(16) unsigned char stack[4096]{};const auto s=reinterpret_cast<DWORD64>(stack+2056);
++    CONTEXT c{};c.ContextFlags=CONTEXT_FULL;c.Rip=base+f->BeginAddress+offset;c.Rsp=s+delta;
++    c.Rbx=0xbbbb;c.Rbp=frame_mode?s-0x50:0xbaba;c.Rsi=0x5151;c.Rdi=0xd1d1;
++    c.R12=0x1212;c.R13=0x1313;c.R14=0x1414;c.R15=0x1515;
++    *reinterpret_cast<DWORD64*>(s)=reinterpret_cast<DWORD64>(&Describe);
++    if(kind=="T"){
++      *reinterpret_cast<DWORD64*>(s-8)=0xbaba;
++      *reinterpret_cast<DWORD64*>(s-16)=0xed7;
++    }else{
++      *reinterpret_cast<DWORD64*>(s-8)=0xbbbb;
++      *reinterpret_cast<DWORD64*>(s-16)=0xbaba;
++      *reinterpret_cast<DWORD64*>(s-0x20)=0x1414;
++    }
++    Require(SafeUnwind(base,c.Rip,f,c),"RtlVirtualUnwind raised");
++    Require(c.Rip==reinterpret_cast<DWORD64>(&Describe)&&c.Rsp==s+8&&c.Rbp==0xbaba&&
++      c.Rbx==0xbbbb&&c.R14==0x1414&&c.Rsi==0x5151&&c.Rdi==0xd1d1&&
++      c.R12==0x1212&&c.R13==0x1313&&c.R15==0x1515,"RtlVirtualUnwind caller state mismatch");
++  }
++  Require(input.eof()&&count>32&&seen_t==expected_t&&seen_p==expected_p,"missing/truncated instruction cases");return count;
++}
++int main(int argc,char**argv){
++  try{
++    Require(argc>=3,"usage: EXE MODE MACHINE_ID [CASES]; no CK3 contact");
++    const std::string mode=argv[1],machine=argv[2];
++    Require(machine=="desktop-3fevhd2-1c74096080","explicit fixture machine binding required");
++    if(mode=="--describe"){Describe();return 0;}
++    unsigned checks=0;
++    if(mode=="--abi"){ABI();ForeignAndDefaultOff();checks=2;}
++    else if(mode=="--state-routes"){StateRoutes();ConcurrentOff();checks=2;}
++    else if(mode=="--unwind"){Require(argc==4,"case file required");checks=UnwindCases(argv[3]);}
++    else Require(false,"unknown explicit mode");
++    std::cout<<"{\"schema\":\"xar.parent-entry.synthetic-cold.v1\",\"machine_id\":\""<<machine
++      <<"\",\"mode\":\""<<mode<<"\",\"passed_checks\":"<<checks
++      <<",\"game_contact\":false,\"fixture_private_owner_seed\":true,\"real_Install_Restore_qualified\":false,\"full_native_qualification\":false}\n";
++    return 0;
++  }catch(const std::exception&e){std::cerr<<e.what()<<"\n";return 1;}
++}
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/fixture-a02/fixture_call.asm
+@@ -0,0 +1,183 @@
++OPTION CASEMAP:NONE
++EXTERN ParentFixtureBodySeen:BYTE
++EXTERN ParentFixtureInputXmm:BYTE
++EXTERN ParentFixtureReturnXmm:BYTE
++EXTERN ParentFixtureFxBefore:BYTE
++EXTERN ParentFixtureFxAfter:BYTE
++EXTERN ParentFixtureReturnedXmm:BYTE
++EXTERN ParentFixtureCallEntryRsp:QWORD
++EXTERN ParentFixtureCallRbp:QWORD
++EXTERN ParentFixtureReturnedRax:QWORD
++EXTERN ParentFixtureReturnedRsp:QWORD
++EXTERN ParentFixtureBodyCalls:QWORD
++EXTERN ParentFixtureCallTarget:QWORD
++PUBLIC ParentFixtureInvoke
++PUBLIC ParentFixtureBody
++PUBLIC ParentFixtureAfterCall
++.code
++ParentFixtureInvoke PROC FRAME
++  push rbx
++  .pushreg rbx
++  push rbp
++  .pushreg rbp
++  push rsi
++  .pushreg rsi
++  push rdi
++  .pushreg rdi
++  push r12
++  .pushreg r12
++  push r13
++  .pushreg r13
++  push r14
++  .pushreg r14
++  push r15
++  .pushreg r15
++  sub rsp,0f8h
++  .allocstack 0f8h
++  lea rbp,[rsp]
++  .setframe rbp,0
++  movdqu [rsp+40h],xmm6
++  .savexmm128 xmm6,40h
++  movdqu [rsp+50h],xmm7
++  .savexmm128 xmm7,50h
++  movdqu [rsp+60h],xmm8
++  .savexmm128 xmm8,60h
++  movdqu [rsp+70h],xmm9
++  .savexmm128 xmm9,70h
++  movdqu [rsp+80h],xmm10
++  .savexmm128 xmm10,80h
++  movdqu [rsp+90h],xmm11
++  .savexmm128 xmm11,90h
++  movdqu [rsp+0a0h],xmm12
++  .savexmm128 xmm12,0a0h
++  movdqu [rsp+0b0h],xmm13
++  .savexmm128 xmm13,0b0h
++  movdqu [rsp+0c0h],xmm14
++  .savexmm128 xmm14,0c0h
++  movdqu [rsp+0d0h],xmm15
++  .savexmm128 xmm15,0d0h
++  .endprolog
++  mov [rsp+0e0h],rcx
++  mov rax,05555h
++  mov [rsp+20h],rax
++  mov rax,06666h
++  mov [rsp+28h],rax
++  lea rax,[rsp-8]
++  mov ParentFixtureCallEntryRsp,rax
++  mov ParentFixtureCallRbp,rbp
++  movdqu xmm0,[ParentFixtureInputXmm+00h]
++  movdqu xmm1,[ParentFixtureInputXmm+10h]
++  movdqu xmm2,[ParentFixtureInputXmm+20h]
++  movdqu xmm3,[ParentFixtureInputXmm+30h]
++  movdqu xmm4,[ParentFixtureInputXmm+40h]
++  movdqu xmm5,[ParentFixtureInputXmm+50h]
++  movdqu xmm6,[ParentFixtureInputXmm+60h]
++  movdqu xmm7,[ParentFixtureInputXmm+70h]
++  movdqu xmm8,[ParentFixtureInputXmm+80h]
++  movdqu xmm9,[ParentFixtureInputXmm+90h]
++  movdqu xmm10,[ParentFixtureInputXmm+0a0h]
++  movdqu xmm11,[ParentFixtureInputXmm+0b0h]
++  movdqu xmm12,[ParentFixtureInputXmm+0c0h]
++  movdqu xmm13,[ParentFixtureInputXmm+0d0h]
++  movdqu xmm14,[ParentFixtureInputXmm+0e0h]
++  movdqu xmm15,[ParentFixtureInputXmm+0f0h]
++  mov rax,0aaaah
++  mov rcx,01111h
++  mov rdx,[rsp+0e0h]
++  mov r8,0eeeeeeeefffffff9h
++  mov r9,09999h
++  mov r10,0a0a0h
++  mov r11,0b0b0h
++  mov rbx,0bbbbh
++  mov rsi,05151h
++  mov rdi,0d1d1h
++  mov r12,01212h
++  mov r13,01313h
++  mov r14,01414h
++  mov r15,01515h
++  push 0ed7h
++  popfq
++  fxsave [ParentFixtureFxBefore]
++  call qword ptr [ParentFixtureCallTarget]
++ParentFixtureAfterCall LABEL BYTE
++  mov ParentFixtureReturnedRax,rax
++  mov ParentFixtureReturnedRsp,rsp
++  movdqu [ParentFixtureReturnedXmm],xmm0
++  fxsave [ParentFixtureFxAfter]
++  cld
++  movdqu xmm6,[rsp+40h]
++  movdqu xmm7,[rsp+50h]
++  movdqu xmm8,[rsp+60h]
++  movdqu xmm9,[rsp+70h]
++  movdqu xmm10,[rsp+80h]
++  movdqu xmm11,[rsp+90h]
++  movdqu xmm12,[rsp+0a0h]
++  movdqu xmm13,[rsp+0b0h]
++  movdqu xmm14,[rsp+0c0h]
++  movdqu xmm15,[rsp+0d0h]
++  lea rsp,[rbp+0f8h]
++  pop r15
++  pop r14
++  pop r13
++  pop r12
++  pop rdi
++  pop rsi
++  pop rbp
++  pop rbx
++  ret
++ParentFixtureInvoke ENDP
++
++; Entered only after the test's actual copied native prefix. The zero-length
++; prologue describes that inherited frame, not a second stack allocation.
++ParentFixtureBody PROC FRAME
++  .pushreg rbx
++  .pushreg rbp
++  .allocstack 98h
++  .savereg r14,88h
++  .endprolog
++  mov [ParentFixtureBodySeen+00h],rax
++  mov [ParentFixtureBodySeen+08h],rcx
++  mov [ParentFixtureBodySeen+10h],rdx
++  mov [ParentFixtureBodySeen+18h],r8
++  mov [ParentFixtureBodySeen+20h],r9
++  mov [ParentFixtureBodySeen+28h],r10
++  mov [ParentFixtureBodySeen+30h],r11
++  mov [ParentFixtureBodySeen+38h],rbx
++  mov [ParentFixtureBodySeen+40h],rbp
++  mov [ParentFixtureBodySeen+48h],rsi
++  mov [ParentFixtureBodySeen+50h],rdi
++  mov [ParentFixtureBodySeen+58h],r12
++  mov [ParentFixtureBodySeen+60h],r13
++  mov [ParentFixtureBodySeen+68h],r14
++  mov [ParentFixtureBodySeen+70h],r15
++  mov [ParentFixtureBodySeen+78h],rsp
++  movdqu [ParentFixtureBodySeen+080h],xmm0
++  movdqu [ParentFixtureBodySeen+090h],xmm1
++  movdqu [ParentFixtureBodySeen+0a0h],xmm2
++  movdqu [ParentFixtureBodySeen+0b0h],xmm3
++  movdqu [ParentFixtureBodySeen+0c0h],xmm4
++  movdqu [ParentFixtureBodySeen+0d0h],xmm5
++  movdqu [ParentFixtureBodySeen+0e0h],xmm6
++  movdqu [ParentFixtureBodySeen+0f0h],xmm7
++  movdqu [ParentFixtureBodySeen+100h],xmm8
++  movdqu [ParentFixtureBodySeen+110h],xmm9
++  movdqu [ParentFixtureBodySeen+120h],xmm10
++  movdqu [ParentFixtureBodySeen+130h],xmm11
++  movdqu [ParentFixtureBodySeen+140h],xmm12
++  movdqu [ParentFixtureBodySeen+150h],xmm13
++  movdqu [ParentFixtureBodySeen+160h],xmm14
++  movdqu [ParentFixtureBodySeen+170h],xmm15
++  mov rax,[rsp+0d0h]
++  mov [ParentFixtureBodySeen+180h],rax
++  mov rax,[rsp+0d8h]
++  mov [ParentFixtureBodySeen+188h],rax
++  lock inc qword ptr [ParentFixtureBodyCalls]
++  movdqu xmm0,[ParentFixtureReturnXmm]
++  mov rax,0d00dfeed11223344h
++  mov r14,[rsp+88h]
++  add rsp,98h
++  pop rbp
++  pop rbx
++  ret
++ParentFixtureBody ENDP
++END
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/fixture-a02/fixture_core.cpp
+@@ -0,0 +1,66 @@
++// NO-GAME STATE FIXTURE ONLY. The corrected a04 core file is included without
++// edits. This private test TU can seed its internal owner state; it does not
++// qualify real installation, prefix writing, global quiescence or restoration.
++#include "fixture_shared.hpp"
++#include <cstring>
++#include "../candidate-a04/parent_entry_opportunity_12004.cpp"
++namespace xar::ck3_12004::parent_entry {
++namespace {
++alignas(16) unsigned char fake_character[0x200]{};
++alignas(16) unsigned char fake_context[0x500]{};
++alignas(16) unsigned char fake_state[0x100]{};
++bool fixture_read_failure=false;
++volatile LONG64 fixture_reads=0;
++volatile LONG64 fixture_prefix_reads=0;
++bool FixtureRead(void*,std::uintptr_t p,void*out,std::size_t n) noexcept {
++  InterlockedIncrement64(&fixture_reads);
++  if(fixture_read_failure)return false;
++  if(p==owner.module_base+kEntryRva&&n==16){InterlockedIncrement64(&fixture_prefix_reads);std::memcpy(out,patch.data(),16);return true;}
++  if(p==owner.module_base+0x5C68C50&&n==8){std::memcpy(out,&owner.game_state,8);return true;}
++  const bool range=(p>=reinterpret_cast<std::uintptr_t>(fake_character)&&p+n<=reinterpret_cast<std::uintptr_t>(fake_character)+sizeof fake_character)||
++    (p>=reinterpret_cast<std::uintptr_t>(fake_state)&&p+n<=reinterpret_cast<std::uintptr_t>(fake_state)+sizeof fake_state);
++  if(!range)return false;
++  std::memcpy(out,reinterpret_cast<const void*>(p),n);return true;
++}
++}
++extern "C" bool ParentFixtureSeed(std::uint64_t target) {
++  if(Atomic(XarParentEntryState12004.enabled)||Atomic(XarParentEntryState12004.active_thunks))return false;
++  std::memset(&XarParentEntryState12004,0,sizeof XarParentEntryState12004);
++  owner={};owner.machine_id="NO_GAME_SYNTHETIC_FIXTURE";owner.executable_sha256=std::string(kExeSha);
++  owner.module_base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
++  owner.character=target;owner.context=reinterpret_cast<std::uintptr_t>(fake_context);
++  owner.game_state=reinterpret_cast<std::uintptr_t>(fake_state);
++  owner.pid=GetCurrentProcessId();owner.full_id=33388;owner.local_player_id=1;
++  FILETIME c{},e{},k{},u{};if(!GetProcessTimes(GetCurrentProcess(),&c,&e,&k,&u))return false;
++  owner.process_create_time_100ns=(std::uint64_t(c.dwHighDateTime)<<32)|c.dwLowDateTime;
++  owner.generation=owner.window=owner.payment_epoch=1;owner.date_raw=53149056;owner.absolute_day=2214544;
++  owner.ordinary_null_owner=true;owner.explicit_entry_hook_admission=true;
++  environment={};environment.read=&FixtureRead;
++  // The injected reader supplies only this fixture's declared Character fields.
++  // Target points to fake_character, so the actual ASM RDX remains owned memory.
++  if(target!=reinterpret_cast<std::uintptr_t>(fake_character))return false;
++  std::uint32_t id=33388,magic=0x43686172,day=static_cast<std::uint32_t>(owner.absolute_day);
++  std::memcpy(fake_character+0x18,&id,4);std::memcpy(fake_character+0x1c,&magic,4);
++  std::memcpy(fake_character+0x1c0,&owner.context,8);
++  std::memcpy(fake_state+8,&owner.date_raw,8);std::memcpy(fake_state+0x9c,&day,4);
++  patch.fill(0x90);owned=true;patch_may_be_present=true;armed_once=false;identity_before=false;
++  fixture_read_failure=false;
++  auto&w=XarParentEntryState12004;w.target_character=target;w.admitted_full_id=33388;
++  w.epoch=w.generation=w.window=1;w.admission_date=owner.date_raw;w.admission_absolute_day=owner.absolute_day;
++  return true;
++}
++extern "C" std::uint64_t ParentFixtureTarget(){return reinterpret_cast<std::uintptr_t>(fake_character);}
++extern "C" void ParentFixtureReadFailure(bool fail){fixture_read_failure=fail;}
++extern "C" bool ParentFixtureAdmissionGuardTest(){
++  if(!ParentFixtureSeed(reinterpret_cast<std::uintptr_t>(fake_character)))return false;
++  auto a=owner;auto e=environment;e.all_reachable_threads_quiescent=true;
++  owned=false;patch_may_be_present=false;
++  InterlockedExchange64(&fixture_reads,0);InterlockedExchange64(&fixture_prefix_reads,0);a.local_player_id=0;
++  if(Install(a,e)||Atomic(fixture_reads)!=0)return false;
++  a.local_player_id=1;
++  // Prefix reader deliberately returns NOPs. A legitimate1/33388 pair must
++  // reach Identity reads then reject the fake prefix BEFORE any pin/write.
++  if(Install(a,e)||Atomic(fixture_reads)==0||Atomic(fixture_prefix_reads)==0||owned||patch_may_be_present)return false;
++  return true;
++}
++}
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/fixture-a02/fixture_shared.hpp
+@@ -0,0 +1,24 @@
++#pragma once
++#include "../candidate-a04/parent_entry_opportunity_12004.hpp"
++struct alignas(16) ParentFixtureSeen {
++  std::uint64_t rax,rcx,rdx,r8,r9,r10,r11,rbx,rbp,rsi,rdi,r12,r13,r14,r15,rsp;
++  unsigned char xmm[16][16];
++  std::uint64_t fifth,sixth;
++};
++extern "C" {
++extern ParentFixtureSeen ParentFixtureBodySeen;
++extern unsigned char ParentFixtureInputXmm[16][16];
++extern unsigned char ParentFixtureReturnXmm[16];
++extern unsigned char ParentFixtureFxBefore[512],ParentFixtureFxAfter[512];
++extern std::uint64_t ParentFixtureCallEntryRsp,ParentFixtureCallRbp;
++extern std::uint64_t ParentFixtureReturnedRax,ParentFixtureReturnedRsp;
++extern unsigned char ParentFixtureReturnedXmm[16];
++extern volatile LONG64 ParentFixtureBodyCalls;
++extern void (*ParentFixtureCallTarget)();
++void ParentFixtureInvoke(std::uint64_t target);
++void ParentFixtureBody();
++void ParentFixtureAfterCall();
++bool ParentFixtureSeed(std::uint64_t target);
++void ParentFixtureReadFailure(bool fail);
++bool ParentFixtureAdmissionGuardTest();
++}
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/fixture-a02/prepare_unwind_cases.py
+@@ -0,0 +1,85 @@
++"""Future own-project-EXE instruction-boundary input; never reads CK3.
++
++Run only after its exact new SYSTEM receipt. This file is prepared source; it
++has not been run against a built candidate. It reuses manifest SHA provenance,
++double-stats the same open image and reads bounded headers/two function spans.
++"""
++import argparse,datetime,hashlib,json,os,re,struct
++from pathlib import Path
++
++def sha(b):return hashlib.sha256(b).hexdigest()
++def write_new(path,data):
++ with path.open('xb') as f:f.write(data)
++def main():
++ p=argparse.ArgumentParser(description=__doc__)
++ for name in ('exe','manifest','description','output','receipt','build-root'):p.add_argument('--'+name,type=Path,required=True)
++ a=p.parse_args();build=a.build_root.resolve();exe=a.exe.resolve()
++ assert exe==build/'parent_entry_opportunity_cold.exe'
++ for out in (a.output,a.receipt):assert out.resolve().is_relative_to(build) and not out.exists()
++ manifest_raw=a.manifest.read_bytes();manifest=json.loads(manifest_raw)
++ entries=[x for x in manifest['files'] if Path(x['path']).resolve()==exe]
++ assert len(entries)==1
++ description_raw=a.description.read_bytes();description=json.loads(description_raw)
++ from capstone import Cs,CS_ARCH_X86,CS_MODE_64
++ decoder=Cs(CS_ARCH_X86,CS_MODE_64)
++ cases=[];spans=[];reads=0
++ with exe.open('rb') as f:
++  before=os.fstat(f.fileno());assert before.st_size==entries[0]['size']
++  def read(offset,size):
++   nonlocal reads
++   assert 0<=offset<=before.st_size-size and size<=8192
++   reads+=1;assert reads<=16
++   f.seek(offset);data=f.read(size);assert len(data)==size;return data
++  dos=read(0,64);assert dos[:2]==b'MZ'
++  pe=struct.unpack_from('<I',dos,0x3c)[0];assert pe<=0x100000
++  file=read(pe,24);assert file[:4]==b'PE\0\0'
++  sections=struct.unpack_from('<H',file,6)[0];optional_size=struct.unpack_from('<H',file,20)[0]
++  assert 0<sections<=64 and 0<optional_size<=1024
++  optional=read(pe+24,optional_size);assert optional[:2]==b'\x0b\x02'
++  table=read(pe+24+optional_size,40*sections)
++  def offset(rva,size):
++   matches=[]
++   for i in range(sections):
++    row=table[i*40:(i+1)*40];va,raw_size,raw=struct.unpack_from('<III',row,12)
++    if va<=rva and rva+size<=va+raw_size:matches.append(raw+rva-va)
++   assert len(matches)==1;return matches[0]
++  for key,kind in (('thunk','T'),('prefix','P')):
++   item=description[key];rva=item['rva'];size=item['bytes'];assert 0<size<=8192
++   raw=read(offset(rva,size),size);decoded=list(decoder.disasm(raw,rva))
++   assert decoded and sum(x.size for x in decoded)==size
++   assert decoded[0].address==rva
++   if kind=='P':assert raw[:16].hex()=='488bc453554881ec980000004c8970e0' and raw[-4:].hex()=='ff642408'
++   else:assert decoded[-1].bytes[:2]==b'\xff\x25'
++   delta=0;frame=0
++   for ins in decoded:
++    cases.append(f'{kind} {ins.address-rva:x} {delta} {frame}\n')
++    op=ins.op_str.replace(' ','').lower();mn=ins.mnemonic
++    if mn in ('push','pushfq'):delta-=8
++    elif mn=='popfq':delta+=8
++    elif mn=='pop':
++     delta+=8
++     if op=='rbp':frame=0
++    elif mn=='sub' and op=='rsp,0x98':delta-=0x98
++    elif mn=='lea':
++     if op=='rsp,[rsp-0x40]':delta-=0x40
++     elif op=='rbp,[rsp]':frame=1
++     elif op=='rsp,[rbp+0x40]':delta=-0x10
++     elif op.startswith('rsp,') or op.startswith('rbp,'):raise AssertionError('Unmodelled frame instruction '+op)
++    elif mn in ('add','mov') and op.startswith('rsp,'):raise AssertionError('Unmodelled stack write '+op)
++   spans.append({'function':key,'rva':rva,'file_offset':offset(rva,size),'bytes':size,
++     'sha256':sha(raw),'instruction_count':len(decoded),'last_instruction_hex':bytes(decoded[-1].bytes).hex()})
++  after=os.fstat(f.fileno())
++ assert (before.st_dev,before.st_ino,before.st_size,before.st_mtime_ns)==(after.st_dev,after.st_ino,after.st_size,after.st_mtime_ns)
++ instruction_count=len(cases)
++ header=f"COUNTS T {spans[0]['instruction_count']} {spans[0]['bytes']} P {spans[1]['instruction_count']} {spans[1]['bytes']}\n"
++ data=(header+''.join(cases)).encode('ascii');assert len(data)<=32768
++ receipt={'schema':'xar.parent-entry.own-fixture-unwind-boundaries.v1',
++  'machine_id':'desktop-3fevhd2-1c74096080','observed_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
++  'EXE':str(exe),'manifest_sha256':sha(manifest_raw),'registered_EXE_sha256':entries[0]['sha256'],
++  'description_sha256':sha(description_raw),'stat_identity':{'dev':before.st_dev,'ino':before.st_ino,'size':before.st_size,'mtime_ns':before.st_mtime_ns},
++  'full_EXE_hashes':0,'game_EXE_reads':0,'bounded_reads':reads,'spans':spans,
++  'case_file':{'path':str(a.output),'bytes':len(data),'sha256':sha(data),'instruction_boundaries':instruction_count},
++  'actual_RtlVirtualUnwind_pass':False,'case_file_is_native_qualification':False}
++ write_new(a.output,data);write_new(a.receipt,(json.dumps(receipt,indent=2)+'\n').encode())
++ print(json.dumps(receipt))
++if __name__=='__main__':main()
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/check_core_a04.py
+@@ -0,0 +1,296 @@
++"""Source-derived checks only; never compiles/loads/executes a native image."""
++import copy
++import hashlib
++import json
++import os
++import re
++import unittest
++from pathlib import Path
++
++HERE=Path(__file__).resolve().parent
++ROOT=Path(os.environ['XAR_PARENT_SOURCE_REPO']) if 'XAR_PARENT_SOURCE_REPO' in os.environ else HERE.parents[3]
++HELD=ROOT/'docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source'
++MASK=(1<<64)-1
++STATE=0x100000
++ENTRY=0x700008
++BASE=0x140000000
++TARGET=0x800000
++
++def instructions(text):
++    result=[];labels={}
++    in_thunk=False
++    for original in text.splitlines():
++        line=original.split(';',1)[0].strip().lower()
++        if line.startswith('xarparententrythunk12004 proc'):
++            in_thunk=True
++            continue
++        if line.startswith('xarparententrythunk12004 endp'):break
++        if not in_thunk or not line or line.startswith('.'):continue
++        if line.endswith(':'):labels[line[:-1]]=len(result);continue
++        if line.startswith('lock '):line=line[5:]
++        opcode,_,operands=line.partition(' ')
++        result.append((opcode,[p.strip() for p in operands.split(',') if p.strip()]))
++    return result,labels
++
++class ThunkModel:
++    """Interpret the actual candidate MASM subset, not a second hook function.
++
++    GPRs, full saved flags and original stack/home bytes are modelled. This does
++    not encode machine code or implement the real Windows unwinder/XSTATE ABI.
++    """
++    def __init__(self,text,wire=None,character=TARGET):
++        self.code,self.labels=instructions(text)
++        names='rax rcx rdx r8 r9 r10 r11 rbx rbp rsi rdi r12 r13 r14 r15 rsp'.split()
++        self.reg={n:0x123400000000+i*0x1111 for i,n in enumerate(names)}
++        self.reg['rdx']=character;self.reg['rsp']=ENTRY
++        self.flags=0xED7;self.zf=False
++        self.mem={ENTRY:BASE+0x3978bf8}
++        self.mem.update({ENTRY+8*i:0xCAFE0000+i for i in range(1,12)})
++        self.mem.update(wire or {})
++        self.mem.setdefault(STATE,1)
++        self.mem.setdefault(STATE+8,TARGET)
++        self.xmm=tuple(bytes([i])*16 for i in range(16))
++        self.original=(copy.deepcopy(self.reg),self.flags,copy.deepcopy(self.mem),self.xmm)
++        self.pc=0;self.tail_count=0
++    def address(self,op):
++        op=op.replace('qword ptr ','').strip()
++        if op=='gs:[48h]':return 0xFFFF0048
++        expr=op[1:-1]
++        parts=re.split(r'(?=[+-])',expr)
++        total=self.reg[parts[0]]
++        for p in parts[1:]:
++            sign=-1 if p[0]=='-' else 1
++            total+=sign*self.number(p[1:])
++        return total&MASK
++    @staticmethod
++    def number(op):return int(op[:-1],16) if op.endswith('h') else int(op,10)
++    def read(self,op):
++        if op=='xarparententrystate12004':return STATE
++        if op=='gs:[48h]':return 12345
++        if '[' in op:return self.mem.get(self.address(op),0)
++        if op in self.reg:return self.reg[op]
++        if op in ('eax','ecx','edx'):return self.reg['r'+op[1:]]&0xffffffff
++        return self.number(op)
++    def write(self,op,value):
++        value&=MASK
++        if '[' in op:self.mem[self.address(op)]=value
++        elif op in ('eax','ecx','edx'):self.reg['r'+op[1:]]=value&0xffffffff
++        else:self.reg[op]=value
++    def arithmetic_flags(self,value):
++        self.zf=(value&MASK)==0
++        # Deliberately clobber every arithmetic flag. POPFQ must restore the
++        # original complete word, not merely the branch condition.
++        self.flags=(self.flags^0xCD5)&MASK
++    def step(self):
++        op,a=self.code[self.pc];self.pc+=1
++        if op=='push':
++            value=self.read(a[0]);self.reg['rsp']-=8;self.mem[self.reg['rsp']]=value
++        elif op=='pushfq':
++            self.reg['rsp']-=8;self.mem[self.reg['rsp']]=self.flags
++        elif op=='pop':
++            value=self.mem[self.reg['rsp']];self.reg['rsp']+=8;self.write(a[0],value)
++        elif op=='popfq':
++            self.flags=self.mem[self.reg['rsp']];self.reg['rsp']+=8
++        elif op=='mov':self.write(a[0],self.read(a[1]))
++        elif op=='lea':
++            self.write(a[0],STATE if a[1]=='xarparententrystate12004' else self.address(a[1]))
++        elif op in ('inc','dec'):
++            value=(self.read(a[0])+(1 if op=='inc' else -1))&MASK
++            self.write(a[0],value);self.arithmetic_flags(value)
++        elif op=='cmp':self.arithmetic_flags(self.read(a[0])-self.read(a[1]))
++        elif op=='cmpxchg':
++            old=self.read(a[0]);self.arithmetic_flags(self.reg['rax']-old)
++            if self.zf:self.write(a[0],self.read(a[1]))
++            else:self.reg['rax']=old
++        elif op in ('xor','or','shl'):
++            left=self.read(a[0]);right=self.read(a[1])
++            result=left^right if op=='xor' else left|right if op=='or' else left<<right
++            self.write(a[0],result);self.arithmetic_flags(result)
++        elif op=='rdtsc':
++            self.reg['rax']=0x89abcdef;self.reg['rdx']=0x12345678
++        elif op in ('je','jne','jnz','jmp'):
++            take=op=='jmp' or (self.zf if op=='je' else not self.zf)
++            if take:
++                if a[0]=='qword ptr [xarparententryoriginalprefixtarget12004]':
++                    self.tail_count+=1;return False
++                self.pc=self.labels[a[0]]
++        else:raise AssertionError('Unexpected instruction: '+op)
++        return True
++    def run(self):
++        for _ in range(256):
++            if not self.step():return self
++        raise AssertionError('Unbounded thunk path')
++    def assert_transparent(self,test):
++        old_reg,old_flags,old_mem,old_xmm=self.original
++        test.assertEqual(self.reg,old_reg)
++        test.assertEqual(self.flags,old_flags)
++        test.assertEqual(self.xmm,old_xmm)
++        for p,v in old_mem.items():
++            if ENTRY<=p<ENTRY+96:test.assertEqual(self.mem[p],v)
++        test.assertEqual(self.tail_count,1)
++        test.assertEqual(self.mem.get(STATE+0x100,0),0)
++
++class CandidateTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.asm=(HERE/'candidate-a04/parent_entry_opportunity_12004.asm').read_text()
++        cls.cpp=(HERE/'candidate-a04/parent_entry_opportunity_12004.cpp').read_text()
++        cls.header=(HERE/'candidate-a04/parent_entry_opportunity_12004.hpp').read_text()
++    def test_held_parent_full_raw_and_disassembly_agree(self):
++        source=json.loads((HELD/'SOURCE-SPANS.actual.json').read_text(encoding='utf-8'))
++        spans=[s for s in source['spans'] if s['label'].startswith('parent-')]
++        spans.sort(key=lambda s:s['begin_rva']);raw=b'';cursor=0x28f7840
++        for s in spans:
++            b=bytes.fromhex(s['raw_hex'])
++            self.assertEqual(cursor,s['begin_rva'])
++            self.assertEqual(hashlib.sha256(b).hexdigest(),s['sha256'])
++            self.assertEqual(len(b),s['bytes']);raw+=b;cursor+=len(b)
++        self.assertEqual(len(raw),1118)
++        self.assertEqual(hashlib.sha256(raw).hexdigest(),
++            'c115401592983d13238154255b9b2583fe85222089d71fde10f0e8aae6c9753c')
++        assembled=b''
++        for line in (HELD/'parent.complete.asm').read_text().splitlines():
++            m=re.match(r'^([0-9A-F]+)  ((?:[0-9a-f]{2} )+)',line)
++            self.assertIsNotNone(m)
++            self.assertEqual(int(m[1],16),0x28f7840+len(assembled))
++            assembled+=bytes.fromhex(m[2])
++        self.assertEqual(raw,assembled)
++    def test_target_entry_preserves_inputs_flags_stack_and_tail_once(self):
++        m=ThunkModel(self.asm).run();m.assert_transparent(self)
++        self.assertEqual(m.mem[STATE+0x58],2)
++        self.assertEqual(m.mem[STATE+0x70],TARGET)
++        self.assertEqual(m.mem[STATE+0xd8],ENTRY)
++        self.assertEqual(m.mem[STATE+0xe8],BASE+0x3978bf8)
++        self.assertEqual(m.mem[STATE+0xf0],12345)
++        self.assertEqual(m.mem[STATE+0xf8],0x1234567889abcdef)
++    def test_foreign_beyond_old_128_does_not_consume_target_frame(self):
++        wire={STATE:1,STATE+8:TARGET}
++        for _ in range(257):
++            m=ThunkModel(self.asm,wire,character=TARGET+0x1000).run()
++            m.assert_transparent(self)
++            wire={p:v for p,v in m.mem.items() if STATE<=p<STATE+0x110}
++        self.assertEqual(wire[STATE+0x40],257)
++        self.assertEqual(wire.get(STATE+0x58,0),0)
++        m=ThunkModel(self.asm,wire).run();m.assert_transparent(self)
++        self.assertEqual(m.mem[STATE+0x58],2)
++    def test_disabled_path_forwards_without_collecting(self):
++        m=ThunkModel(self.asm,{STATE:0}).run();m.assert_transparent(self)
++        for offset in (0x40,0x48,0x50,0x58):self.assertEqual(m.mem.get(STATE+offset,0),0)
++    def test_one_target_frame_is_immutable_and_later_match_counted(self):
++        first=ThunkModel(self.asm).run()
++        wire={p:v for p,v in first.mem.items() if STATE<=p<STATE+0x110}
++        before={p:v for p,v in wire.items() if STATE+0x60<=p<STATE+0x100}
++        second=ThunkModel(self.asm,wire).run();second.assert_transparent(self)
++        self.assertEqual(second.mem[STATE+0x48],2)
++        self.assertEqual(second.mem[STATE+0x50],1)
++        self.assertEqual(before,{p:v for p,v in second.mem.items() if STATE+0x60<=p<STATE+0x100})
++    def test_counter_wrap_is_visible_not_silent_negative_evidence(self):
++        m=ThunkModel(self.asm,{STATE+0x40:MASK},TARGET+8).run()
++        m.assert_transparent(self)
++        self.assertEqual(m.mem[STATE+0x108],1)
++    def test_source_contains_no_argument_dereference_or_call_or_simd(self):
++        code,_=instructions(self.asm)
++        self.assertFalse(any(op in ('call','ret') for op,_ in code))
++        for op,args in code:
++            for a in args:
++                self.assertNotRegex(a,r'\[(?:rcx|rdx|r8|r9)(?:\+|\])')
++                self.assertNotRegex(a,r'\b(?:xmm|ymm|zmm)\d+\b')
++        self.assertIn('full_id_read_at_entry=false,native_clock_read_at_entry=false',self.header)
++        self.assertIn('actual_payment=false,military_producer=false,payer_identified=false',self.header)
++    def test_unwind_frame_model_at_flag_restore_boundaries(self):
++        # Check the stack/frame hypothesis for the nonstandard POPFQ boundary.
++        # This is NOT RtlVirtualUnwind qualification of emitted pdata/xdata.
++        m=ThunkModel(self.asm)
++        reached=[]
++        for _ in range(256):
++            op,args=m.code[m.pc]
++            if op=='popfq':
++                reached.append('popfq')
++                self.assertEqual(m.reg['rbp'],ENTRY-0x50)
++                self.assertEqual(m.reg['rsp'],ENTRY-0x10)
++                self.assertEqual(m.mem[m.reg['rbp']+0x48],m.original[0]['rbp'])
++            if op=='pop' and args==['rbp']:
++                reached.append('poprbp');self.assertEqual(m.reg['rsp'],ENTRY-8)
++            if not m.step():break
++        self.assertEqual(reached,['popfq','poprbp'])
++        self.assertEqual(m.reg['rsp'],ENTRY)
++        self.assertIn('jmp qword ptr [XarParentEntryOriginalPrefixTarget12004]',self.asm)
++        self.assertNotIn('jmp XarParentEntryOriginalPrefix12004',self.asm)
++        self.assertIn('extern void (*const XarParentEntryOriginalPrefixTarget12004)()',self.cpp)
++    def test_off_precedes_busy_check_and_no_rearm_or_unsafe_unpatch(self):
++        stop=self.cpp.split('bool StopAndSnapshot',1)[1].split('bool Uninstall',1)[0]
++        self.assertLess(stop.index('InterlockedExchange64(&wire.enabled,0)'),
++                        stop.index('if(Atomic(wire.active_thunks))'))
++        self.assertIn('out.producer_busy=true;return false;',stop)
++        self.assertIn('armed_once||!Identity()',self.cpp)
++        uninstall=self.cpp.split('bool Uninstall',1)[1]
++        self.assertIn('if(!quiescent||Atomic',uninstall)
++        self.assertNotIn('VirtualFree',uninstall)
++        self.assertIn('current!=patch&&current!=kPrefix',self.cpp)
++        self.assertIn('actual_created==owner.process_create_time_100ns',self.cpp)
++    def test_unknown_and_invalid_snapshots_do_not_default_to_zero_counts(self):
++        self.assertIn('std::optional<std::uint64_t> foreign_count',self.header)
++        self.assertIn('std::optional<std::uint64_t> frame_state',self.header)
++        self.assertIn('std::optional<std::uint32_t> full_id_at_entry',self.header)
++        self.assertIn('(state!=0&&state!=2)||(overflow!=0&&overflow!=1)',self.cpp)
++        stop=self.cpp.split('bool StopAndSnapshot',1)[1].split('bool Uninstall',1)[0]
++        self.assertLess(stop.index('Status::invalid_wire_state'),stop.index('out.foreign_count='))
++        exact=stop.split('if(!overflow){',1)[1].split('}',1)[0]
++        self.assertIn('out.foreign_count=out.raw_foreign_counter_bits',exact)
++        self.assertIn('out.matching_pointer_count=out.raw_matching_counter_bits',exact)
++        self.assertIn('if(!frame_consistent||!counts_consistent)',self.cpp)
++        self.assertIn('out.frame->rdx==owner.character',self.cpp)
++    def test_stop_order_accounts_for_inflight_before_enabled_check(self):
++        code,_=instructions(self.asm)
++        active=next(i for i,(op,a) in enumerate(code) if op=='inc' and a==['qword ptr [r11+100h]'])
++        enabled=next(i for i,(op,a) in enumerate(code) if op=='cmp' and a==['qword ptr [r11+00h]','0'])
++        self.assertLess(active,enabled)
++        # A producer admitted before OFF stays active through the final publish;
++        # no close can treat the partial frame as an empty successful sample.
++        m=ThunkModel(self.asm)
++        while m.pc<=enabled:m.step()
++        self.assertEqual(m.mem[STATE+0x100],1)
++        m.mem[STATE]=0
++        self.assertNotEqual(m.mem[STATE+0x100],0)
++        m.run()
++        self.assertEqual(m.mem[STATE+0x100],0)
++        self.assertEqual(m.mem[STATE+0x58],2)
++        # An entry beginning after OFF can only touch active_thunks.
++        wire={p:v for p,v in m.mem.items() if STATE<=p<STATE+0x110}
++        after=ThunkModel(self.asm,wire).run()
++        for o in (0x40,0x48,0x50,0x58):self.assertEqual(after.mem.get(STATE+o,0),wire.get(STATE+o,0))
++    def test_state_corruption_is_detected_by_transparency_oracle(self):
++        mutant=self.asm.replace('mov r10,[rbp+28h]','mov r10,0')
++        m=ThunkModel(mutant).run()
++        with self.assertRaises(AssertionError):m.assert_transparent(self)
++    def test_prefix_transfer_is_not_epilogue_and_preserves_original_frame(self):
++        prefix=self.asm.split('XarParentEntryOriginalPrefix12004 PROC FRAME',1)[1]
++        self.assertIn('db 0ffh,064h,024h,008h',prefix)
++        self.assertNotIn('jmp qword ptr [XarParentEntryContinuation12004]',prefix)
++        # Published Version1 scanner's FF25 and REX.W FF/4 tail forms must NOT
++        # match while this prefix still owns its original allocated frame.
++        def scanner_tail(b):
++            return b[:2]==bytes.fromhex('ff25') or (len(b)>=3 and b[0]==0x48 and b[1]==0xff and (b[2]&0x38)==0x20)
++        self.assertFalse(scanner_tail(bytes.fromhex('ff642408')))
++        self.assertTrue(scanner_tail(bytes.fromhex('ff2500000000')))
++        body=(HELD/'parent.complete.asm').read_text()
++        self.assertNotRegex(body,r'\[rsp \+ 0x(?:8|10)\]')
++        state=ThunkModel(self.asm).run()
++        old=copy.deepcopy(state.reg);entry=old['rsp']
++        # Original prefix's native effect, including the existing save slots.
++        registers=copy.deepcopy(old);memory={}
++        registers['rax']=entry
++        registers['rsp']-=8;memory[registers['rsp']]=old['rbx']
++        registers['rsp']-=8;memory[registers['rsp']]=old['rbp']
++        registers['rsp']-=0x98;memory[entry-0x20]=old['r14']
++        before=copy.deepcopy(registers);sp=registers['rsp']
++        memory[sp+0x10]=registers['r11']
++        registers['r11']=BASE+0x28f7850
++        memory[sp+8]=registers['r11']
++        registers['r11']=memory[sp+0x10]
++        self.assertEqual(registers,before)
++        self.assertEqual(sp,entry-0xa8)
++        self.assertEqual(memory[sp+8],BASE+0x28f7850)
++        self.assertEqual(memory[entry-0x20],old['r14'])
++
++if __name__=='__main__':unittest.main(verbosity=2)
+--- /dev/null
++++ b/ck3_autonomous_player/native_bridge/research/parent_entry_opportunity_12004/check_fixture_source_a02.py
+@@ -0,0 +1,72 @@
++import ast
++import hashlib
++import json
++import os
++from pathlib import Path
++import unittest
++import check_core_a04 as old
++HERE=Path(__file__).resolve().parent
++
++class CorrectedCoreChecks(old.CandidateTests):
++ @classmethod
++ def setUpClass(cls):
++  p=HERE/'candidate-a04'
++  cls.asm=(p/'parent_entry_opportunity_12004.asm').read_text()
++  cls.cpp=(p/'parent_entry_opportunity_12004.cpp').read_text()
++  cls.header=(p/'parent_entry_opportunity_12004.hpp').read_text()
++ def test_real_player_slot_and_character_ID_are_independent(self):
++  p=Path('C:/ck3-e04-resume-20261020-a01/r08-scene-a02/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0223/case-output/r08-writer-control/watch/ADMISSION.actual.json')
++  raw=p.read_bytes()
++  self.assertEqual(hashlib.sha256(raw).hexdigest(),'0f442d65fd587101b2cc070add82f23921c71d95ddbad293755cafad5eee1f81')
++  b=json.loads(raw)['owner_binding'];self.assertEqual((b['local_player_id'],b['player_character_full_id']),(1,33388))
++  self.assertIn('!a.local_player_id',self.cpp)
++  self.assertNotIn('a.local_player_id!=a.full_id',self.cpp)
++
++class FixtureSourceChecks(unittest.TestCase):
++ @classmethod
++ def setUpClass(cls):
++  cls.p=HERE/'fixture-a02';cls.cpp=(cls.p/'cold_main.cpp').read_text();cls.asm=(cls.p/'fixture_call.asm').read_text();cls.core=(cls.p/'fixture_core.cpp').read_text()
++ def test_actual_native_fixture_is_explicit_and_core_is_unmodified_input(self):
++  cm=(self.p/'CMakeLists.txt').read_text()
++  self.assertIn('add_executable(parent_entry_opportunity_cold',cm)
++  self.assertIn('XAR_BUILD_PARENT_ENTRY_SYNTHETIC_COLD',cm)
++  self.assertIn('#include "../candidate-a04/parent_entry_opportunity_12004.cpp"',self.core)
++  self.assertIn('owner.local_player_id=1',self.core)
++  self.assertIn('ParentFixtureAdmissionGuardTest()',self.cpp)
++  for name in ('cold_main.cpp','fixture_core.cpp','fixture_call.asm','fixture_shared.hpp'):self.assertTrue((self.p/name).is_file())
++ def test_return_and_real_body_are_measured_separately_from_prefix_flags(self):
++  self.assertIn('f.rflags&0xcd5',self.cpp)
++  self.assertNotIn('b.rflags',self.cpp)
++  self.assertIn('ParentFixtureReturnedRax==0xd00dfeed11223344ULL',self.cpp)
++  self.assertIn('ParentFixtureReturnedRsp==f.rsp+8',self.cpp)
++  self.assertIn('ParentFixtureBodyCalls==1',self.cpp)
++  self.assertIn('std::memcmp(b.xmm,ParentFixtureInputXmm',self.cpp)
++  self.assertIn('ParentFixtureAfterCall',self.cpp)
++  self.assertIn('  cld\n',self.asm) # caller must restore normal ABI DF before C++
++ def test_real_OS_unwind_is_required_and_each_boundary_file_is_bounded(self):
++  self.assertIn('RtlLookupFunctionEntry',self.cpp)
++  self.assertIn('RtlVirtualUnwind(UNW_FLAG_NHANDLER',self.cpp)
++  helper=(self.p/'prepare_unwind_cases.py').read_text();ast.parse(helper)
++  self.assertIn("for key,kind in (('thunk','T'),('prefix','P'))",helper)
++  self.assertIn('for ins in decoded:',helper)
++  self.assertIn("raw[-4:].hex()=='ff642408'",helper)
++  self.assertIn('reads<=16',helper)
++  self.assertIn('full_EXE_hashes',helper)
++ def test_foreign_and_stalled_unknowns_are_not_relabelled_native_install(self):
++  self.assertIn('i<257',self.cpp)
++  self.assertIn('!busy.foreign_count',self.cpp)
++  self.assertIn('!overflow.foreign_count',self.cpp)
++  self.assertIn('!pe::Uninstall(false)',self.cpp)
++  self.assertIn('real_Install_Restore_qualified\\\":false',self.cpp)
++  self.assertIn('full_native_qualification\\\":false',self.cpp)
++
++ def test_unwind_input_rejects_duplicate_and_partial_case_sets(self):
++  self.assertIn('visited.emplace(kind,offset).second',self.cpp)
++  self.assertIn('seen_t==expected_t&&seen_p==expected_p',self.cpp)
++  for nv in ('c.Rsi==0x5151','c.Rdi==0xd1d1','c.R12==0x1212','c.R13==0x1313','c.R15==0x1515'):self.assertIn(nv,self.cpp)
++ def test_admission_guard_reaches_prefix_not_merely_first_identity_read(self):
++  self.assertIn('Atomic(fixture_prefix_reads)==0',self.core)
++  self.assertIn('InterlockedIncrement64(&fixture_prefix_reads)',self.core)
++  self.assertIn('add_dependencies(parent_entry_opportunity_cold xar_parent_entry_opportunity_12004)',(self.p/'CMakeLists.txt').read_text())
++
++if __name__=='__main__':unittest.main(verbosity=2)

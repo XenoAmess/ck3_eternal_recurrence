@@ -1,0 +1,47 @@
+{
+  "schema": "xar.e04.Root.actual-SYSTEM-selected-path-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:30:41.013081+00:00",
+  "reviewer": "/root",
+  "source": "Root directly loaded full actual producer, SYSTEM receipt and manifest; all input bytes/SHA checked; selected actual fields below. Unrelated global exclusions not reproduced.",
+  "gate": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\EXECUTION-GATE.actual.json",
+    "bytes": 1338,
+    "sha256": "5696a3d1d7c6ff2f87436a8baa347242c6fc789a3251095a5c3f48e2baebce99"
+  },
+  "producer": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\native-msvc-result.json",
+    "bytes": 1619,
+    "sha256": "ac8eb871ca527884c77ef5fe55b825142f96f76c1f29c451bb7da69920cb13a4"
+  },
+  "receipt": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\defender-exe-exclusions\\20261020T172906Z-9c6c140e\\receipt.json",
+    "bytes": 273331,
+    "sha256": "a263f694e9cbc639ccd266b7b479a2c11a4d840e190540021726df0a95eacbe4"
+  },
+  "manifest": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\defender-exe-exclusions\\20261020T172906Z-9c6c140e\\manifest.json",
+    "bytes": 1769,
+    "sha256": "6c70b07d36798646bce5b2a11806a9f7575d5e614f28b01cff87d4cb88d2790b"
+  },
+  "status": "verified",
+  "admin_token": true,
+  "system_token_sid": "S-1-5-18",
+  "files": [
+    {
+      "path": "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+      "sha256": "5e43a0640410655ccebc6caa4f14294d5e6b7eb8cbc35146713ce7acd99f3fa6",
+      "size": 61952,
+      "target": "parent_entry_opportunity_cold",
+      "target_id": "parent_entry_opportunity_cold::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "missing_requested_paths": [],
+  "partial_mutation": false,
+  "observed_extensions_unchanged": true,
+  "observed_processes_unchanged": true,
+  "observed_prior_settings_preserved": true,
+  "project_EXE_run_by_this_review": false,
+  "native_cold_pass": false,
+  "game_contact": false
+}

@@ -1,0 +1,21 @@
+{
+  "pid": 20700,
+  "creation_time_100ns": 134369909345667310,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parenta01\\source-repair-a01\\extend_source_a03.py",
+    "--cap",
+    "C:\\w\\e04parenta01\\capacity\\PARENT-ENTRY-NATIVE64-1800-SOURCE-BOUND.actual-a03.json",
+    "--cap-sha256",
+    "1fe19fe6593e9ed47f436c33e330953dc6a2493ecfb258255dfedd56816c90f6"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "started_at_utc": "2026-10-20T17:28:54.564649+00:00",
+  "observed_at_utc": "2026-10-20T17:28:55.132401+00:00",
+  "exit_code": 0
+}

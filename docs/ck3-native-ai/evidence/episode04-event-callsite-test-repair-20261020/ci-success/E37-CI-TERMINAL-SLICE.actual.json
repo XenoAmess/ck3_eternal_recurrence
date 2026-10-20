@@ -1,0 +1,23 @@
+{
+  "schema": "xar.e04.CI-terminal-exact-line-slice.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:00:00.056505+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\test-fixture-publish-a01\\CI-OBSERVATIONS.actual.jsonl",
+    "bytes": 16807,
+    "sha256": "07570eb198648413cebfb2e291fb6d2ee4ff46c73c778819f05f283ac067f68b"
+  },
+  "operation": "exact UTF-8 JSONL byte slice; original response projection, not a new GH query",
+  "line_number": 25,
+  "source_byte_offset": 16249,
+  "source_byte_count": 558,
+  "extracted_original_line": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-publish-prep-a01\\E37-CI-TERMINAL.extracted-original-line.json",
+    "bytes": 558,
+    "sha256": "31f9cef90de7c6d87d8cee5d6a083f495fd6ffe51bde35154305dc382c14c2a5"
+  },
+  "source_event_observed_at_utc": "2026-10-20T16:53:40.928507+00:00",
+  "published_head": "e37d3b2abc19e42e6d3c2343df6e71311318321d",
+  "both_automatic_workflows_success": true,
+  "new_GH_queries": 0
+}

@@ -1,0 +1,172 @@
+{
+  "schema": "xar.e04.Root.R196.R07.bounded-positive-source-shot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:22:16.054526+00:00",
+  "reviewer": "/root",
+  "decision": "ACCEPT_BOUNDED_ORIGINAL_M_POSITIVE_SOURCE_SHOT",
+  "theme": "R07",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/raw-r07-treatment-a01/raw.mkv",
+    "bytes": 49062501,
+    "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+    "body_rehashed_this_review": false
+  },
+  "accepted_span_seconds_half_open": [
+    32,
+    52
+  ],
+  "accepted_span_frames_half_open": [
+    960,
+    1560
+  ],
+  "fps": 30,
+  "actual_source_frames": 600,
+  "original_speed": true,
+  "direct_Root_view": {
+    "tool": "view_image detail original",
+    "new_sheets": [
+      0,
+      12,
+      13,
+      14,
+      37
+    ],
+    "existing_fullres_PTS_seconds": [
+      35,
+      38,
+      41,
+      44
+    ],
+    "Root_saw_all52": false,
+    "basis": "Actual Root tool image returns during current turn. All823 source cells separately reviewed by named AI; padding excluded."
+  },
+  "observations": {
+    "selected_army_panel_count": [
+      1162,
+      1162
+    ],
+    "global_counter1163_is_distinct": true,
+    "supply_labels": [
+      "300/300",
+      "300/300"
+    ],
+    "gold_labels": [
+      260,
+      257
+    ],
+    "dates": [
+      "1067-03-25",
+      "1067-03-26"
+    ],
+    "panel": "land camp to ships/embarked",
+    "conservative_structural_change_PTS_bracket": "(38.900,39.467]",
+    "readable_gold_date_change_PTS_bracket": "(38,41]",
+    "native_callback_exact_PTS": null,
+    "pre_seconds_lower_bound": 6.9,
+    "post_seconds_lower_bound": 12.533
+  },
+  "native_payment": {
+    "segment_id": "R0196-treatment-segment-02",
+    "payment_epoch": 3,
+    "controlled_window_id": 3,
+    "writer_sequence": 3,
+    "transition_sequence": 5,
+    "gateway_sequence": 4,
+    "account_kind": 0,
+    "payer_character_id": 31254,
+    "land_id": null,
+    "requested_amount_raw": 300000,
+    "entry_balance_bits": 26010399,
+    "returned_balance_bits": 25710399,
+    "returned_balance_matches_requested_sub": true,
+    "transition_army_full_id": 18,
+    "requested_public_unit_id": 18,
+    "transition_province_id": 1032
+  },
+  "gold_scale": 100000,
+  "observed_gold_debit": 3,
+  "clean_review_type": "AI_ALL_CONTINUOUS_FRAME_THUMBNAIL_REVIEW_PLUS_KEY_ORIGINAL_RESOLUTION",
+  "limits": {
+    "original_R07_v1_qualified": false,
+    "full_R07_all_variants": false,
+    "source_bound_quote": null,
+    "Move_warning_in_this_span": false,
+    "universal_fee_proved": false,
+    "military_maintenance_attribution": false,
+    "commander_cause_proved": false,
+    "actual_CPU_callback_to_PTS_mapping": false,
+    "all_original_resolution_frames_readable": false,
+    "human1x": false,
+    "human_signoff": false,
+    "whole_movie_complete": false,
+    "OneDrive_uploaded": false
+  },
+  "credit": {
+    "unit": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
+    "previous_accepted_themes": [
+      "R04",
+      "R06",
+      "R09",
+      "R12"
+    ],
+    "new_theme": "R07",
+    "accepted_count_after_this_decision": 5,
+    "total_themes": 11,
+    "percentage": 45.45454545454545,
+    "research": [
+      10,
+      14
+    ],
+    "business": [
+      7,
+      11
+    ],
+    "B": [
+      0,
+      2
+    ],
+    "ABC": [
+      0,
+      3
+    ],
+    "ledger_publication_pending": true
+  },
+  "pins": {
+    "AI_all52": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\AI-ALL52-REVIEW.actual-a01.json",
+      "bytes": 53483,
+      "sha256": "5200092b8c63ccc396eec6ea3973189cba808d5abf448612b847060c43546169"
+    },
+    "extraction": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\EXTRACTION.actual.json",
+      "bytes": 20892,
+      "sha256": "61e0c7905af307f680165b0de808d5c45690156ea61d1e522559573985842acd"
+    },
+    "CRC_PTS_owned0": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\POST-WAIT-CRC-PTS-OWNED0.actual.json",
+      "bytes": 1451,
+      "sha256": "a1adb07b0ca1fd7ccf171d04657645c3cda283aad7f24abf3f02d5452ce4929a"
+    },
+    "historical_Root_v2_adoption": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\root-research-decision.actual.json",
+      "bytes": 2371,
+      "sha256": "1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f"
+    },
+    "closed_native_pair": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\CLOSED-PAIR-ASSESSMENT.actual-a01.json",
+      "bytes": 1815,
+      "sha256": "244fa8729f92773e2abdf81d66a0e5da29a594a7eb9d88cb156ca0665245686b"
+    },
+    "production_replay": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\PRODUCTION-PAIR-REPLAY.actual-a01.json",
+      "bytes": 16094,
+      "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+    },
+    "previous_four_ledger": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0175-r12-positive-review-a01\\formal-dynamic-theme-ledger.json",
+      "bytes": 10760,
+      "sha256": "8dfe931eed08d20502d3d46f8b2f8ffcad6b7e07ecb3cb5e1d7b6e1796dc3d69"
+    }
+  }
+}

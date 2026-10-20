@@ -1,0 +1,46 @@
+{
+  "schema": "xar.parent-entry.own-fixture-unwind-boundaries.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:35:13.568922+00:00",
+  "EXE": "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+  "manifest_sha256": "6c70b07d36798646bce5b2a11806a9f7575d5e614f28b01cff87d4cb88d2790b",
+  "registered_EXE_sha256": "5e43a0640410655ccebc6caa4f14294d5e6b7eb8cbc35146713ce7acd99f3fa6",
+  "description_sha256": "cd4969217916592c5afa85aa1a8f7eec1efaf6f9aa33ee363857bb34c32ad5e6",
+  "stat_identity": {
+    "dev": 13886423844274364792,
+    "ino": 1125899908084867,
+    "size": 61952,
+    "mtime_ns": 1792517346291499600
+  },
+  "full_EXE_hashes": 0,
+  "game_EXE_reads": 0,
+  "bounded_reads": 6,
+  "spans": [
+    {
+      "function": "thunk",
+      "rva": 36224,
+      "file_offset": 33152,
+      "bytes": 403,
+      "sha256": "fc026585eca1762be549a7f3d8c3e1447f0a65d02be87bb92302a521860f8e96",
+      "instruction_count": 80,
+      "last_instruction_hex": "ff251d300000"
+    },
+    {
+      "function": "prefix",
+      "rva": 36627,
+      "file_offset": 33555,
+      "bytes": 42,
+      "sha256": "f3c592a477cc376b36814b9b3fdc1dba0269d63e209b67c98f08adf0438df605",
+      "instruction_count": 10,
+      "last_instruction_hex": "ff642408"
+    }
+  ],
+  "case_file": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt",
+    "bytes": 1026,
+    "sha256": "d5a557f42baaf2837a8f768fa28b5fdab6eace70beaa73107f26dae6fdd80b94",
+    "instruction_boundaries": 90
+  },
+  "actual_RtlVirtualUnwind_pass": false,
+  "case_file_is_native_qualification": false
+}

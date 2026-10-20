@@ -1,0 +1,239 @@
+{
+  "schema": "xar.e04.parent-entry-managed-install-window-independent-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:53:39.519465+00:00",
+  "status": "INTEGRATION_GAP_NO_CURRENT_PROVEN_INSTALL_WINDOW_FOR_A03_CONTRACT",
+  "capacity": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/capacity/PARENT-1715-C4M-OFFLINE-SOURCE-ONLY-ADMISSION.actual-a01.json",
+    "bytes": 3680,
+    "sha256": "c4e0acf00e53e2e45518b852bfa7f586ef05af021fa5d2972a33c8acf701098c"
+  },
+  "source_readback": {
+    "source_root": "D:/workspace/ck3_eternal_recurrence",
+    "head": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+    "git_status_porcelain": "",
+    "observed_at_utc": "2026-10-20T16:53:39.519664+00:00",
+    "not_a_new_native_binary_qualification": true
+  },
+  "source_pins": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "bytes": 319238,
+      "sha256": "05ecc000814b8fac9d8281dfa91fdda51ce0578ba4b9f7578549517861655c17"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "bytes": 76215,
+      "sha256": "e33be8fed7f6450c691aed044130ddd4cfc8304199a40e8bc564c3b9fc6a2261"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "bytes": 170719,
+      "sha256": "0c9a5aa63ec7e95047e43a05ee3a88fc44ae66d85e22eb4c7594ff9c54db701c"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/injector_main.cpp",
+      "bytes": 3312,
+      "sha256": "e20f503b7a196c32b0dde5c6c9871fb974a0d801e68788f86a9b10e5eecabfeb"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/injector.cpp",
+      "bytes": 13522,
+      "sha256": "9c44bbcfa0605e5de311e5a90232c07f747a3ca918c78b2ed49e2d4328eefbcb"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1611813,
+      "sha256": "41a3e271793e59cb87469324f0ef04611cc0277bedcc06d6fe1043c10fb83953"
+    }
+  ],
+  "selected_actual_input": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-scene-a02/driver-runs/desktop-3fevhd2-1c74096080--vanilla--R0223/frozen-argv.json",
+    "bytes": 34690,
+    "sha256": "459d07ba42d709f8669aaa3cb7d86358edd7f5238ed75120aa944e3310568990"
+  },
+  "frozen_source_bindings": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "direct_frozen_file_pin_present": true,
+      "matching_when_present": true
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+      "direct_frozen_file_pin_present": false,
+      "matching_when_present": false
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+      "direct_frozen_file_pin_present": false,
+      "matching_when_present": false
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/injector_main.cpp",
+      "direct_frozen_file_pin_present": false,
+      "matching_when_present": false
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/injector.cpp",
+      "direct_frozen_file_pin_present": false,
+      "matching_when_present": false
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "direct_frozen_file_pin_present": false,
+      "matching_when_present": false
+    }
+  ],
+  "selected_actual_route": {
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0223",
+    "host": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "saved_campaign": true,
+    "delayed_after_saved_load_flag_present": false,
+    "trace": [
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+        "lines": [
+          634,
+          685
+        ],
+        "role": "saved_campaign_session locally reuses existing native_session.launch; inject-after-load option is only selected if explicitly requested."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/native_session.py",
+        "lines": [
+          990,
+          1016
+        ],
+        "role": "native_session calls runtime.launch."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+        "lines": [
+          2313,
+          2346
+        ],
+        "role": "CreateProcess uses CREATE_SUSPENDED and retains the primary-thread handle."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+        "lines": [
+          3156,
+          3172
+        ],
+        "role": "The selected no-delayed-injection route invokes _resume_with_native_bridge."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+        "lines": [
+          2695,
+          2733
+        ],
+        "role": "Calls the injector before resuming the primary thread; CAS/creation custody does not stop target worker threads."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/runtime.py",
+        "lines": [
+          2558,
+          2570
+        ],
+        "role": "Only an already-resumed target gets --pipe; this startup route uses PrepareStartup."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/injector_main.cpp",
+        "lines": [
+          57,
+          88
+        ],
+        "role": "Opens the retained target and selects InjectLibraryAndPrepareStartup when no --pipe is present."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/injector.cpp",
+        "lines": [
+          119,
+          143,
+          196,
+          203,
+          220,
+          283
+        ],
+        "role": "Creates/waits a remote LoadLibrary thread, then creates/waits a remote PrepareStartup thread."
+      },
+      {
+        "source": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+        "lines": [
+          31179,
+          31187,
+          30065,
+          30096
+        ],
+        "role": "DLL_PROCESS_ATTACH can call StartFromEnvironment, which starts the bridge WorkerMain thread."
+      }
+    ]
+  },
+  "conclusions": [
+    {
+      "id": "PRIMARY_SUSPENDED_IS_REAL_BUT_NOT_GLOBAL_BARRIER",
+      "severity": "integration blocker for claiming a03 installation proof",
+      "finding": "The selected startup path has a real pre-primary-resume interval. It does not suspend/retain all target threads or establish that every possible parent-prefix executor is quiescent. At least the remote loader/preparation threads and bridge worker exist during injection. Existing startup hook booleans/assertions are not a proof transferable to this new parent site."
+    },
+    {
+      "id": "INSTALL_TIME_OWNER_PHASE_MISMATCH",
+      "severity": "integration blocker",
+      "finding": "a03 Install requires a current nonnull Character/context/game-state and a successful current Identity join before writing the patch. No selected public startup producer supplies these actual world-owner facts while the newly-created primary remains unresumed. Historical pointers or later MapReady values cannot be substituted. Once the ordinary saved world is available, that primary has already been resumed and this startup interval has ended. This review did not observe OS memory to assert a particular null value; the missing producer/proof is the gap."
+    },
+    {
+      "id": "NO_SELECTED_POSTLOAD_GLOBAL_STOP",
+      "severity": "integration blocker",
+      "finding": "The inspected selected host/runtime/injector path has no target-all-thread stop/quiescence transaction. Pause-map/paused native state and before_process_create CAS gates do not assert this. The optional pre_native_resume custody seam is before first resume, is not selected by the actual argv, and is not a post-MapReady all-thread barrier."
+    }
+  ],
+  "implementation_boundary": {
+    "safe_install_current_public_path_proven": false,
+    "startup_window_can_be_claimed_as_all_threads_stopped": false,
+    "pause_map_can_satisfy_guard": false,
+    "set_quiescent_true_from_existing_six_hook_convention": false,
+    "future_options_not_implemented": "Either qualify a genuinely controlled installation protocol while the current owner exists, or redesign/qualify an owner-independent startup install with separate later owner arm. A debugger or suspend-all approach is a future qualified design, not an existing admitted path or an automatic proof.",
+    "uninstall": "a03 optional Uninstall still needs actual fresh global quiescence plus no active thunk; its counter alone is insufficient. Retaining the pinned hook OFF until normal process exit is explicitly supported, but does not solve the initial install gap."
+  },
+  "bounded_search_note": {
+    "files": [
+      "runtime.py",
+      "native_session.py",
+      "injector_main.cpp",
+      "injector.cpp"
+    ],
+    "terms": [
+      "SuspendThread",
+      "NtSuspendProcess",
+      "DebugActiveProcess",
+      "WaitForDebugEvent",
+      "Thread32First",
+      "quiescen"
+    ],
+    "matches": 0,
+    "scope": "Only these selected route files; not a claim that no such API exists anywhere in the repository."
+  },
+  "not_selected_harness": {
+    "path": "ck3_autonomous_player/native_bridge/src/host.cpp",
+    "reason": "It is a separate suspended-target transport/offline exchange harness. The actual R0223 frozen command selects the Python MCP host instead. Its suspended-primary pattern is not used as game-install proof."
+  },
+  "qualification": {
+    "new_game_or_os_process_observations": false,
+    "SDK_or_DR": false,
+    "EXE_body_reads": false,
+    "new_native_build": false,
+    "OS_unwind_or_install_cold": false,
+    "D_W_changes": false,
+    "live_admission": false
+  },
+  "prior_review_unchanged": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-independent-review-a01/FINAL-INDEPENDENT-REVIEW.actual-a01.json",
+    "bytes": 11465,
+    "sha256": "6ced40ded6285d3f91db2d1b5364d20f8e8c7f59bbda247041e72705de2c6a35"
+  },
+  "retention": {
+    "purpose": "Source-pinned selected installation lifecycle gap",
+    "review_due_utc": "2026-10-21T17:15:00Z",
+    "indefinite_retention_claim": false
+  }
+}

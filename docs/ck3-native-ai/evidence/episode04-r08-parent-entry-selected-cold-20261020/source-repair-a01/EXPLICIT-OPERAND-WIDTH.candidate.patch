@@ -1,0 +1,141 @@
+--- fixture-a02/fixture_call.asm
++++ fixture-a03/fixture_call.asm
+@@ -65,22 +65,22 @@
+   lea rax,[rsp-8]
+   mov ParentFixtureCallEntryRsp,rax
+   mov ParentFixtureCallRbp,rbp
+-  movdqu xmm0,[ParentFixtureInputXmm+00h]
+-  movdqu xmm1,[ParentFixtureInputXmm+10h]
+-  movdqu xmm2,[ParentFixtureInputXmm+20h]
+-  movdqu xmm3,[ParentFixtureInputXmm+30h]
+-  movdqu xmm4,[ParentFixtureInputXmm+40h]
+-  movdqu xmm5,[ParentFixtureInputXmm+50h]
+-  movdqu xmm6,[ParentFixtureInputXmm+60h]
+-  movdqu xmm7,[ParentFixtureInputXmm+70h]
+-  movdqu xmm8,[ParentFixtureInputXmm+80h]
+-  movdqu xmm9,[ParentFixtureInputXmm+90h]
+-  movdqu xmm10,[ParentFixtureInputXmm+0a0h]
+-  movdqu xmm11,[ParentFixtureInputXmm+0b0h]
+-  movdqu xmm12,[ParentFixtureInputXmm+0c0h]
+-  movdqu xmm13,[ParentFixtureInputXmm+0d0h]
+-  movdqu xmm14,[ParentFixtureInputXmm+0e0h]
+-  movdqu xmm15,[ParentFixtureInputXmm+0f0h]
++  movdqu xmm0,xmmword ptr [ParentFixtureInputXmm+00h]
++  movdqu xmm1,xmmword ptr [ParentFixtureInputXmm+10h]
++  movdqu xmm2,xmmword ptr [ParentFixtureInputXmm+20h]
++  movdqu xmm3,xmmword ptr [ParentFixtureInputXmm+30h]
++  movdqu xmm4,xmmword ptr [ParentFixtureInputXmm+40h]
++  movdqu xmm5,xmmword ptr [ParentFixtureInputXmm+50h]
++  movdqu xmm6,xmmword ptr [ParentFixtureInputXmm+60h]
++  movdqu xmm7,xmmword ptr [ParentFixtureInputXmm+70h]
++  movdqu xmm8,xmmword ptr [ParentFixtureInputXmm+80h]
++  movdqu xmm9,xmmword ptr [ParentFixtureInputXmm+90h]
++  movdqu xmm10,xmmword ptr [ParentFixtureInputXmm+0a0h]
++  movdqu xmm11,xmmword ptr [ParentFixtureInputXmm+0b0h]
++  movdqu xmm12,xmmword ptr [ParentFixtureInputXmm+0c0h]
++  movdqu xmm13,xmmword ptr [ParentFixtureInputXmm+0d0h]
++  movdqu xmm14,xmmword ptr [ParentFixtureInputXmm+0e0h]
++  movdqu xmm15,xmmword ptr [ParentFixtureInputXmm+0f0h]
+   mov rax,0aaaah
+   mov rcx,01111h
+   mov rdx,[rsp+0e0h]
+@@ -102,7 +102,7 @@
+ ParentFixtureAfterCall LABEL BYTE
+   mov ParentFixtureReturnedRax,rax
+   mov ParentFixtureReturnedRsp,rsp
+-  movdqu [ParentFixtureReturnedXmm],xmm0
++  movdqu xmmword ptr [ParentFixtureReturnedXmm],xmm0
+   fxsave [ParentFixtureFxAfter]
+   cld
+   movdqu xmm6,[rsp+40h]
+@@ -135,44 +135,44 @@
+   .allocstack 98h
+   .savereg r14,88h
+   .endprolog
+-  mov [ParentFixtureBodySeen+00h],rax
+-  mov [ParentFixtureBodySeen+08h],rcx
+-  mov [ParentFixtureBodySeen+10h],rdx
+-  mov [ParentFixtureBodySeen+18h],r8
+-  mov [ParentFixtureBodySeen+20h],r9
+-  mov [ParentFixtureBodySeen+28h],r10
+-  mov [ParentFixtureBodySeen+30h],r11
+-  mov [ParentFixtureBodySeen+38h],rbx
+-  mov [ParentFixtureBodySeen+40h],rbp
+-  mov [ParentFixtureBodySeen+48h],rsi
+-  mov [ParentFixtureBodySeen+50h],rdi
+-  mov [ParentFixtureBodySeen+58h],r12
+-  mov [ParentFixtureBodySeen+60h],r13
+-  mov [ParentFixtureBodySeen+68h],r14
+-  mov [ParentFixtureBodySeen+70h],r15
+-  mov [ParentFixtureBodySeen+78h],rsp
+-  movdqu [ParentFixtureBodySeen+080h],xmm0
+-  movdqu [ParentFixtureBodySeen+090h],xmm1
+-  movdqu [ParentFixtureBodySeen+0a0h],xmm2
+-  movdqu [ParentFixtureBodySeen+0b0h],xmm3
+-  movdqu [ParentFixtureBodySeen+0c0h],xmm4
+-  movdqu [ParentFixtureBodySeen+0d0h],xmm5
+-  movdqu [ParentFixtureBodySeen+0e0h],xmm6
+-  movdqu [ParentFixtureBodySeen+0f0h],xmm7
+-  movdqu [ParentFixtureBodySeen+100h],xmm8
+-  movdqu [ParentFixtureBodySeen+110h],xmm9
+-  movdqu [ParentFixtureBodySeen+120h],xmm10
+-  movdqu [ParentFixtureBodySeen+130h],xmm11
+-  movdqu [ParentFixtureBodySeen+140h],xmm12
+-  movdqu [ParentFixtureBodySeen+150h],xmm13
+-  movdqu [ParentFixtureBodySeen+160h],xmm14
+-  movdqu [ParentFixtureBodySeen+170h],xmm15
++  mov qword ptr [ParentFixtureBodySeen+00h],rax
++  mov qword ptr [ParentFixtureBodySeen+08h],rcx
++  mov qword ptr [ParentFixtureBodySeen+10h],rdx
++  mov qword ptr [ParentFixtureBodySeen+18h],r8
++  mov qword ptr [ParentFixtureBodySeen+20h],r9
++  mov qword ptr [ParentFixtureBodySeen+28h],r10
++  mov qword ptr [ParentFixtureBodySeen+30h],r11
++  mov qword ptr [ParentFixtureBodySeen+38h],rbx
++  mov qword ptr [ParentFixtureBodySeen+40h],rbp
++  mov qword ptr [ParentFixtureBodySeen+48h],rsi
++  mov qword ptr [ParentFixtureBodySeen+50h],rdi
++  mov qword ptr [ParentFixtureBodySeen+58h],r12
++  mov qword ptr [ParentFixtureBodySeen+60h],r13
++  mov qword ptr [ParentFixtureBodySeen+68h],r14
++  mov qword ptr [ParentFixtureBodySeen+70h],r15
++  mov qword ptr [ParentFixtureBodySeen+78h],rsp
++  movdqu xmmword ptr [ParentFixtureBodySeen+080h],xmm0
++  movdqu xmmword ptr [ParentFixtureBodySeen+090h],xmm1
++  movdqu xmmword ptr [ParentFixtureBodySeen+0a0h],xmm2
++  movdqu xmmword ptr [ParentFixtureBodySeen+0b0h],xmm3
++  movdqu xmmword ptr [ParentFixtureBodySeen+0c0h],xmm4
++  movdqu xmmword ptr [ParentFixtureBodySeen+0d0h],xmm5
++  movdqu xmmword ptr [ParentFixtureBodySeen+0e0h],xmm6
++  movdqu xmmword ptr [ParentFixtureBodySeen+0f0h],xmm7
++  movdqu xmmword ptr [ParentFixtureBodySeen+100h],xmm8
++  movdqu xmmword ptr [ParentFixtureBodySeen+110h],xmm9
++  movdqu xmmword ptr [ParentFixtureBodySeen+120h],xmm10
++  movdqu xmmword ptr [ParentFixtureBodySeen+130h],xmm11
++  movdqu xmmword ptr [ParentFixtureBodySeen+140h],xmm12
++  movdqu xmmword ptr [ParentFixtureBodySeen+150h],xmm13
++  movdqu xmmword ptr [ParentFixtureBodySeen+160h],xmm14
++  movdqu xmmword ptr [ParentFixtureBodySeen+170h],xmm15
+   mov rax,[rsp+0d0h]
+-  mov [ParentFixtureBodySeen+180h],rax
++  mov qword ptr [ParentFixtureBodySeen+180h],rax
+   mov rax,[rsp+0d8h]
+-  mov [ParentFixtureBodySeen+188h],rax
++  mov qword ptr [ParentFixtureBodySeen+188h],rax
+   lock inc qword ptr [ParentFixtureBodyCalls]
+-  movdqu xmm0,[ParentFixtureReturnXmm]
++  movdqu xmm0,xmmword ptr [ParentFixtureReturnXmm]
+   mov rax,0d00dfeed11223344h
+   mov r14,[rsp+88h]
+   add rsp,98h
+--- fixture-a02/CMakeLists.txt
++++ fixture-a03/CMakeLists.txt
+@@ -9,7 +9,7 @@
+   message(FATAL_ERROR "Both explicit opt-ins required; no default installation")
+ endif()
+ add_subdirectory(../candidate-a04 candidate-core)
+-add_executable(parent_entry_opportunity_cold cold_main.cpp fixture_core.cpp
++add_executable(parent_entry_opportunity_cold ../fixture-a02/cold_main.cpp ../fixture-a02/fixture_core.cpp
+   fixture_call.asm ../candidate-a04/parent_entry_opportunity_12004.asm)
+ target_compile_features(parent_entry_opportunity_cold PRIVATE cxx_std_17)
+ add_dependencies(parent_entry_opportunity_cold xar_parent_entry_opportunity_12004)

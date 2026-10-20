@@ -41,3 +41,19 @@ R08 后继运行源码与已编译组件的关系见[bc638 来源选择](evidenc
 当前维护费率为正时，可以作为预算输入，不能称为已经实付。Army自然parent阶段已发生，也不能据此认定Character维护结算被选择。targetcache或paidjournal为空不授权“军费0”；保持付款unknown，继续使用本场来源明确的原生费率、钱包与已有承诺做战争预算，保留雇佣应急资金，输入不足时延后可选建设。
 
 来源机器 `machine_id: desktop-3fevhd2-1c74096080`；[R0223原件、结果和研究边界](episode04-r0223-one-day-no-cd-and-normal-close-20261020.md)分别记录真实一日、两次Army parent、C/D未取得和正常闭场。研究文档可供规划代理阅读，尚未实现的候选不会自动成为普通planner策略。正式动态镜头当前4/11（R04/R06/R09/R12）；完整R08、B0/2与ABC0/3均未新增资格。
+
+## 2026-10-20 parent-entry候选的运行边界
+
+当前运行链没有接入该Character parent-entry hook。独立default-OFF源码候选、源码检查和合成fixture不代表生产Native已编译、安装、接入public startup或取得实机付款结果；可复用知识仍需通过已存在的当前原生接口输入规划。当前维护费率可供预算，null付款、空paidjournal或未选中维护结算机会都不能推导“军费0”；继续用本场费率、钱包、已有承诺与雇佣应急资金处理战争，缺输入时延后可选建设。
+
+机制、最终来源pins和独审install-gap从[候选与冷测边界专题](episode04-r08-parent-entry-candidate-and-cold-boundary-20261020.md)进入。研究文档不会被普通planner自动读取执行；未集成、未编译状态不能据此升级为可用能力。
+
+## 2026-10-20 17:22 UTC 镜头账本与战争预算边界
+
+当前正式动态为5/11（R04/R06/R07/R09/R12）；R0196仅签登船源[32,52)秒，3金币的原生个人钱包扣款有同场绑定，不是维护费或所有登船的通用报价。未观测付款保持unknown，不能由null/空journal推0费；当前原生费率与钱包仍用于战争预算。此前4/11及未编译候选说明按其快照时间保留；后继独立编译尝试不能追认旧prepared packet或自动成为生产可用hook。
+
+## 2026-10-20 17:35 后继独立有限冷验
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root已接受独立a04组件/修正fixture-a03的有限冷验：真实MSVC静态库与一cold EXE、该EXE精确SYSTEM设置读回、四mode原wait0，以及实际90个合成CONTEXT指令PC的Windows RtlVirtualUnwind通过。[冷验专题和原件](episode04-r08-parent-entry-selected-cold-20261020.md)区分第一次MASM A2022失败、窄operand-width修正、后继成功与Root验收；这不是整个bc638/master Native重编译。
+
+前述17:14源码包与后续首次失败报告按各自时点保留，不能追认当时已编译。当前运行链仍未接入此hook，真实Install/Restore、受管全线程安装窗口、public admission/typed Snapshot/OFF及游戏付款仍未取得；null付款不推军费0。正式动态5/11、研究10/14、业务7/11、B0/2、ABC0/3及fullR08false不因冷验变化。

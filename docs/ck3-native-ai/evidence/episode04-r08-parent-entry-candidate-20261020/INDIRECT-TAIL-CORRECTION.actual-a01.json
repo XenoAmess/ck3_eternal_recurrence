@@ -1,0 +1,20 @@
+{
+  "schema": "xar.e04.parent-entry-unwind-tail-source-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:38:06.994255+00:00",
+  "old": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\rejected-a01\\parent_entry_opportunity_12004.asm",
+    "bytes": 3207,
+    "sha256": "f08f837bd10132ba3eb9d0b18312c341e5998070c535062a8cf4930699ad3524"
+  },
+  "new": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-candidate-a01\\candidate\\parent_entry_opportunity_12004.asm",
+    "bytes": 3278,
+    "sha256": "c1ca3f8329e04549871a2263ef6cb05450f62cadf595e592bcec14f01c585b4d"
+  },
+  "reason": "Root source review: direct E9 tail is outside documented x64 legal epilogue JMP subset; immutable RIP-relative indirect memory FF25 target required.",
+  "primary_source": "https://learn.microsoft.com/en-us/cpp/build/prolog-and-epilog?view=msvc-170",
+  "actual_OS_unwind_failure_observed": false,
+  "actual_native_build_or_unwind_cold": false,
+  "prior10_and12_python_checks_do_not_qualify_OS_unwind": true
+}

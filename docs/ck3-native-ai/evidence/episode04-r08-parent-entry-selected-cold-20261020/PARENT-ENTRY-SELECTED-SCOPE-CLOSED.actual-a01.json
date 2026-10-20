@@ -1,0 +1,841 @@
+{
+  "schema": "xar.e04.parent-entry-selected-scope-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:38:09.188473+00:00",
+  "qualification": {
+    "path": "C:\\w\\e04parenta01\\PARENT-ENTRY-SELECTED-COLD-QUALIFICATION.actual-a01.json",
+    "bytes": 11177,
+    "sha256": "d435ef3b5848fee5dff87da471e56c0e3693da4e9989f542d2f8bbfdff98e81b"
+  },
+  "selected_scope_actual_terminal": "SOURCE_EXTENSION_BUILD_SYSTEM_AND_FIVE_COLD_STAGES_COMPLETED",
+  "owned_original_Popen_wait_receipts": [
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-000.ORIGINAL-WAIT.actual.json",
+        "bytes": 778,
+        "sha256": "39e357fb5c1355cc305b26ea953baa39ba57e1ff46a4fa6d7682497c786b979f"
+      },
+      "pid": 3912,
+      "creation_time_100ns": 134369903389871178,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-001.ORIGINAL-WAIT.actual.json",
+        "bytes": 779,
+        "sha256": "9913f5a1edc4a30c6ca28b77ad60caf1dd35be0f0e361a100989c94c5ab6717a"
+      },
+      "pid": 32704,
+      "creation_time_100ns": 134369903417767033,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-002.ORIGINAL-WAIT.actual.json",
+        "bytes": 779,
+        "sha256": "8ad0ae18574dfc7eb8d80ff3f1e7ccb07f842e24beac5750d4807bf0e0150b7c"
+      },
+      "pid": 31388,
+      "creation_time_100ns": 134369903436092215,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-003.ORIGINAL-WAIT.actual.json",
+        "bytes": 779,
+        "sha256": "e537b25fb22de1bc3ca540724b0a2121e3c614652ffc1bef31772446de1193ee"
+      },
+      "pid": 23016,
+      "creation_time_100ns": 134369903454344967,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-004.ORIGINAL-WAIT.actual.json",
+        "bytes": 779,
+        "sha256": "d004fb6b89d0dd2bbbf47e11920ecafa3c8d7e3e21dec279b98b9187b4259612"
+      },
+      "pid": 27836,
+      "creation_time_100ns": 134369903472783180,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-005.ORIGINAL-WAIT.actual.json",
+        "bytes": 779,
+        "sha256": "38a610b9699c4d9b7e12518e61d0ed31ad9a9414fd2f986c6a3fcdf9f6495b95"
+      },
+      "pid": 36460,
+      "creation_time_100ns": 134369903491156128,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\fresh-006.ORIGINAL-WAIT.actual.json",
+        "bytes": 778,
+        "sha256": "50e39850a48e7e49d7df92c14cf5e203f9c51ca88484fb3bc7efbe653cec4569"
+      },
+      "pid": 9064,
+      "creation_time_100ns": 134369903510896855,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a02\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 2037,
+        "sha256": "42a77c9e8bea86b5475398563f7218d4ca05b439d26330552b0cfb42edd4fc4f"
+      },
+      "pid": 29144,
+      "creation_time_100ns": 134369903407184415,
+      "original_exit_code": 1
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-000.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "16ed0c895c609a7167b3bc92a344a7a0c0ea2b9512d17103b09d9b5437b8dd24"
+      },
+      "pid": 34232,
+      "creation_time_100ns": 134369909327496413,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-001.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "4a4f45feb1a93f837b9cc93bf77bc10d6cf31e40babe8629e4cf2a5b071f1e9b"
+      },
+      "pid": 24140,
+      "creation_time_100ns": 134369909351358240,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-002.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "c3c47ab3c97dde16e708b4516e05e3b8f4e5cb8e9757d145fae867b7e8277ce5"
+      },
+      "pid": 29916,
+      "creation_time_100ns": 134369909371103233,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-003.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "eafc895aab366d8edce211342e6bf61a7c76ad5fc1406c8441488231063b5dae"
+      },
+      "pid": 34432,
+      "creation_time_100ns": 134369909390059829,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-004.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "2d804e1a2ff1ae83f2ce8fc6ab9cf61e37c14109304eafba1ca83e4e5eb8ce18"
+      },
+      "pid": 33264,
+      "creation_time_100ns": 134369909409291413,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-005.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "421ea258b62dd60322e4b58f497383c38353a72d184bed3ff403159ab6a97960"
+      },
+      "pid": 30324,
+      "creation_time_100ns": 134369909428338419,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-006.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "2332a7a02977209d14629a748998e9790568eacdb89a0a0d03d0ff2a119b417b"
+      },
+      "pid": 37152,
+      "creation_time_100ns": 134369909448267214,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-007.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "543366f1a44840ba30065ca35ed977d9c36a514059ab6bca0dd5630dee87ceb1"
+      },
+      "pid": 24368,
+      "creation_time_100ns": 134369909467932465,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-008.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "6ee221c504ca321215cc267bb556c7b5869b54d4b76723f502fd0a8f3b4e8454"
+      },
+      "pid": 20672,
+      "creation_time_100ns": 134369909487568270,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-009.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "5e825049927205d11b412cf1dedf5aa6862281720d0ceb59ccaab515149540f2"
+      },
+      "pid": 16824,
+      "creation_time_100ns": 134369909506996808,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-010.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "41dd9317056c6dda9de18d2687fb106ef84561c12474758bfe5f1467c830d1de"
+      },
+      "pid": 31800,
+      "creation_time_100ns": 134369909526492864,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-011.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "da639264a45531e9526f77f41d45e7c492ee99d8828751c898e461b8abd0118d"
+      },
+      "pid": 29072,
+      "creation_time_100ns": 134369909545560786,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-012.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "a2f1d7f0f6c79c804c8e787260264dcd9c765f669ce1d7aa91054c7c33802a8f"
+      },
+      "pid": 29480,
+      "creation_time_100ns": 134369909564458235,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-013.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "ff437352ec1020f2cec62b1e2f030b1076152faf1da830d0574d42d311156fa2"
+      },
+      "pid": 32932,
+      "creation_time_100ns": 134369909583622353,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-014.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "87e9e6009a50575f17101ce74078a77eb8ebec3c80bdd13579fd027e2c822655"
+      },
+      "pid": 33860,
+      "creation_time_100ns": 134369909604029466,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-015.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "78ad31b6dba9e1d00b01398339aa4d8b19ec15def68ece76df47b4eb9541ba13"
+      },
+      "pid": 22952,
+      "creation_time_100ns": 134369909623974793,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-016.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "34a248be2d0d0093b105a6d991ec9be7af06d7d0f53623f6a5915d328b3f28df"
+      },
+      "pid": 17864,
+      "creation_time_100ns": 134369909643720411,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-017.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "517989b94b9d2371aac2f53a52b52a974f609896344e7a607264fb93e9e0bd36"
+      },
+      "pid": 30876,
+      "creation_time_100ns": 134369909664163371,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-018.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "f5d3f651d99604a9c8d9edc40e0d5772eadd45227cfbc753a10147ec837609c9"
+      },
+      "pid": 30280,
+      "creation_time_100ns": 134369909684718226,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-019.ORIGINAL-WAIT.actual.json",
+        "bytes": 737,
+        "sha256": "df07d58d2beb0022f010ad75d13fd33fc4ad70f5dda3f3275a3512a4b6934929"
+      },
+      "pid": 3284,
+      "creation_time_100ns": 134369909704693302,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-020.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "adb9715cc40075859b18fcc929aff41743f4bddc65b3b5425774910a955c954b"
+      },
+      "pid": 11548,
+      "creation_time_100ns": 134369909725205724,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-021.ORIGINAL-WAIT.actual.json",
+        "bytes": 738,
+        "sha256": "c563307c272371346148cbda8d719ef2efd2c027c69b7a05d3e1ca54147064c2"
+      },
+      "pid": 32452,
+      "creation_time_100ns": 134369909745583595,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-022.ORIGINAL-WAIT.actual.json",
+        "bytes": 737,
+        "sha256": "27919ecb8391948d27b17a564fd42eaeb27f5a527b75ff9a220be75fbdf035fb"
+      },
+      "pid": 1804,
+      "creation_time_100ns": 134369909765583124,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\fresh-023.ORIGINAL-WAIT.actual.json",
+        "bytes": 737,
+        "sha256": "0a44005a29d8874e33a3a3fa19525f19cf5952df016a8215794afd777b9fa3fc"
+      },
+      "pid": 6324,
+      "creation_time_100ns": 134369909785688702,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 2046,
+        "sha256": "d1cb2d635437e022006ab9550710f2b0985963047d06b12742d9e5bf074742af"
+      },
+      "pid": 25684,
+      "creation_time_100ns": 134369909359186474,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\build-execution-a03\\SOURCE-EXTENSION-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 687,
+        "sha256": "e70f180a79b335e4021bc92fd2526faa70712f4b37aceaa6fa99c9aaef3f220a"
+      },
+      "pid": 20700,
+      "creation_time_100ns": 134369909345667310,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\ABI.fresh.ORIGINAL-WAIT.actual.json",
+        "bytes": 1141,
+        "sha256": "1e5704ab1da249c05c76139ae4ec73e4ddf233eaadf26ee4fbde9d23a7264b80"
+      },
+      "pid": 4376,
+      "creation_time_100ns": 134369913138246174,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\ABI.ORIGINAL-WAIT.actual.json",
+        "bytes": 1275,
+        "sha256": "edf11c07a8da7c00ff65c19b6998bcd672df6ce9674ff2ec230f1ca2ebbfc02b"
+      },
+      "pid": 32968,
+      "creation_time_100ns": 134369913142512106,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\derive.fresh.ORIGINAL-WAIT.actual.json",
+        "bytes": 1172,
+        "sha256": "669bc6a9dbfa09a52418326e26bb513d13c9aa5e2cbf6a08b86c07c0fe5cb420"
+      },
+      "pid": 25908,
+      "creation_time_100ns": 134369913124914116,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\derive.ORIGINAL-WAIT.actual.json",
+        "bytes": 1907,
+        "sha256": "ed5962ffde906d674935367b4509e982d2864d166cd217c95a4b6fc0cb09165b"
+      },
+      "pid": 17188,
+      "creation_time_100ns": 134369913128974446,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\describe.fresh.ORIGINAL-WAIT.actual.json",
+        "bytes": 1157,
+        "sha256": "5f60901f6de9e515bcace87cc3344f7fafbbf2d1d50294596329dcd8b6973503"
+      },
+      "pid": 17788,
+      "creation_time_100ns": 134369913117824033,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\describe.ORIGINAL-WAIT.actual.json",
+        "bytes": 1286,
+        "sha256": "17e0155449c91f2dd2c9b438bd182f2334b7e88506770e129a483f26380101d0"
+      },
+      "pid": 4616,
+      "creation_time_100ns": 134369913122020848,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\state.fresh.ORIGINAL-WAIT.actual.json",
+        "bytes": 1167,
+        "sha256": "3d108be7d2549e9a4318ea9a910d7cfa4fe78996af4a5834d36fa1789be0749c"
+      },
+      "pid": 21376,
+      "creation_time_100ns": 134369913145276846,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\state.ORIGINAL-WAIT.actual.json",
+        "bytes": 1288,
+        "sha256": "5dfaf1b059343f1c4d5c5349319c097f37404b509167564db82adb75e422483b"
+      },
+      "pid": 32728,
+      "creation_time_100ns": 134369913149306326,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\unwind.fresh.ORIGINAL-WAIT.actual.json",
+        "bytes": 1163,
+        "sha256": "f41b4bd88ffb18c86871642d9d8b65fbcfc6397ce074693506329ecf413f22d3"
+      },
+      "pid": 4840,
+      "creation_time_100ns": 134369913152641689,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\unwind.ORIGINAL-WAIT.actual.json",
+        "bytes": 1340,
+        "sha256": "41d5da18ed77b913d11f164862fafe9d1f7a37d56d55f24b82e174162172bbe9"
+      },
+      "pid": 35408,
+      "creation_time_100ns": 134369913156865156,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\exact-SYSTEM-receipt-a03\\fresh.ORIGINAL-WAIT.actual.json",
+        "bytes": 1224,
+        "sha256": "1a3d74a52393aad27738ed5201c9671aa797ccad263dcf9a277bc5654d085929"
+      },
+      "pid": 33136,
+      "creation_time_100ns": 134369909853031407,
+      "original_exit_code": 0
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parenta01\\exact-SYSTEM-receipt-a03\\gate.ORIGINAL-WAIT.actual.json",
+        "bytes": 972,
+        "sha256": "043febea912eaf8f9fb117ddc2c2429c68dc47c2798834db8540d64604819c70"
+      },
+      "pid": 33288,
+      "creation_time_100ns": 134369909858900169,
+      "original_exit_code": 0
+    }
+  ],
+  "owned_PID_creation_census": [
+    {
+      "pid": 3912,
+      "creation_time_100ns": 134369903389871178,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 32704,
+      "creation_time_100ns": 134369903417767033,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 31388,
+      "creation_time_100ns": 134369903436092215,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 23016,
+      "creation_time_100ns": 134369903454344967,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 27836,
+      "creation_time_100ns": 134369903472783180,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 36460,
+      "creation_time_100ns": 134369903491156128,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 9064,
+      "creation_time_100ns": 134369903510896855,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 29144,
+      "creation_time_100ns": 134369903407184415,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 34232,
+      "creation_time_100ns": 134369909327496413,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 24140,
+      "creation_time_100ns": 134369909351358240,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 29916,
+      "creation_time_100ns": 134369909371103233,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 34432,
+      "creation_time_100ns": 134369909390059829,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 33264,
+      "creation_time_100ns": 134369909409291413,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 30324,
+      "creation_time_100ns": 134369909428338419,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 37152,
+      "creation_time_100ns": 134369909448267214,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 24368,
+      "creation_time_100ns": 134369909467932465,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 20672,
+      "creation_time_100ns": 134369909487568270,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 16824,
+      "creation_time_100ns": 134369909506996808,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 31800,
+      "creation_time_100ns": 134369909526492864,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 29072,
+      "creation_time_100ns": 134369909545560786,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 29480,
+      "creation_time_100ns": 134369909564458235,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 32932,
+      "creation_time_100ns": 134369909583622353,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 33860,
+      "creation_time_100ns": 134369909604029466,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 22952,
+      "creation_time_100ns": 134369909623974793,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 17864,
+      "creation_time_100ns": 134369909643720411,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 30876,
+      "creation_time_100ns": 134369909664163371,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 30280,
+      "creation_time_100ns": 134369909684718226,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 3284,
+      "creation_time_100ns": 134369909704693302,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 11548,
+      "creation_time_100ns": 134369909725205724,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 32452,
+      "creation_time_100ns": 134369909745583595,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 1804,
+      "creation_time_100ns": 134369909765583124,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 6324,
+      "creation_time_100ns": 134369909785688702,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 25684,
+      "creation_time_100ns": 134369909359186474,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 20700,
+      "creation_time_100ns": 134369909345667310,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 4376,
+      "creation_time_100ns": 134369913138246174,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 32968,
+      "creation_time_100ns": 134369913142512106,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 25908,
+      "creation_time_100ns": 134369913124914116,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 17188,
+      "creation_time_100ns": 134369913128974446,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 17788,
+      "creation_time_100ns": 134369913117824033,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 4616,
+      "creation_time_100ns": 134369913122020848,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 21376,
+      "creation_time_100ns": 134369913145276846,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 32728,
+      "creation_time_100ns": 134369913149306326,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 4840,
+      "creation_time_100ns": 134369913152641689,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 35408,
+      "creation_time_100ns": 134369913156865156,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 33136,
+      "creation_time_100ns": 134369909853031407,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    },
+    {
+      "pid": 33288,
+      "creation_time_100ns": 134369909858900169,
+      "OpenProcess_error": 87,
+      "original_process_closed": true,
+      "reason": "PID no longer exists"
+    }
+  ],
+  "owned_scope_read_errors": [],
+  "owned_build_SYSTEM_cold_writers_remaining": 0,
+  "fixed_SYSTEM_task": {
+    "path": "\\XAR CK3 Project EXE Broker\\RegisterDeclaredProjectExecutables",
+    "observed_at_utc": "2026-10-20T17:38:09.141139+00:00",
+    "state": 3,
+    "running_instances": 0,
+    "last_task_result": 0,
+    "read_only_COM": true
+  },
+  "remaining_heavy_write_bytes": 0,
+  "remaining_build_SYSTEM_cold_actions": 0,
+  "project_EXE_modes_executed_once": [
+    "--describe",
+    "--abi",
+    "--state-routes",
+    "--unwind"
+  ],
+  "automatic_replay": false,
+  "source": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+    "logical_bytes": 61342,
+    "files": 14,
+    "complete": true,
+    "body_reads": 0
+  },
+  "build_measurement_before_this_closure_and_copyplan": {
+    "root": "C:\\w\\e04parenta01",
+    "logical_bytes": 3456724,
+    "files": 260,
+    "complete": true,
+    "body_reads": 0
+  },
+  "fixed_protected_protocol_charge_bytes": 33554432,
+  "no_global_process_absence_claim": true,
+  "metadata_finalizer_current_pid": 8444,
+  "metadata_finalizer_is_not_a_build_or_cold_worker": true,
+  "remaining_metadata_only_copyplan_max_bytes": 12288,
+  "retention": {
+    "reason": "Pending Root finite scope adoption and Git small-evidence integration; source/own project EXE retained as active reproducibility inputs",
+    "review_by_utc": "2026-10-21T18:00:00Z",
+    "no_indefinite_retention": true
+  },
+  "capacity_settlement_not_claimed": true
+}

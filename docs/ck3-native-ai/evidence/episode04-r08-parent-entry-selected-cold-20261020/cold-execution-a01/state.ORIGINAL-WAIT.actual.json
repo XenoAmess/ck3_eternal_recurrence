@@ -1,0 +1,43 @@
+{
+  "pid": 32728,
+  "creation_time_100ns": 134369913149306326,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T17:35:14.929223+00:00",
+  "observed_at_utc": "2026-10-20T17:35:15.123337+00:00",
+  "argv": [
+    "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+    "--state-routes",
+    "desktop-3fevhd2-1c74096080"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "guard_error": null,
+  "stdout": {
+    "path": "C:\\w\\e04parenta01\\cold-execution-a01\\state.stdout.log",
+    "bytes": 261,
+    "sha256": "c9e355f81e891301e5ccd4b389053a30a8d560d6bd20189eab0fd8a644cd8427"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04parenta01\\cold-execution-a01\\state.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "local_after": {
+    "source": {
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01",
+      "logical_bytes": 61342,
+      "files": 14,
+      "complete": true
+    },
+    "build": {
+      "root": "C:\\w\\e04parenta01",
+      "logical_bytes": 3421155,
+      "files": 249,
+      "complete": true
+    },
+    "fixed_protocol_charge_bytes": 33554432
+  },
+  "EXE_stat_unchanged": true,
+  "no_game_contact": true
+}

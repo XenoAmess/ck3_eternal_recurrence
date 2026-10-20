@@ -1,5 +1,17 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-20 17:22 UTC：R0196限定登船支出镜头签出，正式动态5/11
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root接受原M R07源 **[32,52)秒/600actual帧（960..1559）**，最新正式动态 **5/11（45.45%，R04/R06/R07/R09/R12）**。陆地camp到ships/embarked、选中军队兵数1162（原生Army18）不变（global1163另计）、补给300/300不变；可读金币260→257与日期3月25→26日，独立native同segment/epoch3、payer31254、requested300000/余额26010399→25710399绑定一次扣3金币。
+
+AI审52sheets/823actual cells（padding不计），Root亲审5张具名sheets及35/38/41/44秒4fullres；结构变化保守区间(38.900,39.467]、金币/日期可读(38,41]秒，不编造exact callback PTS。只授此限定正例，原R07 v1false/fullR07 false、quote=null、通用费率/维护费归因/Move警告/人工1×/最终影片/OneDrive均未授。研究10/14、业务7/11、B0/2、ABC0/3不变。前面的4/11及更早段落按当时快照保留。
+
+[Root实际裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/ROOT-R196-R07-SHOT-ACCEPTANCE.actual.json)；[唯一主题账本](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)。
+
+## 2026-10-20 16:53 UTC：e37两个自动CI成功；parent-entry仍为独立候选
+
+`machine_id: desktop-3fevhd2-1c74096080`。e37d3b2的Official Runner CI39458388810与Linear history39458388808均实际SUCCESS，原ec/4b9失败、首次候选identity失败和发布时稀疏/网络拒止原件保留。后继parent-entry仅独立default-OFF源码及合成fixture，未编译、未接当前生产运行链，install-window/typed Snapshot/OFF/public admission仍缺资格；null付款不能推0费。参见[本批候选与独审边界](../ck3-native-ai/episode04-r08-parent-entry-candidate-and-cold-boundary-20261020.md)。正式动态4/11、研究10/14、业务7/11、B0/2、ABC0/3不变，不预授R07、影片或one-life。
+
 ## 2026-10-20 16:10 UTC：R0194限定Split签出；R0223一日未取得C/D
 
 `machine_id: desktop-3fevhd2-1c74096080`。Root新签R0194原M Split **[0,15)秒/450actual帧**，正式动态最新 **4/11（36.36%，R04+R06+R09+R12）**；旧3/11及更早快照保留。GUI250→75的保守变化区间(0,6.3]秒；175不是同时GUI可读，以同场独立F1/native75+175=250证明实际Split，ACK仅submitted。只授Split源镜头，Merge GUI251/physical250分列，完整R09套、human1×/最终影片/OneDrive均未授。
@@ -247,3 +259,9 @@ Root 后续独立行政目录 6 rows 均 ok，普通 Save74,272,517B/b1aab6da…
 `machine_id: desktop-3fevhd2-1c74096080`。D已实际detach至bc63851081462413d0cc6ebe62e37490707ee6a9并保持clean，archive tag已push；R08源码与master相同，运行Native6b91，master的新d622原生变动不追认为旧DLL已编译。[来源选择](../ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/bc638-runtime-source-selection/CURRENT-SOURCE-COMPONENT-SELECTION.actual-a01.json)独立保留A41/A08原资格。R0222默认previous_native_cleanup/lease/latest-counter路径已只读实际通过，行政custom output不需要新schema或伪造canonical结果；原public2/host1保留。CI依赖顺序修正后的c1b03已实际通过R08步骤与Linear，完整Official仍待终态。
 
 三个已闭场shadercache完成[精确回收](../maintenance/three-closed-shadercache-retirement-2026-10-20.md)，用于后继预算；不授新game/DR/影片资格。新实际窗口须另绑来源、容量与新鲜Steam证明。研究10/14、业务7/11、正式动态3/11、B0/2、ABC0/3保持。
+
+## 2026-10-20 17:35 后继独立有限冷验
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root已接受独立a04组件/修正fixture-a03的有限冷验：真实MSVC静态库与一cold EXE、该EXE精确SYSTEM设置读回、四mode原wait0，以及实际90个合成CONTEXT指令PC的Windows RtlVirtualUnwind通过。[冷验专题和原件](../ck3-native-ai/episode04-r08-parent-entry-selected-cold-20261020.md)区分第一次MASM A2022失败、窄operand-width修正、后继成功与Root验收；这不是整个bc638/master Native重编译。
+
+前述17:14源码包与后续首次失败报告按各自时点保留，不能追认当时已编译。当前运行链仍未接入此hook，真实Install/Restore、受管全线程安装窗口、public admission/typed Snapshot/OFF及游戏付款仍未取得；null付款不推军费0。正式动态5/11、研究10/14、业务7/11、B0/2、ABC0/3及fullR08false不因冷验变化。

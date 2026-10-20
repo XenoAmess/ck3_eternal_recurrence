@@ -1,0 +1,274 @@
+{
+  "schema": "xar.e04.parent-archive-R07-localFF-a04.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:26:36.572165+00:00",
+  "base_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-publish-prep-a01\\EXACT-COPYPLAN.a01.prepared.json",
+    "bytes": 20802,
+    "sha256": "955d1ffff69363c6bd7b7df36fef08a24a56681e7bc2e44361ce2b31aa658d12"
+  },
+  "base_supplement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\parent-entry-publish-prep-a01\\COPYPLAN-SUPPLEMENT.a03.prepared.json",
+    "bytes": 2089,
+    "sha256": "7aee782e81c9f17ad8050a299674f66cc91d7af6a9492a3d5cb1c3a2b684b86f"
+  },
+  "approved_local_FF_from": "e37d3b2abc19e42e6d3c2343df6e71311318321d",
+  "approved_local_FF_to": "a58047138dc5d476de9da9bb35809fa4a3ef77fa",
+  "Root_reviewed_local_object_only": true,
+  "fetch": false,
+  "additional_originals": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\AI-ALL52-REVIEW.actual-a01.json",
+        "bytes": 53483,
+        "sha256": "5200092b8c63ccc396eec6ea3973189cba808d5abf448612b847060c43546169"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/AI-ALL52-REVIEW.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\RECOMMENDATION.actual.md",
+        "bytes": 1524,
+        "sha256": "1b4b5c1c520597de3bcb648035dadd666903329355410bc9190e8defc81f768b"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/RECOMMENDATION.actual.md"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\EXTRACTION.actual.json",
+        "bytes": 20892,
+        "sha256": "61e0c7905af307f680165b0de808d5c45690156ea61d1e522559573985842acd"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/EXTRACTION.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\POST-WAIT-CRC-PTS-OWNED0.actual.json",
+        "bytes": 1451,
+        "sha256": "a1adb07b0ca1fd7ccf171d04657645c3cda283aad7f24abf3f02d5452ce4929a"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/POST-WAIT-CRC-PTS-OWNED0.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\source-frame-PTS.actual.csv",
+        "bytes": 14127,
+        "sha256": "bf3bdb11974d2df371b8f588e4fa9954b1a4508ac430a805c1b8f731d3f7b782"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/source-frame-PTS.actual.csv"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ffmpeg-stderr.actual.log.gz",
+        "bytes": 8467,
+        "sha256": "eb2470024a7bd879e877182fd4576c22aca1cbf5e74ead27a0ad969791af9833"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/ffmpeg-stderr.actual.log.gz"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\COMMAND.actual.json",
+        "bytes": 884,
+        "sha256": "6e80bbede50efd7740b74c7d94a4a8ffb9a19eb18be1f0458a93791785f91d01"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/COMMAND.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\OWNED-PROCESS.actual.json",
+        "bytes": 91,
+        "sha256": "0975d518a66191c26108346a6429195343ad645c5e3e30371b0c2a7fef8009a9"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/OWNED-PROCESS.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\SOURCE-STAT-BEFORE.actual.json",
+        "bytes": 233,
+        "sha256": "cf1877cfd1f99d043cd1d8535450fe0eb0cb262ccdcc75ef82aa7527524881f9"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/SOURCE-STAT-BEFORE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\LATEST-RELEASE.actual.json",
+        "bytes": 303,
+        "sha256": "671ced078e357d47a02c4efc6f4427652af79c5b01472fcb767ef3e733b94b5d"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/LATEST-RELEASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ONCE-CLAIM.actual.json",
+        "bytes": 964,
+        "sha256": "fdd774f0aa307b09f30234d96ca178e9a846488b2799af52c8f1fc5a95669212"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/ONCE-CLAIM.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\image-dimensions.actual.jsonl",
+        "bytes": 9454,
+        "sha256": "85a05978be368f6dc4ae04d6d4f3b9f18495617042895f23e2bc0a867b1f2f4f"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/image-dimensions.actual.jsonl"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\usage-by-sheet.actual.csv",
+        "bytes": 1626,
+        "sha256": "2cab421093e0caa39f51994f878974bf2796be13c4b678fd933431029e78ca7f"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/usage-by-sheet.actual.csv"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\R07-ONCE-CONTACT-PROPOSAL.prepared-a02.json",
+        "bytes": 4605,
+        "sha256": "a1de433acab2ad62953b07d7ee7cc57f2dff595fabcc4e2248e5082c6e691b4a"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/preparation/R07-ONCE-CONTACT-PROPOSAL.prepared-a02.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\r07_once_contacts.prepared-a02.py",
+        "bytes": 10430,
+        "sha256": "64e02dcd8968b157006cd0eef88554875d9352cbdaa98c568ea8f20ea9c58406"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/preparation/r07_once_contacts.prepared-a02.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\R07-ONCE-CONTACT-PROPOSAL.prepared-a01.json",
+        "bytes": 8663,
+        "sha256": "56cb993bcdf9775f84205383364b5c06363130d676debf91a6f3be8ed1e35684"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/preparation/R07-ONCE-CONTACT-PROPOSAL.prepared-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ROOT-R196-R07-SHOT-ACCEPTANCE.actual.json",
+        "bytes": 5566,
+        "sha256": "8a11a08a217d355ec2a0d1d4fdc88e7277709e185de71e832fbf5b8001b29731"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/ROOT-R196-R07-SHOT-ACCEPTANCE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\SMALLARCHIVE-COPYPLAN.actual-a02.json",
+        "bytes": 7718,
+        "sha256": "8a279e2fa0ce92883e28d6370b1fa1d4af0bf88c4f833820f524a3bfa9b0c2fe"
+      },
+      "destination": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/SMALLARCHIVE-COPYPLAN.actual-a02.json"
+    }
+  ],
+  "additional_original_bytes": 150481,
+  "documentation_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-publish-1800-a01\\DOCS-LEDGER-R07.a04.candidate.patch",
+    "bytes": 23328,
+    "sha256": "3f9d28f452ded9c84064c6b8d400f1c2137800212b1f672ecd6bc704f4317eb2"
+  },
+  "documentation_base_and_proposed_pins": [
+    {
+      "path": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "base_bytes": 8750,
+      "base_sha256": "98962e06cfe385d2c1f8a1a62296ce271eea6afd53973a16d8e8cd72b0935a32",
+      "proposed_bytes": 10106,
+      "proposed_sha256": "48153a59bc05225df31a5ccf581f4b1931f53a9ed6067203fd18a55a8ea2103a"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "base_bytes": 47783,
+      "base_sha256": "abf88ea1bb454f8104cb8584e4d519776e7d1cce4a99da8b4ec39a306b4fd8be",
+      "proposed_bytes": 49777,
+      "proposed_sha256": "a0499db11432982d29dbe89f0839f2e1af10764ee004c8c82033ce405a6d86c9"
+    },
+    {
+      "path": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "base_bytes": 35127,
+      "base_sha256": "e6473e99e321a6509dd6b4254798e9ccc9b8ad22ce4ea68bee7ae0ec6bc0b700",
+      "proposed_bytes": 37138,
+      "proposed_sha256": "39a27bff959abf7b05dd9aea83720f50afb308eef71202317a020aae365dad00"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-parent-entry-candidate-and-cold-boundary-20261020.md",
+      "base_bytes": 0,
+      "base_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposed_bytes": 4999,
+      "proposed_sha256": "2f969dbf258cabcb727d32d9c397ba14e5e1a91d17f7b4711021f5f0869b7861"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json",
+      "base_bytes": 10760,
+      "base_sha256": "8dfe931eed08d20502d3d46f8b2f8ffcad6b7e07ecb3cb5e1d7b6e1796dc3d69",
+      "proposed_bytes": 13064,
+      "proposed_sha256": "d9d814c92d5f08db28489a3f7241af0f6898d3083d1191c5029737d0d7ac48a5"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-20.md",
+      "base_bytes": 57333,
+      "base_sha256": "cb399cec5ba9f854b6a7cd6429ce2a78de89cbdb329c078133fb618ffc4ccb03",
+      "proposed_bytes": 57870,
+      "proposed_sha256": "522044db6922b35d00eb9ccd5d936f230ca513f45acb7ae2754fe6511cf1e49b"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "base_bytes": 50252,
+      "base_sha256": "f5e02f0633e7a68df9ca6949cc388b086f4a476bb5049fc1af77dc7f7010a409",
+      "proposed_bytes": 50789,
+      "proposed_sha256": "aec9cfaae39d2ade4ec7b8b3aed0fa3f4f820824785c2df093ddadff6dd137d1"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/meetings/daily/2026-10-20.md",
+      "base_bytes": 7200,
+      "base_sha256": "8e6d56eb6701914926d4b3efbe683a0a13b5b4dfd057df17985bd0e47c4f76fc",
+      "proposed_bytes": 7737,
+      "proposed_sha256": "5379050be759afd400e75ea170ee33650805513beab829d3300a9c6d32c5d4b5"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/meetings/weekly/2026-W43.md",
+      "base_bytes": 3390,
+      "base_sha256": "093e38fa5d89ca89c66f2752994c2a57c16dad4e2f33244124abac951d65ca46",
+      "proposed_bytes": 3927,
+      "proposed_sha256": "6f81fdb29f0385ff775178cf64c80aabb092e9ffd1833ab55b1f0ef7cfb77096"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/monthly/2026-10.md",
+      "base_bytes": 13218,
+      "base_sha256": "9f1cdfdd3fc1e16ea792d51b7ea64f0ea5bda5e4a90079a2947ffacac2707d3a",
+      "proposed_bytes": 13755,
+      "proposed_sha256": "3f86cc0b2fc5b9dbc75cdc41f7d9689c12252b197efc23909f703241a1a6a3e2"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/README.md",
+      "base_bytes": 0,
+      "base_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposed_bytes": 809,
+      "proposed_sha256": "e61f63d1094ddb03c450917c8b59798eb49504d3cdfaefa9e6e7a86843afb056"
+    }
+  ],
+  "supersedes_old_documentation_patches": true,
+  "old_source_packet_and_Root_decisions_unchanged": true,
+  "formal_dynamic": "5/11",
+  "accepted_themes": [
+    "R04",
+    "R06",
+    "R07",
+    "R09",
+    "R12"
+  ],
+  "research": "10/14",
+  "business": "7/11",
+  "B": "0/2",
+  "ABC": "0/3",
+  "Native_late_build_actuals_pending_new_sourcebinding": true,
+  "actual_new_native_actions_by_this_lane": 0,
+  "W_hard_ceiling_bytes": 1835008,
+  "Q_hard_ceiling_bytes": 262144,
+  "combined_C_ceiling_bytes": 2097152,
+  "D_Git_serial_peak_ceiling_bytes": 16777216,
+  "D_W_Git_mutations": false,
+  "sourcecopy_and_new5_not_executed": true,
+  "commit_push_hold": true,
+  "hard_deadline_utc": "2026-10-20T18:00:00Z"
+}

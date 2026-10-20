@@ -1,0 +1,25 @@
+test_counter_wrap_is_visible_not_silent_negative_evidence (__main__.CorrectedCoreChecks.test_counter_wrap_is_visible_not_silent_negative_evidence) ... ok
+test_disabled_path_forwards_without_collecting (__main__.CorrectedCoreChecks.test_disabled_path_forwards_without_collecting) ... ok
+test_foreign_beyond_old_128_does_not_consume_target_frame (__main__.CorrectedCoreChecks.test_foreign_beyond_old_128_does_not_consume_target_frame) ... ok
+test_held_parent_full_raw_and_disassembly_agree (__main__.CorrectedCoreChecks.test_held_parent_full_raw_and_disassembly_agree) ... ok
+test_off_precedes_busy_check_and_no_rearm_or_unsafe_unpatch (__main__.CorrectedCoreChecks.test_off_precedes_busy_check_and_no_rearm_or_unsafe_unpatch) ... ok
+test_one_target_frame_is_immutable_and_later_match_counted (__main__.CorrectedCoreChecks.test_one_target_frame_is_immutable_and_later_match_counted) ... ok
+test_prefix_transfer_is_not_epilogue_and_preserves_original_frame (__main__.CorrectedCoreChecks.test_prefix_transfer_is_not_epilogue_and_preserves_original_frame) ... ok
+test_real_player_slot_and_character_ID_are_independent (__main__.CorrectedCoreChecks.test_real_player_slot_and_character_ID_are_independent) ... ok
+test_source_contains_no_argument_dereference_or_call_or_simd (__main__.CorrectedCoreChecks.test_source_contains_no_argument_dereference_or_call_or_simd) ... ok
+test_state_corruption_is_detected_by_transparency_oracle (__main__.CorrectedCoreChecks.test_state_corruption_is_detected_by_transparency_oracle) ... ok
+test_stop_order_accounts_for_inflight_before_enabled_check (__main__.CorrectedCoreChecks.test_stop_order_accounts_for_inflight_before_enabled_check) ... ok
+test_target_entry_preserves_inputs_flags_stack_and_tail_once (__main__.CorrectedCoreChecks.test_target_entry_preserves_inputs_flags_stack_and_tail_once) ... ok
+test_unknown_and_invalid_snapshots_do_not_default_to_zero_counts (__main__.CorrectedCoreChecks.test_unknown_and_invalid_snapshots_do_not_default_to_zero_counts) ... ok
+test_unwind_frame_model_at_flag_restore_boundaries (__main__.CorrectedCoreChecks.test_unwind_frame_model_at_flag_restore_boundaries) ... ok
+test_actual_native_fixture_is_explicit_and_core_is_unmodified_input (__main__.FixtureSourceChecks.test_actual_native_fixture_is_explicit_and_core_is_unmodified_input) ... ok
+test_admission_guard_reaches_prefix_not_merely_first_identity_read (__main__.FixtureSourceChecks.test_admission_guard_reaches_prefix_not_merely_first_identity_read) ... ok
+test_foreign_and_stalled_unknowns_are_not_relabelled_native_install (__main__.FixtureSourceChecks.test_foreign_and_stalled_unknowns_are_not_relabelled_native_install) ... ok
+test_real_OS_unwind_is_required_and_each_boundary_file_is_bounded (__main__.FixtureSourceChecks.test_real_OS_unwind_is_required_and_each_boundary_file_is_bounded) ... ok
+test_return_and_real_body_are_measured_separately_from_prefix_flags (__main__.FixtureSourceChecks.test_return_and_real_body_are_measured_separately_from_prefix_flags) ... ok
+test_unwind_input_rejects_duplicate_and_partial_case_sets (__main__.FixtureSourceChecks.test_unwind_input_rejects_duplicate_and_partial_case_sets) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.121s
+
+OK

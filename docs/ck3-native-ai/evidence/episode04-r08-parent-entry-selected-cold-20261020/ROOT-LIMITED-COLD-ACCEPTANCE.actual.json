@@ -1,0 +1,138 @@
+{
+  "schema": "xar.e04.Root.parent-entry.selected-cold-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:39:09.628163+00:00",
+  "reviewer": "/root",
+  "decision": "ACCEPT_ONLY_THE_ACTUAL_SELECTED_SYNTHETIC_NATIVE_COLD_SCOPE",
+  "EXE": {
+    "path": "C:\\w\\e04parenta01\\build-a03\\parent_entry_opportunity_cold.exe",
+    "sha256": "5e43a0640410655ccebc6caa4f14294d5e6b7eb8cbc35146713ce7acd99f3fa6",
+    "size": 61952,
+    "target": "parent_entry_opportunity_cold",
+    "target_id": "parent_entry_opportunity_cold::@6890427a1f51a3e7e1df"
+  },
+  "source_role": "core-a04 plus explicit-width fixture-a03; independent default-OFF research component, not production integration",
+  "actual_scope": [
+    "MSVC x64 static library and real EXE built",
+    "register/stack/input flags/XMM/x87-MXCSR/native return and original-once ABI",
+    "257 foreign then matching target and default OFF",
+    "private seeded core Arm/OFF/busy/readfail/overflow/invalid state routes",
+    "8-thread 4096 original calls and concurrent OFF integrity",
+    "Windows RtlVirtualUnwind with synthetic CONTEXT at every decoded PC: thunk80 plus prefix10"
+  ],
+  "actual_waits": [
+    {
+      "phase": "cold-describe",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\describe.ORIGINAL-WAIT.actual.json",
+        "bytes": 1286,
+        "sha256": "17e0155449c91f2dd2c9b438bd182f2334b7e88506770e129a483f26380101d0"
+      },
+      "PID": 4616,
+      "creation_time_100ns": 134369913122020848
+    },
+    {
+      "phase": "derive-own-EXE-unwind-boundaries",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\derive.ORIGINAL-WAIT.actual.json",
+        "bytes": 1907,
+        "sha256": "ed5962ffde906d674935367b4509e982d2864d166cd217c95a4b6fc0cb09165b"
+      },
+      "PID": 17188,
+      "creation_time_100ns": 134369913128974446
+    },
+    {
+      "phase": "cold-ABI",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\ABI.ORIGINAL-WAIT.actual.json",
+        "bytes": 1275,
+        "sha256": "edf11c07a8da7c00ff65c19b6998bcd672df6ce9674ff2ec230f1ca2ebbfc02b"
+      },
+      "PID": 32968,
+      "creation_time_100ns": 134369913142512106
+    },
+    {
+      "phase": "cold-state-and-concurrent-OFF",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\state.ORIGINAL-WAIT.actual.json",
+        "bytes": 1288,
+        "sha256": "5dfaf1b059343f1c4d5c5349319c097f37404b509167564db82adb75e422483b"
+      },
+      "PID": 32728,
+      "creation_time_100ns": 134369913149306326
+    },
+    {
+      "phase": "cold-real-Windows-unwind",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\unwind.ORIGINAL-WAIT.actual.json",
+        "bytes": 1340,
+        "sha256": "41d5da18ed77b913d11f164862fafe9d1f7a37d56d55f24b82e174162172bbe9"
+      },
+      "PID": 35408,
+      "creation_time_100ns": 134369913156865156
+    }
+  ],
+  "input_bindings": {
+    "SYSTEM_selected_review": {
+      "path": "C:\\w\\e04parenta01\\ROOT-SYSTEM-REVIEW.actual.json",
+      "bytes": 1990,
+      "sha256": "fa9f0907794f9b8c1d7dc0a454e52593fcfd9d5f9d9ec258fce605f39bc0c363"
+    },
+    "completed_stages": {
+      "path": "C:\\w\\e04parenta01\\cold-execution-a01\\SELECTED-COLD-COMPLETED.actual.json",
+      "bytes": 1642,
+      "sha256": "7ba5d004f6ddc698031078393e5a27cdb1af70fc93f0a6d10a6c9489f8ca465d"
+    },
+    "unwind_intent": {
+      "path": "C:\\w\\e04parenta01\\cold-execution-a01\\unwind.INTENT.prepared.json",
+      "bytes": 4004,
+      "sha256": "40fedf90f5be71513a1370060f8615df3fd89e285513b8d64635bf886f172df0"
+    },
+    "emitted_spans": {
+      "path": "C:\\w\\e04parenta01\\build-a03\\UNWIND-BOUNDARIES.actual.json",
+      "bytes": 1593,
+      "sha256": "d6c5ac474c948bd3a481abc8baed0a2c3348012ab404e3cbc5fc1060fdb3bdfa"
+    },
+    "case_file": {
+      "path": "C:\\w\\e04parenta01\\build-a03\\unwind-cases.txt",
+      "bytes": 1026,
+      "sha256": "d5a557f42baaf2837a8f768fa28b5fdab6eace70beaa73107f26dae6fdd80b94"
+    }
+  },
+  "limits": {
+    "full_native_qualification": false,
+    "real_Install_Restore_or_patch_fault_fixture": false,
+    "all_peer_threads_quiescent_proof": false,
+    "public_startup_late_owner_integration": false,
+    "actual_CPU_paused_at_every_PC": false,
+    "real_game_contact": false,
+    "entry_FullID_or_clock_dereference": false,
+    "AVX_upper_state_fixture": false,
+    "military_payment_payer_cadence_cd_qualification": false,
+    "full_R08": false
+  },
+  "credit": {
+    "research": [
+      10,
+      14
+    ],
+    "business": [
+      7,
+      11
+    ],
+    "formal_source_themes": [
+      5,
+      11
+    ],
+    "B": [
+      0,
+      2
+    ],
+    "ABC": [
+      0,
+      3
+    ]
+  },
+  "earlier_failures_preserved": true,
+  "replay_unknown_actions": false
+}

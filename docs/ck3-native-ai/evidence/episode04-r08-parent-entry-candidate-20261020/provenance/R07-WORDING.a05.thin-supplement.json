@@ -1,0 +1,69 @@
+{
+  "schema": "xar.e04.R07-count-not-ID-wording-thin.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:29:28.527399+00:00",
+  "base_a04": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-publish-1800-a01\\R07-AND-LOCAL-FF.a04.prepared.json",
+    "bytes": 13016,
+    "sha256": "5655f6c8e43aaa8a416b186384e0189d07d284158c063f53cb485e9d7b7130a9"
+  },
+  "documentation_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-publish-1800-a01\\DOCS-LEDGER-R07.a05.candidate.patch",
+    "bytes": 23615,
+    "sha256": "f88f6829fa6c4fe3fbac6bf6b214a992ddd5d9aa5aecc289938eed872738b3bc"
+  },
+  "documentation_proposed_pin_overrides": [
+    {
+      "path": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "proposed_bytes": 49809,
+      "proposed_sha256": "763eb0e1121a6a5f70174e68cb793b0bcf2a3741864a2aa6a382445902775824"
+    },
+    {
+      "path": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "proposed_bytes": 37170,
+      "proposed_sha256": "161d55dd7f87b9509ac9a25c5557f373e4c349662ca4153d2672fc984b70900b"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-parent-entry-candidate-and-cold-boundary-20261020.md",
+      "proposed_bytes": 5031,
+      "proposed_sha256": "1c7a136044b2fe18fd0bcb9d519748fdc58deaec618e39db9d48fa1b30786a1b"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-20.md",
+      "proposed_bytes": 57903,
+      "proposed_sha256": "391371a15df50d47997e8fb7e96cf5f870cf311535898a37a88c4ebe7eb568ce"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "proposed_bytes": 50822,
+      "proposed_sha256": "fc30b8140f7148e483b0120c1c237f9aac7ddcaf138133cab4f56db9ce7ee647"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/meetings/daily/2026-10-20.md",
+      "proposed_bytes": 7770,
+      "proposed_sha256": "2921bbbf0b798930396849575113cc0b407b91271869a3e3f6a6fd492fa1917c"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/meetings/weekly/2026-W43.md",
+      "proposed_bytes": 3960,
+      "proposed_sha256": "2b0175e53efc139568b146741fdce5adda2266170700238ad82be1e9b0d17ed9"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/monthly/2026-10.md",
+      "proposed_bytes": 13788,
+      "proposed_sha256": "a9048bf1b47547972978df946c2a4e870c05bc41e670533848d5aafcb73919c5"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/README.md",
+      "proposed_bytes": 835,
+      "proposed_sha256": "284f4c5600b40fc9ddaf2bb2aaa1a29382ff587b34a6833607e16c5bc0505418"
+    }
+  ],
+  "correction": "1162 is selected Army soldier count; actual native Army full ID is18; global1163 separate",
+  "original_Root_AI_media_sources_unchanged": true,
+  "additional_sourcecopies": [],
+  "copylists_and_credit_unchanged": true,
+  "formal_dynamic": "5/11",
+  "W_D_mutations": false,
+  "commit_push_hold": true
+}

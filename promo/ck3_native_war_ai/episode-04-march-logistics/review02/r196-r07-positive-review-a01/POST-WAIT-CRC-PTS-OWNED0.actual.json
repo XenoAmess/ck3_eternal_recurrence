@@ -1,0 +1,36 @@
+{
+  "schema": "xar.e04.R196-postwait-gzip-PTS-census.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:13:14.031099+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\EXTRACTION.actual.json",
+    "bytes": 20892,
+    "sha256": "61e0c7905af307f680165b0de808d5c45690156ea61d1e522559573985842acd"
+  },
+  "original_Popen_pid": 23632,
+  "original_wait_returned": true,
+  "original_wait_rc": 0,
+  "gzip_read_to_EOF_CRC_validated": true,
+  "uncompressed_hash_and_length_match": true,
+  "full_stderr_lossless_gzip": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\ffmpeg-stderr.actual.log.gz",
+    "bytes": 8467,
+    "sha256": "eb2470024a7bd879e877182fd4576c22aca1cbf5e74ead27a0ad969791af9833"
+  },
+  "source_trace": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r07-r196-source-visual5-a01\\source-frame-PTS.actual.csv",
+    "bytes": 14127,
+    "sha256": "bf3bdb11974d2df371b8f588e4fa9954b1a4508ac430a805c1b8f731d3f7b782"
+  },
+  "actual_trace_823_start32_end59_4_step33_34": true,
+  "sheets52_cells823_exactsize_geometry": true,
+  "all_media_processes": [],
+  "owned_media_live": [],
+  "raw_body_read_or_rehashed": false,
+  "new_probe_or_decode": false,
+  "technical_bounded_extraction_pass": true,
+  "continuous_clean_review_pending": true,
+  "human1x": false,
+  "formal_credit": 0,
+  "remaining_heavy": 0
+}

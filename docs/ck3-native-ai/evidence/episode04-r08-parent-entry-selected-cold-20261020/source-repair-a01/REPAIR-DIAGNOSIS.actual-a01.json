@@ -1,0 +1,102 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:24:00.925673+00:00",
+  "actual_failure": "producer 29144 original wait exit1; MASM A2022 fixture BYTE-extern memory operands",
+  "first_attempt_references": [
+    {
+      "path": "C:\\w\\e04parenta01\\native-msvc-result.json",
+      "bytes": 1511,
+      "sha256": "c25ddeb7b0c1c9e04168041a7bd41ed4f86a3d96980833cf1a542b8c147886bd"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\msvc-build.log",
+      "bytes": 10828,
+      "sha256": "fde543a542d70dae68bdba5f11b9cfe3420f8aef10cc3a932ea6ddeb54db595a"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\msvc-configure.log",
+      "bytes": 738,
+      "sha256": "35ba20c4e5c6991f05f384c39cdc780472bd9abf901a94a45f878f584539ae00"
+    },
+    {
+      "path": "C:\\w\\e04parenta01\\build-execution-a02\\ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 2037,
+      "sha256": "42a77c9e8bea86b5475398563f7218d4ca05b439d26330552b0cfb42edd4fc4f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 5020,
+      "sha256": "22ab7e2633b27f2f80c32f3c8b86792f8202cc467922654bce6288af55142a14"
+    }
+  ],
+  "asm_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-entry-source-p01\\fixture-a02\\fixture_call.asm",
+    "bytes": 5007,
+    "sha256": "b850bf87690f871d36471e085526283167dd08d9401464b78b584d45de53638c"
+  },
+  "asm_candidate": {
+    "path": "C:\\w\\e04parenta01\\source-repair-a01\\fixture_call.asm",
+    "bytes": 5595,
+    "sha256": "915bf07a3d0b0754680ae50bc2a986604e7ab99df027f5f37c3acca09609d365"
+  },
+  "changed_instruction_lines": [
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    105,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    171,
+    173,
+    175
+  ],
+  "change_kind": "explicit widths only; instruction mnemonic, registers, addresses and control flow unchanged",
+  "core_a04_unchanged": true,
+  "prior_source_tree_untouched": true,
+  "actual_SYSTEM_requests": 0,
+  "project_EXE_executions": 0,
+  "non_execution_inspection_error": "A --help invocation of non-argparse executor stopped at existing output directory mkdir before producer Popen; no new build"
+}

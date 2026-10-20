@@ -1,0 +1,193 @@
+{
+  "schema": "xar.e04.parent-entry-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T16:48:24.285492+00:00",
+  "machine_identity_readback": {
+    "command": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_live_run_id.py",
+      "machine"
+    ],
+    "observed_at_utc": "2026-10-20T16:48:24.281183+00:00",
+    "exit_code": 0,
+    "stdout": "desktop-3fevhd2-1c74096080"
+  },
+  "status": "SOURCE_REVIEW_COMPLETE_REPAIRED_P1_NATIVE_QUALIFICATION_PENDING",
+  "capacity": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/capacity/PARENT-1715-C4M-OFFLINE-SOURCE-ONLY-ADMISSION.actual-a01.json",
+    "bytes": 3680,
+    "sha256": "c4e0acf00e53e2e45518b852bfa7f586ef05af021fa5d2972a33c8acf701098c"
+  },
+  "review_lane_hardcap_bytes": 98304,
+  "review_lane_deadline_utc": "2026-10-20T17:15:00Z",
+  "final_candidate_sources": [
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/candidate/parent_entry_opportunity_12004.cpp",
+      "bytes": 9348,
+      "sha256": "43df7d3d2643bc781666e71aa82fbdf379b11b01441d74085b7007c791f8c07c"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/candidate/parent_entry_opportunity_12004.asm",
+      "bytes": 3802,
+      "sha256": "99f2033b67195e25d5173a42dfeaaefff38d5b040e7aaa9df4b497894a367ead"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/candidate/parent_entry_opportunity_12004.hpp",
+      "bytes": 4111,
+      "sha256": "25363ef0f3deb17f5afd0a1660d894b87fd632652e19092ae02e7a0ff6bc4e75"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/candidate/CMakeLists.txt",
+      "bytes": 926,
+      "sha256": "4f166c10b7e79f7d7572355217b5a7f778a0e31dc049c282356c61d389d12140"
+    }
+  ],
+  "candidate_patch": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/PARENT-ENTRY-SOURCE.candidate-a03.patch",
+    "bytes": 45581,
+    "sha256": "6ffb5694e20025296b606f34650eacd0a5a8ef9b6714ce3b80a18e4c590fdb0e"
+  },
+  "candidate_contract": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/SOURCE-CONTRACT.prepared-a03.json",
+    "bytes": 8869,
+    "sha256": "e53c2e9f260194cf5e317bd35b42c784fc1ddb54f2676ef6dcf5a071d7df0176"
+  },
+  "held_original_inputs": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/SOURCE-SPANS.actual.json",
+      "bytes": 27108,
+      "sha256": "7edca9f87e438aaefa9ffc468fe68b0911e37d9f4171f19b94645f69a2ff89c3"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/parent.complete.asm",
+      "bytes": 15822,
+      "sha256": "36eecdf78b4e958833f90ee903e1cd2cb607e0a1d5e8ea1adb0fc3e1d14f040f"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/PARENT-HOOK-SOURCE-ANCHOR.contract-a01.json",
+      "bytes": 3047,
+      "sha256": "291fb0c13237a6545459db9be5a0eeb376f0f2e04eb806ad0bf1def28a83bea1"
+    }
+  ],
+  "independent_held_byte_verification": {
+    "source_spans": 6,
+    "contiguous_bytes": 1118,
+    "raw_sha256": "c115401592983d13238154255b9b2583fe85222089d71fde10f0e8aae6c9753c",
+    "disassembly_instructions": 250,
+    "every_retained_disassembly_byte_matches_span": true,
+    "prefix_bytes": 16,
+    "prefix_whole_instructions": 5,
+    "new_exe_reads": 0
+  },
+  "reviewed_version_history": [
+    {
+      "requested_cpp_sha256": "f44ae2dc06dd00baa41122732d723fb63607b8b7b2b8f719eec6c33bcb4cae6a",
+      "requested_hpp_sha256": "67c6172cf2a1032604c5e24e6f8e05549e8db16cf5604af5c036f41835033d3c",
+      "status": "Superseded while author was editing; not represented as the final freshly pinned version."
+    },
+    {
+      "observed_at_utc": "2026-10-20T16:37:07.057406+00:00",
+      "cpp_bytes": 9249,
+      "cpp_sha256": "85edafbde1e25bf660cc66024d5bfc780db9e410dc1381512560785e962fe886",
+      "hpp_bytes": 4047,
+      "hpp_sha256": "1f89d1dd6c72054b4a191f9016597660e43b62b71595ccf37aa30509d8c794a7",
+      "asm_sha256": "f08f837bd10132ba3eb9d0b18312c341e5998070c535062a8cf4930699ad3524",
+      "status": "Intermediate readback; final source review is pinned separately."
+    },
+    {
+      "asm_sha256": "c1ca3f8329e04549871a2263ef6cb05450f62cadf595e592bcec14f01c585b4d",
+      "status": "Rejected prefix continuation FF25; independent finding retained."
+    }
+  ],
+  "findings": [
+    {
+      "id": "PREFIX_CONTINUATION_FALSE_EPILOGUE",
+      "severity": "P1",
+      "status": "SOURCE_PATTERN_REPAIRED_IN_A03; ACTUAL_UNWIND_UNQUALIFIED",
+      "original_finding": {
+        "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-independent-review-a01/FINDING-PREFIX-CONTINUATION.actual-a01.json",
+        "bytes": 3201,
+        "sha256": "93299d8e55791343387972c73d5c933a45c6efec5b8e50ca9bf9006c7271ef78"
+      },
+      "final_lines": [
+        126,
+        132
+      ],
+      "final_source_reason": "The prefix retains RSP=S-0xA8. R11 is saved privately at RSP+0x10, continuation placed at RSP+8, R11 restored; explicit FF642408 has ModRM01 and no REX.W. This is not the FF25 or REX.W epilogue branch recognized by the reviewed version-1 scanner. The actual emitted form/pdata remains unobserved."
+    },
+    {
+      "id": "THUNK_TAIL_EPILOGUE_DOCUMENTATION",
+      "reported_by": "Root",
+      "status": "DOCUMENTED_FORM_CORRECTED_TO_IMMUTABLE_FF25; NO_OS_FAILURE_CLAIM",
+      "reason": "After POPFQ/POP RBP the thunk uses the immutable original-prefix target. Microsoft documentation restricts epilogue branches; the maintained unwinder source is more permissive for external E9, so this review does not assert the earlier direct E9 must fail on the current OS."
+    }
+  ],
+  "source_reasoning": {
+    "entry_registers_flags_rsp": "B=S-0x50. Saved volatile GPRs occupy B..B+0x37, flags B+0x40, original RBP B+0x48, original return B+0x50. Only RAX/RCX/RDX/R8/R9/R10/R11/RBP are modified and all are restored before the original prefix. No CALL, argument dereference or SIMD/x87/AVX instruction is added. No return type or XMM argument signature is inferred.",
+    "original_prefix": "The unchanged five-instruction prefix is position-independent. It leaves RSP=S-0xA8 and saves R14 at S-0x20=finalRSP+0x88, matching the MASM SAVE_NONVOL declaration. Additional continuation scratch lies entirely below S and does not touch caller home/stack inputs or [S].",
+    "concurrent_off": "ASM increments active_thunks before reading enabled. A producer that can see enabled1 is already represented in active_thunks; OFF is interlocked before the active check. Busy returns false with stopped false. Later disabled entries touch only the active counter. One frame is claimed by CMPXCHG and ready is published only after complete writes. No reset/rearm route was found. This reasoning does not claim native concurrent testing.",
+    "overflow_unknown": "Wrap sets a sticky flag; raw bits remain available and derived counts stay null. Invalid frame/overflow states, changed prefix, impossible count/frame relations and noncanonical captured RSP are rejected. Empty, not-owned, not-armed and busy outputs do not manufacture zero counts.",
+    "install_restore": "CMake option defaults OFF and has no production startup hook. Install requires explicit admission and caller-proven global quiescence, verifies identity and both prefixes, pins the code module, and marks ownership before the first possible patch write. Restore must write, flush, restore protection and independently read the exact prefix; failure retains ownership/pinned code. The boolean quiescence argument itself is not OS proof.",
+    "capture_scope": "Only pointer equality is sampled at entry. Pre/post identity joins do not prove entry full-ID/native clock, parent completion, payer, military semantics or a c/d writer. These fields remain null/false.",
+    "timer_scope": "The component has no native timer/watchdog; a finite opportunity depends on a future existing controller/OFF integration. The current production DLL/EXEs do not expose this unintegrated component."
+  },
+  "excluded_false_positive": {
+    "stack_alignment": "The thunk makes no call. Microsoft stack-usage Function Types explicitly permits a no-call frame function to leave the stack unaligned. RSP mod16 alone is not a finding."
+  },
+  "author_model_checks_readback": {
+    "original_wait": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/source-checks-a05/ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1316,
+      "sha256": "45ce5097ce66f24b91a70e046aa6a09d862170754566ec7fbedd8e04eacb2fe0"
+    },
+    "stderr": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-1715-a01/parent-entry-candidate-a01/source-checks-a05/stderr.log",
+      "bytes": 2046,
+      "sha256": "02995ccfe4fe26a516e9d7392db12ee8ccaad2c76d5314eeecc8ec7a67bf4721"
+    },
+    "exit_code": 0,
+    "unique_python_source_model_methods": 13,
+    "independent_rerun": false,
+    "os_native_or_live_credit": false,
+    "earlier_collection_failure": "Preserved by author as zero executed tests; not treated as a native failure or pass."
+  },
+  "remaining_qualification_blockers": [
+    "Actual MSVC/MASM bytes and pdata/xdata, including the required 16B match and exact no-REX.W FF642408 continuation, have not been observed.",
+    "Real RtlVirtualUnwind at every instruction boundary, especially POPFQ / POP RBP / thunk tail and every continuation scratch instruction, plus representative real SEH/mitigation state, remains unqualified.",
+    "Native sentinel transparency, concurrent OFF/busy/once/overflow and failed write/protect/flush/readback/restore cases remain untested.",
+    "There is no production startup/command/typed Snapshot/OFF integration or new coherent binary qualification; no live use is admitted by this review."
+  ],
+  "primary_references": [
+    {
+      "url": "https://learn.microsoft.com/en-us/cpp/build/prolog-and-epilog?view=msvc-170",
+      "support": "Documented constrained epilogues and instruction scanning."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/cpp/build/stack-usage?view=msvc-170",
+      "support": "Function Types no-call frame-function alignment exception."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/dotnet/runtime/main/src/coreclr/unwinder/amd64/unwinder.cpp",
+      "support": "Microsoft-maintained source identifies copied Windows exdsptch.c; version1 FF25 detection and return emulation explain the repaired finding. This source analysis does not inspect or qualify the current machine OS."
+    }
+  ],
+  "execution_limits": {
+    "new_compilations": 0,
+    "new_native_cold": 0,
+    "sdk_calls": 0,
+    "debug_register_operations": 0,
+    "exe_body_reads": 0,
+    "game_or_screen_actions": 0,
+    "D_or_W_writes": 0,
+    "native_os_unwind_calls": 0,
+    "qualification_granted": false
+  },
+  "retention": {
+    "purpose": "Independent review of source-only parent-entry candidate and resolved false-epilogue finding",
+    "review_due_utc": "2026-10-21T17:15:00Z",
+    "indefinite_retention_claim": false
+  }
+}

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-parent-1715-a01\parent-entry-candidate-a01\check_candidate.py", line 11, in <module>
+    ROOT=Path(os.environ.get('XAR_PARENT_SOURCE_REPO',str(HERE.parents[3])))
+                                                          ~~~~~~~~~~~~^^^
+  File "C:\Users\1\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__init__.py", line 68, in __getitem__
+    raise IndexError(idx)
+IndexError: 3

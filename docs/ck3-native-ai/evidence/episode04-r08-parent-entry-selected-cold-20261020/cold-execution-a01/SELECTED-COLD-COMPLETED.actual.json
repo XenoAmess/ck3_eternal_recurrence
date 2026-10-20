@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T17:35:15.963806+00:00",
+  "selected_stages": [
+    {
+      "phase": "cold-describe",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\describe.ORIGINAL-WAIT.actual.json",
+        "bytes": 1286,
+        "sha256": "17e0155449c91f2dd2c9b438bd182f2334b7e88506770e129a483f26380101d0"
+      }
+    },
+    {
+      "phase": "derive-own-EXE-unwind-boundaries",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\derive.ORIGINAL-WAIT.actual.json",
+        "bytes": 1907,
+        "sha256": "ed5962ffde906d674935367b4509e982d2864d166cd217c95a4b6fc0cb09165b"
+      }
+    },
+    {
+      "phase": "cold-ABI",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\ABI.ORIGINAL-WAIT.actual.json",
+        "bytes": 1275,
+        "sha256": "edf11c07a8da7c00ff65c19b6998bcd672df6ce9674ff2ec230f1ca2ebbfc02b"
+      }
+    },
+    {
+      "phase": "cold-state-and-concurrent-OFF",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\state.ORIGINAL-WAIT.actual.json",
+        "bytes": 1288,
+        "sha256": "5dfaf1b059343f1c4d5c5349319c097f37404b509167564db82adb75e422483b"
+      }
+    },
+    {
+      "phase": "cold-real-Windows-unwind",
+      "wait": {
+        "path": "C:\\w\\e04parenta01\\cold-execution-a01\\unwind.ORIGINAL-WAIT.actual.json",
+        "bytes": 1340,
+        "sha256": "41d5da18ed77b913d11f164862fafe9d1f7a37d56d55f24b82e174162172bbe9"
+      }
+    }
+  ],
+  "all_selected_actual_waits_zero": true,
+  "real_game_Install_Restore_qualified": false,
+  "full_R08_business": false
+}
