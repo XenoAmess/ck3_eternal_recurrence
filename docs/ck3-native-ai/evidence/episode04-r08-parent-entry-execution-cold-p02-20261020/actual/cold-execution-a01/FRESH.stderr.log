@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\w\e04parentdr02\capacity\fresh_parent_dr_native64_2015_prepared_a01.py", line 81, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\w\e04parentdr02\capacity\fresh_parent_dr_native64_2015_prepared_a01.py", line 73, in main
+    v=volumes();b=budget(v,active);assert min(b[k] for k in ('C_quota_margin_bytes','C_floor_margin_bytes','D_floor_margin_bytes'))>=0
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

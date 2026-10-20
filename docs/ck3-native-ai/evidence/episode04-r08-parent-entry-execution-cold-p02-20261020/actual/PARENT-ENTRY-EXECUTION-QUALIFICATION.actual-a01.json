@@ -1,0 +1,107 @@
+{
+  "schema": "xar.maintenance.parent_entry.execution-qualification.v1",
+  "status": "SELECTED_EXECUTION_COLD_PASS",
+  "mode": "parent-entry-execution-once-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:48:41.618534+00:00",
+  "observer_pin": {
+    "path": "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+    "bytes": 129536,
+    "sha256": "fe05bc177791fc6d41e25e1f05ab85e62c826e0f78c67dd066cbb0c477126c14"
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\cold_observer.cpp",
+      "bytes": 29745,
+      "sha256": "c3fbca7e7e2b7c9ac7b2239cbc542320ddbb00b2103834aa362ba1ee29f4b258"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\CMakeLists.txt",
+      "bytes": 1312,
+      "sha256": "f3ac48b08cb3bcfa06228416bd5d4164df766e884f129e925007814dec232d8a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\parent_entry_execution_contract.py",
+      "bytes": 10975,
+      "sha256": "00b8bbbc55b5689808846a39d510567e3323fcfb9f2c42e439bf0f2f2e74e295"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\prepare_parent_entry_admission.py",
+      "bytes": 9633,
+      "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\consume_parent_entry_actual.py",
+      "bytes": 1535,
+      "sha256": "6f49cda065d61b780b9bbbc9b96ee17fd8fbb67d91cf0d1b3cf5cc825abe5ffe"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\parent_entry_cold_call.asm",
+      "bytes": 889,
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\test_parent_entry_execution_contract.py",
+      "bytes": 8510,
+      "sha256": "7e91afc1b38cd4f86a7c319ec90c8713470c2e1824eed4940db23fa06b208b2a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\PARENT-ENTRY-DR.contract.json",
+      "bytes": 3291,
+      "sha256": "027d9440d7c05b1a5ea790cdb346028125f35f9a643083a1978add099a8e5456"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\owner_binding.py",
+      "bytes": 6251,
+      "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+    }
+  ],
+  "SYSTEM_receipt_pin": {
+    "path": "C:\\w\\e04parentdr02\\build-a01\\defender-exe-exclusions\\20261020T193400Z-6bce3500\\receipt.json",
+    "bytes": 329297,
+    "sha256": "a34a56d12fd0cd6ed962f03357307ed051408f40a2afc4b8dc8dd9111098f091"
+  },
+  "cold_suite_pin": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\SELECTED-COLD.actual.json",
+    "bytes": 4226,
+    "sha256": "283358b05236d5ae92b74fd671587ea5635dd8f54759f0f940af8656b9a6b7fa"
+  },
+  "Root_acceptance_pin": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-COLD-ACCEPTANCE.actual-a01.json",
+    "bytes": 5702,
+    "sha256": "935e7900fa2910f296b8b000f25e577775e9793be3f9e4911d1462bb93011cbf"
+  },
+  "limited_to": "Exact17 standalone synthetic cold; runtime requires separate fresh Root admission",
+  "real_CK3": false,
+  "public_runtime_qualification": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "formal_dynamic_scenes": "5/11"
+}

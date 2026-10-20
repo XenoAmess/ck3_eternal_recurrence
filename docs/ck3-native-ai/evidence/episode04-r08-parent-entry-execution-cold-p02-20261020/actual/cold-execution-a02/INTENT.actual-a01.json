@@ -1,0 +1,80 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:14.391602+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\run_parent_entry_cold.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--build-dir",
+    "C:\\w\\e04parentdr02\\build-a01",
+    "--machine-build-record",
+    "C:\\w\\e04parentdr02\\MACHINE-BUILD.actual.json",
+    "--output-root",
+    "C:\\w\\e04parentdr02\\cold-a01",
+    "--execute-qualified-cold",
+    "--case",
+    "foreign257_then_target",
+    "--case",
+    "created_thread",
+    "--case",
+    "foreign4096_limit",
+    "--case",
+    "timeout",
+    "--case",
+    "restore-fault",
+    "--case",
+    "readback-fault",
+    "--case",
+    "continue-fault",
+    "--case",
+    "default-off",
+    "--case",
+    "missing-ack",
+    "--case",
+    "bad-schema",
+    "--case",
+    "occupied-dr",
+    "--case",
+    "occupied-tf",
+    "--case",
+    "context-drift",
+    "--case",
+    "fullid-drift",
+    "--case",
+    "magic-drift",
+    "--case",
+    "session-drift",
+    "--case",
+    "cancel_late"
+  ],
+  "plan": {
+    "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "bytes": 16191,
+    "sha256": "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3"
+  },
+  "capacity": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-COLD-ONLY30-2015.actual-a05.json",
+    "bytes": 8559,
+    "sha256": "b314de0c4932fdbb730d54ff3f0a17376a6442bcd295a10873ab1e3f0866f165"
+  },
+  "fresh": {
+    "path": "C:\\w\\e04parentdr02\\cold-execution-a02\\FRESH.actual.json",
+    "bytes": 3022,
+    "sha256": "6548decdc1d2915ce5efe7257659c89a4a15c889fab3a487a5a3b036b5feab0a"
+  },
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\SOURCE-MANIFEST.actual.json",
+    "bytes": 8598,
+    "sha256": "fbefc43570ccb9880b9d4362688eea732cb6e3d49813864a2866c0647fae68c7"
+  },
+  "Root_review": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "a21289adcd8ae8e950e8722c7c34ede5b21d0174bae9529534c9b351bd88db66"
+  },
+  "no_replay": true
+}

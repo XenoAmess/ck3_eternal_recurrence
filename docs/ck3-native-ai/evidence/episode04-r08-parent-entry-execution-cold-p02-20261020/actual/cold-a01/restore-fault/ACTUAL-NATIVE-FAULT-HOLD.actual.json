@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:18.816946+00:00",
+  "fault": "restore",
+  "observer_original_Popen": {
+    "pid": 3856,
+    "created": 134369989986858912
+  },
+  "target_original_Popen": {
+    "pid": 29340,
+    "created": 134369989986187940
+  },
+  "raw_prefix": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\observer.raw.ndjson",
+    "bytes": 3791,
+    "sha256": "d4942288f70c2228f9468963be2c7d6fb245c7c2ba0a5c1e19354ebacfab9a26"
+  },
+  "injected_native_API_seam": true,
+  "real_OS_fault_proven": false
+}

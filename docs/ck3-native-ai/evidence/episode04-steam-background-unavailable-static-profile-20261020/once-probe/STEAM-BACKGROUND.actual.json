@@ -1,0 +1,21 @@
+{
+  "schema": "xar.steam-offline-state-probe/v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:27:17.295343Z",
+  "nonce": "e17fba5ef50efe3ebae27bdf6a1e614d",
+  "reason": "source_not_qualified",
+  "steam": {
+    "pid": 13256,
+    "birth_filetime": "134369289811819170",
+    "exe": "D:\\Program Files (x86)\\Steam\\steam.exe",
+    "file_version": "11.12.30.7"
+  },
+  "source": null,
+  "endpoint": null,
+  "diagnostics": [
+    "native_provider_unavailable=invalid_input"
+  ],
+  "observation_method": null,
+  "native_evidence": null,
+  "status": "unavailable"
+}

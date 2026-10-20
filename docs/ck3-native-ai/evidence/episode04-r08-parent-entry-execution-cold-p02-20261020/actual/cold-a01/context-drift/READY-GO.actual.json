@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:20.937276+00:00",
+  "native_READY": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\READY.actual.json",
+    "bytes": 101,
+    "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+  },
+  "target_meta": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.meta.txt",
+    "bytes": 669,
+    "sha256": "9c169cf0ea635d570bdb6245aa4bfe9ee7092b16b58eccacd16f4189764ef091"
+  },
+  "target_original_Popen": {
+    "pid": 30504,
+    "created": 134369990007561364
+  }
+}

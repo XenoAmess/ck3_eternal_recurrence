@@ -1,0 +1,3705 @@
+{
+  "schema": "xar.e04.parent-dr.actual17-independent-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:47:19.039386+00:00",
+  "status": "INDEPENDENT_REVIEW_PASS_RECOMMEND_STANDALONE_EXECUTION_COLD_ACCEPTANCE",
+  "capacity": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-COLD-ONLY30-2015.actual-a05.json",
+    "bytes": 8559,
+    "sha256": "b314de0c4932fdbb730d54ff3f0a17376a6442bcd295a10873ab1e3f0866f165"
+  },
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\SOURCE-MANIFEST.actual.json",
+    "bytes": 8598,
+    "sha256": "fbefc43570ccb9880b9d4362688eea732cb6e3d49813864a2866c0647fae68c7"
+  },
+  "producer_recipe": {
+    "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "bytes": 16191,
+    "sha256": "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3"
+  },
+  "Root_actual_SYSTEM_review": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "a21289adcd8ae8e950e8722c7c34ede5b21d0174bae9529534c9b351bd88db66"
+  },
+  "suite": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\SELECTED-COLD.actual.json",
+    "bytes": 4226,
+    "sha256": "283358b05236d5ae92b74fd671587ea5635dd8f54759f0f940af8656b9a6b7fa"
+  },
+  "original_runner_wait": {
+    "path": "C:\\w\\e04parentdr02\\cold-execution-a02\\ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1469,
+    "sha256": "a964b23f78030a3b914630d5102600d02c673737762ec13a4bc4ba1dceb4bd19"
+  },
+  "actual_cases": 17,
+  "case_order": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "cases": [
+    {
+      "case": "foreign257_then_target",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\CASE.actual.json",
+        "bytes": 1668,
+        "sha256": "8d16f3bdda23a9b43059cda6328904cdaed6dffad6a8bdadd9f4a984d9b3bfef"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "133de62101f8151553ce9be19649e39cdce549c16ed427f08d405f0ef72e6cd5"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "598cc52b7819999d63e9694b95179a13eaae97c9563bd3d40cf250783c9a6c68"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.POPEN.actual.json",
+          "bytes": 382,
+          "sha256": "34d4e61fba3534b5490e34b24ad713b13500c534ba94894eee1048cb7f79da78"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\observer.POPEN.actual.json",
+          "bytes": 717,
+          "sha256": "9044297c811e4d3da213ea6937814de0387d175fd3b7324255e82106eae783fc"
+        }
+      },
+      "target_pid": 33636,
+      "target_created": 134369989964310136,
+      "observer_pid": 15584,
+      "observer_created": 134369989965640117,
+      "target_exit": 0,
+      "observer_exit": 0,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\observer.raw.ndjson",
+        "bytes": 4098,
+        "sha256": "3d7477ddd40eb627d03b97538a815111de54779435d00b6865b4a6cd79c9fd74"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "foreign_resume": 1,
+        "parent_entry": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_captured",
+        "capture_count": 1,
+        "foreign_count": 257,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.result.json",
+        "bytes": 303,
+        "sha256": "69afab01c65d6d96a09cdf0d3b9e281c0975135ba48489b817af6fe7d81bd0db"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.calls.json",
+        "bytes": 303,
+        "sha256": "69afab01c65d6d96a09cdf0d3b9e281c0975135ba48489b817af6fe7d81bd0db"
+      },
+      "actual_body_calls": 258,
+      "foreign_body_calls": 257,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "707b2a0eb85f15d4dbb3d90db719f56f1fd881e5dc06fd3a35e3380f79e7fd47"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "707b2a0eb85f15d4dbb3d90db719f56f1fd881e5dc06fd3a35e3380f79e7fd47"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "0cebbddb90e7962d03b206d53c03a4170749abef1ee802c32c811a1104aaca57"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 33068,
+          "created": 134369989964310157,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 3748,
+          "created": 134369989965039479,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37612,
+          "created": 134369989965040215,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34208,
+          "created": 134369989965040802,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 24972,
+          "created": 134369989965057613,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 33068,
+          "generation": 1,
+          "created": 134369989964310157,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 3748,
+          "generation": 1,
+          "created": 134369989965039479,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37612,
+          "generation": 1,
+          "created": 134369989965040215,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34208,
+          "generation": 1,
+          "created": 134369989965040802,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 24972,
+          "generation": 1,
+          "created": 134369989965057613,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          27148,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": true,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "created_thread",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\CASE.actual.json",
+        "bytes": 1641,
+        "sha256": "88e0611208fc8711b5f99fa25956fa478cf574bf1ba776432d6f21d09e5acfd1"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "06fad6782e09b448fec15293242ef97103b659b74f88066ed76c663729d2605e"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "eb5f7651f35845062cb4d33a9931396b0fdcb6a77f4ba9e9de18e96daac4a3fb"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.POPEN.actual.json",
+          "bytes": 366,
+          "sha256": "fc8e4778c9bdd2e9a605c1f8204b6fcfc3c24a1c2d114879a6c436d92cbafb94"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\observer.POPEN.actual.json",
+          "bytes": 693,
+          "sha256": "1f5c5525920c8b67d08271f7f8c2058c6a3d467e206f54eac03e5236af5bc1cd"
+        }
+      },
+      "target_pid": 31692,
+      "target_created": 134369989968289085,
+      "observer_pid": 31476,
+      "observer_created": 134369989968886590,
+      "target_exit": 0,
+      "observer_exit": 0,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\observer.raw.ndjson",
+        "bytes": 4186,
+        "sha256": "bb0bc0bdf159087d2b1b3509282c69c9af75765e1f5e9c21cbef80b7eff9ab92"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 7,
+        "ready": 1,
+        "thread_exited": 1,
+        "parent_entry": 1,
+        "restore": 6,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_captured",
+        "capture_count": 1,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.result.json",
+        "bytes": 302,
+        "sha256": "53c357b8df52ccb3b9f7c40ba39e4cf22b2971165041d39e77578ea6762af36a"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.calls.json",
+        "bytes": 302,
+        "sha256": "53c357b8df52ccb3b9f7c40ba39e4cf22b2971165041d39e77578ea6762af36a"
+      },
+      "actual_body_calls": 1,
+      "foreign_body_calls": 0,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "0731b02f2cf127329cbdd9a442722bb46373e91ae8b45ec95abdf8f9aabe254d"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.after-debug.json",
+        "bytes": 548,
+        "sha256": "bbab05a07d91c54e441d86d55fe1dc38c3179ab5960d1b53be99f62d8b381cfc"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3174,
+        "sha256": "93a718e3973160f8f235c20d8470af1a58b7979f4c18742b8e577ae769174218"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 26284,
+          "created": 134369989968289105,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 12664,
+          "created": 134369989968369525,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 35432,
+          "created": 134369989968370267,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 22848,
+          "created": 134369989968370954,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 18284,
+          "created": 134369989968383963,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 26284,
+          "generation": 1,
+          "created": 134369989968289105,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 12664,
+          "generation": 1,
+          "created": 134369989968369525,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 35432,
+          "generation": 1,
+          "created": 134369989968370267,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 22848,
+          "generation": 1,
+          "created": 134369989968370954,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 18284,
+          "generation": 1,
+          "created": 134369989968383963,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 3768,
+          "generation": 1,
+          "created": 134369989969501921,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          2288,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": true,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "foreign4096_limit",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\CASE.actual.json",
+        "bytes": 1657,
+        "sha256": "9750dd071943e08ac9f39a6d845d4d512f7dbeff985553a778f44c32a6d20cbe"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "8ae8db2594e08ece6ca2c45b51009c8923819299731fb5d8b9bb7d221622bcce"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "52c4364f3b671fabeb0949664433c5cb8c22d719210a28469b1b769df16d21a4"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.POPEN.actual.json",
+          "bytes": 372,
+          "sha256": "798acce44a158b676dfd5fbacc006ddb6f6daa61098498fd42122c968bde32c4"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\observer.POPEN.actual.json",
+          "bytes": 702,
+          "sha256": "7552d6d3bf6fa3daa67385117d8d5ea10c1ec1d020d002b184e490c2d18ed39c"
+        }
+      },
+      "target_pid": 18776,
+      "target_created": 134369989970448642,
+      "observer_pid": 21896,
+      "observer_created": 134369989971081297,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\observer.raw.ndjson",
+        "bytes": 3193,
+        "sha256": "a36217acbb1309fb84ff2eb3e1b794eb6eef1a48e68d06044f443b5540483ccf"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "foreign_resume": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "foreign_limit",
+        "capture_count": 0,
+        "foreign_count": 4096,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.result.json",
+        "bytes": 305,
+        "sha256": "53683a0cbe9a847506f49a7294bb8d048410a3d757f34bccab48fcd68fab75bf"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.calls.json",
+        "bytes": 305,
+        "sha256": "53683a0cbe9a847506f49a7294bb8d048410a3d757f34bccab48fcd68fab75bf"
+      },
+      "actual_body_calls": 4097,
+      "foreign_body_calls": 4096,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.initial-debug.json",
+        "bytes": 455,
+        "sha256": "ddbfc91e0bb6e5c03d259b68acb8a8a22f4aaa4e29203e8071960bd31a06c6d4"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.after-debug.json",
+        "bytes": 455,
+        "sha256": "ddbfc91e0bb6e5c03d259b68acb8a8a22f4aaa4e29203e8071960bd31a06c6d4"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2861,
+        "sha256": "3bb58cbd8aaa794b4a7cf4bb5a03e6d5aba2dd45d3eeab913c7e3f44d493ca13"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 31836,
+          "created": 134369989970448665,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21816,
+          "created": 134369989970509855,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 420,
+          "created": 134369989970510605,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 3888,
+          "created": 134369989970511369,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37156,
+          "created": 134369989970523366,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 31836,
+          "generation": 1,
+          "created": 134369989970448665,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21816,
+          "generation": 1,
+          "created": 134369989970509855,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 420,
+          "generation": 1,
+          "created": 134369989970510605,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 3888,
+          "generation": 1,
+          "created": 134369989970511369,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37156,
+          "generation": 1,
+          "created": 134369989970523366,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          37584,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "timeout",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\CASE.actual.json",
+        "bytes": 1612,
+        "sha256": "6d954434e2719311dd3c02f2115e25ccdce9dab7f638968f80376cfe26e7e4c2"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "3e048ce2fd4d1fc8a1b8387fc1f70cb36c5d4f40f58531479031c35cf4ef0e27"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "631bff95d623ed7841855f6d4dad87fda98c144fce1f17cd7fcf96ca7e2743a5"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.POPEN.actual.json",
+          "bytes": 352,
+          "sha256": "362fb2c4bcdc4deb23a4a9f7818fa54b3ac4fea5535a843a14d08313655a8395"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\observer.POPEN.actual.json",
+          "bytes": 670,
+          "sha256": "1750c578a9ba550a28a5224f73b151664fe324f5760622f6989f2800c2fbf1d9"
+        }
+      },
+      "target_pid": 13888,
+      "target_created": 134369989975673573,
+      "observer_pid": 29976,
+      "observer_created": 134369989976365726,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\observer.raw.ndjson",
+        "bytes": 3077,
+        "sha256": "ec9104c4f39e123f2f0dddff61eddd356b745bcc5ef20eb0a30d1d9ee41befa1"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "cleanup_thread_unarmed": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "timeout",
+        "capture_count": 0,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.result.json",
+        "bytes": 299,
+        "sha256": "3536e2db7eeb59f37653b81786fbc5505381443d8a1b4eb86e0970b24ee31ecc"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.calls.json",
+        "bytes": 299,
+        "sha256": "3536e2db7eeb59f37653b81786fbc5505381443d8a1b4eb86e0970b24ee31ecc"
+      },
+      "actual_body_calls": 0,
+      "foreign_body_calls": 0,
+      "target_body_calls": 0,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "5c85204faa59241c9992a5c36aad7cdb3999b684b8b421266cf31de6e3d84fe5"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "5c85204faa59241c9992a5c36aad7cdb3999b684b8b421266cf31de6e3d84fe5"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "78760043e50a080696aea44c4d2723f1ea25ff637934a18d1daabb55d66cf5a8"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 31660,
+          "created": 134369989975673619,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 6640,
+          "created": 134369989975790229,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 19712,
+          "created": 134369989975791726,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37700,
+          "created": 134369989975792796,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21472,
+          "created": 134369989975813062,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 31660,
+          "generation": 1,
+          "created": 134369989975673619,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 6640,
+          "generation": 1,
+          "created": 134369989975790229,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 19712,
+          "generation": 1,
+          "created": 134369989975791726,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37700,
+          "generation": 1,
+          "created": 134369989975792796,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21472,
+          "generation": 1,
+          "created": 134369989975813062,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          13692,
+          1
+        ]
+      ],
+      "unarmed_rows": 1,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "restore-fault",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\CASE.actual.json",
+        "bytes": 1640,
+        "sha256": "addc0487cf75451c42163ba6da3727161705aee6c5949e4bac1b94ece40b3b45"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "d8953a40917e4679ae32b52b2ec1f7aa5c572360100010658401814a85b23510"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 223,
+          "sha256": "3cee02fc7405b947918e8141a2d63f3e14bf561438b527ae6db124e4a48c6c69"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.POPEN.actual.json",
+          "bytes": 373,
+          "sha256": "1e457bda4f2ed4900fe78764c20fb6d258f9e59da74249a57f9f635a970b6289"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\observer.POPEN.actual.json",
+          "bytes": 724,
+          "sha256": "dbcbc1b69ac8d889ac6b72fb8232e17e491cc9ec973574fe91c96dc56ed7541f"
+        }
+      },
+      "target_pid": 29340,
+      "target_created": 134369989986187940,
+      "observer_pid": 3856,
+      "observer_created": 134369989986858912,
+      "target_exit": 0,
+      "observer_exit": 0,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\observer.raw.ndjson",
+        "bytes": 4218,
+        "sha256": "2a06b42758126f46b3ae47f0f04b4b8c2fad7d13181326612c6b954acabaf7bc"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "foreign_resume": 1,
+        "parent_entry": 1,
+        "unresolved_cleanup_hold": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_captured",
+        "capture_count": 1,
+        "foreign_count": 257,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.result.json",
+        "bytes": 303,
+        "sha256": "708d15cd7ddff7ce9cfa12b648bab01f986bde2e45320ed53cd2a43d316b920e"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.calls.json",
+        "bytes": 303,
+        "sha256": "708d15cd7ddff7ce9cfa12b648bab01f986bde2e45320ed53cd2a43d316b920e"
+      },
+      "actual_body_calls": 258,
+      "foreign_body_calls": 257,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "1c87c3c9bdaf54f6a8fb9d76d4e13e49cbc1ed369651019b705fcb60dac5315c"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "1c87c3c9bdaf54f6a8fb9d76d4e13e49cbc1ed369651019b705fcb60dac5315c"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2870,
+        "sha256": "fb5986debd2b235be1fa2fcf905f182e69a83d9782cfdba869ce353a003dd954"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 30328,
+          "created": 134369989986187964,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 15176,
+          "created": 134369989986248979,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 13760,
+          "created": 134369989986249733,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 15736,
+          "created": 134369989986250289,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 25300,
+          "created": 134369989986261177,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 30328,
+          "generation": 1,
+          "created": 134369989986187964,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 15176,
+          "generation": 1,
+          "created": 134369989986248979,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 13760,
+          "generation": 1,
+          "created": 134369989986249733,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 15736,
+          "generation": 1,
+          "created": 134369989986250289,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 25300,
+          "generation": 1,
+          "created": 134369989986261177,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          28400,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": true,
+      "actual_native_fault_hold": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\ACTUAL-NATIVE-FAULT-HOLD.actual.json",
+        "bytes": 575,
+        "sha256": "a26ac5bdcf4acc35396d2552f1a721c505dbb860d51bbe9891573c0fc83275c0"
+      },
+      "owned_late_events": []
+    },
+    {
+      "case": "readback-fault",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\CASE.actual.json",
+        "bytes": 1642,
+        "sha256": "66b431b6aa65ed11e8c31db61da114a240d167b524bfbf7f319091d73cac03da"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 223,
+          "sha256": "d3b50a1db5b9662ed45eb79f375ae7c6059074fce1a9d116198dc064babb9a58"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "5db8d1ad9d20857cc6a07d4a54e423370bddbd9bb9c5fb1a18ef5dde7e3e5403"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.POPEN.actual.json",
+          "bytes": 373,
+          "sha256": "c32ece75feeecbca41adfb4e1a4feb755c9df375c319b84486968c634b4e7fd2"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\observer.POPEN.actual.json",
+          "bytes": 729,
+          "sha256": "41c513a01f00c7c6403e51a8c6a4a96d6aa12767884eb7fb3d2e0c4890eadde8"
+        }
+      },
+      "target_pid": 6656,
+      "target_created": 134369989990063078,
+      "observer_pid": 21164,
+      "observer_created": 134369989990796816,
+      "target_exit": 0,
+      "observer_exit": 0,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\observer.raw.ndjson",
+        "bytes": 4213,
+        "sha256": "41799ecad8308a4a50fce09520d914e9f71223c630d1ac7beb492a167cff29ea"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "foreign_resume": 1,
+        "parent_entry": 1,
+        "unresolved_cleanup_hold": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_captured",
+        "capture_count": 1,
+        "foreign_count": 257,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.result.json",
+        "bytes": 302,
+        "sha256": "711318ae43d2655517284e00e854191e216eac2232c232cc4cba013485a76431"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.calls.json",
+        "bytes": 302,
+        "sha256": "711318ae43d2655517284e00e854191e216eac2232c232cc4cba013485a76431"
+      },
+      "actual_body_calls": 258,
+      "foreign_body_calls": 257,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.initial-debug.json",
+        "bytes": 456,
+        "sha256": "a355262273af32fb5929fa950f435811bc9a274664c6a9e3b954716701c901f7"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.after-debug.json",
+        "bytes": 456,
+        "sha256": "a355262273af32fb5929fa950f435811bc9a274664c6a9e3b954716701c901f7"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2864,
+        "sha256": "5728943016b8301bfa165d71bb7f80aba56d27158cbd491545185b87081a6266"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 26108,
+          "created": 134369989990063102,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 9096,
+          "created": 134369989990139861,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 26828,
+          "created": 134369989990140962,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34660,
+          "created": 134369989990141980,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 7044,
+          "created": 134369989990156877,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 26108,
+          "generation": 1,
+          "created": 134369989990063102,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 9096,
+          "generation": 1,
+          "created": 134369989990139861,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 26828,
+          "generation": 1,
+          "created": 134369989990140962,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34660,
+          "generation": 1,
+          "created": 134369989990141980,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 7044,
+          "generation": 1,
+          "created": 134369989990156877,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          32200,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": true,
+      "actual_native_fault_hold": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\ACTUAL-NATIVE-FAULT-HOLD.actual.json",
+        "bytes": 577,
+        "sha256": "239d4a4217e69ffa5d88e94b67c71db7845a0d746e201420b723c6980b38a19d"
+      },
+      "owned_late_events": []
+    },
+    {
+      "case": "continue-fault",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\CASE.actual.json",
+        "bytes": 1643,
+        "sha256": "84bd0287bfde6ebbbb92e29451c0e4d8a30798660b31ccc26759376958ac7868"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "ecb8b3fb5b869a537723b89a2efc6b5b9ffc64c4ff675e6891c88740b286c0a7"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "4e96b214c7323aa268d7bba5d6ae42d28c65f7a9d277c65f9391caf6e74f7475"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.POPEN.actual.json",
+          "bytes": 374,
+          "sha256": "db969381e289380c8e7dac99e3bf10b01f26f0976dfff15cd91d96534f87130b"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\observer.POPEN.actual.json",
+          "bytes": 729,
+          "sha256": "8dc661a14a93f71ddbd4ced19041337bf523fa2cb753b235cd8d6e03ab372bf5"
+        }
+      },
+      "target_pid": 36304,
+      "target_created": 134369989993408152,
+      "observer_pid": 29904,
+      "observer_created": 134369989994220699,
+      "target_exit": 0,
+      "observer_exit": 0,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\observer.raw.ndjson",
+        "bytes": 4217,
+        "sha256": "9fc3cc0cf682303aa04d99e84adf965dd1cbd52c3fdb0d5f9ac1b7adfba39dc7"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "foreign_resume": 1,
+        "parent_entry": 1,
+        "restore": 5,
+        "unresolved_cleanup_hold": 1,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_captured",
+        "capture_count": 1,
+        "foreign_count": 257,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.result.json",
+        "bytes": 303,
+        "sha256": "0d451bb3c513effc04337c2102667ae0f303ab06a3aad9b952dc25bd7f5f0021"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.calls.json",
+        "bytes": 303,
+        "sha256": "0d451bb3c513effc04337c2102667ae0f303ab06a3aad9b952dc25bd7f5f0021"
+      },
+      "actual_body_calls": 258,
+      "foreign_body_calls": 257,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "eb3af40144e5668d39935cdd9073204f264f7cc1abf564d3095bec38d37b05fe"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "eb3af40144e5668d39935cdd9073204f264f7cc1abf564d3095bec38d37b05fe"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2870,
+        "sha256": "cc84876bbe398aca4192d9dd83bf248c3a9b344ba1ab7bcb9e1cb9bbe927d437"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 21796,
+          "created": 134369989993408175,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 35496,
+          "created": 134369989993485035,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 23992,
+          "created": 134369989993485822,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 24380,
+          "created": 134369989993487034,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 29264,
+          "created": 134369989993500418,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 21796,
+          "generation": 1,
+          "created": 134369989993408175,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 35496,
+          "generation": 1,
+          "created": 134369989993485035,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 23992,
+          "generation": 1,
+          "created": 134369989993485822,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 24380,
+          "generation": 1,
+          "created": 134369989993487034,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 29264,
+          "generation": 1,
+          "created": 134369989993500418,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          27388,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": true,
+      "actual_native_fault_hold": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\ACTUAL-NATIVE-FAULT-HOLD.actual.json",
+        "bytes": 578,
+        "sha256": "8d57348f9d6f4a6dd083ef90c7258cd7b55b2c3b867ffc6fc8a7fc8e40b486ab"
+      },
+      "owned_late_events": []
+    },
+    {
+      "case": "default-off",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\CASE.actual.json",
+        "bytes": 1099,
+        "sha256": "d1c8d01d8b6bafe7a96be22510760b2d9fe5bbf14515a5a57990313b0e2713e5"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "e209dff7e1f00c52228b84066b0410e17e90433b33beca4a3329b2801c7ee874"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "6590bcd04fa704c4540d97f974313e11ff4cbf57169ec5ccf569a5f3a99ed42d"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.POPEN.actual.json",
+          "bytes": 356,
+          "sha256": "94188b9f783a0da0bfcd93e61d903d264e6857e76509861f19e5e381f5bbe019"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\observer.POPEN.actual.json",
+          "bytes": 640,
+          "sha256": "344cad35c256db530d8044794f8007c2f0b4d5d8c2327855698dc4775a5284c4"
+        }
+      },
+      "target_pid": 27132,
+      "target_created": 134369989997194414,
+      "observer_pid": 29892,
+      "observer_created": 134369989998177376,
+      "target_exit": 0,
+      "observer_exit": 2,
+      "raw": null,
+      "raw_row_counts": {},
+      "native_terminal": null,
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.result.json",
+        "bytes": 298,
+        "sha256": "25812a128b27b528f19b477475b484f5e4ef9d60c56f2927f105ff58a3aa7275"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.calls.json",
+        "bytes": 298,
+        "sha256": "25812a128b27b528f19b477475b484f5e4ef9d60c56f2927f105ff58a3aa7275"
+      },
+      "actual_body_calls": 0,
+      "foreign_body_calls": 0,
+      "target_body_calls": 0,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "c34376a9b5066a689bdf34cec3b241461e258d163f4f83ef8999b16a2f369b8c"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "c34376a9b5066a689bdf34cec3b241461e258d163f4f83ef8999b16a2f369b8c"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2305,
+        "sha256": "6e810941bfd5db265c261ae57c4e80af1911935c9343b2a481b1e178f7342801"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 7748,
+          "created": 134369989997194460,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 30784,
+          "created": 134369989997298076,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 12256,
+          "created": 134369989997299555,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37660,
+          "created": 134369989997300857,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 25368,
+          "created": 134369989997324123,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [],
+      "retired_generations": [],
+      "unarmed_rows": 0,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "missing-ack",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\CASE.actual.json",
+        "bytes": 1100,
+        "sha256": "417bf269c6a271f371201d272230a9ec8aa832c3530ad488e13d5b2ca40ad199"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "38defc878d6761510aaced3280cfc76b6662121369b66d168dab3a3755363413"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "911faec55b491364657f34f59a779ba30117ebf9cfdf85281edce17cca595af5"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.POPEN.actual.json",
+          "bytes": 356,
+          "sha256": "89f3a3c656cfa18bfde615ec93c82012e33f045297f854827ece3624df8a310d"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\observer.POPEN.actual.json",
+          "bytes": 642,
+          "sha256": "6b90624c2666585a85f92a0c5f23a1967c644801a3ff1bddf17599dd2e1c05a4"
+        }
+      },
+      "target_pid": 32724,
+      "target_created": 134369989999168955,
+      "observer_pid": 28236,
+      "observer_created": 134369990000008082,
+      "target_exit": 0,
+      "observer_exit": 2,
+      "raw": null,
+      "raw_row_counts": {},
+      "native_terminal": null,
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.result.json",
+        "bytes": 299,
+        "sha256": "ec59f5c800f6614df1b8a9b07b25cee58d66dfbffa7f93bf32a8d3bb1d76ecb9"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.calls.json",
+        "bytes": 299,
+        "sha256": "ec59f5c800f6614df1b8a9b07b25cee58d66dfbffa7f93bf32a8d3bb1d76ecb9"
+      },
+      "actual_body_calls": 0,
+      "foreign_body_calls": 0,
+      "target_body_calls": 0,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "7df58294ff7df810ee4ffe6554be36c4a80869b97f5ab55fefc639580e0d9fb2"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "7df58294ff7df810ee4ffe6554be36c4a80869b97f5ab55fefc639580e0d9fb2"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2307,
+        "sha256": "23d424690767916450c5ad3b5001c839cd1cae6fb1486a4c9cad4de216f5913c"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 29672,
+          "created": 134369989999168978,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 11576,
+          "created": 134369989999273396,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 31872,
+          "created": 134369989999274406,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 11184,
+          "created": 134369989999277291,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21404,
+          "created": 134369989999291626,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [],
+      "retired_generations": [],
+      "unarmed_rows": 0,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "bad-schema",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\CASE.actual.json",
+        "bytes": 1098,
+        "sha256": "386825286d6b33617adf4eb8f40295c68c2fc08e1b328fa48586e38c4885efb9"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "19a640a6862922bded2133845f476a51de7e349c3582ed8c648eafa96523746d"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "149d54c0654994a356f944e10c9e880e174463a4f73b0dded8a0321e4af54fa1"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.POPEN.actual.json",
+          "bytes": 355,
+          "sha256": "a78d9c5967a50c58d77757d2b16e853c0186663de4612d00b55112ddf2920fdc"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\observer.POPEN.actual.json",
+          "bytes": 685,
+          "sha256": "aeb47f93bc400af98524b47638635681f7ded89b4ac51fd00e7a4778b22ba1b8"
+        }
+      },
+      "target_pid": 27952,
+      "target_created": 134369990001115127,
+      "observer_pid": 16552,
+      "observer_created": 134369990001852541,
+      "target_exit": 0,
+      "observer_exit": 2,
+      "raw": null,
+      "raw_row_counts": {},
+      "native_terminal": null,
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.result.json",
+        "bytes": 299,
+        "sha256": "6ace2fe20674e975f58c17a727fc19a0c7c977ecfcbe13c51994f262827f2db2"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.calls.json",
+        "bytes": 299,
+        "sha256": "6ace2fe20674e975f58c17a727fc19a0c7c977ecfcbe13c51994f262827f2db2"
+      },
+      "actual_body_calls": 0,
+      "foreign_body_calls": 0,
+      "target_body_calls": 0,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "fa04d9505c2cf694db6810656fc6038fc1b5839e9dc107b6421d7d860e766de3"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "fa04d9505c2cf694db6810656fc6038fc1b5839e9dc107b6421d7d860e766de3"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2305,
+        "sha256": "f6fad20a7b5228036215ae12c5eb910ea63af56dafdda258281d6cd775cbc725"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 24880,
+          "created": 134369990001115150,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 37308,
+          "created": 134369990001194287,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 1316,
+          "created": 134369990001195360,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 27616,
+          "created": 134369990001196656,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 32084,
+          "created": 134369990001211453,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [],
+      "retired_generations": [],
+      "unarmed_rows": 0,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "occupied-dr",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\CASE.actual.json",
+        "bytes": 1281,
+        "sha256": "5091daf91a174545439a4773c94fa2db063b14cda37dd7dd85ba46eb9dd42305"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "bf8eab058c2ab92573309f4b18592ffda58b733d45a497eb6d165a02d5954f17"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "080aa17cf2b17568d5dc1dffd2ccc4a8f540c1782ec18b0390a17bc1de433ab7"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.POPEN.actual.json",
+          "bytes": 360,
+          "sha256": "6657d48ea425a9b6824dd143542d98478ab6082a77c9606782e481a9d678917b"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\observer.POPEN.actual.json",
+          "bytes": 684,
+          "sha256": "44f0b9e657490e11af34fe2fc4a27299529dcce34e0042623143411ba5a57691"
+        }
+      },
+      "target_pid": 32460,
+      "target_created": 134369990003200262,
+      "observer_pid": 30104,
+      "observer_created": 134369990003983594,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\observer.raw.ndjson",
+        "bytes": 1093,
+        "sha256": "25c5b1f97525575b32cbd6ccabb673d2a7aae1384992725caad29d3761833c69"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 1,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "arm_failed",
+        "capture_count": 0,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": false,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.result.json",
+        "bytes": 299,
+        "sha256": "b981eaafe4a35060a9b86de268efe5f17b16b6dc9a5ca4345936f83bbf2bf18c"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.calls.json",
+        "bytes": 299,
+        "sha256": "b981eaafe4a35060a9b86de268efe5f17b16b6dc9a5ca4345936f83bbf2bf18c"
+      },
+      "actual_body_calls": 0,
+      "foreign_body_calls": 0,
+      "target_body_calls": 0,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 1,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.initial-debug.json",
+        "bytes": 478,
+        "sha256": "292bd1c1826af6df228295d0831629be9567ba936366767562e44e3dc68d3846"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.after-debug.json",
+        "bytes": 478,
+        "sha256": "292bd1c1826af6df228295d0831629be9567ba936366767562e44e3dc68d3846"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2347,
+        "sha256": "16099d735e1eb4fcad2aed5170d20a31b560dec312b2b116099a77a6cc76f73a"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 26600,
+          "created": 134369990003200304,
+          "original_and_after_full6": [
+            305418240,
+            0,
+            0,
+            0,
+            4294905840,
+            1025
+          ]
+        },
+        {
+          "tid": 25204,
+          "created": 134369990003297537,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 31112,
+          "created": 134369990003298953,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34072,
+          "created": 134369990003300229,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 28932,
+          "created": 134369990003323427,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [],
+      "retired_generations": [],
+      "unarmed_rows": 0,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "occupied-tf",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\CASE.actual.json",
+        "bytes": 1280,
+        "sha256": "273fb3a01b8d1c690b14a7271ac1cbb9686c5b9278aa76f60597605d42655ed3"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "c49832f1b83ea17f483dafaac612d4b3bc6a07b9ffb2d3838fc1c872e84338fd"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "1710ed3a4c3d897a31b18f3943ebe05b963a9230a4debb4c104628f8151239e7"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.POPEN.actual.json",
+          "bytes": 360,
+          "sha256": "c8e213d45752b498c691a0dd4ac5e943439f6ca7a6685259369f9f8779b8c7d3"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\observer.POPEN.actual.json",
+          "bytes": 684,
+          "sha256": "b2487c87960ce22279ca56a1f97bf760afd6db75f0b626c58fc1266e5c4bca4a"
+        }
+      },
+      "target_pid": 30980,
+      "target_created": 134369990005155950,
+      "observer_pid": 29076,
+      "observer_created": 134369990006036860,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\observer.raw.ndjson",
+        "bytes": 1073,
+        "sha256": "b2c81190409eaabd4bed77885aaadabbcc9a0f95d7264628ba38f9b2d4c83db6"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 1,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "arm_failed",
+        "capture_count": 0,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": false,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.result.json",
+        "bytes": 298,
+        "sha256": "88a269921b4877b2fa4e1dde20b54f96c7dafee97f3e4ef6a7eaef3b06e1af24"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.calls.json",
+        "bytes": 298,
+        "sha256": "88a269921b4877b2fa4e1dde20b54f96c7dafee97f3e4ef6a7eaef3b06e1af24"
+      },
+      "actual_body_calls": 0,
+      "foreign_body_calls": 0,
+      "target_body_calls": 0,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.initial-debug.json",
+        "bytes": 367,
+        "sha256": "81741751101fcba2a78c43f2bd5f7a060760ab0873e81e0277eb751040b9ba5b"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "23768939fcaf2059e15a5146a2e20080e4ef8d4f834ee165d3aba8830be4d970"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2175,
+        "sha256": "81c67c1861811ae2b994138c803c1564d88fd7106c22918eb2546300c16a1bbb"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 35980,
+          "created": 134369990005155991,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 31788,
+          "created": 134369990005238320,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 23060,
+          "created": 134369990005239408,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 23776,
+          "created": 134369990005240686,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [],
+      "retired_generations": [],
+      "unarmed_rows": 0,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "context-drift",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\CASE.actual.json",
+        "bytes": 1636,
+        "sha256": "9379e142371126d93f924108aa1a898736a97a785fb076040e3360d9d205c16d"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "65cead9486e27b5a6edef17cb3600b15dd269c3e00008e58c99b2127a1357e70"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "8e0ddaeea1bf704ba675827557436a61050d254a60c5061515b7f80752d6a501"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.POPEN.actual.json",
+          "bytes": 364,
+          "sha256": "eca70c87f253e471f4b1db58fbefa9a1a206dd0595ad50901334e2dcce54388f"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\observer.POPEN.actual.json",
+          "bytes": 690,
+          "sha256": "e8e16140482bb8a9829b8bb0ec0e296a7a207dd7b358a49a9f7bdccf3682fee4"
+        }
+      },
+      "target_pid": 30504,
+      "target_created": 134369990007561364,
+      "observer_pid": 19508,
+      "observer_created": 134369990008426173,
+      "target_exit": 0,
+      "observer_exit": 0,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\observer.raw.ndjson",
+        "bytes": 3841,
+        "sha256": "1dce4067d4b7ebe4c5bf506b060128de963edda25611902f0c6157d235adf0cb"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "parent_entry": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_captured",
+        "capture_count": 1,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.result.json",
+        "bytes": 299,
+        "sha256": "1e9ba03414545021d16e4ceda3ed79a236de819de4516dd69c570146ddc2bb9e"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.calls.json",
+        "bytes": 299,
+        "sha256": "1e9ba03414545021d16e4ceda3ed79a236de819de4516dd69c570146ddc2bb9e"
+      },
+      "actual_body_calls": 1,
+      "foreign_body_calls": 0,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "fc25617c7f6fe453c8f8449fba4b3daad9977b28998a5e37fa59cf262242e48f"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "fc25617c7f6fe453c8f8449fba4b3daad9977b28998a5e37fa59cf262242e48f"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2869,
+        "sha256": "4ced8af648f31bd4ed7018e06b0e2fc380218c6e680d6455803c5b8f57b94d58"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 26740,
+          "created": 134369990007561389,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21220,
+          "created": 134369990007645319,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 32556,
+          "created": 134369990007646422,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21036,
+          "created": 134369990007647743,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 27868,
+          "created": 134369990007663736,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 26740,
+          "generation": 1,
+          "created": 134369990007561389,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21220,
+          "generation": 1,
+          "created": 134369990007645319,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 32556,
+          "generation": 1,
+          "created": 134369990007646422,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21036,
+          "generation": 1,
+          "created": 134369990007647743,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 27868,
+          "generation": 1,
+          "created": 134369990007663736,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          1300,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": true,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "fullid-drift",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\CASE.actual.json",
+        "bytes": 1640,
+        "sha256": "840ef73cec92c0b1895649368d60f36c1b455b0033db72e86e48c0fd627c48a3"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "71c3417d41d1bcf8ea8c55dd31c9c71a63068e2c97b5500e64c32248543ec34c"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "794328701fce488d5a1d2c8afd37c6a0a8d1fc10a5092b96a2d649e46c54ace5"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.POPEN.actual.json",
+          "bytes": 362,
+          "sha256": "f429e7310dabb59198f5fce272836ca0cd51ec44359b8e4df65375b206e09c6b"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\observer.POPEN.actual.json",
+          "bytes": 687,
+          "sha256": "36d49064f7f111eab7a7174a10d8b3251bd78f5f3951a7047001a62251a0e897"
+        }
+      },
+      "target_pid": 25432,
+      "target_created": 134369990010472207,
+      "observer_pid": 36768,
+      "observer_created": 134369990011232806,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\observer.raw.ndjson",
+        "bytes": 3849,
+        "sha256": "a28063bef92d2818daf3140f1264b89a07d5c62374a500ee80d0f2d99c356def"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "parent_entry": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_read_incomplete",
+        "capture_count": 1,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.result.json",
+        "bytes": 299,
+        "sha256": "e8f8332c236c0ee0e0bb03d90a1baa82fc892fd493fee02405a86d67d48ae5a7"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.calls.json",
+        "bytes": 299,
+        "sha256": "e8f8332c236c0ee0e0bb03d90a1baa82fc892fd493fee02405a86d67d48ae5a7"
+      },
+      "actual_body_calls": 1,
+      "foreign_body_calls": 0,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "2f6c664018554d4fca66af0038ff742615475c9d81f030ee1b430655b39276d4"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "2f6c664018554d4fca66af0038ff742615475c9d81f030ee1b430655b39276d4"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2870,
+        "sha256": "f46b8fd0fd39328610dd29f7ba56754bac52ea261f035cddb35c93d89708b574"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 12440,
+          "created": 134369990010472234,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 35976,
+          "created": 134369990010554314,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34724,
+          "created": 134369990010555578,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21244,
+          "created": 134369990010556840,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 24896,
+          "created": 134369990010572754,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 12440,
+          "generation": 1,
+          "created": 134369990010472234,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 35976,
+          "generation": 1,
+          "created": 134369990010554314,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34724,
+          "generation": 1,
+          "created": 134369990010555578,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 21244,
+          "generation": 1,
+          "created": 134369990010556840,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 24896,
+          "generation": 1,
+          "created": 134369990010572754,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          20156,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "magic-drift",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\CASE.actual.json",
+        "bytes": 1636,
+        "sha256": "2f6d6176f1b421b719756d3ede5e12c2db692fd3ae5d9e9ba92f0f84977186af"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "7579a667c48338b22f40692fe35ece4a5c0184d1215b155c03c7cf2e068f0fa9"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "cdfc16bd4cd4c55d82cc41da852a94b1ee5a3a9c29e93dca39562151a803c1f5"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.POPEN.actual.json",
+          "bytes": 360,
+          "sha256": "43444b5fee33e2734b299f3345918f0cfdfba96b00251c180f899f5d31b8e5a6"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\observer.POPEN.actual.json",
+          "bytes": 684,
+          "sha256": "0195157a5921e40f2c6f3c7f07e443fefe3e50ace3c19854d1dd04fe16906290"
+        }
+      },
+      "target_pid": 33720,
+      "target_created": 134369990013213605,
+      "observer_pid": 35644,
+      "observer_created": 134369990014100139,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\observer.raw.ndjson",
+        "bytes": 3829,
+        "sha256": "b11ceb91473ebc797df2192c7e87370d8eab2aa1b04df52f58576879e9e5c84b"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "parent_entry": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_read_incomplete",
+        "capture_count": 1,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.result.json",
+        "bytes": 298,
+        "sha256": "e7c0adcaad13784b9c95a66ac271c62339c535ef2ac1cc613a8f1cd0f24e58f4"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.calls.json",
+        "bytes": 298,
+        "sha256": "e7c0adcaad13784b9c95a66ac271c62339c535ef2ac1cc613a8f1cd0f24e58f4"
+      },
+      "actual_body_calls": 1,
+      "foreign_body_calls": 0,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "a8b57617bb6b73397421f0bf32eb7db2c76a68df93119d7b1cd1e5dc5618e9d1"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "a8b57617bb6b73397421f0bf32eb7db2c76a68df93119d7b1cd1e5dc5618e9d1"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "3e23cff0badcaa1e400c582ff7b08cf38a3862c6a17cd2b6498be74658a4054f"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 6536,
+          "created": 134369990013213630,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 18976,
+          "created": 134369990013296950,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 29860,
+          "created": 134369990013297746,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34700,
+          "created": 134369990013298397,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 27740,
+          "created": 134369990013310665,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 6536,
+          "generation": 1,
+          "created": 134369990013213630,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 18976,
+          "generation": 1,
+          "created": 134369990013296950,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 29860,
+          "generation": 1,
+          "created": 134369990013297746,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 34700,
+          "generation": 1,
+          "created": 134369990013298397,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 27740,
+          "generation": 1,
+          "created": 134369990013310665,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          20096,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "session-drift",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\CASE.actual.json",
+        "bytes": 1643,
+        "sha256": "c52584af07e386459641e2ccf65816885513721d5c812a62226d1952085dfc2b"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "f3f8e43d2cc28723c3d914d1d1d0aa434e84768617d46dc9cdedb2901cc1980b"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "38b9a5e42b5d041a9cad94ffc74608e6f66059a019b48f91ffd5056ceed79984"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.POPEN.actual.json",
+          "bytes": 364,
+          "sha256": "d826b50d5de4e6f023905973bc5085ac5a59e2bc724a9da0c7e00efda51e7309"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\observer.POPEN.actual.json",
+          "bytes": 690,
+          "sha256": "cbb1d10b598bed34afd06094a7b0a699c59c2568495252501c5844d3577ec419"
+        }
+      },
+      "target_pid": 26696,
+      "target_created": 134369990016004929,
+      "observer_pid": 34492,
+      "observer_created": 134369990016732204,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\observer.raw.ndjson",
+        "bytes": 3849,
+        "sha256": "9a192795ff13128c4d376527f04f2166aa8481030ff239dd36241e8f4d6f7206"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "parent_entry": 1,
+        "restore": 5,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "target_read_incomplete",
+        "capture_count": 1,
+        "foreign_count": 0,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.result.json",
+        "bytes": 299,
+        "sha256": "247c7540d4ada360844c5fef773a7160c760a7f114927a856a0e6a5f78e7567c"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.calls.json",
+        "bytes": 299,
+        "sha256": "247c7540d4ada360844c5fef773a7160c760a7f114927a856a0e6a5f78e7567c"
+      },
+      "actual_body_calls": 1,
+      "foreign_body_calls": 0,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "17dffd7d0837c77780377920282c619ac89346471a1ee74ec154b7cd49994c98"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "17dffd7d0837c77780377920282c619ac89346471a1ee74ec154b7cd49994c98"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "1c1033d918b0b87a47da9132a156c1a5f6fe678a91fb3df670e81461feb91fed"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 11116,
+          "created": 134369990016004955,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 33592,
+          "created": 134369990016117290,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 23820,
+          "created": 134369990016118451,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 6232,
+          "created": 134369990016119766,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 33156,
+          "created": 134369990016135787,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 11116,
+          "generation": 1,
+          "created": 134369990016004955,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 33592,
+          "generation": 1,
+          "created": 134369990016117290,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 23820,
+          "generation": 1,
+          "created": 134369990016118451,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 6232,
+          "generation": 1,
+          "created": 134369990016119766,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 33156,
+          "generation": 1,
+          "created": 134369990016135787,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          31560,
+          1
+        ]
+      ],
+      "unarmed_rows": 0,
+      "target_retained": true,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": []
+    },
+    {
+      "case": "cancel_late",
+      "CASE": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\CASE.actual.json",
+        "bytes": 1631,
+        "sha256": "712e96a01bb9d0969356c9475bb48e09084d6c4176c1d24809edba593b1f29a9"
+      },
+      "original_waits": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "34c0ca1d738aa63a6bc93fabf0583b9a8219ea6adcf3165b86d4e984acfc1711"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\observer.ORIGINAL-WAIT.actual.json",
+          "bytes": 224,
+          "sha256": "d005042accf68f6a53bea54a06704a0e886c1c1374b688313f034b38087d7438"
+        }
+      },
+      "original_popens": {
+        "target": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.POPEN.actual.json",
+          "bytes": 360,
+          "sha256": "548de9563af78082bedf672489e7f10a7f5a105e243e543dbd058a07057e76f8"
+        },
+        "observer": {
+          "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\observer.POPEN.actual.json",
+          "bytes": 684,
+          "sha256": "936dfc18a4a4c3a0b328098015643fbd08122b14e7761bc8deb0de4266f427e9"
+        }
+      },
+      "target_pid": 29000,
+      "target_created": 134369990018595239,
+      "observer_pid": 27580,
+      "observer_created": 134369990019510359,
+      "target_exit": 0,
+      "observer_exit": 1,
+      "raw": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\observer.raw.ndjson",
+        "bytes": 3567,
+        "sha256": "05bbf86045520db747b1d7c086abb0748563eb9e7407bc541ecf1664e80003af"
+      },
+      "raw_row_counts": {
+        "start": 1,
+        "arm": 6,
+        "ready": 1,
+        "thread_exited": 1,
+        "foreign_resume": 1,
+        "cleanup_owned_execution": 1,
+        "restore": 5,
+        "cleanup_thread_unarmed": 1,
+        "terminal": 1
+      },
+      "native_terminal": {
+        "kind": "terminal",
+        "reason": "cancel",
+        "capture_count": 0,
+        "foreign_count": 247,
+        "restored": true,
+        "detached": true,
+        "pending_event": false,
+        "cleanup_complete": true,
+        "process_exited": false,
+        "observation_thread_admission_complete": true,
+        "window_complete": false,
+        "full_R08": false
+      },
+      "target_result": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.result.json",
+        "bytes": 305,
+        "sha256": "d250e78d6f57058e56f86fc4fe0f4793a1e6b39c0063f02f8b6326ce372d5edd"
+      },
+      "actual_calls": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.calls.json",
+        "bytes": 305,
+        "sha256": "d250e78d6f57058e56f86fc4fe0f4793a1e6b39c0063f02f8b6326ce372d5edd"
+      },
+      "actual_body_calls": 4097,
+      "foreign_body_calls": 4096,
+      "target_body_calls": 1,
+      "native_ABI_four_args_and_return_failures": 0,
+      "occupied_warmup_calls": 0,
+      "before_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "1f887261abd8983b39b040b2722ce65a7d2b9ef4d80efc0767a4e4a3af4be16b"
+      },
+      "after_debug": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "1f887261abd8983b39b040b2722ce65a7d2b9ef4d80efc0767a4e4a3af4be16b"
+      },
+      "original_audit": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2866,
+        "sha256": "61026f24c942b1ea5c5a217c17b9a506e5b713879628e33a88a0b8efa7a132b5"
+      },
+      "independently_compared_existing_full6": [
+        {
+          "tid": 35028,
+          "created": 134369990018595263,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 14324,
+          "created": 134369990018665962,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 22800,
+          "created": 134369990018666715,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 2172,
+          "created": 134369990018667702,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 26180,
+          "created": 134369990018683272,
+          "original_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "independently_compared_owned_full6": [
+        {
+          "tid": 35028,
+          "generation": 1,
+          "created": 134369990018595263,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 14324,
+          "generation": 1,
+          "created": 134369990018665962,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 22800,
+          "generation": 1,
+          "created": 134369990018666715,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 2172,
+          "generation": 1,
+          "created": 134369990018667702,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "tid": 26180,
+          "generation": 1,
+          "created": 134369990018683272,
+          "saved_and_after_full6": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "retired_generations": [
+        [
+          1704,
+          1
+        ]
+      ],
+      "unarmed_rows": 1,
+      "target_retained": false,
+      "target_qualified": false,
+      "actual_native_fault_hold": null,
+      "owned_late_events": [
+        {
+          "kind": "cleanup_owned_execution",
+          "owned_late_event": true,
+          "thread_id": 35028,
+          "thread_generation": 1,
+          "thread_created": 134369990018595263,
+          "RIP": 140699891494928,
+          "restored_generation": false,
+          "debug": [
+            140699891494928,
+            0,
+            0,
+            0,
+            4294905841,
+            1025
+          ]
+        }
+      ]
+    }
+  ],
+  "all34_child_original_waits_verified": true,
+  "all_native_full6_audits_independently_verified": true,
+  "no_register_masking": true,
+  "occupied_DR_warmup_actual": 1,
+  "occupied_TF_before_and_after_preserved": true,
+  "all_seventeen_executed": true,
+  "cancel_late_last_and_actual_owned_late_observed": true,
+  "known_native_fault_seams": "restore/readback/continue actual injected API seams; held original Popen then cleanup and wait, not proof of spontaneous OS failures",
+  "ABI_scope": "Real synthetic declared four-argument function executed; body counters, per-call captured arguments and return assertion zero failures. No CK3 prototype or actual parent return capture qualification.",
+  "qualification_scope": "Recommend Root acceptance only for this exact standalone parent-entry execution-DR cold binary/source set. Root must separately issue qualification/adoption.",
+  "qualification_not_self_issued": true,
+  "real_CK3": false,
+  "public_live_qualification": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "old_attempt": "Old p01 ten PASS, occupied-dr FAIL, later six unexecuted and missing original target wait remain unchanged. New p02 is independent; Python mock suites are not counted as native cold.",
+  "reviewer_execution": {
+    "native_EXE": 0,
+    "SDK": 0,
+    "DR_API": 0,
+    "game": 0,
+    "Steam_probe": 0,
+    "source_edits": 0,
+    "consumer_or_selector_reruns": 0
+  },
+  "reviewer_checker_correction": "Initial metadata-only check incorrectly expected observer exit0 for three retained-but-unqualified drift cases. Corrected to exit1 with raw target_read_incomplete below; no native result changed or replayed.",
+  "raw_handling": "Exact original final raw hashes/rows read for independent audit; no raw copies, no EXE bodies read or rehashed.",
+  "retention": {
+    "reason": "Independent exact17 cold and full6/wait provenance for next Root adoption",
+    "review_by_utc": "2026-10-22T19:45:00Z"
+  }
+}

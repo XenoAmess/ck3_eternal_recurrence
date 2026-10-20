@@ -1,0 +1,91 @@
+{
+  "schema": "xar.e04.parent-dr.T02-final-native-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:52:13.262681+00:00",
+  "author_process": {
+    "pid": 14016,
+    "created": 134369995330225353,
+    "exits_after_terminal_write": true,
+    "already_absent_during_write_not_claimed": true
+  },
+  "actual_scope": "sourcecopy14 + MSVC2target + exactSYSTEM2 + 17actualPASS once; lastcancel_late",
+  "Root_limited_Q": {
+    "path": "C:\\w\\e04parentdr02\\PARENT-ENTRY-EXECUTION-QUALIFICATION.actual-a01.json",
+    "bytes": 4738,
+    "sha256": "b80270c8bd5bace8c464a31b8ef67cea346fcf5edae52f6bf9ae1f687ee41504"
+  },
+  "Root_acceptance": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-COLD-ACCEPTANCE.actual-a01.json",
+    "bytes": 5702,
+    "sha256": "935e7900fa2910f296b8b000f25e577775e9793be3f9e4911d1462bb93011cbf"
+  },
+  "independent_review": {
+    "path": "C:\\w\\e04parentdr02\\cold-review-a01\\INDEPENDENT-ACTUAL-17-COLD-REVIEW.actual-a01.json",
+    "bytes": 105158,
+    "sha256": "109784b48604c246334d5e2697d3cbf1d0271145ca0c6ab5503bccf6f65dc994"
+  },
+  "owned_native_close": {
+    "path": "C:\\w\\e04parentdr02\\OWNED-NATIVE-EXE-CLOSED.actual-a01.json",
+    "bytes": 20720,
+    "sha256": "7053e58c7abde3dc9a9218e75ba8a7b9e6443c3d44348264319dff3547f0d5ef"
+  },
+  "original_waits": 47,
+  "all_recorded_native_generations_closed": true,
+  "remaining_heavy_write_bytes": 0,
+  "remaining_author_metadata_write_bytes_after_this_file": 0,
+  "all_other_authors_reported_stopped": true,
+  "metadata_before_final_file": {
+    "root": "C:\\w\\e04parentdr02",
+    "complete": true,
+    "files": 462,
+    "logical_bytes": 3737448,
+    "metadata_sha256": "08cff85276bc302712796638367db930aa2ce558e48d2828102f09f7ea3b88a7",
+    "read_errors": []
+  },
+  "source_actual": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+    "complete": true,
+    "files": 15,
+    "logical_bytes": 162475,
+    "metadata_sha256": "e486e99a76065c51fc7104105d66cec16dd978db7334771db22c2db6d68b2f95",
+    "read_errors": []
+  },
+  "final_logical_not_continuous_physical_peak_proof": true,
+  "copyplan": {
+    "path": "C:\\w\\e04parentdr02\\SMALL-EVIDENCE-COPYPLAN.actual-a01.json",
+    "bytes": 128881,
+    "sha256": "43009da706c0587fcc1aa7bd63d860c461ed739e8543ec49131f152dcbc75b1f"
+  },
+  "archive_payload_count": 434,
+  "archive_payload_bytes": 874576,
+  "delivery_sidecars": [
+    "SMALL-EVIDENCE-COPYPLAN.actual-a01.json",
+    "FINAL-NATIVE-CLOSED.actual-a01.json"
+  ],
+  "public_runtime_qualification": false,
+  "real_CK3": false,
+  "real_OS_fault_proven": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "formal_dynamic_scenes": "5/11",
+  "first_fresh_24924_original_rc": 1,
+  "first_fresh_exact_margin": "unknown",
+  "later_independent_193957_quota_bytes": -1622016,
+  "later_value_not_attributed_to_first_instant": true,
+  "prior_p01_FAIL_and_missing_original_wait_unchanged": true,
+  "review_by_utc": "2026-10-27T00:00:00Z",
+  "retain": "Current source/binaries/fullSYSTEM receipt/original attempts remain required qualification and next-experiment inputs; reassess under common policy, no indefinite retention or delete authorization",
+  "budget": {
+    "top_absolute_bytes": 31457280,
+    "historical_source_bytes": 2097152,
+    "completed_protocol_charge_bytes": 33554432,
+    "active_cold_future_before_settlement_bytes": 31457280,
+    "credit_bytes": 0,
+    "hard_deadline_utc": "2026-10-20T20:15:00Z"
+  },
+  "final_file_bytes": 3637,
+  "self_inclusive_final_logical_bytes": 3741085,
+  "self_inclusive_final_file_count": 463
+}

@@ -1,0 +1,123 @@
+{
+  "schema": "xar.e04.Root.actual-cold-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:46:55.156649+00:00",
+  "accepted_readback": true,
+  "suite": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\SELECTED-COLD.actual.json",
+    "bytes": 4226,
+    "sha256": "283358b05236d5ae92b74fd671587ea5635dd8f54759f0f940af8656b9a6b7fa"
+  },
+  "cases": {
+    "foreign257_then_target": {
+      "target_exit": 0,
+      "observer_exit": 0,
+      "full6": true,
+      "raw_rows": 17
+    },
+    "created_thread": {
+      "target_exit": 0,
+      "observer_exit": 0,
+      "full6": true,
+      "raw_rows": 18
+    },
+    "foreign4096_limit": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 16
+    },
+    "timeout": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 16
+    },
+    "restore-fault": {
+      "target_exit": 0,
+      "observer_exit": 0,
+      "full6": true,
+      "raw_rows": 18
+    },
+    "readback-fault": {
+      "target_exit": 0,
+      "observer_exit": 0,
+      "full6": true,
+      "raw_rows": 18
+    },
+    "continue-fault": {
+      "target_exit": 0,
+      "observer_exit": 0,
+      "full6": true,
+      "raw_rows": 18
+    },
+    "default-off": {
+      "target_exit": 0,
+      "observer_exit": 2,
+      "full6": true,
+      "raw_rows": 0
+    },
+    "missing-ack": {
+      "target_exit": 0,
+      "observer_exit": 2,
+      "full6": true,
+      "raw_rows": 0
+    },
+    "bad-schema": {
+      "target_exit": 0,
+      "observer_exit": 2,
+      "full6": true,
+      "raw_rows": 0
+    },
+    "occupied-dr": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 3
+    },
+    "occupied-tf": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 3
+    },
+    "context-drift": {
+      "target_exit": 0,
+      "observer_exit": 0,
+      "full6": true,
+      "raw_rows": 16
+    },
+    "fullid-drift": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 16
+    },
+    "magic-drift": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 16
+    },
+    "session-drift": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 16
+    },
+    "cancel_late": {
+      "target_exit": 0,
+      "observer_exit": 1,
+      "full6": true,
+      "raw_rows": 18
+    }
+  },
+  "case_pin_count": 17,
+  "original_case_wait_count": 34,
+  "actual_full6_recomputed_from_raw_and_peer_rows": true,
+  "real_CK3": false,
+  "full_R08": false,
+  "qualification_pending_independent_review": true,
+  "old_attempt_unchanged": "10PASS/occupied-drFAIL/6notstarted/target wait UNKNOWN",
+  "formal_dynamic_scenes": "5/11"
+}

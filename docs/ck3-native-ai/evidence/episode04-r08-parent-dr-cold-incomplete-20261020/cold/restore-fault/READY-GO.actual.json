@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:54:11.660236+00:00",
+  "native_READY": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\READY.actual.json",
+    "bytes": 101,
+    "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+  },
+  "target_meta": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.meta.txt",
+    "bytes": 669,
+    "sha256": "9099e22b1a8cbaefb23eef07e29996461ed498527a34ba454e0ebff18155f2c5"
+  },
+  "target_original_Popen": {
+    "pid": 29452,
+    "created": 134369960515127199
+  }
+}

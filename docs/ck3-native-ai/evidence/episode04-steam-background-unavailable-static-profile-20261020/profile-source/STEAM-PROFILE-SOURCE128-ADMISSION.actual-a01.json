@@ -1,0 +1,69 @@
+{
+  "schema": "xar.e04.steam-file-profile-source128-2015.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:32:25.981347+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-steam-profile-source128-2015-20261020-a01",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-profile-source-2015-a01",
+  "all_inclusive_aggregate_ceiling_bytes": 131072,
+  "source_analysis_execution_admitted": true,
+  "exact_readonly_file_inputs": [
+    "D:/Program Files (x86)/Steam/steam.exe",
+    "D:/Program Files (x86)/Steam/steamui.dll"
+  ],
+  "allowed_reads": "File version/SHA256/PE headers and six existing instruction anchors; stable beforeafter file identity. No mode query, process memory or runtime provider execution.",
+  "source_provider": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+    "bytes": 16352,
+    "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+  },
+  "actual_unqualified_probe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\STEAM-BACKGROUND.actual.json",
+    "bytes": 595,
+    "sha256": "77a531480b7616e371c2df589f26f29a733a3f2ed97969d6b376408950280a19"
+  },
+  "probe_scope_closed": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\INDEPENDENT-CAPACITY-CLOSED.actual-a01.json",
+    "bytes": 1009,
+    "sha256": "fafab730c747db7035ca21f8559c96a85d0cc66201e94ba41adec190a525766e"
+  },
+  "run_probe_process_memory_Steam_mode_UI_SDK_game_newEXE_build_Git_D_U_W_mutation_download_execution_admitted": false,
+  "unknown_version_allowlist_expansion_without_source_verification_admitted": false,
+  "Root_authority": "Root explicitly grants independent file-only Steam source profile diagnosis, one bounded smallscript/receipt set; preserve unavailable actual and no runtime qualification.",
+  "hard_deadline_utc": "2026-10-20T20:15:00Z",
+  "quota_review_at_utc": "2026-10-20T20:15:00Z",
+  "fresh_budget": {
+    "C_known_future_bytes": 67502080,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25837305856,
+    "C_floor_margin_bytes": 51588870144,
+    "C_projected_whole_volume_upper_bound_bytes": 438070239232,
+    "C_quota_margin_bytes": 16424960,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39776256
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:32:25.981091+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77426176000,
+      "available_to_caller_bytes": 77426176000,
+      "total_free_bytes": 77426176000,
+      "entire_volume_used_allocation_upper_bound_bytes": 433707769856,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:32:25.981091+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648830464,
+      "available_to_caller_bytes": 21648830464,
+      "total_free_bytes": 21648830464,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441177088,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "physical_or_unused_credit_bytes": 0
+}

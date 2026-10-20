@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:31:29.145816+00:00",
+  "old_source4_closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\capacity\\SOURCE4-1930-INDEPENDENT-CLOSED.actual-a01.json",
+    "bytes": 1972,
+    "sha256": "ed8f5b5c6e1496cf9b27168b40d9df9b4f0f3bc0bdf15e6467637e4c768f552b"
+  },
+  "actual_observed_utc": "2026-10-20T19:30:01.044768+00:00",
+  "actual_OS_mtime_utc": "2026-10-20T19:30:01.045342+00:00",
+  "hard_deadline_utc": "2026-10-20T19:30:00Z",
+  "late_admin_write_seconds": 1.045342,
+  "writer": "capacity coordinator",
+  "Root_last_source_adoption_OS_mtime_utc": "2026-10-20T19:29:47.741045+00:00",
+  "old_U_read_only_after_this_closure": true,
+  "not_retroactively_admitted": true,
+  "author_source_and_metadata_had_already_stopped": true,
+  "this_addendum_is_new_T02_metadata_only": true
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "xar.steam-static-completeness-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:44:21.637334Z",
+  "corrected_original": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r08-steam-profile-source-2015-a01/STATIC-PROFILE-CANDIDATES.actual-a01.json",
+    "bytes": 9394,
+    "sha256": "813c36b61ed3caeb393843e5302bb52c31295392ea54438076bed81a44f7b30b"
+  },
+  "finding": "The complete_function flag used a single RUNTIME_FUNCTION extent. The tray73B segment5A28C0..5A2909 has live branches to5A2909 and5A2A76, no complete return path; complete_function=true is WRONG. Preserve original and interpret as captured_pdata_segment_complete only.",
+  "source_bound_metadata": "Actual adjacent pdata shows5A2909..5A2A76 and5A2A76..5A2AA4 have UNW_FLAG_CHAININFO4 and both chain to root triple(5A28C0,5A2909,1050584). These entries establish source extents, not completed control-flow analysis.",
+  "next_authorized_read": "Read only bounded continuation5A2909..5A2AA4=411B from same fixed SteamUI; combine with existing73B prefix for484B decode, inspect actual stores/branches/returns. Per-function4KiB and totalreport32KiB remain.",
+  "other_roles": "Getter5F7D00..5F7D26=38B has actual RET; producer63EA4C and caller6B2FFF snippets remain partial. No profile or runtime qualification is granted.",
+  "Root_authority": "Root explicitly required correction+finite continuation under unchanged open profile128KiB/20:15.",
+  "provider_changed": false,
+  "run_probe_calls": 0,
+  "process_memory_reads": 0,
+  "current_mode": null
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "xar.maintenance.parent_entry.cold.case.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:21.017565+00:00",
+  "status": "PASS",
+  "case": "context-drift",
+  "actual_target_result": {
+    "synthetic": true,
+    "actual_body_calls": 1,
+    "foreign_body_calls": 0,
+    "target_body_calls": 1,
+    "return_failures": 0,
+    "audit_failures": 0,
+    "main_tid": 26740,
+    "auditor_tid": 27868,
+    "worker_tid": 0,
+    "full_id_initial": 33388,
+    "local_player_id": 1,
+    "target_owned_TF_hold": false,
+    "occupied_warmup_calls": 0,
+    "real_CK3_call": false
+  },
+  "native_consumer": {
+    "target_entry_retained": true,
+    "target_entry_qualified": true,
+    "admitted_context_unchanged": false,
+    "foreign_count": 0,
+    "cleanup_complete": true,
+    "reason": "target_captured",
+    "window_complete": false,
+    "full_R08": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null,
+    "synthetic": true
+  },
+  "raw": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\observer.raw.ndjson",
+    "bytes": 3841,
+    "sha256": "1dce4067d4b7ebe4c5bf506b060128de963edda25611902f0c6157d235adf0cb"
+  },
+  "target_original_exit": 0,
+  "observer_original_exit": 0,
+  "independent_audit": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\INDEPENDENT-DR-AUDIT.actual.json",
+    "bytes": 2869,
+    "sha256": "4ced8af648f31bd4ed7018e06b0e2fc380218c6e680d6455803c5b8f57b94d58"
+  },
+  "actual_debugger_fault_injected": false,
+  "real_OS_failure_proven": false,
+  "real_CK3": false,
+  "parent_return_observed": false,
+  "full_R08": false
+}

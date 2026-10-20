@@ -1,0 +1,91 @@
+{
+  "schema": "xar.e04.parent-dr.native-repair-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:20:57.129845+00:00",
+  "status": "NO_REMAINING_SOURCE_BLOCKER_IN_REVIEWED_TWO_FILE_REPAIR",
+  "source_only": true,
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-REPAIR.candidate.patch",
+      "bytes": 13378,
+      "sha256": "b49d6091712ca5df83c1759eba1db5c3bf517f3330669d7ba70f929b67511e96"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair_a02.py",
+      "bytes": 6990,
+      "sha256": "d66d24f81315859c7c538ea956731a931592bdb4c6bfa82acb49aa95f81f9046"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\SOURCE-DELIVERY.prepared-a02.json",
+      "bytes": 5077,
+      "sha256": "449829440e679bb266e5d6c79f9bcda63e594d9ab4f507863670134c4003a6fb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\ORIGINAL-WAIT.actual-a02.json",
+      "bytes": 2042,
+      "sha256": "8caf9c45beb6c4b66bffcce61b63014cfd0c25fcdd6e9802961749fc9a358831"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\stderr.log",
+      "bytes": 1003,
+      "sha256": "e7309fe6e59883e9f817afa23eef48c09160341c57cbc6fcb1184185f309853c"
+    }
+  ],
+  "reviewer_execution": {
+    "tests": 0,
+    "native_build": 0,
+    "EXE": 0,
+    "DR": 0,
+    "SDK": 0,
+    "game": 0,
+    "Steam_probe": 0,
+    "D_W_edits": 0
+  },
+  "findings": [
+    {
+      "severity": "P1",
+      "status": "RESOLVED_A02",
+      "issue": "Initial synthetic audit-failure Finish exception accepted armed/unknown restore states.",
+      "resolution": "Only strict zero-arm refusal plus original observer wait, exact private synthetic identity, last complete restored/detached/no-pending/non-exited terminal can Finish administratively. Audit remains failed."
+    },
+    {
+      "status": "REVIEWED",
+      "issue": "Occupied DR fixture baseline repair",
+      "resolution": "Private DR6/DR7 requested inputs plus ordinary Interlocked/event main-thread warmup before independent baseline. TF stays suspended without warmup. All six before/after values remain exact; no masking or retroactive credit."
+    },
+    {
+      "status": "REVIEWED",
+      "issue": "Exceptional finally original ownership",
+      "resolution": "Every registered original Popen is waited even when already exited after inner hold. Receipt failure explicitly retains unknown result; OS absence is never substituted for original wait."
+    }
+  ],
+  "author_test_evidence": {
+    "original_pid": 33380,
+    "original_wait": true,
+    "exit_code": 0,
+    "count": 6,
+    "kind": "pure Python control-flow mocks/source assertions; not native qualification"
+  },
+  "retained_actual_boundary": {
+    "old_cold_passes": 10,
+    "occupied_dr": "FAIL",
+    "later_unexecuted": 6,
+    "old_target_original_wait": "missing/unknown",
+    "new_cold": 0,
+    "execution_DR_qualified": false,
+    "full_R08": false
+  },
+  "future_actual_required": "Separately admitted exact build/SYSTEM and selected native cold. Require actual occupied_warmup_calls=1 and full-six independent baseline/readback equality. Source and Python tests do not prove OS cause or qualification.",
+  "review_scope_excludes": "Public Steam and parent controller review remains separate and pending final source freeze.",
+  "budget_before_bytes": 950608
+}

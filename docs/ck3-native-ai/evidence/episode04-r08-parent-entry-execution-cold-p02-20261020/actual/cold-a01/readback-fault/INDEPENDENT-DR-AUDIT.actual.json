@@ -1,0 +1,183 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:19.301836+00:00",
+  "before": [
+    {
+      "tid": 26108,
+      "created": 134369989990063102,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 9096,
+      "created": 134369989990139861,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 26828,
+      "created": 134369989990140962,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 34660,
+      "created": 134369989990141980,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 7044,
+      "created": 134369989990156877,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "after": [
+    {
+      "tid": 26108,
+      "created": 134369989990063102,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 9096,
+      "created": 134369989990139861,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 26828,
+      "created": 134369989990140962,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 34660,
+      "created": 134369989990141980,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 7044,
+      "created": 134369989990156877,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "checked_live_owned_generations": [
+    {
+      "thread_id": 26108,
+      "thread_generation": 1,
+      "created": 134369989990063102
+    },
+    {
+      "thread_id": 9096,
+      "thread_generation": 1,
+      "created": 134369989990139861
+    },
+    {
+      "thread_id": 26828,
+      "thread_generation": 1,
+      "created": 134369989990140962
+    },
+    {
+      "thread_id": 34660,
+      "thread_generation": 1,
+      "created": 134369989990141980
+    },
+    {
+      "thread_id": 7044,
+      "thread_generation": 1,
+      "created": 134369989990156877
+    }
+  ],
+  "retired_generations": [
+    [
+      32200,
+      1
+    ]
+  ],
+  "independent_peer_rows": 5,
+  "all_required_owned_DR_vectors_equal": true
+}

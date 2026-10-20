@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:54:12.005774+00:00",
+  "native_READY": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\READY.actual.json",
+    "bytes": 101,
+    "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+  },
+  "target_meta": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.meta.txt",
+    "bytes": 668,
+    "sha256": "7eb7ff4cbbfe51f24b10805baccbd50b87e45b1e72e362e1ef84b2c420261312"
+  },
+  "target_original_Popen": {
+    "pid": 14448,
+    "created": 134369960518593764
+  }
+}

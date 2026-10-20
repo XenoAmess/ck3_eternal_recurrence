@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:20.612726+00:00",
+  "argv": [
+    "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+    "--enable-parent-entry-execution-cold",
+    "--admission-meta",
+    "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.meta.txt",
+    "--timeout-ms",
+    "15000",
+    "--raw",
+    "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\observer.raw.ndjson",
+    "--ready",
+    "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\READY.actual.json",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080",
+    "--explicit-execution-breakpoint-v1"
+  ],
+  "pid": 29076,
+  "created": 134369990006036860
+}

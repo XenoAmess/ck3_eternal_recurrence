@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+    "--plan",
+    "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "--plan-sha256",
+    "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3",
+    "--capacity",
+    "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-SOURCE-COPY.actual-a02.json",
+    "--capacity-sha256",
+    "49b2a6f8482a50337a775e7ef0ec2b2c01c7e2765b713ec6a325adee10be1ded",
+    "--fresh-sha256",
+    "923c3e85d80f8d081f6471b0f9b49129bf68b721b54dd41c4180ac231cfaff65"
+  ],
+  "pid": 18624,
+  "creation_time_100ns": 134369983291327821,
+  "creation_time_read_error": null,
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "observed_at_utc": "2026-10-20T19:32:09.526654+00:00",
+  "persistence": "All fresh/intent/streams persisted only after original sourcefreezer wait0; no earlier durable intent claimed",
+  "fresh_stdout_sha256": "923c3e85d80f8d081f6471b0f9b49129bf68b721b54dd41c4180ac231cfaff65"
+}

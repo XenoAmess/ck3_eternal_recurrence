@@ -1,0 +1,219 @@
+{
+  "schema": "xar.e04.parent.public-source-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:28:38.377806+00:00",
+  "source_freeze_before_1928": true,
+  "source_writers": 0,
+  "owned_test_processes": 0,
+  "owned_native_SDK_Steamprobe_game_processes": 0,
+  "D_W_Git_mutations": false,
+  "a02_source_byte_readback_all": true,
+  "a02_source_readback": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_live_run_id.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_camera.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_client.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_keeper.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_prepare.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_queue.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_recorder.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_contract.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_probe.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\r08_parent_entry_controller.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\r08_parent_entry_one_day.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\test_parent_public_source.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\run_source_checks.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\README.md",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\BUNDLE-SOURCE-INDEX.prepared.json",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\CASE-INPUTS.binding-template.json",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\PUBLIC-PRODUCTS.prepared.json",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\initial-plan.json",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\cold_observer.cpp",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\consume_parent_entry_actual.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\owner_binding.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\parent_entry_execution_contract.py",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\parent_entry_execution_once.inc",
+      "matches": true
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+      "matches": true
+    }
+  ],
+  "a02": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 12500,
+    "sha256": "331ca617167541c5d6d5ea89d7bee00caa352ef24d9375ac6e86eb9c656bbe45"
+  },
+  "a03": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+    "bytes": 1418,
+    "sha256": "07d06c8c1d848b717bb8b96479ff1940c64bc414a60ddf8ea557472f4305e5b1"
+  },
+  "final_focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\focused-a09\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1343,
+    "sha256": "2d44fa2f5862a4fc0def5ed20ff842324b45ca967417fc45c3027b897b4d35a7"
+  },
+  "final_unique_methods": 9,
+  "actual_exit_code": 0,
+  "prepare17": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+    "bytes": 9633,
+    "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0"
+  },
+  "public_review": "pending separate reviewer receipt",
+  "lane_bytes": {
+    "capacity": 11549,
+    "controller-a01": 297714,
+    "native-repair-a01": 158393,
+    "public-bundle-a01": 641004,
+    "review-a01": 16792,
+    "root-review-a01": 16025
+  },
+  "aggregate_observed_bytes": 1141477,
+  "aggregate_complete_lifetime_peak_measured": false,
+  "source_candidates_not_runtime_qualification": true,
+  "source_only_missing": [
+    "new distinct parent execution qualification/Root acceptance",
+    "runtime/capacity mapping and actual background offline receipt",
+    "actual single-day business observation",
+    "new background supervisor-refusal predecessor closure",
+    "automatic typed-consumer hold release API",
+    "static type checker availability"
+  ],
+  "current_D_source": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "Steam_source": "6022a3de194c7bd2477185203d57b34269c6df5f",
+  "test_temp_retention": {
+    "root": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\tests-temp",
+    "kind": "synthetic offline fixture residues only",
+    "review_by_utc": "2026-10-21T19:30:00Z",
+    "reason": "retain first real failed fixture diagnostics until Root source intake; not game/save/raw inputs"
+  }
+}

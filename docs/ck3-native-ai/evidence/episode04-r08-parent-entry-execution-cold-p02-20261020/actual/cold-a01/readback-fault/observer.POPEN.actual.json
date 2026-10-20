@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:19.084723+00:00",
+  "argv": [
+    "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+    "--enable-parent-entry-execution-cold",
+    "--admission-meta",
+    "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.meta.txt",
+    "--timeout-ms",
+    "15000",
+    "--raw",
+    "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\observer.raw.ndjson",
+    "--ready",
+    "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\READY.actual.json",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080",
+    "--explicit-execution-breakpoint-v1",
+    "--cold-fault",
+    "readback"
+  ],
+  "pid": 21164,
+  "created": 134369989990796816
+}

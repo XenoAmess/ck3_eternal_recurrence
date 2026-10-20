@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.parent-dr.final-incomplete-native-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:01:45.598236+00:00",
+  "source": {
+    "root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01",
+    "logical_bytes": 157906,
+    "files": 15
+  },
+  "build_before_this_receipt": {
+    "root": "C:\\w\\e04parentdr01",
+    "logical_bytes": 3374016,
+    "files": 319
+  },
+  "two_metadata_scans_identical": true,
+  "remaining_heavy_write_bytes": 0,
+  "all_unexecuted_six_cancelled_by_Root": true,
+  "compiled_two_targets": true,
+  "SYSTEM_exact_two": true,
+  "cold_passed_cases": 10,
+  "cold_failed_case": "occupied-dr",
+  "cold_unexecuted_cases": 6,
+  "execution_DR_qualified": false,
+  "full_R08": false,
+  "original_target_exit_code": null,
+  "original_target_wait_missing": true,
+  "owned_census": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\OWNED-GENERATION-CENSUS.actual-a01.json",
+    "bytes": 13153,
+    "sha256": "eb44ee53b53aac6b55b1ad0f36f71c1b3913c985a1093c09d162be7318902870"
+  },
+  "status": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\SELECTED-COLD-INCOMPLETE.actual-a01.json",
+    "bytes": 8471,
+    "sha256": "f2df0f61b5dfa2c0835fef31e0b5b3fe18296051b04a505e1fa3560427a3ff02"
+  },
+  "copyplan": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\SMALL-EVIDENCE-COPYPLAN.prepared-a01.json",
+    "bytes": 84569,
+    "sha256": "0a7287ae3bb806a3126289799b11147983800b272762d4fd7190df2c9f56a7b9"
+  },
+  "bus_task": "e04-parent-dr-native64-1915-execution-20261020-a01",
+  "bus_state": "done",
+  "bus_resources": [],
+  "Root_cleanup_event_attempts": 0,
+  "metadata_writer_final_pid": 30100,
+  "metadata_writer_contract": "This final one-shot writes only this receipt then exits; tool completion is separate actual exit evidence. This agent performs no further B/S writes after this command.",
+  "retention_review_by_utc": "2026-10-21T19:15:00Z",
+  "measurement_boundary": "Complete logical metadata before this create-only receipt; capacity independently measures final root including this receipt. No physical free credit or whole-volume peak proof."
+}

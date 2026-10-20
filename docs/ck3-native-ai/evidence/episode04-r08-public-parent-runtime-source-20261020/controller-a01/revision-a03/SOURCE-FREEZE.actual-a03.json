@@ -1,0 +1,30 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:27:22.319662+00:00",
+  "a02_all_source_pins_restored": true,
+  "delta": "create-only actor validates parent_tools six exact source pins before SDK; old a02 loader/test/index restored byte-exact",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\BUNDLE-SOURCE-INDEX.prepared.json",
+      "bytes": 9573,
+      "sha256": "1f1c11ea5a90476844e895e14f4e49e675421dbc684ab3afa3a17308c499230e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\CASE-INPUTS.binding-template.json",
+      "bytes": 1354,
+      "sha256": "81056f025bd38cf6e22588dba9e49fe938d1c7dbcd874887f9bae75b3463f967"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\r08_parent_entry_one_day.py",
+      "bytes": 9490,
+      "sha256": "a23235a8bfb48842396fa924a262184bdd64abe9d80c847f4c80ec001608093f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\test_parent_public_source.py",
+      "bytes": 20600,
+      "sha256": "4bf9f77e21a108dfb9778afab519c48c464ab1fc168294385b83d0d7b862f511"
+    }
+  ],
+  "source_only": true,
+  "native_SDK_Steamprobe_game": false
+}

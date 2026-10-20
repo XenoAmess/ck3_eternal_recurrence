@@ -1,0 +1,167 @@
+{
+  "schema": "xar.e04.parent-dr.T02-source-build-SYSTEM-cutover.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:41:22.114016+00:00",
+  "original_owned_waits": [
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 740,
+        "sha256": "a6ae1ed5c6a42696b96fe5f5cec71aa4c214d166a5df07513fe6295ce92c2ea8"
+      },
+      "pid": 20256,
+      "creation_time_100ns": 134369983287697298,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1206,
+        "sha256": "3d776acb5b714813a5142e719ea6a623d73f4158fcdc2c716e02506f6e961c75"
+      },
+      "pid": 18624,
+      "creation_time_100ns": 134369983291327821,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\VERIFY-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1007,
+        "sha256": "c60303b83f709ef511547dbd756d7a1e0ab388f2755ad0de42b5e1644102c22f"
+      },
+      "pid": 20020,
+      "creation_time_100ns": 134369983295313381,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 760,
+        "sha256": "5b814eeb9b494438e4e2b2bfbc711263aa2909462454abcec2ec31f185d4eda6"
+      },
+      "pid": 23596,
+      "creation_time_100ns": 134369984264738049,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1136,
+        "sha256": "1faf5dd33436d08f17e7f2b718a535c5e1e0220df27f7dacc298cc49d0a84f3e"
+      },
+      "pid": 5152,
+      "creation_time_100ns": 134369984271077626,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1008,
+        "sha256": "38570f8a60358232b480cd618949fdcc2305f2b48fc5c125269900ee2a1c0c6c"
+      },
+      "pid": 35660,
+      "creation_time_100ns": 134369984268456917,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 750,
+        "sha256": "8e973e6fa1d23ac20eb277aba34b9cd6f33355f0aa42a28e2a640990083c8da9"
+      },
+      "pid": 26480,
+      "creation_time_100ns": 134369984921369264,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 997,
+        "sha256": "fcde8a0e8ebd5c742373f5fdb5d817700dd2884c29693aa7812ad12fb2d72480"
+      },
+      "pid": 2956,
+      "creation_time_100ns": 134369984932714342,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1008,
+        "sha256": "66f261e75a89e5bdd6101df977ae303e7e2c7a0b381a9209c5ac6df02402be4a"
+      },
+      "pid": 24924,
+      "creation_time_100ns": 134369984928908051,
+      "original_wait": true,
+      "exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 791,
+        "sha256": "a5ffa970ad2ce9cb1a58ce27b99e4dfa2cf1e364483c07ef4c8752258e1b8414"
+      },
+      "pid": 24924,
+      "creation_time_100ns": 134369987637193360,
+      "original_wait": true,
+      "exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_currently_absent": true
+    }
+  ],
+  "scoped_current_writer_matches": [],
+  "read_errors": [],
+  "scoped_current_writers_zero": true,
+  "source_build_SYSTEM_remaining_heavy_write_bytes": 0,
+  "new_project_EXE_executions": 0,
+  "cold_cases_executed": 0,
+  "SYSTEM_fixed_task": {
+    "path": "\\XAR CK3 Project EXE Broker\\RegisterDeclaredProjectExecutables",
+    "state": 3,
+    "instances": 0,
+    "last_result": 0,
+    "observed_at_utc": "2026-10-20T19:41:22.113990+00:00"
+  },
+  "compiled_source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\SOURCE-MANIFEST.actual.json",
+    "bytes": 8598,
+    "sha256": "fbefc43570ccb9880b9d4362688eea732cb6e3d49813864a2866c0647fae68c7"
+  },
+  "producer": {
+    "path": "C:\\w\\e04parentdr02\\build-a01\\native-msvc-result.json",
+    "bytes": 1614,
+    "sha256": "bad010f4b4d03dee3dd75c11001b9acbd69c636ea4dc2c22f7dd516002e6c3b2"
+  },
+  "Root_SYSTEM_review": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "a21289adcd8ae8e950e8722c7c34ede5b21d0174bae9529534c9b351bd88db66"
+  },
+  "only_fresh_capacity_failed_no_cold_replay": true,
+  "not_global_process_absence": true
+}

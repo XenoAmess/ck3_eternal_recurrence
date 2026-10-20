@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p01\run_parent_entry_cold.py", line 265, in run_case
+    if observer_code==0 or ready.exists() or any(x.get('kind') in {'arm','parent_entry'} for x in rows):raise ValueError('Expected zero-arm refusal did not occur')
+                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Expected zero-arm refusal did not occur
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p01\run_parent_entry_cold.py", line 333, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p01\run_parent_entry_cold.py", line 330, in main
+    for case in selected:results.append(run_case(options,case,machine,gate,win))
+                                        ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p01\run_parent_entry_cold.py", line 302, in run_case
+    if target is not None and not released:finish_target(case in REFUSALS)
+                                           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p01\run_parent_entry_cold.py", line 214, in finish_target
+    audit=verify_audit(rows,before,after,refusal)
+  File "C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p01\run_parent_entry_cold.py", line 140, in verify_audit
+    if k in observed and observed[k]['dr']!=item['dr']:raise ValueError('Independent existing thread debug vector changed')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Independent existing thread debug vector changed

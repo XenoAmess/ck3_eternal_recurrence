@@ -1,0 +1,164 @@
+{
+  "schema": "xar.e04.parent-dr.native-repair.freeze.v3",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "frozen_at_utc": "2026-10-20T19:23:10.994216+00:00",
+  "source_control_only": true,
+  "source_overlay": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\cold_observer.cpp",
+      "bytes": 29745,
+      "sha256": "c3fbca7e7e2b7c9ac7b2239cbc542320ddbb00b2103834aa362ba1ee29f4b258",
+      "relative_path": "cold_observer.cpp"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\CMakeLists.txt",
+      "bytes": 1312,
+      "sha256": "f3ac48b08cb3bcfa06228416bd5d4164df766e884f129e925007814dec232d8a",
+      "relative_path": "CMakeLists.txt"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a",
+      "relative_path": "parent_entry_execution_once.inc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_execution_contract.py",
+      "bytes": 10975,
+      "sha256": "00b8bbbc55b5689808846a39d510567e3323fcfb9f2c42e439bf0f2f2e74e295",
+      "relative_path": "parent_entry_execution_contract.py"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+      "bytes": 9633,
+      "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0",
+      "relative_path": "prepare_parent_entry_admission.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\consume_parent_entry_actual.py",
+      "bytes": 1535,
+      "sha256": "6f49cda065d61b780b9bbbc9b96ee17fd8fbb67d91cf0d1b3cf5cc825abe5ffe",
+      "relative_path": "consume_parent_entry_actual.py"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa",
+      "relative_path": "parent_entry_cold_target.cpp"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_cold_call.asm",
+      "bytes": 889,
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8",
+      "relative_path": "parent_entry_cold_call.asm"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8",
+      "relative_path": "run_parent_entry_cold.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\test_parent_entry_execution_contract.py",
+      "bytes": 8510,
+      "sha256": "7e91afc1b38cd4f86a7c319ec90c8713470c2e1824eed4940db23fa06b208b2a",
+      "relative_path": "test_parent_entry_execution_contract.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\PARENT-ENTRY-DR.contract.json",
+      "bytes": 3291,
+      "sha256": "027d9440d7c05b1a5ea790cdb346028125f35f9a643083a1978add099a8e5456",
+      "relative_path": "PARENT-ENTRY-DR.contract.json"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\owner_binding.py",
+      "bytes": 6251,
+      "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a",
+      "relative_path": "owner_binding.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9",
+      "relative_path": "cold_target.cpp"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef",
+      "relative_path": "synthetic_write.asm"
+    }
+  ],
+  "source_overlay_files": 14,
+  "source_overlay_bytes": 153877,
+  "overlay_origin": "Original immutable p01 actual14 plus only target/runner a02 repairs; future copy must freshly verify current input pins",
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\SOURCE-DELIVERY.prepared-a02.json",
+    "bytes": 5077,
+    "sha256": "449829440e679bb266e5d6c79f9bcda63e594d9ab4f507863670134c4003a6fb"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-REPAIR.candidate.patch",
+    "bytes": 13378,
+    "sha256": "b49d6091712ca5df83c1759eba1db5c3bf517f3330669d7ba70f929b67511e96"
+  },
+  "tests": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair_a02.py",
+    "bytes": 6990,
+    "sha256": "d66d24f81315859c7c538ea956731a931592bdb4c6bfa82acb49aa95f81f9046"
+  },
+  "actual_python_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\ORIGINAL-WAIT.actual-a02.json",
+    "bytes": 2042,
+    "sha256": "8caf9c45beb6c4b66bffcce61b63014cfd0c25fcdd6e9802961749fc9a358831"
+  },
+  "old_SOURCE_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 9086,
+    "sha256": "e05c1e458582f82fa1f3aeed9ec1a911de61f3771f9ae7913cab9582466c5f9e"
+  },
+  "native_build_admitted": false,
+  "native_qualification": false,
+  "full_R08": false,
+  "prior_a02_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-SOURCE-FREEZE.actual-a02.json",
+    "bytes": 5854,
+    "sha256": "da9f5886b3c83ac344fe4f4f71e2479f42162450a5f285f9313e6d0a064210dd"
+  },
+  "third_Python_create_only_overlay": {
+    "new_prepare17": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+      "bytes": 9633,
+      "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0"
+    },
+    "prior_prepare15": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\prepare_parent_entry_admission.py",
+      "bytes": 9606,
+      "sha256": "06c089973978a837a7deccf57195a95f790c84b3b1d4d8f1d443f9472d7154c4",
+      "relative_path": "prepare_parent_entry_admission.py"
+    },
+    "only_functional_delta": "Add missing-ack and bad-schema to required set; no existing checks removed or mode/C++/ASM expanded",
+    "readonly_AST_required_cases": [
+      "bad-schema",
+      "cancel_late",
+      "context-drift",
+      "continue-fault",
+      "created_thread",
+      "default-off",
+      "foreign257_then_target",
+      "foreign4096_limit",
+      "fullid-drift",
+      "magic-drift",
+      "missing-ack",
+      "occupied-dr",
+      "occupied-tf",
+      "readback-fault",
+      "restore-fault",
+      "session-drift",
+      "timeout"
+    ]
+  },
+  "Root_explicit_new_metadata_authorization": "Root authorized create-only a03 after this lane a02 closure; neither a02 index nor two frozen repair sources rewritten.",
+  "qualification_boundary": "Future Q source_pins and actual S02 manifest must bind this new prepare17 exact path/SHA; old 06c089 source pin is not inherited by this stricter helper. Existing prepare source checks are unchanged; this record does not assert a new self-hash guard.",
+  "Root_required_actual_qualification": "Exact selected17 all actual PASS with full6, original waits and independent Root acceptance. No Python tests, source adoption, old10PASS or partial native attempt issue new Q."
+}

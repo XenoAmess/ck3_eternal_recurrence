@@ -1,0 +1,214 @@
+{
+  "schema": "xar.e04.parent-dr-native64-2015-source-copy.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:31:29.177829+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+  "new_independent_purpose_not_old_native_scope_extension": true,
+  "aggregate_ceiling_bytes": 67108864,
+  "component_roots": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+    "build": "C:\\w\\e04parentdr02"
+  },
+  "component_ceiling_bytes": {
+    "source": 2097152,
+    "build": 31457280,
+    "protocol": 33554432
+  },
+  "build_root": "C:\\w\\e04parentdr02\\build-a01",
+  "metadata_control_execution_admitted": true,
+  "source_control_implementation_execution_admitted": true,
+  "source_freeze_execution_admitted": true,
+  "build_execution_admitted": false,
+  "SYSTEM_registration_execution_admitted": false,
+  "EXE_execution_admitted": false,
+  "cold_execution_admitted": false,
+  "real_DR_game_SDK_Steam_D_W_Git_download_execution_admitted": false,
+  "bootstrap_metadata_total_ceiling_bytes": 262144,
+  "bootstrap_subroots": {
+    "capacity": {
+      "root": "C:\\w\\e04parentdr02\\capacity",
+      "ceiling_bytes": 65536
+    },
+    "control_metadata": {
+      "root": "C:\\w\\e04parentdr02\\control-metadata-a01",
+      "ceiling_bytes": 196608
+    }
+  },
+  "bootstrap_contract": "Before firstsourcecopy top may contain only declared exact create-only metadata leaves beneath these two precise dirs; aggregate<=256KiB, capacity<=64KiB. Sourcep02 and truebuild-a01 child must remain absent. No arbitrary extra dirs. All bootstrap counts inside top30MiB.",
+  "producer_plan": {
+    "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "bytes": 16191,
+    "sha256": "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3"
+  },
+  "allowed_phase_argv": {
+    "source-copy": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+      "--plan",
+      "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+      "--plan-sha256",
+      "LATE_BOUND_PLAN_SHA256",
+      "--capacity",
+      "LATE_BOUND_ACTUAL_CAP_PATH",
+      "--capacity-sha256",
+      "LATE_BOUND_ACTUAL_CAP_SHA256",
+      "--fresh-sha256",
+      "LATE_BOUND_SOURCE_COPY_FRESH_SHA256"
+    ]
+  },
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "Root_authority": "Root reviewed finala03 recipe1-330/source14/entrydeps/2targets/System/17cold. One sourcecopy now; actualoriginalwait0 and verify-only14 S02 destinations+manifest required before separate conditional MSVC/System cap. All EXE/cold remain false.",
+  "C_project_quota_ceiling_bytes": 438086664192,
+  "C_system_growth_reserve_bytes": 4294967296,
+  "hard_deadline_utc": "2026-10-20T20:15:00Z",
+  "quota_review_at_utc": "2026-10-20T20:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:31:29.177586+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77423955968,
+      "available_to_caller_bytes": 77423955968,
+      "total_free_bytes": 77423955968,
+      "entire_volume_used_allocation_upper_bound_bytes": 433709989888,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:31:29.177586+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648834560,
+      "available_to_caller_bytes": 21648834560,
+      "total_free_bytes": 21648834560,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441172992,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 67502080,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25837305856,
+    "C_floor_margin_bytes": 51586650112,
+    "C_projected_whole_volume_upper_bound_bytes": 438072459264,
+    "C_quota_margin_bytes": 14204928,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39780352
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 67502080,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 0,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-push-ci-2000-20261020-a01",
+        "known_future": {
+          "C:/": 262144,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+        "known_future": {
+          "C:/": 67108864,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-steam-background-probe128-2015-20261020-a01",
+        "known_future": {
+          "C:/": 131072,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 392735,
+    "sha256": "4a7869dcaeb4e981bd80ba87396fe15a8c59402d46ecb90d258427ec5a6dff45"
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false,
+  "previous_source_control_admission": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-SOURCE-CONTROL.actual-a01.json",
+    "bytes": 4875,
+    "sha256": "4d8f341aa7635e0b365cd5dd2ba417a41b10b509dfd9553fb79cc9749e474747"
+  },
+  "bootstrap_files": [
+    {
+      "path": "C:\\w\\e04parentdr02\\capacity\\fresh_parent_dr_native64_2015_prepared_a01.py",
+      "bytes": 6605,
+      "sha256": "71bd048db4f5d3c9c093f699ed70edab2759e1ed97f7d9b417108b762a6c61ee"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-SOURCE-CONTROL.actual-a01.json",
+      "bytes": 4875,
+      "sha256": "4d8f341aa7635e0b365cd5dd2ba417a41b10b509dfd9553fb79cc9749e474747"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\capacity\\SOURCE4-CLOSURE-ADMIN-TIME-ADDENDUM.actual-a01.json",
+      "bytes": 896,
+      "sha256": "1dc28d0d70b0015d235a0c3e34554438e6476ad45f8929ef8f5671b3b5e2a7ea"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+      "bytes": 6429,
+      "sha256": "895322e4529058a0084bb5bc5d3d0303600a24ba3be87d02708eff7e5c80401d"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+      "bytes": 16191,
+      "sha256": "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\prepare_t02_recipe_a01.py",
+      "bytes": 6966,
+      "sha256": "f65f4002660e591d6072f73e46602b87c4818f4e70252fe07f4db3be8068892c"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\prepare_t02_recipe_a02.py",
+      "bytes": 6254,
+      "sha256": "21ec758330cb0f06134f98502a2c2920bbf0ac62ba7f09ab6f4dbc58658ed56e"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\prepare_t02_recipe_a03.py",
+      "bytes": 6252,
+      "sha256": "6c4f8b760343cfe20a2a021ae7145b0e410f31ef4d0e87f89f22888c6d0bf87e"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\verify_parent_dr_system_gate_a01.py",
+      "bytes": 3191,
+      "sha256": "362cab66b5e04029e74a67621b020d3f3257fad40c513c85fcf66ce9169a9552"
+    }
+  ],
+  "stage": "exactS02 sourcecopy only; ignore isolated narrativep01 label, actualpaths/manifest/verifier must beS02"
+}

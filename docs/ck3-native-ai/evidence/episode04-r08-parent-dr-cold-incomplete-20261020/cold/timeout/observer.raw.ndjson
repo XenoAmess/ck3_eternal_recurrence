@@ -1,0 +1,16 @@
+{"kind":"start","schema":"xar.maintenance.parent_entry.raw.v1","mode":"parent-entry-execution-once-v1","machine_id":"desktop-3fevhd2-1c74096080","synthetic":true,"pid":15444,"created":134369960504191388,"entry":140702039043824,"module_base":140702039015424,"module_size":86016,"character":140702039081920,"full_id":33388,"context":140702039082944,"local_player_id":1,"game_state":140702039083968,"date_raw":53149056,"absolute_day":2214544,"admission_id":"synthetic-cold","prefix_sha256":"d44f03f2855791f5fb4ee339dc21b28917e981d419df5cb4f1ecb89ba20aa517","foreign_limit":512,"capture_ms":750,"target_record_limit":1,"owner_binding":null}
+{"kind":"arm","thread_id":14736,"thread_generation":1,"thread_created":134369960504191432,"success":true,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140702039043824,0,0,0,0,1],"readback":true}
+{"kind":"arm","thread_id":17388,"thread_generation":1,"thread_created":134369960504285496,"success":true,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140702039043824,0,0,0,0,1],"readback":true}
+{"kind":"arm","thread_id":6552,"thread_generation":1,"thread_created":134369960504286915,"success":true,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140702039043824,0,0,0,0,1],"readback":true}
+{"kind":"arm","thread_id":35824,"thread_generation":1,"thread_created":134369960504288212,"success":true,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140702039043824,0,0,0,0,1],"readback":true}
+{"kind":"arm","thread_id":27852,"thread_generation":1,"thread_created":134369960504311156,"success":true,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140702039043824,0,0,0,0,1],"readback":true}
+{"kind":"arm","thread_id":22288,"thread_generation":1,"thread_created":134369960505056015,"success":true,"saved_debug":[0,0,0,0,0,0],"armed_debug":[140702039043824,0,0,0,0,1],"readback":true}
+{"kind":"ready","census_complete":true}
+{"kind":"thread_exited","thread_id":22288,"thread_generation":1}
+{"kind":"cleanup_thread_unarmed","thread_id":17908,"thread_generation":1,"thread_created":134369960513740546,"readback":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":6552,"thread_generation":1,"thread_created":134369960504286915,"readback":true,"equal_original":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":14736,"thread_generation":1,"thread_created":134369960504191432,"readback":true,"equal_original":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":17388,"thread_generation":1,"thread_created":134369960504285496,"readback":true,"equal_original":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":27852,"thread_generation":1,"thread_created":134369960504311156,"readback":true,"equal_original":true,"debug":[0,0,0,0,0,0]}
+{"kind":"restore","thread_id":35824,"thread_generation":1,"thread_created":134369960504288212,"readback":true,"equal_original":true,"debug":[0,0,0,0,0,0]}
+{"kind":"terminal","reason":"timeout","capture_count":0,"foreign_count":0,"restored":true,"detached":true,"pending_event":false,"cleanup_complete":true,"process_exited":false,"observation_thread_admission_complete":true,"window_complete":false,"full_R08":false}

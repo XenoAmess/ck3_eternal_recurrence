@@ -1,0 +1,82 @@
+{
+  "schema": "xar.steam-source-profile-diagnosis-and-next-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:35:29Z",
+  "scope": "FILE_ONLY_SOURCE_DIAGNOSIS; NO CURRENT MODE QUALIFICATION",
+  "diagnosis": {
+    "native_invalid_input": {
+      "source": "steam_offline_native_provider_v1.py",
+      "lines": [
+        30,
+        232,
+        239,
+        240,
+        255,
+        259
+      ],
+      "cause": "Frozen STEAM_VERSION10.96.30.42 rejects actual steam.exe11.12.30.7 before SteamUI source/module/mode reads."
+    },
+    "outer_source_not_qualified": {
+      "source": "steam_offline_state_probe.py",
+      "lines": [
+        239,
+        242,
+        478,
+        480,
+        482
+      ],
+      "cause": "Native unavailable reason only retained; CEF source qualification independently checks the same exact EXE version. Neither result is online/offline evidence."
+    },
+    "file_only_result": "Both actual EXE and UI are11.12.30.7; UI differs in size,digest,SizeOfImage,all six old anchors. Version-only guard changes cannot qualify the old source profile.",
+    "current_mode": null
+  },
+  "refs": {
+    "input_probe": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-steam-background-probe-2015-a01/STEAM-BACKGROUND.actual.json",
+      "bytes": 595,
+      "sha256": "77a531480b7616e371c2df589f26f29a733a3f2ed97969d6b376408950280a19"
+    },
+    "provider": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-runtime-source-1930-a01/public-bundle-a01/tools/steam_offline_native_provider_v1.py",
+      "bytes": 16352,
+      "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+    },
+    "probe": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-parent-runtime-source-1930-a01/public-bundle-a01/tools/steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    },
+    "file_diagnostic": {
+      "path": "C:/ck3-e04-resume-20261020-a01/r08-steam-profile-source-2015-a01/FILE-SOURCE-DIAGNOSTIC.actual-a01.json",
+      "bytes": 9305,
+      "sha256": "3b35f902057cf8603a4a4a90e613886d92f8a1a930ac91f3fe8368fb7956770e"
+    }
+  },
+  "minimal_next_plan": {
+    "status": "PROPOSAL_ONLY_NOT_ADMITTED_OR_EXECUTED",
+    "fixed_file": "D:/Program Files (x86)/Steam/steamui.dll",
+    "file_bytes": 19449496,
+    "file_sha256": "1b9457943205dc3af0bd53463ba331cbd2a381388699705c02271aac7a2b1252",
+    "source_stage": "New finite file-only source scope must locate the exact bIsOfflineMode producer, backing storage, private getter writer/current-user refresh, offline tray branch and manager compare/store in this exact DLL. Derive new RVAs from source; do not shift old RVAs by size difference.",
+    "next_limits_proposal": "Read only this already identified DLL; explicit new source/output budget before string/xref search or disassembly; bound each derived function/metadata extent. No automatic whole-image disassembly.",
+    "candidate_stage": "Freeze separate exact EXE identity and UI source profile in a new candidate; retain frozen U and failed actual. Keep full UI digest/layout/code-anchor guards, runtime same-instance/module/code rechecks, stable paired native+tray state and unavailable-on-unknown behavior.",
+    "narrow_checks": "Actual profile bytes/anchors accepted; wrong digest/version/anchor/layout rejected; changed instance/source and contradictory or unstable mode rejected; do not rerun unrelated CK3 matrix.",
+    "future_runtime": "Only after independent source/candidate review and a fresh finite Root+capacity authorization may a single new background observation occur. Current scope grants no run_probe, process memory, current-mode read, UI interaction or launch."
+  },
+  "effects": {
+    "new_provider_code": false,
+    "allowlist_changed": false,
+    "frozen_U_changed": false,
+    "run_probe_calls": 0,
+    "process_memory_reads": 0,
+    "mode_observations": 0,
+    "Steam_mode_changes": 0,
+    "game_SDK_UI": 0,
+    "Git_D_W_changes": 0
+  },
+  "retention": {
+    "purpose": "Version-bound source mismatch and next finite profile input",
+    "review_due_utc": "2026-10-22T19:35:29Z",
+    "no_automatic_renewal": true
+  }
+}

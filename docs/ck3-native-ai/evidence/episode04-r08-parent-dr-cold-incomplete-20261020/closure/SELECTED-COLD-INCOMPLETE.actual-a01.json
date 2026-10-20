@@ -1,0 +1,222 @@
+{
+  "schema": "xar.e04.parent-dr.selected-cold-incomplete.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:58:41.429338+00:00",
+  "status": "COMPILED_SYSTEM_VERIFIED_COLD_INCOMPLETE_FAILED",
+  "source_kind": "unpublished Root-source-only-adopted a02 snapshot; never whole bc638/master compilation",
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 9086,
+    "sha256": "e05c1e458582f82fa1f3aeed9ec1a911de61f3771f9ae7913cab9582466c5f9e"
+  },
+  "source_freeze_a02": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 9208,
+    "sha256": "7a3036c27b05b73b5612b7f2509e341bfacdee65e36fbf8d6f0dd2d99a958667"
+  },
+  "source_only_adoption": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\root-review-a01\\ROOT-SOURCE-ONLY-ADOPTION.actual-a01.json",
+    "bytes": 2943,
+    "sha256": "d71e7851d6803377721c30c2f6e17a5f4ff55319ce6d7f1cb107fdebbf416710"
+  },
+  "producer_plan": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE-RECIPE.prepared-a02.json",
+    "bytes": 14558,
+    "sha256": "e2eff559c88154fd655aaa735fd3f2b3466e2a3f380392c8f431830b250b4bc3"
+  },
+  "producer": {
+    "path": "C:\\w\\e04parentdr01\\build-a01\\native-msvc-result.json",
+    "bytes": 1614,
+    "sha256": "959173af0e3b06cf403e4fbfe3d4b36527399184f176cc05bf297e1673162c98"
+  },
+  "producer_original_wait": {
+    "path": "C:\\w\\e04parentdr01\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1137,
+    "sha256": "b3edcf35e0745dbd0dc1099ec47d88f4e680539a6ac28b9f5347f6cebf25663d"
+  },
+  "exact_SYSTEM_gate": {
+    "path": "C:\\w\\e04parentdr01\\EXECUTION-GATE.actual.json",
+    "bytes": 2174,
+    "sha256": "e9c6d34a6919bc3d2d386c331ac6ce2a0e4ef7247566d2ab142f1dc495264db7"
+  },
+  "Root_actual_SYSTEM_review": {
+    "path": "C:\\w\\e04parentdr01\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "e37b888aaf22c80487613eba6c9f8e68cc34a40c84232cae53708797668f7228"
+  },
+  "original_SYSTEM_receipt": {
+    "path": "C:\\w\\e04parentdr01\\build-a01\\defender-exe-exclusions\\20261020T184959Z-2feb1920\\receipt.json",
+    "bytes": 328403,
+    "sha256": "3f7cce6879cf4932bf7d378f0ec98153e34412297bbad2647e4a3eb33bb53b84"
+  },
+  "cold_original_wait": {
+    "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1469,
+    "sha256": "226e4725baf111a55a899456e1791d7ae8fd221185e992fb38923d8fe8d579eb"
+  },
+  "cold_original_stderr": {
+    "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\stderr.log",
+    "bytes": 2098,
+    "sha256": "fc7e5afc058cde88f7d905d55a5baaa5c3de2e45bfeb000072d886e704397cb2"
+  },
+  "selected_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "passed_cases": [
+    {
+      "case": "foreign257_then_target",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\CASE.actual.json",
+        "bytes": 1636,
+        "sha256": "5f34657c8752817e21177bfcfafcd5924b22e374456b0d535c77f83fa5de4eeb"
+      }
+    },
+    {
+      "case": "created_thread",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\CASE.actual.json",
+        "bytes": 1610,
+        "sha256": "6ab6e11c8e517fee056040602bfc2169a97464475b91d6c83064ab6b7f6855aa"
+      }
+    },
+    {
+      "case": "foreign4096_limit",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\CASE.actual.json",
+        "bytes": 1625,
+        "sha256": "3f38e9da3e6f2589433a0d4302260bbf4cd0e997fb84e45bf7a251738c7272cd"
+      }
+    },
+    {
+      "case": "timeout",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\CASE.actual.json",
+        "bytes": 1580,
+        "sha256": "4a7fcf8bb3d690c2678eb19f20685946a157f0cb14f6aad0a228d40b0ac1fe40"
+      }
+    },
+    {
+      "case": "restore-fault",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\CASE.actual.json",
+        "bytes": 1607,
+        "sha256": "fb951668412becf2921e0bcb80690a2f1abaaaf9521ed1fc2c80ca14e676b85f"
+      }
+    },
+    {
+      "case": "readback-fault",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\CASE.actual.json",
+        "bytes": 1610,
+        "sha256": "98d77dd05e660cde179c87d185b78009da9e5f5a2b755be3897a75f9d363aa25"
+      }
+    },
+    {
+      "case": "continue-fault",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\CASE.actual.json",
+        "bytes": 1611,
+        "sha256": "f135fbc6f8c243f89aaa08ce3468d2cdf68daa195a64d97cfe749b386bbcfe27"
+      }
+    },
+    {
+      "case": "default-off",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\CASE.actual.json",
+        "bytes": 1067,
+        "sha256": "1540ced0b36986011467edf5f40af25f95299a380ae0820eca4f00a90a271856"
+      }
+    },
+    {
+      "case": "missing-ack",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\CASE.actual.json",
+        "bytes": 1068,
+        "sha256": "e08c1848b1c1fb939f75154cb2f191778f6700c7ee66c8da1886279f14ec57cc"
+      }
+    },
+    {
+      "case": "bad-schema",
+      "actual": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\CASE.actual.json",
+        "bytes": 1066,
+        "sha256": "a6e4bf95388a2c8b4e14be292b7bb7167de6b9e047495bcef4792df733adc918"
+      }
+    }
+  ],
+  "failed_case": "occupied-dr",
+  "failed_case_original_CASE_file_exists": false,
+  "failed_case_original_FAILED_file_exists": false,
+  "failed_case_hold": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\UNRESOLVED-OWNER-HOLD.actual.json",
+    "bytes": 343,
+    "sha256": "9c78f5f71dcfa712a9cf3085563343d942ec9de488da75fe8913944a63b89307"
+  },
+  "failed_case_raw": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.raw.ndjson",
+    "bytes": 1093,
+    "sha256": "1210ab638d92b6678a84ec931ef29dec4cd7caeb6328549307b8bad179e36a9a"
+  },
+  "failure_order": [
+    "Runner line265 classifies diagnostic arm success=false/saved_debug=[] as an arm, so expected zero-arm refusal check fails",
+    "Cleanup line140 exact six-DR comparison fails: main TID24700 before [305418240,0,0,0,0,1], after [305418240,0,0,0,4294905840,1025]"
+  ],
+  "unexecuted_cases": [
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "observer_original_wait": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.ORIGINAL-WAIT.actual.json",
+    "bytes": 224,
+    "sha256": "a478e857ca637e06e082654c13bb6a484cfe5bedcf5e1c8972fc6ddfc220f33d"
+  },
+  "original_target_wait_missing": true,
+  "original_target_exit_code": null,
+  "missing_wait_reason": "Original target was retained through hold until natural exit. Original runner exception/finally did not persist its original target wait. Current absence cannot reconstruct original exit code.",
+  "Root_normal_finish_grant_action": "No SetEvent performed: target and runner had already naturally exited when grant was received; no delayed signal/retry.",
+  "owned_generation_census": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\OWNED-GENERATION-CENSUS.actual-a01.json",
+    "bytes": 13153,
+    "sha256": "eb44ee53b53aac6b55b1ad0f36f71c1b3913c985a1093c09d162be7318902870"
+  },
+  "owned_current_live": [],
+  "owned_current_read_errors": [],
+  "remaining_heavy_write_bytes": 0,
+  "metadata_archive_only_remaining": true,
+  "qualification": {
+    "compiled_two_targets": true,
+    "exact_SYSTEM_two_paths": true,
+    "selected_suite_completed": false,
+    "execution_DR_qualified": false,
+    "real_CK3": false,
+    "SDK": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null,
+    "full_R08": false
+  },
+  "retention": {
+    "review_by_utc": "2026-10-21T19:15:00Z",
+    "reason": "Active source-specific cold refusal/audit failure and missing original wait receipt; retain exact inputs/attempt until bounded fix/review, no indefinite retention"
+  }
+}

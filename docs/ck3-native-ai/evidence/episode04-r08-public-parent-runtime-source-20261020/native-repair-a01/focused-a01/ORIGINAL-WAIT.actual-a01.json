@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:11:03.864458+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair.py"
+  ],
+  "pid": 13680,
+  "creation_time_100ns": 134369970633591384,
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "pure_python_control_flow_mocks": true,
+  "native_EXE_execution": false,
+  "debug_register_API_execution": false,
+  "source": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31179,
+      "sha256": "17bf65a5da6a921ecb284d8246252d6c69fa253e5d125bde1080a70aafceb135"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair.py",
+      "bytes": 5785,
+      "sha256": "f20fa6e227646f88fb2a8d3c521272456dc9b708f8ded3dad77de2e7a25154da"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a01\\stdout.log",
+    "bytes": 187,
+    "sha256": "2d77f589ef43fdc6dcd13f97e97a289731cd6850815d4f6d610373dc844446bd"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a01\\stderr.log",
+    "bytes": 843,
+    "sha256": "411899c47ffbeeb7a8e253761f2f5071a3e5a88710f93f40254a2563bc54d60d"
+  },
+  "temporary_root": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\tmp-a01",
+  "generated_mock_case_directories_automatically_deleted": true,
+  "repeat_reason": "First source-only tool check passed but did not retain a parent-owned Popen identity; this tracked run binds exact final candidate/test bytes and original wait, no native cases replayed"
+}

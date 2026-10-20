@@ -1,0 +1,68 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:27:17.565540+00:00",
+  "started_at_utc": "2026-10-20T19:27:16.823537+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_probe.py",
+    "--timeout",
+    "2.0",
+    "--receipt",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\STEAM-BACKGROUND.actual.json"
+  ],
+  "original_Popen": true,
+  "pid": 3076,
+  "creation_filetime": 134369980368251942,
+  "identity_error": null,
+  "actual_original_wait": true,
+  "exit_code": 2,
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\STEAM-BACKGROUND-PROBE128-ADMISSION.actual-a01.json",
+    "bytes": 5247,
+    "sha256": "697f6eb4e55a0e39f228ba51b6ccb4081b9707d35a1511d2c5e667ee9cea2944"
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 5146,
+      "sha256": "c489018d8c7df379bf520da3d36b66cb09f844cb7171b17a8196239978859165"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16352,
+      "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    }
+  ],
+  "receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\STEAM-BACKGROUND.actual.json",
+    "bytes": 595,
+    "sha256": "77a531480b7616e371c2df589f26f29a733a3f2ed97969d6b376408950280a19"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\stdout.json",
+    "bytes": 595,
+    "sha256": "77a531480b7616e371c2df589f26f29a733a3f2ed97969d6b376408950280a19"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "probe_observation_only": true,
+  "game_launch_qualification": false,
+  "future_managed_launch_requires_new_fresh_observation": true,
+  "screen_UI_activation_mode_switch_game_SDK": false
+}

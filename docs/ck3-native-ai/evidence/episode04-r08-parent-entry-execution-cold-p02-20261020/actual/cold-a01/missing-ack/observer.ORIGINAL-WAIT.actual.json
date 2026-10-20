@@ -1,0 +1,9 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:20.022768+00:00",
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 2,
+  "pid": 28236,
+  "created": 134369990000008082
+}

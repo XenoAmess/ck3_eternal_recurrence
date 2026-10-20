@@ -1,0 +1,10 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:22.049800+00:00",
+  "raw_prefix": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\observer.raw.ndjson",
+    "bytes": 2150,
+    "sha256": "8bd4c5d33052ab7d48d211c9f2e5a6a7429fcf2d197cfce0f574ac44a73210ae"
+  },
+  "trigger": "actual native foreign_resume record"
+}

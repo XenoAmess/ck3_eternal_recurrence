@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:22.958318+00:00",
+  "sample_interval_seconds": 1,
+  "metadata_samples_not_continuous_peak_proof": true,
+  "peaks": {
+    "source_bytes": 162475,
+    "build_bytes": 3377983
+  },
+  "capacity_red": null,
+  "completed_protocol_historical_charge_bytes": 33554432,
+  "active_cold_only_future_bytes": 31457280,
+  "protected_private_enumeration_not_claimed": true
+}

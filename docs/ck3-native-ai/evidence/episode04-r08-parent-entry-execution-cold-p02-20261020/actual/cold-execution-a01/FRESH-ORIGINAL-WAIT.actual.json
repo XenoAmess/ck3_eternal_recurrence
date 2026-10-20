@@ -1,0 +1,26 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parentdr02\\capacity\\fresh_parent_dr_native64_2015_prepared_a01.py",
+    "--cap",
+    "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-COLD.actual-a04.json",
+    "--cap-sha256",
+    "073c36fbd82dea4a4c424fd96216c7a0bce412d669e317674e2256ba6e6aef5f",
+    "--phase",
+    "cold-selected-suite",
+    "--output",
+    "-"
+  ],
+  "pid": 24924,
+  "creation_time_100ns": 134369987637193360,
+  "creation_time_read_error": null,
+  "original_Popen": true,
+  "original_wait": true,
+  "started_at_utc": "2026-10-20T19:39:23.718167+00:00",
+  "finished_at_utc": "2026-10-20T19:39:24.107793+00:00",
+  "exit_code": 1
+}

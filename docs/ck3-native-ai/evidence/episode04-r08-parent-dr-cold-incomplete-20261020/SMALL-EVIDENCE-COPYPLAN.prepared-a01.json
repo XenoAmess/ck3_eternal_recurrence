@@ -1,0 +1,2263 @@
+{
+  "schema": "xar.e04.parent-dr.small-evidence-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T19:00:23.581601+00:00",
+  "prepared_only": true,
+  "copy_executed": false,
+  "suggested_repo_root": "docs/ck3-native-ai/evidence/episode04-r08-parent-dr-cold-incomplete-20261020",
+  "copy": [
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\CMakeLists.txt",
+        "bytes": 1312,
+        "sha256": "f3ac48b08cb3bcfa06228416bd5d4164df766e884f129e925007814dec232d8a"
+      },
+      "target": "source/CMakeLists.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\cold_observer.cpp",
+        "bytes": 29745,
+        "sha256": "c3fbca7e7e2b7c9ac7b2239cbc542320ddbb00b2103834aa362ba1ee29f4b258"
+      },
+      "target": "source/cold_observer.cpp"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\cold_target.cpp",
+        "bytes": 6298,
+        "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9"
+      },
+      "target": "source/cold_target.cpp"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\consume_parent_entry_actual.py",
+        "bytes": 1535,
+        "sha256": "6f49cda065d61b780b9bbbc9b96ee17fd8fbb67d91cf0d1b3cf5cc825abe5ffe"
+      },
+      "target": "source/consume_parent_entry_actual.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\owner_binding.py",
+        "bytes": 6251,
+        "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a"
+      },
+      "target": "source/owner_binding.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\PARENT-ENTRY-DR.contract.json",
+        "bytes": 3291,
+        "sha256": "027d9440d7c05b1a5ea790cdb346028125f35f9a643083a1978add099a8e5456"
+      },
+      "target": "source/PARENT-ENTRY-DR.contract.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_cold_call.asm",
+        "bytes": 889,
+        "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8"
+      },
+      "target": "source/parent_entry_cold_call.asm"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_cold_target.cpp",
+        "bytes": 12873,
+        "sha256": "4ca7c7ea284438c0b0f727c24a6bda4718b07f33506ca7ffd66a3207189defaf"
+      },
+      "target": "source/parent_entry_cold_target.cpp"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_execution_contract.py",
+        "bytes": 10975,
+        "sha256": "00b8bbbc55b5689808846a39d510567e3323fcfb9f2c42e439bf0f2f2e74e295"
+      },
+      "target": "source/parent_entry_execution_contract.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_execution_once.inc",
+        "bytes": 29838,
+        "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+      },
+      "target": "source/parent_entry_execution_once.inc"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\prepare_parent_entry_admission.py",
+        "bytes": 9606,
+        "sha256": "06c089973978a837a7deccf57195a95f790c84b3b1d4d8f1d443f9472d7154c4"
+      },
+      "target": "source/prepare_parent_entry_admission.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\run_parent_entry_cold.py",
+        "bytes": 27479,
+        "sha256": "226e244e1095914b359edff4b1bf1ccf1a05007a3637ce0b0411889872da3e46"
+      },
+      "target": "source/run_parent_entry_cold.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\SOURCE-MANIFEST.actual.json",
+        "bytes": 9086,
+        "sha256": "e05c1e458582f82fa1f3aeed9ec1a911de61f3771f9ae7913cab9582466c5f9e"
+      },
+      "target": "source/SOURCE-MANIFEST.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\synthetic_write.asm",
+        "bytes": 218,
+        "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef"
+      },
+      "target": "source/synthetic_write.asm"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\test_parent_entry_execution_contract.py",
+        "bytes": 8510,
+        "sha256": "7e91afc1b38cd4f86a7c319ec90c8713470c2e1824eed4940db23fa06b208b2a"
+      },
+      "target": "source/test_parent_entry_execution_contract.py"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\freeze_parent_dr_sources_a01.py",
+        "bytes": 6011,
+        "sha256": "881410bc5d6632d129cbbedd20861e34d4d6dd5e40f449fb21c608ae42ac4c2e"
+      },
+      "target": "control/freeze_parent_dr_sources_a01.py"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\verify_parent_dr_system_gate_a01.py",
+        "bytes": 3191,
+        "sha256": "be4bc379fa7d64191abaff484d379edd340a7b563cde97e0222a4b4321e96b3d"
+      },
+      "target": "control/verify_parent_dr_system_gate_a01.py"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE-RECIPE.prepared-a02.json",
+        "bytes": 14558,
+        "sha256": "e2eff559c88154fd655aaa735fd3f2b3466e2a3f380392c8f431830b250b4bc3"
+      },
+      "target": "control/PARENT-DR-NATIVE-RECIPE.prepared-a02.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\ROOT-COPY-AND-CONDITIONAL-BUILD-GRANT.actual-a01.json",
+        "bytes": 1462,
+        "sha256": "058c61ea43d481c4907ff32c09b674856e2dd37319ff86e3c22edb7e8b8cee00"
+      },
+      "target": "control/ROOT-COPY-AND-CONDITIONAL-BUILD-GRANT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-SOURCE-COPY-ADMISSION.actual-a02.json",
+        "bytes": 7706,
+        "sha256": "05eec676508058b2b68fa8c0c742e1d4990eb469fb27ee200e280fa27be38913"
+      },
+      "target": "control/PARENT-DR-NATIVE64-1915-SOURCE-COPY-ADMISSION.actual-a02.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-BUILD-SYSTEM-ADMISSION.actual-a03.json",
+        "bytes": 7268,
+        "sha256": "1c686379ebd10e4ab64d9ace9ed1067d2b195c0ef1c73e50cf4d3cc09d67f3c3"
+      },
+      "target": "control/PARENT-DR-NATIVE64-1915-BUILD-SYSTEM-ADMISSION.actual-a03.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-COLD-ADMISSION.actual-a04.json",
+        "bytes": 6951,
+        "sha256": "d6e13b67f5902834195372849613fd37818f0e8ad98ed8b53c5d39652e0d7574"
+      },
+      "target": "control/PARENT-DR-NATIVE64-1915-COLD-ADMISSION.actual-a04.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\fresh-ORIGINAL-WAIT.actual.json",
+        "bytes": 792,
+        "sha256": "8eade39e28a4bf9ade8d1a2513f5ca20a7b2b66d595814cc91f7bfc5cad28208"
+      },
+      "target": "execution/source-copy-a01/fresh-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\fresh-stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "execution/source-copy-a01/fresh-stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\FRESH.actual.json",
+        "bytes": 2795,
+        "sha256": "1f73397d50bd230cbbf505e3f4682fa2e1945fb7fb51e9387aa7a97a036e0443"
+      },
+      "target": "execution/source-copy-a01/FRESH.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1188,
+        "sha256": "9fc6b51f93bcd2e2003292c1b28f99fb0c0bb89875fc6ce559a3e3cc8510a8e5"
+      },
+      "target": "execution/source-copy-a01/ORIGINAL-WAIT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "execution/source-copy-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\stdout.log",
+        "bytes": 3468,
+        "sha256": "6c0d67a822b2bb20734eaf40b2543586b996a8d68fd3b0705dddc870170dc97a"
+      },
+      "target": "execution/source-copy-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\VERIFY-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 993,
+        "sha256": "96b08885bd3fdab8320cf7579adb1854ddb8a4dac9224779aea5abfc3d70af14"
+      },
+      "target": "execution/source-copy-a01/VERIFY-ORIGINAL-WAIT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\verify-stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "execution/source-copy-a01/verify-stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\source-copy-a01\\verify-stdout.log",
+        "bytes": 3319,
+        "sha256": "33a046922b817c49ec2d20bb8aac3368146c24564e4d7f5839f7bc9553c348d9"
+      },
+      "target": "execution/source-copy-a01/verify-stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 812,
+        "sha256": "30ef64d3cff9886637ecc73c33def18c69cfefd825e0930203bd63b733f7dac8"
+      },
+      "target": "execution/build-execution-a01/FRESH-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\FRESH.actual.json",
+        "bytes": 2820,
+        "sha256": "45f2f46a0bde802e65b850431629681e07c61a21b24f2f52983728ddd906d962"
+      },
+      "target": "execution/build-execution-a01/FRESH.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\INTENT.actual-a01.json",
+        "bytes": 1013,
+        "sha256": "2f91a517f4c1133ef565a857b5ef71bd627b7a2c90f32e0632a56eea619de117"
+      },
+      "target": "execution/build-execution-a01/INTENT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\LOCAL-CAPACITY-MONITOR.actual.json",
+        "bytes": 3846,
+        "sha256": "8810f9e261da050b93226b59dad6998a5cd73b5ab523e97de294965eca83fd92"
+      },
+      "target": "execution/build-execution-a01/LOCAL-CAPACITY-MONITOR.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1137,
+        "sha256": "b3edcf35e0745dbd0dc1099ec47d88f4e680539a6ac28b9f5347f6cebf25663d"
+      },
+      "target": "execution/build-execution-a01/ORIGINAL-WAIT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "execution/build-execution-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\stdout.log",
+        "bytes": 11066,
+        "sha256": "34b5e0ab83bc8e3bad121fb0cb6b2c9064bf0b37f2b62d11084941ee8ac76fe4"
+      },
+      "target": "execution/build-execution-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 994,
+        "sha256": "00815bc0841352d13bed7210eeebcc4030d2c229f4797e9b2c002549f43ed366"
+      },
+      "target": "execution/build-execution-a01/VERIFY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-execution-a01\\VERIFY.stdout.log",
+        "bytes": 3319,
+        "sha256": "6b7e033ba5a6ee0cd3772bf94866564594ead2f6ebcdfad89f141b0a048682f5"
+      },
+      "target": "execution/build-execution-a01/VERIFY.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 802,
+        "sha256": "e87a9adc69219a8e99cbf0e50e320380553b5235022410d308661cdc45743e6b"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/FRESH-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\FRESH.actual.json",
+        "bytes": 2812,
+        "sha256": "f0baac13ca5d9a66adf82c416423a9585282440e8808366afa4e52af103f07c2"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/FRESH.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 984,
+        "sha256": "7bb10fe01299e8f5eb686392ce8c394db368b8b2dd6bd5f2ef25b0c9d813d22a"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/ORIGINAL-WAIT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\stdout.log",
+        "bytes": 350,
+        "sha256": "f0b34402c863aaaee6870d10651cc6986c75e7350a0cc597661383ffebfed8bd"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 994,
+        "sha256": "38b240e8c320ada2333f6cf56c433a6b818666d5a1f97e0e4c98ccfd830ed22a"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/VERIFY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\VERIFY.stdout.log",
+        "bytes": 3319,
+        "sha256": "bc7b019e40fcff3ea6dedd5acd7e98483a2a0c45dd7bee0b6ac98c58199a2941"
+      },
+      "target": "execution/SYSTEM-gate-execution-a01/VERIFY.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 793,
+        "sha256": "5a1b6a2381c593498c57fdc13c1dc89ef0901387dd692ac3f7393b224c85ac31"
+      },
+      "target": "execution/cold-execution-a01/FRESH-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\FRESH.actual.json",
+        "bytes": 2803,
+        "sha256": "46a8827d56a18a845ab6d61157ef4a3a29ce75da8972d81ccfdfb92652ea7195"
+      },
+      "target": "execution/cold-execution-a01/FRESH.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\INTENT.actual-a01.json",
+        "bytes": 1345,
+        "sha256": "90aaa6c99a4f463e6da0b6ebc9ac60cfe80922b5d8c6bee0ae9dd22e6cb8697c"
+      },
+      "target": "execution/cold-execution-a01/INTENT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\LOCAL-CAPACITY-MONITOR.actual.json",
+        "bytes": 9841,
+        "sha256": "f851d4fb95ab04aa60d63d47d86ce1eb0fad8ff3bbf9757e3b80d255808700eb"
+      },
+      "target": "execution/cold-execution-a01/LOCAL-CAPACITY-MONITOR.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1469,
+        "sha256": "226e4725baf111a55a899456e1791d7ae8fd221185e992fb38923d8fe8d579eb"
+      },
+      "target": "execution/cold-execution-a01/ORIGINAL-WAIT.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\stderr.log",
+        "bytes": 2098,
+        "sha256": "fc7e5afc058cde88f7d905d55a5baaa5c3de2e45bfeb000072d886e704397cb2"
+      },
+      "target": "execution/cold-execution-a01/stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\stdout.log",
+        "bytes": 188,
+        "sha256": "35119b48f3731c7a62fc4e9eac2ad6037b42e1b881bd5ef01844454ee78607db"
+      },
+      "target": "execution/cold-execution-a01/stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 986,
+        "sha256": "0367a10d011e12de8e745870a2fbc6e80854f98a0f9c638ce31a9f4a016e9a2b"
+      },
+      "target": "execution/cold-execution-a01/VERIFY-ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-execution-a01\\VERIFY.stdout.log",
+        "bytes": 3319,
+        "sha256": "4288c416ac69832a4e99d01bd0ee473481ea293f2479fa82cf29f0619e99d109"
+      },
+      "target": "execution/cold-execution-a01/VERIFY.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-review-a01\\INDEPENDENT-ACTUAL-COLD-REVIEW.actual-a01.json",
+        "bytes": 22272,
+        "sha256": "953b2007796ce39fc40cfc28ce148a27767a5eb7b396a27cb790e2038b8f1748"
+      },
+      "target": "execution/cold-review-a01/INDEPENDENT-ACTUAL-COLD-REVIEW.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-review-a01\\write_review.py",
+        "bytes": 10241,
+        "sha256": "8d9d363c3807cee9c461708e9b4c3f13055e0adb51670769eed0926c4b0c3142"
+      },
+      "target": "execution/cold-review-a01/write_review.py"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\MACHINE-BUILD.actual.json",
+        "bytes": 4992,
+        "sha256": "7cac89507792c769a70c3e3196074dce0d8eb424c2ea706f7c0c5adbdb53e12a"
+      },
+      "target": "actual/MACHINE-BUILD.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\EXECUTION-GATE.actual.json",
+        "bytes": 2174,
+        "sha256": "e9c6d34a6919bc3d2d386c331ac6ce2a0e4ef7247566d2ab142f1dc495264db7"
+      },
+      "target": "actual/EXECUTION-GATE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+        "bytes": 2607,
+        "sha256": "e37b888aaf22c80487613eba6c9f8e68cc34a40c84232cae53708797668f7228"
+      },
+      "target": "actual/ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-a01\\native-msvc-result.json",
+        "bytes": 1614,
+        "sha256": "959173af0e3b06cf403e4fbfe3d4b36527399184f176cc05bf297e1673162c98"
+      },
+      "target": "actual/native-msvc-result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\build-a01\\defender-exe-exclusions\\20261020T184959Z-2feb1920\\manifest.json",
+        "bytes": 2613,
+        "sha256": "c2a09dc14afc01eb07fc91c9b3163080e75d65bfb9df81d5f04bb0404f7b3687"
+      },
+      "target": "actual/SYSTEM-manifest.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\BAD-SCHEMA.meta.txt",
+        "bytes": 647,
+        "sha256": "d57a97a6b55760b4b609ba5985045ca8db8ce5e49fdb02339e50545f1f988255"
+      },
+      "target": "cold/bad-schema/BAD-SCHEMA.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\CASE.actual.json",
+        "bytes": 1066,
+        "sha256": "a6e4bf95388a2c8b4e14be292b7bb7167de6b9e047495bcef4792df733adc918"
+      },
+      "target": "cold/bad-schema/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2305,
+        "sha256": "39b86dc8275680f1554867c681d8bc0996d9b17f13424ed92835956620ac1ad0"
+      },
+      "target": "cold/bad-schema/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.INTENT.json",
+        "bytes": 2453,
+        "sha256": "acd755addec85f17cb3f60557d493d694ad4e81a13c79d2d30f47f488b820bcd"
+      },
+      "target": "cold/bad-schema/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "dfe5100bbe423d403db296c3449d07a29e7ca01055965a04bd243cda37d56492"
+      },
+      "target": "cold/bad-schema/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.POPEN.actual.json",
+        "bytes": 684,
+        "sha256": "0b1c0450bd25023394e7bef11e12fc839862df47f03e0c405f239eb6a7f1cc68"
+      },
+      "target": "cold/bad-schema/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/bad-schema/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/bad-schema/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "de3ceea9e223a24dff8de5706583f775ca28f3f07df06e6b82a936d45d0fbb07"
+      },
+      "target": "cold/bad-schema/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.calls.json",
+        "bytes": 273,
+        "sha256": "a20e5be7c471cc24e36b2299ad50519837b2840cad586d4d4bceba32661cb8b8"
+      },
+      "target": "cold/bad-schema/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "de3ceea9e223a24dff8de5706583f775ca28f3f07df06e6b82a936d45d0fbb07"
+      },
+      "target": "cold/bad-schema/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.INTENT.json",
+        "bytes": 2123,
+        "sha256": "36b10da9072284a4c2f919fa92342f97954d8715fd3b9152a7982c4b5e227d0a"
+      },
+      "target": "cold/bad-schema/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "1505130cebaae02eb990a46ad3fa28b22f04b92dfcb8c3f3f0b406111415f4ce"
+      },
+      "target": "cold/bad-schema/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "85a33b0f6f3ac2ef4935bcf78ebc6fd120f674c8b23954076ce5a01f561e6255"
+      },
+      "target": "cold/bad-schema/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.POPEN.actual.json",
+        "bytes": 355,
+        "sha256": "c1a10569117e007616a5ed93cdbcdd0cdcc2f62622f0c204645406a0ee32aa4c"
+      },
+      "target": "cold/bad-schema/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.result.json",
+        "bytes": 273,
+        "sha256": "a20e5be7c471cc24e36b2299ad50519837b2840cad586d4d4bceba32661cb8b8"
+      },
+      "target": "cold/bad-schema/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/bad-schema/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/bad-schema/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\ACTUAL-NATIVE-FAULT-HOLD.actual.json",
+        "bytes": 577,
+        "sha256": "a2a35a73683f1ffade099065077fbbb0e8780ffd89b400b8fd9cfe7e772e5e28"
+      },
+      "target": "cold/continue-fault/ACTUAL-NATIVE-FAULT-HOLD.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\CASE.actual.json",
+        "bytes": 1611,
+        "sha256": "f135fbc6f8c243f89aaa08ce3468d2cdf68daa195a64d97cfe749b386bbcfe27"
+      },
+      "target": "cold/continue-fault/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2870,
+        "sha256": "85adbb6578b1296e7ebf3072fbd9c8640cc8fb1dd0542d1dd72754b8f71a222a"
+      },
+      "target": "cold/continue-fault/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.INTENT.json",
+        "bytes": 2497,
+        "sha256": "7923ded843b2f5be935138eb75fbe89c6c1cee435ceae0ef77da0cd5bd61bc67"
+      },
+      "target": "cold/continue-fault/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "a7d4066e67c6f3b6adae4422687d26d61aba81cb16f70987ad64052d04e42fc3"
+      },
+      "target": "cold/continue-fault/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.POPEN.actual.json",
+        "bytes": 728,
+        "sha256": "a8322d741e1c8d25ea5a0e8d01b610e5d77c304628a9f3cdd03cb335e4791763"
+      },
+      "target": "cold/continue-fault/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.raw.ndjson",
+        "bytes": 4218,
+        "sha256": "611818ef868c57d56bbaf596fef4814f2164ccd89eee73b7ad9425c3d2773569"
+      },
+      "target": "cold/continue-fault/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/continue-fault/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/continue-fault/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\READY-GO.actual.json",
+        "bytes": 599,
+        "sha256": "18383e130f46354452cd80a2195b962fe614522e07791ccead5745b943410078"
+      },
+      "target": "cold/continue-fault/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/continue-fault/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "b2180eaf0550bd3ddc8e2795e27aff7a24029c815710c77ca11acfc8945ea9b2"
+      },
+      "target": "cold/continue-fault/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.calls.json",
+        "bytes": 277,
+        "sha256": "d8175481c2df78d1a04da172c2fe4b57f329d5bd43adc9a6917d52984df151ce"
+      },
+      "target": "cold/continue-fault/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "b2180eaf0550bd3ddc8e2795e27aff7a24029c815710c77ca11acfc8945ea9b2"
+      },
+      "target": "cold/continue-fault/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.INTENT.json",
+        "bytes": 2142,
+        "sha256": "c9fb900d9474b77af834225c48dd228f6184fa53e0c8020207d80f2f844f72ad"
+      },
+      "target": "cold/continue-fault/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "ab340d85aa5cfb94788318aefa3ad41fe0795bd0bcccb601a0adceaba794907a"
+      },
+      "target": "cold/continue-fault/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "138f12347bc599f2fd738f53b21ff5008e2d1d5e55dac58023d102b9c1b46a33"
+      },
+      "target": "cold/continue-fault/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.POPEN.actual.json",
+        "bytes": 374,
+        "sha256": "e1c9a8d019e60859156b40ab9c9fc0a929ce6b32765638a19abe4ac65bde69cf"
+      },
+      "target": "cold/continue-fault/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.result.json",
+        "bytes": 277,
+        "sha256": "d8175481c2df78d1a04da172c2fe4b57f329d5bd43adc9a6917d52984df151ce"
+      },
+      "target": "cold/continue-fault/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/continue-fault/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/continue-fault/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\CASE.actual.json",
+        "bytes": 1610,
+        "sha256": "6ab6e11c8e517fee056040602bfc2169a97464475b91d6c83064ab6b7f6855aa"
+      },
+      "target": "cold/created_thread/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 3177,
+        "sha256": "cc913edb163c575d490c66fdfa78864ad256f1fc81f50de7d87640289da27f4d"
+      },
+      "target": "cold/created_thread/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.INTENT.json",
+        "bytes": 2461,
+        "sha256": "131ca7f9f492fbf02b1e134c9e22bfb5b8ff0a1d1b50772c9fc753c6d0df0a76"
+      },
+      "target": "cold/created_thread/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "9128c6cb29b25294e9991ba4a88999c4b5c1ee416822c9fcb863caf6e76904dd"
+      },
+      "target": "cold/created_thread/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.POPEN.actual.json",
+        "bytes": 693,
+        "sha256": "bb6c9bd812c7c6d877f1f8d8b520b663382e41ab878404155166eeb6094a64c9"
+      },
+      "target": "cold/created_thread/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.raw.ndjson",
+        "bytes": 4191,
+        "sha256": "7c0522d5a2f38a72328998ad39610695d522a321481187f5cff964cc58661f95"
+      },
+      "target": "cold/created_thread/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/created_thread/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/created_thread/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\READY-GO.actual.json",
+        "bytes": 599,
+        "sha256": "0b7be7d148cf54c68da3fdb0ac423f17066df0c8a79b874efa069290853eded5"
+      },
+      "target": "cold/created_thread/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/created_thread/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.after-debug.json",
+        "bytes": 549,
+        "sha256": "dba4e2b252f8be0820949803f3b3fdb07853647274386c62bd7d861612388453"
+      },
+      "target": "cold/created_thread/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.calls.json",
+        "bytes": 277,
+        "sha256": "af0d3f07d333eda168350330cae69e3481d8d57289107a7d5e901fc3a314cfde"
+      },
+      "target": "cold/created_thread/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "fc09a54c2b111e8d0b7159201fe92af5575e0a4023eebaeee3bd7b937ea96590"
+      },
+      "target": "cold/created_thread/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.INTENT.json",
+        "bytes": 2134,
+        "sha256": "6c649c47ad730a61c597cda32d9626d6a30c16fd460c3d3601a8b213b99db335"
+      },
+      "target": "cold/created_thread/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "f28a9dafbbeebfeff360e931ababe45b7cee677dd35156c1d3f6578a50948c14"
+      },
+      "target": "cold/created_thread/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "8113b7ba0f8420331e4a16b0474dac627bf6c3069f99d632e38a7c81f998b321"
+      },
+      "target": "cold/created_thread/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.POPEN.actual.json",
+        "bytes": 366,
+        "sha256": "a4db8b5e718764eda71b4c334b2d11e82c371a118156eb9c841244ab2b47a79a"
+      },
+      "target": "cold/created_thread/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.result.json",
+        "bytes": 277,
+        "sha256": "af0d3f07d333eda168350330cae69e3481d8d57289107a7d5e901fc3a314cfde"
+      },
+      "target": "cold/created_thread/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/created_thread/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/created_thread/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\CASE.actual.json",
+        "bytes": 1067,
+        "sha256": "1540ced0b36986011467edf5f40af25f95299a380ae0820eca4f00a90a271856"
+      },
+      "target": "cold/default-off/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2305,
+        "sha256": "a1d0d1c7d1b2134dfec5bd75f4a15305cae91f29e88a8d8a11c8cd4307bde8ac"
+      },
+      "target": "cold/default-off/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.INTENT.json",
+        "bytes": 2408,
+        "sha256": "fdce3e97edfce91552dba7927f4e8b676cc18d408bb4019baebf76e155b63ea3"
+      },
+      "target": "cold/default-off/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "9823a2062cd7fd4c66bf9243b4902ff3872d64251096c43e870298df7a1fb5b8"
+      },
+      "target": "cold/default-off/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.POPEN.actual.json",
+        "bytes": 640,
+        "sha256": "114d902c54788677feab94906f5bc1d7b8415e6fbc5d77d78aaa69a3eb5dcac3"
+      },
+      "target": "cold/default-off/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/default-off/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/default-off/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "f95d7434c4322ca1d6ef8092f4bbd541c33120449652e496151aa4110d8fd70f"
+      },
+      "target": "cold/default-off/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.calls.json",
+        "bytes": 272,
+        "sha256": "05f4ef2376f60417369479eaf16b385d1e8ab1c889a3cc1acb8bc148147ea55d"
+      },
+      "target": "cold/default-off/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "f95d7434c4322ca1d6ef8092f4bbd541c33120449652e496151aa4110d8fd70f"
+      },
+      "target": "cold/default-off/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.INTENT.json",
+        "bytes": 2124,
+        "sha256": "24c2d3b589b24921c5c733ca90905ee5ef04d30f9c2e67d9fa7ecfbba4beeab2"
+      },
+      "target": "cold/default-off/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.meta.txt",
+        "bytes": 668,
+        "sha256": "b61a8fad635d86bcd2131016ad53fb2efd8c7fe7891d2d4dd89d04f26bcf62a5"
+      },
+      "target": "cold/default-off/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "3962fc05c73d05d58904792fdb76f6eda5b7852106d730a7e274b35b887eb399"
+      },
+      "target": "cold/default-off/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.POPEN.actual.json",
+        "bytes": 356,
+        "sha256": "53384288e75e7662780063b784b0a8cbece64b74858c5a98fa684c6373291265"
+      },
+      "target": "cold/default-off/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.result.json",
+        "bytes": 272,
+        "sha256": "05f4ef2376f60417369479eaf16b385d1e8ab1c889a3cc1acb8bc148147ea55d"
+      },
+      "target": "cold/default-off/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/default-off/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/default-off/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\EXACT-SYSTEM-GATE.actual.json",
+        "bytes": 1700,
+        "sha256": "34f3632aaf5bae63cd07bbd1c2da717057e7b70519a388b63ad324110891dbc1"
+      },
+      "target": "cold/EXACT-SYSTEM-GATE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\CASE.actual.json",
+        "bytes": 1636,
+        "sha256": "5f34657c8752817e21177bfcfafcd5924b22e374456b0d535c77f83fa5de4eeb"
+      },
+      "target": "cold/foreign257_then_target/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2870,
+        "sha256": "41f8642f95e5d1d043867d36d3f053bbb5f0735edbf8eeb3e45a63e24afc7f75"
+      },
+      "target": "cold/foreign257_then_target/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.INTENT.json",
+        "bytes": 2485,
+        "sha256": "bd14b49180629988d91fcbbc51cf754430be2a52dcccc71b2d71b6c744649377"
+      },
+      "target": "cold/foreign257_then_target/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "956b8fbf1a220cebe11ca2eb0711d76c22ad0e27a32d1fe3ec213d75a0d38b2d"
+      },
+      "target": "cold/foreign257_then_target/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.POPEN.actual.json",
+        "bytes": 717,
+        "sha256": "3eccc568ae178474cce3427d1dc422ed940b63ef5b1f1bd992ba79547a29df80"
+      },
+      "target": "cold/foreign257_then_target/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.raw.ndjson",
+        "bytes": 4100,
+        "sha256": "39b845ed8c9641e03cc77e40f6d4cc0368813d85e28bb0f9bf4c3c342981bc39"
+      },
+      "target": "cold/foreign257_then_target/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign257_then_target/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign257_then_target/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\READY-GO.actual.json",
+        "bytes": 614,
+        "sha256": "4aa29689db712a81609c5b7d4a53d66e1363349047964d242ed295f2047450d6"
+      },
+      "target": "cold/foreign257_then_target/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/foreign257_then_target/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "c29a0d3eb7e087b31ea1cd175ca6a8cc95f80c42b0282f24a801dddc7b5356fc"
+      },
+      "target": "cold/foreign257_then_target/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.calls.json",
+        "bytes": 277,
+        "sha256": "ad7eef6821adb7b7147f9f6a8e0956b26104e6582b0d3b2d416587858a70d52b"
+      },
+      "target": "cold/foreign257_then_target/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "c29a0d3eb7e087b31ea1cd175ca6a8cc95f80c42b0282f24a801dddc7b5356fc"
+      },
+      "target": "cold/foreign257_then_target/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.INTENT.json",
+        "bytes": 2150,
+        "sha256": "0346476fffa0fe58a008e870f83e2595e9b139b4f33be01b09c13d2bac729568"
+      },
+      "target": "cold/foreign257_then_target/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.meta.txt",
+        "bytes": 663,
+        "sha256": "690741febbd0c0584abdb9bbff21f16447d8a2b7830cd816757ef2f0f548d150"
+      },
+      "target": "cold/foreign257_then_target/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "2ef6d4cdb6e237ac82a1e51ef63e4ba01b29d122a3e9817c9facee81cbfb8bfe"
+      },
+      "target": "cold/foreign257_then_target/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.POPEN.actual.json",
+        "bytes": 381,
+        "sha256": "f8abbdb574873b01ec2d25be225deba75bb50444921fc8e1c713c2d3700430da"
+      },
+      "target": "cold/foreign257_then_target/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.result.json",
+        "bytes": 277,
+        "sha256": "ad7eef6821adb7b7147f9f6a8e0956b26104e6582b0d3b2d416587858a70d52b"
+      },
+      "target": "cold/foreign257_then_target/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign257_then_target/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign257_then_target/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\CASE.actual.json",
+        "bytes": 1625,
+        "sha256": "3f38e9da3e6f2589433a0d4302260bbf4cd0e997fb84e45bf7a251738c7272cd"
+      },
+      "target": "cold/foreign4096_limit/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2870,
+        "sha256": "ec72fa2634c8fb4aee8cc78ee067ea90c3be63edcb8020173039c08e808ebbb9"
+      },
+      "target": "cold/foreign4096_limit/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.INTENT.json",
+        "bytes": 2470,
+        "sha256": "db4b9dd15ac3c1612d3ec0fc42a12b62fb58f3b382c514bad0eaa7018f8d06f3"
+      },
+      "target": "cold/foreign4096_limit/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "c7f1d87422ee89ddf52170da03768d0f1999ac2aeddc9f087179afe00f231333"
+      },
+      "target": "cold/foreign4096_limit/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.POPEN.actual.json",
+        "bytes": 702,
+        "sha256": "524a27d2d6a118cc94e1acfd761b498c4c83efc10757c0425b2e0ea061c70d59"
+      },
+      "target": "cold/foreign4096_limit/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.raw.ndjson",
+        "bytes": 3199,
+        "sha256": "0be51e2fbf26c78a536f008f3cb1a8eabdb4d0ca66fd6f7d2cf90c649fd99a0d"
+      },
+      "target": "cold/foreign4096_limit/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign4096_limit/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign4096_limit/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\READY-GO.actual.json",
+        "bytes": 605,
+        "sha256": "612c19468e18e6f5c79580c8b05937296019d9a6a251d63052efc73f6159566a"
+      },
+      "target": "cold/foreign4096_limit/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/foreign4096_limit/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "d397b4a8d879bc39b5e98aa5b35f312e7371614254cb7eac20514ac09e9967b9"
+      },
+      "target": "cold/foreign4096_limit/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.calls.json",
+        "bytes": 279,
+        "sha256": "e49ce360565b526ceb62f17d31da6abf7561653e94fdce31ffbb690e13c619e9"
+      },
+      "target": "cold/foreign4096_limit/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "d397b4a8d879bc39b5e98aa5b35f312e7371614254cb7eac20514ac09e9967b9"
+      },
+      "target": "cold/foreign4096_limit/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.INTENT.json",
+        "bytes": 2140,
+        "sha256": "7e43f25a8b23fc25395add0665ab1ebd8af3da114eac733518ec0efcde91849c"
+      },
+      "target": "cold/foreign4096_limit/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.meta.txt",
+        "bytes": 670,
+        "sha256": "06dec1a62590bc4bd90673d178fb4702068cecb7cc66d613609b675b75ca9935"
+      },
+      "target": "cold/foreign4096_limit/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "be1d73cc2b7490d944586922b2a0f2cbc7116e04a35fd7a4a88c973fefca54dc"
+      },
+      "target": "cold/foreign4096_limit/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.POPEN.actual.json",
+        "bytes": 372,
+        "sha256": "9c18ff3af7143f6139fdf1622af058b104a9851b8c9f9f3842c10aaafa5442e6"
+      },
+      "target": "cold/foreign4096_limit/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.result.json",
+        "bytes": 279,
+        "sha256": "e49ce360565b526ceb62f17d31da6abf7561653e94fdce31ffbb690e13c619e9"
+      },
+      "target": "cold/foreign4096_limit/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign4096_limit/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/foreign4096_limit/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\CASE.actual.json",
+        "bytes": 1068,
+        "sha256": "e08c1848b1c1fb939f75154cb2f191778f6700c7ee66c8da1886279f14ec57cc"
+      },
+      "target": "cold/missing-ack/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2307,
+        "sha256": "a9d7867cf7943c96981f6618723b0dfe0bb6e3ae695f1d09f58e3df775f7023e"
+      },
+      "target": "cold/missing-ack/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.INTENT.json",
+        "bytes": 2410,
+        "sha256": "0d93ca77a02f1c63ae2bf4aaf823735f877509470fc3596e5e90ab07bdc43a2f"
+      },
+      "target": "cold/missing-ack/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "e47db374ab2196fb8614eda93bae96c0279113d341118f3b51dfa4dad2015dca"
+      },
+      "target": "cold/missing-ack/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.POPEN.actual.json",
+        "bytes": 641,
+        "sha256": "049577599266816823465efe2fbb699e829cf3b9e8e50ea8ea9e9281d4bd30b8"
+      },
+      "target": "cold/missing-ack/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/missing-ack/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/missing-ack/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.after-debug.json",
+        "bytes": 458,
+        "sha256": "9e15ca252d813f1d71c00c5189c492c404fd0950810ce68a570ca56d88c45a85"
+      },
+      "target": "cold/missing-ack/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.calls.json",
+        "bytes": 273,
+        "sha256": "014ef168ffd80d2a2bc692f42d2a4af12d7ca33955548be106e7a10641a0a96a"
+      },
+      "target": "cold/missing-ack/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.initial-debug.json",
+        "bytes": 458,
+        "sha256": "9e15ca252d813f1d71c00c5189c492c404fd0950810ce68a570ca56d88c45a85"
+      },
+      "target": "cold/missing-ack/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.INTENT.json",
+        "bytes": 2124,
+        "sha256": "de115a96e4a9ba3af275f28dd40122b356b3022be72ae823585cf1d1c01be7d4"
+      },
+      "target": "cold/missing-ack/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "1cfe0e0be39ba2a5e491191002e82350872c4b64a3dc6fbbf633b10f97fa997d"
+      },
+      "target": "cold/missing-ack/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "e91a800d500e9de37c434875b03dda3a15369b4a29df955cb72bfd8ed64e882f"
+      },
+      "target": "cold/missing-ack/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.POPEN.actual.json",
+        "bytes": 356,
+        "sha256": "b11200be181036bcb8cada95e02971d48e1c4db288368db6232da91b0176806f"
+      },
+      "target": "cold/missing-ack/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.result.json",
+        "bytes": 273,
+        "sha256": "014ef168ffd80d2a2bc692f42d2a4af12d7ca33955548be106e7a10641a0a96a"
+      },
+      "target": "cold/missing-ack/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/missing-ack/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/missing-ack/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.INTENT.json",
+        "bytes": 2452,
+        "sha256": "40e92ce92c8e5b7a307caa7ca091c15aec41cd95f4d279a0bade26f0aa92a3da"
+      },
+      "target": "cold/occupied-dr/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "a478e857ca637e06e082654c13bb6a484cfe5bedcf5e1c8972fc6ddfc220f33d"
+      },
+      "target": "cold/occupied-dr/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.POPEN.actual.json",
+        "bytes": 684,
+        "sha256": "09728d70b35df31a77c71e81de2f48206675564af5e7737ac9405020d569726f"
+      },
+      "target": "cold/occupied-dr/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.raw.ndjson",
+        "bytes": 1093,
+        "sha256": "1210ab638d92b6678a84ec931ef29dec4cd7caeb6328549307b8bad179e36a9a"
+      },
+      "target": "cold/occupied-dr/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/occupied-dr/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/occupied-dr/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.after-debug.json",
+        "bytes": 478,
+        "sha256": "2ab4bb981b58f40c66c6126660fe3fc5604df4f12ec02d94e547500bbadc8d59"
+      },
+      "target": "cold/occupied-dr/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.calls.json",
+        "bytes": 273,
+        "sha256": "ca38f4a054816f50b3e6e9a7966de2709d384ddbfc5b9c418abd35f5a82e9e03"
+      },
+      "target": "cold/occupied-dr/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.initial-debug.json",
+        "bytes": 466,
+        "sha256": "e5bb67abb482a6694b5faae8e04516988425e227da063338900d2a19fcc61ca8"
+      },
+      "target": "cold/occupied-dr/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.INTENT.json",
+        "bytes": 2128,
+        "sha256": "00d4c174e5f25c18472e5f5dd3f7cbb2667fffa6eb7c29fdd16eb71926941051"
+      },
+      "target": "cold/occupied-dr/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "f4f434be7cee3014ed41e825d416c513bed65478c5620ce9c2fc2af52fbff8b9"
+      },
+      "target": "cold/occupied-dr/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.POPEN.actual.json",
+        "bytes": 360,
+        "sha256": "4c81dbf5549d23d298c431b26cec14940bee12264b526ae4998f81ebd17b0963"
+      },
+      "target": "cold/occupied-dr/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.result.json",
+        "bytes": 273,
+        "sha256": "ca38f4a054816f50b3e6e9a7966de2709d384ddbfc5b9c418abd35f5a82e9e03"
+      },
+      "target": "cold/occupied-dr/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/occupied-dr/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/occupied-dr/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\UNRESOLVED-OWNER-HOLD.actual.json",
+        "bytes": 343,
+        "sha256": "9c78f5f71dcfa712a9cf3085563343d942ec9de488da75fe8913944a63b89307"
+      },
+      "target": "cold/occupied-dr/UNRESOLVED-OWNER-HOLD.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\ACTUAL-NATIVE-FAULT-HOLD.actual.json",
+        "bytes": 578,
+        "sha256": "6d8307f9e75460db596b167ee19a260ec417b390121603cee71159b88a91cb74"
+      },
+      "target": "cold/readback-fault/ACTUAL-NATIVE-FAULT-HOLD.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\CASE.actual.json",
+        "bytes": 1610,
+        "sha256": "98d77dd05e660cde179c87d185b78009da9e5f5a2b755be3897a75f9d363aa25"
+      },
+      "target": "cold/readback-fault/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "ec727e3e75e1a77771910279ce7167f033358d1caac32b5ccc0bfe11f2ada7aa"
+      },
+      "target": "cold/readback-fault/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.INTENT.json",
+        "bytes": 2497,
+        "sha256": "f43240c4247ed60210069f9c2c1729f20fef775692222ad413d027ff11e5e6ae"
+      },
+      "target": "cold/readback-fault/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "0ab115421026d493d74938a017fba0a5abf7f83bbdb5fcf27a477d3f24342f71"
+      },
+      "target": "cold/readback-fault/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.POPEN.actual.json",
+        "bytes": 729,
+        "sha256": "a7c639761741115c7745fe50a47cbe602539c33da7f977ffb74648e07f1ae2ba"
+      },
+      "target": "cold/readback-fault/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.raw.ndjson",
+        "bytes": 4214,
+        "sha256": "b72e0c8bdee4ea95423e82f7cd7137e83f0c0fafe9ef675664b85e7ea0d16e52"
+      },
+      "target": "cold/readback-fault/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/readback-fault/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/readback-fault/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\READY-GO.actual.json",
+        "bytes": 599,
+        "sha256": "59f4a82fb4a812ae318dea524437399c733c81f9eea7d99c1d09db5958516986"
+      },
+      "target": "cold/readback-fault/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/readback-fault/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "73cbe8838c16339e9502f3bf2bb428247612f19d4a6e2599893d497bd88064d9"
+      },
+      "target": "cold/readback-fault/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.calls.json",
+        "bytes": 276,
+        "sha256": "495ec286c8a30950dfe7bd4e5990f6f32f2ea863e312f8576bf251336b83b3db"
+      },
+      "target": "cold/readback-fault/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "73cbe8838c16339e9502f3bf2bb428247612f19d4a6e2599893d497bd88064d9"
+      },
+      "target": "cold/readback-fault/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.INTENT.json",
+        "bytes": 2142,
+        "sha256": "6a204e3957c3fa46cab44672bd3da7ba44910ce6d4e1ceb3c431e0a09196b959"
+      },
+      "target": "cold/readback-fault/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.meta.txt",
+        "bytes": 668,
+        "sha256": "7eb7ff4cbbfe51f24b10805baccbd50b87e45b1e72e362e1ef84b2c420261312"
+      },
+      "target": "cold/readback-fault/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "999f06914428dbbc8a8759051a2534d5e35c77ff90e8e4c0e6fcab2b350ee1fc"
+      },
+      "target": "cold/readback-fault/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.POPEN.actual.json",
+        "bytes": 374,
+        "sha256": "7f3b3279f71326d22c413b6bf90c48359077eba8e04540d41e073f4080a3e383"
+      },
+      "target": "cold/readback-fault/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.result.json",
+        "bytes": 276,
+        "sha256": "495ec286c8a30950dfe7bd4e5990f6f32f2ea863e312f8576bf251336b83b3db"
+      },
+      "target": "cold/readback-fault/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/readback-fault/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/readback-fault/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\ACTUAL-NATIVE-FAULT-HOLD.actual.json",
+        "bytes": 575,
+        "sha256": "10275600f739228d013fd9042c3de8b0b0ac328dc60da8cb6e7824882968ac48"
+      },
+      "target": "cold/restore-fault/ACTUAL-NATIVE-FAULT-HOLD.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\CASE.actual.json",
+        "bytes": 1607,
+        "sha256": "fb951668412becf2921e0bcb80690a2f1abaaaf9521ed1fc2c80ca14e676b85f"
+      },
+      "target": "cold/restore-fault/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "e2ee54bb914016465c3ab45584359d874ad9696c7fb5c89fc12c85e9adc12e16"
+      },
+      "target": "cold/restore-fault/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.INTENT.json",
+        "bytes": 2493,
+        "sha256": "c1963a87858f35e997918d0e137ad7bd073a8a468ffbcc8fae2787c4fe8c5897"
+      },
+      "target": "cold/restore-fault/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "815086329c3c1efdf1d2df8d76a954d15f7f68ae952c1b36d273bd581fbe61e2"
+      },
+      "target": "cold/restore-fault/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.POPEN.actual.json",
+        "bytes": 724,
+        "sha256": "95113e907ea725178618012db9d8d5c8ae358d22dd533e202c5018aec1306596"
+      },
+      "target": "cold/restore-fault/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.raw.ndjson",
+        "bytes": 4216,
+        "sha256": "7f52e39d33ebbf1b14d223b14cd31b6acf17d8678c4bba2376d1e5d1262cee11"
+      },
+      "target": "cold/restore-fault/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/restore-fault/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/restore-fault/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\READY-GO.actual.json",
+        "bytes": 597,
+        "sha256": "22f44eefbdfeae98ac6f3ed4f8a662b4191e3145cd7ba7b50b662c5062218695"
+      },
+      "target": "cold/restore-fault/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/restore-fault/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "92bdfa0bfdceb4e2c0781bc434ff8362b951fbc7530cfc4b51678d0ad333af2a"
+      },
+      "target": "cold/restore-fault/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.calls.json",
+        "bytes": 276,
+        "sha256": "98f82851e46aca953b7302ebc42c3ecac657a247865c18558c869de8a94be669"
+      },
+      "target": "cold/restore-fault/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "92bdfa0bfdceb4e2c0781bc434ff8362b951fbc7530cfc4b51678d0ad333af2a"
+      },
+      "target": "cold/restore-fault/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.INTENT.json",
+        "bytes": 2141,
+        "sha256": "606ac17fa6485b48b29137caefc3e0455bef5c5b5144b679f120402dd509b364"
+      },
+      "target": "cold/restore-fault/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "9099e22b1a8cbaefb23eef07e29996461ed498527a34ba454e0ebff18155f2c5"
+      },
+      "target": "cold/restore-fault/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "81f1467ed4e1929b7fdbaa86a3edbc60c6b27eaaaf2425e0a64fc9fcc5bc3255"
+      },
+      "target": "cold/restore-fault/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.POPEN.actual.json",
+        "bytes": 373,
+        "sha256": "e3ed5bb4dec909f8d4f32df937124a9eaf1a8aedbb8ac848559d607dfedd9f92"
+      },
+      "target": "cold/restore-fault/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.result.json",
+        "bytes": 276,
+        "sha256": "98f82851e46aca953b7302ebc42c3ecac657a247865c18558c869de8a94be669"
+      },
+      "target": "cold/restore-fault/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/restore-fault/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/restore-fault/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\CASE.actual.json",
+        "bytes": 1580,
+        "sha256": "4a7fcf8bb3d690c2678eb19f20685946a157f0cb14f6aad0a228d40b0ac1fe40"
+      },
+      "target": "cold/timeout/CASE.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\INDEPENDENT-DR-AUDIT.actual.json",
+        "bytes": 2867,
+        "sha256": "023fd63b33272eb6b4d4d4f6df6c1bd558bd6e123b0ceea3d42cc50ec7886f04"
+      },
+      "target": "cold/timeout/INDEPENDENT-DR-AUDIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.INTENT.json",
+        "bytes": 2438,
+        "sha256": "de0f0e37d00b7a5f1a7fb9ad9b09a6615ff3e68f5d6eeb96bddc9dc254e3b029"
+      },
+      "target": "cold/timeout/observer.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "12eb8f9af0fb0793bef0c7c78c504c8642801c851915b4607b8e70ff77f65dba"
+      },
+      "target": "cold/timeout/observer.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.POPEN.actual.json",
+        "bytes": 670,
+        "sha256": "5bfde25e51529c3148e79863bbb4fa090174c0717fd666d2b536b1f841b7c1dd"
+      },
+      "target": "cold/timeout/observer.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.raw.ndjson",
+        "bytes": 3077,
+        "sha256": "c86d33a6932a306d6d97f3ac6d766c9b8806552e8b4e27f3349beb47ae356d4e"
+      },
+      "target": "cold/timeout/observer.raw.ndjson"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/timeout/observer.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/timeout/observer.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\READY-GO.actual.json",
+        "bytes": 585,
+        "sha256": "b6c4971f3366134e9a9ca7ae67d4ef6ed77477295738bd1203e28f1fd52dd609"
+      },
+      "target": "cold/timeout/READY-GO.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\READY.actual.json",
+        "bytes": 101,
+        "sha256": "452e678783e83375272311f7fb1b6c4dd0d1796eb6314f8f104dfa403da37ea5"
+      },
+      "target": "cold/timeout/READY.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.after-debug.json",
+        "bytes": 457,
+        "sha256": "369702c587e0311e0f73613ed75577d2e1c126fa8fefca71a9714fdd92777ea9"
+      },
+      "target": "cold/timeout/target.after-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.calls.json",
+        "bytes": 273,
+        "sha256": "dce44b57350ec3a53ab2fe8943c7ff6cf4883de4cf56a1604b0fd581cb8db29d"
+      },
+      "target": "cold/timeout/target.calls.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.initial-debug.json",
+        "bytes": 457,
+        "sha256": "369702c587e0311e0f73613ed75577d2e1c126fa8fefca71a9714fdd92777ea9"
+      },
+      "target": "cold/timeout/target.initial-debug.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.INTENT.json",
+        "bytes": 2120,
+        "sha256": "da03a5774721df00018c99982de355fcf6183dea96f56039392e6bc7b5f11d30"
+      },
+      "target": "cold/timeout/target.INTENT.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.meta.txt",
+        "bytes": 669,
+        "sha256": "0d5056ebb7107168d1c8dd365e4c6b81a722a6c898c6aa65f0cc248ce534284d"
+      },
+      "target": "cold/timeout/target.meta.txt"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "cf5e43f601c3210c01f53ba11a1bbaad2d32a3d30b66e81b63a6998b269111fb"
+      },
+      "target": "cold/timeout/target.ORIGINAL-WAIT.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.POPEN.actual.json",
+        "bytes": 352,
+        "sha256": "41042f0feb86d088d0d3d23f3a32945d67442b496ccdf8629a6adedb4fef6141"
+      },
+      "target": "cold/timeout/target.POPEN.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.result.json",
+        "bytes": 273,
+        "sha256": "dce44b57350ec3a53ab2fe8943c7ff6cf4883de4cf56a1604b0fd581cb8db29d"
+      },
+      "target": "cold/timeout/target.result.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/timeout/target.stderr.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "target": "cold/timeout/target.stdout.log"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\OWNED-GENERATION-CENSUS.actual-a01.json",
+        "bytes": 13153,
+        "sha256": "eb44ee53b53aac6b55b1ad0f36f71c1b3913c985a1093c09d162be7318902870"
+      },
+      "target": "closure/OWNED-GENERATION-CENSUS.actual-a01.json"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\README.archive.md",
+        "bytes": 1148,
+        "sha256": "504789ee88a8f139adf7ff236bbaf46c7f9d159b0c0796cc38526c21a5d28a3b"
+      },
+      "target": "closure/README.archive.md"
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\SELECTED-COLD-INCOMPLETE.actual-a01.json",
+        "bytes": 8471,
+        "sha256": "f2df0f61b5dfa2c0835fef31e0b5b3fe18296051b04a505e1fa3560427a3ff02"
+      },
+      "target": "closure/SELECTED-COLD-INCOMPLETE.actual-a01.json"
+    }
+  ],
+  "total_files": 278,
+  "total_copy_bytes": 513872,
+  "roles": {
+    "source": "Actual frozen unpublished a02 inputs; manifest compiled=false describes generation time",
+    "control": "Prepared helpers/plan and actual phase authorization",
+    "execution": "Original streams/waits and independent readbacks",
+    "cold": "Actual synthetic originals; missing originals stay missing",
+    "closure": "Derived incomplete status, not replacement originals"
+  },
+  "external_pin_only": [
+    {
+      "path": "C:\\w\\e04parentdr01\\build-a01\\defender-exe-exclusions\\20261020T184959Z-2feb1920\\receipt.json",
+      "bytes": 328403,
+      "sha256": "3f7cce6879cf4932bf7d378f0ec98153e34412297bbad2647e4a3eb33bb53b84"
+    },
+    {
+      "path": "C:\\w\\e04parentdr01\\build-a01\\maintenance_parent_entry_cold_target.exe",
+      "bytes": 62464,
+      "sha256": "8b996f91507f320ef6fe6c4c1ff6bcd6c0b9c7659f52f0267f98e49c30b5a0ab"
+    },
+    {
+      "path": "C:\\w\\e04parentdr01\\build-a01\\maintenance_parent_entry_observer.exe",
+      "bytes": 129536,
+      "sha256": "ccfb8889fe357999618fd63ecb1ffb0f0537db4d517ae96efad8a02284ea7c49"
+    }
+  ],
+  "no_binary_or_PDB_or_full_SYSTEM_settings_copy": true,
+  "execution_DR_qualified": false,
+  "full_R08": false
+}

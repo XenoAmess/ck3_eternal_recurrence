@@ -1,0 +1,302 @@
+{
+  "schema": "xar.steam-file-only-profile-diagnostic.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:34:46.569363+00:00",
+  "elapsed_seconds": 0.874,
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-profile-source-2015-a01\\STEAM-PROFILE-SOURCE128-ADMISSION.actual-a01.json",
+    "bytes": 3245,
+    "sha256": "cedb0dea2c893d15f9e25abcf55009d389c96ed89d1de274d90554c36f953dd8"
+  },
+  "frozen_provider": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+    "bytes": 16352,
+    "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+  },
+  "executor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-profile-source-2015-a01\\file_source_diagnostic.py",
+    "bytes": 8363,
+    "sha256": "54fcf443d3ec7653bf1eaecedda019d6b1c827b58dc14b462db534843f687866"
+  },
+  "old_profile": {
+    "exe_and_ui_version": "10.96.30.42",
+    "ui_bytes": 18962584,
+    "ui_sha256": "cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278",
+    "ui_size_of_image": 19238912
+  },
+  "files": [
+    {
+      "path": "D:/Program Files (x86)/Steam/steam.exe",
+      "status": "FILE_ONLY_COMPLETE",
+      "mode_observation": false,
+      "path_identity_before": {
+        "dev": 7220568048185129294,
+        "ino": 1407374884965178,
+        "bytes": 5823128,
+        "mtime_ns": 1791921020000000000
+      },
+      "handle_identity_before": {
+        "volume_serial": 882653518,
+        "file_index": 1407374884965178,
+        "bytes": 5823128,
+        "creation_filetime": 134364688998933265,
+        "mtime_filetime": 134363946200000000,
+        "attributes": 32,
+        "links": 1
+      },
+      "versions": {
+        "file_version": "11.12.30.7",
+        "product_version": "1.0.0.2",
+        "fixed_info_signature": "0xfeef04bd"
+      },
+      "bytes": 5823128,
+      "sha256": "7895a1a7ba04461d057fc14c47e83fcb0d6f5441682b6dfa83802324d06de347",
+      "pe": {
+        "pe_offset": 368,
+        "machine": "0x8664",
+        "timestamp": 1791917138,
+        "optional_magic": "0x20b",
+        "size_of_image": 7430144,
+        "sections": [
+          {
+            "name": ".text",
+            "virtual_size": 4013075,
+            "rva": 4096,
+            "raw_size": 4013568,
+            "raw_offset": 1024
+          },
+          {
+            "name": ".rdata",
+            "virtual_size": 1270802,
+            "rva": 4018176,
+            "raw_size": 1271296,
+            "raw_offset": 4014592
+          },
+          {
+            "name": ".data",
+            "virtual_size": 1688588,
+            "rva": 5292032,
+            "raw_size": 88576,
+            "raw_offset": 5285888
+          },
+          {
+            "name": ".pdata",
+            "virtual_size": 169872,
+            "rva": 6983680,
+            "raw_size": 169984,
+            "raw_offset": 5374464
+          },
+          {
+            "name": ".fptable",
+            "virtual_size": 256,
+            "rva": 7155712,
+            "raw_size": 512,
+            "raw_offset": 5544448
+          },
+          {
+            "name": ".rsrc",
+            "virtual_size": 224132,
+            "rva": 7159808,
+            "raw_size": 224256,
+            "raw_offset": 5544960
+          },
+          {
+            "name": ".reloc",
+            "virtual_size": 42340,
+            "rva": 7385088,
+            "raw_size": 42496,
+            "raw_offset": 5769216
+          }
+        ]
+      },
+      "handle_identity_after": {
+        "volume_serial": 882653518,
+        "file_index": 1407374884965178,
+        "bytes": 5823128,
+        "creation_filetime": 134364688998933265,
+        "mtime_filetime": 134363946200000000,
+        "attributes": 32,
+        "links": 1
+      },
+      "path_identity_after": {
+        "dev": 7220568048185129294,
+        "ino": 1407374884965178,
+        "bytes": 5823128,
+        "mtime_ns": 1791921020000000000
+      },
+      "identity_stable": true,
+      "read_handle_closed": true
+    },
+    {
+      "path": "D:/Program Files (x86)/Steam/steamui.dll",
+      "status": "FILE_ONLY_COMPLETE",
+      "mode_observation": false,
+      "path_identity_before": {
+        "dev": 7220568048185129294,
+        "ino": 1407374884965127,
+        "bytes": 19449496,
+        "mtime_ns": 1791921020000000000
+      },
+      "handle_identity_before": {
+        "volume_serial": 882653518,
+        "file_index": 1407374884965127,
+        "bytes": 19449496,
+        "creation_filetime": 134364688967872968,
+        "mtime_filetime": 134363946200000000,
+        "attributes": 32,
+        "links": 1
+      },
+      "versions": {
+        "file_version": "11.12.30.7",
+        "product_version": "1.0.0.1",
+        "fixed_info_signature": "0xfeef04bd"
+      },
+      "bytes": 19449496,
+      "sha256": "1b9457943205dc3af0bd53463ba331cbd2a381388699705c02271aac7a2b1252",
+      "pe": {
+        "pe_offset": 424,
+        "machine": "0x8664",
+        "timestamp": 1791917210,
+        "optional_magic": "0x20b",
+        "size_of_image": 19730432,
+        "sections": [
+          {
+            "name": ".text",
+            "virtual_size": 12880156,
+            "rva": 4096,
+            "raw_size": 12880384,
+            "raw_offset": 1024
+          },
+          {
+            "name": ".rdata",
+            "virtual_size": 4634410,
+            "rva": 12886016,
+            "raw_size": 4634624,
+            "raw_offset": 12881408
+          },
+          {
+            "name": ".data",
+            "virtual_size": 1082084,
+            "rva": 17522688,
+            "raw_size": 805888,
+            "raw_offset": 17516032
+          },
+          {
+            "name": ".pdata",
+            "virtual_size": 854004,
+            "rva": 18608128,
+            "raw_size": 854016,
+            "raw_offset": 18321920
+          },
+          {
+            "name": ".fptable",
+            "virtual_size": 256,
+            "rva": 19464192,
+            "raw_size": 512,
+            "raw_offset": 19175936
+          },
+          {
+            "name": ".rsrc",
+            "virtual_size": 3320,
+            "rva": 19468288,
+            "raw_size": 3584,
+            "raw_offset": 19176448
+          },
+          {
+            "name": ".reloc",
+            "virtual_size": 257788,
+            "rva": 19472384,
+            "raw_size": 258048,
+            "raw_offset": 19180032
+          }
+        ],
+        "six_old_profile_anchors": [
+          {
+            "rva": "0x616d0c",
+            "bytes": 23,
+            "expected_hex": "440fb60513c9b000488d157d3b7400488bcbe81d9e3b00",
+            "mapped": true,
+            "match": false,
+            "raw_offset": 6381836,
+            "actual_hex": "8d4500ba13000000488d0de5e16a00ff15d74663004c8b"
+          },
+          {
+            "rva": "0x5d39b0",
+            "bytes": 38,
+            "expected_hex": "40534883ec20488bd9e852d8f2ff488bc8488b10ff92880000008883e70100004883c4205bc3",
+            "mapped": true,
+            "match": false,
+            "raw_offset": 6106544,
+            "actual_hex": "e87bc1f4ff4c8bcb4c8d05491f7d00ba01000000488bc84c8b1041ff5268e85dc1f4ff4c8bcf"
+          },
+          {
+            "rva": "0x6869df",
+            "bytes": 12,
+            "expected_hex": "488d0d5acaa900e8c5cff4ff",
+            "mapped": true,
+            "match": false,
+            "raw_offset": 6839775,
+            "actual_hex": "00488d3cc3483bdf741e0f1f"
+          },
+          {
+            "rva": "0x6158e4",
+            "bytes": 29,
+            "expected_hex": "803d3cddb000007419488b0dacc1b0004533c0ba04000000e81fc7f6ff",
+            "mapped": true,
+            "match": false,
+            "raw_offset": 6376676,
+            "actual_hex": "c0750433c0eb164c8d4500ba13000000488d0d05f66a00ff15f75a6300"
+          },
+          {
+            "rva": "0x582038",
+            "bytes": 15,
+            "expected_hex": "8bfa4c8bf1490f45f03b9154010000",
+            "mapped": true,
+            "match": false,
+            "raw_offset": 5772344,
+            "actual_hex": "c8720cf30f5cc80f2fc87303488bd6"
+          },
+          {
+            "rva": "0x582071",
+            "bytes": 7,
+            "expected_hex": "4189be54010000",
+            "mapped": true,
+            "match": false,
+            "raw_offset": 5772401,
+            "actual_hex": "480bc2f3480f2a"
+          }
+        ]
+      },
+      "handle_identity_after": {
+        "volume_serial": 882653518,
+        "file_index": 1407374884965127,
+        "bytes": 19449496,
+        "creation_filetime": 134364688967872968,
+        "mtime_filetime": 134363946200000000,
+        "attributes": 32,
+        "links": 1
+      },
+      "path_identity_after": {
+        "dev": 7220568048185129294,
+        "ino": 1407374884965127,
+        "bytes": 19449496,
+        "mtime_ns": 1791921020000000000
+      },
+      "identity_stable": true,
+      "read_handle_closed": true,
+      "old_profile_comparison": {
+        "size_match": false,
+        "digest_match": false,
+        "version_match": false,
+        "image_size_match": false,
+        "anchors_all_match": false
+      }
+    }
+  ],
+  "run_probe_calls": 0,
+  "Steam_process_memory_reads": 0,
+  "Steam_mode_UI_switch_game_SDK_download": 0,
+  "U_D_W_Git_mutations": 0,
+  "unavailable_probe_not_rewritten": true,
+  "current_offline_mode": null
+}

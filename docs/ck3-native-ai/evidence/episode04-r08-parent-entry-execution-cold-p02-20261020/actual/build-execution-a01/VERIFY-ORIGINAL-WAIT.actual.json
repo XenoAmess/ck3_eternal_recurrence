@@ -1,0 +1,28 @@
+{
+  "pid": 35660,
+  "creation_time_100ns": 134369984268456917,
+  "creation_time_read_error": null,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+    "--plan",
+    "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "--plan-sha256",
+    "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3",
+    "--capacity",
+    "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-BUILD-SYSTEM.actual-a03.json",
+    "--capacity-sha256",
+    "1f3ea4f7ec519b3d05301c0dd2d3bc66cb1fc7a7268670b182f5d33db47c7c91",
+    "--verify-only",
+    "--manifest-sha256",
+    "fbefc43570ccb9880b9d4362688eea732cb6e3d49813864a2866c0647fae68c7"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "observed_at_utc": "2026-10-20T19:33:47.103241+00:00"
+}

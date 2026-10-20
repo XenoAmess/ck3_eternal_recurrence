@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:54:12.431002+00:00",
+  "fault": "continue",
+  "observer_original_Popen": {
+    "pid": 6952,
+    "created": 134369960523062229
+  },
+  "target_original_Popen": {
+    "pid": 34228,
+    "created": 134369960522229347
+  },
+  "raw_prefix": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.raw.ndjson",
+    "bytes": 3946,
+    "sha256": "088f509c43a104cd64c72da53d2535865404e5674d124b89ff753ec5665678fd"
+  },
+  "injected_native_API_seam": true,
+  "real_OS_fault_proven": false
+}

@@ -1,0 +1,208 @@
+{
+  "schema": "xar.e04.parent-dr-native64-1915-conditional-build.v3",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:48:28.544225+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "financial_reservation_admitted": true,
+  "task_id": "e04-capacity-parent-dr-native64-1915-20261020-a01",
+  "new_purpose_not_old_N_extension": true,
+  "aggregate_ceiling_bytes": 67108864,
+  "component_roots": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01",
+    "build": "C:\\w\\e04parentdr01"
+  },
+  "component_ceiling_bytes": {
+    "source": 2097152,
+    "build": 31457280,
+    "protocol": 33554432
+  },
+  "build_root": "C:\\w\\e04parentdr01\\build-a01",
+  "bootstrap_root": "C:\\w\\e04parentdr01\\capacity",
+  "bootstrap_metadata_ceiling_bytes": 65536,
+  "metadata_control_execution_admitted": true,
+  "source_control_implementation_execution_admitted": true,
+  "source_freeze_execution_admitted": false,
+  "build_execution_admitted": true,
+  "SYSTEM_registration_execution_admitted": true,
+  "EXE_execution_admitted": false,
+  "cold_execution_admitted": false,
+  "DR_game_SDK_Steam_D_W_Git_download_execution_admitted": false,
+  "producer_plan": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE-RECIPE.prepared-a02.json",
+    "bytes": 14558,
+    "sha256": "e2eff559c88154fd655aaa735fd3f2b3466e2a3f380392c8f431830b250b4bc3"
+  },
+  "allowed_phase_argv": {
+    "MSVC-build-and-ordinary-SYSTEM": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "--source-dir",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01",
+      "--build-dir",
+      "C:\\w\\e04parentdr01\\build-a01",
+      "--configuration",
+      "Release",
+      "--jobs",
+      "2",
+      "--defender-external-candidate",
+      "e04-parent-entry-execution-dr-12004",
+      "--cmake-define",
+      "XAR_BUILD_PARENT_ENTRY_EXECUTION_COLD_12004=ON",
+      "--cmake-define",
+      "CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY",
+      "--configure",
+      "--build",
+      "--target",
+      "maintenance_parent_entry_observer",
+      "maintenance_parent_entry_cold_target"
+    ],
+    "exact-SYSTEM-receipt": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\w\\e04parentdr01\\capacity\\verify_parent_dr_system_gate_a01.py",
+      "--plan",
+      "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE-RECIPE.prepared-a02.json",
+      "--plan-sha256",
+      "LATE_BOUND_PLAN_SHA256",
+      "--capacity",
+      "LATE_BOUND_ACTUAL_CAP_PATH",
+      "--capacity-sha256",
+      "LATE_BOUND_ACTUAL_CAP_SHA256",
+      "--source-manifest-sha256",
+      "LATE_BOUND_ACTUAL_FROZEN_MANIFEST_SHA256"
+    ]
+  },
+  "stage": "Root conditional build grant fulfilled by actual source-copy/verify wait0 and independently checked14 destinations. Exact two-target MSVC plus ordinary SYSTEM only; EXE/cold remain false.",
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "hard_deadline_utc": "2026-10-20T19:15:00Z",
+  "quota_review_at_utc": "2026-10-20T19:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T18:48:28.544024+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77676675072,
+      "available_to_caller_bytes": 77676675072,
+      "total_free_bytes": 77676675072,
+      "entire_volume_used_allocation_upper_bound_bytes": 433457270784,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T18:48:28.544024+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21649494016,
+      "available_to_caller_bytes": 21649494016,
+      "total_free_bytes": 21649494016,
+      "entire_volume_used_allocation_upper_bound_bytes": 478440513536,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 69206016,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25881142470,
+    "C_floor_margin_bytes": 51795532602,
+    "C_projected_whole_volume_upper_bound_bytes": 437863576774,
+    "C_quota_margin_bytes": 223087418,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 23662592
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false,
+  "source_control_admission": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-SOURCE-CONTROL-ADMISSION.actual-a01.json",
+    "bytes": 3532,
+    "sha256": "7488e9831a1510c6d05d2ad8c859df8522d84f5c6bf486c0bf10e50a7d7decc1"
+  },
+  "Root_source_copy_and_conditional_build_grant": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\ROOT-COPY-AND-CONDITIONAL-BUILD-GRANT.actual-a01.json",
+    "bytes": 1462,
+    "sha256": "058c61ea43d481c4907ff32c09b674856e2dd37319ff86e3c22edb7e8b8cee00"
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 69206016,
+      "D:/": 16777216
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-parent-dr-native64-1915-20261020-a01",
+        "known_future": {
+          "C:/": 67108864,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-ci-r05-git-1915-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 16777216
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "previous_source_copy_admission": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-SOURCE-COPY-ADMISSION.actual-a02.json",
+    "bytes": 7706,
+    "sha256": "05eec676508058b2b68fa8c0c742e1d4990eb469fb27ee200e280fa27be38913"
+  },
+  "frozen_source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 9086,
+    "sha256": "e05c1e458582f82fa1f3aeed9ec1a911de61f3771f9ae7913cab9582466c5f9e"
+  },
+  "original_source_copy_and_verify_waits": [
+    {
+      "path": "C:\\w\\e04parentdr01\\source-copy-a01\\ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1188,
+      "sha256": "9fc6b51f93bcd2e2003292c1b28f99fb0c0bb89875fc6ce559a3e3cc8510a8e5"
+    },
+    {
+      "path": "C:\\w\\e04parentdr01\\source-copy-a01\\VERIFY-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 993,
+      "sha256": "96b08885bd3fdab8320cf7579adb1854ddb8a4dac9224779aea5abfc3d70af14"
+    }
+  ],
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 384446,
+    "sha256": "fef2ec8b1c31f3509b7f506499d444aee7ac8e10ef2ecf4ff5cd1b07eb41f006"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:29:04.173963+00:00",
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\DELIVERY.actual-a03.json",
+    "bytes": 9708,
+    "sha256": "3750ecfae292e37caaecb770cb2f07f63ac20d9d4e550e8cb4c8f41c41aa23c7"
+  },
+  "independent_source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\review-a01\\PUBLIC-PARENT-INDEPENDENT-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 5954,
+    "sha256": "66703b71b0c400a659668d9274960a78f6bece1423e13be0d626b40cfd4f1117"
+  },
+  "use_revision_a03": true,
+  "source_writer_count": 0,
+  "test_processes_owned": 0,
+  "metadata_writer_closing_now": true,
+  "native_SDK_Steamprobe_game_qualification": false
+}

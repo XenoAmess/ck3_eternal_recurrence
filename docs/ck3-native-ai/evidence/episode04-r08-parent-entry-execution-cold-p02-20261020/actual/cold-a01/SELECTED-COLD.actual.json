@@ -1,0 +1,120 @@
+{
+  "schema": "xar.maintenance.parent_entry.cold.suite.v1",
+  "mode": "parent-entry-execution-once-v1",
+  "status": "SELECTED_CASES_COMPLETED_NOT_QUALIFICATION",
+  "execution_DR_qualified": false,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:22.155423+00:00",
+  "selected_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "cases": [
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\CASE.actual.json",
+      "bytes": 1668,
+      "sha256": "8d16f3bdda23a9b43059cda6328904cdaed6dffad6a8bdadd9f4a984d9b3bfef"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\CASE.actual.json",
+      "bytes": 1641,
+      "sha256": "88e0611208fc8711b5f99fa25956fa478cf574bf1ba776432d6f21d09e5acfd1"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\CASE.actual.json",
+      "bytes": 1657,
+      "sha256": "9750dd071943e08ac9f39a6d845d4d512f7dbeff985553a778f44c32a6d20cbe"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\CASE.actual.json",
+      "bytes": 1612,
+      "sha256": "6d954434e2719311dd3c02f2115e25ccdce9dab7f638968f80376cfe26e7e4c2"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\CASE.actual.json",
+      "bytes": 1640,
+      "sha256": "addc0487cf75451c42163ba6da3727161705aee6c5949e4bac1b94ece40b3b45"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\CASE.actual.json",
+      "bytes": 1642,
+      "sha256": "66b431b6aa65ed11e8c31db61da114a240d167b524bfbf7f319091d73cac03da"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\CASE.actual.json",
+      "bytes": 1643,
+      "sha256": "84bd0287bfde6ebbbb92e29451c0e4d8a30798660b31ccc26759376958ac7868"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\CASE.actual.json",
+      "bytes": 1099,
+      "sha256": "d1c8d01d8b6bafe7a96be22510760b2d9fe5bbf14515a5a57990313b0e2713e5"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\CASE.actual.json",
+      "bytes": 1100,
+      "sha256": "417bf269c6a271f371201d272230a9ec8aa832c3530ad488e13d5b2ca40ad199"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\CASE.actual.json",
+      "bytes": 1098,
+      "sha256": "386825286d6b33617adf4eb8f40295c68c2fc08e1b328fa48586e38c4885efb9"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\CASE.actual.json",
+      "bytes": 1281,
+      "sha256": "5091daf91a174545439a4773c94fa2db063b14cda37dd7dd85ba46eb9dd42305"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\CASE.actual.json",
+      "bytes": 1280,
+      "sha256": "273fb3a01b8d1c690b14a7271ac1cbb9686c5b9278aa76f60597605d42655ed3"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\CASE.actual.json",
+      "bytes": 1636,
+      "sha256": "9379e142371126d93f924108aa1a898736a97a785fb076040e3360d9d205c16d"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\CASE.actual.json",
+      "bytes": 1640,
+      "sha256": "840ef73cec92c0b1895649368d60f36c1b455b0033db72e86e48c0fd627c48a3"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\CASE.actual.json",
+      "bytes": 1636,
+      "sha256": "2f6d6176f1b421b719756d3ede5e12c2db692fd3ae5d9e9ba92f0f84977186af"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\CASE.actual.json",
+      "bytes": 1643,
+      "sha256": "c52584af07e386459641e2ccf65816885513721d5c812a62226d1952085dfc2b"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\CASE.actual.json",
+      "bytes": 1631,
+      "sha256": "712e96a01bb9d0969356c9475bb48e09084d6c4176c1d24809edba593b1f29a9"
+    }
+  ],
+  "Root_required_cases_qualification_not_self_issued": true,
+  "real_CK3": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false
+}

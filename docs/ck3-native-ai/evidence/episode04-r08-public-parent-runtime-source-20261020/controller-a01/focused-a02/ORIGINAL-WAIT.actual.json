@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.parent.public.focused-original-wait.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:16:32.479386+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\test_parent_public_source.py",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence"
+  ],
+  "pid": 26472,
+  "process_creation_filetime_100ns": "134369973908527347",
+  "returncode": 1,
+  "actual_original_popen_wait": true,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\focused-a02\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\focused-a02\\stderr.log",
+    "bytes": 2682,
+    "sha256": "7a27fd6311b61a967aa0c2e0e985790f8109fac823088762afbb2ac8a3eae07e"
+  },
+  "SDK_game_Steamprobe_native_execution": false,
+  "source_test": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\test_parent_public_source.py",
+    "bytes": 13462,
+    "sha256": "f4eeb4bd7e35fcc6727d2de78659d29399af4c1f2bf2eec510148164be2e4f86"
+  }
+}

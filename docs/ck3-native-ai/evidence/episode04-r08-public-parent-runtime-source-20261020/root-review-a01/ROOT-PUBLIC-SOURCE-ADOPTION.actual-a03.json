@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.root-public-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:29:47.739615+00:00",
+  "accepted": true,
+  "scope": "SOURCE_ONLY, final revision-a03 actor/index/template",
+  "source_and_independent_review": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\SOURCE-FREEZE.actual-a02.json",
+      "bytes": 12500,
+      "sha256": "331ca617167541c5d6d5ea89d7bee00caa352ef24d9375ac6e86eb9c656bbe45"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+      "bytes": 1418,
+      "sha256": "07d06c8c1d848b717bb8b96479ff1940c64bc414a60ddf8ea557472f4305e5b1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\review-a01\\PUBLIC-PARENT-INDEPENDENT-SOURCE-REVIEW.actual-a01.json",
+      "bytes": 5954,
+      "sha256": "66703b71b0c400a659668d9274960a78f6bece1423e13be0d626b40cfd4f1117"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\DELIVERY.actual-a03.json",
+      "bytes": 9708,
+      "sha256": "3750ecfae292e37caaecb770cb2f07f63ac20d9d4e550e8cb4c8f41c41aa23c7"
+    }
+  ],
+  "final_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\BUNDLE-SOURCE-INDEX.prepared.json",
+    "bytes": 9573,
+    "sha256": "1f1c11ea5a90476844e895e14f4e49e675421dbc684ab3afa3a17308c499230e"
+  },
+  "Root_direct_review": [
+    "source-freezes and actual pin readback",
+    "strict current native Steam profile and final TTL/birth recheck",
+    "actual raw-start/arm/census READY binding; original Popen custody",
+    "restore and typed cleanup before SDK after/OFF/Save/normal-close",
+    "17-case Python qualification gate and six exact parent_tools source peers"
+  ],
+  "remaining": [
+    "real17-case native cold qualification and Root acceptance",
+    "current-machine Steam background profile qualification: actual once probe unavailable",
+    "new public supervisor refusal, runtime/capacity and fresh Root scope",
+    "actual single-day observation; static mypy unavailable"
+  ],
+  "native_game_or_SDK_execution_authorized": false,
+  "runtime_qualification": false,
+  "full_R08": false,
+  "formal_dynamic_scenes": "5/11"
+}

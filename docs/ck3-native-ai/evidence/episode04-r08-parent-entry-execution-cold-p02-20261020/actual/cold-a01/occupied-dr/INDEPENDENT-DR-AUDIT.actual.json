@@ -1,0 +1,152 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:20.465779+00:00",
+  "before": [
+    {
+      "tid": 26600,
+      "created": 134369990003200304,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        305418240,
+        0,
+        0,
+        0,
+        4294905840,
+        1025
+      ]
+    },
+    {
+      "tid": 25204,
+      "created": 134369990003297537,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 31112,
+      "created": 134369990003298953,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 34072,
+      "created": 134369990003300229,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 28932,
+      "created": 134369990003323427,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "after": [
+    {
+      "tid": 26600,
+      "created": 134369990003200304,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        305418240,
+        0,
+        0,
+        0,
+        4294905840,
+        1025
+      ]
+    },
+    {
+      "tid": 25204,
+      "created": 134369990003297537,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 31112,
+      "created": 134369990003298953,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 34072,
+      "created": 134369990003300229,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "tid": 28932,
+      "created": 134369990003323427,
+      "complete": true,
+      "eflags": 582,
+      "dr": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "checked_live_owned_generations": [],
+  "retired_generations": [],
+  "independent_peer_rows": 5,
+  "all_required_owned_DR_vectors_equal": true
+}

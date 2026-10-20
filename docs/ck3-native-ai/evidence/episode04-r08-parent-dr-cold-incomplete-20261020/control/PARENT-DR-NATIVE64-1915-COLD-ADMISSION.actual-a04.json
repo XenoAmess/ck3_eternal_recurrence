@@ -1,0 +1,225 @@
+{
+  "schema": "xar.e04.parent-dr-native64-1915-selected-cold.v4",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:53:09.076577+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-parent-dr-native64-1915-20261020-a01",
+  "previous_build_admission": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-BUILD-SYSTEM-ADMISSION.actual-a03.json",
+    "bytes": 7268,
+    "sha256": "1c686379ebd10e4ab64d9ace9ed1067d2b195c0ef1c73e50cf4d3cc09d67f3c3"
+  },
+  "producer_plan": {
+    "path": "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE-RECIPE.prepared-a02.json",
+    "bytes": 14558,
+    "sha256": "e2eff559c88154fd655aaa735fd3f2b3466e2a3f380392c8f431830b250b4bc3"
+  },
+  "component_roots": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01",
+    "build": "C:\\w\\e04parentdr01"
+  },
+  "component_ceiling_bytes": {
+    "source": 2097152,
+    "build": 31457280,
+    "protocol": 33554432
+  },
+  "aggregate_ceiling_bytes": 67108864,
+  "build_root": "C:\\w\\e04parentdr01\\build-a01",
+  "bootstrap_metadata_ceiling_bytes": 65536,
+  "source_freeze_execution_admitted": false,
+  "build_execution_admitted": false,
+  "SYSTEM_registration_execution_admitted": false,
+  "EXE_execution_admitted": true,
+  "cold_execution_admitted": true,
+  "synthetic_owned_cold_debugger_execution_admitted": true,
+  "real_game_DR_install_SDK_Steam_D_W_Git_execution_admitted": false,
+  "selected_project_EXEs": [
+    {
+      "path": "C:\\w\\e04parentdr01\\build-a01\\maintenance_parent_entry_cold_target.exe",
+      "bytes": 62464,
+      "sha256": "8b996f91507f320ef6fe6c4c1ff6bcd6c0b9c7659f52f0267f98e49c30b5a0ab"
+    },
+    {
+      "path": "C:\\w\\e04parentdr01\\build-a01\\maintenance_parent_entry_observer.exe",
+      "bytes": 129536,
+      "sha256": "ccfb8889fe357999618fd63ecb1ffb0f0537db4d517ae96efad8a02284ea7c49"
+    }
+  ],
+  "Root_actual_SYSTEM_review": {
+    "path": "C:\\w\\e04parentdr01\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "e37b888aaf22c80487613eba6c9f8e68cc34a40c84232cae53708797668f7228"
+  },
+  "actual_machine_build": {
+    "path": "C:\\w\\e04parentdr01\\MACHINE-BUILD.actual.json",
+    "bytes": 4992,
+    "sha256": "7cac89507792c769a70c3e3196074dce0d8eb424c2ea706f7c0c5adbdb53e12a"
+  },
+  "frozen_source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 9086,
+    "sha256": "e05c1e458582f82fa1f3aeed9ec1a911de61f3771f9ae7913cab9582466c5f9e"
+  },
+  "allowed_phase_argv": {
+    "cold-selected-suite": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\run_parent_entry_cold.py",
+      "--repo",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "--build-dir",
+      "C:\\w\\e04parentdr01\\build-a01",
+      "--machine-build-record",
+      "C:\\w\\e04parentdr01\\MACHINE-BUILD.actual.json",
+      "--output-root",
+      "C:\\w\\e04parentdr01\\cold-a01",
+      "--execute-qualified-cold",
+      "--case",
+      "foreign257_then_target",
+      "--case",
+      "created_thread",
+      "--case",
+      "foreign4096_limit",
+      "--case",
+      "timeout",
+      "--case",
+      "restore-fault",
+      "--case",
+      "readback-fault",
+      "--case",
+      "continue-fault",
+      "--case",
+      "default-off",
+      "--case",
+      "missing-ack",
+      "--case",
+      "bad-schema",
+      "--case",
+      "occupied-dr",
+      "--case",
+      "occupied-tf",
+      "--case",
+      "context-drift",
+      "--case",
+      "fullid-drift",
+      "--case",
+      "magic-drift",
+      "--case",
+      "session-drift",
+      "--case",
+      "cancel_late"
+    ]
+  },
+  "selected_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "required_cancel_late_last": true,
+  "stage": "One exact17-case cold-suite attempt. Before phase fresh full active ledger/volumes and verify-only14dest+manifest. Preserve original Popen identity/wait and partial failures; no automatic replay, no partial Q.",
+  "hard_deadline_utc": "2026-10-20T19:15:00Z",
+  "quota_review_at_utc": "2026-10-20T19:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T18:53:09.076378+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77670612992,
+      "available_to_caller_bytes": 77670612992,
+      "total_free_bytes": 77670612992,
+      "entire_volume_used_allocation_upper_bound_bytes": 433463332864,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T18:53:09.076378+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21649485824,
+      "available_to_caller_bytes": 21649485824,
+      "total_free_bytes": 21649485824,
+      "entire_volume_used_allocation_upper_bound_bytes": 478440521728,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 69206016,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25881142470,
+    "C_floor_margin_bytes": 51789470522,
+    "C_projected_whole_volume_upper_bound_bytes": 437869638854,
+    "C_quota_margin_bytes": 217025338,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 23654400
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 69206016,
+      "D:/": 16777216
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-parent-dr-native64-1915-20261020-a01",
+        "known_future": {
+          "C:/": 67108864,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-ci-r05-git-1915-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 16777216
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 385498,
+    "sha256": "36f9301e57b7b91a3016426d39bec2e6d7527da59e0913b5aaff42cbb5fa1741"
+  },
+  "physical_or_unused_credit_bytes": 0
+}

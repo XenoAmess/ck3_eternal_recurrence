@@ -1,0 +1,248 @@
+{
+  "schema": "xar.e04.parent.public-source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:25:23.537383+00:00",
+  "status": "SOURCE_ONLY_FOCUSED_PASS_NOT_RUNTIME_QUALIFICATION",
+  "D_source": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "Steam_source": "6022a3de194c7bd2477185203d57b34269c6df5f",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 148615,
+      "sha256": "21191e5d87930b544760fde9abc15b5451530e927af7191f9732439a86686526"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 64343,
+      "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 11423,
+      "sha256": "59d77a0b73cd96f15bd9accf2d6451b665adac71572f32d05d51399c1f284613"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 17072,
+      "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_recorder.py",
+      "bytes": 36097,
+      "sha256": "3c22605777bbf63f714a862240af52dc9d1e06040777b9604d7155ed1dca1083"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "bytes": 1062,
+      "sha256": "c9051d277e77421301de8b964d51daf8277c3b55d80572c01f846f39f42145c9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 5146,
+      "sha256": "c489018d8c7df379bf520da3d36b66cb09f844cb7171b17a8196239978859165"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16352,
+      "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "bytes": 2370,
+      "sha256": "0e72c42a3f7c6781333c9053a6719d0f2e511346b4060ab86d6bbdf3c3fcf47d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2582,
+      "sha256": "5df9c395e690bc13e3b1dd60c4a6eb1503a5dec7eeb5f55a27e35e75fab8cc27"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 16326,
+      "sha256": "9e9c48643d31cc355e90f108bf070d6663762c8f3d066c8e4c3e4e656e67ee60"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\r08_parent_entry_controller.py",
+      "bytes": 17447,
+      "sha256": "12035b11f5ddc707f9b064bc36ca1c0b57d8edde1f6423995a195d856bde9e05"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\r08_parent_entry_one_day.py",
+      "bytes": 8850,
+      "sha256": "540c03ec72ef6f9969f124bd3f6d25b74a6d7a6bf80dd315aaf54620bc0a1d1a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\test_parent_public_source.py",
+      "bytes": 20181,
+      "sha256": "5348178bddc29b3927368dca60033a2d37f14e1ace6bea5e5d073a0a4014f40b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\run_source_checks.py",
+      "bytes": 2831,
+      "sha256": "791f9c09ba58465e62d4fd64b99311e095f529d77ee0c7837d0be25702aa5096"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\README.md",
+      "bytes": 5846,
+      "sha256": "2e29c546d1116d52887fd680cbe8c8f548fb267b31ff9bfd31ce8a5a661f6005"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\BUNDLE-SOURCE-INDEX.prepared.json",
+      "bytes": 9545,
+      "sha256": "7a702a9e7c9252b014146970fdfa74dbd06e398f9202b69296ea10c08d517235"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\CASE-INPUTS.binding-template.json",
+      "bytes": 1367,
+      "sha256": "215cb47c610411219740992ab21b860989865a8703b0f00baeebde959ba39684"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\PUBLIC-PRODUCTS.prepared.json",
+      "bytes": 1775,
+      "sha256": "4638663c4add846ddbd5facfa21e9958883bc3e905b781a8f644394b41c07025"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\initial-plan.json",
+      "bytes": 15,
+      "sha256": "a83ec9bd74417c1411c6816122e4a7b3abe88ef720fc4d50613f657af7f095c9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\cold_observer.cpp",
+      "bytes": 29745,
+      "sha256": "c3fbca7e7e2b7c9ac7b2239cbc542320ddbb00b2103834aa362ba1ee29f4b258"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\consume_parent_entry_actual.py",
+      "bytes": 1535,
+      "sha256": "6f49cda065d61b780b9bbbc9b96ee17fd8fbb67d91cf0d1b3cf5cc825abe5ffe"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\owner_binding.py",
+      "bytes": 6251,
+      "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\parent_entry_execution_contract.py",
+      "bytes": 10975,
+      "sha256": "00b8bbbc55b5689808846a39d510567e3323fcfb9f2c42e439bf0f2f2e74e295"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+      "bytes": 9633,
+      "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0"
+    }
+  ],
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\focused-a07\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1372,
+    "sha256": "6eb28525dddfcd2643487bb4303abd91a4177f6b51cf6bf9d140d013908a06fa"
+  },
+  "focused_methods": 9,
+  "static_typing": {
+    "status": "ENVIRONMENT_UNAVAILABLE",
+    "actual_command": "selected Python -B -m mypy --version",
+    "actual_exit_code": 1,
+    "reason": "No module named mypy"
+  },
+  "source_syntax": "compile-memory PASS",
+  "native_build_SYSTEM_DR_Steamprobe_game_SDK": false,
+  "Git_D_W_mutation": false,
+  "prepare17_delta": "required set adds missing-ack and bad-schema only; old a02 helper preserved",
+  "pending": [
+    "new distinct parent execution qualification/Root acceptance",
+    "runtime/capacity mapping and actual background offline receipt",
+    "actual single-day business observation",
+    "new background supervisor-refusal predecessor closure",
+    "automatic typed-consumer hold release API",
+    "static type checker availability"
+  ],
+  "lane_bytes": {
+    "capacity": 11549,
+    "controller-a01": 237316,
+    "native-repair-a01": 158393,
+    "public-bundle-a01": 641004,
+    "review-a01": 4171,
+    "root-review-a01": 16025
+  },
+  "supersedes": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 11776,
+    "sha256": "0c795a75acfa04efa71b3c990ff8fa65704fbe17cafefffd8b39a2fc592f9b6d"
+  },
+  "delta_from_a01": "Only actor/controller/test deadline-before-Popen guard and test added; exact original3 source snapshots retained in a01-before-deadline-delta. prepare17 single-file frozen SHA unchanged.",
+  "migration_diff": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\PUBLIC-MIGRATION.review.diff",
+    "bytes": 22498,
+    "sha256": "e01a2a44da4f57f49b688c504571df40cb3bf7b223f88d99d6d9a196f709e5ae"
+  }
+}

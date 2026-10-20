@@ -1,0 +1,54 @@
+{
+  "schema": "xar.maintenance.parent_entry.cold.case.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:18.977960+00:00",
+  "status": "PASS",
+  "case": "restore-fault",
+  "actual_target_result": {
+    "synthetic": true,
+    "actual_body_calls": 258,
+    "foreign_body_calls": 257,
+    "target_body_calls": 1,
+    "return_failures": 0,
+    "audit_failures": 0,
+    "main_tid": 30328,
+    "auditor_tid": 25300,
+    "worker_tid": 0,
+    "full_id_initial": 33388,
+    "local_player_id": 1,
+    "target_owned_TF_hold": false,
+    "occupied_warmup_calls": 0,
+    "real_CK3_call": false
+  },
+  "native_consumer": {
+    "target_entry_retained": true,
+    "target_entry_qualified": true,
+    "admitted_context_unchanged": true,
+    "foreign_count": 257,
+    "cleanup_complete": true,
+    "reason": "target_captured",
+    "window_complete": false,
+    "full_R08": false,
+    "paid_maintenance_raw": null,
+    "payer": null,
+    "cadence": null,
+    "synthetic": true
+  },
+  "raw": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\observer.raw.ndjson",
+    "bytes": 4218,
+    "sha256": "2a06b42758126f46b3ae47f0f04b4b8c2fad7d13181326612c6b954acabaf7bc"
+  },
+  "target_original_exit": 0,
+  "observer_original_exit": 0,
+  "independent_audit": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\INDEPENDENT-DR-AUDIT.actual.json",
+    "bytes": 2870,
+    "sha256": "fb5986debd2b235be1fa2fcf905f182e69a83d9782cfdba869ce353a003dd954"
+  },
+  "actual_debugger_fault_injected": true,
+  "real_OS_failure_proven": false,
+  "real_CK3": false,
+  "parent_return_observed": false,
+  "full_R08": false
+}

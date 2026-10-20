@@ -1,0 +1,160 @@
+--- a/parent_entry_cold_target.cpp
++++ b/parent_entry_cold_target.cpp
+@@ -23,7 +23,8 @@
+ struct FixtureClock {std::uint64_t game_state;std::uint32_t date_raw,absolute_day;};
+ FixtureClock clock_value{};
+ std::wstring mode,prefix,event_base;
+-HANDLE go_event=nullptr,cancel_event=nullptr,audit_event=nullptr,finish_event=nullptr,fault_release_event=nullptr,initial_done=nullptr,audit_done=nullptr,worker_done=nullptr;
++HANDLE go_event=nullptr,cancel_event=nullptr,audit_event=nullptr,finish_event=nullptr,fault_release_event=nullptr,initial_done=nullptr,audit_done=nullptr,worker_done=nullptr,warmup_event=nullptr,warmed_event=nullptr;
++volatile LONG occupied_warmup_calls=0;
+ HANDLE main_thread=nullptr,auditor_thread=nullptr,worker_thread=nullptr;
+ DWORD main_tid=0,auditor_tid=0,worker_tid=0;
+ volatile LONG foreign_calls=0,target_calls=0,return_failures=0,audit_failures=0;
+@@ -84,10 +85,16 @@
+ DWORD WINAPI Auditor(void*){
+  if(mode==L"occupied-dr"||mode==L"occupied-tf"){
+   if(SuspendThread(main_thread)==DWORD(-1))return 1;CONTEXT c{};c.ContextFlags=CONTEXT_DEBUG_REGISTERS|CONTEXT_CONTROL;bool ok=GetThreadContext(main_thread,&c)!=FALSE;
+-  if(ok){if(mode==L"occupied-dr"){c.Dr0=0x12345000;c.Dr7=(c.Dr7&~3ULL)|1ULL;}else c.EFlags|=0x100;ok=SetThreadContext(main_thread,&c)!=FALSE;}
++  if(ok){if(mode==L"occupied-dr"){// Intel SDM 253669-060US Fig17-1/17-2: DR7 bit10 is fixed1.
++    // New fixture input only; not proof of the previous run's OS causality.
++    c.Dr0=0x12345000;c.Dr6=0xffff0ff0ULL;c.Dr7=(c.Dr7&~3ULL)|0x401ULL;}else c.EFlags|=0x100;ok=SetThreadContext(main_thread,&c)!=FALSE;}
+   if(!ok){ResumeOwnedPeer(main_thread,main_tid);return 2;}
+   tf_held=mode==L"occupied-tf";
+   if(!tf_held&&!ResumeOwnedPeer(main_thread,main_tid))return 3;
++  if(mode==L"occupied-dr"){
++   SetEvent(warmup_event);
++   if(WaitForSingleObject(warmed_event,kWait)!=WAIT_OBJECT_0)return 6;
++  }
+  }
+  initial_peers=AuditPeers();for(const auto&r:initial_peers)if(r.tid==main_tid)initial_main=r;
+  if(tf_held){WriteDebug(L".initial-debug.json",initial_peers);Meta();}
+@@ -104,7 +111,7 @@
+  }
+  SetEvent(audit_done);return WaitForSingleObject(finish_event,kWait)==WAIT_OBJECT_0?0:5;
+ }
+-void Results(const wchar_t*s=L".result.json"){std::ofstream o(File(s));o<<"{\"synthetic\":true,\"actual_body_calls\":"<<ParentColdBodyCalls<<",\"foreign_body_calls\":"<<foreign_calls<<",\"target_body_calls\":"<<target_calls<<",\"return_failures\":"<<return_failures<<",\"audit_failures\":"<<audit_failures<<",\"main_tid\":"<<main_tid<<",\"auditor_tid\":"<<auditor_tid<<",\"worker_tid\":"<<worker_tid<<",\"full_id_initial\":33388,\"local_player_id\":1,\"target_owned_TF_hold\":"<<(tf_held?"true":"false")<<",\"real_CK3_call\":false}\n";}
++void Results(const wchar_t*s=L".result.json"){std::ofstream o(File(s));o<<"{\"synthetic\":true,\"actual_body_calls\":"<<ParentColdBodyCalls<<",\"foreign_body_calls\":"<<foreign_calls<<",\"target_body_calls\":"<<target_calls<<",\"return_failures\":"<<return_failures<<",\"audit_failures\":"<<audit_failures<<",\"main_tid\":"<<main_tid<<",\"auditor_tid\":"<<auditor_tid<<",\"worker_tid\":"<<worker_tid<<",\"full_id_initial\":33388,\"local_player_id\":1,\"target_owned_TF_hold\":"<<(tf_held?"true":"false")<<",\"occupied_warmup_calls\":"<<occupied_warmup_calls<<",\"real_CK3_call\":false}\n";}
+ }
+ int wmain(int argc,wchar_t**argv){
+  if(argc!=5||std::wstring(argv[1])!=L"--mode"||std::wstring(argv[3])!=L"--prefix")return 2;mode=argv[2];prefix=argv[4];
+@@ -114,10 +121,15 @@
+  Put(foreign_character,0x18,std::uint32_t(44444));clock_value={reinterpret_cast<std::uintptr_t>(game_state.data()),53149056,2214544};
+  event_base=L"Local\\XarParentEntryCold"+std::to_wstring(GetCurrentProcessId());
+  auto event=[&](const wchar_t*s){return CreateEventW(nullptr,TRUE,FALSE,(event_base+s).c_str());};
+- go_event=event(L"Go");cancel_event=event(L"Cancel");audit_event=event(L"Audit");finish_event=event(L"Finish");fault_release_event=event(L"FaultRelease");initial_done=CreateEventW(nullptr,TRUE,FALSE,nullptr);audit_done=CreateEventW(nullptr,TRUE,FALSE,nullptr);worker_done=CreateEventW(nullptr,TRUE,FALSE,nullptr);
++ go_event=event(L"Go");cancel_event=event(L"Cancel");audit_event=event(L"Audit");finish_event=event(L"Finish");fault_release_event=event(L"FaultRelease");initial_done=CreateEventW(nullptr,TRUE,FALSE,nullptr);audit_done=CreateEventW(nullptr,TRUE,FALSE,nullptr);worker_done=CreateEventW(nullptr,TRUE,FALSE,nullptr);warmup_event=CreateEventW(nullptr,TRUE,FALSE,nullptr);warmed_event=CreateEventW(nullptr,TRUE,FALSE,nullptr);
+  main_tid=GetCurrentThreadId();main_thread=OpenThread(THREAD_ALL_ACCESS,FALSE,main_tid);
+- if(!go_event||!cancel_event||!audit_event||!finish_event||!fault_release_event||!initial_done||!audit_done||!worker_done||!main_thread)return 3;
++ if(!go_event||!cancel_event||!audit_event||!finish_event||!fault_release_event||!initial_done||!audit_done||!worker_done||!warmup_event||!warmed_event||!main_thread)return 3;
+  auditor_thread=CreateThread(nullptr,0,Auditor,nullptr,0,&auditor_tid);if(!auditor_thread)return 4;
++ if(mode==L"occupied-dr"){
++  if(WaitForSingleObject(warmup_event,kWait)!=WAIT_OBJECT_0)return 5;
++  // An ordinary main-thread round trip, not ParentEntryStart or an observer action.
++  InterlockedIncrement(&occupied_warmup_calls);SetEvent(warmed_event);
++ }
+  if(WaitForSingleObject(initial_done,kWait)!=WAIT_OBJECT_0)return 5;
+  if(!tf_held){initial_auditor=Snapshot(auditor_thread,auditor_tid);auto rows=initial_peers;rows.push_back(initial_auditor);WriteDebug(L".initial-debug.json",rows);Meta();}
+  HANDLE startup_events[]={go_event,cancel_event};const DWORD startup=WaitForMultipleObjects(2,startup_events,FALSE,kWait);
+@@ -143,6 +155,6 @@
+  if(WaitForSingleObject(auditor_thread,5000)!=WAIT_OBJECT_0)return 10;
+  if(worker_thread&&WaitForSingleObject(worker_thread,5000)!=WAIT_OBJECT_0)return 11;
+  DWORD ac=1,wc=0;GetExitCodeThread(auditor_thread,&ac);if(worker_thread)GetExitCodeThread(worker_thread,&wc);
+- for(HANDLE h:{main_thread,auditor_thread,worker_thread,go_event,cancel_event,audit_event,finish_event,fault_release_event,initial_done,audit_done,worker_done})if(h)CloseHandle(h);
++ for(HANDLE h:{main_thread,auditor_thread,worker_thread,go_event,cancel_event,audit_event,finish_event,fault_release_event,initial_done,audit_done,worker_done,warmup_event,warmed_event})if(h)CloseHandle(h);
+  return ac||wc||return_failures||audit_failures?12:0;
+ }
+--- a/run_parent_entry_cold.py
++++ b/run_parent_entry_cold.py
+@@ -1,7 +1,8 @@
+ """Future qualified synthetic execution-DR cold only; --help never runs EXEs.
+ 
+ Unknown debugger/restore state retains both Popen owners. It never kills a
+-debugger or releases an unaudited target to make a finite test look complete.
++debugger. A proven detached synthetic target may finish after audit FAIL;
++that explicit failed audit never becomes a PASS.
+ """
+ import argparse,ctypes,datetime,hashlib,json,os,subprocess,sys,time
+ from ctypes import wintypes as W
+@@ -146,6 +147,39 @@
+         known=set(baseline)|{(tid,value[0]) for (tid,generation),value in arms.items()}|set(unarmed)
+         if set(observed)-known:raise ValueError('Unaudited live thread/generation is not explained by native arm or original census')
+     return dict(checked_live_owned_generations=checked,retired_generations=[list(x) for x in sorted(retired)],independent_peer_rows=len(after),all_required_owned_DR_vectors_equal=True)
++
++def assert_zero_arm_refusal(rows,observer_code,ready_exists):
++    if type(observer_code) is not int or observer_code not in (1,2) or ready_exists:
++        raise ValueError('Expected zero-arm refusal did not occur')
++    for row in rows:
++        if not isinstance(row,dict):raise ValueError('Unknown refusal diagnostic')
++        if row.get('kind') in {'parent_entry','restore','foreign_resume','ready','cleanup_owned_execution'}:
++            raise ValueError('Refusal contains execution or mutation evidence')
++        if row.get('kind')=='arm':
++            vector=row.get('armed_debug')
++            if not(row.get('success') is False and row.get('saved_debug')==[] and row.get('readback') is True and
++                   isinstance(vector,list) and len(vector)==6 and all(type(x) is int and 0<=x<2**64 for x in vector) and
++                   all(type(row.get(k)) is int and row[k]>0 for k in ('thread_id','thread_generation','thread_created'))):
++                raise ValueError('Actual, partial or unknown arm cannot pass refusal')
++
++def synthetic_detached_cleanup_proven(rows,meta,identity,observer_code,observer_waited,machine,refusal):
++    # Only a strict zero-mutation refusal can take this failed-audit exception.
++    # A raw restored=True never overrides unknown or contradicted owned state.
++    if refusal is not True or observer_waited is not True or not isinstance(meta,dict):return False
++    if not isinstance(rows,list) or any(not isinstance(r,dict) or r.get('kind') not in {'start','arm','terminal'} for r in rows):return False
++    try:assert_zero_arm_refusal(rows,observer_code,False)
++    except ValueError:return False
++    starts=[r for r in rows if r.get('kind')=='start'];terms=[r for r in rows if r.get('kind')=='terminal']
++    if len(starts)!=1 or len(terms)!=1 or not rows or rows[-1] is not terms[0]:return False
++    s,t=starts[0],terms[0]
++    try:
++        same=(meta['parent_schema']=='xar.maintenance.parent_entry.cold-meta.v1' and
++              s['schema']=='xar.maintenance.parent_entry.raw.v1' and s['mode']=='parent-entry-execution-once-v1' and
++              s['machine_id']==machine and s['synthetic'] is True and 'owner_binding' in s and s['owner_binding'] is None and
++              int(s['pid'])==int(meta['pid'])==identity['pid'] and int(s['created'])==int(meta['created'])==identity['created'] and
++              int(s['entry'])==int(meta['parent_entry']))
++    except (KeyError,TypeError,ValueError):return False
++    return same and all(t.get(k) is True for k in ('restored','detached','cleanup_complete')) and t.get('pending_event') is False and t.get('process_exited') is False
+ 
+ def run_case(options,case,machine,gate,win):
+     from parent_entry_execution_contract import normalize_rows
+@@ -221,6 +255,16 @@
+                 audit['independent_preexisting_TF_preserved_before_target_release']=True
+             write(out/'INDEPENDENT-DR-AUDIT.actual.json',dict(machine_id=machine,observed_at_utc=now(),before=before,after=after,**audit));target_audited=True
+         except BaseException as exc:
++            write(out/'INDEPENDENT-DR-AUDIT-FAILED.actual.json',dict(machine_id=machine,observed_at_utc=now(),error=repr(exc),qualified=False,before=before if 'before' in locals() else None,after=after if 'after' in locals() else None))
++            if synthetic_detached_cleanup_proven(rows,meta,win.identity(target),observer.returncode if observer is not None and observer.poll() is not None else None,'observer' in waited,machine,case in REFUSALS):
++                # Normal end of this exact private fixture only. The failed six-DR
++                # audit remains failed; never release an unknown debugger/restore.
++                win.event(meta['finish_event']);released=True
++                until=time.monotonic()+5
++                while target.poll() is None and time.monotonic()<until:time.sleep(.01)
++                if target.poll() is None:hold('Failed synthetic audit: original Finish did not close target',target)
++                original_wait('target',target)
++                raise
+             hold('Independent restoration proof failed: '+repr(exc),target);raise
+         win.event(meta['finish_event']);released=True
+         until=time.monotonic()+5
+@@ -262,7 +306,7 @@
+             time.sleep(.005)
+         observer_code=original_wait('observer',observer);rows=raw_rows(raw,True)
+         if case in REFUSALS:
+-            if observer_code==0 or ready.exists() or any(x.get('kind') in {'arm','parent_entry'} for x in rows):raise ValueError('Expected zero-arm refusal did not occur')
++            assert_zero_arm_refusal(rows,observer_code,ready.exists())
+             win.event(meta['cancel_event']);normalized=None
+         else:
+             expected_code=1 if case in PARTIAL_REASONS else 0
+@@ -313,8 +357,14 @@
+             except BaseException:alive=True
+             if alive:
+                 hold('Final ownership backstop after incomplete case cleanup: '+label,p)
+-                try:original_wait(label,p)
+-                except BaseException:pass # Process is closed; missing receipt stays unknown.
++            # Also consume the actual original Popen after an inner hold already
++            # observed its exit. A new handle/current absence is never a wait.
++            try:original_wait(label,p)
++            except BaseException as wait_error:
++                try:write(out/(label+'.WAIT-RECEIPT-ERROR.actual.json'),dict(machine_id=machine,observed_at_utc=now(),error=repr(wait_error),original_wait_receipt_missing=True,qualified=False))
++                except BaseException:pass
++        if error is not None and not (out/'FAILED.actual.json').exists():
++            write(out/'FAILED.actual.json',dict(machine_id=machine,observed_at_utc=now(),error=error,cleanup_exception=repr(sys.exc_info()[1]),automatic_replay=False,qualified=False,target_audited=target_audited))
+         for h in handles:h.close()
+     return pin(out/'CASE.actual.json')
+ 

@@ -1,0 +1,213 @@
+{
+  "schema": "xar.e04.parent-dr-native64-independent-incomplete-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:03:45.416142+00:00",
+  "native_final_closure": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\FINAL-NATIVE-INCOMPLETE-CLOSURE.actual-a01.json",
+    "bytes": 2182,
+    "sha256": "a2f10161aa5f609348594fb4a3da77190e7a67ad18b469bad452b5ed03993227"
+  },
+  "original_owned_census": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\OWNED-GENERATION-CENSUS.actual-a01.json",
+    "bytes": 13153,
+    "sha256": "eb44ee53b53aac6b55b1ad0f36f71c1b3913c985a1093c09d162be7318902870"
+  },
+  "independent_current_generations": [
+    {
+      "pid": 3540,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 6464,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 6952,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 8972,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 8988,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 10320,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 11588,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 14036,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 14448,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 14676,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 14720,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 14728,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 15444,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 16528,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 17036,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 18052,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 21404,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 22384,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 23732,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 25864,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 26772,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 29124,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 29380,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 29452,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 31156,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 31680,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 32096,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 32468,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 32544,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 33192,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 34228,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 35808,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 36136,
+      "current_generation_closed": true,
+      "OS_error": 87
+    },
+    {
+      "pid": 37616,
+      "current_generation_closed": true,
+      "OS_error": 87
+    }
+  ],
+  "fixed_SYSTEM_running_instances": 0,
+  "fixed_SYSTEM_task_state": 3,
+  "two_complete_metadata_scans_identical": true,
+  "B_before_this_receipt_logical_bytes": 3376198,
+  "S_final_logical_bytes": 157906,
+  "remaining_heavy_write_bytes": 0,
+  "closed_incomplete": true,
+  "cold_PASS": 10,
+  "cold_FAIL": "occupied-dr",
+  "unexecuted_cancelled": 6,
+  "full_Q": false,
+  "target_original_wait_and_exit_code": "UNKNOWN preserved; current absence does not replace missing original wait",
+  "future_C_before": 67108864,
+  "future_C_after": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "fresh_budget_before": {
+    "C_known_future_bytes": 69206016,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25881142470,
+    "C_floor_margin_bytes": 51790011194,
+    "C_projected_whole_volume_upper_bound_bytes": 437869098182,
+    "C_quota_margin_bytes": 217566010,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 23576576
+  },
+  "retention_review_by_utc": "2026-10-21T19:15:00Z"
+}

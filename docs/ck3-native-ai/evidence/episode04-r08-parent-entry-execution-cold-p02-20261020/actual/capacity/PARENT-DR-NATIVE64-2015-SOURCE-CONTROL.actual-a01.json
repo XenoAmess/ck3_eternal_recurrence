@@ -1,0 +1,139 @@
+{
+  "schema": "xar.e04.parent-dr-native64-2015-financial-source-control.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:23:13.904177+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+  "new_independent_purpose_not_old_native_scope_extension": true,
+  "aggregate_ceiling_bytes": 67108864,
+  "component_roots": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+    "build": "C:\\w\\e04parentdr02"
+  },
+  "component_ceiling_bytes": {
+    "source": 2097152,
+    "build": 31457280,
+    "protocol": 33554432
+  },
+  "build_root": "C:\\w\\e04parentdr02\\build-a01",
+  "metadata_control_execution_admitted": true,
+  "source_control_implementation_execution_admitted": true,
+  "source_freeze_execution_admitted": false,
+  "build_execution_admitted": false,
+  "SYSTEM_registration_execution_admitted": false,
+  "EXE_execution_admitted": false,
+  "cold_execution_admitted": false,
+  "real_DR_game_SDK_Steam_D_W_Git_download_execution_admitted": false,
+  "bootstrap_metadata_total_ceiling_bytes": 262144,
+  "bootstrap_subroots": {
+    "capacity": {
+      "root": "C:\\w\\e04parentdr02\\capacity",
+      "ceiling_bytes": 65536
+    },
+    "control_metadata": {
+      "root": "C:\\w\\e04parentdr02\\control-metadata-a01",
+      "ceiling_bytes": 196608
+    }
+  },
+  "bootstrap_contract": "Before firstsourcecopy top may contain only declared exact create-only metadata leaves beneath these two precise dirs; aggregate<=256KiB, capacity<=64KiB. Sourcep02 and truebuild-a01 child must remain absent. No arbitrary extra dirs. All bootstrap counts inside top30MiB.",
+  "producer_plan": null,
+  "allowed_phase_argv": {},
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "Root_authority": "Root explicitly grants new64 financial+reviewable sourcecontrol through20:15 with source2/top30/fullprotocol32; oldU4/CI256 remain concurrent. Exact finala03 sourcefreeze/17case helper and recipe require Root adoption before sourcecopy/build/SYSTEM; newEXE/cold require later actualSYSTEMreview. No policies/ACL changed.",
+  "C_project_quota_ceiling_bytes": 438086664192,
+  "C_system_growth_reserve_bytes": 4294967296,
+  "hard_deadline_utc": "2026-10-20T20:15:00Z",
+  "quota_review_at_utc": "2026-10-20T20:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:23:13.903481+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77427683328,
+      "available_to_caller_bytes": 77427683328,
+      "total_free_bytes": 77427683328,
+      "entire_volume_used_allocation_upper_bound_bytes": 433706262528,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:23:13.903481+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648842752,
+      "available_to_caller_bytes": 21648842752,
+      "total_free_bytes": 21648842752,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441164800,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 71565312,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25841369088,
+    "C_floor_margin_bytes": 51586314240,
+    "C_projected_whole_volume_upper_bound_bytes": 438072795136,
+    "C_quota_margin_bytes": 13869056,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39788544
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 71565312,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 0,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-parent-runtime-source4-1930-20261020-a01",
+        "known_future": {
+          "C:/": 4194304,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-push-ci-2000-20261020-a01",
+        "known_future": {
+          "C:/": 262144,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+        "known_future": {
+          "C:/": 67108864,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 390076,
+    "sha256": "04ec960db9713cff161d86c162bf1349c5061254f5c650f454131f37b68717b3"
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false
+}

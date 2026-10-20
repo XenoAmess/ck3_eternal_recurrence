@@ -1,0 +1,14 @@
+test_actual_ready_prefix_identity_and_census (__main__.Focused.test_actual_ready_prefix_identity_and_census) ... ok
+test_actual_selection_external_adapter_explicit_peers_and_no_six_queries (__main__.Focused.test_actual_selection_external_adapter_explicit_peers_and_no_six_queries) ... ok
+test_background_profile_machine_birth_and_freshness (__main__.Focused.test_background_profile_machine_birth_and_freshness) ... ok
+test_diagnostic_timeout_keeps_same_original_wait_until_exit (__main__.Focused.test_diagnostic_timeout_keeps_same_original_wait_until_exit) ... ok
+test_expired_pair_and_rebuilt_observer_are_zero_launch (__main__.Focused.test_expired_pair_and_rebuilt_observer_are_zero_launch) ... ok
+test_real_prepare_cli_requires_root_selected_seventeen_cases (__main__.Focused.test_real_prepare_cli_requires_root_selected_seventeen_cases) ... ok
+test_retained_real_harmless_host_wait_has_background_provenance (__main__.Focused.test_retained_real_harmless_host_wait_has_background_provenance) ... ok
+test_source_hash_crossing_ttl_is_rejected (__main__.Focused.test_source_hash_crossing_ttl_is_rejected) ... ok
+test_unknown_day_not_replayed_and_postread_only_after_cleanup (__main__.Focused.test_unknown_day_not_replayed_and_postread_only_after_cleanup) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.649s
+
+OK

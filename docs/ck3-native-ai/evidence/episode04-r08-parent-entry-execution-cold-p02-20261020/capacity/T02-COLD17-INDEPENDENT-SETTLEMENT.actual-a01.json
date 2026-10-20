@@ -1,0 +1,331 @@
+{
+  "schema": "xar.e04.T02-native-cold17-independent-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:54:59.364528+00:00",
+  "native_final": {
+    "path": "C:\\w\\e04parentdr02\\FINAL-NATIVE-CLOSED.actual-a01.json",
+    "bytes": 3637,
+    "sha256": "181ce2b137a047361d23b64bb001dee2e2a4e2e59456c837cf9a0dc7be96f203"
+  },
+  "limited_Q": {
+    "path": "C:\\w\\e04parentdr02\\PARENT-ENTRY-EXECUTION-QUALIFICATION.actual-a01.json",
+    "bytes": 4738,
+    "sha256": "b80270c8bd5bace8c464a31b8ef67cea346fcf5edae52f6bf9ae1f687ee41504"
+  },
+  "Root_acceptance": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-COLD-ACCEPTANCE.actual-a01.json",
+    "bytes": 5702,
+    "sha256": "935e7900fa2910f296b8b000f25e577775e9793be3f9e4911d1462bb93011cbf"
+  },
+  "owned_census": {
+    "path": "C:\\w\\e04parentdr02\\OWNED-NATIVE-EXE-CLOSED.actual-a01.json",
+    "bytes": 20720,
+    "sha256": "7053e58c7abde3dc9a9218e75ba8a7b9e6443c3d44348264319dff3547f0d5ef"
+  },
+  "current_generation_checks": [
+    [
+      20256,
+      134369983287697298,
+      "absent87"
+    ],
+    [
+      18624,
+      134369983291327821,
+      "absent87"
+    ],
+    [
+      20020,
+      134369983295313381,
+      "absent87"
+    ],
+    [
+      23596,
+      134369984264738049,
+      "absent87"
+    ],
+    [
+      5152,
+      134369984271077626,
+      "absent87"
+    ],
+    [
+      35660,
+      134369984268456917,
+      "absent87"
+    ],
+    [
+      26480,
+      134369984921369264,
+      "absent87"
+    ],
+    [
+      2956,
+      134369984932714342,
+      "absent87"
+    ],
+    [
+      24924,
+      134369984928908051,
+      "absent87"
+    ],
+    [
+      24924,
+      134369987637193360,
+      "absent87"
+    ],
+    [
+      18672,
+      134369989936829363,
+      "absent87"
+    ],
+    [
+      32500,
+      134369989956828136,
+      134369996987167655,
+      259
+    ],
+    [
+      29644,
+      134369989941110948,
+      "absent87"
+    ],
+    [
+      16552,
+      134369990001852541,
+      "absent87"
+    ],
+    [
+      27952,
+      134369990001115127,
+      "absent87"
+    ],
+    [
+      27580,
+      134369990019510359,
+      "absent87"
+    ],
+    [
+      29000,
+      134369990018595239,
+      "absent87"
+    ],
+    [
+      19508,
+      134369990008426173,
+      "absent87"
+    ],
+    [
+      30504,
+      134369990007561364,
+      "absent87"
+    ],
+    [
+      29904,
+      134369989994220699,
+      "absent87"
+    ],
+    [
+      36304,
+      134369989993408152,
+      "absent87"
+    ],
+    [
+      31476,
+      134369989968886590,
+      "absent87"
+    ],
+    [
+      31692,
+      134369989968289085,
+      "absent87"
+    ],
+    [
+      29892,
+      134369989998177376,
+      "absent87"
+    ],
+    [
+      27132,
+      134369989997194414,
+      "absent87"
+    ],
+    [
+      15584,
+      134369989965640117,
+      "absent87"
+    ],
+    [
+      33636,
+      134369989964310136,
+      "absent87"
+    ],
+    [
+      21896,
+      134369989971081297,
+      "absent87"
+    ],
+    [
+      18776,
+      134369989970448642,
+      "absent87"
+    ],
+    [
+      36768,
+      134369990011232806,
+      "absent87"
+    ],
+    [
+      25432,
+      134369990010472207,
+      "absent87"
+    ],
+    [
+      35644,
+      134369990014100139,
+      "absent87"
+    ],
+    [
+      33720,
+      134369990013213605,
+      "absent87"
+    ],
+    [
+      28236,
+      134369990000008082,
+      "absent87"
+    ],
+    [
+      32724,
+      134369989999168955,
+      "absent87"
+    ],
+    [
+      30104,
+      134369990003983594,
+      "absent87"
+    ],
+    [
+      32460,
+      134369990003200262,
+      "absent87"
+    ],
+    [
+      29076,
+      134369990006036860,
+      "absent87"
+    ],
+    [
+      30980,
+      134369990005155950,
+      "absent87"
+    ],
+    [
+      21164,
+      134369989990796816,
+      "absent87"
+    ],
+    [
+      6656,
+      134369989990063078,
+      "absent87"
+    ],
+    [
+      3856,
+      134369989986858912,
+      "absent87"
+    ],
+    [
+      29340,
+      134369989986187940,
+      "absent87"
+    ],
+    [
+      34492,
+      134369990016732204,
+      "absent87"
+    ],
+    [
+      26696,
+      134369990016004929,
+      "absent87"
+    ],
+    [
+      29976,
+      134369989976365726,
+      "absent87"
+    ],
+    [
+      13888,
+      134369989975673573,
+      "absent87"
+    ],
+    [
+      14016,
+      134369995330225353,
+      "absent87"
+    ]
+  ],
+  "fixed_SYSTEM_task": {
+    "state": 3,
+    "instances": 0,
+    "last": 0
+  },
+  "two_complete_scans_stable": true,
+  "T02_logical_bytes": 3741085,
+  "T02_files": 463,
+  "S02_logical_bytes": 162475,
+  "S02_files": 15,
+  "T02_S02_now_readonly": true,
+  "first_fresh24924_rc1_preserved": true,
+  "first_fresh_margin_unknown": true,
+  "later_193957_separate_quota_bytes": -1622016,
+  "late_value_not_same_time_claim": true,
+  "future_before_bytes": 31457280,
+  "future_after_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "qualification": "Exact17 synthetic cold only; no public runtime/Steam/offline/game/payment/realOSfault or fullR08 qualification.",
+  "review_by_utc": "2026-10-27T00:00:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:54:59.281186+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77389254656,
+      "available_to_caller_bytes": 77389254656,
+      "total_free_bytes": 77389254656,
+      "entire_volume_used_allocation_upper_bound_bytes": 433744691200,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:54:59.281186+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648809984,
+      "available_to_caller_bytes": 21648809984,
+      "total_free_bytes": 21648809984,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441197568,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget_after": {
+    "C_known_future_bytes": 3407872,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25773211648,
+    "C_floor_margin_bytes": 51616043008,
+    "C_projected_whole_volume_upper_bound_bytes": 438043066368,
+    "C_quota_margin_bytes": 43597824,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39755776
+  },
+  "transaction": {
+    "adopted": true,
+    "capacity_registry_revision": 512,
+    "lock_hold_seconds": 0.0016176998615264893,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 399360,
+      "sha256": "ff3399b820c9cc46eaa946c9883e87f9cb3ade45ad8f8ac0a9b2637ad56413d0"
+    }
+  }
+}

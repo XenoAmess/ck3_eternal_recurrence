@@ -1,0 +1,379 @@
+{
+  "schema": "xar.e04.parent-dr.owned-generation-census.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:57:42.124527+00:00",
+  "owned_source": "Original POPEN/INTENT/WAIT exact PID+creation receipts under this B only; no global process absence claimed",
+  "rows": [
+    {
+      "pid": 3540,
+      "expected_creation_time_100ns": 134369960515955202,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 6464,
+      "expected_creation_time_100ns": 134369960531118086,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 6952,
+      "expected_creation_time_100ns": 134369960523062229,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 8972,
+      "expected_creation_time_100ns": 134369960491293689,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 8988,
+      "expected_creation_time_100ns": 134369960529037712,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 10320,
+      "expected_creation_time_100ns": 134369960498507117,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 11588,
+      "expected_creation_time_100ns": 134369960525977452,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\default-off\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 14036,
+      "expected_creation_time_100ns": 134369956779063418,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\source-copy-a01\\fresh-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 14448,
+      "expected_creation_time_100ns": 134369960518593764,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 14676,
+      "expected_creation_time_100ns": 134369960519431083,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 14720,
+      "expected_creation_time_100ns": 134369960496545557,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 14728,
+      "expected_creation_time_100ns": 134369960499265390,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign4096_limit\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 15444,
+      "expected_creation_time_100ns": 134369960504191388,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\timeout\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 16528,
+      "expected_creation_time_100ns": 134369956783001627,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\source-copy-a01\\ORIGINAL-WAIT.actual-a01.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 17036,
+      "expected_creation_time_100ns": 134369957854490831,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\build-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 18052,
+      "expected_creation_time_100ns": 134369960504933381,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\timeout\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 21404,
+      "expected_creation_time_100ns": 134369960480923593,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 22384,
+      "expected_creation_time_100ns": 134369960483959082,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-execution-a01\\INTENT.actual-a01.json",
+        "C:\\w\\e04parentdr01\\cold-execution-a01\\ORIGINAL-WAIT.actual-a01.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 23732,
+      "expected_creation_time_100ns": 134369960530170648,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 25864,
+      "expected_creation_time_100ns": 134369958541330313,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\ORIGINAL-WAIT.actual-a01.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 26772,
+      "expected_creation_time_100ns": 134369960495602585,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\created_thread\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 29124,
+      "expected_creation_time_100ns": 134369960477197875,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 29380,
+      "expected_creation_time_100ns": 134369960533394874,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 29452,
+      "expected_creation_time_100ns": 134369960515127199,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\restore-fault\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 31156,
+      "expected_creation_time_100ns": 134369957858168892,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\build-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 31680,
+      "expected_creation_time_100ns": 134369958530425874,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 32096,
+      "expected_creation_time_100ns": 134369960527991795,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 32468,
+      "expected_creation_time_100ns": 134369960492942461,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\foreign257_then_target\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 32544,
+      "expected_creation_time_100ns": 134369957860805496,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\build-execution-a01\\INTENT.actual-a01.json",
+        "C:\\w\\e04parentdr01\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 33192,
+      "expected_creation_time_100ns": 134369960532485293,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\occupied-dr\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 34228,
+      "expected_creation_time_100ns": 134369960522229347,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\continue-fault\\target.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 35808,
+      "expected_creation_time_100ns": 134369958537708714,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\SYSTEM-gate-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 36136,
+      "expected_creation_time_100ns": 134369956787283043,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\source-copy-a01\\VERIFY-ORIGINAL-WAIT.actual-a01.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    },
+    {
+      "pid": 37616,
+      "expected_creation_time_100ns": 134369960526787440,
+      "source_receipts": [
+        "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.ORIGINAL-WAIT.actual.json",
+        "C:\\w\\e04parentdr01\\cold-a01\\default-off\\observer.POPEN.actual.json"
+      ],
+      "open_error": 87,
+      "original_generation_closed": true,
+      "reason": "PID absent"
+    }
+  ],
+  "owned_live": [],
+  "read_errors": [],
+  "closed": true,
+  "missing_original_target_wait": {
+    "pid": 33192,
+    "creation_time_100ns": 134369960532485293,
+    "reason": "Hold loop observed original process exit but exception/finally failed to write original target wait. Current generation absence is separate; original exit code remains unknown."
+  }
+}

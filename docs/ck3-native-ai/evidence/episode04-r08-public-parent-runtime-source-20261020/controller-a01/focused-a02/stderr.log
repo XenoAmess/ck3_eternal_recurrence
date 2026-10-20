@@ -1,0 +1,20 @@
+test_actual_ready_prefix_identity_and_census (__main__.Focused.test_actual_ready_prefix_identity_and_census) ... ok
+test_actual_selection_external_adapter_explicit_peers_and_no_six_queries (__main__.Focused.test_actual_selection_external_adapter_explicit_peers_and_no_six_queries) ... FAIL
+test_background_profile_machine_birth_and_freshness (__main__.Focused.test_background_profile_machine_birth_and_freshness) ... ok
+test_retained_real_harmless_host_wait_has_background_provenance (__main__.Focused.test_retained_real_harmless_host_wait_has_background_provenance) ... ok
+test_source_hash_crossing_ttl_is_rejected (__main__.Focused.test_source_hash_crossing_ttl_is_rejected) ... ok
+test_unknown_day_not_replayed_and_postread_only_after_cleanup (__main__.Focused.test_unknown_day_not_replayed_and_postread_only_after_cleanup) ... ok
+
+======================================================================
+FAIL: test_actual_selection_external_adapter_explicit_peers_and_no_six_queries (__main__.Focused.test_actual_selection_external_adapter_explicit_peers_and_no_six_queries)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r08-parent-runtime-source-1930-a01\controller-a01\test_parent_public_source.py", line 139, in test_actual_selection_external_adapter_explicit_peers_and_no_six_queries
+    self.assertEqual(result.returncode,0,result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\r\n  File "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py", line 925, in <module>\r\n    raise SystemExit(main())\r\n                     ~~~~^^\r\n  File "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py", line 896, in main\r\n    result = native_dispatch(args)\r\n  File "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py", line 913, in native_dispatch\r\n    selection = Selection(args.runtime, args.products, args.product, args.case, args.run_context,args.prepared_case)\r\n  File "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py", line 157, in __init__\r\n    from ck3_mod_acceptance_graphics_cache import profile_enabled\r\nModuleNotFoundError: No module named \'ck3_mod_acceptance_graphics_cache\'\r\n'
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.097s
+
+FAILED (failures=1)

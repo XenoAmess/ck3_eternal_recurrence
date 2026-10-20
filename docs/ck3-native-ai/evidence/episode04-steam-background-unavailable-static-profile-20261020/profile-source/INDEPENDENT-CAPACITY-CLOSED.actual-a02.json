@@ -1,0 +1,71 @@
+{
+  "schema": "xar.e04.steam-file-profile128-closed.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:49:16.829141+00:00",
+  "producer_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-profile-source-2015-a01\\DELIVERY.actual-a02.json",
+    "bytes": 2933,
+    "sha256": "f1158a71459bee56af80600c12ae3465f501c76573e25d1724c172d11979ee9f"
+  },
+  "Root_same_purpose_static_analysis_authority_preserved": "Root explicitly continued same source-only purpose/twofiles/root128KiB/20:15; no new 0delta card needed.",
+  "two_complete_metadata_scans_stable": true,
+  "producer_logical_bytes": 77325,
+  "files": 13,
+  "scoped_current_process_matches": [],
+  "author_original_tools_terminal": "Producer reports actual foreground tools returned0; original Popen OS generation handles not supplied in this delivery, not reconstructed retrospectively.",
+  "current_mode": null,
+  "runtime_qualified": false,
+  "old_probe_unavailable_not_reclassified": true,
+  "corrections_preserved": [
+    "STATIC-COMPLETENESS-CORRECTION.actual-a01.json supersedes erroneous single-pdata complete_function flag.",
+    "TYPED-CFG-AND-PROFILE-CANDIDATE.actual-a01.json classifies jump-table data and resolves actual local CFG; it supersedes the linear-disasm local-branch verdict."
+  ],
+  "future_before_bytes": 131072,
+  "future_after_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "all_actual_files_retained": true,
+  "review_due_utc": "2026-10-22T19:35:29Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:49:16.746336+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77394513920,
+      "available_to_caller_bytes": 77394513920,
+      "total_free_bytes": 77394513920,
+      "entire_volume_used_allocation_upper_bound_bytes": 433739431936,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:49:16.746336+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648809984,
+      "available_to_caller_bytes": 21648809984,
+      "total_free_bytes": 21648809984,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441197568,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget_after": {
+    "C_known_future_bytes": 33816576,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25803620352,
+    "C_floor_margin_bytes": 51590893568,
+    "C_projected_whole_volume_upper_bound_bytes": 438068215808,
+    "C_quota_margin_bytes": 18448384,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39755776
+  },
+  "transaction": {
+    "adopted": true,
+    "capacity_registry_revision": 510,
+    "lock_hold_seconds": 0.0015116999857127666,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 398019,
+      "sha256": "8178721fddde2855c33f4ed518f7546478101747ca93c0f01a10e3a3224175fa"
+    }
+  }
+}

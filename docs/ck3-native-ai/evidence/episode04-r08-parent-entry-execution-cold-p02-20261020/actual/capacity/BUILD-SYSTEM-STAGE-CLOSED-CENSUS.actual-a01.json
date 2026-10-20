@@ -1,0 +1,135 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:41:31.739388+00:00",
+  "recorded_generation_checks": [
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 760,
+        "sha256": "5b814eeb9b494438e4e2b2bfbc711263aa2909462454abcec2ec31f185d4eda6"
+      },
+      "pid": 23596,
+      "creation": 134369984264738049,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1136,
+        "sha256": "1faf5dd33436d08f17e7f2b718a535c5e1e0220df27f7dacc298cc49d0a84f3e"
+      },
+      "pid": 5152,
+      "creation": 134369984271077626,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1008,
+        "sha256": "38570f8a60358232b480cd618949fdcc2305f2b48fc5c125269900ee2a1c0c6c"
+      },
+      "pid": 35660,
+      "creation": 134369984268456917,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\cold-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 791,
+        "sha256": "a5ffa970ad2ce9cb1a58ce27b99e4dfa2cf1e364483c07ef4c8752258e1b8414"
+      },
+      "pid": 24924,
+      "creation": 134369987637193360,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 740,
+        "sha256": "a6ae1ed5c6a42696b96fe5f5cec71aa4c214d166a5df07513fe6295ce92c2ea8"
+      },
+      "pid": 20256,
+      "creation": 134369983287697298,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1206,
+        "sha256": "3d776acb5b714813a5142e719ea6a623d73f4158fcdc2c716e02506f6e961c75"
+      },
+      "pid": 18624,
+      "creation": 134369983291327821,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\VERIFY-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1007,
+        "sha256": "c60303b83f709ef511547dbd756d7a1e0ab388f2755ad0de42b5e1644102c22f"
+      },
+      "pid": 20020,
+      "creation": 134369983295313381,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 750,
+        "sha256": "8e973e6fa1d23ac20eb277aba34b9cd6f33355f0aa42a28e2a640990083c8da9"
+      },
+      "pid": 26480,
+      "creation": 134369984921369264,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 997,
+        "sha256": "fcde8a0e8ebd5c742373f5fdb5d817700dd2884c29693aa7812ad12fb2d72480"
+      },
+      "pid": 2956,
+      "creation": 134369984932714342,
+      "closed": true,
+      "open_error": 87
+    },
+    {
+      "receipt": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1008,
+        "sha256": "66f261e75a89e5bdd6101df977ae303e7e2c7a0b381a9209c5ac6df02402be4a"
+      },
+      "pid": 24924,
+      "creation": 134369984928908051,
+      "closed": true,
+      "open_error": 87
+    }
+  ],
+  "root_referencing_processes": [],
+  "fixed_SYSTEM_task": {
+    "state": 3,
+    "instances": 0,
+    "last_result": 0
+  },
+  "root_review": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "a21289adcd8ae8e950e8722c7c34ede5b21d0174bae9529534c9b351bd88db66"
+  },
+  "first_cold_fresh_failure": {
+    "path": "C:\\w\\e04parentdr02\\cold-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+    "bytes": 791,
+    "sha256": "a5ffa970ad2ce9cb1a58ce27b99e4dfa2cf1e364483c07ef4c8752258e1b8414"
+  },
+  "read_errors": [],
+  "source_build_SYSTEM_future_authority_closed_by_Root": true,
+  "no_global_process_absence_claim": true
+}

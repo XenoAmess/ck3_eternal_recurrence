@@ -1,0 +1,589 @@
+{
+  "schema": "xar.e04.parent-dr.T02-owned-native-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:47:53.417831+00:00",
+  "original_wait_records_count": 47,
+  "owned_original_processes": [
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 740,
+        "sha256": "a6ae1ed5c6a42696b96fe5f5cec71aa4c214d166a5df07513fe6295ce92c2ea8"
+      },
+      "pid": 20256,
+      "created": 134369983287697298,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1206,
+        "sha256": "3d776acb5b714813a5142e719ea6a623d73f4158fcdc2c716e02506f6e961c75"
+      },
+      "pid": 18624,
+      "created": 134369983291327821,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\source-copy-a01\\VERIFY-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1007,
+        "sha256": "c60303b83f709ef511547dbd756d7a1e0ab388f2755ad0de42b5e1644102c22f"
+      },
+      "pid": 20020,
+      "created": 134369983295313381,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 760,
+        "sha256": "5b814eeb9b494438e4e2b2bfbc711263aa2909462454abcec2ec31f185d4eda6"
+      },
+      "pid": 23596,
+      "created": 134369984264738049,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1136,
+        "sha256": "1faf5dd33436d08f17e7f2b718a535c5e1e0220df27f7dacc298cc49d0a84f3e"
+      },
+      "pid": 5152,
+      "created": 134369984271077626,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\build-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1008,
+        "sha256": "38570f8a60358232b480cd618949fdcc2305f2b48fc5c125269900ee2a1c0c6c"
+      },
+      "pid": 35660,
+      "created": 134369984268456917,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 750,
+        "sha256": "8e973e6fa1d23ac20eb277aba34b9cd6f33355f0aa42a28e2a640990083c8da9"
+      },
+      "pid": 26480,
+      "created": 134369984921369264,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 997,
+        "sha256": "fcde8a0e8ebd5c742373f5fdb5d817700dd2884c29693aa7812ad12fb2d72480"
+      },
+      "pid": 2956,
+      "created": 134369984932714342,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\SYSTEM-gate-execution-a01\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1008,
+        "sha256": "66f261e75a89e5bdd6101df977ae303e7e2c7a0b381a9209c5ac6df02402be4a"
+      },
+      "pid": 24924,
+      "created": 134369984928908051,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-execution-a01\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 791,
+        "sha256": "a5ffa970ad2ce9cb1a58ce27b99e4dfa2cf1e364483c07ef4c8752258e1b8414"
+      },
+      "pid": 24924,
+      "created": 134369987637193360,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-execution-a02\\FRESH-ORIGINAL-WAIT.actual.json",
+        "bytes": 783,
+        "sha256": "5eb407dc56632b8da371f7fe1c297271526df8800110811c12366e97d22f47a2"
+      },
+      "pid": 18672,
+      "created": 134369989936829363,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-execution-a02\\ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1469,
+        "sha256": "a964b23f78030a3b914630d5102600d02c673737762ec13a4bc4ba1dceb4bd19"
+      },
+      "pid": 32500,
+      "created": 134369989956828136,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-execution-a02\\VERIFY-ORIGINAL-WAIT.actual.json",
+        "bytes": 1048,
+        "sha256": "b31c899f90530c947196e2482a26215ebc6285c3684364c7edc9174ad9a6790e"
+      },
+      "pid": 29644,
+      "created": 134369989941110948,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "149d54c0654994a356f944e10c9e880e174463a4f73b0dded8a0321e4af54fa1"
+      },
+      "pid": 16552,
+      "created": 134369990001852541,
+      "actual_original_exit_code": 2,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\bad-schema\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "19a640a6862922bded2133845f476a51de7e349c3582ed8c648eafa96523746d"
+      },
+      "pid": 27952,
+      "created": 134369990001115127,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "d005042accf68f6a53bea54a06704a0e886c1c1374b688313f034b38087d7438"
+      },
+      "pid": 27580,
+      "created": 134369990019510359,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\cancel_late\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "34c0ca1d738aa63a6bc93fabf0583b9a8219ea6adcf3165b86d4e984acfc1711"
+      },
+      "pid": 29000,
+      "created": 134369990018595239,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "8e0ddaeea1bf704ba675827557436a61050d254a60c5061515b7f80752d6a501"
+      },
+      "pid": 19508,
+      "created": 134369990008426173,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\context-drift\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "65cead9486e27b5a6edef17cb3600b15dd269c3e00008e58c99b2127a1357e70"
+      },
+      "pid": 30504,
+      "created": 134369990007561364,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "4e96b214c7323aa268d7bba5d6ae42d28c65f7a9d277c65f9391caf6e74f7475"
+      },
+      "pid": 29904,
+      "created": 134369989994220699,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\continue-fault\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "ecb8b3fb5b869a537723b89a2efc6b5b9ffc64c4ff675e6891c88740b286c0a7"
+      },
+      "pid": 36304,
+      "created": 134369989993408152,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "eb5f7651f35845062cb4d33a9931396b0fdcb6a77f4ba9e9de18e96daac4a3fb"
+      },
+      "pid": 31476,
+      "created": 134369989968886590,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\created_thread\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "06fad6782e09b448fec15293242ef97103b659b74f88066ed76c663729d2605e"
+      },
+      "pid": 31692,
+      "created": 134369989968289085,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "6590bcd04fa704c4540d97f974313e11ff4cbf57169ec5ccf569a5f3a99ed42d"
+      },
+      "pid": 29892,
+      "created": 134369989998177376,
+      "actual_original_exit_code": 2,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "e209dff7e1f00c52228b84066b0410e17e90433b33beca4a3329b2801c7ee874"
+      },
+      "pid": 27132,
+      "created": 134369989997194414,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "598cc52b7819999d63e9694b95179a13eaae97c9563bd3d40cf250783c9a6c68"
+      },
+      "pid": 15584,
+      "created": 134369989965640117,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign257_then_target\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "133de62101f8151553ce9be19649e39cdce549c16ed427f08d405f0ef72e6cd5"
+      },
+      "pid": 33636,
+      "created": 134369989964310136,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "52c4364f3b671fabeb0949664433c5cb8c22d719210a28469b1b769df16d21a4"
+      },
+      "pid": 21896,
+      "created": 134369989971081297,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\foreign4096_limit\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "8ae8db2594e08ece6ca2c45b51009c8923819299731fb5d8b9bb7d221622bcce"
+      },
+      "pid": 18776,
+      "created": 134369989970448642,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "794328701fce488d5a1d2c8afd37c6a0a8d1fc10a5092b96a2d649e46c54ace5"
+      },
+      "pid": 36768,
+      "created": 134369990011232806,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\fullid-drift\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "71c3417d41d1bcf8ea8c55dd31c9c71a63068e2c97b5500e64c32248543ec34c"
+      },
+      "pid": 25432,
+      "created": 134369990010472207,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "cdfc16bd4cd4c55d82cc41da852a94b1ee5a3a9c29e93dca39562151a803c1f5"
+      },
+      "pid": 35644,
+      "created": 134369990014100139,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\magic-drift\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "7579a667c48338b22f40692fe35ece4a5c0184d1215b155c03c7cf2e068f0fa9"
+      },
+      "pid": 33720,
+      "created": 134369990013213605,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "911faec55b491364657f34f59a779ba30117ebf9cfdf85281edce17cca595af5"
+      },
+      "pid": 28236,
+      "created": 134369990000008082,
+      "actual_original_exit_code": 2,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\missing-ack\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "38defc878d6761510aaced3280cfc76b6662121369b66d168dab3a3755363413"
+      },
+      "pid": 32724,
+      "created": 134369989999168955,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "080aa17cf2b17568d5dc1dffd2ccc4a8f540c1782ec18b0390a17bc1de433ab7"
+      },
+      "pid": 30104,
+      "created": 134369990003983594,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "bf8eab058c2ab92573309f4b18592ffda58b733d45a497eb6d165a02d5954f17"
+      },
+      "pid": 32460,
+      "created": 134369990003200262,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "1710ed3a4c3d897a31b18f3943ebe05b963a9230a4debb4c104628f8151239e7"
+      },
+      "pid": 29076,
+      "created": 134369990006036860,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\occupied-tf\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "c49832f1b83ea17f483dafaac612d4b3bc6a07b9ffb2d3838fc1c872e84338fd"
+      },
+      "pid": 30980,
+      "created": 134369990005155950,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "5db8d1ad9d20857cc6a07d4a54e423370bddbd9bb9c5fb1a18ef5dde7e3e5403"
+      },
+      "pid": 21164,
+      "created": 134369989990796816,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "d3b50a1db5b9662ed45eb79f375ae7c6059074fce1a9d116198dc064babb9a58"
+      },
+      "pid": 6656,
+      "created": 134369989990063078,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 223,
+        "sha256": "3cee02fc7405b947918e8141a2d63f3e14bf561438b527ae6db124e4a48c6c69"
+      },
+      "pid": 3856,
+      "created": 134369989986858912,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\restore-fault\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "d8953a40917e4679ae32b52b2ec1f7aa5c572360100010658401814a85b23510"
+      },
+      "pid": 29340,
+      "created": 134369989986187940,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "38b9a5e42b5d041a9cad94ffc74608e6f66059a019b48f91ffd5056ceed79984"
+      },
+      "pid": 34492,
+      "created": 134369990016732204,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\session-drift\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "f3f8e43d2cc28723c3d914d1d1d0aa434e84768617d46dc9cdedb2901cc1980b"
+      },
+      "pid": 26696,
+      "created": 134369990016004929,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\observer.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "631bff95d623ed7841855f6d4dad87fda98c144fce1f17cd7fcf96ca7e2743a5"
+      },
+      "pid": 29976,
+      "created": 134369989976365726,
+      "actual_original_exit_code": 1,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    },
+    {
+      "wait": {
+        "path": "C:\\w\\e04parentdr02\\cold-a01\\timeout\\target.ORIGINAL-WAIT.actual.json",
+        "bytes": 224,
+        "sha256": "3e048ce2fd4d1fc8a1b8387fc1f70cb36c5d4f40f58531479031c35cf4ef0e27"
+      },
+      "pid": 13888,
+      "created": 134369989975673573,
+      "actual_original_exit_code": 0,
+      "OpenProcess_error": 87,
+      "original_generation_closed": true
+    }
+  ],
+  "read_errors": [],
+  "all_recorded_original_generations_closed": true,
+  "SYSTEM_fixed_task": {
+    "path": "\\XAR CK3 Project EXE Broker\\RegisterDeclaredProjectExecutables",
+    "state": 3,
+    "instances": 0,
+    "last_result": 0
+  },
+  "remaining_heavy_write_bytes": 0,
+  "actual_selected_CASE_count": 17,
+  "all_cases_actual_PASS": true,
+  "Root_qualification_pending": true,
+  "all_metadata_writers_zero_not_claimed_until_Root_and_review_close": true,
+  "no_global_process_absence_claim": true,
+  "prior_missing_T01_target_original_wait_not_reconstructed": true,
+  "real_CK3": false,
+  "full_R08": false
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-mod-acceptance-products-v1",
+  "product_inventory": "{repo_root}/workshop/products.json",
+  "products": {
+    "war-episode04-r10": {
+      "external_mod": false,
+      "cases": [
+        {
+          "id": "r10-common-preparation",
+          "status": "ready",
+          "adapter": {
+            "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+            "config": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json"
+          },
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "initial_plan": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\initial-plan.json",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_query_war_cash_current_resources_private_v1",
+            "ck3_execute_step",
+            "ck3_save_checkpoint"
+          ],
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 7200,
+            "poll_interval": 0.1,
+            "hold_seconds": 3600
+          },
+          "phases": [
+            "public-normal-save-parent-entry-one-opportunity"
+          ],
+          "normal_close": "shared-original-client"
+        }
+      ]
+    }
+  }
+}

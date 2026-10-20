@@ -1,0 +1,37 @@
+{
+  "schema": "xar.maintenance.parent_entry.cold.case.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:19.896024+00:00",
+  "status": "PASS",
+  "case": "default-off",
+  "actual_target_result": {
+    "synthetic": true,
+    "actual_body_calls": 0,
+    "foreign_body_calls": 0,
+    "target_body_calls": 0,
+    "return_failures": 0,
+    "audit_failures": 0,
+    "main_tid": 7748,
+    "auditor_tid": 25368,
+    "worker_tid": 0,
+    "full_id_initial": 33388,
+    "local_player_id": 1,
+    "target_owned_TF_hold": false,
+    "occupied_warmup_calls": 0,
+    "real_CK3_call": false
+  },
+  "native_consumer": null,
+  "raw": null,
+  "target_original_exit": 0,
+  "observer_original_exit": 2,
+  "independent_audit": {
+    "path": "C:\\w\\e04parentdr02\\cold-a01\\default-off\\INDEPENDENT-DR-AUDIT.actual.json",
+    "bytes": 2305,
+    "sha256": "6e810941bfd5db265c261ae57c4e80af1911935c9343b2a481b1e178f7342801"
+  },
+  "actual_debugger_fault_injected": false,
+  "real_OS_failure_proven": false,
+  "real_CK3": false,
+  "parent_return_observed": false,
+  "full_R08": false
+}

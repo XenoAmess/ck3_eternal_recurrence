@@ -1,0 +1,25 @@
+{
+  "pid": 17036,
+  "creation_time_100ns": 134369957854490831,
+  "creation_time_read_error": null,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\capacity\\fresh_parent_dr_native64_1915_prepared_a02.py",
+    "--cap",
+    "C:\\w\\e04parentdr01\\capacity\\PARENT-DR-NATIVE64-1915-BUILD-SYSTEM-ADMISSION.actual-a03.json",
+    "--cap-sha256",
+    "1c686379ebd10e4ab64d9ace9ed1067d2b195c0ef1c73e50cf4d3cc09d67f3c3",
+    "--phase",
+    "MSVC-build-and-ordinary-SYSTEM",
+    "--output",
+    "-"
+  ],
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "observed_at_utc": "2026-10-20T18:49:45.814686+00:00"
+}

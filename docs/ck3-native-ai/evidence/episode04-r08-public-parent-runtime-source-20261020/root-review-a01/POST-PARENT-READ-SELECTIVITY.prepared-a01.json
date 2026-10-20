@@ -1,0 +1,44 @@
+{
+  "schema": "xar.e04.post-parent-pointer-read.static-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:17:29.130152+00:00",
+  "source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0174-maintenance-source\\parent.complete.asm",
+    "bytes": 15822,
+    "sha256": "36eecdf78b4e958833f90ee903e1cd2cb607e0a1d5e8ea1adb0fc3e1d14f040f",
+    "lines": [
+      "1-17",
+      "35-54"
+    ]
+  },
+  "instruction_rva": "0x28F7853",
+  "instruction_bytes": "488b92c0010000",
+  "instruction_length": 7,
+  "candidate_post_pc_rva": "0x28F785A",
+  "candidate_watch": "fresh same-session player Character pointer +0x1C0; exact aligned8 read/write data breakpoint",
+  "prologue26_hex": "488bc453554881ec980000004c8970e0488bea488b92c0010000",
+  "post_register_meaning": {
+    "RBP": "original entry RDX Character",
+    "RDX": "just-read secondary-context pointer, including legitimate null",
+    "RCX": "original entry RCX, unchanged up to post PC",
+    "R8D": "original index bits, unchanged up to post PC",
+    "RAX": "entry RSP",
+    "RSP": "entry RSP -0xA8"
+  },
+  "narrow_observation_credit": "target Character passed this parent pointer-read edge only",
+  "entryExact": false,
+  "four_raw_semantics": "any later read is a post-read snapshot; not an entry atomic value",
+  "null_path": "parent null test 28F786F/7872 can still reach CALL28A6D10 at28F7934; callee must independently validate",
+  "selection_limit": "other accesses to the same player field can still trap; no4096 coverage guarantee",
+  "implementation_present": false,
+  "native_cold_qualification": false,
+  "execution_authorized": false,
+  "writer_or_settlement_or_payment_or_payer_or_cadence_proven": false,
+  "next_requirements": [
+    "explicit post-read mode and distinct contract; never reuse entry RDX meaning",
+    "same-session Character FullID/magic/pointer/alignment and module-byte anchors",
+    "data-trap continuation semantics, exact peer restore/cancel/late-thread cold cases",
+    "separate build, exact SYSTEM evidence and Root actual qualification before any game window"
+  ],
+  "formal_dynamic_scenes": "5/11"
+}

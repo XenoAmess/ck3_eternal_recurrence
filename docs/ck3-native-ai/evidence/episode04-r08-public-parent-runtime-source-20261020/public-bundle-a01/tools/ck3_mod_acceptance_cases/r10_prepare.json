@@ -1,0 +1,63 @@
+{
+  "schema": "xar.e04.r10-common-preparation.v1",
+  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county, R06 refill or R08 natural writer opportunity through the same common CaseClient",
+  "formal_ABC_executor_implemented": false,
+  "formal_ABC_arm": false,
+  "normal_Save_performed_by_case": false,
+  "maximum_actual_days": 0,
+  "optional_r04_county_entry": {
+    "settings": "case_inputs.r04_county_entry",
+    "maximum_actual_days": 7,
+    "maximum_Move_attempts": 1,
+    "maximum_observation_days": 1,
+    "camera_marker": "before-action-camera-{awaiting,started}.json",
+    "normal_close_owner": "shared entry/CaseClient",
+    "R04_entire_card_closed": false
+  },
+  "optional_r06_refill_one_day": {
+    "settings": "case_inputs.r06_refill_one_day",
+    "maximum_actual_days": 1,
+    "maximum_Move_attempts": 0,
+    "maximum_observer_launches": 1,
+    "native_window_ms": 30000,
+    "requires_actual_worker_READY": true,
+    "requires_source_bound_native_qualification": true,
+    "coordination": "r06-before-observer-{awaiting,started}.json",
+    "normal_close_owner": "shared entry/CaseClient",
+    "full_R06_qualified": false
+  },
+  "optional_r08_writer_one_day": {
+    "settings": "case_inputs.r08_writer_one_day",
+    "maximum_actual_days": 1,
+    "maximum_observer_launches": 1,
+    "native_window_ms": 30000,
+    "aggregate_slot_hits": 128,
+    "watch_offsets": [
+      704,
+      712,
+      40,
+      48
+    ],
+    "owner_binding_mode": "native_campaign_owned_no_load_v2",
+    "coordination": "r08-before-observer-awaiting.json -> r08-root-observer-admission.json",
+    "normal_close_owner": "shared entry/CaseClient, after verified restore and payment OFF/clear",
+    "full_R08_qualified": false
+  },
+  "pending": [
+    "Root common S0 selection and normal Save after actual route/site pilot",
+    "two distinct sites with actual positive same-province stock deltas and qualified callback chain",
+    "frozen plan and three independent normal cold loads",
+    "shared A/B/C execution seam and full actual 90-day common horizon",
+    "R08 qualified application/payer/cadence before formal compare_fees"
+  ],
+  "optional_bounded_r08_parent_entry_execution_one_day": {
+    "default": null,
+    "mode": "parent-entry-execution-once-v1",
+    "maximum_actual_days": 1,
+    "observer_timeout_seconds": 30,
+    "foreign_limit": 4096,
+    "fresh_owner_pair_seconds": 30,
+    "qualification": "distinct_new_execution_DR_qualification_required",
+    "full_R08_qualified": false
+  }
+}

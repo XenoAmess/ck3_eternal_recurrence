@@ -1,0 +1,44 @@
+{
+  "schema": "xar.e04.source4-1930-independent-final-close.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:30:01.044768+00:00",
+  "hard_deadline_utc": "2026-10-20T19:30:00Z",
+  "actual_author_final_seal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\FINAL-SEAL.actual-a03.json",
+    "bytes": 819,
+    "sha256": "080e99a20287307f158f0c23ba70444f28f56e3ff574f02f7e97c8d40ea05abb"
+  },
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\DELIVERY.actual-a03.json",
+    "bytes": 9708,
+    "sha256": "3750ecfae292e37caaecb770cb2f07f63ac20d9d4e550e8cb4c8f41c41aa23c7"
+  },
+  "two_complete_metadata_scans_identical": true,
+  "aggregate_before_this_receipt_logical_bytes": 1157386,
+  "files_before_this_receipt": 131,
+  "native_author_lane_reported_final_bytes": 158393,
+  "review_lane_reported_final_bytes": 16792,
+  "public_and_controller_final_reported_bytes": [
+    641004,
+    308241
+  ],
+  "all_author_source_metadata_test_writers_stopped": true,
+  "Root_source_only_adoptions_retained": true,
+  "new_native_build_SYSTEM_EXE_DR_SDK_game_qualification": false,
+  "future_before_bytes": 4194304,
+  "future_after_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "historical_continuous_global_peak": "UNKNOWN; final complete scans do not retrospectively prove all intervals",
+  "post_close_usage": "Read-only source inputs for separately admitted T02; no U successor metadata writes.",
+  "retention_review_by_utc": "2026-10-21T19:30:00Z",
+  "fresh_after_future_cancel": {
+    "C_known_future_bytes": 67502080,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25837305856,
+    "C_floor_margin_bytes": 51585417216,
+    "C_projected_whole_volume_upper_bound_bytes": 438073692160,
+    "C_quota_margin_bytes": 12972032,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39780352
+  }
+}

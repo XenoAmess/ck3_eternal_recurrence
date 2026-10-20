@@ -1,0 +1,104 @@
+{
+  "schema": "xar.e04.parent-public-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:28:11.347746+00:00",
+  "status": "NO_REMAINING_SOURCE_BLOCKER_IN_REVIEWED_FROZEN_SCOPE",
+  "source_only": true,
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+    "bytes": 1418,
+    "sha256": "07d06c8c1d848b717bb8b96479ff1940c64bc414a60ddf8ea557472f4305e5b1"
+  },
+  "base_source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 12500,
+    "sha256": "331ca617167541c5d6d5ea89d7bee00caa352ef24d9375ac6e86eb9c656bbe45"
+  },
+  "source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\BUNDLE-SOURCE-INDEX.prepared.json",
+    "bytes": 9573,
+    "sha256": "1f1c11ea5a90476844e895e14f4e49e675421dbc684ab3afa3a17308c499230e"
+  },
+  "verified_frozen_files": 43,
+  "verified_index_files": 32,
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\revision-a03\\focused-a09\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1343,
+    "sha256": "2d44fa2f5862a4fc0def5ed20ff842324b45ca967417fc45c3027b897b4d35a7"
+  },
+  "author_focused_methods": 9,
+  "test_boundary": "Python controls, synthetic mutation fixtures and harmless Python children only. No native cold or Steam observation.",
+  "findings": [
+    {
+      "severity": "P1",
+      "status": "RESOLVED",
+      "issue": "45-second observer timeout returned to a CLI which could exit despite a global session dictionary.",
+      "resolution": "Same original Popen remains in wait; receipt/interrupt errors cannot release uncertain native ownership. Typed cleanup failure holds the original CLI; no SDK, relaunch or forced detach."
+    },
+    {
+      "severity": "P1",
+      "status": "RESOLVED",
+      "issue": "Configured parent_tools could point outside the pinned source bundle.",
+      "resolution": "Final source binds the actual executed parent tools to the same exact source index; wrong-directory mutation is rejected before observer/day."
+    },
+    {
+      "status": "RESOLVED",
+      "issue": "Steam freshness was evaluated before source qualification hashing.",
+      "resolution": "Final TTL and Steam incarnation recheck after source hashing plus cheap receipt/profile/birth recheck immediately before host Popen."
+    },
+    {
+      "status": "RESOLVED",
+      "issue": "Generic typed Steam receipt shape did not qualify its producer/profile.",
+      "resolution": "Native-only exact provider identity, version, source, image size, value/producer/tray anchors and complete SourceIdentity; CEF is not qualified by this launch profile."
+    },
+    {
+      "status": "RESOLVED",
+      "issue": "Original 1050-second observation/cleanup/close reserve was checked only at actor entry.",
+      "resolution": "Actor reuses client.guard and the same reserve after preparation; controller checks harddeadline immediately before observer claim. Expired/1049-second variant launches nothing."
+    },
+    {
+      "status": "RESOLVED",
+      "issue": "Public prepare still required fifteen cases instead of the predeclared seventeen.",
+      "resolution": "Missing-ack and bad-schema are required with the existing fifteen. Real prepare CLI rejects a fifteen-case synthetic fixture; no synthetic qualification is issued."
+    }
+  ],
+  "inspected_route": "Actual public Selection/adapter loader -> same real CaseClient -> original common queue -> pinned parent controller; no direct legacy host launch or fabricated client identifier.",
+  "inspected_once_cleanup": "Prepared/raw start, thread generation arm and READY bind; one exact-day claim, unknown action never replayed. SDK independent after only after original observer wait and typed cleanup. Existing restore -> independent OFFs -> one Save/independent snapshot -> instance CloseGate preserves all three gates.",
+  "steam_provider": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+    "pid_access": "0x1010 (VM_READ | QUERY_LIMITED_INFORMATION)",
+    "bounded_read_bytes": "1..1024",
+    "UI_activation_memory_writes_debug_attach": false,
+    "code_profile_portability": "Code pins are reusable across machines; actual installed source, PID birth, read permissions and offline state require fresh target-machine observation."
+  },
+  "unresolved_qualification": [
+    "New separately admitted selected native seventeen-case cold and independent Root acceptance are still required; old ten-pass/occupied-failure/six-unexecuted run remains partial.",
+    "Current-machine actual background native observation has not run in this source scope; no Steam state is established.",
+    "Fresh source-bound runtime, finite capacity, actual normal checkpoint, lease and explicit Root owner grant are future inputs.",
+    "Historical direct-image refusal closure remains byte-bound to its old launcher. New background pre-host refusal closure is not implemented.",
+    "No automatic typed-cleanup hold release API; unknown restoration intentionally remains held."
+  ],
+  "reviewer_execution": {
+    "tests": 0,
+    "native_build": 0,
+    "EXE": 0,
+    "DR": 0,
+    "SDK": 0,
+    "Steam_probe": 0,
+    "game": 0,
+    "D_W_Git_edits": 0
+  },
+  "execution_DR_qualified": false,
+  "paid_maintenance_raw": null,
+  "payer": null,
+  "cadence": null,
+  "full_R08": false,
+  "source_syntax_evidence": "compile-memory PASS",
+  "static_typing": {
+    "status": "ENVIRONMENT_UNAVAILABLE",
+    "actual_command": "selected Python -B -m mypy --version",
+    "actual_exit_code": 1,
+    "reason": "No module named mypy"
+  },
+  "aggregate_before_review_bytes": 1135523
+}

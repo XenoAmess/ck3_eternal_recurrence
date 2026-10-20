@@ -1,0 +1,83 @@
+{
+  "schema": "xar.e04.parent-dr.native-repair.source-only.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T19:14:26.777085+00:00",
+  "source_only": true,
+  "source": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-REPAIR.candidate.patch",
+      "bytes": 13378,
+      "sha256": "b49d6091712ca5df83c1759eba1db5c3bf517f3330669d7ba70f929b67511e96"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair_a02.py",
+      "bytes": 6990,
+      "sha256": "d66d24f81315859c7c538ea956731a931592bdb4c6bfa82acb49aa95f81f9046"
+    }
+  ],
+  "focused_python_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\ORIGINAL-WAIT.actual-a02.json",
+    "bytes": 2042,
+    "sha256": "8caf9c45beb6c4b66bffcce61b63014cfd0c25fcdd6e9802961749fc9a358831"
+  },
+  "native_build_or_EXE_or_DR_execution": false,
+  "old_attempt_qualification": {
+    "compiled_two": true,
+    "SYSTEM_two": true,
+    "passed10": true,
+    "occupied_dr_failed": true,
+    "later6_unexecuted": true,
+    "original_target_wait_missing": true,
+    "original_target_exit_code": null,
+    "execution_DR_qualified": false,
+    "full_R08": false
+  },
+  "changes": {
+    "refusal": "Strict success=False/saved=[]/readback=True/complete six u64 and positive thread identity distinguishes only no-mutation diagnostic. Any successful/partial/unknown arm or execution evidence refuses PASS.",
+    "occupied_baseline": "New private occupied-dr input requests DR6=0xffff0ff0 and DR7 bit10+L0. Main executes an ordinary Interlocked/event roundtrip before peer reads its actual full-six baseline. TF stays suspended and has no warmup. Exact six-register audit is unchanged; no masking.",
+    "cleanup": "Only strict zero-mutation refusal with exact private synthetic identity, original observer wait, last typed complete/restored/detached/no-pending/non-exited terminal can use normal Finish after audit FAIL; still FAIL. Success/partial/unknown armed or restore states retain original owners. Finally waits every registered original Popen, including already closed objects; wait receipt failure remains explicitly unknown."
+  },
+  "primary_sources": [
+    {
+      "title": "Intel SDM Volume 3B",
+      "url": "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3b-part-2-manual.pdf",
+      "document": "253669-060US, September 2016",
+      "location": "Section17.2.3/17.2.4; Figure17-2 printed17-7, PDF page119; reset Table22-10 PDF581-582",
+      "observed_at_utc": "2026-10-20T19:10:18Z",
+      "basis": "Official web PDF identity, parsed layout and reset table; DR7 bit10=1 and reference DR6 FFFF0FF0/reset DR7 400. New fixture requests only. Full PDF not locally downloaded or hashed.",
+      "full_pdf_sha256": null
+    },
+    {
+      "title": "SetThreadContext",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadcontext",
+      "observed_at_utc": "2026-10-20T19:05:00Z",
+      "basis": "OS-controlled context values may be adjusted; thread must be suspended while set. This does not establish causality for the old mismatch."
+    }
+  ],
+  "causality_boundary": "OS adjustment/normalization remains an inference for the old observed difference; current failed full-six audit is not reclassified.",
+  "future_actual_required": "New separately admitted build+exact SYSTEM+selected native cold. Independent actual warmup_calls=1 and before/after full6 equality must be reviewed; Python source/mocks are not a native qualification.",
+  "draft_history": {
+    "rejected_runner": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\rejected-a01\\run_parent_entry_cold.py",
+      "bytes": 31179,
+      "sha256": "17bf65a5da6a921ecb284d8246252d6c69fa253e5d125bde1080a70aafceb135"
+    },
+    "rejected_patch": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\rejected-a01\\NATIVE-REPAIR.candidate.patch",
+      "bytes": 12894,
+      "sha256": "c483488809c0fa67c08d453c1e5f1ffc2bd018dd05e31d4ca29ae52bcb449b7f"
+    },
+    "reason": "a01 synthetic Finish exception was too broad; a02 narrows it to zero-mutation refusal. Earlier source-only test receipt binds the retained a01 bytes, not a02."
+  },
+  "remaining_build_and_live_authority": false
+}

@@ -1,0 +1,9 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:17:28.710901+00:00",
+  "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_graphics_cache.py",
+  "bytes": 39545,
+  "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36",
+  "reason": "real unrelated-cwd public CLI discovered direct graphics_cache import; copy exact existing dependency"
+}

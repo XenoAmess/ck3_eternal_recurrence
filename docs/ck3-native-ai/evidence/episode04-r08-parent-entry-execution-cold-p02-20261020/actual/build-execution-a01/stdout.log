@@ -1,0 +1,148 @@
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "-S", "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02", "-B", "C:\\w\\e04parentdr02\\build-a01", "-G", "Ninja", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe", "-DCMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DCMAKE_C_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DXAR_BUILD_PARENT_ENTRY_EXECUTION_COLD_12004=ON", "-DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY"], "log": "C:\\w\\e04parentdr02\\build-a01\\msvc-configure.log"}
+-- The CXX compiler identification is MSVC 19.51.36256.0
+-- The ASM_MASM compiler identification is MSVC
+-- Found assembler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/ml64.exe
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (2.7s)
+-- Generating done (0.1s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_C_COMPILER
+
+
+-- Build files have been written to: C:/w/e04parentdr02/build-a01
+{"command": ["C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "--build", "C:\\w\\e04parentdr02\\build-a01", "--parallel", "2", "--target", "maintenance_parent_entry_observer", "maintenance_parent_entry_cold_target"], "log": "C:\\w\\e04parentdr02\\build-a01\\msvc-build.log"}
+[1/5] Building CXX object CMakeFiles\maintenance_parent_entry_cold_target.dir\parent_entry_cold_target.cpp.obj
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): warning C4244: “=”: 从“const wchar_t”转换到“char”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): note: 模板实例化上下文(最早的实例化上下文)为
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\parent_entry_cold_target.cpp(74): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)”的引用
+        with
+        [
+            _Elem=wchar_t,
+            _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+            _Alloc=std::allocator<char>
+        ]
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\parent_entry_cold_target.cpp(74): note: 请参阅 "`anonymous-namespace'::Meta::<lambda_1>::operator ()" 中对 "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string" 的第一个引用
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(862): note: 查看对正在编译的函数 模板 实例化“void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<const wchar_t*,const wchar_t*,_Size_type>(_Iter,const _Sent,_Size)”的引用
+        with
+        [
+            _Size_type=unsigned __int64,
+            _Iter=const wchar_t *,
+            _Sent=const wchar_t *,
+            _Size=unsigned __int64
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1018): note: 查看对正在编译的函数 模板 实例化“_OutIt *std::_Copy_n_unchecked4<const wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)”的引用
+        with
+        [
+            _OutIt=char *,
+            _Size=unsigned __int64,
+            _InIt=const wchar_t *,
+            _SizeTy=unsigned __int64
+        ]
+[2/5] Building ASM_MASM object CMakeFiles\maintenance_parent_entry_cold_target.dir\parent_entry_cold_call.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.51.36256.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Assembling: C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\parent_entry_cold_call.asm
+[3/5] Linking CXX executable maintenance_parent_entry_cold_target.exe
+[4/5] Building CXX object CMakeFiles\maintenance_parent_entry_observer.dir\cold_observer.cpp.obj
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): note: 模板实例化上下文(最早的实例化上下文)为
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\parent_entry_execution_once.inc(287): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(const _Iter,const _Iter)”的引用
+        with
+        [
+            _Elem=wchar_t,
+            _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
+        ]
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\parent_entry_execution_once.inc(287): note: 请参阅 "`anonymous-namespace'::ParentEntryMain" 中对 "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign" 的第一个引用
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1686): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<wchar_t*,0>(_Iter,_Iter,const _Alloc &)”的引用
+        with
+        [
+            _Iter=wchar_t *,
+            _Alloc=std::allocator<char>
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(862): note: 查看对正在编译的函数 模板 实例化“void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<wchar_t*,wchar_t*,_Size_type>(_Iter,const _Sent,_Size)”的引用
+        with
+        [
+            _Size_type=unsigned __int64,
+            _Iter=wchar_t *,
+            _Sent=wchar_t *,
+            _Size=unsigned __int64
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1018): note: 查看对正在编译的函数 模板 实例化“_OutIt *std::_Copy_n_unchecked4<wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)”的引用
+        with
+        [
+            _OutIt=char *,
+            _Size=unsigned __int64,
+            _InIt=wchar_t *,
+            _SizeTy=unsigned __int64
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): warning C4244: “=”: 从“const wchar_t”转换到“char”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xutility(5094): note: 模板实例化上下文(最早的实例化上下文)为
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\cold_observer.cpp(298): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign<std::_String_const_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(const _Iter,const _Iter)”的引用
+        with
+        [
+            _Elem=wchar_t,
+            _Iter=std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
+        ]
+C:\ck3-war-episode04-research-20261004-a01\e04-r08-parent-dr-source-p02\cold_observer.cpp(298): note: 请参阅 "wmain" 中对 "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign" 的第一个引用
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1686): note: 查看对正在编译的函数 模板 实例化“std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<const wchar_t*,0>(_Iter,_Iter,const _Alloc &)”的引用
+        with
+        [
+            _Iter=const wchar_t *,
+            _Alloc=std::allocator<char>
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(862): note: 查看对正在编译的函数 模板 实例化“void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<const wchar_t*,const wchar_t*,_Size_type>(_Iter,const _Sent,_Size)”的引用
+        with
+        [
+            _Size_type=unsigned __int64,
+            _Iter=const wchar_t *,
+            _Sent=const wchar_t *,
+            _Size=unsigned __int64
+        ]
+C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\xstring(1018): note: 查看对正在编译的函数 模板 实例化“_OutIt *std::_Copy_n_unchecked4<const wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)”的引用
+        with
+        [
+            _OutIt=char *,
+            _Size=unsigned __int64,
+            _InIt=const wchar_t *,
+            _SizeTy=unsigned __int64
+        ]
+[5/5] Linking CXX executable maintenance_parent_entry_observer.exe
+{
+  "schema": "xar.native.msvc-build.v1",
+  "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+  "build_dir": "C:\\w\\e04parentdr02\\build-a01",
+  "configuration": "Release",
+  "jobs": 2,
+  "targets": [
+    "maintenance_parent_entry_observer",
+    "maintenance_parent_entry_cold_target"
+  ],
+  "tools": {
+    "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+  },
+  "local_ck3_contacted": false,
+  "temporary_dir": "C:\\w\\e04parentdr02\\build-a01\\.msvc-temp",
+  "python_cache": "C:\\w\\e04parentdr02\\build-a01\\.python-cache",
+  "configured": true,
+  "built": true,
+  "dependency_prefix_mode": "direct-2052-cp936",
+  "status": "built",
+  "build_succeeded": true,
+  "defender_exclusions": {
+    "status": "verified",
+    "manifest": "C:\\w\\e04parentdr02\\build-a01\\defender-exe-exclusions\\20261020T193400Z-6bce3500\\manifest.json",
+    "receipt": "C:\\w\\e04parentdr02\\build-a01\\defender-exe-exclusions\\20261020T193400Z-6bce3500\\receipt.json",
+    "receipt_sha256": "a34a56d12fd0cd6ed962f03357307ed051408f40a2afc4b8dc8dd9111098f091",
+    "error": null
+  }
+}

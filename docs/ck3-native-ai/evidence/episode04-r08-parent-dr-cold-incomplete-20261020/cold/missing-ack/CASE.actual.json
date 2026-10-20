@@ -1,0 +1,36 @@
+{
+  "schema": "xar.maintenance.parent_entry.cold.case.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:54:12.992784+00:00",
+  "status": "PASS",
+  "case": "missing-ack",
+  "actual_target_result": {
+    "synthetic": true,
+    "actual_body_calls": 0,
+    "foreign_body_calls": 0,
+    "target_body_calls": 0,
+    "return_failures": 0,
+    "audit_failures": 0,
+    "main_tid": 31092,
+    "auditor_tid": 26824,
+    "worker_tid": 0,
+    "full_id_initial": 33388,
+    "local_player_id": 1,
+    "target_owned_TF_hold": false,
+    "real_CK3_call": false
+  },
+  "native_consumer": null,
+  "raw": null,
+  "target_original_exit": 0,
+  "observer_original_exit": 2,
+  "independent_audit": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\missing-ack\\INDEPENDENT-DR-AUDIT.actual.json",
+    "bytes": 2307,
+    "sha256": "a9d7867cf7943c96981f6618723b0dfe0bb6e3ae695f1d09f58e3df775f7023e"
+  },
+  "actual_debugger_fault_injected": false,
+  "real_OS_failure_proven": false,
+  "real_CK3": false,
+  "parent_return_observed": false,
+  "full_R08": false
+}

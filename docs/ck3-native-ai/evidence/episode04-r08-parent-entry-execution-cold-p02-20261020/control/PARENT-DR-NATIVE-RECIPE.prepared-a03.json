@@ -1,0 +1,363 @@
+{
+  "schema": "xar.e04.parent-dr.native-recipe.prepared.v3",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T19:27:47.006659+00:00",
+  "prepared_only": true,
+  "execution_admitted_by_plan": false,
+  "source_kind": "Unpublished Root-adopted repaired a03 execution-DR snapshot; exact14 including prepare17; never whole bc638/master compilation",
+  "source_root": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+  "component_build_root": "C:\\w\\e04parentdr02",
+  "build_root": "C:\\w\\e04parentdr02\\build-a01",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-SOURCE-FREEZE.actual-a03.json",
+    "bytes": 8027,
+    "sha256": "ae8b99690bbf5e6eaaf6c87a5351fce8f43008caba2fcd77d5abb6b872ac13ac"
+  },
+  "Root_source_only_adoption": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\root-review-a01\\ROOT-NATIVE-SOURCE-ADOPTION.actual-a02.json",
+    "bytes": 2920,
+    "sha256": "5bb4d11cd14a80e78a22287b9a7d0b5ca8ea906df3850bd9730794d652345e3f"
+  },
+  "source_copy": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\cold_observer.cpp",
+      "bytes": 29745,
+      "sha256": "c3fbca7e7e2b7c9ac7b2239cbc542320ddbb00b2103834aa362ba1ee29f4b258",
+      "relative_path": "cold_observer.cpp"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\CMakeLists.txt",
+      "bytes": 1312,
+      "sha256": "f3ac48b08cb3bcfa06228416bd5d4164df766e884f129e925007814dec232d8a",
+      "relative_path": "CMakeLists.txt"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a",
+      "relative_path": "parent_entry_execution_once.inc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_execution_contract.py",
+      "bytes": 10975,
+      "sha256": "00b8bbbc55b5689808846a39d510567e3323fcfb9f2c42e439bf0f2f2e74e295",
+      "relative_path": "parent_entry_execution_contract.py"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+      "bytes": 9633,
+      "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0",
+      "relative_path": "prepare_parent_entry_admission.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\consume_parent_entry_actual.py",
+      "bytes": 1535,
+      "sha256": "6f49cda065d61b780b9bbbc9b96ee17fd8fbb67d91cf0d1b3cf5cc825abe5ffe",
+      "relative_path": "consume_parent_entry_actual.py"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa",
+      "relative_path": "parent_entry_cold_target.cpp"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\parent_entry_cold_call.asm",
+      "bytes": 889,
+      "sha256": "5c6853107cc73e8df861c50c8ecaadef513bff4862a487aecc1cfee040cbfbc8",
+      "relative_path": "parent_entry_cold_call.asm"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8",
+      "relative_path": "run_parent_entry_cold.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\test_parent_entry_execution_contract.py",
+      "bytes": 8510,
+      "sha256": "7e91afc1b38cd4f86a7c319ec90c8713470c2e1824eed4940db23fa06b208b2a",
+      "relative_path": "test_parent_entry_execution_contract.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\PARENT-ENTRY-DR.contract.json",
+      "bytes": 3291,
+      "sha256": "027d9440d7c05b1a5ea790cdb346028125f35f9a643083a1978add099a8e5456",
+      "relative_path": "PARENT-ENTRY-DR.contract.json"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\owner_binding.py",
+      "bytes": 6251,
+      "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a",
+      "relative_path": "owner_binding.py"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\cold_target.cpp",
+      "bytes": 6298,
+      "sha256": "699205cd217e106899ef2d6fd4dd378a7f9e4b366423b3a3669fd20a8d557fb9",
+      "relative_path": "cold_target.cpp"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\synthetic_write.asm",
+      "bytes": 218,
+      "sha256": "e7fead9b113d7f0cd9ac3c25a2422cda647c216278764930034f90d827d664ef",
+      "relative_path": "synthetic_write.asm"
+    }
+  ],
+  "source_copy_bytes": 153877,
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "entry_dependencies": [
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+      "bytes": 6429,
+      "sha256": "895322e4529058a0084bb5bc5d3d0303600a24ba3be87d02708eff7e5c80401d"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\verify_parent_dr_system_gate_a01.py",
+      "bytes": 3191,
+      "sha256": "362cab66b5e04029e74a67621b020d3f3257fad40c513c85fcf66ce9169a9552"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "bytes": 13321,
+      "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+      "bytes": 26973,
+      "sha256": "67c6021fcd5af209f409957fe045cfbc890da4eda72baf9a5bdf5b0c58d4701b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tools\\build_fresh.py",
+      "bytes": 15140,
+      "sha256": "70fe1d0d5870168b43cd9eedfbb3c3a0387300313dc9c0654788e2bcd0c4e4af"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\capacity\\fresh_parent_dr_native64_2015_prepared_a01.py",
+      "bytes": 6605,
+      "sha256": "71bd048db4f5d3c9c093f699ed70edab2759e1ed97f7d9b417108b762a6c61ee"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-SOURCE-FREEZE.actual-a03.json",
+      "bytes": 8027,
+      "sha256": "ae8b99690bbf5e6eaaf6c87a5351fce8f43008caba2fcd77d5abb6b872ac13ac"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\root-review-a01\\ROOT-NATIVE-SOURCE-ADOPTION.actual-a02.json",
+      "bytes": 2920,
+      "sha256": "5bb4d11cd14a80e78a22287b9a7d0b5ca8ea906df3850bd9730794d652345e3f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\root-review-a01\\ROOT-PREPARE17-SOURCE-ADOPTION.actual-a01.json",
+      "bytes": 1461,
+      "sha256": "c39812d393d18b7c316af1c554fc035687346d9ffa084d78c51ce4f2f8310965"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\review-a01\\NATIVE-REPAIR-INDEPENDENT-SOURCE-REVIEW.actual-a01.json",
+      "bytes": 4171,
+      "sha256": "cb8a034e786212c9115121e8d4b7bd50b5e1ba874cb451959e32308fdc738f5f"
+    }
+  ],
+  "budget": {
+    "aggregate_ceiling_bytes": 67108864,
+    "source_ceiling_bytes": 2097152,
+    "component_build_logs_control_ceiling_bytes": 31457280,
+    "fixed_protocol_full_charge_bytes": 33554432,
+    "bootstrap_metadata_ceiling_bytes": 262144,
+    "bootstrap_part_of_build": true,
+    "estimated_build_peak_bytes": 12582912,
+    "estimate_not_actual": true,
+    "bootstrap_metadata_total_ceiling_bytes": 262144,
+    "bootstrap_capacity_ceiling_bytes": 65536,
+    "bootstrap_control_ceiling_bytes": 196608
+  },
+  "phase_argv": {
+    "source-copy": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+      "--plan",
+      "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+      "--plan-sha256",
+      "LATE_BOUND_PLAN_SHA256",
+      "--capacity",
+      "LATE_BOUND_ACTUAL_CAP_PATH",
+      "--capacity-sha256",
+      "LATE_BOUND_ACTUAL_CAP_SHA256",
+      "--fresh-sha256",
+      "LATE_BOUND_SOURCE_COPY_FRESH_SHA256"
+    ],
+    "MSVC-build-and-ordinary-SYSTEM": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "--source-dir",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+      "--build-dir",
+      "C:\\w\\e04parentdr02\\build-a01",
+      "--configuration",
+      "Release",
+      "--jobs",
+      "2",
+      "--defender-external-candidate",
+      "e04-parent-entry-execution-dr-12004",
+      "--cmake-define",
+      "XAR_BUILD_PARENT_ENTRY_EXECUTION_COLD_12004=ON",
+      "--cmake-define",
+      "CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY",
+      "--configure",
+      "--build",
+      "--target",
+      "maintenance_parent_entry_observer",
+      "maintenance_parent_entry_cold_target"
+    ],
+    "exact-SYSTEM-receipt": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\w\\e04parentdr02\\control-metadata-a01\\verify_parent_dr_system_gate_a01.py",
+      "--plan",
+      "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+      "--plan-sha256",
+      "LATE_BOUND_PLAN_SHA256",
+      "--capacity",
+      "LATE_BOUND_ACTUAL_CAP_PATH",
+      "--capacity-sha256",
+      "LATE_BOUND_ACTUAL_CAP_SHA256",
+      "--source-manifest-sha256",
+      "LATE_BOUND_ACTUAL_FROZEN_MANIFEST_SHA256"
+    ],
+    "cold-selected-suite": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\run_parent_entry_cold.py",
+      "--repo",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "--build-dir",
+      "C:\\w\\e04parentdr02\\build-a01",
+      "--machine-build-record",
+      "C:\\w\\e04parentdr02\\MACHINE-BUILD.actual.json",
+      "--output-root",
+      "C:\\w\\e04parentdr02\\cold-a01",
+      "--execute-qualified-cold",
+      "--case",
+      "foreign257_then_target",
+      "--case",
+      "created_thread",
+      "--case",
+      "foreign4096_limit",
+      "--case",
+      "timeout",
+      "--case",
+      "restore-fault",
+      "--case",
+      "readback-fault",
+      "--case",
+      "continue-fault",
+      "--case",
+      "default-off",
+      "--case",
+      "missing-ack",
+      "--case",
+      "bad-schema",
+      "--case",
+      "occupied-dr",
+      "--case",
+      "occupied-tf",
+      "--case",
+      "context-drift",
+      "--case",
+      "fullid-drift",
+      "--case",
+      "magic-drift",
+      "--case",
+      "session-drift",
+      "--case",
+      "cancel_late"
+    ]
+  },
+  "frozen_output_verification_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\w\\e04parentdr02\\control-metadata-a01\\freeze_parent_dr_sources_a01.py",
+    "--plan",
+    "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "--plan-sha256",
+    "LATE_BOUND_PLAN_SHA256",
+    "--capacity",
+    "LATE_BOUND_ACTUAL_CAP_PATH",
+    "--capacity-sha256",
+    "LATE_BOUND_ACTUAL_CAP_SHA256",
+    "--verify-only",
+    "--manifest-sha256",
+    "LATE_BOUND_ACTUAL_FROZEN_MANIFEST_SHA256"
+  ],
+  "verification": "Before every build/SYSTEM/cold phase: new fresh global ledger+volumes/local roots, then actual p01 manifest SHA and all14 output byte pins verified via freezer --verify-only. Machine build record uses p01 output paths, never old N input paths.",
+  "source_copy_fresh_stdin": "Exact actual fresh stdout is passed as original sourcefreezer stdin and SHA argv; helper verifies same cap, source-copy/GREEN and <=30s. Persist unchanged fresh/intent/streams only after original sourcefreezer wait0; never earlier durable-intent claim.",
+  "bootstrap": "Before first copy, top contains only declared exact flat metadata leaves in capacity<=64KiB and control-metadata-a01<=192KiB, total<=256KiB inside top30MiB. Sourcep02/buildchild absent. Fresh stdout remains memory until sourcefreezer originalwait0.",
+  "source_manifest": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\SOURCE-MANIFEST.actual.json",
+  "project_EXEs": [
+    "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+    "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_cold_target.exe"
+  ],
+  "selected_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "cancel_late_last_but_still_required": true,
+  "actual_build_wait_path": "C:\\w\\e04parentdr02\\build-execution-a01\\ORIGINAL-WAIT.actual-a01.json",
+  "SYSTEM_gate": "Public producer exact2 requested targets. Independent gate reads real producer build_succeeded/originalwait/source14 and frozen runner.verify_build exact2 SYSTEM receipt; no UAC or policy/ACL edit. Root must read actual gate before EXE phase grant.",
+  "failure": "One attempt, original Popen object registered before fallible metadata, PID/create/original waits. Failure preserved, no automatic rerun. Known cleanup/fault seam release only; unknown debugger/restoration retains original owner. Native fault seam is not real OS-failure evidence.",
+  "qualification": "Root requires exact17 actual PASS with full-six DR audit and original waits; prepare17/source manifest/Q.source_pins must bind new9079d4 helper. Earlier10PASS/FAIL and Python mocks never qualify the new attempt.",
+  "remaining_execution_dependencies": "Actual phase-source-bound cap plus fresh global budget; no source/build/SYSTEM/EXE authority is conferred by this recipe.",
+  "retention": {
+    "reason": "One coherent standalone DR compile/System/cold candidate; current source inputs protected pending resolution/publication",
+    "review_by_utc": "2026-10-21T19:15:00Z",
+    "no_indefinite_retention": true
+  },
+  "Root_prepare17_adoption": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\root-review-a01\\ROOT-PREPARE17-SOURCE-ADOPTION.actual-a01.json",
+    "bytes": 1461,
+    "sha256": "c39812d393d18b7c316af1c554fc035687346d9ffa084d78c51ce4f2f8310965"
+  },
+  "independent_native_repair_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\review-a01\\NATIVE-REPAIR-INDEPENDENT-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 4171,
+    "sha256": "cb8a034e786212c9115121e8d4b7bd50b5e1ba874cb451959e32308fdc738f5f"
+  },
+  "hard_deadline_utc": "2026-10-20T20:15:00Z",
+  "history": "Old p01/B01 and U two repair sources/a02/a03 indexes are immutable; extra a03 index was explicitly authorized after prior a02 lane closure. Abandoned a01 metadata generator was never executed."
+}

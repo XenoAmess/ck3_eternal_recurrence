@@ -1,0 +1,127 @@
+{
+  "schema": "xar.e04.parent-runtime-source4-1930-source-only-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:04:21.066260+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-parent-runtime-source4-1930-20261020-a01",
+  "new_purpose_not_1915_renewal": true,
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01",
+  "all_inclusive_aggregate_ceiling_bytes": 4194304,
+  "source_only_implementation_execution_admitted": true,
+  "focused_Python_checks_execution_admitted": true,
+  "allowed_source_scope": "Root-selected cold fixture/runner repair; Steam/parent-route small source bundle and focused offline checks. Candidate source only under this new root, no mutation of old source/output roots. Authors freeze by19:28. Exact per-author source method/pins recorded in their intents.",
+  "source_lane_roots": {
+    "native_repair": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01",
+    "public_bundle": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01",
+    "controller": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01",
+    "independent_review": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\review-a01",
+    "Root": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\root-review-a01",
+    "capacity": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\capacity"
+  },
+  "lane_ceilings_bytes": {
+    "native_repair": 524288,
+    "public_bundle": 1048576,
+    "controller": 1048576,
+    "independent_review": 524288,
+    "Root": 131072,
+    "capacity": 262144
+  },
+  "unassigned_collective_headroom_bytes": 655360,
+  "build_SYSTEM_newEXE_DR_game_SDK_FFmpeg_Git_D_W_download_execution_admitted": false,
+  "old_native_incomplete_settlement": {
+    "path": "C:\\w\\e04parentdr01\\incomplete-closure-a01\\INDEPENDENT-CAPACITY-SETTLEMENT.actual-a01.json",
+    "bytes": 4934,
+    "sha256": "395f2ef99537c5badb9990864da6f10b6429a7cbe68c0d3e086ab77494827f6f"
+  },
+  "source_freeze_at_utc": "2026-10-20T19:28:00Z",
+  "hard_deadline_utc": "2026-10-20T19:30:00Z",
+  "quota_review_at_utc": "2026-10-20T19:30:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:04:20.659258+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77671280640,
+      "available_to_caller_bytes": 77671280640,
+      "total_free_bytes": 77671280640,
+      "entire_volume_used_allocation_upper_bound_bytes": 433462665216,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:04:20.659258+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21649408000,
+      "available_to_caller_bytes": 21649408000,
+      "total_free_bytes": 21649408000,
+      "entire_volume_used_allocation_upper_bound_bytes": 478440599552,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 6291456,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25818227910,
+    "C_floor_margin_bytes": 51853052730,
+    "C_projected_whole_volume_upper_bound_bytes": 437806056646,
+    "C_quota_margin_bytes": 280607546,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 23576576
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 6291456,
+      "D:/": 16777216
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-ci-r05-git-1915-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 16777216
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-parent-runtime-source4-1930-20261020-a01",
+        "known_future": {
+          "C:/": 4194304,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 386352,
+    "sha256": "4e2e20b055aa2b943f55596898fdf1195e1ed8a0c5b5a49fe36f5c0c481f44a9"
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "automatic_renewal": false
+}

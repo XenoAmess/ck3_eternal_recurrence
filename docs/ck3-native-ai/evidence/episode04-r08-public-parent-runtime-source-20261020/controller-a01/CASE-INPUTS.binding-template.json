@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:14:13.370164+00:00",
+  "status": "BINDING_TEMPLATE_NOT_EXECUTABLE_NOT_QUALIFICATION",
+  "case_inputs": {
+    "normal_checkpoint_receipt": "BIND_EXACT_CURRENT_SOURCE_PIN",
+    "normal_checkpoint_build_receipt": "BIND_EXACT_CURRENT_SOURCE_PIN",
+    "plain_configuration": "BIND_FOUR_PLAIN_CONFIG_PINS",
+    "r08_parent_entry_one_day": {
+      "bundle_index_pin": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\BUNDLE-SOURCE-INDEX.prepared.json",
+        "bytes": 9545,
+        "sha256": "7a702a9e7c9252b014146970fdfa74dbd06e398f9202b69296ea10c08d517235"
+      },
+      "qualification_pin": "BIND_FRESH_PARENT_EXECUTION_Q_PIN_NOT_A08",
+      "observer_pin": "BIND_SAME_Q_OBSERVER_EXE_PIN",
+      "root_scope_path": "BIND_NEW_ROOT_SCOPE_PATH_ISSUED_AFTER_OWNER_PAIR",
+      "actor_id": 33388,
+      "expected_start_date_raw": "BIND_ACTUAL_NORMAL_SOURCE_DATE",
+      "parent_tools": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools",
+      "prefix": "r08-parent-actual-new-run",
+      "deadline_utc": "BIND_NEW_FINITE_DEADLINE_WITH_RESERVES",
+      "payment_enable_once_authorized": false,
+      "natural_phase_enable_once_authorized": false
+    }
+  }
+}

@@ -1,0 +1,11 @@
+test_audit_failure_can_finish_only_exact_detached_synthetic_and_stays_failed (__main__.Checks.test_audit_failure_can_finish_only_exact_detached_synthetic_and_stays_failed) ... ok
+test_exception_cleanup_hold_exit_still_persists_closed_original_wait (__main__.Checks.test_exception_cleanup_hold_exit_still_persists_closed_original_wait) ... ok
+test_failed_audit_finish_exception_rejects_any_mutation_or_unknown (__main__.Checks.test_failed_audit_finish_exception_rejects_any_mutation_or_unknown) ... ok
+test_fixture_source_keeps_TF_held_and_adds_main_roundtrip (__main__.Checks.test_fixture_source_keeps_TF_held_and_adds_main_roundtrip) ... ok
+test_refusal_accepts_only_complete_nonmutating_diagnostic (__main__.Checks.test_refusal_accepts_only_complete_nonmutating_diagnostic) ... ok
+test_six_register_comparison_is_not_masked (__main__.Checks.test_six_register_comparison_is_not_masked) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.155s
+
+OK

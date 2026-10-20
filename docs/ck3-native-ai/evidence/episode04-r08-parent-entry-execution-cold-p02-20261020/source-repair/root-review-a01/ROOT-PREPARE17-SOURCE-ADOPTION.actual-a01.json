@@ -1,0 +1,40 @@
+{
+  "schema": "xar.e04.root-prepare17-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:23:20.695958+00:00",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+    "bytes": 9633,
+    "sha256": "9079d4dcd3fc3310ec276b32576245cd7065a5d05d3667bc3f966da104a4daa0"
+  },
+  "old_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p01\\prepare_parent_entry_admission.py",
+    "bytes": 9606,
+    "sha256": "06c089973978a837a7deccf57195a95f790c84b3b1d4d8f1d443f9472d7154c4"
+  },
+  "exact_change": "required-case set adds missing-ack and bad-schema; all other bytes preserved",
+  "required_cases": [
+    "bad-schema",
+    "cancel_late",
+    "context-drift",
+    "continue-fault",
+    "created_thread",
+    "default-off",
+    "foreign257_then_target",
+    "foreign4096_limit",
+    "fullid-drift",
+    "magic-drift",
+    "missing-ack",
+    "occupied-dr",
+    "occupied-tf",
+    "readback-fault",
+    "restore-fault",
+    "session-drift",
+    "timeout"
+  ],
+  "adopted": true,
+  "scope": "third Python input in a new immutable a03 overlay; previous a02 remains historical",
+  "binary_source_changed": false,
+  "native_execution_or_qualification": false,
+  "actual_Q_requirement": "all17 actual PASS with full6 audits and original waits, independent Root acceptance"
+}

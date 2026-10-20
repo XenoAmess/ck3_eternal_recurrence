@@ -1,0 +1,262 @@
+{
+  "schema": "xar.e04.parent-dr-cold-only30-2015.v5",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:42:35.075912+00:00",
+  "machine_source": "Actual tools/ck3_live_run_id.py machine currentoriginal subprocess stdout=desktop-3fevhd2-1c74096080",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+  "previous_build_admission": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-BUILD-SYSTEM.actual-a03.json",
+    "bytes": 7876,
+    "sha256": "1f3ea4f7ec519b3d05301c0dd2d3bc66cb1fc7a7268670b182f5d33db47c7c91"
+  },
+  "producer_plan": {
+    "path": "C:\\w\\e04parentdr02\\control-metadata-a01\\PARENT-DR-NATIVE-RECIPE.prepared-a03.json",
+    "bytes": 16191,
+    "sha256": "824baf95a239267bf9288438b1dd283dbdb33ba2a377c3fd9de3503a433217c3"
+  },
+  "aggregate_ceiling_bytes": 67108864,
+  "component_roots": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02",
+    "build": "C:\\w\\e04parentdr02"
+  },
+  "component_ceiling_bytes": {
+    "source": 2097152,
+    "build": 31457280,
+    "protocol": 33554432
+  },
+  "build_root": "C:\\w\\e04parentdr02\\build-a01",
+  "source_freeze_execution_admitted": false,
+  "build_execution_admitted": false,
+  "SYSTEM_registration_execution_admitted": false,
+  "EXE_execution_admitted": true,
+  "cold_execution_admitted": true,
+  "synthetic_owned_cold_debugger_execution_admitted": true,
+  "Steam_game_SDK_real_DR_install_Git_D_W_execution_admitted": false,
+  "selected_project_EXEs": [
+    {
+      "path": "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_cold_target.exe",
+      "bytes": 62464,
+      "sha256": "1ce5038f7522cbf33264afb660823dfab9a93a3141059ac9c66d672be5df9597"
+    },
+    {
+      "path": "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+      "bytes": 129536,
+      "sha256": "fe05bc177791fc6d41e25e1f05ab85e62c826e0f78c67dd066cbb0c477126c14"
+    }
+  ],
+  "Root_actual_SYSTEM_review": {
+    "path": "C:\\w\\e04parentdr02\\ROOT-ACTUAL-SYSTEM-REVIEW.actual-a01.json",
+    "bytes": 2607,
+    "sha256": "a21289adcd8ae8e950e8722c7c34ede5b21d0174bae9529534c9b351bd88db66"
+  },
+  "actual_machine_build": {
+    "path": "C:\\w\\e04parentdr02\\MACHINE-BUILD.actual.json",
+    "bytes": 5031,
+    "sha256": "8f884db006846ae795157c9d5843b3ef442c37da79ca3e4f8bf04fb9a3ed1cb5"
+  },
+  "frozen_source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\SOURCE-MANIFEST.actual.json",
+    "bytes": 8598,
+    "sha256": "fbefc43570ccb9880b9d4362688eea732cb6e3d49813864a2866c0647fae68c7"
+  },
+  "allowed_phase_argv": {
+    "cold-selected-suite": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\ck3-war-episode04-research-20261004-a01\\e04-r08-parent-dr-source-p02\\run_parent_entry_cold.py",
+      "--repo",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "--build-dir",
+      "C:\\w\\e04parentdr02\\build-a01",
+      "--machine-build-record",
+      "C:\\w\\e04parentdr02\\MACHINE-BUILD.actual.json",
+      "--output-root",
+      "C:\\w\\e04parentdr02\\cold-a01",
+      "--execute-qualified-cold",
+      "--case",
+      "foreign257_then_target",
+      "--case",
+      "created_thread",
+      "--case",
+      "foreign4096_limit",
+      "--case",
+      "timeout",
+      "--case",
+      "restore-fault",
+      "--case",
+      "readback-fault",
+      "--case",
+      "continue-fault",
+      "--case",
+      "default-off",
+      "--case",
+      "missing-ack",
+      "--case",
+      "bad-schema",
+      "--case",
+      "occupied-dr",
+      "--case",
+      "occupied-tf",
+      "--case",
+      "context-drift",
+      "--case",
+      "fullid-drift",
+      "--case",
+      "magic-drift",
+      "--case",
+      "session-drift",
+      "--case",
+      "cancel_late"
+    ]
+  },
+  "selected_cases": [
+    "foreign257_then_target",
+    "created_thread",
+    "foreign4096_limit",
+    "timeout",
+    "restore-fault",
+    "readback-fault",
+    "continue-fault",
+    "default-off",
+    "missing-ack",
+    "bad-schema",
+    "occupied-dr",
+    "occupied-tf",
+    "context-drift",
+    "fullid-drift",
+    "magic-drift",
+    "session-drift",
+    "cancel_late"
+  ],
+  "required_cancel_late_last": true,
+  "stage": "Cold-only exact17 once; first actual24924 freshRED preserved. Source/build/SYSTEM future permission closed; absolute historical2+30+32 hardcaps retained only for frozen input compatibility, ledger future top30 only. No new protocol request/sourcewrite/build. Original runner never started before this stage.",
+  "independent_cold_review_subroot": "C:\\w\\e04parentdr02\\cold-review-a01",
+  "independent_cold_review_ceiling_bytes": 131072,
+  "Root_postreview_ceiling_bytes": 32768,
+  "all_reviews_in_top30MiB_not_newfuture": true,
+  "hard_deadline_utc": "2026-10-20T20:15:00Z",
+  "quota_review_at_utc": "2026-10-20T20:15:00Z",
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T19:42:35.075675+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77409558528,
+      "available_to_caller_bytes": 77409558528,
+      "total_free_bytes": 77409558528,
+      "entire_volume_used_allocation_upper_bound_bytes": 433724387328,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T19:42:35.075675+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648818176,
+      "available_to_caller_bytes": 21648818176,
+      "total_free_bytes": 21648818176,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441189376,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 33947648,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25803751424,
+    "C_floor_margin_bytes": 51605807104,
+    "C_projected_whole_volume_upper_bound_bytes": 438053302272,
+    "C_quota_margin_bytes": 33361920,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 39763968
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 33947648,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 0,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-push-ci-2000-20261020-a01",
+        "known_future": {
+          "C:/": 262144,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+        "known_future": {
+          "C:/": 31457280,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-steam-profile-source128-2015-20261020-a01",
+        "known_future": {
+          "C:/": 131072,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-public-background-refusal2-2030-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 397056,
+    "sha256": "d9ea3f7b8aebdc144b4f011d48317a04b39a83b2e760fd38195db80a250d4cae"
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "previous_cold_admission": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\PARENT-DR-NATIVE64-2015-COLD.actual-a04.json",
+    "bytes": 7527,
+    "sha256": "073c36fbd82dea4a4c424fd96216c7a0bce412d669e317674e2256ba6e6aef5f"
+  },
+  "stage_financial_future_bytes": 31457280,
+  "stage_closure_census": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\BUILD-SYSTEM-STAGE-CLOSED-CENSUS.actual-a01.json",
+    "bytes": 4280,
+    "sha256": "d8adf832e3eac3359b1447d41e3a8edfca290a1be973c2cc449d65d0c87bef45"
+  },
+  "stage_financial_transition": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\SOURCE-BUILD-SYSTEM-FUTURE-CLOSED-COLD30.actual-a01.json",
+    "bytes": 3396,
+    "sha256": "d7ced919c3e8d1fa99c38adf28440027fc7891a137b099613307051074f1cba8"
+  },
+  "fresh_guard": {
+    "path": "C:\\w\\e04parentdr02\\capacity\\fresh_parent_dr_cold_only30_2015_a01.py",
+    "bytes": 7039,
+    "sha256": "a8ebab1cda939d8194da534d2e20c3ec5b0cba236fe6ca230fab59f5b7373217"
+  }
+}

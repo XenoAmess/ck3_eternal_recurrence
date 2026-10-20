@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:54:12.035163+00:00",
+  "fault": "readback",
+  "observer_original_Popen": {
+    "pid": 14676,
+    "created": 134369960519431083
+  },
+  "target_original_Popen": {
+    "pid": 14448,
+    "created": 134369960518593764
+  },
+  "raw_prefix": {
+    "path": "C:\\w\\e04parentdr01\\cold-a01\\readback-fault\\observer.raw.ndjson",
+    "bytes": 3788,
+    "sha256": "165f401c2acc86cbbc809b03246b460e94cf690e8cb71961abbff80e0316361e"
+  },
+  "injected_native_API_seam": true,
+  "real_OS_fault_proven": false
+}

@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:32:25.955746+00:00",
+  "actual_probe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\STEAM-BACKGROUND.actual.json",
+    "bytes": 595,
+    "sha256": "77a531480b7616e371c2df589f26f29a733a3f2ed97969d6b376408950280a19"
+  },
+  "actual_original_Python_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-background-probe-2015-a01\\PYTHON-ORIGINAL-WAIT.actual.json",
+    "bytes": 2912,
+    "sha256": "5e9bb5530071ca3254055a9a568614e53a533507cd5b9c340d9bb5992df80253"
+  },
+  "Root_actual_original_exit_code": 2,
+  "Root_all_writers_stopped": true,
+  "two_complete_scans_identical": true,
+  "root_before_this_receipt_logical_bytes": 13617,
+  "actual_status": "unavailable/source_not_qualified/native_provider_unavailable=invalid_input",
+  "offline_observation": null,
+  "no_replay_UI_or_screenshot_fallback": true,
+  "future_bytes_after": 0,
+  "physical_or_unused_credit_bytes": 0
+}

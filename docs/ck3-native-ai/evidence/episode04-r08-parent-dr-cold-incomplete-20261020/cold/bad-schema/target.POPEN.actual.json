@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T18:54:13.021610+00:00",
+  "argv": [
+    "C:\\w\\e04parentdr01\\build-a01\\maintenance_parent_entry_cold_target.exe",
+    "--mode",
+    "timeout",
+    "--prefix",
+    "C:\\w\\e04parentdr01\\cold-a01\\bad-schema\\target"
+  ],
+  "pid": 23732,
+  "created": 134369960530170648
+}

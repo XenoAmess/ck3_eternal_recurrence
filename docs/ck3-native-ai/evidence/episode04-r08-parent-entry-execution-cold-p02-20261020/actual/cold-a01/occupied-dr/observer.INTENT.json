@@ -1,0 +1,61 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:20.393843+00:00",
+  "argv": [
+    "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+    "--enable-parent-entry-execution-cold",
+    "--admission-meta",
+    "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\target.meta.txt",
+    "--timeout-ms",
+    "15000",
+    "--raw",
+    "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\observer.raw.ndjson",
+    "--ready",
+    "C:\\w\\e04parentdr02\\cold-a01\\occupied-dr\\READY.actual.json",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080",
+    "--explicit-execution-breakpoint-v1"
+  ],
+  "gate": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T19:43:16.415907+00:00",
+    "producer": {
+      "path": "C:\\w\\e04parentdr02\\build-a01\\native-msvc-result.json",
+      "bytes": 1614,
+      "sha256": "bad010f4b4d03dee3dd75c11001b9acbd69c636ea4dc2c22f7dd516002e6c3b2"
+    },
+    "original_build": {
+      "path": "C:\\w\\e04parentdr02\\MACHINE-BUILD.actual.json",
+      "bytes": 5031,
+      "sha256": "8f884db006846ae795157c9d5843b3ef442c37da79ca3e4f8bf04fb9a3ed1cb5"
+    },
+    "SYSTEM_receipt": {
+      "path": "C:\\w\\e04parentdr02\\build-a01\\defender-exe-exclusions\\20261020T193400Z-6bce3500\\receipt.json",
+      "bytes": 329297,
+      "sha256": "a34a56d12fd0cd6ed962f03357307ed051408f40a2afc4b8dc8dd9111098f091"
+    },
+    "SYSTEM_manifest": {
+      "path": "C:\\w\\e04parentdr02\\build-a01\\defender-exe-exclusions\\20261020T193400Z-6bce3500\\manifest.json",
+      "bytes": 2613,
+      "sha256": "e6612b73f926370557340c586f1819e0113821dedf245286b460de3308764d08"
+    },
+    "files": [
+      {
+        "path": "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_cold_target.exe",
+        "size": 62464,
+        "sha256": "1ce5038f7522cbf33264afb660823dfab9a93a3141059ac9c66d672be5df9597",
+        "target": "maintenance_parent_entry_cold_target",
+        "target_id": "maintenance_parent_entry_cold_target::@6890427a1f51a3e7e1df"
+      },
+      {
+        "path": "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_observer.exe",
+        "size": 129536,
+        "sha256": "fe05bc177791fc6d41e25e1f05ab85e62c826e0f78c67dd066cbb0c477126c14",
+        "target": "maintenance_parent_entry_observer",
+        "target_id": "maintenance_parent_entry_observer::@6890427a1f51a3e7e1df"
+      }
+    ],
+    "no_CK3_contact": true
+  },
+  "synthetic_only": true
+}

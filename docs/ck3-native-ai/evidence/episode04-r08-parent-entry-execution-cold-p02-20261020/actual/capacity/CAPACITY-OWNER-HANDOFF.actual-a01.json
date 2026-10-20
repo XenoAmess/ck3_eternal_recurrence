@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:34:52.946296+00:00",
+  "old_source4_task": "e04-capacity-parent-runtime-source4-1930-20261020-a01",
+  "old_done_event": 7689,
+  "new_task": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+  "register_event": 7690,
+  "heartbeat_event": 7691,
+  "poll_cursor": 7691,
+  "poll_remaining": 0,
+  "list_unique_current_capacity_owner": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bc63851081462413d0cc6ebe62e37490707ee6a9"
+    },
+    "last_sequence": 7691,
+    "next_step": "ImmediateRED alerts; exactSYSTEMRootreview before newcold; timely finiteclose/handoff.",
+    "pid": 23820,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [
+      "e04-capacity-reservations"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "Machine desktop-3fevhd2-1c74096080 newT02 native64 actualMSVC/System phase until20:15; source2 until20:30, profile128, CI256 concurrently counted; legacy0 explicitcancel.",
+    "task_id": "e04-capacity-parent-dr-native64-2015-20261020-a02",
+    "updated_at_utc": "2026-10-20T19:34:51.774183+00:00",
+    "age_seconds": 0,
+    "stale": false
+  },
+  "old_U_no_further_writes": true,
+  "other_finite_source2_2030_and_CI_profile_scopes_still_separate": true
+}

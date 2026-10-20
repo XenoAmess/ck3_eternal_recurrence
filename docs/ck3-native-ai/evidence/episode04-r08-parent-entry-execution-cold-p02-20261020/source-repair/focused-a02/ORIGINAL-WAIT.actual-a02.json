@@ -1,0 +1,48 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:12:49.251389+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair_a02.py"
+  ],
+  "pid": 33380,
+  "creation_time_100ns": 134369971685919088,
+  "original_Popen": true,
+  "original_wait": true,
+  "exit_code": 0,
+  "pure_python_control_flow_mocks": true,
+  "native_EXE_execution": false,
+  "debug_register_API_execution": false,
+  "source": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\test_native_repair_a02.py",
+      "bytes": 6990,
+      "sha256": "d66d24f81315859c7c538ea956731a931592bdb4c6bfa82acb49aa95f81f9046"
+    }
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\stdout.log",
+    "bytes": 187,
+    "sha256": "2d77f589ef43fdc6dcd13f97e97a289731cd6850815d4f6d610373dc844446bd"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\stderr.log",
+    "bytes": 1003,
+    "sha256": "e7309fe6e59883e9f817afa23eef48c09160341c57cbc6fcb1184185f309853c"
+  },
+  "temporary_root": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\tmp-a02",
+  "generated_mock_case_directories_automatically_deleted": true
+}

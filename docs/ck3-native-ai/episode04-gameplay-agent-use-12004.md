@@ -1,5 +1,10 @@
 # 战争四期研究：游玩智能体参考入口
 
+> 2026-10-20 20:00 UTC后继：machine_id: `desktop-3fevhd2-1c74096080`；来源T02 Root19:48:41Z、U源码采用19:29:47Z及Steam一次19:27:17Z原件。
+
+当前运行链尚未由本批归档接入或证明parent hook；17项合成cold只授独立observer有限资格，不能推当前Character settlement已被选择。paid/payer/cadence仍null，空cache/journal不能推军费0；继续以本场原生当前费率、钱包、承诺与雇佣应急金预算，正费率不当实付。T01的occupied失败与target原wait UNKNOWN保留；公共a03源码/9项Python检查、Steam静态profile和一次unavailable均不授CK3/public live或Steam离线。本批代码仅存evidence，不自动加载为策略。正式5/11、研究10/14、业务7/11、B0/2、ABC0/3不变。[实际cold、来源与下一合法入口](episode04-r08-parent-entry-execution-cold-and-runtime-boundary-20261020.md)。
+
+
 > 2026-10-20追加；machine_id: `desktop-3fevhd2-1c74096080`；来源为Root18:10Z裁定、CI18:14:28Z闭场及fixture18:20:04Z实际回执。
 
 R05正式镜头仍须来自新罗贝尔正常campaign自然接近低补给阈值的输入。R211受控低库存预置后的337供给扣兵、另67围城/劫掠扣兵仅作机制补充，净少404不能全算供给；自然日callback不改变受控输入身份。继续按实际stock/grace/fleet与原生physical结果判断。正式进度保持5/11；[最终裁定与后续合法观测边界](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r211-r05-supplement-review-a01/README.md)。

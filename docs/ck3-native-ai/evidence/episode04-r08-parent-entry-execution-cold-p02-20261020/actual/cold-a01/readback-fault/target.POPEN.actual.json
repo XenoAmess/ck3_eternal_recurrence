@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:43:19.010190+00:00",
+  "argv": [
+    "C:\\w\\e04parentdr02\\build-a01\\maintenance_parent_entry_cold_target.exe",
+    "--mode",
+    "foreign257_then_target",
+    "--prefix",
+    "C:\\w\\e04parentdr02\\cold-a01\\readback-fault\\target"
+  ],
+  "pid": 6656,
+  "created": 134369989990063078
+}

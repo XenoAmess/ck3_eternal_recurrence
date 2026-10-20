@@ -1,0 +1,23 @@
+{
+  "schema": "xar.e04.parent-dr.next-build-budget.readonly.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:17:26.169262+00:00",
+  "prepared_only": true,
+  "new_budget_or_execution_admitted": false,
+  "observed_previous_producer": {
+    "source": "C:/w/e04parentdr01/build-execution-a01/LOCAL-CAPACITY-MONITOR.actual.json",
+    "samples": 45,
+    "maximum_observed_top_bytes": 2339664,
+    "not_transient_peak_upper": true
+  },
+  "temporary_route": "Actual public producer child_environment pins TEMP/TMP .msvc-temp, Python cache .python-cache and tool caches beneath true build child; driver TEMP/TMP and all fixture output also new top.",
+  "actual_Release_flags": "/O2 /Ob2 /DNDEBUG; /INCREMENTAL:NO; no /Zi or /DEBUG flags observed. Ninja PDB variable names are not PDB materialization proof.",
+  "protocol": {
+    "installed_policy_max_request_bytes": 2097152,
+    "max_requests_per_run": 8,
+    "full_protocol_conservative_charge_bytes": 33554432,
+    "current_receipt_size_not_upper": true,
+    "unproven_smaller_bound": "worker_core636 serializes receipt with mutable global before/after settings; no independent output-byte ceiling found. Private scope enumeration unknown is not zero."
+  },
+  "conclusion": "Cannot certify total24/32MiB from final footprint or 1s samples. With existing full32MiB protocol charge alone, no source/build space remains at total32. New independent capacity/recipe required; no build granted by this proposal."
+}

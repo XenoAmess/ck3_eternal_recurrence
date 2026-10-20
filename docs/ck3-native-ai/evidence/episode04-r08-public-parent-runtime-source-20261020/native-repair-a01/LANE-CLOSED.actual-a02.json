@@ -1,0 +1,58 @@
+{
+  "schema": "xar.e04.parent-dr.native-repair-lane.closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:21:53.283834+00:00",
+  "native_repair_source_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\parent_entry_cold_target.cpp",
+      "bytes": 13724,
+      "sha256": "eca9817eb3dcd029c5dd018297e39e8affc9e9e4b914f24948f2bcc7ecf993aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\run_parent_entry_cold.py",
+      "bytes": 31658,
+      "sha256": "7155eded12ab26d4e994d87c8fe1f4fabc5bc5b2dafa769d8bd5d915479374a8"
+    }
+  ],
+  "source_freeze_a02": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\NATIVE-SOURCE-FREEZE.actual-a02.json",
+    "bytes": 5854,
+    "sha256": "da9f5886b3c83ac344fe4f4f71e2479f42162450a5f285f9313e6d0a064210dd"
+  },
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\SOURCE-DELIVERY.prepared-a02.json",
+    "bytes": 5077,
+    "sha256": "449829440e679bb266e5d6c79f9bcda63e594d9ab4f507863670134c4003a6fb"
+  },
+  "independent_source_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\review-a01\\NATIVE-REPAIR-INDEPENDENT-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 4171,
+    "sha256": "cb8a034e786212c9115121e8d4b7bd50b5e1ba874cb451959e32308fdc738f5f"
+  },
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\native-repair-a01\\focused-a02\\ORIGINAL-WAIT.actual-a02.json",
+    "bytes": 2042,
+    "sha256": "8caf9c45beb6c4b66bffcce61b63014cfd0c25fcdd6e9802961749fc9a358831"
+  },
+  "actual_before_this_receipt": {
+    "bytes": 147624,
+    "files": 18
+  },
+  "temporary_mock_directories_remaining": [],
+  "native_build_SYSTEM_EXE_DR_game_SDK_actions": 0,
+  "remaining_heavy_write_bytes": 0,
+  "remaining_lane_metadata_writes_after_this_process": 0,
+  "bus_task": "e04-parent-native-repair-source-1930-20261020-a01",
+  "bus_state": "done",
+  "bus_resources": [],
+  "historical_attempt_still_failed": true,
+  "original_missing_target_wait_still_unknown": true,
+  "new_native_qualification": false,
+  "new_prepare17_a03_overlay_pending_other_owner": true,
+  "future_new_scope_roots_planned_only": [
+    "C:/w/e04parentdr02",
+    "C:/ck3-war-episode04-research-20261004-a01/e04-r08-parent-dr-source-p02"
+  ],
+  "metadata_final_writer_pid": 20660,
+  "final_writer_contract": "This one-shot writes only this receipt and exits; no further writes to this lane by this agent. Tool completion is separate actual exit evidence."
+}

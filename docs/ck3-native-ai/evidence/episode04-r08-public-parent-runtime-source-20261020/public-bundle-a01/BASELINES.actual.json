@@ -1,0 +1,197 @@
+{
+  "schema": "xar.e04.parent.public.baseline-copy.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T19:05:29.774493+00:00",
+  "rows": [
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61674,
+      "sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 147469,
+      "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_allocate.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 17792,
+      "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_launcher.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_keeper.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 17072,
+      "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_queue.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 64343,
+      "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_client.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_prepare.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "bytes": 1062,
+      "sha256": "c9051d277e77421301de8b964d51daf8277c3b55d80572c01f846f39f42145c9",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_runtime_inputs.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_recorder.py",
+      "bytes": 36097,
+      "sha256": "3c22605777bbf63f714a862240af52dc9d1e06040777b9604d7155ed1dca1083",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_recorder.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_live_run_id.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 15813,
+      "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2124,
+      "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/r10_prepare.json"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/r04_county_entry.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_camera.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434",
+      "source_revision": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+      "source": "tools/ck3_mod_acceptance_cases/__init__.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da",
+      "source_revision": "6022a3de194c7bd2477185203d57b34269c6df5f",
+      "source": "tools/steam_offline_state_probe.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b",
+      "source_revision": "6022a3de194c7bd2477185203d57b34269c6df5f",
+      "source": "tools/steam_offline_state_contract.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\public-bundle-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16352,
+      "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a",
+      "source_revision": "6022a3de194c7bd2477185203d57b34269c6df5f",
+      "source": "tools/steam_offline_native_provider_v1.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\parent_entry_execution_contract.py",
+      "bytes": 10975,
+      "sha256": "00b8bbbc55b5689808846a39d510567e3323fcfb9f2c42e439bf0f2f2e74e295",
+      "source_revision": "source-freeze-a02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\parent_entry_execution_contract.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\prepare_parent_entry_admission.py",
+      "bytes": 9606,
+      "sha256": "06c089973978a837a7deccf57195a95f790c84b3b1d4d8f1d443f9472d7154c4",
+      "source_revision": "source-freeze-a02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\prepare_parent_entry_admission.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\consume_parent_entry_actual.py",
+      "bytes": 1535,
+      "sha256": "6f49cda065d61b780b9bbbc9b96ee17fd8fbb67d91cf0d1b3cf5cc825abe5ffe",
+      "source_revision": "source-freeze-a02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\consume_parent_entry_actual.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\owner_binding.py",
+      "bytes": 6251,
+      "sha256": "0c98e162dcf32f4c50343ae6310938fd89ffb8272804c1b8d00868ecd277498a",
+      "source_revision": "source-freeze-a02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\owner_binding.py"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\cold_observer.cpp",
+      "bytes": 29745,
+      "sha256": "c3fbca7e7e2b7c9ac7b2239cbc542320ddbb00b2103834aa362ba1ee29f4b258",
+      "source_revision": "source-freeze-a02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\cold_observer.cpp"
+    },
+    {
+      "destination": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-runtime-source-1930-a01\\controller-a01\\parent-tools\\parent_entry_execution_once.inc",
+      "bytes": 29838,
+      "sha256": "5188d1f42a9ad5167ed1f6915a0536d8b23547fe2000ae5cf4b6af80dc50603a",
+      "source_revision": "source-freeze-a02",
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-dr-source-1830-a01\\source-candidate-a01\\maintenance_writer_cold_12004\\parent_entry_execution_once.inc"
+    }
+  ],
+  "source_only": true
+}

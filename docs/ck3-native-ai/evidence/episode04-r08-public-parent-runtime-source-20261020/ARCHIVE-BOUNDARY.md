@@ -1,0 +1,3 @@
+# U source archive boundary
+
+machine_id: `desktop-3fevhd2-1c74096080`; source-only snapshots, not deployed production. Keep39 a02 originals and create-only revision-a03 overlay separately. Final actor/index/template/test are under controller-a01/revision-a03; original9 Python/harmless-child checks do not prove native/Steam/game. The10 U source-repair/review/adoption items already in the mandatory T02 archive are refs-only here; exact canonical mapping is in the archive plan. Test temp residue and irrelevant administrative helpers are not copied. Source4 actual administrative closure was late1.045s; its raw settlement and addendum remain historical.
