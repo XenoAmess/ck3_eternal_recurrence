@@ -36,3 +36,17 @@ A03 controls、feeder、compact BASE renderer 和 display 复用包已完成有�
 A04依赖修复已由四个实际base Python `-B -S` 新进程离线验证：原条件复现缺pywintypes，修复后owner／Queue／MCPApp实际模块导入均通过。只抑制private custody receipt及入口main，没有Driver／Service／Game调用；不能当完整冷链资格。小回执 `O/A04-BASE-NO-SITE-IMPORTS-QUALIFIED.json` 为8515 B／`cc6aa44d9767d35d97cebca050147b5a89bb7e3cc970a6f6a39d66cb6e373d49`，此前harness导入路径及顶层main处理错误也保留。
 
 master `d4ce48c6` 的Official CI39359517349在step86失败，Linear39359517355成功。最小测试修复补齐三项真实默认False的fixture字段，并保留运行路径守卫、允许裸EXE SHA；仅一次定向文件运行25项，24通过、1失败、0error、2.843秒（tool37ad0c）。剩余失败命中 `faith_e02_first_four_integrated_adapter.py` 的真实C:/workspace外置scout来源；所需scout／queue不在当前Git树或历史，相关测试另读三份外置SDK记录。未猜造来源或放宽路径守卫，未改其他机器产品行为，Official仍RED。一次测试临时根已精确清理；该故障不阻断使用已冻结Source25的罗贝尔现场。
+
+## 04:02Z A04 实际结果与并行后继
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，观察截至2026-10-20T04:02Z。A04使用独立 `U=N/robert30-v20261019-campaign01/runtime-a04`，状态目录与原T为同FileID junction，没有复制SAVE或Driver。原44项／六入口preflight通过；Source25、Native30及4753周期／5429日保持。实际R0002 Game182100／FILETIME134369407465127587于03:32启动。03:26:37新Steam窗口位移原图经Root亲审离线；不是复用其他机器或旧画面事实。
+
+DISPLAY01因Root漏建recordings父目录，在任何worker／OBS启动前失败；publisher正常0、Task Job0。保FileID归档小输出后，DISPLAY02又因误归档固定provider，在sourcepin检查处失败、Job0。还原原字节同FileID provider、保留旧preflight，并用独立nonce的DISPLAY03恢复。上述失败未重放同Task，原件均留在O的tasks与post-close目录。新录制b72da700-8919-48ee-a855-c3c26730b923于03:55:14实际开始；早期hook空帧不予准入。Root亲审03:55:45冻结game／scene原图，地图、暂停1081-07-31、右灰决策文字正常，无旧蓝窗／影片标题；first-frame2732 B／`a21c9efbc204f78959c9ff30c59ee979eacbbfba9b1adaa19221a2082bb40a31`，不授连续跟随或全境信用。
+
+原verify_segment及实际空Mod启动日志验证通过后，03:56:38发布gate；实际Queue115432／App185588创建，但在业务RPC前失败。监督的完整子链导出与origin首次连接各使用默认10秒窗口，前者实际抛`private custody receive timeout`；App随后连接已关闭管道，WinError2。现有证据不能判定两个窗口谁先到期，不是03:32以来整个预录等待耗尽期限。Queue与App实际均exit1，next_sequence仍10481，无SEM／CAP、无FULL或游戏日新增。现有链只允许一次创建，未伪造重连资格。
+
+原监督自动闭场于03:58:03：Game forced exit1、Job0／treegone；不是正常游戏退出。全部四个Task均注销并实际absent，screen102经最终CAS7528释放，R0002标completed-red。录制引擎、publisher及媒体后处理完成，影片65780082 B／SHA256 `6fde22f4ab4bbcf9aa33590fcd4fe134a3ee6dca45a6cf75c925ca1b07dc5b6b`；display确实等到了媒体完成，但最终validator缺少`ck3_capture_closed_receipt`导入导致stage1、Job0／无force。不能把媒体完成扩张为完整wrapper成功。闭场索引`O/A04-FAILED-CLOSED-INDEX.json`5527 B／`c12c0c5770b937fe38fe193b703351a613db39c3439f6475bebb3866a81335bc`精确回链实际closed、stderr、媒体及屏幕释放。
+
+用户要求高并发后，M6复用实例机会恢复、M7专用Service投影合同、非主导护资战争决策、性能四路均有独立候选／资格；源码资格不计游戏成绩。M6旧gain25仍缺独立terminal，M7仍缺实际H正见证与广度，G2保持6/8。heartbeat早醒候选被反例证明没有吞吐收益，未作为性能修复采用；Source26拟采用逐字节等价的历史编码LF单次join，收益仍须实测。战争procurement扩展发现跨战争共享资金包缺口，未直接采用。下一必要冷边界同时补启动期有限等待与录制validator完整路径；稳态RPC期限不随意放大。
+
+统一full仍27377 B／`332fabb30cc6f6a62d2f8974cd6e55d12036425f5b7f02aa8cf56709af6ee42a`、复核06:30Z。新增小源码／资格从已取消的C20未来预算精确转划；旧attempt占用不退款、不删除失败事实。原30年全墙钟起点2026-10-19T03:26:49.420926Z不重置，1秒／日及10950日目标均未完成。

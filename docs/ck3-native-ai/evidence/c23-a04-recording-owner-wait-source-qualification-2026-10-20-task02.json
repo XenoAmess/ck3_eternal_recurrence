@@ -1,0 +1,88 @@
+{
+  "schema": "xar.A04-recording-owner-wait-real-Task-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:29:50.612134+00:00",
+  "status": "SOURCE_QUALIFIED_NOT_DEPLOYED",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\project_recording_owner_wait_v1.py",
+      "bytes": 5395,
+      "sha256": "ecfbb55c736aa1aa6f39cd1a9ef16a3609ae52bcbc097c2d0e9347c08b811ace"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_recording_owner_wait_v1.py",
+      "bytes": 9969,
+      "sha256": "afdc795601572bfbb86ecac8be278db3ec817c36862894e933b5dd963c9a938d"
+    }
+  ],
+  "affected_RAM": "1 case / 4 media terminal subcases PASS 0.003s",
+  "original_projection_inverse": "project() preserves all original bytes outside four exact seams and compiles candidate",
+  "failed_attempts_preserved": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c23-a04-recording-owner-wait-source-qualification-2026-10-20-owned02.json",
+      "bytes": 1573,
+      "sha256": "628cddf737747d2455a26a8566334ee3cda794a41790d7d8ce37ddb370c9e4df"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\c23-a04-recording-owner-wait-source-qualification-2026-10-20.json",
+      "bytes": 1458,
+      "sha256": "f2c3330153c1358abb56c677a1b449ca76d8eefe07a23ccd3b210351e54b7a3b"
+    }
+  ],
+  "first_real_stdout_unknown": "exec session ID lost; no PASS credit",
+  "first_source_cap_RED": {
+    "actual": 13202,
+    "then_cap": 12288,
+    "over_by": 914
+  },
+  "first_Task_failed": {
+    "root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04",
+    "CLOSED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04\\CLOSED.json",
+      "bytes": 746,
+      "sha256": "f6dd5ee37ef9d4024650665b5ecff69bd98dcc86739b35a53ada40e7cc2dd1fb"
+    },
+    "child_exit": 63,
+    "Job0": true,
+    "forced_cleanup": false,
+    "unregistered": true
+  },
+  "actual_success": {
+    "root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04-task02",
+    "spec": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04-task02\\SPEC.json",
+      "bytes": 2631,
+      "sha256": "1510035913ef0dec57aa00fe1ea2698a3ed5986edf948e4a12a74a5930a4228a"
+    },
+    "STARTED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04-task02\\STARTED.json",
+      "bytes": 1320,
+      "sha256": "ebb45a34e59ef1bcdd2818f0299f22760f9505d2131eb4eae8918f9e1e816ec1"
+    },
+    "CLOSED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04-task02\\CLOSED.json",
+      "bytes": 745,
+      "sha256": "2a67d0e051bfdbd9b3f38d151aee43e37ca783e28e2a0fa82ddd5392e9d9af3b"
+    },
+    "stdout": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04-task02\\stage.stdout.log",
+      "bytes": 791,
+      "sha256": "5f6364d405b591dc543aa997ad2b8ba98cf0cc08ceb8f7a1c0d25c5165a8e09f"
+    },
+    "UNREGISTERED": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\tasks\\spec-display-worker-qualification-a04-task02\\UNREGISTERED.json",
+      "bytes": 368,
+      "sha256": "3a42485820c272813e45b25261f4a206cf665e77e30b928376e02caf95d0a5f3"
+    },
+    "child_exit": 0,
+    "Job0": true,
+    "forced_cleanup": false,
+    "bootstrap_exit": 0,
+    "task_absent_after": true
+  },
+  "production_contract": "retain just-started exact recording worker handle; await real exit and media terminal; JOB_TAIL_PENDING_ORIGINAL_OWNER; original Task alone checks retained Job0 after stage exit",
+  "unknown_second_Job_pid": "First Task 67632 and success Task 241444 image unknown; no inferred identity",
+  "Game_OBS_desktop_or_T04_calls": 0,
+  "scratch_bytes": 0,
+  "source_joint_cap": 24576
+}

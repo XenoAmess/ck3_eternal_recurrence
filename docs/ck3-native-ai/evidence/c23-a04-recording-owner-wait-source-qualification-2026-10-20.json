@@ -1,0 +1,34 @@
+{
+  "schema": "xar.A04-recording-owner-worker-wait-source-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T03:16:05.974996+00:00",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\project_recording_owner_wait_v1.py",
+      "bytes": 6603,
+      "sha256": "c115f8235feaaa222d8396ca82c624750f762fcdde9ac39bc594ac5a3dd5e1a2"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_recording_owner_wait_v1.py",
+      "bytes": 8634,
+      "sha256": "b36052e910eb51151a9f87990109cb2da0425ad0b9c1fb8c4966885772ed8025"
+    }
+  ],
+  "RAM_cases": "2 PASS 0.184s; four media terminal subcases; not repeated",
+  "earlier_owned_attempt": "UNKNOWN: exec session ID not retained; process absence gives no credit",
+  "first_source_peak": {
+    "bytes": 13202,
+    "old_cap": 12288,
+    "over_by": 914,
+    "status": "RED preserved"
+  },
+  "current_joint_cap": 20480,
+  "actual_owned_probe": {
+    "status": "ACTUAL_OWNED_PROBE_FAILED",
+    "error": "RuntimeError('owned fixture timed out; exact fixture Job closed; stdout={\"phase\": \"held_worker_before_wait\", \"worker_pid\": 157832, \"worker_birth\": 134369397362180929, \"tail_pid\": 53568}\\r\\n')"
+  },
+  "T04_writes": 0,
+  "Game_OBS_Task_desktop_calls": 0,
+  "scratch_bytes": 0,
+  "current_Job_API_source": "https://learn.microsoft.com/windows/win32/api/jobapi2/nf-jobapi2-queryinformationjobobject"
+}
