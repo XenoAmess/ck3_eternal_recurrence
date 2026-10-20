@@ -12,6 +12,7 @@ from fractions import Fraction
 from .bridge.domain_construction_private_transport_v1 import RESERVE_RAW
 from .normal_army_projected_contact_v1 import select_normal_army_projected_contact_v1
 from .war_reinforcement_finance_v1 import observe_reinforcement_finance_v1
+from .nonleading_player_realm_siege_v1 import nonleading_player_realm_siege_war_v1
 from .war_reinforcement_tradeoff_v1 import (
     _armies, _count, _stationary_staging, observe_war_spending_priority_v1,
 )
@@ -53,6 +54,23 @@ def observe_procurement_package_budget_v1(snapshot, ledger, *, purpose_war_ids):
     records = []
     connected_wars = purposes | {row["war_id"] for row in _armies(snapshot.get("active_wars"))
         if row.get("player_is_primary_war_leader") is True and type(row.get("war_id")) is int}
+    # Additional links restrict the package; they never authorize a hire.
+    connected_wars.update(row["war_id"] for row in _armies(snapshot.get("active_wars"))
+        if nonleading_player_realm_siege_war_v1(snapshot, row))
+    native = snapshot.get("native_revision")
+    played, diag = snapshot.get("played_character", {}), snapshot.get("diagnostics", {})
+    native_frame = (snapshot.get("source") == "injected-dll-named-pipe"
+        and type(native) is int and native > 0 and snapshot.get("snapshot_id") == f"native:{native}"
+        and type(snapshot.get("date_raw")) is int and snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and played.get("source") == "native" and played.get("alive") is True
+        and diag.get("connected") is True and type(diag.get("bridge_pid")) is int and diag["bridge_pid"] > 0
+        and type(diag.get("connection_generation")) is int and diag["connection_generation"] >= 0)
+    active_native_nonleading = {row["war_id"] for row in _armies(snapshot.get("active_wars"))
+        if native_frame and row.get("source") == "native" and row.get("player_side") == "defender"
+        and row.get("player_is_primary_war_leader") is False
+        and type(row.get("war_id")) is int and row["war_id"] > 0}
     for row in _armies(ledger.get("observed")):
         if row.get("status") != "employment_observed":
             continue
@@ -64,6 +82,24 @@ def observe_procurement_package_budget_v1(snapshot, ledger, *, purpose_war_ids):
         prior_purposes = selected.get("purpose_war_ids", selected.get("numerical_balance_reversed_war_ids", []))
         prior_scope = decision.get("war_spending_priority", {}).get("primary_war_hostile_union_v1", {}).get("war_ids", [])
         records.append((row, selected, set(prior_purposes) | set(prior_scope)))
+        # Preserve prior strict contract costs while the same War remains active,
+        # including after its siege scope disappears. Unknown history grants nothing.
+        qualified_prior = {war["war_id"] for war in _armies(decision.get("war_spending_priority", {}).get("wars"))
+            if war.get("primary_player_war") is False and war.get("player_side") == "defender"
+            and type(war.get("war_id")) is int
+            and isinstance(proof := war.get("nonleading_realm_siege_cash_protection_v1"), Mapping)
+            and proof.get("qualified_current_scope") is True and proof.get("procurement_scope_extended") is True
+            and proof.get("reasons") == ["qualified_nonleading_defence_stationary_hostile_siege_in_player_realm"]
+            and "qualified_nonleading_defence_stationary_hostile_siege_in_player_realm" in war.get("protect_cash_reasons", [])}
+        prior_native, prior_date = source.get("native_revision"), source.get("date_raw")
+        frame_verified = (type(prior_native) is int and prior_native > 0
+                and source.get("snapshot_id") == f"native:{prior_native}"
+                and type(prior_date) is int and prior_date <= snapshot["date_raw"])
+        active_prior = set(prior_purposes) & active_native_nonleading
+        if active_prior and (not frame_verified or not active_prior.issubset(qualified_prior)):
+            return {"status": "unavailable", "reason": "active_nonleading_prior_contract_scope_unqualified",
+                    "remaining_package_gold_raw": None}
+        connected_wars.update(active_prior)
     # Shared simultaneous wars cannot alternate fresh half-treasury caps. A
     # later overlapping contract retains the old package while any linked war
     # remains active; genuinely disjoint later wars can start a new package.

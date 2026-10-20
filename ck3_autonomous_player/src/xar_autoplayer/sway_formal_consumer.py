@@ -15,6 +15,7 @@ from .bridge.driver import BridgeUnavailableError
 from .bridge.active_scheme_sway_formal_private_transport import RECEIPT_SOURCE_KEY
 from .bridge.version_identity import CK3_12004
 from .environment import write_json_atomic
+from .reused_sway_opportunity_v1 import fresh_empty_sway_slot_after_reuse_v1
 
 
 LEDGER_FILE = "active-scheme-sway-formal-private-v1.json"
@@ -382,6 +383,14 @@ def _same_target_followup(resolved: Mapping[str, object],
     if readback["matching_sway_active"] is True:
         return {**followup, "decision": "retain_existing_sway"}
     terminal = resolved.get("terminal_intervention")
+    reused_gap = fresh_empty_sway_slot_after_reuse_v1(resolved, readback)
+    if reused_gap is not None:
+        # Keep the lost old end UNKNOWN; the new UUID gets no old gain.
+        # consume_sway_private_once already joined this fresh read to its
+        # current frame and still calls unchanged should_submit_sway.
+        return {**followup, "decision": "repeat_selected_target",
+                "previous_instance_observation_gap": reused_gap,
+                "previous_instance_terminal_observed": False}
     if (not isinstance(terminal, Mapping)
             or terminal.get("instance_terminal_outcome_observed") is not True):
         return {**followup, "decision": "observe_tracked_instance_end"}

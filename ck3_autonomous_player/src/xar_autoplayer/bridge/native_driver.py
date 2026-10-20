@@ -11590,7 +11590,7 @@ class NativeHeadlessGameplayDriver:
         )
         try:
             # Materialize one immutable snapshot before releasing the state lock.
-            return b"".join(serialized_parts) + b"\n"
+            return b"".join((*serialized_parts, b"\n"))
         finally:
             if persistence_step is not None:
                 finish_army_timing(

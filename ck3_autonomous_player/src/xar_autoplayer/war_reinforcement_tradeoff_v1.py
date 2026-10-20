@@ -10,6 +10,7 @@ from collections.abc import Mapping
 
 from .bridge.domain_construction_private_transport_v1 import RESERVE_RAW
 from .war_reinforcement_finance_v1 import observe_reinforcement_finance_v1
+from .nonleading_player_realm_siege_v1 import nonleading_player_realm_siege_war_v1
 from .war_political_survival_stakes_v1 import (
     observe_political_survival_stakes_v1, political_survival_stakes_qualified_v1,
 )
@@ -80,6 +81,7 @@ def observe_war_spending_priority_v1(
     wars = []
     for war in active:
         political = observe_political_survival_stakes_v1(snapshot, war, root)
+        nonleading_realm_siege = nonleading_player_realm_siege_war_v1(snapshot, war)
         score = war.get("player_relative_war_score")
         primary = war.get("player_is_primary_war_leader") is True
         targets = war.get("targeted_title_ids")
@@ -123,6 +125,8 @@ def observe_war_spending_priority_v1(
             reasons.append("losing_own_war_and_shared_raised_force_below_unique_primary_hostiles")
         if primary and hostile_sieges:
             reasons.append("observed_hostile_siege_in_player_subrealm")
+        if nonleading_realm_siege:
+            reasons.append("qualified_nonleading_defence_stationary_hostile_siege_in_player_realm")
         if primary and all_own_retreating:
             reasons.append("entire_observed_own_raised_force_currently_retreating")
         if primary and war.get("player_side") == "defender" and hostile_occupations:
@@ -155,6 +159,13 @@ def observe_war_spending_priority_v1(
             "raised_force_deficit": deficit if own_count is not None and enemy is not None else None,
             "existing_operational_strength_balance_v1": operational,
             "protect_cash_reasons": reasons,
+            "nonleading_realm_siege_cash_protection_v1": {
+                "qualified_current_scope": nonleading_realm_siege,
+                "reasons": ["qualified_nonleading_defence_stationary_hostile_siege_in_player_realm"] if nonleading_realm_siege else [],
+                "procurement_scope_extended": nonleading_realm_siege,
+                "arrival_before_loss_verified": False,
+                "defeat_title_transfer_verified": False,
+            },
         })
     protected = [war for war in wars if war["protect_cash_reasons"]]
     protected.sort(key=lambda war: (
@@ -165,7 +176,12 @@ def observe_war_spending_priority_v1(
         war["war_id"] if type(war["war_id"]) is int else -1))
     return {
         "schema": "xar.war-spending-priority.v1", "read_only": True,
-        "defer_new_economic_construction": any(row["protect_cash_reasons"] for row in wars),
+        "defer_new_economic_construction": any(
+            row["protect_cash_reasons"] or row["nonleading_realm_siege_cash_protection_v1"]["reasons"]
+            for row in wars),
+        "nonleading_realm_siege_construction_deferred_v1": any(
+            row["nonleading_realm_siege_cash_protection_v1"]["qualified_current_scope"]
+            for row in wars),
         "wars": wars, "count_scope": "observed raised armies; no unraised reserves or promised allies",
         "cash_protection_priority_war_ids": [war["war_id"] for war in protected],
         "cash_priority_does_not_assign_armies": True,
