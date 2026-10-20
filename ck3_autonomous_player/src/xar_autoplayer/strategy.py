@@ -134,6 +134,7 @@ from .bridge.succession_transition_contract import (
     unknown_succession_lifecycle_binding_v1,
 )
 from .bridge.war_contract import (
+    war_termination_optional_query_defer_v1,
     MAX_ROUTE_CONTACT_HOSTILE_IDS,
     QUERY_ARMY_STRENGTHS_STEP,
     RAISE_TROOPS_STEP,
@@ -10017,6 +10018,16 @@ def _choose_one_life_turn_core(
                 # native-negative assessment.  Full military planning below
                 # still runs, while terminal thresholds and new war identities
                 # always force another native query.
+                optional_defer = war_termination_optional_query_defer_v1(
+                    snapshot, war, ({"step": _effective_command(row),
+                        "ok": row.get("ok"), "result": _effective_command_result(row)}
+                        for row in reversed(rows)))
+                if optional_defer is not None:
+                    summary = next((item for item in war_summary
+                        if item.get("war_id") == war_id), None)
+                    if isinstance(summary, dict):
+                        summary["war_termination_optional_query_defer"] = dict(optional_defer)
+                    continue
                 policy_defer = war_termination_query_policy_defer_v1(
                     snapshot,
                     active_wars,

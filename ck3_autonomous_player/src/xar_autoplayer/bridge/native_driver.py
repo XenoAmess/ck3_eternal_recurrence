@@ -655,6 +655,7 @@ from .army_captured_target_land_supply_inputs_contract import (
     normalize_target_land_supply_in_route_preview,
 )
 from .war_contract import (
+    war_termination_optional_unavailable_v1,
     ARMY_ROUTES_CAPABILITY,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP,
     BATTLE_DECISION_EPOCH_ADVANCE_STEP_PREFIX,
@@ -9522,6 +9523,9 @@ class NativeHeadlessGameplayDriver:
                         or (parse_query_route_contact_horizon_step(step) is not None
                           and result.get("schema") == "xar.route-contact-readonly-unavailable.v1"
                           and result.get("status") == "unavailable")
+                        or (parse_query_war_termination_options_step(step) is not None
+                            and result.get("schema") == "xar.war-termination-readonly-unavailable/v1"
+                            and result.get("status") == "unavailable")
                         or (parse_query_battle_control_snapshot_v1_step(step) is not None
                             and result.get("schema") == "xar.battle-control-readonly-unavailable.v1"
                             and result.get("status") == "unavailable")) else True), result=result,
@@ -22504,6 +22508,16 @@ class NativeHeadlessGameplayDriver:
                     internal_semantic_snapshot=True,
                 )
             except _NativeCommandRejectedError as error:
+                if error.native_error == "war-termination completion snapshot read failed":
+                    current = self.take_internal_semantic_snapshot()
+                    unavailable = war_termination_optional_unavailable_v1(
+                        step=step, native_error=error.native_error,
+                        native_request_id=error.native_request_id,
+                        request=error.native_request_frame,
+                        response=error.native_command_result_frame,
+                        starting=starting, current=current)
+                    if unavailable is not None:
+                        return dict(unavailable)
                 if error.native_error not in (
                     _WAR_TERMINATION_REVISION_RETRY_ERRORS
                 ):

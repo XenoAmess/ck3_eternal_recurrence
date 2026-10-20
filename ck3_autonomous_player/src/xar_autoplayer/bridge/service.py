@@ -3953,7 +3953,7 @@ class GameplayBridgeService:
                 query = reader(expected_revision=revision)
             else:
                 query = formal_query
-            after = self.snapshot()
+            after = self.snapshot(include_native_command_history=False)
         except Exception as error:
             return {**unknown, "query_status": "query_error",
                     "error_type": type(error).__name__}
@@ -4054,7 +4054,7 @@ class GameplayBridgeService:
         else:
             try:
                 query = reader(expected_revision=revision)
-                after = self.snapshot()
+                after = self.snapshot(include_native_command_history=False)
             except Exception as error:
                 result = {"status": "query_error", "error_type": type(error).__name__}
             else:
