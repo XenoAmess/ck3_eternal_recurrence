@@ -1,0 +1,96 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:27:59.186327+00:00",
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 274765,
+    "sha256": "53c0e4d5b4db9eb6f56c9862b6d212b98ca7c2ec677c203d2145567551214b05"
+  },
+  "settlement": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-NORMAL-CLOSED-BUSINESS-REFUSED-SETTLEMENT.actual-a01.json",
+    "bytes": 9116,
+    "sha256": "1b07563f9e476e670f8c5e754ad12666018b9872a8325b6cbf75c051376b516a"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 16,
+    "lock_hold_seconds": 0.0007104999385774136,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 275140,
+      "sha256": "08949e7b8f618c2970402293cc595fc4d7f1573b9d4856187a51a8e1277f8f1e"
+    }
+  },
+  "active_balances_after": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-resume-20261020-a02",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T10:27:59.137949+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 79787642880,
+      "available_to_caller_bytes": 79787642880,
+      "total_free_bytes": 79787642880,
+      "entire_volume_used_allocation_upper_bound_bytes": 431346302976,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T10:27:59.137949+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21667991552,
+      "available_to_caller_bytes": 21667991552,
+      "total_free_bytes": 21667991552,
+      "entire_volume_used_allocation_upper_bound_bytes": 478422016000,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget_after": {
+    "C_known_future_bytes": 134217728,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 25946154182,
+    "C_floor_margin_bytes": 53841488698,
+    "C_projected_whole_volume_upper_bound_bytes": 435817620678,
+    "C_quota_margin_bytes": 2269043514,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 58937344
+  },
+  "physical_or_unused_credit_bytes": 0,
+  "shared128_remains_open": true,
+  "old_1030_quota_not_automatically_renewed": true
+}

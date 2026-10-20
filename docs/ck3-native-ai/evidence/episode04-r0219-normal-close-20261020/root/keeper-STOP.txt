@@ -1,0 +1,1 @@
+R0219 actual normal GUI Quit; retained OS0/native0 and original hostwait0, no ADD credit.

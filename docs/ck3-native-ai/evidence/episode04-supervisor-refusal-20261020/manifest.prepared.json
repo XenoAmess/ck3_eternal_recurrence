@@ -1,0 +1,310 @@
+{
+  "schema": "xar.e04.supervisor_refusal_small_archive.prepared.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T10:01:07.377590+00:00",
+  "status": "PREPARED_EXACT_SMALL_ARCHIVE_NOT_YET_INTEGRATED_OR_PUBLISHED",
+  "proposed_repository_destination": "docs/ck3-native-ai/evidence/episode04-supervisor-refusal-20261020",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "integration_head": "d0a30bd0e3341eef69be7a009b378706f13763bc",
+  "source_files": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\HANDOFF.actual-a01.json",
+        "bytes": 4839,
+        "sha256": "65be0731af4f88676703892cf9e1e72636bfc2bca3b31af20903435c92234f7b"
+      },
+      "archive_relative_path": "fix/HANDOFF.actual-a01.json",
+      "role": "ACTUAL_HANDOFF",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\TEST-RESULT.actual.json",
+        "bytes": 2695,
+        "sha256": "ff2dcc18d64395be53841b6b4094b855ea1e15111b2a5fdf4a078cd141030e3c"
+      },
+      "archive_relative_path": "tests/TEST-RESULT.actual.json",
+      "role": "ACTUAL_15_FOCUSED_TESTS",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\test-stderr.log",
+        "bytes": 2214,
+        "sha256": "8a21592b1cdf9f5780396ad7fb3ba36d7a11ae4e36325e9d5765a3d0e057fa93"
+      },
+      "archive_relative_path": "tests/test-stderr.log",
+      "role": "ACTUAL_15_FOCUSED_OUTPUT",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\test-stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "tests/test-stdout.log",
+      "role": "ACTUAL_EMPTY_STDOUT",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\run_focused_tests.py",
+        "bytes": 2826,
+        "sha256": "6f058cd9b2e0c14e529a11fb4b7d0aaa12becee57300dcdebdb33a3002ef766f"
+      },
+      "archive_relative_path": "helpers/run_focused_tests.py",
+      "role": "EXECUTED_HELPER_SOURCE_NOT_RESULT",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\build_actual_a01.py",
+        "bytes": 1857,
+        "sha256": "d98b240a6c3d3a89da001a49173f36f8415067b0e9416e9728c94029b89e7ba6"
+      },
+      "archive_relative_path": "helpers/build_actual_a01.py",
+      "role": "EXECUTED_HELPER_SOURCE_NOT_RESULT",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1782,
+        "sha256": "721a51e6d5529e733d006e1c6fdf8a230f83b3d774bbcca9ff5521331ae6e6a1"
+      },
+      "archive_relative_path": "builder/ORIGINAL-WAIT.actual.json",
+      "role": "ACTUAL_ORIGINAL_BUILDER_WAIT0",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\stdout.log",
+        "bytes": 9716,
+        "sha256": "90870ea735d2645dcd1b7c4da8f0390de9457cb21ad1d3ad1803722d575ba066"
+      },
+      "archive_relative_path": "builder/stdout.log",
+      "role": "ACTUAL_VALIDATION_FRESH_CENSUS",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive_relative_path": "builder/stderr.log",
+      "role": "ACTUAL_BUILDER_STDERR",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\SUPERVISOR-ADMISSION-REFUSED.actual.json",
+        "bytes": 4225,
+        "sha256": "b2633e79daadf1f0cc6a6b7dc52034ca50b2053e6c137c19a41c3a1532984809"
+      },
+      "archive_relative_path": "builder/SUPERVISOR-ADMISSION-REFUSED.actual.json",
+      "role": "ACTUAL_R0218_ADMIN_CLOSURE",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-review-a01\\REFUSAL-INDEPENDENT-REVIEW.actual-a01.json",
+        "bytes": 9878,
+        "sha256": "61f46df6b54a33007c030d80aa5e98b717083ec0ce7fa9cb7baa4ee59c3bf3c1"
+      },
+      "archive_relative_path": "review/REFUSAL-INDEPENDENT-REVIEW.actual-a01.json",
+      "role": "ACTUAL_INDEPENDENT_READONLY_REVIEW",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-SOURCE-FROZEN.actual-a02.json",
+        "bytes": 1680,
+        "sha256": "a37fffcdeb2dcca40d62bd7e6c4e9124240661d7a6ead3ad7fc552899fb19356"
+      },
+      "archive_relative_path": "review/ROOT-SOURCE-FROZEN.actual-a02.json",
+      "role": "ACTUAL_ROOT_REVIEW_AND_SOURCE_FREEZE",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\refusal-archive-a01\\CHERRY-PICK-READBACK.actual.json",
+        "bytes": 2587,
+        "sha256": "608e4f092a5b7fb72f5ea17e7565a48d691c9b7b0b3e6656a85a5a47070f15cb"
+      },
+      "archive_relative_path": "integration/CHERRY-PICK-READBACK.actual.json",
+      "role": "ACTUAL_LOCAL_CHERRY_PICK_READBACK",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\ready-context.json",
+        "bytes": 5621,
+        "sha256": "22ba811e60efbe1fbbab9068899d5232f162e21f11bc356069daed4403aeed2c"
+      },
+      "archive_relative_path": "R0218/ready.json",
+      "role": "ACTUAL_ORIGINAL_R0218_ready",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\frozen-argv.json",
+        "bytes": 33778,
+        "sha256": "33d9fbb32b5f7e96b357879e74b8936cf48fee87c85d919b19c6d61abbbf826b"
+      },
+      "archive_relative_path": "R0218/frozen.json",
+      "role": "ACTUAL_ORIGINAL_R0218_frozen",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\allocated-context.json",
+        "bytes": 5359,
+        "sha256": "8eea2d26dbcfd5563b0ab84291a2c3f2804220943c4db559b07140861e7bcad4"
+      },
+      "archive_relative_path": "R0218/allocated_context.json",
+      "role": "ACTUAL_ORIGINAL_R0218_allocated_context",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\prepared-a02\\prepared-case.json",
+        "bytes": 11432,
+        "sha256": "51b63f539fece4ec6275864e2f16f42364331580194165c34799ead240fb7ada"
+      },
+      "archive_relative_path": "R0218/prepared_case.json",
+      "role": "ACTUAL_ORIGINAL_R0218_prepared_case",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\launch-intent.json",
+        "bytes": 1615,
+        "sha256": "6a4839b8f6d42b2e8fa771ba62402e3da28fcf77a810a45bc91c07b28989c731"
+      },
+      "archive_relative_path": "R0218/launch_intent.json",
+      "role": "ACTUAL_ORIGINAL_R0218_launch_intent",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-started.json",
+        "bytes": 955,
+        "sha256": "109fa34dc61c9b95dba0bdfa35ab7fce489056a3b3263e0a9ac5c8dd16115f07"
+      },
+      "archive_relative_path": "R0218/supervisor_started.json",
+      "role": "ACTUAL_ORIGINAL_R0218_supervisor_started",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-stderr.log",
+        "bytes": 137,
+        "sha256": "e5b5e14c9c8b7ba34acb67b373ca31b144fa0b99a2a70eaebf1915e36037d990"
+      },
+      "archive_relative_path": "R0218/supervisor_stderr.log",
+      "role": "ACTUAL_ORIGINAL_R0218_supervisor_stderr",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1271,
+        "sha256": "8466b65c33d5d9804bc46e9f1e434ca900c05c231a9cdc0a2bffddb0db3f5dc7"
+      },
+      "archive_relative_path": "R0218/public_run_wait.json",
+      "role": "ACTUAL_ORIGINAL_R0218_public_run_wait",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\allocate-exec-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1751,
+        "sha256": "8b032f9783d3919abb45e7e6adb2e6132628d5f9e0bb0a87df2e64c5fab575ac"
+      },
+      "archive_relative_path": "R0218/public_allocate_wait.json",
+      "role": "ACTUAL_ORIGINAL_R0218_public_allocate_wait",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\STOP",
+        "bytes": 104,
+        "sha256": "4d3a4d8e5e66b8719ea1da521e073bc8a69a609ea2f94571ae6c2b61a90e0df5"
+      },
+      "archive_relative_path": "R0218/keeper_STOP",
+      "role": "ACTUAL_ORIGINAL_R0218_keeper_STOP",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\report.json",
+        "bytes": 435,
+        "sha256": "3ead7f344694e7e9501dc123508d72dab3d1b2d5d805a7a0a72785944c494d0c"
+      },
+      "archive_relative_path": "R0218/keeper_report.json",
+      "role": "ACTUAL_ORIGINAL_R0218_keeper_report",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\keeper-actual-parent-exit.json",
+        "bytes": 598,
+        "sha256": "a055875416757dce7597bd9e43d839d2607a0ea49fa82638e013e6a863412ff3"
+      },
+      "archive_relative_path": "R0218/keeper_parent_exit.json",
+      "role": "ACTUAL_ORIGINAL_R0218_keeper_parent_exit",
+      "source_observation_unchanged": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\SCREEN-RELEASE.actual-a01.json",
+        "bytes": 1281,
+        "sha256": "fa1883d38e224c1dc71134fa8270c21d458c3c0dd47a6c6c862bbf98ae386406"
+      },
+      "archive_relative_path": "R0218/CAS_release.json",
+      "role": "ACTUAL_ORIGINAL_R0218_CAS_release",
+      "source_observation_unchanged": true
+    }
+  ],
+  "pin_only_originals": [
+    {
+      "key": "launcher_source",
+      "original_pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+        "bytes": 17792,
+        "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+      },
+      "reason": "Mutable historical counter is now consumed by R0219; launcher source is retained in exact Git source4fc. Neither is reread or duplicated."
+    },
+    {
+      "key": "counter",
+      "original_pin": {
+        "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+        "bytes": 282,
+        "sha256": "39746402c458ea344329ad28e4124f7db108dbb30f7e5c2680e7fbf3fa84d913"
+      },
+      "reason": "Mutable historical counter is now consumed by R0219; launcher source is retained in exact Git source4fc. Neither is reread or duplicated."
+    }
+  ],
+  "supervisor_original_wait_proven": false,
+  "supervisor_original_wait_returncode": null,
+  "R0219_result_granted": false,
+  "R06_or_dynamic_credit_granted": false,
+  "max_package_bytes": 1048576,
+  "PNG_or_binary_or_save_or_wire_copied": false,
+  "actual_local_tests_builders_game_SDK_screen_calls": 0,
+  "exact_original_body_rewritten": false,
+  "mutable_current_counter_read": false,
+  "archive_attributes": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\refusal-archive-a01\\package\\.gitattributes",
+    "bytes": 161,
+    "sha256": "fcd327b05b9d359247d48fe5d7c4157231a47ec6c4765359fdb1ba0deed8c05c"
+  },
+  "README": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\refusal-archive-a01\\package\\README.md",
+    "bytes": 2205,
+    "sha256": "91876d0495efa220a91c91b1fbc3c0dc743d739288aa9deb0a892b00f5021358"
+  }
+}

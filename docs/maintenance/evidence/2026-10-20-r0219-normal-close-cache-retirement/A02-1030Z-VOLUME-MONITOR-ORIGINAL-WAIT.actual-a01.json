@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:33:14.980479+00:00",
+  "original_exec_session_id": 46024,
+  "actual_original_wait_returncode": 0,
+  "original_tool_observation": "write_stdin original session46024 returned exit_code0; final monitor_stopped at10:30:17.935844Z, deadline reached, no stopflag",
+  "owner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A02-FINITE-VOLUME-MONITOR-OWNED.actual-a01.json",
+    "bytes": 1117,
+    "sha256": "736703475864ff3063864c366089dd42ae78be893fe5f907b5ccb0dce980dd21"
+  },
+  "journal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A02-FINITE-VOLUME-MONITOR.actual.jsonl",
+    "bytes": 459616,
+    "sha256": "72a640227327a8e8bfe9f6afaf760d82aa6711581a5479d3d7def2a25166a18e"
+  },
+  "old_native_scene_game_quota_not_renewed": true
+}

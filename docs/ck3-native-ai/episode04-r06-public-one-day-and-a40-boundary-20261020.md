@@ -1,5 +1,14 @@
 # E04 R06 公共单日入口与 A40 未完成资格（2026-10-20）
 
+## 2026-10-20 R0219：2100秒门槛拒绝后实际正常退出
+
+`machine_id: desktop-3fevhd2-1c74096080`；原件见 [R0219 manifest](evidence/episode04-r0219-normal-close-20261020/MANIFEST.actual.json)，完整清理六 rows 是明确标注的派生投影，非新 SDK 原件。源码4fc8包含严格的 pre-host supervisor refusal 前驱合同，15项 focused 测试和独审通过；原R0218 unknown wait及 latest/counter 守卫未变。
+
+R0219实际约09:58:01 MapReady；deadline10:30，需2100秒，最晚入口09:55:00。R10首snapshot/六查询完成，但R06在worker、camera和one-day之前拒绝；run原wait2保留 `MapReady lacks original 2100-second room`，noDay、ADDfalse、fullR06false。guard在actor finally之前，不能声称自动OFF/Save；Root另经公共queue实际OFF/clear和一次普通Save，独立读回日期53149056不变。
+
+普通Save为native_campaign；`driver_state_replace`仍unconfirmed/save_binding_mismatch，不授one-life绑定。GUI正常关闭取得retained OS0/native0/host原wait0；keeper与allocator原wait0，CAS7395→7396 done/resources[]。正常关闭不抹去case error。研究71.4%、业务63.6%、正式动态0/11不变；R12已审34秒素材独立列账。下一finite场仍需新预算、资格和新鲜Steam/实际scope，不把本场闭场当新准入。
+
+
 ## 08:31 UTC：真实分配后绑定容量
 
 `machine_id: desktop-3fevhd2-1c74096080`。用户继续后，实际接线发现循环：prepare冻结case inputs，而场次容量必须绑定allocate之后才生成的真实run ID。旧R0217是在分配前预填R0217、后来与真实分配相同；[原件审查](evidence/episode04-r06-post-allocate-20261020/integration/R0217-CAPACITY-ROUTE.actual.json)保留该事实，不能把它视为已有合法的后置覆盖入口，也不倒改旧业务观测。

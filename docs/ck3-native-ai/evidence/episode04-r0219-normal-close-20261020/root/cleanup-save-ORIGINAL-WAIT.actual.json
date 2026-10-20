@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:13:09.600053+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance_queue.py",
+    "--live",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219",
+    "--plan",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-cleanup-save.plan.json",
+    "--name",
+    "r0219-root-cleanup-save-a01.json",
+    "--timeout-seconds",
+    "120"
+  ],
+  "pid": 30624,
+  "actual_original_popen_wait": true,
+  "returncode": 0
+}

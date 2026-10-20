@@ -1,0 +1,204 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:15:02.849153+00:00",
+  "source": "Actual original public queue step results and independent snapshot, no repeated action",
+  "all_sampling_off_clear": {
+    "natural_phase": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "regular_core": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "daily_assault_preparation": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "assault_placement": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "assault_consumer": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "assault_group_release": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "gathering": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "cleanup": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    },
+    "pre_date_prefix": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "disabled",
+      "readiness": "off"
+    }
+  },
+  "checkpoint": {
+    "status": "saved",
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 74272517,
+    "sha256": "b9b940458bf4ab362838b64d70dd5302cbe186765dca36cfef5996352ea28fb9",
+    "date_raw": 53149056,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 8,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "independent_after": {
+    "date_raw": 53149056,
+    "paused": true,
+    "snapshot_id": "native:4",
+    "revision": 5,
+    "last_checkpoint_submission": {
+      "sequence": 1,
+      "requested_save_name": "xar_checkpoint",
+      "date_raw": 53149056,
+      "status": "submitted"
+    }
+  },
+  "driver_state_replace_receipt": {
+    "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+    "status": "unconfirmed",
+    "write_replace_returned": true,
+    "save_binding_verified": false,
+    "reason": "save_binding_mismatch",
+    "attempt_binding": {
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0219",
+      "bridge_pid": 9956,
+      "episode_character_id": null,
+      "episode_run_id": null,
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "rogue_one_life",
+        "xar_enabled": "xar_on",
+        "pact_contract": "terminal_settlement_required",
+        "source": "legacy-driver-default",
+        "environment_sha256": null
+      },
+      "campaign_goal": null
+    },
+    "binding_contract": "one_life_episode_identity_v1",
+    "checkpoint_episode_projection": "native_campaign",
+    "missing_checkpoint_binding_fields": [
+      "episode_character_id",
+      "episode_run_id"
+    ],
+    "recorded_session_binding": {
+      "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0219",
+      "bridge_pid": 9956,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "save_history_index": 8,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 74272517,
+      "sha256": "b9b940458bf4ab362838b64d70dd5302cbe186765dca36cfef5996352ea28fb9",
+      "date_raw": 53149056,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 8,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "encoded_history_rows": 8,
+    "driver_state_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\native-session\\driver-state.json"
+  },
+  "normal_close_qualified": false
+}

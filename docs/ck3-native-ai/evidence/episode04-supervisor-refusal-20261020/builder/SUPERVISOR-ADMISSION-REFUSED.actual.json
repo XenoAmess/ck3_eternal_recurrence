@@ -1,0 +1,89 @@
+{
+  "schema": "ck3-mod-acceptance-supervisor-admission-refused-closure-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:33:23.051227+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0218",
+  "failure_stage": "SUPERVISOR_ADMISSION_BEFORE_RETAIN_HOST",
+  "host_started": false,
+  "native_session_started": false,
+  "game_started": false,
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "supervisor_original_wait_proven": false,
+  "supervisor_original_wait_returncode": null,
+  "ready": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\ready-context.json",
+    "bytes": 5621,
+    "sha256": "22ba811e60efbe1fbbab9068899d5232f162e21f11bc356069daed4403aeed2c"
+  },
+  "frozen": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\frozen-argv.json",
+    "bytes": 33778,
+    "sha256": "33d9fbb32b5f7e96b357879e74b8936cf48fee87c85d919b19c6d61abbbf826b"
+  },
+  "allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\allocated-context.json",
+    "bytes": 5359,
+    "sha256": "8eea2d26dbcfd5563b0ab84291a2c3f2804220943c4db559b07140861e7bcad4"
+  },
+  "prepared_case": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\prepared-a02\\prepared-case.json",
+    "bytes": 11432,
+    "sha256": "51b63f539fece4ec6275864e2f16f42364331580194165c34799ead240fb7ada"
+  },
+  "launch_intent": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\launch-intent.json",
+    "bytes": 1615,
+    "sha256": "6a4839b8f6d42b2e8fa771ba62402e3da28fcf77a810a45bc91c07b28989c731"
+  },
+  "supervisor_started": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-started.json",
+    "bytes": 955,
+    "sha256": "109fa34dc61c9b95dba0bdfa35ab7fce489056a3b3263e0a9ac5c8dd16115f07"
+  },
+  "supervisor_stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-stderr.log",
+    "bytes": 137,
+    "sha256": "e5b5e14c9c8b7ba34acb67b373ca31b144fa0b99a2a70eaebf1915e36037d990"
+  },
+  "public_run_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1271,
+    "sha256": "8466b65c33d5d9804bc46e9f1e434ca900c05c231a9cdc0a2bffddb0db3f5dc7"
+  },
+  "public_allocate_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\allocate-exec-a02\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1751,
+    "sha256": "8b032f9783d3919abb45e7e6adb2e6132628d5f9e0bb0a87df2e64c5fab575ac"
+  },
+  "keeper_STOP": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\STOP",
+    "bytes": 104,
+    "sha256": "4d3a4d8e5e66b8719ea1da521e073bc8a69a609ea2f94571ae6c2b61a90e0df5"
+  },
+  "keeper_report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\report.json",
+    "bytes": 435,
+    "sha256": "3ead7f344694e7e9501dc123508d72dab3d1b2d5d805a7a0a72785944c494d0c"
+  },
+  "keeper_parent_exit": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\keeper-actual-parent-exit.json",
+    "bytes": 598,
+    "sha256": "a055875416757dce7597bd9e43d839d2607a0ea49fa82638e013e6a863412ff3"
+  },
+  "CAS_release": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\SCREEN-RELEASE.actual-a01.json",
+    "bytes": 1281,
+    "sha256": "fa1883d38e224c1dc71134fa8270c21d458c3c0dd47a6c6c862bbf98ae386406"
+  },
+  "launcher_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+    "bytes": 17792,
+    "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+  },
+  "counter": {
+    "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+    "bytes": 282,
+    "sha256": "39746402c458ea344329ad28e4124f7db108dbb30f7e5c2680e7fbf3fa84d913"
+  }
+}

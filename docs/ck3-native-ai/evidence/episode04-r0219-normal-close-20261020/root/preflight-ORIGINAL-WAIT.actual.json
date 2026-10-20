@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:50:58.759653+00:00",
+  "started_at_utc": "2026-10-20T09:50:57.461319+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance.py",
+    "preflight",
+    "--runtime",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\runtime.local.json",
+    "--products",
+    "D:/workspace/ck3_eternal_recurrence/tools/ck3_mod_acceptance_r10_products.json",
+    "--product",
+    "war-episode04-r10",
+    "--case",
+    "r10-common-preparation",
+    "--prepared-case",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\prepared-a02\\prepared-case.json",
+    "--run-context",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\R06-SCOPED-REVIEWED-CONTEXT.actual-a04.json"
+  ],
+  "document": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\runtime-assembly-a01\\PUBLIC-ARGV.actual-a04.json",
+  "bindings_source": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-R0219-SCOPE-BINDINGS.actual-a01.json",
+  "phase": "preflight",
+  "pid": 23964,
+  "actual_original_popen_wait": true,
+  "returncode": 0
+}

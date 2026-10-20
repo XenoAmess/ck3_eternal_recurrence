@@ -1,0 +1,202 @@
+{
+  "schema": "xar.e04.capacity_archive.integration_index.prepared.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:38:10.910903+00:00",
+  "role": "derived integration index; the 16 listed source bytes are unchanged",
+  "Root_approved_small_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\CAPACITY-R0219-RECLAMATION-SMALL-COPYPLAN.prepared-a01.json",
+    "bytes": 4530,
+    "sha256": "10336c63fc760321d4412bb733154512be710ce76bde2fac1cb4eab0a96dd7fa"
+  },
+  "source_destination_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\CAPACITY-R0219-RECLAMATION-DESTINATION-COPYPLAN.prepared-a02.json",
+    "bytes": 8666,
+    "sha256": "2105cc4ff89fdd4f6b1f523c4047417b39a2981a0184d6e73d64cab4ef11ec38"
+  },
+  "source_files": [
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/THREE-CACHE-BATCHES-DELETED-ORIGINALS.compact-a01.json",
+      "bytes": 363609,
+      "sha256": "3e2b26f997abca32c8fec552c6ecc437e45c41c5a7a86f111ea6f0d1546b3dce",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\THREE-CACHE-BATCHES-DELETED-ORIGINALS.compact-a01.json",
+        "bytes": 363609,
+        "sha256": "3e2b26f997abca32c8fec552c6ecc437e45c41c5a7a86f111ea6f0d1546b3dce"
+      },
+      "source_role": "compact deleted-original identity inventory"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/THREE-EXACT-CACHE-BATCHES-RETIREMENT.actual-a01.json",
+      "bytes": 6573,
+      "sha256": "1e12a7921443ab9260205293906b0e0daba29e90de9590bbedfe339a6975456d",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\THREE-EXACT-CACHE-BATCHES-RETIREMENT.actual-a01.json",
+        "bytes": 6573,
+        "sha256": "1e12a7921443ab9260205293906b0e0daba29e90de9590bbedfe339a6975456d"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/THREE-EXACT-CACHE-BATCHES-TRANSACTION.actual-a01.json",
+      "bytes": 1126,
+      "sha256": "2fb88bee36b49cc0341a54fb31c5b0b610c776eb3a8776650945ee789b8541b5",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\THREE-EXACT-CACHE-BATCHES-TRANSACTION.actual-a01.json",
+        "bytes": 1126,
+        "sha256": "2fb88bee36b49cc0341a54fb31c5b0b610c776eb3a8776650945ee789b8541b5"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/REBUILDABLE-OBJECT-STATIC-LIB-PROPOSAL.actual-a01.json",
+      "bytes": 13514,
+      "sha256": "a06f7111501f252a850f94f10829b07938abde78f6a9194c9d703c43f89d0eb4",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\REBUILDABLE-OBJECT-STATIC-LIB-PROPOSAL.actual-a01.json",
+        "bytes": 13514,
+        "sha256": "a06f7111501f252a850f94f10829b07938abde78f6a9194c9d703c43f89d0eb4"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/ROOT-THREE-EXACT-CACHE-BATCHES-1100Z-APPROVAL.actual-a01.json",
+      "bytes": 1383,
+      "sha256": "e20798414960f846eb9e4fcc760b09f29d2450d306f195a328850d72078f51cc",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\ROOT-THREE-EXACT-CACHE-BATCHES-1100Z-APPROVAL.actual-a01.json",
+        "bytes": 1383,
+        "sha256": "e20798414960f846eb9e4fcc760b09f29d2450d306f195a328850d72078f51cc"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/METADATA-RECLAMATION-1100Z-TRANSACTION.actual-a01.json",
+      "bytes": 2921,
+      "sha256": "be445fdd1a11f1677ec0c6845aeca3dfa6fdc00c5ad991cd6cc5527952cf5d96",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\METADATA-RECLAMATION-1100Z-TRANSACTION.actual-a01.json",
+        "bytes": 2921,
+        "sha256": "be445fdd1a11f1677ec0c6845aeca3dfa6fdc00c5ad991cd6cc5527952cf5d96"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/R0219-NORMAL-CLOSED-BUSINESS-REFUSED-SETTLEMENT.actual-a01.json",
+      "bytes": 9116,
+      "sha256": "1b07563f9e476e670f8c5e754ad12666018b9872a8325b6cbf75c051376b516a",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-NORMAL-CLOSED-BUSINESS-REFUSED-SETTLEMENT.actual-a01.json",
+        "bytes": 9116,
+        "sha256": "1b07563f9e476e670f8c5e754ad12666018b9872a8325b6cbf75c051376b516a"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/R0219-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+      "bytes": 3026,
+      "sha256": "2ff0a742e5121d5f41245deda29abe37793bdb187618533d8c156a7f4401043d",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+        "bytes": 3026,
+        "sha256": "2ff0a742e5121d5f41245deda29abe37793bdb187618533d8c156a7f4401043d"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/R0219-CLEANUP-COMPONENT-MONITOR-ORIGINAL-WAIT.actual-a02.json",
+      "bytes": 1152,
+      "sha256": "8acfd8f7c357e37107c89f01d4431d5cc3653845ff498a62def4c1672dad34fe",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-CLEANUP-COMPONENT-MONITOR-ORIGINAL-WAIT.actual-a02.json",
+        "bytes": 1152,
+        "sha256": "8acfd8f7c357e37107c89f01d4431d5cc3653845ff498a62def4c1672dad34fe"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/A02-1030Z-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 869,
+      "sha256": "04fffe6cff66252cff4dca2798191c8c3f35b80927594f9a5e05898343140d12",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A02-1030Z-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 869,
+        "sha256": "04fffe6cff66252cff4dca2798191c8c3f35b80927594f9a5e05898343140d12"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/retire_exact_build_intermediates.py",
+      "bytes": 15334,
+      "sha256": "ef7accf81b966ebbe13ad76bdb1871faa095975cbaa8d4404a2b74874483ac8d",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\retire_exact_build_intermediates.py",
+        "bytes": 15334,
+        "sha256": "ef7accf81b966ebbe13ad76bdb1871faa095975cbaa8d4404a2b74874483ac8d"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/capacity_common.py",
+      "bytes": 6442,
+      "sha256": "214c929ffa7e8bb7b716d91d6134bf961da547bec95e2cea7c593d04c561361f",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\capacity_common.py",
+        "bytes": 6442,
+        "sha256": "214c929ffa7e8bb7b716d91d6134bf961da547bec95e2cea7c593d04c561361f"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/settle_r0219_closed.py",
+      "bytes": 6664,
+      "sha256": "393ec8d0bf22671f1155811a22d60254666bf12e4b1a4d30db7eb41729a49c0a",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\settle_r0219_closed.py",
+        "bytes": 6664,
+        "sha256": "393ec8d0bf22671f1155811a22d60254666bf12e4b1a4d30db7eb41729a49c0a"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/seal_reclamation_summary.py",
+      "bytes": 4681,
+      "sha256": "644a5d35f6b12b8d4cf69a98e2c35f572833150a29d79ba64466e3bb19313156",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\seal_reclamation_summary.py",
+        "bytes": 4681,
+        "sha256": "644a5d35f6b12b8d4cf69a98e2c35f572833150a29d79ba64466e3bb19313156"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/admit_metadata_reclaim_1100.py",
+      "bytes": 2515,
+      "sha256": "54d645be4416ee2b5ce554ade49a90bc5bf8102614c32fcfe1a78f0a2aebbbdd",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\admit_metadata_reclaim_1100.py",
+        "bytes": 2515,
+        "sha256": "54d645be4416ee2b5ce554ade49a90bc5bf8102614c32fcfe1a78f0a2aebbbdd"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    },
+    {
+      "path": "docs/maintenance/evidence/2026-10-20-r0219-normal-close-cache-retirement/prepare_capacity_closeout_copyplan.py",
+      "bytes": 3947,
+      "sha256": "93643a934cdc493395364358cffd55ddae80264ca05bff3b4accd56e63fcf1e6",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\prepare_capacity_closeout_copyplan.py",
+        "bytes": 3947,
+        "sha256": "93643a934cdc493395364358cffd55ddae80264ca05bff3b4accd56e63fcf1e6"
+      },
+      "source_role": "exact closure, authority, transaction or source evidence"
+    }
+  ],
+  "additional_integration_files": [
+    "README.md",
+    ".gitattributes",
+    "manifest.prepared.json"
+  ],
+  "large_payload_copied": false,
+  "helper_execution_during_integration": false,
+  "source_machine_facts_not_new_scene_admission": true
+}

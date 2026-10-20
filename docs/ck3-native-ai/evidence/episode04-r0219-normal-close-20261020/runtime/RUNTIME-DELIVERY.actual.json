@@ -1,0 +1,63 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:41:22.317574+00:00",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "runtime": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\runtime.local.json",
+    "bytes": 2591,
+    "sha256": "d1b593a4b75e76dbd90de6ddd1949b7c68f87b6268accb566b7467c8048ce68a"
+  },
+  "manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\manifest.json",
+    "bytes": 4271,
+    "sha256": "423dd9ed207d9ad01936c2388a480aa5b124a98e519a29a5996a47d9ac1c4cd5"
+  },
+  "source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\source-index.json",
+    "bytes": 17906,
+    "sha256": "6551a5ba76b47295ec6775f425cdbc934b16b7db74abd979d5c8e32f0c82bd41"
+  },
+  "native_source_index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\native-source-index.json",
+    "bytes": 15471,
+    "sha256": "d00b055e87e928906351d13de7481ec1f4e85224939d0bb8add923c3d2e6d7a8"
+  },
+  "case_input": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\runtime-assembly-a01\\CASE-INPUTS.actual-a04.json",
+    "bytes": 5916,
+    "sha256": "8143c45daafd956653a5d0b2eee21879aad32ca7b2cd5b9a031b6982bf66c41b"
+  },
+  "assembly_inputs": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\runtime-assembly-a01\\RUNTIME-ASSEMBLY.actual-a03.json",
+    "bytes": 5877,
+    "sha256": "de37fca570793317a9b76b094fb740fec5d1c3a7c1a404d36136c5ffa52c8ac3"
+  },
+  "original_template": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\public-plan\\runtime-assembly-a01\\CASE-INPUTS.bound-template-a04.json",
+    "bytes": 5916,
+    "sha256": "301d816e9ee9338f72794cff6885ee5359729256cb060b7fdd673d22fedf7e85"
+  },
+  "actual_producer": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "public_Selection_constructed": true,
+  "unprepared_selection_blockers": [
+    "Original case budget unbound: command_timeout",
+    "Original case budget unbound: readiness_timeout",
+    "Original case budget unbound: timeout",
+    "Original case budget unbound: poll_interval",
+    "Original case budget unbound: hold_seconds",
+    "Saved campaign input unbound: save",
+    "Saved campaign input unbound: bytes",
+    "Saved campaign input unbound: sha256",
+    "Saved campaign input unbound: player_id",
+    "Saved campaign input unbound: date_raw",
+    "Saved campaign input unbound: product_inventory"
+  ],
+  "game_and_native_payload_rehashed": false,
+  "no_profile_save_copy_allocation_SDK_game_screen": true
+}

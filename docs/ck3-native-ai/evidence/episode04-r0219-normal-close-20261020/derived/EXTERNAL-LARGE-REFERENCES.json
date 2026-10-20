@@ -1,0 +1,84 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:28:08.850388+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "original_report_pin_only": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.json",
+    "bytes": 14615145,
+    "sha256": "ea1cb817d6265da4185974ed8db94f4eb020fb55c5499aa30af1e3b00e24f836",
+    "mtime_ns": 1792491549739639300
+  },
+  "report_copied": false,
+  "large_files": [
+    {
+      "role": "native_wire",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.native-wire.jsonl",
+      "bytes": 47345136,
+      "mtime_ns": 1792491499983320800,
+      "sha256": null,
+      "content_read": false,
+      "copied": false,
+      "scope": "stat identity only; original large wire retained externally, not newly hashed"
+    },
+    {
+      "role": "mcp_wire",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.mcp-wire.jsonl",
+      "bytes": 38874908,
+      "mtime_ns": 1792491191278695200,
+      "sha256": null,
+      "content_read": false,
+      "copied": false,
+      "scope": "stat identity only; original large wire retained externally, not newly hashed"
+    },
+    {
+      "role": "server_stderr",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.server-stderr.log",
+      "bytes": 0,
+      "mtime_ns": 1792489925700440000,
+      "sha256": null,
+      "content_read": false,
+      "copied": false,
+      "scope": "stat identity only; original large wire retained externally, not newly hashed"
+    },
+    {
+      "role": "ordinary native_campaign Save only; no one-life episode qualification",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 74272517,
+      "sha256": "b9b940458bf4ab362838b64d70dd5302cbe186765dca36cfef5996352ea28fb9",
+      "sha256_source": "Actual original native Save receipt, body not rehashed",
+      "content_read": false,
+      "copied": false
+    }
+  ],
+  "PNG_pin_only": [
+    {
+      "role": "Root original GUI evidence; binary omitted from metadata package",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\after-final-quit.png",
+      "bytes": 1776648,
+      "sha256": "45afa0b2c47c0b036e6208422fdfaa2db7c282f644ba4347593db91950cd7163",
+      "copied": false
+    },
+    {
+      "role": "Root original GUI evidence; binary omitted from metadata package",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\after-quit-menu.png",
+      "bytes": 2089943,
+      "sha256": "54b04c8bb65d2896e0e5fdff27b1d7ab85bf0df0a075dcdd4bc6c6699fc9400b",
+      "copied": false
+    },
+    {
+      "role": "Root original GUI evidence; binary omitted from metadata package",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\confirm-original.png",
+      "bytes": 1777040,
+      "sha256": "f8bc06a60226a50c007c29fcf6eab0c6db20514133b85f7f8c354dc215c22769",
+      "copied": false
+    },
+    {
+      "role": "Root original GUI evidence; binary omitted from metadata package",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\menu-scancode-original.png",
+      "bytes": 2078483,
+      "sha256": "c7e12ce1acbd10ba7e9420e8bb695c762ae361084a7fe1b40c30e6a93f676183",
+      "copied": false
+    }
+  ],
+  "boundary": "No wire, PNG, save binary, executable or native report body copied into this package"
+}

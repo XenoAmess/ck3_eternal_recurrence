@@ -1,0 +1,35 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "operation": "inspect",
+  "observed_at_utc": "2026-10-20T10:15:03.556984+00:00",
+  "pid": 9956,
+  "create_time": 1792489933.4353063,
+  "hwnd": 344328696,
+  "inspection": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 9956,
+    "owned_ck3_create_time": 1792489933.4353063,
+    "hwnd": 344328696,
+    "foreground_hwnd": 344328696,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-20T10:15:03.400527+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  }
+}

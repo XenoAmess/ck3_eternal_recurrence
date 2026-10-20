@@ -1,0 +1,13 @@
+{
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "reviewer": "/root",
+  "pid": 9956,
+  "create_time": 1792489933.4353063,
+  "original_hold_deadline": 1792493880.467225,
+  "disposition": "business_failure_preserved",
+  "live": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\keeper-a01",
+  "screen_task": "e04-common-12004-a224",
+  "action": "Authorized operator normal GUI Quit to desktop; preserve original images, mapped clicks and unchecked autosave state",
+  "host_error_preserved": null
+}

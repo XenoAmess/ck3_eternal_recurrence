@@ -1,0 +1,4 @@
+# Exact historical metadata/helper bytes; preserve original CRLF and formatting.
+* binary
+.gitattributes text diff merge eol=lf
+README.md text diff merge eol=lf

@@ -1,0 +1,27 @@
+{
+  "at_utc": "2026-10-20T09:10:21.354925+00:00",
+  "pid": 8484,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+    "--run-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218",
+    "--keeper-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01",
+    "--proof",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\steam-review-a01\\ROOT-DIRECT-REVIEW.actual.json",
+    "--challenge",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\steam-review-a01\\challenge.json",
+    "--observed-nonce",
+    "53de025dc890bc1f227adad826631a2c",
+    "--reviewer",
+    "/root",
+    "--supervise",
+    "--launch-ticket",
+    "4ce3b04b81767497fac265f72ecf8fa1203c909d89765cb2879b54ad06271050"
+  ],
+  "business_pass": false
+}

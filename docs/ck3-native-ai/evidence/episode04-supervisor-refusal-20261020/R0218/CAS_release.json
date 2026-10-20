@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "wip/e04-r06-a41-20261020",
+      "dirty_entries": 0,
+      "head": "31ff77a0f07fb21f528c88e56314cbb093972703"
+    },
+    "last_sequence": 7358,
+    "next_step": "",
+    "pid": 36904,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0218_supervisor_stale_prehost_refusal_keeper_originalwait0_no_game_no_replay",
+    "task_id": "e04-common-12004-a223",
+    "updated_at_utc": "2026-10-20T09:14:50.211776+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 7358,
+    "event_id": "36313f2f0ad048feb8b524995f3c88c7",
+    "timestamp_utc": "2026-10-20T09:14:50.213054+00:00",
+    "kind": "completed",
+    "task_id": "e04-common-12004-a223",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0218_supervisor_stale_prehost_refusal_keeper_originalwait0_no_game_no_replay",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "wip/e04-r06-a41-20261020",
+      "dirty_entries": 0,
+      "head": "31ff77a0f07fb21f528c88e56314cbb093972703"
+    }
+  }
+}

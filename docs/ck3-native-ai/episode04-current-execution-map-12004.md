@@ -1,5 +1,12 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-20 10:22 UTC：R0219 已正常闭场，R06 未推进
+
+`machine_id: desktop-3fevhd2-1c74096080`；[实际小原件](evidence/episode04-r0219-normal-close-20261020/MANIFEST.actual.json)。4fc8的严格supervisor refusal前驱修复通过15项focused/独审，latest/counter守卫保留。R0219约09:58:01 MapReady，原10:30 deadline不足2100秒，R10查询后R06拒绝；public run原wait2保留错误，无worker/camera/one-day/ADD。
+
+Root经公共queue实际OFF/clear和一次普通Save，日期未变；native_campaign Save的driver_state_replace仍save_binding_mismatch，不授one-life。GUI正常退出实际OS0/native0/host0、keeper0/allocator0，CAS7395→7396 done/resources[]。研究10/14（71.4%）、业务7/11（63.6%）、正式动态0/11、ABC0/3不变；R12已审34秒素材另列。后继新finite尚未准入，不复用旧证明或重投未知动作。
+
+
 ## 2026-10-20 07:54 UTC：R06 源码与 A40 真实未完成边界
 
 `machine_id: desktop-3fevhd2-1c74096080`。[公共单日入口与A40专题](episode04-r06-public-one-day-and-a40-boundary-20261020.md)：R06专项18/18、R04路由1/1、通用适配器25/25通过；A40编译完成，但精确根目录未登记，原生提权返回1223、没有新资格。新R06场次在有限时间窗内提交前拒绝，未分配run、未启动游戏/录制。07:55 UTC容量bus done7304资源空、monitor原wait0、全部执行future为0，旧42MB仅carry。研究10/14、业务7/11、动态0/11、ABC0/3保持。下方R0217与36秒插片实证继续有效，不能将本轮源码视为新ADD。

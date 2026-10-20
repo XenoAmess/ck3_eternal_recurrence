@@ -1,0 +1,219 @@
+{
+  "bundle": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\SUPERVISOR-ADMISSION-REFUSED.actual.json",
+    "bytes": 4225,
+    "sha256": "b2633e79daadf1f0cc6a6b7dc52034ca50b2053e6c137c19a41c3a1532984809"
+  },
+  "validation": {
+    "mode": "previous-shared-supervisor-admission-refused",
+    "actual_process_inventory": {
+      "at_utc": "2026-10-20T09:33:23.991437+00:00",
+      "scanned_process_count": 229,
+      "python_controllers_inspected": [
+        {
+          "pid": 8920,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 26304,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 28664,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 28700,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 30316,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 32000,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 32988,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 37172,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        }
+      ],
+      "blockers": [],
+      "process_absence_is_normal_exit_proof": false
+    },
+    "failure_cleanup": {
+      "close": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\SUPERVISOR-ADMISSION-REFUSED.actual.json",
+        "bytes": 4225,
+        "sha256": "b2633e79daadf1f0cc6a6b7dc52034ca50b2053e6c137c19a41c3a1532984809"
+      },
+      "original_evidence": {
+        "ready": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\ready-context.json",
+          "bytes": 5621,
+          "sha256": "22ba811e60efbe1fbbab9068899d5232f162e21f11bc356069daed4403aeed2c"
+        },
+        "frozen": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\frozen-argv.json",
+          "bytes": 33778,
+          "sha256": "33d9fbb32b5f7e96b357879e74b8936cf48fee87c85d919b19c6d61abbbf826b"
+        },
+        "allocated_context": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\allocated-context.json",
+          "bytes": 5359,
+          "sha256": "8eea2d26dbcfd5563b0ab84291a2c3f2804220943c4db559b07140861e7bcad4"
+        },
+        "prepared_case": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\prepared-a02\\prepared-case.json",
+          "bytes": 11432,
+          "sha256": "51b63f539fece4ec6275864e2f16f42364331580194165c34799ead240fb7ada"
+        },
+        "launch_intent": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\launch-intent.json",
+          "bytes": 1615,
+          "sha256": "6a4839b8f6d42b2e8fa771ba62402e3da28fcf77a810a45bc91c07b28989c731"
+        },
+        "supervisor_started": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-started.json",
+          "bytes": 955,
+          "sha256": "109fa34dc61c9b95dba0bdfa35ab7fce489056a3b3263e0a9ac5c8dd16115f07"
+        },
+        "supervisor_stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-stderr.log",
+          "bytes": 137,
+          "sha256": "e5b5e14c9c8b7ba34acb67b373ca31b144fa0b99a2a70eaebf1915e36037d990"
+        },
+        "launcher_source": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+          "bytes": 17792,
+          "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+        },
+        "proof": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\steam-review-a01\\ROOT-DIRECT-REVIEW.actual.json",
+          "bytes": 1582,
+          "sha256": "b6b911890c78692aa5abf5164ff81dbbef633fcc5c343f390473625549c7c9e6"
+        },
+        "challenge": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\steam-review-a01\\challenge.json",
+          "bytes": 2238,
+          "sha256": "2ea3b4931b7cb695935928233ed5d4e7f0b90e656cd31c730471dcfa81085dad"
+        },
+        "keeper_inputs": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\inputs.json",
+          "bytes": 807,
+          "sha256": "ec4d1f514b2f74292965f22d91759c8eb5ea627e9e49059950601b62e7954d36"
+        },
+        "frame": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\steam-offline-a03\\steam-frame-freshness.json",
+          "bytes": 1140,
+          "sha256": "12e761a40286a85d921898232e9ae655b8feee556c107614fe1aadeb19d725c9"
+        },
+        "public_run_wait": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a01\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1271,
+          "sha256": "8466b65c33d5d9804bc46e9f1e434ca900c05c231a9cdc0a2bffddb0db3f5dc7"
+        },
+        "run--runtime": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a01\\runtime.local.json",
+          "bytes": 2591,
+          "sha256": "af4a0d161c5571859cdc337eea45c9108d7d8d1c7b2216cfea90529b2b3fa211"
+        },
+        "run--products": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+          "bytes": 2077,
+          "sha256": "bb5910bf787a950199c83b38c07055376979c95310475e63bfec262368f86b5a"
+        },
+        "public_allocate_wait": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\allocate-exec-a02\\ORIGINAL-WAIT.actual.json",
+          "bytes": 1751,
+          "sha256": "8b032f9783d3919abb45e7e6adb2e6132628d5f9e0bb0a87df2e64c5fab575ac"
+        },
+        "allocate--runtime": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a01\\runtime.local.json",
+          "bytes": 2591,
+          "sha256": "af4a0d161c5571859cdc337eea45c9108d7d8d1c7b2216cfea90529b2b3fa211"
+        },
+        "allocate--products": {
+          "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r10_products.json",
+          "bytes": 2077,
+          "sha256": "bb5910bf787a950199c83b38c07055376979c95310475e63bfec262368f86b5a"
+        },
+        "reviewed_context": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\R06-SCOPED-REVIEWED-CONTEXT.actual-a01.json",
+          "bytes": 6195,
+          "sha256": "c5e0ffab3926d520f25ca771b513212df2ab3dc2e18849d1fbcab0f09e87e62c"
+        },
+        "keeper_STOP": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\STOP",
+          "bytes": 104,
+          "sha256": "4d3a4d8e5e66b8719ea1da521e073bc8a69a609ea2f94571ae6c2b61a90e0df5"
+        },
+        "keeper_report": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01\\report.json",
+          "bytes": 435,
+          "sha256": "3ead7f344694e7e9501dc123508d72dab3d1b2d5d805a7a0a72785944c494d0c"
+        },
+        "keeper_parent_exit": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\keeper-actual-parent-exit.json",
+          "bytes": 598,
+          "sha256": "a055875416757dce7597bd9e43d839d2607a0ea49fa82638e013e6a863412ff3"
+        },
+        "CAS_release": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\SCREEN-RELEASE.actual-a01.json",
+          "bytes": 1281,
+          "sha256": "fa1883d38e224c1dc71134fa8270c21d458c3c0dd47a6c6c862bbf98ae386406"
+        }
+      },
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-20T09:33:23.991665+00:00",
+      "absent_host_native_control_profile": {
+        "launch.json": true,
+        "host-started.json": true,
+        "host-stdout.log": true,
+        "host-stderr.log": true,
+        "host-original-process-exit.json": true,
+        "native-report.json": true,
+        "native-report.session.log": true,
+        "native-session": true,
+        "case-output": true,
+        "case-output*": true,
+        "native-report*": true,
+        "state/control": true,
+        "state/native-session": true,
+        "controls-empty": true,
+        "profile/save games": true,
+        "profile/logs": true,
+        "profile/run": true
+      },
+      "failure_stage": "SUPERVISOR_ADMISSION_BEFORE_RETAIN_HOST",
+      "original_public_run_exit_code": 2,
+      "original_allocator_exit_code": 0,
+      "original_keeper_exit_code": 0,
+      "original_host_exit_code": null,
+      "original_ck3_exit_code": null,
+      "supervisor_original_wait_returncode": null,
+      "host_started": false,
+      "native_session_started": false,
+      "game_started": false,
+      "normal_close_qualified": false,
+      "business_pass": false,
+      "supervisor_original_wait_proven": false,
+      "typed_normal_exit_proven": false,
+      "administrative_resource_admission_only": true
+    }
+  },
+  "SDK_or_launch": false
+}

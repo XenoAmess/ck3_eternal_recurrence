@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:38:48.065480+00:00",
+  "source_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "source_archive_tag": "archive/war-e04-r06-refusal-20261020-source",
+  "source_tag_push_succeeded": true,
+  "clean": true,
+  "review": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 147469,
+      "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 21734,
+      "sha256": "c93eecba3fe3e15780760ee0feaff015a9e2106af92a9e50de52cba96859f6d7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 65105,
+      "sha256": "8a4bc9ef127fad92c5be8ffe7275ac72070ec64046ecbdcb9e0e91708f100792"
+    }
+  ],
+  "focused_tests": 15,
+  "live_game_started": false,
+  "master_integration": "PENDING; metadata runtime source freezes this exact clean checkout",
+  "deadline_utc": "2026-10-20T10:30:00Z",
+  "source_role": "Public administrative predecessor fix only; unchanged qualified nativefee bytes and Q retain main93/snapshotfd5/invoked31ff provenance"
+}

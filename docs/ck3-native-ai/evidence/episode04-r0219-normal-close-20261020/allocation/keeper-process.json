@@ -1,0 +1,25 @@
+{
+  "pid": 36436,
+  "create_time": 1792489524.8867652,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_keeper.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--root",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\keeper-a01",
+    "--task",
+    "e04-common-12004-a224",
+    "--sequence",
+    "7376",
+    "--bus-dir",
+    "D:\\workspace\\.codex-task-bus",
+    "--bus-cli",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-cli-sha256",
+    "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F"
+  ]
+}

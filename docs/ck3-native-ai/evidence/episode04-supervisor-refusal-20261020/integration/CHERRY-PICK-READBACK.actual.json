@@ -1,0 +1,58 @@
+{
+  "schema": "xar.e04.supervisor_refusal.cherry_pick_readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:56:38.861168+00:00",
+  "integration_worktree": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "published_base": "5c9c174ccda31dbb37aa3ce6e6c52f5517e23932",
+  "Root_source": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "cherry_picked_HEAD": "d0a30bd0e3341eef69be7a009b378706f13763bc",
+  "clean_before_and_after": true,
+  "exactly_four_changed_files": [
+    ".github/workflows/static-ci.yml",
+    "tools/ck3_mod_acceptance_allocate.py",
+    "tools/ck3_mod_acceptance_supervisor_refusal.py",
+    "tools/test_ck3_mod_acceptance_supervisor_refusal.py"
+  ],
+  "code_blob_checks": [
+    {
+      "path": "tools/ck3_mod_acceptance_allocate.py",
+      "Root_source_blob": "9d41f3067e8254aca134857d8a040be01879d9e4",
+      "integration_blob": "9d41f3067e8254aca134857d8a040be01879d9e4",
+      "bytes": 147469,
+      "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8",
+      "exact_equal": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_supervisor_refusal.py",
+      "Root_source_blob": "7ccc5d2614f59f450e67c0676e3b9b0f8926a63b",
+      "integration_blob": "7ccc5d2614f59f450e67c0676e3b9b0f8926a63b",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22",
+      "exact_equal": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_supervisor_refusal.py",
+      "Root_source_blob": "3b4141ffecd2d1e09d2248f8f90ecf445d51a227",
+      "integration_blob": "3b4141ffecd2d1e09d2248f8f90ecf445d51a227",
+      "bytes": 21734,
+      "sha256": "c93eecba3fe3e15780760ee0feaff015a9e2106af92a9e50de52cba96859f6d7",
+      "exact_equal": true
+    }
+  ],
+  "CI_added_lines": [
+    "      - name: Test supervisor admission refusal predecessor closure",
+    "        run: python -B -X utf8 tools/test_ck3_mod_acceptance_supervisor_refusal.py"
+  ],
+  "CI_removed_lines": [],
+  "all_other_master_CI_bytes_preserved": true,
+  "CI_added_lines_equal_Root_source": true,
+  "git_diff_check_exit": 0,
+  "original_D_HEAD": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "original_D_clean": true,
+  "local_tests_or_builds_triggered": false,
+  "SDK_game_screen_calls": 0,
+  "push_or_fetch_or_rebase_performed": false,
+  "R0219_live_credit_granted": false,
+  "master_CI5c_is_separate": true,
+  "next_owner": "Root reviews small test/builder/independent/closure archive then decides publication"
+}

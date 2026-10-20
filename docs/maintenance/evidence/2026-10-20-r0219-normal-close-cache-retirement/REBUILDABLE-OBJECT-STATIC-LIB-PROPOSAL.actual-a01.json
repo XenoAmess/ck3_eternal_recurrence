@@ -1,0 +1,252 @@
+{
+  "schema": "xar.e04.three-exact-rebuildable-object-static-library-batches-proposal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:08:42.477329+00:00",
+  "groups": [
+    {
+      "id": "a40",
+      "root": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01",
+      "objects": {
+        "manifest": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\CLOSED-BUILD-OBJECT-CANDIDATES.actual-a01.json",
+          "bytes": 882049,
+          "sha256": "bd83594adc9a29c372f3266f4e884185579e4ef99c3938f87338d50172d15b2e"
+        },
+        "group_id": "a40-closed-native-CMakeFiles-rebuildable-intermediates"
+      },
+      "static_library_exact_metadata": {
+        "relative_path": "xar_ck3_12002_runtime.lib",
+        "bytes": 141455000,
+        "allocated_bytes": 141455360,
+        "st_dev": 13886423844274364792,
+        "st_ino": 562949954645382,
+        "mtime_ns": 1792479216578798000,
+        "st_nlink": 1,
+        "sha256": null,
+        "payload_hashed": false
+      },
+      "static_library_role_proof": {
+        "retained_build_ninja": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\build.ninja",
+        "actual_rule_prefix": "build xar_ck3_12002_runtime.lib: CXX_STATIC_LIBRARY_LINKER__xar_ck3_12002_runtime_Release CMakeFiles\\xar_county_primary_writer_thunk_12004.dir\\src\\cou",
+        "actual_rule_characters": 39557,
+        "bounded_rule_text_sha256": "64619ca100d1ca774301c26d5ee146fa6afd739210a825db81e86f01810e9494",
+        "whole_ninja_payload_hashed": false
+      },
+      "source_rebuild_recipe": {
+        "original_producer_plan": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-plan\\A40-PRODUCER-PLAN.prepared-a02.json",
+          "bytes": 46163,
+          "sha256": "dfeeeaa1c6e44d566eead3add3578317cd79e97302d1cb11ea7fe9db5748e5a0"
+        },
+        "current_retained_CMakeCache": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\CMakeCache.txt",
+          "bytes": 48040,
+          "sha256": "39aeecaa6c06db9bda87ab083db758c4037ae231b4f577be0e851649013e988f"
+        },
+        "native_source_lists": [
+          {
+            "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\ck3_12002_runtime_sources.txt",
+            "bytes": 32854,
+            "sha256": "3fc6451aab0a9e1d80ed09dae1a1418e2592c7f4e4d861e080a7e2b3871fdb30"
+          },
+          {
+            "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\ck3_bridge_sources.txt",
+            "bytes": 12208,
+            "sha256": "00fbbbe9b92c846ea1813e6b836dcc268273fcf8047f1d0ac72da3dc634262d9"
+          }
+        ],
+        "retained_large_graphs_metadata_only": [
+          {
+            "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\build.ninja",
+            "bytes": 7058910,
+            "sha256": null,
+            "kept_readable_not_hashed_or_candidate": true
+          },
+          {
+            "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\compile_commands.json",
+            "bytes": 4545719,
+            "sha256": null,
+            "kept_readable_not_hashed_or_candidate": true
+          }
+        ],
+        "rebuild_recipe": "Use retained exact native source Git tree, original public producer targets/183 BOOL flags, CMakeCache and retained dependency graphs with genuine existing MSVC/Ninja. Rebuild intermediates before any future relink; never substitute regenerated objects for original evidence.",
+        "rebuild_performed": false
+      },
+      "reason": "xar_ck3_12002_runtime.lib is the actual STATIC archive from exact CMake object inputs; already linked DLL/EXEs are retained. It is not a DLL, EXE or PDB, and current runtime manifest points only to oldA40 DLL/newCw EXEs. Any future relink must first rebuild missing objects/archive from retained Git tree/flags/graph.",
+      "exact_file_count_in_batch": 756,
+      "logical_candidate_bytes": 369059389,
+      "allocated_candidate_upper_bound_bytes": 370569864,
+      "must_revalidate_before_execution": [
+        "Root exact scope approval and current reference/protection check",
+        "No compiler/linker/build writer and reliable per-file exclusive identity/handle check",
+        "Delete exact listed files only, never directories or any DLL/EXE/PDB/Q/source/restore input/S0",
+        "Original payload SHA remains unknown; preserve exact metadata identity and source recipe; no new large payload hash"
+      ],
+      "deletion_ready_or_authorized": false,
+      "deletion_performed": false
+    },
+    {
+      "id": "a39",
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01",
+      "objects": {
+        "manifest": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\CLOSED-BUILD-OBJECT-CANDIDATES.actual-a01.json",
+          "bytes": 882049,
+          "sha256": "bd83594adc9a29c372f3266f4e884185579e4ef99c3938f87338d50172d15b2e"
+        },
+        "group_id": "a39-closed-native-CMakeFiles-rebuildable-intermediates"
+      },
+      "static_library_exact_metadata": {
+        "relative_path": "xar_ck3_12002_runtime.lib",
+        "bytes": 141454464,
+        "allocated_bytes": 141455360,
+        "st_dev": 13886423844274364792,
+        "st_ino": 1125899907362886,
+        "mtime_ns": 1792464415929971400,
+        "st_nlink": 1,
+        "sha256": null,
+        "payload_hashed": false
+      },
+      "static_library_role_proof": {
+        "retained_build_ninja": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\build.ninja",
+        "actual_rule_prefix": "build xar_ck3_12002_runtime.lib: CXX_STATIC_LIBRARY_LINKER__xar_ck3_12002_runtime_Release CMakeFiles\\xar_county_primary_writer_thunk_12004.dir\\src\\cou",
+        "actual_rule_characters": 39557,
+        "bounded_rule_text_sha256": "64619ca100d1ca774301c26d5ee146fa6afd739210a825db81e86f01810e9494",
+        "whole_ninja_payload_hashed": false
+      },
+      "source_rebuild_recipe": {
+        "original_producer_plan": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\native-prepare\\A39-CORRECTED-PLAN.actual-a03.json",
+          "bytes": 39716,
+          "sha256": "b4132e3013ba5c5ae2dbea579bf7e3fb0939d3365bce89a265c0d92bcb65e20f"
+        },
+        "current_retained_CMakeCache": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\CMakeCache.txt",
+          "bytes": 47724,
+          "sha256": "b05177d23e02c0587453621f981d319715770d0900999cad066e132d710d7d4b"
+        },
+        "native_source_lists": [
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ck3_12002_runtime_sources.txt",
+            "bytes": 32853,
+            "sha256": "5a44ea42f102dc2827acc320b59d04ca3018f1e177c998d85d7c691dc6f6f091"
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\ck3_bridge_sources.txt",
+            "bytes": 12208,
+            "sha256": "00fbbbe9b92c846ea1813e6b836dcc268273fcf8047f1d0ac72da3dc634262d9"
+          }
+        ],
+        "retained_large_graphs_metadata_only": [
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\build.ninja",
+            "bytes": 7019404,
+            "sha256": null,
+            "kept_readable_not_hashed_or_candidate": true
+          },
+          {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a39-a01\\compile_commands.json",
+            "bytes": 4532468,
+            "sha256": null,
+            "kept_readable_not_hashed_or_candidate": true
+          }
+        ],
+        "rebuild_recipe": "Use retained exact native source Git tree, original public producer targets/183 BOOL flags, CMakeCache and retained dependency graphs with genuine existing MSVC/Ninja. Rebuild intermediates before any future relink; never substitute regenerated objects for original evidence.",
+        "rebuild_performed": false
+      },
+      "reason": "xar_ck3_12002_runtime.lib is the actual STATIC archive from exact CMake object inputs; already linked DLL/EXEs are retained. It is not a DLL, EXE or PDB, and current runtime manifest points only to oldA40 DLL/newCw EXEs. Any future relink must first rebuild missing objects/archive from retained Git tree/flags/graph.",
+      "exact_file_count_in_batch": 788,
+      "logical_candidate_bytes": 377612137,
+      "allocated_candidate_upper_bound_bytes": 379183752,
+      "must_revalidate_before_execution": [
+        "Root exact scope approval and current reference/protection check",
+        "No compiler/linker/build writer and reliable per-file exclusive identity/handle check",
+        "Delete exact listed files only, never directories or any DLL/EXE/PDB/Q/source/restore input/S0",
+        "Original payload SHA remains unknown; preserve exact metadata identity and source recipe; no new large payload hash"
+      ],
+      "deletion_ready_or_authorized": false,
+      "deletion_performed": false
+    },
+    {
+      "id": "a38",
+      "root": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01",
+      "objects": {
+        "manifest": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A38-OBJECT-ONLY-CANDIDATES.actual-a01.json",
+          "bytes": 266009,
+          "sha256": "65b92c903bf8c2871c0d2920e41615ef82d362c95920a93a8da1cdf8de470b11"
+        }
+      },
+      "static_library_exact_metadata": {
+        "relative_path": "xar_ck3_12002_runtime.lib",
+        "bytes": 138707132,
+        "allocated_bytes": 138711040,
+        "st_dev": 13886423844274364792,
+        "st_ino": 10414574138754908,
+        "mtime_ns": 1792388564259334900,
+        "st_nlink": 1,
+        "sha256": null,
+        "payload_hashed": false
+      },
+      "static_library_role_proof": {
+        "retained_build_ninja": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\build.ninja",
+        "actual_rule_prefix": "build xar_ck3_12002_runtime.lib: CXX_STATIC_LIBRARY_LINKER__xar_ck3_12002_runtime_Release CMakeFiles\\xar_county_primary_writer_thunk_12004.dir\\src\\cou",
+        "actual_rule_characters": 38187,
+        "bounded_rule_text_sha256": "9c97f69975b60786ef60c2ac1682bf930bc208f639a758497778b2bc28294ece",
+        "whole_ninja_payload_hashed": false
+      },
+      "source_rebuild_recipe": {
+        "original_producer_plan": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\a38-exact-source-qualification-prep-a01\\A38-PLAN.actual-a01.json",
+          "bytes": 35780,
+          "sha256": "428ce50e4c9c2c835c4c763fac52f7c30c13e46e83ed5a269297fe20c69dc43c"
+        },
+        "qualification": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\ROOT-A38-PRODUCTION-QUALIFICATION.actual-a01.json",
+          "bytes": 20576,
+          "sha256": "d2cd74ebc706d78d052016a286a2908f7d41832e20fcd6c864dd3f93acebd194"
+        },
+        "CMakeCache": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a38-a01\\CMakeCache.txt",
+          "bytes": 46478,
+          "sha256": "a77b59e7248957a33a4a4bb0240000d59c1d1b2c9971f693b319bd3162d80878"
+        }
+      },
+      "reason": "xar_ck3_12002_runtime.lib is the actual STATIC archive from exact CMake object inputs; already linked DLL/EXEs are retained. It is not a DLL, EXE or PDB, and current runtime manifest points only to oldA40 DLL/newCw EXEs. Any future relink must first rebuild missing objects/archive from retained Git tree/flags/graph.",
+      "exact_file_count_in_batch": 732,
+      "logical_candidate_bytes": 357863909,
+      "allocated_candidate_upper_bound_bytes": 359350920,
+      "must_revalidate_before_execution": [
+        "Root exact scope approval and current reference/protection check",
+        "No compiler/linker/build writer and reliable per-file exclusive identity/handle check",
+        "Delete exact listed files only, never directories or any DLL/EXE/PDB/Q/source/restore input/S0",
+        "Original payload SHA remains unknown; preserve exact metadata identity and source recipe; no new large payload hash"
+      ],
+      "deletion_ready_or_authorized": false,
+      "deletion_performed": false
+    }
+  ],
+  "aggregate_logical_candidate_bytes": 1104535435,
+  "aggregate_allocated_upper_bound_bytes": 1109104536,
+  "one_GiB_target_met_by_candidates_only": true,
+  "current_runtime_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 17064,
+    "sha256": "ecf363b613cab07cf4e05734822a58b16712763d8785bc6ea940015f541aa07e"
+  },
+  "permanent_asset_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "all_DLL_EXE_PDB_qualification_and_original_failure_and_unique_ACL_recovery_and_Mar31S0_retained": true,
+  "this_is_proposal_only_no_new_native_execution_no_payload_hash_no_deletion": true,
+  "physical_or_unused_credit_bytes": 0,
+  "current_408GiB1030Z_not_renewed": true,
+  "purpose_review_at_utc": "2026-10-20T10:30:00Z",
+  "scheme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\extend_static_library_candidates_a02.py",
+    "bytes": 7360,
+    "sha256": "e8c483be4342d1af6c2c65b1d6975ba571f8d0f3332f32fb95fba1d10ec955a1"
+  }
+}

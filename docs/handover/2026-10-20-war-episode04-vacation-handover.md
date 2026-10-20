@@ -1,5 +1,18 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+## 2026-10-20 R0219 正常闭场补注（原交接历史保留）
+
+`machine_id: desktop-3fevhd2-1c74096080`。来源为 [R0219 小原件清单](../ck3-native-ai/evidence/episode04-r0219-normal-close-20261020/MANIFEST.actual.json)，观察截至 10:22:22 UTC。
+
+冻结源码 `4fc8d0f4cae53735274475bd3e7fc3afbb958f7c` 已加入严格的 supervisor admission refusal 前驱闭场；15 项 focused 测试及独立审阅通过。latest machine allocation/counter 未放宽，R0218 原 supervisor wait 继续未知。R0219 使用新 runtime 与真实 post-allocate cap，未回放 R0218。
+
+本场实际 MapReady 约09:58:01 UTC，原容量 deadline10:30 UTC；2100秒余量要求的最晚 MapReady 为09:55:00。公共 R10 首 snapshot 与六查询完成后，R06 原样拒绝，public run 原 wait2 保留该错误。R06 尚未进入 worker/camera/one-day，未观测 ADD。该 guard 位于 R06 finally 之前，Root另经公共 queue 完成一次 pause、all OFF/readback、一次普通 Save 及独立同日读回。
+
+实际 GUI 正常退出取得 retained CK3 OS0、native0、host 原 wait0；keeper/allocator 原 wait0，CAS7395→7396、done/resources[]。普通 `native_campaign` Save成功不等于 one-life 状态绑定：原 `driver_state_replace` 为 `unconfirmed/save_binding_mismatch`，未追认为 one-life 合格。
+
+研究10/14（71.4%）、业务7/11（63.6%）、正式动态0/11、ABC0/3不变；R12已审34秒视觉素材单列，不由本次闭场增加镜头信用。后继需新 finite 准入，尚未授权其预算、run或游戏动作；不复用本场旧 Steam 证明或回放已消费动作。
+
+
 > 2026-10-20 07:57 UTC接续，`machine_id: desktop-3fevhd2-1c74096080`：[R06公共单日源码及A40未完成边界](../ck3-native-ai/episode04-r06-public-one-day-and-a40-boundary-20261020.md)已入库，专项18/18、R04路由1/1、通用25/25通过。A40编译成功但原生提权返回1223，未授新资格；剩余时间不足，新R06未分配run、未启动游戏。容量monitor原wait0、bus done7304资源空、所有执行future为0，08:00Z额度不续。R0217另已产出[36秒字幕审阅插片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md)，未授人工1×或正式动态。研究/业务信用不变，后继先核新鲜机器条件及有限时间窗。
 
 > 2026-10-20接续补注，`machine_id: desktop-3fevhd2-1c74096080`：04:50 UTC已完成[R0217新现场正常收束及83秒原片](../ck3-native-ai/episode04-r0217-direct-debits-and-normal-close-20261020.md)，取得17次direct-v2个别物理扣兵小计236，县总额仍未知。此前另已产出34分37秒方法＋独立证据审阅片。研究10/14、业务7/11、正式动态0/11、ABC0/3保持。下文为09:48–09:56交接的原始历史范围，R219失败不被后续成功倒改。

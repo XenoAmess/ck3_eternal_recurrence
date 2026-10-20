@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:22:01.048452+00:00",
+  "source": "Actual normal-close typed retained OS0/native0, original host Popen wait0, psutil no game/recorder",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "normal_close_qualified": true,
+  "host_original_wait0": {
+    "at_utc": "2026-10-20T10:19:10.137242+00:00",
+    "pid": 20964,
+    "returncode": 0,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+    "actual_original_popen_wait": true,
+    "normal_ck3_exit_inferred": false,
+    "business_pass": false
+  },
+  "actual_days": 0,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false,
+  "reason": "Preserved actual MapReady lacks original2100 room",
+  "keeper_and_screen_release": "PENDING"
+}

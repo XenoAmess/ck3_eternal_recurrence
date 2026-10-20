@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:33:15.130074+00:00",
+  "summary": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\THREE-EXACT-CACHE-BATCHES-RETIREMENT.actual-a01.json",
+    "bytes": 6573,
+    "sha256": "1e12a7921443ab9260205293906b0e0daba29e90de9590bbedfe339a6975456d"
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 275556,
+    "sha256": "676b0382891e693d6b2a94220d2589e809af738eec4d8096b8275d795e928ed1"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 18,
+    "lock_hold_seconds": 0.0010714998934417963,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 276179,
+      "sha256": "95f52ab820ad83f115ee247aae1c4fd26955b8e4c9f751e8039b86b4ac64de3c"
+    }
+  },
+  "future_and_legacy_unchanged": true,
+  "physical_or_unused_credit_bytes": 0
+}

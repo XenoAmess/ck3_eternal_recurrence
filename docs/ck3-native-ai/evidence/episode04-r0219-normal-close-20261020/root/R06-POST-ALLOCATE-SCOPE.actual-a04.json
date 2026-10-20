@@ -1,0 +1,32 @@
+{
+  "schema": "ck3-mod-acceptance-r06-post-allocate-scope-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "run_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02",
+  "prepared_case": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\prepared-a02\\prepared-case.json",
+    "bytes": 11432,
+    "sha256": "d9a106ad87c13a1b61e2da8db409ec4365f2efb9152ba3801077da42b38fb2c9"
+  },
+  "runtime_manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\manifest.json",
+    "bytes": 4271,
+    "sha256": "423dd9ed207d9ad01936c2388a480aa5b124a98e519a29a5996a47d9ac1c4cd5"
+  },
+  "allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\allocated-context.json",
+    "bytes": 5359,
+    "sha256": "5b301a2d38d3531c9cbab8d084223dd3734a8cda35f9fd2e266215527496d832"
+  },
+  "frozen_argv": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\frozen-argv.json",
+    "bytes": 38219,
+    "sha256": "2d4dc51452b85a8b7ae7c866893485cf86a0ab0b1edf5c55682e16b432046575"
+  },
+  "capacity_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 17064,
+    "sha256": "ecf363b613cab07cf4e05734822a58b16712763d8785bc6ea940015f541aa07e"
+  }
+}

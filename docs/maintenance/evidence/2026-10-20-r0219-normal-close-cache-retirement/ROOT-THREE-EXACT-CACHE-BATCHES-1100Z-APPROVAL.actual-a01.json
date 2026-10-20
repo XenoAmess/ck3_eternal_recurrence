@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:29:21.020197+00:00",
+  "authorized_by": "/root",
+  "source": "Direct collaboration message after independent R0219 typed normal closure",
+  "proposal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\REBUILDABLE-OBJECT-STATIC-LIB-PROPOSAL.actual-a01.json",
+    "bytes": 13514,
+    "sha256": "a06f7111501f252a850f94f10829b07938abde78f6a9194c9d703c43f89d0eb4"
+  },
+  "scope": "A40 756, A39 788, A38 732 exact manifest .obj files and each root unique xar_ck3_12002_runtime.lib; exact resolved paths, reliable exclusive identity handles, per-file skip on discrepancy. No directories, permission changes, DLL/EXE/PDB/Q/source/flags/Git/ACL restore/S0 deletion.",
+  "a38_old_whole_build_protection_narrowed_only_for_exact_rebuildable_candidates": true,
+  "reason": "Root reviewed unified storage policy early reclamation rule; current A41 and R0219 normal closure consume retained linked images; relinking requires retained exact-source/flags/graph reconstruction.",
+  "deadline_utc": "2026-10-20T11:00:00Z",
+  "shared_existing_ceiling_bytes": 134217728,
+  "new_global_future_bytes": 0,
+  "old_1030_scene_native_game_authority_not_renewed": true,
+  "new_game_build_or_media_execution_admitted": false,
+  "candidate_free_credit_bytes": 0,
+  "payload_SHA_unknown_preserved": true
+}

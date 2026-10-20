@@ -1,0 +1,791 @@
+{
+  "schema": "xar.e04.r0219.small-evidence-copy-manifest.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:30:47.255494+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "package_repo_target": "docs/ck3-native-ai/evidence/episode04-r0219-normal-close-20261020",
+  "budget_bytes": 2097152,
+  "rows": [
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\ready-context.json",
+        "bytes": 5621,
+        "sha256": "d41e9efc29774a3b6cbb202a36774536d990cf9f57d7cbc2971b38060f4a5fb7"
+      },
+      "package_relative_path": "allocation/ready-context.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\ready-context.json",
+        "bytes": 5621,
+        "sha256": "d41e9efc29774a3b6cbb202a36774536d990cf9f57d7cbc2971b38060f4a5fb7"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\frozen-argv.json",
+        "bytes": 38219,
+        "sha256": "2d4dc51452b85a8b7ae7c866893485cf86a0ab0b1edf5c55682e16b432046575"
+      },
+      "package_relative_path": "allocation/frozen-argv.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\frozen-argv.json",
+        "bytes": 38219,
+        "sha256": "2d4dc51452b85a8b7ae7c866893485cf86a0ab0b1edf5c55682e16b432046575"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\allocated-context.json",
+        "bytes": 5359,
+        "sha256": "5b301a2d38d3531c9cbab8d084223dd3734a8cda35f9fd2e266215527496d832"
+      },
+      "package_relative_path": "allocation/allocated-context.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\allocated-context.json",
+        "bytes": 5359,
+        "sha256": "5b301a2d38d3531c9cbab8d084223dd3734a8cda35f9fd2e266215527496d832"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\host-started.json",
+        "bytes": 3764,
+        "sha256": "42f457a0ae4e2aecb55a6bce6dbda400608d44e831be748b522038f1cefbf120"
+      },
+      "package_relative_path": "allocation/host-started.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\host-started.json",
+        "bytes": 3764,
+        "sha256": "42f457a0ae4e2aecb55a6bce6dbda400608d44e831be748b522038f1cefbf120"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\host-supervisor-started.json",
+        "bytes": 956,
+        "sha256": "701f96b0362d52cf4537bd5594aa7d1f395f96d09b8491402543f7984944d70e"
+      },
+      "package_relative_path": "allocation/host-supervisor-started.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\host-supervisor-started.json",
+        "bytes": 956,
+        "sha256": "701f96b0362d52cf4537bd5594aa7d1f395f96d09b8491402543f7984944d70e"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\host-original-process-exit.json",
+        "bytes": 245,
+        "sha256": "f1a9a8812254719dafd3bec73cd11a59dcdcaddc2f262c098dd8268ab71ad353"
+      },
+      "package_relative_path": "allocation/host-original-process-exit.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\host-original-process-exit.json",
+        "bytes": 245,
+        "sha256": "f1a9a8812254719dafd3bec73cd11a59dcdcaddc2f262c098dd8268ab71ad353"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\keeper-process.json",
+        "bytes": 717,
+        "sha256": "094e3b77231ba43d07b648a33bf0e8e0cbfa09e7ee5c7cd1d54eec5d2928d6d0"
+      },
+      "package_relative_path": "allocation/keeper-process.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\keeper-process.json",
+        "bytes": 717,
+        "sha256": "094e3b77231ba43d07b648a33bf0e8e0cbfa09e7ee5c7cd1d54eec5d2928d6d0"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 original allocation/retained Popen identity or exit",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\keeper-actual-parent-exit.json",
+        "bytes": 598,
+        "sha256": "f3b09d4033c5560224584061721fcd5bb63c710fa26c4940775d0d4e4d070b5b"
+      },
+      "package_relative_path": "allocation/keeper-actual-parent-exit.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\allocation\\keeper-actual-parent-exit.json",
+        "bytes": 598,
+        "sha256": "f3b09d4033c5560224584061721fcd5bb63c710fa26c4940775d0d4e4d070b5b"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual immutable prepared input; R06 capacity leaf remains null",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\prepared-a02\\prepared-case.json",
+        "bytes": 11432,
+        "sha256": "d9a106ad87c13a1b61e2da8db409ec4365f2efb9152ba3801077da42b38fb2c9"
+      },
+      "package_relative_path": "prepared/prepared-case.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\prepared\\prepared-case.json",
+        "bytes": 11432,
+        "sha256": "d9a106ad87c13a1b61e2da8db409ec4365f2efb9152ba3801077da42b38fb2c9"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual frozen4fc runtime metadata; A41 native compilation identity separately retained",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\runtime.local.json",
+        "bytes": 2591,
+        "sha256": "d1b593a4b75e76dbd90de6ddd1949b7c68f87b6268accb566b7467c8048ce68a"
+      },
+      "package_relative_path": "runtime/runtime.local.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\runtime\\runtime.local.json",
+        "bytes": 2591,
+        "sha256": "d1b593a4b75e76dbd90de6ddd1949b7c68f87b6268accb566b7467c8048ce68a"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual frozen4fc runtime metadata; A41 native compilation identity separately retained",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\manifest.json",
+        "bytes": 4271,
+        "sha256": "423dd9ed207d9ad01936c2388a480aa5b124a98e519a29a5996a47d9ac1c4cd5"
+      },
+      "package_relative_path": "runtime/manifest.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\runtime\\manifest.json",
+        "bytes": 4271,
+        "sha256": "423dd9ed207d9ad01936c2388a480aa5b124a98e519a29a5996a47d9ac1c4cd5"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual frozen4fc runtime metadata; A41 native compilation identity separately retained",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\source-index.json",
+        "bytes": 17906,
+        "sha256": "6551a5ba76b47295ec6775f425cdbc934b16b7db74abd979d5c8e32f0c82bd41"
+      },
+      "package_relative_path": "runtime/source-index.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\runtime\\source-index.json",
+        "bytes": 17906,
+        "sha256": "6551a5ba76b47295ec6775f425cdbc934b16b7db74abd979d5c8e32f0c82bd41"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual frozen4fc runtime metadata; A41 native compilation identity separately retained",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\native-source-index.json",
+        "bytes": 15471,
+        "sha256": "d00b055e87e928906351d13de7481ec1f4e85224939d0bb8add923c3d2e6d7a8"
+      },
+      "package_relative_path": "runtime/native-source-index.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\runtime\\native-source-index.json",
+        "bytes": 15471,
+        "sha256": "d00b055e87e928906351d13de7481ec1f4e85224939d0bb8add923c3d2e6d7a8"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual frozen4fc runtime metadata; A41 native compilation identity separately retained",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\RUNTIME-DELIVERY.actual.json",
+        "bytes": 2928,
+        "sha256": "aeeee62bc437767eb10af95b3f46dcb440d315c00d20b9e46abaa2179d7f4388"
+      },
+      "package_relative_path": "runtime/RUNTIME-DELIVERY.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\runtime\\RUNTIME-DELIVERY.actual.json",
+        "bytes": 2928,
+        "sha256": "aeeee62bc437767eb10af95b3f46dcb440d315c00d20b9e46abaa2179d7f4388"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\case-error-preserved.json",
+        "bytes": 200,
+        "sha256": "46dd91fa392dd6b8c075be84c0ade31e2219711cf09cf3ae236d80798565ba98"
+      },
+      "package_relative_path": "actual/case-error-preserved.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\case-error-preserved.json",
+        "bytes": 200,
+        "sha256": "46dd91fa392dd6b8c075be84c0ade31e2219711cf09cf3ae236d80798565ba98"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\r10-common-preparation-result.json",
+        "bytes": 4246,
+        "sha256": "521c88e2688bff6519b8ebaf683a93c29984d7e3f91e307e3dc7518eb16262ff"
+      },
+      "package_relative_path": "actual/r10-common-preparation-result.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\r10-common-preparation-result.json",
+        "bytes": 4246,
+        "sha256": "521c88e2688bff6519b8ebaf683a93c29984d7e3f91e307e3dc7518eb16262ff"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\normal-quit-awaiting.json",
+        "bytes": 632,
+        "sha256": "47db4b5499361b9837d84004bbf8a0cb6e6797bf032da4cfa1399cdaf852af1d"
+      },
+      "package_relative_path": "actual/normal-quit-awaiting.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\normal-quit-awaiting.json",
+        "bytes": 632,
+        "sha256": "47db4b5499361b9837d84004bbf8a0cb6e6797bf032da4cfa1399cdaf852af1d"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\manual-quit-awaiting.json",
+        "bytes": 646,
+        "sha256": "358f03f0307fed20198a05777f22e7d82b3063106ec087984ce83b5ecf1ee360"
+      },
+      "package_relative_path": "actual/manual-quit-awaiting.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\manual-quit-awaiting.json",
+        "bytes": 646,
+        "sha256": "358f03f0307fed20198a05777f22e7d82b3063106ec087984ce83b5ecf1ee360"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\normal-quit-root-result.json",
+        "bytes": 2242,
+        "sha256": "ab4cd35e48759dc277eb22472bd766726ed7c175223cfaebabe042fed8235743"
+      },
+      "package_relative_path": "actual/normal-quit-root-result.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\normal-quit-root-result.json",
+        "bytes": 2242,
+        "sha256": "ab4cd35e48759dc277eb22472bd766726ed7c175223cfaebabe042fed8235743"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\normal-close-result.json",
+        "bytes": 9507,
+        "sha256": "e58ab6bcb96b4fb0fa10b430143c8fae08a42b0d3cb4bb3138f2f5e353da5293"
+      },
+      "package_relative_path": "actual/normal-close-result.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\normal-close-result.json",
+        "bytes": 9507,
+        "sha256": "e58ab6bcb96b4fb0fa10b430143c8fae08a42b0d3cb4bb3138f2f5e353da5293"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 178,
+        "sha256": "589a2b27dbba5558a47ac34783ea44faacf7fab2e71a619dbb0e5985aaf4e399"
+      },
+      "package_relative_path": "actual/actual-retained-handle-os-exit.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\actual-retained-handle-os-exit.json",
+        "bytes": 178,
+        "sha256": "589a2b27dbba5558a47ac34783ea44faacf7fab2e71a619dbb0e5985aaf4e399"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\entry-run-result.json",
+        "bytes": 18802,
+        "sha256": "dd21f78ba8f12b5b3b38cfc94a46916f0a65d552804b42e9c9c864e857d38521"
+      },
+      "package_relative_path": "actual/entry-run-result.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\entry-run-result.json",
+        "bytes": 18802,
+        "sha256": "dd21f78ba8f12b5b3b38cfc94a46916f0a65d552804b42e9c9c864e857d38521"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\retained-current-process-identity.json",
+        "bytes": 109,
+        "sha256": "a6d80b3b3516f89016364307948a6d1ff8d9669bed1e1f9756d7c5f677ca40de"
+      },
+      "package_relative_path": "actual/retained-current-process-identity.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\retained-current-process-identity.json",
+        "bytes": 109,
+        "sha256": "a6d80b3b3516f89016364307948a6d1ff8d9669bed1e1f9756d7c5f677ca40de"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 case/normal-exit original; business failure remains preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\case-output\\acceptance-normal-exit-finish-hold.actual-results.json",
+        "bytes": 2440,
+        "sha256": "abbffdbeec91ec8ecbc3cebc20a02531890ea40165a46e7548f5f11bd5fa4478"
+      },
+      "package_relative_path": "actual/acceptance-normal-exit-finish-hold.actual-results.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\actual\\acceptance-normal-exit-finish-hold.actual-results.json",
+        "bytes": 2440,
+        "sha256": "abbffdbeec91ec8ecbc3cebc20a02531890ea40165a46e7548f5f11bd5fa4478"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original public prepare Popen wait; run=2 is preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\prepare-exec-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1190,
+        "sha256": "f2413bbdc5070d0e66ff1139ff4ad24c237ad5c0b196b33103572f5c5cab3942"
+      },
+      "package_relative_path": "root/prepare-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\prepare-ORIGINAL-WAIT.actual.json",
+        "bytes": 1190,
+        "sha256": "f2413bbdc5070d0e66ff1139ff4ad24c237ad5c0b196b33103572f5c5cab3942"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original public plan Popen wait; run=2 is preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\plan-exec-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1061,
+        "sha256": "5b9a255ea7794d22599f927885a4e1254c36f32f31fcdc7e5ed7954ad9c56f09"
+      },
+      "package_relative_path": "root/plan-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\plan-ORIGINAL-WAIT.actual.json",
+        "bytes": 1061,
+        "sha256": "5b9a255ea7794d22599f927885a4e1254c36f32f31fcdc7e5ed7954ad9c56f09"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original public allocate Popen wait; run=2 is preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\allocate-exec-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1708,
+        "sha256": "e931348a149ba56e70164d62efde4f7bc430a253fe4eef096dc5963ccb43d744"
+      },
+      "package_relative_path": "root/allocate-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\allocate-ORIGINAL-WAIT.actual.json",
+        "bytes": 1708,
+        "sha256": "e931348a149ba56e70164d62efde4f7bc430a253fe4eef096dc5963ccb43d744"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original public preflight Popen wait; run=2 is preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\preflight-exec-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1281,
+        "sha256": "d60aa792827600c69058854d96d0f0f9dc490e9364d94eb6958738fc4677b954"
+      },
+      "package_relative_path": "root/preflight-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\preflight-ORIGINAL-WAIT.actual.json",
+        "bytes": 1281,
+        "sha256": "d60aa792827600c69058854d96d0f0f9dc490e9364d94eb6958738fc4677b954"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original public run Popen wait; run=2 is preserved",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a04\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1269,
+        "sha256": "ba0102a20d6430f9ca22fa4c5ce69b2f8041693272799c7d2b2947d01186e894"
+      },
+      "package_relative_path": "root/run-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\run-ORIGINAL-WAIT.actual.json",
+        "bytes": 1269,
+        "sha256": "ba0102a20d6430f9ca22fa4c5ce69b2f8041693272799c7d2b2947d01186e894"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original once-only Root cleanup plan",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-cleanup-off.plan.json",
+        "bytes": 572,
+        "sha256": "192b61f176afb3ab5161092cfff8a79b93844ba43ac802d0c127f759532daaa2"
+      },
+      "package_relative_path": "root/cleanup-off.plan.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\cleanup-off.plan.json",
+        "bytes": 572,
+        "sha256": "192b61f176afb3ab5161092cfff8a79b93844ba43ac802d0c127f759532daaa2"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original queue submission wait; ACK is not postcondition",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-cleanup-off-exec-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 718,
+        "sha256": "926d3dcf7b3e8d7c52ded308d07762e8e8db38425ffd9c7815097e983dda6ac3"
+      },
+      "package_relative_path": "root/cleanup-off-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\cleanup-off-ORIGINAL-WAIT.actual.json",
+        "bytes": 718,
+        "sha256": "926d3dcf7b3e8d7c52ded308d07762e8e8db38425ffd9c7815097e983dda6ac3"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original once-only Root cleanup plan",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-cleanup-save.plan.json",
+        "bytes": 267,
+        "sha256": "46a6d58158557d280afd38576e5cbeb67dbb9583787e8ce2c49af367038114f4"
+      },
+      "package_relative_path": "root/cleanup-save.plan.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\cleanup-save.plan.json",
+        "bytes": 267,
+        "sha256": "46a6d58158557d280afd38576e5cbeb67dbb9583787e8ce2c49af367038114f4"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original queue submission wait; ACK is not postcondition",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-cleanup-save-exec-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 720,
+        "sha256": "5b782e272618ee538f150d0512e6d4024d2ceaf0aceb33c2bbebd52a3a26ba43"
+      },
+      "package_relative_path": "root/cleanup-save-ORIGINAL-WAIT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\cleanup-save-ORIGINAL-WAIT.actual.json",
+        "bytes": 720,
+        "sha256": "5b782e272618ee538f150d0512e6d4024d2ceaf0aceb33c2bbebd52a3a26ba43"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Root actual all-OFF and normal native_campaign Save; state replacement mismatch retained",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\ROOT-CLEANUP.actual.json",
+        "bytes": 6267,
+        "sha256": "c5ad27b24a169ecdf5647d11920795cd15a16c88546c5a3e6ee53da1b9095953"
+      },
+      "package_relative_path": "root/ROOT-CLEANUP.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\ROOT-CLEANUP.actual.json",
+        "bytes": 6267,
+        "sha256": "c5ad27b24a169ecdf5647d11920795cd15a16c88546c5a3e6ee53da1b9095953"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\ROOT-NORMAL-CLOSED-BEFORE-KEEPER.actual.json",
+        "bytes": 810,
+        "sha256": "d4a9a39793de92c43797e6ab6e92353708a16c7019e467282d8143d0cf963bb9"
+      },
+      "package_relative_path": "root/ROOT-NORMAL-CLOSED-BEFORE-KEEPER.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\ROOT-NORMAL-CLOSED-BEFORE-KEEPER.actual.json",
+        "bytes": 810,
+        "sha256": "d4a9a39793de92c43797e6ab6e92353708a16c7019e467282d8143d0cf963bb9"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\SCREEN-RELEASE.actual-a01.json",
+        "bytes": 1245,
+        "sha256": "c2ee75f04809c5d94995b0304ac20caf9e6ceb0aa1c7d4fb444d54d894942dc3"
+      },
+      "package_relative_path": "root/SCREEN-RELEASE.actual-a01.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\SCREEN-RELEASE.actual-a01.json",
+        "bytes": 1245,
+        "sha256": "c2ee75f04809c5d94995b0304ac20caf9e6ceb0aa1c7d4fb444d54d894942dc3"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\keeper-a01\\report.json",
+        "bytes": 435,
+        "sha256": "9b37779e0a2a9fa4ce63382099eca6f3657d57241e7db43db2e2b0aa79753f75"
+      },
+      "package_relative_path": "root/keeper-report.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\keeper-report.json",
+        "bytes": 435,
+        "sha256": "9b37779e0a2a9fa4ce63382099eca6f3657d57241e7db43db2e2b0aa79753f75"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\keeper-a01\\STOP",
+        "bytes": 91,
+        "sha256": "9b88b2486cca26eb2fcc5b09fb842e812b6a700efa05f0368cda737a7805642c"
+      },
+      "package_relative_path": "root/keeper-STOP.txt",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\keeper-STOP.txt",
+        "bytes": 91,
+        "sha256": "9b88b2486cca26eb2fcc5b09fb842e812b6a700efa05f0368cda737a7805642c"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\ROOT-SOURCE-FROZEN.actual-a02.json",
+        "bytes": 1680,
+        "sha256": "a37fffcdeb2dcca40d62bd7e6c4e9124240661d7a6ead3ad7fc552899fb19356"
+      },
+      "package_relative_path": "root/ROOT-SOURCE-FROZEN.actual-a02.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\ROOT-SOURCE-FROZEN.actual-a02.json",
+        "bytes": 1680,
+        "sha256": "a37fffcdeb2dcca40d62bd7e6c4e9124240661d7a6ead3ad7fc552899fb19356"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R0219-SCENE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 17064,
+        "sha256": "ecf363b613cab07cf4e05734822a58b16712763d8785bc6ea940015f541aa07e"
+      },
+      "package_relative_path": "root/R0219-SCENE-SOURCE-BOUND.actual-a01.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\R0219-SCENE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 17064,
+        "sha256": "ecf363b613cab07cf4e05734822a58b16712763d8785bc6ea940015f541aa07e"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual R0219 source/scope/keeper/CAS original; no retroactive qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\R06-POST-ALLOCATE-SCOPE.actual-a04.json",
+        "bytes": 1600,
+        "sha256": "768a1c67871a9787500aa5ce441d3654e0dae9cff20fed135ac18b81450ebb26"
+      },
+      "package_relative_path": "root/R06-POST-ALLOCATE-SCOPE.actual-a04.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\root\\R06-POST-ALLOCATE-SCOPE.actual-a04.json",
+        "bytes": 1600,
+        "sha256": "768a1c67871a9787500aa5ce441d3654e0dae9cff20fed135ac18b81450ebb26"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original screenshot/input sidecar; associated PNG is reference only",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\after-final-quit.png.json",
+        "bytes": 1520,
+        "sha256": "3a62b4ec183334cc957142d7adda510d1d8f9826cc2e331b7a1549eccbc4b63b"
+      },
+      "package_relative_path": "gui-sidecars/after-final-quit.png.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\gui-sidecars\\after-final-quit.png.json",
+        "bytes": 1520,
+        "sha256": "3a62b4ec183334cc957142d7adda510d1d8f9826cc2e331b7a1549eccbc4b63b"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original screenshot/input sidecar; associated PNG is reference only",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\after-quit-menu.png.json",
+        "bytes": 1523,
+        "sha256": "f4d21513467b61fa080295a14f038e3bbbb1ced3343522fbd4332f8ec12b1f5c"
+      },
+      "package_relative_path": "gui-sidecars/after-quit-menu.png.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\gui-sidecars\\after-quit-menu.png.json",
+        "bytes": 1523,
+        "sha256": "f4d21513467b61fa080295a14f038e3bbbb1ced3343522fbd4332f8ec12b1f5c"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original screenshot/input sidecar; associated PNG is reference only",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\confirm-original.png.json",
+        "bytes": 442,
+        "sha256": "959944c164202ff02d21fae79af4ca8790423c387ac3510fdd42e603212f60f9"
+      },
+      "package_relative_path": "gui-sidecars/confirm-original.png.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\gui-sidecars\\confirm-original.png.json",
+        "bytes": 442,
+        "sha256": "959944c164202ff02d21fae79af4ca8790423c387ac3510fdd42e603212f60f9"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Original screenshot/input sidecar; associated PNG is reference only",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\menu-scancode-original.png.json",
+        "bytes": 624,
+        "sha256": "51075f40cddce7f6c6ba8b6bfe8278cb4f73cb1660258e155c1cb3f62fda4f55"
+      },
+      "package_relative_path": "gui-sidecars/menu-scancode-original.png.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\gui-sidecars\\menu-scancode-original.png.json",
+        "bytes": 624,
+        "sha256": "51075f40cddce7f6c6ba8b6bfe8278cb4f73cb1660258e155c1cb3f62fda4f55"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual owned client inspection metadata; no screenshot copy",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\quit-r0219-a01\\CLIENT-INSPECT.actual.json",
+        "bytes": 887,
+        "sha256": "7adbdf37bdf7b6027e8c4c27d894b6da6c18b738a44b81fb6430bd70143c668d"
+      },
+      "package_relative_path": "gui-sidecars/CLIENT-INSPECT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\gui-sidecars\\CLIENT-INSPECT.actual.json",
+        "bytes": 887,
+        "sha256": "7adbdf37bdf7b6027e8c4c27d894b6da6c18b738a44b81fb6430bd70143c668d"
+      }
+    },
+    {
+      "kind": "derived-complete-step-projection",
+      "role": "All six original report cleanup steps preserved semantically",
+      "package_relative_path": "derived/CLEANUP-SIX-STEPS.derived.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\derived\\CLEANUP-SIX-STEPS.derived.json",
+        "bytes": 446681,
+        "sha256": "95de2027eb79b6e6fe5eefd248d99e4beebf01f5964f6c2f78108df8c69bc411"
+      },
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.json",
+        "bytes": 14615145,
+        "sha256": "ea1cb817d6265da4185974ed8db94f4eb020fb55c5499aa30af1e3b00e24f836",
+        "mtime_ns": 1792491549739639300
+      }
+    },
+    {
+      "kind": "derived-summary-or-reference",
+      "role": "EXTERNAL-LARGE-REFERENCES.json",
+      "package_relative_path": "derived/EXTERNAL-LARGE-REFERENCES.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\derived\\EXTERNAL-LARGE-REFERENCES.json",
+        "bytes": 3702,
+        "sha256": "fb95f22442c0a0d6a0e07da626ed93ee2ca51f737342f282ec411205d7c8cd48"
+      }
+    },
+    {
+      "kind": "derived-summary-or-reference",
+      "role": "R0219-OBSERVED-BOUNDARY.derived.json",
+      "package_relative_path": "derived/R0219-OBSERVED-BOUNDARY.derived.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\derived\\R0219-OBSERVED-BOUNDARY.derived.json",
+        "bytes": 4853,
+        "sha256": "7befad767e93026759a4593c58db9642c80c86b842695545bd71603689d0cdad"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual 15 focused test original; isolated machine-chain allocator, no game",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\TEST-RESULT.actual.json",
+        "bytes": 2695,
+        "sha256": "ff2dcc18d64395be53841b6b4094b855ea1e15111b2a5fdf4a078cd141030e3c"
+      },
+      "package_relative_path": "qualification/REFUSAL-15-TEST-RESULT.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\qualification\\REFUSAL-15-TEST-RESULT.actual.json",
+        "bytes": 2695,
+        "sha256": "ff2dcc18d64395be53841b6b4094b855ea1e15111b2a5fdf4a078cd141030e3c"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual independent source review original, no live qualification",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-review-a01\\REFUSAL-INDEPENDENT-REVIEW.actual-a01.json",
+        "bytes": 9878,
+        "sha256": "61f46df6b54a33007c030d80aa5e98b717083ec0ce7fa9cb7baa4ee59c3bf3c1"
+      },
+      "package_relative_path": "qualification/REFUSAL-INDEPENDENT-REVIEW.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\qualification\\REFUSAL-INDEPENDENT-REVIEW.actual.json",
+        "bytes": 9878,
+        "sha256": "61f46df6b54a33007c030d80aa5e98b717083ec0ce7fa9cb7baa4ee59c3bf3c1"
+      }
+    },
+    {
+      "kind": "exact-original-copy",
+      "role": "Actual full A41 native producer qualification; not R06 gameplay credit",
+      "source": {
+        "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+        "bytes": 26157,
+        "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+      },
+      "package_relative_path": "qualification/A41-COHERENT-QUALIFICATION.actual.json",
+      "copy": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0219-evidence-a01\\package\\qualification\\A41-COHERENT-QUALIFICATION.actual.json",
+        "bytes": 26157,
+        "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+      }
+    }
+  ],
+  "report_pin_only": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.json",
+    "bytes": 14615145,
+    "sha256": "ea1cb817d6265da4185974ed8db94f4eb020fb55c5499aa30af1e3b00e24f836",
+    "mtime_ns": 1792491549739639300
+  },
+  "scope": "Exact small originals plus explicitly derived complete rows; large external bodies reference-only",
+  "retention_review_utc": "2026-10-27T00:00:00Z",
+  "retention_reason": "Current closure/predecessor and unresolved R06/ordinary-Save binding boundary; review under common storage policy",
+  "metadata_correction": "Only derived source_head label corrected; initial candidate and manifest preserved in external diagnostics. All original copies remain exact."
+}

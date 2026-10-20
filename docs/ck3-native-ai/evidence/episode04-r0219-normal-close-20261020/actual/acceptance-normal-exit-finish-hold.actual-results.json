@@ -1,0 +1,66 @@
+{
+  "rows": [
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "plan": {
+        "id": "acceptance-normal-exit-finish-hold",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "started_at": "2026-10-20T10:19:08.294382+00:00",
+      "ok": true,
+      "result": {
+        "hold_finished": true
+      },
+      "resolved_expect": {
+        "hold_finished": true
+      },
+      "after_snapshot": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 9956,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0219",
+        "started_at": "2026-10-20T09:52:10.593758+00:00",
+        "finished_at": "2026-10-20T10:18:21.631368+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "7ab8892547674c8999ee85872759b935",
+          "ck3_pid": 9956,
+          "ck3_creation_date": "20261020095213.435306+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 28164,
+          "watchdog_creation_date": "20261020095211.275001+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\control\\ck3.json": true,
+            "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\control\\watchdog-7ab8892547674c8999ee85872759b935.ready.json": true,
+            "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\control\\ck3.watchdog_error": true,
+            "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finished_at": "2026-10-20T10:19:08.476805+00:00"
+    }
+  ],
+  "business_PASS_inferred": false
+}

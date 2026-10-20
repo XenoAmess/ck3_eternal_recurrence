@@ -1,0 +1,91 @@
+{
+  "schema": "xar.e04.r0218.supervisor_refusal_fix_handoff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:35:39.600934+00:00",
+  "source_head_before_Root_commit": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 147469,
+      "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 21734,
+      "sha256": "c93eecba3fe3e15780760ee0feaff015a9e2106af92a9e50de52cba96859f6d7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 65105,
+      "sha256": "8a4bc9ef127fad92c5be8ffe7275ac72070ec64046ecbdcb9e0e91708f100792"
+    }
+  ],
+  "source_frozen_for_Root_review": true,
+  "source_changes": 4,
+  "source_write_scope": "two new Python files, allocator dispatch branch, CI test registration; no latest guard change",
+  "diff_check_returncode": 0,
+  "focused_tests": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\TEST-RESULT.actual.json",
+    "bytes": 2695,
+    "sha256": "ff2dcc18d64395be53841b6b4094b855ea1e15111b2a5fdf4a078cd141030e3c"
+  },
+  "focused_tests_passed": 15,
+  "focused_execution_count": 1,
+  "focused_meaningful_routes": [
+    "public native_dispatch -> allocate_and_keep -> actual machine claim -> isolated real ID allocation",
+    "later machine admission rejects before new ID/ledger despite matching product counter and closed CAS",
+    "other/unknown exception or original wait, host evidence, wrong root/machine, active runtime/supervisor, old counter, unreleased task, altered pin, invented game/supervisor exit credit rejected"
+  ],
+  "actual_R0218_builder_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 1782,
+    "sha256": "721a51e6d5529e733d006e1c6fdf8a230f83b3d774bbcca9ff5521331ae6e6a1"
+  },
+  "actual_R0218_builder_returncode": 0,
+  "actual_bundle": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\SUPERVISOR-ADMISSION-REFUSED.actual.json",
+    "bytes": 4225,
+    "sha256": "b2633e79daadf1f0cc6a6b7dc52034ca50b2053e6c137c19a41c3a1532984809"
+  },
+  "actual_validation_and_fresh_census": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\stdout.log",
+    "bytes": 9716,
+    "sha256": "90870ea735d2645dcd1b7c4da8f0390de9457cb21ad1d3ad1803722d575ba066"
+  },
+  "supervisor_original_wait_proven": false,
+  "supervisor_original_wait_returncode": null,
+  "fresh_process_absence_is_original_wait": false,
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "future_public_allocate_predecessor_arguments": [
+    "--previous-live",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218",
+    "--previous-keeper",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\keeper-a01",
+    "--previous-release",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\SCREEN-RELEASE.actual-a01.json",
+    "--previous-failure-close",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\SUPERVISOR-ADMISSION-REFUSED.actual.json"
+  ],
+  "future_latest_screen_release": "Only an actual later closed screen epoch if one exists; never repeat the previous release as latest.",
+  "future_runtime_and_prepared": "Root commit/freeze then fresh runtime/index/inputs/prepared; retain all old immutable originals. Do not reuse source31ff runtime.",
+  "runtime_dependency_inclusion": "Existing assemble_runtime_and_inputs_a02.py critical tools/ck3_mod_acceptance*.py glob includes new validator automatically.",
+  "allocation_executed_on_target_machine": false,
+  "SDK_or_game_or_screen_action": false,
+  "known_protocol": {
+    "launcher_sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b",
+    "supervise_admission_line": 225,
+    "retain_host_call_line": 226,
+    "host_files_opened_lines": [
+      188,
+      189
+    ],
+    "exception": "Exact recent() stale ValueError, with pinned consumed intent/argv and time crossing; other exceptions refused"
+  },
+  "preservation": "No original run, profile, prepared, frozen argv, wait, release or helper was rewritten; counter fixture only uses isolated synthetic state."
+}

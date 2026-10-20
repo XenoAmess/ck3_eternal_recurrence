@@ -1,0 +1,54 @@
+{
+  "schema": "ck3-mod-acceptance-runtime-v1",
+  "manifest": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\manifest.json",
+    "bytes": 4271,
+    "sha256": "423dd9ed207d9ad01936c2388a480aa5b124a98e519a29a5996a47d9ac1c4cd5"
+  },
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "repo_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "game_dir": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+  "userdir_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\userdirs",
+  "artifacts_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs",
+  "paths": {
+    "source_root": "D:\\workspace\\ck3_eternal_recurrence",
+    "host": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "source_index": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\source-index.json",
+    "native_source_index": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a03\\native-source-index.json",
+    "dll": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "injector": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe"
+  },
+  "runtime_environment": {
+    "PYTHONUTF8": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": [
+      "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools"
+    ]
+  },
+  "reviewed_launcher": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+    "bytes": 17792,
+    "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+  },
+  "control_queue": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue.py",
+    "bytes": 17072,
+    "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920"
+  },
+  "allocation": {
+    "lease_repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "screen_keeper": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b"
+    },
+    "task_bus": {
+      "path": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "bytes": 31763,
+      "sha256": "9198718f0f0931d93ed7f1557ca1cbedd1fa086a4a1cff210bca10404a305d7f"
+    },
+    "task_prefix": "e04-common-12004-"
+  },
+  "qualification": "ACTUAL_A41_PRODUCER_AND_FROZEN_PUBLIC_SOURCE_BOUND_SHARED_RUNTIME_LIVE_PENDING"
+}

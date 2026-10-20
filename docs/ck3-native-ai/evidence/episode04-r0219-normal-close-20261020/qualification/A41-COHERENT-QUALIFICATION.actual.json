@@ -1,0 +1,452 @@
+{
+  "schema": "xar.e04.a41-coherent-relocation-worker-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:50:01.944018+00:00",
+  "status": "PASS_SELECTED_SCOPE_ONLY",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_build_source_head_role": "Original main carrier and relocated production EXE compilation; worker snapshot origin is separately recorded, never relabelled.",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "actual_clean_invocation_HEAD": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "actual_source_layers": {
+    "carrier_and_relocated_EXE_original_compile_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "carrier_and_EXE_native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "genuine_configure_preparation_observed_head": "1ec22203947d56397e30275f31dd4634cf87529a",
+    "worker_actual_compile_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "worker_actual_compile_source_rule": "Actual compiler reads unchanged original fd5 sparse snapshot. Record its original source head, actual source_dir and manifest; separately record Root new clean HEAD and exact 13-input/nativefee equivalence at invocation. Do not relabel snapshot or promote old results.",
+    "worker_actual_compiler_source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "worker_original_snapshot_source_root": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01",
+    "worker_original_snapshot_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "worker_original_snapshot_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 8115,
+      "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+    },
+    "worker_current_thirteen_input_equivalence": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "bytes": 15980,
+      "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+    },
+    "worker_actual_clean_invocation_HEAD": null
+  },
+  "production_bytes_qualified": true,
+  "focused_cold_qualified": true,
+  "all_feature_flags": {
+    "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE": "ON",
+    "XAR_CK3_BUILD_H2743_STOCK_PREDICATE_FIXTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1": "ON",
+    "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1": "ON",
+    "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "ON",
+    "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+    "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+    "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF",
+    "XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1": "ON",
+    "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": "ON",
+    "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": "ON",
+    "XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004": "ON",
+    "XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004": "ON",
+    "XAR_ENABLE_COUNTY_PREVIEW_RELATION_INPUTS_12004": "ON",
+    "XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004": "ON",
+    "XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004": "ON",
+    "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1": "OFF",
+    "XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1": "OFF",
+    "XAR_ENABLE_PREWAR_FORCE_COALITION_V2": "OFF",
+    "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004": "ON",
+    "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": "ON",
+    "XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004": "ON",
+    "XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_ENABLE_HOLY_SITE_CREATION_UI12004": "OFF",
+    "XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004": "OFF",
+    "XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004": "OFF",
+    "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004": "OFF",
+    "XAR_ENABLE_RELIGION_UI12004_PRESENTATION": "OFF",
+    "XAR_ENABLE_RITE_CREATION_ACTIONS12004": "OFF",
+    "XAR_ENABLE_ACTUAL_COUNTY_PRIMARY_OWNER_12004": "ON",
+    "XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_ACTIVITIES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_HEIR_CANDIDATE_COMPONENT12004_V1": "OFF",
+    "XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1": "OFF",
+    "XAR_CK3_ENABLE_ARTIFACT_PERSONAL_USE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_GHW_PERMISSIONS_READONLY_V1": "OFF",
+    "XAR_CK3_BUILD_NATIVE_LAYOUT_REPORT_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_PILGRIMAGE_EXECUTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_CAMERA_TRACKING_V1": "OFF"
+  },
+  "outputs": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+    }
+  ],
+  "original_main_compile": {
+    "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "actual_public_result": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\native-msvc-result.json",
+      "bytes": 1929,
+      "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+    },
+    "original_failure_preserved": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-FIRST-FAILURE.actual-a01.json",
+      "bytes": 8029,
+      "sha256": "dd9b428687c87137fc02a827f24e22eea95c5ebd139b8e8026de51db52b0cfc1"
+    },
+    "new_main_compilation_performed": false
+  },
+  "main_actual_qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-MAIN-RELOCATION-QUALIFICATION.actual-a01.json",
+    "bytes": 5946,
+    "sha256": "214bd1603c8acc20bca4548a14e1a7b185f4a772765b9f826ebc41d4eaf36fe0"
+  },
+  "worker_live": {
+    "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "build_result": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\native-msvc-result.json",
+      "bytes": 1661,
+      "sha256": "6212c4dcf1b5f8f51aa8309060ab69395112bdea8dad6a38a7fc2e056b13d9c8"
+    },
+    "SYSTEM_receipt": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\receipt.json",
+      "bytes": 270898,
+      "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+    },
+    "manifest": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\manifest.json",
+      "bytes": 1824,
+      "sha256": "17e8500582a9c19eed3e2ffe69ea855216d0a35ab8fc28549d246579690dc442"
+    },
+    "cmake_defines": {
+      "XAR_ENABLE_REFILL_ADD_HWPROBE_12004": "ON",
+      "XAR_ENABLE_REFILL_STACK_Q_COLD_12004": "OFF",
+      "XAR_ENABLE_REFILL_V3_COLD_PROBE_12004": "OFF",
+      "XAR_ENABLE_REFILL_CARRIER_THREAD_DISCOVERY_12004": "ON",
+      "XAR_ENABLE_REFILL_V5_COLD_PROBE_12004": "OFF"
+    },
+    "outputs": [
+      {
+        "target": "refill_add_hwprobe_12004",
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+        "bytes": 140288,
+        "sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5"
+      }
+    ],
+    "original_snapshot_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "original_snapshot_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 8115,
+      "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+    },
+    "actual_clean_invocation_HEAD": "31ff77a0f07fb21f528c88e56314cbb093972703",
+    "current_canonical_thirteen_input_equivalence": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "bytes": 15980,
+      "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+    }
+  },
+  "worker_V5": {
+    "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "build_result": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\native-msvc-result.json",
+      "bytes": 1702,
+      "sha256": "4e83b811b97adfd4caa17ef77ddbc27cc7623c02b5f8d11dbba190f7a5aa71de"
+    },
+    "SYSTEM_receipt": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\receipt.json",
+      "bytes": 326544,
+      "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+    },
+    "manifest": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\manifest.json",
+      "bytes": 2748,
+      "sha256": "e92b30d5c84b5fe3675fbe1ace97abbff3d2d1bd7752f79aa88621db341c79c6"
+    },
+    "cmake_defines": {
+      "XAR_ENABLE_REFILL_ADD_HWPROBE_12004": "OFF",
+      "XAR_ENABLE_REFILL_STACK_Q_COLD_12004": "OFF",
+      "XAR_ENABLE_REFILL_V3_COLD_PROBE_12004": "OFF",
+      "XAR_ENABLE_REFILL_CARRIER_THREAD_DISCOVERY_12004": "ON",
+      "XAR_ENABLE_REFILL_V5_COLD_PROBE_12004": "ON"
+    },
+    "outputs": [
+      {
+        "target": "refill_v5_cold_target_12004",
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+        "bytes": 66048,
+        "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521"
+      },
+      {
+        "target": "refill_v5_cold_observer_12004",
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+        "bytes": 156672,
+        "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d"
+      }
+    ],
+    "original_snapshot_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "original_snapshot_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 8115,
+      "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+    },
+    "actual_clean_invocation_HEAD": "31ff77a0f07fb21f528c88e56314cbb093972703",
+    "current_canonical_thirteen_input_equivalence": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "bytes": 15980,
+      "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+    }
+  },
+  "worker_focused_cold": {
+    "path": "C:\\w\\e04a41\\refill-worker-cold-evidence-a01\\FOCUSED-WORKER-COLD.actual.json",
+    "bytes": 12026,
+    "sha256": "ae0c1adf969e4a271edc52e1376d1eeb5d9252098fcd83bfa32247edf584f80d"
+  },
+  "worker_execution_phases": {
+    "path": "C:\\w\\e04a41\\A41-WORKER-PHASES-COMPLETED.actual-a01.json",
+    "bytes": 4569,
+    "sha256": "3167dd78655cbe0758db2906da3a12bad698a48d98cf0d92c66b210a077ab683"
+  },
+  "selected_actual_counts": {
+    "production_original_compile_targets": 3,
+    "relocated_EXEs": 3,
+    "new_live_worker_build_targets": 1,
+    "new_V5_build_targets": 2,
+    "new_exact_SYSTEM_EXEs": 6,
+    "UI_cold_cases": 1,
+    "V5_owned_cold_cases": 2
+  },
+  "fixed_protocol_growth_actual_contract_derived_bytes": 1003300,
+  "fixed_protocol_conservative_charge_bytes": 33554432,
+  "protocol_growth_by_actual_request": [
+    {
+      "request_id": "08abb280-0b8d-4131-8565-7d2face2678f",
+      "actual_raw_request_bytes": 4459,
+      "actual_protected_result_bytes": 382372,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 391566,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\protected-worker-receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      }
+    },
+    {
+      "request_id": "dc57c953-a27c-477c-bdff-0162a1d50cc8",
+      "actual_raw_request_bytes": 2819,
+      "actual_protected_result_bytes": 270898,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 276812,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\broker-proof-c5c5c8779c074a80acace92a7c17047b\\protected-worker-receipt.json",
+        "bytes": 270898,
+        "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+      }
+    },
+    {
+      "request_id": "ac28ace4-e062-4ccc-bc1e-29b873838e13",
+      "actual_raw_request_bytes": 4051,
+      "actual_protected_result_bytes": 326544,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 334922,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\protected-worker-receipt.json",
+        "bytes": 326544,
+        "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+      }
+    }
+  ],
+  "native_root_logical_bytes_observed_before_this_receipt": 28453666,
+  "native_root_peak_bytes_known": 30569211,
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a04.json",
+    "bytes": 58499,
+    "sha256": "e0497d35bbc2fb3baea252161c31d6917f940f67ff0534517a4e43f9578e54a2"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+    "bytes": 13370,
+    "sha256": "9b2425d8db39fe97a367cf9ed7d6bd253e165e3cb4a952a71ee1486d76b0a426"
+  },
+  "historical_a40_OS1223_and_closed_incomplete_attempt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-INCOMPLETE-ATTEMPT-CLOSURE.actual-a01.json",
+    "bytes": 12374,
+    "sha256": "f00c9d4f73aba8135d760f0a8ebd95dd24fe4090c1e8f32eedd23fa76415d3d7"
+  },
+  "a41_first_prefile_failure_preserved": {
+    "path": "C:\\w\\e04a41\\A41-MAIN-EXECUTOR-FAILURE.actual-a01.json",
+    "bytes": 838,
+    "sha256": "b4160317181e40655eac14235dd15eef533eb99354026ea27f616364b3733ded"
+  },
+  "readonly_API_diagnosis": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-READONLY-NATIVE-LEASE-DIAGNOSIS.actual-a01.json",
+    "bytes": 1487,
+    "sha256": "a27e5cdf0a0d154b107cdcc3b92b93fcb259e9f3dc0eb0127d5c538dc63fd54e"
+  },
+  "scope_limits": [
+    "No new main compilation is claimed; original source93 and exact relocation are distinct actual layers.",
+    "Existing snapshotfd5 is source-only input, exact current13 equality; no a37 Q, result or capacity reused.",
+    "UI and owned V5 finite evidence only; no CK3 live ADD, SDK, game, screen, external process DR or global business qualification.",
+    "Installed policy/runtime/task/action/ACL unchanged; ordinary fixed SYSTEM registration only, no runas/UAC."
+  ],
+  "remaining_heavy_write_bytes": 0,
+  "game_or_SDK_or_screen_or_live_observer_executed": false
+}

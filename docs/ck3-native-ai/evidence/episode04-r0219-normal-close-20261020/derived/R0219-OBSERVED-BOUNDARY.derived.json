@@ -1,0 +1,119 @@
+{
+  "schema": "xar.e04.r0219.observed-boundary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T10:28:08.850388+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0219",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "runtime_source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "source_report": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0219\\native-report.json",
+    "bytes": 14615145,
+    "sha256": "ea1cb817d6265da4185974ed8db94f4eb020fb55c5499aa30af1e3b00e24f836",
+    "mtime_ns": 1792491549739639300
+  },
+  "first_case_snapshot": {
+    "started_at": "2026-10-20T09:58:04.605022+00:00",
+    "finished_at": "2026-10-20T09:58:04.837246+00:00"
+  },
+  "hold_began_derived_from_original_3600_budget": "2026-10-20T09:58:00.467225+00:00",
+  "Root_observed_MapReady_utc": "2026-10-20T09:58:01Z",
+  "Root_MapReady_observation_source": "Root live task instruction; first snapshot original row separately pinned",
+  "immutable_capacity_deadline_utc": "2026-10-20T10:30:00Z",
+  "required_MapReady_room_seconds": 2100,
+  "latest_admissible_MapReady_utc": "2026-10-20T09:55:00Z",
+  "case_error": "ValueError: R06 MapReady lacks original 2100-second room",
+  "R06_try_finally_entered": false,
+  "R06_worker_started": false,
+  "R06_camera_started": false,
+  "actual_days": 0,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false,
+  "business_pass": false,
+  "formal_dynamic_passed": 0,
+  "formal_dynamic_total": 11,
+  "normal_close_qualified": true,
+  "actual_retained_OS0": true,
+  "actual_native0": true,
+  "host_original_wait0": true,
+  "public_run_original_wait2": true,
+  "keeper_original_wait0": true,
+  "allocator_original_wait0": true,
+  "CAS": {
+    "expected": 7395,
+    "actual": 7396,
+    "state": "done",
+    "resources": []
+  },
+  "all_sampling_OFF_clear": true,
+  "normal_Save": {
+    "status": "saved",
+    "episode_projection": "native_campaign",
+    "date_raw": 53149056,
+    "independent_after_date_raw": 53149056,
+    "driver_state_replace": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "unconfirmed",
+      "write_replace_returned": true,
+      "save_binding_verified": false,
+      "reason": "save_binding_mismatch",
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0219",
+        "bridge_pid": 9956,
+        "episode_character_id": null,
+        "episode_run_id": null,
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "rogue_one_life",
+          "xar_enabled": "xar_on",
+          "pact_contract": "terminal_settlement_required",
+          "source": "legacy-driver-default",
+          "environment_sha256": null
+        },
+        "campaign_goal": null
+      },
+      "binding_contract": "one_life_episode_identity_v1",
+      "checkpoint_episode_projection": "native_campaign",
+      "missing_checkpoint_binding_fields": [
+        "episode_character_id",
+        "episode_run_id"
+      ],
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0219",
+        "bridge_pid": 9956,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "save_history_index": 8,
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 74272517,
+        "sha256": "b9b940458bf4ab362838b64d70dd5302cbe186765dca36cfef5996352ea28fb9",
+        "date_raw": 53149056,
+        "overwrite_confirmed": false,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 8,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "encoded_history_rows": 8,
+      "driver_state_path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a03\\state-a02\\native-session\\driver-state.json"
+    },
+    "one_life_qualified": false
+  },
+  "progress": {
+    "research": "10/14 (71.4%)",
+    "business": "7/11 (63.6%)",
+    "dynamic": "0/11",
+    "ABC": "0/3"
+  },
+  "R12_visual_asset": "Separately reviewed [0,34) second material; no credit added by R0219 closure",
+  "next_finite_scene_admitted": false,
+  "prior_run_replay_allowed": false,
+  "allocator_source_sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8",
+  "metadata_correction": "source_head now identifies the actual Git commit; allocator file SHA separately labelled. Initial derived candidate preserved outside final package."
+}

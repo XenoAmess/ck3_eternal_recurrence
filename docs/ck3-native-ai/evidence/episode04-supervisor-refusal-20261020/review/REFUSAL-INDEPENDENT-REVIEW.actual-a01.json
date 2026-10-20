@@ -1,0 +1,172 @@
+{
+  "schema": "xar.e04.supervisor-refusal-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:36:16.815974+00:00",
+  "reviewer": "/root/native_prepare",
+  "status": "PASS_SELECTED_ADMINISTRATIVE_REFUSAL_CONTRACT",
+  "findings": [],
+  "source_observation": {
+    "head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "git_status_short": "M .github/workflows/static-ci.yml\n M tools/ck3_mod_acceptance_allocate.py\n?? tools/ck3_mod_acceptance_supervisor_refusal.py\n?? tools/test_ck3_mod_acceptance_supervisor_refusal.py",
+    "source_files": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+        "bytes": 19615,
+        "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 147469,
+        "sha256": "f0360257a3a85c0f886b9b86f74b7c13368bac85b0f9f3ebb32435edca246df8"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_supervisor_refusal.py",
+        "bytes": 21734,
+        "sha256": "c93eecba3fe3e15780760ee0feaff015a9e2106af92a9e50de52cba96859f6d7"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+        "bytes": 65105,
+        "sha256": "8a4bc9ef127fad92c5be8ffe7275ac72070ec64046ecbdcb9e0e91708f100792"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher.py",
+        "bytes": 17792,
+        "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_r06_scope.py",
+        "bytes": 19716,
+        "sha256": "79046d91ca51c66028bd28465cfab3be87be09da5fc0d3141d4e53679192f4fc"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_live_run_id.py",
+        "bytes": 18126,
+        "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+      }
+    ],
+    "git_diff_check_exit_code": 0
+  },
+  "evidence": {
+    "focused_tests": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\TEST-RESULT.actual.json",
+      "bytes": 2695,
+      "sha256": "ff2dcc18d64395be53841b6b4094b855ea1e15111b2a5fdf4a078cd141030e3c"
+    },
+    "focused_tests_stderr": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\test-stderr.log",
+      "bytes": 2214,
+      "sha256": "8a21592b1cdf9f5780396ad7fb3ba36d7a11ae4e36325e9d5765a3d0e057fa93"
+    },
+    "focused_runner": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\run_focused_tests.py",
+      "bytes": 2826,
+      "sha256": "6f058cd9b2e0c14e529a11fb4b7d0aaa12becee57300dcdebdb33a3002ef766f"
+    },
+    "actual_builder_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1782,
+      "sha256": "721a51e6d5529e733d006e1c6fdf8a230f83b3d774bbcca9ff5521331ae6e6a1"
+    },
+    "actual_builder_validation": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\stdout.log",
+      "bytes": 9716,
+      "sha256": "90870ea735d2645dcd1b7c4da8f0390de9457cb21ad1d3ad1803722d575ba066"
+    },
+    "actual_bundle": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\supervisor-refusal-fix-a01\\builder-exec-a01\\SUPERVISOR-ADMISSION-REFUSED.actual.json",
+      "bytes": 4225,
+      "sha256": "b2633e79daadf1f0cc6a6b7dc52034ca50b2053e6c137c19a41c3a1532984809"
+    },
+    "original_public_run_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\run-exec-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1271,
+      "sha256": "8466b65c33d5d9804bc46e9f1e434ca900c05c231a9cdc0a2bffddb0db3f5dc7"
+    },
+    "original_supervisor_stderr": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-stderr.log",
+      "bytes": 137,
+      "sha256": "e5b5e14c9c8b7ba34acb67b373ca31b144fa0b99a2a70eaebf1915e36037d990"
+    },
+    "original_supervisor_started": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\host-supervisor-started.json",
+      "bytes": 955,
+      "sha256": "109fa34dc61c9b95dba0bdfa35ab7fce489056a3b3263e0a9ac5c8dd16115f07"
+    },
+    "original_frozen": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\frozen-argv.json",
+      "bytes": 33778,
+      "sha256": "33d9fbb32b5f7e96b357879e74b8936cf48fee87c85d919b19c6d61abbbf826b"
+    },
+    "original_keeper_parent_wait": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0218\\keeper-actual-parent-exit.json",
+      "bytes": 598,
+      "sha256": "a055875416757dce7597bd9e43d839d2607a0ea49fa82638e013e6a863412ff3"
+    },
+    "original_CAS_release": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a02\\SCREEN-RELEASE.actual-a01.json",
+      "bytes": 1281,
+      "sha256": "fa1883d38e224c1dc71134fa8270c21d458c3c0dd47a6c6c862bbf98ae386406"
+    }
+  },
+  "checks": [
+    {
+      "claim": "Original supervisor wait remains unavailable",
+      "result": "PASS",
+      "details": "Module lines 66-70 and 266-268 require false/None. PID absence at 255-259 proves present resource closure only. Original supervisor PID 8484 has no retained creation time or original wait receipt; no exit code is inferred."
+    },
+    {
+      "claim": "Known exception occurs before retain_host",
+      "result": "PASS",
+      "details": "Exact original/frozen launcher SHA 7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b independently read. recent lines 23-28 uniquely raises this exact stale message. supervise line 225 calls admission; retain_host is only called at 226. Original stderr is the exact BLOCKED object, not an arbitrary matching substring."
+    },
+    {
+      "claim": "Actual freshness boundary is supported",
+      "result": "PASS",
+      "details": "Original frame captured 09:00:20.551675Z; public run began 09:10:17.554051Z; supervisor started 09:10:21.354925Z. The candidate requires first-start age <=600s and a supervisor-start age >600s, preserving the original refusal rather than replaying it."
+    },
+    {
+      "claim": "Host/native/game/control closure remains administrative",
+      "result": "PASS",
+      "details": "Checks all named and wildcard host/native outputs, empty controls and prepared profile logs/save games/run. Fresh census in actual builder scanned 229 processes with blockers []; it covers this frozen Python host entry and managed native injector/watchdog/CK3 scope. The original closure text alone is not presented as a retained historical process census. No game, normal exit, or business credit is granted."
+    },
+    {
+      "claim": "Machine, full counter, waits and CAS guards remain strict",
+      "result": "PASS",
+      "details": "Module validates current machine and exact default counter namespace plus full formatted run ID, original public run wait2, allocator wait0, keeper parent wait0/report, original CAS7358 completion and current released task. Only the new dispatch branch was added in allocator; claim_machine_admission and actual ID allocation remain unchanged."
+    },
+    {
+      "claim": "Focused negative and full-route tests are meaningful",
+      "result": "PASS",
+      "details": "Read final 15 tests and actual return0 receipt/stderr (5.906s). Tests exercise the real public allocation route, machine chain and isolated counter while substituting OS/keeper boundaries; later real counter and later machine admission independently reject. Tests reject unknown public wait, invented supervisor wait, other machine/exception, live runtime/host artifacts, active screen and changed original pin. Originals remain byte-identical after the synthetic successor allocation."
+    },
+    {
+      "claim": "Original case evidence is not rewritten",
+      "result": "PASS",
+      "details": "Validator only reads originals; builder writes an exclusive new bundle and returns separate validation. Allocation copies predecessor evidence into a fresh successor and intentionally does not freeze the mutable counter as a future immutable input. The module is not a launch/replay path."
+    }
+  ],
+  "review_scope": {
+    "read_only_source_and_original_metadata": true,
+    "reviewer_reran_tests": false,
+    "test_evidence_consumed": "Original focused receipt and stderr, source pins independently matched",
+    "source_changed_by_reviewer": false,
+    "game_SDK_build_screen_or_EXE_started_by_reviewer": false,
+    "large_inputs_or_binary_hashes_read": false,
+    "native_Cw_root_writes": false,
+    "qualifies_business_or_live_R06": false,
+    "latest_counter_relaxation_allowed": false,
+    "limitations": [
+      "The original supervisor exit status and creation time remain unknown.",
+      "Focused tests isolate IDs, machine/OS processes and screen boundaries; they do not claim a real successor run or gameplay.",
+      "This review approves only the exact pinned administrative predecessor contract; later source changes need their own review."
+    ]
+  },
+  "storage": {
+    "scope": "Existing shared128MiB, native-review-a01 <=128KiB",
+    "retention_reason": "Current source review and R0218 continuation proof",
+    "review_after_utc": "2026-10-27T10:30:00+00:00",
+    "remaining_heavy_write_bytes": 0
+  }
+}
