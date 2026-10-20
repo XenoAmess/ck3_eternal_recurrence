@@ -1778,11 +1778,12 @@ def allocate_and_keep(selection,args):
         allocated_unrun=failure_schema=='ck3-mod-acceptance-allocated-unrun-closure-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
         prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
+        supervisor_refused=failure_schema=='ck3-mod-acceptance-supervisor-admission-refused-closure-v1'
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
         expired_keeper=(failed_live and failure_bundle.get('closure_kind')=='expired-keeper-missing-final-report')
-        if allocated_unused or allocated_unrun or never_launched or prelaunch_host or pre_ready or failed_resource or failed_live:
+        if allocated_unused or allocated_unrun or never_launched or prelaunch_host or supervisor_refused or pre_ready or failed_resource or failed_live:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
@@ -1792,7 +1793,11 @@ def allocate_and_keep(selection,args):
         # The canonical bus event/task reconstruction is valid for a successful
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
-        if allocated_unrun:
+        if supervisor_refused:
+            from ck3_mod_acceptance_supervisor_refusal import validate_supervisor_refusal
+            session_closure=validate_supervisor_refusal(previous,freeze,failure_path,
+                            args.previous_keeper,release,bus_packet)
+        elif allocated_unrun:
             from ck3_mod_acceptance_unrun import validate_allocated_unrun
             session_closure=validate_allocated_unrun(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
