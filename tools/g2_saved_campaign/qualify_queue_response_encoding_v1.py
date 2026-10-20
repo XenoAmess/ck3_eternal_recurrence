@@ -9,6 +9,8 @@ from __future__ import annotations
 import argparse
 import ast
 import asyncio
+from copy import deepcopy
+from typing import TypedDict
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -22,12 +24,15 @@ from unittest import mock
 import uuid
 
 from owner_response_json_once_v1 import prepare_success_response_row_v1
-from owner_response_source_transform_v1 import transform_owner_source_v1
+from owner_response_contract_v1 import JsonObject
+from owner_response_source_transform_v1 import (
+    canonical_decoder_source_v1, transform_canonical_owner_source_v1, transform_owner_source_v1,
+)
 
 LIMIT = 1024 * 1024
 
 
-def selected(raw):
+def selected(raw: bytes) -> list[ast.stmt]:
     tree = ast.parse(raw.decode('utf-8-sig'))
     functions = [node for node in ast.walk(tree)
                  if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))]
@@ -40,7 +45,12 @@ def selected(raw):
     if {node.name for node in local} not in (
             {'atomic', 'decoded'}, {'atomic', 'atomic_payload_v1', 'decoded'}):
         raise ValueError('actual writer and decoder definitions required')
-    return local + calls
+    imports = [node for node in tree.body if isinstance(node, ast.ImportFrom)
+               and any(alias.asname == "_OwnerResponseJsonV1" for alias in node.names)]
+    result: list[ast.stmt] = list(imports)
+    result.extend(local)
+    result.extend(calls)
+    return result
 
 
 def preserved_ast(before, after):
@@ -73,16 +83,26 @@ def preserved_ast(before, after):
         raise AssertionError('actual relay, decoder, postverification or credits changed')
 
 
-async def exercise(raw, root, *, rpc_error=False, reject_after=False, existing=False):
+class ExcerptRunV1(TypedDict):
+    events: list[str]
+    calls: list[tuple[object, object, object]]
+    error: tuple[str, str] | None
+    response: bytes | None
+    credit: bool
+
+
+async def exercise(raw: bytes, root: Path, *, rpc_error: bool = False,
+                   reject_after: bool = False, existing: bool = False) -> ExcerptRunV1:
     for directory in (root, root / 'out', root / 'queue', root / 'p37-display-responses'):
         directory.mkdir(exist_ok=True)
     events, calls = [], []
     ticks = iter(100 + index * .25 for index in range(100))
-    complete = {'structured_content': {'status': 'executed', 'selected_step': 'fixture',
+    complete: JsonObject = {'structured_content': {'status': 'executed', 'selected_step': 'fixture',
         'result': {'status': 'completed', 'accepted': True, 'postcondition_verified': True,
             'date_raw': 53144328, 'query_sequence': 2**63 + 8, 'optional': None,
             'all_fields_retained': ['完整原生字段\n\\\"🪶', -0.0, False, -(2**63)]}},
-        'content': [{'type': 'text', 'text': '原始响应'}], 'is_error': False}
+        'content': [{'type': 'text', 'text': '原始响应'}], 'is_error': False,
+        'meta': None, 'result_type': 'complete'}
     scope = {'json': json, 'os': __import__('os'), 'uuid': uuid,
         'time': types.SimpleNamespace(monotonic=lambda: next(ticks), sleep=lambda _: None),
         'REPLY_RESERVE': LIMIT, 'N': root, 'Q': root / 'queue', 'OUTBOX': root / 'out',
@@ -94,7 +114,7 @@ async def exercise(raw, root, *, rpc_error=False, reject_after=False, existing=F
         'print': lambda *args, **kwargs: None}
     nodes = selected(raw)
     exec(compile(ast.Module(body=nodes, type_ignores=[]), '<exact-queue-excerpt>', 'exec'), scope)
-    call = next(node for node in nodes if node.name == 'call')
+    call = next(node for node in nodes if isinstance(node, ast.AsyncFunctionDef) and node.name == 'call')
     relay_imports = [node for node in ast.walk(call) if isinstance(node, ast.ImportFrom)
                      and any(name.name == 'relay_compact' for name in node.names)]
     if len(relay_imports) != 1:
@@ -109,7 +129,14 @@ async def exercise(raw, root, *, rpc_error=False, reject_after=False, existing=F
             events.append('call_tool')
             if rpc_error:
                 raise RuntimeError('synthetic unknown outcome')
-            return types.SimpleNamespace(model_dump=lambda **kwargs: complete)
+            def model_dump(**kwargs):
+                explicit = any(isinstance(node, ast.keyword) and node.arg == 'by_alias'
+                               for node in ast.walk(ast.parse(raw.decode('utf-8-sig'))))
+                expected = {'mode': 'json', 'by_alias': False} if explicit else {'mode': 'json'}
+                if kwargs != expected:
+                    raise AssertionError('explicit canonical dump contract')
+                return complete
+            return types.SimpleNamespace(model_dump=model_dump)
 
     class Owner:
         last_auto_observation = {'synthetic_only': True}
@@ -129,7 +156,7 @@ async def exercise(raw, root, *, rpc_error=False, reject_after=False, existing=F
     if existing:
         response.write_bytes(b'protected original')
     request = {'sequence': 7, 'tool': 'ck3_auto_turn', 'arguments': {}, 'source': 'qualification'}
-    error = None
+    error: tuple[str, str] | None = None
     with mock.patch.dict(sys.modules, {relay.__name__: relay}):
         try:
             await scope['call'](Owner(), Session(), request, Path('synthetic-request.json'))
@@ -201,7 +228,41 @@ def benchmark(size):
                                                for key, value in timings.items()}}
 
 
-def main():
+
+def canonical_preserved_ast_v1(before: bytes, after: bytes) -> None:
+    """Independently reverse only the two reviewed canonical AST changes."""
+    original = ast.parse(before.decode("utf-8-sig"))
+    normalized = ast.parse(after.decode("utf-8-sig"))
+    expected = ast.parse(canonical_decoder_source_v1())
+    old = [node for node in original.body if isinstance(node, ast.FunctionDef) and node.name == "decoded"]
+    new = [node for node in normalized.body if isinstance(node, ast.FunctionDef) and node.name == "decoded"]
+    if len(old) != 1 or len(new) != 1 or ast.dump(new[0]) != ast.dump(expected.body[-1]):
+        raise ValueError("only the reviewed canonical decoder is allowed")
+    imports = [node for node in normalized.body if ast.dump(node) == ast.dump(expected.body[0])]
+    if len(imports) != 1:
+        raise ValueError("one actual canonical type import required")
+    normalized.body.remove(imports[0])
+    normalized.body[normalized.body.index(new[0])] = deepcopy(old[0])
+    owners = [node for node in ast.walk(normalized)
+              if isinstance(node, ast.AsyncFunctionDef) and node.name == "call"
+              and any(isinstance(item, ast.Assign) and len(item.targets) == 1
+                      and isinstance(item.targets[0], ast.Name) and item.targets[0].id == "dumped"
+                      for item in ast.walk(node))]
+    if len(owners) != 1:
+        raise ValueError("one returned-result owner call required")
+    dumps = [node for node in ast.walk(owners[0]) if isinstance(node, ast.Call)
+             and isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name)
+             and node.func.value.id == "result" and node.func.attr == "model_dump"]
+    if len(dumps) != 1:
+        raise ValueError("one returned-result model dump required")
+    aliases = [kw for kw in dumps[0].keywords if kw.arg == "by_alias"]
+    if len(aliases) != 1 or ast.dump(aliases[0].value) != ast.dump(ast.Constant(value=False)):
+        raise ValueError("explicit canonical field names required")
+    dumps[0].keywords.remove(aliases[0])
+    if ast.dump(normalized) != ast.dump(original):
+        raise ValueError("an unrelated source AST changed")
+
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', required=True, type=Path)
     parser.add_argument('--source-sha256', required=True)
@@ -212,8 +273,11 @@ def main():
     if args.source.stat().st_size > LIMIT:
         raise ValueError('small queue source only')
     before = args.source.read_bytes()
-    after = transform_owner_source_v1(before, expected_source_sha256=args.source_sha256)
-    preserved_ast(before, after)
+    encoded = transform_owner_source_v1(before, expected_source_sha256=args.source_sha256)
+    preserved_ast(before, encoded)
+    after = transform_canonical_owner_source_v1(
+        encoded, expected_source_sha256=hashlib.sha256(encoded).hexdigest())
+    canonical_preserved_ast_v1(encoded, after)
     args.temporary_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='queue-encoding-', dir=args.temporary_root) as temporary:
         reports = qualify_calls(before, after, Path(temporary))
@@ -222,7 +286,9 @@ def main():
         'source': {'path': str(args.source.resolve()), 'bytes': len(before),
                    'sha256': hashlib.sha256(before).hexdigest()},
         'candidate_source': {'bytes': len(after), 'sha256': hashlib.sha256(after).hexdigest(),
-            'produced_by': 'owner_response_source_transform_v1.transform_owner_source_v1'},
+            'produced_by': 'owner_response_source_transform_v1.transform_canonical_owner_source_v1'},
+        'encoding_source': {'bytes': len(encoded), 'sha256': hashlib.sha256(encoded).hexdigest()},
+        'canonical_decoder_guarded': True, 'explicit_by_alias_false': True,
         'actual_source_excerpts': reports, 'unrelated_function_AST_unchanged': True,
         'post_result_tail_AST_unchanged': True,
         'benchmarks': [benchmark(4 * 1024**2), benchmark(16 * 1024**2)],

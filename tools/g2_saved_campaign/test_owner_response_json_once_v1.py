@@ -20,16 +20,23 @@ import types
 import unittest
 from unittest import mock
 import uuid
+from typing import TypedDict
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from owner_response_json_once_v1 import prepare_success_response_row_v1
-from owner_response_source_transform_v1 import transform_owner_source_v1
+from owner_response_contract_v1 import JsonObject
+from qualify_queue_response_encoding_v1 import canonical_preserved_ast_v1
+from owner_response_source_transform_v1 import (
+    canonical_decoder_source_v1, transform_canonical_owner_source_v1, transform_owner_source_v1,
+)
 
 SOURCE = HERE / "fixtures/owner_response_encoding_source.py"
 RAW = SOURCE.read_bytes()
 SHA = hashlib.sha256(RAW).hexdigest()
-NEW = transform_owner_source_v1(RAW, expected_source_sha256=SHA)
+ENCODED = transform_owner_source_v1(RAW, expected_source_sha256=SHA)
+NEW = transform_canonical_owner_source_v1(
+    ENCODED, expected_source_sha256=hashlib.sha256(ENCODED).hexdigest())
 MEASUREMENTS = []
 
 
@@ -38,13 +45,17 @@ def pin(path):
     return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
 
-def source_nodes(raw):
+def source_nodes(raw: bytes) -> list[ast.stmt]:
     tree = ast.parse(raw.decode("utf-8-sig"))
     names = {"atomic", "atomic_payload_v1", "decoded", "call"}
-    return [n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+    imports = [n for n in tree.body if isinstance(n, ast.ImportFrom)
+               and n.module == "owner_response_json_once_v1"]
+    result: list[ast.stmt] = list(imports)
+    result.extend(n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
             and n.name in names and (n.name != "call" or any(
                 isinstance(item, ast.Name) and item.id in {
-                    "dumped", "_owner_response_success_row_once_v1"} for item in ast.walk(n)))]
+                    "dumped", "_owner_response_success_row_once_v1"} for item in ast.walk(n))))
+    return result
 
 
 def make_globals(raw, root, events):
@@ -65,20 +76,32 @@ def make_globals(raw, root, events):
     return result
 
 
-def fixture_result():
+def fixture_result() -> JsonObject:
     return {"structured_content": {"status": "executed", "selected_step": "synthetic-hold",
         "result": {"accepted": True, "status": "completed", "postcondition_verified": True,
             "date_raw": 1000, "query_sequence": 2**63 + 8,
             "companies": [{"id": 0}, {"id": 0xffffffff}],
             "terms": [-(2**63), 2**63 - 1, 33_000_001], "readonly": False,
             "text": "完整原生字段，不能删减\n\\\"🪶", "optional": None}},
-        "content": [{"type": "text", "text": "已完成"}], "is_error": False}
+        "content": [{"type": "text", "text": "已完成"}], "is_error": False,
+        "meta": None, "result_type": "complete"}
 
 
-async def run_call(raw, root, *, rpc_error=False, reject_after=False, existing=False):
+class CallObservationV1(TypedDict):
+    events: list[str]
+    stats: dict[str, int]
+    error: tuple[str, str] | None
+    response: bytes | None
+    ordinary_credit: bool
+    original_result: JsonObject
+
+
+async def run_call(raw: bytes, root: Path, *, rpc_error: bool = False,
+                   reject_after: bool = False, existing: bool = False,
+                   sdk_result: JsonObject | None = None) -> CallObservationV1:
     events = []
     globals_ = make_globals(raw, root, events)
-    complete = fixture_result()
+    complete = fixture_result() if sdk_result is None else sdk_result
     stats = {"calls": 0, "full_result_encoding_traversals": 0}
     real_dumps = json.dumps
 
@@ -93,7 +116,12 @@ async def run_call(raw, root, *, rpc_error=False, reject_after=False, existing=F
             events.append("call_tool")
             if rpc_error:
                 raise RuntimeError("synthetic original outcome unknown")
-            return types.SimpleNamespace(model_dump=lambda **kw: complete)
+            def model_dump(**kwargs):
+                expected = {"mode": "json"} if raw == RAW else {"mode": "json", "by_alias": False}
+                if kwargs != expected:
+                    raise AssertionError("explicit canonical model dump contract")
+                return complete
+            return types.SimpleNamespace(model_dump=model_dump)
 
     class Owner:
         last_auto_observation = {"days": 1, "NativeACK": "synthetic-only"}
@@ -116,7 +144,7 @@ async def run_call(raw, root, *, rpc_error=False, reject_after=False, existing=F
         response.write_bytes(b"protected original")
     owner = Owner()
     request = {"sequence": 7, "tool": "ck3_auto_turn", "arguments": {}, "source": "synthetic"}
-    error = None
+    error: tuple[str, str] | None = None
     with (mock.patch.dict(sys.modules, {overlay.__name__: overlay}),
           mock.patch.object(json, "dumps", side_effect=observed_dumps)):
         try:
@@ -228,7 +256,7 @@ class OwnerResponseTests(unittest.TestCase):
             for n in ast.walk(tree):
                 if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     continue
-                if n.name in {"atomic", "atomic_payload_v1"}:
+                if n.name in {"atomic", "atomic_payload_v1", "decoded"}:
                     continue
                 if n.name == "call" and any(isinstance(item, ast.Name) and item.id == "dumped"
                                              for item in ast.walk(n)):
@@ -236,8 +264,8 @@ class OwnerResponseTests(unittest.TestCase):
                 result.setdefault(n.name, []).append(ast.dump(n))
             return result
         self.assertEqual(functions(before), functions(after))
-        old_call = next(n for n in source_nodes(RAW) if n.name == "call")
-        new_call = next(n for n in source_nodes(NEW) if n.name == "call")
+        old_call = next(n for n in source_nodes(RAW) if isinstance(n, ast.AsyncFunctionDef) and n.name == "call")
+        new_call = next(n for n in source_nodes(NEW) if isinstance(n, ast.AsyncFunctionDef) and n.name == "call")
         old_tail = next(i for i, n in enumerate(old_call.body)
             if isinstance(n, ast.Assign) and any(isinstance(t, ast.Attribute)
                 and t.attr == "current_attempt" for t in n.targets) and i > 1)
@@ -256,6 +284,53 @@ class OwnerResponseTests(unittest.TestCase):
             transform_owner_source_v1(changed, expected_source_sha256=hashlib.sha256(changed).hexdigest())
         with self.assertRaisesRegex(ValueError, "identifier required"):
             transform_owner_source_v1(RAW, expected_source_sha256=SHA, helper_module="os; bad")
+
+    def test_canonical_decoder_and_explicit_dump_are_the_only_new_seams(self) -> None:
+        tree = ast.parse(NEW.decode("utf-8-sig"))
+        expected = ast.parse(canonical_decoder_source_v1())
+        actual = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "decoded")
+        self.assertEqual(ast.dump(actual), ast.dump(expected.body[-1]))
+        dumps = [n for n in ast.walk(tree) if isinstance(n, ast.Call)
+                 and isinstance(n.func, ast.Attribute) and n.func.attr == "model_dump"]
+        self.assertEqual(len(dumps), 1)
+        self.assertEqual(ast.dump(dumps[0]),
+                         ast.dump(ast.parse("result.model_dump(mode='json', by_alias=False)", mode="eval").body))
+        with self.assertRaises(ValueError):
+            transform_canonical_owner_source_v1(NEW, expected_source_sha256=hashlib.sha256(NEW).hexdigest())
+        for bad in (ENCODED + b"\ndef decoded(row): return row\n",
+                    ENCODED.replace(b"SDK error;", b"foreign error;", 1),
+                    ENCODED + b"\nJsonValue = 1\n"):
+            with self.assertRaises(ValueError):
+                transform_canonical_owner_source_v1(bad, expected_source_sha256=hashlib.sha256(bad).hexdigest())
+
+    def test_returned_failures_persist_once_before_canonical_refusal(self) -> None:
+        cases = []
+        for change in ({"is_error": True}, {"is_error": 0}, {"is_error": None},
+                       {"result_type": "input_required"}, {"isError": False}):
+            cases.append({**fixture_result(), **change})
+        missing = fixture_result()
+        del missing["result_type"]
+        cases.append(missing)
+        for index, wire in enumerate(cases):
+            # Bound each physical fixture independently, including cleanup.
+            with tempfile.TemporaryDirectory() as name:
+                result = asyncio.run(run_call(NEW, Path(name) / "new", sdk_result=wire))
+                row = json.loads(result["response"])
+                self.assertEqual(row["result"], wire)
+                self.assertNotIn("client_error", row)
+                self.assertNotIn("error", row)
+                self.assertEqual(result["stats"]["calls"], 1)
+                self.assertNotIn("check_after", result["events"])
+                self.assertFalse(result["ordinary_credit"])
+                self.assertIsNotNone(result["error"])
+
+    def test_canonical_qualifier_limits_dump_guard_to_actual_owner(self) -> None:
+        original = RAW + b"\ndef unrelated(result):\n    return result.model_dump(mode='json')\n"
+        encoded = transform_owner_source_v1(original, expected_source_sha256=hashlib.sha256(original).hexdigest())
+        canonical = transform_canonical_owner_source_v1(encoded, expected_source_sha256=hashlib.sha256(encoded).hexdigest())
+        canonical_preserved_ast_v1(encoded, canonical)
+        with self.assertRaises(ValueError):
+            canonical_preserved_ast_v1(encoded, canonical + b"\nUNREVIEWED = True\n")
 
 
 if __name__ == "__main__":
