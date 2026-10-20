@@ -6,10 +6,10 @@
 
 | 用户问题 | 当前实际状态 |
 | --- | --- |
-| G2八个M | **6/8**；M6仍缺同实例自然终态和更后普通消费；M7实际H及原广度未闭。 |
+| G2八个M | **6/8**；M6仍缺同实例自然终态和更后普通消费；M7已有下述自然H正见证，原广度未闭。 |
 | 1秒／日优化 | **未达成**。原全墙钟已超过24小时，即余下游戏日瞬时完成，10950日整场均值也大于7.89秒／日。后继FULL单独测完整wall，原维护时间继续计入。 |
-| 30年 | **5429/10950日，49.58%，剩5521日**；4753完整周期、SAVE10480；06:30Z实际SEM消费后NEXT10482。原raw53144328→53407128及campaign不变。 |
-| 决策能力提升 | 已有自然继承子链和具名Sway收益；终态、实际H、完整战争与跨政府广度仍有缺口。新Source26的M6/M7、战时护资、持久化及启动等待只保持各自源码／离线资格。 |
+| 30年 | **5430/10950日，剩5520日**；已结算4760周期，raw53274648；SAVE10480仍为5429日。07:49:45Z新FULL10497遇原生clock未停止错误；不重发AUTO10501，正在恢复。原T0、终点及campaign不变。 |
+| 决策能力提升 | 已有自然继承子链、具名Sway收益及本场实际H；M6终态、完整战争与跨政府广度仍有缺口。Source26已在下述A08运行，不能把源码改善直接换算成业务或性能验收。 |
 
 Source25 `9b791aae`已规范提交、双导出。04:44Z Root完成Source26唯一writer：commit `394865df3259be5db29014ab1d17db7bdd48c21d`，anchor `_runtime/source26-integration17/SOURCE26-CANONICAL-ANCHOR.json`为7045 B／SHA `d2bf903d4a0f18cc819721451d42e390a58529f76a19ad2df301e85df5b78e85`。04:46:38Z双generic export实际完成，各1462行／59253402 B；COMPLETE为2427 B／`3f8a95a08790e0e2168f64547192b4fc9937a3fa0809536daf5f662c86673cc8`。policy-free BASE为389934 B／`30ba9778f6d4be917d29f1ab9a2a2b2aa414f5fedbfa03cdb7a8a9bebebd0517`，保留native历史三方来源。A05 union首次完整RAM组合通过：119个unique输出、峰1781760 B低于4MiB；当时仅RAM，随后实际采用见下文。A03/A04失败没有新增游戏信用。
 
@@ -50,4 +50,18 @@ A07独立准备119输出；06:22:00Z新R0005监督Run，Game244624／FILETIME134
 原计分anchor、000至178月及cursor完整保留；后继A08准备同FileID目录关联。原SEM恢复合法追加Driver第5269行`restore-checkpoint`；保存描述和四sidecars不变。06:45Z原canonical cold validator实际通过新Driver，SHA`d8758d6913d915f2e29ffeb3d880db9f33706d36a5cd94898ac01d7e50b7b60c`；小复核`O/A08-POST-SEM-DRIVER-REVIEW02.json`8024 B／`1447501126fce982da6d11b2561ce4bd1cc504e18ee8b3b533e3bc3885ba2f4b`明确勘误01中误读history键的0，真实键为command_history。此时A08仍在准备，G2／天数／性能不增信用。
 
 CI补记：旧fef随后step100失败，已整改两份文档的禁用shell术语；exact`ff78f425`的[Official39375878467](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39375878467)与Linear均成功，87／100通过。远端runner仍`machine_id: unknown`；不外推其他head或实机资格。
+
+## 07:49Z A08实际续行
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，07:45Z重新读身份一致。A08的119输出、44源及89编译通过；state及campaign-score均关联原目录，不建立新锚点。Root亲审`O/steam-offline-a08-new06`新位移图的离线状态后07:09:40Z运行新监督Task；Game126468／FILETIME134369537928979603，SDK Queue25252／App265520。新录制job56877bbc-064d-4883-9085-820948bcd7d8，Root亲审保存地图、灰色实时文字及无旧蓝窗。完整Mod校验已在发布gate前实际通过；SEM10482、CAP10483及原冷绑定成功，新增信用0。
+
+FULL10484因动态分类器依赖缺失失败；原AUTO10495实际已推进1日。按有限卡补三份原件硬链接后，10496成功重消费原响应，明确新RPC0、原动作不重发。原feeder实际exit1／Job0并注销；新恢复启动器01的STOP名称又被bootstrap拒绝，未注册或Run，保留失败SPEC和资格。02仅修正停止标记前缀，12198 B／SHA`640d63dd091601da60460b3b84557229347393cd1cabbcd402103b8bf42c1ad3`；另补原allowlist及12handler硬链接。Root只读资格通过后，07:48:26Z唯一Run新Task`XARG2ManagedOwner-fd99801c440f485aa05e82f860cdeb21`，SPEC SHA`fafd14e50f68f071fa39d9a063866e5419cd9a45d8ec30a15ae9040172374fd8`。其原循环发布FULL10497，首MET10498实际确认53274648，结算继承的1日；窗口2、T0、终点和全部原墙钟不变。原SAVE及所有失败证据保留，不把这1日计作新owner产生的日期。
+
+M7新增当前原局候选投影的实际H观察：H5274／query2，native:1/public2/native1，raw53274624；候选40695存活，House/D0均174，原actor40526／founder31254／episode绑定，Core前后相同且非fixture。Game精确birth、DLL及31叶实际source epoch绑定；k=1、H区间[70,100]，b及完整备用域未知。保全`U8/a05-offline-evidence/m7/ROOT-FIRST-NATURAL-H-WAL01.json`42506 B／`a7f9ec3a0462a61846185a52334d2010e28652ca2ccec22050c2f45aae176c84`和`ROOT-FIRST-NATURAL-H-EXTENT01.json`1623 B／`db5615ae8c28f1e2985b355fed01d826dd00fcc5d991992c8ab272f52f25c678`。M7多seed／政体等广度仍缺，不能改为完成。
+
+失败FULL10484的6 AUTO＋5 MET并集13.5201秒，缺完整FULL墙钟，不计算整批吞吐。10495 clock4.3919秒，其中resume到首见目标日3.8179秒；原生触发时刻未知，不能当CPU瓶颈。新MET10498耗时17.4856秒；后继性能保留完整wall并分列继承日。1秒／日仍未达。
+
+容量按同一通用策略手工复核至10:30Z；A08恢复联合256KiB从原first64未来额度内划分，不增加global。原source01资格把逻辑长度误名为allocation，原件不覆盖；新admission追加Win32 FileStandardInfo更正：source12288、proof4096 B。07:47Z新增事件batch为0，离线分析输出亦为0，不制造空事件记录。
+
+当前exact`17bd4cdf`的Linear成功；[Official39382593386](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39382593386/job/118494880919#step:87:1)在step87因新Mecca adapter硬编码运行目录失败，已并行窄修；不声称此head双绿。CI runner `machine_id: unknown`。
 

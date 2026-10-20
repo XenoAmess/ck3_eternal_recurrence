@@ -10,9 +10,8 @@ from ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter import require_root_v
 
 CASE='faith-engine-e02-mecca26-knight-controlled-v1'
 PRODUCT='faith-engine'
-INTENT_LEDGER=Path('C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b15-a01/a1-intent-ledger')
-PROTECTED27={'path':str(INTENT_LEDGER/'3ad4993037a85b2c10e268825adc15db107b8139fc543db5775a110177ca20fe.intent.json'),
-    'bytes':1726,'sha256':'2b56aa5ac1c7704f6d73f1e031ad6ed78bfad7fd30b2bdae8ca8665b5e6d3d65'}
+PROTECTED27_NAME='3ad4993037a85b2c10e268825adc15db107b8139fc543db5775a110177ca20fe.intent.json'
+PROTECTED27={'bytes':1726,'sha256':'2b56aa5ac1c7704f6d73f1e031ad6ed78bfad7fd30b2bdae8ca8665b5e6d3d65'}
 SAVE={'bytes':50210503,'sha256':'7bd48c5eb8c51a24badd02ba57cb030dba3526da4483479ae9adc231cea7ea7e','player_id':15893,'date_raw':51394920}
 EXE='98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518'
 MAX_CALLS=88
@@ -65,9 +64,10 @@ def validate_contract(context):
     ledger=Path(c.get('intent_ledger_root',''))
     require(ledger.is_absolute() and c.get('intent_ledger_root')==context.get('case_inputs',{}).get('intent_ledger_root'),'Stable explicit cross-run intent ledger required')
     protected=c.get('protected_demote27_intent')
-    require(type(protected) is dict and protected==PROTECTED27 and pin(protected['path'])==protected,'Original consumed27 intent pin required')
+    require(type(protected) is dict and protected=={'path':str(ledger.resolve()/PROTECTED27_NAME),**PROTECTED27}
+        and pin(protected['path'])==protected,'Original consumed27 intent pin required')
     protected_path=Path(protected['path']).resolve()
-    require(protected_path.parent==ledger.resolve()==INTENT_LEDGER.resolve() and not ledger.is_symlink(),'Reuse the original retained ledger root, not a fresh directory')
+    require(protected_path.parent==ledger.resolve() and not ledger.is_symlink(),'Reuse the original retained ledger root, not a fresh directory')
     old=read(protected_path);old_scope=old.get('scope',{})
     require(old_scope=={'machine_id':c['machine_id'],'saved_sha256':SAVE['sha256'],'date_raw':SAVE['date_raw'],
         'played_character_id':SAVE['player_id'],'action':'demote','holy_site_id':27},'Protected original27 scope differs')

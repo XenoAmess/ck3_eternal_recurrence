@@ -135,9 +135,9 @@ class MeccaConsumers(unittest.TestCase):
   cls.temp=tempfile.TemporaryDirectory(prefix='MECCA-authored-',dir=Path(os.environ.get('XAR_CASE_TEST_SCRATCH_ROOT',str(HERE.parent))));cls.work=Path(cls.temp.name)
   cls.image=cls.work/'AUTHORED-not-game.png';cls.image.write_bytes(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII='))
   cls.receipt=cls.work/'AUTHORED-cohort.json';cls.receipt.write_text('{"scope":"AUTHORED not native qualification"}',encoding='utf-8')
-  cls.original_constants=(A.INTENT_LEDGER,A.PROTECTED27)
+  cls.original_constants=A.PROTECTED27
  @classmethod
- def tearDownClass(cls):A.INTENT_LEDGER,A.PROTECTED27=cls.original_constants;cls.temp.cleanup()
+ def tearDownClass(cls):A.PROTECTED27=cls.original_constants;cls.temp.cleanup()
  def setUp(self):self.created=[]
  def tearDown(self):
   # Only this test's resolved owned fixture directories, never a live ledger.
@@ -153,12 +153,12 @@ class MeccaConsumers(unittest.TestCase):
    'played_character_id':A.SAVE['player_id'],'action':'demote','holy_site_id':27}
   protected=ledger/(A.digest(scope)+'.intent.json')
   if not protected.exists():protected.write_text(json.dumps({'scope':scope,'AUTHORED':True,'business_outcome_observed':False}),encoding='utf-8')
-  A.INTENT_LEDGER=ledger;A.PROTECTED27=A.pin(protected)
+  protected_pin=A.pin(protected);A.PROTECTED27={k:protected_pin[k]for k in ('bytes','sha256')}
   c={'schema':'faith-e02-mecca-knight-controlled-case-v1','case':A.CASE,'product':A.PRODUCT,'machine_id':'4-8e1c2f1861',
    'saved_input':{'save':'AUTHORED-not-restored.ck3',**A.SAVE},'scope':A.SCOPE,'profile':{'enabled_mods':[],'product_files':[]},'max_public_calls':A.MAX_CALLS,
    'dependencies':[A.pin(p)for p in (A.__file__,Q.__file__,A.shared_opening_binding.__code__.co_filename,A.require_root_visual_review.__code__.co_filename)],
    'native_cohort':{'dll_sha256':'a'*64,'qualification_receipt':A.pin(self.receipt)},'intent_ledger_root':str(ledger),
-   'protected_demote27_intent':A.PROTECTED27,'allow_natural_refresh':natural,'intent_review_after_utc':'2026-10-27T00:00:00Z'}
+   'protected_demote27_intent':protected_pin,'allow_natural_refresh':natural,'intent_review_after_utc':'2026-10-27T00:00:00Z'}
   return {'case_contract':c,'case_spec':{'required_mcp_tools':sorted(A.REQUIRED),'opt_in_read_only_mcp_tools':sorted(Q.READONLY),
    **{k:False for k in A.CLOSED},'whole_product_acceptance_credit':False,'business_contract_applicable':False,
    'budgets':{'hold_seconds':3600,'timeout':4500}},'product':A.PRODUCT,'case':A.CASE,'run_id':'AUTHORED-MECCA','output':str(out),
@@ -215,7 +215,7 @@ class MeccaConsumers(unittest.TestCase):
  def test_cannot_move_ledger_root_or_replace_original27_pin(self):
   context=self.context();moved=self.work/'wrong-ledger';moved.mkdir();context['case_contract']['intent_ledger_root']=str(moved);context['case_inputs']['intent_ledger_root']=str(moved)
   with self.assertRaises(ValueError):A.validate_contract(context)
-  context=self.context();context['case_contract']['protected_demote27_intent']={**A.PROTECTED27,'sha256':'b'*64}
+  context=self.context();context['case_contract']['protected_demote27_intent']['sha256']='b'*64
   with self.assertRaises(ValueError):A.validate_contract(context)
  def test_failed_fsync_retains_new26_claim_and_never_confirms(self):
   context=self.context();c=AuthoredPublicClient(self.image)
