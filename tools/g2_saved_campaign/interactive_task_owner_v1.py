@@ -19,6 +19,19 @@ import sys
 import time
 import uuid
 from datetime import datetime, timezone
+from typing import Literal, TypedDict
+
+OwnerRole = Literal["supervisor", "display_owner", "sdk_owner", "feeder", "native_build"]
+StageArgs = tuple[str, ...] | list[str]
+
+
+class PreparedOwnerReceiptV1(TypedDict):
+    machine_id: str
+    utc: str
+    spec: str
+    spec_sha256: str
+    task_name: str
+    registered: Literal[False]
 
 SCHEMA = "xar.interactive-task-owner/v1"
 ROLES = {"supervisor", "display_owner", "sdk_owner", "feeder", "native_build", "fixture"}
@@ -208,15 +221,51 @@ def require_caller(s, caller):
         raise ValueError("task caller must be the same user/session and actual base Python image")
 
 
-def prepare_spec(*, root, role, stage, stage_sha256, bootstrap_path, cwd,
-                 machine_id, stage_args=(), stop_path=None, pythonpath=None,
-                 admission_path=None, admission_sha256=None,
-                 enable_driver_state_wal=False):
+def prepare_spec(*, root: str | os.PathLike[str], role: OwnerRole,
+                 stage: str | os.PathLike[str], stage_sha256: str,
+                 bootstrap_path: str | os.PathLike[str], cwd: str | os.PathLike[str],
+                 machine_id: str, stage_args: StageArgs = (),
+                 stop_path: str | os.PathLike[str] | None = None,
+                 pythonpath: str | None = None,
+                 admission_path: str | os.PathLike[str] | None = None,
+                 admission_sha256: str | None = None,
+                 enable_driver_state_wal: bool = False) -> PreparedOwnerReceiptV1:
     """Create one stage spec only; does not contact/register Task Scheduler.
 
     Production bootstrap must be an independently admitted frozen source copy,
     so its lifetime read lease never locks the mutable repository source.
     """
+    # Production callers also load this file by an arbitrary importlib name.
+    # Resolve the exact sibling source instead of depending on their sys.path.
+    import importlib.util
+    contract_path = Path(__file__).resolve().with_name("owner_prepare_contract_v1.py")
+    contract_digest = "3d19624797c122960e52266a8bd5c89c6786cf3dfbdcdf0521e77228bcbb6c92"
+    with contract_path.open("rb") as contract_file:
+        contract_raw = contract_file.read(2616)
+    if len(contract_raw) != 2615 or hashlib.sha256(contract_raw).hexdigest() != contract_digest:
+        raise ValueError("owner preparation contract source SHA differs")
+    contract_name = "_xar_owner_prepare_contract_" + contract_digest
+    contract = sys.modules.get(contract_name)
+    if contract is None:
+        contract_spec = importlib.util.spec_from_file_location(contract_name, contract_path)
+        if contract_spec is None or contract_spec.loader is None:
+            raise ValueError("owner preparation contract loader unavailable")
+        contract = importlib.util.module_from_spec(contract_spec)
+        sys.modules[contract_name] = contract
+        try:
+            # Compile the already verified bytes; never create an import cache.
+            exec(compile(contract_raw, str(contract_path), "exec"), contract.__dict__)
+        except BaseException:
+            sys.modules.pop(contract_name, None)
+            raise
+    elif (not isinstance(getattr(contract, "__file__", None), str)
+          or Path(contract.__file__).resolve() != contract_path):
+        raise ValueError("owner preparation contract module belongs to another source")
+    inputs = contract.validate_owner_prepare_inputs_v1(machine_id=machine_id, role=role,
+        stage_args=stage_args, pythonpath=pythonpath,
+        enable_driver_state_wal=enable_driver_state_wal)
+    machine_id, role, stage_args = inputs.machine_id, inputs.role, inputs.stage_args
+    pythonpath, enable_driver_state_wal = inputs.pythonpath, inputs.enable_driver_state_wal
     root, stage, boot = Path(root).resolve(), Path(stage).resolve(), Path(bootstrap_path).resolve()
     if role not in ROLES - {"fixture"} or sha(stage) != stage_sha256:
         raise ValueError("exact admitted production role/stage source required")

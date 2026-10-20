@@ -164,6 +164,23 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Install configured type checker
+        run: |
+          python -B -X utf8 -c "import pathlib, subprocess, sys, tomllib; requirements = tomllib.loads(pathlib.Path('ck3_autonomous_player/pyproject.toml').read_text(encoding='utf-8-sig'))['project']['optional-dependencies']['typecheck']; subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-cache-dir', *requirements], check=True)"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Check strict cold and owner types and boundary contracts
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools;${{ github.workspace }}\tools\g2_saved_campaign
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -B -m mypy --config-file ck3_autonomous_player/pyproject.toml --no-incremental --cache-dir "%RUNNER_TEMP%\mypy-cold-owner"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_cold_checkpoint_type_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/g2_saved_campaign/test_owner_prepare_contract_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_driver_state_wal_diagnostics.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test succession refresh after an SDK publication revision reset without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py
       - name: Test retained named Sway gain and independent consumption without CK3

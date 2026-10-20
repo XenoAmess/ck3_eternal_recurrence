@@ -20,6 +20,7 @@ import time
 from typing import Callable, Iterator, TextIO
 
 from .bridge.session_queue import PersistentSessionQueue, SessionQueueRequest
+from .cold_checkpoint_validator import ColdCheckpointAnchorV1
 from .environment import EnvironmentSpec, ensure_state_path_safe, write_json_atomic
 from .errors import AgentError
 from .locking import exclusive_launch_lock, exclusive_state_lock
@@ -1737,14 +1738,14 @@ def _validate_start_next_episode_request(
 
 def _validate_cold_start_checkpoint(
     spec: EnvironmentSpec, config: NativeBridgeLaunchConfig
-) -> dict[str, object]:
+) -> ColdCheckpointAnchorV1:
     """Resolve the exact v2 checkpoint selected by an explicit cold start."""
     return validate_cold_start_checkpoint_for_pipe(spec, config.pipe_name)
 
 
 def validate_cold_start_checkpoint_for_pipe(
     spec: EnvironmentSpec, pipe_name: str
-) -> dict[str, object]:
+) -> ColdCheckpointAnchorV1:
     """Resolve a v2 checkpoint without requiring a bridge binary.
 
     The driver-state pipe remains part of the immutable checkpoint anchor.  A
