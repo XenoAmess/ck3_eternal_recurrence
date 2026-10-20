@@ -177,6 +177,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_cold_checkpoint_type_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_driver_resume_type_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/g2_saved_campaign/test_owner_prepare_contract_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_driver_state_wal_diagnostics.py

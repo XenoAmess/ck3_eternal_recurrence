@@ -74,6 +74,28 @@ def checked_spec(path, expected_sha):
     if sha(path) != expected_sha:
         raise ValueError("owner spec SHA differs")
     s = read(path)
+    if not isinstance(s, dict):
+        raise ValueError("owner spec must be a JSON object")
+    machine_id = s.get("machine_id")
+    if not isinstance(machine_id, str) or not machine_id.strip() or "\0" in machine_id:
+        raise ValueError("owner machine_id must be a nonempty string without NUL")
+
+    class FileIdentityV1(TypedDict):
+        volume_serial: str
+        file_id: str
+
+    def require_file_identity(value: object, name: str) -> FileIdentityV1:
+        if not isinstance(value, dict) or set(value) != {"volume_serial", "file_id"}:
+            raise ValueError("exact interpreter FileID required: " + name)
+        volume, identity = value["volume_serial"], value["file_id"]
+        if (not isinstance(volume, str)
+                or re.fullmatch(r"(?:0|[1-9][0-9]{0,19})", volume) is None
+                or int(volume) > 2**64 - 1
+                or not isinstance(identity, str)
+                or re.fullmatch(r"[0-9a-f]{32}", identity) is None):
+            raise ValueError("exact interpreter FileID required: " + name)
+        return {"volume_serial": volume, "file_id": identity}
+
     if (s.get("schema") != SCHEMA or s.get("role") not in ROLES
             or not re.fullmatch(r"[0-9a-f]{32}", s.get("nonce", ""))
             or not s.get("machine_id") or not s.get("sid", "").startswith("S-1-")
@@ -94,8 +116,8 @@ def checked_spec(path, expected_sha):
     for key in ("bootstrap", "stage"):
         if sha(s[key]) != s[key + "_sha256"]:
             raise ValueError(key + " source SHA differs")
-    if any(not isinstance(s.get(k + "_file_id"), dict) for k in ("python", "pythonw")):
-        raise ValueError("exact interpreter FileID required; redirector argv is not identity")
+    for key in ("python_file_id", "pythonw_file_id"):
+        require_file_identity(s.get(key), key)
     args = s.get("stage_args")
     if not isinstance(args, list) or len(args) > 128 or any(not isinstance(a, str) or "\0" in a for a in args):
         raise ValueError("invalid finite stage arguments")

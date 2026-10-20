@@ -68,8 +68,10 @@ class Tests(unittest.TestCase):
         root = Path(self.temp.name)
         self.s = {"root": str(root), "nonce": "a" * 32, "machine_id": "test-only",
                   "sid": "S-1-5-21-1", "session": 2, "python": str(root / "python.exe"),
-                  "pythonw": str(root / "pythonw.exe"), "python_file_id": {"id": "p"},
-                  "pythonw_file_id": {"id": "w"}, "stop_path": str(root / "fixture-stop"),
+                  "pythonw": str(root / "pythonw.exe"),
+                  "python_file_id": {"volume_serial": "1", "file_id": "1" * 32},
+                  "pythonw_file_id": {"volume_serial": "1", "file_id": "2" * 32},
+                  "stop_path": str(root / "fixture-stop"),
                   "stage_sha256": "b" * 64}
 
     def test_actual_core_job_before_resume_and_original_exit(self):
@@ -223,7 +225,8 @@ class Tests(unittest.TestCase):
         fake = FakeOS(self.s)
         fake.current = lambda: {"sid": self.s["sid"], "session": self.s["session"],
                                 "loaded_module": self.s["python"]}
-        fake.file_id = lambda path: {"fixture": str(path)}
+        fake.file_id = lambda path: dict(self.s[
+            "pythonw_file_id" if Path(path).name.lower() == "pythonw.exe" else "python_file_id"])
         args = dict(role="sdk_owner", stage=stage, stage_sha256=real_sha(stage),
                     bootstrap_path=boot, cwd=root, machine_id="test-only")
         with patch.object(o, "Windows", return_value=fake), patch.object(o, "sha", side_effect=fixture_sha):
@@ -248,6 +251,71 @@ class Tests(unittest.TestCase):
             with patch.object(o, "prepare_spec", return_value={"fixture": True}) as prepare, redirect_stdout(io.StringIO()):
                 self.assertEqual(o.main(argv + flags), 0)
                 self.assertIs(prepare.call_args.kwargs["enable_driver_state_wal"], expected)
+
+
+class CheckedSpecTypeContractTests(unittest.TestCase):
+    def fixture(self) -> dict[str, object]:
+        root = Path(o.__file__).resolve().parent / "__ram_owner__"
+        return {"schema": o.SCHEMA, "role": "sdk_owner", "machine_id": "synthetic-only",
+            "nonce": "a" * 32, "task_name": "XARG2ManagedOwner-" + "a" * 32,
+            "sid": "S-1-5-21-1", "session": 2, "root": str(root), "cwd": str(root),
+            "python": str(root / "python.exe"), "pythonw": str(root / "pythonw.exe"),
+            "bootstrap": str(root / "bootstrap.py"), "bootstrap_sha256": "b" * 64,
+            "stage": str(root / "stage.py"), "stage_sha256": "b" * 64,
+            "python_file_id": {"volume_serial": "1", "file_id": "1" * 32},
+            "pythonw_file_id": {"volume_serial": "1", "file_id": "2" * 32},
+            "stage_args": [], "env": {}, "stop_path": None}
+
+    def checked(self, value: dict[str, object]) -> dict[str, object]:
+        path = Path(o.__file__).resolve().parent / "__ram_owner__" / "SPEC.json"
+        with patch.object(o, "read", return_value=value), patch.object(o, "sha", return_value="b" * 64), patch.object(
+            Path, "resolve", lambda self: self
+        ), patch.object(o, "Windows", side_effect=AssertionError("OS reached")) as windows, patch.object(
+            Path, "mkdir", side_effect=AssertionError("mkdir reached")
+        ) as mkdir, patch.object(o, "once", side_effect=AssertionError("write reached")) as write:
+            result = o.checked_spec(path, "b" * 64)
+            windows.assert_not_called()
+            mkdir.assert_not_called()
+            write.assert_not_called()
+            return result
+
+    def test_machine_id_must_be_nonblank_string_without_nul(self) -> None:
+        for bad in (None, 0, 123, True, ["M"], {"id": "M"}, "", " ", "M\0x"):
+            with self.subTest(bad=bad):
+                value = {**self.fixture(), "machine_id": bad}
+                before = json.dumps(value, sort_keys=True)
+                with self.assertRaisesRegex(ValueError, "machine_id"):
+                    self.checked(value)
+                self.assertEqual(json.dumps(value, sort_keys=True), before)
+
+    def test_file_id_shapes_are_rejected_for_both_interpreters(self) -> None:
+        valid = {"volume_serial": "1", "file_id": "1" * 32}
+        bad_values: list[object] = [None, [], "id", {}, {"id": "p"},
+            {"volume_serial": "1"}, {**valid, "extra": "x"}]
+        for volume in (1, True, "", "00", "+1", "-1", " 1", "1 ", "\u0661", str(2**64)):
+            bad_values.append({**valid, "volume_serial": volume})
+        for identity in (1, True, "", "a" * 31, "a" * 33, "g" * 32, "A" * 32):
+            bad_values.append({**valid, "file_id": identity})
+        for field in ("python_file_id", "pythonw_file_id"):
+            for bad in bad_values:
+                with self.subTest(field=field, bad=bad):
+                    value = {**self.fixture(), field: bad}
+                    before = json.dumps(value, sort_keys=True)
+                    with self.assertRaisesRegex(ValueError, field):
+                        self.checked(value)
+                    self.assertEqual(json.dumps(value, sort_keys=True), before)
+
+    def test_canonical_uint64_and_hex_boundaries_are_preserved(self) -> None:
+        for volume in ("0", str(2**64 - 1)):
+            for identity in ("0" * 32, "0123456789abcdef" * 2):
+                with self.subTest(volume=volume, identity=identity):
+                    exact = {"volume_serial": volume, "file_id": identity}
+                    value = {**self.fixture(), "python_file_id": dict(exact), "pythonw_file_id": dict(exact)}
+                    before = json.dumps(value, sort_keys=True)
+                    result = self.checked(value)
+                    self.assertEqual(result["python_file_id"], exact)
+                    self.assertEqual(result["pythonw_file_id"], exact)
+                    self.assertEqual(json.dumps(value, sort_keys=True), before)
 
 
 if __name__ == "__main__":
