@@ -7,8 +7,8 @@
   "sources": [
     {
       "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_a03_display_reuse_v1.py",
-      "bytes": 13917,
-      "sha256": "54d5f4cfbfb4ddb3e94297011f969e7bc9b9478faff6c0a50b9ea98f29c9771e"
+      "bytes": 13896,
+      "sha256": "5c3692ef106d8d09c3b8befca378411516bb5bc9671264fa0bf7d71283e4bfc6"
     },
     {
       "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_c23_a03_display_reuse_v1.py",
@@ -103,5 +103,16 @@
     "source_files_copied": 0,
     "runtime_receipt_writes": 0,
     "A03_new_profile_not_yet_created": true
+  },
+  "supervisor_input_arrival_addendum": {
+    "observed_at_utc": "2026-10-20T02:43:04.208021+00:00",
+    "previous_helper": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_c23_a03_display_reuse_v1.py",
+      "bytes": 13917,
+      "sha256": "54d5f4cfbfb4ddb3e94297011f969e7bc9b9478faff6c0a50b9ea98f29c9771e"
+    },
+    "reason": "Actual supervisor launch receipt may arrive before display preparation. Launch/placement are inputs; publisher namespace remains create-only. Original owner new physical Game tuple guard is unchanged.",
+    "qualification": "5 PASS 0.155s with actual successful launch receipt present",
+    "runtime_written_bytes": 0
   }
 }

@@ -84,9 +84,9 @@ def existing_graph(runtime):
     require(spec['generation'] == 'C23' and spec['machine_id'] == MACHINE
             and Path(spec['target_runtime']).resolve() == runtime,
             'original owner runtime differs')
-    # Successful launch/placement remain the original first-success names.
-    # They must still be absent while preparing, but will exist when running.
-    absent = [runtime / spec[k] for k in (*NAMESPACE_KEYS, 'launch', 'placement')]
+    # Launch/placement are supervisor inputs and may arrive during preparation.
+    # The unchanged owner validates their actual new Game tuple when running.
+    absent = [runtime / spec[k] for k in NAMESPACE_KEYS]
     absent.append(runtime / 'ROOT-DISPLAY-CHILD-IMPORT-PREFLIGHT-C23-A03.json')
     require(not any(p.exists() for p in absent), 'first-use namespace is occupied')
     require(sum(r['bytes'] for r in refs) == 278733, 'complete 18-leaf size differs')
