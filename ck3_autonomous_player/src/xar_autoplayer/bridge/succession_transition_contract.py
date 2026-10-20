@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 import re
-from typing import Final
+from typing import Final, TypedDict
 
 from .turn_bundle_contract import TURN_BUNDLE_V1_SCHEMA
 
@@ -56,6 +56,19 @@ _EXPECTATION_BINDING_FIELDS: Final = {
     "episode_run_id",
     "episode_character_id",
 }
+
+
+class SuccessionFrameBindingV1(TypedDict):
+    snapshot_id: str
+    revision: int
+    native_revision: int
+    date_raw: int
+
+
+class SuccessionTitleExpectationV1(TypedDict):
+    title: dict[str, object]
+    first_heir_character_id: int | None
+    primary: bool
 
 
 def legacy_rogue_one_life_binding_v1() -> dict[str, object]:
@@ -264,7 +277,7 @@ def bind_succession_lifecycle_from_environment_v1(
 def _positive_int(value: object, name: str) -> int:
     if (
         isinstance(value, bool)
-        or not isinstance(value, int)
+        or type(value) is not int
         or not 1 <= value <= 2**31 - 1
     ):
         raise ValueError(f"{name} must be a positive int32")
@@ -274,7 +287,7 @@ def _positive_int(value: object, name: str) -> int:
 def _uint64(value: object, name: str) -> int:
     if (
         isinstance(value, bool)
-        or not isinstance(value, int)
+        or type(value) is not int
         or not 0 <= value <= 2**64 - 1
     ):
         raise ValueError(f"{name} must be a uint64")
@@ -284,14 +297,14 @@ def _uint64(value: object, name: str) -> int:
 def _date_raw(value: object, name: str) -> int:
     if (
         isinstance(value, bool)
-        or not isinstance(value, int)
+        or type(value) is not int
         or not -(2**31) <= value <= 2**31 - 1
     ):
         raise ValueError(f"{name} must be an int32")
     return value
 
 
-def _binding(bundle: dict[str, object], name: str) -> dict[str, object]:
+def _binding(bundle: dict[str, object], name: str) -> SuccessionFrameBindingV1:
     binding = bundle.get("binding")
     if not isinstance(binding, dict):
         raise ValueError(f"{name} binding is malformed")
@@ -322,10 +335,11 @@ def _available_value(
 def _succession_partition(
     bundle: dict[str, object],
     name: str,
-) -> tuple[dict[str, object], list[dict[str, object]]]:
+) -> tuple[dict[str, object], list[SuccessionTitleExpectationV1]]:
     if bundle.get("schema") != TURN_BUNDLE_V1_SCHEMA:
         raise ValueError(f"{name} is not a turn-bundle v1")
-    if bundle.get("status") not in {"available", "partial"}:
+    status = bundle.get("status")
+    if not isinstance(status, str) or status not in {"available", "partial"}:
         raise ValueError(f"{name} is unavailable")
     succession = _available_value(bundle.get("succession_state"), name)
     if not isinstance(succession, dict):
@@ -338,7 +352,7 @@ def _succession_partition(
     rows = partition.get("title_heirs")
     if not isinstance(rows, list) or not rows:
         raise ValueError(f"{name} title-heir rows are malformed")
-    normalized_rows: list[dict[str, object]] = []
+    normalized_rows: list[SuccessionTitleExpectationV1] = []
     seen: set[int] = set()
     primary_rows = 0
     current_row_fields = {
@@ -435,6 +449,9 @@ def freeze_succession_expectation_v1(
     primary_rows = [row for row in rows if row["primary"]]
     if primary_rows[0]["first_heir_character_id"] != expected_successor:
         raise ValueError("primary-title row disagrees with expected successor")
+    partition = _available_value(succession.get("partition"), "turn_bundle succession partition")
+    if not isinstance(partition, dict):
+        raise ValueError("turn_bundle succession partition is malformed")
     return normalize_succession_expectation_v1({
         "schema": SUCCESSION_EXPECTATION_V1_SCHEMA,
         "status": "available",
@@ -447,9 +464,7 @@ def freeze_succession_expectation_v1(
         "predecessor_character_id": episode_character_id,
         "expected_successor_character_id": expected_successor,
         "title_expectations": rows,
-        "risk_state": _available_value(
-            succession.get("partition"), "turn_bundle succession partition"
-        ).get("risk_state"),
+        "risk_state": partition.get("risk_state"),
         "unavailable_reason": None,
     })
 
@@ -509,7 +524,7 @@ def normalize_succession_expectation_v1(value: object) -> dict[str, object]:
     else:
         raise ValueError("succession expectation state is malformed")
     risk_state = value.get("risk_state")
-    if risk_state not in {
+    if not isinstance(risk_state, str) or risk_state not in {
         "single_successor",
         "split_successors",
         "no_primary_heir",
@@ -520,7 +535,7 @@ def normalize_succession_expectation_v1(value: object) -> dict[str, object]:
     rows = value.get("title_expectations")
     if not isinstance(rows, list) or not rows:
         raise ValueError("succession expectation title rows are malformed")
-    normalized_rows: list[dict[str, object]] = []
+    normalized_rows: list[SuccessionTitleExpectationV1] = []
     seen: set[int] = set()
     primary_rows = 0
     primary_heir: int | None = None
@@ -584,6 +599,7 @@ def reconcile_succession_transition_v1(
 ) -> dict[str, object]:
     """Compare one real played-character transition with a frozen projection."""
 
+    expectation = normalize_succession_expectation_v1(expectation)
     if (
         not isinstance(expectation, dict)
         or expectation.get("schema") != SUCCESSION_EXPECTATION_V1_SCHEMA
@@ -600,7 +616,8 @@ def reconcile_succession_transition_v1(
     )
     if (
         pre_binding.get("episode_character_id") != predecessor_id
-        or post_snapshot.get("episode_character_id") != predecessor_id
+        or _positive_int(post_snapshot.get("episode_character_id"), "post episode character_id")
+        != predecessor_id
         or post_snapshot.get("one_life_terminal_reason")
         != "played_character_changed"
         or post_snapshot.get("one_life_terminal") is not True
@@ -616,8 +633,14 @@ def reconcile_succession_transition_v1(
     if actual_successor_id == predecessor_id:
         raise ValueError("post snapshot did not change played character")
     post_binding = _binding(post_turn_bundle, "post_turn_bundle")
+    snapshot_binding = {
+        "snapshot_id": post_snapshot.get("snapshot_id"),
+        "revision": _uint64(post_snapshot.get("revision"), "post revision"),
+        "native_revision": _uint64(post_snapshot.get("native_revision"), "post native_revision"),
+        "date_raw": _date_raw(post_snapshot.get("date_raw"), "post date_raw"),
+    }
     for key in ("snapshot_id", "revision", "native_revision", "date_raw"):
-        if post_snapshot.get(key) != post_binding[key]:
+        if snapshot_binding[key] != post_binding[key]:
             raise ValueError(f"post snapshot and turn bundle disagree on {key}")
     if post_binding["date_raw"] < _date_raw(pre_binding.get("date_raw"), "pre date"):
         raise ValueError("post-transition date precedes the expectation")
@@ -630,7 +653,8 @@ def reconcile_succession_transition_v1(
     )
     if (
         not isinstance(post_ruler, dict)
-        or post_ruler.get("character_id") != actual_successor_id
+        or _positive_int(post_ruler.get("character_id"), "post ruler character_id")
+        != actual_successor_id
         or post_ruler.get("alive") is not True
     ):
         raise ValueError("post turn bundle ruler disagrees with played successor")

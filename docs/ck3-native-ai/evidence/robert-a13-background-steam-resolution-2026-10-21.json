@@ -1,0 +1,227 @@
+{
+  "schema": "xar.robert-a13-background-Steam-native-resolution-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T19:20:47.197551+00:00",
+  "scope": "Actual A13 close, background Steam observations and local CI wiring; A14 not deployed",
+  "campaign": {
+    "completed_cycles": 4753,
+    "saved_game_days": 5429,
+    "target_game_days": 10950,
+    "checkpoint_saved_count": 74,
+    "G2_completed": 6,
+    "G2_total": 8,
+    "M6_natural_terminal_complete": false,
+    "M7_breadth_complete": false,
+    "new_credit_in_A13": 0,
+    "next_sequence_unsubmitted": 10538,
+    "original_UNKNOWN_AUTO10534_replayed": false,
+    "whole_wall_started_at_utc": "2026-10-19T03:26:49.420926Z",
+    "whole_wall_reset": false,
+    "one_second_per_day_achieved": false
+  },
+  "mainline": {
+    "public_commit": "aa7d19fe09c4807d6fae0c34a31439a9f46ff9ed",
+    "tree": "5cdb3b87f43fa361c6ecd542ed7900b9c12d6e58",
+    "contains": "OBS integral float Number normalization and four portable regression tests",
+    "actual_push_observed_at_utc": "2026-10-20T18:53:46+00:00"
+  },
+  "background_steam": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\source28-a14-prep01\\ROOT-STEAM-OFFLINE-NATIVE01.json",
+      "bytes": 2480,
+      "sha256": "afe504b345a48bcd997793cf87936fe4304a853e0d40e4d345175ce9f4616977"
+    },
+    "status_at_observation": "offline",
+    "offline_mode_at_observation": true,
+    "GUI_calls_by_probe": 0,
+    "new_launch_requires_fresh_proof": true,
+    "zero_native_byte_is_online_proof": false
+  },
+  "resolution": {
+    "actual_game_source": [
+      2560,
+      1440
+    ],
+    "actual_video": [
+      2560,
+      1440
+    ],
+    "scale": 1,
+    "first_frame_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a13\\recording03-ac1f4a2385cb4ab7a61f236808da1ae4\\FIRST-FRAME-ADMITTED.json",
+      "bytes": 2254,
+      "sha256": "94806b655c14646f7e5b76a3cbc84146ee12a072deca6591e01e81866c3df5cb"
+    },
+    "retired_blue_panel_present": false,
+    "A13_new_native_business_queries": 0,
+    "A13_hidden_Game_freshness_qualified": false
+  },
+  "actual_closure": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a13\\ROOT-A13-ACTUAL-CLOSURE-INDEX01.json",
+    "bytes": 10767,
+    "sha256": "5cbc7d3483e00a6e7413e56fa7b59547b4d25738eea93919ce43e6b05bd23a45"
+  },
+  "current_Driver_SAVE_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a13\\ROOT-A13-CURRENT-DRIVER-SAVE-REVIEW01.json",
+    "bytes": 2383,
+    "sha256": "d8a8d8d1570aab0aa2b339003a7c94fbae3c3a2b17f259c949cd131d9813d17f"
+  },
+  "actual_Driver_SAVE_sources": [
+    {
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\native-session\\driver-state.json",
+        "bytes": 38423108,
+        "sha256": "3c955e9330fd4f653102f95990006902548db95146037c7686e3b78b69e5cf9b"
+      },
+      "identity_schema": "xar.file-stat-identity.os-ns-decimal.v1",
+      "identity": {
+        "bytes": 38423108,
+        "file_id": "281474989052345",
+        "mtime_ns": "1792514702320642500"
+      },
+      "hardlink_count": 2,
+      "stable_before_after": true
+    },
+    {
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 116203629,
+        "sha256": "f0edd690a08320c52fb61cafc21d8991aca8e7775e1f1c2692e7e09c865b0061"
+      },
+      "identity_schema": "xar.file-stat-identity.os-ns-decimal.v1",
+      "identity": {
+        "bytes": 116203629,
+        "file_id": "281474988852756",
+        "mtime_ns": "1792449304215108900"
+      },
+      "hardlink_count": 1,
+      "stable_before_after": true
+    }
+  ],
+  "A13_close_summary": {
+    "Game_exit_code": 1,
+    "Game_forced_owned_cleanup": true,
+    "Game_job_active_final": 0,
+    "SDK_pair_published": false,
+    "SDK_historical_exit_codes": null,
+    "SDK_dual_zero_qualified": false,
+    "OBS_exit_code": 0,
+    "publisher_exit_code": 0,
+    "managed_tasks_absent": true,
+    "screen_released": true
+  },
+  "local_CI_wiring": {
+    "workflow": {
+      "path": ".github\\workflows\\static-ci.yml",
+      "bytes": 69743,
+      "sha256": "1262760e3380fef3dbc30e669585c5b87f0391512f9fe84b948deb643282f8fb"
+    },
+    "committed": false,
+    "steps_total": 143,
+    "existing_step": 39,
+    "new_step_inserted": false,
+    "actual_unit_tests_passed": 10,
+    "strict_mypy_sources_passed": 2,
+    "checked_at_utc": "2026-10-20T19:17:31+00:00",
+    "remote_qualification_claimed": false
+  },
+  "A14": {
+    "status": "preparing_not_deployed",
+    "runtime_created": false,
+    "full_graph_Runtime_qualification": false,
+    "rich_panel_live_verified": false,
+    "Native31_live_verified": false
+  },
+  "performance_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\source28-a14-prep01\\PERFORMANCE-FAILED-EXTENT-REVIEW01.json",
+    "bytes": 2233,
+    "sha256": "14b4725f4038e6b24fc2d07dc978e221e36855ef472f6582009de53bc788cd58"
+  },
+  "append_2026_10_20_local_type_and_CI_scope_correction": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "appended_at_utc": "2026-10-20T19:46:23.127618+00:00",
+    "prior_record": {
+      "bytes": 5517,
+      "sha256": "ca751a9657598297ebc9cdbadbd35f59bc8d1d763af9537e54f78e20ba9a7580",
+      "all_prior_values_retained": true
+    },
+    "correction": "The 19:20 record and its 69743-byte workflow ref describe a historical intermediate source. That SHA is no longer the current workflow bytes. This append qualifies the current local source and commands only; it adds no Game, saved-day, or remote CI credit.",
+    "current_local_CI_wiring": {
+      "workflow": {
+        "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+        "bytes": 70341,
+        "sha256": "5ba594defbd6b7432d9045cb3f43a218777a0cc25687861ffc13b47ea668bf51"
+      },
+      "committed": false,
+      "steps_total": 143,
+      "existing_step": 39,
+      "new_step_inserted": false,
+      "step55_and94_unchanged": true,
+      "actual_combined_unittest": {
+        "command": "python -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_file_stat_identity_v1 tools.g2_saved_campaign.test_obs_capture_dimensions_v1 tools.g2_saved_campaign.test_a14_mod_absence_binding_v1 ck3_autonomous_player.tests.test_native_loaded_provider_origin_recv_deadline_v1 ck3_autonomous_player.tests.unit.test_restore_checkpoint_type_contract_v1",
+        "tests_passed": 44,
+        "started_at_utc": "2026-10-20T19:37:55.121Z",
+        "ended_at_utc": "2026-10-20T19:37:57.075Z"
+      },
+      "actual_strict_mypy": {
+        "command": "python -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/file_stat_identity_v1.py tools/g2_saved_campaign/test_obs_capture_dimensions_v1.py tools/g2_saved_campaign/test_a14_mod_absence_binding_v1.py ck3_autonomous_player/tests/test_native_loaded_provider_origin_recv_deadline_v1.py ck3_autonomous_player/tests/unit/test_restore_checkpoint_type_contract_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/restore_checkpoint_type_contract_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py",
+        "sources_passed": 7,
+        "errors": 0,
+        "started_at_utc": "2026-10-20T19:37:57.075Z",
+        "ended_at_utc": "2026-10-20T19:38:01.689Z"
+      },
+      "whole_native_driver_strict_claimed": false,
+      "remote_qualification_claimed": false
+    },
+    "published_prior_scope_CI": {
+      "commit": "aa7d19fe09c4807d6fae0c34a31439a9f46ff9ed",
+      "machine_id": "unknown",
+      "Official": {
+        "conclusion": "success",
+        "completed_at_utc": "2026-10-20T19:30:22Z",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39478748626/job/118821472710"
+      },
+      "Linear": {
+        "conclusion": "success",
+        "completed_at_utc": "2026-10-20T18:54:50Z",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39478748627/job/118821472278"
+      },
+      "new_uncommitted_scope_covered": false
+    },
+    "local_source_qualification_refs": {
+      "A14_stage": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\source28-a14-prep01\\source-preparation01\\QUALIFICATION02.json",
+        "bytes": 17979,
+        "sha256": "7ac6d73584da24847d3ec47f18fb47c7a55f963a927d66c89979938e664f21eb"
+      },
+      "rich_identity": {
+        "path": "D:\\codex-ck3-demos\\2026-10-20-rich-identity-boundary-fix01\\QUALIFICATION01.json",
+        "bytes": 6622,
+        "sha256": "0b1dc7aa0a78b2945a01cd074280f18be70ddd4b0ce7d73ce3899f6909cadf03"
+      },
+      "Native31_source_package": {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\candidates\\native31_passive_journal_20261020\\MANIFEST.json",
+        "bytes": 6989,
+        "sha256": "574b0aa2b58cf140698cba156fb192132c4c048b18e3dbd556c5d66b6d9d2d1c"
+      },
+      "S29_evidence": "Actual checker/test stdout; no standalone qualification JSON was created. Full NativeDriver strict and clean native rebuild are not claimed."
+    },
+    "A14_source_refs": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source28_a14_rich_native31_union_v1.py",
+        "bytes": 57134,
+        "sha256": "e17498d4b081bdf461756497a9a2d8195d92f080475fc01aeef9e92b91f22880"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_source28_a14_cold_union_v1.py",
+        "bytes": 30879,
+        "sha256": "c1040668971efc3b68f1b6fb4b98c4d07cf94128c5f47f9b305ff19791459ede"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_a14_mod_absence_binding_v1.py",
+        "bytes": 24537,
+        "sha256": "83bfff803f862d2560c5a1507f7340842eb38a0b748d1cf1d2de70f01d58e985"
+      }
+    ]
+  }
+}

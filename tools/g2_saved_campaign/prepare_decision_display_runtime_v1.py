@@ -59,6 +59,9 @@ def transform_feed(source: bytes) -> bytes:
     # Retain the source-reviewed event explanation/proof already added to plan.
     addition = '''    from decision_display_contract_v1 import project_plan
     display_actual = {**actual, **plan}
+    for identity in ("selected_step", "phase"):
+        if identity in actual:
+            display_actual[identity] = actual[identity]
     plan = project_plan(display_actual)
 '''
     lines.insert(line, addition)

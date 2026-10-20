@@ -1,0 +1,204 @@
+{
+  "baseline_inputs": [
+    {
+      "blob": "f96ac18c2be47a0a6fc1ed3e8642b5a084053efb",
+      "bytes": 1605122,
+      "name": "src/bridge.cpp",
+      "sha256": "975cad765a74c388cfa9dd5849d82b0dbe3091e4b6aa39273138a50279970a7e"
+    },
+    {
+      "blob": "b6603bf6b3bb851efd25df963e44a2feb566560d",
+      "bytes": 7628,
+      "name": "src/ck3_12002_commands.cpp",
+      "sha256": "8d5806d2b57dc8d115bc6cb52ca7e4b6374e6be4b546ab813ea3b3b889324c2a"
+    },
+    {
+      "blob": "3a5b0f9506e3aacbc74879bde20486845562a82f",
+      "bytes": 453519,
+      "name": "CMakeLists.txt",
+      "sha256": "abeae6aec614db664faca9dfc6fb4f115f20865fa0faf6deebee15d690e2445f"
+    }
+  ],
+  "evidence_inputs": [
+    {
+      "bytes": 5453,
+      "name": "evidence/SOURCE-RECEIPT01.json",
+      "sha256": "1379532ef4fd072d4e4330f17661dea153d8dfd8aa1a7141e9ff68070a205b10"
+    },
+    {
+      "bytes": 2225,
+      "name": "evidence/SOURCE-OVERLAY-RESULT01.json",
+      "sha256": "d7d1d5eb6c1c555dc580c2f229db63a17c66770450f014b4eee77274c0e44d77"
+    },
+    {
+      "bytes": 209,
+      "name": "evidence/FAILED-production-1792513602860687000.json",
+      "sha256": "bcc9d3411150497df2ead9105b9387fb54a37e9f315e24b2c0ba42635f68308f"
+    },
+    {
+      "bytes": 13172,
+      "name": "evidence/PRODUCTION-RESULT01.json",
+      "sha256": "8f8a6462d34556337a73ccc29a080c29efc15e58f932b96cc3bc7f5094594957"
+    },
+    {
+      "bytes": 25064,
+      "name": "evidence/POSTCHECK01.json",
+      "sha256": "c1576149a48e292c6b192cec63beb41193bc5cef964b7aabc524567d5be6238c"
+    },
+    {
+      "bytes": 11911,
+      "name": "evidence/FIXTURES-RESULT01.json",
+      "sha256": "6d90f7cf29d268340c400949a70f771081b6a306811e25432b4ca46ce4c5bad3"
+    },
+    {
+      "bytes": 3828,
+      "name": "evidence/QUALIFICATION02.json",
+      "sha256": "7592b69fc57e98c2e96375dcc794087489865df9d3a5ab5b70810231d77aa6b6"
+    }
+  ],
+  "expected_outputs": [
+    {
+      "bytes": 1606472,
+      "name": "native/src/bridge.cpp",
+      "sha256": "661e73ca1002334e039ad234ae142937cd24f128d3399a9b0ad154adc1c11719"
+    },
+    {
+      "bytes": 8431,
+      "name": "native/src/ck3_12002_commands.cpp",
+      "sha256": "d5a18e67954b215d110cc256f26b5577bb7a0c2ea46b8f0122b817a120cc5c74"
+    },
+    {
+      "bytes": 454163,
+      "name": "native/CMakeLists.txt",
+      "sha256": "d60a14197e678f39854e57469e39c3623e287bb95cb62d3bf4cef954af995551"
+    },
+    {
+      "bytes": 4176,
+      "name": "native/include/xar_bridge/native_time_command_observer_12004.hpp",
+      "sha256": "f0beb8ff286bcda8854fcfe74529ae47943f67db206b8b7855d1081ec8254e11"
+    },
+    {
+      "bytes": 14322,
+      "name": "native/src/native_time_command_observer_12004.cpp",
+      "sha256": "a0973832477b55bda0bc6917854fd5ec595209ab8b356f2bb07a5bd35aaaad7a"
+    },
+    {
+      "bytes": 9790,
+      "name": "native/src/native_time_command_observer_12004_install.cpp",
+      "sha256": "95888a0ca45293704dedc8915edf817c5dabb12af42c93b4f536f080994ed545"
+    },
+    {
+      "bytes": 10331,
+      "name": "native/tests/native31_core_test.cpp",
+      "sha256": "65c8a0b9fc798f2ce9e50273d5d1086891abb14a45304c7feb48610769ef3ffa"
+    },
+    {
+      "bytes": 28985,
+      "name": "native/tests/native31_installer_fixture.cpp",
+      "sha256": "bb1913f8ef69f94b9c80af73c4ab106c8a93ade4a5a590788ccb42f5fb73ce9c"
+    },
+    {
+      "bytes": 807,
+      "name": "native/cmake/native30-runtime-source-macro-restore.cmake",
+      "sha256": "e99511202bab46b24e37b9cf4b1e9d31eb6e9ce3612bf8f078dba131f05d2e02"
+    },
+    {
+      "bytes": 17063,
+      "name": "cold/observer_journal_v1.py",
+      "sha256": "f77710b050f839da36c308a1da66a8aec79fa0ec8bec167100f62c688a029712"
+    },
+    {
+      "bytes": 1876,
+      "name": "cold/native31_mcp_extension_v1.py",
+      "sha256": "9c56a270f8029360de26560ded0cb3f7938749684f65921b9245f30ee49004a0"
+    },
+    {
+      "bytes": 7998,
+      "name": "cold/native31_source28_binding.py",
+      "sha256": "917e4f6f3e07b333b4d74099ee8f6ea16ccd0de6debf58adddc86fbe8ca2fc5a"
+    },
+    {
+      "bytes": 12205,
+      "name": "cold/test_observer_journal_v1.py",
+      "sha256": "b4b78478e6038c971e19565599e87c0fd04c480f954d5b98a01575ab329b3062"
+    }
+  ],
+  "frozen_commit": "704bdd3362bdc282ed5f5f8cf31fd3f50b90d747",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-20T19:39:37.079963+00:00",
+  "qualification": {
+    "artifact_qualification": "OFFLINE_ARTIFACT_QUALIFIED_NOT_DEPLOYED",
+    "clean_native_build_verified": false,
+    "game_calls_by_packaging": 0,
+    "original_producer_postcheck": "FAILED",
+    "runtime_admission_granted": false
+  },
+  "schema": "xar.native31.public-source-package/v1",
+  "source_inputs": [
+    {
+      "bytes": 4565,
+      "name": "historical_inputs/prepare_producer.py",
+      "sha256": "2e43be2687d498b021af8d02a511435f7fbc8afb1c9be6d4e08b6c17e3748aef"
+    },
+    {
+      "bytes": 46983,
+      "name": "historical_inputs/candidate-package.json",
+      "sha256": "8db93e15993129f483febb9672c40b017f2ffca0b560124fd0955b94c332a7c3"
+    },
+    {
+      "bytes": 13210,
+      "name": "historical_inputs/production_producer.py",
+      "sha256": "ef08dd9241d9f631372c5b459a8d3bdd5571606958b32838bab2f77a3a9d9451"
+    },
+    {
+      "bytes": 4176,
+      "name": "native/include/xar_bridge/native_time_command_observer_12004.hpp",
+      "sha256": "f0beb8ff286bcda8854fcfe74529ae47943f67db206b8b7855d1081ec8254e11"
+    },
+    {
+      "bytes": 14322,
+      "name": "native/src/native_time_command_observer_12004.cpp",
+      "sha256": "a0973832477b55bda0bc6917854fd5ec595209ab8b356f2bb07a5bd35aaaad7a"
+    },
+    {
+      "bytes": 9790,
+      "name": "native/src/native_time_command_observer_12004_install.cpp",
+      "sha256": "95888a0ca45293704dedc8915edf817c5dabb12af42c93b4f536f080994ed545"
+    },
+    {
+      "bytes": 10331,
+      "name": "native/tests/native31_core_test.cpp",
+      "sha256": "65c8a0b9fc798f2ce9e50273d5d1086891abb14a45304c7feb48610769ef3ffa"
+    },
+    {
+      "bytes": 28985,
+      "name": "native/tests/native31_installer_fixture.cpp",
+      "sha256": "bb1913f8ef69f94b9c80af73c4ab106c8a93ade4a5a590788ccb42f5fb73ce9c"
+    },
+    {
+      "bytes": 807,
+      "name": "native/cmake/native30-runtime-source-macro-restore.cmake",
+      "sha256": "e99511202bab46b24e37b9cf4b1e9d31eb6e9ce3612bf8f078dba131f05d2e02"
+    },
+    {
+      "bytes": 17063,
+      "name": "cold/observer_journal_v1.py",
+      "sha256": "f77710b050f839da36c308a1da66a8aec79fa0ec8bec167100f62c688a029712"
+    },
+    {
+      "bytes": 1876,
+      "name": "cold/native31_mcp_extension_v1.py",
+      "sha256": "9c56a270f8029360de26560ded0cb3f7938749684f65921b9245f30ee49004a0"
+    },
+    {
+      "bytes": 7998,
+      "name": "cold/native31_source28_binding.py",
+      "sha256": "917e4f6f3e07b333b4d74099ee8f6ea16ccd0de6debf58adddc86fbe8ca2fc5a"
+    },
+    {
+      "bytes": 12205,
+      "name": "cold/test_observer_journal_v1.py",
+      "sha256": "b4b78478e6038c971e19565599e87c0fd04c480f954d5b98a01575ab329b3062"
+    }
+  ]
+}

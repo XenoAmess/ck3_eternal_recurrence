@@ -284,6 +284,9 @@ from .succession_transition_contract import (
     normalize_succession_expectation_v1,
     reconcile_succession_transition_v1,
 )
+from .restore_checkpoint_type_contract_v1 import (
+    checkpoint_identity_v1, process_replacement_identity_v1, same_nullable_integer_v1,
+)
 from .zhongguo_case_snapshot_contract import (
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_CAPABILITY,
     QUERY_ZHONGGUO_CASE_SNAPSHOT_V1_STEP,
@@ -1712,7 +1715,7 @@ def load_native_driver_state_for_resume_payload(
     persisted_bridge_pid = payload.get("bridge_pid")
     if (
         isinstance(persisted_bridge_pid, bool)
-        or not isinstance(persisted_bridge_pid, int)
+        or type(persisted_bridge_pid) is not int
         or persisted_bridge_pid <= 0
     ):
         raise ValueError("driver state bridge_pid is malformed")
@@ -1723,7 +1726,7 @@ def load_native_driver_state_for_resume_payload(
             raise ValueError("driver state has a run without a character")
     elif (
         isinstance(character_id, bool)
-        or not isinstance(character_id, int)
+        or type(character_id) is not int
         or not isinstance(run_id, str)
         or not run_id
     ):
@@ -11974,6 +11977,9 @@ class NativeHeadlessGameplayDriver:
     def _matching_checkpoint_history_index(
         self, checkpoint: dict[str, object]
     ) -> int | None:
+        identity = checkpoint_identity_v1(checkpoint)
+        if identity is None:
+            return None
         expected_sha256 = checkpoint.get("sha256")
         expected_size = checkpoint.get("size")
         expected_date_raw = checkpoint.get("date_raw")
@@ -11997,18 +12003,15 @@ class NativeHeadlessGameplayDriver:
             saved = result.get("checkpoint") if isinstance(result, dict) else None
             if not isinstance(saved, dict):
                 continue
-            if (
-                saved.get("sha256") == expected_sha256
-                and saved.get("size") == expected_size
-                and saved.get("date_raw") == expected_date_raw
-            ):
+            if checkpoint_identity_v1(saved) == identity:
                 index = row.get("index")
-                return index if isinstance(index, int) else None
+                return index if type(index) is int else None
         return None
 
     def _cold_candidate_ready(self, candidate: dict[str, object]) -> bool:
         if (
-            candidate.get("format_version") != _NATIVE_DRIVER_STATE_VERSION
+            type(candidate.get("format_version")) is not int
+            or candidate.get("format_version") != _NATIVE_DRIVER_STATE_VERSION
             or self.save_dir is None
         ):
             return False
@@ -12018,12 +12021,15 @@ class NativeHeadlessGameplayDriver:
         checkpoint = candidate.get("last_checkpoint")
         if (
             isinstance(character_id, bool)
-            or not isinstance(character_id, int)
+            or type(character_id) is not int
             or not isinstance(run_id, str)
             or not run_id
             or not isinstance(history, list)
             or not isinstance(checkpoint, dict)
         ):
+            return False
+        identity = checkpoint_identity_v1(checkpoint)
+        if identity is None:
             return False
         history_index = checkpoint.get("history_index")
         sha256 = checkpoint.get("sha256")
@@ -12031,18 +12037,18 @@ class NativeHeadlessGameplayDriver:
         date_raw = checkpoint.get("date_raw")
         if (
             isinstance(history_index, bool)
-            or not isinstance(history_index, int)
+            or type(history_index) is not int
             or history_index < 1
             or history_index > len(history)
             or not isinstance(sha256, str)
             or len(sha256) != 64
             or any(character not in "0123456789abcdef" for character in sha256)
             or isinstance(size, bool)
-            or not isinstance(size, int)
+            or type(size) is not int
             or size <= 0
             or isinstance(date_raw, bool)
-            or not isinstance(date_raw, int)
-            or checkpoint.get("episode_character_id") != character_id
+            or type(date_raw) is not int
+            or not same_nullable_integer_v1(checkpoint.get("episode_character_id"), character_id)
             or checkpoint.get("episode_run_id") != run_id
         ):
             return False
@@ -12051,13 +12057,12 @@ class NativeHeadlessGameplayDriver:
         saved = result.get("checkpoint") if isinstance(result, dict) else None
         return bool(
             isinstance(anchor, dict)
+            and type(anchor.get("index")) is int
             and anchor.get("index") == history_index
             and anchor.get("command") in _CHECKPOINT_ANCHOR_STEPS
             and anchor.get("ok") is True
             and isinstance(saved, dict)
-            and saved.get("sha256") == sha256
-            and saved.get("size") == size
-            and saved.get("date_raw") == date_raw
+            and checkpoint_identity_v1(saved) == identity
         )
 
     def _bind_episode_from_playable_snapshot(
@@ -35844,12 +35849,13 @@ def _checkpoint_history_index(
     checkpoint: object,
     history: list[dict[str, object]],
 ) -> int | None:
-    if not isinstance(checkpoint, dict):
+    identity = checkpoint_identity_v1(checkpoint)
+    if not isinstance(checkpoint, dict) or identity is None:
         return None
     index = checkpoint.get("history_index")
     if (
         isinstance(index, bool)
-        or not isinstance(index, int)
+        or type(index) is not int
         or not 1 <= index <= len(history)
     ):
         return None
@@ -35857,21 +35863,20 @@ def _checkpoint_history_index(
     result = anchor.get("result")
     saved = result.get("checkpoint") if isinstance(result, dict) else None
     return index if (
-        anchor.get("index") == index
+        type(anchor.get("index")) is int
+        and anchor.get("index") == index
         and anchor.get("command") in _CHECKPOINT_ANCHOR_STEPS
         and anchor.get("ok") is True
         and isinstance(saved, dict)
-        and all(
-            saved.get(key) == checkpoint.get(key)
-            for key in ("sha256", "size", "date_raw")
-        )
+        and checkpoint_identity_v1(saved) == identity
     ) else None
 
 
 def _proven_restore_lineage_row(
     row: object, checkpoint: dict[str, object]
 ) -> bool:
-    if not isinstance(row, dict):
+    identity = checkpoint_identity_v1(checkpoint)
+    if not isinstance(row, dict) or identity is None:
         return False
     result = row.get("result")
     restored_checkpoint = (
@@ -35892,13 +35897,11 @@ def _proven_restore_lineage_row(
         and result.get("backend_id") == "native-headless"
         and result.get("source")
         in (_COLD_RESTORE_SOURCE, "native-session-lifecycle-queue")
-        and result.get("restored_date_raw") == checkpoint.get("date_raw")
+        and same_nullable_integer_v1(result.get("restored_date_raw"), identity["date_raw"])
         and result.get("map_ready") is True
         and isinstance(restored_checkpoint, dict)
-        and all(
-            restored_checkpoint.get(key) == checkpoint.get(key)
-            for key in ("sha256", "size", "date_raw")
-        )
+        and checkpoint_identity_v1(restored_checkpoint) == identity
+        and process_replacement_identity_v1(lifecycle) is not None
         and _positive_native_id(previous_pid)
         and _positive_native_id(pid)
         and previous_pid != pid
@@ -35927,15 +35930,12 @@ def _checkpoint_history_with_restore_lineage(
 def _same_restore_process_replacement(left: object, right: object) -> bool:
     if not isinstance(left, dict) or not isinstance(right, dict):
         return False
-    left_lifecycle = left.get("lifecycle")
-    right_lifecycle = right.get("lifecycle")
+    left_lifecycle = process_replacement_identity_v1(left.get("lifecycle"))
+    right_lifecycle = process_replacement_identity_v1(right.get("lifecycle"))
     return bool(
         left.get("source") == _COLD_RESTORE_SOURCE
-        and isinstance(left_lifecycle, dict)
-        and isinstance(right_lifecycle, dict)
-        and left_lifecycle.get("previous_pid")
-        == right_lifecycle.get("previous_pid")
-        and left_lifecycle.get("pid") == right_lifecycle.get("pid")
+        and left_lifecycle is not None
+        and left_lifecycle == right_lifecycle
     )
 
 
@@ -35948,7 +35948,7 @@ def _normalize_managed_restore_transaction(
     episode_character_id: object,
     episode_run_id: object,
 ) -> dict[str, object] | None:
-    if not isinstance(value, dict):
+    if not isinstance(value, dict) or checkpoint_identity_v1(checkpoint) is None:
         return None
     source_pid = value.get("source_bridge_pid")
     replacement_pid = value.get("replacement_bridge_pid")
@@ -35962,29 +35962,30 @@ def _normalize_managed_restore_transaction(
         or not isinstance(request_id, str)
         or not request_id.startswith("restore-")
         or isinstance(source_pid, bool)
-        or not isinstance(source_pid, int)
+        or type(source_pid) is not int
         or source_pid <= 0
         or (
             replacement_pid is not None
             and (
                 isinstance(replacement_pid, bool)
-                or not isinstance(replacement_pid, int)
+                or type(replacement_pid) is not int
                 or replacement_pid <= 0
             )
         )
+        or type(bridge_pid) is not int
         or bridge_pid
         != (replacement_pid if replacement_pid is not None else source_pid)
         or not isinstance(digest, str)
         or len(digest) != 64
         or any(character not in "0123456789abcdef" for character in digest)
         or isinstance(size, bool)
-        or not isinstance(size, int)
+        or type(size) is not int
         or size <= 0
         or isinstance(date_raw, bool)
-        or not isinstance(date_raw, int)
+        or type(date_raw) is not int
         or isinstance(history_index, bool)
-        or not isinstance(history_index, int)
-        or value.get("episode_character_id") != episode_character_id
+        or type(history_index) is not int
+        or not same_nullable_integer_v1(value.get("episode_character_id"), episode_character_id)
         or value.get("episode_run_id") != episode_run_id
         or not isinstance(checkpoint, dict)
         or checkpoint.get("sha256") != digest

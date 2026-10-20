@@ -277,5 +277,166 @@ def unchanged():
             transform_feed(b"def publish_before_submit(observation):\n    return None\n")
 
 
+
+
+class DisplayIdentityBoundaryTests(unittest.TestCase):
+    """Identity is never shortened by a presentation/prose limit."""
+
+    @staticmethod
+    def _queue_compact(actual: object) -> contract.Record:
+        import os
+        root = os.environ.get("XAR_IDENTITY_PRIVATE_RUNTIME_ROOT")
+        source = ((Path(root) / "root_p37c23_sdk_queue.py").read_bytes() if root else b'''def compact_plan(plan):
+    return {"prewar_force_admission": None}
+def display_projection(row, body):
+    # raw response retained
+    return {"army_strengths": []}
+''')
+        transformed = ast.parse(transform_queue(source))
+        functions = [node for node in transformed.body if isinstance(node, ast.FunctionDef)
+                     and node.name in ("compact_plan", "display_projection")]
+        namespace: dict[str, object] = {}
+        exec(compile(ast.Module(functions, type_ignores=[]), "<actual-queue-formatters>", "exec"), namespace)
+        compact = namespace["compact_plan"]
+        if not callable(compact):
+            raise AssertionError("actual compact callable required")
+        return contract.record(compact(actual))
+
+    @staticmethod
+    def _row(actual: contract.Record, compact: contract.Record) -> contract.Record:
+        return {"source": "actual GameplayBridgeService.before_submit callback",
+                "source_namespace": "p37-responses", "game_pid": 123, "game_creation_date": "fixture",
+                "request": {"tool": "root_before_auto_turn_submit", "parent_sequence": 143},
+                "result": {"is_error": False, "structured_content": {"status": "planned",
+                    "selected_step": actual["selected_step"], "snapshot_id": "fixture", "revision": 9,
+                    "plan": compact}}}
+
+    @staticmethod
+    def _publisher(row: contract.Record, actual: contract.Record) -> contract.Record:
+        import io
+        from unittest.mock import patch
+        import decision_text_publisher as pub
+        memory: dict[str, object] = {}
+        session = Path("D:/identity-boundary-fixture")
+        context = {"sequence": 143, "tool": "ck3_auto_turn"}
+        config = {"current_request_path": "held-context", "game": {"pid": 123, "creation_date": "fixture"}}
+        started = {"configuration": {}, "session": str(session)}
+
+        def read(path: object) -> object:
+            return context if str(path) == "held-context" else memory[str(path)]
+
+        def atomic(path: object, value: object, **kwargs: object) -> None:
+            memory[str(path)] = copy.deepcopy(value)
+
+        def pin(path: object) -> contract.Record:
+            import hashlib
+            raw = json.dumps(memory[str(path)], ensure_ascii=False).encode()
+            return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+
+        observation = {"selected_step": actual["selected_step"], "plan": actual,
+                       "snapshot_id": "fixture", "revision": 9}
+        with patch.object(Path, "open", lambda *args, **kwargs: io.StringIO()), \
+                patch.object(Path, "exists", lambda path: str(path) in memory), \
+                patch.object(Path, "unlink", lambda *args, **kwargs: None), \
+                patch.object(pub, "validate_started", return_value=started), \
+                patch.object(pub, "checked", return_value=config), \
+                patch.object(pub, "read", side_effect=read), patch.object(pub, "atomic", side_effect=atomic), \
+                patch.object(pub, "pin", side_effect=pin), \
+                patch.object(pub, "wait_text_published", return_value={"software_text_ack": True}):
+            receipt = pub.publish_callback_observation(
+                json.loads(json.dumps(row, ensure_ascii=False)), {}, actual_observation=observation)
+        if receipt["callback_index"] != 1 or len(memory) != 1:
+            raise AssertionError("real publisher did not emit the exact first callback")
+        return contract.record(next(iter(memory.values())))
+
+    def test_actual_queue_formatter_keeps_long_identity_through_real_publisher(self) -> None:
+        for length in (1300, 1600):
+            with self.subTest(length=length):
+                actual: contract.Record = {"selected_step": "ordinary-" + "s" * (length - 9),
+                    "phase": "p" * 1300, "reason": "r" * 1600, "policy": "q" * 1600}
+                compact = self._queue_compact(actual)
+                self.assertEqual(compact["selected_step"], actual["selected_step"])
+                self.assertEqual(compact["phase"], actual["phase"])
+                self.assertEqual((len(str(compact["reason"])), len(str(compact["policy"]))), (1200, 1200))
+                published = self._publisher(self._row(actual, compact), actual)
+                body = contract.record(contract.record(published["result"])["structured_content"])
+                plan = contract.record(body["plan"])
+                card = contract.parse_card(plan[contract.DETAIL], step=actual["selected_step"], phase=actual["phase"])
+                self.assertEqual(card.selected_step, actual["selected_step"])
+                self.assertEqual(card.phase, actual["phase"])
+        for invalid in ("s" * 1601, True):
+            with self.subTest(invalid_type=type(invalid)), self.assertRaises(ValueError):
+                self._queue_compact({"selected_step": invalid})
+
+    def test_actual_private_feed_merge_restores_complete_source_identity(self) -> None:
+        import os
+        import types
+        from unittest.mock import patch
+        root = os.environ.get("XAR_IDENTITY_PRIVATE_RUNTIME_ROOT")
+        if not root:
+            self.skipTest("actual read-only private runtime path not supplied")
+        path = Path(root) / "root_p37c23_compact_decision_feed.py"
+        namespace: dict[str, object] = {"__file__": str(Path("D:/identity-boundary-fixture") / path.name),
+                                        "__name__": "identity_private_feed"}
+        exec(compile(transform_feed(path.read_bytes()), "<actual-private-feed>", "exec"), namespace)
+        before = namespace["publish_before_submit"]
+        if not callable(before):
+            raise AssertionError("actual pre-submit callback required")
+        actual: contract.Record = {"selected_step": "ordinary-" + "s" * 1291,
+            "phase": "p" * 1300, "reason": "r" * 1600, "policy": "q" * 1600}
+        received: list[contract.Record] = []
+
+        def publish(row: contract.Record, reference: object, *, actual_observation: object) -> contract.Record:
+            self.assertEqual(contract.record(actual_observation)["plan"], actual)
+            saved = self._publisher(row, actual)
+            received.append(saved)
+            return saved
+
+        api = types.ModuleType("root_decision_text_api_c23")
+        api.load_api = lambda *args: types.SimpleNamespace(publish_callback_observation=publish)
+        api.started_reference = lambda *args: {}
+
+        def read_text(path: Path, **kwargs: object) -> str:
+            if path.name == "CURRENT-REQUEST-P37.json":
+                return json.dumps({"sequence": 143, "tool": "ck3_auto_turn"})
+            if path.name == "ROOT-ACTUAL-GAME-LAUNCH-C23.json":
+                return json.dumps({"pid": 123, "creation_date": "fixture"})
+            raise AssertionError("unexpected runtime lookup: " + str(path))
+
+        with patch.dict("sys.modules", {"root_decision_text_api_c23": api}), \
+                patch.object(Path, "read_text", read_text):
+            before({"selected_step": actual["selected_step"], "plan": actual,
+                    "snapshot_id": "fixture", "revision": 9})
+        self.assertEqual(len(received), 1)
+        plan = contract.record(contract.record(contract.record(received[0]["result"])["structured_content"])["plan"])
+        self.assertEqual(plan["selected_step"], actual["selected_step"])
+        self.assertEqual(plan["phase"], actual["phase"])
+        self.assertEqual(plan["reason"], "r" * 1200)
+        self.assertEqual(plan["policy"], "q" * 1200)
+
+    def test_fallback_identity_survives_json_roundtrip_and_result_projection(self) -> None:
+        for phase_case in ("missing", None, "p" * 1300):
+            with self.subTest(phase=type(phase_case).__name__):
+                actual: contract.Record = {"selected_step": "ordinary-" + "s" * 1291,
+                    "reason": "r" * 1600, "war_decision_presentation_v1": []}
+                if phase_case != "missing":
+                    actual["phase"] = phase_case
+                compact = json.loads(json.dumps(feed.compact_plan(actual), ensure_ascii=False))
+                self.assertEqual(compact["selected_step"], actual["selected_step"])
+                self.assertEqual("phase" in compact, "phase" in actual)
+                if "phase" in actual:
+                    self.assertEqual(compact["phase"], actual["phase"])
+                self.assertIsNone(compact[contract.DETAIL])
+                self.assertIn(contract.UNAVAILABLE, compact)
+                self._publisher(self._row(actual, compact), actual)
+                result = contract.project_result({"request": {"tool": "ck3_auto_turn", "sequence": 143}},
+                    {"selected_step": actual["selected_step"], "plan": actual, "result": {"status": "executed"}})
+                roundtrip = json.loads(json.dumps(result, ensure_ascii=False))
+                body = contract.record(contract.record(roundtrip["result"])["structured_content"])
+                plan = contract.record(body["plan"])
+                self.assertEqual(body["selected_step"], plan["selected_step"])
+                self.assertEqual(plan.get("phase"), actual.get("phase"))
+                self.assertNotEqual(contract.outcome(body).stage, "verified")
+
 if __name__ == "__main__":
     unittest.main()

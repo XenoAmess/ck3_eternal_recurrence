@@ -294,10 +294,19 @@ def _fallback_plan(plan: Record, error: ValueError | TypeError | OverflowError) 
     result: Record = {DETAIL: None, UNAVAILABLE: _unavailable(error)}
     if "selected_step" in plan:
         result["selected_step"] = plan["selected_step"]
+    phase = plan.get("phase")
+    if "phase" in plan and (phase is None or isinstance(phase, str) and len(phase) <= 1600):
+        result["phase"] = phase
     for key, limit in (("reason", 1200),):
         value = plan.get(key)
         if isinstance(value, str):
             result[key] = value[:limit]
+    # Optional prose yields to complete valid identity within the wire budget.
+    while _display_bytes(result) > SOFT_DISPLAY_BYTES and result.get("reason"):
+        reason = result["reason"]
+        if not isinstance(reason, str):
+            break
+        result["reason"] = reason[:len(reason) // 2]
     return result
 
 
@@ -306,7 +315,7 @@ def project_plan(actual: object) -> Record:
     _required_step(plan)  # Never soften malformed business/action identity.
     result = {key: plan[key] for key in ("policy", "phase", "selected_step", "reason", "decision",
               "declaration", "prewar_force_admission", "event_choice_utility") if key in plan}
-    for key in ("reason", "selected_step", "policy", "phase"):
+    for key in ("reason", "policy"):
         value = result.get(key)
         if isinstance(value, str):
             result[key] = value[:1200]

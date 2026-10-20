@@ -114,9 +114,12 @@ class OriginKernelIOV1:
 
     def recv(self, handle: int, *, startup: bool = False) -> dict[str, object]:
         contract._require(type(startup) is bool,"explicit startup phase required")
+        contract._require(type(handle) is int and handle > 0,"private receive handle required")
         budget=self.startup_timeout if startup else self.timeout
         deadline=time.monotonic()+budget;raw=self.rx.get(handle,b"")
         while b"\n" not in raw:
+            if time.monotonic() >= deadline:
+                raise TimeoutError("private custody receive timeout")
             count=w.DWORD()
             self.api._ok(self._peek(handle,None,0,None,ctypes.byref(count),None),"private custody peek")
             if count.value:
@@ -124,12 +127,24 @@ class OriginKernelIOV1:
                 buffer=ctypes.create_string_buffer(count.value);read=w.DWORD()
                 self.api._ok(self._read(handle,buffer,count.value,ctypes.byref(read),None),"private custody read")
                 raw+=buffer.raw[:read.value]
-            elif time.monotonic()>deadline:raise TimeoutError("private custody receive timeout")
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("private custody receive timeout")
+            elif time.monotonic() >= deadline:raise TimeoutError("private custody receive timeout")
             else:time.sleep(.005)
+        if time.monotonic() >= deadline:
+            raise TimeoutError("private custody receive timeout")
         line,tail=raw.split(b"\n",1);self.rx[handle]=tail
-        value=json.loads(line)
-        contract._require(type(value) is dict,"private object message required")
-        return value
+        value: object=json.loads(line)
+        if not isinstance(value, dict):
+            raise ValueError("private object message required")
+        result: dict[str, object] = {}
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise ValueError("private object message keys must be text")
+            result[key] = item
+        if time.monotonic() >= deadline:
+            raise TimeoutError("private custody receive timeout")
+        return result
 
     def close(self,handle):
         self.facade.close_owned_handle(handle);self.rx.pop(handle,None)
