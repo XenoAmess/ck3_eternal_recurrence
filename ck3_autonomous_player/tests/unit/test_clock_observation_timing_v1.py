@@ -18,7 +18,13 @@ sys.path.insert(0, str(HERE.parents[1] / 'src'))
 import xar_autoplayer.bridge.army_query_timing as timing
 from xar_autoplayer.bridge import clock_observation_timing_v1 as profile
 
-UNPROFILE_HUNKS = [('            clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")\n', '            from .clock_observation_timing_v1 import (\n                start_clock_observation_v1, finish_clock_observation_v1,\n            )\n            clock_observation = start_clock_observation_v1(self, current)\n            clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")\n'), ('            finally:\n                finish_army_timing(clock_wait_timing, step="life-advance",\n', '            finally:\n                finish_clock_observation_v1(self, clock_observation, current)\n                finish_army_timing(clock_wait_timing, step="life-advance",\n'), ('            changed = self.take_internal_semantic_snapshot()\n            return changed\n        finally:\n            finish_army_timing(\n                timing, step="life-advance", before_snapshot=before_snapshot,\n', '            changed = self.take_internal_semantic_snapshot()\n            if getattr(self, "_exact_clock_observation_v1", None) is not None:\n                from .clock_observation_timing_v1 import observe_clock_snapshot_v1\n                observe_clock_snapshot_v1(self, changed)\n            return changed\n        finally:\n            finish_army_timing(\n                timing, step="life-advance", before_snapshot=before_snapshot,\n')]
+# Strip only observation hooks; retain adjacent wait-progress diagnostics.
+UNPROFILE_HUNKS = [
+    ("", '            from .clock_observation_timing_v1 import (\n                start_clock_observation_v1, finish_clock_observation_v1,\n            )\n'),
+    ("", '            clock_observation = start_clock_observation_v1(self, current)\n'),
+    ("", '                finish_clock_observation_v1(self, clock_observation, current)\n'),
+    ("", '            if getattr(self, "_exact_clock_observation_v1", None) is not None:\n                from .clock_observation_timing_v1 import observe_clock_snapshot_v1\n                observe_clock_snapshot_v1(self, changed)\n'),
+]
 
 def unprofiled_source(raw):
     text = raw.decode('utf-8').replace('\r\n', '\n')
