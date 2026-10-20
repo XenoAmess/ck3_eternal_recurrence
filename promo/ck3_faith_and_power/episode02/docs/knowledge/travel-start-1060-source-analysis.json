@@ -1,0 +1,240 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "travel_start_event.1060",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T07:20:04.421520+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "completed_source_analysis_actual_visual_popup_native_definition_unqueried",
+  "static_definition_id": "travel_start_event.1060",
+  "live_native_definition_id": null,
+  "event_definition_key_authority": "Static complete title+body+source/caller mapping; not a live native definition query",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_start_events.txt",
+      "bytes": 95408,
+      "sha256": "4ef3fb9e9c1da72ec6660a98805ed4fdc4b90d95becc73d334b98487ddf13dc9",
+      "relevant_lines": [
+        [
+          2158,
+          2304
+        ],
+        [
+          2306,
+          2601
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_start_events_l_simp_chinese.yml",
+      "bytes": 33689,
+      "sha256": "7c6146fc235866430d1fa2667afe2610b703830ef74d181cfae4a952b1372e78",
+      "relevant_lines": [
+        [
+          7,
+          18
+        ],
+        [
+          137,
+          145
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "relevant_lines": [
+        [
+          3,
+          3
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+      "relevant_lines": [
+        [
+          1172,
+          1182
+        ],
+        [
+          1436,
+          1452
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\50_pilgrimage_values.txt",
+      "bytes": 11353,
+      "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9",
+      "relevant_lines": [
+        [
+          154,
+          158
+        ]
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "relevant_lines": [
+        [
+          4367,
+          4374
+        ]
+      ]
+    }
+  ],
+  "event_definition_lines": [
+    2307,
+    2601
+  ],
+  "caller_lines": [
+    1172,
+    1182,
+    1436,
+    1452
+  ],
+  "title_key": "travel_start_event.1060.t_pilgrimage",
+  "description_key": "travel_start_event.1060.desc_pilgrimage",
+  "title_localization_chain": [
+    "activity_pilgrimage -> 朝圣",
+    "travel_start_event.1000.t -> 第一次启程",
+    "travel_start_event.1060.t_pilgrimage -> $activity_pilgrimage$：$travel_start_event.1000.t$"
+  ],
+  "shared_key_caveat": "1000.t/1000.a are reused localization keys; generic definition1000 is commented out in this caller and has a different body",
+  "theme": "travel_pilgrimage",
+  "type": "character_event",
+  "trigger": "is_available_travelling = yes; is_landed = yes; involved_activity ?= { has_activity_type = activity_pilgrimage }",
+  "caller": "on_travel_plan_start events list includes1060; outer OR ruler or eligible nonplayable playdate, plus NOT recently_invalidated_hostage",
+  "occurrence_guaranteed": false,
+  "immediate_effects": [
+    "Play mx_cue_travel_start; save actual current travel leader if present",
+    "Set pilgrim_net from capital for landed actor, otherwise location county; gather eligible same-faith local and neighboring pool characters",
+    "Create rando_pilgrim_counter=0; invoke local-grab and additional-create helpers by selected pomp tier",
+    "Helpers add companions, remove courtier/guest relation, increment counter; new created pilgrims have cannot_be_diarch for1week; additional creation is human-player only",
+    "If destination has one of four inspection_protected_holy_site/poi levy/gold modifiers, activity_special_type_progression_huge adds20 only when its progress variable already exists"
+  ],
+  "entourage_caps": {
+    "humble": 7,
+    "appropriate": 5,
+    "ceremonial": 10,
+    "throng": 20,
+    "meaning": "Configured total entourage caps, not an observed number of new companions"
+  },
+  "immediate_live_effects_independently_read_back": false,
+  "source_options": [
+    {
+      "source_option_ordinal": 1,
+      "name_keys_in_source_order": [
+        "travel_start_event.1000.a_cynical",
+        "travel_start_event.1000.a_hajj",
+        "travel_start_event.1000.a_hajj_revisit",
+        "travel_start_event.1000.a"
+      ],
+      "name_conditions": [
+        "Ill or cynical",
+        "Hajj without hajjaj",
+        "Hajj with hajjaj",
+        "Not hajj"
+      ],
+      "displayed_branch_static_match": "travel_start_event.1000.a / 我等不及了！",
+      "effects": [
+        "If rando_pilgrim_counter >0, show travel_start_event.1060.tt.random_pilgrim_counter custom_tooltip"
+      ],
+      "option_starts_travel": false,
+      "option_grants_pilgrim_trait_or_main_reward": false,
+      "option_direct_gold_or_piety_cost_in_this_block": false,
+      "native_option_index_not_inferred": true
+    }
+  ],
+  "after_effect": "remove_variable = rando_pilgrim_counter",
+  "interpretation": "Departure-window source analysis, not arrival/conclusion/return evidence; companion effects are immediate, not triggered by selecting the acknowledgment",
+  "registry_at_analysis": {
+    "status": "unavailable",
+    "reason": "event_definition_key_not_registered"
+  },
+  "actual_visual_observation": {
+    "original_image": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b17-a01\\screenshots\\blocked-current-event-a01.png",
+      "bytes": 5200019,
+      "sha256": "cb2e34011e44cf42e1402c9e64fafac816257b0ec469c4813e88a19ee8f6b69f"
+    },
+    "directly_reviewed": true,
+    "OCR_used": false,
+    "title": "朝圣：第一次启程",
+    "body_fragments": [
+      "在准备旅行的整个过程中，我一直有这种平静的感觉，知道一切都会好起来的。",
+      "我很高兴动身前往罗马进行朝圣"
+    ],
+    "visible_option_texts": [
+      "我等不及了！"
+    ],
+    "visual_option_rows": 1,
+    "native_option_index": null,
+    "native_legal_option_status": null
+  },
+  "actual_batch_binding": {
+    "run_id": "4-8e1c2f1861--faith-engine--R0009",
+    "run_binding": {
+      "run_id": "4-8e1c2f1861--faith-engine--R0009",
+      "machine_id": "4-8e1c2f1861",
+      "actor_character_id": 31254,
+      "bridge_pid": 2516,
+      "connection_generation": 1,
+      "episode_run_id": null
+    },
+    "diagnostic_allowed_event_instance": 1,
+    "instance_authority": "Original failed pause-frame diagnostic only",
+    "event_root_character_id": null,
+    "event_root_scope": null,
+    "diagnostic_date_raw": 53144352,
+    "diagnostic_native_revision": 8,
+    "diagnostic_pid": 2516,
+    "diagnostic_generation": 1,
+    "failed_day": "case-natural-day-0037",
+    "event_native_definition_query_observed": false,
+    "selection_submitted": false,
+    "selection_ACK_observed": false,
+    "original_window_consumed_observed": false,
+    "independent_old_window_gone": null,
+    "boundary": "Window visible at failure; no event choice or consumed-window credit; later GUI game exit does not establish event consumption"
+  },
+  "evidence_pins": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b17-a01\\capture-observations\\NATURAL-DAY-FAILURE.actual.json",
+      "bytes": 13502,
+      "sha256": "fb979b1be0eebfdeb66f251f1bb74eabcaf90efd46336a6b1d8d577f4a2fb59d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b17-a01\\live\\4-8e1c2f1861--faith-engine--R0009\\case-output\\ordinary-pilgrimage-first-native-frame.json",
+      "bytes": 18209,
+      "sha256": "25f1fe70cfed6a20bf3f6044c814b3918a569b59ce162efef2201cfde823b9e7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b17-a01\\live\\4-8e1c2f1861--faith-engine--R0009\\case-output\\ordinary-pilgrimage-result.json",
+      "bytes": 29002,
+      "sha256": "42aff1903e575fd3bba0af63d986da5da221f83ac9d2afa9b44a4f74139b5807"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b17-a01\\commands\\failure-readonly-a01\\execution.actual.json",
+      "bytes": 815,
+      "sha256": "7e173c0c896ae81a092717e1d98cb21e259a91667e49a8e3caff5fe9e5cae502"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b17-a01\\commands\\failure-readonly-a01\\stderr.txt",
+      "bytes": 831,
+      "sha256": "79d952b5e8837fe452fca09d5fb8b98d78264e2344c4cccd13a3f96486ae0242"
+    }
+  ],
+  "future_recognition": "For same exact build/source SHA and a fresh native1060 definition, mark source analysis known; preserve current instance/root/options before existing legal first-display policy; never synthesize old scopes/history or bypass a failed host gate",
+  "selection_policy_changed": false,
+  "full_occurrence_contract_registered": false,
+  "live_instance_or_scope_ids_fabricated": false,
+  "live_reward_payment_or_business_credit": false,
+  "merge_target": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json"
+}

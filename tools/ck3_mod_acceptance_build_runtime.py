@@ -26,6 +26,7 @@ CRITICAL_TRANSPORTS = frozenset({
     "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py",
 })
 EXTRA_CAPABILITIES = {
+    "ck3_execute_step": [],  # Existing generic SDK endpoint; Case policy still constrains actions.
     "ck3_open_character_window_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
     "ck3_open_holy_site_decision_v1": [],
     "ck3_confirm_holy_site_decision_v1": [],
@@ -602,7 +603,7 @@ def qualified_fixture_link_support(value, refs, machine, scope, snapshot_root, b
         name: {owners[path] for path in paths} for name, paths in actual_inputs.items()}}
 
 
-def qualify_native(path, root, commit, machine, previous_dll, previous_manifest, native_source_checkout_binding=None):
+def qualify_native(path, root, commit, machine, previous_dll, previous_manifest, native_source_checkout_binding=None, native_shared_python_host_delta=None):
     value = read(path)
     native_commit = value.get("source_commit", "")
     require(value.get("schema") == "ck3-qualified-native-build-v1" and value.get("machine_id") == machine
@@ -655,7 +656,12 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                              "ck3_native_source_binding").qualified_native_source_checkout(
         native_source_checkout_binding, root=root, runtime_commit=commit, native_commit=native_commit,
         machine=machine, qualified_native_ref=pin(path), qualification=value,
-        snapshot_ref=refs["snapshot"], snapshot=snapshot)
+        snapshot_ref=refs["snapshot"], snapshot=snapshot,
+        native_shared_python_host_delta=native_shared_python_host_delta)
+    if native_shared_python_host_delta is not None:
+        require(classify(HOST_RELATIVE) == {"shared_host"}, "Canonical Python-host classification changed")
+        qualify("shared_host", Path(source_checkout["shared_host_qualification"]["path"]),
+                commit, root, [HOST_RELATIVE], machine)
     compile_native_root = source_checkout["native_source_base"]
     compile_repo = compile_native_root.parent.parent
     require((compile_repo / NATIVE_PREFIX).resolve() == compile_native_root,
@@ -686,6 +692,10 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             checked(original)
         elif "source" not in row:
             original = {"path": str(native_root / relative), "bytes": row["bytes"], "sha256": row["sha256"]}
+            if relative == HOST_RELATIVE.removeprefix(NATIVE_PREFIX) and source_checkout.get("runtime_shared_host_pin"):
+                original = source_checkout["runtime_shared_host_pin"]
+                require(Path(original["path"]).resolve() == root / HOST_RELATIVE,
+                        "Verified shared-host runtime pin is from another source path")
             checked(original)
         else:
             checked({"path": row["source"], "bytes": row["bytes"], "sha256": row["sha256"]})
@@ -787,7 +797,9 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             "native_files": native_files, "snapshot_root": str(snapshot_root), "compile_commit": native_commit,
             "execution_wire": execution_wire, "profile_expansion": expansion["ref"] if expansion else None,
             "fixture_link_support": link_support["ref"] if link_support else None,
-            "source_checkout_binding": source_checkout["binding_ref"]}
+            "source_checkout_binding": source_checkout["binding_ref"],
+            "shared_python_host_delta": source_checkout.get("shared_python_host_delta"),
+            "shared_host_qualification": source_checkout.get("shared_host_qualification")}
 
 
 def project_host(root, old_host, old_runtime, new_runtime, source_files):
@@ -855,6 +867,8 @@ def main(argv=None):
     parser.add_argument("--qualified-native", type=Path, required=True, help="exact actual native production-build qualification")
     parser.add_argument("--native-source-checkout-binding", type=Path,
                         help="explicit actual equivalence receipt for a clean linked Native source worktree")
+    parser.add_argument("--native-shared-python-host-delta", type=Path,
+                        help="explicit reviewed canonical Python-host delta beside unchanged compiled Native inputs")
     parser.add_argument("--task-prefix", default="ck3-acceptance-")
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--product", required=True)
@@ -914,7 +928,11 @@ def main(argv=None):
         require(separator and chain not in receipts, "Unique CHAIN=receipt required")
         receipts[chain] = Path(path)
     native_bundle = qualify_native(args.qualified_native, root, args.source_commit, machine, refs["dll"], manifest,
-                                   getattr(args, "native_source_checkout_binding", None))
+                                   getattr(args, "native_source_checkout_binding", None),
+                                   getattr(args, "native_shared_python_host_delta", None))
+    if native_bundle.get("shared_host_qualification") is not None:
+        require("shared_host" in receipts and pin(receipts["shared_host"]) == native_bundle["shared_host_qualification"],
+                "Shared-host delta must use this selected current source-chain qualification")
     required.discard("new_native_base_required")
     if native_bundle["execution_wire"]:
         required.add("pilgrimage_wire_seam")
@@ -975,6 +993,9 @@ def main(argv=None):
     new_manifest["native_compile_source_commit"] = native_bundle["compile_commit"]
     new_manifest["native_compile_working_tree_dirty"] = False
     new_manifest.pop("native_source_checkout_binding", None)
+    new_manifest.pop("native_shared_python_host_delta", None)
+    if native_bundle.get("shared_python_host_delta") is not None:
+        new_manifest["native_shared_python_host_delta"] = native_bundle["shared_python_host_delta"]
     if native_bundle["source_checkout_binding"] is not None:
         new_manifest["native_source_checkout_binding"] = native_bundle["source_checkout_binding"]
     new_manifest["shared_provider_scope"] = "one public SDK/host, qualified global production DLL, independent product policy only"

@@ -1,5 +1,7 @@
 # CK3 自动游玩智能体进度中心
 
+2026-10-20 信仰引擎二期研究复用：[智能体参考入口](../ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)及既有 `ck3_query_holy_site_planning_knowledge_v1` 的二期摘要可供规划前查询。文档／MCP 可查与普通 auto 自动消费分别记录；新知识不代表当前行动合法、收益已经到账或新增业务实机通过。
+
 2026-10-18 01:43 CST度假收尾已按Root eb0cb9f9固定：停止FULL／新增实现；窗口15在573日后SAVE652前置拒绝，653以新SAVE收尾，cycles5364／raw53331120、无新窗口16。SDK双正常0／0，录像／辅助任务已收尾；Game一次WM_CLOSE未退、无force，保原supervisor／keeper，后WM_CLOSE无fresh SEM，不称地图已重验。先读[最终度假交接](../handover/2026-10-18-robert30-clean-vacation-handoff.md)及park指针20e4846d，不能重发653、release screen或重开1066。下列健康均为历史前缀；首次／稳定30年与速度目标未达。
 
 ### 2026-10-18 01:27 CST：SDK49固定健康前缀与关闭暂停修复

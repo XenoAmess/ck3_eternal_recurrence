@@ -1639,8 +1639,16 @@ def _campaign_pause_pending_ready_successor(source: dict[str, object], snapshot:
     hello = diagnostics["hello"]
     mailbox = diagnostics["last_heartbeat"]["main_thread_query_mailbox_v1"]
     consecutive = mailbox.get("consecutive_verified")
+    snapshot_pause_leads_owner = mailbox.get("paused") is False
+    if snapshot_pause_leads_owner and (
+            detail.get("schema") != "ck3-campaign-pause-same-owner-frame-diagnostic-v1"
+            or len(conditions) != 32 or consecutive != 0
+            or [row.get("index") for row in conditions] != list(range(32))
+            or [row["index"] for row in conditions if row["failed"]] != [23]):
+        raise error
     if (snapshot["paused"] is not True or mailbox.get("ready") is not False
-            or mailbox.get("paused") is not True or mailbox.get("paused_main_thread_observed") is not False
+            or (mailbox.get("paused") is not True and not snapshot_pause_leads_owner)
+            or mailbox.get("paused_main_thread_observed") is not False
             or mailbox.get("application_main_observed") is not True
             or type(consecutive) is not int or not 0 <= consecutive < 2
             or type(hello.get("connection_generation")) is not int
@@ -1652,9 +1660,11 @@ def _campaign_pause_pending_ready_successor(source: dict[str, object], snapshot:
                "date": snapshot["date_raw"], "revision": snapshot["revision"], "native_revision": snapshot["native_revision"],
                "pump": mailbox["owner_verified_pump_epochs"], "rejections": diagnostics["rejected_state_snapshot_count"],
                "pause_transition": False, "pending_paused_ready": True}
-    identity_matches = (current["identity"] == source["identity"] if allow_actor_change is not True else
+    identity_matches = (current["identity"] == source["identity"]
+                        if snapshot_pause_leads_owner or allow_actor_change is not True else
                         all(current["identity"][i] == source["identity"][i] for i in (0, 1, 3, 4, 5, 6, 7)))
     if (not identity_matches or current["rejections"] != source["rejections"]
+            or (snapshot_pause_leads_owner and current["date"] != source["date"])
             or any(current[k] < source[k] for k in ("date", "revision", "native_revision", "pump"))):
         raise error
     return current
@@ -1964,7 +1974,9 @@ class PlanClient:
                 if observed.get("pending_paused_ready") is True:
                     evidence.setdefault("pending_owner_stamp_readbacks", []).append({
                         "snapshot_id": current["snapshot_id"], "date_raw": current["date_raw"],
-                        "snapshot_paused": True, "owner_paused": True, "owner_ready": False,
+                        "snapshot_paused": True,
+                        "owner_paused": current["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["paused"],
+                        "owner_ready": False,
                         "consecutive_verified": current["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["consecutive_verified"],
                         "business_credit": False})
                 elif current["paused"] is True:

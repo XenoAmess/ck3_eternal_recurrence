@@ -1,5 +1,9 @@
 # CK3 玩法模型 v1
 
+## 2026-10-20：1.20.0.4 信仰引擎研究入口
+
+[二期智能体参考](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)提供装备／供奉、缓存、朝圣、精神领袖与大圣战的当前知识入口。实际知识 MCP 为 `ck3_query_holy_site_planning_knowledge_v1`，二期摘要在 `knowledge.episode02_research`；普通 auto 尚未自动调用。下文 2026-08-21 的 1.19.0.6 与旧屏幕／OCR流程按历史身份保留，不能覆盖当前 AGENTS 的原生事件处理及机器资格要求。
+
 ## 资料与版本边界
 
 - 本机目标版本：**CK3 1.19.0.6 (Scribe)**；访问日期：2026-08-21。

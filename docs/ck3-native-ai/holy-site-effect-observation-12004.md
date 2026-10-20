@@ -1,5 +1,7 @@
 # 圣地认可矩阵与实际角色聚合观测（1.20.0.4）
 
+2026-10-20 更新入口：[二期智能体参考](faith-and-power-episode02-agent-reference-12004.md)。下文2026-10-17“尚未构建”属于当时补丁阶段；新构建与各场资格见二期执行记录。B15已证主要关系改变及付款，但缓存刷新／角色净收益未闭合；cached world state、即时 relic evaluation 和人物 aggregate 必须分列，不能以两次稳定或关系变化代替缓存新鲜度。
+
 machine_id: `4-8e1c2f1861`；离线来源核对时间 2026-10-17 18:50 UTC。EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。本补丁阶段 native 构建、新原生包消费和实机仍待验；synthetic SDK 测试不能替代它们。
 
 现有只读 `ck3_query_player_holy_site_relic_context_v1(expected_revision, holy_site_id)` 可选增加 `recognition_matrix` 与 `modifier_aggregate_observation`；action-context 工具仅增加认可矩阵。工具名、私有权限、旧字段和旧计数保持原合同，不添加任意 actor/key 参数或动作权限。旧包缺字段兼容。action preview canonical/hash 排除这两个独立观察域。

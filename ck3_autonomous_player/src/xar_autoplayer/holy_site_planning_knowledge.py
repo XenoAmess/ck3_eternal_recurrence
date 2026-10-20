@@ -17,6 +17,7 @@ from .holy_site_decision_value_knowledge import (
     HOLY_SITE_SHARED_RELIC_VALUE_KNOWLEDGE,
 )
 from .holy_site_grade_value_knowledge import HOLY_SITE_GRADE_VALUE_KNOWLEDGE
+from .holy_site_episode02_research import episode02_research
 from .holy_site_historical_cases import (
     HOLY_SITE_ADOPTION_HISTORICAL_CASES,
     HOLY_SITE_GRADE_REALLOCATION_HISTORICAL_CASES,
@@ -583,6 +584,7 @@ def query_holy_site_planning_knowledge_v1(
         result["reason"] = "Revalidate the source rules for the requested build; 1.20.0.4 rules are not a new-build permission."
         return result
     knowledge = deepcopy(_KNOWLEDGE[action])
+    knowledge["episode02_research"] = episode02_research()
     knowledge["v5_clarifications"] = holy_site_v5_clarifications(action)
     knowledge["v4_clarifications"] = holy_site_v4_clarifications(action)
     fields = knowledge.pop("base_observations", _COMMON_OBSERVATIONS) + knowledge.pop("additional_observations")

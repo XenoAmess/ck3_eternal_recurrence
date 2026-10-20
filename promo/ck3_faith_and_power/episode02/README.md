@@ -1,5 +1,8 @@
 # CK3:信仰引擎 第二期
 
+- [游玩智能体研究入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)：机制、所需当前观测、来源和反例；既有知识 MCP 已返回二期摘要，普通 auto 自动调用与事件完整 registry 合同仍未接通。
+- [24分33.600秒完整制作预览](C:/workspace/ck3-faith-and-power-20261017/episode02/review-static-70cue-a01/episode02-production-preview.mp4)：70 cue 静帧讲解预览，持续标注23项实拍结果待补；不是正式拍摄完成版。
+
 第二期融合旧二、三期尚有新增价值的内容，以“已有圣地，下一笔资源投在哪里”为主线，连接圣物用途、类型选择、朝圣和宗教权力。当前完整首版目标约27—30分钟，实际时长待案例补入后测定，不为片长重复一期。
 
 - [导演案](docs/director-plan.md)：章节、讲解路线、镜头和研究依赖。

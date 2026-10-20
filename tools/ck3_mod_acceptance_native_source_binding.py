@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -20,6 +21,9 @@ FIELDS = frozenset({
     "native_source_base", "native_subtree_tree_id", "common_git_directory",
     "qualified_native", "snapshot",
 })
+
+
+DELTA_FIELDS = FIELDS | {"runtime_native_subtree_tree_id", "shared_python_host_delta"}
 
 
 def require(value, message):
@@ -55,7 +59,7 @@ def checkout(repo, commit):
 
 def qualified_native_source_checkout(binding_path, *, root, runtime_commit, native_commit,
                                      machine, qualified_native_ref, qualification, snapshot_ref,
-                                     snapshot):
+                                     snapshot, native_shared_python_host_delta=None):
     """Return the actual original Native root and optional checked binding pin.
 
     Without an explicit binding the historical same-Root requirement is exact.
@@ -65,6 +69,8 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
     root = Path(root).resolve()
     runtime_native = (root / NATIVE_PREFIX).resolve()
     original_native = Path(snapshot["Root_native_source_base"]).resolve()
+    require(native_shared_python_host_delta is None or binding_path is not None,
+            "A shared-host delta requires an explicit actual source checkout binding")
     if binding_path is None:
         require(original_native == runtime_native, "Snapshot is from another Root native tree")
         return {"native_source_base": runtime_native, "binding_ref": None}
@@ -75,7 +81,9 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
     require(not binding_path.is_symlink(), "Source checkout binding cannot be symbolic")
     binding_ref = pin(binding_path)
     value = json.loads(binding_path.read_text(encoding="utf-8-sig"))
-    require(isinstance(value, dict) and set(value) == FIELDS and value.get("schema") == SCHEMA,
+    fields = FIELDS if native_shared_python_host_delta is None else DELTA_FIELDS
+    schema = SCHEMA if native_shared_python_host_delta is None else "ck3-native-worktree-shared-python-host-binding-v1"
+    require(isinstance(value, dict) and set(value) == fields and value.get("schema") == schema,
             "Exact explicit Native worktree source-binding schema required")
     require(value["machine_id"] == machine and qualification.get("machine_id") == machine
             and snapshot.get("machine_id") == machine,
@@ -107,9 +115,25 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
                               cwd=root, capture_output=True)
     require(ancestor.returncode == 0, "Native compile commit must be an ancestor of the actual runtime commit")
     subtree = git(root, "rev-parse", runtime_commit + ":" + NATIVE_PREFIX.rstrip("/"))
-    require(subtree == value["native_subtree_tree_id"]
-            == git(native_repo, "rev-parse", native_commit + ":" + NATIVE_PREFIX.rstrip("/")),
-            "Runtime and compile commits have different Native Git trees")
+    compile_subtree = git(native_repo, "rev-parse", native_commit + ":" + NATIVE_PREFIX.rstrip("/"))
+    shared_host = None
+    if native_shared_python_host_delta is None:
+        require(subtree == value["native_subtree_tree_id"] == compile_subtree,
+                "Runtime and compile commits have different Native Git trees")
+    else:
+        require(value["native_subtree_tree_id"] == compile_subtree
+                and value["runtime_native_subtree_tree_id"] == subtree
+                and value["shared_python_host_delta"] == pin(native_shared_python_host_delta),
+                "Shared-host opt-in must preserve both actual trees and the exact explicit delta pin")
+        path = Path(__file__).with_name("ck3_mod_acceptance_shared_python_host_delta.py")
+        spec = importlib.util.spec_from_file_location("ck3_exact_shared_python_host_delta", path)
+        delta_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(delta_module)
+        shared_host = delta_module.qualify_shared_host_delta(
+            native_shared_python_host_delta, root=root, native_repo=native_repo,
+            runtime_commit=runtime_commit, native_commit=native_commit, machine=machine,
+            qualified_native_ref=qualified_native_ref, qualification=qualification,
+            snapshot_ref=snapshot_ref, snapshot=snapshot)
     tracked = set(git(root, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
     native_tracked = set(git(native_repo, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
     rows = snapshot.get("files", [])
@@ -128,6 +152,15 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
             path = base / relative
             require(not path.is_symlink(), "Native worktree source inputs cannot be symbolic")
             actual = pin(path)
-            require({key: actual[key] for key in expected} == expected,
+            wanted = expected
+            if (shared_host is not None and base == runtime_native
+                    and relative == "research/run_ck3_12002_mcp_live.py"):
+                wanted = {key: shared_host["runtime_host_pin"][key] for key in ("bytes", "sha256")}
+            require({key: actual[key] for key in wanted} == wanted,
                     "Actual Native source raw pin differs across the runtime, compile checkout or frozen snapshot: " + relative)
-    return {"native_source_base": original_native, "binding_ref": binding_ref}
+    result = {"native_source_base": original_native, "binding_ref": binding_ref}
+    if shared_host is not None:
+        result.update(runtime_shared_host_pin=shared_host["runtime_host_pin"],
+                      shared_python_host_delta=shared_host["ref"],
+                      shared_host_qualification=shared_host["shared_host_qualification"])
+    return result
