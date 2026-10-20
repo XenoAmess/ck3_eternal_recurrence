@@ -14,10 +14,10 @@
 - [新执行资格与七章声音](docs/production-b5-and-voices-20261020.md)：B5生产DLL、19项原生和37项接口验证、两条拍摄流程、后36段声音以及B6容量准入。
 - [朝圣第二场诊断与修复](docs/filming-b6-and-request-seam-20261020.md)：本场70／100金默认活动费、open请求字段缺失、真实解析验证、专用事件策略与正常关场。
 - 机制研究：[圣物与类型效果](docs/research-artifacts-and-site-effects.md)、[普通朝圣](docs/research-pilgrimage.md)、[精神领袖与大圣战](docs/research-spiritual-head-and-ghw.md)。
-- [最新导演进度与相对节点](docs/director-progress-and-schedule-20261020.md)：实测固定声音23:32.267、51/65视觉绑定、24必需结果缺口，以及原生修复、串行现场与完整首版的证据gate。
+- [最新导演进度与相对节点](docs/director-progress-and-schedule-20261020.md)：固定声音23:32.267、53/65固定视觉、当前35项画面／结果缺口，以及并行研究、后续实拍和完整首版的滚动工时。
 - [B9生产构建、接口资格与并行后继](docs/production-b9-and-parallel-20261020.md)：新DLL与8个原生夹具、复用66项控制层／当前38项SDK及Root33项资格分别记账；observer原RED、后继6目标68 owned场景、GHW body 9项消费者及B6/B8精确回收；朝圣完整结果仍待实拍。
-- [B10／B11资格与B12装备实拍](docs/filming-b10-and-b11-plan-20261020.md)：B10止于规划；B11生产／接口通过；B12礼器267装备／卸装后态已读回、供奉未执行，正常Quit未合格，保留原run2。
+- [B13／B14实际、作者输入与CI边界](docs/filming-b10-and-b11-plan-20261020.md)：B14供奉链与正常闭场已证；固定53／65及装备1／24分列，支持修复已应用、本地原CI模块25项通过，远端CI待新提交验证。
 
-前四章29段已有[9分25.888秒可审阅视频](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)，尚待完整观看与听审；七章65条固定声音实测23:32.267，正式51／65视觉绑定、14条待补和24项required尚未全闭。补800–1600字真实案例后的完整目标约27–30分钟，完整片尚未生成。`machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T03:05:27.175574Z`：B11生产／接口资格已完成，B12同进程R0006观察到礼器267装备／卸装各一次及独立后态；供奉未执行，原hold到期自动清理，run原wait2、host／allocator原wait0，正常Quit资格false。119.966秒原片只签[26,32)6秒装备转场source；不能当作供奉或人物净收益。B13补供奉、A1、H2与P3须新grant；研究、Python修复与镜头审阅并行，现场串行。详见[B11资格与B12实际](docs/filming-b10-and-b11-plan-20261020.md)及[执行进度](docs/production-progress.md)。
+前四章已有[9分25.888秒可审阅视频](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/sample/render-a02/native-run/derived/direct/episode02-review.mp4)。当前作者候选68cue／56有视觉：固定53／65、装备required1／24，两条B14供奉子结果另增展示21.8667秒；仍35pending＝12固定＋23required，未render／人工试听，完整片目标约27–30分钟。`machine_id: 4-8e1c2f1861`，截至`2026-10-20T04:48:52.452189Z`，B14已正常typed Quit，原OS／native／run／host／keeper／allocator均0，Steam离线、显示恢复与CAS12604释放完成；B12旧未供奉／正常Quit不合格保持。供奉转移与合计稀有度4→8已入作者候选，麦加收益仍缺，未冒整comparison。Root已应用三个源码包，本地原step87模块25项PASS，Hosted CI未新跑，旧RED保留。详见[B14闭场与当前缺口](docs/filming-b10-and-b11-plan-20261020.md)及[进度](docs/production-progress.md)。
 
 一期已由用户确认成功，其交付、17章范围与制作经验以[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)为准。旧[三期导演提案](../director-plan.md)保留历史身份，不再作为当前集数和拍摄清单。

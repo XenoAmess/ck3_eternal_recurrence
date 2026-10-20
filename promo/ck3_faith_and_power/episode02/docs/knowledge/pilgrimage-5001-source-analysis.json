@@ -1,0 +1,72 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "pilgrimage.5001",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T04:36:28.783101+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_bound_not_live_observed",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    }
+  ],
+  "event_definition_lines": [
+    9672,
+    9717
+  ],
+  "caller_lines": [
+    130,
+    146,
+    197,
+    216
+  ],
+  "title_key": "pilgrimage.5001.t",
+  "description_key": "pilgrimage.5001.desc",
+  "theme": "pilgrimage_destination",
+  "type": "activity_event",
+  "trigger": "scope:activity.activity_location.county = title:c_roma",
+  "caller": "pilgrimage_arrival_events first_valid_on_action -> christian_arrival_events random_events; native event triggers determine eligibility",
+  "occurrence_guaranteed": false,
+  "immediate_effects": [
+    "play_music_cue = mx_cue_pilgrimage_arrival"
+  ],
+  "source_options": [
+    {
+      "source_option_ordinal": 1,
+      "name_keys_in_source_order": [
+        "pilgrimage.4001.a_dead",
+        "pilgrimage.4001.a_cynical",
+        "pilgrimage.4001.a"
+      ],
+      "name_conditions": [
+        "pilgrimage_death_bury_home variable",
+        "cynical trait",
+        "ordinary fallback"
+      ],
+      "effects": [
+        "give_pilgrim_trait_or_xp_effect = yes",
+        "pilgrimage_arrival_stress_loss_effect = yes"
+      ],
+      "fixed_numeric_reward_claimed": false,
+      "native_option_index_not_inferred": true
+    }
+  ],
+  "after_effect": "If no owned artifact has variable is_rome_pilgrim_badge, trigger pilgrimage.4100 after1day",
+  "interpretation": "A same-player native5001 window is source-bound Rome arrival-event evidence; preserve actual rendered option and independent post-selection window state",
+  "registry_at_analysis": {
+    "status": "unavailable",
+    "reason": "event_definition_key_not_registered"
+  },
+  "selection_policy_changed": false,
+  "full_occurrence_contract_registered": false,
+  "live_instance_or_scope_ids_fabricated": false,
+  "live_reward_payment_or_business_credit": false
+}

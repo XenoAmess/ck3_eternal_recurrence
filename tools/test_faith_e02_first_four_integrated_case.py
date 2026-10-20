@@ -267,9 +267,13 @@ class IntegratedConsumers(unittest.TestCase):
         # is imported; retained scout and source-evidence dependencies stay explicit.
         dependencies=[A.__file__,Q.__file__,A.S.__file__,A.S.queue.__file__,
             A.S.shared_opening_binding.__code__.co_filename,A.require_root_visual_review.__code__.co_filename]
-        quals=A.ORIGIN.parents[2]
-        providers=[quals/package/'SDK-DELIVERY.actual.json'for package in
-            ('faith-observers-sdk-a02','actor-skill-effects-sdk-a02','inventory-open-sdk-a01')]
+        # Pin-only authored provider records keep this unit fixture portable.
+        # They do not claim native/SDK qualification or replace production evidence.
+        providers=[]
+        for package in ('faith-observers','actor-skill-effects','inventory-open'):
+            path=cls.work/(package+'-source-fixture.json')
+            path.write_text(json.dumps({'authored_unit_fixture':True,'native_qualified':False}),encoding='utf-8')
+            providers.append(path)
         cls.contract={'schema':'faith-e02-first-four-integrated-case-v1','product':A.PRODUCT,'case':A.CASE,
             'machine_id':'4-8e1c2f1861','saved_input':{'save':'authored-not-restored.ck3',**A.S.SAVE},
             'profile':{'enabled_mods':[],'product_files':[]},'scope':A.SCOPE,'max_public_calls':A.MAX_CALLS,

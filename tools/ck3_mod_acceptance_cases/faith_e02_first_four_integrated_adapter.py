@@ -14,7 +14,7 @@ from ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter import (
 
 CASE = 'faith-engine-e02-first-four-integrated-v1'
 PRODUCT = 'faith-engine'
-ORIGIN = Path('C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/first-four-public-scout-a01/candidate/tools')
+ORIGIN = Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(ORIGIN))
 try:
     spec = importlib.util.spec_from_file_location('_faith_firstfour_original_scout', ORIGIN / 'ck3_mod_acceptance_cases/faith_e02_first_four_scout_adapter.py')

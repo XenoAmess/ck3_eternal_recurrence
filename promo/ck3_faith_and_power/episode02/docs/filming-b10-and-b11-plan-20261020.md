@@ -1,4 +1,43 @@
-# B10朝圣规划、B11生产资格与B12装备实拍
+# B10至B14：实拍、作者输入与生产资格
+
+## 10月20日12:49：B14正常闭场；两条供奉子结果接入，累计68cue／56有图
+
+`machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T04:48:52.452189Z`。R0007已取得[正常typed Quit及保留handle OS0／native退出0](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/live/4-8e1c2f1861--faith-engine--R0007/case-output/normal-close-result.json)，原run／host／keeper／allocator等待均0；fresh Steam离线经新像素与原图直接审阅，最终桌面实读恢复1024×768，[screen CAS12604](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/SCREEN-RELEASE.actual.json)为done／resources[]。这是B14本场正常闭场资格，整场business_pass仍false；B12未供奉／normalQuit=false不追认。
+
+[两条供奉子结果](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b14-enshrine-formal-intake-a01/DELIVERY.actual.json)已以原PNG静帧对照接入正式作者候选，新增展示21.8667秒（实际speech20.832秒），只讲267转移到麦加26和生效圣物稀有度合计4→8。累计68cue／56有视觉、固定53／65、required仍1／24，35pending＝12固定＋23required；两子结果不冒整供奉comparison，未render／人工试听。麦加预览的骑士战斗力、奉献等级影响尚无实际后态；本场外交原文指麦地那，delta0本身不是机制失败。新getter／SDK接线候选继续外置并行，尚未native／live qualified；后继独立worktree、新grant构建与P3并行是计划。
+
+闭场后Root已应用portable四文件、Selection fixture及P3 helper／knowledge三个源码补丁包；[本地原step87模块25项](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/portable-postclose-apply-a01/POST-APPLY-TESTS.actual.json)实际PASS、原Popen.wait0（测试报告3.632秒）。native源码／registry未变；尚未commit／push，Hosted CI尚未新跑，两个旧RED保留，不把本地25项写成远端CI转绿。
+
+[B14存储闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/STORAGE-CLOSURE.actual.json)为4KiB逐路径上界438,136,832 B，其中raw49,537,024、nonraw388,599,808，卷可用111,280,152,576 B；上界不是实际物理分配量。场景后续重型预留为0，仅留65,536 B小型闭场尾项，未关闭共享20MiB池。下一门槛为新源码实际CI、麦加收益与P3／H2证据及正式画面补齐，完整片仍约27–30分钟预测。
+
+## 10月20日12:27：B14最小物品链已观察，固定53／65；闭场仍待原件
+
+`machine_id: 4-8e1c2f1861`，本节来源截至`2026-10-20T04:26:58.303112Z`。B14运行`4-8e1c2f1861--faith-engine--R0007`，CK3 PID15816／generation1，玩家15893、date_raw51394920；沿`C_native=e089`、`C_runtime=8979`的当前输入执行。[本场first-four结果](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/live/4-8e1c2f1861--faith-engine--R0007/case-output/firstfour-integrated-result.json)为MINIMAL_ITEM_CHAIN_OBSERVED_ATTRIBUTION_PENDING，business_pass=false。物品267／site26麦加的装备、卸装、供奉、宝物栏Open及Close各提交一次，unknown_original_action=false，公共调用64／96；装备／卸装独立post成立，Close独立隐藏成立，供奉后独立物主／槽位／库存后态成立。物品267由人物15893持有变为圣地26持有，进入slot1，并从玩家库存移出。麦加当前生效圣物稀有度**合计**4→8，物品267自身仍为rarity4，不能写成单件圣物升级。
+
+人物15893和10322均取得独立前后读回，independent_pair_observed=true，但整条equip→unequip→enshrine链的外交差值均0；site_attribution_observed=false、selected_site_contribution_raw=null，未证明个人净收益或单站贡献。payment_total_proven也仍false。不能把本场槽位／所有权已变写成人物收益已经兑现。B12的未供奉、PARTIAL与normalQuit=false是另一场旧事实，保留原样，不由B14后态追认。
+
+唯一[本场录制终态](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/captures/b14-enshrine-a01/recorder-final.json)在`04:26:23Z`原FFmpeg退出0／probe0：原片68.200秒、49,490,441 B，SHA-256 `9878ec36c47d9db6eb343dac1059d49bef6723db951474e34cd193e88a8c0d99`，2560×1440、无音轨。当前为ENCODED_UNREVIEWED，尚未签内容片段、连续clean或字幕布局，不能假定原片连续覆盖所有动作。typed Quit／CK3 OS结果、原host／run／allocator／keeper等待、Steam离线／显示恢复／screen释放仍待本场闭场原件，暂不写正常退出PASS。
+
+[固定画面补充](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/remaining-fixed-visuals-post-b13-a01/DELIVERY.actual.json)把C5P02与C5P05按规则语义绑定到既有B10原帧及规则注释，固定视觉现53／65、12条仍缺；静帧lineage投影不冒充新typed capture或连续clean，完整朝圣报价仍缺，70金币不作总费，C5P07保持partial。与B12装备案例合并后的[当前作者输入](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/full-review-fixed53-equipment01-a01/DELIVERY.actual.json)为66cue／54条有视觉，结果槽仍单独计1／24 observed-bound、23pending。[实际assembler检查](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/full-review-fixed53-equipment01-a01/assembly-a01/ASSEMBLY-PENDING.actual.json)保留35项缺口＝12固定视觉＋23必需结果，因此拒绝最终full input；B14新实证尚未经正式案例入库，不自动再关结果槽。原65固定声音23:32.267、B12新增14.4秒、9:25.888样片身份分别保留；未render或人工试听，约27–30分钟仍为完整片预测。
+
+独立于现场，两个冻结提交的正式CI均RED：[e089 Official Runner](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39366054836/job/118443044442)与[8979 Official Runner](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39366770805/job/118445282317)在step87“Test shared CK3 acceptance without installed CK3”的同25项出现1 error＋1 failure；对应Linear history均PASS。[原始诊断](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/official-ci-step87-failure-a01/DELIVERY.actual.json)分别定位为测试fixture经Selection.__new__创建时漏设Close opt-in属性，以及生产集成adapter仍依赖绝对外置scout路径。这里machine_id为本地观察者4-8e1c2f1861，远端GitHub runner machine_id:unknown，不能套用本机环境。
+
+[四文件portable候选](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/portable-firstfour-support-a01/DELIVERY.actual.json)改为从__file__定位仓库tools，将既有scout adapter／queue同字节迁入仓库，并让单测fixture可移植；外置3项focused consumers与独审通过。另有独立592 B Selection fixture-only补丁及2项focused检查通过，生产Close资格守卫未放宽。两份都是**未应用候选**，原B14冻结输入未热改；完整25项未据此重跑，正式CI尚未转绿。下一步是现场按原输入完成闭场，然后Root审阅应用候选、取得新源码CI实际终态；B14素材QA和案例接入、A1／H2／P3后继研究继续并行，不能以源码或小fixture替代游戏与成片验收。
+
+## 10月20日12:15：B13新DLL与接口验收通过，新增装备案例1项来源已绑定
+
+`machine_id: 4-8e1c2f1861`，本节来源截点`2026-10-20T04:14:53.122569Z`。B13以`C_native=e089510724d1811c0e58e378da78b17608507b32`冷构建新生产DLL，原等待0；15,562,240 B，SHA-256 `26dd1777bdca41d8cfe31ec71109918918aba9eae5f42298154024c7623d470b`。[17个有限原生目标](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/native-a01/PUBLIC-RUNTIME-QUALIFICATION.expanded.actual.json)实际原等待均0，[17个精确EXE的Defender管理员／WMI读回](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/native-a01/defender-a01/MACHINE-BINDING.actual.json)verified，不宣称SYSTEM。当前公共运行输入另绑定`C_runtime=8979d58c37d178d7e29839316b814b967a2e270c`；[公共native consumer](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/common-runtime-preparation-a01/NATIVE-EXECUTION-a01.actual.json)与[六条公共源码链资格](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/common-runtime-preparation-a01/QUALIFIED-INPUTS.actual.json)实际0。编译来源与运行来源分列，不能用后继HEAD追认旧DLL。
+
+新DLL原始Close body由[7项消费者／18个组合](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/close-sdk-native-seam-a01/actual-close-a01/RESULT.actual.json)实际通过；朝圣SDK另以当前新body完成38项检查，0skip。Close的outer／snapshot等仍为明确模拟，不授原生owner／TLS、游戏关窗或供奉结果。[SDK最终回执](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/close-sdk-native-seam-a01/DELIVERY.final.actual.json)分别保留原38项child退出0、父级容量守卫退出1、metadata容量恢复退出0；恢复没有重跑38项。原copy阶段因单证据正文超1MiB退出1，后继仅修正metadata输出并恢复0，原失败继续保留。各类检查不混加为游戏用例数，B12的PARTIAL、未供奉和正常Quit未合格结论不变。
+
+新增[装备结果作者输入候选](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b12-artifact-formal-intake-a01/DELIVERY.actual.json)已通过[公共FormalInputs元数据校验](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b12-artifact-formal-intake-a01/FORMAL-VALIDATION.actual.json)：在E02-C4-P01后插入14.4秒，13.896秒为实测声音，画面是原PTS[26,32)6秒实录，加同take已保留29.967秒／frame631原静帧停留8.4秒，不循环原片或制造新增游戏时间。该候选把`E2-B1_ARTIFACT_AND_EQUIPMENT`记为observed-bound，24个必需结果中1项已有来源绑定，23项仍pending；卸装仅作辅助，供奉、人物净收益和单站归因不获信用。原65条固定声音23:32.267与51条固定视觉绑定保持原计数、原工程未覆盖；候选另有1条新增案例。尚未渲染或人工试听，`content_ready=false`，不能写成完整影片已交付。
+
+[一期派生物精确回收](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/reclaim-e01-derived-execution-a02/EXECUTION.actual.json)已执行534项、314,703,872分配B，旧prepared／segment原件不可读取，用户确认V7、原片、声音及必要重建输入保留；不重复扣除早先已回收的4份导出或二期回收量。B13[精确回收](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/intermediate-reclaim-execution-a01/EXECUTION.actual.json)另完成870项、436,052,624分配B，Source／DLL／17EXE和14份活跃S14支持对象保留。[B13闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/qualifications/STORAGE-CLOSURE.post-reclaim-a01.actual.json)实读分配上界172,138,496 B；回收不自动回填旧grant，也不与新扫描重复扣减。
+
+B14新[场次准入](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/ADMISSION.json)已签发，期限`04:11:25.977926Z—06:11:25.977926Z`，总峰值896MiB、软停止832MiB，单take至多120秒。raw与nonraw各512MiB仅为子上限，二者之和仍受896MiB约束；共享20MiB小型研究池承接一次，不叠加新预留。现场全程交filming单机独占，原图审阅、合法once动作、独立后态与正常typed Quit保留120秒收尾。B14实际runID、Close隐藏、可见报价、供奉／owner／slot／wallet／人物后态和闭场结果均待真实回执，不能由准入预写PASS。并行继续源码研究、H2／P3后继案例准备及装备段作者审阅；游戏／屏幕串行。下一门槛是当前B14实际链和正常闭场，再补案例声音及全片审计，完整目标仍约27–30分钟，9:25.888样片保持现有交付身份。
+
+
+B14公共runtime来源冻结及生成原进程已实际0，35个必需MCP注册项齐，当前仅证明生成与静态消费者已运行。生成时仍列product_inventory待public prepare绑定，尚不代表prepare、allocate、游戏启动或正常Quit通过。原件：[B14公共runtime交付](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b14-a01/runtime-producer-a01/DELIVERY.actual.json)。
 
 ## 10月20日11:05：B11生产资格完成，B12装备／卸装已观察，供奉未执行
 

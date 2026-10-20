@@ -1,5 +1,29 @@
 # 第二期执行进度
 
+## 10月20日12:49：B14正常闭场，68cue／56视觉；本地原CI模块25项通过
+
+`machine_id: 4-8e1c2f1861`，截至`2026-10-20T04:48:52.452189Z`。R0007 typed Quit取得保留OS0／native0，原run／host／keeper／allocator等待0；fresh Steam离线直接审阅、1024×768恢复、CAS12604done，B14正常闭场合格，B12旧失败保持。两条供奉PNG子结果新增展示21.8667秒，累计68cue／56有图，固定53／65与required1／24分列，35pending不变，未render／试听，整comparison与净收益未证。麦加骑士／奉献影响后态仍缺，外交原文是麦地那，delta0不是机制失败。[闭场、作者输入与来源](filming-b10-and-b11-plan-20261020.md)。
+
+Root闭场后应用三个源码包，本地原step87模块25项实际PASS／原wait0，native／registry未变；未commit／push，Hosted CI未新跑，原两个RED保留。场景4KiB上界438,136,832 B，future重型0，仅65,536 B闭场小尾项，20MiB池未擅关闭。getter／SDK候选尚未native／live qualified；独立worktree、新grant构建与P3并行是下一步计划，完整片约27–30分钟仍为预测。
+
+## 10月20日12:27：B14供奉后物主／槽位已独立观察，固定53／65，闭场待证
+
+`machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T04:26:58.303112Z`。R0007／PID15816／gen1中，267／麦加26的equip、unequip、enshrine、库存Open、Close各一次，unknownfalse、64／96调用；独立post确认个人装备状态、关窗隐藏及供奉后圣地物主／slot1／玩家库存移出。生效圣物稀有度合计4→8，267自身仍4。两人物15893／10322独立前后读回成立，但外交delta均0、归因false、付款总额未证，整场business_pass仍false。唯一take68.200秒、49,490,441 B在04:26:23Z原录制进程0／probe0，内容QA与typed Quit／正常闭场仍待原件。B12旧未供奉／normalQuitfalse不改写。详见[本场证据与CI边界](filming-b10-and-b11-plan-20261020.md)。
+
+固定C5P02／P05规则画面新绑定后为53／65，12固定缺口；加B12装备14.4秒案例的当前作者工程66cue／54有视觉，required仍1／24来源绑定／23pending，总35待办＝12＋23。实际assembler结构检查完成但拒绝最终full input，B14实证还未正式接入，不自动增信用。原65声音23:32.267、9:25.888样片及约27–30分钟完整片预测保持，未新render／人工试听。
+
+e089与8979正式CI均在step87同25tests出现1error＋1failure，Linear均PASS。原因是Selection单测漏Close opt-in属性，以及集成adapter绝对外置scout路径不可移植；四文件portable补丁及独立fixture-only补丁只完成外置3项／2项focused检查和独审，未应用、未改冻结Root、未CI绿。先完成当前现场闭场，再审阅应用补丁并核新提交CI，素材QA、案例接入与A1／H2／P3研究并行；不重写既有失败回执。
+
+## 10月20日12:15：B13新生产与接口验收完成，装备结果1／24来源已绑定
+
+`machine_id: 4-8e1c2f1861`，来源截至`2026-10-20T04:14:53.122569Z`。B13冷生产DLL15,562,240 B／SHA-256 `26dd1777bdca41d8cfe31ec71109918918aba9eae5f42298154024c7623d470b`，原等待0；17个有限原生目标原等待0，17EXE管理员／WMI排除verified。`C_native=e089`与`C_runtime=8979`分别绑定，公共native consumer、六条公共源码链实际0，Close7项／18组合及fresh朝圣38项分列通过。原copy1／metadata恢复0、SDK38 child0／父容量1／恢复0均保留，不把metadata恢复称重跑测试或游戏通过。证据见[B13验收与B14准入增量](filming-b10-and-b11-plan-20261020.md)。
+
+装备案例新增14.4秒正式作者输入候选，实测speech13.896秒，6秒原片[26,32)加8.4秒同take原静帧，公共FormalInputs元数据实际通过；24required中1项observed-bound、23项pending。原65固定声音23:32.267／51固定视觉绑定不覆盖，新增案例分列；卸装仅辅助，没有供奉／净收益／单站归因信用，未render或人工试听，完整输入仍content_ready=false。现有9:25.888样片与约27–30分钟完整片预测不变。
+
+Root实际回收一期534项／314,703,872分配B及B13 870项／436,052,624分配B，旧prepared／segment与所选中间物不可读，V7／原片／声音／Source／DLL／EXE／S14保留；B13闭场分配上界172,138,496 B，不能重复扣减。B14新grant总896MiB、单take≤120秒，至06:11:25Z；shared20MiB只承接一次。filming独占现场全程，研究／H2／P3后继准备和作者审阅并行。B14 runID、动作及正常Quit结果待实际，不预写供奉或退出PASS；本场后态与闭场结果待真实回执补入。
+
+B14公共runtime冻结／生成原进程实际0，35必需MCP注册齐；product_inventory仍待prepare绑定，非现场通过。
+
 ## 10月20日11:45：供奉遮挡修复已审计，B13进入新版构建准备
 
 `machine_id: 4-8e1c2f1861`，实际观察截至`2026-10-20T03:44:45Z`。B12证明物品栏会遮挡圣地报价，因此新增原生 Inventory Close、独立意图账本及查询／关闭／隐藏后验三个MCP通道；动作回执与实际隐藏分开判断。源码独审通过，SDK新增20项、正式first-four消费者28项分别实际通过；尚未编译或取得实机关窗资格。A1、R19的公共host `after_snapshot`兼容修复同时纳入下一冻结来源。profile v1保留，v2精确增加两个Close有限目标至17项／41个直接编译单元，7项窄消费者通过，未将旧DLL追认为新能力。

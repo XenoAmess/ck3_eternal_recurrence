@@ -41,6 +41,7 @@ class Focused(unittest.TestCase):
             # This pure build_argv fixture bypasses __init__; retain every
             # explicitly initialized provider opt-in used by build_argv.
             selected.opt_in_player_inventory_window_open=False
+            selected.opt_in_player_inventory_window_close=False
             selected.opt_in_player_artifact_personal_use_actions=False
             selected.opt_in_player_pilgrimage_execution=False
             selected.opt_in_player_rite_creation_actions=False

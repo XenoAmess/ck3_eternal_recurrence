@@ -429,7 +429,7 @@ class _Journey:
 
     def capture_key_window(self, typed, options, frame):
         key = typed["event_definition_key"]
-        if key not in {"pilgrimage.7000", "pilgrimage.9001"}:
+        if key not in {"pilgrimage.5001", "pilgrimage.7000", "pilgrimage.9001"}:
             return None
         self.guard()
         reviewer = getattr(self.client, "operator_reviewer", None)
