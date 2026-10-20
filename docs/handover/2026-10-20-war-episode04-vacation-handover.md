@@ -1,5 +1,7 @@
 # 战争四期休假交接：研究、拍摄、影片与本机现场
 
+> 2026-10-20 07:57 UTC接续，`machine_id: desktop-3fevhd2-1c74096080`：[R06公共单日源码及A40未完成边界](../ck3-native-ai/episode04-r06-public-one-day-and-a40-boundary-20261020.md)已入库，专项18/18、R04路由1/1、通用25/25通过。A40编译成功但原生提权返回1223，未授新资格；剩余时间不足，新R06未分配run、未启动游戏。容量monitor原wait0、bus done7304资源空、所有执行future为0，08:00Z额度不续。R0217另已产出[36秒字幕审阅插片](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0217-proof-chapter-a01/README.md)，未授人工1×或正式动态。研究/业务信用不变，后继先核新鲜机器条件及有限时间窗。
+
 > 2026-10-20接续补注，`machine_id: desktop-3fevhd2-1c74096080`：04:50 UTC已完成[R0217新现场正常收束及83秒原片](../ck3-native-ai/episode04-r0217-direct-debits-and-normal-close-20261020.md)，取得17次direct-v2个别物理扣兵小计236，县总额仍未知。此前另已产出34分37秒方法＋独立证据审阅片。研究10/14、业务7/11、正式动态0/11、ABC0/3保持。下文为09:48–09:56交接的原始历史范围，R219失败不被后续成功倒改。
 
 现场观察时间：2026-10-20 09:48–09:56（Asia/Shanghai），文件于同日补齐。执行者 `/root`；`machine_id: desktop-3fevhd2-1c74096080`，已用 `tools/ck3_live_run_id.py machine` 当场读回。下面的安装、路径、进程、权限、磁盘与实机事实只属于这台机器。
