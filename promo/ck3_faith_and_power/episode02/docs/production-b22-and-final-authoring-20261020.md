@@ -43,3 +43,11 @@ C10 `7bc3b62c5f01510db1eb74f1e2f13eb23eb0e7e7` 的[Official CI39452484280](https
 B28的首次公开预检另发现旧H1适配器缺少`verify_case`；它尚未分配现场或启动游戏。新增入口委派给已有严格单臂验证器，仍拒绝partial、unknown与跨run原件，且不授整产品业务通过。Root已按资格字节集成这些改动及test-only夹具修复，实际组合测试19项通过、原进程等待0；[组合回执](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/c11-root-integration-a01/COMBINED-ROOT-TARGETED.a02.actual.json)保留首次因缺测试导入路径而失败的调用与其后正确调用，二者不混计。新正式CI仍待提交后的实际终态。
 
 制作端当前延续清单为[71段实际装配](C:/workspace/ck3-faith-and-power-20261017/episode02/final-authoring-b24-a01/CASE-BLOCKS.manifest.A1-P12-actual.a01.json)：65固定段、B12及5句新声共1486.933333秒，9/24必需槽已绑定、15待补、目标88段。P12两句实测24.533333秒；未执行新完整视频渲染，R0014未完成部分没有冒充完整旅程。
+
+## 2026-10-21 02:24 普通圣地报价解析修复
+
+`machine_id: 4-8e1c2f1861`；本条依据截至2026-10-20T18:23:43Z的已封原件。B28/R0015使用C11 `6d7b715edacf42c0849612a95ff543b2f3313c29`，正常关闭、原游戏保留句柄OS0、host/run/allocator退出0、keeper停止及CAS12868空资源均已取得；[实际闭场](C:/workspace/ck3-faith-and-power-20261017/episode02/capture-b28-h1-ordinary-a01/SCENE-CLOSURE.actual.json)不能代替业务通过。H1结果仍为`PARTIAL`，错误为`Exact bounded integer required`，没有两份完整独立报价，也没有升格或创建领袖提交。
+
+正式SDK的决议查询外层没有`capture_epoch`；独立原生采集序号在`selected_terms.capture_epoch`。H1两处消费者错误读取外层缺失字段，现按正式嵌套合同修复，保留严格整数边界、双方身份、同场绑定和两条独立query递增要求。[修复与实际定向验证](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b21-a01/h1-verify-entry-fix-a01/nested-quote-epoch-a02/DELIVERY.actual.json)记录原009 SDK JSON进入真实消费者的优化模式单项验证通过、strict四源通过；缺第二份原始query仍拒绝完成。不修改SDK生产者，不重编Native，不将Select后观察冒充第二份query。
+
+原009仅可证明本场一次完整十币种报价：300虔诚、225金币，其余八项为零；原生序号14094。当前Faith103确已采用纳杰夫32，关联边`eminent=false`表示普通等级，不能误读为未采用，其他Faith的等级不代入。本场[透明历史事实](C:/workspace/ck3-faith-and-power-20261017/episode02/h1-h2-composite-candidate-a01/narration-next-a01/B28-R0015-PARTIAL-FACTS.actual.json)不填H1完成槽。旧录制监看读文件时失败，唯一11.9秒补充片段仅为退出确认画面，不授报价上屏信用；后继使用独立场次及有界文件读取重试的新监看。

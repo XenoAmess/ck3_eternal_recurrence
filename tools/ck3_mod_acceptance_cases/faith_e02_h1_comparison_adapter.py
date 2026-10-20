@@ -220,8 +220,9 @@ def hof_terms(row_value: object) -> Q.Obj:
     t = Q.obj(value.get("selected_terms"))
     Q.require(Q.integer(t.get("played_character_id")) == 31254
               and Q.integer(t.get("date_raw"), -(2**31), 2**31-1) == 53144328, "Terms actor/date malformed")
-    Q.require(Q.integer(t.get("capture_epoch"), 1, 2**53-1) ==
-              Q.integer(value.get("capture_epoch"), 1, 2**53-1), "Terms and outer native capture differ")
+    # The public decision-item envelope has no capture_epoch; the typed
+    # selected terms carry the independently captured native epoch.
+    Q.integer(t.get("capture_epoch"), 1, 2**53-1)
     Q.integer(t.get("named_parameter_count"), 0, 1)
     Q.vector(t.get("resource_quote"))
     return Q.obj(selected_quotes().quote_terms(row, 31254, 53144328))
@@ -317,7 +318,7 @@ class ArmRun:
             self.snapshot()
             row = self.call(Q.QUERY, {"decision_key": Q.DECISION})
             terms.append(self.terms(row))
-            epochs.append(Q.integer(Q.obj(row["result"]).get("capture_epoch"), 1, 2**53-1))
+            epochs.append(Q.integer(terms[-1].get("capture_epoch"), 1, 2**53-1))
             refs.append(self.receipts[-1])
         Q.require(epochs[1] > epochs[0], "HoF quotes need independent increasing native capture epochs")
         claim: Q.Obj = {"schema": "faith-e02-R19-hof-once-claim-v1", "decision_key": Q.DECISION,
