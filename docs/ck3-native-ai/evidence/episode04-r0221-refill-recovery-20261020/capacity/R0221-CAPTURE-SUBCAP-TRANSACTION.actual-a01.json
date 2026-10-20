@@ -1,0 +1,30 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:34:56.648121+00:00",
+  "capture_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+    "bytes": 10772,
+    "sha256": "b8ca4b17bafbd4b1de344c006779c3a75a30358a797cd9c6ce7692bc72394708"
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 301450,
+    "sha256": "33601c1ca6dcd0f164f0096cfe8c399ab85ace2b692b51bd636d71f62257d897"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 119,
+    "lock_hold_seconds": 0.0007287999615073204,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 302044,
+      "sha256": "c38c02ff03d659ad03fb8e4e64e0206e06b70eb57785aa6da84ed911a6293efa"
+    }
+  },
+  "scene_hardcap_unchanged_bytes": 2415919104,
+  "scene_unspent_unchanged_bytes": 2412643713,
+  "shared_reserved_future_unchanged_bytes": 134217728,
+  "additional_global_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0
+}

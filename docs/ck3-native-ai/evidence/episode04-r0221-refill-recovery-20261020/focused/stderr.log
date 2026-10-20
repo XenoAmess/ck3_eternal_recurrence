@@ -1,0 +1,9 @@
+test_newline_65537th_byte_is_rejected_without_output (__main__.TargetProofCliSerialization.test_newline_65537th_byte_is_rejected_without_output) ... ok
+test_parent_owner_token_generation_and_unselected_tail_stay_strict (__main__.TargetProofCliSerialization.test_parent_owner_token_generation_and_unselected_tail_stay_strict) ... ok
+test_pretty_over_cap_complete_proof_roundtrips_real_cli (__main__.TargetProofCliSerialization.test_pretty_over_cap_complete_proof_roundtrips_real_cli) ... ok
+test_utf8_and_newline_exact_65536_bytes_are_accepted (__main__.TargetProofCliSerialization.test_utf8_and_newline_exact_65536_bytes_are_accepted) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 32.570s
+
+OK

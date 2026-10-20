@@ -1,0 +1,43 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:33:28.189724+00:00",
+  "pid": 15768,
+  "create_time": 1792496007.9713185,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/capacity/r06-1315-a01/monitor_scene_actual_unspent.py"
+  ],
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\monitor_scene_actual_unspent.py",
+    "bytes": 8535,
+    "sha256": "05f9c507dc96b2ec147365aa8f69ca309affb4809743ae0df08a5bd362522f55"
+  },
+  "measurement_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\scene_a05_consumed_measure.py",
+    "bytes": 6868,
+    "sha256": "12f93601ff5703cc52878a139ca14c08c6009f6d732c00a42f91990bc2727678"
+  },
+  "base_scene_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 16549,
+    "sha256": "04bdfd0f164a0866bb87b6a6d127be8c66479af29926db0ab7f5c4c6208115d2"
+  },
+  "conversion_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\ROOT-NEW-FINITE-1315Z-APPROVAL.actual-a01.json",
+    "bytes": 1190,
+    "sha256": "36c9423fc82ca2ee1dc15b07a0971d7e5742758b76f9976f216db85fa3ff5eac"
+  },
+  "predecessor_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1230-a01\\R0220-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1389,
+    "sha256": "ec8bd7ed7d0cbb6dee3b19bbb1eddd99832b56e602029b410eee7f653d7c1394"
+  },
+  "stop_flag": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-ACTUAL-UNSPENT-GUARD.STOP",
+  "deadline_utc": "2026-10-20T13:15:00Z",
+  "interval_seconds": 15,
+  "all_observations_outside_global_CAS_lock": true,
+  "no_SDK_screen_game_or_payload_hash_actions": true
+}

@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "bridge_pid": 37800,
+  "date_raw": 53149056,
+  "camera_started": true,
+  "start_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\E04-R06-R0221-TAKE01-started.actual.json",
+    "bytes": 1312,
+    "sha256": "ee105c1a9215e169791b43787738b3c6fe3e4a0a2f9f6ca5ffe003ab964f68ff"
+  }
+}

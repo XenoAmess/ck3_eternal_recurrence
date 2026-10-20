@@ -1,0 +1,54 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:09:45.988565+00:00",
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 304088,
+    "sha256": "cff5f4ab7d457e0c36e3a6bc3e05b1a014897f47435c54798a9c3b083c85d0ce"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 206,
+    "lock_hold_seconds": 0.0015807999297976494,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 305903,
+      "sha256": "d4f48fd28450f58c765b20f7bbf556e305d55064b0e226a8ce4d2c2f8af8ec43"
+    }
+  },
+  "Root_explicit_instruction": "No new live reservation/native build; original shared128 remains finite until13:15 for offline repair/evidence/CI and approved boundedvisual. No new monitor platform.",
+  "three_original_waits": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-LIVE-ALARM-WATCH-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 866,
+      "sha256": "8b8fcce606f07fd9a3c3395935f2d47859134b6e17fa071f92bc9b2c3f883ec4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1405,
+      "sha256": "007ee4028288c76975ac34fda4cde709dba07a487d8724f4c6ca34f9eb2328fa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "bytes": 1119,
+      "sha256": "99b5975862b74e083ea9b79338c01814b1a498e8b0949dbcb46d0ca801d2891d"
+    }
+  ],
+  "incident_originals": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-TRANSIENT-METADATA-GAP-RED-RECOVERY.actual-a01.json",
+      "bytes": 8968,
+      "sha256": "eb810347e3c0d8b0ff68953d342b1b6bbf791a737ee0f7df742459c65a9029ae"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-GLOBAL-RED-115334-CROSS-TIME-COMPARISON.actual-a01.json",
+      "bytes": 14941,
+      "sha256": "079b4ad345f0a15c366f33648137eefe27be47c747cfc24195f7a8afcd05f28a"
+    }
+  ],
+  "scene_native_game_camera_future_or_execution_admitted": false,
+  "shared_remaining_future_bytes": 134217728,
+  "new_global_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0
+}

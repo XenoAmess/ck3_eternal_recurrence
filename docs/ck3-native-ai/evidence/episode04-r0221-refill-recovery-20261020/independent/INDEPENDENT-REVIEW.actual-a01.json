@@ -1,0 +1,151 @@
+{
+  "schema": "xar.e04.r0221-compact-independent-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:13:55.124224+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "status": "PASS",
+  "source_original_consumer": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+    "bytes": 6158,
+    "sha256": "ae99e511ba8a44430417a47103d6d535c4508384d200123372b9655954597c2b"
+  },
+  "source_fixed_consumer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+    "bytes": 6391,
+    "sha256": "cc64032d7ffb1325724871b3a4c124d042d1c643c22125b6db7f825770e9c4b8"
+  },
+  "source_unchanged_guard": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_target_instruction_core_proof_12004.py",
+    "bytes": 33771,
+    "sha256": "e226875b69d8b2c753262ca49ecead000f544aeee8fa44c43075c943c3f29721"
+  },
+  "original_sources": {
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+      "bytes": 31553,
+      "sha256": "afbae8ec5dd382626cad5a7e6aefb913a2f9c2aed82a877b2219f8d048da2eb6"
+    },
+    "binding": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\owner-binding.json",
+      "bytes": 1168,
+      "sha256": "5b30d31b1b7cc50cd22d4737394d2be67f0a17e76c83ad9ce45bf599c7d1f096"
+    },
+    "parent_proof": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-FULL-PARENT-PROOF.json",
+      "bytes": 1749,
+      "sha256": "77b17cdada589deef5bedb04f84bf6ab433d86dca4959c23b0b164b95bf9ea6c"
+    },
+    "original_terminal": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-REFILL-TERMINAL.json",
+      "bytes": 381,
+      "sha256": "fe30148cdba1e12b6d1ed4394e0f0af395fcc4fbae0f415a7c41699d8284cdeb"
+    }
+  },
+  "recovered_proof": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-CORE-PROOF.offline.json",
+    "bytes": 50670,
+    "sha256": "46e70788286eff215d37d552bc166db3f2fe1663cd9004f9f57d08dcb0497c6c"
+  },
+  "recovered_item": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-INSTRUCTION.offline.json",
+    "bytes": 90993,
+    "sha256": "c88b81b489beef30b82391e8fbd1050f6bd10cdc19ec915f89513af5cff81bf7"
+  },
+  "test_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 2301,
+    "sha256": "21da2202cf972a0b76121b545d7e91d110413d53c7604347107b277b934bfb26"
+  },
+  "recovery_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 7480,
+    "sha256": "de10b75c9b2e63f42049438be5048168fed0d20decc7e287834e80972fff50d5"
+  },
+  "independent_original_parent_reextraction": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+    "file_identity": [
+      13886423844274364792,
+      1970324838218770
+    ],
+    "response_line": {
+      "begin": 54547350,
+      "end": 73098176,
+      "sha256": "b03ff66bdef770e33231a16e595fdbcc6fcd269eb58104bac62d230043529fd5"
+    },
+    "bytes_read": 18550826,
+    "request_id": "step-16-3ff7a3f69e0e",
+    "query_sequence": 4,
+    "whole_wire_read_or_hashed": false
+  },
+  "lossless_proof": {
+    "complete_reextraction_canonical_equal": true,
+    "UTF8_bytes_with_newline": 50670,
+    "original_pretty_UTF8_bytes_with_newline": 76077,
+    "hard_limit_bytes": 65536,
+    "canonical_derived_SHA256_excludes_newline": "e3eeb41b3aaa034172e499f204ae8870658647055824a6af46fd7215d844654f",
+    "file_SHA256_includes_newline": "46e70788286eff215d37d552bc166db3f2fe1663cd9004f9f57d08dcb0497c6c",
+    "entry_arrg_branches": 27,
+    "returned_arrg_branches": 27
+  },
+  "owner_and_token": {
+    "pid": 37800,
+    "process_created_filetime": 134369699086779087,
+    "selected_thread_id": 37456,
+    "selected_thread_generation": 134369699152906149,
+    "native_core_token": 1
+  },
+  "actual_in_memory_mutation_probes": [
+    {
+      "name": "actual raw with another owner PID",
+      "rejected": true,
+      "error_type": "ValueError",
+      "message": "start owner match pid"
+    },
+    {
+      "name": "actual raw pair with mismatched carrier invocation token",
+      "rejected": true,
+      "error_type": "ValueError",
+      "message": "same stable entire carrier and invocation token across one worker pair"
+    },
+    {
+      "name": "actual raw post boundary with another thread generation",
+      "rejected": true,
+      "error_type": "ValueError",
+      "message": "same actual stopped worker generation at both boundaries"
+    },
+    {
+      "name": "actual parent response with altered original range SHA",
+      "rejected": true,
+      "error_type": "ValueError",
+      "message": "original full response-line range SHA/length"
+    },
+    {
+      "name": "compact proof with one copied ArRg branch omitted",
+      "rejected": true,
+      "error_type": "ValueError",
+      "message": "target proof exactly re-extracted from verified original full parent bytes, including JSON types"
+    }
+  ],
+  "mutation_boundary": "Only labelled memory copies changed, never original raw/parent/binding or proof files; no actual native action implied",
+  "recovered_derived_target_qualification": {
+    "actual_ADD_observed": true,
+    "same_core_invocation_join_ready": true,
+    "natural_attribution_ready": true,
+    "global_physical_closure_qualification_granted": false,
+    "whole_core_NET_cause_proven": false,
+    "same_core_NET_cause_proven": false,
+    "full_window_coverage_ready": false,
+    "toggle_effect_proven": false,
+    "refill_business_qualification_granted": false,
+    "owner_admission_authority_verified_here": false
+  },
+  "original_terminal_unchanged": {
+    "actual_days": 1,
+    "exact_day_verified": true,
+    "actual_ADD_observed": false,
+    "full_R06_qualified": false
+  },
+  "qualification_boundary": "New offline derived target proof and unchanged original-contract validation; no new live run, full R06, business refill, whole-Core NET or global closure credit",
+  "SDK_game_screen_input_or_CI_calls": 0,
+  "repository_or_original_evidence_modified": false
+}

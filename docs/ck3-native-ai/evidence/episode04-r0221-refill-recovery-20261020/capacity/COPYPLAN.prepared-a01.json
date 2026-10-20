@@ -1,0 +1,278 @@
+{
+  "schema": "xar.e04.r0221-capacity-small-originals-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:14:45.020841+00:00",
+  "state": "prepared-not-copied-or-staged-by-capacity",
+  "entries": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\ROOT-NEW-FINITE-1315Z-APPROVAL.actual-a01.json",
+        "bytes": 1190,
+        "sha256": "36c9423fc82ca2ee1dc15b07a0971d7e5742758b76f9976f216db85fa3ff5eac"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/ROOT-NEW-FINITE-1315Z-APPROVAL.actual-a01.json",
+      "role": "Root distinct finite packet; no automatic renewal"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-NEW-FINITE-RESERVATION-PREPARE-ONLY.actual-a01.json",
+        "bytes": 7594,
+        "sha256": "12ed8775388d21f6500b53733d60fdb9fe4feaefd3d4b6f1d280dd91dfc6a50e"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R06-NEW-FINITE-RESERVATION-PREPARE-ONLY.actual-a01.json",
+      "role": "Historical run-null reservation; not game launch"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\NEW-FINITE-SHARED-TRANSFER-ADMISSION-TRANSACTION.actual-a01.json",
+        "bytes": 2852,
+        "sha256": "ce2d9388fec81d28c33350d4222140fe0b896f94fa383a9f641ba7e6083a9d80"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/NEW-FINITE-SHARED-TRANSFER-ADMISSION-TRANSACTION.actual-a01.json",
+      "role": "Same shared128 pool transfer, legacy/system preserved"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\SOURCE-ISOLATION-1315Z.actual-a01.json",
+        "bytes": 1277,
+        "sha256": "68bbfd8f30b760da139b0e996dd0b7ae81595aa96d40215d10e6640a7d83ea0e"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/SOURCE-ISOLATION-1315Z.actual-a01.json",
+      "role": "Machine/time/source4fc nativefee observed before scene"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-A07-EXACT-RUNTIME-PREPARE-ONLY.actual-a02.json",
+        "bytes": 9185,
+        "sha256": "1a65d87e50aa990da2d001b4ad257983099b808e64016cd373851a12d559ea51"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R06-A07-EXACT-RUNTIME-PREPARE-ONLY.actual-a02.json",
+      "role": "Exact runtime/input prepare binding with null run"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-SCENE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 16549,
+        "sha256": "04bdfd0f164a0866bb87b6a6d127be8c66479af29926db0ab7f5c4c6208115d2"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-SCENE-SOURCE-BOUND.actual-a01.json",
+      "role": "Actual READY allocation, original gamefalse actor capacity"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-ACTUAL-SOURCE-BOUND-TRANSACTION.actual-a01.json",
+        "bytes": 1160,
+        "sha256": "279103313a5a4fee7c5e36389558022059bfdafe3b68384622bbb4982870c7a2"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-ACTUAL-SOURCE-BOUND-TRANSACTION.actual-a01.json",
+      "role": "Actual run source-bound transaction"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-ROOT-LAUNCH-STAGE-AUTHORITY.actual-a01.json",
+        "bytes": 4483,
+        "sha256": "d78a8745d11164971c1e2a4312916c786c562d8b6c566de8b1435b59b4bbe247"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-ROOT-LAUNCH-STAGE-AUTHORITY.actual-a01.json",
+      "role": "Separate explicit Root launch and conditional camera phase"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-ROOT-LAUNCH-AUTHORITY-TRANSACTION.actual-a01.json",
+        "bytes": 1146,
+        "sha256": "9a298b2857cd0916191e3e023724cd4352a3081ffb1df156241ba50f4647da22"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-ROOT-LAUNCH-AUTHORITY-TRANSACTION.actual-a01.json",
+      "role": "Zero-budget-delta launch authority append"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+        "bytes": 10772,
+        "sha256": "b8ca4b17bafbd4b1de344c006779c3a75a30358a797cd9c6ce7692bc72394708"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+      "role": "Single36 hard96 client-only raw256 child bound to base cap"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-CAPTURE-SUBCAP-TRANSACTION.actual-a01.json",
+        "bytes": 1304,
+        "sha256": "c2001568a8a7a6b794e307b9d68daf89baa041d175816b904215cb532d5a9739"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-CAPTURE-SUBCAP-TRANSACTION.actual-a01.json",
+      "role": "No new raw pool or credit"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-ACTUAL-UNSPENT-FIRST-CONVERSION.actual-a01.json",
+        "bytes": 14681,
+        "sha256": "0f211d0c6281fd2d3361bbb70daf76fde6a2e42319258daf8aade3bcb7d7e212"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R06-ACTUAL-UNSPENT-FIRST-CONVERSION.actual-a01.json",
+      "role": "Initial complete paired accounting; hardcaps unchanged"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-TRANSIENT-METADATA-GAP-RED-RECOVERY.actual-a01.json",
+        "bytes": 8968,
+        "sha256": "eb810347e3c0d8b0ff68953d342b1b6bbf791a737ee0f7df742459c65a9029ae"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-TRANSIENT-METADATA-GAP-RED-RECOVERY.actual-a01.json",
+      "role": "Actual shadercache temporary-file gap RED and recovery; delayed notice preserved"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-GLOBAL-RED-115334-CROSS-TIME-COMPARISON.actual-a01.json",
+        "bytes": 14941,
+        "sha256": "079b4ad345f0a15c366f33648137eefe27be47c747cfc24195f7a8afcd05f28a"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-GLOBAL-RED-115334-CROSS-TIME-COMPARISON.actual-a01.json",
+      "role": "Actual11:53:34 global RED and time-bracketing uncertainty; no no-overrun or autopause claim"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-LIVE-ALARM-WATCH-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 866,
+        "sha256": "8b8fcce606f07fd9a3c3395935f2d47859134b6e17fa071f92bc9b2c3f883ec4"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-LIVE-ALARM-WATCH-ORIGINAL-WAIT.actual-a01.json",
+      "role": "Original watcher session37671 real wait0"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1405,
+        "sha256": "007ee4028288c76975ac34fda4cde709dba07a487d8724f4c6ca34f9eb2328fa"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-CONSUMED-GUARD-ORIGINAL-WAIT.actual-a01.json",
+      "role": "Original combined session90932 real wait0"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 1119,
+        "sha256": "99b5975862b74e083ea9b79338c01814b1a498e8b0949dbcb46d0ca801d2891d"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-VOLUME-MONITOR-ORIGINAL-WAIT.actual-a01.json",
+      "role": "Original global session46296 real wait0"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-NORMAL-CLOSED-CONSUMER-ERROR-SETTLEMENT.actual-a01.json",
+        "bytes": 15252,
+        "sha256": "86b4555b4bcf098a5e54a6409b515ea630e9b589cd7f901a4bbdb6b7200985a8"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-NORMAL-CLOSED-CONSUMER-ERROR-SETTLEMENT.actual-a01.json",
+      "role": "Typed normal closure, original case exactday1 but ADD/fullR06false retained; current occupancy and future0"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-ACTUAL-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+        "bytes": 2980,
+        "sha256": "3fdd85b6ccdf930af256683244d54befe23fbc796066d84592feb4fbc620b29a"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-ACTUAL-CLOSED-SETTLEMENT-TRANSACTION.actual-a01.json",
+      "role": "Scene future0, shared128 only, no physical/unused credit"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-EXECUTION-AUTHORITY-CLOSED-METADATA-ONLY-ADDENDUM.actual-a01.json",
+        "bytes": 2558,
+        "sha256": "50c3e9fb4caa673a14c3036fbf6875f8f1cf9c550ddef4ba5e87a82430f33bc6"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-EXECUTION-AUTHORITY-CLOSED-METADATA-ONLY-ADDENDUM.actual-a01.json",
+      "role": "No new live/camera/native; finite offline metadata scope only"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-ACTUAL-UNSPENT-GUARD-OWNED.actual-a01.json",
+        "bytes": 1978,
+        "sha256": "e535dfaf600c90351b204e5252e9185926111b004b074a0f0a6e7010e46cb43c"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R06-ACTUAL-UNSPENT-GUARD-OWNED.actual-a01.json",
+      "role": "Combined exact process identity/source"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\NEW-1315Z-FINITE-MONITOR-OWNED.actual-a01.json",
+        "bytes": 1370,
+        "sha256": "438159c298c07029b1e56e6c7f8db4b41eb93c76c2696c3d3aec38cfe4387e56"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/NEW-1315Z-FINITE-MONITOR-OWNED.actual-a01.json",
+      "role": "Global exact process identity/source"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-LIVE-ALARM-WATCH-OWNED.actual-a01.json",
+        "bytes": 944,
+        "sha256": "d30d777e137ad97ed7348354be0046256e3d00d117d06ba35253b7f3c79d8753"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/R0221-LIVE-ALARM-WATCH-OWNED.actual-a01.json",
+      "role": "Journal watcher identity and limited combined-journal scope"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\packet_common.py",
+        "bytes": 383,
+        "sha256": "3a4be9760e3c702f97afdbb9a7a3322bbfad239f1e3f831b0d327ebedc5b41ed"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/packet_common.py",
+      "role": "Historical source helper; not a new authorization"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\scene_a05_consumed_measure.py",
+        "bytes": 6868,
+        "sha256": "12f93601ff5703cc52878a139ca14c08c6009f6d732c00a42f91990bc2727678"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/scene_a05_consumed_measure.py",
+      "role": "Exact metadata-only four-component scanner source"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\monitor_scene_actual_unspent.py",
+        "bytes": 8535,
+        "sha256": "05f9c507dc96b2ec147365aa8f69ca309affb4809743ae0df08a5bd362522f55"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/monitor_scene_actual_unspent.py",
+      "role": "Exact dynamic guard source; past REDs remain"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\check_current_r0221_accounting.py",
+        "bytes": 4235,
+        "sha256": "f78abc9903e9512c62c0c07f8acf47bd16dc1c638ff79b28e70b01f3064a474d"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/check_current_r0221_accounting.py",
+      "role": "Phase capacity checker source; no SDK actions"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\watch_live_capacity_alarms.py",
+        "bytes": 3558,
+        "sha256": "c96cedab2f0dcfcef9f477b2e903d989bade060eb25c8ea1265a9664096928ed"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/watch_live_capacity_alarms.py",
+      "role": "Watcher source, combined-only limitation visible"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\settle_r0221_actual_closed.py",
+        "bytes": 7757,
+        "sha256": "8580cb51ac0a592310476f4f0607a82237b99c879939263e2e18b80d7359950e"
+      },
+      "suggested_repo_relative_destination": "docs/ck3-native-ai/evidence/episode04-r0221-refill-recovery-20261020/capacity/settle_r0221_actual_closed.py",
+      "role": "Typed storage closure source, not business qualification"
+    }
+  ],
+  "files": 29,
+  "total_source_bytes": 155910,
+  "archive_owner_may_use_unified_Root_directory_with_explicit_mapping": true,
+  "raw_SDK_Save_EXE_Q_payload_and_large_monitor_JSONL_not_copied": true,
+  "business_original_false_not_rewritten_by_later_offline_recovery": true,
+  "both_actual_RED_incidents_and_notice_or_timing_uncertainties_retained": true,
+  "current_shared128_not_closed_or_duplicated": true,
+  "additional_global_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0
+}

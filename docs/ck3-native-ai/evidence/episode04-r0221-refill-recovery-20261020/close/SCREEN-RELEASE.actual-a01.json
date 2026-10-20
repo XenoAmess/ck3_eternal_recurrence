@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "wip/e04-r06-a41-20261020",
+      "dirty_entries": 0,
+      "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c"
+    },
+    "last_sequence": 7462,
+    "next_step": "",
+    "pid": 7492,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0221-normal-close-OS0-native0-host0-keeper0-preserved-consumer-error",
+    "task_id": "e04-common-12004-a226",
+    "updated_at_utc": "2026-10-20T11:56:51.456800+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 7462,
+    "event_id": "eb9cccc8a69d44ed85b72f358e35bcb6",
+    "timestamp_utc": "2026-10-20T11:56:51.458109+00:00",
+    "kind": "completed",
+    "task_id": "e04-common-12004-a226",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0221-normal-close-OS0-native0-host0-keeper0-preserved-consumer-error",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "wip/e04-r06-a41-20261020",
+      "dirty_entries": 0,
+      "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c"
+    }
+  }
+}

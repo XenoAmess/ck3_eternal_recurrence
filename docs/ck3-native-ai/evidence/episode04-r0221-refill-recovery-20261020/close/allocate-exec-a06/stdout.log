@@ -1,0 +1,87 @@
+{
+  "status": "ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN",
+  "live": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "task": "e04-common-12004-a226",
+  "sequence": 7444,
+  "keeper_ready": {
+    "at_utc": "2026-10-20T11:32:36.318439+00:00",
+    "lease": {
+      "schema": "xar.promo.screen-lease-cas/v1",
+      "task_id": "e04-common-12004-a226",
+      "expected_sequence": 7444,
+      "sequence": 7445,
+      "event_id": "39ba67c4e7074e58a8105f1816047e33",
+      "updated_at_utc": "2026-10-20T11:32:35.606298+00:00",
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "checkout_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+      "source_cli": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "cli_sha256": "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+      "screen_resource": "ck3-screen:acquired"
+    },
+    "inputs": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\keeper-a01\\inputs.json",
+      "bytes": 807,
+      "sha256": "98a4dbd0756d12ec4577c9dc4a7ca3f70687c1bec5842c358fd823f6a57da17d"
+    }
+  },
+  "keeper_pid": 30276,
+  "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\keeper-a01",
+  "register_to_keeper_ready_seconds": 4.046924100024626,
+  "context": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\ready-context.json",
+  "prepared_case": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\prepared-a01\\prepared-case.json",
+  "actual_host_argv": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\frozen-argv.json",
+  "game_started": false,
+  "business_pass": false
+}
+{
+  "status": "ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN",
+  "live": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "task": "e04-common-12004-a226",
+  "sequence": 7444,
+  "keeper_ready": {
+    "at_utc": "2026-10-20T11:32:36.318439+00:00",
+    "lease": {
+      "schema": "xar.promo.screen-lease-cas/v1",
+      "task_id": "e04-common-12004-a226",
+      "expected_sequence": 7444,
+      "sequence": 7445,
+      "event_id": "39ba67c4e7074e58a8105f1816047e33",
+      "updated_at_utc": "2026-10-20T11:32:35.606298+00:00",
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "checkout_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+      "source_cli": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+      "cli_sha256": "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+      "screen_resource": "ck3-screen:acquired"
+    },
+    "inputs": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\keeper-a01\\inputs.json",
+      "bytes": 807,
+      "sha256": "98a4dbd0756d12ec4577c9dc4a7ca3f70687c1bec5842c358fd823f6a57da17d"
+    }
+  },
+  "keeper_pid": 30276,
+  "keeper_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\keeper-a01",
+  "register_to_keeper_ready_seconds": 4.046924100024626,
+  "context": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\ready-context.json",
+  "prepared_case": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\prepared-a01\\prepared-case.json",
+  "actual_host_argv": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\frozen-argv.json",
+  "game_started": false,
+  "business_pass": false,
+  "keeper_actual_exit_code": 0,
+  "keeper_report": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "e04-common-12004-a226",
+    "last_sequence": 7459,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\keeper-a01\\journal.jsonl",
+    "at_utc": "2026-10-20T11:56:36.819263+00:00",
+    "entry_error": null,
+    "checkout_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221"
+}

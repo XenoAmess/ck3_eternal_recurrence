@@ -1,0 +1,3513 @@
+{
+  "schema": "xar.ck3.refill_ADD_12004.prepared_live_argv.v4",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-20T11:51:28.039210+00:00",
+  "input_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepare-inputs\\frame.json",
+      "bytes": 42878,
+      "sha256": "8b23e96d0dac9a2998cbff6ae0fe8d023878f000d1920131b30de9472ed3fcb5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepare-inputs\\diagnostics.json",
+      "bytes": 13370,
+      "sha256": "e0768a3838beabdb323819e58034980707fb50938bbb752b8d6b90bdd279ec8f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepare-inputs\\army-packet.json",
+      "bytes": 18892539,
+      "sha256": "00a567b4bf64abbdc1bb9f36dfed0a4e25609ad3d7fb5289b567a7d8fa5685a1"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepare-inputs\\owner-admission.json",
+      "bytes": 1734,
+      "sha256": "8f0459313aaec00bcd4e77b29305a44de0ab23b8267b23e3c94f47a67a82e327"
+    }
+  ],
+  "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+  "positive_prepare_target": {
+    "schema": "xar.ck3.refill_ADD_12004.positive_prepare_target.v1",
+    "ordered_refill_entry_mode": "fixed_chunk0_prepare",
+    "input_basis": "same_capture_fixed_chunk0_conditional_preparation_ordered_occurrences",
+    "conditional_request_only": true,
+    "actual_preparation_observed": false,
+    "actual_ADD_observed": false,
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "arrg_full_id_i32": 82,
+    "army_full_id_i32": 0,
+    "q_index": 1,
+    "conditional_shared_q_i32": 1,
+    "native_unit_position_eligible": true,
+    "selected_write": {
+      "physical_index": 1,
+      "q_ordinal_raw": 1,
+      "q": 1,
+      "before_current": 68,
+      "before_maximum": 69,
+      "after_current": 69,
+      "after_maximum": 69,
+      "pair_cleared": false
+    },
+    "selected_occurrence_stored_index": 2602,
+    "ordered_occurrences": [
+      {
+        "stored_index": 2602,
+        "persistent_regiment_id": 2602,
+        "prepared_fraction_raw": 4020,
+        "native_core_admitted": true,
+        "q_buffer": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 1
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 1,
+            "before_current": 68,
+            "before_maximum": 69,
+            "after_current": 69,
+            "after_maximum": 69,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          }
+        ]
+      },
+      {
+        "stored_index": 2604,
+        "persistent_regiment_id": 2604,
+        "prepared_fraction_raw": 3600,
+        "native_core_admitted": true,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 1,
+            "after_current": 0,
+            "after_maximum": 1,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          }
+        ]
+      },
+      {
+        "stored_index": 2606,
+        "persistent_regiment_id": 2606,
+        "prepared_fraction_raw": 5400,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2608,
+        "persistent_regiment_id": 2608,
+        "prepared_fraction_raw": 3525,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2610,
+        "persistent_regiment_id": 2610,
+        "prepared_fraction_raw": 5820,
+        "native_core_admitted": true,
+        "q_buffer": [
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 3
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 3,
+            "before_current": 299,
+            "before_maximum": 302,
+            "after_current": 302,
+            "after_maximum": 302,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          }
+        ]
+      },
+      {
+        "stored_index": 2612,
+        "persistent_regiment_id": 2612,
+        "prepared_fraction_raw": 3300,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2614,
+        "persistent_regiment_id": 2614,
+        "prepared_fraction_raw": 4050,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2616,
+        "persistent_regiment_id": 2616,
+        "prepared_fraction_raw": 4950,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2618,
+        "persistent_regiment_id": 2618,
+        "prepared_fraction_raw": 3750,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2620,
+        "persistent_regiment_id": 2620,
+        "prepared_fraction_raw": 4665,
+        "native_core_admitted": true,
+        "q_buffer": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 1
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 1,
+            "before_current": 68,
+            "before_maximum": 69,
+            "after_current": 69,
+            "after_maximum": 69,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          }
+        ]
+      },
+      {
+        "stored_index": 2622,
+        "persistent_regiment_id": 2622,
+        "prepared_fraction_raw": 3000,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2624,
+        "persistent_regiment_id": 2624,
+        "prepared_fraction_raw": 5400,
+        "native_core_admitted": true,
+        "q_buffer": [
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 2
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 2,
+            "before_current": 73,
+            "before_maximum": 75,
+            "after_current": 75,
+            "after_maximum": 75,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          }
+        ]
+      },
+      {
+        "stored_index": 2626,
+        "persistent_regiment_id": 2626,
+        "prepared_fraction_raw": 3750,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2628,
+        "persistent_regiment_id": 2628,
+        "prepared_fraction_raw": 5400,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2630,
+        "persistent_regiment_id": 2630,
+        "prepared_fraction_raw": 3075,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2632,
+        "persistent_regiment_id": 2632,
+        "prepared_fraction_raw": 2925,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2634,
+        "persistent_regiment_id": 2634,
+        "prepared_fraction_raw": 4140,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2636,
+        "persistent_regiment_id": 2636,
+        "prepared_fraction_raw": 3075,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 2638,
+        "persistent_regiment_id": 2638,
+        "prepared_fraction_raw": 4140,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 9884,
+        "persistent_regiment_id": 9884,
+        "prepared_fraction_raw": 3450,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 9886,
+        "persistent_regiment_id": 9886,
+        "prepared_fraction_raw": 3450,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 10178,
+        "persistent_regiment_id": 10178,
+        "prepared_fraction_raw": 3600,
+        "native_core_admitted": true,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 1,
+            "after_current": 0,
+            "after_maximum": 1,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": true
+          }
+        ]
+      },
+      {
+        "stored_index": 15158,
+        "persistent_regiment_id": 15158,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15159,
+        "persistent_regiment_id": 15159,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15160,
+        "persistent_regiment_id": 15160,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15161,
+        "persistent_regiment_id": 15161,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15162,
+        "persistent_regiment_id": 15162,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15163,
+        "persistent_regiment_id": 15163,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15164,
+        "persistent_regiment_id": 15164,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15165,
+        "persistent_regiment_id": 15165,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15166,
+        "persistent_regiment_id": 15166,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15167,
+        "persistent_regiment_id": 15167,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15168,
+        "persistent_regiment_id": 15168,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15169,
+        "persistent_regiment_id": 15169,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 15170,
+        "persistent_regiment_id": 15170,
+        "prepared_fraction_raw": 0,
+        "native_core_admitted": false,
+        "q_buffer": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "prepared_nonpositive",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": []
+      },
+      {
+        "stored_index": 16464,
+        "persistent_regiment_id": 16793680,
+        "prepared_fraction_raw": 10000,
+        "native_core_admitted": true,
+        "q_buffer": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 1
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 1,
+            "before_current": 9,
+            "before_maximum": 10,
+            "after_current": 10,
+            "after_maximum": 10,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          }
+        ]
+      },
+      {
+        "stored_index": 17828,
+        "persistent_regiment_id": 17948,
+        "prepared_fraction_raw": 10000,
+        "native_core_admitted": true,
+        "q_buffer": [
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "chunk_decisions": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "predicate": true,
+            "permission_basis": "held_native_unit_position_context",
+            "qualified": true,
+            "calculated_q": 2
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "predicate": false,
+            "permission_basis": "current_maximum",
+            "qualified": false,
+            "calculated_q": 0
+          }
+        ],
+        "writes": [
+          {
+            "physical_index": 0,
+            "q_ordinal_raw": 0,
+            "q": 2,
+            "before_current": 198,
+            "before_maximum": 200,
+            "after_current": 200,
+            "after_maximum": 200,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 1,
+            "q_ordinal_raw": 1,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 2,
+            "q_ordinal_raw": 2,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 3,
+            "q_ordinal_raw": 3,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 4,
+            "q_ordinal_raw": 4,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 5,
+            "q_ordinal_raw": 5,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          },
+          {
+            "physical_index": 6,
+            "q_ordinal_raw": 6,
+            "q": 0,
+            "before_current": 0,
+            "before_maximum": 0,
+            "after_current": 0,
+            "after_maximum": 0,
+            "pair_cleared": false
+          }
+        ]
+      }
+    ],
+    "DATA_occurrences": [
+      {
+        "army_regiment_id": 82,
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1
+      }
+    ],
+    "selected_eligibility": [
+      {
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "current_soldiers": 68,
+        "maximum_soldiers": 69,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "permission_source_branch": "non_GDbo_direct_true_after_Army_guards",
+        "containing_guard_138_raw": 0,
+        "containing_definition_magic_38": 1316318316,
+        "persistent_enum_name": null,
+        "player_origin_category": null,
+        "observed_prepared148_raw": 0,
+        "observed_fresh_fraction_raw": 4020,
+        "conditional_prepared_if_normal_preparation_called_raw": 4020,
+        "conditional_preparation_branch": "ordinary_guard_bypass",
+        "fraction_scale": 100000,
+        "stored_prepared_is_positive": false,
+        "independent_chunk_gate_for_stored_core": true,
+        "current_permission_false_does_not_rule_out_stored_core_request": false,
+        "integer_request_can_still_truncate_to_zero": true,
+        "actual_preparation_observed": false,
+        "actual_ADD_observed": false
+      }
+    ]
+  },
+  "identity": {
+    "pid": 37800,
+    "thread_id": 13924,
+    "process_created_filetime": 134369699086779087,
+    "thread_created_filetime": 134369699086779128,
+    "image_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "method": "Win32 query-only GetProcessTimes/GetThreadTimes; no float conversion",
+    "debug_registers_read_or_written": false
+  },
+  "native_argv": [
+    "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+    "--enable",
+    "--pid",
+    "37800",
+    "--thread",
+    "0",
+    "--regiment",
+    "2602",
+    "--slot",
+    "1",
+    "--created",
+    "134369699086779087",
+    "--timeout-ms",
+    "30000",
+    "--raw",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+    "--ready",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.ready.json",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080",
+    "--thread-policy",
+    "carrier-owned-target",
+    "--max-threads",
+    "160"
+  ],
+  "consume_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+    "--raw",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+    "--binding",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\owner-binding.json",
+    "--output",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\instruction-item.json",
+    "--create-target-core-proof",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\target-core-proof.json"
+  ],
+  "DATA_occurrences": [
+    {
+      "army_regiment_id": 82,
+      "record_index": 1,
+      "persistent_regiment_id": 2602,
+      "chunk_index": 1
+    }
+  ],
+  "selected_eligibility": [
+    {
+      "persistent_regiment_id": 2602,
+      "chunk_index": 1,
+      "current_soldiers": 68,
+      "maximum_soldiers": 69,
+      "state_raw": 0,
+      "native_can_replenish": true,
+      "native_chunk_can_replenish": true,
+      "permission_source_branch": "non_GDbo_direct_true_after_Army_guards",
+      "containing_guard_138_raw": 0,
+      "containing_definition_magic_38": 1316318316,
+      "persistent_enum_name": null,
+      "player_origin_category": null,
+      "observed_prepared148_raw": 0,
+      "observed_fresh_fraction_raw": 4020,
+      "conditional_prepared_if_normal_preparation_called_raw": 4020,
+      "conditional_preparation_branch": "ordinary_guard_bypass",
+      "fraction_scale": 100000,
+      "stored_prepared_is_positive": false,
+      "independent_chunk_gate_for_stored_core": true,
+      "current_permission_false_does_not_rule_out_stored_core_request": false,
+      "integer_request_can_still_truncate_to_zero": true,
+      "actual_preparation_observed": false,
+      "actual_ADD_observed": false
+    }
+  ],
+  "carrier_module_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+  "carrier_source_epoch": 20261018,
+  "consume_argv_requires_core_observation": false,
+  "consume_core_observation_argument_name": null,
+  "Root_admission_authority_verified_here": false,
+  "exe_content_rehashed_here": false,
+  "observer_launched": false,
+  "actual_ADD_observed": false,
+  "ready_must_match": {
+    "schema": "xar.ck3.refill_ADD_12004.hwprobe_ready.v4",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "pid": 37800,
+    "process_created_filetime": 134369699086779087,
+    "thread_id": null,
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "site_0": "0x2A98B88",
+    "site_1": "0x2A98B8B",
+    "carrier_module_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "carrier_source_epoch": 20261018,
+    "thread_policy": "carrier_owned_target",
+    "maximum_owned_threads": 160
+  },
+  "no_new_MCP_query_required": true,
+  "natural_core_token": null,
+  "full_R06_qualified": false,
+  "consume_argv_requires_target_core_proof": true,
+  "consume_full_parent_argument_name": "--full-parent-proof",
+  "observer_thread_policy": "carrier_owned_target",
+  "maximum_owned_threads": 160,
+  "actual_callback_thread_id": null
+}

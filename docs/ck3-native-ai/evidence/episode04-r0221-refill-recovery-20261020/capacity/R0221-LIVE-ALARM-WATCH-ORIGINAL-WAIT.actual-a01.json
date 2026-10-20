@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:58:54.064169+00:00",
+  "original_exec_session_id": 37671,
+  "actual_original_wait_returncode": 0,
+  "actual_exit_at_utc": "2026-10-20T11:58:29.191511+00:00",
+  "actual_tool_observation": "write_stdin original session37671 returned exit_code0 and alarm_watcher_exited true with exact stop flag",
+  "owner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-LIVE-ALARM-WATCH-OWNED.actual-a01.json",
+    "bytes": 944,
+    "sha256": "d30d777e137ad97ed7348354be0046256e3d00d117d06ba35253b7f3c79d8753"
+  },
+  "stop_flag": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-LIVE-ALARM-WATCH.STOP",
+    "bytes": 302,
+    "sha256": "eefa42206d947fa53f74d4380eaf482727f76cc861c821b5f8b648696ef0374d"
+  }
+}

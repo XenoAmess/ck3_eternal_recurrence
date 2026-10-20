@@ -1,0 +1,175 @@
+{
+  "schema": "xar.e04.r0221-retained-parent-projection-size-diagnosis.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:58:21.419369+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "parent_proof": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-FULL-PARENT-PROOF.json",
+    "bytes": 1749,
+    "sha256": "77b17cdada589deef5bedb04f84bf6ab433d86dca4959c23b0b164b95bf9ea6c"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+    "bytes": 31553,
+    "sha256": "afbae8ec5dd382626cad5a7e6aefb913a2f9c2aed82a877b2219f8d048da2eb6"
+  },
+  "binding": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\owner-binding.json",
+    "bytes": 1168,
+    "sha256": "5b30d31b1b7cc50cd22d4737394d2be67f0a17e76c83ad9ce45bf599c7d1f096"
+  },
+  "retained_parent_response": {
+    "file_identity": [
+      13886423844274364792,
+      1970324838218770
+    ],
+    "begin": 54547350,
+    "end": 73098176,
+    "bytes": 18550826,
+    "sha256": "b03ff66bdef770e33231a16e595fdbcc6fcd269eb58104bac62d230043529fd5",
+    "actual_bounded_range_sha_verified": true
+  },
+  "native_core_token": 1,
+  "query_sequence": 4,
+  "frame_shape_sizes": {
+    "entry": {
+      "total": {
+        "compact": 21901,
+        "pretty": 30975
+      },
+      "fields": {
+        "global_capture_complete_as_observed": {
+          "compact": 5,
+          "pretty": 5
+        },
+        "global_missing_inputs_as_observed": {
+          "compact": 52,
+          "pretty": 56
+        },
+        "subject_coverage_v1": {
+          "compact": 576,
+          "pretty": 710
+        },
+        "target_army_manager_aliases": {
+          "compact": 134,
+          "pretty": 177
+        },
+        "target_army_physical_token": {
+          "compact": 13,
+          "pretty": 13
+        },
+        "target_army_native_arrg_count": {
+          "compact": 2,
+          "pretty": 2
+        },
+        "entire_target_army_arrg_branch_roster": {
+          "compact": 8714,
+          "pretty": 11442
+        },
+        "selected_arrg_complete_DATA": {
+          "compact": 1035,
+          "pretty": 1374
+        },
+        "all_target_Regi_DATA_aliases": {
+          "compact": 341,
+          "pretty": 474
+        },
+        "target_Regi_numeric_seven": {
+          "compact": 10553,
+          "pretty": 14375
+        },
+        "target_DATA_alias_enumeration_complete": {
+          "compact": 4,
+          "pretty": 4
+        },
+        "numeric_seven_capture_time": {
+          "compact": 73,
+          "pretty": 73
+        }
+      }
+    },
+    "returned": {
+      "total": {
+        "compact": 21901,
+        "pretty": 30975
+      },
+      "fields": {
+        "global_capture_complete_as_observed": {
+          "compact": 5,
+          "pretty": 5
+        },
+        "global_missing_inputs_as_observed": {
+          "compact": 52,
+          "pretty": 56
+        },
+        "subject_coverage_v1": {
+          "compact": 576,
+          "pretty": 710
+        },
+        "target_army_manager_aliases": {
+          "compact": 134,
+          "pretty": 177
+        },
+        "target_army_physical_token": {
+          "compact": 13,
+          "pretty": 13
+        },
+        "target_army_native_arrg_count": {
+          "compact": 2,
+          "pretty": 2
+        },
+        "entire_target_army_arrg_branch_roster": {
+          "compact": 8714,
+          "pretty": 11442
+        },
+        "selected_arrg_complete_DATA": {
+          "compact": 1035,
+          "pretty": 1374
+        },
+        "all_target_Regi_DATA_aliases": {
+          "compact": 341,
+          "pretty": 474
+        },
+        "target_Regi_numeric_seven": {
+          "compact": 10553,
+          "pretty": 14375
+        },
+        "target_DATA_alias_enumeration_complete": {
+          "compact": 4,
+          "pretty": 4
+        },
+        "numeric_seven_capture_time": {
+          "compact": 73,
+          "pretty": 73
+        }
+      }
+    }
+  },
+  "paired_target_frames_only": {
+    "compact": 43824,
+    "pretty": 65677
+  },
+  "original_shape_counts": {
+    "entry": {
+      "subject_witnesses": 1,
+      "target_arrg_branches": 27,
+      "selected_arrg_DATA": 4,
+      "target_Regi_aliases": 1
+    },
+    "returned": {
+      "subject_witnesses": 1,
+      "target_arrg_branches": 27,
+      "selected_arrg_DATA": 4,
+      "target_Regi_aliases": 1
+    }
+  },
+  "source_contract": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_target_instruction_core_proof_12004.py",
+    "bytes": 33771,
+    "sha256": "e226875b69d8b2c753262ca49ecead000f544aeee8fa44c43075c943c3f29721"
+  },
+  "diagnostic_only": true,
+  "production_consumer_replayed": false,
+  "SDK_or_probe_or_day": false,
+  "new_proof_or_qualification_emitted": false
+}

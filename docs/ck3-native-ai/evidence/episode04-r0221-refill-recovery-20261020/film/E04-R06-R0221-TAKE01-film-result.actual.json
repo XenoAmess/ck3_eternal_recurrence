@@ -1,0 +1,49 @@
+{
+  "schema": "xar.e04.owned-client-window-take-terminal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:52:33.788826+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "state": "NORMAL_TREE_EMPTY",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 37800,
+    "owned_ck3_create_time": 1792496308.677909,
+    "hwnd": 331285030,
+    "foreground_hwnd": 331285030,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-20T11:51:54.413646+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "recorder_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\result.json",
+    "bytes": 2014,
+    "sha256": "22b1246e765dea00cc2a74bd24a50ac91ad212513120f5aa9ebf7f001f599139"
+  },
+  "primary_action_error": null,
+  "recorder_finish_error": null,
+  "secondary_cleanup_error": null,
+  "finish_reason": "timer",
+  "elapsed_wall_seconds_at_terminal": 38.2637065,
+  "planned_recording_max_seconds": 36,
+  "hard_terminal_wall_seconds_met": true,
+  "actual_observer_result": null,
+  "one_actual_ffmpeg_job_no_replay": true,
+  "raw_video_human_approved": false,
+  "business_result_inferred_from_video": false
+}

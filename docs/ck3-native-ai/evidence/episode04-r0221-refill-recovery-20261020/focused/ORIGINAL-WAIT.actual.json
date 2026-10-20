@@ -1,0 +1,50 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T12:09:02.443536+00:00",
+  "observed_at_utc": "2026-10-20T12:09:35.381024+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\tests\\unit\\test_target_instruction_core_proof_12004.py",
+    "TargetProofCliSerialization",
+    "-v"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "actual_original_Popen_wait": true,
+  "returncode": 0,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\stderr.log",
+    "bytes": 750,
+    "sha256": "3e669c4ad7bcdb6594ea4876619f740ec1de609aa93dddda656fbb057ec72abe"
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+      "bytes": 6391,
+      "sha256": "cc64032d7ffb1325724871b3a4c124d042d1c643c22125b6db7f825770e9c4b8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\tests\\unit\\test_target_instruction_core_proof_12004.py",
+      "bytes": 20327,
+      "sha256": "2eb7666700a1c9708ffe8816361dbfa6b16c8492e9e23a3927329167de53a852"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\.github\\workflows\\static-ci.yml",
+      "bytes": 66948,
+      "sha256": "243d1b08693b519a89ff7e21ed91499a30b842ee3033d55d0b0e682da6b33753"
+    }
+  ],
+  "test_selection": "Only new real-CLI serialization class; synthetic temporary source-shaped inputs, no existing old compound rerun",
+  "temporary_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\tmp",
+  "temporary_files_remaining": [],
+  "SDK_game_screen_probe_day_build_calls": 0,
+  "actual_business_qualification": false,
+  "D_source_unchanged": true
+}

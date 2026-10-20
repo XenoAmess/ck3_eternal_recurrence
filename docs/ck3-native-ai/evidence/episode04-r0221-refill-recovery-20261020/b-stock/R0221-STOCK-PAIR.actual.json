@@ -1,0 +1,562 @@
+{
+  "schema": "xar.e04.B.R0221-retained-stock-pair-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:56:27.290045+00:00",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+    "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "pid": 37800,
+    "process_creation_filetime": 134369699086779087,
+    "generation": 1,
+    "actor": 33388,
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "province_id": 2170
+  },
+  "representation": "derived source-pinned field projection from retained originals; not full Driver/normal-day record",
+  "terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+    "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+    "actual_days": 1,
+    "exact_day_verified": true,
+    "actual_ADD_observed": false,
+    "finaldate": 53149080,
+    "OFFclear": true,
+    "Save": true,
+    "native_restore_verified": true,
+    "errors": [],
+    "full_R06_qualified": false
+  },
+  "worker_status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+  "worker_error": {
+    "type": "SystemExit",
+    "message": "2"
+  },
+  "full_R06_qualified": false,
+  "actual_ADD_observed": false,
+  "native_endpoints": {
+    "before": {
+      "episode_field_present": false,
+      "native_episode_run_id": null,
+      "managed_campaign_run_binding": {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01",
+        "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "frozen_argv_sha256": "ce6ae612f3e4a9c05e8005ce1958012eab060b58f3000ea784a8ac434975fc59"
+      },
+      "date_raw": 53149056,
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "paused": true,
+      "map_ready": true,
+      "diagnostics": {
+        "bridge_pid": 37800,
+        "connection_generation": 1
+      },
+      "played_character": {
+        "character_id": 33388,
+        "alive": true
+      },
+      "selected_army": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 2170,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    },
+    "after": {
+      "episode_field_present": false,
+      "native_episode_run_id": null,
+      "managed_campaign_run_binding": {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01",
+        "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "frozen_argv_sha256": "ce6ae612f3e4a9c05e8005ce1958012eab060b58f3000ea784a8ac434975fc59"
+      },
+      "date_raw": 53149080,
+      "snapshot_id": "native:5",
+      "revision": 6,
+      "native_revision": 5,
+      "paused": true,
+      "map_ready": true,
+      "diagnostics": {
+        "bridge_pid": 37800,
+        "connection_generation": 1
+      },
+      "played_character": {
+        "character_id": 33388,
+        "alive": true
+      },
+      "selected_army": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 2170,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    },
+    "independent_before": {
+      "episode_field_present": false,
+      "native_episode_run_id": null,
+      "managed_campaign_run_binding": {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01",
+        "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "frozen_argv_sha256": "ce6ae612f3e4a9c05e8005ce1958012eab060b58f3000ea784a8ac434975fc59"
+      },
+      "date_raw": 53149056,
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "paused": true,
+      "map_ready": true,
+      "diagnostics": {
+        "bridge_pid": 37800,
+        "connection_generation": 1
+      },
+      "played_character": {
+        "character_id": 33388,
+        "alive": true
+      },
+      "selected_army": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 2170,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    },
+    "independent_after": {
+      "episode_field_present": false,
+      "native_episode_run_id": null,
+      "managed_campaign_run_binding": {
+        "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01",
+        "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--vanilla--R0221",
+        "host_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+        "frozen_argv_sha256": "ce6ae612f3e4a9c05e8005ce1958012eab060b58f3000ea784a8ac434975fc59"
+      },
+      "date_raw": 53149080,
+      "snapshot_id": "native:5",
+      "revision": 6,
+      "native_revision": 5,
+      "paused": true,
+      "map_ready": true,
+      "diagnostics": {
+        "bridge_pid": 37800,
+        "connection_generation": 1
+      },
+      "played_character": {
+        "character_id": 33388,
+        "alive": true
+      },
+      "selected_army": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 2170,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    }
+  },
+  "independent_checks": [
+    {
+      "same_native_frame": true,
+      "same_subject": true,
+      "independent_paused": true,
+      "query_frame": true
+    },
+    {
+      "same_native_frame": true,
+      "same_subject": true,
+      "independent_paused": true,
+      "query_frame": true
+    }
+  ],
+  "stock_rows": [
+    {
+      "native_carmy_id": 0,
+      "current_supply_raw": 10350831,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_change_monthly_raw": -423728,
+      "actual_supply_callback": {
+        "leaf_present": true,
+        "complete_value": {
+          "status": "available",
+          "source": "native_natural_supply_callback_entry_return",
+          "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+          "observer_installed": true,
+          "oldest_available_sequence": 0,
+          "latest_sequence": 0,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0,
+          "events": []
+        }
+      },
+      "complete_CDate64": 300336128075693440
+    },
+    {
+      "native_carmy_id": 0,
+      "current_supply_raw": 10350831,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_change_monthly_raw": -423728,
+      "actual_supply_callback": {
+        "leaf_present": true,
+        "complete_value": {
+          "status": "available",
+          "source": "native_natural_supply_callback_entry_return",
+          "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 9,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0,
+          "events": []
+        }
+      },
+      "complete_CDate64": 300337098738302360
+    }
+  ],
+  "actual_stock_delta_raw": 0,
+  "original_day": {
+    "day_claim": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "episode": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+      "pid": 37800,
+      "status": "claimed_result_unknown_no_replay",
+      "starting_date_raw": 53149056,
+      "target_date_raw": 53149080
+    },
+    "resume_claim": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "episode": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+      "pid": 37800,
+      "status": "claimed_result_unknown_no_replay",
+      "generation": 1
+    },
+    "arm_result": {
+      "step": "research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-5-mode-terminal-a-0",
+      "accepted": true,
+      "status": "available",
+      "tactical_daily_sentinel": {
+        "state": "armed",
+        "generation": 1,
+        "starting_date_raw": 53149056,
+        "target_date_raw": 53149080,
+        "last_observed_date_raw": 53149056,
+        "trigger_date_raw": 0,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "backend_id": "native-headless"
+    },
+    "stop_result": {
+      "step": "research-query-tactical-daily-sentinel-v1",
+      "accepted": true,
+      "status": "available",
+      "tactical_daily_sentinel": {
+        "state": "triggered",
+        "generation": 1,
+        "starting_date_raw": 53149056,
+        "target_date_raw": 53149080,
+        "last_observed_date_raw": 53149080,
+        "trigger_date_raw": 53149080,
+        "speed": 5,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "backend_id": "native-headless"
+    }
+  },
+  "wire_checks": [
+    {
+      "original_lines": {
+        "request_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 40878210,
+          "end": 40878512,
+          "bytes": 302,
+          "sha256": "e06918f4dfec08d17ef3fd377807405f70e31e75b4775f3d0ddc15cd80ca2281"
+        },
+        "response_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 40878512,
+          "end": 52670018,
+          "bytes": 11791506,
+          "sha256": "3f2447f01a06651ed806255d91f0004e2ebf986d757ba9cc65d7e8beed1a2401"
+        }
+      },
+      "complete_Driver_packet": false,
+      "query_reissued": false,
+      "query_sequence": 3,
+      "native_request_id": "step-12-19aac8d16f7d",
+      "selected_native_vs_normalized_equal": {
+        "native_carmy_id": true,
+        "current_supply_raw": true,
+        "current_supply_capacity_raw": true,
+        "actual_supply_callback_observations_v1": true
+      },
+      "whole_wire_or_range_rehashed": false
+    },
+    {
+      "original_lines": {
+        "request_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 54547048,
+          "end": 54547350,
+          "bytes": 302,
+          "sha256": "8f05cbb1977363715d9510730087d0c35f786aa8a46c983438da15b982a3dc29"
+        },
+        "response_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 54547350,
+          "end": 73098176,
+          "bytes": 18550826,
+          "sha256": "b03ff66bdef770e33231a16e595fdbcc6fcd269eb58104bac62d230043529fd5"
+        }
+      },
+      "complete_Driver_packet": false,
+      "query_reissued": false,
+      "query_sequence": 4,
+      "native_request_id": "step-16-3ff7a3f69e0e",
+      "selected_native_vs_normalized_equal": {
+        "native_carmy_id": true,
+        "current_supply_raw": true,
+        "current_supply_capacity_raw": true,
+        "actual_supply_callback_observations_v1": true
+      },
+      "whole_wire_or_range_rehashed": false
+    }
+  ],
+  "adapter_assessment": {
+    "schema": "xar.e04.B-passive-stock-pair-assessment.v1",
+    "representation": "derived passive semantic assessment; not original native/Driver/normal-day record",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T11:56:27.290045+00:00",
+    "binding": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+      "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+      "native_tree": "fee86631356f556271445157523c62abfd62951e",
+      "pid": 37800,
+      "process_creation_filetime": 134369699086779087,
+      "generation": 1,
+      "actor": 33388,
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "province_id": 2170
+    },
+    "source_context_refs": {
+      "typed_terminal": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-REFILL-TERMINAL.json",
+        "bytes": 381,
+        "sha256": "fe30148cdba1e12b6d1ed4394e0f0af395fcc4fbae0f415a7c41699d8284cdeb"
+      },
+      "worker": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-WORKER-RESULT.json",
+        "bytes": 116314,
+        "sha256": "970ab21daa87ea4612748cf7b9c3f6a1077b3d7f1f3de4b2fcb3598fa2d42ed2"
+      },
+      "independent_before": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0013-r06-before-independent-after.actual-results.json",
+        "bytes": 101991,
+        "sha256": "9b629c78a337762a742c73b463ce66779d83d80df13330929ee8e818a074e6b2"
+      },
+      "independent_after": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0023-r06-after-independent-after.actual-results.json",
+        "bytes": 102549,
+        "sha256": "3b138f332edfbe27e00f1df02871943c98974b8b108edf40cb9afc619c9a704c"
+      }
+    },
+    "source_date_raw": null,
+    "original_refs": {
+      "before": {
+        "native_snapshot": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0011-r06-before-before.actual-results.json",
+          "bytes": 101967,
+          "sha256": "77504d91a0fa9b3d59b1fac643d62bcb998916dab00fe9e70f5fe848be883b7b"
+        },
+        "normalized_full": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0012-r06-before-full-derived-normalized-full.json",
+          "bytes": 18892579,
+          "sha256": "e1c3d432596eb70dcdec041109ed73bc525751909b3cabfa0886ba459f14e436"
+        },
+        "full_wire_proof": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0012-r06-before-full-full-wire-proof.json",
+          "bytes": 1752,
+          "sha256": "5146e1a1580e29c9292ddca383e9b2846f521ce55fdfc45086bc8efe9f19994f"
+        }
+      },
+      "after": {
+        "native_snapshot": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0020-wait-day.actual-results.json",
+          "bytes": 102499,
+          "sha256": "81c6e88a047be9ce6be0b87681cb7e99b5c122e8c4aeb4d504c7db79a1914c75"
+        },
+        "normalized_full": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0022-r06-after-full-derived-normalized-full.json",
+          "bytes": 31691187,
+          "sha256": "0ccbaca243b99772c3d234b40493437f10f63979160dc80909b5cd13349e1de7"
+        },
+        "full_wire_proof": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0022-r06-after-full-full-wire-proof.json",
+          "bytes": 1749,
+          "sha256": "77b17cdada589deef5bedb04f84bf6ab433d86dca4959c23b0b164b95bf9ea6c"
+        }
+      },
+      "day": {
+        "day_claim": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r05-observe-originals\\day-53149056.once-claim.json",
+          "bytes": 236,
+          "sha256": "106d73b8f27779b12f832c418038e96a165ab9ba7ed906f102b6a5cbe624564b"
+        },
+        "resume_claim": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r05-observe-originals\\day-53149056-initial-resume.once-claim.json",
+          "bytes": 191,
+          "sha256": "20044849168bc35651dddc11e7ff503d34e7d1197440749b466c386377595633"
+        },
+        "arm_control": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0016-arm-day.actual-results.json",
+          "bytes": 52291,
+          "sha256": "b993c486a9fe5e4ff5120c3b821661b31e9ce2efd650a9a8d00bef0d9e65b51f"
+        },
+        "resume_control": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0017-resume-day.actual-results.json",
+          "bytes": 51670,
+          "sha256": "6c68ffc7fde8659d13f70275dfe02527cbf9ee674a5ba630c641bea0b14f9de8"
+        },
+        "stop_control": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0021-clock-query.actual-results.json",
+          "bytes": 52534,
+          "sha256": "85e5fd139cf83188bcbb031aa949e205fe5816a73fa4840b7960ef5d39fe0e92"
+        }
+      }
+    },
+    "native_episode_before": null,
+    "native_episode_after": null,
+    "native_episode_fields_observed": true,
+    "stock_callback_chain_passed": false,
+    "status": "NO_CREDIT",
+    "source_pin_integrity_verified_by_this_pure_function": false,
+    "one_life_qualification_granted": false,
+    "normal_day_record_created": false,
+    "B_single_site_qualified": false,
+    "B_qualified_sites": 0,
+    "formal_ABC_completed_arms": 0,
+    "SDK_calls": 0,
+    "new_queries": 0,
+    "new_days": 0,
+    "native_episode_field_present_before": false,
+    "native_episode_field_present_after": false,
+    "before_date_raw": 53149056,
+    "after_date_raw": 53149080,
+    "stock_before_raw": 10350831,
+    "stock_after_raw": 10350831,
+    "actual_stock_delta_raw": 0,
+    "clock_generation": 1,
+    "reason": "no actual positive stock delta"
+  },
+  "journal_installation_not_inferred_from_nine_sampling_families": true,
+  "B_single_site_qualified": false,
+  "B_qualified_sites": 0,
+  "formal_ABC_completed_arms": 0,
+  "one_life_qualified": false
+}

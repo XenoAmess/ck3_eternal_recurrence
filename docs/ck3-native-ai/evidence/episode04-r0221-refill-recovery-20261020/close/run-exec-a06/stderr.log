@@ -1,0 +1,6 @@
+usage: ck3_mod_acceptance.py [-h] --raw RAW --binding BINDING --output OUTPUT
+                             [--core-observation CORE_OBSERVATION]
+                             [--target-core-proof TARGET_CORE_PROOF |
+                             --create-target-core-proof CREATE_TARGET_CORE_PROOF]
+                             [--full-parent-proof FULL_PARENT_PROOF]
+ck3_mod_acceptance.py: error: derived target proof exceeds64KiB

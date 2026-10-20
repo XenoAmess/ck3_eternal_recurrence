@@ -1,0 +1,28 @@
+{
+  "schema": "xar.e04.finite-source-isolation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:29:48.583368+00:00",
+  "source_repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "actual_git": {
+    "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "branch": "wip/e04-r06-a41-20261020",
+    "dirty": ""
+  },
+  "Root_authorization": "Root explicitly froze unchanged D4fc/nativefee/A41 for independent scene-a05 finite packet through13:15Z; no D rebase/checkout/native build while scene active.",
+  "packet_deadline_utc": "2026-10-20T13:15:00Z",
+  "launch_latest_utc": "2026-10-20T12:00:00Z",
+  "native_compile_budget": 0,
+  "A41_qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "root_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\ROOT-NEW-FINITE-1315Z-APPROVAL.actual-a01.json",
+    "bytes": 1190,
+    "sha256": "36c9423fc82ca2ee1dc15b07a0971d7e5742758b76f9976f216db85fa3ff5eac"
+  },
+  "OS_ACL_or_permission_change": false,
+  "game_or_SDK_or_screen": false
+}

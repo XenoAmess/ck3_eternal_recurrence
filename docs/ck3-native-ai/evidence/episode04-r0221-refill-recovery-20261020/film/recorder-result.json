@@ -1,0 +1,65 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "state": "NORMAL_TREE_EMPTY",
+  "job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 15084,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-20T11:52:32.060872+00:00"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01\\take01\\raw.mkv",
+    "bytes": 20403313,
+    "sha256": "5280a139b1f1b1fb54b432e824ab4786c030668efe71465435f7f99aeb75912e"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 37800,
+    "owned_ck3_create_time": 1792496308.677909,
+    "hwnd": 331285030,
+    "foreground_hwnd": 331285030,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-20T11:51:54.413646+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "deadline_admission_at_spawn": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+    "capacity": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-SINGLE-36S-CLIENT-CAPTURE-CAPACITY.actual-a01.json",
+      "bytes": 10772,
+      "sha256": "b8ca4b17bafbd4b1de344c006779c3a75a30358a797cd9c6ce7692bc72394708"
+    },
+    "seconds": 36,
+    "hold_remaining_seconds": 3089.4083597660065,
+    "normal_close_and_cleanup_reserve_seconds": 1025
+  },
+  "started_at_utc": "2026-10-20T11:51:55.525115+00:00",
+  "completed_at_utc": "2026-10-20T11:52:32.138011+00:00",
+  "start_monotonic_ns": 1719897842409000,
+  "end_monotonic_ns": 1719934455329300,
+  "partial_assets_retained": true,
+  "clean_spans_certified": false,
+  "human_approval": false,
+  "media_probe_pending": true
+}

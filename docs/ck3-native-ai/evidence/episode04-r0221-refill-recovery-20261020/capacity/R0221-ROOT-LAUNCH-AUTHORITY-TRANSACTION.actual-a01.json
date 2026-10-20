@@ -1,0 +1,27 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:37:44.893805+00:00",
+  "authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-ROOT-LAUNCH-STAGE-AUTHORITY.actual-a01.json",
+    "bytes": 4483,
+    "sha256": "d78a8745d11164971c1e2a4312916c786c562d8b6c566de8b1435b59b4bbe247"
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 302044,
+    "sha256": "f2822cb2da78c68d6b5ee95246e957047f5dce3b1e4d0a746e4e52871066a5df"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 131,
+    "lock_hold_seconds": 0.0008660000748932362,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 302791,
+      "sha256": "87c763adb619ef8f3cb8f1c24a099da13154ee7f23abf80da3f81cdab7340528"
+    }
+  },
+  "future_delta_bytes": 0,
+  "original_capacity_scope_and_prepared_unchanged": true
+}

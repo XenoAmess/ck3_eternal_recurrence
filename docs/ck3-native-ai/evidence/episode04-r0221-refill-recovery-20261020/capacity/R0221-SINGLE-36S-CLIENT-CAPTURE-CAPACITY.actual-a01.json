@@ -1,0 +1,293 @@
+{
+  "schema": "xar.e04.r0221-single-client-only-capture-existing-raw-subcap.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:34:56.549606+00:00",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "base_scene_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-SCENE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 16549,
+    "sha256": "04bdfd0f164a0866bb87b6a6d127be8c66479af29926db0ab7f5c4c6208115d2"
+  },
+  "Root_finite_packet_authority": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\ROOT-NEW-FINITE-1315Z-APPROVAL.actual-a01.json",
+    "bytes": 1190,
+    "sha256": "36c9423fc82ca2ee1dc15b07a0971d7e5742758b76f9976f216db85fa3ff5eac"
+  },
+  "authorization_source": "Current R0221 single36s/raw256/normal900/cleanup120 camera direction relayed by public_preflight; within Root explicit new1315 packet. Capture metadata may be prepared; actual game launch still needs separate Root authority, actual Root UI frame review and canonical owner/Start guards.",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05",
+  "run_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "state_dir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01",
+  "component_roots": {
+    "profile": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\state-a01",
+    "driver": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221",
+    "raw": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01",
+    "other": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05"
+  },
+  "component_additional_roots": {
+    "profile": [
+      "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\userdirs"
+    ]
+  },
+  "component_ceiling_bytes": {
+    "profile": 805306368,
+    "driver": 1073741824,
+    "raw": 268435456,
+    "other": 268435456
+  },
+  "aggregate_scene_ceiling_bytes": 2415919104,
+  "raw_workdir": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\raw-a01",
+  "raw_execution_admitted_after_separate_Root_launch_and_actual_UI_review": true,
+  "camera_or_film_execution_admitted": true,
+  "single_camera_job_maximum": 1,
+  "actual_Root_UIframe_review_and_canonical_owner_guards_still_required": true,
+  "separate_Root_game_launch_authority_still_required_before_actual_capture": true,
+  "capture_bounds": {
+    "max_recording_seconds": 36,
+    "recording_hard_stop_seconds": 96,
+    "normal_close_reserve_seconds": 900,
+    "cleanup_save_reserve_seconds": 120,
+    "absolute_phase_deadline_utc": "2026-10-20T13:15:00Z",
+    "client_only": true,
+    "maximum_ffmpeg_jobs": 1
+  },
+  "quota_review_at_utc": "2026-10-20T13:15:00Z",
+  "run_hard_deadline_utc": "2026-10-20T13:15:00Z",
+  "quota_bytes": 438086664192,
+  "prepared_case": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\prepared-a01\\prepared-case.json",
+    "bytes": 11432,
+    "sha256": "08f84668c2c8f32ec09c69dbdbbc2bb010a6acb76c9439b7c56d0bcf0edb2cce"
+  },
+  "allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\allocated-context.json",
+    "bytes": 5359,
+    "sha256": "98f48085cca3e668bdabd4539bf91bafffa56749c6124b2b586c0d74a14421bf"
+  },
+  "frozen_argv": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\frozen-argv.json",
+    "bytes": 33778,
+    "sha256": "ce6ae612f3e4a9c05e8005ce1958012eab060b58f3000ea784a8ac434975fc59"
+  },
+  "runtime": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a06\\runtime.local.json",
+    "bytes": 2591,
+    "sha256": "748417dd5733742ffc3bb30711b84bf404e82c7cb866c27cd7cd012772a7aa5b"
+  },
+  "runtime_delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\common-runtime-a41-a06\\RUNTIME-DELIVERY.actual.json",
+    "bytes": 2922,
+    "sha256": "ac799edcb5e7a4d8ee778b1e48ef1c2d001ae341feb752b46964c817f0327f08"
+  },
+  "fresh_actual_component_measurement": {
+    "schema": "xar.e04.r06-four-component-live-metadata-monitor.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T11:34:56.549323+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+    "scene_root": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05",
+    "components": {
+      "profile": {
+        "logical_bytes": 13860,
+        "allocated_unique_bytes": 20592,
+        "files": 6,
+        "ceiling_bytes": 805306368,
+        "logical_margin_bytes": 805292508
+      },
+      "driver": {
+        "logical_bytes": 709991,
+        "allocated_unique_bytes": 729312,
+        "files": 14,
+        "ceiling_bytes": 1073741824,
+        "logical_margin_bytes": 1073031833
+      },
+      "raw": {
+        "logical_bytes": 0,
+        "allocated_unique_bytes": 0,
+        "files": 0,
+        "ceiling_bytes": 268435456,
+        "logical_margin_bytes": 268435456
+      },
+      "other": {
+        "logical_bytes": 2551540,
+        "allocated_unique_bytes": 2580032,
+        "files": 29,
+        "ceiling_bytes": 268435456,
+        "logical_margin_bytes": 265883916
+      }
+    },
+    "logical_total_bytes": 3275391,
+    "allocated_unique_total_bytes": 3329936,
+    "measurement_is_live_not_atomic_snapshot": true,
+    "metadata_coverage_complete": true,
+    "errors": [],
+    "errors_count": 0,
+    "elapsed_seconds": 0.199,
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 301450,
+      "sha256": "33601c1ca6dcd0f164f0096cfe8c399ab85ace2b692b51bd636d71f62257d897"
+    },
+    "active_balances": {
+      "known_future": {
+        "C:/": 2546861441,
+        "D:/": 0
+      },
+      "legacy": {
+        "C:/": 42132678,
+        "D:/": 0
+      },
+      "claims": [
+        {
+          "task_id": "e04-capacity-resume-20261020-a01",
+          "known_future": {
+            "C:/": 0,
+            "D:/": 0
+          },
+          "legacy": {
+            "C:/": 42132678,
+            "D:/": 0
+          },
+          "carry_only": true
+        },
+        {
+          "task_id": "e04-capacity-r06-1315-20261020-a01",
+          "known_future": {
+            "C:/": 2546861441,
+            "D:/": 0
+          },
+          "legacy": {
+            "C:/": 0,
+            "D:/": 0
+          },
+          "carry_only": false
+        }
+      ]
+    },
+    "fresh_volumes": {
+      "C:/": {
+        "volume": "C:/",
+        "observed_at_utc": "2026-10-20T11:34:56.375645+00:00",
+        "total_bytes": 511133945856,
+        "free_bytes": 80017248256,
+        "available_to_caller_bytes": 80017248256,
+        "total_free_bytes": 80017248256,
+        "entire_volume_used_allocation_upper_bound_bytes": 431116697600,
+        "source": "Windows GetDiskFreeSpaceExW"
+      },
+      "D:/": {
+        "volume": "D:/",
+        "observed_at_utc": "2026-10-20T11:34:56.375645+00:00",
+        "total_bytes": 500090007552,
+        "free_bytes": 21665775616,
+        "available_to_caller_bytes": 21665775616,
+        "total_free_bytes": 21665775616,
+        "entire_volume_used_allocation_upper_bound_bytes": 478424231936,
+        "source": "Windows GetDiskFreeSpaceExW"
+      }
+    },
+    "budget": {
+      "C_known_future_bytes": 2546861441,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 28358797895,
+      "C_floor_margin_bytes": 51658450361,
+      "C_projected_whole_volume_upper_bound_bytes": 438000659015,
+      "C_quota_margin_bytes": 86005177,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 56721408
+    },
+    "shared_actual_logical_bytes": 46070748,
+    "shared_collective_ceiling_bytes": 134217728,
+    "remaining_hard_deadline_seconds": 6003.62414,
+    "alarms": [],
+    "running_component_hardcaps_not_reduced": true,
+    "payload_body_bytes_read": 0,
+    "SDK_game_screen_actions": 0
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T11:34:56.375645+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 80017248256,
+      "available_to_caller_bytes": 80017248256,
+      "total_free_bytes": 80017248256,
+      "entire_volume_used_allocation_upper_bound_bytes": 431116697600,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T11:34:56.375645+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21665775616,
+      "available_to_caller_bytes": 21665775616,
+      "total_free_bytes": 21665775616,
+      "entire_volume_used_allocation_upper_bound_bytes": 478424231936,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "active_balances": {
+    "known_future": {
+      "C:/": 2546861441,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-1315-20261020-a01",
+        "known_future": {
+          "C:/": 2546861441,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "budget": {
+    "C_known_future_bytes": 2546861441,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 28358797895,
+    "C_floor_margin_bytes": 51658450361,
+    "C_projected_whole_volume_upper_bound_bytes": 438000659015,
+    "C_quota_margin_bytes": 86005177,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 56721408
+  },
+  "raw256_existing_future_not_new_pool": true,
+  "additional_global_future_bytes": 0,
+  "physical_or_unused_credit_bytes": 0,
+  "native_compile_or_new_game_admitted_by_this_capture_cap": false,
+  "base_actor_capacity_scope_and_prepared_originals_not_modified": true,
+  "film_Start_or_clean_take_or_normal_close_not_claimed": true,
+  "consumer_contract": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\window_take.py",
+    "bytes": 27125,
+    "sha256": "5d5e403d9af9c453c677bb965e5ee1896c4ba6d74b1ba1ccaf26bb907692739b"
+  },
+  "scheme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\admit_r0221_single_capture.py",
+    "bytes": 4659,
+    "sha256": "8c6ac9d0ccfbd7800c9e01590439c6508a61f80ce7a481609568131ea17cc9f7"
+  }
+}

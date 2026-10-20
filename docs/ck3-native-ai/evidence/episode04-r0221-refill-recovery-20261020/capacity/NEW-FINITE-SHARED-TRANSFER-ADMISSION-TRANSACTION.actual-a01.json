@@ -1,0 +1,106 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:29:48.934760+00:00",
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 289861,
+    "sha256": "91134e52810277b7d0458bc11881c823691cd9b0abcb66b6325cba785386ce0b"
+  },
+  "active_before": {
+    "known_future": {
+      "C:/": 134217728,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-1230-20261020-a01",
+        "known_future": {
+          "C:/": 134217728,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-NEW-FINITE-RESERVATION-PREPARE-ONLY.actual-a01.json",
+    "bytes": 7594,
+    "sha256": "12ed8775388d21f6500b53733d60fdb9fe4feaefd3d4b6f1d280dd91dfc6a50e"
+  },
+  "source_isolation": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\SOURCE-ISOLATION-1315Z.actual-a01.json",
+    "bytes": 1277,
+    "sha256": "68bbfd8f30b760da139b0e996dd0b7ae81595aa96d40215d10e6640a7d83ea0e"
+  },
+  "commit": {
+    "adopted": true,
+    "capacity_registry_revision": 110,
+    "lock_hold_seconds": 0.0008096999954432249,
+    "lock_body": "two exact named metadata comparisons, time guard, one os.replace; no body read/hash/probe/traversal/serialization/fsync/callback",
+    "ledger_after": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 297869,
+      "sha256": "4f47a6c0986354b9be694f9a6ee250389790d1739b9889be25533970b2c86129"
+    }
+  },
+  "active_after": {
+    "known_future": {
+      "C:/": 2550136832,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-1315-20261020-a01",
+        "known_future": {
+          "C:/": 2550136832,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "shared_transferred_bytes": 134217728,
+  "net_new_scene_future_bytes": 2415919104,
+  "no_duplicate_shared_pool": true,
+  "no_physical_or_unused_credit": true
+}

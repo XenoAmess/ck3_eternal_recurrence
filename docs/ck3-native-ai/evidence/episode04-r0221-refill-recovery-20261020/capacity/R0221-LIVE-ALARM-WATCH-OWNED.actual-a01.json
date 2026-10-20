@@ -1,0 +1,24 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:48:10.173686+00:00",
+  "pid": 36668,
+  "create_time": 1792496889.8705287,
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\watch_live_capacity_alarms.py",
+    "bytes": 3558,
+    "sha256": "c96cedab2f0dcfcef9f477b2e903d989bade060eb25c8ea1265a9664096928ed"
+  },
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/capacity/r06-1315-a01/watch_live_capacity_alarms.py"
+  ],
+  "stop_flag": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-LIVE-ALARM-WATCH.STOP",
+  "deadline_utc": "2026-10-20T13:15:00Z",
+  "poll_seconds": 2,
+  "task_bus_notify_target": "e04-r06-resume-20261020-a02",
+  "no_ledger_capacity_or_scene_mutation": true,
+  "new_heavy_budget_bytes": 0
+}

@@ -1,5 +1,11 @@
 # E04 R06 公共单日入口与 A40 未完成资格（2026-10-20）
 
+## 2026-10-20 12:22 UTC：R0221选定ADD已离线恢复，完整R06仍未通过
+
+`machine_id: desktop-3fevhd2-1c74096080`；[原始失败、同次Core离线恢复与精确来源](episode04-r0221-target-add-offline-recovery-12004.md)。现场source4fc8d0f4/nativefee866、自然1日53149056→53149080实际捕获选定Regi2602/slot1 ADD +1（68→69）；原live consumer因pretty target proof超过64KiB退出2，原terminal ADDfalse/fullR06false保留。隔离树仅修无损紧凑序列化、上限仍65536字节；4项真实CLI测试原wait0、一次同immutable raw/binding/fullparent离线恢复原wait0及独审PASS，新完整proof50670字节，严格same_core_invocation_join_ready=true。全Core NET/全局物理闭包/开关效果/fullR06仍false，无新日步、SDK或native构建。
+
+原actor finally实际OFF/clear、Save、restore，GUI正常闭场retainedOS0/native0/host原0、keeper/allocator0，CAS7462 done/resources[]。被动B库存10350831→10350831，journal installed=true但目标Army callback0，NO_CREDIT/B0/2。保留11:42缺口RED和11:53:34全局RED及时间不确定性；film终态11:52:33早于后一次RED，不授全程容量GREEN或影片验收。正式动态1/11（既有R12）、研究10/14、业务7/11、ABC0/3不变。旧段落和失败原件作为历史保留。
+
 ## 2026-10-20 11:22 UTC：R0220过期准入未启动日步，已正常闭场
 
 `machine_id: desktop-3fevhd2-1c74096080`；[实际小原件与分层清单](evidence/episode04-r0220-withheld-camera-20261020/MANIFEST.actual.json)。本场public run原wait **0**（11:17:47 UTC），内层R06仍为`STOPPED_ERROR_PRESERVED_NO_REPLAY / Canonical R06 camera Start absent`，**0day/noADD/fullR06false**；不能沿用R0219的wait2或把外层0当业务通过。

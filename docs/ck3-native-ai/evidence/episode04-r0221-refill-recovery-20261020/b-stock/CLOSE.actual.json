@@ -1,0 +1,76 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:56:32.018828+00:00",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "projection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-r0221-passive-a01\\R0221-STOCK-PAIR.actual.json",
+    "bytes": 22088,
+    "sha256": "d4cd414cea92826777175fa3871ad1a5827a3f2889a53cc37b1a0d6fd36d9c22"
+  },
+  "index": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-r0221-passive-a01\\SOURCE-INDEX.actual.json",
+    "bytes": 8741,
+    "sha256": "717607fff39d006c45eb0313cf193f9f2926b234f7d4c7c73817ae384fa75add"
+  },
+  "done": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "schema": "codex.task_bus.v1",
+      "task_id": "e04-b-stock-r0221-passive-20261020-a01",
+      "state": "done",
+      "summary": "R0221-retained-stock-pair-assessed-source-pins-no-new-action-no-B-credit",
+      "next_step": "",
+      "resources": [],
+      "updated_at_utc": "2026-10-20T11:56:31.964227+00:00",
+      "pid": 33828,
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "branch": "wip/e04-r06-a41-20261020",
+        "dirty_entries": 0
+      },
+      "last_sequence": 7461
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 7461,
+      "event_id": "94ebeadbb011496eba4e11671deed47e",
+      "timestamp_utc": "2026-10-20T11:56:31.966382+00:00",
+      "kind": "completed",
+      "task_id": "e04-b-stock-r0221-passive-20261020-a01",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "R0221-retained-stock-pair-assessed-source-pins-no-new-action-no-B-credit",
+      "next_step": "",
+      "resources": [],
+      "repo": "D:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+        "branch": "wip/e04-r06-a41-20261020",
+        "dirty_entries": 0
+      }
+    }
+  },
+  "poll": {
+    "previous_cursor": 7460,
+    "acknowledged_cursor": 7460,
+    "remaining": 0
+  },
+  "active_tasks_read": true,
+  "remaining_heavy_bytes": 0,
+  "SDK_calls": 0,
+  "new_queries": 0,
+  "new_days": 0,
+  "game_screen_or_media_actions": 0,
+  "D_tracked_status_and_HEAD_unchanged": true,
+  "review_at_utc": "2026-10-22T11:56:27.290045+00:00",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-PASSIVE-STOCK-METADATA-CHILD.actual-a01.json",
+    "bytes": 2860,
+    "sha256": "b56331ca67a95102484b46e79518cb9f429f1bdba72b847410dffde784783170"
+  },
+  "deadline_utc": "2026-10-20T12:30:00Z"
+}

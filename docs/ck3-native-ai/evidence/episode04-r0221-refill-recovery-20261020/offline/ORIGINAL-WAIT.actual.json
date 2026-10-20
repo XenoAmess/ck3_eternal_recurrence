@@ -1,0 +1,126 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "started_at_utc": "2026-10-20T12:11:46.242079+00:00",
+  "observed_at_utc": "2026-10-20T12:11:54.250240+00:00",
+  "actual_original_Popen_wait": true,
+  "returncode": 0,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+    "--raw",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+    "--binding",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\owner-binding.json",
+    "--create-target-core-proof",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-CORE-PROOF.offline.json",
+    "--full-parent-proof",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-FULL-PARENT-PROOF.json",
+    "--output",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-INSTRUCTION.offline.json"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "consumer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+    "bytes": 6391,
+    "sha256": "cc64032d7ffb1325724871b3a4c124d042d1c643c22125b6db7f825770e9c4b8"
+  },
+  "focused_test_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 2301,
+    "sha256": "21da2202cf972a0b76121b545d7e91d110413d53c7604347107b277b934bfb26"
+  },
+  "original_inputs": {
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\observer.raw.ndjson",
+      "bytes": 31553,
+      "sha256": "afbae8ec5dd382626cad5a7e6aefb913a2f9c2aed82a877b2219f8d048da2eb6"
+    },
+    "binding": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r06-worker-prepared\\owner-binding.json",
+      "bytes": 1168,
+      "sha256": "5b30d31b1b7cc50cd22d4737394d2be67f0a17e76c83ad9ce45bf599c7d1f096"
+    },
+    "parent": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-FULL-PARENT-PROOF.json",
+      "bytes": 1749,
+      "sha256": "77b17cdada589deef5bedb04f84bf6ab433d86dca4959c23b0b164b95bf9ea6c"
+    }
+  },
+  "original_failed_terminal": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-REFILL-TERMINAL.json",
+    "bytes": 381,
+    "sha256": "fe30148cdba1e12b6d1ed4394e0f0af395fcc4fbae0f415a7c41699d8284cdeb"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\stdout.log",
+    "bytes": 365,
+    "sha256": "b8add98838ab8f2fb0216dd627824bb7eaf912fdf2c537aa1c849bebe7256fab"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "full_parent_copy": false,
+  "parent_read_domain": "Only original pinned18.55MiB response range by the unchanged consumer read/re-extraction contract",
+  "SDK_probe_game_screen_compile_newday_calls": 0,
+  "original_failed_records_overwritten": false,
+  "full_global_R06_qualified": false,
+  "target_proof": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-CORE-PROOF.offline.json",
+    "bytes": 50670,
+    "sha256": "46e70788286eff215d37d552bc166db3f2fe1663cd9004f9f57d08dcb0497c6c"
+  },
+  "instruction_item": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\R0221-TARGET-INSTRUCTION.offline.json",
+    "bytes": 90993,
+    "sha256": "c88b81b489beef30b82391e8fbd1050f6bd10cdc19ec915f89513af5cff81bf7"
+  },
+  "lossless_canonical_plus_newline": true,
+  "target_core_join_recovered_offline": true,
+  "global_or_business_qualification_granted": false,
+  "scalar_item_fields": {
+    "schema": "xar.ck3.refill_ADD_12004.target_instruction_item.v1",
+    "source_kind": "native_instruction_local_physical_ADD",
+    "raw_sha256": "afbae8ec5dd382626cad5a7e6aefb913a2f9c2aed82a877b2219f8d048da2eb6",
+    "owner_admission_authority_verified_here": false,
+    "actual_ADD_observed": true,
+    "instruction_operand_signed32": 1,
+    "instruction_operand_u32": 1,
+    "before_current_u32": 68,
+    "after_current_u32": 69,
+    "signed_endpoint_net": 1,
+    "unsigned_endpoint_net": 1,
+    "DWORD_wrap_matches": true,
+    "regi_full_id_u32": 2602,
+    "physical_slot": 1,
+    "arrg_full_id_i32": 82,
+    "army_full_id_i32": 0,
+    "matching_DATA_aliases": 1,
+    "physical_seven_before_hex": "00000000000000002a0a000000000000ffffffff0000000000000000f8779c02ffffffff45000000440000002a0a000001000000520000000000000000000000f8779c02ffffffff00000000000000002a0a000002000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000003000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000004000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000005000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000006000000ffffffff0000000000000000f8779c02ffffffff",
+    "physical_seven_after_hex": "00000000000000002a0a000000000000ffffffff0000000000000000f8779c02ffffffff45000000450000002a0a000001000000520000000000000000000000f8779c02ffffffff00000000000000002a0a000002000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000003000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000004000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000005000000ffffffff0000000000000000f8779c02ffffffff00000000000000002a0a000006000000ffffffff0000000000000000f8779c02ffffffff",
+    "debug_hits": 3266,
+    "clean_detach_and_register_restore": true,
+    "instruction_replayed_by_probe": false,
+    "natural_parent_token": null,
+    "native_core_token": 1,
+    "native_event_date_raw": 300337098738302360,
+    "same_core_NET_cause_proven": false,
+    "natural_attribution_ready": true,
+    "full_window_coverage_ready": false,
+    "toggle_effect_proven": false,
+    "refill_business_qualification_granted": false,
+    "raw_schema": "xar.ck3.refill_ADD_12004.hwprobe_raw.v5",
+    "selected_thread_id": 37456,
+    "selected_thread_generation": 134369699152906149,
+    "same_core_invocation_join_ready": true,
+    "target_core_proof_canonical_derived_sha256": "e3eeb41b3aaa034172e499f204ae8870658647055824a6af46fd7215d844654f",
+    "full_parent_response_line_sha256": "b03ff66bdef770e33231a16e595fdbcc6fcd269eb58104bac62d230043529fd5",
+    "global_physical_closure_qualification_granted": false,
+    "whole_core_NET_cause_proven": false
+  }
+}

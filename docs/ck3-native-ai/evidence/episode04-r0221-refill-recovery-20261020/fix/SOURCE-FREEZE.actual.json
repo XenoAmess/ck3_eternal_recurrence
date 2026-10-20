@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:14:24.957548+00:00",
+  "integration_base": "d44285c464658df8474331b3e8aa09f8c3ca2df2",
+  "D_frozen_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "D_tracked_clean": true,
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\consume_live_refill_add.py",
+      "bytes": 6391,
+      "sha256": "cc64032d7ffb1325724871b3a4c124d042d1c643c22125b6db7f825770e9c4b8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\tests\\unit\\test_target_instruction_core_proof_12004.py",
+      "bytes": 20327,
+      "sha256": "2eb7666700a1c9708ffe8816361dbfa6b16c8492e9e23a3927329167de53a852"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\.github\\workflows\\static-ci.yml",
+      "bytes": 66948,
+      "sha256": "243d1b08693b519a89ff7e21ed91499a30b842ee3033d55d0b0e682da6b33753"
+    }
+  ],
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\COMPACT-FIX.actual.diff",
+    "bytes": 10926,
+    "sha256": "033eb01380a4e88a3db0ba2f745f5ec270ddb38c4904348459388b73dcfaede7"
+  },
+  "diff_check": 0,
+  "unchanged_semantic_contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_target_instruction_core_proof_12004.py",
+    "bytes": 33771,
+    "sha256": "e226875b69d8b2c753262ca49ecead000f544aeee8fa44c43075c943c3f29721"
+  },
+  "no_native_binary_build_or_cpp_change": true,
+  "consumer_location_changes_future_Git_native_bridge_tree": true,
+  "compiled_and_live_original_native_source_tree": "fee86631356f556271445157523c62abfd62951e",
+  "focused_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 2301,
+    "sha256": "21da2202cf972a0b76121b545d7e91d110413d53c7604347107b277b934bfb26"
+  },
+  "recovery_original_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\actual-recovery-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 7480,
+    "sha256": "de10b75c9b2e63f42049438be5048168fed0d20decc7e287834e80972fff50d5"
+  },
+  "new_live_or_full_R06_qualification_granted": false
+}

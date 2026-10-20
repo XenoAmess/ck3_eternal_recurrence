@@ -1,0 +1,32 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:30:23.621803+00:00",
+  "capacity_task_id": "e04-capacity-r06-1315-20261020-a01",
+  "pid": 3888,
+  "create_time": 1792495823.381201,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/ck3-e04-resume-20261020-a01/r06-resume-a02/capacity/r06-1315-a01/monitor_new_finite_packet.py"
+  ],
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\monitor_new_finite_packet.py",
+    "bytes": 2358,
+    "sha256": "6d2005f42583722f8b00987f0c3edda49b7c1c074b83064606a67c74f2b94f5f"
+  },
+  "helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\packet_common.py",
+    "bytes": 383,
+    "sha256": "3a4be9760e3c702f97afdbb9a7a3322bbfad239f1e3f831b0d327ebedc5b41ed"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R06-NEW-FINITE-RESERVATION-PREPARE-ONLY.actual-a01.json",
+    "bytes": 7594,
+    "sha256": "12ed8775388d21f6500b53733d60fdb9fe4feaefd3d4b6f1d280dd91dfc6a50e"
+  },
+  "stop_flag": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\NEW-1315Z-FINITE-MONITOR.STOP",
+  "quota_review_at_utc": "2026-10-20T13:15:00Z",
+  "SDK_game_screen_actions": 0
+}

@@ -1,0 +1,177 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T11:56:27.290045+00:00",
+  "source_head": "4fc8d0f4cae53735274475bd3e7fc3afbb958f7c",
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-r0221-passive-a01\\consume_retained_pair.py",
+    "bytes": 12365,
+    "sha256": "ab0c62e956f70700211469427109d8e5b276c9bd8a982c31bed93a943b3973dc"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-PASSIVE-STOCK-METADATA-CHILD.actual-a01.json",
+    "bytes": 2860,
+    "sha256": "b56331ca67a95102484b46e79518cb9f429f1bdba72b847410dffde784783170"
+  },
+  "adapter": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-passive-adapter-a01\\b_stock_passive_pair_a02.py",
+    "bytes": 12790,
+    "sha256": "5799593528cf6290d144f54fb5fc58d889b27388ef7887a5b951899288bbabb5"
+  },
+  "original_file_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\r06-1315-a01\\R0221-PASSIVE-STOCK-METADATA-CHILD.actual-a01.json",
+      "bytes": 2860,
+      "sha256": "b56331ca67a95102484b46e79518cb9f429f1bdba72b847410dffde784783170"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-REFILL-TERMINAL.json",
+      "bytes": 381,
+      "sha256": "fe30148cdba1e12b6d1ed4394e0f0af395fcc4fbae0f415a7c41699d8284cdeb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06-WORKER-RESULT.json",
+      "bytes": 116314,
+      "sha256": "970ab21daa87ea4612748cf7b9c3f6a1077b3d7f1f3de4b2fcb3598fa2d42ed2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0011-r06-before-before.actual-results.json",
+      "bytes": 101967,
+      "sha256": "77504d91a0fa9b3d59b1fac643d62bcb998916dab00fe9e70f5fe848be883b7b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0020-wait-day.actual-results.json",
+      "bytes": 102499,
+      "sha256": "81c6e88a047be9ce6be0b87681cb7e99b5c122e8c4aeb4d504c7db79a1914c75"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0013-r06-before-independent-after.actual-results.json",
+      "bytes": 101991,
+      "sha256": "9b629c78a337762a742c73b463ce66779d83d80df13330929ee8e818a074e6b2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0023-r06-after-independent-after.actual-results.json",
+      "bytes": 102549,
+      "sha256": "3b138f332edfbe27e00f1df02871943c98974b8b108edf40cb9afc619c9a704c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0012-r06-before-full-derived-normalized-full.json",
+      "bytes": 18892579,
+      "sha256": "e1c3d432596eb70dcdec041109ed73bc525751909b3cabfa0886ba459f14e436"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0012-r06-before-full-full-wire-proof.json",
+      "bytes": 1752,
+      "sha256": "5146e1a1580e29c9292ddca383e9b2846f521ce55fdfc45086bc8efe9f19994f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0022-r06-after-full-derived-normalized-full.json",
+      "bytes": 31691187,
+      "sha256": "0ccbaca243b99772c3d234b40493437f10f63979160dc80909b5cd13349e1de7"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0022-r06-after-full-full-wire-proof.json",
+      "bytes": 1749,
+      "sha256": "77b17cdada589deef5bedb04f84bf6ab433d86dca4959c23b0b164b95bf9ea6c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r05-observe-originals\\day-53149056.once-claim.json",
+      "bytes": 236,
+      "sha256": "106d73b8f27779b12f832c418038e96a165ab9ba7ed906f102b6a5cbe624564b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\r05-observe-originals\\day-53149056-initial-resume.once-claim.json",
+      "bytes": 191,
+      "sha256": "20044849168bc35651dddc11e7ff503d34e7d1197440749b466c386377595633"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0016-arm-day.actual-results.json",
+      "bytes": 52291,
+      "sha256": "b993c486a9fe5e4ff5120c3b821661b31e9ce2efd650a9a8d00bef0d9e65b51f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0017-resume-day.actual-results.json",
+      "bytes": 51670,
+      "sha256": "6c68ffc7fde8659d13f70275dfe02527cbf9ee674a5ba630c641bea0b14f9de8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\R06A06-r05obs-0021-clock-query.actual-results.json",
+      "bytes": 52534,
+      "sha256": "85e5fd139cf83188bcbb031aa949e205fe5816a73fa4840b7960ef5d39fe0e92"
+    }
+  ],
+  "native_wire_original_ranges": [
+    {
+      "original_lines": {
+        "request_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 40878210,
+          "end": 40878512,
+          "bytes": 302,
+          "sha256": "e06918f4dfec08d17ef3fd377807405f70e31e75b4775f3d0ddc15cd80ca2281"
+        },
+        "response_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 40878512,
+          "end": 52670018,
+          "bytes": 11791506,
+          "sha256": "3f2447f01a06651ed806255d91f0004e2ebf986d757ba9cc65d7e8beed1a2401"
+        }
+      },
+      "complete_Driver_packet": false,
+      "query_reissued": false,
+      "query_sequence": 3,
+      "native_request_id": "step-12-19aac8d16f7d",
+      "selected_native_vs_normalized_equal": {
+        "native_carmy_id": true,
+        "current_supply_raw": true,
+        "current_supply_capacity_raw": true,
+        "actual_supply_callback_observations_v1": true
+      },
+      "whole_wire_or_range_rehashed": false
+    },
+    {
+      "original_lines": {
+        "request_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 54547048,
+          "end": 54547350,
+          "bytes": 302,
+          "sha256": "8f05cbb1977363715d9510730087d0c35f786aa8a46c983438da15b982a3dc29"
+        },
+        "response_line": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\native-report.native-wire.jsonl",
+          "begin": 54547350,
+          "end": 73098176,
+          "bytes": 18550826,
+          "sha256": "b03ff66bdef770e33231a16e595fdbcc6fcd269eb58104bac62d230043529fd5"
+        }
+      },
+      "complete_Driver_packet": false,
+      "query_reissued": false,
+      "query_sequence": 4,
+      "native_request_id": "step-16-3ff7a3f69e0e",
+      "selected_native_vs_normalized_equal": {
+        "native_carmy_id": true,
+        "current_supply_raw": true,
+        "current_supply_capacity_raw": true,
+        "actual_supply_callback_observations_v1": true
+      },
+      "whole_wire_or_range_rehashed": false
+    }
+  ],
+  "derived_projection": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-r0221-passive-a01\\R0221-STOCK-PAIR.actual.json",
+    "bytes": 22088,
+    "sha256": "d4cd414cea92826777175fa3871ad1a5827a3f2889a53cc37b1a0d6fd36d9c22"
+  },
+  "no_large_file_copy": true,
+  "no_whole_native_report_read_or_hash": true,
+  "SDK_calls": 0,
+  "new_queries": 0,
+  "new_days": 0,
+  "builds": 0,
+  "tracked_writes": 0,
+  "deadline_utc": "2026-10-20T12:30:00Z",
+  "lane_ceiling_bytes": 524288,
+  "shared_pool_bytes": 134217728
+}

@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "status": "STOPPED_ERROR_PRESERVED_NO_REPLAY",
+  "actual_days": 1,
+  "exact_day_verified": true,
+  "actual_ADD_observed": false,
+  "finaldate": 53149080,
+  "OFFclear": true,
+  "Save": true,
+  "native_restore_verified": true,
+  "errors": [],
+  "full_R06_qualified": false
+}

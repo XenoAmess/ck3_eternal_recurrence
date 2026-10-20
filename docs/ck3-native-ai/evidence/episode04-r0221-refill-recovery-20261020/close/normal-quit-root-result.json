@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0221",
+  "reviewer": "/root",
+  "pid": 37800,
+  "create_time": 1792496308.677909,
+  "original_hold_deadline": 1792500205.9740927,
+  "quit_request": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0221\\case-output\\normal-quit-awaiting.json",
+    "bytes": 636,
+    "sha256": "a56da4a1dabb47c992a67d83c4e0b0079779efbbb6ab142a27f4c21164bd3cce"
+  },
+  "normal_gui_quit": true,
+  "direct_reviewed": true,
+  "review_method": "explicit operator direct image review; no automatic image-content judgment",
+  "autosave_unchecked_observed": true,
+  "autosave_unchecked_screenshot": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\quit-r0221-a01\\quit-confirm-original.png",
+    "bytes": 1782762,
+    "sha256": "957977628ecc3f9b078baf903291460b8b5f003179c2c956670b3979de0aabe0"
+  },
+  "final_click": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\quit-r0221-a01\\quit-desktop-click.png.json",
+    "bytes": 1530,
+    "sha256": "7b97b5ee0814adc7c60826b93d25585599f1e0deea075f509d9d01fe43c44158"
+  },
+  "after_click_screenshot": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\quit-r0221-a01\\quit-desktop-click.png",
+    "bytes": 1776488,
+    "sha256": "fb11cb5d52169c2ee2b8bf3d1a2a8109197500de9c9b2fc98917e19fd6483fa9"
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\quit-r0221-a01\\quit-confirm-original.png",
+      "bytes": 1782762,
+      "sha256": "957977628ecc3f9b078baf903291460b8b5f003179c2c956670b3979de0aabe0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\quit-r0221-a01\\quit-desktop-click.png.json",
+      "bytes": 1530,
+      "sha256": "7b97b5ee0814adc7c60826b93d25585599f1e0deea075f509d9d01fe43c44158"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-scene-a05\\quit-r0221-a01\\quit-desktop-click.png",
+      "bytes": 1776488,
+      "sha256": "fb11cb5d52169c2ee2b8bf3d1a2a8109197500de9c9b2fc98917e19fd6483fa9"
+    }
+  ],
+  "actual_os0_proven": false,
+  "actual_native0_proven": false,
+  "process_exit_claimed": false,
+  "business_pass": false
+}

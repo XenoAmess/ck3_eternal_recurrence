@@ -82,7 +82,10 @@ def main(argv=None):
         if args.create_target_core_proof is not None:
             proof = build_target_instruction_core_proof_12004(
                 parent_response=parent, parent_proof=parent_proof, binding=binding, raw=raw)
-            encoded = (json.dumps(proof, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+            # Preserve the complete validated proof in its bounded canonical
+            # representation; indentation must not consume the wire budget.
+            encoded = (json.dumps(proof, ensure_ascii=False, separators=(',', ':'),
+                                  sort_keys=True, allow_nan=False) + '\n').encode('utf-8')
             if len(encoded) > 65536:
                 parser.error('derived target proof exceeds64KiB')
             with args.create_target_core_proof.open('xb') as stream:

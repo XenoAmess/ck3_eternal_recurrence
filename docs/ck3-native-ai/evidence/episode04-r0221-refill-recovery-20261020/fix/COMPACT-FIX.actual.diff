@@ -1,0 +1,180 @@
+diff --git a/.github/workflows/static-ci.yml b/.github/workflows/static-ci.yml
+index ccec50aab..ca3d8d88e 100644
+--- a/.github/workflows/static-ci.yml
++++ b/.github/workflows/static-ci.yml
+@@ -99,6 +99,8 @@ jobs:
+         run: python -B -X utf8 tools/test_r06_refill_one_day.py
+       - name: Test public post-allocation refill capacity scope
+         run: python -B -X utf8 tools/test_ck3_mod_acceptance_r06_scope.py
++      - name: Test lossless bounded target-proof CLI serialization
++        run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py TargetProofCliSerialization
+       - name: Test supervisor admission refusal predecessor closure
+         run: python -B -X utf8 tools/test_ck3_mod_acceptance_supervisor_refusal.py
+       - name: Test isolated native army route producer without CK3
+diff --git a/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py b/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py
+index 55f3939a0..f09f19211 100644
+--- a/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py
++++ b/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py
+@@ -82,7 +82,10 @@ def main(argv=None):
+         if args.create_target_core_proof is not None:
+             proof = build_target_instruction_core_proof_12004(
+                 parent_response=parent, parent_proof=parent_proof, binding=binding, raw=raw)
+-            encoded = (json.dumps(proof, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
++            # Preserve the complete validated proof in its bounded canonical
++            # representation; indentation must not consume the wire budget.
++            encoded = (json.dumps(proof, ensure_ascii=False, separators=(',', ':'),
++                                  sort_keys=True, allow_nan=False) + '\n').encode('utf-8')
+             if len(encoded) > 65536:
+                 parser.error('derived target proof exceeds64KiB')
+             with args.create_target_core_proof.open('xb') as stream:
+diff --git a/ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py b/ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py
+index 695cdf7c8..87a57ee8e 100644
+--- a/ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py
++++ b/ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py
+@@ -6,6 +6,9 @@ import json
+ import os
+ from pathlib import Path
+ import struct
++import subprocess
++import sys
++import tempfile
+ import unittest
+ 
+ 
+@@ -173,5 +176,136 @@ class TargetInstructionCompound(unittest.TestCase):
+                 target_core_proof=proof,parent_response=b'',parent_proof=parent)
+ 
+ 
++class TargetProofCliSerialization(unittest.TestCase):
++    """Actual file/CLI seams with synthetic bytes, never live qualification."""
++
++    CLI = ROOT / 'ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py'
++
++    def inputs(self, directory, *, file_bytes=None):
++        rows, binding, core, _response, parent = sample(null_episode=True)
++        parent_path = directory / 'original.native-wire.jsonl'
++
++        def refresh():
++            response = parent_bytes(core)
++            parent_path.write_bytes(response)
++            identity = parent_path.stat()
++            parent.update(path=str(parent_path), file_identity=[identity.st_dev, identity.st_ino])
++            parent['response_line'].update(begin=0, end=len(response), sha256=hashlib.sha256(response).hexdigest())
++            return m.build_target_instruction_core_proof_12004(
++                raw=wire(rows), binding=binding, parent_response=response, parent_proof=parent)
++
++        # Every skipped non-target branch stays present and validated. Grow a
++        # valid complete roster until pretty printing alone crosses the cap.
++        for index in range(2, 128):
++            for label in ('entry', 'returned'):
++                army = core[label]['army_objects'][0]
++                branch = copy.deepcopy(army['arrg_occurrences'][1])
++                branch['occurrence'] = old.occurrence(83 + index, 0x500001000 + index * 0x100)
++                branch['occurrence']['stored_index'] = index
++                army['arrg_occurrences'].append(branch)
++                army['native_arrg_occurrence_count'] = len(army['arrg_occurrences'])
++            proof = refresh()
++            if len((json.dumps(proof, ensure_ascii=False, indent=2) + '\n').encode('utf-8')) > 65536:
++                break
++        else:
++            self.fail('valid roster did not reach the indented transport regression')
++        if file_bytes is not None:
++            reason = core['entry']['missing_inputs'][0] + ': synthetic UTF-8 汉 boundary '
++            padding = 0
++            for _ in range(8):
++                core['entry']['missing_inputs'][0] = reason + 'x' * padding
++                proof = refresh()
++                difference = file_bytes - len(m._encoded(proof) + b'\n')
++                if difference == 0:
++                    break
++                padding += difference
++                self.assertGreaterEqual(padding, 0)
++            else:
++                self.fail('could not construct exact encoded file boundary')
++        paths = {key: directory / name for key, name in (
++            ('raw', 'observer.raw.ndjson'), ('binding', 'owner-binding.json'),
++            ('parent', 'full-parent-proof.json'), ('proof', 'derived-target-proof.json'), ('output', 'item.json'))}
++        paths['raw'].write_bytes(wire(rows))
++        paths['binding'].write_bytes(m._encoded(binding))
++        paths['parent'].write_bytes(m._encoded(parent))
++        return rows, binding, core, parent, proof, paths
++
++    def run_cli(self, paths, *, consume=False):
++        return subprocess.run([sys.executable, '-B', '-X', 'utf8', str(self.CLI),
++            '--raw', str(paths['raw']), '--binding', str(paths['binding']),
++            '--full-parent-proof', str(paths['parent']),
++            '--target-core-proof' if consume else '--create-target-core-proof', str(paths['proof']),
++            '--output', str(paths['output'])], capture_output=True, timeout=45)
++
++    def assert_scope(self, item):
++        self.assertTrue(item['same_core_invocation_join_ready'])
++        self.assertIsNone(item['owner_binding']['episode_run_id'])
++        self.assertEqual(item['owner_binding']['episode_projection'], 'native_campaign')
++        for key in ('global_physical_closure_qualification_granted', 'whole_core_NET_cause_proven',
++                    'same_core_NET_cause_proven', 'refill_business_qualification_granted',
++                    'full_window_coverage_ready', 'owner_admission_authority_verified_here'):
++            self.assertFalse(item[key], key)
++
++    def test_pretty_over_cap_complete_proof_roundtrips_real_cli(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            directory = Path(temporary)
++            _rows, _binding, core, _parent, proof, paths = self.inputs(directory)
++            self.assertGreater(len((json.dumps(proof, ensure_ascii=False, indent=2) + '\n').encode('utf-8')), 65536)
++            result = self.run_cli(paths)
++            self.assertEqual(result.returncode, 0, result.stderr.decode())
++            self.assertEqual(paths['proof'].read_bytes(), m._encoded(proof) + b'\n')
++            self.assertLessEqual(paths['proof'].stat().st_size, 65536)
++            self.assertEqual(json.loads(paths['proof'].read_bytes()), proof)
++            for label in ('entry', 'returned'):
++                self.assertEqual(len(proof[label + '_target']['entire_target_army_arrg_branch_roster']),
++                                 len(core[label]['army_objects'][0]['arrg_occurrences']))
++            self.assert_scope(json.loads(paths['output'].read_bytes()))
++            paths['output'] = directory / 'read-back-item.json'
++            reread = self.run_cli(paths, consume=True)
++            self.assertEqual(reread.returncode, 0, reread.stderr.decode())
++            self.assert_scope(json.loads(paths['output'].read_bytes()))
++
++    def test_utf8_and_newline_exact_65536_bytes_are_accepted(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            *_prefix, proof, paths = self.inputs(Path(temporary), file_bytes=65536)
++            result = self.run_cli(paths)
++            self.assertEqual(result.returncode, 0, result.stderr.decode())
++            self.assertEqual(paths['proof'].stat().st_size, 65536)
++            self.assertEqual(paths['proof'].read_bytes(), m._encoded(proof) + b'\n')
++            self.assertIn('汉'.encode('utf-8'), paths['proof'].read_bytes())
++            self.assert_scope(json.loads(paths['output'].read_bytes()))
++
++    def test_newline_65537th_byte_is_rejected_without_output(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            *_prefix, proof, paths = self.inputs(Path(temporary), file_bytes=65537)
++            self.assertEqual(len(m._encoded(proof)), 65536)
++            result = self.run_cli(paths)
++            self.assertEqual(result.returncode, 2, result.stderr.decode())
++            self.assertIn(b'derived target proof exceeds64KiB', result.stderr)
++            self.assertFalse(paths['proof'].exists())
++            self.assertFalse(paths['output'].exists())
++
++    def test_parent_owner_token_generation_and_unselected_tail_stay_strict(self):
++        for mutation in ('parent_sha', 'owner', 'token', 'generation', 'tail_branch'):
++            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary:
++                rows, binding, core, parent, _proof, paths = self.inputs(Path(temporary))
++                if mutation == 'parent_sha': parent['response_line']['sha256'] = '0' * 64
++                elif mutation == 'owner': binding['army_full_id_i32'] = 1
++                elif mutation == 'token': rows[7]['native_core_token'] = 123
++                elif mutation == 'generation': rows[6]['thread_generation'] = 556
++                else:
++                    core['entry']['army_objects'][0]['arrg_occurrences'][-1]['records_complete'] = False
++                    response = parent_bytes(core)
++                    Path(parent['path']).write_bytes(response)
++                    parent['response_line'].update(end=len(response), sha256=hashlib.sha256(response).hexdigest())
++                paths['raw'].write_bytes(wire(rows))
++                paths['binding'].write_bytes(m._encoded(binding))
++                paths['parent'].write_bytes(m._encoded(parent))
++                result = self.run_cli(paths)
++                self.assertNotEqual(result.returncode, 0)
++                self.assertFalse(paths['proof'].exists())
++                self.assertFalse(paths['output'].exists())
++
++
+ if __name__ == '__main__':
+     unittest.main()

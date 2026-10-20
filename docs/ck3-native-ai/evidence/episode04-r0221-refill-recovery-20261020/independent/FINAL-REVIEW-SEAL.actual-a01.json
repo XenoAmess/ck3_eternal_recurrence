@@ -1,0 +1,46 @@
+{
+  "schema": "xar.e04.r0221-compact-independent-review-seal.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T12:16:02.277142+00:00",
+  "status": "PASS_NO_BLOCKING_FINDINGS",
+  "review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-independent-review-a01\\INDEPENDENT-REVIEW.actual-a01.json",
+    "bytes": 6895,
+    "sha256": "584b56d4f95e36c9c77058c1ce8a180fd702aafee445628faa358fa4aabbcfde"
+  },
+  "implementation_final_source_freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\SOURCE-FREEZE.actual.json",
+    "bytes": 2467,
+    "sha256": "f59f61cb6de129780c178e8a624cccb289f8b8ce2f9e35b20add6343281dd7b9"
+  },
+  "reproduction_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-independent-review-a01\\review_recovered_proof.py",
+    "bytes": 11367,
+    "sha256": "8d27e5535e613a21274f60821b9e7e989e7c20d01998d12042b7948b7b9f80a7"
+  },
+  "execution_evidence": {
+    "source": "functions.exec exec_command chunk a741a5",
+    "observed_tool_exit_code": 0,
+    "wall_seconds": 8.8716398,
+    "original_Popen_identity_not_captured_by_this_audit": true,
+    "original_Popen_exit_receipt_not_invented": true
+  },
+  "reproduction_helper_documentation_note": "After execution, only its overbroad no-process docstring was corrected to acknowledge the two read-only Git subprocesses. Functional code and review result were not changed or rerun.",
+  "focused_tests_review": {
+    "original_Popen_wait0_receipt": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r0221-compact-fix-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 2301,
+      "sha256": "21da2202cf972a0b76121b545d7e91d110413d53c7604347107b277b934bfb26"
+    },
+    "source_test": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree\\ck3_autonomous_player\\tests\\unit\\test_target_instruction_core_proof_12004.py",
+      "bytes": 20327,
+      "sha256": "2eb7666700a1c9708ffe8816361dbfa6b16c8492e9e23a3927329167de53a852"
+    },
+    "verified": "Four real-file/subprocess CLI tests: lossless pretty-over-cap creation and readback; UTF8+newline65536 accept;65537 reject before output; parent/owner/token/generation/unselected-tail reject. No mocks of consumer/build/normalize.",
+    "independently_rerun_same_focused_tests": false
+  },
+  "actual_reextraction_and_in_memory_mutations": "Review receipt records independent unchanged-D normalization and five labelled actual-memory mutation rejections; source files/raw/parent/binding and original false terminal unchanged.",
+  "scope": "New offline derived target qualification only. No new live execution or global/business/full-R06 qualification.",
+  "evidence_package": "This small directory only; original raw, parent range, proof, item and logs remain referenced at exact paths/pins; no payload copied."
+}
