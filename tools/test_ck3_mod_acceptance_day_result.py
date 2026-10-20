@@ -1,4 +1,4 @@
-"""Portable normal-day result tests using actual host and client methods."""
+﻿"""Portable normal-day result tests using actual host and client methods."""
 from __future__ import annotations
 
 import asyncio
@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import threading
 from types import SimpleNamespace
+from typing import Literal, Protocol, runtime_checkable
 import unittest
 
 from test_ck3_mod_acceptance_pause import frame
@@ -16,6 +17,16 @@ from test_ck3_mod_acceptance_pause import frame
 ROOT = Path(__file__).resolve().parents[1]
 HOST = ROOT / "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
 CLIENT = ROOT / "tools/ck3_mod_acceptance_client.py"
+
+
+DayCall = tuple[list[dict[str, object]], str, float | None, Literal[90]]
+
+
+@runtime_checkable
+class DayResultClient(Protocol):
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> dict[str, object]: ...
 
 
 class NormalDayResultTests(unittest.IsolatedAsyncioTestCase):
@@ -89,17 +100,32 @@ class NormalDayResultTests(unittest.IsolatedAsyncioTestCase):
         value.advance = lambda row: namespace["advance"](value, row)
         return value
 
-    def client(self, row):
-        value = self.client_module.CaseClient.__new__(self.client_module.CaseClient)
-        value._seq = 0
-        value._binding = None
-        value.manifest = {"game": {"version": "1.20.0.4",
-                                  "exe_sha256": frame()["diagnostics"]["hello"]["expected_ck3_sha256"]}}
-        calls = []
-        def execute(steps, name, timeout):
-            calls.append((steps, name, timeout))
+    def client(self, row: dict[str, object]) -> tuple[DayResultClient, list[DayCall]]:
+        value: object = self.client_module.CaseClient.__new__(self.client_module.CaseClient)
+        setattr(value, "_seq", 0)
+        setattr(value, "_binding", None)
+        setattr(value, "manifest", {"game": {"version": "1.20.0.4",
+            "exe_sha256": frame()["diagnostics"]["hello"]["expected_ck3_sha256"]}})
+        calls: list[DayCall] = []
+
+        def held_report(reserve: Literal[90] = 90) -> dict[str, object]:
+            # Authored held-session seam: native exact-day is deliberately NOT
+            # advertised, so this test continues to consume the old host row.
+            if type(reserve) is not int or reserve != 90:
+                raise AssertionError("Original guard reserve must remain90")
+            return {"phase": "hold", "steps": [], "capabilities": {
+                "action_steps": [], "bridge_capabilities": []}}
+
+        def execute(steps: list[dict[str, object]], name: str, timeout: float | None = None,
+                    reserve: Literal[90] = 90) -> list[dict[str, object]]:
+            if type(reserve) is not int or reserve != 90:
+                raise AssertionError("Original execute reserve must remain90")
+            calls.append((steps, name, timeout, reserve))
             return [row]
-        value.execute_plan = execute
+        setattr(value, "guard", held_report)
+        setattr(value, "execute_plan", execute)
+        if not isinstance(value, DayResultClient):
+            raise TypeError("Actual public client lacks the day-result interface")
         return value, calls
 
     async def test_campaign_success_declares_proven_interval_and_original_client_accepts_raw_row(self):
@@ -113,9 +139,12 @@ class NormalDayResultTests(unittest.IsolatedAsyncioTestCase):
         row = {"ok": True, "finished_at": "synthetic", "result": result}
         original = copy.deepcopy(row)
         client, calls = self.client(row)
-        self.assertIs(client.advance_day(timeout=5), row)
+        self.assertEqual(client.advance_day(timeout=5), row)
         self.assertEqual(row, original)
         self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0][0][0]["kind"], "advance_day")
+        self.assertNotIn("tool", calls[0][0][0])
+        self.assertEqual(calls[0][3], 90)
         self.assertEqual([args["step"] for name, args, _ in host.calls if name == "ck3_execute_step"],
                          ["pause-map", "resume-map", "pause-map"])
 
