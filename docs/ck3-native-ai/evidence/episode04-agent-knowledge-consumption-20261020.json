@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.R0217-direct-v2-portable-replay.v1",
+  "producer_machine_id": "desktop-3fevhd2-1c74096080",
+  "review_machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-20T08:04:53.267569+00:00",
+  "projection_pin": {
+    "path": "docs\\ck3-native-ai\\evidence\\episode04-r0217-20261020\\research\\DIRECT-V2-PROJECTION.actual.json",
+    "bytes": 82474,
+    "sha256": "41f2e90525c664cef89d2f279df64a8e30e26909ff703c49a395e1a18c81501c"
+  },
+  "consumer_result_canonical_sha256": "d7465069b9db33a9448f8561389ec262722e75a9bebd5d1d218eb1b6ce077fbd",
+  "matches_original_scene_consumer": true,
+  "qualified_positive_invocations": 17,
+  "other_qualified_invocations": 1,
+  "excluded_invocations": 5,
+  "individual_debit_sum": 236,
+  "global_window_continuous": true,
+  "whole_county_debit": null,
+  "whole_county_card_closed": false,
+  "large_original_or_EXE_read": false,
+  "SDK_game_GUI_build_action": false,
+  "new_runtime_qualification_granted": false,
+  "original_source_truth_not_independently_reestablished": true
+}

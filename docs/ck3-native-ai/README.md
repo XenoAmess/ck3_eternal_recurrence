@@ -1,5 +1,9 @@
 # CK3 原生 AI 决策树索引
 
+## 游玩智能体使用战争四期研究
+
+先读[智能体参考与代码消费入口](episode04-gameplay-agent-use-12004.md)，再按[当前执行图](episode04-current-execution-map-12004.md)进入机制、实际证据及未闭问题。该入口明确区分可读研究、已有生产消费者和普通 planner 的策略接线；下方历史日期的摘要不代表最新状态。R0217个别直接扣兵小计与R06源码已进入共享知识，县总额和新R06实机仍未闭。
+
 战役评价：[跨代评分规则 v1](campaign-development-scoring-v1-design-2026-10-19.md)、[只读存档评分器与本场证据](campaign-scoring-offline-implementation-2026-10-19.md)、[评分图片与讲解视频](campaign-score-presentation-v1.md)、[首轮评分成片与交付](first30-film-scored-delivery-2026-10-19.md)、[休假接手入口](../handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)。固定开局家族与三十年窗口，保留缺项区间和历史不足，分别报告局面分与完整战役分。
 
 ## 2026-10-17：信仰与权力／圣地规划知识

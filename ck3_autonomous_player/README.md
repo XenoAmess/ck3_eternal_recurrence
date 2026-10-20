@@ -10,6 +10,8 @@ production、非 debug、仅加载本 mod 的正常游戏里扮演玩家。
 
 ## 当前完成度
 
+战争移动、补给、损耗、补员和拆合军的研究参考见[游玩智能体知识入口](../docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md)。它提供机制专题、当前实证、MCP输入和生产消费者的对应关系；研究可供开发与规划参考，普通 `plan/auto` 不会自动读取所有 Markdown，尚未接入策略或未经实机验证的部分均单独标明。下文 Phase A 等记录保留原日期的历史范围。
+
 **Phase A 已完成。** 提交 `11ab443050132341bb27f6f924d792772f397396` 的冻结候选在同一环境指纹下连续三次
 通过 production、非 debug、单 mod、可见主菜单 isolation smoke：
 `20260821T180045Z-a3c49b20`、`20260821T180248Z-7ad2dd83`、`20260821T180531Z-9c6bb34b`。
