@@ -1,0 +1,158 @@
+{
+  "schema": "xar.e04.finite-source-only-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T20:19:22.820945+00:00",
+  "task_id": "e04-capacity-production-runtime-source4-2130-20261020-a01",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "source_implementation_execution_admitted": true,
+  "source_only": true,
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01",
+  "all_inclusive_aggregate_ceiling_bytes": 4194304,
+  "aggregate_ceiling_bytes": 4194304,
+  "partitions": {
+    "author": {
+      "root": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01",
+      "ceiling_bytes": 2621440
+    },
+    "review": {
+      "root": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\review-a01",
+      "ceiling_bytes": 524288
+    },
+    "Root": {
+      "root": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\root-review-a01",
+      "ceiling_bytes": 131072
+    },
+    "capacity": {
+      "root": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\capacity",
+      "ceiling_bytes": 262144
+    }
+  },
+  "unallocated_headroom_bytes": 655360,
+  "author": "native_prepare",
+  "reviewer": "public_preflight",
+  "hard_deadline_utc": "2026-10-20T21:30:00Z",
+  "scope": "Root-selected production integration candidate only: local4c79 Gitblob/no-lazy-fetch plus closedU/V/H inputs, preserve master late-nativecleanup/native-day/client changes, strict old10.96 plus exactnew11.12 dualprofile registry. External patch/focused Python harmless-child tests only; no production checkout or publication.",
+  "read_only_source_roots": [
+    "C:/ck3-war-episode04-research-20261004-a01/e04-r08-parent-dr-source-p02",
+    "C:/ck3-e04-resume-20261020-a01/r08-parent-runtime-source-1930-a01",
+    "C:/ck3-e04-resume-20261020-a01/r08-public-background-refusal-2030-a01",
+    "C:/ck3-e04-resume-20261020-a01/r08-steam-provider1112-source-2030-a01"
+  ],
+  "local_readonly_Git_blob_HEAD": "4c79b6ae1ccac70267128fa0627db78dbdf8a68e",
+  "Git_read_flags": "GIT_OPTIONAL_LOCKS=0; GIT_NO_LAZY_FETCH=1; no fetch",
+  "forbidden": [
+    "nativebuild",
+    "native_project_EXE_execution",
+    "actualVM_or_DR",
+    "Steam_observation_or_mode_change",
+    "run_probe",
+    "UI",
+    "game",
+    "SDK",
+    "SYSTEM",
+    "Git_mutation",
+    "D_W_oldroot_write",
+    "download"
+  ],
+  "all_helpers_source_tests_temp_logs_review_and_Root_counted": true,
+  "source_checks_not_actualcold_or_runtimeQ": true,
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T20:19:22.820637+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77368897536,
+      "available_to_caller_bytes": 77368897536,
+      "total_free_bytes": 77368897536,
+      "entire_volume_used_allocation_upper_bound_bytes": 433765048320,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T20:19:22.820637+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21648764928,
+      "available_to_caller_bytes": 21648764928,
+      "total_free_bytes": 21648764928,
+      "entire_volume_used_allocation_upper_bound_bytes": 478441242624,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "fresh_budget": {
+    "C_known_future_bytes": 14811136,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25784614912,
+    "C_floor_margin_bytes": 51584282624,
+    "C_projected_whole_volume_upper_bound_bytes": 438074826752,
+    "C_quota_margin_bytes": 11837440,
+    "D_required_free_bytes": 21625831424,
+    "D_floor_margin_bytes": 22933504
+  },
+  "all_active_claims": {
+    "known_future": {
+      "C:/": 14811136,
+      "D:/": 16777216
+    },
+    "legacy": {
+      "C:/": 0,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-runtime-evidence-git-2100-20261020-a01",
+        "known_future": {
+          "C:/": 8388608,
+          "D:/": 16777216
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-r223-exact-retention128-2100-20261020-a01",
+        "known_future": {
+          "C:/": 131072,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-player-parent-readwatch-source2-2115-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-production-runtime-source4-2130-20261020-a01",
+        "known_future": {
+          "C:/": 4194304,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 405603,
+    "sha256": "c125d74fc4380277feb94d76f6c5c70e59747ae6610cb548cd0f14a8ebd9d962"
+  },
+  "physical_or_unused_credit_bytes": 0
+}

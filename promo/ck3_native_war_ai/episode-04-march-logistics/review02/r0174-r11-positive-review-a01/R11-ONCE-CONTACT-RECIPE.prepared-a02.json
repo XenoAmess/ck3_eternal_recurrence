@@ -1,0 +1,416 @@
+{
+  "schema": "xar.e04.R11-R0174-prefix600-once-visual5-PROPOSAL.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T21:07:21.942293+00:00",
+  "status": "TYPED_DECIMAL64_A02_SOURCE_ONLY_PENDING_UPDATED_CAP_ROOT_ONCE",
+  "output_root": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01",
+  "hard_deadline_utc": "2026-10-20T22:00:00Z",
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_once_contacts_a02_final.py",
+    "bytes": 19160,
+    "sha256": "64c4d1e61f61e755bd2209d3822d6a4300d0298f31708d91ac3ea2217cc6f5b9"
+  },
+  "financial_planning": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-VISUAL5-FINANCIAL-PLANNING.actual-a01.json",
+    "bytes": 3769,
+    "sha256": "620e09b77bf22ae7e81d7c62e49fa51e91b2e61766e444c7cb3eeaff482fc984"
+  },
+  "retained_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\raw.mkv",
+    "bytes": 56479663,
+    "sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12"
+  },
+  "retained_source_stat": {
+    "bytes": 56479663,
+    "mtime_ns": "1792078260762602000",
+    "st_dev": "13886423844274364792",
+    "st_ino": "844424932065981"
+  },
+  "source_stat_observed_at_utc": "2026-10-20T21:07:21.942312+00:00",
+  "raw_body_opened_for_preparation": false,
+  "raw_hash_recomputed": false,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-nostdin",
+    "-hide_banner",
+    "-nostats",
+    "-loglevel",
+    "info",
+    "-threads",
+    "1",
+    "-filter_threads",
+    "1",
+    "-filter_complex_threads",
+    "1",
+    "-copyts",
+    "-t",
+    "20",
+    "-i",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\raw.mkv",
+    "-an",
+    "-sn",
+    "-dn",
+    "-vf",
+    "trim=start_frame=0:end_frame=600,showinfo@source=checksum=0,scale=320:180:flags=area,pad=320:198:0:0:color=black,drawtext=fontfile=consola.ttf:text='k%{n} PTS=%{pts}':fontcolor=white:fontsize=11:x=3:y=182,tile=4x4:nb_frames=16:color=black",
+    "-c:v",
+    "mjpeg",
+    "-q:v",
+    "12",
+    "-threads:v",
+    "1",
+    "-fps_mode",
+    "vfr",
+    "-frames:v",
+    "38",
+    "-f",
+    "image2pipe",
+    "pipe:1"
+  ],
+  "cwd": "C:/Windows/Fonts",
+  "source_frames_half_open": [
+    0,
+    600
+  ],
+  "source_seconds_half_open": [
+    0,
+    20
+  ],
+  "source_frames": 600,
+  "sheets": 38,
+  "last_sheet": {
+    "source_frames_half_open": [
+      592,
+      600
+    ],
+    "valid_cells": 8,
+    "padding_cells": 8
+  },
+  "expected_sheet_dimensions": [
+    1280,
+    792
+  ],
+  "effective_label_band_pixels": 18,
+  "cell_source": [
+    320,
+    180
+  ],
+  "layout": [
+    4,
+    4
+  ],
+  "JPEG_q": 12,
+  "cap": {
+    "total_bytes": 5242880,
+    "contacts_bytes": 4194304,
+    "metadata_bytes": 262144,
+    "new_fullres_bytes": 0,
+    "spare_bytes": 786432
+  },
+  "estimated_contacts_bytes": [
+    1600000,
+    3500000
+  ],
+  "estimated_metadata_bytes_max": 196608,
+  "total_peak_hard_bytes": 5242880,
+  "existing_raw_QA": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\report.json",
+    "bytes": 6955,
+    "sha256": "93425a084061f8579fdaa21cc85b1c6538bf3418904ed2d9a4b3490faa6b4c38"
+  },
+  "old_fullraw_decode": {
+    "decoded_frames": 1350,
+    "seconds": 45,
+    "fps": "30/1",
+    "geometry": [
+      2560,
+      1440
+    ],
+    "available_stream_decode_exit": 0,
+    "audio_streams": 0,
+    "repeat_old_decode": false,
+    "fullpacket_PTS_audit_repeated": false
+  },
+  "actual_source_PTS_required": {
+    "first_ticks": 0,
+    "last_ticks": 19967,
+    "time_base": "1/1000",
+    "frame_count": 600,
+    "step_ticks": [
+      33,
+      34
+    ],
+    "local_to_source_prefix_offset": 0,
+    "fullraw_EOF_claim": false
+  },
+  "historical_binding": {
+    "identity": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 5629,
+      "sha256": "aac8943c2be8c0040ecf6a7f9e756b2dfe809a04928510a6ced5e6f5f8967a05"
+    },
+    "intent": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\intent.json",
+      "bytes": 48401,
+      "sha256": "98336caa2b0179845142ee008cf1d3844b0fcdffe080035420c598682616c027"
+    },
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "original_identity_recorded_at_utc": "2026-10-15T15:19:12.047226+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0174",
+    "PID": 17468,
+    "process_birth_filetime": "134365505726865638",
+    "generation": 1,
+    "episode": "native-31254-0d067159706e",
+    "actual_runtime_Robert": 31254,
+    "normal_saved_R0173_T0_continuation": true,
+    "fresh_ABC_T0": false,
+    "machine_not_inferred_from_current_stat": true
+  },
+  "original_M": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+    },
+    "lines": [
+      145,
+      149
+    ],
+    "claim": "Unlocked Halt: before route/progress; one native Halt; independent empty route/same province/null target; one exact-day stationary followup.",
+    "common_M_planned_pre_seconds": [
+      6,
+      10
+    ],
+    "Root_adjudication": "Root directly read M145-149 and viewed existing frames00/01; left upper coast hover does not cover necessary evidence. M149 has no6-second hard precondition.",
+    "actual_pre_sample_bracket_seconds": [
+      0,
+      2
+    ],
+    "pre_length_shortfall_disclosed": true,
+    "original_M_changed": false
+  },
+  "native_proof_refs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\allocated-context.actual-a01.json",
+      "bytes": 1000,
+      "sha256": "03b4d54b87d9d65818b7de55e24efef3f2dbb72902e482b245f2afa29ff1a2c6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\once-halt-control.actual-a01.json",
+      "bytes": 2039,
+      "sha256": "bc98d61e437140aa79c97a1e463476f7a13054b272f891d203211023fb966b4b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\halt-phase-completion.actual-a01.json",
+      "bytes": 3048,
+      "sha256": "42f10ccf1e3b69f2af80ed3479f189c50b473120c9b1079c5a6f34497dd3d9d4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-01.complete.json",
+      "bytes": 8894,
+      "sha256": "294aac8cba9b77cca5ce61436500ad2b479c6bd115e7638aa628b45acf56edd8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\process-ready.json",
+      "bytes": 1031,
+      "sha256": "4e679ed072608fb4020762badc2652f0a795af35914075e31242b6c4c06bea0b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\job-start.json",
+      "bytes": 966,
+      "sha256": "7c9873b07debef15b551bc9546b3d59e4fb63e28e3bcd2b243d3dc073da3a991"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\job-terminal.json",
+      "bytes": 205,
+      "sha256": "a825c02e9c2539b4fb377716d2244fee0557e3fa3147c0815e6b2d6498858da2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\result.json",
+      "bytes": 808,
+      "sha256": "58a6fa18c311d70123647556e13a312648e1e525a5d7555d655df129312eda5a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\cut-candidates.json",
+      "bytes": 11013,
+      "sha256": "0e80087d60d0bcb932e0ce12fd92dfda9f4d4385ec0d012e85f9653e9836ade3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\010-t0-baseline-a02-02-baseline-ordinary.json",
+      "bytes": 5301,
+      "sha256": "ad4972b1ad1640a90718b80211ce1f942de5a716aaa8c2039ccd17d340d5a5c5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-10-before-halt.json",
+      "bytes": 117268,
+      "sha256": "752690d7f0e050d0f5a54af39d2b3663f9314e27293fcd61c5a1db0843ea3b21"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-11-halt-once.json",
+      "bytes": 2279,
+      "sha256": "46e2828395ba23e2be8470a175865ef1edb829ecbeffd9a007f6c4d28344102b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-12-after-halt-independent.json",
+      "bytes": 117294,
+      "sha256": "83a5f6adfab5ed37ce2419998b372246874aab02dfec3b95c15a50cebdd0297d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\031-halt-readonly-a01-halt-readonly-01.json",
+      "bytes": 116624,
+      "sha256": "9445be18495f4267f23fa9d6114f304063009d18d21cad0a58cd67bce9557e8b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-09-clock-query-0.json",
+      "bytes": 4666,
+      "sha256": "d8bee8873aa1654b63a5dbe780e841a05fddc0b663206a4057e247cf627474a5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-12-final.json",
+      "bytes": 117701,
+      "sha256": "ca2d7980c5bfc2967dfe062d8d00d547fe4ecc75ff74863000b8de518a1c3dce"
+    }
+  ],
+  "native_before_progress_source_reference_only": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\state-a01\\native-session\\army-query-history-results\\army-query-cf0a535747884470a39d9f7ec36b3a72.json",
+    "bytes": 3381416,
+    "sha256": "aa539012928defe99fe05c4822417f06d49b6c2d6b0dff318ad85c2209a1937b",
+    "full_Driver_DTO_not_original_wire": true,
+    "copy_to_new_root": false,
+    "exact_fields": {
+      "army_strengths[0].current_movement_progress.normalized_edge_progress": {
+        "raw": 31717,
+        "scale": 100000
+      },
+      "army_strengths[0].current_movement_progress.loaded_movement_lock_cutoff": {
+        "raw": 50000,
+        "scale": 100000
+      }
+    }
+  },
+  "native_action": {
+    "halt_submit_utc": "2026-10-15T15:30:17.043845+00:00",
+    "halt_ack_only": true,
+    "immediate_after_stale_failure_preserved": true,
+    "independent_empty_route_utc": "2026-10-15T15:30:31.238281+00:00",
+    "date_raw": 53145048,
+    "U": 18,
+    "province": 2624,
+    "route": [],
+    "target": null,
+    "state": "regular",
+    "replayed": false
+  },
+  "native_next_day": {
+    "start_raw": 53145048,
+    "end_raw": 53145072,
+    "exact_delta": 24,
+    "generation": 1,
+    "ticks": 1,
+    "overshoot": 0,
+    "final_utc": "2026-10-15T15:31:48.961495+00:00",
+    "province": 2624,
+    "route": [],
+    "target": null,
+    "in_selected_media_claim": false
+  },
+  "historical_camera_clock": {
+    "declared_start_utc": "2026-10-15T15:30:12.538604+00:00",
+    "actual_job_resumed_utc": "2026-10-15T15:30:15.529982+00:00",
+    "camera_PID": 11076,
+    "original_returncode": 0,
+    "camera_job_state": "NORMAL_TREE_EMPTY",
+    "wall_to_PTS_calibrated": false,
+    "exact_native_action_PTS": null,
+    "warning": "Declared start precedes actual job resume. Neither wall offset4.505s nor job offset1.514s is claimed as encoded event PTS. Existing visual bracket only(0,2]."
+  },
+  "existing_fullres": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\samples\\frame-00.jpg",
+      "bytes": 389449,
+      "sha256": "74d27521112bd58d23b5e68f1380bebf387a56ff2c85402b53708b5a79324b2a",
+      "PTS_seconds": "0",
+      "dimensions": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\samples\\frame-01.jpg",
+      "bytes": 405750,
+      "sha256": "3e7a8d979d856e80d1887b2550f5141ae69848c0674e99911998e7d4897786d4",
+      "PTS_seconds": "2",
+      "dimensions": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\samples\\frame-02.jpg",
+      "bytes": 406145,
+      "sha256": "f15cca85b43c656308cad5a8c78a8c98d41fd741b3a008917c4d37906b5a2e56",
+      "PTS_seconds": "4",
+      "dimensions": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\samples\\frame-03.jpg",
+      "bytes": 403576,
+      "sha256": "cd51beb8ad64cbac3cca333667dbc68656767703abb1e0133ba13a7613574299",
+      "PTS_seconds": "20",
+      "dimensions": [
+        2560,
+        1440
+      ]
+    }
+  ],
+  "existing_fullres_reviewer_separation": {
+    "media_agent": "Actually viewed all4 originals at0/2/4/20s; sample-only.",
+    "Root": "Actually directly viewed frames00/01; no claim Root viewed remaining2 or all600cells."
+  },
+  "new_fullres": false,
+  "conditional_new_fullres": false,
+  "prior_qualified_producer": {
+    "runner": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\r07_once_contacts.prepared-a02.py",
+      "bytes": 10430,
+      "sha256": "64e02dcd8968b157006cd0eef88554875d9352cbdaa98c568ea8f20ea9c58406"
+    },
+    "recipe": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-parent-1715-a01\\next-source-shot-inventory-a01\\R07-ONCE-CONTACT-PROPOSAL.prepared-a02.json",
+      "bytes": 4605,
+      "sha256": "a1de433acab2ad62953b07d7ee7cc57f2dff595fabcc4e2248e5082c6e691b4a"
+    },
+    "reuse": "Boundary JPEG parser/one FFmpeg BELOW_NORMAL/real geometry-first/nextJPEG cap/PTS lossless gzip inherited; new600/38/prefix0/label18 geometry frozen."
+  },
+  "release_policy": "One read-only gh latest formal release query at start; preserve actual rc and stop without FFmpeg on failure; no download.",
+  "execution_rules": "New actual source-bound cap+Root one-execution grant required. Financial-only refuses. One FFmpeg threads1 BELOW_NORMAL, -t20 input/no seek, trim600,38sheets, geometry actual first thenassert1280x792. Existing AV QA reused. Never ffprobe/raw hash/raw copy/movie/TTS/game/SDK/UI. Cap before each exact nextJPEG; failure partial preserved/no retry. All600actual cells require real AI view; existing fullres used only for readable endpoints. No human1x or formal grant.",
+  "execution_authorized": false,
+  "formal_theme_credit": false,
+  "human1x": false,
+  "human_signoff": false,
+  "typed_contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_visual_contract_a02.py",
+    "bytes": 5112,
+    "sha256": "1eb8a2a791945ba2fe2f59db8210f7d83a41eadbb1868e68f78297d9cf7e1303"
+  },
+  "typed_recipe_producer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_recipe_a02.py",
+    "bytes": 3881,
+    "sha256": "d71ae33bd22777faf7905dfc76773b83c6a33c7a486aa05c3a2d4cea553aca8c"
+  },
+  "preserved_a01_recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-ONCE-CONTACT-RECIPE.prepared-a01.json",
+    "bytes": 14855,
+    "sha256": "45be441a3f3cbbcf7fc7e200fa96102c2a178aef42ed7bff6e2ed9df8c1175ff"
+  },
+  "preserved_a01_runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_once_contacts.prepared-a01.py",
+    "bytes": 11757,
+    "sha256": "1be0ba785527e8e198951e2d60f1277191ce21ea2224ed12fbca7c650d381010"
+  },
+  "producer_consumer_domain": "RawStat.from_native/RawStat.wire producer; RawStat.parse consumer; canonical uint64 strings. Source legacy unchanged.",
+  "type_check_policy": "Actual mypy --check-untyped-defs --disallow-untyped-defs on producer/contract/runner/tests; no Any/cast/ignore suppressions.",
+  "OS_process_readback": "Typed standard-library tasklist process-name census and narrowly validated ctypes GetPriorityClass replace untyped psutil; no added observation of game/Steam."
+}

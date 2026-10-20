@@ -1,4 +1,4 @@
-"""Launch one frozen shared host after direct, fresh Steam image review.
+"""Launch one frozen shared host after a fresh background Steam observation.
 
 The detached supervisor retains the real host Popen. Its exit receipt is host
 process evidence only; product acceptance and normal CK3 exit remain separate.
@@ -14,13 +14,17 @@ import secrets
 import subprocess
 import sys
 import time
+from collections.abc import Sequence
+from ck3_mod_acceptance_background_types import (JsonObject, ProcessGeneration, json_object,
+    text_field, object_field, strings_field, environment, process_handle)
+from ck3_mod_acceptance_steam_gate import OfflineAdmission
 
 from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
 
 MAX_REVIEW_AGE = 600
 
 
-def recent(timestamp, *, now=None):
+def recent(timestamp: str, *, now: datetime | None = None) -> datetime:
     instant = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
     now = now or datetime.now(timezone.utc)
     require(instant.tzinfo is not None and 0 <= (now - instant).total_seconds() <= MAX_REVIEW_AGE,
@@ -28,23 +32,23 @@ def recent(timestamp, *, now=None):
     return instant
 
 
-def frozen_run(run_root, *, all_pins=True, input_phase="launch"):
+def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "launch") -> tuple[JsonObject, JsonObject]:
     root = Path(run_root).resolve()
     frozen_path = root / "frozen-argv.json"
-    frozen = read_json(frozen_path)
-    require(isinstance(frozen.get("run_id"), str) and frozen["run_id"] and
-            isinstance(frozen.get("argv"), list) and frozen["argv"] and
-            all(isinstance(arg, str) and arg for arg in frozen["argv"]), "Actual frozen run/argv required")
-    require(frozen.get("launch_requires_fresh_owned_cas_and_offline_direct_review") is True,
-            "Allocated direct review gate is missing")
+    frozen = json_object(read_json(frozen_path))
+    argv = strings_field(frozen, "argv")
+    require(bool(text_field(frozen,"run_id")) and bool(argv), "Actual frozen run/argv required")
+    require(frozen.get("launch_requires_fresh_owned_cas_and_background_offline") is True,
+            "Allocated background offline gate is missing")
     require(frozen.get("previous_session_closed") is True and frozen.get("previous_screen_released") is True,
             "Previous managed session/screen closure is not admitted")
-    context = read_json(root / "ready-context.json")
-    check_pin(context["frozen_argv"])
-    require(Path(context["frozen_argv"]["path"]).resolve() == frozen_path and
-            context.get("run_id") == frozen["run_id"] and Path(context["run_dir"]).resolve() == root,
+    context = json_object(read_json(root / "ready-context.json"))
+    context_pin = object_field(context,"frozen_argv")
+    check_pin(context_pin)
+    require(Path(text_field(context_pin,"path")).resolve() == frozen_path and
+            context.get("run_id") == frozen["run_id"] and Path(text_field(context,"run_dir")).resolve() == root,
             "Ready allocation does not bind this exact frozen argv")
-    files = frozen.get("files")
+    files = object_field(frozen,"files")
     require(isinstance(files, dict) and files, "Allocated exact input pins required")
     require(input_phase in {"launch", "running"}, "Unknown frozen input phase")
     if all_pins:
@@ -52,144 +56,70 @@ def frozen_run(run_root, *, all_pins=True, input_phase="launch"):
             import importlib.util
             source = Path(__file__).with_name("ck3_mod_acceptance_runtime_inputs.py").resolve()
             require(str(source) in files, "Running input helper is absent from allocation pins")
-            check_pin({**files[str(source)], "path": str(source)})
+            check_pin({**json_object(files[str(source)]), "path": str(source)})
             spec = importlib.util.spec_from_file_location("shared_acceptance_runtime_inputs", source)
+            if spec is None or spec.loader is None:raise ValueError("Running input loader unavailable")
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            frozen["_runtime_input_observation"] = module.validate_running_inputs(root, frozen)
+            frozen["_runtime_input_observation"] = json_object(module.validate_running_inputs(root, frozen))
         else:
             for name, row in files.items():
-                check_pin({**row, "path": name})
+                check_pin({**json_object(row), "path": name})
         check_pin(frozen["runtime_manifest"])
     # A copied helper must not silently import another unpinned sibling.
-    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py"):
+    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_steam_gate.py", "steam_offline_state_contract.py", "steam_offline_state_probe.py", "steam_offline_native_provider_v1.py", "steam_offline_native_profiles.py", "ck3_mod_acceptance_background_types.py", "ck3_live_run_id.py"):
         path = Path(__file__).with_name(name).resolve()
         require(str(path) in files, "Public helper is absent from allocation pins: " + str(path))
-        check_pin({**files[str(path)], "path": str(path)})
-    host = str(Path(frozen["argv"][frozen["argv"].index("--agent-source-root") - 1]).resolve())
+        check_pin({**json_object(files[str(path)]), "path": str(path)})
+    host = str(Path(argv[argv.index("--agent-source-root") - 1]).resolve())
     require(host in files, "Actual shared host is absent from allocation pins")
-    check_pin({**files[host], "path": host})
-    frozen["_checked_frozen_argv"] = pin(frozen_path)
+    check_pin({**json_object(files[host]), "path": host})
+    frozen["_checked_frozen_argv"] = json_object(pin(frozen_path))
     return frozen, context
 
 
-def check_fresh_frame(frame_path, image, *, now=None):
-    frame_path, image = Path(frame_path).resolve(), Path(image).resolve()
-    frame = read_json(frame_path)
-    require(frame.get("schema") == "ck3.steam_fresh_desktop_frame.v1" and
-            frame.get("moving_edge_changed") is True and
-            frame.get("restored_rect") == frame.get("before_rect") and
-            frame.get("moved_rect") != frame.get("before_rect"), "Actual reversible Steam freshness proof required")
-    captured = recent(frame["captured_at_utc"], now=now)
-    require(Path(frame["moved_path"]).resolve() == image and
-            pin(image)["sha256"] == str(frame["moved_sha256"]).lower() and
-            str(frame["before_sha256"]).lower() != str(frame["moved_sha256"]).lower(),
-            "Freshness proof differs from the directly reviewed original frame")
-    check_pin({"path": frame["before_path"], "bytes": Path(frame["before_path"]).stat().st_size,
-               "sha256": str(frame["before_sha256"]).lower()})
-    if frame.get("clock_check") is not None:
-        require(frame["clock_check"].get("clock_pixels_unchanged") is False,
-                "Freshness proof retains a stale desktop clock")
-    from PIL import Image, ImageChops
-    with Image.open(image) as moved, Image.open(frame["before_path"]) as before:
-        require(list(moved.size) == frame["desktop_size"] and before.size == moved.size,
-                "Steam original dimensions differ from freshness receipt")
-        delta = ImageChops.difference(before.convert("RGB"), moved.convert("RGB"))
-        first, second = frame["before_rect"], frame["moved_rect"]
-        edge = (min(first[0], second[0]), first[1], max(first[0], second[0]), first[3])
-        require(delta.getbbox() is not None and delta.crop(edge).getbbox() is not None,
-                "Original image bytes do not prove Steam window edge movement")
-    return frame, captured
 
 
-def create_challenge(run_root, keeper_root, frame_path, image, output):
-    frozen, context = frozen_run(run_root)
-    require(Path(context["keeper_root"]).resolve() == Path(keeper_root).resolve(), "Wrong allocated keeper")
-    lease = live_lease(keeper_root, frozen)
-    frame, _ = check_fresh_frame(frame_path, image)
-    output = Path(output).resolve()
-    require(not output.exists(), "Use a new direct-review challenge directory")
-    output.mkdir(parents=True)
-    nonce = secrets.token_hex(16)
-    from PIL import Image, ImageDraw, ImageFont
-    with Image.open(image) as original:
-        reviewed = Image.new("RGB", (max(original.width, 800), original.height + 64), "white")
-        reviewed.paste(original.convert("RGB"), (0, 64))
-        draw = ImageDraw.Draw(reviewed)
-        draw.text((10, 8), "DIRECT REVIEW NONCE: " + nonce, font=ImageFont.load_default(size=24), fill="black")
-        draw.text((10, 44), "Read Steam offline status in the original frame below; this banner does not certify it.", fill="black")
-        reviewed.save(output / "direct-review.png")
-    challenge = {"schema": "ck3-mod-acceptance-review-challenge-v1", "created_at_utc": utc(),
-        "nonce": nonce, "run_id": frozen["run_id"], "screen_task": frozen["screen_task"],
-        "frozen_argv": pin(Path(run_root) / "frozen-argv.json"), "keeper_root": str(Path(keeper_root).resolve()),
-        "keeper_inputs": pin(Path(keeper_root) / "inputs.json"), "frame": pin(frame_path), "image": pin(image),
-        "review_image": pin(output / "direct-review.png"), "cas_at_creation": lease["lease"],
-        "offline_status_observed": None, "business_pass": False}
-    write_new(output / "challenge.json", challenge)
-    return {"status": "DIRECT_IMAGE_REVIEW_REQUIRED", "challenge": pin(output / "challenge.json"),
-            "review_image": challenge["review_image"], "business_pass": False}
 
 
-def validate_review(frozen, keeper_root, proof_path, challenge_path, observed_nonce, reviewer, *, now=None):
-    proof, challenge = read_json(proof_path), read_json(challenge_path)
-    require(challenge.get("schema") == "ck3-mod-acceptance-review-challenge-v1" and
-            proof.get("schema") == "ck3-mod-acceptance-direct-review-v1", "Shared direct-review schemas required")
-    created, reviewed = recent(challenge["created_at_utc"], now=now), recent(proof["reviewed_at_utc"], now=now)
-    require(created <= reviewed and isinstance(reviewer, str) and reviewer.strip() and
-            proof.get("reviewer") == reviewer and proof.get("direct_image_review") is True and
-            proof.get("steam_offline_confirmed") is True, "Current operator's direct Steam offline image review required")
-    require(isinstance(observed_nonce, str) and len(observed_nonce) == 32 and
-            secrets.compare_digest(observed_nonce, str(challenge.get("nonce", ""))) and
-            proof.get("observed_nonce") == observed_nonce, "Directly observed fresh image nonce differs")
-    for value in (proof, challenge):
-        require(value.get("run_id") == frozen["run_id"] and value.get("screen_task") == frozen["screen_task"],
-                "Direct review belongs to another allocated run/screen task")
-    require(Path(challenge["keeper_root"]).resolve() == Path(keeper_root).resolve(), "Challenge crossed keeper")
-    for key in ("frozen_argv", "keeper_inputs", "frame", "image", "review_image"):
-        check_pin(challenge[key])
-    require(challenge["frozen_argv"] == frozen["_checked_frozen_argv"] and
-            Path(challenge["keeper_inputs"]["path"]).resolve() == Path(keeper_root).resolve() / "inputs.json",
-            "Direct review differs from this actual frozen allocation/keeper")
-    require(challenge["frozen_argv"] == pin(Path(proof["frozen_argv"]["path"])), "Review frozen argv changed")
-    for key in ("frozen_argv", "image", "review_image"):
-        require(proof.get(key) == challenge[key], "Direct review bytes differ: " + key)
-    require(proof.get("challenge") == pin(challenge_path), "Direct review challenge bytes changed")
-    frame, captured = check_fresh_frame(challenge["frame"]["path"], challenge["image"]["path"], now=now)
-    require(captured <= created, "Challenge predates its claimed Steam frame")
-    return {"proof": pin(proof_path), "challenge": pin(challenge_path), "image": challenge["image"],
-            "reviewer": reviewer, "screen_task": frozen["screen_task"], "steam_pid": frame["steam_pid"],
-            "reviewed_at_utc": proof["reviewed_at_utc"]}
 
 
-def admission(args):
+def admission(args: argparse.Namespace) -> tuple[JsonObject, OfflineAdmission, JsonObject]:
     root = args.run_root.resolve()
     frozen, context = frozen_run(root)
-    require(Path(context["keeper_root"]).resolve() == args.keeper_root.resolve(), "Wrong allocated keeper")
-    review = validate_review(frozen, args.keeper_root, args.proof, args.challenge, args.observed_nonce, args.reviewer)
-    owner = live_lease(args.keeper_root, frozen)
+    require(Path(text_field(context,"keeper_root")).resolve() == args.keeper_root.resolve(), "Wrong allocated keeper")
+    from ck3_mod_acceptance_steam_gate import validate_receipt
+    from steam_offline_state_probe import WindowsReader
+    from ck3_live_run_id import current_machine_id
+    machine=current_machine_id()
+    require(object_field(frozen,'identity_allocation').get('machine_id')==machine,'Frozen machine differs')
+    review=validate_receipt(args.steam_offline_receipt,machine_id=machine,reader=WindowsReader())
+    owner = json_object(live_lease(args.keeper_root, frozen))
     import psutil
-    steam = psutil.Process(review["steam_pid"])
-    require(steam.name().lower() in ("steam.exe", "steamwebhelper.exe"), "Reviewed Steam UI process is absent or replaced")
     require(not any((row.info["name"] or "").lower() == "ck3.exe" for row in psutil.process_iter(["name"])),
             "CK3 is already running")
-    expected_environment = frozen.get("runtime_environment", {})
+    expected_environment = environment(frozen.get("runtime_environment", {}))
+    argv = strings_field(frozen,"argv")
     require(all(os.environ.get(name) == value for name, value in expected_environment.items()),
             "Actual host import environment differs from frozen shared runtime")
-    require("--output" in frozen["argv"] and
-            Path(frozen["argv"][frozen["argv"].index("--output") + 1]).resolve() == root / "native-report.json",
+    require("--output" in argv and
+            Path(argv[argv.index("--output") + 1]).resolve() == root / "native-report.json",
             "Host output differs from actual allocation")
     return frozen, review, owner
 
 
-def retain_host(root, frozen, review, owner):
+def retain_host(root: Path, frozen: JsonObject, review: OfflineAdmission, owner: JsonObject) -> int:
     """Retain one actual Popen until wait returns; useful with harmless test children."""
     root = Path(root).resolve()
     require(not (root / "host-started.json").exists(), "Shared host launch already consumed")
+    from ck3_mod_acceptance_steam_gate import recheck_before_popen
+    from steam_offline_state_probe import WindowsReader
+    recheck_before_popen(review,reader=WindowsReader())
     stdout = (root / "host-stdout.log").open("xb")
     stderr = (root / "host-stderr.log").open("xb")
     child = None
     try:
-        child = subprocess.Popen(frozen["argv"], cwd=frozen["lease_anchor"], stdout=stdout, stderr=stderr)
+        child = subprocess.Popen(strings_field(frozen,"argv"), cwd=text_field(frozen,"lease_anchor"), stdout=stdout, stderr=stderr)
         import psutil
         try:
             creation = psutil.Process(child.pid).create_time()
@@ -198,7 +128,7 @@ def retain_host(root, frozen, review, owner):
         write_new(root / "host-started.json", {"at_utc": utc(), "pid": child.pid,
             "create_time": creation, "supervisor_pid": os.getpid(),
             "argv": frozen["argv"], "run_id": frozen["run_id"], "admitted_lease": owner["lease"],
-            "direct_review": review, "actual_popen_retained": True, "business_pass": False})
+            "background_offline_admission": review, "actual_popen_retained": True, "business_pass": False})
         code = child.wait()
         write_new(root / "host-original-process-exit.json", {"at_utc": utc(), "pid": child.pid,
             "returncode": code, "run_id": frozen["run_id"], "actual_original_popen_wait": True,
@@ -217,75 +147,140 @@ def retain_host(root, frozen, review, owner):
         stdout.close(); stderr.close()
 
 
-def supervise(args):
+def _birth_filetime(handle: int) -> str:
+    import ctypes
+    from ctypes import wintypes
+    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+    kernel.GetProcessTimes.argtypes=[wintypes.HANDLE]+[ctypes.POINTER(wintypes.FILETIME)]*4
+    kernel.GetProcessTimes.restype=wintypes.BOOL
+    fields=[wintypes.FILETIME() for _ in range(4)]
+    require(kernel.GetProcessTimes(handle,*[ctypes.byref(f) for f in fields]),'Exact original process creation unavailable')
+    value=(fields[0].dwHighDateTime<<32)|fields[0].dwLowDateTime
+    require(value>0,'Exact process creation is empty')
+    return str(value)
+
+
+def process_identity(pid: int) -> ProcessGeneration:
+    import ctypes
+    from ctypes import wintypes
+    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+    kernel.OpenProcess.argtypes=[wintypes.DWORD,wintypes.BOOL,wintypes.DWORD]
+    kernel.OpenProcess.restype=wintypes.HANDLE
+    kernel.CloseHandle.argtypes=[wintypes.HANDLE]
+    handle=kernel.OpenProcess(0x1000,False,pid)
+    require(handle,'Known supervisor process identity unavailable')
+    try:return {'pid':pid,'birth_filetime':_birth_filetime(handle)}
+    finally:kernel.CloseHandle(handle)
+
+
+def supervise(args: argparse.Namespace) -> int:
     root = args.run_root.resolve()
     intent = read_json(root / "launch-intent.json")
     require(intent.get("ticket") == args.launch_ticket, "Original once-only launcher ticket differs")
-    check_pin(intent["proof"]); check_pin(intent["challenge"]); check_pin(intent["frozen_argv"])
-    frozen, review, owner = admission(args)
-    return retain_host(root, frozen, review, owner)
+    require(intent.get('schema')=='ck3-mod-acceptance-background-launch-intent-v1','Background intent schema required')
+    check_pin(intent['steam_offline_receipt']); check_pin(intent['frozen_argv'])
+    require(Path(intent['steam_offline_receipt']['path']).resolve()==args.steam_offline_receipt.resolve(),'Receipt crossed original intent')
+    from ck3_mod_acceptance_steam_gate import BackgroundGateRefusal
+    try:
+        frozen, review, owner = admission(args)
+        require(review['receipt']==intent['steam_offline_receipt'] and intent['frozen_argv']==pin(root/'frozen-argv.json'),'Original background admission changed')
+        return retain_host(root, frozen, review, owner)
+    except BackgroundGateRefusal as error:
+        frozen,_ = frozen_run(root)
+        write_new(root/'supervisor-background-refused.json', {
+            'schema':'ck3-mod-acceptance-background-supervisor-prehost-refusal-v1',
+            'machine_id':text_field(object_field(frozen,'identity_allocation'),'machine_id'),'at_utc':utc(),
+            'run_id':frozen['run_id'],'supervisor_pid':os.getpid(),
+            'runtime_identity':process_identity(os.getpid()),'runtime_parent_identity':process_identity(os.getppid()),
+            'stage':'BACKGROUND_ADMISSION_BEFORE_RETAIN_HOST',
+            'reason_code':error.reason_code,'error_type':type(error).__name__,
+            'error_repr':repr(error),'launch_intent':pin(root/'launch-intent.json'),
+            'frozen_argv':pin(root/'frozen-argv.json'),'steam_offline_receipt':intent['steam_offline_receipt'],
+            'host_started':False,'game_started':False,'native_session_started':False,'business_pass':False})
+        raise
 
 
-def launch(args):
+
+def launch(args: argparse.Namespace) -> int:
     root = args.run_root.resolve()
     frozen, review, owner = admission(args)
     require(not (root / "launch-intent.json").exists(), "Original launch intent already consumed; never replay")
     ticket = secrets.token_hex(32)
-    write_new(root / "launch-intent.json", {"at_utc": utc(), "ticket": ticket, "run_id": frozen["run_id"],
-        "proof": pin(args.proof), "challenge": pin(args.challenge), "frozen_argv": pin(root / "frozen-argv.json"),
+    write_new(root / "launch-intent.json", {'schema':'ck3-mod-acceptance-background-launch-intent-v1',
+        'at_utc':utc(),'ticket':ticket,'run_id':frozen['run_id'],
+        'steam_offline_receipt':review['receipt'],'background_admission':review,'frozen_argv':pin(root/'frozen-argv.json'),
         "admitted_lease": owner["lease"], "business_pass": False})
     argv = [sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()),
             "--run-root", str(root), "--keeper-root", str(args.keeper_root.resolve()),
-            "--proof", str(args.proof.resolve()), "--challenge", str(args.challenge.resolve()),
-            "--observed-nonce", args.observed_nonce, "--reviewer", args.reviewer,
+            '--steam-offline-receipt',str(args.steam_offline_receipt.resolve()),
             "--supervise", "--launch-ticket", ticket]
     with (root / "host-supervisor-stdout.log").open("xb") as stdout, (root / "host-supervisor-stderr.log").open("xb") as stderr:
-        child = subprocess.Popen(argv, cwd=frozen["lease_anchor"], stdout=stdout, stderr=stderr,
+        child = subprocess.Popen(argv, cwd=text_field(frozen,"lease_anchor"), stdout=stdout, stderr=stderr,
                                  creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    write_new(root / "host-supervisor-started.json", {"at_utc": utc(), "pid": child.pid, "argv": argv,
-                                                    "business_pass": False})
-    deadline = time.monotonic() + 45
-    start_read_error = None
-    while time.monotonic() < deadline:
-        if (root / "host-started.json").exists():
-            try:
-                host = read_json(root / "host-started.json")
-            except json.JSONDecodeError as error:
-                # The supervisor publishes this once-only ACK with open('x')
-                # before json.dump completes. Re-read it; never start again.
-                start_read_error = error
-            else:
-                print(json.dumps({"status": "ORIGINAL_SHARED_HOST_STARTED", "run_id": frozen["run_id"],
-                    "host": host, "business_pass": False}), flush=True)
-                return 0
-        require(child.poll() is None, "Original host supervisor failed; inspect retained stderr and never replay")
-        time.sleep(.05)
-    raise TimeoutError("Original host supervisor launch not proved in budget; never replay") from start_read_error
+    original_identity=None
+    handed_off=False
+    original_waited=False
+    try:
+        original_identity={'pid':child.pid,'birth_filetime':_birth_filetime(process_handle(child))}
+        write_new(root / "host-supervisor-started.json", {"at_utc": utc(), "pid": child.pid, "argv": argv,
+            "machine_id":text_field(object_field(frozen,"identity_allocation"),"machine_id"),"original_popen_identity":original_identity,
+            "business_pass": False})
+        deadline = time.monotonic() + 45
+        start_read_error = None
+        while time.monotonic() < deadline:
+            if (root / "host-started.json").exists():
+                try:
+                    host = read_json(root / "host-started.json")
+                except json.JSONDecodeError as error:
+                    start_read_error = error
+                else:
+                    handed_off=True  # Only the original supervisor's actual host ACK transfers custody.
+                    print(json.dumps({"status":"ORIGINAL_SHARED_HOST_STARTED","run_id":frozen["run_id"],
+                        "host":host,"business_pass":False}),flush=True)
+                    return 0
+            if child.poll() is not None:
+                code=child.wait()
+                original_waited=True
+                write_new(root/'host-supervisor-original-wait.json',{
+                    'machine_id':text_field(object_field(frozen,'identity_allocation'),'machine_id'),'at_utc':utc(),
+                    'run_id':frozen['run_id'],'pid':child.pid,'returncode':code,'original_popen_identity':original_identity,
+                    'actual_original_popen_wait':True,'supervisor_started':pin(root/'host-supervisor-started.json'),
+                    'launch_intent':pin(root/'launch-intent.json'),'business_pass':False})
+                raise ValueError('Original host supervisor refused before host; original wait recorded; never replay')
+            time.sleep(.05)
+        raise TimeoutError("Original host supervisor launch not proved in budget; never replay") from start_read_error
+    finally:
+        if not handed_off and not original_waited:
+            # A fallible creation/read/write or diagnostic timeout never abandons
+            # the actual Popen. Keep this CLI alive; no kill, spawn or SDK replay.
+            while True:
+                try:
+                    code=child.wait(timeout=1)
+                    break
+                except subprocess.TimeoutExpired:
+                    continue
+                except BaseException:
+                    try:time.sleep(.05)
+                    except BaseException:pass
+            path=root/'host-supervisor-original-wait.json'
+            if not path.exists():
+                write_new(path,{'machine_id':text_field(object_field(frozen,'identity_allocation'),'machine_id'),'at_utc':utc(),
+                    'run_id':frozen['run_id'],'pid':child.pid,'returncode':code,
+                    'original_popen_identity':original_identity,'actual_original_popen_wait':True,
+                    'launch_intent':pin(root/'launch-intent.json'),
+                    'start_recording_or_ack_failed':True,'business_pass':False})
 
 
-def main(argv=None):
+
+def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-root", required=True, type=Path)
     parser.add_argument("--keeper-root", required=True, type=Path)
-    parser.add_argument("--proof", type=Path)
-    parser.add_argument("--challenge", type=Path)
-    parser.add_argument("--observed-nonce")
-    parser.add_argument("--reviewer")
-    parser.add_argument("--create-challenge", action="store_true")
-    parser.add_argument("--fresh-frame", type=Path)
-    parser.add_argument("--image", type=Path)
-    parser.add_argument("--output", type=Path)
+    parser.add_argument('--steam-offline-receipt',type=Path,required=True)
     parser.add_argument("--supervise", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--launch-ticket", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
-        if args.create_challenge:
-            require(args.fresh_frame and args.image and args.output and not args.supervise,
-                    "Challenge requires --fresh-frame --image --output")
-            print(json.dumps(create_challenge(args.run_root, args.keeper_root, args.fresh_frame, args.image, args.output)))
-            return 0
-        require(args.proof and args.challenge and args.observed_nonce and args.reviewer,
-                "Fresh directly reviewed proof/challenge/nonce/reviewer required")
         return supervise(args) if args.supervise else launch(args)
     except Exception as error:
         print(json.dumps({"status": "BLOCKED", "error": repr(error), "business_pass": False}), file=sys.stderr, flush=True)

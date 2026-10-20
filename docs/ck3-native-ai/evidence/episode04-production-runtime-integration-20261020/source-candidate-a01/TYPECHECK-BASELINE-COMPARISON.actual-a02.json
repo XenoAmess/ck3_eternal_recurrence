@@ -1,0 +1,66 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T20:58:22.360677+00:00",
+  "checker": "mypy1.20.1",
+  "actual_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\ORIGINAL-WAIT.actual.json",
+    "bytes": 2957,
+    "sha256": "3286f4dd751e30d53682bd8cb2bc0a91e72d28ccdd1c902ba798724452259340"
+  },
+  "baseline_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\ORIGINAL-WAIT.actual.json",
+    "bytes": 3569,
+    "sha256": "0821dc5b123f4fee17eef0a34730acd9d638ee1f064e9c2bb7a04e34f5979f57"
+  },
+  "actual_diagnostic_count": 15,
+  "baseline_diagnostic_count": 16,
+  "introduced_diagnostics": [],
+  "removed_diagnostics": [
+    [
+      "tools/ck3_mod_acceptance.py",
+      "run",
+      "Item \"None\" of \"Path | None\" has no attribute \"parent\"  [union-attr]"
+    ]
+  ],
+  "new_modified_scope_has_no_new_diagnostics": true,
+  "whole_legacy_typecheck_pass": false,
+  "legacy_allocator_functions_preserved": [
+    "require",
+    "verify_profile_inventory",
+    "closed_session",
+    "native_cleanup_closed",
+    "previous_native_cleanup",
+    "previous_session_closure",
+    "previous_allocated_unused_closure",
+    "wait_for_allocated_keeper",
+    "previous_never_launched_closure",
+    "previous_prelaunch_host_failure_closure",
+    "previous_pre_ready_closure",
+    "closed_lease",
+    "read_actual_release",
+    "read_failed_runtime_release",
+    "previous_runtime_failure_closure",
+    "previous_expired_keeper_resource_closure",
+    "previous_missing_normal_resource_closure",
+    "_late_object",
+    "_late_integer",
+    "_late_check",
+    "validate_late_native_cleanup",
+    "validate_late_public_wait",
+    "validate_late_failed_day",
+    "previous_failed_live_resource_closure",
+    "previous_failed_resource_closure",
+    "require_latest_screen_release",
+    "actual_machine_binding",
+    "machine_id_history",
+    "shared_bus_history",
+    "current_screen_absent",
+    "validate_legacy_bootstrap",
+    "claim_machine_admission",
+    "runtime_process_inventory",
+    "keeper_command",
+    "wait_for_keeper_ready"
+  ],
+  "client_byte_exact": true,
+  "CEF_probe_byte_exact": true
+}

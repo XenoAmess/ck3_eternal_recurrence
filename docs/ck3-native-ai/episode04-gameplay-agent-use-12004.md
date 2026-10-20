@@ -1,5 +1,10 @@
 # 战争四期研究：游玩智能体参考入口
 
+> 2026-10-20 21:30 UTC后继；machine_id: `desktop-3fevhd2-1c74096080`；Root生产源码采用21:11:38Z、R11正式裁定21:27:19Z及本次有限canonical回执。
+
+公共生产源码选定接入typed后台拒绝、11.12来源profile与default-OFF parent路由；这不更新D盘冻结运行树，也不证明当前Steam离线或hook已在CK3执行。此前“managed-host未绑定”的归因有误：host原本已选native_campaign，跟随实际玩家及自然继承，不生成oneLife episode，并与显式episode/game-rule lifecycle保持互斥。真实缺口在shared cleanup尚未核Save前后同native actor/owner；旧oneLife driver持久化消费者对无episode给unconfirmed，应独立保留，既不改true也不据此判普通Save失败。ordinarySave2正在修该consumer，未入本批15路径，普通Save验收边界尚未完成。paid/payer/cadence未知；继续以当前原生费率、钱包、承诺及雇佣应急金预算，正费率不当实付，空journal不推0费，战争可选建设规则继续。R11 Halt限定源现已Root签授，正式6/11；研究10/14、业务7/11、B0/2、ABC0/3不变，影片未完成。[源码消费者、有限验证和当前边界](episode04-production-runtime-integration-20261020.md)。
+
+
 > 2026-10-20 20:00 UTC后继：machine_id: `desktop-3fevhd2-1c74096080`；来源T02 Root19:48:41Z、U源码采用19:29:47Z及Steam一次19:27:17Z原件。
 
 当前运行链尚未由本批归档接入或证明parent hook；17项合成cold只授独立observer有限资格，不能推当前Character settlement已被选择。paid/payer/cadence仍null，空cache/journal不能推军费0；继续以本场原生当前费率、钱包、承诺与雇佣应急金预算，正费率不当实付。T01的occupied失败与target原wait UNKNOWN保留；公共a03源码/9项Python检查、Steam静态profile和一次unavailable均不授CK3/public live或Steam离线。本批代码仅存evidence，不自动加载为策略。正式5/11、研究10/14、业务7/11、B0/2、ABC0/3不变。[实际cold、来源与下一合法入口](episode04-r08-parent-entry-execution-cold-and-runtime-boundary-20261020.md)。

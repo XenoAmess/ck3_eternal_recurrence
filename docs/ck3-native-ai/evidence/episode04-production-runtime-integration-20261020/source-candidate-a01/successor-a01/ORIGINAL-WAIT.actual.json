@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T20:51:41.079419+00:00",
+  "finished_at_utc": "2026-10-20T20:51:45.328217+00:00",
+  "pid": 28284,
+  "created": 134370031010818122,
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\harness\\exercise_successor_v3.py",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence"
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\stdout.log",
+    "bytes": 88,
+    "sha256": "15e6232fda7d6d28f83dbe1f39449d69bed842a278a3f22b16c43e8d265a42de"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "actual_Steam_game_SDK_observer": false
+}

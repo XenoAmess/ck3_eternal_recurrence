@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T21:07:55.811520+00:00",
+  "observed_at_utc": "2026-10-20T21:07:56.388187+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/test_r11_contract_a02.py"
+  ],
+  "original_Popen_pid": 31556,
+  "original_wait_returncode": 0,
+  "timeout": false,
+  "owned_alive": false,
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_bytes": 1469,
+  "stderr_sha256": "7ec6eb5dac5f992ec9815dd54b78bcede7fed4e1df9650ebb1a58b40d32ac294",
+  "FFmpeg_calls": 0,
+  "cache_or_tmp_outside_scope": false
+}

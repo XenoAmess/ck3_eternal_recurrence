@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T21:03:38.592120+00:00",
+  "observed_at_utc": "2026-10-20T21:04:06.623642+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-m",
+    "mypy",
+    "--config-file",
+    "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02.ini",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "--python-version",
+    "3.14",
+    "--platform",
+    "win32",
+    "--check-untyped-defs",
+    "--disallow-untyped-defs",
+    "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_visual_contract_a02.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_once_contacts_a02.py"
+  ],
+  "original_Popen_pid": 22884,
+  "original_wait_returncode": 1,
+  "stdout_bytes": 871,
+  "stderr_bytes": 0,
+  "FFmpeg_calls": 0
+}

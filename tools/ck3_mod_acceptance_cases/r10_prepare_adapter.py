@@ -6,6 +6,12 @@ county, refill or single natural writer opportunity. Derived
 full-wire views retain their original public control rows. The shared entry
 owns the host, SDK session and normal game closure.
 """
+from __future__ import annotations
+from collections.abc import Mapping
+from typing import TYPE_CHECKING
+from ck3_mod_acceptance_background_types import JsonObject, json_object
+if TYPE_CHECKING:
+    from ck3_mod_acceptance_client import CaseClient
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -82,11 +88,11 @@ def evaluate_policy_records(repo, label, *, plan, evidence, **records):
         sys.path[:] = original
 
 
-def validate_contract(context):
+def _validate_contract_impl(context):
     need(context['case_contract'].get('schema') == 'xar.e04.r10-common-preparation.v1',
          'R10 common preparation contract differs')
     value = context.get('case_inputs', {})
-    need(sum(value.get(k) is not None for k in ('r04_county_entry','r06_refill_one_day','r08_writer_one_day')) <= 1,
+    need(sum(value.get(k) is not None for k in ('r04_county_entry','r06_refill_one_day','r08_writer_one_day','r08_parent_entry_one_day')) <= 1,
          'R04, R06 and R08 are mutually exclusive')
     if value.get('r04_county_entry') is not None:
         from . import r04_county_entry
@@ -97,6 +103,10 @@ def validate_contract(context):
     if value.get('r08_writer_one_day') is not None:
         from . import r08_writer_one_day
         r08_writer_one_day.validate_contract(context)
+    if value.get('r08_parent_entry_one_day') is not None:
+        parent = module(Path(__file__).with_name('parent_bundle_loader.py'), 'explicit_parent_bundle_loader').load(context)
+        parent.validate_contract(context)
+        return
     if not value:
         return
     for key in ('army_id', 'war_id', 'goal_province_id', 'staging_province_id'):
@@ -213,10 +223,13 @@ def collect_ready_t0(context, relay, *, source_binding):
             'common_T0_frozen': False, 'formal_ABC_arm': False}
 
 
-def run_case(context, client):
+def _run_case_impl(context, client):
     from ck3_live_run_id import current_machine_id
     from ck3_mod_acceptance_cases.r08_writer_common_adapter import retained_creation_filetime
     validate_contract(context)
+    if context['case_inputs'].get('r08_parent_entry_one_day') is not None:
+        parent = module(Path(__file__).with_name('parent_bundle_loader.py'), 'explicit_parent_bundle_loader').load(context)
+        return parent.run_case(context, client)
     machine = current_machine_id()
     client.retain_process()
     # PID/create-time comes from the original retained OS handle, not old proofs.
@@ -276,3 +289,13 @@ def verify_case(context):
         from . import r08_writer_one_day
         verified['r08_writer_one_day'] = r08_writer_one_day.verify_case(context)
     return verified
+
+
+def validate_contract(context: Mapping[str,object]) -> None:
+    """Keep the original product checks behind an explicit context interface."""
+    _validate_contract_impl(context)
+
+
+def run_case(context: Mapping[str,object], client: CaseClient) -> JsonObject:
+    """Dispatch through the original managed client; validate returned JSON."""
+    return json_object(_run_case_impl(context,client))

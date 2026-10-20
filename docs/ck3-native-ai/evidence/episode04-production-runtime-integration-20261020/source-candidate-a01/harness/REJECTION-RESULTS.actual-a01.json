@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "synthetic_machine_id": "background-source-only-machine",
+  "semantic_mutations": [
+    {
+      "variant": "business-credit",
+      "rejected": true,
+      "error": "Pre-host refusal cannot invent host/game/supervisor exit credit",
+      "input_mutated_in_memory_only": true
+    },
+    {
+      "variant": "runtime-birth",
+      "rejected": true,
+      "error": "Exact supervisor runtime/original-Popen generation relation not proved",
+      "input_mutated_in_memory_only": true
+    },
+    {
+      "variant": "runtime-pid",
+      "rejected": true,
+      "error": "Exact supervisor runtime/original-Popen generation relation not proved",
+      "input_mutated_in_memory_only": true
+    },
+    {
+      "variant": "original-wait",
+      "rejected": true,
+      "error": "Actual original supervisor wait differs",
+      "input_mutated_in_memory_only": true
+    },
+    {
+      "variant": "wrong-stage",
+      "rejected": true,
+      "error": "Actual typed background refusal/stderr identity differs",
+      "input_mutated_in_memory_only": true
+    }
+  ],
+  "actual_stale_predecessor_allocate_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\stale-predecessor-allocate-a01.ORIGINAL-WAIT.json",
+    "bytes": 2979,
+    "sha256": "491d8a0c9fc4091ddca8ee22956f2c32fc1971cda518be74f5e9287fbe685cbe"
+  },
+  "actual_counter_and_machine_admission_unchanged": true,
+  "keeper_spawned": false,
+  "successor_R3_allocated": false,
+  "SDK_Steam_game_observer": false
+}

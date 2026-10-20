@@ -1,0 +1,136 @@
+{
+  "schema": "xar.e04.production-runtime-root-source-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:11:38.438781+00:00",
+  "status": "SOURCE_ONLY_ACCEPTED",
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\DELIVERY.actual-a02.json",
+    "bytes": 18672,
+    "sha256": "7bb973bdc8ee124117bad5d2ab472ee4bc76d845e287e5e0f792e1e7f160882f"
+  },
+  "freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 20702,
+    "sha256": "6163019e1d3c5fa0d05d570240b612eed04e1ecd65a0224f3a2b227c179d56da"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\PRODUCTION-RUNTIME.candidate-a02.patch",
+    "bytes": 133913,
+    "sha256": "5eddcdbaf0469d601b1eea3dcc4f176d682390c48a5a60de02189846fbdb1274"
+  },
+  "independent_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\review-a01\\INDEPENDENT-PRODUCTION-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 30020,
+    "sha256": "ed63bad039ce1452d56f77b5383f3a82dd80eefbd7f1897fdda270189a1bd49f"
+  },
+  "canonical_mapping_checked": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_allocate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_refusal.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "bytes": 22242,
+      "sha256": "6d1770c79e780000382762b27bf463981fdd1f8a5c0293ccb787ccb99cb44640"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_types.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/parent_bundle_loader.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "bytes": 3273,
+      "sha256": "87863898941c3c1b462ce27602b560cb33d7f37260404fbf0f4a377dfda39f30"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_controller.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_controller.py",
+      "bytes": 17538,
+      "sha256": "09f3019847bace658f57dafbe3df826a4e1336b6f803a449a541c0e4ce841870"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_one_day.py",
+      "bytes": 9607,
+      "sha256": "171db0e9d7fe2c211ff0d6ff6a7bc56751caa22b5ef83f95070639803d523cb0"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2582,
+      "sha256": "5df9c395e690bc13e3b1dd60c4a6eb1503a5dec7eeb5f55a27e35e75fab8cc27"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_launcher.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 16572,
+      "sha256": "e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_steam_gate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 6023,
+      "sha256": "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274"
+    },
+    {
+      "repo_path": "tools/steam_offline_native_profiles.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_profiles.py",
+      "bytes": 3856,
+      "sha256": "ed83e4332446e54a7b6ae97e92131540c0f59ff0af3d0eb1be694ee65f26d3fa"
+    },
+    {
+      "repo_path": "tools/steam_offline_native_provider_v1.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16681,
+      "sha256": "e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_parent_bundle.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\test_ck3_mod_acceptance_parent_bundle.py",
+      "bytes": 6513,
+      "sha256": "4e95cbd9318432b5ed4e71aa8e64f401cec884f4b40ac53a4808258217c2aa09"
+    },
+    {
+      "repo_path": "tools/test_steam_offline_native_profiles.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_steam_offline_native_profiles.py",
+      "bytes": 6945,
+      "sha256": "41ea147691c7ac98a05d46b6cce7d38b129c4b8246f62c694b5657b54fc4a778"
+    }
+  ],
+  "actor_and_parent_test_use_revision_a02": true,
+  "root_direct_review": [
+    "dual-profile registry and fresh offline gate read in preceding task context",
+    "Steam provider entire engine and identity/source/profile coupling directly read",
+    "final actor before-SDK six-tool path/index/pin guard directly read",
+    "allocator/entry/typed-refusal patch and independent original standard-CLI evidence reviewed"
+  ],
+  "static_boundary": "Actual modified-scope diagnostics fifteen; exact baseline sixteen; no new diagnostics. Whole legacy typecheck is not clean.",
+  "test_boundary": "Original pre-overlay 34 tests preserved. Final four binding fault methods and final eight parent tests separately passed; no invented single combined final run.",
+  "known_ordinary_save_boundary": "Same-CaseClient Save and independent after-read do not fix the managed-host lifecycle binding gap or qualify one-life identity.",
+  "actual_background_probe": false,
+  "actual_host_launch": false,
+  "new_native_build": false,
+  "new_cold_qualification": false,
+  "game_business_pass": false,
+  "formal_r08_credit": 0,
+  "git_mutation_authorized_by_this_record": false,
+  "source_writers_after_this_record": 0
+}

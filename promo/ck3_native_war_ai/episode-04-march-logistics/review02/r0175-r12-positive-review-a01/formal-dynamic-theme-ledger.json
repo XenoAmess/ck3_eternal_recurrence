@@ -1,7 +1,7 @@
 {
   "schema": "xar.e04.formal_dynamic_theme_accepted_source_shots.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-20T17:22:16.054526+00:00",
+  "observed_at_utc": "2026-10-20T21:27:19.131257+00:00",
   "role": "derived tiny ledger bound to actual Root decision; no new media review",
   "unit": "formal dynamic themes R03 through R13 with at least one accepted original-M source shot",
   "definition": "Each R03..R13 theme counts once after at least one accepted original-M source shot; no full-suite or finished-film equivalence",
@@ -15,9 +15,9 @@
     "bytes": 27122,
     "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
   },
-  "accepted_count": 5,
+  "accepted_count": 6,
   "total_themes": 11,
-  "percentage": 45.45454545454545,
+  "percentage": 54.54545454545454,
   "themes": [
     {
       "theme": "R03",
@@ -169,8 +169,34 @@
     },
     {
       "theme": "R11",
-      "status": "pending_accepted_original_M_source_shot",
-      "accepted_shots": []
+      "status": "accepted_original_M_positive_source_shot",
+      "accepted_shots": [
+        {
+          "run": "R0174",
+          "span_seconds_half_open": [
+            0,
+            20
+          ],
+          "span_frames_half_open": [
+            0,
+            600
+          ],
+          "source_fps": 30,
+          "Root_decision_repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+          "native_army_id": 18,
+          "native_actor_id": 31254,
+          "native_province": 2624,
+          "native_after_empty_route_null_target_regular": true,
+          "stationary_next_day": true,
+          "next_day_within_selected_clip": false,
+          "exact_Halt_PTS": null,
+          "visible_transition_seconds_bracket": [
+            0,
+            2
+          ],
+          "human_1x": false
+        }
+      ]
     },
     {
       "theme": "R12",
@@ -207,7 +233,8 @@
     "R0217 only17 direct-v2 physical debit calls/subtotal236 accepted; county total remains null/fullR04false,5emptyDATAcalls excluded.",
     "Map6746to6510 and unique physical6741to6505 stated separately; native callback exactPTS/active phase/Movefirst6days/Army-pane or readable route-warning/same-lifeABC not granted.",
     "R0194 only Split [0,15)/450 frames: selected GUI250->75 plus independent native75+175=250; child175 not simultaneously GUI readable; no merge251/physical250 or fullR09 film credit.",
-    "R0196 only [32,52)/600 frames: boarding panel/count1162 unchanged, supply300/300 unchanged, gold260->257 with independently bound payer31254 raw300000; no universal fee quote, maintenance attribution, exact callback PTS or fullR07 suite credit."
+    "R0196 only [32,52)/600 frames: boarding panel/count1162 unchanged, supply300/300 unchanged, gold260->257 with independently bound payer31254 raw300000; no universal fee quote, maintenance attribution, exact callback PTS or fullR07 suite credit.",
+    "R0174 R11 only original-M Halt [0,20)/600 source frames; immediate-after stale route and original exit1 retained; independent empty-route read plus next-day stationary native evidence are separate and next-day is outside clip. Exact Halt PTS null; no fresh ABC, human1x or finished-film credit."
   ],
   "full_R12_variant_suite_film_qualified": false,
   "human_1x": false,
@@ -221,7 +248,7 @@
   "historical_zero_records_retained": true,
   "evidence_retention": {
     "owner": "/root",
-    "purpose": "Accepted bounded R04, R06, R07, R09 and R12 sources for Episode04 final edit and evidence review",
+    "purpose": "Accepted bounded R04, R06, R07, R09, R11 and R12 sources for Episode04 final edit and evidence review",
     "review_at_utc": "2026-10-21T10:00:00Z",
     "automatic_renewal": false
   },
@@ -300,12 +327,30 @@
         "bytes": 5566,
         "sha256": "8a11a08a217d355ec2a0d1d4fdc88e7277709e185de71e832fbf5b8001b29731"
       }
+    },
+    {
+      "observed_at_utc": "2026-10-20T21:27:19.131257+00:00",
+      "accepted_count": 6,
+      "accepted_themes": [
+        "R04",
+        "R06",
+        "R07",
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "previous_ledger_sha256": "d9d814c92d5f08db28489a3f7241af0f6898d3083d1191c5029737d0d7ac48a5",
+      "Root_decision": {
+        "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+        "bytes": 6036,
+        "sha256": "65db0c714b6f22c9205f20040684451a7ee27a70f859d920f6c06cf277ae1d0c"
+      }
     }
   ],
   "current_Root_decision": {
-    "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/ROOT-R196-R07-SHOT-ACCEPTANCE.actual.json",
-    "bytes": 5566,
-    "sha256": "8a11a08a217d355ec2a0d1d4fdc88e7277709e185de71e832fbf5b8001b29731"
+    "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+    "bytes": 6036,
+    "sha256": "65db0c714b6f22c9205f20040684451a7ee27a70f859d920f6c06cf277ae1d0c"
   },
   "Root_decisions": [
     {
@@ -332,6 +377,11 @@
       "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-r07-positive-review-a01/ROOT-R196-R07-SHOT-ACCEPTANCE.actual.json",
       "bytes": 5566,
       "sha256": "8a11a08a217d355ec2a0d1d4fdc88e7277709e185de71e832fbf5b8001b29731"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+      "bytes": 6036,
+      "sha256": "65db0c714b6f22c9205f20040684451a7ee27a70f859d920f6c06cf277ae1d0c"
     }
   ],
   "full_R06_qualified": false,
@@ -340,5 +390,6 @@
   "full_R04_qualified": false,
   "full_R09_variant_film_qualified": false,
   "full_R07_qualified": false,
-  "full_R07_variant_film_qualified": false
+  "full_R07_variant_film_qualified": false,
+  "full_R11_variant_film_qualified": false
 }

@@ -1,0 +1,11 @@
+--- a/tools/test_ck3_mod_acceptance_parent_bundle.py
++++ b/tools/test_ck3_mod_acceptance_parent_bundle.py
+@@ -11,7 +11,7 @@
+ ROOT=Path(os.environ.get('XAR_PRODUCTION_SOURCE_TOOLS',str(Path(__file__).resolve().parent)))
+ ACTOR=Path(os.environ.get('XAR_PARENT_ACTOR_SOURCE',str(ROOT/'ck3_mod_acceptance_cases/r08_parent_entry_one_day.py')))
+ TOOL_NAMES=('prepare_parent_entry_admission.py','consume_parent_entry_actual.py','parent_entry_execution_contract.py','owner_binding.py','cold_observer.cpp','parent_entry_execution_once.inc')
+-SCRATCH=ROOT.parent/'tmp'
++SCRATCH=Path(tempfile.gettempdir())
+ 
+ 
+ def pin(path: Path) -> dict:

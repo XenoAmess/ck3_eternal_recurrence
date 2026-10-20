@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:32:11.571530+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--config-file",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy.ini",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "--follow-imports",
+    "skip",
+    "--check-untyped-defs",
+    "--python-version",
+    "3.14",
+    "--platform",
+    "win32",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\test_ck3_mod_acceptance_parent_bundle.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror",
+  "pid": 8460,
+  "creation_filetime_decimal": "134370055315568651",
+  "started_at_utc": "2026-10-20T21:32:11.571282+00:00"
+}

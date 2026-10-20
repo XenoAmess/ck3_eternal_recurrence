@@ -1,0 +1,1451 @@
+{
+  "schema": "xar.e04.production-publication.exact-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T22:08:04.964218+00:00",
+  "planning_only": true,
+  "Git_mutation_execution_admitted": false,
+  "W": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\integration-worktree",
+  "expected_W_and_remote": "ad11f3ef0792ca04c1a38a60542d6ee96992f301",
+  "planning_actual_W_HEAD": "ad11f3ef0792ca04c1a38a60542d6ee96992f301",
+  "existing_object_FF_requires_separate_Root_and_capacity_admission": true,
+  "D_readonly_expected_HEAD": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "hard_deadline_utc": "2026-10-20T22:15:00Z",
+  "items": [
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance.py",
+      "target": "tools/ck3_mod_acceptance.py",
+      "role": "adopted production source",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23",
+      "git_blob": "1af160da352bda0432873a115ea175a015a49f5e",
+      "old": {
+        "bytes": 61674,
+        "sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c",
+        "git_blob": "007ecbb75d69591a070e1f4d973c5762d6ac1997"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_allocate.py",
+      "target": "tools/ck3_mod_acceptance_allocate.py",
+      "role": "adopted production source",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f",
+      "git_blob": "e00eee3d05b6793dffadfda7f3cf5cad9741f3ad",
+      "old": {
+        "bytes": 156757,
+        "sha256": "a971c149a17db8dba00ad35d09d97642479a6c2104e8fff5cf24e9a07c7907fc",
+        "git_blob": "4d2e45adba46a4e7713bc7aebd407502c41eecc7"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "target": "tools/ck3_mod_acceptance_background_refusal.py",
+      "role": "adopted production source",
+      "bytes": 22242,
+      "sha256": "6d1770c79e780000382762b27bf463981fdd1f8a5c0293ccb787ccb99cb44640",
+      "git_blob": "4c27c3355cbc9df5fe72c307131a5eca89e8a4a7",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_background_types.py",
+      "target": "tools/ck3_mod_acceptance_background_types.py",
+      "role": "adopted production source",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e",
+      "git_blob": "df37df45360925bde6d302e14657140a18e15e86",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "target": "tools/ck3_mod_acceptance_cases/parent_bundle_loader.py",
+      "role": "adopted production source",
+      "bytes": 3273,
+      "sha256": "87863898941c3c1b462ce27602b560cb33d7f37260404fbf0f4a377dfda39f30",
+      "git_blob": "9c809c724893c94bdc59dd513a5444af96c3e5db",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_controller.py",
+      "target": "tools/ck3_mod_acceptance_cases/r08_parent_entry_controller.py",
+      "role": "adopted production source",
+      "bytes": 17538,
+      "sha256": "09f3019847bace658f57dafbe3df826a4e1336b6f803a449a541c0e4ce841870",
+      "git_blob": "579cbe72e711d8ff3316ead353d25a928298ae64",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_one_day.py",
+      "target": "tools/ck3_mod_acceptance_cases/r08_parent_entry_one_day.py",
+      "role": "adopted production source",
+      "bytes": 9607,
+      "sha256": "171db0e9d7fe2c211ff0d6ff6a7bc56751caa22b5ef83f95070639803d523cb0",
+      "git_blob": "22033e9fd3cb2e344dd69d45f2d881a02af7cbcf",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "target": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "role": "production source; explicit overlay",
+      "bytes": 2519,
+      "sha256": "d55c8aaade8f6f7c5b471122cc69a2f83311761359e7de8297652b69f41ee63d",
+      "git_blob": "f02cf5a0aa2c23f54917f9f7722e61a7dbcb15a1",
+      "old": {
+        "bytes": 2124,
+        "sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b",
+        "git_blob": "8821f35ddabeb64bee3fcf86252ec38a43f0fb79"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "target": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "role": "adopted production source",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e",
+      "git_blob": "ff9128d36886cc7396d0f8fc94dd721a703c6107",
+      "old": {
+        "bytes": 15813,
+        "sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6",
+        "git_blob": "1e62debe0348b76423a7f5c70f2b63b01615ad79"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_launcher.py",
+      "target": "tools/ck3_mod_acceptance_launcher.py",
+      "role": "adopted production source",
+      "bytes": 16572,
+      "sha256": "e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24",
+      "git_blob": "88408f7f2c776877bdfb3adcba1e14d7d4667cf8",
+      "old": {
+        "bytes": 17792,
+        "sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b",
+        "git_blob": "e0fb52ec864e227eccfdc4116cbe4ad060eded3a"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "target": "tools/ck3_mod_acceptance_steam_gate.py",
+      "role": "adopted production source",
+      "bytes": 6023,
+      "sha256": "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274",
+      "git_blob": "c53d68683810755d52d8467f6e7b56f184bb1d13",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\steam_offline_native_profiles.py",
+      "target": "tools/steam_offline_native_profiles.py",
+      "role": "adopted production source",
+      "bytes": 3856,
+      "sha256": "ed83e4332446e54a7b6ae97e92131540c0f59ff0af3d0eb1be694ee65f26d3fa",
+      "git_blob": "43b7e64d33f36633942a2a432acbae57d527dc9b",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\steam_offline_native_provider_v1.py",
+      "target": "tools/steam_offline_native_provider_v1.py",
+      "role": "adopted production source",
+      "bytes": 16681,
+      "sha256": "e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c",
+      "git_blob": "86d7b58fb0cd167c84e6261c2c9684d43b5bf595",
+      "old": {
+        "bytes": 16352,
+        "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a",
+        "git_blob": "41ce98acc8478da2c580f6a9b55c6a2d5fc8f7ef"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\test_ck3_mod_acceptance_parent_bundle.py",
+      "target": "tools/test_ck3_mod_acceptance_parent_bundle.py",
+      "role": "production source; explicit overlay",
+      "bytes": 6523,
+      "sha256": "f84de409489d66adc7a97dd1cb6c098136fdae11f183e593e3ef17fc6d86573e",
+      "git_blob": "80c0f82715c34711a7ada7ef6a796fa632cf9f63",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\test_steam_offline_native_profiles.py",
+      "target": "tools/test_steam_offline_native_profiles.py",
+      "role": "adopted production source",
+      "bytes": 6945,
+      "sha256": "41ea147691c7ac98a05d46b6cce7d38b129c4b8246f62c694b5657b54fc4a778",
+      "git_blob": "c0b71e37f1a288560f3bdedd250c225c102df00d",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/SOURCE-FREEZE.actual-a02.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 20702,
+      "sha256": "6163019e1d3c5fa0d05d570240b612eed04e1ecd65a0224f3a2b227c179d56da",
+      "git_blob": "7a551de4aed771ff92b8ba23d7df86800d1fd719",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\PRODUCTION-RUNTIME.candidate-a02.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/PRODUCTION-RUNTIME.candidate-a02.patch",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 133913,
+      "sha256": "5eddcdbaf0469d601b1eea3dcc4f176d682390c48a5a60de02189846fbdb1274",
+      "git_blob": "695dba5b91557d7be6162809b9892e68cfeaac35",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\TYPECHECK-BASELINE-COMPARISON.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/TYPECHECK-BASELINE-COMPARISON.actual-a02.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 2288,
+      "sha256": "b3fe877298fa09c907c99515fa8e79ae69830faff8cffda928bf69c3f724d598",
+      "git_blob": "65e1d6712fe60eb85bcfe5eb900fd7b90a2a1218",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\DELIVERY.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/DELIVERY.actual-a02.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 18672,
+      "sha256": "7bb973bdc8ee124117bad5d2ab472ee4bc76d845e287e5e0f792e1e7f160882f",
+      "git_blob": "b212e8a3d64a8f4544605417d98954b5a120bfcd",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\review-a01\\INDEPENDENT-PRODUCTION-SOURCE-REVIEW.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/review-a01/INDEPENDENT-PRODUCTION-SOURCE-REVIEW.actual-a01.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 30020,
+      "sha256": "ed63bad039ce1452d56f77b5383f3a82dd80eefbd7f1897fdda270189a1bd49f",
+      "git_blob": "de185c7ba41bf60901610ba4135e96667f6eb90f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\root-review-a01\\ROOT-SOURCE-ADOPTION.actual-a02.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/root-review-a01/ROOT-SOURCE-ADOPTION.actual-a02.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 7702,
+      "sha256": "a9ba06603b6aeb9dab3de20d5f17ee4e21cbd5fbb76dd4af5317d96ca53f3544",
+      "git_blob": "5f7e245a68606bc893728c851a6dfefa0ec4fa0e",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/focused-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1196,
+      "sha256": "f49b650853455a9122b4d19e7eceffd7056347c482fd4fa02d22e6d3610ec7a2",
+      "git_blob": "fd0de3a12c595a9d1136d937e7aeb312968e6128",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/focused-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/focused-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 4667,
+      "sha256": "4c276c5fbbaf1dc86827243596d0eb295ac4fe93ea6bc29040bbaec303b50618",
+      "git_blob": "fc2c819b4ee22e31990449dc148c99ff431db4b0",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a02\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/focused-a02/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1242,
+      "sha256": "0034e918624b298717ce5983d369d3a46ba474d8d74a8954f063231ca78a2ac2",
+      "git_blob": "3e14a07623f53e5ed2bb49227af36b6831ff5ea8",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a02\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/focused-a02/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a02\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/focused-a02/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 5663,
+      "sha256": "048becce9bf1f73864afb87c9e2c0a652d3ca8b3d90d8a2573ed8875bb6699b6",
+      "git_blob": "d60ae06998a76ae7ea92019b72c4cf20e16a82eb",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a02\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-a02/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 2957,
+      "sha256": "ef770217e73f4a5c73c14d278f125409cacfb190234ee853f204ba4a7702afec",
+      "git_blob": "29c6ddf5e33fa77194cf7c5ec9bb46eada38fc1f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a02\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-a02/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 2477,
+      "sha256": "d182343b923a8361342f7679cc5b1ee18572163711481b002a36c3c2b104366f",
+      "git_blob": "5d9bafb3530a4ed117892b9871aa3d315f81caa6",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a02\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-a02/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-a03/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 2957,
+      "sha256": "3286f4dd751e30d53682bd8cb2bc0a91e72d28ccdd1c902ba798724452259340",
+      "git_blob": "ce552ef3214106891579cbdd2d904833c01656b6",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-a03/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1902,
+      "sha256": "9fbfa9b63d2cdaa1c87abad1f3a426429981cba273af548e9075184ecdc70297",
+      "git_blob": "71ac1cbebfbd968bd440d38d48e3a5c03a3d38b5",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-a03/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-baseline-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 3569,
+      "sha256": "0821dc5b123f4fee17eef0a34730acd9d638ee1f064e9c2bb7a04e34f5979f57",
+      "git_blob": "618c60cb96703a6a64d53e2e411ec3ba23deb7ad",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-baseline-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 2012,
+      "sha256": "67724b1faef4d9727dd268fd07a9e2097d2b9a33b93b977c48fd219324fbafec",
+      "git_blob": "bfe4e629097d6387f9e6716c27e0d716c917dae2",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-baseline-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-revision-a02\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-revision-a02/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 3339,
+      "sha256": "39f545fdb42f266e197c501b3a74c9854a68dbe5e9b1b2be2889b788c741497c",
+      "git_blob": "c807705360e487edc251780462cbffeb2a10fd8c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-revision-a02\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-revision-a02/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1902,
+      "sha256": "9fbfa9b63d2cdaa1c87abad1f3a426429981cba273af548e9075184ecdc70297",
+      "git_blob": "71ac1cbebfbd968bd440d38d48e3a5c03a3d38b5",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-revision-a02\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/typecheck-revision-a02/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-identity-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-identity-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1284,
+      "sha256": "73a7c834a2a85e84beb8adb031812716253afe15dab39f007da5b6eef824adff",
+      "git_blob": "4a9409f841dff66b6b792a8a76ad8cfb0865bb4f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-identity-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-identity-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1606,
+      "sha256": "6aef1b2a3446d5af42314078b1f9cd8c34c596d9169849032754b1035c7929f0",
+      "git_blob": "ea913179930799d2deee35c7d3543bd5f44f22b6",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-identity-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-identity-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-fresh-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-fresh-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1266,
+      "sha256": "d5b4c59b18375274e19ff1dc4fcc0fd9543f7d9cac5185179c435333de15e1d0",
+      "git_blob": "b62930e3b896d7298e3a022506586b8f84ff6e1d",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-fresh-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-fresh-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1576,
+      "sha256": "6ed2c76c719907f0262b062351dedc56476c1743792bb0f5bd21ef990eff9b7a",
+      "git_blob": "3ac7b0a3710ee88154dfb0e73abfefcb6b012c3f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-fresh-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-fresh-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-late-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-late-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1269,
+      "sha256": "76c1f10fa427ca5c7232e24e0fb25c566a7caa53876bb62b421c6b3ac51f1cc7",
+      "git_blob": "3ac1a38310a01c0a8bdf8e26e81e90332edd2e55",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-late-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-late-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1575,
+      "sha256": "8eb3ff46a38d0dffa638871bf5aa605ad61f6ff98d572762a22d72c911a63080",
+      "git_blob": "835fe5419c9b0cf027f7e7ebddb83b2c148bc909",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-late-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-late-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/successor-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1166,
+      "sha256": "779a65b177f852826bcdd9d54ebd901c96170eb3dddaa07d2b67447881ceaf8f",
+      "git_blob": "3235e9fa67e19048cd062e0dc12714454d4dafbb",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/successor-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 88,
+      "sha256": "15e6232fda7d6d28f83dbe1f39449d69bed842a278a3f22b16c43e8d265a42de",
+      "git_blob": "5ad4113cde83fd8ae5b8b4c560d315a1f260d8f7",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/successor-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/semantic-rejections-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1193,
+      "sha256": "5c0a18bc1e0b4e4a83435487a807c33437bfe918c4db1f4811d457a8622752cf",
+      "git_blob": "4c68a401a1108c7799ece4b8661c982dc3858c4c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/semantic-rejections-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 108,
+      "sha256": "80e23fc170be51f2f0ed5117f12bbd39555920578d20ce5caa20ee76579cc6ec",
+      "git_blob": "b0912b34377fc0686940637c2079f6e005ebff20",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/semantic-rejections-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-route-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-route-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1123,
+      "sha256": "7e53bc2e26630ec40ca1421094a295b0be8a6458fda0af344658925b1c7e24ef",
+      "git_blob": "5a0220b5147b429deb2131d43d7e6bf56ea7800a",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-route-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-route-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 128,
+      "sha256": "7b7fac41d17ada46eec20b81beb5d3da1da843abfcdb7f06292c6b642f07c353",
+      "git_blob": "cd5f92f4fb6cd9fe1534ea923f7a5aad4ddd8e10",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-route-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/standard-route-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\owner-focused-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/owner-focused-a01/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1121,
+      "sha256": "b7172aa13d3aa32ed91a5ef3e047f8f9561149dd34689e15bc5803602e326beb",
+      "git_blob": "4e26a7c9dd4900710452f3d40d05759e2caf8ce7",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\owner-focused-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/owner-focused-a01/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\owner-focused-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/owner-focused-a01/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 105,
+      "sha256": "72bf4c16566eda0e63087d0395fe6c81a51c6bd51c64228c8664611899f4f907",
+      "git_blob": "a1a53210687da297560b45828a73b925ddad2462",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\actor-binding-a02\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/actor-binding-a02/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1123,
+      "sha256": "ea1774e42d7493d7338a172c69dcfdbfd9370ea4c11dd3dbfca99eed531ec986",
+      "git_blob": "67aad183060051fba2a9db4d74c6864ddee649f1",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\actor-binding-a02\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/actor-binding-a02/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\actor-binding-a02\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/actor-binding-a02/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 107,
+      "sha256": "005be1cbd53c54251fddb1f235987ac1ee8b28f0b52a796762900b476ffbd8a1",
+      "git_blob": "c731558fc1d9be20c004311f1e3c65186889aaf1",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a02\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/parent-production-tests-a02/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1137,
+      "sha256": "29ab12912d13a826d76489b004141daf40eb6fe95a42b3ed130a0766b34027b6",
+      "git_blob": "d944e316e117daa9c6c5f10af75f0b37eac08018",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a02\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/parent-production-tests-a02/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a02\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/parent-production-tests-a02/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 871,
+      "sha256": "a76e2adb13d89b378f390ad29565b66d46868cf53f53a32d04ffaa9adfae7f6f",
+      "git_blob": "f157c994927736eca23e836ab0e79febae86e877",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a03\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/parent-production-tests-a03/ORIGINAL-WAIT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1138,
+      "sha256": "5372b4495605c42880f9b22b65aad2c3270c96a85a7946994897eafedd75f291",
+      "git_blob": "cd9db520ae5b88512213c2e5811e929325e6b48f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a03\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/parent-production-tests-a03/stdout.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a03\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/parent-production-tests-a03/stderr.log",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1379,
+      "sha256": "bbd87feb99af4b07ed319bbf745b77b03cdfa09e39be6de2f3774e406e84ba5e",
+      "git_blob": "8fef62ba9208a027fe37c69c73c4d0c4be1ca623",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\TYPECHECK-FIRST-MEMORY-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/TYPECHECK-FIRST-MEMORY-RESULT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 6584,
+      "sha256": "46cd09199c7e1d63c6acb570ae59f8b0f1beeabb8a61d3b8e378cabee84e1a66",
+      "git_blob": "570ec7094fdd9cf8ef8281dacdb322dbf980711e",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\harness\\standard-route-a01\\imports.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/harness/standard-route-a01/imports.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1973,
+      "sha256": "7936665a4b8158bdb1161fb68d85884a2ef344784ce0c677f4e4533c1f033204",
+      "git_blob": "e6d36e5754d7b669543bedb057395fec55745893",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\harness\\REJECTION-RESULTS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/harness/REJECTION-RESULTS.actual-a01.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1602,
+      "sha256": "abb4be081d5e0e1682759e47da04f1c2b57be3bb51bc635711aff394640f7411",
+      "git_blob": "ec5a6c36564c28dd9af217731af7c01481336221",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\SUCCESSOR-RESULT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-identity-a03/SUCCESSOR-RESULT.actual.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1629,
+      "sha256": "f030627035b28dd9a3a74b0889b908cd716e7a8046cacbc60e9e224809bf9d0b",
+      "git_blob": "a5a64fe5615fd6092666af243b5ca5da3e0017ff",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\supervisor-background-refused.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-identity-a03/artifacts/background-source-only-machine--vanilla--R0001/supervisor-background-refused.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1793,
+      "sha256": "74ab2f37b67ac25c5fdcb69896d6fd94d75e4ab9f4c17109371b2aafb4154285",
+      "git_blob": "c618709ef4ed8427c0b409edb468721969521e3d",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\host-supervisor-started.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-identity-a03/artifacts/background-source-only-machine--vanilla--R0001/host-supervisor-started.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1198,
+      "sha256": "ea64f13e499a6151c62b94eeadec4c7bbb398a9bbcc7572d254a8b940a772740",
+      "git_blob": "845981ed516e53474ca864d6411f8dfaa7696d24",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\host-supervisor-original-wait.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-identity-a03/artifacts/background-source-only-machine--vanilla--R0001/host-supervisor-original-wait.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1074,
+      "sha256": "76c15060b78feac25d0c37b18a51a6799bbf1a828c73c1cf4c7ebc46e2bbaed5",
+      "git_blob": "6ebd5b92501ef23105d6f6e2b92b15944247598e",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-late-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\supervisor-background-refused.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-late-a03/artifacts/background-source-only-machine--vanilla--R0001/supervisor-background-refused.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1805,
+      "sha256": "3a5ebd5fdc289780aa866e073fc92f881edcd1ada4b357549d4d0f7cf67dd545",
+      "git_blob": "3c1c60d9f249a3ff365b6842243bf0cc6c2ac152",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-late-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\host-supervisor-started.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-late-a03/artifacts/background-source-only-machine--vanilla--R0001/host-supervisor-started.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1186,
+      "sha256": "70e469307a32bd694d3597c911c6ad7c70731276cf6681e597753c2472476ea5",
+      "git_blob": "c4d0dd09fa79a4bba48dc396158ccb492360f35e",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-late-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\host-supervisor-original-wait.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-late-a03/artifacts/background-source-only-machine--vanilla--R0001/host-supervisor-original-wait.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 1066,
+      "sha256": "b2d30a5901afae3ad0f740b7a7fee292a9cae2e22f0ed9293e813ea9a3dd3ca2",
+      "git_blob": "88a6da37dffc93655c3116953d0f47995225c787",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\same-client-boundary.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-fresh-a03/same-client-boundary.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 80,
+      "sha256": "f0897c06d28a5dbf0a4c8e692835f4dfaf265829b53b14da25fd9512c3de00fa",
+      "git_blob": "a7adc6887ee34829bc57a28a95fca8c6c5445b91",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\normal-close-boundary.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/cases/standard-entry-fresh-a03/normal-close-boundary.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 139,
+      "sha256": "2a86267534b0e8ad896233956837b02b5021246446acda57522771ef2d76b467",
+      "git_blob": "d6a605c5d9509f84cb908e74a057b6be7e563a5c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\capacity\\SOURCE-ONLY-ADMISSION.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/capacity/SOURCE-ONLY-ADMISSION.actual-a01.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 5232,
+      "sha256": "992034bda1b422ce0fcfb75a74f31775e640743a82df3d79acff58fb69544ad3",
+      "git_blob": "feacef3cf825a118a45d94c1743aa6ee6468be72",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\SOURCE-FREEZE.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/provenance/V-typed-refusal-SOURCE-FREEZE.actual-a03.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 12955,
+      "sha256": "3fe9ea3d18195c1497264d394ddae28babc05e3195d852a7225773aed97e252c",
+      "git_blob": "550f752880a6ca3dfd083dbc1cad5fac57792a8b",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-steam-provider1112-source-2030-a01\\source-candidate-a01\\DELIVERY.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/provenance/H-provider1112-DELIVERY.actual-a01.json",
+      "role": "original byte-exact selected source evidence",
+      "bytes": 4037,
+      "sha256": "d4128887ae97fcfa3030c29c9be8d43ce428b5ebbe08e9726e3b682031bfdf36",
+      "git_blob": "d418de7bfeb41d81ee106550690036bb32c5f566",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\baseline_and_close_checks_a02.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/baseline_and_close_checks_a02.py",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 3773,
+      "sha256": "05477fd7ebcc7e1376e4a9a8f1c6e3d81d9165e73a7df88da9bc5702a72f7594",
+      "git_blob": "dd1db159ebffb428a92542903a3dd08027c2e28b",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\canonical-parent-test-a01\\CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/canonical-parent-test-a01/CREATED.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 609,
+      "sha256": "5087ee798c5d332543e33c93f370305a21859b439a7db352d185be42cade9c0f",
+      "git_blob": "272862d7b1bbc38f8acf3b65310b1eda28068c47",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\canonical-parent-test-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/canonical-parent-test-a01/ORIGINAL-WAIT.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1283,
+      "sha256": "3c329de7eb7e788e0987b7917c0b6b271e557bebbe801c97df65c6d879216b1e",
+      "git_blob": "9db6948bc7d835e62720865342583ecb5c93540d",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\canonical-parent-test-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/canonical-parent-test-a01/stderr.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1227,
+      "sha256": "3b7875a4e10c69ffca7cd0d0d4204c3ee742de772d4d537614b4fd9283a9c296",
+      "git_blob": "41fca014a7ac484685bed4b78e194ce59e79a188",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\canonical-parent-test-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/canonical-parent-test-a01/stdout.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\CHECKS.actual-a03.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/CHECKS.actual-a03.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 4492,
+      "sha256": "f347ecb522a835b30d6a37c3340b42f0596474b9542615a5711f84cb1aea6a2f",
+      "git_blob": "95db9e6a62dcc401be4cd34ebfc3b41d1e34ae36",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\compare_typechecks_a03.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/compare_typechecks_a03.py",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 3346,
+      "sha256": "e5f7599494822b639d94a20517db20fa01645debb955a1ba7737d981e5f1185e",
+      "git_blob": "2030ffe8b895e607e0b1ca3ae1dfb2eac657d4e6",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\MIRROR-AND-OVERLAYS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/MIRROR-AND-OVERLAYS.actual-a01.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 28836,
+      "sha256": "53088b2ab2df071345d92acf599986fc433d353df0af7eb4f598eae6de8bc684",
+      "git_blob": "91927183a9f93ebf21eb1056f3d619e5e64b137d",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-baseline-a01/CREATED.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 922,
+      "sha256": "d2d983f9679ff76d502b651f9878a07c14064a97500c6f2f8183a26690a913de",
+      "git_blob": "68a70f846415f25d4b18c1022cb5f39dc0e52a9d",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-baseline-a01/ORIGINAL-WAIT.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1614,
+      "sha256": "c8b37a863302e42b217856be243445cfafa76308d1b0b3a865066b62220e68e9",
+      "git_blob": "3cb2482a468bc65abb10a2cdfe8122c3fb9b8cf8",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-baseline-a01/stderr.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-baseline-a01/stdout.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1579,
+      "sha256": "5dcf8a9385022f25549bb36b7b190b8497ad5af2a85b0c0c6f435a2936d6b170",
+      "git_blob": "c5c16d418ca3a744ba00406b494663b75261e729",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-effective-a01/CREATED.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 921,
+      "sha256": "f71cf0fb66f29b5f0e140e9e74061b810687138680dfb82485d281fb5237dd71",
+      "git_blob": "4cc50d330dafd3abc58166f18dc3e288b33c32dc",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-effective-a01/ORIGINAL-WAIT.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1614,
+      "sha256": "5f187d41683d0ca9cb73e3e983b00133d20677a7f997fb5ddc0352b3cb6ab663",
+      "git_blob": "d99a76d925f2209769aaebb99e0bf00299b30918",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-effective-a01/stderr.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy-equal-resolution-effective-a01/stdout.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 998,
+      "sha256": "eb93e73265b37c491b97bc91894b177a4b499fa07b8fa82c45847565a0028b48",
+      "git_blob": "2268474ec13e2812f9ae970d03fe0f783da692aa",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy.ini",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/mypy.ini",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 7,
+      "sha256": "e96b3933c1194a7a75b0bfa014b8f663c0739cc06fa33ab40777aae3c132d6a8",
+      "git_blob": "f8b1844b64aa325804c11149e915ab8c63c3c4fb",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\prepare_and_check_a01.py",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/prepare_and_check_a01.py",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 10017,
+      "sha256": "87bc271edc5b43a85f2e92eba96e69f588413485dd731e9d966ebd8eeea9a3e0",
+      "git_blob": "b9e34ee033570766157d74cdea75c3421ac228fe",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\r10-json-LF.candidate-a01.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/r10-json-LF.candidate-a01.patch",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 5353,
+      "sha256": "3677a9571a5151f0221a371e82d72b206e5821fd80f749f80d71afc6a938ae82",
+      "git_blob": "c90252f3e82895676af688d19faa3d1b2c8724fb",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-baseline-mypy-a01\\CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-baseline-mypy-a01/CREATED.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 922,
+      "sha256": "004c06343162d3f184929b9fb47edddc1ecaa1d94faf2464565dee5a048e7b5c",
+      "git_blob": "0a19799fc22894a8d695f08e76017080aa159662",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-baseline-mypy-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-baseline-mypy-a01/ORIGINAL-WAIT.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1590,
+      "sha256": "50a69939d64419a7e86806b22d19d479b490f95a70ef16689bd92a8dcf177907",
+      "git_blob": "08e7f7bbe4c4cc0775fdc8775cf6a21d0aa20f90",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-baseline-mypy-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-baseline-mypy-a01/stderr.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-baseline-mypy-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-baseline-mypy-a01/stdout.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 2565,
+      "sha256": "a9bd18bd0f3ab17df0a611645d5e2f5f6eaf178faea5d12c1b28caff43c2aa28",
+      "git_blob": "abad5e51abd63479de7d2029da263fcfd09ebc05",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-overlay-mypy-a01\\CREATED.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-overlay-mypy-a01/CREATED.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 922,
+      "sha256": "157a784f586009c557795d5c2d7b7e6688fa33d66860eb705eddc9a6c53a9891",
+      "git_blob": "147f0567856b9c9b6b8d38573c20402b57fd281f",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-overlay-mypy-a01\\ORIGINAL-WAIT.actual.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-overlay-mypy-a01/ORIGINAL-WAIT.actual.json",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 1587,
+      "sha256": "6c72b4582a2b735c48feaf1f4e5beac62a9f3134f99c06d78be31e63c05bbda4",
+      "git_blob": "8b4a95038160a3aadc376d6008b6df99f9c14e64",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-overlay-mypy-a01\\stderr.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-overlay-mypy-a01/stderr.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-overlay-mypy-a01\\stdout.log",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-overlay-mypy-a01/stdout.log",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 998,
+      "sha256": "eb93e73265b37c491b97bc91894b177a4b499fa07b8fa82c45847565a0028b48",
+      "git_blob": "2268474ec13e2812f9ae970d03fe0f783da692aa",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\test-temp.candidate-a01.patch",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/source-overlay/test-temp.candidate-a01.patch",
+      "role": "create-only overlay preparation/check evidence; includes retained failures",
+      "bytes": 630,
+      "sha256": "bbb0977e77da50dc9cfb4cf2d345ad82b16b86c1b309aeea0d88b08601961c70",
+      "git_blob": "5f1a3a62ccca518a9b8a8aa47e4dbe49e56ecee1",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-ONCE-CONTACT-RECIPE.prepared-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/R11-ONCE-CONTACT-RECIPE.prepared-a02.json",
+      "role": "R11 original small evidence",
+      "bytes": 16357,
+      "sha256": "daed749accd2104e001e686607f760069b46bb468786b1de2e05e004630c3a06",
+      "git_blob": "ecf6ff75bbe33fd5892f56132088529785ae5f0c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_once_contacts_a02_final.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/r11_once_contacts_a02_final.py",
+      "role": "R11 original small evidence",
+      "bytes": 19160,
+      "sha256": "64c4d1e61f61e755bd2209d3822d6a4300d0298f31708d91ac3ea2217cc6f5b9",
+      "git_blob": "9a2127815fc0f902e1268a0424b1d1eca85bbe58",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_visual_contract_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/r11_visual_contract_a02.py",
+      "role": "R11 original small evidence",
+      "bytes": 5112,
+      "sha256": "1eb8a2a791945ba2fe2f59db8210f7d83a41eadbb1868e68f78297d9cf7e1303",
+      "git_blob": "8b1fe261d03d1631e2348d4d7ad6530d9c42b3f8",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_recipe_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/r11_recipe_a02.py",
+      "role": "R11 original small evidence",
+      "bytes": 3881,
+      "sha256": "d71ae33bd22777faf7905dfc76773b83c6a33c7a486aa05c3a2d4cea553aca8c",
+      "git_blob": "cfc8298e284d1677959650b37469ff81e8f162b4",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\test_r11_contract_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/test_r11_contract_a02.py",
+      "role": "R11 original small evidence",
+      "bytes": 5005,
+      "sha256": "b732c2b587150bc52d5e74242db0fe92f7a9aa720aa3acfdb04590e89f86e972",
+      "git_blob": "404f36ad7472c7ba9fe1496e9264141498193129",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\CHECKS-AND-PREPARED-PINS.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/CHECKS-AND-PREPARED-PINS.actual-a02.json",
+      "role": "R11 original small evidence",
+      "bytes": 8036,
+      "sha256": "e6490cc3fea8b01c63f580cb07ee76675dd78762a2f0b727ef6a51f3325767ea",
+      "git_blob": "d00cf164a161abff42008863429e23b7c7341814",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-final.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/mypy-a02-final.actual.json",
+      "role": "R11 original small evidence",
+      "bytes": 1390,
+      "sha256": "e10353474a75dbefda3de50b3598d5585e186fd974b9a3ed9f75699126dc83a9",
+      "git_blob": "0449d2edfab8360a5db77105607fb5376cc5a191",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-final.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/mypy-a02-final.stdout.txt",
+      "role": "R11 original small evidence",
+      "bytes": 44,
+      "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76",
+      "git_blob": "49a1e82b673afb21ac31d8b4a25c43daabf4f4d3",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\contract-tests-a02.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/contract-tests-a02.actual.json",
+      "role": "R11 original small evidence",
+      "bytes": 768,
+      "sha256": "ba370f03b0790e1aeae23d643f886cc2c4d31549ed66168410677b27518cf25c",
+      "git_blob": "171db54f5f07f4b3924dcdd6c6fc3ea21c1f3f54",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\contract-tests-a02.stderr.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/contract-tests-a02.stderr.txt",
+      "role": "R11 original small evidence",
+      "bytes": 1469,
+      "sha256": "7ec6eb5dac5f992ec9815dd54b78bcede7fed4e1df9650ebb1a58b40d32ac294",
+      "git_blob": "57b61159371a8eaea91eed2b19e00adb15b6b47e",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-first.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/mypy-a02-first.actual.json",
+      "role": "R11 original small evidence",
+      "bytes": 939,
+      "sha256": "58e1a5d77b35074e3b74c3c10c9a10546968bfe6453e5a496bbb75310e47a513",
+      "git_blob": "d34e457f637dcc17a587ab15207862b9528a3af4",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-first.stdout.txt",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/mypy-a02-first.stdout.txt",
+      "role": "R11 original small evidence",
+      "bytes": 871,
+      "sha256": "77cab3a2a81c32db68f883fcb83a53594d3ed02b9117a40bbe0c16419240adee",
+      "git_blob": "2cbc668de9bc1eff69e978811efa7cb652ad0a88",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-VISUAL5-TYPED-A02-SOURCE-BOUND.actual-a03.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/R11-VISUAL5-TYPED-A02-SOURCE-BOUND.actual-a03.json",
+      "role": "R11 original small evidence",
+      "bytes": 5781,
+      "sha256": "5ba6840d07cf160602f83fab2af258178470cb7abba87c89cbeb6f1c70d74f3f",
+      "git_blob": "273a6f463b43b3fff3b24f6e1460ec67477f2ba3",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\EXTRACTION.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/EXTRACTION.actual.json",
+      "role": "R11 original small evidence",
+      "bytes": 15998,
+      "sha256": "71a0c9100dfb59a4d51cf7a26df42749808e309a781458b17094983a61811658",
+      "git_blob": "5dbc460ffaa3772961f200b9afd3a8e5336cd2b6",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\GZIP-CRC-AND-OWNED-WAIT.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/GZIP-CRC-AND-OWNED-WAIT.actual.json",
+      "role": "R11 original small evidence",
+      "bytes": 578,
+      "sha256": "7975c22f5ed6863363f510ab02d8dd50c363579c52d78ea56430d8387c4367c2",
+      "git_blob": "eadf56c51b834cd4802d7c215088e0f8aeae9ca4",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\source-frame-PTS.actual.csv",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/source-frame-PTS.actual.csv",
+      "role": "R11 original small evidence",
+      "bytes": 9645,
+      "sha256": "5adb59ea1154ba9688bc0212c72d3fdaf34994f8c4b2bf6e4cf2839f2517f219",
+      "git_blob": "0986af78856de5cf99e98b8c04a501895b01a81b",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\ffmpeg-stderr.actual.log.gz",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ffmpeg-stderr.actual.log.gz",
+      "role": "R11 original small evidence",
+      "bytes": 7183,
+      "sha256": "057983f1412f2c8360c6bc3f1856a34a3ce913b171aab2c50e332c90851b6264",
+      "git_blob": "5bf01af70847f089a8b61359e01a1465a8961134",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\LATEST-RELEASE.actual.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/LATEST-RELEASE.actual.json",
+      "role": "R11 original small evidence",
+      "bytes": 430,
+      "sha256": "68c20b79ccff855a7fbdaee758a701ed939dfa00e6b9554f8c779e98edba91de",
+      "git_blob": "6905a178ced821d0b0a18c613e2e649f7adc6421",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\AI-CONTINUOUS-REVIEW.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/AI-CONTINUOUS-REVIEW.actual-a01.json",
+      "role": "R11 original small evidence",
+      "bytes": 3878,
+      "sha256": "03e54fbff13e77f515a8cdd9dbc06e0aeea7456fe962026e35474979fa6fa0e0",
+      "git_blob": "891059594046f8aeb71bea26479ee5e55c3720c4",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\DELIVERY.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/DELIVERY.actual-a02.json",
+      "role": "R11 original small evidence",
+      "bytes": 993,
+      "sha256": "a464d228be028a07bb62a692e7effff396dfcfad4ba9e7b7f15be8031996b9fe",
+      "git_blob": "8919ed8d46b7b2e96f6f8d163357bcb2c9c2e550",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\SMALLARCHIVE-COPYPLAN.actual-a02.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/SMALLARCHIVE-COPYPLAN.actual-a02.json",
+      "role": "original plan predates Root formal decision",
+      "bytes": 3193,
+      "sha256": "09406e43a0d8f03bbcd3cef175cb0f5d18c8623ae895bc467bee6c3bc4a2e987",
+      "git_blob": "f37be5c340464bf9c871fe67efd2b7e8a2aa5b64",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json",
+      "role": "Root original formal R11 decision",
+      "bytes": 6036,
+      "sha256": "65db0c714b6f22c9205f20040684451a7ee27a70f859d920f6c06cf277ae1d0c",
+      "git_blob": "9b420123ed1461ec2b84495532fd072577baaf5c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\root_adjudicate_r11_a01.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/root_adjudicate_r11_a01.py",
+      "role": "Root original helper source; failed a01 and corrected a02 kept separately",
+      "bytes": 7063,
+      "sha256": "331ed1a389ad946a11314b41507c6068c6157c9b849a3967ebaa6fd7bfe725a9",
+      "git_blob": "c600bacda29b47e2ba12eb8d85ddd755884e032c",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\root_adjudicate_r11_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/root_adjudicate_r11_a02.py",
+      "role": "Root original helper source; failed a01 and corrected a02 kept separately",
+      "bytes": 7072,
+      "sha256": "ea844104c84e681da8fe34f4f744ecc979a10701f61c2da74130d4216e2b1883",
+      "git_blob": "cfea91c62e229371ab8ecee41ca82c8bc2c18990",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\root_prepare_r11_a02.py",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/root_prepare_r11_a02.py",
+      "role": "Root original helper source; failed a01 and corrected a02 kept separately",
+      "bytes": 686,
+      "sha256": "0e70f17d685f1d4de2f4722ec9f07856ca5719562af7a4faa6a1e69e34449017",
+      "git_blob": "c6832959d5f7d03a67ddc5028cc1d805f1e2a8bf",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates\\EXTERNAL-AVAILABILITY.actual-a01.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/EXTERNAL-AVAILABILITY.actual-a01.json",
+      "role": "fresh zero-body external read availability and finite review",
+      "bytes": 10031,
+      "sha256": "ae85dc1f4d448375020932ddcc9a72d469ed80eeee1b9a1927a5df6d5141e5cd",
+      "git_blob": "e4b5a83097021863a1d14e6213fbe4ca8fc69140",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates\\CI-7ac6-TWO-SUCCESS.actual-a01.json",
+      "target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/CI-7ac6-TWO-SUCCESS.actual-a01.json",
+      "role": "actual prior-head CI terminal readback",
+      "bytes": 957,
+      "sha256": "0db0b8ded67e6fc5c9124a10d1e11cf5244dba757c01904b1aa965040de08a33",
+      "git_blob": "d82dedf38b57278bb2ca9cf9e78120d48b3ed4be",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r0175-r12-positive-review-a01\\formal-dynamic-theme-ledger.json",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json",
+      "role": "derived append-only formal ledger 5 to 6; previous history preserved",
+      "bytes": 15193,
+      "sha256": "5a906541a8c8a4cd1d5d57683a7a4b4d93c3483d4541b3c399476691cac1e39d",
+      "git_blob": "c299ca007b690387d901fd313bfd9c5b5bfd7440",
+      "old": {
+        "bytes": 13064,
+        "sha256": "d9d814c92d5f08db28489a3f7241af0f6898d3083d1191c5029737d0d7ac48a5",
+        "git_blob": "2ab9e5eb1a58358e35dc66c2fdf2f756787c0750"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates-a02\\docs\\ck3-native-ai\\episode04-production-runtime-integration-20261020.md",
+      "target": "docs/ck3-native-ai/episode04-production-runtime-integration-20261020.md",
+      "role": "new shared source/qualification boundary topic",
+      "bytes": 5133,
+      "sha256": "d392ce39e338694dd5b313a4581c5ad9d8b88f75cff63be456f8b4acf519db60",
+      "git_blob": "5ab878b07bf846abd3c552b5cc2c7d92e2955e83",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates\\R11-README.md",
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/README.md",
+      "role": "R11 formal scope wrapper; original producer facts unchanged",
+      "bytes": 1313,
+      "sha256": "8b4147f9c58c0308c4fa93d7bdec6e2ec58db1eb1f0b3862440d099d4fb9b184",
+      "git_blob": "0ec8ac64f0de6bd296947fc514dbbebcb35cb7df",
+      "old": null
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates-a02\\docs\\ck3-native-ai\\episode04-gameplay-agent-use-12004.md",
+      "target": "docs/ck3-native-ai/episode04-gameplay-agent-use-12004.md",
+      "role": "central latest append; historical bytes unchanged",
+      "bytes": 13814,
+      "sha256": "aafd3073158f87b5cbe47be07b61b2b7a23f72e91bfae06658ac7ce299a679b9",
+      "git_blob": "01c5f9eff5e70f804628b3ce1d98401399a04053",
+      "old": {
+        "bytes": 12559,
+        "sha256": "fc90a95b47ef7144999f43278cccbb94b3ab9de8b8556e4a880871cb4daff275",
+        "git_blob": "aa0163dbef6fb508e4207c18f2a11119b27c7309"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates-a02\\docs\\ck3-native-ai\\episode04-current-execution-map-12004.md",
+      "target": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "role": "central latest append; historical bytes unchanged",
+      "bytes": 54896,
+      "sha256": "655a6b5ee9982f8799644c46b98dbc98996565e6e83ddad4784ef5e8775018ce",
+      "git_blob": "93eba084ef53cfe16d95eaf81762f3d0a49f54b3",
+      "old": {
+        "bytes": 53067,
+        "sha256": "d1fa1a6700f113ed67d04037357b78f7630042933c2ae40f15339ee7f946113b",
+        "git_blob": "bf240943cd0bddc6a0edbb72cd347192e5a82095"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates-a02\\docs\\handover\\2026-10-20-war-episode04-vacation-handover.md",
+      "target": "docs/handover/2026-10-20-war-episode04-vacation-handover.md",
+      "role": "central latest append; historical bytes unchanged",
+      "bytes": 42325,
+      "sha256": "335103dabcbea63a39daec841ebe35f2325c35089e5eefe95ba2c3feb8f2d55a",
+      "git_blob": "d07d722b6307ad2e5aaed5ede032d194f4b22ae9",
+      "old": {
+        "bytes": 40479,
+        "sha256": "98f0310088eac3a5cebcfa4d1e0c1114142e79a8a453b46dd5240798eb70413d",
+        "git_blob": "372438fc7eb29355bca0282e02c627673105ff27"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates-a02\\docs\\autonomous-agent-progress\\daily\\2026-10-20.md",
+      "target": "docs/autonomous-agent-progress/daily/2026-10-20.md",
+      "role": "central latest append; historical bytes unchanged",
+      "bytes": 62150,
+      "sha256": "f1a8960984ea314459b2077806eb77132d53132fc91a2ef65de67c6392978c16",
+      "git_blob": "4811c25de495970acd03e6413db6dd74c1f5dc72",
+      "old": {
+        "bytes": 60298,
+        "sha256": "0babe2ce93d88b651749aeb20bdccf1b08c7b58bda21500b94b7eb53450f0dc5",
+        "git_blob": "8d79d3df83d5f72c722384d8e9be037403b531bd"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates-a02\\docs\\autonomous-agent-progress\\weekly\\2026-W43.md",
+      "target": "docs/autonomous-agent-progress/weekly/2026-W43.md",
+      "role": "central latest append; historical bytes unchanged",
+      "bytes": 55069,
+      "sha256": "57bb9b87a81f83d165bbedebe30713a2a07fb27fb1484fc9e56010697d4b2f26",
+      "git_blob": "b5a3dced6d361ea444e654be7b3bc7d9b7590c53",
+      "old": {
+        "bytes": 53217,
+        "sha256": "3c19d78b61f20dda892434f5b3ca01eda3b614280f6c3281d9fb2c89f9ca7a85",
+        "git_blob": "d4b4d93399d55fa42ff2773de0a36e7c90f2f155"
+      }
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\candidates\\.gitattributes",
+      "target": ".gitattributes",
+      "role": "artifact directories only; production JSON stays ordinary text",
+      "bytes": 132408,
+      "sha256": "5afcc0887ea9a41e2e104444df4e0f51813a646ad8604f65a08e509df61bc1cc",
+      "git_blob": "45ae1bd812c09ef2311fc2efd59fb7288a8266f1",
+      "old": {
+        "bytes": 132054,
+        "sha256": "8d20c7765cc99a5f8183f5ce4502ab96708563ae4fa9bcf02592dac564ef4a61",
+        "git_blob": "f1125f84f004d04fcbbfa8b03203dd9f5944fae7"
+      }
+    }
+  ],
+  "plan_self_target": "docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/provenance/EXACT-COPYPLAN.prepared-a03.json",
+  "summary": {
+    "production_files": 15,
+    "original_production_bytes": 353547,
+    "effective_production_bytes": 353494,
+    "source_overlays": [
+      "temporary directory one line +10B",
+      "JSON63 CRLF to LF -63B"
+    ],
+    "original_selected_PROD_evidence_files": 69,
+    "original_selected_PROD_evidence_bytes": 308896,
+    "R11_copyplan_original_count": 20,
+    "R11_copyplan_original_bytes": 107518,
+    "formal": "6/11",
+    "research": "10/14",
+    "business": "7/11",
+    "B": "0/2",
+    "ABC": "0/3"
+  },
+  "central_ledger_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\CENTRAL-AND-LEDGER.candidate-a02.patch",
+    "bytes": 16574,
+    "sha256": "39dea4e1ab9a3b1d555e0e1ab9b665f10efb58a13f2050257f2f56914ce91330"
+  },
+  "commands_after_actual_sourcebound_admission": [
+    "fresh exact W/remote/D identity and clean guard",
+    "copy exact approved items; .gitattributes first",
+    "git add --sparse --pathspec-from-file=NUL-approved-list --pathspec-file-nul",
+    "stage blobs exact SHA256 and Git oid; links and ledger check",
+    "one commit; committed blobs exact",
+    "fresh remote expectedbase; one push HEAD:refs/heads/master; remote exact readback; Wclean/Dreadonly"
+  ],
+  "execution_guards": [
+    "--no-optional-locks --no-lazy-fetch",
+    "gc.auto=0 maintenance.auto=false",
+    "no fetch/force/reset/GC/Dcheckout",
+    "retain same original Popen through create/communicate/wait failure"
+  ],
+  "proof_output": "Only this new root; actual argv/PID/creation/originalwait; small logs and blob summary",
+  "new_game_SDK_Steam_build_SYSTEM_or_download": false,
+  "new_head_CI_green_claim": false,
+  "ordinary_Save_one_life_qualified": false,
+  "full_R08_or_actual_paid_payer_cadence": false,
+  "revision": "a03-create-only-ad11-existing-object-baseline",
+  "supersedes_prepared_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\evidence-prep\\EXACT-COPYPLAN.prepared-a02.json",
+    "bytes": 87292,
+    "sha256": "dbbc25048f2ba8eca1342415a6e0b7327feb824807dec5d5bbb992a672dd14c1"
+  },
+  "actual_current_W_HEAD": "ad11f3ef0792ca04c1a38a60542d6ee96992f301",
+  "existing_object_FF_completed": true,
+  "ordinary_Save_boundary": "Host already native_campaign; Save before/after native actor/owner consumer and old oneLife persistence remain separate; ordinarySave2 not in this fifteen-path scope."
+}

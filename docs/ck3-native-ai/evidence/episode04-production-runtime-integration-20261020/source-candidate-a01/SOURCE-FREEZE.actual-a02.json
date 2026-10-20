@@ -1,0 +1,376 @@
+{
+  "schema": "xar.e04.production-runtime-source-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T20:58:22.383343+00:00",
+  "base_head": "4c79b6ae1ccac70267128fa0627db78dbdf8a68e",
+  "latest_docs_only_head": "7ac6cebe92c67a3dd5295ae5fe07d944a38480c6",
+  "all_selected_production_blobs_equal_between_heads": true,
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\PRODUCTION-RUNTIME.candidate-a02.patch",
+    "bytes": 133913,
+    "sha256": "5eddcdbaf0469d601b1eea3dcc4f176d682390c48a5a60de02189846fbdb1274"
+  },
+  "changed": [
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23",
+      "base_sha256": "811fad4b90eb61206200f3d6f045531c42e808dc7dcd8ab875af8e2659f1844c"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_allocate.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f",
+      "base_sha256": "a971c149a17db8dba00ad35d09d97642479a6c2104e8fff5cf24e9a07c7907fc"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_refusal.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "bytes": 22242,
+      "sha256": "6d1770c79e780000382762b27bf463981fdd1f8a5c0293ccb787ccb99cb44640",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_types.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/parent_bundle_loader.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "bytes": 3273,
+      "sha256": "87863898941c3c1b462ce27602b560cb33d7f37260404fbf0f4a377dfda39f30",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_controller.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_controller.py",
+      "bytes": 17538,
+      "sha256": "09f3019847bace658f57dafbe3df826a4e1336b6f803a449a541c0e4ce841870",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_one_day.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_one_day.py",
+      "bytes": 9607,
+      "sha256": "171db0e9d7fe2c211ff0d6ff6a7bc56751caa22b5ef83f95070639803d523cb0",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2582,
+      "sha256": "5df9c395e690bc13e3b1dd60c4a6eb1503a5dec7eeb5f55a27e35e75fab8cc27",
+      "base_sha256": "b1cce07272f0646c82730a4db3b609f550ea87185a46429eb09318507362213b"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e",
+      "base_sha256": "4c3d2c25a38907b7de0f6cf028a59e50b10b2d05d8d0bf27a91f9c7603fc8ed6"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_launcher.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 16572,
+      "sha256": "e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24",
+      "base_sha256": "7d3c30118fb92401a744b6bc784f6c35ba52fa855c5e9eb657bb86dc052b180b"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_steam_gate.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 6023,
+      "sha256": "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/steam_offline_native_profiles.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_profiles.py",
+      "bytes": 3856,
+      "sha256": "ed83e4332446e54a7b6ae97e92131540c0f59ff0af3d0eb1be694ee65f26d3fa",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/steam_offline_native_provider_v1.py",
+      "role": "production",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16681,
+      "sha256": "e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c",
+      "base_sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_parent_bundle.py",
+      "role": "test",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\test_ck3_mod_acceptance_parent_bundle.py",
+      "bytes": 6513,
+      "sha256": "4e95cbd9318432b5ed4e71aa8e64f401cec884f4b40ac53a4808258217c2aa09",
+      "base_sha256": null
+    },
+    {
+      "repo_path": "tools/test_steam_offline_native_profiles.py",
+      "role": "test",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_steam_offline_native_profiles.py",
+      "bytes": 6945,
+      "sha256": "41ea147691c7ac98a05d46b6cce7d38b129c4b8246f62c694b5657b54fc4a778",
+      "base_sha256": null
+    }
+  ],
+  "same_directory_closure": [
+    {
+      "repo_path": "tools/ck3_live_run_id.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_allocate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_refusal.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "bytes": 22242,
+      "sha256": "6d1770c79e780000382762b27bf463981fdd1f8a5c0293ccb787ccb99cb44640"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_types.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_camera.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/__init__.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/parent_bundle_loader.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "bytes": 3273,
+      "sha256": "87863898941c3c1b462ce27602b560cb33d7f37260404fbf0f4a377dfda39f30"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_controller.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_controller.py",
+      "bytes": 17538,
+      "sha256": "09f3019847bace658f57dafbe3df826a4e1336b6f803a449a541c0e4ce841870"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_one_day.py",
+      "bytes": 9607,
+      "sha256": "171db0e9d7fe2c211ff0d6ff6a7bc56751caa22b5ef83f95070639803d523cb0"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2582,
+      "sha256": "5df9c395e690bc13e3b1dd60c4a6eb1503a5dec7eeb5f55a27e35e75fab8cc27"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_client.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 66429,
+      "sha256": "7c63ead0dc553118485fd0dcaeb8e49537012c8175d8c980e3eb147487d889da"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_keeper.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_launcher.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 16572,
+      "sha256": "e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_native_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_native_day.py",
+      "bytes": 8325,
+      "sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_prepare.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_queue.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 17072,
+      "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_recorder.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_recorder.py",
+      "bytes": 36098,
+      "sha256": "4fd5ce11c27c4ea2913002e7559894f5422f173ae726278106ae28c9f24fc113"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_runtime_inputs.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "bytes": 1062,
+      "sha256": "c9051d277e77421301de8b964d51daf8277c3b55d80572c01f846f39f42145c9"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_steam_gate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 6023,
+      "sha256": "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_supervisor_refusal.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+    },
+    {
+      "repo_path": "tools/steam_offline_native_profiles.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_profiles.py",
+      "bytes": 3856,
+      "sha256": "ed83e4332446e54a7b6ae97e92131540c0f59ff0af3d0eb1be694ee65f26d3fa"
+    },
+    {
+      "repo_path": "tools/steam_offline_native_provider_v1.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16681,
+      "sha256": "e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c"
+    },
+    {
+      "repo_path": "tools/steam_offline_state_contract.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b"
+    },
+    {
+      "repo_path": "tools/steam_offline_state_probe.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 27703,
+      "sha256": "44eeafedbf235d6c55ab96c8d1eebd73015ec112e78a78fc704b40aac0f8a283"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_late_native_cleanup.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_ck3_mod_acceptance_late_native_cleanup.py",
+      "bytes": 5429,
+      "sha256": "7a57ac9357fd75f10648058c8f3580187b1444f8c35a30c8dd03ece3915d35b7"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_native_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_ck3_mod_acceptance_native_day.py",
+      "bytes": 8025,
+      "sha256": "e680917956a4480456e4033ca33fa3f4f52ce7e14d317ea54b38527bbbc80636"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_parent_bundle.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\test_ck3_mod_acceptance_parent_bundle.py",
+      "bytes": 6513,
+      "sha256": "4e95cbd9318432b5ed4e71aa8e64f401cec884f4b40ac53a4808258217c2aa09"
+    },
+    {
+      "repo_path": "tools/test_steam_offline_native_profiles.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_steam_offline_native_profiles.py",
+      "bytes": 6945,
+      "sha256": "41ea147691c7ac98a05d46b6cce7d38b129c4b8246f62c694b5657b54fc4a778"
+    },
+    {
+      "repo_path": "tools/test_steam_offline_native_provider_v1.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_steam_offline_native_provider_v1.py",
+      "bytes": 7040,
+      "sha256": "30d73a10eda059df8e0b322c33dbc02cfaaa8f05442cda8baf98452784c3cfea"
+    }
+  ],
+  "typecheck_comparison": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\TYPECHECK-BASELINE-COMPARISON.actual-a02.json",
+    "bytes": 2288,
+    "sha256": "b3fe877298fa09c907c99515fa8e79ae69830faff8cffda928bf69c3f724d598"
+  },
+  "production_source_frozen": true,
+  "revision": "a02",
+  "supersedes_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a01.json",
+    "bytes": 20111,
+    "sha256": "95965ab46b84ffe5ef72a5c827330257f12151245c40ecad94952dc404d73e4d"
+  },
+  "a01_known_missing_before_SDK_parent_tools_pin_guard": true,
+  "assembly_mapping_required": true,
+  "restored_guard_origin": "U/controller-a01/revision-a03 actor9490/a23235a8bfb48842396fa924a262184bdd64abe9d80c847f4c80ec001608093f",
+  "actual_Steam_game_native_build_System_Git_mutation": false,
+  "known_gap": "managed native_campaign ordinary Save projection remains separate from oneLife; no lifecycle/driver change in this patch"
+}

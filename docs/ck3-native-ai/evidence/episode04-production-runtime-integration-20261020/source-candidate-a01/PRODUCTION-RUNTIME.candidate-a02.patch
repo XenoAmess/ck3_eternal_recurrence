@@ -1,0 +1,2330 @@
+--- a/tools/ck3_mod_acceptance.py
++++ b/tools/ck3_mod_acceptance.py
+@@ -822,14 +822,12 @@
+         launcher = path_at(launcher_ref["path"], self.runtime_path.parent)
+         check_pin(launcher, launcher_ref)
+         context = self.context
+-        for key in ("keeper_root", "proof", "challenge", "observed_nonce", "reviewer"):
++        for key in ("keeper_root", "steam_offline_receipt"):
+             if not context.get(key):
+                 raise ValueError(f"Existing reviewed launcher context missing: {key}")
+         argv = [str(self.locations["python"]), "-B", "-X", "utf8", str(launcher),
+                 "--run-root", str(self.run_dir), "--keeper-root", str(path_at(context["keeper_root"], self.context_path.parent)),
+-                "--proof", str(path_at(context["proof"], self.context_path.parent)),
+-                "--challenge", str(path_at(context["challenge"], self.context_path.parent)),
+-                "--observed-nonce", context["observed_nonce"], "--reviewer", context["reviewer"]]
++                "--steam-offline-receipt", str(path_at(context["steam_offline_receipt"], self.context_path.parent))]
+         environment = dict(os.environ)
+         environment.update(self.runtime_environment)
+         environment.update(PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1")
+--- a/tools/ck3_mod_acceptance_allocate.py
++++ b/tools/ck3_mod_acceptance_allocate.py
+@@ -1,5 +1,10 @@
+-﻿"""One shared allocation followed immediately by the existing screen keeper."""
++"""One shared allocation followed immediately by the existing screen keeper."""
+ from __future__ import annotations
++from ck3_mod_acceptance_background_types import JsonObject, json_object
++from typing import TYPE_CHECKING
++if TYPE_CHECKING:
++    import argparse
++    from ck3_mod_acceptance import Selection
+ from datetime import datetime,timezone
+ import hashlib,json,os,platform,re,subprocess,sys,time
+ from pathlib import Path
+@@ -1871,7 +1876,7 @@
+         time.sleep(.02)
+ 
+ 
+-def allocate_and_keep(selection,args):
++def _allocate_and_keep_impl(selection,args):
+     require(selection.prepared_path and not selection.context,'One prepared unused case and no allocated context required')
+     bootstrap_path=getattr(args,'first_machine_bootstrap',None)
+     failure_path=getattr(args,'previous_failure_close',None)
+@@ -1930,7 +1935,7 @@
+         allocated_unrun=failure_schema=='ck3-mod-acceptance-allocated-unrun-closure-v1'
+         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
+         prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
+-        supervisor_refused=failure_schema=='ck3-mod-acceptance-supervisor-admission-refused-closure-v1'
++        supervisor_refused=failure_schema in {'ck3-mod-acceptance-supervisor-admission-refused-closure-v1','ck3-mod-acceptance-background-supervisor-refused-closure-v1'}
+         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
+         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
+         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
+@@ -1946,7 +1951,10 @@
+         # predecessor too; its bytes are verified by read_failed_runtime_release.
+         release=read_failed_runtime_release(args.previous_release)
+         if supervisor_refused:
+-            from ck3_mod_acceptance_supervisor_refusal import validate_supervisor_refusal
++            if failure_schema=='ck3-mod-acceptance-background-supervisor-refused-closure-v1':
++                from ck3_mod_acceptance_background_refusal import validate_supervisor_refusal
++            else:
++                from ck3_mod_acceptance_supervisor_refusal import validate_supervisor_refusal
+             session_closure=validate_supervisor_refusal(previous,freeze,failure_path,
+                             args.previous_keeper,release,bus_packet)
+         elif allocated_unrun:
+@@ -2026,6 +2034,19 @@
+         shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
+         files.update({p:pin(p) for p in (shared_tools/'ck3_mod_acceptance.py',
+             shared_tools/'ck3_mod_acceptance_client.py',shared_tools/'ck3_mod_acceptance_native_day.py',shared_tools/'ck3_mod_acceptance_prepare.py')})
++    # Explicit external product peers are exact frozen source inputs, never host/native overrides.
++    parent_inputs=selection.prepared.get('case_inputs',{}).get('r08_parent_entry_one_day') if selection.prepared else None
++    if parent_inputs is not None:
++        index_ref=parent_inputs['bundle_index_pin']; index_path=Path(index_ref['path']).resolve()
++        require(0<index_path.stat().st_size==index_ref['bytes']<=65536,'Bounded external parent source index')
++        check_pin(index_path,index_ref); index=read_json(index_path)
++        require(index.get('schema')=='xar.e04.parent.public-source-bundle.v1','Parent bundle schema')
++        files[index_path]=pin(index_path)
++        for row in index['files']:
++            peer=Path(row['path']).resolve();check_pin(peer,row);files[peer]=pin(peer)
++    shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
++    for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py'):
++        peer=shared_tools/name;files[peer]=pin(peer)
+     files.update({Path(row['path']):row for row in observed.values()})
+     if bootstrap_path:
+         for row in [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()]:
+@@ -2067,14 +2088,14 @@
+         'lease_anchor':str(lease_repo),'previous_session_closed':True,'previous_screen_released':True,
+         'predecessor_admission':pin(live/'predecessor-admission.json'),
+         'files':{str(path):{k:row[k] for k in ('bytes','sha256')} for path,row in files.items()},
+-        'launch_requires_fresh_owned_cas_and_offline_direct_review':True,'business_pass':False}
++        'launch_requires_fresh_owned_cas_and_background_offline':True,'business_pass':False}
+     write_json(live/'frozen-argv.json',frozen)
+     # All slow pin/profile work precedes register. No tool boundary occurs
+     # between the actual allocated JSON and the original keeper subprocess.
+     result=subprocess.run([str(selection.locations['python']),'-B','-X','utf8',str(bus),
+         '--expected-cli-sha256',bus_ref['sha256'].upper(),'register','--task',task,
+         '--summary',selection.product_key+' '+selection.case['id']+' shared runtime acceptance',
+-        '--next-step','Fresh offline/nonce review then one shared host launch',
++        '--next-step','Fresh background offline receipt then one shared host launch',
+         '--repo',str(lease_repo),'--resource','ck3-screen:acquired'],capture_output=True)
+     (live/'screen-registration.json').write_bytes(result.stdout);(live/'screen-registration-stderr.log').write_bytes(result.stderr)
+     require(result.returncode==0,'Actual register failed; preserve consumed input and do not replay')
+@@ -2101,3 +2122,8 @@
+             'run_id':identity.run_id,'business_pass':False}
+     write_json(live/'keeper-actual-parent-exit.json',closed)
+     return {**allocated,**closed}
++
++
++def allocate_and_keep(selection: Selection, args: argparse.Namespace) -> JsonObject:
++    """Typed finite-JSON boundary around the inherited allocation/CAS flow."""
++    return json_object(_allocate_and_keep_impl(selection,args))
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_background_refusal.py
+@@ -0,0 +1,345 @@
++"""Close a consumed launch refused by its supervisor before host creation.
++
++The CLI writes small metadata only. This new protocol proves its original
++supervisor wait, never a host/game exit or business pass. Historical unknown
++supervisor waits are not backfilled.
++"""
++from __future__ import annotations
++from datetime import datetime, timezone
++from collections.abc import Mapping
++from ck3_mod_acceptance_background_types import JsonObject, PreviousRefusalClosure, json_object, previous_refusal
++from pathlib import Path
++import argparse
++import json
++import os
++from ck3_mod_acceptance import check_pin, pin, read_json
++
++SCHEMA = 'ck3-mod-acceptance-background-supervisor-refused-closure-v1'
++# This profile recognizes only the exact reviewed typed pre-host protocol.
++GATE_PROTOCOL_SHA256 = 'a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274'
++LAUNCHER_PROTOCOL_SHA256 = 'e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24'
++FALSE_FIELDS = ('host_started', 'native_session_started', 'game_started',
++                'normal_close_qualified', 'business_pass')
++
++
++def need(value: object, message: str) -> None:
++    if not value:
++        raise ValueError(message)
++
++
++def _read(path):
++    path = Path(path)
++    need(path.stat().st_size <= 1048576, 'Small original metadata required')
++    value = read_json(path)
++    need(isinstance(value, dict), 'Original metadata object required')
++    return value
++
++
++def _stamp(value):
++    stamp = datetime.fromisoformat(value)
++    need(stamp.tzinfo is not None and stamp.utcoffset() is not None,
++         'Original timezone-aware observation required')
++    return stamp
++
++
++def _arg(argv, name):
++    need(isinstance(argv, list) and all(isinstance(x, str) for x in argv)
++         and argv.count(name) == 1 and argv.index(name) + 1 < len(argv),
++         'Original command argument missing: ' + name)
++    return argv[argv.index(name) + 1]
++
++
++def _launcher(argv):
++    paths = [Path(x).resolve() for x in argv if Path(x).name == 'ck3_mod_acceptance_launcher.py']
++    need(len(paths) == 1, 'Original supervisor launcher missing or ambiguous')
++    return paths[0]
++
++
++def _validate_supervisor_refusal_impl(previous, freeze, close_path, keeper_root, release, bus_packet):
++    from ck3_mod_acceptance_allocate import closed_lease, read_failed_runtime_release, runtime_process_inventory
++    import ck3_live_run_id as ids
++    import psutil
++    previous, keeper_root = Path(previous).resolve(), Path(keeper_root).resolve()
++    bundle = _read(close_path)
++    machine, run, task = ids.current_machine_id(), freeze['run_id'], freeze['screen_task']
++    need(bundle.get('schema') == SCHEMA and bundle.get('run_id') == run
++         and previous.name == run and bundle.get('machine_id') == machine
++         == freeze.get('identity_allocation', {}).get('machine_id'),
++         'Supervisor refusal full run/machine identity differs')
++    need(bundle.get('failure_stage') == 'BACKGROUND_SUPERVISOR_ADMISSION_BEFORE_RETAIN_HOST'
++         and all(bundle.get(k) is False for k in FALSE_FIELDS)
++         and 'supervisor_original_wait_returncode' in bundle
++         and bundle['supervisor_original_wait_returncode'] == 2 and bundle.get('supervisor_original_wait_proven') is True,
++         'Pre-host refusal cannot invent host/game/supervisor exit credit')
++    _stamp(bundle['observed_at_utc'])
++    evidence = {}
++
++    def original(key, expected=None, decode=True):
++        ref = bundle[key]
++        path = Path(ref['path']).resolve()
++        need(expected is None or path == Path(expected).resolve(),
++             'Supervisor refusal original path differs: ' + key)
++        need(path.stat().st_size <= 1048576, 'Small original metadata required: ' + key)
++        check_pin(path, ref)
++        evidence[key] = ref
++        return _read(path) if decode else path
++
++    ready = original('ready', previous / 'ready-context.json')
++    need(original('frozen', previous / 'frozen-argv.json') == freeze,
++         'Supervisor refusal supplied frozen allocation differs')
++    context = original('allocated_context', previous / 'allocated-context.json')
++    need(ready.get('schema') == context.get('schema') == 'ck3-mod-acceptance-run-context-v1'
++         and ready.get('run_id') == context.get('run_id') == run
++         and all(Path(row['run_dir']).resolve() == previous
++                 and Path(row['keeper_root']).resolve() == keeper_root for row in (ready, context))
++         and ready['frozen_argv'] == bundle['frozen']
++         and ready['prepared_case'] == context['prepared_case'] == bundle['prepared_case']
++         and ready['product'] == context['product'] and ready['case'] == context['case']
++         and ready['case_inputs'] == context['case_inputs'], 'Original refused READY identity differs')
++    prepared_path = Path(ready['prepared_case']['path']).resolve()
++    prepared = original('prepared_case', prepared_path)
++    state = Path(freeze['state_dir']).resolve()
++    need(Path(prepared['startup']['state_dir']).resolve() == state,
++         'Original refused prepared profile differs')
++    intent = original('launch_intent', previous / 'launch-intent.json')
++    supervisor = original('supervisor_started', previous / 'host-supervisor-started.json')
++    stderr = original('supervisor_stderr', previous / 'host-supervisor-stderr.log')
++    refused = original('background_refusal', previous/'supervisor-background-refused.json')
++    waited = original('supervisor_original_wait', previous/'host-supervisor-original-wait.json')
++    need(refused.get('schema')=='ck3-mod-acceptance-background-supervisor-prehost-refusal-v1'
++         and refused.get('stage')=='BACKGROUND_ADMISSION_BEFORE_RETAIN_HOST'
++         and refused.get('reason_code')=='BACKGROUND_OFFLINE_ADMISSION_REJECTED'
++         and refused.get('error_type')=='BackgroundGateRefusal'
++         and refused.get('machine_id')==machine and refused.get('run_id')==run
++         and type(refused.get('supervisor_pid')) is int and refused['supervisor_pid']>0
++         and refused.get('launch_intent')==bundle['launch_intent']
++         and refused.get('frozen_argv')==bundle['frozen']
++         and all(refused.get(k) is False for k in ('host_started','game_started','native_session_started','business_pass'))
++         and stderr=={'status':'BLOCKED','error':refused.get('error_repr'),'business_pass':False},
++         'Actual typed background refusal/stderr identity differs')
++    need(waited.get('machine_id')==machine and waited.get('run_id')==run
++         and waited.get('pid')==supervisor.get('pid') and waited.get('returncode')==2
++         and waited.get('actual_original_popen_wait') is True
++         and waited.get('launch_intent')==bundle['launch_intent']
++         and waited.get('supervisor_started')==bundle['supervisor_started'],
++         'Actual original supervisor wait differs')
++
++    def generation(value):
++        return (isinstance(value,dict) and set(value)=={'pid','birth_filetime'}
++            and type(value['pid']) is int and value['pid']>0
++            and isinstance(value['birth_filetime'],str) and value['birth_filetime'].isdigit()
++            and 0<int(value['birth_filetime'])<2**64)
++    original_generation=supervisor.get('original_popen_identity')
++    runtime_generation=refused.get('runtime_identity')
++    parent_generation=refused.get('runtime_parent_identity')
++    need(generation(original_generation) and generation(runtime_generation) and generation(parent_generation)
++         and supervisor.get('machine_id')==machine
++         and original_generation['pid']==supervisor['pid']
++         and waited.get('original_popen_identity')==original_generation
++         and runtime_generation['pid']==refused['supervisor_pid']
++         and (runtime_generation==original_generation or parent_generation==original_generation),
++         'Exact supervisor runtime/original-Popen generation relation not proved')
++
++    argv = supervisor.get('argv', [])
++    launcher = _launcher(argv)
++    original('launcher_source', launcher, decode=False)
++    original('steam_gate_source',launcher.with_name('ck3_mod_acceptance_steam_gate.py'),decode=False)
++    need(bundle['steam_gate_source']['sha256']==GATE_PROTOCOL_SHA256 and freeze['files'].get(str(launcher.with_name('ck3_mod_acceptance_steam_gate.py')),{}).get('sha256')==GATE_PROTOCOL_SHA256,'Reviewed background gate protocol differs')
++    source_ref = freeze.get('files', {}).get(str(launcher), {})
++    need(source_ref.get('sha256') == bundle['launcher_source']['sha256'] == LAUNCHER_PROTOCOL_SHA256
++         and source_ref.get('bytes') == bundle['launcher_source']['bytes'],
++         'Original frozen launcher is not the reviewed pre-retain-host refusal protocol')
++    need(intent.get('run_id') == run and intent.get('business_pass') is False
++         and intent.get('frozen_argv') == bundle['frozen']
++         and intent.get('admitted_lease', {}).get('task_id') == task
++         and type(supervisor.get('pid')) is int and supervisor['pid'] > 0
++         and supervisor.get('business_pass') is False and argv.count('--supervise') == 1
++         and _arg(argv, '--launch-ticket') == intent.get('ticket')
++         and isinstance(intent.get('ticket'), str) and len(intent['ticket']) == 64
++         and Path(_arg(argv, '--run-root')).resolve() == previous
++         and Path(_arg(argv, '--keeper-root')).resolve() == keeper_root,
++         'Consumed launch intent/supervisor identity differs')
++    need(intent.get('schema')=='ck3-mod-acceptance-background-launch-intent-v1', 'Distinct background intent required')
++    receipt_path=Path(_arg(argv,'--steam-offline-receipt')).resolve()
++    receipt_ref=intent['steam_offline_receipt']
++    need(Path(receipt_ref['path']).resolve()==receipt_path and refused['steam_offline_receipt']==receipt_ref,
++         'Original background receipt path/pin differs')
++    check_pin(receipt_path,receipt_ref);evidence['steam_offline_receipt']=receipt_ref
++    from steam_offline_state_contract import parse_result
++    observed=parse_result(_read(receipt_path))
++    admitted=intent.get('background_admission',{})
++    need(observed.status=='offline' and observed.machine_id==machine and observed.steam is not None
++         and admitted.get('schema')=='ck3-mod-acceptance-background-offline-admission-v1'
++         and admitted.get('machine_id')==machine and admitted.get('receipt')==receipt_ref
++         and admitted.get('steam_pid')==observed.steam.pid
++         and admitted.get('steam_birth_filetime')==observed.steam.birth_filetime
++         and admitted.get('observed_at_utc')==observed.observed_at_utc
++         and admitted.get('background_only') is True, 'Original parent background admission differs')
++
++    waits = {}
++    for mode, code in (('run', 2), ('allocate', 0)):
++        row = original('public_' + mode + '_wait')
++        command = row.get('argv', [])
++        entries = [i for i, x in enumerate(command) if Path(x).name == 'ck3_mod_acceptance.py']
++        need(row.get('machine_id') == machine and row.get('phase') == mode
++             and row.get('actual_original_popen_wait') is True
++             and type(row.get('returncode')) is int and row['returncode'] == code
++             and type(row.get('pid')) is int and row['pid'] > 0
++             and len(entries) == 1 and command.count(mode) == 1
++             and (command[entries[0]+1:entries[0]+2] == [mode] or command[-1:] == [mode])
++             and Path(_arg(command, '--prepared-case')).resolve() == prepared_path
++             and _arg(command, '--product') == ready['product']
++             and _arg(command, '--case') == ready['case'],
++             'Actual original public ' + mode + ' Popen wait differs')
++        for flag in ('--runtime', '--products'):
++            path = Path(_arg(command, flag)).resolve()
++            need(str(path) in freeze['files'], 'Original public input missing from allocation pins')
++            check_pin(path, freeze['files'][str(path)])
++            evidence[mode + flag] = pin(path)
++        started, finished = (_stamp(row[k]) for k in ('started_at_utc', 'observed_at_utc'))
++        need(started <= finished, 'Original public wait time order differs')
++        waits[mode] = (row, started, finished)
++    need(Path(_arg(waits['allocate'][0]['argv'], '--keeper-output')).resolve() == keeper_root
++         and all(_arg(waits['allocate'][0]['argv'], k) == _arg(waits['run'][0]['argv'], k)
++                 for k in ('--runtime', '--products', '--product', '--case')),
++         'Original public run/allocator inputs differ')
++    reviewed_path = Path(_arg(waits['run'][0]['argv'], '--run-context')).resolve()
++    reviewed = _read(reviewed_path)
++    need(reviewed.get('run_id')==run and Path(reviewed['run_dir']).resolve()==previous
++         and Path(reviewed['keeper_root']).resolve()==keeper_root
++         and reviewed.get('prepared_case')==bundle['prepared_case']
++         and reviewed.get('frozen_argv')==bundle['frozen']
++         and Path(reviewed['steam_offline_receipt']).resolve()==receipt_path,
++         'Original public background run context differs')
++    evidence['reviewed_context']=pin(reviewed_path)
++    observed_at=_stamp(observed.observed_at_utc)
++    intent_at,supervisor_at,refused_at,waited_at=(_stamp(row['at_utc']) for row in (intent,supervisor,refused,waited))
++    need(waits['run'][1]<=intent_at<=supervisor_at<=refused_at<=waited_at<=waits['run'][2]
++         and 0<=(intent_at-observed_at).total_seconds()<=30,
++         'Actual initial admission and supervisor refusal chronology differs')
++
++    original('keeper_STOP', keeper_root / 'STOP', decode=False)
++    need((keeper_root / 'STOP').stat().st_size > 0, 'Actual keeper STOP is empty')
++    keeper = original('keeper_report', keeper_root / 'report.json')
++    parent = original('keeper_parent_exit', previous / 'keeper-actual-parent-exit.json')
++    need(keeper.get('task_id') == task and keeper.get('thread_exited') is True
++         and keeper.get('failure') is None and keeper.get('entry_error') is None
++         and keeper.get('game_actions') is False and parent.get('run_id') == run
++         and parent.get('keeper_actual_exit_code') == 0 and parent.get('keeper_report') == keeper
++         and waits['allocate'][1] <= waits['run'][1]
++         and waits['run'][2] <= _stamp(keeper['at_utc']) <= waits['allocate'][2],
++         'Actual keeper STOP/original parent wait0/allocator wait0 differs')
++    original('CAS_release')
++    cas = read_failed_runtime_release(Path(bundle['CAS_release']['path']))
++    event, task_row = cas.get('event', {}), cas.get('task', {})
++    need(cas == release and closed_lease(keeper, cas, task)
++         and task_row.get('state') == event.get('state') == 'done'
++         and event.get('task_id') == task and event.get('kind') == 'completed'
++         and event.get('sequence') == task_row.get('last_sequence')
++         and event.get('resources') == [], 'Exact original keeper CAS completion differs')
++    tasks = bus_packet.get('tasks', [])
++    current = [row for row in tasks if row.get('task_id') == task]
++    need(len(current) == 1 and all(current[0].get(k) == v for k, v in task_row.items())
++         and not any('ck3-screen:acquired' in row.get('resources', []) for row in tasks),
++         'Current predecessor task/released screen readback differs')
++
++    identity, root = freeze['identity_allocation'], ids.default_state_root().resolve()
++    need(Path(identity['state_root']).resolve() == root, 'Actual machine counter namespace differs')
++    products = Path(_arg(waits['allocate'][0]['argv'], '--products')).resolve()
++    product = _read(products)['products'][ready['product']]
++    external = product.get('external_mod', False)
++    need(type(external) is bool and (product.get('runtime_mod_key') or ready['product']) == freeze['mod_key'],
++         'Original allocated product counter namespace differs')
++    counter = root / machine / freeze['mod_key'] / 'counter.json'
++    row = original('counter', counter)
++    need(row.get('machine_id') == machine and row.get('mod_key') == freeze['mod_key']
++         and ids.format_run_id(machine, freeze['mod_key'], row['last_sequence'], external_mod=external) == run,
++         'Supervisor-refused run is not the latest actual machine/product counter')
++    # Check now, but do not freeze the counter: the one subsequent allocation
++    # must be able to advance it after the unchanged machine admission guard.
++    evidence.pop('counter')
++    absent = {name: not (previous / name).exists() for name in (
++        'launch.json', 'host-started.json', 'host-stdout.log', 'host-stderr.log',
++        'host-original-process-exit.json', 'native-report.json', 'native-report.session.log',
++        'native-session', 'case-output')}
++    absent['case-output*'] = not list(previous.glob('case-output*'))
++    absent['native-report*'] = not list(previous.glob('native-report*'))
++    absent['state/control'] = not (state / 'control').exists()
++    absent['state/native-session'] = not (state / 'native-session').exists()
++    absent['controls-empty'] = (previous / 'controls').is_dir() and not any((previous / 'controls').iterdir())
++    for name in ('save games', 'logs', 'run'):
++        path = state / 'profile' / name
++        absent['profile/' + name] = not path.exists() or (path.is_dir() and not any(path.iterdir()))
++    need(all(absent.values()), 'Supervisor refusal has actual host/native/control/profile evidence')
++    need(all(not psutil.pid_exists(pid) for pid in
++             (supervisor['pid'], refused['supervisor_pid'], waits['run'][0]['pid'], waits['allocate'][0]['pid'])),
++         'Original supervisor/public process PID is still present; no wait inference allowed')
++    inventory = runtime_process_inventory(psutil, os.getpid())
++    need(not inventory['blockers'], 'Supervisor-refused predecessor runtime process is still running')
++    return {'mode': 'previous-shared-background-supervisor-admission-refused', 'actual_process_inventory': inventory,
++        'failure_cleanup': {'close': pin(Path(close_path)), 'original_evidence': evidence,
++            'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
++            'absent_host_native_control_profile': absent,
++            'failure_stage': bundle['failure_stage'], 'original_public_run_exit_code': 2,
++            'original_allocator_exit_code': 0, 'original_keeper_exit_code': 0,
++            'original_host_exit_code': None, 'original_ck3_exit_code': None,
++            'supervisor_original_wait_returncode': 2, 'supervisor_original_wait_proven':True, **{k: False for k in FALSE_FIELDS},
++            'typed_normal_exit_proven': False, 'administrative_resource_admission_only': True}}
++
++
++def validate_supervisor_refusal(previous: Path, freeze: Mapping[str,object], close_path: Path,
++                                keeper_root: Path, release: Mapping[str,object],
++                                bus_packet: Mapping[str,object]) -> PreviousRefusalClosure:
++    # The inherited original-evidence checks run in full before the result crosses
++    # this typed JSON boundary. No cast or inferred process absence supplies proof.
++    return previous_refusal(_validate_supervisor_refusal_impl(
++        previous, freeze, close_path, keeper_root, release, bus_packet))
++
++
++def build_bundle(args: argparse.Namespace) -> JsonObject:
++    import ck3_live_run_id as ids
++    from ck3_mod_acceptance_allocate import current_screen_absent, read_failed_runtime_release
++    previous, keeper = args.previous_live.resolve(), args.keeper_root.resolve()
++    freeze = _read(previous / 'frozen-argv.json')
++    ready = _read(previous / 'ready-context.json')
++    machine = ids.current_machine_id()
++    launcher = _launcher(_read(previous / 'host-supervisor-started.json')['argv'])
++    paths = {'ready': previous / 'ready-context.json', 'frozen': previous / 'frozen-argv.json',
++        'allocated_context': previous / 'allocated-context.json', 'prepared_case': Path(ready['prepared_case']['path']),
++        'launch_intent': previous / 'launch-intent.json', 'supervisor_started': previous / 'host-supervisor-started.json',
++        'supervisor_stderr': previous / 'host-supervisor-stderr.log',
++        'background_refusal':previous/'supervisor-background-refused.json',
++        'supervisor_original_wait':previous/'host-supervisor-original-wait.json','public_run_wait': args.public_run_wait,
++        'public_allocate_wait': args.public_allocate_wait, 'keeper_STOP': keeper / 'STOP',
++        'keeper_report': keeper / 'report.json', 'keeper_parent_exit': previous / 'keeper-actual-parent-exit.json',
++        'CAS_release': args.release, 'launcher_source': launcher,'steam_gate_source':launcher.with_name('ck3_mod_acceptance_steam_gate.py'),
++        'counter': ids.default_state_root() / machine / freeze['mod_key'] / 'counter.json'}
++    need(all(Path(p).stat().st_size <= 1048576 for p in paths.values()), 'Bounded original metadata only')
++    row = {'schema': SCHEMA, 'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
++        'run_id': freeze['run_id'], 'failure_stage': 'BACKGROUND_SUPERVISOR_ADMISSION_BEFORE_RETAIN_HOST',
++        **{k: False for k in FALSE_FIELDS}, 'supervisor_original_wait_proven':True,'supervisor_original_wait_returncode':2,
++        **{k: pin(Path(p).resolve()) for k, p in paths.items()}}
++    output = args.output.resolve()
++    need(not output.exists(), 'New immutable closure output required')
++    output.parent.mkdir(parents=True, exist_ok=True)
++    with output.open('x', encoding='utf-8', newline='\n') as stream:
++        json.dump(row, stream, ensure_ascii=False, indent=2)
++        stream.write('\n')
++    bus = Path(freeze['lease_anchor']) / 'tools/codex_task_bus.py'
++    packet = current_screen_absent(Path(freeze['lease_anchor']), args.task_bus_root,
++        freeze['files'][str(bus)]['sha256'], None)
++    verdict = validate_supervisor_refusal(previous, freeze, output, keeper,
++        read_failed_runtime_release(args.release), packet)
++    return json_object({'bundle': pin(output), 'validation': verdict, 'SDK_or_launch': False})
++
++
++def main() -> None:
++    parser = argparse.ArgumentParser(description=__doc__)
++    for flag in ('previous-live', 'keeper-root', 'public-run-wait', 'public-allocate-wait',
++                 'release', 'task-bus-root', 'output'):
++        parser.add_argument('--' + flag, type=Path, required=True)
++    print(json.dumps(build_bundle(parser.parse_args()), ensure_ascii=False, indent=2))
++
++
++if __name__ == '__main__':
++    main()
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_background_types.py
+@@ -0,0 +1,99 @@
++"""Validated JSON boundary shared by the new background refusal protocol."""
++from __future__ import annotations
++import math,re,subprocess
++from typing import Literal, TypeAlias, TypedDict
++
++JsonValue: TypeAlias = None | bool | int | float | str | list['JsonValue'] | dict[str,'JsonValue']
++JsonObject: TypeAlias = dict[str,JsonValue]
++
++class FilePin(TypedDict):
++    path: str
++    bytes: int
++    sha256: str
++
++class ProcessGeneration(TypedDict):
++    pid: int
++    birth_filetime: str
++
++class PreviousRefusalClosure(TypedDict):
++    mode: Literal['previous-shared-background-supervisor-admission-refused']
++    actual_process_inventory: JsonObject
++    failure_cleanup: JsonObject
++
++def json_value(value: object) -> JsonValue:
++    if value is None or type(value) in (str,bool,int):
++        if value is None or isinstance(value,(str,bool,int)):return value
++    if type(value) is float and isinstance(value,float) and math.isfinite(value):return value
++    if isinstance(value,list):return [json_value(item) for item in value]
++    if isinstance(value,dict):
++        out: JsonObject={}
++        for key,item in value.items():
++            if not isinstance(key,str):raise ValueError('JSON object key must be string')
++            out[key]=json_value(item)
++        return out
++    raise ValueError('Value is outside the finite JSON type domain')
++
++def json_object(value: object) -> JsonObject:
++    result=json_value(value)
++    if not isinstance(result,dict):raise ValueError('JSON metadata object required')
++    return result
++
++def file_pin(value: object) -> FilePin:
++    row=json_object(value)
++    path,size,digest=row.get('path'),row.get('bytes'),row.get('sha256')
++    if not isinstance(path,str) or not path or type(size) is not int or not isinstance(size,int) or size<0:
++        raise ValueError('Exact file path/byte-count required')
++    if not isinstance(digest,str) or re.fullmatch('[0-9a-f]{64}',digest) is None:
++        raise ValueError('Exact file SHA256 required')
++    return FilePin(path=path,bytes=size,sha256=digest)
++
++def previous_refusal(value: object) -> PreviousRefusalClosure:
++    row=json_object(value)
++    if row.get('mode')!='previous-shared-background-supervisor-admission-refused':raise ValueError('Refusal closure mode')
++    inventory=json_object(row.get('actual_process_inventory'))
++    cleanup=json_object(row.get('failure_cleanup'))
++    if inventory.get('blockers')!=[]:raise ValueError('Unresolved process inventory')
++    file_pin(cleanup.get('close'))
++    evidence=json_object(cleanup.get('original_evidence'))
++    for item in evidence.values():file_pin(item)
++    if (cleanup.get('administrative_resource_admission_only') is not True
++            or cleanup.get('typed_normal_exit_proven') is not False
++            or cleanup.get('original_host_exit_code') is not None
++            or cleanup.get('original_ck3_exit_code') is not None):
++        raise ValueError('Administrative refusal cannot invent normal/game exit')
++    for name in ('host_started','native_session_started','game_started','normal_close_qualified','business_pass'):
++        if cleanup.get(name) is not False:raise ValueError('Refusal cannot invent host/business credit')
++    return PreviousRefusalClosure(mode='previous-shared-background-supervisor-admission-refused',
++        actual_process_inventory=inventory,failure_cleanup=cleanup)
++
++def text_field(row: JsonObject, key: str) -> str:
++    value=row.get(key)
++    if not isinstance(value,str) or not value:raise ValueError('Nonempty string required: '+key)
++    return value
++
++def object_field(row: JsonObject, key: str) -> JsonObject:
++    return json_object(row.get(key))
++
++def strings_field(row: JsonObject, key: str) -> list[str]:
++    value=row.get(key)
++    if not isinstance(value,list) or not value:raise ValueError('Nonempty string list required: '+key)
++    result: list[str]=[]
++    for item in value:
++        if not isinstance(item,str) or not item:raise ValueError('String list required: '+key)
++        result.append(item)
++    return result
++
++def environment(value: object) -> dict[str,str]:
++    row=json_object(value)
++    result: dict[str,str]={}
++    for key,item in row.items():
++        if not isinstance(item,str):raise ValueError('Environment string required')
++        result[key]=item
++    return result
++
++def process_handle(process: 'subprocess.Popen[bytes]') -> int:
++    # The original retained Popen handle, never a reopened PID handle.
++    value=getattr(process,'_handle',None)
++    if not isinstance(value,int) or isinstance(value,bool) or value<=0:
++        raise ValueError('Original Windows Popen handle unavailable')
++    return value
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/parent_bundle_loader.py
+@@ -0,0 +1,65 @@
++"""Explicit, pinned peer loading for the external public product adapter."""
++from __future__ import annotations
++from collections.abc import Mapping
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import sys
++from types import ModuleType
++from typing import Final
++from ck3_mod_acceptance_background_types import file_pin, json_object, object_field, text_field
++
++ORDER: Final[tuple[str,...]] = ('r04_county_entry_window', 'r04_county_entry', 'r08_writer_common_adapter',
++         'r08_writer_one_day', 'r08_parent_entry_controller', 'r08_parent_entry_one_day')
++
++
++def load(context: Mapping[str,object]) -> ModuleType:
++    settings=object_field(json_object(context['case_inputs']),'r08_parent_entry_one_day')
++    ref=file_pin(settings['bundle_index_pin'])
++    path = Path(ref['path'])
++    if not 0 < path.stat().st_size == ref['bytes'] <= 65536:
++        raise ValueError('Bounded exact external source index required')
++    payload = path.read_bytes()
++    if len(payload)!=ref['bytes'] or hashlib.sha256(payload).hexdigest() != ref['sha256']:
++        raise ValueError('External source index changed')
++    value = json_object(json.loads(payload))
++    if set(value) != {'schema', 'files', 'modules'} or value['schema'] != 'xar.e04.parent.public-source-bundle.v1':
++        raise ValueError('External source schema')
++    rows=value['files']
++    if not isinstance(rows,list):raise ValueError('Explicit source file list required')
++    files: set[str]=set()
++    for row in rows:
++        item=file_pin(row)
++        p = Path(item['path'])
++        if item['path'] in files:raise ValueError('Duplicate source pin')
++        if p.stat().st_size != item['bytes'] or hashlib.sha256(p.read_bytes()).hexdigest() != item['sha256']:
++            raise ValueError('Explicit bundle peer changed: '+str(p))
++        files.add(item['path'])
++    modules=object_field(value,'modules')
++    if set(modules) != set(ORDER):
++        raise ValueError('Exact finite peer module list required')
++    sources={name:Path(text_field(modules,name)) for name in ORDER}
++    for name,source in sources.items():
++        if str(source) not in files or source.name!=name+'.py':raise ValueError('Module not in source pins')
++    cached=True
++    for name in ORDER:
++        existing=sys.modules.get('ck3_mod_acceptance_cases.'+name)
++        if existing is None or existing.__file__ is None or Path(existing.__file__).resolve()!=sources[name].resolve():
++            cached=False
++            break
++    if cached:
++        return sys.modules['ck3_mod_acceptance_cases.r08_parent_entry_one_day']
++    for name in ORDER:
++        source = sources[name]
++        if str(source) not in files or source.name != name+'.py':
++            raise ValueError('Module not in source pins')
++        qualified = 'ck3_mod_acceptance_cases.'+name
++        spec = importlib.util.spec_from_file_location(qualified, source)
++        if spec is None or spec.loader is None:raise ValueError('Explicit source loader unavailable')
++        module = importlib.util.module_from_spec(spec)
++        sys.modules[qualified] = module
++        spec.loader.exec_module(module)
++        package = sys.modules['ck3_mod_acceptance_cases']
++        setattr(package, name, module)
++    return sys.modules['ck3_mod_acceptance_cases.r08_parent_entry_one_day']
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/r08_parent_entry_controller.py
+@@ -0,0 +1,341 @@
++"""Own one parent observer and one public exact-day request; never construct SDK."""
++from __future__ import annotations
++from dataclasses import dataclass
++from datetime import datetime, timezone
++import hashlib
++import ctypes
++from ctypes import wintypes
++import json
++from pathlib import Path
++import subprocess
++import time
++from typing import Callable, TypedDict, NoReturn, BinaryIO
++from ck3_mod_acceptance_background_types import process_handle
++
++MODE = 'parent-entry-execution-once-v1'
++
++
++class FilePin(TypedDict):
++    path: str
++    bytes: int
++    sha256: str
++
++
++@dataclass
++class Session:
++    process: subprocess.Popen[bytes]
++    output: Path
++    started: float
++    stdout: BinaryIO
++    stderr: BinaryIO
++    cancel_handle: int
++    machine_id: str = ''
++    created_filetime: str | None = None
++
++
++# This owner survives a return to the actor and retains unresolved native cleanup.
++SESSIONS: dict[str, Session] = {}
++EVENTS: dict[str, int] = {}
++
++
++def create_cancel(name: str) -> int:
++    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
++    kernel.CreateEventW.argtypes = (wintypes.LPVOID, wintypes.BOOL, wintypes.BOOL, wintypes.LPCWSTR)
++    kernel.CreateEventW.restype = wintypes.HANDLE
++    handle = kernel.CreateEventW(None, True, False, name)
++    error = ctypes.get_last_error()
++    if not handle or error == 183:
++        if handle:
++            close_cancel(int(handle))
++        raise OSError(error, 'New unique parent cancel event required')
++    return int(handle)
++
++
++def close_cancel(handle: int) -> None:
++    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
++    kernel.CloseHandle.argtypes = (wintypes.HANDLE,)
++    kernel.CloseHandle.restype = wintypes.BOOL
++    if not kernel.CloseHandle(handle):
++        raise ctypes.WinError(ctypes.get_last_error())
++
++
++def need(ok: bool, reason: str) -> None:
++    if not ok:
++        raise ValueError(reason)
++
++
++def pin(path: Path) -> FilePin:
++    payload = path.read_bytes()
++    return FilePin(path=str(path.resolve()), bytes=len(payload), sha256=hashlib.sha256(payload).hexdigest())
++
++
++def read_pin(ref: FilePin, maximum: int = 65536) -> dict:
++    path = Path(ref['path'])
++    need(type(ref['bytes']) is int and 0 < ref['bytes'] <= maximum
++         and path.stat().st_size == ref['bytes'], 'Exact bounded file required')
++    payload = path.read_bytes()
++    need(len(payload) == ref['bytes'] and hashlib.sha256(payload).hexdigest() == ref['sha256'], 'File changed')
++    value = json.loads(payload)
++    need(type(value) is dict, 'JSON object required')
++    return value
++
++
++def write(path: Path, value: dict) -> FilePin:
++    from ck3_live_run_id import current_machine_id
++    value = {'machine_id': current_machine_id(),
++             'observed_at_utc': datetime.now(timezone.utc).isoformat(), **value}
++    payload = (json.dumps(value, sort_keys=True, allow_nan=False, indent=2) + '\n').encode()
++    need(len(payload) <= 65536, 'Bounded controller record')
++    with path.open('xb') as output:
++        output.write(payload)
++    return pin(path)
++
++
++def process_birth(process: subprocess.Popen[bytes]) -> str:
++    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
++    kernel.GetProcessTimes.argtypes = (wintypes.HANDLE, ctypes.POINTER(wintypes.FILETIME),
++        ctypes.POINTER(wintypes.FILETIME), ctypes.POINTER(wintypes.FILETIME), ctypes.POINTER(wintypes.FILETIME))
++    kernel.GetProcessTimes.restype = wintypes.BOOL
++    fields = [wintypes.FILETIME() for _ in range(4)]
++    if not kernel.GetProcessTimes(process_handle(process), *(ctypes.byref(field) for field in fields)):
++        raise ctypes.WinError(ctypes.get_last_error())
++    return str((fields[0].dwHighDateTime << 32) | fields[0].dwLowDateTime)
++
++
++def bind_ready(raw_path: Path, binding: dict, ready: dict) -> dict:
++    need(raw_path.stat().st_size <= 1024*1024, 'Bounded actual parent raw')
++    with raw_path.open('rb') as source:
++        prefix = source.read(131072)
++    lines = prefix.splitlines(keepends=True)
++    rows = [json.loads(line) for line in lines if line.endswith(b'\n')]
++    need(bool(rows) and rows[0].get('kind') == 'start', 'Actual raw start absent')
++    start = rows[0]
++    need(start.get('schema') == 'xar.maintenance.parent_entry.raw.v1'
++         and start.get('mode') == MODE, 'Actual parent start schema/mode')
++    for key, value in binding['expected'].items():
++        need(type(start.get(key)) is type(value) and start.get(key) == value, 'Raw/prepared identity differs: '+key)
++    active: dict[int, int] = {}
++    found = False
++    for row in rows[1:]:
++        if row.get('kind') == 'arm':
++            tid, generation = row.get('thread_id'), row.get('thread_generation')
++            need(type(tid) is int and tid > 0 and type(generation) is int and generation > 0
++                 and type(row.get('thread_created')) is int and row['thread_created'] > 0
++                 and row.get('success') is True and row.get('readback') is True,
++                 'Actual successful thread generation/readback required')
++            debug = row.get('armed_debug')
++            need(type(debug) is list and len(debug) == 6 and debug[0] == binding['expected']['entry']
++                 and debug[1:4] == [0,0,0] and debug[5] & 0xffff00ff == 1,
++                 'Actual mode DR0 execute vector required')
++            active[tid] = generation
++        elif row.get('kind') == 'thread_exited':
++            need(active.get(row.get('thread_id')) == row.get('thread_generation'), 'Retired generation differs')
++            active.pop(row['thread_id'])
++        elif row.get('kind') == 'ready':
++            need(row.get('census_complete') is True, 'Actual raw census absent')
++            found = True
++            break
++    need(found and len(active) == ready['armed_thread_count'] > 0, 'READY/raw census size differs')
++    return {'raw_start': start, 'armed_generations': active, 'actual_raw_ready': True}
++
++
++def fresh(scope: dict, *, machine: str, collected_at: float,
++          monotonic: Callable[[], float] = time.monotonic) -> None:
++    now = datetime.now(timezone.utc)
++    issued = datetime.fromisoformat(scope['observed_at_utc'].replace('Z', '+00:00'))
++    expires = datetime.fromisoformat(scope['expires_at_utc'].replace('Z', '+00:00'))
++    need(scope.get('machine_id') == machine and scope.get('mode') == MODE
++         and scope.get('execution_authorized') is True and issued.tzinfo is not None
++         and issued <= now < expires and (expires-issued).total_seconds() <= 300,
++         'Fresh separate parent Root scope required')
++    need(0 <= monotonic() - collected_at <= 30, 'Same-client owner pair older than 30 seconds')
++
++
++def observer_argv(exe: Path, prepared: Path, output: Path, machine: str) -> list[str]:
++    return [str(exe), '--enable-ck3-12004-parent-entry-once', '--admission-meta',
++        str(prepared/'PARENT-ENTRY.meta.txt'), '--timeout-ms', '30000', '--raw',
++        str(output/'parent.raw.ndjson'), '--ready', str(output/'parent.ready.json'),
++        '--machine-id', machine, '--explicit-execution-breakpoint-v1']
++
++
++def prepare(python: str, repo: Path, tools: Path, collected: dict, scope_pin: FilePin,
++            qualification: FilePin, observer: FilePin, output: Path) -> Path:
++    need(not output.exists(), 'New parent control root required')
++    output.mkdir(parents=True)
++    prepared = output/'prepared'
++    read_pin(scope_pin); read_pin(qualification)
++    exe = Path(observer['path'])
++    need(pin(exe) == observer, 'Observer content differs from reviewed Q')
++    argv = [python, '-B', '-X', 'utf8', str(tools/'prepare_parent_entry_admission.py'),
++        '--prepare-parent-entry', '--repo', str(repo), '--snapshot', collected['before_response']['path'],
++        '--cash', collected['cash_response']['path'], '--root-scope', scope_pin['path'],
++        '--qualification', qualification['path'], '--observer', str(exe), '--output-root', str(prepared)]
++    write(output/'prepare.once.json', {'argv': argv, 'observer_started': False})
++    with (output/'prepare.stdout').open('xb') as out, (output/'prepare.stderr').open('xb') as err:
++        result = subprocess.run(argv, stdout=out, stderr=err, timeout=45, check=False,
++            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
++    write(output/'PREPARE.actual.json', {'returncode': result.returncode, 'argv': argv,
++        'stdout': pin(output/'prepare.stdout'), 'stderr': pin(output/'prepare.stderr'), 'observer_started': False})
++    need(result.returncode == 0, 'Actual parent prepare rejected; preserve and never retry directory')
++    return prepared
++
++
++def await_ready(session: Session, *, monotonic: Callable[[], float] = time.monotonic,
++                sleep: Callable[[float], None] = time.sleep) -> dict:
++    path = session.output/'parent.ready.json'
++    deadline = session.started + 12
++    while monotonic() < deadline:
++        need(session.process.poll() is None, 'Observer exited before READY; zero day')
++        if path.exists():
++            need(0 < path.stat().st_size <= 65536, 'READY size')
++            try:
++                value = json.loads(path.read_bytes())
++            except json.JSONDecodeError:
++                sleep(.025)
++                continue
++            need(value.get('mode') == MODE and value.get('ready') is True
++                 and value.get('census_complete') is True and type(value.get('armed_thread_count')) is int
++                 and value['armed_thread_count'] > 0, 'Actual complete parent READY required')
++            need(session.process.poll() is None, 'Observer exited while reading READY')
++            return value
++        sleep(.025)
++    raise TimeoutError('Finite READY absent; no day/relaunch')
++
++
++def finish(session: Session, *, python: str, tools: Path, prepared: Path) -> dict:
++    warned = False
++    while True:
++        try:
++            code = session.process.wait(timeout=max(.25, session.started + 45 - time.monotonic()))
++            break
++        except subprocess.TimeoutExpired:
++            if not warned:
++                write(session.output/'UNRESOLVED-NATIVE-HOLD.actual.json', {'machine_id': session.machine_id,
++                    'pid': session.process.pid, 'observer_created_filetime': session.created_filetime,
++                    'original_popen_retained': True, 'diagnostic_threshold_seconds': 45,
++                    'SDK_game_close_relaunch_kill': False})
++                warned = True
++            time.sleep(.25)
++    session.stdout.close(); session.stderr.close()
++    close_cancel(session.cancel_handle)
++    EVENTS.pop(str(session.output), None)
++    write(session.output/'OBSERVER-ORIGINAL-WAIT.actual.json', {'pid': session.process.pid,
++        'observer_created_filetime': session.created_filetime, 'machine_id': session.machine_id,
++        'returncode': code, 'actual_original_popen_wait': True})
++    result_path = session.output/'PARENT-ENTRY.actual.json'
++    argv = [python, '-B', '-X', 'utf8', str(tools/'consume_parent_entry_actual.py'),
++        '--raw', str(session.output/'parent.raw.ndjson'), '--binding', str(prepared/'BINDING.prepared.json'),
++        '--output', str(result_path)]
++    write(session.output/'consume.once.json', {'argv': argv})
++    with (session.output/'consume.stdout').open('xb') as out, (session.output/'consume.stderr').open('xb') as err:
++        result = subprocess.run(argv, stdout=out, stderr=err, timeout=20, check=False)
++    write(session.output/'CONSUME.actual.json', {'returncode': result.returncode, 'argv': argv})
++    need(result.returncode == 0, 'Typed parent consumption rejected; no cleanup credit')
++    actual = read_pin(pin(result_path))
++    need(actual.get('synthetic') is False and actual.get('cleanup_complete') is True,
++         'Actual nonsynthetic cleanup required')
++    return actual
++
++
++def hold_uncertain(session: Session, error: BaseException) -> NoReturn:
++    # Returning would let the public CLI destroy its original ownership stack.
++    # No timed auto-release, force-kill, repeated consumer or SDK recovery occurs.
++    try:
++        write(session.output/'UNRESOLVED-TYPED-CLEANUP-HOLD.actual.json', {
++            'machine_id': session.machine_id, 'pid': session.process.pid,
++            'observer_created_filetime': session.created_filetime,
++            'error': (type(error).__name__+': '+str(error))[:4096], 'original_cli_retains_owner': True})
++    except BaseException:
++        pass
++    while True:
++        try:
++            time.sleep(1)
++        except BaseException:
++            # A Python interrupt or wait/reporting error is not permission to
++            # abandon the native owner. Keep one OS wait slice before retry.
++            try:
++                kernel = ctypes.WinDLL('kernel32', use_last_error=True)
++                kernel.Sleep(1000)
++            except BaseException:
++                continue
++
++
++def observe(*, python: str, tools: Path, observer: FilePin, prepared: Path, output: Path,
++            machine: str, scope_pin: FilePin, collected_at: float, before: dict, deadline_utc: str,
++            call: Callable[[str, str, dict], dict]) -> dict:
++    scope = read_pin(scope_pin)
++    fresh(scope, machine=machine, collected_at=collected_at)
++    binding = read_pin(pin(prepared/'BINDING.prepared.json'))
++    need(binding['root_scope_sha256'] == scope_pin['sha256'], 'Prepared scope changed')
++    exe = Path(observer['path'])
++    need(pin(exe) == observer, 'Final observer bytes differ; never use old Q after rebuild')
++    deadline = datetime.fromisoformat(deadline_utc.replace('Z', '+00:00'))
++    need(deadline.tzinfo is not None and (deadline-datetime.now(timezone.utc)).total_seconds() >= 1050,
++         'Insufficient original close/cleanup/observation reserve immediately before observer claim')
++    argv = observer_argv(exe, prepared, output, machine)
++    handle = create_cancel(scope['cancel_event'])
++    EVENTS[str(output)] = handle
++    try:
++        write(output/'observer-start.once.json', {'argv': argv, 'no_replay': True})
++    except BaseException:
++        close_cancel(handle); EVENTS.pop(str(output), None)
++        raise
++    out, err = (output/'observer.stdout').open('xb'), (output/'observer.stderr').open('xb')
++    started = time.monotonic()
++    try:
++        proc = subprocess.Popen(argv, stdout=out, stderr=err, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
++    except BaseException:
++        out.close(); err.close()
++        raise
++    session = Session(proc, output, started, out, err, handle, machine)
++    SESSIONS[str(output)] = session  # Register the original object before recording identity/READY.
++    day: dict = {'submitted': False, 'exact_day_verified': False}
++    error: str | None = None
++    step = None
++    step_error = None
++    try:
++        session.created_filetime = process_birth(proc)
++        write(output/'OBSERVER-ORIGINAL-POPEN.actual.json', {'machine_id': machine, 'pid': proc.pid,
++            'observer_created_filetime': session.created_filetime, 'actual_original_popen_retained': True,
++            'argv': argv})
++        ready = await_ready(session)
++        ready_binding = bind_ready(output/'parent.raw.ndjson', binding, ready)
++        write(output/'READY-OBSERVED.actual.json', {'ready': ready, 'binding': ready_binding})
++        fresh(read_pin(scope_pin), machine=machine, collected_at=collected_at)
++        need(proc.poll() is None and time.monotonic()-started < 18, 'Insufficient watch headroom; zero day')
++        write(output/'day.once.json', {'tool': 'ck3_execute_step', 'step': 'life-advance-one-day', 'no_replay': True})
++        day['submitted'] = True
++        try:
++            step = call('day-once', 'ck3_execute_step', {'step': 'life-advance-one-day', 'expected_revision': None})
++        except BaseException as exc:
++            step_error = type(exc).__name__ + ': ' + str(exc)
++    except BaseException as exc:
++        error = type(exc).__name__ + ': ' + str(exc)
++    finally:
++        try:
++            actual = finish(session, python=python, tools=tools, prepared=prepared)
++        except BaseException as exc:
++            hold_uncertain(session, exc)
++    # Only the unique composite executes during the debugger window. Every SDK
++    # post-read waits for the original observer wait and typed full cleanup.
++    if actual.get('cleanup_complete') is True and day['submitted']:
++        try:
++            after = call('independent-after', 'ck3_take_snapshot', {'include_native_command_history': False})
++            need(after.get('date_raw') == before['date_raw']+24 and after.get('paused') is True
++                 and after.get('played_character', {}).get('character_id') == before['played_character']['character_id']
++                 and after.get('diagnostics', {}).get('bridge_pid') == before['diagnostics']['bridge_pid']
++                 and after.get('diagnostics', {}).get('connection_generation') == before['diagnostics']['connection_generation'],
++                 'Independent exact-day owner/date mismatch')
++            if step is not None and step_error is None:
++                from xar_autoplayer.bridge.exact_one_day_postcondition import exact_day_postcondition
++                day['postcondition'] = exact_day_postcondition(step, before, after)
++                day['exact_day_verified'] = True
++            day.update(after=after, original_step_error=step_error)
++            need(step_error is None, 'Original day unknown; no replay')
++        except BaseException as exc:
++            error = type(exc).__name__ + ': ' + str(exc)
++    result = {'day': day, 'observer': actual, 'primary_error': error,
++              'safe_to_begin_normal_close': actual.get('cleanup_complete') is True,
++              'full_R08_qualified': False, 'paid_maintenance_raw': None}
++    write(output/'ROOT-WINDOW-RESULT.actual.json', result)
++    return result
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_cases/r08_parent_entry_one_day.py
+@@ -0,0 +1,167 @@
++"""Distinct parent execution observation through the original public CaseClient."""
++from __future__ import annotations
++from datetime import datetime, timezone
++import json
++from pathlib import Path
++import time
++from typing import Protocol, Mapping
++
++from . import r08_writer_common_adapter as bridge
++from . import r08_writer_one_day as cleanup_library
++from . import r08_parent_entry_controller as controller
++
++
++class PublicSelection(Protocol):
++    @property
++    def locations(self) -> Mapping[str,Path]: ...
++
++
++class PublicClient(Protocol):
++    output: Path
++    selection: PublicSelection
++    def guard(self) -> None: ...
++    def checkpoint(self, name: str, value: dict) -> object: ...
++    def normal_close(self, disposition: str) -> dict: ...
++
++
++def need(ok: bool, message: str) -> None:
++    if not ok:
++        raise ValueError(message)
++
++
++def validate_contract(context: dict) -> dict:
++    value = context['case_inputs']['r08_parent_entry_one_day']
++    fields = {'bundle_index_pin', 'qualification_pin', 'observer_pin', 'root_scope_path',
++        'actor_id', 'expected_start_date_raw', 'parent_tools', 'prefix', 'deadline_utc',
++        'payment_enable_once_authorized', 'natural_phase_enable_once_authorized'}
++    need(type(value) is dict and set(value) == fields, 'Exact parent one-day settings required')
++    need(type(value['actor_id']) is int and value['actor_id'] > 0
++         and type(value['expected_start_date_raw']) is int and value['expected_start_date_raw'] > 0,
++         'Parent actor/start date must be predeclared')
++    for name in ('payment_enable_once_authorized', 'natural_phase_enable_once_authorized'):
++        need(type(value[name]) is bool, 'Explicit once-enable decision required')
++    need(type(value['prefix']) is str and value['prefix'].startswith('r08-parent-')
++         and len(value['prefix']) < 45, 'Bounded parent prefix required')
++    deadline = datetime.fromisoformat(value['deadline_utc'].replace('Z', '+00:00'))
++    need(deadline.tzinfo is not None and (deadline-datetime.now(timezone.utc)).total_seconds() >= 1050,
++         'Parent window requires original 900s close +120s cleanup +30s observation reserve')
++    source_index = controller.read_pin(value['bundle_index_pin'])
++    indexed = {Path(row['path']).resolve(): row for row in source_index['files']}
++    parent_tools = Path(value['parent_tools']).resolve()
++    for name in ('prepare_parent_entry_admission.py','consume_parent_entry_actual.py',
++                 'parent_entry_execution_contract.py','owner_binding.py',
++                 'cold_observer.cpp','parent_entry_execution_once.inc'):
++        path = (parent_tools/name).resolve()
++        need(path in indexed and controller.pin(path) == indexed[path],
++             'Executed parent_tools path is not in the exact source bundle: '+name)
++    controller.read_pin(value['qualification_pin'])
++    return value
++
++
++def run_case(context: dict, client: PublicClient) -> dict:
++    from ck3_live_run_id import current_machine_id
++    from xar_autoplayer.bridge.war_payment_observations_v1 import normalize_payment_extras, JOURNAL_KEY
++    cfg = validate_contract(context)
++    machine = current_machine_id()
++    output = Path(client.output)
++    scope_path = Path(cfg['root_scope_path'])
++    need(not scope_path.exists(), 'Root scope must be issued for this fresh actual owner pair')
++    controller.write(output/'r08-parent.once.json', {'machine_id': machine, 'run_id': context['run_id'],
++        'predeclared_date_raw': cfg['expected_start_date_raw'], 'maximum_actual_days': 1, 'no_replay': True})
++    gate = cleanup_library.CloseGate(client)
++    packets = bridge.CommonPackets(context, client, output/'r08-parent-common-packets', machine=machine)
++    serial = 0
++    result: dict = {'machine_id': machine, 'run_id': context['run_id'], 'actual_days': 0,
++        'exact_day_verified': False, 'full_R08_qualified': False, 'business_pass': False,
++        'status': 'ENTERED', 'errors': []}
++
++    def call(label: str, tool: str, args: dict) -> dict:
++        nonlocal serial
++        serial += 1
++        return packets.request(cfg['prefix']+'-'+str(serial)+'-'+label, tool, args)[0]
++
++    def snapshot(label: str) -> dict:
++        frame = call(label, 'ck3_take_snapshot', {'include_native_command_history': False})
++        need(frame.get('episode_run_id') is None and frame.get('episode_projection') == 'native_campaign'
++             and frame.get('map_ready') is True and frame.get('paused') is True
++             and frame.get('played_character', {}).get('character_id') == cfg['actor_id'],
++             'Fresh ordinary paused same owner required')
++        return frame
++
++    def payment(label: str, mode: str) -> dict:
++        frame = snapshot(label+'-frame')
++        args = {'expected_revision': frame['revision'], 'payment_sampling': mode}
++        if mode == 'enable':
++            args['payment_window_contract'] = 'same_owned_process_no_load_v1'
++        normalized = normalize_payment_extras(call(label, bridge.CASH_TOOL, args),
++            snapshot=frame, payment_sampling=mode)
++        if mode != 'query':
++            need(normalized['war_payment_control_v1']['accepted'] is True, 'Payment action rejected')
++        return normalized[JOURNAL_KEY]
++
++    control = output/'r08-parent-control'
++    try:
++        initial = payment('initial-payment', 'query')
++        if initial['sampling']['capture_enabled'] is not True:
++            need(cfg['payment_enable_once_authorized'], 'Payment once-enable not authorized')
++            cleanup_library.prepare_natural_phase(call, snapshot,
++                enable_once_authorized=cfg['natural_phase_enable_once_authorized'])
++            payment('payment-enable-once', 'enable')
++        need(payment('payment-independent-on', 'query')['sampling']['capture_enabled'] is True,
++             'Independent payment ON required')
++        collected_at = time.monotonic()
++        collected = bridge.collect_current_context(context, client, machine=machine,
++            prefix=cfg['prefix']+'-owner', packet_root=output/'r08-parent-inputs',
++            owner_binding_mode='native_campaign_owned_no_load_v2')
++        expected = collected['expected']
++        need(expected['date'] == cfg['expected_start_date_raw'] and expected['character_id'] == cfg['actor_id'],
++             'Predeclared parent actor/day differs')
++        controller.write(output/'R08-PARENT-AWAITING-ROOT.json', {'machine_id': machine,
++            'run_id': context['run_id'], 'snapshot_view_pin': collected['before_response'],
++            'cash_view_pin': collected['cash_response'], 'common_output': str(output),
++            'retained_process': collected['common_retained_process'], 'expected': expected,
++            'root_scope_path': str(scope_path), 'owner_pair_freshness_seconds': 30,
++            'observer_started': False})
++        # Root completes image review before this phase. Waiting never refreshes or resubmits a query.
++        while not scope_path.exists():
++            need(time.monotonic()-collected_at <= 30, 'Root grant absent before pair freshness expired; zero launch/day')
++            time.sleep(.05)
++        scope_pin = controller.pin(scope_path)
++        controller.fresh(controller.read_pin(scope_pin), machine=machine, collected_at=collected_at)
++        python = str(client.selection.locations['python'])
++        tools = Path(cfg['parent_tools'])
++        prepared = controller.prepare(python, Path(context['repo_root']), tools, collected,
++            scope_pin, cfg['qualification_pin'], cfg['observer_pin'], control)
++        # These bytes are the exact snapshot that admitted the native observer, not a new clock arm.
++        before = controller.read_pin(collected['before_response'], 3*1024*1024)['body']
++        client.guard()
++        validate_contract(context)
++        gate.restored = False
++        try:
++            window = controller.observe(python=python, tools=tools, observer=cfg['observer_pin'],
++                prepared=prepared, output=control, machine=machine, scope_pin=scope_pin,
++                collected_at=collected_at, before=before, deadline_utc=cfg['deadline_utc'], call=call)
++            result['window'] = window
++        finally:
++            gate.restored = not (control/'observer-start.once.json').exists() or (
++                result.get('window', {}).get('safe_to_begin_normal_close') is True)
++        result['exact_day_verified'] = window['day'].get('exact_day_verified') is True
++        result['status'] = 'PARENT_WINDOW_CONSUMED' if not window['primary_error'] else 'STOPPED_ERROR_PRESERVED_NO_REPLAY'
++    except BaseException as exc:
++        result.update(status='STOPPED_ERROR_PRESERVED_NO_REPLAY', error=type(exc).__name__+': '+str(exc))
++    finally:
++        claimed = (control/'day.once.json').exists()
++        cleanup, errors, days = cleanup_library.cleanup_writer_window(call, snapshot, payment, gate,
++            observer_claimed=claimed, expected_start_date_raw=cfg['expected_start_date_raw'])
++        result.update(cleanup=cleanup, native_restore_verified=gate.restored,
++            normal_close_owned_by_shared_entry=True)
++        result['errors'].extend(errors)
++        if days is not None:
++            result['actual_days'] = days
++        client.checkpoint('R08-PARENT-RESULT', result)
++        client.checkpoint('R08-PARENT-TERMINAL', {'machine_id': machine, 'run_id': context['run_id'],
++            'status': result['status'], 'actual_days': result['actual_days'],
++            'exact_day_verified': result['exact_day_verified'], 'native_restore_verified': gate.restored,
++            'OFFclear': cleanup['OFFclear'], 'Save': cleanup['Save'],
++            'full_R08_qualified': False, 'business_pass': False})
++    return result
+--- a/tools/ck3_mod_acceptance_cases/r10_prepare.json
++++ b/tools/ck3_mod_acceptance_cases/r10_prepare.json
+@@ -1,48 +1,63 @@
+-{
+-  "schema": "xar.e04.r10-common-preparation.v1",
+-  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county, R06 refill or R08 natural writer opportunity through the same common CaseClient",
+-  "formal_ABC_executor_implemented": false,
+-  "formal_ABC_arm": false,
+-  "normal_Save_performed_by_case": false,
+-  "maximum_actual_days": 0,
+-  "optional_r04_county_entry": {
+-    "settings": "case_inputs.r04_county_entry",
+-    "maximum_actual_days": 7,
+-    "maximum_Move_attempts": 1,
+-    "maximum_observation_days": 1,
+-    "camera_marker": "before-action-camera-{awaiting,started}.json",
+-    "normal_close_owner": "shared entry/CaseClient",
+-    "R04_entire_card_closed": false
+-  },
+-  "optional_r06_refill_one_day": {
+-    "settings": "case_inputs.r06_refill_one_day",
+-    "maximum_actual_days": 1,
+-    "maximum_Move_attempts": 0,
+-    "maximum_observer_launches": 1,
+-    "native_window_ms": 30000,
+-    "requires_actual_worker_READY": true,
+-    "requires_source_bound_native_qualification": true,
+-    "coordination": "r06-before-observer-{awaiting,started}.json",
+-    "normal_close_owner": "shared entry/CaseClient",
+-    "full_R06_qualified": false
+-  },
+-  "optional_r08_writer_one_day": {
+-    "settings": "case_inputs.r08_writer_one_day",
+-    "maximum_actual_days": 1,
+-    "maximum_observer_launches": 1,
+-    "native_window_ms": 30000,
+-    "aggregate_slot_hits": 128,
+-    "watch_offsets": [704, 712, 40, 48],
+-    "owner_binding_mode": "native_campaign_owned_no_load_v2",
+-    "coordination": "r08-before-observer-awaiting.json -> r08-root-observer-admission.json",
+-    "normal_close_owner": "shared entry/CaseClient, after verified restore and payment OFF/clear",
+-    "full_R08_qualified": false
+-  },
+-  "pending": [
+-    "Root common S0 selection and normal Save after actual route/site pilot",
+-    "two distinct sites with actual positive same-province stock deltas and qualified callback chain",
+-    "frozen plan and three independent normal cold loads",
+-    "shared A/B/C execution seam and full actual 90-day common horizon",
+-    "R08 qualified application/payer/cadence before formal compare_fees"
+-  ]
+-}
++{
++  "schema": "xar.e04.r10-common-preparation.v1",
++  "scope": "normal source readiness pilot with mutually exclusive explicit R04 county, R06 refill or R08 natural writer opportunity through the same common CaseClient",
++  "formal_ABC_executor_implemented": false,
++  "formal_ABC_arm": false,
++  "normal_Save_performed_by_case": false,
++  "maximum_actual_days": 0,
++  "optional_r04_county_entry": {
++    "settings": "case_inputs.r04_county_entry",
++    "maximum_actual_days": 7,
++    "maximum_Move_attempts": 1,
++    "maximum_observation_days": 1,
++    "camera_marker": "before-action-camera-{awaiting,started}.json",
++    "normal_close_owner": "shared entry/CaseClient",
++    "R04_entire_card_closed": false
++  },
++  "optional_r06_refill_one_day": {
++    "settings": "case_inputs.r06_refill_one_day",
++    "maximum_actual_days": 1,
++    "maximum_Move_attempts": 0,
++    "maximum_observer_launches": 1,
++    "native_window_ms": 30000,
++    "requires_actual_worker_READY": true,
++    "requires_source_bound_native_qualification": true,
++    "coordination": "r06-before-observer-{awaiting,started}.json",
++    "normal_close_owner": "shared entry/CaseClient",
++    "full_R06_qualified": false
++  },
++  "optional_r08_writer_one_day": {
++    "settings": "case_inputs.r08_writer_one_day",
++    "maximum_actual_days": 1,
++    "maximum_observer_launches": 1,
++    "native_window_ms": 30000,
++    "aggregate_slot_hits": 128,
++    "watch_offsets": [
++      704,
++      712,
++      40,
++      48
++    ],
++    "owner_binding_mode": "native_campaign_owned_no_load_v2",
++    "coordination": "r08-before-observer-awaiting.json -> r08-root-observer-admission.json",
++    "normal_close_owner": "shared entry/CaseClient, after verified restore and payment OFF/clear",
++    "full_R08_qualified": false
++  },
++  "pending": [
++    "Root common S0 selection and normal Save after actual route/site pilot",
++    "two distinct sites with actual positive same-province stock deltas and qualified callback chain",
++    "frozen plan and three independent normal cold loads",
++    "shared A/B/C execution seam and full actual 90-day common horizon",
++    "R08 qualified application/payer/cadence before formal compare_fees"
++  ],
++  "optional_bounded_r08_parent_entry_execution_one_day": {
++    "default": null,
++    "mode": "parent-entry-execution-once-v1",
++    "maximum_actual_days": 1,
++    "observer_timeout_seconds": 30,
++    "foreign_limit": 4096,
++    "fresh_owner_pair_seconds": 30,
++    "qualification": "distinct_new_execution_DR_qualification_required",
++    "full_R08_qualified": false
++  }
++}
+--- a/tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py
++++ b/tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py
+@@ -6,6 +6,12 @@
+ full-wire views retain their original public control rows. The shared entry
+ owns the host, SDK session and normal game closure.
+ """
++from __future__ import annotations
++from collections.abc import Mapping
++from typing import TYPE_CHECKING
++from ck3_mod_acceptance_background_types import JsonObject, json_object
++if TYPE_CHECKING:
++    from ck3_mod_acceptance_client import CaseClient
+ from pathlib import Path
+ import hashlib
+ import importlib.util
+@@ -82,11 +88,11 @@
+         sys.path[:] = original
+ 
+ 
+-def validate_contract(context):
++def _validate_contract_impl(context):
+     need(context['case_contract'].get('schema') == 'xar.e04.r10-common-preparation.v1',
+          'R10 common preparation contract differs')
+     value = context.get('case_inputs', {})
+-    need(sum(value.get(k) is not None for k in ('r04_county_entry','r06_refill_one_day','r08_writer_one_day')) <= 1,
++    need(sum(value.get(k) is not None for k in ('r04_county_entry','r06_refill_one_day','r08_writer_one_day','r08_parent_entry_one_day')) <= 1,
+          'R04, R06 and R08 are mutually exclusive')
+     if value.get('r04_county_entry') is not None:
+         from . import r04_county_entry
+@@ -97,6 +103,10 @@
+     if value.get('r08_writer_one_day') is not None:
+         from . import r08_writer_one_day
+         r08_writer_one_day.validate_contract(context)
++    if value.get('r08_parent_entry_one_day') is not None:
++        parent = module(Path(__file__).with_name('parent_bundle_loader.py'), 'explicit_parent_bundle_loader').load(context)
++        parent.validate_contract(context)
++        return
+     if not value:
+         return
+     for key in ('army_id', 'war_id', 'goal_province_id', 'staging_province_id'):
+@@ -213,10 +223,13 @@
+             'common_T0_frozen': False, 'formal_ABC_arm': False}
+ 
+ 
+-def run_case(context, client):
++def _run_case_impl(context, client):
+     from ck3_live_run_id import current_machine_id
+     from ck3_mod_acceptance_cases.r08_writer_common_adapter import retained_creation_filetime
+     validate_contract(context)
++    if context['case_inputs'].get('r08_parent_entry_one_day') is not None:
++        parent = module(Path(__file__).with_name('parent_bundle_loader.py'), 'explicit_parent_bundle_loader').load(context)
++        return parent.run_case(context, client)
+     machine = current_machine_id()
+     client.retain_process()
+     # PID/create-time comes from the original retained OS handle, not old proofs.
+@@ -276,3 +289,13 @@
+         from . import r08_writer_one_day
+         verified['r08_writer_one_day'] = r08_writer_one_day.verify_case(context)
+     return verified
++
++
++def validate_contract(context: Mapping[str,object]) -> None:
++    """Keep the original product checks behind an explicit context interface."""
++    _validate_contract_impl(context)
++
++
++def run_case(context: Mapping[str,object], client: CaseClient) -> JsonObject:
++    """Dispatch through the original managed client; validate returned JSON."""
++    return json_object(_run_case_impl(context,client))
+--- a/tools/ck3_mod_acceptance_launcher.py
++++ b/tools/ck3_mod_acceptance_launcher.py
+@@ -1,4 +1,4 @@
+-"""Launch one frozen shared host after direct, fresh Steam image review.
++"""Launch one frozen shared host after a fresh background Steam observation.
+ 
+ The detached supervisor retains the real host Popen. Its exit receipt is host
+ process evidence only; product acceptance and normal CK3 exit remain separate.
+@@ -14,13 +14,17 @@
+ import subprocess
+ import sys
+ import time
++from collections.abc import Sequence
++from ck3_mod_acceptance_background_types import (JsonObject, ProcessGeneration, json_object,
++    text_field, object_field, strings_field, environment, process_handle)
++from ck3_mod_acceptance_steam_gate import OfflineAdmission
+ 
+ from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
+ 
+ MAX_REVIEW_AGE = 600
+ 
+ 
+-def recent(timestamp, *, now=None):
++def recent(timestamp: str, *, now: datetime | None = None) -> datetime:
+     instant = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+     now = now or datetime.now(timezone.utc)
+     require(instant.tzinfo is not None and 0 <= (now - instant).total_seconds() <= MAX_REVIEW_AGE,
+@@ -28,23 +32,23 @@
+     return instant
+ 
+ 
+-def frozen_run(run_root, *, all_pins=True, input_phase="launch"):
++def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "launch") -> tuple[JsonObject, JsonObject]:
+     root = Path(run_root).resolve()
+     frozen_path = root / "frozen-argv.json"
+-    frozen = read_json(frozen_path)
+-    require(isinstance(frozen.get("run_id"), str) and frozen["run_id"] and
+-            isinstance(frozen.get("argv"), list) and frozen["argv"] and
+-            all(isinstance(arg, str) and arg for arg in frozen["argv"]), "Actual frozen run/argv required")
+-    require(frozen.get("launch_requires_fresh_owned_cas_and_offline_direct_review") is True,
+-            "Allocated direct review gate is missing")
++    frozen = json_object(read_json(frozen_path))
++    argv = strings_field(frozen, "argv")
++    require(bool(text_field(frozen,"run_id")) and bool(argv), "Actual frozen run/argv required")
++    require(frozen.get("launch_requires_fresh_owned_cas_and_background_offline") is True,
++            "Allocated background offline gate is missing")
+     require(frozen.get("previous_session_closed") is True and frozen.get("previous_screen_released") is True,
+             "Previous managed session/screen closure is not admitted")
+-    context = read_json(root / "ready-context.json")
+-    check_pin(context["frozen_argv"])
+-    require(Path(context["frozen_argv"]["path"]).resolve() == frozen_path and
+-            context.get("run_id") == frozen["run_id"] and Path(context["run_dir"]).resolve() == root,
++    context = json_object(read_json(root / "ready-context.json"))
++    context_pin = object_field(context,"frozen_argv")
++    check_pin(context_pin)
++    require(Path(text_field(context_pin,"path")).resolve() == frozen_path and
++            context.get("run_id") == frozen["run_id"] and Path(text_field(context,"run_dir")).resolve() == root,
+             "Ready allocation does not bind this exact frozen argv")
+-    files = frozen.get("files")
++    files = object_field(frozen,"files")
+     require(isinstance(files, dict) and files, "Allocated exact input pins required")
+     require(input_phase in {"launch", "running"}, "Unknown frozen input phase")
+     if all_pins:
+@@ -52,144 +56,70 @@
+             import importlib.util
+             source = Path(__file__).with_name("ck3_mod_acceptance_runtime_inputs.py").resolve()
+             require(str(source) in files, "Running input helper is absent from allocation pins")
+-            check_pin({**files[str(source)], "path": str(source)})
++            check_pin({**json_object(files[str(source)]), "path": str(source)})
+             spec = importlib.util.spec_from_file_location("shared_acceptance_runtime_inputs", source)
++            if spec is None or spec.loader is None:raise ValueError("Running input loader unavailable")
+             module = importlib.util.module_from_spec(spec)
+             spec.loader.exec_module(module)
+-            frozen["_runtime_input_observation"] = module.validate_running_inputs(root, frozen)
++            frozen["_runtime_input_observation"] = json_object(module.validate_running_inputs(root, frozen))
+         else:
+             for name, row in files.items():
+-                check_pin({**row, "path": name})
++                check_pin({**json_object(row), "path": name})
+         check_pin(frozen["runtime_manifest"])
+     # A copied helper must not silently import another unpinned sibling.
+-    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py"):
++    for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_steam_gate.py", "steam_offline_state_contract.py", "steam_offline_state_probe.py", "steam_offline_native_provider_v1.py", "steam_offline_native_profiles.py", "ck3_mod_acceptance_background_types.py", "ck3_live_run_id.py"):
+         path = Path(__file__).with_name(name).resolve()
+         require(str(path) in files, "Public helper is absent from allocation pins: " + str(path))
+-        check_pin({**files[str(path)], "path": str(path)})
+-    host = str(Path(frozen["argv"][frozen["argv"].index("--agent-source-root") - 1]).resolve())
++        check_pin({**json_object(files[str(path)]), "path": str(path)})
++    host = str(Path(argv[argv.index("--agent-source-root") - 1]).resolve())
+     require(host in files, "Actual shared host is absent from allocation pins")
+-    check_pin({**files[host], "path": host})
+-    frozen["_checked_frozen_argv"] = pin(frozen_path)
++    check_pin({**json_object(files[host]), "path": host})
++    frozen["_checked_frozen_argv"] = json_object(pin(frozen_path))
+     return frozen, context
+ 
+ 
+-def check_fresh_frame(frame_path, image, *, now=None):
+-    frame_path, image = Path(frame_path).resolve(), Path(image).resolve()
+-    frame = read_json(frame_path)
+-    require(frame.get("schema") == "ck3.steam_fresh_desktop_frame.v1" and
+-            frame.get("moving_edge_changed") is True and
+-            frame.get("restored_rect") == frame.get("before_rect") and
+-            frame.get("moved_rect") != frame.get("before_rect"), "Actual reversible Steam freshness proof required")
+-    captured = recent(frame["captured_at_utc"], now=now)
+-    require(Path(frame["moved_path"]).resolve() == image and
+-            pin(image)["sha256"] == str(frame["moved_sha256"]).lower() and
+-            str(frame["before_sha256"]).lower() != str(frame["moved_sha256"]).lower(),
+-            "Freshness proof differs from the directly reviewed original frame")
+-    check_pin({"path": frame["before_path"], "bytes": Path(frame["before_path"]).stat().st_size,
+-               "sha256": str(frame["before_sha256"]).lower()})
+-    if frame.get("clock_check") is not None:
+-        require(frame["clock_check"].get("clock_pixels_unchanged") is False,
+-                "Freshness proof retains a stale desktop clock")
+-    from PIL import Image, ImageChops
+-    with Image.open(image) as moved, Image.open(frame["before_path"]) as before:
+-        require(list(moved.size) == frame["desktop_size"] and before.size == moved.size,
+-                "Steam original dimensions differ from freshness receipt")
+-        delta = ImageChops.difference(before.convert("RGB"), moved.convert("RGB"))
+-        first, second = frame["before_rect"], frame["moved_rect"]
+-        edge = (min(first[0], second[0]), first[1], max(first[0], second[0]), first[3])
+-        require(delta.getbbox() is not None and delta.crop(edge).getbbox() is not None,
+-                "Original image bytes do not prove Steam window edge movement")
+-    return frame, captured
+-
+-
+-def create_challenge(run_root, keeper_root, frame_path, image, output):
+-    frozen, context = frozen_run(run_root)
+-    require(Path(context["keeper_root"]).resolve() == Path(keeper_root).resolve(), "Wrong allocated keeper")
+-    lease = live_lease(keeper_root, frozen)
+-    frame, _ = check_fresh_frame(frame_path, image)
+-    output = Path(output).resolve()
+-    require(not output.exists(), "Use a new direct-review challenge directory")
+-    output.mkdir(parents=True)
+-    nonce = secrets.token_hex(16)
+-    from PIL import Image, ImageDraw, ImageFont
+-    with Image.open(image) as original:
+-        reviewed = Image.new("RGB", (max(original.width, 800), original.height + 64), "white")
+-        reviewed.paste(original.convert("RGB"), (0, 64))
+-        draw = ImageDraw.Draw(reviewed)
+-        draw.text((10, 8), "DIRECT REVIEW NONCE: " + nonce, font=ImageFont.load_default(size=24), fill="black")
+-        draw.text((10, 44), "Read Steam offline status in the original frame below; this banner does not certify it.", fill="black")
+-        reviewed.save(output / "direct-review.png")
+-    challenge = {"schema": "ck3-mod-acceptance-review-challenge-v1", "created_at_utc": utc(),
+-        "nonce": nonce, "run_id": frozen["run_id"], "screen_task": frozen["screen_task"],
+-        "frozen_argv": pin(Path(run_root) / "frozen-argv.json"), "keeper_root": str(Path(keeper_root).resolve()),
+-        "keeper_inputs": pin(Path(keeper_root) / "inputs.json"), "frame": pin(frame_path), "image": pin(image),
+-        "review_image": pin(output / "direct-review.png"), "cas_at_creation": lease["lease"],
+-        "offline_status_observed": None, "business_pass": False}
+-    write_new(output / "challenge.json", challenge)
+-    return {"status": "DIRECT_IMAGE_REVIEW_REQUIRED", "challenge": pin(output / "challenge.json"),
+-            "review_image": challenge["review_image"], "business_pass": False}
+-
+-
+-def validate_review(frozen, keeper_root, proof_path, challenge_path, observed_nonce, reviewer, *, now=None):
+-    proof, challenge = read_json(proof_path), read_json(challenge_path)
+-    require(challenge.get("schema") == "ck3-mod-acceptance-review-challenge-v1" and
+-            proof.get("schema") == "ck3-mod-acceptance-direct-review-v1", "Shared direct-review schemas required")
+-    created, reviewed = recent(challenge["created_at_utc"], now=now), recent(proof["reviewed_at_utc"], now=now)
+-    require(created <= reviewed and isinstance(reviewer, str) and reviewer.strip() and
+-            proof.get("reviewer") == reviewer and proof.get("direct_image_review") is True and
+-            proof.get("steam_offline_confirmed") is True, "Current operator's direct Steam offline image review required")
+-    require(isinstance(observed_nonce, str) and len(observed_nonce) == 32 and
+-            secrets.compare_digest(observed_nonce, str(challenge.get("nonce", ""))) and
+-            proof.get("observed_nonce") == observed_nonce, "Directly observed fresh image nonce differs")
+-    for value in (proof, challenge):
+-        require(value.get("run_id") == frozen["run_id"] and value.get("screen_task") == frozen["screen_task"],
+-                "Direct review belongs to another allocated run/screen task")
+-    require(Path(challenge["keeper_root"]).resolve() == Path(keeper_root).resolve(), "Challenge crossed keeper")
+-    for key in ("frozen_argv", "keeper_inputs", "frame", "image", "review_image"):
+-        check_pin(challenge[key])
+-    require(challenge["frozen_argv"] == frozen["_checked_frozen_argv"] and
+-            Path(challenge["keeper_inputs"]["path"]).resolve() == Path(keeper_root).resolve() / "inputs.json",
+-            "Direct review differs from this actual frozen allocation/keeper")
+-    require(challenge["frozen_argv"] == pin(Path(proof["frozen_argv"]["path"])), "Review frozen argv changed")
+-    for key in ("frozen_argv", "image", "review_image"):
+-        require(proof.get(key) == challenge[key], "Direct review bytes differ: " + key)
+-    require(proof.get("challenge") == pin(challenge_path), "Direct review challenge bytes changed")
+-    frame, captured = check_fresh_frame(challenge["frame"]["path"], challenge["image"]["path"], now=now)
+-    require(captured <= created, "Challenge predates its claimed Steam frame")
+-    return {"proof": pin(proof_path), "challenge": pin(challenge_path), "image": challenge["image"],
+-            "reviewer": reviewer, "screen_task": frozen["screen_task"], "steam_pid": frame["steam_pid"],
+-            "reviewed_at_utc": proof["reviewed_at_utc"]}
+-
+-
+-def admission(args):
++
++
++
++
++
++
++def admission(args: argparse.Namespace) -> tuple[JsonObject, OfflineAdmission, JsonObject]:
+     root = args.run_root.resolve()
+     frozen, context = frozen_run(root)
+-    require(Path(context["keeper_root"]).resolve() == args.keeper_root.resolve(), "Wrong allocated keeper")
+-    review = validate_review(frozen, args.keeper_root, args.proof, args.challenge, args.observed_nonce, args.reviewer)
+-    owner = live_lease(args.keeper_root, frozen)
++    require(Path(text_field(context,"keeper_root")).resolve() == args.keeper_root.resolve(), "Wrong allocated keeper")
++    from ck3_mod_acceptance_steam_gate import validate_receipt
++    from steam_offline_state_probe import WindowsReader
++    from ck3_live_run_id import current_machine_id
++    machine=current_machine_id()
++    require(object_field(frozen,'identity_allocation').get('machine_id')==machine,'Frozen machine differs')
++    review=validate_receipt(args.steam_offline_receipt,machine_id=machine,reader=WindowsReader())
++    owner = json_object(live_lease(args.keeper_root, frozen))
+     import psutil
+-    steam = psutil.Process(review["steam_pid"])
+-    require(steam.name().lower() in ("steam.exe", "steamwebhelper.exe"), "Reviewed Steam UI process is absent or replaced")
+     require(not any((row.info["name"] or "").lower() == "ck3.exe" for row in psutil.process_iter(["name"])),
+             "CK3 is already running")
+-    expected_environment = frozen.get("runtime_environment", {})
++    expected_environment = environment(frozen.get("runtime_environment", {}))
++    argv = strings_field(frozen,"argv")
+     require(all(os.environ.get(name) == value for name, value in expected_environment.items()),
+             "Actual host import environment differs from frozen shared runtime")
+-    require("--output" in frozen["argv"] and
+-            Path(frozen["argv"][frozen["argv"].index("--output") + 1]).resolve() == root / "native-report.json",
++    require("--output" in argv and
++            Path(argv[argv.index("--output") + 1]).resolve() == root / "native-report.json",
+             "Host output differs from actual allocation")
+     return frozen, review, owner
+ 
+ 
+-def retain_host(root, frozen, review, owner):
++def retain_host(root: Path, frozen: JsonObject, review: OfflineAdmission, owner: JsonObject) -> int:
+     """Retain one actual Popen until wait returns; useful with harmless test children."""
+     root = Path(root).resolve()
+     require(not (root / "host-started.json").exists(), "Shared host launch already consumed")
++    from ck3_mod_acceptance_steam_gate import recheck_before_popen
++    from steam_offline_state_probe import WindowsReader
++    recheck_before_popen(review,reader=WindowsReader())
+     stdout = (root / "host-stdout.log").open("xb")
+     stderr = (root / "host-stderr.log").open("xb")
+     child = None
+     try:
+-        child = subprocess.Popen(frozen["argv"], cwd=frozen["lease_anchor"], stdout=stdout, stderr=stderr)
++        child = subprocess.Popen(strings_field(frozen,"argv"), cwd=text_field(frozen,"lease_anchor"), stdout=stdout, stderr=stderr)
+         import psutil
+         try:
+             creation = psutil.Process(child.pid).create_time()
+@@ -198,7 +128,7 @@
+         write_new(root / "host-started.json", {"at_utc": utc(), "pid": child.pid,
+             "create_time": creation, "supervisor_pid": os.getpid(),
+             "argv": frozen["argv"], "run_id": frozen["run_id"], "admitted_lease": owner["lease"],
+-            "direct_review": review, "actual_popen_retained": True, "business_pass": False})
++            "background_offline_admission": review, "actual_popen_retained": True, "business_pass": False})
+         code = child.wait()
+         write_new(root / "host-original-process-exit.json", {"at_utc": utc(), "pid": child.pid,
+             "returncode": code, "run_id": frozen["run_id"], "actual_original_popen_wait": True,
+@@ -217,75 +147,140 @@
+         stdout.close(); stderr.close()
+ 
+ 
+-def supervise(args):
++def _birth_filetime(handle: int) -> str:
++    import ctypes
++    from ctypes import wintypes
++    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
++    kernel.GetProcessTimes.argtypes=[wintypes.HANDLE]+[ctypes.POINTER(wintypes.FILETIME)]*4
++    kernel.GetProcessTimes.restype=wintypes.BOOL
++    fields=[wintypes.FILETIME() for _ in range(4)]
++    require(kernel.GetProcessTimes(handle,*[ctypes.byref(f) for f in fields]),'Exact original process creation unavailable')
++    value=(fields[0].dwHighDateTime<<32)|fields[0].dwLowDateTime
++    require(value>0,'Exact process creation is empty')
++    return str(value)
++
++
++def process_identity(pid: int) -> ProcessGeneration:
++    import ctypes
++    from ctypes import wintypes
++    kernel=ctypes.WinDLL('kernel32',use_last_error=True)
++    kernel.OpenProcess.argtypes=[wintypes.DWORD,wintypes.BOOL,wintypes.DWORD]
++    kernel.OpenProcess.restype=wintypes.HANDLE
++    kernel.CloseHandle.argtypes=[wintypes.HANDLE]
++    handle=kernel.OpenProcess(0x1000,False,pid)
++    require(handle,'Known supervisor process identity unavailable')
++    try:return {'pid':pid,'birth_filetime':_birth_filetime(handle)}
++    finally:kernel.CloseHandle(handle)
++
++
++def supervise(args: argparse.Namespace) -> int:
+     root = args.run_root.resolve()
+     intent = read_json(root / "launch-intent.json")
+     require(intent.get("ticket") == args.launch_ticket, "Original once-only launcher ticket differs")
+-    check_pin(intent["proof"]); check_pin(intent["challenge"]); check_pin(intent["frozen_argv"])
+-    frozen, review, owner = admission(args)
+-    return retain_host(root, frozen, review, owner)
+-
+-
+-def launch(args):
++    require(intent.get('schema')=='ck3-mod-acceptance-background-launch-intent-v1','Background intent schema required')
++    check_pin(intent['steam_offline_receipt']); check_pin(intent['frozen_argv'])
++    require(Path(intent['steam_offline_receipt']['path']).resolve()==args.steam_offline_receipt.resolve(),'Receipt crossed original intent')
++    from ck3_mod_acceptance_steam_gate import BackgroundGateRefusal
++    try:
++        frozen, review, owner = admission(args)
++        require(review['receipt']==intent['steam_offline_receipt'] and intent['frozen_argv']==pin(root/'frozen-argv.json'),'Original background admission changed')
++        return retain_host(root, frozen, review, owner)
++    except BackgroundGateRefusal as error:
++        frozen,_ = frozen_run(root)
++        write_new(root/'supervisor-background-refused.json', {
++            'schema':'ck3-mod-acceptance-background-supervisor-prehost-refusal-v1',
++            'machine_id':text_field(object_field(frozen,'identity_allocation'),'machine_id'),'at_utc':utc(),
++            'run_id':frozen['run_id'],'supervisor_pid':os.getpid(),
++            'runtime_identity':process_identity(os.getpid()),'runtime_parent_identity':process_identity(os.getppid()),
++            'stage':'BACKGROUND_ADMISSION_BEFORE_RETAIN_HOST',
++            'reason_code':error.reason_code,'error_type':type(error).__name__,
++            'error_repr':repr(error),'launch_intent':pin(root/'launch-intent.json'),
++            'frozen_argv':pin(root/'frozen-argv.json'),'steam_offline_receipt':intent['steam_offline_receipt'],
++            'host_started':False,'game_started':False,'native_session_started':False,'business_pass':False})
++        raise
++
++
++
++def launch(args: argparse.Namespace) -> int:
+     root = args.run_root.resolve()
+     frozen, review, owner = admission(args)
+     require(not (root / "launch-intent.json").exists(), "Original launch intent already consumed; never replay")
+     ticket = secrets.token_hex(32)
+-    write_new(root / "launch-intent.json", {"at_utc": utc(), "ticket": ticket, "run_id": frozen["run_id"],
+-        "proof": pin(args.proof), "challenge": pin(args.challenge), "frozen_argv": pin(root / "frozen-argv.json"),
++    write_new(root / "launch-intent.json", {'schema':'ck3-mod-acceptance-background-launch-intent-v1',
++        'at_utc':utc(),'ticket':ticket,'run_id':frozen['run_id'],
++        'steam_offline_receipt':review['receipt'],'background_admission':review,'frozen_argv':pin(root/'frozen-argv.json'),
+         "admitted_lease": owner["lease"], "business_pass": False})
+     argv = [sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()),
+             "--run-root", str(root), "--keeper-root", str(args.keeper_root.resolve()),
+-            "--proof", str(args.proof.resolve()), "--challenge", str(args.challenge.resolve()),
+-            "--observed-nonce", args.observed_nonce, "--reviewer", args.reviewer,
++            '--steam-offline-receipt',str(args.steam_offline_receipt.resolve()),
+             "--supervise", "--launch-ticket", ticket]
+     with (root / "host-supervisor-stdout.log").open("xb") as stdout, (root / "host-supervisor-stderr.log").open("xb") as stderr:
+-        child = subprocess.Popen(argv, cwd=frozen["lease_anchor"], stdout=stdout, stderr=stderr,
++        child = subprocess.Popen(argv, cwd=text_field(frozen,"lease_anchor"), stdout=stdout, stderr=stderr,
+                                  creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+-    write_new(root / "host-supervisor-started.json", {"at_utc": utc(), "pid": child.pid, "argv": argv,
+-                                                    "business_pass": False})
+-    deadline = time.monotonic() + 45
+-    start_read_error = None
+-    while time.monotonic() < deadline:
+-        if (root / "host-started.json").exists():
+-            try:
+-                host = read_json(root / "host-started.json")
+-            except json.JSONDecodeError as error:
+-                # The supervisor publishes this once-only ACK with open('x')
+-                # before json.dump completes. Re-read it; never start again.
+-                start_read_error = error
+-            else:
+-                print(json.dumps({"status": "ORIGINAL_SHARED_HOST_STARTED", "run_id": frozen["run_id"],
+-                    "host": host, "business_pass": False}), flush=True)
+-                return 0
+-        require(child.poll() is None, "Original host supervisor failed; inspect retained stderr and never replay")
+-        time.sleep(.05)
+-    raise TimeoutError("Original host supervisor launch not proved in budget; never replay") from start_read_error
+-
+-
+-def main(argv=None):
++    original_identity=None
++    handed_off=False
++    original_waited=False
++    try:
++        original_identity={'pid':child.pid,'birth_filetime':_birth_filetime(process_handle(child))}
++        write_new(root / "host-supervisor-started.json", {"at_utc": utc(), "pid": child.pid, "argv": argv,
++            "machine_id":text_field(object_field(frozen,"identity_allocation"),"machine_id"),"original_popen_identity":original_identity,
++            "business_pass": False})
++        deadline = time.monotonic() + 45
++        start_read_error = None
++        while time.monotonic() < deadline:
++            if (root / "host-started.json").exists():
++                try:
++                    host = read_json(root / "host-started.json")
++                except json.JSONDecodeError as error:
++                    start_read_error = error
++                else:
++                    handed_off=True  # Only the original supervisor's actual host ACK transfers custody.
++                    print(json.dumps({"status":"ORIGINAL_SHARED_HOST_STARTED","run_id":frozen["run_id"],
++                        "host":host,"business_pass":False}),flush=True)
++                    return 0
++            if child.poll() is not None:
++                code=child.wait()
++                original_waited=True
++                write_new(root/'host-supervisor-original-wait.json',{
++                    'machine_id':text_field(object_field(frozen,'identity_allocation'),'machine_id'),'at_utc':utc(),
++                    'run_id':frozen['run_id'],'pid':child.pid,'returncode':code,'original_popen_identity':original_identity,
++                    'actual_original_popen_wait':True,'supervisor_started':pin(root/'host-supervisor-started.json'),
++                    'launch_intent':pin(root/'launch-intent.json'),'business_pass':False})
++                raise ValueError('Original host supervisor refused before host; original wait recorded; never replay')
++            time.sleep(.05)
++        raise TimeoutError("Original host supervisor launch not proved in budget; never replay") from start_read_error
++    finally:
++        if not handed_off and not original_waited:
++            # A fallible creation/read/write or diagnostic timeout never abandons
++            # the actual Popen. Keep this CLI alive; no kill, spawn or SDK replay.
++            while True:
++                try:
++                    code=child.wait(timeout=1)
++                    break
++                except subprocess.TimeoutExpired:
++                    continue
++                except BaseException:
++                    try:time.sleep(.05)
++                    except BaseException:pass
++            path=root/'host-supervisor-original-wait.json'
++            if not path.exists():
++                write_new(path,{'machine_id':text_field(object_field(frozen,'identity_allocation'),'machine_id'),'at_utc':utc(),
++                    'run_id':frozen['run_id'],'pid':child.pid,'returncode':code,
++                    'original_popen_identity':original_identity,'actual_original_popen_wait':True,
++                    'launch_intent':pin(root/'launch-intent.json'),
++                    'start_recording_or_ack_failed':True,'business_pass':False})
++
++
++
++def main(argv: Sequence[str] | None = None) -> int:
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument("--run-root", required=True, type=Path)
+     parser.add_argument("--keeper-root", required=True, type=Path)
+-    parser.add_argument("--proof", type=Path)
+-    parser.add_argument("--challenge", type=Path)
+-    parser.add_argument("--observed-nonce")
+-    parser.add_argument("--reviewer")
+-    parser.add_argument("--create-challenge", action="store_true")
+-    parser.add_argument("--fresh-frame", type=Path)
+-    parser.add_argument("--image", type=Path)
+-    parser.add_argument("--output", type=Path)
++    parser.add_argument('--steam-offline-receipt',type=Path,required=True)
+     parser.add_argument("--supervise", action="store_true", help=argparse.SUPPRESS)
+     parser.add_argument("--launch-ticket", help=argparse.SUPPRESS)
+     args = parser.parse_args(argv)
+     try:
+-        if args.create_challenge:
+-            require(args.fresh_frame and args.image and args.output and not args.supervise,
+-                    "Challenge requires --fresh-frame --image --output")
+-            print(json.dumps(create_challenge(args.run_root, args.keeper_root, args.fresh_frame, args.image, args.output)))
+-            return 0
+-        require(args.proof and args.challenge and args.observed_nonce and args.reviewer,
+-                "Fresh directly reviewed proof/challenge/nonce/reviewer required")
+         return supervise(args) if args.supervise else launch(args)
+     except Exception as error:
+         print(json.dumps({"status": "BLOCKED", "error": repr(error), "business_pass": False}), file=sys.stderr, flush=True)
+--- /dev/null
++++ b/tools/ck3_mod_acceptance_steam_gate.py
+@@ -0,0 +1,129 @@
++"""Consume one current-machine background observation; never operate Steam/UI."""
++from __future__ import annotations
++
++from datetime import datetime, timezone
++import hashlib
++import json
++from pathlib import Path
++from typing import Protocol, TypedDict
++
++from steam_offline_state_contract import ProcessIdentity, ProbeResult, parse_result
++from steam_offline_native_provider_v1 import _qualified_source, _validated_identity
++
++
++class BackgroundGateRefusal(ValueError):
++    """A background observation was rejected before any controlled host spawn."""
++    reason_code = 'BACKGROUND_OFFLINE_ADMISSION_REJECTED'
++
++
++class FilePin(TypedDict):
++    path: str
++    bytes: int
++    sha256: str
++
++
++class OfflineAdmission(TypedDict):
++    schema: str
++    machine_id: str
++    observed_at_utc: str
++    receipt: FilePin
++    steam_pid: int
++    steam_birth_filetime: str
++    observation_method: str
++    background_only: bool
++
++
++class IdentityReader(Protocol):
++    def identity(self, pid: int) -> ProcessIdentity: ...
++
++
++def file_pin(path: Path) -> FilePin:
++    size = path.stat().st_size
++    digest = hashlib.sha256()
++    with path.open('rb') as source:
++        for chunk in iter(lambda: source.read(1024 * 1024), b''):
++            digest.update(chunk)
++    if path.stat().st_size != size:
++        raise ValueError('Source changed during observation')
++    return FilePin(path=str(path.resolve()), bytes=size, sha256=digest.hexdigest())
++
++
++def validate_observation(value: object, *, machine_id: str, reader: IdentityReader,
++                         now: datetime | None = None) -> ProbeResult:
++    result = parse_result(value)
++    now = now or datetime.now(timezone.utc)
++    stamp = datetime.fromisoformat(result.observed_at_utc.replace('Z', '+00:00'))
++    if (result.machine_id != machine_id or result.status != 'offline'
++            or stamp.tzinfo is None or not 0 <= (now - stamp).total_seconds() <= 30
++            or result.steam is None or result.source is None):
++        raise ValueError('Fresh same-machine background offline observation required')
++    if reader.identity(result.steam.pid) != result.steam:
++        raise ValueError('Observed Steam incarnation changed')
++    _validated_identity(result.steam)
++    # This launch profile admits only the exact native offline-positive producer.
++    # The general parser also understands CEF, which this launch profile does not qualify.
++    from steam_offline_native_profiles import select_profile
++    profile = select_profile(result.steam.file_version, result.source.bytes, result.source.sha256)
++    evidence = result.native_evidence
++    if (result.observation_method != 'native_current_user_byte' or evidence is None
++            or result.source.sha256 != profile.image_sha256 or result.source.bytes != profile.image_bytes
++            or Path(result.source.path).resolve() != (Path(result.steam.exe).parent/'steamui.dll').resolve()
++            or evidence.module_size != profile.image_size or int(evidence.value_rva) != profile.value_rva
++            or int(evidence.producer_rva) != profile.producer_rva
++            or evidence.producer_anchor_hex != profile.producer.hex()
++            or int(evidence.tray_manager_pointer_rva) != profile.tray_manager_rva
++            or int(evidence.tray_state_offset) != profile.tray_offset):
++        raise ValueError('Background provider source/profile is not qualified for this launch')
++    return result
++
++
++def _validate_receipt(path: Path, *, machine_id: str, reader: IdentityReader,
++                     now: datetime | None = None) -> OfflineAdmission:
++    if not 0 < path.stat().st_size <= 65536:
++        raise ValueError('Bounded actual Steam receipt required')
++    payload = path.read_bytes()
++    if len(payload) > 65536:
++        raise ValueError('Steam receipt grew')
++    result = validate_observation(json.loads(payload), machine_id=machine_id,
++                                  reader=reader, now=now)
++    source = result.source
++    steam = result.steam
++    if source is None or steam is None:
++        raise ValueError('Actual source absent')
++    actual_source = _qualified_source(source.path)
++    if actual_source != source:
++        raise ValueError('Observed Steam source changed')
++    receipt = FilePin(path=str(path.resolve()), bytes=len(payload),
++                      sha256=hashlib.sha256(payload).hexdigest())
++    if path.read_bytes() != payload or reader.identity(steam.pid) != steam:
++        raise ValueError('Receipt or Steam incarnation changed before admission')
++    validate_observation(json.loads(payload), machine_id=machine_id, reader=reader)
++    return OfflineAdmission(schema='ck3-mod-acceptance-background-offline-admission-v1',
++        machine_id=machine_id, observed_at_utc=result.observed_at_utc, receipt=receipt,
++        steam_pid=steam.pid, steam_birth_filetime=steam.birth_filetime,
++        observation_method=str(result.observation_method), background_only=True)
++
++
++def validate_receipt(path: Path, *, machine_id: str, reader: IdentityReader, now: datetime | None = None) -> OfflineAdmission:
++    try:
++        return _validate_receipt(path,machine_id=machine_id,reader=reader,now=now)
++    except (ValueError,OSError,KeyError,TypeError) as error:
++        raise BackgroundGateRefusal(str(error)) from error
++
++
++def _recheck_before_popen(admission: OfflineAdmission, *, reader: IdentityReader) -> None:
++    ref = admission['receipt']
++    path = Path(ref['path'])
++    if path.stat().st_size != ref['bytes'] or not 0 < ref['bytes'] <= 65536:
++        raise ValueError('Actual admission receipt changed')
++    payload = path.read_bytes()
++    if hashlib.sha256(payload).hexdigest() != ref['sha256']:
++        raise ValueError('Actual admission receipt content changed')
++    validate_observation(json.loads(payload), machine_id=admission['machine_id'], reader=reader)
++
++
++def recheck_before_popen(admission: OfflineAdmission, *, reader: IdentityReader) -> None:
++    try:
++        _recheck_before_popen(admission,reader=reader)
++    except (ValueError,OSError,KeyError,TypeError) as error:
++        raise BackgroundGateRefusal(str(error)) from error
+--- /dev/null
++++ b/tools/steam_offline_native_profiles.py
+@@ -0,0 +1,84 @@
++"""Immutable exact native SteamUI profiles; no state observation or wire schema.
++
++Source-only image lookup is not admission. Native provider and public gate both
++join the same Steam incarnation version to the actual UI size/digest through
++select_profile; a version and an approved unrelated image never form a profile.
++"""
++from __future__ import annotations
++from dataclasses import dataclass
++import re
++from typing import Final
++
++
++@dataclass(frozen=True, slots=True)
++class NativeOfflineProfile:
++    profile_id: str
++    steam_version: str
++    image_sha256: str
++    image_bytes: int
++    image_size: int
++    value_rva: int
++    tray_manager_rva: int
++    tray_offset: int
++    producer_rva: int
++    producer: bytes
++    anchors: tuple[tuple[int, bytes], ...]
++
++
++PROFILE_1096: Final[NativeOfflineProfile] = NativeOfflineProfile(
++    'steamui-10.96.30.42-cb387ade', '10.96.30.42',
++    'cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278',
++    18962584, 19238912, 0x1123627, 0x1121AA0, 0x154, 0x616D0C,
++    bytes.fromhex('440fb60513c9b000488d157d3b7400488bcbe81d9e3b00'),
++    ((0x616D0C, bytes.fromhex('440fb60513c9b000488d157d3b7400488bcbe81d9e3b00')),
++     (0x5D39B0, bytes.fromhex('40534883ec20488bd9e852d8f2ff488bc8488b10ff92880000008883e70100004883c4205bc3')),
++     (0x6869DF, bytes.fromhex('488d0d5acaa900e8c5cff4ff')),
++     (0x6158E4, bytes.fromhex('803d3cddb000007419488b0dacc1b0004533c0ba04000000e81fc7f6ff')),
++     (0x582038, bytes.fromhex('8bfa4c8bf1490f45f03b9154010000')),
++     (0x582071, bytes.fromhex('4189be54010000'))),
++)
++PROFILE_1112: Final[NativeOfflineProfile] = NativeOfflineProfile(
++    'steamui-11.12.30.7-1b945794', '11.12.30.7',
++    '1b9457943205dc3af0bd53463ba331cbd2a381388699705c02271aac7a2b1252',
++    19449496, 19730432, 0x1194EC7, 0x11932E0, 0x154, 0x63EA4C,
++    bytes.fromhex('440fb6057364b500488d150da37700488bcbe83d703d00'),
++    ((0x63EA4C, bytes.fromhex('440fb6057364b500488d150da37700488bcbe83d703d00')),
++     (0x5F7D00, bytes.fromhex('40534883ec20488bd9e8c280f2ff488bc8488b10ff92880000008883870100004883c4205bc3')),
++     (0x6B2FFF, bytes.fromhex('488d0d3a1dae00e8f54cf4ff')),
++     (0x63D524, bytes.fromhex('803d9c79b500007419488b0dac5db5004533c0ba04000000e87f53f6ff')),
++     (0x5A28DE, bytes.fromhex('8bfa4c8bf13b9154010000')),
++     (0x5A290E, bytes.fromhex('4189be54010000'))),
++)
++PROFILES: Final[tuple[NativeOfflineProfile, ...]] = (PROFILE_1096, PROFILE_1112)
++
++
++def _source_key(image_bytes: int, image_sha256: str) -> tuple[int, str]:
++    if type(image_bytes) is not int or image_bytes <= 0:
++        raise ValueError('Exact positive UI byte count required')
++    if type(image_sha256) is not str or re.fullmatch('[0-9a-f]{64}', image_sha256) is None:
++        raise ValueError('Exact lowercase UI SHA256 required')
++    return image_bytes, image_sha256
++
++
++def source_profile(image_bytes: int, image_sha256: str) -> NativeOfflineProfile:
++    """Resolve file-only anchors; caller must still join the Steam version."""
++    key = _source_key(image_bytes, image_sha256)
++    matches = tuple(p for p in PROFILES if (p.image_bytes, p.image_sha256) == key)
++    if len(matches) != 1:
++        raise ValueError('SteamUI source is not one unique exact profile')
++    return matches[0]
++
++
++def select_profile(steam_version: str, image_bytes: int,
++                   image_sha256: str) -> NativeOfflineProfile:
++    if type(steam_version) is not str:
++        raise ValueError('Exact Steam version string required')
++    profile = source_profile(image_bytes, image_sha256)
++    if steam_version != profile.steam_version:
++        raise ValueError('Steam incarnation and SteamUI source cross profiles')
++    return profile
++
++
++def supported_version(steam_version: str) -> bool:
++    """Identity prefilter only, never version-only source admission."""
++    return type(steam_version) is str and any(p.steam_version == steam_version for p in PROFILES)
+--- a/tools/steam_offline_native_provider_v1.py
++++ b/tools/steam_offline_native_provider_v1.py
+@@ -25,6 +25,9 @@
+     NativeEvidence, ProcessIdentity, SourceIdentity, decimal, exact_int, text,
+ )
+ 
++from steam_offline_native_profiles import PROFILES, select_profile, source_profile, supported_version
++
++# Legacy aliases retain the exact 10.96 source API; engine selection is per observation.
+ IMAGE_SHA256 = "cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278"
+ IMAGE_BYTES = 18962584
+ IMAGE_SIZE = 19238912
+@@ -111,12 +114,11 @@
+ def _qualified_source(path: str) -> SourceIdentity:
+     source_path = Path(path).resolve(strict=True)
+     before = _stamp(source_path)
+-    if before[0] != IMAGE_BYTES:
++    if before[0] not in {p.image_bytes for p in PROFILES}:
+         raise ValueError("SteamUI size is not qualified")
+     with source_path.open("rb") as stream:
+         digest = hashlib.file_digest(stream, "sha256").hexdigest()
+-        if digest != IMAGE_SHA256:
+-            raise ValueError("SteamUI digest is not qualified")
++        profile = source_profile(before[0], digest)
+         stream.seek(0x3C)
+         pe = struct.unpack("<I", stream.read(4))[0]
+         stream.seek(pe)
+@@ -129,17 +131,17 @@
+             raise ValueError("invalid PE shape")
+         optional = stream.read(optional_size)
+         if (struct.unpack_from("<H", optional)[0] != 0x20B
+-                or struct.unpack_from("<I", optional, 56)[0] != IMAGE_SIZE):
++                or struct.unpack_from("<I", optional, 56)[0] != profile.image_size):
+             raise ValueError("unexpected image layout")
+         sections = [struct.unpack("<8sIIIIIIHHI", stream.read(40))
+                     for _ in range(section_count)]
+-        for rva, expected in ANCHORS:
++        for rva, expected in profile.anchors:
+             matched = False
+             for section in sections:
+                 virtual, raw_size, raw_offset = section[2], section[3], section[4]
+                 if virtual <= rva and rva + len(expected) <= virtual + raw_size:
+                     offset = raw_offset + rva - virtual
+-                    if offset + len(expected) > IMAGE_BYTES:
++                    if offset + len(expected) > profile.image_bytes:
+                         raise ValueError("anchor outside raw file")
+                     stream.seek(offset)
+                     if stream.read(len(expected)) != expected:
+@@ -236,7 +238,7 @@
+     if int(decimal(value.birth_filetime)) <= 0:
+         raise ValueError("invalid birth time")
+     text(value.exe)
+-    if value.file_version != STEAM_VERSION:
++    if not supported_version(value.file_version):
+         raise ValueError("Steam version is not qualified")
+     if Path(value.exe).name.lower() != "steam.exe":
+         raise ValueError("expected steam.exe")
+@@ -264,20 +266,20 @@
+         stage = "source_not_qualified"
+         expected_path = str(Path(steam.exe).parent / "steamui.dll")
+         source_before = backend.source(expected_path)
+-        if (source_before.bytes != IMAGE_BYTES or source_before.sha256 != IMAGE_SHA256
+-                or Path(source_before.path).resolve() != Path(expected_path).resolve()):
++        profile = select_profile(steam.file_version, source_before.bytes, source_before.sha256)
++        if Path(source_before.path).resolve() != Path(expected_path).resolve():
+             return NativeUnavailable("unavailable", stage, "source binding is not qualified")
+-        if reader.file_version(source_before.path) != STEAM_VERSION:
++        if reader.file_version(source_before.path) != profile.steam_version:
+             return NativeUnavailable("unavailable", stage, "SteamUI version is not qualified")
+         stage = "module_changed"
+         module_before = backend.module(steam.pid, expected_path)
+-        if (type(module_before.base) is not int or not 0x10000 <= module_before.base <= 0x7FFFFFFFFFFF - IMAGE_SIZE
+-                or type(module_before.size) is not int or module_before.size != IMAGE_SIZE
++        if (type(module_before.base) is not int or not 0x10000 <= module_before.base <= 0x7FFFFFFFFFFF - profile.image_size
++                or type(module_before.size) is not int or module_before.size != profile.image_size
+                 or Path(module_before.path).resolve() != Path(expected_path).resolve()):
+             return NativeUnavailable("unavailable", stage, "loaded SteamUI layout differs")
+         backend.open(steam.pid)
+         stage = "anchor_mismatch"
+-        for rva, expected in ANCHORS:
++        for rva, expected in profile.anchors:
+             if backend.read(module_before.base + rva, len(expected)) != expected:
+                 return NativeUnavailable("unavailable", stage, "loaded instruction anchor differs")
+         stage = "tray_state_unavailable"
+@@ -285,11 +287,11 @@
+         tray_values: list[int] = []
+         manager_values: list[int] = []
+         for _ in range(2):
+-            manager = int(struct.unpack("<Q", backend.read(module_before.base + TRAY_MANAGER_RVA, 8))[0])
+-            if not 0x10000 <= manager <= 0x7FFFFFFFFFFF - TRAY_OFFSET - 4 or manager % 8:
++            manager = int(struct.unpack("<Q", backend.read(module_before.base + profile.tray_manager_rva, 8))[0])
++            if not 0x10000 <= manager <= 0x7FFFFFFFFFFF - profile.tray_offset - 4 or manager % 8:
+                 return NativeUnavailable("unavailable", stage, "invalid current tray manager")
+-            raw = backend.read(module_before.base + VALUE_RVA, 1)[0]
+-            tray = int(struct.unpack("<I", backend.read(manager + TRAY_OFFSET, 4))[0])
++            raw = backend.read(module_before.base + profile.value_rva, 1)[0]
++            tray = int(struct.unpack("<I", backend.read(manager + profile.tray_offset, 4))[0])
+             if raw == 0:
+                 return NativeUnavailable("unavailable", "native_online_not_qualified",
+                                          "native zero does not qualify current online mode")
+@@ -303,7 +305,7 @@
+             return NativeUnavailable("unavailable", stage, "mode or tray state changed during read")
+         # Recheck code, mapping, file identity and exact process birth after data.
+         stage = "anchor_mismatch"
+-        for rva, expected in ANCHORS:
++        for rva, expected in profile.anchors:
+             if backend.read(module_before.base + rva, len(expected)) != expected:
+                 return NativeUnavailable("unavailable", stage, "loaded code changed during read")
+         stage = "module_changed"
+@@ -321,14 +323,14 @@
+         evidence = NativeEvidence(
+             machine_id=machine_id, observed_at_utc=observed_at, nonce=nonce,
+             module_base=str(module_before.base), module_size=module_before.size,
+-            value_rva=str(VALUE_RVA), value_address=str(module_before.base + VALUE_RVA),
+-            producer_rva=str(PRODUCER_RVA), producer_anchor_hex=PRODUCER.hex(),
+-            producer_anchor_sha256=hashlib.sha256(PRODUCER).hexdigest(),
++            value_rva=str(profile.value_rva), value_address=str(module_before.base + profile.value_rva),
++            producer_rva=str(profile.producer_rva), producer_anchor_hex=profile.producer.hex(),
++            producer_anchor_sha256=hashlib.sha256(profile.producer).hexdigest(),
+             raw_samples=(raw_values[0], raw_values[1]),
+             steam_before=before, steam_after=after,
+             source_before=source_before, source_after=source_after,
+-            tray_manager_pointer_rva=str(TRAY_MANAGER_RVA),
+-            tray_manager_address=str(manager_values[0]), tray_state_offset=str(TRAY_OFFSET),
++            tray_manager_pointer_rva=str(profile.tray_manager_rva),
++            tray_manager_address=str(manager_values[0]), tray_state_offset=str(profile.tray_offset),
+             tray_state_samples=(tray_values[0], tray_values[1]),
+         )
+         return NativeObserved("observed", _state(raw_values[0], tray_values[0]),
+--- /dev/null
++++ b/tools/test_ck3_mod_acceptance_parent_bundle.py
+@@ -0,0 +1,105 @@
++"""Source routing and exact peers only; no native/business qualification."""
++from __future__ import annotations
++from datetime import datetime,timezone,timedelta
++import hashlib,json,tempfile,unittest,os
++from pathlib import Path
++from unittest.mock import patch
++from ck3_mod_acceptance_cases import parent_bundle_loader as loader
++from ck3_mod_acceptance_cases import r10_prepare_adapter as adapter
++from ck3_mod_acceptance_background_types import file_pin,json_value
++
++ROOT=Path(os.environ.get('XAR_PRODUCTION_SOURCE_TOOLS',str(Path(__file__).resolve().parent)))
++ACTOR=Path(os.environ.get('XAR_PARENT_ACTOR_SOURCE',str(ROOT/'ck3_mod_acceptance_cases/r08_parent_entry_one_day.py')))
++TOOL_NAMES=('prepare_parent_entry_admission.py','consume_parent_entry_actual.py','parent_entry_execution_contract.py','owner_binding.py','cold_observer.cpp','parent_entry_execution_once.inc')
++SCRATCH=ROOT.parent/'tmp'
++
++
++def pin(path: Path) -> dict:
++    payload=path.read_bytes()
++    return dict(path=str(path),bytes=len(payload),sha256=hashlib.sha256(payload).hexdigest())
++
++
++class ParentBundle(unittest.TestCase):
++    def setUp(self) -> None:
++        self.temp=tempfile.TemporaryDirectory(dir=SCRATCH)
++        self.addCleanup(self.temp.cleanup)
++        self.root=Path(self.temp.name)
++        self.q=self.root/'q.json';self.q.write_text('{}')
++        for name in TOOL_NAMES:(self.root/name).write_text('source-only pinned path fixture '+name)
++        sources={name:str(ROOT/'ck3_mod_acceptance_cases'/(name+'.py')) for name in loader.ORDER}
++        sources['r08_parent_entry_one_day']=str(ACTOR)
++        self.index=self.root/'index.json'
++        self.value=dict(schema='xar.e04.parent.public-source-bundle.v1',modules=sources,
++                        files=[pin(Path(path)) for path in sources.values()]+[pin(self.root/name) for name in TOOL_NAMES])
++        self.index.write_text(json.dumps(self.value))
++        self.cfg=dict(bundle_index_pin=pin(self.index),qualification_pin=pin(self.q),observer_pin=pin(self.q),
++            root_scope_path=str(self.root/'not-authorized.json'),actor_id=33388,expected_start_date_raw=53149056,
++            parent_tools=str(self.root),prefix='r08-parent-source-only',
++            deadline_utc=(datetime.now(timezone.utc)+timedelta(hours=1)).isoformat(),
++            payment_enable_once_authorized=False,natural_phase_enable_once_authorized=False)
++        self.context=dict(case_contract={'schema':'xar.e04.r10-common-preparation.v1'},
++                          case_inputs={'r08_parent_entry_one_day':self.cfg})
++
++    def replace_index(self) -> None:
++        self.index.write_text(json.dumps(self.value));self.cfg['bundle_index_pin']=pin(self.index)
++
++    def test_actual_pinned_parent_route_same_client_without_r10_queries(self) -> None:
++        parent=loader.load(self.context)
++        self.assertEqual(Path(parent.__file__).resolve(),ACTOR)
++        adapter.validate_contract(self.context)
++        client=object()
++        with patch.object(parent,'run_case',return_value={'source_route_only':True}) as route, \
++             patch.object(adapter,'collect_ready_t0',side_effect=AssertionError('Unexpected R10 query prelude')):
++            result=adapter.run_case(self.context,client)
++        self.assertTrue(result['source_route_only']);route.assert_called_once_with(self.context,client)
++
++    def test_default_off_and_existing_case_exclusion(self) -> None:
++        adapter.validate_contract({'case_contract':self.context['case_contract'],'case_inputs':{}})
++        bad={**self.context,'case_inputs':{**self.context['case_inputs'],'r06_refill_one_day':{}}}
++        with self.assertRaisesRegex(ValueError,'mutually exclusive'):adapter.validate_contract(bad)
++
++    def test_cached_module_still_checks_source_pins(self) -> None:
++        loader.load(self.context)
++        self.value['files'][0]['sha256']='0'*64;self.replace_index()
++        with self.assertRaisesRegex(ValueError,'peer changed'):loader.load(self.context)
++
++    def test_finite_module_set_and_duplicate_pin_rejected(self) -> None:
++        self.value['modules']['foreign_module']=str(self.q);self.replace_index()
++        with self.assertRaisesRegex(ValueError,'finite peer'):loader.load(self.context)
++        self.value['modules'].pop('foreign_module');self.value['files'].append(self.value['files'][0]);self.replace_index()
++        with self.assertRaisesRegex(ValueError,'Duplicate'):loader.load(self.context)
++
++    def test_typed_json_and_pin_boundary_rejects_non_json_and_numeric_aliases(self) -> None:
++        for invalid in [True,1.0]:
++            with self.subTest(value=invalid),self.assertRaises(ValueError):file_pin({**pin(self.q),'bytes':invalid})
++        for invalid in [(1,2),float('nan'),Path('not-json')]:
++            with self.subTest(value=repr(invalid)),self.assertRaises(ValueError):json_value(invalid)
++
++    def test_refusal_protocol_is_exact_final_pair(self) -> None:
++        import ck3_mod_acceptance_background_refusal as refusal
++        self.assertEqual(refusal.GATE_PROTOCOL_SHA256,pin(ROOT/'ck3_mod_acceptance_steam_gate.py')['sha256'])
++        self.assertEqual(refusal.LAUNCHER_PROTOCOL_SHA256,pin(ROOT/'ck3_mod_acceptance_launcher.py')['sha256'])
++        self.assertNotEqual(refusal.LAUNCHER_PROTOCOL_SHA256,'6ef5b8b0882c56fb3bccff74d9c3e77437663add415b63fda2995cbcba4e1d76')
++
++    def test_each_executed_parent_tool_is_bound_before_any_action(self) -> None:
++        from unittest.mock import Mock
++        from ck3_mod_acceptance_cases import r08_parent_entry_controller as controller
++        import copy
++        original=copy.deepcopy(self.value)
++        for name in TOOL_NAMES:
++            with self.subTest(peer=name):
++                self.value=copy.deepcopy(original)
++                self.value['files']=[r for r in self.value['files'] if r['path']!=str(self.root/name)]
++                self.replace_index();client=Mock()
++                with patch.object(controller,'observe') as observer,patch.object(controller.subprocess,'Popen') as popen:
++                    with self.assertRaises(ValueError):adapter.run_case(self.context,client)
++                self.assertFalse(client.mock_calls);observer.assert_not_called();popen.assert_not_called()
++
++    def test_crossed_parent_tool_directory_refused_before_any_action(self) -> None:
++        from unittest.mock import Mock
++        self.cfg['parent_tools']=str(self.root/'other-parent-tools');client=Mock()
++        with self.assertRaises(ValueError):adapter.run_case(self.context,client)
++        self.assertFalse(client.mock_calls)
++
++
++if __name__=='__main__':unittest.main()
+--- /dev/null
++++ b/tools/test_steam_offline_native_profiles.py
+@@ -0,0 +1,107 @@
++"""Exact profile selection through real provider/gate, with no OS reads."""
++from __future__ import annotations
++from dataclasses import FrozenInstanceError, replace
++from datetime import datetime, timedelta, timezone
++import json
++from pathlib import Path
++import struct
++import unittest
++from steam_offline_native_profiles import PROFILES, PROFILE_1096, PROFILE_1112, NativeOfflineProfile, select_profile
++from steam_offline_native_provider_v1 import Module, NativeObserved, NativeUnavailable, _probe_bound
++from steam_offline_state_contract import ProcessIdentity, SourceIdentity
++from ck3_mod_acceptance_steam_gate import validate_observation
++
++BASE=0x180000000
++MANAGER=0x200000000
++
++class Reader:
++    def __init__(self, profile: NativeOfflineProfile, *, ui_version: str | None=None) -> None:
++        self.steam=ProcessIdentity(12001,'134000000000000001',str(Path('steam.exe').resolve()),profile.steam_version)
++        self.ui_version=ui_version or profile.steam_version
++    def identity(self,pid: int) -> ProcessIdentity:
++        if pid!=self.steam.pid:raise ValueError('Unexpected fixture PID')
++        return self.steam
++    def file_version(self,path: str) -> str:
++        return self.ui_version
++
++class FakeBackend:
++    def __init__(self, profile: NativeOfflineProfile, *, wrong_anchor: bool=False,
++                 wrong_module: bool=False, raw: int=1, tray: int=4) -> None:
++        self.profile=profile;self.wrong_anchor=wrong_anchor;self.wrong_module=wrong_module
++        self.raw=raw;self.tray=tray;self.reads: list[tuple[int,int]]=[];self.closed=False
++        self.source_value=SourceIdentity(str(Path('steamui.dll').resolve()),profile.image_bytes,profile.image_sha256,'1','2')
++    def source(self,path: str) -> SourceIdentity:
++        return self.source_value
++    def module(self,pid: int,path: str) -> Module:
++        return Module(BASE,self.profile.image_size+int(self.wrong_module),self.source_value.path)
++    def open(self,pid: int) -> None:pass
++    def close(self) -> None:self.closed=True
++    def read(self,address: int,count: int) -> bytes:
++        self.reads.append((address,count));p=self.profile
++        for rva,expected in p.anchors:
++            if address==BASE+rva and count==len(expected):return bytes(count) if self.wrong_anchor else expected
++        if address==BASE+p.tray_manager_rva and count==8:return struct.pack('<Q',MANAGER)
++        if address==BASE+p.value_rva and count==1:return bytes((self.raw,))
++        if address==MANAGER+p.tray_offset and count==4:return struct.pack('<I',self.tray)
++        raise ValueError('Unexpected or unbounded fixture read')
++
++def wire(profile: NativeOfflineProfile) -> tuple[dict[str,object],Reader]:
++    reader=Reader(profile);backend=FakeBackend(profile)
++    result=_probe_bound('synthetic-profile-machine','nonce',reader.steam,reader,backend)
++    if not isinstance(result,NativeObserved):raise AssertionError(result)
++    evidence=result.evidence.to_wire()
++    return dict(schema='xar.steam-offline-state-probe/v2',machine_id='synthetic-profile-machine',
++        observed_at_utc=result.evidence.observed_at_utc,nonce='nonce',status='offline',offline_mode=True,
++        reason='observed',steam=evidence['steam_before'],source=evidence['source_before'],endpoint=None,
++        diagnostics=[],observation_method='native_current_user_byte',native_evidence=evidence),reader
++
++class ProfilesTest(unittest.TestCase):
++    def test_both_profiles_produce_and_consume_same_v2_json(self) -> None:
++        for p in PROFILES:
++            value,reader=wire(p)
++            result=validate_observation(json.loads(json.dumps(value)),machine_id='synthetic-profile-machine',reader=reader)
++            self.assertEqual(result.status,'offline')
++            self.assertEqual(result.source.sha256,p.image_sha256)
++            self.assertEqual(result.native_evidence.value_rva,str(p.value_rva))
++    def test_version_image_cross_product_is_not_a_profile(self) -> None:
++        for a,b in [(PROFILE_1096,PROFILE_1112),(PROFILE_1112,PROFILE_1096)]:
++            with self.assertRaises(ValueError):select_profile(a.steam_version,b.image_bytes,b.image_sha256)
++            reader=Reader(a);backend=FakeBackend(b)
++            result=_probe_bound('machine','nonce',reader.steam,reader,backend)
++            self.assertIsInstance(result,NativeUnavailable);self.assertEqual(backend.reads,[]);self.assertTrue(backend.closed)
++    def test_gate_rejects_cross_profile_receipt(self) -> None:
++        value,reader=wire(PROFILE_1112)
++        value['steam']={**value['steam'],'file_version':PROFILE_1096.steam_version}
++        with self.assertRaises(ValueError):validate_observation(value,machine_id='synthetic-profile-machine',reader=reader)
++    def test_source_digest_size_and_unknown_version_are_exact(self) -> None:
++        p=PROFILE_1112
++        for version,size,digest in [('future',p.image_bytes,p.image_sha256),(p.steam_version,p.image_bytes+1,p.image_sha256),(p.steam_version,p.image_bytes,'0'*64)]:
++            with self.assertRaises(ValueError):select_profile(version,size,digest)
++        self.assertRaises(ValueError,select_profile,p.steam_version,True,p.image_sha256)
++        self.assertRaises(ValueError,select_profile,p.steam_version,float(p.image_bytes),p.image_sha256)
++    def test_steamui_file_version_and_loaded_imagesize_remain_bound(self) -> None:
++        for p in PROFILES:
++            reader=Reader(p,ui_version='wrong');backend=FakeBackend(p)
++            self.assertIsInstance(_probe_bound('m','n',reader.steam,reader,backend),NativeUnavailable)
++            self.assertEqual(backend.reads,[])
++            reader=Reader(p);backend=FakeBackend(p,wrong_module=True)
++            self.assertIsInstance(_probe_bound('m','n',reader.steam,reader,backend),NativeUnavailable)
++            self.assertEqual(backend.reads,[])
++    def test_anchors_tray_and_zero_are_not_weakened(self) -> None:
++        for p in PROFILES:
++            for options in [dict(wrong_anchor=True),dict(tray=5),dict(raw=0)]:
++                reader=Reader(p);backend=FakeBackend(p,**options)
++                self.assertIsInstance(_probe_bound('m','n',reader.steam,reader,backend),NativeUnavailable)
++                self.assertTrue(backend.closed)
++    def test_gate_freshness_and_machine_are_still_independent(self) -> None:
++        for p in PROFILES:
++            value,reader=wire(p)
++            with self.assertRaises(ValueError):validate_observation(value,machine_id='other-machine',reader=reader)
++            late=datetime.now(timezone.utc)+timedelta(seconds=31)
++            with self.assertRaises(ValueError):validate_observation(value,machine_id='synthetic-profile-machine',reader=reader,now=late)
++    def test_registry_records_and_anchor_sequences_are_immutable(self) -> None:
++        self.assertIsInstance(PROFILES,tuple)
++        self.assertRaises(FrozenInstanceError,setattr,PROFILE_1112,'image_size',0)
++        self.assertEqual(len(PROFILE_1096.anchors),6);self.assertEqual(len(PROFILE_1112.anchors),6)
++
++if __name__=='__main__':unittest.main()

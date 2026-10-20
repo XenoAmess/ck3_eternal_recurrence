@@ -1,0 +1,38 @@
+{
+  "schema": "ck3-mod-acceptance-background-supervisor-prehost-refusal-v1",
+  "machine_id": "background-source-only-machine",
+  "at_utc": "2026-10-20T20:51:06.284417+00:00",
+  "run_id": "background-source-only-machine--vanilla--R0001",
+  "supervisor_pid": 15368,
+  "runtime_identity": {
+    "pid": 15368,
+    "birth_filetime": "134370030656644753"
+  },
+  "runtime_parent_identity": {
+    "pid": 29460,
+    "birth_filetime": "134370030656118417"
+  },
+  "stage": "BACKGROUND_ADMISSION_BEFORE_RETAIN_HOST",
+  "reason_code": "BACKGROUND_OFFLINE_ADMISSION_REJECTED",
+  "error_type": "BackgroundGateRefusal",
+  "error_repr": "BackgroundGateRefusal('Observed Steam incarnation changed')",
+  "launch_intent": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\launch-intent.json",
+    "bytes": 1748,
+    "sha256": "8825ad9d1a65c4aba01683e61c44538dea2b82ce250a161a0f01d55360235094"
+  },
+  "frozen_argv": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\frozen-argv.json",
+    "bytes": 18847,
+    "sha256": "ff4efb6001c33f766aa94920d4d4a3a10f96bc0c9469e6158d18d508275694e7"
+  },
+  "steam_offline_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\offline.fixture.json",
+    "bytes": 3056,
+    "sha256": "802d0188fc6cdc1036390c97e4bee6722a40aedc75d93de14c5348bf0d856e36"
+  },
+  "host_started": false,
+  "game_started": false,
+  "native_session_started": false,
+  "business_pass": false
+}

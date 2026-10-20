@@ -1,0 +1,256 @@
+{
+  "schema": "xar.background-supervisor-refusal.source-freeze.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T20:02:46.621622+00:00",
+  "cap": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\PUBLIC-BACKGROUND-REFUSAL-SOURCE4-ADMISSION.actual-a03.json",
+    "bytes": 5721,
+    "sha256": "dc16e68c58aa735231ce31da4ade66b2e56235bd335e7f55c9506b2b57b6719d"
+  },
+  "final_production_changes": [
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_allocate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 148891,
+      "sha256": "9740c439fbbe175ec96351b2b55a0d247a67a32cac967a751d23b8a971802bc8"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_steam_gate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 5948,
+      "sha256": "1856aff643bf3e7a6db01262833cb6157624f70970a549ce3db1592a578d7ae0"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_launcher.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 15565,
+      "sha256": "6ef5b8b0882c56fb3bccff74d9c3e77437663add415b63fda2995cbcba4e1d76"
+    },
+    {
+      "repository_relative_path": "tools/ck3_mod_acceptance_background_refusal.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "bytes": 21402,
+      "sha256": "5f5f1120e01cf2b1f5e4be7fcb99a8273ed0324fad527b68a0bf11493b936283"
+    }
+  ],
+  "full_same_directory_source_closure": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 148891,
+      "sha256": "9740c439fbbe175ec96351b2b55a0d247a67a32cac967a751d23b8a971802bc8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "bytes": 21402,
+      "sha256": "5f5f1120e01cf2b1f5e4be7fcb99a8273ed0324fad527b68a0bf11493b936283"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "bytes": 2370,
+      "sha256": "0e72c42a3f7c6781333c9053a6719d0f2e511346b4060ab86d6bbdf3c3fcf47d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2582,
+      "sha256": "5df9c395e690bc13e3b1dd60c4a6eb1503a5dec7eeb5f55a27e35e75fab8cc27"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 16326,
+      "sha256": "9e9c48643d31cc355e90f108bf070d6663762c8f3d066c8e4c3e4e656e67ee60"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 64343,
+      "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 15565,
+      "sha256": "6ef5b8b0882c56fb3bccff74d9c3e77437663add415b63fda2995cbcba4e1d76"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 17072,
+      "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_recorder.py",
+      "bytes": 36097,
+      "sha256": "3c22605777bbf63f714a862240af52dc9d1e06040777b9604d7155ed1dca1083"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "bytes": 1062,
+      "sha256": "c9051d277e77421301de8b964d51daf8277c3b55d80572c01f846f39f42145c9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 5948,
+      "sha256": "1856aff643bf3e7a6db01262833cb6157624f70970a549ce3db1592a578d7ae0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16352,
+      "sha256": "b1c02586f60d4ba1a4b32aa26d695b22dd2a3ce647f7a66e0994afb92ff9e50a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\tools\\steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    }
+  ],
+  "harness_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\exercise_public_background_v3.py",
+      "bytes": 15282,
+      "sha256": "ef9de3d1ae38cdada38a3c41181651b7ddaa89ee587e740df024617794e7acb5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\exercise_refusal_rejections.py",
+      "bytes": 3742,
+      "sha256": "1003b15aa869ab8460fe8203559eb119ede3d6a86c4407d8f3894d5b50ae1be9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\exercise_successor_v3.py",
+      "bytes": 2289,
+      "sha256": "34a2e1cc9f0b668b743ee2ba7350d5cfd04f45122357e93db62a10ec1b53af06"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\prove_standard_source_route.py",
+      "bytes": 3182,
+      "sha256": "c20b86c4021ef207a990af95775129b7af21ac61359a84b5eb79e92fdc5c1005"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\test_launch_original_owner.py",
+      "bytes": 3732,
+      "sha256": "a8373ebb27c37bb49e220500074b994ddf1d5e5f974e55803bf697327e2f6aea"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\shim\\sitecustomize.py",
+      "bytes": 360,
+      "sha256": "055bb54e6f4a644620b072ec50636200c3d7991dc01a07401ad70ec77cc5823a"
+    }
+  ],
+  "production_patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\BACKGROUND-REFUSAL.production.candidate.patch",
+    "bytes": 35316,
+    "sha256": "bc9b6521b5367f6c4b57ec43c8457024a431510f09e10145a2aab8ebed9d8a9c"
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\owner-focused-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1068,
+      "sha256": "f2f936a1339a2d7a77c1e567b5184e4db3f290eda546bb91ef1435bcf61d9688"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\standard-route-a01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1973,
+      "sha256": "a0cc4d9fea3fea51bdca76c1190f135440b74ac08fbba44b242e2221a5310387"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\standard-route-a01\\imports.actual.json",
+      "bytes": 1924,
+      "sha256": "393343c02d9c15c0a398faf25622d5dc9f60c1fd59b1dc3c60d5eb8ac215d50f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\revision-a03\\REJECTION-RESULTS.actual-a01.json",
+      "bytes": 1580,
+      "sha256": "b4ed6be5e63e3669f2757b57f82f995907316bd49cf8453340c4964ca08aeb6b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\cases\\standard-entry-identity-a03\\SUCCESSOR-RESULT.actual.json",
+      "bytes": 1519,
+      "sha256": "de72260c3ee36e6629dfa6d8b40b2219648d4e4689c7281ed822561f26b9e81d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-public-background-refusal-2030-a01\\cases\\exact-generation-late-a02\\CASE-RESULT.actual.json",
+      "bytes": 1415,
+      "sha256": "aac38456cdf4b8091a3cce98b754ef0909f5c4dfdd710b20e9f14780bf1461a3"
+    }
+  ],
+  "source_only": true,
+  "actual_Steam_probe": false,
+  "actual_game": false,
+  "actual_SDK": false,
+  "actual_observer": false,
+  "native_Q": false,
+  "parent17_Q": false,
+  "D_U_W_modified": false,
+  "exact_profile_in_test": "10.96.30.42 synthetic; does not qualify actual Steam 11.12.30.7",
+  "standard_entry_route": "revision-a03/tools/ck3_mod_acceptance.py; no -P and no helper preload",
+  "historical_31_second_test": "exact-generation-late-a02 belongs revision-a02, not silently reassigned to v3",
+  "known_fixture_drafts_preserved": [
+    "fresh",
+    "fresh-a02",
+    "exact-generation-late-a01",
+    "late-expiry/closure-a01",
+    "exact-generation-late-a02/second-a02-allocate",
+    "earlier weak nonce-only validator is superseded by exact generation v2/v3"
+  ]
+}

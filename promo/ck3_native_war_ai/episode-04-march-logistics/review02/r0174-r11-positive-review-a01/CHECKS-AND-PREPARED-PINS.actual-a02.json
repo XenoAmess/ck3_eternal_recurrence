@@ -1,0 +1,182 @@
+{
+  "schema": "xar.R11.typed-decimal64-prepared-a02.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:09:49.473557+00:00",
+  "status": "ACTUAL_MYPY4_PASS_AND11_CONTRACT_TESTS_PASS_SOURCE_ONLY",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-ONCE-CONTACT-RECIPE.prepared-a02.json",
+      "bytes": 16357,
+      "sha256": "daed749accd2104e001e686607f760069b46bb468786b1de2e05e004630c3a06"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_once_contacts_a02_final.py",
+      "bytes": 19160,
+      "sha256": "64c4d1e61f61e755bd2209d3822d6a4300d0298f31708d91ac3ea2217cc6f5b9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_visual_contract_a02.py",
+      "bytes": 5112,
+      "sha256": "1eb8a2a791945ba2fe2f59db8210f7d83a41eadbb1868e68f78297d9cf7e1303"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_recipe_a02.py",
+      "bytes": 3881,
+      "sha256": "d71ae33bd22777faf7905dfc76773b83c6a33c7a486aa05c3a2d4cea553aca8c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\test_r11_contract_a02.py",
+      "bytes": 5005,
+      "sha256": "b732c2b587150bc52d5e74242db0fe92f7a9aa720aa3acfdb04590e89f86e972"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02.ini",
+      "bytes": 8,
+      "sha256": "3a5cc44fe6748c26e27e01abd1ac6df68da712b9e4b31ef66f21e1e186fccba4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-final.actual.json",
+      "bytes": 1390,
+      "sha256": "e10353474a75dbefda3de50b3598d5585e186fd974b9a3ed9f75699126dc83a9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-final.stdout.txt",
+      "bytes": 44,
+      "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-final.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\contract-tests-a02.actual.json",
+      "bytes": 768,
+      "sha256": "ba370f03b0790e1aeae23d643f886cc2c4d31549ed66168410677b27518cf25c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\contract-tests-a02.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\contract-tests-a02.stderr.txt",
+      "bytes": 1469,
+      "sha256": "7ec6eb5dac5f992ec9815dd54b78bcede7fed4e1df9650ebb1a58b40d32ac294"
+    }
+  ],
+  "mypy_original_wait": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "started_at_utc": "2026-10-20T21:07:55.819286+00:00",
+    "observed_at_utc": "2026-10-20T21:08:23.940569+00:00",
+    "argv": [
+      "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-m",
+      "mypy",
+      "--config-file",
+      "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/mypy-a02.ini",
+      "--no-incremental",
+      "--cache-dir",
+      "nul",
+      "--python-version",
+      "3.14",
+      "--platform",
+      "win32",
+      "--check-untyped-defs",
+      "--disallow-untyped-defs",
+      "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/r11_visual_contract_a02.py",
+      "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/r11_once_contacts_a02_final.py",
+      "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/r11_recipe_a02.py",
+      "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/test_r11_contract_a02.py"
+    ],
+    "original_Popen_pid": 34976,
+    "original_wait_returncode": 0,
+    "timeout": false,
+    "owned_alive": false,
+    "stdout_bytes": 44,
+    "stdout_sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "FFmpeg_calls": 0,
+    "cache_or_tmp_outside_scope": false
+  },
+  "contract_tests_original_wait": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "started_at_utc": "2026-10-20T21:07:55.811520+00:00",
+    "observed_at_utc": "2026-10-20T21:07:56.388187+00:00",
+    "argv": [
+      "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "-B",
+      "C:/ck3-e04-resume-20261020-a01/r11-r174-continuous-review-2200-a01/test_r11_contract_a02.py"
+    ],
+    "original_Popen_pid": 31556,
+    "original_wait_returncode": 0,
+    "timeout": false,
+    "owned_alive": false,
+    "stdout_bytes": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 1469,
+    "stderr_sha256": "7ec6eb5dac5f992ec9815dd54b78bcede7fed4e1df9650ebb1a58b40d32ac294",
+    "FFmpeg_calls": 0,
+    "cache_or_tmp_outside_scope": false
+  },
+  "typed_targets": [
+    "r11_once_contacts_a02_final.py",
+    "r11_visual_contract_a02.py",
+    "r11_recipe_a02.py",
+    "test_r11_contract_a02.py"
+  ],
+  "uint64_wire_example": {
+    "bytes": 56479663,
+    "mtime_ns": "1792078260762602000",
+    "st_dev": "13886423844274364792",
+    "st_ino": "844424932065981"
+  },
+  "process_birth_filetime": "134365505726865638",
+  "producer_consumer_shared_domain": "r11_visual_contract_a02.RawStat.from_native/wire/parse; Recipe.parse validates birth decimal text",
+  "mypy_no_Any_cast_ignore_suppression": true,
+  "regressions": "actual producer->consumer; wrong/missing/misspelled fields; bool/float/numeric uint64 refusal; uint64 bounds/canonical forms; JSON roundtrip; inherited in-memory JPEG framing",
+  "preserved_failure_boundaries": {
+    "legacy_tools_venv_mypy": "No module named mypy; actual tool result preserved in conversation",
+    "PIL_and_psutil_import_boundary": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\type-import-boundary-a02.stdout.txt",
+        "bytes": 450,
+        "sha256": "1a6218d2123ccf9e6c5ce34112d4304f0ee3135c9bee28b378bf0e62d56c7489"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\type-import-boundary-a02.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "first_typed_mypy": [
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-first.actual.json",
+        "bytes": 939,
+        "sha256": "58e1a5d77b35074e3b74c3c10c9a10546968bfe6453e5a496bbb75310e47a513"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-first.stdout.txt",
+        "bytes": 871,
+        "sha256": "77cab3a2a81c32db68f883fcb83a53594d3ed02b9117a40bbe0c16419240adee"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\mypy-a02-first.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "first_error_fix": "Three local stream variable assignments renamed by create-only final script. Earlier draft source files retained, never executed as FFmpeg producer."
+  },
+  "legacy_a01_unchanged": true,
+  "source_refs_not_copied": true,
+  "metadata_cache_note": "TMP/TEMP/PYTHONDONTWRITEBYTECODE and mypy cache-dir nul were configured; no global filesystem audit claimed.",
+  "FFmpeg_calls": 0,
+  "raw_body_reads": 0,
+  "updated_source_bound_cap_and_Root_once_pending": true,
+  "financial_cap_unchanged": true,
+  "remaining_source_writes": 0,
+  "formal_theme_credit": 0
+}

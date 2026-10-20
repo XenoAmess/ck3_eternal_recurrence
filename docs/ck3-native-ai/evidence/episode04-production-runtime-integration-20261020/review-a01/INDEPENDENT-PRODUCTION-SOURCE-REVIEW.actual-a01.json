@@ -1,0 +1,574 @@
+{
+  "schema": "xar.e04.production-runtime-independent-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:02:04.602348+00:00",
+  "status": "PASS_SOURCE_REVIEW_ONLY",
+  "blocking_findings": [],
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\capacity\\SOURCE-ONLY-ADMISSION.actual-a01.json",
+    "bytes": 5232,
+    "sha256": "992034bda1b422ce0fcfb75a74f31775e640743a82df3d79acff58fb69544ad3"
+  },
+  "freeze": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\SOURCE-FREEZE.actual-a02.json",
+    "bytes": 20702,
+    "sha256": "6163019e1d3c5fa0d05d570240b612eed04e1ecd65a0224f3a2b227c179d56da"
+  },
+  "delivery": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\DELIVERY.actual-a02.json",
+    "bytes": 18672,
+    "sha256": "7bb973bdc8ee124117bad5d2ab472ee4bc76d845e287e5e0f792e1e7f160882f"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\PRODUCTION-RUNTIME.candidate-a02.patch",
+    "bytes": 133913,
+    "sha256": "5eddcdbaf0469d601b1eea3dcc4f176d682390c48a5a60de02189846fbdb1274"
+  },
+  "final_source_mappings": [
+    {
+      "repo_path": "tools/ck3_live_run_id.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_allocate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_refusal.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_refusal.py",
+      "bytes": 22242,
+      "sha256": "6d1770c79e780000382762b27bf463981fdd1f8a5c0293ccb787ccb99cb44640"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_background_types.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 4570,
+      "sha256": "4b7307f75a603b49ab86ff66f9ea2fb851e5c23829aab8c90d04d27e203e860e"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_camera.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_camera.py",
+      "bytes": 956,
+      "sha256": "ea71ccfc8bbd973f68f8eba49748fa2b52d6c2fb0a79318fffaee528ecf3bf32"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/__init__.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\__init__.py",
+      "bytes": 75,
+      "sha256": "93b63bdb0d5c486bbac3260d54266f81de0b9afea4c587a2b280de49554cf434"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/parent_bundle_loader.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+      "bytes": 3273,
+      "sha256": "87863898941c3c1b462ce27602b560cb33d7f37260404fbf0f4a377dfda39f30"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r04_county_entry.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry.py",
+      "bytes": 49534,
+      "sha256": "e0c901c2ac5cc26b62eed8013d143006d57c88134f7ebb7fd137b65c18fcb5f4"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r04_county_entry_window.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r04_county_entry_window.py",
+      "bytes": 6940,
+      "sha256": "d2d536453f8997d9463ba5464386dccc377b6115ddbe3809103be6626b8fa128"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_controller.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_controller.py",
+      "bytes": 17538,
+      "sha256": "09f3019847bace658f57dafbe3df826a4e1336b6f803a449a541c0e4ce841870"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_parent_entry_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_one_day.py",
+      "bytes": 9607,
+      "sha256": "171db0e9d7fe2c211ff0d6ff6a7bc56751caa22b5ef83f95070639803d523cb0"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 10850,
+      "sha256": "4b29453fc5dbe4363f054894ba90f8b09bfa3ae59b59463e76feb04891af7e21"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r08_writer_one_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_writer_one_day.py",
+      "bytes": 23002,
+      "sha256": "973de1c8444af65d3a37f2308683d5c1839e02bb966d03d2ecf31814c6bf242a"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare.json",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare.json",
+      "bytes": 2582,
+      "sha256": "5df9c395e690bc13e3b1dd60c4a6eb1503a5dec7eeb5f55a27e35e75fab8cc27"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_cases/r10_prepare_adapter.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+      "bytes": 16981,
+      "sha256": "8879be8dc9cf8c3dd76f25734da733a37c4ba49c92cb02f61cfa3ae5a3f0275e"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_client.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 66429,
+      "sha256": "7c63ead0dc553118485fd0dcaeb8e49537012c8175d8c980e3eb147487d889da"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_graphics_cache.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_graphics_cache.py",
+      "bytes": 39545,
+      "sha256": "b6b32225b5e96bf3818d9a6a0425336a74af9a384f8607474cf296f8dce76d36"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_keeper.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_keeper.py",
+      "bytes": 14152,
+      "sha256": "a78372d92546b6abaff8da426c130218c33d88ccaa228b01f7d4c8324822290b"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_launcher.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_launcher.py",
+      "bytes": 16572,
+      "sha256": "e223c5efea10a51618a676ef991485540a2856f32f159a3ed8f2f82a7e749b24"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_native_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_native_day.py",
+      "bytes": 8325,
+      "sha256": "df0a73bf9bb09bdc4e555539fa74d7259ed4464b3b86f293979a32c024cbcace"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_prepare.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_queue.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_queue.py",
+      "bytes": 17072,
+      "sha256": "6642930b225b30c8977df6d49628bff23a005df4a3d4ef66ca387c9120921920"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_recorder.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_recorder.py",
+      "bytes": 36098,
+      "sha256": "4fd5ce11c27c4ea2913002e7559894f5422f173ae726278106ae28c9f24fc113"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_runtime_inputs.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_runtime_inputs.py",
+      "bytes": 1062,
+      "sha256": "c9051d277e77421301de8b964d51daf8277c3b55d80572c01f846f39f42145c9"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_steam_gate.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 6023,
+      "sha256": "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274"
+    },
+    {
+      "repo_path": "tools/ck3_mod_acceptance_supervisor_refusal.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_supervisor_refusal.py",
+      "bytes": 19615,
+      "sha256": "6e5613685a04699002f6860c7345560da9bc6b48e82d589ab9f71241513e3a22"
+    },
+    {
+      "repo_path": "tools/steam_offline_native_profiles.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_profiles.py",
+      "bytes": 3856,
+      "sha256": "ed83e4332446e54a7b6ae97e92131540c0f59ff0af3d0eb1be694ee65f26d3fa"
+    },
+    {
+      "repo_path": "tools/steam_offline_native_provider_v1.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_provider_v1.py",
+      "bytes": 16681,
+      "sha256": "e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c"
+    },
+    {
+      "repo_path": "tools/steam_offline_state_contract.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_state_contract.py",
+      "bytes": 17615,
+      "sha256": "148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b"
+    },
+    {
+      "repo_path": "tools/steam_offline_state_probe.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_state_probe.py",
+      "bytes": 28370,
+      "sha256": "53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 27703,
+      "sha256": "44eeafedbf235d6c55ab96c8d1eebd73015ec112e78a78fc704b40aac0f8a283"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_late_native_cleanup.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_ck3_mod_acceptance_late_native_cleanup.py",
+      "bytes": 5429,
+      "sha256": "7a57ac9357fd75f10648058c8f3580187b1444f8c35a30c8dd03ece3915d35b7"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_native_day.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_ck3_mod_acceptance_native_day.py",
+      "bytes": 8025,
+      "sha256": "e680917956a4480456e4033ca33fa3f4f52ce7e14d317ea54b38527bbbc80636"
+    },
+    {
+      "repo_path": "tools/test_ck3_mod_acceptance_parent_bundle.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\revision-a02\\tools\\test_ck3_mod_acceptance_parent_bundle.py",
+      "bytes": 6513,
+      "sha256": "4e95cbd9318432b5ed4e71aa8e64f401cec884f4b40ac53a4808258217c2aa09"
+    },
+    {
+      "repo_path": "tools/test_steam_offline_native_profiles.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_steam_offline_native_profiles.py",
+      "bytes": 6945,
+      "sha256": "41ea147691c7ac98a05d46b6cce7d38b129c4b8246f62c694b5657b54fc4a778"
+    },
+    {
+      "repo_path": "tools/test_steam_offline_native_provider_v1.py",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\test_steam_offline_native_provider_v1.py",
+      "bytes": 7040,
+      "sha256": "30d73a10eda059df8e0b322c33dbc02cfaaa8f05442cda8baf98452784c3cfea"
+    }
+  ],
+  "checks": {
+    "dual_profiles": "Unique immutable Steam-version+UI-size+SHA pair; provider/gate same registry; six anchors/image/tray/positive sampling/birth checks; read-only access0x1010; CEF/wire unchanged.",
+    "master": "37 local4c79/7ac6 selected blob IDs independently equal with no-lazy read. Client/native-day/CEF/contract/liveid byte exact;35 non-allocate legacy allocator functions AST equal.",
+    "native_owner": "Same CaseClient/once day; original Popen held; typed restore/detach before SDK-after/OFFSave/Quit; unknown cleanup holds CLI, no forced release.",
+    "refusal": "Exact launcher/gate pair; runtime vs original Popen PID+birth proved. Actual supervisorwait2; keeper/CAS/counter/absence checks retained. Real isolated R2 and stale predecessor no R3/keeper/ledger. Old unknown waits unchanged.",
+    "resolved_HIGH": "a01 missing parent_tools guard. a02 only restores U-final-a03 nine lines before SDK; removing lines recovers a01 actor SHA. Four actual R10/loader cases+final8 parent tests cover wrong-dir/missing6/index/tamper early refusal.",
+    "checks": "34 pre-overlay focused; final4+8 separate runs, initial ACTOR NameError rc1 preserved. Standard no-preload import audit; real harmless hostwait0; drift and actual31s stale host0. OS/Steam/bus/SDK seams explicit; not real offline/game.",
+    "types": "mypy actual15 vs exact4c79 shadow16; original waits both1; final actor shadow15 output byte-exact; introduced[]; whole legacy remains RED.",
+    "assembly": "37 final repo_path mappings required. Actor+test from revision-a02, not old A/tools. Ordinary Save not oneLife."
+  },
+  "evidence": {
+    "focused-a02": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1242,
+        "sha256": "0034e918624b298717ce5983d369d3a46ba474d8d74a8954f063231ca78a2ac2"
+      },
+      "pid": 34408,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\focused-a02\\stderr.log",
+          "bytes": 5663,
+          "sha256": "048becce9bf1f73864afb87c9e2c0a652d3ca8b3d90d8a2573ed8875bb6699b6"
+        }
+      }
+    },
+    "actor-binding-a02": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\actor-binding-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1123,
+        "sha256": "ea1774e42d7493d7338a172c69dcfdbfd9370ea4c11dd3dbfca99eed531ec986"
+      },
+      "pid": 35380,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\actor-binding-a02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\actor-binding-a02\\stderr.log",
+          "bytes": 107,
+          "sha256": "005be1cbd53c54251fddb1f235987ac1ee8b28f0b52a796762900b476ffbd8a1"
+        }
+      }
+    },
+    "parent-production-tests-a03": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1138,
+        "sha256": "5372b4495605c42880f9b22b65aad2c3270c96a85a7946994897eafedd75f291"
+      },
+      "pid": 26328,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a03\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a03\\stderr.log",
+          "bytes": 1379,
+          "sha256": "bbd87feb99af4b07ed319bbf745b77b03cdfa09e39be6de2f3774e406e84ba5e"
+        }
+      }
+    },
+    "parent-production-tests-a02": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1137,
+        "sha256": "29ab12912d13a826d76489b004141daf40eb6fe95a42b3ed130a0766b34027b6"
+      },
+      "pid": 30688,
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a02\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\parent-production-tests-a02\\stderr.log",
+          "bytes": 871,
+          "sha256": "a76e2adb13d89b378f390ad29565b66d46868cf53f53a32d04ffaa9adfae7f6f"
+        }
+      }
+    },
+    "standard-fresh-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-fresh-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1266,
+        "sha256": "d5b4c59b18375274e19ff1dc4fcc0fd9543f7d9cac5185179c435333de15e1d0"
+      },
+      "pid": 12684,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-fresh-a01\\stdout.log",
+          "bytes": 1576,
+          "sha256": "6ed2c76c719907f0262b062351dedc56476c1743792bb0f5bd21ef990eff9b7a"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-fresh-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "standard-identity-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-identity-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1284,
+        "sha256": "73a7c834a2a85e84beb8adb031812716253afe15dab39f007da5b6eef824adff"
+      },
+      "pid": 13332,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-identity-a01\\stdout.log",
+          "bytes": 1606,
+          "sha256": "6aef1b2a3446d5af42314078b1f9cd8c34c596d9169849032754b1035c7929f0"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-identity-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "standard-late-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-late-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1269,
+        "sha256": "76c1f10fa427ca5c7232e24e0fb25c566a7caa53876bb62b421c6b3ac51f1cc7"
+      },
+      "pid": 22232,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-late-a01\\stdout.log",
+          "bytes": 1575,
+          "sha256": "8eb3ff46a38d0dffa638871bf5aa605ad61f6ff98d572762a22d72c911a63080"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-late-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "standard-route-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-route-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1123,
+        "sha256": "7e53bc2e26630ec40ca1421094a295b0be8a6458fda0af344658925b1c7e24ef"
+      },
+      "pid": 7676,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-route-a01\\stdout.log",
+          "bytes": 128,
+          "sha256": "7b7fac41d17ada46eec20b81beb5d3da1da843abfcdb7f06292c6b642f07c353"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\standard-route-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "successor-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1166,
+        "sha256": "779a65b177f852826bcdd9d54ebd901c96170eb3dddaa07d2b67447881ceaf8f"
+      },
+      "pid": 28284,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\stdout.log",
+          "bytes": 88,
+          "sha256": "15e6232fda7d6d28f83dbe1f39449d69bed842a278a3f22b16c43e8d265a42de"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\successor-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "semantic-rejections-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1193,
+        "sha256": "5c0a18bc1e0b4e4a83435487a807c33437bfe918c4db1f4811d457a8622752cf"
+      },
+      "pid": 33900,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\stdout.log",
+          "bytes": 108,
+          "sha256": "80e23fc170be51f2f0ed5117f12bbd39555920578d20ce5caa20ee76579cc6ec"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "owner-focused-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\owner-focused-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1121,
+        "sha256": "b7172aa13d3aa32ed91a5ef3e047f8f9561149dd34689e15bc5803602e326beb"
+      },
+      "pid": 25280,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\owner-focused-a01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\owner-focused-a01\\stderr.log",
+          "bytes": 105,
+          "sha256": "72bf4c16566eda0e63087d0395fe6c81a51c6bd51c64228c8664611899f4f907"
+        }
+      }
+    },
+    "typecheck-a03": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2957,
+        "sha256": "3286f4dd751e30d53682bd8cb2bc0a91e72d28ccdd1c902ba798724452259340"
+      },
+      "pid": 15976,
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\stdout.log",
+          "bytes": 1902,
+          "sha256": "9fbfa9b63d2cdaa1c87abad1f3a426429981cba273af548e9075184ecdc70297"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "typecheck-baseline-a01": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3569,
+        "sha256": "0821dc5b123f4fee17eef0a34730acd9d638ee1f064e9c2bb7a04e34f5979f57"
+      },
+      "pid": 2556,
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\stdout.log",
+          "bytes": 2012,
+          "sha256": "67724b1faef4d9727dd268fd07a9e2097d2b9a33b93b977c48fd219324fbafec"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-baseline-a01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "typecheck-revision-a02": {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-revision-a02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3339,
+        "sha256": "39f545fdb42f266e197c501b3a74c9854a68dbe5e9b1b2be2889b788c741497c"
+      },
+      "pid": 36600,
+      "actual_original_popen_wait": true,
+      "returncode": 1,
+      "streams": {
+        "stdout": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-revision-a02\\stdout.log",
+          "bytes": 1902,
+          "sha256": "9fbfa9b63d2cdaa1c87abad1f3a426429981cba273af548e9075184ecdc70297"
+        },
+        "stderr": {
+          "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-revision-a02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  },
+  "Steam_game_SDK_native_execution_or_fullR08_qualification": false,
+  "whole_legacy_typecheck_pass": false,
+  "reviewer_tests_or_probe_or_Git_mutations": 0
+}

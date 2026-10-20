@@ -1,0 +1,46 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T20:50:22.021992+00:00",
+  "finished_at_utc": "2026-10-20T20:50:52.302384+00:00",
+  "pid": 15976,
+  "created": 134370030220249379,
+  "actual_original_popen_wait": true,
+  "returncode": 1,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--no-incremental",
+    "--cache-dir=nul",
+    "--follow-imports=silent",
+    "--ignore-missing-imports",
+    "--platform=win32",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_profiles.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\steam_offline_native_provider_v1.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_steam_gate.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_types.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_launcher.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_background_refusal.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\parent_bundle_loader.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_one_day.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r08_parent_entry_controller.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_cases\\r10_prepare_adapter.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance.py",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_allocate.py"
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\stdout.log",
+    "bytes": 1902,
+    "sha256": "9fbfa9b63d2cdaa1c87abad1f3a426429981cba273af548e9075184ecdc70297"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\typecheck-a03\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "baseline_shadow": false,
+  "no_incremental_or_disk_cache": true
+}

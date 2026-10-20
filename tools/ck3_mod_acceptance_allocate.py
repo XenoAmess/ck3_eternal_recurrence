@@ -1,5 +1,10 @@
-﻿"""One shared allocation followed immediately by the existing screen keeper."""
+"""One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
+from ck3_mod_acceptance_background_types import JsonObject, json_object
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    import argparse
+    from ck3_mod_acceptance import Selection
 from datetime import datetime,timezone
 import hashlib,json,os,platform,re,subprocess,sys,time
 from pathlib import Path
@@ -1871,7 +1876,7 @@ def wait_for_keeper_ready(child,keeper_root,live,started,stdout,stderr):
         time.sleep(.02)
 
 
-def allocate_and_keep(selection,args):
+def _allocate_and_keep_impl(selection,args):
     require(selection.prepared_path and not selection.context,'One prepared unused case and no allocated context required')
     bootstrap_path=getattr(args,'first_machine_bootstrap',None)
     failure_path=getattr(args,'previous_failure_close',None)
@@ -1930,7 +1935,7 @@ def allocate_and_keep(selection,args):
         allocated_unrun=failure_schema=='ck3-mod-acceptance-allocated-unrun-closure-v1'
         never_launched=failure_schema=='ck3-mod-acceptance-never-launched-closure-v1'
         prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
-        supervisor_refused=failure_schema=='ck3-mod-acceptance-supervisor-admission-refused-closure-v1'
+        supervisor_refused=failure_schema in {'ck3-mod-acceptance-supervisor-admission-refused-closure-v1','ck3-mod-acceptance-background-supervisor-refused-closure-v1'}
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
         failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
@@ -1946,7 +1951,10 @@ def allocate_and_keep(selection,args):
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
         if supervisor_refused:
-            from ck3_mod_acceptance_supervisor_refusal import validate_supervisor_refusal
+            if failure_schema=='ck3-mod-acceptance-background-supervisor-refused-closure-v1':
+                from ck3_mod_acceptance_background_refusal import validate_supervisor_refusal
+            else:
+                from ck3_mod_acceptance_supervisor_refusal import validate_supervisor_refusal
             session_closure=validate_supervisor_refusal(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
         elif allocated_unrun:
@@ -2026,6 +2034,19 @@ def allocate_and_keep(selection,args):
         shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
         files.update({p:pin(p) for p in (shared_tools/'ck3_mod_acceptance.py',
             shared_tools/'ck3_mod_acceptance_client.py',shared_tools/'ck3_mod_acceptance_native_day.py',shared_tools/'ck3_mod_acceptance_prepare.py')})
+    # Explicit external product peers are exact frozen source inputs, never host/native overrides.
+    parent_inputs=selection.prepared.get('case_inputs',{}).get('r08_parent_entry_one_day') if selection.prepared else None
+    if parent_inputs is not None:
+        index_ref=parent_inputs['bundle_index_pin']; index_path=Path(index_ref['path']).resolve()
+        require(0<index_path.stat().st_size==index_ref['bytes']<=65536,'Bounded external parent source index')
+        check_pin(index_path,index_ref); index=read_json(index_path)
+        require(index.get('schema')=='xar.e04.parent.public-source-bundle.v1','Parent bundle schema')
+        files[index_path]=pin(index_path)
+        for row in index['files']:
+            peer=Path(row['path']).resolve();check_pin(peer,row);files[peer]=pin(peer)
+    shared_tools=Path(sys.modules['ck3_mod_acceptance'].__file__).parent
+    for name in ('ck3_mod_acceptance_steam_gate.py','steam_offline_state_contract.py','steam_offline_state_probe.py','steam_offline_native_provider_v1.py','steam_offline_native_profiles.py','ck3_mod_acceptance_background_types.py','ck3_live_run_id.py','ck3_mod_acceptance_graphics_cache.py'):
+        peer=shared_tools/name;files[peer]=pin(peer)
     files.update({Path(row['path']):row for row in observed.values()})
     if bootstrap_path:
         for row in [closure['bootstrap'],closure['archive_index'],*closure['original_evidence'].values()]:
@@ -2067,14 +2088,14 @@ def allocate_and_keep(selection,args):
         'lease_anchor':str(lease_repo),'previous_session_closed':True,'previous_screen_released':True,
         'predecessor_admission':pin(live/'predecessor-admission.json'),
         'files':{str(path):{k:row[k] for k in ('bytes','sha256')} for path,row in files.items()},
-        'launch_requires_fresh_owned_cas_and_offline_direct_review':True,'business_pass':False}
+        'launch_requires_fresh_owned_cas_and_background_offline':True,'business_pass':False}
     write_json(live/'frozen-argv.json',frozen)
     # All slow pin/profile work precedes register. No tool boundary occurs
     # between the actual allocated JSON and the original keeper subprocess.
     result=subprocess.run([str(selection.locations['python']),'-B','-X','utf8',str(bus),
         '--expected-cli-sha256',bus_ref['sha256'].upper(),'register','--task',task,
         '--summary',selection.product_key+' '+selection.case['id']+' shared runtime acceptance',
-        '--next-step','Fresh offline/nonce review then one shared host launch',
+        '--next-step','Fresh background offline receipt then one shared host launch',
         '--repo',str(lease_repo),'--resource','ck3-screen:acquired'],capture_output=True)
     (live/'screen-registration.json').write_bytes(result.stdout);(live/'screen-registration-stderr.log').write_bytes(result.stderr)
     require(result.returncode==0,'Actual register failed; preserve consumed input and do not replay')
@@ -2101,3 +2122,8 @@ def allocate_and_keep(selection,args):
             'run_id':identity.run_id,'business_pass':False}
     write_json(live/'keeper-actual-parent-exit.json',closed)
     return {**allocated,**closed}
+
+
+def allocate_and_keep(selection: Selection, args: argparse.Namespace) -> JsonObject:
+    """Typed finite-JSON boundary around the inherited allocation/CAS flow."""
+    return json_object(_allocate_and_keep_impl(selection,args))

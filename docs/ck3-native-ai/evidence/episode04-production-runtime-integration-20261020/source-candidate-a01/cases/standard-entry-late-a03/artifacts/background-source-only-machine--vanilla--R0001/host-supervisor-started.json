@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-10-20T20:51:26.581385+00:00",
+  "pid": 25884,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_launcher.py",
+    "--run-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-late-a03\\artifacts\\background-source-only-machine--vanilla--R0001",
+    "--keeper-root",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-late-a03\\first-keeper",
+    "--steam-offline-receipt",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-late-a03\\offline.fixture.json",
+    "--supervise",
+    "--launch-ticket",
+    "3a990d66c0d0093aa27cb16823bf9353d0bc52ecc7d4f1beebb51e9c0f714f12"
+  ],
+  "machine_id": "background-source-only-machine",
+  "original_popen_identity": {
+    "pid": 25884,
+    "birth_filetime": "134370030865737015"
+  },
+  "business_pass": false
+}

@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-20T20:52:27.344739+00:00",
+  "finished_at_utc": "2026-10-20T20:52:29.701793+00:00",
+  "pid": 33900,
+  "created": 134370031473482689,
+  "actual_original_popen_wait": true,
+  "returncode": 0,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\harness\\exercise_refusal_rejections.py",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence"
+  ],
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\stdout.log",
+    "bytes": 108,
+    "sha256": "80e23fc170be51f2f0ed5117f12bbd39555920578d20ce5caa20ee76579cc6ec"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\semantic-rejections-a01\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "actual_Steam_game_SDK_observer": false
+}

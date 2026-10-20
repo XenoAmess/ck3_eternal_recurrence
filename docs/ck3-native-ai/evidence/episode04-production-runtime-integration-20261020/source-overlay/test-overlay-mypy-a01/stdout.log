@@ -1,0 +1,8 @@
+tools\test_ck3_mod_acceptance_parent_bundle.py:58: error: Unpacked dict entry 0 has incompatible type "object"; expected "SupportsKeysAndGetItem[str, dict[Never, Never]]"  [dict-item]
+tools\test_ck3_mod_acceptance_parent_bundle.py:63: error: Value of type "Collection[Any]" is not indexable  [index]
+tools\test_ck3_mod_acceptance_parent_bundle.py:67: error: Unsupported target for indexed assignment ("Collection[Any]")  [index]
+tools\test_ck3_mod_acceptance_parent_bundle.py:69: error: "Collection[Any]" has no attribute "pop"  [attr-defined]
+tools\test_ck3_mod_acceptance_parent_bundle.py:69: error: "Collection[Any]" has no attribute "append"  [attr-defined]
+tools\test_ck3_mod_acceptance_parent_bundle.py:69: error: Value of type "Collection[Any]" is not indexable  [index]
+tools\test_ck3_mod_acceptance_parent_bundle.py:75: error: Incompatible types in assignment (expression has type "object", variable has type "float")  [assignment]
+Found 7 errors in 1 file (checked 1 source file)

@@ -1298,3 +1298,7 @@ docs/ck3-native-ai/evidence/episode04-r0222-20261020/** -text whitespace=-blank-
 docs/ck3-native-ai/evidence/episode04-r08-runtime-repair-20261020/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 
 docs/maintenance/evidence/2026-10-20-three-closed-shadercache-retirement/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Preserve exact E04 production-source and R11 small evidence bytes.
+docs/ck3-native-ai/evidence/episode04-production-runtime-integration-20261020/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

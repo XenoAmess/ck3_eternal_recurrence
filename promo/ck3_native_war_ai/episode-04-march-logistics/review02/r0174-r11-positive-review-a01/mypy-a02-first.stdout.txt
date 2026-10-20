@@ -1,0 +1,9 @@
+r11_once_contacts_a02.py:351: error: Incompatible types in assignment (expression has type "TextIOWrapper[_WrappedBuffer]", variable has type "BufferedWriter")  [assignment]
+r11_once_contacts_a02.py:352: error: Argument 1 to "writer" has incompatible type "BufferedWriter"; expected "SupportsWrite[str]"  [arg-type]
+r11_once_contacts_a02.py:352: note: Following member(s) of "BufferedWriter" have conflicts:
+r11_once_contacts_a02.py:352: note:     Expected:
+r11_once_contacts_a02.py:352: note:         def write(self, str, /) -> object
+r11_once_contacts_a02.py:352: note:     Got:
+r11_once_contacts_a02.py:352: note:         def write(self, Buffer, /) -> int
+r11_once_contacts_a02.py:380: error: Incompatible types in assignment (expression has type "GzipFile", variable has type "BufferedWriter")  [assignment]
+Found 3 errors in 1 file (checked 2 source files)

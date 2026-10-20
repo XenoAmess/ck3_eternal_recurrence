@@ -822,14 +822,12 @@ class Selection:
         launcher = path_at(launcher_ref["path"], self.runtime_path.parent)
         check_pin(launcher, launcher_ref)
         context = self.context
-        for key in ("keeper_root", "proof", "challenge", "observed_nonce", "reviewer"):
+        for key in ("keeper_root", "steam_offline_receipt"):
             if not context.get(key):
                 raise ValueError(f"Existing reviewed launcher context missing: {key}")
         argv = [str(self.locations["python"]), "-B", "-X", "utf8", str(launcher),
                 "--run-root", str(self.run_dir), "--keeper-root", str(path_at(context["keeper_root"], self.context_path.parent)),
-                "--proof", str(path_at(context["proof"], self.context_path.parent)),
-                "--challenge", str(path_at(context["challenge"], self.context_path.parent)),
-                "--observed-nonce", context["observed_nonce"], "--reviewer", context["reviewer"]]
+                "--steam-offline-receipt", str(path_at(context["steam_offline_receipt"], self.context_path.parent))]
         environment = dict(os.environ)
         environment.update(self.runtime_environment)
         environment.update(PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1")

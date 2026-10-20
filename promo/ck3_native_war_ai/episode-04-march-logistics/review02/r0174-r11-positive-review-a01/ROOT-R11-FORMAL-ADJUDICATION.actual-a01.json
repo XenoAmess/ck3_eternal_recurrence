@@ -1,0 +1,158 @@
+{
+  "schema": "xar.e04.R11-root-formal-adjudication.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:27:19.131257+00:00",
+  "status": "FORMAL_R11_PASS",
+  "original_M_unchanged": true,
+  "original_M_lines": [
+    145,
+    149
+  ],
+  "native_pins_independently_checked": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\allocated-context.actual-a01.json",
+      "bytes": 1000,
+      "sha256": "03b4d54b87d9d65818b7de55e24efef3f2dbb72902e482b245f2afa29ff1a2c6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\once-halt-control.actual-a01.json",
+      "bytes": 2039,
+      "sha256": "bc98d61e437140aa79c97a1e463476f7a13054b272f891d203211023fb966b4b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\halt-phase-completion.actual-a01.json",
+      "bytes": 3048,
+      "sha256": "42f10ccf1e3b69f2af80ed3479f189c50b473120c9b1079c5a6f34497dd3d9d4"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\bounded-days-runner-a01\\day-01.complete.json",
+      "bytes": 8894,
+      "sha256": "294aac8cba9b77cca5ce61436500ad2b479c6bd115e7638aa628b45acf56edd8"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\process-ready.json",
+      "bytes": 1031,
+      "sha256": "4e679ed072608fb4020762badc2652f0a795af35914075e31242b6c4c06bea0b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\job-start.json",
+      "bytes": 966,
+      "sha256": "7c9873b07debef15b551bc9546b3d59e4fb63e28e3bcd2b243d3dc073da3a991"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\job-terminal.json",
+      "bytes": 205,
+      "sha256": "a825c02e9c2539b4fb377716d2244fee0557e3fa3147c0815e6b2d6498858da2"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\result.json",
+      "bytes": 808,
+      "sha256": "58a6fa18c311d70123647556e13a312648e1e525a5d7555d655df129312eda5a"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\media-audit-a01\\cut-candidates.json",
+      "bytes": 11013,
+      "sha256": "0e80087d60d0bcb932e0ce12fd92dfda9f4d4385ec0d012e85f9653e9836ade3"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\010-t0-baseline-a02-02-baseline-ordinary.json",
+      "bytes": 5301,
+      "sha256": "ad4972b1ad1640a90718b80211ce1f942de5a716aaa8c2039ccd17d340d5a5c5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-10-before-halt.json",
+      "bytes": 117268,
+      "sha256": "752690d7f0e050d0f5a54af39d2b3663f9314e27293fcd61c5a1db0843ea3b21"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-11-halt-once.json",
+      "bytes": 2279,
+      "sha256": "46e2828395ba23e2be8470a175865ef1edb829ecbeffd9a007f6c4d28344102b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\030-t0-halt-a01-12-after-halt-independent.json",
+      "bytes": 117294,
+      "sha256": "83a5f6adfab5ed37ce2419998b372246874aab02dfec3b95c15a50cebdd0297d"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\031-halt-readonly-a01-halt-readonly-01.json",
+      "bytes": 116624,
+      "sha256": "9445be18495f4267f23fa9d6114f304063009d18d21cad0a58cd67bce9557e8b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-09-clock-query-0.json",
+      "bytes": 4666,
+      "sha256": "d8bee8873aa1654b63a5dbe780e841a05fddc0b663206a4057e247cf627474a5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0174\\responses\\r174-control-d01-a01-d01-12-final.json",
+      "bytes": 117701,
+      "sha256": "ca2d7980c5bfc2967dfe062d8d00d547fe4ecc75ff74863000b8de518a1c3dce"
+    }
+  ],
+  "AI_actual_all38_review": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\AI-CONTINUOUS-REVIEW.actual-a01.json",
+    "bytes": 3878,
+    "sha256": "03e54fbff13e77f515a8cdd9dbc06e0aeea7456fe962026e35474979fa6fa0e0"
+  },
+  "Root_actual_contact_sheets": [
+    0,
+    2,
+    3,
+    15,
+    37
+  ],
+  "Root_actual_old_fullres_frames": [
+    0,
+    60
+  ],
+  "Root_viewed_all600_claim": false,
+  "source_frames_half_open": [
+    0,
+    600
+  ],
+  "selected_seconds_half_open": [
+    0,
+    20
+  ],
+  "necessary_evidence_occlusion_detected": false,
+  "native_postconditions": {
+    "army_id": 18,
+    "actor": 31254,
+    "province": 2624,
+    "after_empty_route_null_target_regular": true,
+    "exact_day_raw": [
+      53145048,
+      53145072
+    ],
+    "stationary_next_day": true,
+    "nextday_within_selected_clip": false
+  },
+  "boundaries": [
+    "Short prestate disclosed; M149 contains no six-second minimum.",
+    "Exact Halt PTS is null; visible transition only bracketed (0,2].",
+    "Original immediate-after stale route and runner exit1 preserved; later independent empty-route read is separate.",
+    "Ordinary R0173 save continuation; no new ABC fresh-T0 credit.",
+    "AI contact review is not human1x signoff or whole-film completion."
+  ],
+  "formal_r11_credit": 1,
+  "formal_total_before": 5,
+  "formal_total_after": 6,
+  "formal_target": 11,
+  "research_total_unchanged": [
+    10,
+    14
+  ],
+  "B_unchanged": [
+    0,
+    2
+  ],
+  "ABC_unchanged": [
+    0,
+    3
+  ],
+  "new_game_started": false,
+  "new_recording": false,
+  "human1x": false,
+  "whole_film_complete": false
+}

@@ -32,7 +32,12 @@
     "maximum_observer_launches": 1,
     "native_window_ms": 30000,
     "aggregate_slot_hits": 128,
-    "watch_offsets": [704, 712, 40, 48],
+    "watch_offsets": [
+      704,
+      712,
+      40,
+      48
+    ],
     "owner_binding_mode": "native_campaign_owned_no_load_v2",
     "coordination": "r08-before-observer-awaiting.json -> r08-root-observer-admission.json",
     "normal_close_owner": "shared entry/CaseClient, after verified restore and payment OFF/clear",
@@ -44,5 +49,15 @@
     "frozen plan and three independent normal cold loads",
     "shared A/B/C execution seam and full actual 90-day common horizon",
     "R08 qualified application/payer/cadence before formal compare_fees"
-  ]
+  ],
+  "optional_bounded_r08_parent_entry_execution_one_day": {
+    "default": null,
+    "mode": "parent-entry-execution-once-v1",
+    "maximum_actual_days": 1,
+    "observer_timeout_seconds": 30,
+    "foreign_limit": 4096,
+    "fresh_owner_pair_seconds": 30,
+    "qualification": "distinct_new_execution_DR_qualification_required",
+    "full_R08_qualified": false
+  }
 }

@@ -1,0 +1,178 @@
+{
+  "schema": "xar.capacity.source.bound.single.extraction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:13:06.807756+00:00",
+  "owner": "Root",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01",
+  "aggregate_ceiling_bytes": 5242880,
+  "all_inclusive_aggregate_ceiling_bytes": 5242880,
+  "component_ceiling_bytes": {
+    "contacts": 4194304,
+    "metadata": 262144,
+    "spare": 786432
+  },
+  "hard_deadline_utc": "2026-10-20T22:00:00Z",
+  "recipe": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-ONCE-CONTACT-RECIPE.prepared-a02.json",
+    "bytes": 16357,
+    "sha256": "daed749accd2104e001e686607f760069b46bb468786b1de2e05e004630c3a06"
+  },
+  "runner": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_once_contacts_a02_final.py",
+    "bytes": 19160,
+    "sha256": "64c4d1e61f61e755bd2209d3822d6a4300d0298f31708d91ac3ea2217cc6f5b9"
+  },
+  "typed_contract": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_visual_contract_a02.py",
+    "bytes": 5112,
+    "sha256": "1eb8a2a791945ba2fe2f59db8210f7d83a41eadbb1868e68f78297d9cf7e1303"
+  },
+  "typed_recipe_producer": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\r11_recipe_a02.py",
+    "bytes": 3881,
+    "sha256": "d71ae33bd22777faf7905dfc76773b83c6a33c7a486aa05c3a2d4cea553aca8c"
+  },
+  "actual_mypy_and_regressions": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\CHECKS-AND-PREPARED-PINS.actual-a02.json",
+    "bytes": 8036,
+    "sha256": "e6490cc3fea8b01c63f580cb07ee76675dd78762a2f0b727ef6a51f3325767ea"
+  },
+  "source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\raw.mkv",
+    "bytes": 56479663,
+    "sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12"
+  },
+  "source_stat_actual": {
+    "bytes": 56479663,
+    "mtime_ns": "1792078260762602000",
+    "st_dev": "13886423844274364792",
+    "st_ino": "844424932065981"
+  },
+  "RawStat_uint64_domain": "mtime_ns/st_dev/st_ino canonical decimal strings by typed producer/consumer; bytes bounded integer",
+  "raw_body_read_for_admission": false,
+  "previous_unexecuted_source_admission": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r11-r174-continuous-review-2200-a01\\R11-VISUAL5-SOURCE-BOUND-ONCE.actual-a02.json",
+    "bytes": 5154,
+    "sha256": "02c617e64a4636f66394a0609fb1bb91895b340292937329ae5a3e39c1ee2cc0"
+  },
+  "source_bound_single_extraction_execution_admitted": true,
+  "FFmpeg_execution_admitted": true,
+  "single_extraction_count": 1,
+  "retry_execution_admitted": false,
+  "new_fullres": false,
+  "source_frames_half_open": [
+    0,
+    600
+  ],
+  "source_seconds_half_open": [
+    0,
+    20
+  ],
+  "expected_sheets": 38,
+  "expected_sheet_dimensions": [
+    1280,
+    792
+  ],
+  "Root_scope": "a02 actual types/mypy/11regressions source read by Root; actual once dispatch remains Root; no formal by cap",
+  "forbidden": [
+    "ffprobe",
+    "raw hash/copy",
+    "whole raw QA replay",
+    "new fullres",
+    "new video/audio encode",
+    "screenshot",
+    "game",
+    "SDK",
+    "old root write"
+  ],
+  "zero_delta_existing_full5MiB_future": true,
+  "budget": {
+    "C_known_future_bytes": 9437184,
+    "C_legacy_carry_bytes": 0,
+    "C_required_free_bytes": 25779240960,
+    "C_floor_margin_bytes": 51587125248,
+    "C_projected_whole_volume_upper_bound_bytes": 438071984128,
+    "C_quota_margin_bytes": 14680064,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 35885056
+  },
+  "volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T21:13:06.807566+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 77366366208,
+      "available_to_caller_bytes": 77366366208,
+      "total_free_bytes": 77366366208,
+      "entire_volume_used_allocation_upper_bound_bytes": 433767579648,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T21:13:06.807566+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21644939264,
+      "available_to_caller_bytes": 21644939264,
+      "total_free_bytes": 21644939264,
+      "entire_volume_used_allocation_upper_bound_bytes": 478445068288,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "active_balance": {
+    "known_future": {
+      "C:/": 9437184,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 0,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-player-parent-readwatch-source2-2115-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-r11-r174-visual5-2200-20261020-a01",
+        "known_future": {
+          "C:/": 5242880,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      },
+      {
+        "task_id": "e04-capacity-r223-exact5-lossless24-2200-20261020-a01",
+        "known_future": {
+          "C:/": 2097152,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "ledger_before": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 418435,
+    "sha256": "684ac568380820949346f90ba4db9093523a0dff3fda7fb6ad9fa40d315b3049"
+  },
+  "physical_credit_bytes": 0,
+  "RED210315_and_original_a01_no_execution_preserved": true
+}

@@ -1,0 +1,82 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:32:21.667101+00:00",
+  "schema": "xar.e04.production-publish.overlay-checks.v3",
+  "canonical_test_wait": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\canonical-parent-test-a01\\ORIGINAL-WAIT.actual.json",
+  "canonical_methods": 8,
+  "canonical_test_pass": true,
+  "typecheck_runs": {
+    "baseline": {
+      "wait": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1614,
+        "sha256": "c8b37a863302e42b217856be243445cfafa76308d1b0b3a865066b62220e68e9"
+      },
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\stdout.log",
+        "bytes": 1579,
+        "sha256": "5dcf8a9385022f25549bb36b7b190b8497ad5af2a85b0c0c6f435a2936d6b170"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-baseline-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "effective": {
+      "wait": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1614,
+        "sha256": "5f187d41683d0ca9cb73e3e983b00133d20677a7f997fb5ddc0352b3cb6ab663"
+      },
+      "returncode": 1,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\stdout.log",
+        "bytes": 998,
+        "sha256": "eb93e73265b37c491b97bc91894b177a4b499fa07b8fa82c45847565a0028b48"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "MYPYPATH_both": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools",
+  "identical_flags_and_real_dependency_resolution": true,
+  "baseline_diagnostics": [
+    ":58: error: Unpacked dict entry 0 has incompatible type \"object\"; expected \"SupportsKeysAndGetItem[str, dict[Never, Never]]\"  [dict-item]",
+    ":63: error: Value of type \"Collection[Any]\" is not indexable  [index]",
+    ":67: error: Unsupported target for indexed assignment (\"Collection[Any]\")  [index]",
+    ":69: error: \"Collection[Any]\" has no attribute \"pop\"  [attr-defined]",
+    ":69: error: \"Collection[Any]\" has no attribute \"append\"  [attr-defined]",
+    ":69: error: Value of type \"Collection[Any]\" is not indexable  [index]",
+    ":75: error: Incompatible types in assignment (expression has type \"object\", variable has type \"float\")  [assignment]"
+  ],
+  "effective_diagnostics": [
+    ":58: error: Unpacked dict entry 0 has incompatible type \"object\"; expected \"SupportsKeysAndGetItem[str, dict[Never, Never]]\"  [dict-item]",
+    ":63: error: Value of type \"Collection[Any]\" is not indexable  [index]",
+    ":67: error: Unsupported target for indexed assignment (\"Collection[Any]\")  [index]",
+    ":69: error: \"Collection[Any]\" has no attribute \"pop\"  [attr-defined]",
+    ":69: error: \"Collection[Any]\" has no attribute \"append\"  [attr-defined]",
+    ":69: error: Value of type \"Collection[Any]\" is not indexable  [index]",
+    ":75: error: Incompatible types in assignment (expression has type \"object\", variable has type \"float\")  [assignment]"
+  ],
+  "diagnostics_added": [],
+  "typecheck_exitcodes": [
+    1,
+    1
+  ],
+  "single_file_clean": false,
+  "prior_diagnostics_preserved": [
+    "First wrapper asserted mypy0; actual7 retained.",
+    "First baseline in isolated directory had same7 plus3 unresolved imports; assertion failure retained; paired rerun binds same mirror tools for both."
+  ],
+  "TMP_TEMP": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\scratch",
+  "repository_tmp_absent_before_after": true,
+  "scratch_clean_after": true,
+  "source_environment_overrides_removed": true,
+  "unchanged_31_second_cases_rerun": false,
+  "D_W_Git_game_SDK_Steam_mutation": false
+}

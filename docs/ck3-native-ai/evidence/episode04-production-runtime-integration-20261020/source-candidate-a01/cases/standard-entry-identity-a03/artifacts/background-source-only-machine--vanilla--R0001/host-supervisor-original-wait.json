@@ -1,0 +1,23 @@
+{
+  "machine_id": "background-source-only-machine",
+  "at_utc": "2026-10-20T20:51:06.334522+00:00",
+  "run_id": "background-source-only-machine--vanilla--R0001",
+  "pid": 29460,
+  "returncode": 2,
+  "original_popen_identity": {
+    "pid": 29460,
+    "birth_filetime": "134370030656118417"
+  },
+  "actual_original_popen_wait": true,
+  "supervisor_started": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\host-supervisor-started.json",
+    "bytes": 1198,
+    "sha256": "ea64f13e499a6151c62b94eeadec4c7bbb398a9bbcc7572d254a8b940a772740"
+  },
+  "launch_intent": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0001\\launch-intent.json",
+    "bytes": 1748,
+    "sha256": "8825ad9d1a65c4aba01683e61c44538dea2b82ce250a161a0f01d55360235094"
+  },
+  "business_pass": false
+}

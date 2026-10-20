@@ -1,0 +1,17 @@
+# Episode04 公共生产源码接线与R11限定正例（2026-10-20）
+
+`machine_id: desktop-3fevhd2-1c74096080`；本次候选观察时间 `2026-10-20T21:38:29.677820+00:00`。源码采用来自Root 21:11:38Z的原始裁定；本页的生产路径是本次选定发布范围，实际commit/push另以发布回执为准。
+
+公共入口的15条Python/JSON生产路径接入typed background refusal、Steam 11.12 profile来源及default-OFF parent-entry路由。最终actor必须取原revision-a02，执行六个parent工具前绑定各实际路径和pin；公共入口复用同一个CaseClient。源码接线不证明当前D盘冻结执行树已更新或当前Steam离线，也不证明parent hook已在CK3运行。
+
+Root采用、原freeze/patch及独审按原字节保存：[采用](evidence/episode04-production-runtime-integration-20261020/root-review-a01/ROOT-SOURCE-ADOPTION.actual-a02.json)、[交付](evidence/episode04-production-runtime-integration-20261020/source-candidate-a01/DELIVERY.actual-a02.json)、[独审](evidence/episode04-production-runtime-integration-20261020/review-a01/INDEPENDENT-PRODUCTION-SOURCE-REVIEW.actual-a01.json)。原source37闭包仅用于新目录的真实canonical测试镜像，未整包重复归档；生产仅选15路径。native-driver、client、native-day不在改动范围。
+
+本次另有两份create-only overlay，原freeze不覆盖：parent测试把不存在的repo/tmp改为环境临时目录，只一行增加10字节；r10_prepare.json恰63个CRLF变LF，JSON值完全相等。实际镜像的原8项canonical测试通过，TMP/TEMP绑定新授权scratch且测试前后无repo/tmp、无残留fixture。更强的单文件mypy在原测试与新测试相同依赖路径下均保7项旧诊断、exit1，无新增；原生产范围mypy仍15项对基线16项，不是全clean。[两overlay及原检查](evidence/episode04-production-runtime-integration-20261020/source-overlay/MIRROR-AND-OVERLAYS.actual-a01.json)、[最终有限对照](evidence/episode04-production-runtime-integration-20261020/source-overlay/CHECKS.actual-a03.json)。准备器最初误期待mypy0及首个隔离control缺import路径的失败原件均保留，不当作产品失败或PASS。
+
+原实际标准CLI/harmless supervisor子进程及原Popen wait与mock Steam/OS/SDK边界分别记录；现有8项结果不抵扣未重跑的31秒stale用例，也不冒充组合全矩阵。此前“managed-host未绑定”的归因有误：host原本已选native_campaign，跟随实际玩家及自然继承，不生成oneLife episode，并与显式episode/game-rule lifecycle保持互斥。真实缺口在shared cleanup尚未核Save前后同native actor/owner；旧oneLife driver持久化消费者对无episode给unconfirmed，应独立保留，既不改true也不据此判普通Save失败。ordinarySave2正在修该consumer，未入本批15路径，普通Save验收边界尚未完成。来源是`tools/ck3_mod_acceptance_cases/r08_writer_one_day.py::cleanup_writer_window`的Save子段244–251（本批未改），以及Root本轮host/native_campaign只读裁定；R223旧driver receipt仍保one_life_episode_identity_v1/unconfirmed与缺episode字段，不追认one-life。当前Game、paid、payer、cadence、fullR08资格均未取得；正军费率只作战争预算输入，钱包净差或空journal/cache不能当实付或军费0。继续保留战争承诺、雇佣应急金及可选建设政策。
+
+精确旧head7ac6的两自动workflow已独立实读SUCCESS：[Official](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39491469030)、[Linear](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39491469026)；[原JSON](evidence/episode04-production-runtime-integration-20261020/CI-7ac6-TWO-SUCCESS.actual-a01.json)。后继发布head须另读CI，保留0f548失败、上游sibling修复及全部历史。
+
+Root于21:27:19Z正式接受R0174 R11原M Halt源[0,20)秒/600帧。原生Army18/actor31254/Province2624，独立after为空route、target null、regular；下一日53145048→53145072仍驻留，下一日在所选片段之外。原立即after旧route及runner exit1保留，准确Halt PTS null、可见变化仅(0,2]；AI实际审38张/600有效格，Root亲审5张具名sheet及原fullres00/01，未称Root全审600或人工1×。原M未加六秒prestate门槛，普通R0173延续不授fresh ABC。[Root原裁定](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/ROOT-R11-FORMAL-ADJUDICATION.actual-a01.json)、[小包说明](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/README.md)。
+
+当前正式动态6/11（54.55%，R04/R06/R07/R09/R11/R12），未签R03/R05/R08/R10/R13。研究10/14、业务7/11、B0/2、ABC0/3保持；整片、人工1×与OneDrive交付未完成。38张contact合3168758B及原raw只保外置可读来源，未复制或重hash，本次零body读句柄检查与2026-10-21T10:00Z用途复核见[外置可用性](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r0174-r11-positive-review-a01/EXTERNAL-AVAILABILITY.actual-a01.json)。

@@ -1,0 +1,16 @@
+test_actual_frozen_recipe_uses_same_domain (__main__.ContractTests.test_actual_frozen_recipe_uses_same_domain) ... ok
+test_birth_filetime_consumer_rejects_numeric_missing_and_float (__main__.ContractTests.test_birth_filetime_consumer_rejects_numeric_missing_and_float) ... ok
+test_every_stat_identity_rejects_legacy_numeric_in_consumer (__main__.ContractTests.test_every_stat_identity_rejects_legacy_numeric_in_consumer) ... ok
+test_inherited_jpeg_parser_two_images_and_eof (__main__.ContractTests.test_inherited_jpeg_parser_two_images_and_eof) ... ok
+test_legacy_producer_rejects_coercion (__main__.ContractTests.test_legacy_producer_rejects_coercion) ... ok
+test_missing_and_misspelled_stat_fields_rejected (__main__.ContractTests.test_missing_and_misspelled_stat_fields_rejected) ... ok
+test_numeric_bool_float_and_noncanonical_decimal_rejected (__main__.ContractTests.test_numeric_bool_float_and_noncanonical_decimal_rejected) ... ok
+test_rawstat_json_exact_roundtrip (__main__.ContractTests.test_rawstat_json_exact_roundtrip) ... ok
+test_real_producer_consumer_roundtrip (__main__.ContractTests.test_real_producer_consumer_roundtrip) ... ok
+test_recipe_argv_wrong_type_rejected (__main__.ContractTests.test_recipe_argv_wrong_type_rejected) ... ok
+test_safe_numeric_counter_boundary (__main__.ContractTests.test_safe_numeric_counter_boundary) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.131s
+
+OK

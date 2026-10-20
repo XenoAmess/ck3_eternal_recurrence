@@ -25,6 +25,9 @@ from steam_offline_state_contract import (
     NativeEvidence, ProcessIdentity, SourceIdentity, decimal, exact_int, text,
 )
 
+from steam_offline_native_profiles import PROFILES, select_profile, source_profile, supported_version
+
+# Legacy aliases retain the exact 10.96 source API; engine selection is per observation.
 IMAGE_SHA256 = "cb387adefbbac64a3c1490d4275d00daf3a1e0219b4580726ef7681db7429278"
 IMAGE_BYTES = 18962584
 IMAGE_SIZE = 19238912
@@ -111,12 +114,11 @@ def _stamp(path: Path) -> tuple[int, int, int, int, int]:
 def _qualified_source(path: str) -> SourceIdentity:
     source_path = Path(path).resolve(strict=True)
     before = _stamp(source_path)
-    if before[0] != IMAGE_BYTES:
+    if before[0] not in {p.image_bytes for p in PROFILES}:
         raise ValueError("SteamUI size is not qualified")
     with source_path.open("rb") as stream:
         digest = hashlib.file_digest(stream, "sha256").hexdigest()
-        if digest != IMAGE_SHA256:
-            raise ValueError("SteamUI digest is not qualified")
+        profile = source_profile(before[0], digest)
         stream.seek(0x3C)
         pe = struct.unpack("<I", stream.read(4))[0]
         stream.seek(pe)
@@ -129,17 +131,17 @@ def _qualified_source(path: str) -> SourceIdentity:
             raise ValueError("invalid PE shape")
         optional = stream.read(optional_size)
         if (struct.unpack_from("<H", optional)[0] != 0x20B
-                or struct.unpack_from("<I", optional, 56)[0] != IMAGE_SIZE):
+                or struct.unpack_from("<I", optional, 56)[0] != profile.image_size):
             raise ValueError("unexpected image layout")
         sections = [struct.unpack("<8sIIIIIIHHI", stream.read(40))
                     for _ in range(section_count)]
-        for rva, expected in ANCHORS:
+        for rva, expected in profile.anchors:
             matched = False
             for section in sections:
                 virtual, raw_size, raw_offset = section[2], section[3], section[4]
                 if virtual <= rva and rva + len(expected) <= virtual + raw_size:
                     offset = raw_offset + rva - virtual
-                    if offset + len(expected) > IMAGE_BYTES:
+                    if offset + len(expected) > profile.image_bytes:
                         raise ValueError("anchor outside raw file")
                     stream.seek(offset)
                     if stream.read(len(expected)) != expected:
@@ -236,7 +238,7 @@ def _validated_identity(value: ProcessIdentity) -> None:
     if int(decimal(value.birth_filetime)) <= 0:
         raise ValueError("invalid birth time")
     text(value.exe)
-    if value.file_version != STEAM_VERSION:
+    if not supported_version(value.file_version):
         raise ValueError("Steam version is not qualified")
     if Path(value.exe).name.lower() != "steam.exe":
         raise ValueError("expected steam.exe")
@@ -264,20 +266,20 @@ def _probe_bound(machine_id: str, nonce: str, steam: ProcessIdentity,
         stage = "source_not_qualified"
         expected_path = str(Path(steam.exe).parent / "steamui.dll")
         source_before = backend.source(expected_path)
-        if (source_before.bytes != IMAGE_BYTES or source_before.sha256 != IMAGE_SHA256
-                or Path(source_before.path).resolve() != Path(expected_path).resolve()):
+        profile = select_profile(steam.file_version, source_before.bytes, source_before.sha256)
+        if Path(source_before.path).resolve() != Path(expected_path).resolve():
             return NativeUnavailable("unavailable", stage, "source binding is not qualified")
-        if reader.file_version(source_before.path) != STEAM_VERSION:
+        if reader.file_version(source_before.path) != profile.steam_version:
             return NativeUnavailable("unavailable", stage, "SteamUI version is not qualified")
         stage = "module_changed"
         module_before = backend.module(steam.pid, expected_path)
-        if (type(module_before.base) is not int or not 0x10000 <= module_before.base <= 0x7FFFFFFFFFFF - IMAGE_SIZE
-                or type(module_before.size) is not int or module_before.size != IMAGE_SIZE
+        if (type(module_before.base) is not int or not 0x10000 <= module_before.base <= 0x7FFFFFFFFFFF - profile.image_size
+                or type(module_before.size) is not int or module_before.size != profile.image_size
                 or Path(module_before.path).resolve() != Path(expected_path).resolve()):
             return NativeUnavailable("unavailable", stage, "loaded SteamUI layout differs")
         backend.open(steam.pid)
         stage = "anchor_mismatch"
-        for rva, expected in ANCHORS:
+        for rva, expected in profile.anchors:
             if backend.read(module_before.base + rva, len(expected)) != expected:
                 return NativeUnavailable("unavailable", stage, "loaded instruction anchor differs")
         stage = "tray_state_unavailable"
@@ -285,11 +287,11 @@ def _probe_bound(machine_id: str, nonce: str, steam: ProcessIdentity,
         tray_values: list[int] = []
         manager_values: list[int] = []
         for _ in range(2):
-            manager = int(struct.unpack("<Q", backend.read(module_before.base + TRAY_MANAGER_RVA, 8))[0])
-            if not 0x10000 <= manager <= 0x7FFFFFFFFFFF - TRAY_OFFSET - 4 or manager % 8:
+            manager = int(struct.unpack("<Q", backend.read(module_before.base + profile.tray_manager_rva, 8))[0])
+            if not 0x10000 <= manager <= 0x7FFFFFFFFFFF - profile.tray_offset - 4 or manager % 8:
                 return NativeUnavailable("unavailable", stage, "invalid current tray manager")
-            raw = backend.read(module_before.base + VALUE_RVA, 1)[0]
-            tray = int(struct.unpack("<I", backend.read(manager + TRAY_OFFSET, 4))[0])
+            raw = backend.read(module_before.base + profile.value_rva, 1)[0]
+            tray = int(struct.unpack("<I", backend.read(manager + profile.tray_offset, 4))[0])
             if raw == 0:
                 return NativeUnavailable("unavailable", "native_online_not_qualified",
                                          "native zero does not qualify current online mode")
@@ -303,7 +305,7 @@ def _probe_bound(machine_id: str, nonce: str, steam: ProcessIdentity,
             return NativeUnavailable("unavailable", stage, "mode or tray state changed during read")
         # Recheck code, mapping, file identity and exact process birth after data.
         stage = "anchor_mismatch"
-        for rva, expected in ANCHORS:
+        for rva, expected in profile.anchors:
             if backend.read(module_before.base + rva, len(expected)) != expected:
                 return NativeUnavailable("unavailable", stage, "loaded code changed during read")
         stage = "module_changed"
@@ -321,14 +323,14 @@ def _probe_bound(machine_id: str, nonce: str, steam: ProcessIdentity,
         evidence = NativeEvidence(
             machine_id=machine_id, observed_at_utc=observed_at, nonce=nonce,
             module_base=str(module_before.base), module_size=module_before.size,
-            value_rva=str(VALUE_RVA), value_address=str(module_before.base + VALUE_RVA),
-            producer_rva=str(PRODUCER_RVA), producer_anchor_hex=PRODUCER.hex(),
-            producer_anchor_sha256=hashlib.sha256(PRODUCER).hexdigest(),
+            value_rva=str(profile.value_rva), value_address=str(module_before.base + profile.value_rva),
+            producer_rva=str(profile.producer_rva), producer_anchor_hex=profile.producer.hex(),
+            producer_anchor_sha256=hashlib.sha256(profile.producer).hexdigest(),
             raw_samples=(raw_values[0], raw_values[1]),
             steam_before=before, steam_after=after,
             source_before=source_before, source_after=source_after,
-            tray_manager_pointer_rva=str(TRAY_MANAGER_RVA),
-            tray_manager_address=str(manager_values[0]), tray_state_offset=str(TRAY_OFFSET),
+            tray_manager_pointer_rva=str(profile.tray_manager_rva),
+            tray_manager_address=str(manager_values[0]), tray_state_offset=str(profile.tray_offset),
             tray_state_samples=(tray_values[0], tray_values[1]),
         )
         return NativeObserved("observed", _state(raw_values[0], tray_values[0]),

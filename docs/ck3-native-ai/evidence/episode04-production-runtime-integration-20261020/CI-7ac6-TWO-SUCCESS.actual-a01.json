@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:38:29.537052+00:00",
+  "schema": "xar.exacthead.ci-readback.v1",
+  "head": "7ac6cebe92c67a3dd5295ae5fe07d944a38480c6",
+  "runs": [
+    {
+      "conclusion": "success",
+      "head_sha": "7ac6cebe92c67a3dd5295ae5fe07d944a38480c6",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39491469026",
+      "id": 39491469026,
+      "name": "Linear history",
+      "status": "completed",
+      "updated_at": "2026-10-20T20:23:34Z"
+    },
+    {
+      "conclusion": "success",
+      "head_sha": "7ac6cebe92c67a3dd5295ae5fe07d944a38480c6",
+      "html_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39491469030",
+      "id": 39491469030,
+      "name": "Official Runner CI",
+      "status": "completed",
+      "updated_at": "2026-10-20T20:54:58Z"
+    }
+  ],
+  "manual_rerun": false,
+  "new_publish_head_CI_qualified": false
+}

@@ -1,0 +1,13 @@
+test_actual_pinned_parent_route_same_client_without_r10_queries (__main__.ParentBundle.test_actual_pinned_parent_route_same_client_without_r10_queries) ... ok
+test_cached_module_still_checks_source_pins (__main__.ParentBundle.test_cached_module_still_checks_source_pins) ... ok
+test_crossed_parent_tool_directory_refused_before_any_action (__main__.ParentBundle.test_crossed_parent_tool_directory_refused_before_any_action) ... ok
+test_default_off_and_existing_case_exclusion (__main__.ParentBundle.test_default_off_and_existing_case_exclusion) ... ok
+test_each_executed_parent_tool_is_bound_before_any_action (__main__.ParentBundle.test_each_executed_parent_tool_is_bound_before_any_action) ... ok
+test_finite_module_set_and_duplicate_pin_rejected (__main__.ParentBundle.test_finite_module_set_and_duplicate_pin_rejected) ... ok
+test_refusal_protocol_is_exact_final_pair (__main__.ParentBundle.test_refusal_protocol_is_exact_final_pair) ... ok
+test_typed_json_and_pin_boundary_rejects_non_json_and_numeric_aliases (__main__.ParentBundle.test_typed_json_and_pin_boundary_rejects_non_json_and_numeric_aliases) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.859s
+
+OK

@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T21:32:21.625041+00:00",
+  "schema": "xar.original-popen-wait.v1",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "mypy",
+    "--config-file",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy.ini",
+    "--no-incremental",
+    "--cache-dir",
+    "nul",
+    "--follow-imports",
+    "skip",
+    "--check-untyped-defs",
+    "--python-version",
+    "3.14",
+    "--platform",
+    "win32",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror\\tools\\test_ck3_mod_acceptance_parent_bundle.py"
+  ],
+  "cwd": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mirror",
+  "pid": 8460,
+  "creation_filetime_decimal": "134370055315568651",
+  "started_at_utc": "2026-10-20T21:32:11.571282+00:00",
+  "actual_original_popen_wait": true,
+  "returncode": 1,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\stdout.log",
+    "bytes": 998,
+    "sha256": "eb93e73265b37c491b97bc91894b177a4b499fa07b8fa82c45847565a0028b48"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-publish-2200-a01\\source-test\\mypy-equal-resolution-effective-a01\\stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "wrapper_diagnostics": [],
+  "D_or_W_writes": false,
+  "bytecode": false
+}

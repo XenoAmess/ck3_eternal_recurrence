@@ -1,0 +1,20 @@
+{
+  "case": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03",
+  "variant": "fresh",
+  "public_run_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\public-run.ORIGINAL-WAIT.json",
+    "bytes": 2048,
+    "sha256": "2203517b6c2f228837d040b62a91da6fabe5050fc9c9931b5a47a2bcfce33ec9"
+  },
+  "public_allocate_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\first-allocate.ORIGINAL-WAIT.json",
+    "bytes": 2443,
+    "sha256": "cf6f7ca222c7e6dc9929d1114f4b193806988fe84366b913132895adcbd4b817"
+  },
+  "controlled_host_count": 1,
+  "actual_Game_SDK_Steam_observer": false,
+  "live": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\artifacts\\background-source-only-machine--vanilla--R0001",
+  "keeper": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\first-keeper",
+  "prepared": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\first-prepared\\prepared-case.json",
+  "release": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-fresh-a03\\screen-release.fixture.json"
+}

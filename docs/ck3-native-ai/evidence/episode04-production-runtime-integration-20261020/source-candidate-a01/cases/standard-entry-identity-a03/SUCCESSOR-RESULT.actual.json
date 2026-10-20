@@ -1,0 +1,26 @@
+{
+  "machine_id": "background-source-only-machine",
+  "physical_machine_id": "desktop-3fevhd2-1c74096080",
+  "closure": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\BACKGROUND-REFUSAL-CLOSURE.actual-a01.json",
+    "bytes": 6485,
+    "sha256": "dd027ed6061788ffd862422eea1a1a88cb660d417473b803647c787620ec2681"
+  },
+  "closure_cli_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\closure-a01.ORIGINAL-WAIT.json",
+    "bytes": 2641,
+    "sha256": "a92ed3928041e807c5d5cff9662f514a260bc19d6a355dc485f9e872acf188d1"
+  },
+  "successor_original_allocate_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\third-a03-allocate.ORIGINAL-WAIT.json",
+    "bytes": 2932,
+    "sha256": "ea7bba7f2dda77334e09b9b3ee8a2e0b885e33e923ce2fa01a6da7438604f356"
+  },
+  "live": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\artifacts\\background-source-only-machine--vanilla--R0002",
+  "keeper": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\cases\\standard-entry-identity-a03\\third-a03-keeper",
+  "run_id": "background-source-only-machine--vanilla--R0002",
+  "all_failed_predecessor_originals_unchanged": true,
+  "successor_started": false,
+  "controlled_host_count": 0,
+  "Steam_game_SDK_observer": false
+}

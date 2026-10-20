@@ -1,0 +1,32 @@
+{
+  "preloaded": [],
+  "loaded": {
+    "ck3_mod_acceptance": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance.py",
+      "bytes": 61488,
+      "sha256": "a35a5c0f455875ef2a07e5c0b23ee3f1b105381822612f79651793af5f49ce23"
+    },
+    "ck3_mod_acceptance_allocate": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 158676,
+      "sha256": "738b57863dc348795ba23b55893c39767dba029b567c01b762f3a808654d1f0f"
+    }
+  },
+  "sys_path": [
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\harness\\standard-route-a01\\audit-shim",
+    "C:\\ck3-e04-resume-20261020-a01\\r08-production-runtime-source-2130-a01\\source-candidate-a01\\tools",
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\python314.zip",
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\DLLs",
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib",
+    "C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\src",
+    "D:\\workspace\\ck3_reclaim_promo_dev\\promo\\reclaim_the_motherland\\integration\\src",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\win32",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\win32\\lib",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\pythonwin"
+  ]
+}
