@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.a41-phase-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:47:12.994323+00:00",
+  "phase": "worker_live_actual_configure_build",
+  "Popen": {
+    "pid": 11492,
+    "creation_filetime": 134369595854553498
+  },
+  "original_wait_return_code": 0,
+  "guard_failure": null,
+  "stdout": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\stdout.txt",
+    "bytes": 4200,
+    "sha256": "bb72f4e1657d0aa9b72e7c3b07732b82dace7f845d4b893b65771e637d599b8a"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "intent": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\intent.actual.json",
+    "bytes": 3492,
+    "sha256": "7eb3be23ad9f08a2a5d8eb5889a29dd99a5b4342ecd602f7ac8221d89d37df47"
+  },
+  "after_guard": {
+    "observed_at_utc": "2026-10-20T08:47:12.994045+00:00",
+    "native_root_bytes": 25276931,
+    "native_plus_full_protocol_charge": 58831363,
+    "budget": {
+      "C_known_future_bytes": 939524096,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26751460550,
+      "C_floor_margin_bytes": 54301907770,
+      "C_projected_whole_volume_upper_bound_bytes": 435357201606,
+      "C_quota_margin_bytes": 2729462586,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 63324160
+    },
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 268256,
+      "sha256": "f18493f7b80a58910229ffe3272879b74f1e6fbb0d4493e9919e5bb40c496743"
+    }
+  },
+  "guard_observations": 36,
+  "peak_root_bytes": 30569211,
+  "minimum_budget_margins": {
+    "C_floor_margin_bytes": 54300891962,
+    "C_quota_margin_bytes": 2728446778,
+    "D_floor_margin_bytes": 63324160
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schema": "xar.e04.a41-worker-source-scope-and-frozen-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:25:26.581165+00:00",
+  "status": "READONLY_D_NESTED_CMAKE_SOURCE_CONTRACT_REJECTED_BEFORE_SYSTEM_OR_BUILD",
+  "installed_policy": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+    "bytes": 1088,
+    "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+  },
+  "actual_allowed_external_source_roots": [
+    "C:\\ck3-war-episode04-research-20261004-a01"
+  ],
+  "D_nested_source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+  "D_nested_source_is_installed_external_scope": false,
+  "observed_preflight_assertion": "Nested worker external source not covered by installed policy",
+  "failed_readonly_checker": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\check_worker_contract_a41.py",
+    "bytes": 3084,
+    "sha256": "cbc1ed29c172f9a47421b0554b3131666d38d0d9d95c69e5cd752be8de8d1962"
+  },
+  "SYSTEM_TaskRun_called": false,
+  "build_called": false,
+  "frozen_candidate_root": "C:/w/e04a41/worker-source",
+  "exact_existing_CMake_all_targets_and_recursive_quote_include_closure": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\refill_core_carrier_12004.hpp",
+      "bytes": 5570,
+      "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\cold_target.cpp",
+      "bytes": 6201,
+      "sha256": "026812826b314568bd5a84f7d9eff4989e2daa9b62567ad88d7dfb1fe378def9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\synthetic_add.asm",
+      "bytes": 883,
+      "sha256": "7fec28e0b4afa0d669a1ed399f914f49583b6d3d32604237e8a7682a0acef4f3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_hwprobe_12004.cpp",
+      "bytes": 53214,
+      "sha256": "762913208e75274ce9bab2bbfd564be2aa5d4ad5abb0a4b75987a62f5287ccbe"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\CMakeLists.txt",
+      "bytes": 5608,
+      "sha256": "240d9b9aad7bd1ebf5cc4dd183c770163e5ce20069c0030868369e9f385b8ae8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\debug_thread_ownership_12004.hpp",
+      "bytes": 1045,
+      "sha256": "51cad76879125f63efaf18803e8ef557eebdf84cfed7eae02a281056ad985781"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_core_carrier_reader_12004.hpp",
+      "bytes": 12914,
+      "sha256": "e331d33a463b3154a87c375e7268ff98780cc2a6a9eae3e7930d3dbd822dc7ad"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_cold_fixture_12004.cpp",
+      "bytes": 6234,
+      "sha256": "69c6f9cdcfa18b4d97e80fda15a35a120c62acc792ab1f946994581cc170c99e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_source_12004.hpp",
+      "bytes": 1986,
+      "sha256": "df46a9fa389471679d33bd369de21bab428ae1d9988e9fbe9907920483a3045a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v3_cold_entry_12004.cpp",
+      "bytes": 3613,
+      "sha256": "7a77cd3f22ae1e720d6ac919cfe84af4eb2aa1e2f868ac8a59446dfee47bec7c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_entry_12004.cpp",
+      "bytes": 5044,
+      "sha256": "63b026ffdbbddfb7de3f34e19e41dd4f6b3a3c8e731a54a06e56fe4d0c3a7214"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_target_12004.cpp",
+      "bytes": 12234,
+      "sha256": "186c218ee3466c909600d548327a58dca087180ab4e8c7df8f4797426830f9ad"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\thread_ownership_policy_test.cpp",
+      "bytes": 2257,
+      "sha256": "9edc4ca98f0dc83cd5083f3d8471ff077595b85dd29504466af0c53f3c47573a"
+    }
+  ],
+  "file_count": 13,
+  "payload_bytes": 116803,
+  "CMake_closure_reason": "All unconditional add_executable source operands, V3 and V5 conditional sibling operands, recursive quoted local includes; exact unchanged existing files. Unused target sources must exist for normal CMake generation."
+}

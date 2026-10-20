@@ -1,0 +1,289 @@
+{
+  "schema": "xar.e04.a41-existing-frozen-worker-input-identity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:27:32.881033+00:00",
+  "status": "EXISTING_FROZEN_INPUTS_REVALIDATED_CURRENT_EQUIVALENCE_SOURCE_ONLY",
+  "original_snapshot_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 8115,
+    "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+  },
+  "snapshot_original_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+  "snapshot_actual_source_root": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01",
+  "actual_compiler_source_dir_candidate": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+  "current_observed_source_head": "1ec22203947d56397e30275f31dd4634cf87529a",
+  "current_native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "installed_external_source_roots_covering_snapshot": [
+    "C:\\ck3-war-episode04-research-20261004-a01"
+  ],
+  "file_count": 13,
+  "payload_bytes": 135155,
+  "files": [
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\CMakeLists.txt",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\CMakeLists.txt",
+        "bytes": 5608,
+        "sha256": "240d9b9aad7bd1ebf5cc4dd183c770163e5ce20069c0030868369e9f385b8ae8"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\CMakeLists.txt",
+        "bytes": 5608,
+        "sha256": "240d9b9aad7bd1ebf5cc4dd183c770163e5ce20069c0030868369e9f385b8ae8"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\thread_ownership_policy_test.cpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\thread_ownership_policy_test.cpp",
+        "bytes": 2257,
+        "sha256": "9edc4ca98f0dc83cd5083f3d8471ff077595b85dd29504466af0c53f3c47573a"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\thread_ownership_policy_test.cpp",
+        "bytes": 2257,
+        "sha256": "9edc4ca98f0dc83cd5083f3d8471ff077595b85dd29504466af0c53f3c47573a"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_cold_fixture_12004.cpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_cold_fixture_12004.cpp",
+        "bytes": 6234,
+        "sha256": "69c6f9cdcfa18b4d97e80fda15a35a120c62acc792ab1f946994581cc170c99e"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_cold_fixture_12004.cpp",
+        "bytes": 6234,
+        "sha256": "69c6f9cdcfa18b4d97e80fda15a35a120c62acc792ab1f946994581cc170c99e"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_source_12004.hpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_source_12004.hpp",
+        "bytes": 1986,
+        "sha256": "df46a9fa389471679d33bd369de21bab428ae1d9988e9fbe9907920483a3045a"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_stack_q_source_12004.hpp",
+        "bytes": 1986,
+        "sha256": "df46a9fa389471679d33bd369de21bab428ae1d9988e9fbe9907920483a3045a"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v3_cold_entry_12004.cpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v3_cold_entry_12004.cpp",
+        "bytes": 3613,
+        "sha256": "7a77cd3f22ae1e720d6ac919cfe84af4eb2aa1e2f868ac8a59446dfee47bec7c"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v3_cold_entry_12004.cpp",
+        "bytes": 3613,
+        "sha256": "7a77cd3f22ae1e720d6ac919cfe84af4eb2aa1e2f868ac8a59446dfee47bec7c"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_entry_12004.cpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_entry_12004.cpp",
+        "bytes": 5044,
+        "sha256": "63b026ffdbbddfb7de3f34e19e41dd4f6b3a3c8e731a54a06e56fe4d0c3a7214"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_entry_12004.cpp",
+        "bytes": 5044,
+        "sha256": "63b026ffdbbddfb7de3f34e19e41dd4f6b3a3c8e731a54a06e56fe4d0c3a7214"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_target_12004.cpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_target_12004.cpp",
+        "bytes": 12234,
+        "sha256": "186c218ee3466c909600d548327a58dca087180ab4e8c7df8f4797426830f9ad"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_target_12004.cpp",
+        "bytes": 12234,
+        "sha256": "186c218ee3466c909600d548327a58dca087180ab4e8c7df8f4797426830f9ad"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_core_carrier_reader_12004.hpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_core_carrier_reader_12004.hpp",
+        "bytes": 12914,
+        "sha256": "e331d33a463b3154a87c375e7268ff98780cc2a6a9eae3e7930d3dbd822dc7ad"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_core_carrier_reader_12004.hpp",
+        "bytes": 12914,
+        "sha256": "e331d33a463b3154a87c375e7268ff98780cc2a6a9eae3e7930d3dbd822dc7ad"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\debug_thread_ownership_12004.hpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\debug_thread_ownership_12004.hpp",
+        "bytes": 1045,
+        "sha256": "51cad76879125f63efaf18803e8ef557eebdf84cfed7eae02a281056ad985781"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\debug_thread_ownership_12004.hpp",
+        "bytes": 1045,
+        "sha256": "51cad76879125f63efaf18803e8ef557eebdf84cfed7eae02a281056ad985781"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+        "bytes": 24553,
+        "sha256": "7ea5fbef48a41de7ee0e0027c5e3deefbbf98a6cb5ffa6920ac1738a859dd581"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+        "bytes": 24553,
+        "sha256": "7ea5fbef48a41de7ee0e0027c5e3deefbbf98a6cb5ffa6920ac1738a859dd581"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_hwprobe_12004.cpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_hwprobe_12004.cpp",
+        "bytes": 53214,
+        "sha256": "762913208e75274ce9bab2bbfd564be2aa5d4ad5abb0a4b75987a62f5287ccbe"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_hwprobe_12004.cpp",
+        "bytes": 53214,
+        "sha256": "762913208e75274ce9bab2bbfd564be2aa5d4ad5abb0a4b75987a62f5287ccbe"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\synthetic_add.asm",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\synthetic_add.asm",
+        "bytes": 883,
+        "sha256": "7fec28e0b4afa0d669a1ed399f914f49583b6d3d32604237e8a7682a0acef4f3"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\synthetic_add.asm",
+        "bytes": 883,
+        "sha256": "7fec28e0b4afa0d669a1ed399f914f49583b6d3d32604237e8a7682a0acef4f3"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    },
+    {
+      "relative_path": "ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\refill_core_carrier_12004.hpp",
+      "snapshot_actual": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\refill_core_carrier_12004.hpp",
+        "bytes": 5570,
+        "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+      },
+      "canonical_actual": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\refill_core_carrier_12004.hpp",
+        "bytes": 5570,
+        "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+      },
+      "original_manifest_matches": true,
+      "current_native_inputs_identical": true
+    }
+  ],
+  "public_validate_source_succeeded": true,
+  "actual_runner_source_only_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--source-root",
+    "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01",
+    "--source-check-only"
+  ],
+  "actual_runner_source_only_returncode": 0,
+  "actual_runner_source_only_result": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:27:32.711961+00:00",
+    "status": "SOURCE_CHECKS_PASS_ONLY",
+    "built": false,
+    "cold_executed": false,
+    "CK3_actual_ADD_observed": false,
+    "SDK_calls": 0,
+    "checks": [
+      "actual production include with V5 carrier seam",
+      "default OFF flags",
+      "fixed exported carrier ABI publication",
+      "worker-only original ASM call once",
+      "independent assembly counter",
+      "main/worker/auditor DR audit source",
+      "Python syntax"
+    ],
+    "source_pins": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_entry_12004.cpp",
+        "bytes": 5044,
+        "sha256": "63b026ffdbbddfb7de3f34e19e41dd4f6b3a3c8e731a54a06e56fe4d0c3a7214"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_target_12004.cpp",
+        "bytes": 12234,
+        "sha256": "186c218ee3466c909600d548327a58dca087180ab4e8c7df8f4797426830f9ad"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+        "bytes": 24553,
+        "sha256": "7ea5fbef48a41de7ee0e0027c5e3deefbbf98a6cb5ffa6920ac1738a859dd581"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\refill_core_carrier_12004.hpp",
+        "bytes": 5570,
+        "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\synthetic_add.asm",
+        "bytes": 883,
+        "sha256": "7fec28e0b4afa0d669a1ed399f914f49583b6d3d32604237e8a7682a0acef4f3"
+      }
+    ]
+  },
+  "original_manifest_can_satisfy_existing_gate": {
+    "machine_id_exact": true,
+    "source_root_exact": true,
+    "all_nine_required_compiled_input_paths_and_pins_present": true,
+    "existing_gate_has_no_manifest_schema_or_source_head_relabel_requirement": true
+  },
+  "closure": "13 original entries cover normal generator unconditional targets, V5 conditional target/ASM and recursive quoted headers. V3=OFF in both selected configurations, so its conditional cold_target.cpp operand is inactive; no new source copy is needed.",
+  "old_snapshot_modified": false,
+  "new_freeze_or_binary_copy": false,
+  "old_qualification_or_capacity_reused": false,
+  "build_or_SYSTEM_or_cold_executed": false,
+  "remaining": "Actual current clean invocation HEAD, public producer build and SYSTEM source/FileAPI validation, new exact binding, then two actual owned cases are still required."
+}

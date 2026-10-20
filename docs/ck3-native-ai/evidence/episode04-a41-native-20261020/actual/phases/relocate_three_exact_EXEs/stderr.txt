@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\native-plan\relocate_a40_declared_exes_a02.py", line 97, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\ck3-e04-resume-20261020-a01\r06-resume-a02\native-plan\relocate_a40_declared_exes_a02.py", line 58, in main
+    handle=win32file.CreateFile(str(source),win32con.GENERIC_READ,win32con.FILE_SHARE_READ,None,win32con.OPEN_EXISTING,win32con.FILE_FLAG_OPEN_REPARSE_POINT,None)
+                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'win32con' has no attribute 'FILE_FLAG_OPEN_REPARSE_POINT'

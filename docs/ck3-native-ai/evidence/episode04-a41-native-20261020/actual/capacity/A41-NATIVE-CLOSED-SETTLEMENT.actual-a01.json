@@ -1,0 +1,103 @@
+{
+  "schema": "xar.e04.a41-native-actual-closed-settlement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:55:52.465797+00:00",
+  "root_authorization": "Root explicitly approved actual owned-end verification then native768MiB future to0, credit0; actual full selected Q does not grant live R06 business qualification.",
+  "native_root": "C:\\w\\e04a41",
+  "closure": {
+    "path": "C:\\w\\e04a41\\A41-SELECTED-SCOPE-CLOSED.actual-a01.json",
+    "bytes": 12485,
+    "sha256": "bb0b212e0bead7ef1593d57c4d33a9f60823f9a697d5643b577fa90dd94850b0"
+  },
+  "qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "public_verifier_readback": {
+    "path": "C:\\w\\e04a41\\A41-INDEPENDENT-PUBLIC-VERIFIER-READBACK.actual-a01.json",
+    "bytes": 4192,
+    "sha256": "448d4dedc286aac5f8d9e339ea0556ff864bafe872230177bb1b2f1b7641e8b1"
+  },
+  "independent_closed_metadata_measurement": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:55:52.414183+00:00",
+    "aggregate_root": "C:\\w\\e04a41",
+    "logical_bytes": 28501109,
+    "allocated_unique_bytes": 29968200,
+    "files": 864,
+    "allocation_source": "Path.stat stable identity and Windows FileStandardInfo AllocationSize",
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true,
+    "elapsed_seconds": 0.348
+  },
+  "owned_census_before": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:55:52.046901+00:00",
+    "recorded_owned_PIDs_creation_times_still_active": [],
+    "read_errors": [],
+    "fixed_SYSTEM_task_running_instances": 0,
+    "global_process_absence_claimed": false,
+    "historical_descendant_PID_gaps_preserved_in_original": [
+      "Public CMake/Ninja/compiler descendant historical PID/creation times are not individually exposed by their existing producer report. Their actual synchronous build completion and parent Popen wait are preserved, and current owned-path census is empty.",
+      "Fixed SYSTEM broker does not expose its process PID/creation FILETIME; each actual protected receipt proves SID18/admin and the fixed task now has running_instances=0. No SYSTEM PID is invented."
+    ]
+  },
+  "owned_census_after": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:55:52.419996+00:00",
+    "recorded_owned_PIDs_creation_times_still_active": [],
+    "read_errors": [],
+    "fixed_SYSTEM_task_running_instances": 0,
+    "global_process_absence_claimed": false,
+    "historical_descendant_PID_gaps_preserved_in_original": [
+      "Public CMake/Ninja/compiler descendant historical PID/creation times are not individually exposed by their existing producer report. Their actual synchronous build completion and parent Popen wait are preserved, and current owned-path census is empty.",
+      "Fixed SYSTEM broker does not expose its process PID/creation FILETIME; each actual protected receipt proves SID18/admin and the fixed task now has running_instances=0. No SYSTEM PID is invented."
+    ]
+  },
+  "actual_fixed_protocol_contract_derived_bytes": 1003300,
+  "retained_fixed_protocol_conservative_charge_bytes": 33554432,
+  "private_protocol_direct_inventory_performed": false,
+  "protected_unknown_not_assumed_zero": true,
+  "retained_all_native_and_fixed_protocol_existing_allocation_already_inside_whole_volume_used": true,
+  "future_before_bytes": 805306368,
+  "future_after_bytes": 0,
+  "remaining_heavy_write_bytes": 0,
+  "shared128MiB_continues": true,
+  "shared_measurement": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:55:52.460744+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 26668807,
+    "files": 249,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "legacy42132678_unchanged": true,
+  "physical_or_unused_credit_bytes": 0,
+  "deletion_performed": false,
+  "retention": {
+    "policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "purpose_review_at_utc": "2026-10-20T10:30:00Z",
+    "protection_auto_renew": false,
+    "current_necessary_inputs_reason": "Actual new runtime and pending R06 scene consume qualified old DLL/new EXEs and exact original worker snapshot; original source-ACL before records remain unique restoration material. No active input deletion.",
+    "build_default_expires_at_utc": "2026-11-03T08:52:27.344781+00:00",
+    "small_record_default_expires_at_utc": "2027-04-18T08:52:27.344781+00:00",
+    "obsolete_unexecuted_preparations_review": "Derived prepared revisions are eligible for consolidation/reclamation under the common policy, not permanent protection because they were candidates. Preserve one small actual failure and its precise fixed diagnosis.",
+    "expired_is_candidate_not_delete_authorization": true
+  },
+  "old_failure_and_source_layers_preserved": true,
+  "new_scene_or_game_admitted_by_native_settlement": false,
+  "observations_serialization_and_fsync_outside_coordination_lock": true,
+  "scheme": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\settle_a41_reserve_scene.py",
+    "bytes": 11721,
+    "sha256": "6c7fad6d0781b8bbca3a0acbf2ed84bdb035a48c19129dfb92104d5bf816b0ee"
+  }
+}

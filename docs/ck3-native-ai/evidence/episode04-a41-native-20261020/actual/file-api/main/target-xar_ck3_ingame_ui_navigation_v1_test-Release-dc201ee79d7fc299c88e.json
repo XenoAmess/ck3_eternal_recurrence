@@ -1,0 +1,420 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "xar_ck3_ingame_ui_navigation_v1_test.exe"
+		},
+		{
+			"path" : "xar_ck3_ingame_ui_navigation_v1_test.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_options",
+			"target_link_libraries",
+			"target_compile_options",
+			"target_compile_definitions",
+			"target_include_directories",
+			"target_sources",
+			"include"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt",
+			"cmake/religion_ui12004.cmake",
+			"cmake/holy_site_relic_typed_ui12004.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3862,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 3873,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 3868,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 3872,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 3869,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 3867,
+				"parent" : 0
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 10080,
+				"parent" : 0
+			},
+			{
+				"file" : 1,
+				"parent" : 7
+			},
+			{
+				"command" : 6,
+				"file" : 1,
+				"line" : 16,
+				"parent" : 8
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 10084,
+				"parent" : 0
+			},
+			{
+				"file" : 2,
+				"parent" : 10
+			},
+			{
+				"command" : 6,
+				"file" : 2,
+				"line" : 11,
+				"parent" : 11
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 10
+	},
+	"compileDependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "xar_ck3_12002_runtime::@6890427a1f51a3e7e1df"
+		}
+	],
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "/UNDEBUG"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "/utf-8"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "/Gy"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 5,
+					"define" : "NOMINMAX"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "WIN32_LEAN_AND_MEAN"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_COUNTY_PREVIEW_RELATION_INPUTS_12004=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=1"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "_UNICODE"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 6,
+					"path" : "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/research"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "20"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "xar_ck3_12002_runtime::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "xar_ck3_ingame_ui_navigation_v1_test::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/machine:x64 /INCREMENTAL:NO",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/subsystem:console",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/OPT:REF",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "xar_ck3_12002_runtime.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "bcrypt.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"linkLibraries" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "xar_ck3_12002_runtime::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 3,
+			"fragment" : "bcrypt"
+		}
+	],
+	"name" : "xar_ck3_ingame_ui_navigation_v1_test",
+	"nameOnDisk" : "xar_ck3_ingame_ui_navigation_v1_test.exe",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "tests/ingame_ui_navigation_v1_test.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/ck3_12004_holy_site_ui.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/ck3_12004_holy_site_adoption_detail.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/appointment_window_snapshot_v1.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/appointment_character_level12004.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/zhongguo_scoreboard_action_v1.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/protocol.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 9,
+			"compileGroupIndex" : 0,
+			"path" : "src/religion_ui12004.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 9,
+			"compileGroupIndex" : 0,
+			"path" : "src/religion_ui12004_navigation.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 12,
+			"compileGroupIndex" : 0,
+			"path" : "src/ck3_12004_holy_site_relic_actions.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 12,
+			"compileGroupIndex" : 0,
+			"path" : "src/ck3_12004_holy_site_relic_actions_json.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 12,
+			"compileGroupIndex" : 0,
+			"path" : "src/holy_site_relic_request12004.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 12,
+			"compileGroupIndex" : 0,
+			"path" : "src/holy_site_relic_navigation12004.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

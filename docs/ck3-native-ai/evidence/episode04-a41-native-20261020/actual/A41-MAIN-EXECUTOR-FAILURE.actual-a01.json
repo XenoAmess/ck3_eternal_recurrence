@@ -1,0 +1,23 @@
+{
+  "schema": "xar.e04.a41-executor-failure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:34:34.727144+00:00",
+  "stage": "main",
+  "error": "RuntimeError('Actual phase failed: relocate_three_exact_EXEs 1 None')",
+  "parent": {
+    "pid": 25936,
+    "creation_filetime": 134369588292970292
+  },
+  "completed_phase_results": {
+    "main_genuine_configure_only": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\result.actual.json",
+      "bytes": 1940,
+      "sha256": "686ca6039b0de131123537b4aa4dd61f42fd42206309c550404829bdcc6ce146"
+    }
+  },
+  "protocol_growth_known": [],
+  "protocol_actual_unknown_until_verified_if_missing": true,
+  "qualification_granted": false,
+  "remaining_scope_not_automatically_retried": true,
+  "root_peak_bytes_known": 20897589
+}

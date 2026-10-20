@@ -1,0 +1,136 @@
+{
+  "schema": "xar.e04.a41-main-relocation-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:46:08.619436+00:00",
+  "status": "MAIN_RELOCATED_BYTES_SYSTEM3_AND_EXACT_UI1_PASS_WORKER_PENDING",
+  "source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "production_bytes_qualified": true,
+  "focused_UI_cold_qualified": true,
+  "focused_cold_qualified": false,
+  "original_compile_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "original_compile_result": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\native-msvc-result.json",
+    "bytes": 1929,
+    "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+  },
+  "new_main_compile_performed": false,
+  "genuine_configure_result": {
+    "path": "C:\\w\\e04a41\\producer-configure-a01\\native-msvc-result.json",
+    "bytes": 1174,
+    "sha256": "e0a86370e18d74fdcfe6f6e215eace976681478bbe92a55ff6de6fc4a6f5e7bf"
+  },
+  "relocation": {
+    "path": "C:\\w\\e04a41\\A41-RELOCATION.actual-a01.json",
+    "bytes": 4966,
+    "sha256": "2a8156664c6fb850cd504f2f0be386a9543b85c3b4856b5d61adf5092cd016ec"
+  },
+  "real_new_manifest": {
+    "path": "C:\\w\\e04a41\\relocation-registration-a01\\manifest.json",
+    "bytes": 3054,
+    "sha256": "f89e6d507ce74e464c2638fe744411507250994ae3f7fb2ba3103de6595db337"
+  },
+  "SYSTEM_receipt": {
+    "path": "C:\\w\\e04a41\\relocation-registration-a01\\receipt.json",
+    "bytes": 382372,
+    "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+  },
+  "carrier_module": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "bytes": 14397440,
+    "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+  },
+  "relocated_EXEs": [
+    {
+      "target": "xar_ck3_bridge_injector",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+      },
+      "destination": {
+        "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+      }
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+      },
+      "destination": {
+        "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+      }
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+        "bytes": 658944,
+        "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332"
+      },
+      "destination": {
+        "path": "C:\\w\\e04a41\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+        "bytes": 658944,
+        "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332"
+      }
+    }
+  ],
+  "phases": {
+    "main_genuine_configure_only": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\result.actual.json",
+      "bytes": 1940,
+      "sha256": "686ca6039b0de131123537b4aa4dd61f42fd42206309c550404829bdcc6ce146"
+    },
+    "relocate_three_exact_EXEs": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\result.actual.json",
+      "bytes": 1961,
+      "sha256": "8fe9fd979903764591942ad4d878b44d68b30909364127707a0e545ea0c8562e"
+    },
+    "freeze_real_new_CMake_EXE_manifest": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\result.actual.json",
+      "bytes": 1964,
+      "sha256": "aa61e94ba1bcc53a767f9897bf5b05af54633560877c051460a55e3b175c36de"
+    },
+    "ordinary_SYSTEM_register_three_EXEs": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\result.actual.json",
+      "bytes": 1972,
+      "sha256": "8bffb9831ef0272cf1634136ea86e12c50435ebb67322746414548ffd5a9b89f"
+    },
+    "main_UI_finite_cold": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\result.actual.json",
+      "bytes": 1938,
+      "sha256": "ce19e3cf03df063062aab1fea877fe9fe7118955283a4dd9e31fa4af0d888674"
+    }
+  },
+  "protocol_growth_by_actual_request": [
+    {
+      "request_id": "08abb280-0b8d-4131-8565-7d2face2678f",
+      "actual_raw_request_bytes": 4459,
+      "actual_protected_result_bytes": 382372,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 391566,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\protected-worker-receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      }
+    }
+  ],
+  "root_peak_bytes_known": 23034165,
+  "fixed_protocol_charge_bytes": 33554432,
+  "minimum_budget_margins": {
+    "C_floor_margin_bytes": 54302288698,
+    "C_quota_margin_bytes": 2729843514,
+    "D_floor_margin_bytes": 63324160
+  },
+  "worker_scope_actual": "NOT_EXECUTED_PENDING_ROOT_NEW_CLEAN_HEAD",
+  "game_SDK_screen_live_observer_executed": false
+}

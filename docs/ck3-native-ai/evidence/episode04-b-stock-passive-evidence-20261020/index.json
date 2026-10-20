@@ -1,0 +1,236 @@
+{
+  "schema": "xar.e04.B.passive-stock-shared-knowledge-index.v1",
+  "artifact_state": "REPO_READY_PROPOSAL_NOT_YET_INSTALLED",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:01:23.859340+00:00",
+  "source_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "proposed_repository_document": "docs/ck3-native-ai/episode04-b-stock-passive-evidence-12004.md",
+  "proposed_repository_index": "docs/ck3-native-ai/evidence/episode04-b-stock-passive-evidence-20261020/index.json",
+  "document": {
+    "path": "PROPOSED-SHARED-KNOWLEDGE.md",
+    "bytes": 10505,
+    "sha256": "9991560bc15ed7542bc73107fe4327d86a054600ffc7f8a0f4f0a8a7e1909e5e"
+  },
+  "source_pins": [
+    {
+      "path": "docs/ck3-native-ai/episode04-current-execution-map-12004.md",
+      "bytes": 37533,
+      "sha256": "78b74cf7fda37b45603c01eca5707f8e61c6193c48ebe4209edae3a9688aab58"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-strategy-b-12004.md",
+      "bytes": 18760,
+      "sha256": "4c608bad7b16dc5e8974ef954b20efff7c708eb48f61ee90e768553fa2ad88b7"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-strategy-b-next-12004.md",
+      "bytes": 7506,
+      "sha256": "c1a2d976505282144f5dfb491ea95357a80f2e83455ba600933ef4d2d13498de"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r10-stock-growth-opportunity-12004.md",
+      "bytes": 4870,
+      "sha256": "1152ec6f8e2bc4a96cd9982d980262d4057853e1c61680f7bfda742db1a1390d"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-b-next-20261020.md",
+      "bytes": 14907,
+      "sha256": "dc61625d0857764ee2e9c5c6215ee6eec787b2b337ab3367d08998bfba835ef7"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r10-stock-growth-opportunity-12004/QUERY-CURRENT-OPPORTUNITY.contract.json",
+      "bytes": 3891,
+      "sha256": "e4f3adfc3c04252a25a673f5d30e7f278c4f95f0adae476c5c7f2884ab28692e"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r10-stock-growth-opportunity-12004/QUERY-ACTUAL-GROWTH.contract.json",
+      "bytes": 3189,
+      "sha256": "535838c07b2fec6d15a2548b3c00270b0a89e68ce8c2a23b01a47d0ea19ec26a"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_site_growth.py",
+      "bytes": 9484,
+      "sha256": "0db9c7e3a675c5d0e6e92824450236c904ca545eb8364b307ceb6e3b81eac71a"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b.py",
+      "bytes": 25523,
+      "sha256": "84af05fd1fe03045c1edfce8f1ed5aa7a6c35898edd5cb0d457db7be9b945f05"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py",
+      "bytes": 39161,
+      "sha256": "9889cb4838ab08994e8af1abed390bf9e01066b35c30503082b42b59fd22bf26"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10.schema.json",
+      "bytes": 21442,
+      "sha256": "1a3f67701a1211a8a904301925fd35998dcb7d6481aa3a322256366079c1fc42"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/r06_refill_one_day.py",
+      "bytes": 43609,
+      "sha256": "cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_full_army.py",
+      "bytes": 10364,
+      "sha256": "d162e80d965076005c9cf3fce60d7ab1856f25670f24b7f6184e80cd2a812511"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_supply_observation_case.py",
+      "bytes": 43326,
+      "sha256": "e50bab024b7732369f131dc6c1951c296b269fc166fd18cb19dfe4efffd2284e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_prepare_scoped_ordered_refill_assembly.py",
+      "bytes": 4537,
+      "sha256": "c50ff1cc09e80ade092446bd3d289c160f00dd970a648daad61be02b400ff8da"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_actual_supply_callback_journal.cpp",
+      "bytes": 19095,
+      "sha256": "2d4ab90977b6d9f920f81563ea8d082d7b53ec01757c2e0e2a18b1a3498c8093"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/R04-BAYEUX-RESULT.json",
+      "bytes": 239982,
+      "sha256": "3d11b41f532ed9afdbcef25413e70e7f5c21b0ab96436a4d3662a31f53bcde2a"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r0217-20261020/case/normal-close-result.json",
+      "bytes": 9475,
+      "sha256": "668a965e4fff9cde2d58b5ccb7bb05528daff0b2f41e37c70c8ca4b3efc6a824"
+    }
+  ],
+  "bridge_install_source": {
+    "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "git_blob": "b9a5350f2ec7c18907758487832e0562e0fe7b7e",
+    "lines": "30408-30414",
+    "read_scope": "exact rg context only; no executable or Driver payload"
+  },
+  "historical_machine_observation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:50:17.717812+00:00",
+    "scope": "Source-machine normal Save/current stat only; no new load or current runtime qualification",
+    "existing_1513_normal_close_qualified": true,
+    "existing_1513_checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 72796589,
+      "sha256": "475bd703436de962bcd380eedd9c94d9cca7eb052bcf43e42a5c709d16aa27ef",
+      "date_raw": 53147544,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 37,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "existing_1513_independent_after": {
+      "date_raw": 53147544,
+      "played_character": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "event_trait_membership": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 26,
+          "date_raw": 53147544,
+          "played_character_id": 33388,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "selected_army": {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "current_province_id": 1513,
+        "army_state": "regular",
+        "route_read_status": "complete_empty",
+        "route_province_ids": [],
+        "move_target_province_id": null,
+        "in_combat": false,
+        "retreating": false,
+        "controllable": true
+      }
+    },
+    "existing_1513_stat": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r221-scene-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 72796589,
+      "mtime_ns": 1792468760264392100,
+      "payload_read_or_rehashed_here": false
+    },
+    "source_promotion_activated": false,
+    "old_driver_state_mismatch_preserved": true
+  },
+  "current_R06_state": "NEW_GAME_NOT_STARTED_AT_ROOT_HANDOFF; no before/after packets provided to this lane",
+  "actual_R06_packet_refs": [],
+  "actual_growth_event_refs": [],
+  "result_limits": {
+    "B_qualified_sites": 0,
+    "formal_ABC_completed_arms": 0,
+    "minimum_actual_window_days": 1,
+    "R06_existing_pair_passively_reusable": true,
+    "normal_day_adapter_implemented": false,
+    "single_site_CLI_passed_on_actual_R06": false,
+    "R06_equivalent_to_ordinary_B_arm": false,
+    "actual_new_stock_growth_observed": false
+  },
+  "performed": {
+    "SDK_calls": 0,
+    "game_launches": 0,
+    "screen_calls": 0,
+    "new_queries": 0,
+    "new_days": 0,
+    "native_builds": 0,
+    "tracked_writes": 0,
+    "new_Save_or_large_payload_hashes": 0,
+    "prior_passed_tests_repeated": false
+  },
+  "provenance": {
+    "previous_source_delivery": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\b-stock-research\\DELIVERY.actual.json",
+      "bytes": 11611,
+      "sha256": "080fa9c0c9edd14b1e97aae4f66f9889e9aaea1edca8ce3b618b524acecffb2c"
+    },
+    "task_registration_sequence": 7341,
+    "task_poll": {
+      "schema": "codex.task_bus.v1",
+      "ok": true,
+      "task_id": "e04-bstock-shared-knowledge-20261020-a03",
+      "previous_cursor": 0,
+      "acknowledged_cursor": 1,
+      "remaining": 7312
+    },
+    "task_bus_list_read": true,
+    "task_completion_sequence": 7342
+  },
+  "retention": {
+    "knowledge_review_at_utc": "2027-04-18T09:01:23.859340+00:00",
+    "derived_helpers_review_at_utc": "2026-10-22T09:01:23.859340+00:00",
+    "previous_save_or_raw_protection_renewed": false
+  },
+  "storage": {
+    "own_lane_ceiling_bytes": 524288,
+    "this_increment_ceiling_bytes": 262144,
+    "shared_pool_bytes": 134217728,
+    "scope_hard_deadline_utc": "2026-10-20T10:30:00Z",
+    "new_heavy_authority": false
+  }
+}

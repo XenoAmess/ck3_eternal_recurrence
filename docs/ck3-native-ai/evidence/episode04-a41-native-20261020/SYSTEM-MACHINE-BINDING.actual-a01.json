@@ -1,0 +1,120 @@
+{
+  "schema": "xar.e04.a41-original-SYSTEM-receipts-machine-identity-supplement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:05:19.169095+00:00",
+  "status": "ORIGINAL_THREE_SYSTEM_RECEIPTS_SIX_PATHS_EXPLICIT_MACHINE_BINDING",
+  "current_machine_evidence": "tools/ck3_live_run_id.py machine actual local invocation",
+  "original_full_qualification": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "original_archive_copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\COPYPLAN.prepared-a01.json",
+    "bytes": 117145,
+    "sha256": "4eac3de60f4dc979880c133d3be7002984bbf88ebb913137d42817060e4b0dd0"
+  },
+  "groups": [
+    {
+      "group": "main",
+      "raw_original_SYSTEM_receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\main\\receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      },
+      "original_schema_machine_id_field_present": false,
+      "original_local_phase_intent": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\ordinary_SYSTEM_register_three_EXEs\\intent.actual.json",
+        "bytes": 2632,
+        "sha256": "9d346ab45295f11efefbdf79f020a3f3d7e2a23bfe7be3f1eba3e60e1aa12fbe"
+      },
+      "original_phase_fresh_machine_check": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\ordinary_SYSTEM_register_three_EXEs\\capacity-fresh.actual.json",
+        "bytes": 4582,
+        "sha256": "f83e191c1b0240e3a76821fccff1ce8ee6deca3d623d3c0ff775044051e8582c"
+      },
+      "exact_verified_paths_and_SHA": [
+        {
+          "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+          "bytes": 71680,
+          "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+        },
+        {
+          "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+        },
+        {
+          "path": "C:\\w\\e04a41\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+          "bytes": 658944,
+          "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332"
+        }
+      ],
+      "binding_basis": "Original phase capacity helper checked stable machine ID before local Popen/TaskScheduler request; exact protected actual SYSTEM receipt is bound by actual fullQ. No path or PID is used to infer machine identity."
+    },
+    {
+      "group": "worker-live",
+      "raw_original_SYSTEM_receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-live\\receipt.json",
+        "bytes": 270898,
+        "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+      },
+      "original_schema_machine_id_field_present": false,
+      "original_local_phase_intent": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_live_actual_configure_build\\intent.actual.json",
+        "bytes": 3492,
+        "sha256": "7eb3be23ad9f08a2a5d8eb5889a29dd99a5b4342ecd602f7ac8221d89d37df47"
+      },
+      "original_phase_fresh_machine_check": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_live_actual_configure_build\\capacity-fresh.actual.json",
+        "bytes": 4618,
+        "sha256": "a03bbecb35bd674afad84d6fb66cfaa59bcfcba417e40395df396dc5db90e6e2"
+      },
+      "exact_verified_paths_and_SHA": [
+        {
+          "path": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+          "bytes": 140288,
+          "sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5"
+        }
+      ],
+      "binding_basis": "Original phase capacity helper checked stable machine ID before local Popen/TaskScheduler request; exact protected actual SYSTEM receipt is bound by actual fullQ. No path or PID is used to infer machine identity."
+    },
+    {
+      "group": "worker-V5",
+      "raw_original_SYSTEM_receipt": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-V5\\receipt.json",
+        "bytes": 326544,
+        "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+      },
+      "original_schema_machine_id_field_present": false,
+      "original_local_phase_intent": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_actual_configure_build\\intent.actual.json",
+        "bytes": 3528,
+        "sha256": "3fdc2692d0360d3a30da79864d3a2913917048bf3c519f991a760512f5924e29"
+      },
+      "original_phase_fresh_machine_check": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_actual_configure_build\\capacity-fresh.actual.json",
+        "bytes": 4616,
+        "sha256": "b3fd1a2c03dd71c329155108725a9cd52c8dc9d62d0720520386fad4a8188650"
+      },
+      "exact_verified_paths_and_SHA": [
+        {
+          "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+          "bytes": 66048,
+          "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521"
+        },
+        {
+          "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+          "bytes": 156672,
+          "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d"
+        }
+      ],
+      "binding_basis": "Original phase capacity helper checked stable machine ID before local Popen/TaskScheduler request; exact protected actual SYSTEM receipt is bound by actual fullQ. No path or PID is used to infer machine identity."
+    }
+  ],
+  "original_SYSTEM_receipts_rewritten": false,
+  "historical_observation_time_unchanged": true,
+  "schema_boundary": "Original protected SYSTEM schema has no machine_id. This appended identity supplement cites original machine-bound phase evidence; it does not modify original receipt bytes or manufacture a new SYSTEM readback.",
+  "archive_append_only_supplement_after_initial_readback": true,
+  "no_build_registration_EXE_game_SDK_or_screen_execution": true
+}

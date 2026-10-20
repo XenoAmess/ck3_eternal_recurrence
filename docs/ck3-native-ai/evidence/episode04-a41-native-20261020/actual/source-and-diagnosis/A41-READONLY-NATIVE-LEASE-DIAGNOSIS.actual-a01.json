@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.a41-readonly-native-file-information-diagnosis.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:43:08.621634+00:00",
+  "actual_source": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\inspect_win32_read_lease_a41_a02.py",
+    "bytes": 811,
+    "sha256": "58606d513fb90b960ddb3cf0eef96b22aca055bda28858e40511a8aac7cef571"
+  },
+  "actual_return_code": 0,
+  "actual_read_only_API_result": {
+    "bytes": 39936,
+    "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630",
+    "MZ": true,
+    "eof_type": "<class 'bytes'>",
+    "eof_length": 0,
+    "before": [
+      "32",
+      "2026-10-20 06:53:38.646000+00:00",
+      "2026-10-20 08:41:24.675000+00:00",
+      "2026-10-20 06:53:38.715000+00:00",
+      "3061637496",
+      "0",
+      "39936",
+      "1",
+      "262144",
+      "1224072"
+    ],
+    "after": [
+      "32",
+      "2026-10-20 06:53:38.646000+00:00",
+      "2026-10-20 08:43:08.590000+00:00",
+      "2026-10-20 06:53:38.715000+00:00",
+      "3061637496",
+      "0",
+      "39936",
+      "1",
+      "262144",
+      "1224072"
+    ],
+    "differences": [
+      2
+    ],
+    "all_equal": false
+  },
+  "meaning": "Index2 is LastAccessTime and may change due to our own successful ReadFile. Stable identity/content state is indices0,1,3,4,5,6,7,8,9; full SHA and source WRITE/DELETE exclusion remain mandatory.",
+  "binary_copy_or_SYSTEM_or_project_EXE_execution": false
+}

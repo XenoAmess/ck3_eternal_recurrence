@@ -1,0 +1,267 @@
+{
+  "schema": "xar.e04.a41-c-native-source-bound.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:40:53.452683+00:00",
+  "at_utc": "2026-10-20T08:40:53.452683+00:00",
+  "owner": "/root",
+  "capacity_bus_task_id": "e04-capacity-r06-resume-20261020-a02",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "heavy_write_execution_admitted": true,
+  "build_execution_admitted": true,
+  "main_genuine_configure_execution_admitted": false,
+  "main_three_EXE_create_only_relocation_execution_admitted": true,
+  "main_full_recompile_execution_admitted": false,
+  "ordinary_exact_SYSTEM_registration_execution_admitted": true,
+  "focused_cold_execution_admitted": true,
+  "focused_cold_targets": [
+    "xar_ck3_ingame_ui_navigation_v1_test"
+  ],
+  "worker_live_build_execution_admitted": true,
+  "worker_V5_build_and_owned_cold_execution_admitted": true,
+  "worker_cold_cases": [
+    "worker-positive",
+    "worker-exit-before-add"
+  ],
+  "worker_execution_condition": "Only after Root releases a new actual clean invocation HEAD, distinct from plan preparation1ec222; exact native tree and20 entry dependencies must still match. Phase fresh guard requires --worker-source-head and phase intent binds the Root message.",
+  "worker_new_clean_invocation_HEAD_released_at_this_binding": false,
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a03.json",
+    "bytes": 58037,
+    "sha256": "9286f66363ebcbab09ffc3692becdf39c245fe0696e92b6fef550455e154e00c"
+  },
+  "source_head": "1ec22203947d56397e30275f31dd4634cf87529a",
+  "runtime_source_head_at_binding": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "compiled_native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "original_main_compile_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "source_layers": {
+    "carrier_and_relocated_EXE_original_compile_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "carrier_and_EXE_native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "genuine_configure_preparation_observed_head": "1ec22203947d56397e30275f31dd4634cf87529a",
+    "worker_actual_compile_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "worker_actual_compile_source_rule": "Actual compiler reads unchanged original fd5 sparse snapshot. Record its original source head, actual source_dir and manifest; separately record Root new clean HEAD and exact 13-input/nativefee equivalence at invocation. Do not relabel snapshot or promote old results.",
+    "worker_actual_compiler_source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "worker_original_snapshot_source_root": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01",
+    "worker_original_snapshot_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "worker_original_snapshot_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 8115,
+      "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+    },
+    "worker_current_thirteen_input_equivalence": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "bytes": 15980,
+      "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+    },
+    "worker_actual_clean_invocation_HEAD": null
+  },
+  "later_public_successor_allowed_only_same_native_and_exact_dependencies": true,
+  "source_snapshot_required": false,
+  "new_worker_source_copy_bytes": 0,
+  "existing_worker_snapshot_payload_bytes": 135155,
+  "existing_worker_snapshot_is_readonly_input_not_new_credit": true,
+  "build_root": "C:\\w\\e04a41",
+  "new_native_build_root": "C:\\w\\e04a41",
+  "aggregate_ceiling_bytes": 805306368,
+  "new_native_build_ceiling_bytes": 805306368,
+  "aggregate_peak_bytes": 805306368,
+  "this_write_peak_bytes": 805306368,
+  "new_native_root_ceiling_bytes": 771751936,
+  "native_additional_write_roots": [],
+  "fixed_protocol_growth_ceiling_bytes": 33554432,
+  "fixed_protocol_growth_conservative_charge_bytes": 33554432,
+  "fixed_protocol_growth_actual_bytes_at_binding": null,
+  "unknown_protocol_actual_never_assumed_zero": true,
+  "fixed_protocol_data_roots": [
+    "C:/Program Files/XAR CK3 Project EXE Broker/inbox",
+    "C:/Program Files/XAR CK3 Project EXE Broker/private-frozen",
+    "C:/Program Files/XAR CK3 Project EXE Broker/receipts"
+  ],
+  "fixed_protocol_scope": "Only existing broker requests/protected frozen data/receipts for these exact six EXEs; no installed code/policy/task/action/ACL mutation, no runas/UAC. Entire32MiB stays conservatively charged within768MiB.",
+  "expected_exact_SYSTEM_EXEs": [
+    "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+    "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+    "C:\\w\\e04a41\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+    "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+    "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+    "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe"
+  ],
+  "carrier_DLL_readonly": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "bytes": 14397440,
+    "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+  },
+  "exact_SYSTEM_path_SHA_admin_SID_required_before_first_EXE_execution": true,
+  "actual_SYSTEM_or_native_qualification_present": false,
+  "actual_main_compilation_performed_by_this_plan": false,
+  "source_ownership_trust_not_compilation_authentication": true,
+  "scene_execution_admitted": false,
+  "game_execution_admitted": false,
+  "SDK_screen_live_observer_or_external_DR_admitted": false,
+  "owned_debug_synthetic_targets_only": true,
+  "D_heavy_write_execution_admitted": false,
+  "fresh_stage_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\fresh_a41_stage_a02.py",
+    "bytes": 5844,
+    "sha256": "850cac84f119163aa3033bfbfa7e54712d7cb6504dfa00333b90cf27778fe3a3"
+  },
+  "fresh_stage_helper_schema": "xar.e04.a41-native-stage-fresh-capacity.v1",
+  "phase_names": [
+    "relocate_three_exact_EXEs",
+    "freeze_real_new_CMake_EXE_manifest",
+    "ordinary_SYSTEM_register_three_EXEs",
+    "main_UI_finite_cold",
+    "worker_live_actual_configure_build",
+    "worker_V5_actual_configure_build",
+    "worker_V5_two_owned_cases"
+  ],
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T08:40:53.452471+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81062625280,
+      "available_to_caller_bytes": 81062625280,
+      "total_free_bytes": 81062625280,
+      "entire_volume_used_allocation_upper_bound_bytes": 430071320576,
+      "source": "Windows GetDiskFreeSpaceExW",
+      "required_free_bytes": 26751460550,
+      "this_write_peak_bytes": 805306368,
+      "other_unspent_reservations_bytes": 176350406,
+      "system_growth_reserve_bytes": 4294967296,
+      "safety_bytes": 21474836480,
+      "effective_project_quota_bytes": 438086664192,
+      "quota_margin_bytes": 2738719546
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T08:40:53.452471+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21672382464,
+      "available_to_caller_bytes": 21672382464,
+      "total_free_bytes": 21672382464,
+      "entire_volume_used_allocation_upper_bound_bytes": 478417625088,
+      "source": "Windows GetDiskFreeSpaceExW",
+      "required_free_bytes": 21609054208,
+      "this_write_peak_bytes": 0,
+      "system_growth_reserve_bytes": 134217728,
+      "safety_bytes": 21474836480,
+      "heavy_write_execution_admitted": false
+    }
+  },
+  "all_active_balances": {
+    "known_future": {
+      "C:/": 939524096,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-resume-20261020-a02",
+        "known_future": {
+          "C:/": 939524096,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "budget": {
+    "C_known_future_bytes": 939524096,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26751460550,
+    "C_floor_margin_bytes": 54311164730,
+    "C_projected_whole_volume_upper_bound_bytes": 435347944646,
+    "C_quota_margin_bytes": 2738719546,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 63328256
+  },
+  "quota_review_at_utc": "2026-10-20T10:30:00Z",
+  "hard_deadline_utc": "2026-10-20T10:30:00Z",
+  "review_at_utc": "2026-10-20T10:30:00Z",
+  "C_effective_quota_bytes": 438086664192,
+  "metric": "whole_volume_used_physical_allocation_upper_bound",
+  "project_exact_coverage": false,
+  "root_packet_approval": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\ROOT-INDEPENDENT-1030Z-APPROVAL.actual-a01.json",
+    "bytes": 1397,
+    "sha256": "8641fbea38f6bed35eab15ce9664a2e693c430bb8f5cafb74053c6000cafc8d7"
+  },
+  "initial_reserve": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\R06-A02-FINITE-RESERVE-AND-SHARED-ADMISSION.actual-a01.json",
+    "bytes": 5563,
+    "sha256": "ac834b2d8a660e0dc89c031c8e8e9be15c17661dea560f902c6004a5b802243d"
+  },
+  "Root_exact_plan_approval": "Root explicit approved a03 plan9286f66363ebcbab09ffc3692becdf39c245fe0696e92b6fef550455e154e00c/helper7edd2c75aa323105c891ab0529d171ce1e9bcd22d6885b530ec124be4d443ad2; literal native flag matches installed implementation, continue relocation only; original genuine configure/wait0 retained.",
+  "same_native_future_hold_no_extra_pool_or_bytes": true,
+  "native_future_delta_bytes": 0,
+  "scene_future_bytes": 0,
+  "old_legacy_C_carry_bytes_unchanged": 42132678,
+  "old_A40_and_existing_a37_source_actuals_already_inside_volume_used": true,
+  "physical_or_unused_credit_bytes": 0,
+  "old_08Z_capacity_reused_or_quota_automatically_renewed": false,
+  "necessary_normal_Mar31_S0_and_unique_ACL_recovery_assets_preserved": true,
+  "observations_prepared_outside_coordination_locks": true,
+  "scheme_sources": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\rebind_a41_plan_a03.py",
+      "bytes": 6710,
+      "sha256": "a0cd10a0976a7607fc5c3f9adc6fe8e46512531d5df7942eba18266e84d6a5aa"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\capacity_common.py",
+      "bytes": 6442,
+      "sha256": "214c929ffa7e8bb7b716d91d6134bf961da547bec95e2cea7c593d04c561361f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\fresh_a41_stage_a02.py",
+      "bytes": 5844,
+      "sha256": "850cac84f119163aa3033bfbfa7e54712d7cb6504dfa00333b90cf27778fe3a3"
+    }
+  ],
+  "fresh_guard_enforces_exact_helper_pin_and_phase_whitelist": true,
+  "main_genuine_configure_completed_readonly_reference": {
+    "path": "C:\\w\\e04a41\\producer-configure-a01\\native-msvc-result.json",
+    "bytes": 1174,
+    "sha256": "e0a86370e18d74fdcfe6f6e215eace976681478bbe92a55ff6de6fc4a6f5e7bf"
+  },
+  "main_genuine_configure_original_wait0": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\result.actual.json",
+    "bytes": 1940,
+    "sha256": "686ca6039b0de131123537b4aa4dd61f42fd42206309c550404829bdcc6ce146"
+  },
+  "resume_from": "relocate_three_exact_EXEs; no reconfigure or main recompile",
+  "prior_source_bound_capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 11097,
+    "sha256": "1f66dad3c016ab88e8bc52d3b399591041440302b27dbca7a988c27077d8cb54"
+  },
+  "retained_actual_pre_copy_failure": {
+    "path": "C:\\w\\e04a41\\A41-MAIN-EXECUTOR-FAILURE.actual-a01.json",
+    "bytes": 838,
+    "sha256": "b4160317181e40655eac14235dd15eef533eb99354026ea27f616364b3733ded"
+  },
+  "pre_copy_failure_creates_no_EXE_SYSTEM_or_business_credit": true,
+  "extra_scope_in_shared": "Root separately authorized <=16MiB sparse integration-worktree Git-source delivery and existing-media readonly QA metadata inside the same collective shared128MiB; no build or media render there."
+}

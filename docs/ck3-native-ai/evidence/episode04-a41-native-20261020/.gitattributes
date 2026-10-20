@@ -1,0 +1,4 @@
+# Preserve exact source-machine evidence bytes and native FileAPI formatting.
+* binary
+.gitattributes text diff merge eol=lf
+README.md text diff merge eol=lf

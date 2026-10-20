@@ -1,0 +1,47 @@
+{
+  "copied_receipt_bytes_sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d",
+  "pins": {
+    "installed-manifest.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\installed-manifest.json",
+      "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673",
+      "size": 1120
+    },
+    "installed-policy.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\installed-policy.json",
+      "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243",
+      "size": 1088
+    },
+    "installed-runtime-seal.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\installed-runtime-seal.json",
+      "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2",
+      "size": 95324
+    },
+    "manifest.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\manifest.json",
+      "sha256": "e92b30d5c84b5fe3675fbe1ace97abbff3d2d1bd7752f79aa88621db341c79c6",
+      "size": 2748
+    },
+    "protected-worker-receipt.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\protected-worker-receipt.json",
+      "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d",
+      "size": 326544
+    },
+    "request.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\request.json",
+      "sha256": "0a8a61fd106f16bba842381c88f4b53ea5aace551fa0bfba24256c51f44b190b",
+      "size": 4051
+    },
+    "task-readback.json": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\task-readback.json",
+      "sha256": "ba381b14a1a004f084d715718f8e5afc596bb3e424d9fa999bf6bb01b52cc4be",
+      "size": 687
+    }
+  },
+  "proof_dir": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561",
+  "protected_result_path": "C:/Program Files/XAR CK3 Project EXE Broker/receipts\\ac28ace4-e062-4ccc-bc1e-29b873838e13.receipt.json",
+  "request_id": "ac28ace4-e062-4ccc-bc1e-29b873838e13",
+  "request_path": "C:/Program Files/XAR CK3 Project EXE Broker/inbox\\ac28ace4-e062-4ccc-bc1e-29b873838e13.request.json",
+  "request_sha256": "0a8a61fd106f16bba842381c88f4b53ea5aace551fa0bfba24256c51f44b190b",
+  "stage": "result-validation",
+  "status": "verified"
+}

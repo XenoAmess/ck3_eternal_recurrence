@@ -1,0 +1,264 @@
+{
+  "schema": "xar.e04.a41-readonly-site-inspection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:12:55.134001+00:00",
+  "source_head": "1ec22203947d56397e30275f31dd4634cf87529a",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "installed_policy": {
+    "pin": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+      "bytes": 1088,
+      "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+    },
+    "value": {
+      "allowed_build_roots": [
+        "C:\\ck3-war-episode04-research-20261004-a01",
+        "D:/workspace/ck3_eternal_recurrence",
+        "C:/w"
+      ],
+      "allowed_external_source_roots": [
+        "C:\\ck3-war-episode04-research-20261004-a01"
+      ],
+      "broker_schema": "xar.project-exe-broker.policy.v1",
+      "forbidden_roots": [
+        "C:/Windows",
+        "C:/Program Files",
+        "C:/Program Files (x86)",
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv"
+      ],
+      "frozen_dir": "C:/Program Files/XAR CK3 Project EXE Broker/private-frozen",
+      "inbox_dir": "C:/Program Files/XAR CK3 Project EXE Broker/inbox",
+      "installation_id": "83b30886-8dbc-4c9c-8177-d575be46a925",
+      "max_files": 1024,
+      "max_request_bytes": 2097152,
+      "max_requests_per_run": 8,
+      "owner_sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+      "receipts_dir": "C:/Program Files/XAR CK3 Project EXE Broker/receipts",
+      "repo_common_dir": "D:/workspace/ck3_eternal_recurrence/.git",
+      "repo_root": "D:/workspace/ck3_eternal_recurrence",
+      "request_budget_seconds": 60,
+      "run_budget_seconds": 180,
+      "runtime_manifest_sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2",
+      "runtime_root": "C:/Program Files/XAR CK3 Project EXE Broker"
+    }
+  },
+  "installed_manifest": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\installation-manifest.json",
+    "bytes": 1120,
+    "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+  },
+  "installed_runtime_seal": {
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime-seal.json",
+    "bytes": 95324,
+    "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2"
+  },
+  "installed_python_modules": [
+    "broker_bootstrap.py",
+    "installer_core.py",
+    "install_project_exe_broker.py",
+    "native_safety.py",
+    "protected_runtime.py",
+    "uninstall_project_exe_broker.py",
+    "windows_adapter.py",
+    "worker_core.py"
+  ],
+  "new_build_root_readonly": [
+    {
+      "path": "C:\\w",
+      "exists": true,
+      "is_directory": true,
+      "resolved_path": "C:\\w",
+      "file_attributes": 16,
+      "reparse_tag": 0
+    },
+    {
+      "path": "C:\\w\\e04a41",
+      "exists": false
+    }
+  ],
+  "a40_actual_artifact_rechecks": [
+    {
+      "target": "xar_ck3_bridge",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+        "bytes": 14397440,
+        "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+      },
+      "matches_A40_original": true
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+      },
+      "matches_A40_original": true
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+      },
+      "matches_A40_original": true
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "actual": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+        "bytes": 658944,
+        "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332"
+      },
+      "matches_A40_original": true
+    }
+  ],
+  "a40_original_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\A40-FIRST-FAILURE.actual-a01.json",
+    "bytes": 8029,
+    "sha256": "dd9b428687c87137fc02a827f24e22eea95c5ebd139b8e8026de51db52b0cfc1"
+  },
+  "a40_cmake_cache_pin": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\CMakeCache.txt",
+    "bytes": 48040,
+    "sha256": "39aeecaa6c06db9bda87ab083db758c4037ae231b4f577be0e851649013e988f"
+  },
+  "a40_cmake_cache_path_binding": [
+    "CMAKE_BUILD_TYPE:STRING=Release",
+    "CMAKE_CXX_COMPILER:STRING=C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe",
+    "CMAKE_C_COMPILER:UNINITIALIZED=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe",
+    "CMAKE_MAKE_PROGRAM:FILEPATH=C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe",
+    "CMAKE_CACHEFILE_DIR:INTERNAL=c:/ck3-e04-resume-20261020-a01/next-r06-a01/native-build-a40-a01",
+    "CMAKE_GENERATOR:INTERNAL=Ninja",
+    "CMAKE_HOME_DIRECTORY:INTERNAL=D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge"
+  ],
+  "a40_ninja_log": {
+    "exists": true,
+    "bytes": 97478
+  },
+  "entry_dependency_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+      "bytes": 13321,
+      "sha256": "b53409a1ee48098abc3dfce607668a426d8502f5f00c64ad1434fadfb053832e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+      "bytes": 26973,
+      "sha256": "67c6021fcd5af209f409957fe045cfbc890da4eda72baf9a5bdf5b0c58d4701b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\tools\\build_fresh.py",
+      "bytes": 15140,
+      "sha256": "70fe1d0d5870168b43cd9eedfbb3c3a0387300313dc9c0654788e2bcd0c4e4af"
+    }
+  ],
+  "current_C_disk_usage": {
+    "total": 511133945856,
+    "used": 430049906688,
+    "free": 81084039168
+  },
+  "bus": {
+    "acknowledged_events": 6282,
+    "current_events": [
+      {
+        "event_id": "07f9218d6ec5498197ce38124f57ff19",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "36949aabe3fd00c89f3e9fd690226418169f5852"
+        },
+        "kind": "registered",
+        "next_step": "Trace_docs_entry_and_runtime_consumers_then_fix_any_confirmed_gap",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7306,
+        "state": "running",
+        "summary": "Confirm_E04_research_is_discoverable_and_reusable_by_gameplay_agent_no_game",
+        "task_id": "e04-knowledge-usage-confirmation-20261020-a01",
+        "timestamp_utc": "2026-10-20T08:02:27.934196+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "8056bfbcff094d339e4ed524c345e82a",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "1ec22203947d56397e30275f31dd4634cf87529a"
+        },
+        "kind": "completed",
+        "next_step": "Use_shared_reference_for_agent_design_keep_auto_planner_wiring_and_live_qualification_explicit",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7307,
+        "state": "done",
+        "summary": "E04_shared_agent_reference_entry20links_and_actual_production_replay17positive236subtotal_PASS_master1ec222039_pushed",
+        "task_id": "e04-knowledge-usage-confirmation-20261020-a01",
+        "timestamp_utc": "2026-10-20T08:06:35.242119+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "cc041b206bb74aa4bb1b149012db0451",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "1ec22203947d56397e30275f31dd4634cf87529a"
+        },
+        "kind": "registered",
+        "next_step": "Fresh_finite_budget_and_allowed_build_root_producer_then_actual_native_qualification",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7309,
+        "state": "running",
+        "summary": "machine_id:desktop-3fevhd2-1c74096080_R06_fresh_packet_readonly_native_reuse_capacity_planning",
+        "task_id": "e04-r06-resume-20261020-a02",
+        "timestamp_utc": "2026-10-20T08:12:16.222665+00:00",
+        "to": [
+          "*"
+        ]
+      },
+      {
+        "event_id": "7d87e46548c94a2484f0c4280ead3fb3",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "1ec22203947d56397e30275f31dd4634cf87529a"
+        },
+        "kind": "registered",
+        "next_step": "",
+        "repo": "D:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "sequence": 7310,
+        "state": "running",
+        "summary": "desktop-3fevhd2-1c74096080 at 2026-10-20T08:12:33.807143+00:00: readonly public R06 resume plan argv/config sourcing, no allocation or runtime actions",
+        "task_id": "e04-r06-resume-a02-public-plan-20261020",
+        "timestamp_utc": "2026-10-20T08:12:34.860412+00:00",
+        "to": [
+          "*"
+        ]
+      }
+    ]
+  },
+  "actions": {
+    "artifact_copy": false,
+    "build_or_configure": false,
+    "runas": false,
+    "SYSTEM_task_run": false,
+    "Defender_registration": false,
+    "installed_changes": false
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "xar.refill.worker_cold_build_binding.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:48:04.124300+00:00",
+  "build_result": {
+    "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\native-msvc-result.json",
+    "bytes": 1702,
+    "sha256": "4e83b811b97adfd4caa17ef77ddbc27cc7623c02b5f8d11dbba190f7a5aa71de"
+  },
+  "system_receipt": {
+    "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\receipt.json",
+    "bytes": 326544,
+    "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+  },
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+    "bytes": 8115,
+    "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+  }
+}

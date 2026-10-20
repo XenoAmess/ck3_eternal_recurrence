@@ -1,0 +1,2014 @@
+{
+  "schema": "xar.e04.a41-small-evidence-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-20T09:03:08.599254+00:00",
+  "status": "EXACT_SMALL_METADATA_ARCHIVE_PREPARED_AND_COPIED",
+  "archive_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01",
+  "repository_destination_suggestion": "docs/ck3-native-ai/evidence/episode04-a41-native-20261020",
+  "maximum_package_bytes": 4194304,
+  "copy_file_count": 104,
+  "copy_payload_bytes": 1926625,
+  "copy": [
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+        "bytes": 26157,
+        "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+      },
+      "archive_relative_path": "actual/ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+        "bytes": 26157,
+        "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792486201949432500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\ROOT-A41-MAIN-RELOCATION-QUALIFICATION.actual-a01.json",
+        "bytes": 5946,
+        "sha256": "214bd1603c8acc20bca4548a14e1a7b185f4a772765b9f826ebc41d4eaf36fe0"
+      },
+      "archive_relative_path": "actual/ROOT-A41-MAIN-RELOCATION-QUALIFICATION.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\ROOT-A41-MAIN-RELOCATION-QUALIFICATION.actual-a01.json",
+        "bytes": 5946,
+        "sha256": "214bd1603c8acc20bca4548a14e1a7b185f4a772765b9f826ebc41d4eaf36fe0"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792485968638018700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-INDEPENDENT-PUBLIC-VERIFIER-READBACK.actual-a01.json",
+        "bytes": 4192,
+        "sha256": "448d4dedc286aac5f8d9e339ea0556ff864bafe872230177bb1b2f1b7641e8b1"
+      },
+      "archive_relative_path": "actual/A41-INDEPENDENT-PUBLIC-VERIFIER-READBACK.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-INDEPENDENT-PUBLIC-VERIFIER-READBACK.actual-a01.json",
+        "bytes": 4192,
+        "sha256": "448d4dedc286aac5f8d9e339ea0556ff864bafe872230177bb1b2f1b7641e8b1"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792486202088926100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-SELECTED-SCOPE-CLOSED.actual-a01.json",
+        "bytes": 12485,
+        "sha256": "bb0b212e0bead7ef1593d57c4d33a9f60823f9a697d5643b577fa90dd94850b0"
+      },
+      "archive_relative_path": "actual/A41-SELECTED-SCOPE-CLOSED.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-SELECTED-SCOPE-CLOSED.actual-a01.json",
+        "bytes": 12485,
+        "sha256": "bb0b212e0bead7ef1593d57c4d33a9f60823f9a697d5643b577fa90dd94850b0"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792486347346078500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-RELOCATION.actual-a01.json",
+        "bytes": 4966,
+        "sha256": "2a8156664c6fb850cd504f2f0be386a9543b85c3b4856b5d61adf5092cd016ec"
+      },
+      "archive_relative_path": "actual/A41-RELOCATION.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-RELOCATION.actual-a01.json",
+        "bytes": 4966,
+        "sha256": "2a8156664c6fb850cd504f2f0be386a9543b85c3b4856b5d61adf5092cd016ec"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792485929115112500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-RELOCATION-MANIFEST.actual-a01.json",
+        "bytes": 5359,
+        "sha256": "f17a3e869e0b72169e88903f20c2b07398643a2cab7d95e34e222318245b6124"
+      },
+      "archive_relative_path": "actual/A41-RELOCATION-MANIFEST.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-RELOCATION-MANIFEST.actual-a01.json",
+        "bytes": 5359,
+        "sha256": "f17a3e869e0b72169e88903f20c2b07398643a2cab7d95e34e222318245b6124"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792485934652244300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-SYSTEM3-VERIFIED-BEFORE-FIRST-PROJECT-EXE.actual-a01.json",
+        "bytes": 1066,
+        "sha256": "975ee02f62c5a410fd0a68f003ea1c8371a5c0495bc63f56c01dd5d5ac61fe74"
+      },
+      "archive_relative_path": "actual/A41-SYSTEM3-VERIFIED-BEFORE-FIRST-PROJECT-EXE.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-SYSTEM3-VERIFIED-BEFORE-FIRST-PROJECT-EXE.actual-a01.json",
+        "bytes": 1066,
+        "sha256": "975ee02f62c5a410fd0a68f003ea1c8371a5c0495bc63f56c01dd5d5ac61fe74"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792485963483586800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-WORKER-PHASES-COMPLETED.actual-a01.json",
+        "bytes": 4569,
+        "sha256": "3167dd78655cbe0758db2906da3a12bad698a48d98cf0d92c66b210a077ab683"
+      },
+      "archive_relative_path": "actual/A41-WORKER-PHASES-COMPLETED.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-WORKER-PHASES-COMPLETED.actual-a01.json",
+        "bytes": 4569,
+        "sha256": "3167dd78655cbe0758db2906da3a12bad698a48d98cf0d92c66b210a077ab683"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792486097497221900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\CAPACITY-FRESH-CLOSE.actual-a01.json",
+        "bytes": 4609,
+        "sha256": "c5c7988ad9aaa9a64304b9dc710a991bfc8757035d49dc58b50428a1e5fc2916"
+      },
+      "archive_relative_path": "actual/CAPACITY-FRESH-CLOSE.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\CAPACITY-FRESH-CLOSE.actual-a01.json",
+        "bytes": 4609,
+        "sha256": "c5c7988ad9aaa9a64304b9dc710a991bfc8757035d49dc58b50428a1e5fc2916"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792486346306776300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\A41-MAIN-EXECUTOR-FAILURE.actual-a01.json",
+        "bytes": 838,
+        "sha256": "b4160317181e40655eac14235dd15eef533eb99354026ea27f616364b3733ded"
+      },
+      "archive_relative_path": "actual/A41-MAIN-EXECUTOR-FAILURE.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\A41-MAIN-EXECUTOR-FAILURE.actual-a01.json",
+        "bytes": 838,
+        "sha256": "b4160317181e40655eac14235dd15eef533eb99354026ea27f616364b3733ded"
+      },
+      "role": "ACTUAL",
+      "purpose": "Original selected-scope observation, qualification, exact-copy or preserved failure; meaning limited to its recorded event",
+      "source_mtime_ns_observed": 1792485274732406200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\producer-configure-a01\\native-msvc-result.json",
+        "bytes": 1174,
+        "sha256": "e0a86370e18d74fdcfe6f6e215eace976681478bbe92a55ff6de6fc4a6f5e7bf"
+      },
+      "archive_relative_path": "actual/main-configure/native-msvc-result.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\main-configure\\native-msvc-result.json",
+        "bytes": 1174,
+        "sha256": "e0a86370e18d74fdcfe6f6e215eace976681478bbe92a55ff6de6fc4a6f5e7bf"
+      },
+      "role": "ACTUAL_CONFIGURE_ONLY",
+      "purpose": "Original public result: configured=true, built=false. This is not a new main compilation.",
+      "source_mtime_ns_observed": 1792485268202514000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "720082b4c3b55b1af522aa71a07b0a8d94f53c73b853799754434e63cb34f41f"
+      },
+      "archive_relative_path": "actual/phases/freeze_real_new_CMake_EXE_manifest/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\freeze_real_new_CMake_EXE_manifest\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "720082b4c3b55b1af522aa71a07b0a8d94f53c73b853799754434e63cb34f41f"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485932530871000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\intent.actual.json",
+        "bytes": 2735,
+        "sha256": "7abcf3f0ba36226460f7bd48cc009fa5094e242f59f24ed7f049ed40209eab69"
+      },
+      "archive_relative_path": "actual/phases/freeze_real_new_CMake_EXE_manifest/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\freeze_real_new_CMake_EXE_manifest\\intent.actual.json",
+        "bytes": 2735,
+        "sha256": "7abcf3f0ba36226460f7bd48cc009fa5094e242f59f24ed7f049ed40209eab69"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485932504884800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\result.actual.json",
+        "bytes": 1964,
+        "sha256": "aa61e94ba1bcc53a767f9897bf5b05af54633560877c051460a55e3b175c36de"
+      },
+      "archive_relative_path": "actual/phases/freeze_real_new_CMake_EXE_manifest/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\freeze_real_new_CMake_EXE_manifest\\result.actual.json",
+        "bytes": 1964,
+        "sha256": "aa61e94ba1bcc53a767f9897bf5b05af54633560877c051460a55e3b175c36de"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485935756490000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\capacity-fresh.actual.json",
+        "bytes": 4581,
+        "sha256": "8eaede75f4f7c5397a5c9a5feaede98708a19d14a9fde5fc9ea7db6ce9b45d32"
+      },
+      "archive_relative_path": "actual/phases/freeze_real_new_CMake_EXE_manifest/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\freeze_real_new_CMake_EXE_manifest\\capacity-fresh.actual.json",
+        "bytes": 4581,
+        "sha256": "8eaede75f4f7c5397a5c9a5feaede98708a19d14a9fde5fc9ea7db6ce9b45d32"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485932172336100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\Popen.actual.json",
+        "bytes": 16921,
+        "sha256": "fe666d4756e38ea65d72d3f94661e25752c62e99315c3be71110c24fbd09234f"
+      },
+      "archive_relative_path": "actual/phases/main_genuine_configure_only/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_genuine_configure_only\\Popen.actual.json",
+        "bytes": 16921,
+        "sha256": "fe666d4756e38ea65d72d3f94661e25752c62e99315c3be71110c24fbd09234f"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485231446707900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\intent.actual.json",
+        "bytes": 18872,
+        "sha256": "d209d4262557eea99f317cb876c0eac238d4529de77f67133bb2171aed9abd60"
+      },
+      "archive_relative_path": "actual/phases/main_genuine_configure_only/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_genuine_configure_only\\intent.actual.json",
+        "bytes": 18872,
+        "sha256": "d209d4262557eea99f317cb876c0eac238d4529de77f67133bb2171aed9abd60"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485231419723300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\result.actual.json",
+        "bytes": 1940,
+        "sha256": "686ca6039b0de131123537b4aa4dd61f42fd42206309c550404829bdcc6ce146"
+      },
+      "archive_relative_path": "actual/phases/main_genuine_configure_only/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_genuine_configure_only\\result.actual.json",
+        "bytes": 1940,
+        "sha256": "686ca6039b0de131123537b4aa4dd61f42fd42206309c550404829bdcc6ce146"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485269173297000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\capacity-fresh.actual.json",
+        "bytes": 4559,
+        "sha256": "c88600b2dc46566e9fb14c371251c4f05bdfd9efa20679a6949d85521d7ff167"
+      },
+      "archive_relative_path": "actual/phases/main_genuine_configure_only/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_genuine_configure_only\\capacity-fresh.actual.json",
+        "bytes": 4559,
+        "sha256": "c88600b2dc46566e9fb14c371251c4f05bdfd9efa20679a6949d85521d7ff167"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485231062326400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\Popen.actual.json",
+        "bytes": 580,
+        "sha256": "1a83511b43cc01f3a3ba27fb437763a12b43e31c5ff039e60eb024d2aa94544d"
+      },
+      "archive_relative_path": "actual/phases/main_UI_finite_cold-resume-a01/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_UI_finite_cold-resume-a01\\Popen.actual.json",
+        "bytes": 580,
+        "sha256": "1a83511b43cc01f3a3ba27fb437763a12b43e31c5ff039e60eb024d2aa94544d"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485966793711400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\intent.actual.json",
+        "bytes": 2544,
+        "sha256": "9e07cf0eac54fcfee023577bdfa5f026f72e83760957211e65b7aa72cdfa480c"
+      },
+      "archive_relative_path": "actual/phases/main_UI_finite_cold-resume-a01/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_UI_finite_cold-resume-a01\\intent.actual.json",
+        "bytes": 2544,
+        "sha256": "9e07cf0eac54fcfee023577bdfa5f026f72e83760957211e65b7aa72cdfa480c"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485966766716000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\result.actual.json",
+        "bytes": 1938,
+        "sha256": "ce19e3cf03df063062aab1fea877fe9fe7118955283a4dd9e31fa4af0d888674"
+      },
+      "archive_relative_path": "actual/phases/main_UI_finite_cold-resume-a01/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_UI_finite_cold-resume-a01\\result.actual.json",
+        "bytes": 1938,
+        "sha256": "ce19e3cf03df063062aab1fea877fe9fe7118955283a4dd9e31fa4af0d888674"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485968599529100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\capacity-fresh.actual.json",
+        "bytes": 4566,
+        "sha256": "bc2515822ed2ce2e1ba951a62b9a8c2276ccdeb4d8adf6d31b0c6d0e0511170e"
+      },
+      "archive_relative_path": "actual/phases/main_UI_finite_cold-resume-a01/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\main_UI_finite_cold-resume-a01\\capacity-fresh.actual.json",
+        "bytes": 4566,
+        "sha256": "bc2515822ed2ce2e1ba951a62b9a8c2276ccdeb4d8adf6d31b0c6d0e0511170e"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485966348178500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\Popen.actual.json",
+        "bytes": 647,
+        "sha256": "7dfe2924b47e3452809ca026e22b6bbdb3abd1d0183c425f2537e5ab65f04405"
+      },
+      "archive_relative_path": "actual/phases/ordinary_SYSTEM_register_three_EXEs/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\ordinary_SYSTEM_register_three_EXEs\\Popen.actual.json",
+        "bytes": 647,
+        "sha256": "7dfe2924b47e3452809ca026e22b6bbdb3abd1d0183c425f2537e5ab65f04405"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485938125678900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\intent.actual.json",
+        "bytes": 2632,
+        "sha256": "9d346ab45295f11efefbdf79f020a3f3d7e2a23bfe7be3f1eba3e60e1aa12fbe"
+      },
+      "archive_relative_path": "actual/phases/ordinary_SYSTEM_register_three_EXEs/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\ordinary_SYSTEM_register_three_EXEs\\intent.actual.json",
+        "bytes": 2632,
+        "sha256": "9d346ab45295f11efefbdf79f020a3f3d7e2a23bfe7be3f1eba3e60e1aa12fbe"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485938104770800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\result.actual.json",
+        "bytes": 1972,
+        "sha256": "8bffb9831ef0272cf1634136ea86e12c50435ebb67322746414548ffd5a9b89f"
+      },
+      "archive_relative_path": "actual/phases/ordinary_SYSTEM_register_three_EXEs/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\ordinary_SYSTEM_register_three_EXEs\\result.actual.json",
+        "bytes": 1972,
+        "sha256": "8bffb9831ef0272cf1634136ea86e12c50435ebb67322746414548ffd5a9b89f"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485963410679100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\capacity-fresh.actual.json",
+        "bytes": 4582,
+        "sha256": "f83e191c1b0240e3a76821fccff1ce8ee6deca3d623d3c0ff775044051e8582c"
+      },
+      "archive_relative_path": "actual/phases/ordinary_SYSTEM_register_three_EXEs/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\ordinary_SYSTEM_register_three_EXEs\\capacity-fresh.actual.json",
+        "bytes": 4582,
+        "sha256": "f83e191c1b0240e3a76821fccff1ce8ee6deca3d623d3c0ff775044051e8582c"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485937776278300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "6a0e33a33c5af510b86421bf9cff69f5c8d9098fded3c5e747f6bd24cfc5e2a0"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "6a0e33a33c5af510b86421bf9cff69f5c8d9098fded3c5e747f6bd24cfc5e2a0"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485271630781400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\intent.actual.json",
+        "bytes": 2706,
+        "sha256": "1898b8378f23dc9c326789d9d2d2921e14cde5667c2cef11f240939a6fc92ea8"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs\\intent.actual.json",
+        "bytes": 2706,
+        "sha256": "1898b8378f23dc9c326789d9d2d2921e14cde5667c2cef11f240939a6fc92ea8"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485271596800700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\result.actual.json",
+        "bytes": 1929,
+        "sha256": "d1561cbe10c7b139ed77cd0dcbb3cd5398cbcd69fd720eeaa2da55b1855513ed"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs\\result.actual.json",
+        "bytes": 1929,
+        "sha256": "d1561cbe10c7b139ed77cd0dcbb3cd5398cbcd69fd720eeaa2da55b1855513ed"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485274717415000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\capacity-fresh.actual.json",
+        "bytes": 4566,
+        "sha256": "5e1f50f4ef82f99229cc83154efe33810f94f5aeed35eb33f7276c1e74e1bc91"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs\\capacity-fresh.actual.json",
+        "bytes": 4566,
+        "sha256": "5e1f50f4ef82f99229cc83154efe33810f94f5aeed35eb33f7276c1e74e1bc91"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485271232451300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\stderr.txt",
+        "bytes": 757,
+        "sha256": "91f10ea91ed54adac8f14e66b5fcdd6bd183c0c8ae79a594b34730cd4b3d836c"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs/stderr.txt",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs\\stderr.txt",
+        "bytes": 757,
+        "sha256": "91f10ea91ed54adac8f14e66b5fcdd6bd183c0c8ae79a594b34730cd4b3d836c"
+      },
+      "role": "ACTUAL_FAILURE_LOG",
+      "purpose": "Small original AttributeError before first CreateFile/copy; do not replace with a successful report.",
+      "source_mtime_ns_observed": 1792485273217789400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "fed03e76ee2e5525697b98c1cf3ecb4e7b95457748350cc123291e8ee26bec4b"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs-resume-a01/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs-resume-a01\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "fed03e76ee2e5525697b98c1cf3ecb4e7b95457748350cc123291e8ee26bec4b"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485926936399500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\intent.actual.json",
+        "bytes": 2728,
+        "sha256": "2f42248010f9852cf3d4acba84792d88bdc6c75558ff7304a3fba06879fae4ae"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs-resume-a01/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs-resume-a01\\intent.actual.json",
+        "bytes": 2728,
+        "sha256": "2f42248010f9852cf3d4acba84792d88bdc6c75558ff7304a3fba06879fae4ae"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485926909417100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\result.actual.json",
+        "bytes": 1961,
+        "sha256": "8fe9fd979903764591942ad4d878b44d68b30909364127707a0e545ea0c8562e"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs-resume-a01/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs-resume-a01\\result.actual.json",
+        "bytes": 1961,
+        "sha256": "8fe9fd979903764591942ad4d878b44d68b30909364127707a0e545ea0c8562e"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485930022805200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\capacity-fresh.actual.json",
+        "bytes": 4572,
+        "sha256": "2682d55a4b3c6d5b18f3f0190e7bd6d4db038cbd1ed5f1d689a51e62fd5f3eaa"
+      },
+      "archive_relative_path": "actual/phases/relocate_three_exact_EXEs-resume-a01/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\relocate_three_exact_EXEs-resume-a01\\capacity-fresh.actual.json",
+        "bytes": 4572,
+        "sha256": "2682d55a4b3c6d5b18f3f0190e7bd6d4db038cbd1ed5f1d689a51e62fd5f3eaa"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485926552952900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\Popen.actual.json",
+        "bytes": 1335,
+        "sha256": "542eda8e7be7cc0ea05a73d14fe1d62b5f42f99bd9a84bb2ef560c2f5b873449"
+      },
+      "archive_relative_path": "actual/phases/worker_live_actual_configure_build/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_live_actual_configure_build\\Popen.actual.json",
+        "bytes": 1335,
+        "sha256": "542eda8e7be7cc0ea05a73d14fe1d62b5f42f99bd9a84bb2ef560c2f5b873449"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485985468325000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\intent.actual.json",
+        "bytes": 3492,
+        "sha256": "7eb3be23ad9f08a2a5d8eb5889a29dd99a5b4342ecd602f7ac8221d89d37df47"
+      },
+      "archive_relative_path": "actual/phases/worker_live_actual_configure_build/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_live_actual_configure_build\\intent.actual.json",
+        "bytes": 3492,
+        "sha256": "7eb3be23ad9f08a2a5d8eb5889a29dd99a5b4342ecd602f7ac8221d89d37df47"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485985436236100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\result.actual.json",
+        "bytes": 1966,
+        "sha256": "1b8e856337bf3a796adc8b5363db8c2e042d898beaeeb6bdc0c6bbf9ce1ed63b"
+      },
+      "archive_relative_path": "actual/phases/worker_live_actual_configure_build/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_live_actual_configure_build\\result.actual.json",
+        "bytes": 1966,
+        "sha256": "1b8e856337bf3a796adc8b5363db8c2e042d898beaeeb6bdc0c6bbf9ce1ed63b"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486033029411700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\capacity-fresh.actual.json",
+        "bytes": 4618,
+        "sha256": "a03bbecb35bd674afad84d6fb66cfaa59bcfcba417e40395df396dc5db90e6e2"
+      },
+      "archive_relative_path": "actual/phases/worker_live_actual_configure_build/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_live_actual_configure_build\\capacity-fresh.actual.json",
+        "bytes": 4618,
+        "sha256": "a03bbecb35bd674afad84d6fb66cfaa59bcfcba417e40395df396dc5db90e6e2"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792485985068704200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\Popen.actual.json",
+        "bytes": 1372,
+        "sha256": "c095d670089f6ac37e45fc7c5eb06077849eb72753e99baae9fd8e4e67ed0f3d"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_actual_configure_build/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_actual_configure_build\\Popen.actual.json",
+        "bytes": 1372,
+        "sha256": "c095d670089f6ac37e45fc7c5eb06077849eb72753e99baae9fd8e4e67ed0f3d"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486036146982200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\intent.actual.json",
+        "bytes": 3528,
+        "sha256": "3fdc2692d0360d3a30da79864d3a2913917048bf3c519f991a760512f5924e29"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_actual_configure_build/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_actual_configure_build\\intent.actual.json",
+        "bytes": 3528,
+        "sha256": "3fdc2692d0360d3a30da79864d3a2913917048bf3c519f991a760512f5924e29"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486036110304500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\result.actual.json",
+        "bytes": 1955,
+        "sha256": "24743ff1a4b260b4c228c7aec4865c3dc67c666ead1442096734a11105f1bd68"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_actual_configure_build/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_actual_configure_build\\result.actual.json",
+        "bytes": 1955,
+        "sha256": "24743ff1a4b260b4c228c7aec4865c3dc67c666ead1442096734a11105f1bd68"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486084068933900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\capacity-fresh.actual.json",
+        "bytes": 4616,
+        "sha256": "b3fd1a2c03dd71c329155108725a9cd52c8dc9d62d0720520386fad4a8188650"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_actual_configure_build/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_actual_configure_build\\capacity-fresh.actual.json",
+        "bytes": 4616,
+        "sha256": "b3fd1a2c03dd71c329155108725a9cd52c8dc9d62d0720520386fad4a8188650"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486035727798000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\Popen.actual.json",
+        "bytes": 1012,
+        "sha256": "10715553398a1c6eb0cff9a3ffb10cc96b19ca2d11d9724645f0f12a6d33529d"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_two_owned_cases/Popen.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_two_owned_cases\\Popen.actual.json",
+        "bytes": 1012,
+        "sha256": "10715553398a1c6eb0cff9a3ffb10cc96b19ca2d11d9724645f0f12a6d33529d"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486087222584700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\intent.actual.json",
+        "bytes": 3153,
+        "sha256": "01947b721264a6661c297addfb2c54a3c505230919fb79fb5d3b2ebccb26de41"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_two_owned_cases/intent.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_two_owned_cases\\intent.actual.json",
+        "bytes": 3153,
+        "sha256": "01947b721264a6661c297addfb2c54a3c505230919fb79fb5d3b2ebccb26de41"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486087193607500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\result.actual.json",
+        "bytes": 1927,
+        "sha256": "902c44fe39e9fb3046bae06b918eb836f3a9a74f354d37033e1d33ff934f8d76"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_two_owned_cases/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_two_owned_cases\\result.actual.json",
+        "bytes": 1927,
+        "sha256": "902c44fe39e9fb3046bae06b918eb836f3a9a74f354d37033e1d33ff934f8d76"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486097480231800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\capacity-fresh.actual.json",
+        "bytes": 4609,
+        "sha256": "e6840680ea4117e9b8c78a0452d047043530c0f6ca42e879f68dbb0c891fc9b7"
+      },
+      "archive_relative_path": "actual/phases/worker_V5_two_owned_cases/capacity-fresh.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\phases\\worker_V5_two_owned_cases\\capacity-fresh.actual.json",
+        "bytes": 4609,
+        "sha256": "e6840680ea4117e9b8c78a0452d047043530c0f6ca42e879f68dbb0c891fc9b7"
+      },
+      "role": "ACTUAL_LIFECYCLE",
+      "purpose": "Actual direct Popen PID/creation and original wait; source/argv/capacity intent. Includes one failed pre-copy attempt and eight exit0 children.",
+      "source_mtime_ns_observed": 1792486086796587900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold\\HELD-BEFORE-EXE.actual-a01.json",
+        "bytes": 535,
+        "sha256": "3a959f7e9aba56db2f1c6a14f7d8501a57e50d490c37bc7a025ce50fef25b1fc"
+      },
+      "archive_relative_path": "prepared/UI-prelaunch-holder-original.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\UI-prelaunch-holder-original.json",
+        "bytes": 535,
+        "sha256": "3a959f7e9aba56db2f1c6a14f7d8501a57e50d490c37bc7a025ce50fef25b1fc"
+      },
+      "role": "PREPARED_CONTROL_MARKER",
+      "purpose": "Original create-only prelaunch control marker, not an executed UI result. Actual passing test is the separate resume phase.",
+      "source_mtime_ns_observed": 1792485298460009400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      },
+      "archive_relative_path": "actual/SYSTEM/main/receipt.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\main\\receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      },
+      "role": "ACTUAL_PROTECTED_SYSTEM",
+      "purpose": "Exact original SYSTEM SID18/admin verified result for the listed paths; settings success is not game/business qualification.",
+      "source_mtime_ns_observed": 1792485962676243400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\manifest.json",
+        "bytes": 3054,
+        "sha256": "f89e6d507ce74e464c2638fe744411507250994ae3f7fb2ba3103de6595db337"
+      },
+      "archive_relative_path": "actual/SYSTEM/main/manifest.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\main\\manifest.json",
+        "bytes": 3054,
+        "sha256": "f89e6d507ce74e464c2638fe744411507250994ae3f7fb2ba3103de6595db337"
+      },
+      "role": "ACTUAL_DECLARATION",
+      "purpose": "Exact current real CMake target/FileAPI manifest, not invented compiler provenance.",
+      "source_mtime_ns_observed": 1792485934622955900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\request.json",
+        "bytes": 4459,
+        "sha256": "09786bf0170f570dcb6d4a754fbcd113147575faf0933d3fa31f1905e00932c6"
+      },
+      "archive_relative_path": "actual/SYSTEM/main/request.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\main\\request.json",
+        "bytes": 4459,
+        "sha256": "09786bf0170f570dcb6d4a754fbcd113147575faf0933d3fa31f1905e00932c6"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792485940318878900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\proof.json",
+        "bytes": 2575,
+        "sha256": "138aff8e5cdee878cfd943953125672dcdbe94c7a20a3431887697324c231660"
+      },
+      "archive_relative_path": "actual/SYSTEM/main/proof.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\main\\proof.json",
+        "bytes": 2575,
+        "sha256": "138aff8e5cdee878cfd943953125672dcdbe94c7a20a3431887697324c231660"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792485962673245300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\task-readback.json",
+        "bytes": 687,
+        "sha256": "ba381b14a1a004f084d715718f8e5afc596bb3e424d9fa999bf6bb01b52cc4be"
+      },
+      "archive_relative_path": "actual/SYSTEM/main/task-readback.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\main\\task-readback.json",
+        "bytes": 687,
+        "sha256": "ba381b14a1a004f084d715718f8e5afc596bb3e424d9fa999bf6bb01b52cc4be"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792485940317879100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\index-2026-10-20T08-34-28-0096.json",
+        "bytes": 1265,
+        "sha256": "47e811a6b8be3f1fc3950d8a9fedebf2792469cc54e381e437b8e1d53613b23d"
+      },
+      "archive_relative_path": "actual/file-api/main/index-2026-10-20T08-34-28-0096.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\main\\index-2026-10-20T08-34-28-0096.json",
+        "bytes": 1265,
+        "sha256": "47e811a6b8be3f1fc3950d8a9fedebf2792469cc54e381e437b8e1d53613b23d"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Original real generated graph for the actual current named source/build.",
+      "source_mtime_ns_observed": 1792485268095574900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\codemodel-v2-dbdc07bac653ba1c4638.json",
+        "bytes": 210271,
+        "sha256": "cf41fce2f6c843b2641948acec1c9915c6dfaca654b8e4f17a41d886a239970b"
+      },
+      "archive_relative_path": "actual/file-api/main/codemodel-v2-dbdc07bac653ba1c4638.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\main\\codemodel-v2-dbdc07bac653ba1c4638.json",
+        "bytes": 210271,
+        "sha256": "cf41fce2f6c843b2641948acec1c9915c6dfaca654b8e4f17a41d886a239970b"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Original real generated graph for the actual current named source/build.",
+      "source_mtime_ns_observed": 1792485268084580900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      },
+      "archive_relative_path": "actual/file-api/main/target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\main\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Selected exact non-imported executable declaration validated by SYSTEM.",
+      "source_mtime_ns_observed": 1792485267094586100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      },
+      "archive_relative_path": "actual/file-api/main/target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\main\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Selected exact non-imported executable declaration validated by SYSTEM.",
+      "source_mtime_ns_observed": 1792485266698812800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      },
+      "archive_relative_path": "actual/file-api/main/target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\main\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Selected exact non-imported executable declaration validated by SYSTEM.",
+      "source_mtime_ns_observed": 1792485266701811700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\native-msvc-result.json",
+        "bytes": 1661,
+        "sha256": "6212c4dcf1b5f8f51aa8309060ab69395112bdea8dad6a38a7fc2e056b13d9c8"
+      },
+      "archive_relative_path": "actual/worker-live/native-msvc-result.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\worker-live\\native-msvc-result.json",
+        "bytes": 1661,
+        "sha256": "6212c4dcf1b5f8f51aa8309060ab69395112bdea8dad6a38a7fc2e056b13d9c8"
+      },
+      "role": "ACTUAL_BUILD",
+      "purpose": "Real new worker build, successful built=true and exact SYSTEM receipt binding.",
+      "source_mtime_ns_observed": 1792486031210611200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\receipt.json",
+        "bytes": 270898,
+        "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-live/receipt.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-live\\receipt.json",
+        "bytes": 270898,
+        "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+      },
+      "role": "ACTUAL_PROTECTED_SYSTEM",
+      "purpose": "Exact original SYSTEM SID18/admin verified result for the listed paths; settings success is not game/business qualification.",
+      "source_mtime_ns_observed": 1792486031197618500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\manifest.json",
+        "bytes": 1824,
+        "sha256": "17e8500582a9c19eed3e2ffe69ea855216d0a35ab8fc28549d246579690dc442"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-live/manifest.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-live\\manifest.json",
+        "bytes": 1824,
+        "sha256": "17e8500582a9c19eed3e2ffe69ea855216d0a35ab8fc28549d246579690dc442"
+      },
+      "role": "ACTUAL_DECLARATION",
+      "purpose": "Exact current real CMake target/FileAPI manifest, not invented compiler provenance.",
+      "source_mtime_ns_observed": 1792485999881019300,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\broker-proof-c5c5c8779c074a80acace92a7c17047b\\request.json",
+        "bytes": 2819,
+        "sha256": "32b28c565a078b29060447f491becc53eb0c7d68b6a56a6a270d1322d66e0c6a"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-live/request.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-live\\request.json",
+        "bytes": 2819,
+        "sha256": "32b28c565a078b29060447f491becc53eb0c7d68b6a56a6a270d1322d66e0c6a"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792486010673548900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\broker-proof-c5c5c8779c074a80acace92a7c17047b\\proof.json",
+        "bytes": 2951,
+        "sha256": "cd51f496d5abae289f2b66c5589e71b4a7636638e7266a19ea5fb36fd8e1e428"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-live/proof.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-live\\proof.json",
+        "bytes": 2951,
+        "sha256": "cd51f496d5abae289f2b66c5589e71b4a7636638e7266a19ea5fb36fd8e1e428"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792486031194622000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\.cmake\\api\\v1\\reply\\index-2026-10-20T08-46-33-0344.json",
+        "bytes": 1265,
+        "sha256": "5b9e45fd6c768255dfc62006b315f2fe37a8263ec0427d6cccf222e4419d6e11"
+      },
+      "archive_relative_path": "actual/file-api/worker-live/index-2026-10-20T08-46-33-0344.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-live\\index-2026-10-20T08-46-33-0344.json",
+        "bytes": 1265,
+        "sha256": "5b9e45fd6c768255dfc62006b315f2fe37a8263ec0427d6cccf222e4419d6e11"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Original real generated graph for the actual current named source/build.",
+      "source_mtime_ns_observed": 1792485993344769400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-dd2f9dc97fb8a3908019.json",
+        "bytes": 2404,
+        "sha256": "bfb4b7473d6d9186e2bb0d79ea9c4c283214e2f78ece231f9ecf0ac16678933e"
+      },
+      "archive_relative_path": "actual/file-api/worker-live/codemodel-v2-dd2f9dc97fb8a3908019.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-live\\codemodel-v2-dd2f9dc97fb8a3908019.json",
+        "bytes": 2404,
+        "sha256": "bfb4b7473d6d9186e2bb0d79ea9c4c283214e2f78ece231f9ecf0ac16678933e"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Original real generated graph for the actual current named source/build.",
+      "source_mtime_ns_observed": 1792485993335773800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\.cmake\\api\\v1\\reply\\target-refill_add_hwprobe_12004-Release-00effec964dfdd07355a.json",
+        "bytes": 3162,
+        "sha256": "83e1df11eff4c9c8340f2880f567a436274879877bcd2d20ad3981535dabd76f"
+      },
+      "archive_relative_path": "actual/file-api/worker-live/target-refill_add_hwprobe_12004-Release-00effec964dfdd07355a.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-live\\target-refill_add_hwprobe_12004-Release-00effec964dfdd07355a.json",
+        "bytes": 3162,
+        "sha256": "83e1df11eff4c9c8340f2880f567a436274879877bcd2d20ad3981535dabd76f"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Selected exact non-imported executable declaration validated by SYSTEM.",
+      "source_mtime_ns_observed": 1792485993272809900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\native-msvc-result.json",
+        "bytes": 1702,
+        "sha256": "4e83b811b97adfd4caa17ef77ddbc27cc7623c02b5f8d11dbba190f7a5aa71de"
+      },
+      "archive_relative_path": "actual/worker-V5/native-msvc-result.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\worker-V5\\native-msvc-result.json",
+        "bytes": 1702,
+        "sha256": "4e83b811b97adfd4caa17ef77ddbc27cc7623c02b5f8d11dbba190f7a5aa71de"
+      },
+      "role": "ACTUAL_BUILD",
+      "purpose": "Real new worker build, successful built=true and exact SYSTEM receipt binding.",
+      "source_mtime_ns_observed": 1792486082908671700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\receipt.json",
+        "bytes": 326544,
+        "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-V5/receipt.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-V5\\receipt.json",
+        "bytes": 326544,
+        "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+      },
+      "role": "ACTUAL_PROTECTED_SYSTEM",
+      "purpose": "Exact original SYSTEM SID18/admin verified result for the listed paths; settings success is not game/business qualification.",
+      "source_mtime_ns_observed": 1792486082883685900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\manifest.json",
+        "bytes": 2748,
+        "sha256": "e92b30d5c84b5fe3675fbe1ace97abbff3d2d1bd7752f79aa88621db341c79c6"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-V5/manifest.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-V5\\manifest.json",
+        "bytes": 2748,
+        "sha256": "e92b30d5c84b5fe3675fbe1ace97abbff3d2d1bd7752f79aa88621db341c79c6"
+      },
+      "role": "ACTUAL_DECLARATION",
+      "purpose": "Exact current real CMake target/FileAPI manifest, not invented compiler provenance.",
+      "source_mtime_ns_observed": 1792486051049487600,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\request.json",
+        "bytes": 4051,
+        "sha256": "0a8a61fd106f16bba842381c88f4b53ea5aace551fa0bfba24256c51f44b190b"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-V5/request.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-V5\\request.json",
+        "bytes": 4051,
+        "sha256": "0a8a61fd106f16bba842381c88f4b53ea5aace551fa0bfba24256c51f44b190b"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792486061552662700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\proof.json",
+        "bytes": 2951,
+        "sha256": "979c56ea83955caf6d66f788b64103093c3e1d6ac4b0e14d8c8c9eef0c4ecd62"
+      },
+      "archive_relative_path": "actual/SYSTEM/worker-V5/proof.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\SYSTEM\\worker-V5\\proof.json",
+        "bytes": 2951,
+        "sha256": "979c56ea83955caf6d66f788b64103093c3e1d6ac4b0e14d8c8c9eef0c4ecd62"
+      },
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised.",
+      "source_mtime_ns_observed": 1792486082879688200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\index-2026-10-20T08-47-24-0052.json",
+        "bytes": 1265,
+        "sha256": "18675a0cb88fe838c2848277fe6d8d8e26421b1a0c17dc52334f8634487e2342"
+      },
+      "archive_relative_path": "actual/file-api/worker-V5/index-2026-10-20T08-47-24-0052.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-V5\\index-2026-10-20T08-47-24-0052.json",
+        "bytes": 1265,
+        "sha256": "18675a0cb88fe838c2848277fe6d8d8e26421b1a0c17dc52334f8634487e2342"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Original real generated graph for the actual current named source/build.",
+      "source_mtime_ns_observed": 1792486044052405000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-29306aa381ed474c535b.json",
+        "bytes": 2696,
+        "sha256": "3b849002f20df1d387d2055debfff5d5d1a10b3ea27715a4ad8fda3f711615c1"
+      },
+      "archive_relative_path": "actual/file-api/worker-V5/codemodel-v2-29306aa381ed474c535b.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-V5\\codemodel-v2-29306aa381ed474c535b.json",
+        "bytes": 2696,
+        "sha256": "3b849002f20df1d387d2055debfff5d5d1a10b3ea27715a4ad8fda3f711615c1"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Original real generated graph for the actual current named source/build.",
+      "source_mtime_ns_observed": 1792486044041790800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\target-refill_v5_cold_target_12004-Release-013a5ad82b565b34e89b.json",
+        "bytes": 3746,
+        "sha256": "48f3a2b0f2428079ad9b4685e48f2a3432e93fa27bc06b67493261e39f7d8d81"
+      },
+      "archive_relative_path": "actual/file-api/worker-V5/target-refill_v5_cold_target_12004-Release-013a5ad82b565b34e89b.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-V5\\target-refill_v5_cold_target_12004-Release-013a5ad82b565b34e89b.json",
+        "bytes": 3746,
+        "sha256": "48f3a2b0f2428079ad9b4685e48f2a3432e93fa27bc06b67493261e39f7d8d81"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Selected exact non-imported executable declaration validated by SYSTEM.",
+      "source_mtime_ns_observed": 1792486044020286400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\target-refill_v5_cold_observer_12004-Release-5014d546f3c277f9a8f6.json",
+        "bytes": 3059,
+        "sha256": "cc7b4a52e60e2a6c0bf27afa1194195a31804a36dc8c559577e8fb1c63a64e5b"
+      },
+      "archive_relative_path": "actual/file-api/worker-V5/target-refill_v5_cold_observer_12004-Release-5014d546f3c277f9a8f6.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\file-api\\worker-V5\\target-refill_v5_cold_observer_12004-Release-5014d546f3c277f9a8f6.json",
+        "bytes": 3059,
+        "sha256": "cc7b4a52e60e2a6c0bf27afa1194195a31804a36dc8c559577e8fb1c63a64e5b"
+      },
+      "role": "ACTUAL_GENERATED_METADATA",
+      "purpose": "Selected exact non-imported executable declaration validated by SYSTEM.",
+      "source_mtime_ns_observed": 1792486044009292700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\BUILD-BINDING.actual-a01.json",
+        "bytes": 858,
+        "sha256": "19f0a55d6b2e65b9d0671daea8143b249cba5adc45626c1b4f420cfe5f1221e6"
+      },
+      "archive_relative_path": "actual/worker-V5/BUILD-BINDING.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\worker-V5\\BUILD-BINDING.actual-a01.json",
+        "bytes": 858,
+        "sha256": "19f0a55d6b2e65b9d0671daea8143b249cba5adc45626c1b4f420cfe5f1221e6"
+      },
+      "role": "ACTUAL_BUILD_BINDING",
+      "purpose": "Actual worker build/SYSTEM/original frozen source-manifest gate binding.",
+      "source_mtime_ns_observed": 1792486084126986500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-evidence-a01\\FOCUSED-WORKER-COLD.actual.json",
+        "bytes": 12026,
+        "sha256": "ae0c1adf969e4a271edc52e1376d1eeb5d9252098fcd83bfa32247edf584f80d"
+      },
+      "archive_relative_path": "actual/V5-cold/FOCUSED-WORKER-COLD.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\V5-cold\\FOCUSED-WORKER-COLD.actual.json",
+        "bytes": 12026,
+        "sha256": "ae0c1adf969e4a271edc52e1376d1eeb5d9252098fcd83bfa32247edf584f80d"
+      },
+      "role": "ACTUAL_OWNED_COLD",
+      "purpose": "Original existing runner results for exactly worker-positive and worker-exit-before-add; no live CK3 ADD proof.",
+      "source_mtime_ns_observed": 1792486095884744900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-evidence-a01\\SOURCE-CHECKS.actual.json",
+        "bytes": 2001,
+        "sha256": "62b82bd8b0d065129bc2e23bae80d7e6526051964719160458341d9296e10166"
+      },
+      "archive_relative_path": "actual/V5-cold/SOURCE-CHECKS.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\V5-cold\\SOURCE-CHECKS.actual.json",
+        "bytes": 2001,
+        "sha256": "62b82bd8b0d065129bc2e23bae80d7e6526051964719160458341d9296e10166"
+      },
+      "role": "ACTUAL_OWNED_COLD",
+      "purpose": "Original existing runner results for exactly worker-positive and worker-exit-before-add; no live CK3 ADD proof.",
+      "source_mtime_ns_observed": 1792486090336435400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-evidence-a01\\EXECUTION-GATE.actual.json",
+        "bytes": 1986,
+        "sha256": "a606d22341013352237d9f3d82a571f92dab83cade0b44c248fc2b333605bb7b"
+      },
+      "archive_relative_path": "actual/V5-cold/EXECUTION-GATE.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\V5-cold\\EXECUTION-GATE.actual.json",
+        "bytes": 1986,
+        "sha256": "a606d22341013352237d9f3d82a571f92dab83cade0b44c248fc2b333605bb7b"
+      },
+      "role": "ACTUAL_OWNED_COLD",
+      "purpose": "Original existing runner results for exactly worker-positive and worker-exit-before-add; no live CK3 ADD proof.",
+      "source_mtime_ns_observed": 1792486090336435400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a01.json",
+        "bytes": 49400,
+        "sha256": "f428c3c4b5021fa8b87d636dc40f4e5d92fd496431f0e9de6150c7337915b2f0"
+      },
+      "archive_relative_path": "prepared/plans/A41-RELOCATION-WORKER-PLAN.prepared-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\plans\\A41-RELOCATION-WORKER-PLAN.prepared-a01.json",
+        "bytes": 49400,
+        "sha256": "f428c3c4b5021fa8b87d636dc40f4e5d92fd496431f0e9de6150c7337915b2f0"
+      },
+      "role": "PREPARED_PLAN",
+      "purpose": "Frozen prepared revision; only actual receipts establish execution. Source-scope correction and pre-copy API compatibility history remain separate.",
+      "source_mtime_ns_observed": 1792484473690678000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\relocate_a40_declared_exes.py",
+        "bytes": 7004,
+        "sha256": "08fd48c8730241afdb43f13f795041fe2c3d9c185f9c7921aba5f0b8f753bd1b"
+      },
+      "archive_relative_path": "prepared/helpers/relocate_a40_declared_exes.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\helpers\\relocate_a40_declared_exes.py",
+        "bytes": 7004,
+        "sha256": "08fd48c8730241afdb43f13f795041fe2c3d9c185f9c7921aba5f0b8f753bd1b"
+      },
+      "role": "PREPARED_HELPER",
+      "purpose": "Exact reviewed candidate helper source. A03 was not executed; final A04 ran under its own bound cap.",
+      "source_mtime_ns_observed": 1792484358237204200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a02.json",
+        "bytes": 56568,
+        "sha256": "96bc09b43fd8f6daa40853e9d0760fbc338d13034f1c3978935d5d2bda307606"
+      },
+      "archive_relative_path": "prepared/plans/A41-RELOCATION-WORKER-PLAN.prepared-a02.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\plans\\A41-RELOCATION-WORKER-PLAN.prepared-a02.json",
+        "bytes": 56568,
+        "sha256": "96bc09b43fd8f6daa40853e9d0760fbc338d13034f1c3978935d5d2bda307606"
+      },
+      "role": "PREPARED_PLAN",
+      "purpose": "Frozen prepared revision; only actual receipts establish execution. Source-scope correction and pre-copy API compatibility history remain separate.",
+      "source_mtime_ns_observed": 1792484928961558800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\relocate_a40_declared_exes_a02.py",
+        "bytes": 7004,
+        "sha256": "f170c40cc347b5792c8871415a32397b4c1486d434ac5bffa9106a6202a5c251"
+      },
+      "archive_relative_path": "prepared/helpers/relocate_a40_declared_exes_a02.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\helpers\\relocate_a40_declared_exes_a02.py",
+        "bytes": 7004,
+        "sha256": "f170c40cc347b5792c8871415a32397b4c1486d434ac5bffa9106a6202a5c251"
+      },
+      "role": "PREPARED_HELPER",
+      "purpose": "Exact reviewed candidate helper source. A03 was not executed; final A04 ran under its own bound cap.",
+      "source_mtime_ns_observed": 1792484928946568900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a03.json",
+        "bytes": 58037,
+        "sha256": "9286f66363ebcbab09ffc3692becdf39c245fe0696e92b6fef550455e154e00c"
+      },
+      "archive_relative_path": "prepared/plans/A41-RELOCATION-WORKER-PLAN.prepared-a03.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\plans\\A41-RELOCATION-WORKER-PLAN.prepared-a03.json",
+        "bytes": 58037,
+        "sha256": "9286f66363ebcbab09ffc3692becdf39c245fe0696e92b6fef550455e154e00c"
+      },
+      "role": "PREPARED_PLAN",
+      "purpose": "Frozen prepared revision; only actual receipts establish execution. Source-scope correction and pre-copy API compatibility history remain separate.",
+      "source_mtime_ns_observed": 1792485408482117000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\relocate_a40_declared_exes_a03.py",
+        "bytes": 6977,
+        "sha256": "7edd2c75aa323105c891ab0529d171ce1e9bcd22d6885b530ec124be4d443ad2"
+      },
+      "archive_relative_path": "prepared/helpers/relocate_a40_declared_exes_a03.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\helpers\\relocate_a40_declared_exes_a03.py",
+        "bytes": 6977,
+        "sha256": "7edd2c75aa323105c891ab0529d171ce1e9bcd22d6885b530ec124be4d443ad2"
+      },
+      "role": "PREPARED_HELPER",
+      "purpose": "Exact reviewed candidate helper source. A03 was not executed; final A04 ran under its own bound cap.",
+      "source_mtime_ns_observed": 1792485408464070700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a04.json",
+        "bytes": 58499,
+        "sha256": "e0497d35bbc2fb3baea252161c31d6917f940f67ff0534517a4e43f9578e54a2"
+      },
+      "archive_relative_path": "prepared/plans/A41-RELOCATION-WORKER-PLAN.prepared-a04.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\plans\\A41-RELOCATION-WORKER-PLAN.prepared-a04.json",
+        "bytes": 58499,
+        "sha256": "e0497d35bbc2fb3baea252161c31d6917f940f67ff0534517a4e43f9578e54a2"
+      },
+      "role": "PREPARED_PLAN",
+      "purpose": "Frozen prepared revision; only actual receipts establish execution. Source-scope correction and pre-copy API compatibility history remain separate.",
+      "source_mtime_ns_observed": 1792485788658088600,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\relocate_a40_declared_exes_a04.py",
+        "bytes": 7021,
+        "sha256": "d1ea973832ecdd657706e202a0a3b64acd4fc02a6d2864574b6b07c04d7fedb9"
+      },
+      "archive_relative_path": "prepared/helpers/relocate_a40_declared_exes_a04.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\helpers\\relocate_a40_declared_exes_a04.py",
+        "bytes": 7021,
+        "sha256": "d1ea973832ecdd657706e202a0a3b64acd4fc02a6d2864574b6b07c04d7fedb9"
+      },
+      "role": "PREPARED_HELPER",
+      "purpose": "Exact reviewed candidate helper source. A03 was not executed; final A04 ran under its own bound cap.",
+      "source_mtime_ns_observed": 1792485788628738500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-READONLY-SITE-INSPECTION.actual-a01.json",
+        "bytes": 10072,
+        "sha256": "7ebb72893a10a108a18afccf5dd00134156f6188a55afbc5ebad637fa0e78b5b"
+      },
+      "archive_relative_path": "actual/source-and-diagnosis/A41-READONLY-SITE-INSPECTION.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\source-and-diagnosis\\A41-READONLY-SITE-INSPECTION.actual-a01.json",
+        "bytes": 10072,
+        "sha256": "7ebb72893a10a108a18afccf5dd00134156f6188a55afbc5ebad637fa0e78b5b"
+      },
+      "role": "ACTUAL_READONLY_AUDIT",
+      "purpose": "Original machine-bound source/policy/API observation; withdrawn candidates are not qualified source paths.",
+      "source_mtime_ns_observed": 1792483975143505700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-WORKER-FROZEN-SOURCE-CLOSURE.actual-a01.json",
+        "bytes": 5096,
+        "sha256": "dfa92633d01614462da5b38c97524e6f62b7ed547c45e773e22fcba99655acfe"
+      },
+      "archive_relative_path": "actual/source-and-diagnosis/A41-WORKER-FROZEN-SOURCE-CLOSURE.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\source-and-diagnosis\\A41-WORKER-FROZEN-SOURCE-CLOSURE.actual-a01.json",
+        "bytes": 5096,
+        "sha256": "dfa92633d01614462da5b38c97524e6f62b7ed547c45e773e22fcba99655acfe"
+      },
+      "role": "ACTUAL_READONLY_AUDIT",
+      "purpose": "Original machine-bound source/policy/API observation; withdrawn candidates are not qualified source paths.",
+      "source_mtime_ns_observed": 1792484726581944100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+        "bytes": 15980,
+        "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+      },
+      "archive_relative_path": "actual/source-and-diagnosis/A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\source-and-diagnosis\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+        "bytes": 15980,
+        "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+      },
+      "role": "ACTUAL_READONLY_AUDIT",
+      "purpose": "Original machine-bound source/policy/API observation; withdrawn candidates are not qualified source paths.",
+      "source_mtime_ns_observed": 1792484852883708500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-READONLY-NATIVE-LEASE-DIAGNOSIS.actual-a01.json",
+        "bytes": 1487,
+        "sha256": "a27e5cdf0a0d154b107cdcc3b92b93fcb259e9f3dc0eb0127d5c538dc63fd54e"
+      },
+      "archive_relative_path": "actual/source-and-diagnosis/A41-READONLY-NATIVE-LEASE-DIAGNOSIS.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\source-and-diagnosis\\A41-READONLY-NATIVE-LEASE-DIAGNOSIS.actual-a01.json",
+        "bytes": 1487,
+        "sha256": "a27e5cdf0a0d154b107cdcc3b92b93fcb259e9f3dc0eb0127d5c538dc63fd54e"
+      },
+      "role": "ACTUAL_READONLY_AUDIT",
+      "purpose": "Original machine-bound source/policy/API observation; withdrawn candidates are not qualified source paths.",
+      "source_mtime_ns_observed": 1792485788622746500,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+        "bytes": 8115,
+        "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+      },
+      "archive_relative_path": "actual/source-and-diagnosis/SOURCE-MANIFEST.original-a37.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\source-and-diagnosis\\SOURCE-MANIFEST.original-a37.actual.json",
+        "bytes": 8115,
+        "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+      },
+      "role": "ORIGINAL_SOURCE_SNAPSHOT_MANIFEST",
+      "purpose": "Unchanged original fd5 snapshot manifest; current 13 byte-equivalence is separate. No relabelling or old Q reuse.",
+      "source_mtime_ns_observed": 1792361824817511100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\execute_a41.py",
+        "bytes": 13117,
+        "sha256": "92ddf36b0d47cff64b9a2352d46379e777c08dc64e7af0ede67343cbe9149a7e"
+      },
+      "archive_relative_path": "prepared/executors/execute_a41.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\executors\\execute_a41.py",
+        "bytes": 13117,
+        "sha256": "92ddf36b0d47cff64b9a2352d46379e777c08dc64e7af0ede67343cbe9149a7e"
+      },
+      "role": "EXECUTION_DRIVER_SOURCE",
+      "purpose": "Exact driver source preserved for actual intent/self-pin interpretation; archiving does not execute it.",
+      "source_mtime_ns_observed": 1792485229059162800,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\execute_a41_resume_a03.py",
+        "bytes": 13822,
+        "sha256": "aef8c78ae2a0294c21411339c019d612e49d6f8b531470ece52e417a429c6d31"
+      },
+      "archive_relative_path": "prepared/executors/execute_a41_resume_a03.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\executors\\execute_a41_resume_a03.py",
+        "bytes": 13822,
+        "sha256": "aef8c78ae2a0294c21411339c019d612e49d6f8b531470ece52e417a429c6d31"
+      },
+      "role": "EXECUTION_DRIVER_SOURCE",
+      "purpose": "Exact driver source preserved for actual intent/self-pin interpretation; archiving does not execute it.",
+      "source_mtime_ns_observed": 1792485853309551400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\finalize_a41.py",
+        "bytes": 8972,
+        "sha256": "cb25a4546e5a3db115d725254733a05d8ae767060d0cb34887b2d7e10edf5ae2"
+      },
+      "archive_relative_path": "prepared/executors/finalize_a41.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\executors\\finalize_a41.py",
+        "bytes": 8972,
+        "sha256": "cb25a4546e5a3db115d725254733a05d8ae767060d0cb34887b2d7e10edf5ae2"
+      },
+      "role": "EXECUTION_DRIVER_SOURCE",
+      "purpose": "Exact driver source preserved for actual intent/self-pin interpretation; archiving does not execute it.",
+      "source_mtime_ns_observed": 1792486145706510900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\close_a41.py",
+        "bytes": 8146,
+        "sha256": "36f1dcee8e910db8e2b9c63430bbbd1ec9ca03bf4dfef634c95b39d1935d829c"
+      },
+      "archive_relative_path": "prepared/executors/close_a41.py",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\prepared\\executors\\close_a41.py",
+        "bytes": 8146,
+        "sha256": "36f1dcee8e910db8e2b9c63430bbbd1ec9ca03bf4dfef634c95b39d1935d829c"
+      },
+      "role": "EXECUTION_DRIVER_SOURCE",
+      "purpose": "Exact driver source preserved for actual intent/self-pin interpretation; archiving does not execute it.",
+      "source_mtime_ns_observed": 1792486344135619700,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 11097,
+        "sha256": "1f66dad3c016ab88e8bc52d3b399591041440302b27dbca7a988c27077d8cb54"
+      },
+      "archive_relative_path": "actual/capacity/A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+        "bytes": 11097,
+        "sha256": "1f66dad3c016ab88e8bc52d3b399591041440302b27dbca7a988c27077d8cb54"
+      },
+      "role": "HISTORICAL_ACTUAL_ADMISSION",
+      "purpose": "Historical source-bound admission only; old caps do not grant new work. Final native future is now settled zero.",
+      "source_mtime_ns_observed": 1792485074117612200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+        "bytes": 12769,
+        "sha256": "c7dcde0746e8a6e73e6f349831fddc6a569ab367f5ed89066b14515fb9cf6157"
+      },
+      "archive_relative_path": "actual/capacity/A41-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a02.json",
+        "bytes": 12769,
+        "sha256": "c7dcde0746e8a6e73e6f349831fddc6a569ab367f5ed89066b14515fb9cf6157"
+      },
+      "role": "HISTORICAL_ACTUAL_ADMISSION",
+      "purpose": "Historical source-bound admission only; old caps do not grant new work. Final native future is now settled zero.",
+      "source_mtime_ns_observed": 1792485653503248900,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+        "bytes": 13370,
+        "sha256": "9b2425d8db39fe97a367cf9ed7d6bd253e165e3cb4a952a71ee1486d76b0a426"
+      },
+      "archive_relative_path": "actual/capacity/A41-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+        "bytes": 13370,
+        "sha256": "9b2425d8db39fe97a367cf9ed7d6bd253e165e3cb4a952a71ee1486d76b0a426"
+      },
+      "role": "HISTORICAL_ACTUAL_ADMISSION",
+      "purpose": "Historical source-bound admission only; old caps do not grant new work. Final native future is now settled zero.",
+      "source_mtime_ns_observed": 1792485894256950400,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-NATIVE-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 5600,
+        "sha256": "9f3618b4a7d7ea7f6d548941bfa13755c24e880e107ffdb2a36316dc890687d1"
+      },
+      "archive_relative_path": "actual/capacity/A41-NATIVE-CLOSED-SETTLEMENT.actual-a01.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\capacity\\A41-NATIVE-CLOSED-SETTLEMENT.actual-a01.json",
+        "bytes": 5600,
+        "sha256": "9f3618b4a7d7ea7f6d548941bfa13755c24e880e107ffdb2a36316dc890687d1"
+      },
+      "role": "ACTUAL_CAPACITY_SETTLEMENT",
+      "purpose": "Independent final root/owned lifecycle readback; 768MiB future to zero, zero physical free credit.",
+      "source_mtime_ns_observed": 1792486552466858000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\native-msvc-result.json",
+        "bytes": 1929,
+        "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+      },
+      "archive_relative_path": "actual/original-main-compile/native-msvc-result.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\original-main-compile\\native-msvc-result.json",
+        "bytes": 1929,
+        "sha256": "93eff10c0273d53286b6942e759ffb1d68fa00a9b5217963b80b6773de5d785e"
+      },
+      "role": "ORIGINAL_MAIN_COMPILE_ACTUAL",
+      "purpose": "Original source93 main compile/link succeeded; outer producer failed only its old root SYSTEM registration.",
+      "source_mtime_ns_observed": 1792479255031388200,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\result.actual.json",
+        "bytes": 18198,
+        "sha256": "1e6f14fe3eb2d8f310cb7a7963e8f18502133a59fc92fa98b73d51661f863dce"
+      },
+      "archive_relative_path": "actual/original-main-compile/result.actual.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\original-main-compile\\result.actual.json",
+        "bytes": 18198,
+        "sha256": "1e6f14fe3eb2d8f310cb7a7963e8f18502133a59fc92fa98b73d51661f863dce"
+      },
+      "role": "ORIGINAL_MAIN_COMPILE_ACTUAL",
+      "purpose": "Original source93 main compile/link succeeded; outer producer failed only its old root SYSTEM registration.",
+      "source_mtime_ns_observed": 1792479255519671000,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+        "bytes": 58673,
+        "sha256": "ccd37a27ae1812810510d7e14cb232e9a183b8c44201ad5ac69feca2f7ffa759"
+      },
+      "archive_relative_path": "actual/original-main-compile/file-api/target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+      "archive": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\actual\\original-main-compile\\file-api\\target-xar_ck3_bridge-Release-f894743803541b42674e.json",
+        "bytes": 58673,
+        "sha256": "ccd37a27ae1812810510d7e14cb232e9a183b8c44201ad5ac69feca2f7ffa759"
+      },
+      "role": "ORIGINAL_MAIN_COMPILE_METADATA",
+      "purpose": "Original a40 generated target metadata preserved as original compilation provenance.",
+      "source_mtime_ns_observed": 1792478193626318100,
+      "verification": "Source bytes/stat stable; fresh source SHA and byte-identical archive readback; no JSON rewriting or source mutation."
+    }
+  ],
+  "identical_byte_aliases": [
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\protected-worker-receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      },
+      "same_exact_bytes_archived_as": "actual/SYSTEM/main/receipt.json",
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\broker-proof-c5c5c8779c074a80acace92a7c17047b\\protected-worker-receipt.json",
+        "bytes": 270898,
+        "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+      },
+      "same_exact_bytes_archived_as": "actual/SYSTEM/worker-live/receipt.json",
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\broker-proof-c5c5c8779c074a80acace92a7c17047b\\task-readback.json",
+        "bytes": 687,
+        "sha256": "ba381b14a1a004f084d715718f8e5afc596bb3e424d9fa999bf6bb01b52cc4be"
+      },
+      "same_exact_bytes_archived_as": "actual/SYSTEM/main/task-readback.json",
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\protected-worker-receipt.json",
+        "bytes": 326544,
+        "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+      },
+      "same_exact_bytes_archived_as": "actual/SYSTEM/worker-V5/receipt.json",
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised."
+    },
+    {
+      "source": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\task-readback.json",
+        "bytes": 687,
+        "sha256": "ba381b14a1a004f084d715718f8e5afc596bb3e424d9fa999bf6bb01b52cc4be"
+      },
+      "same_exact_bytes_archived_as": "actual/SYSTEM/main/task-readback.json",
+      "role": "ACTUAL_FIXED_PROTOCOL",
+      "purpose": "Exact request/protected result/task/client proof. Identical receipt aliases are stored once, never normalised."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+        "bytes": 3209,
+        "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40"
+      },
+      "same_exact_bytes_archived_as": "actual/file-api/main/target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "role": "ORIGINAL_MAIN_COMPILE_METADATA",
+      "purpose": "Original a40 generated target metadata preserved as original compilation provenance."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+        "bytes": 3180,
+        "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb"
+      },
+      "same_exact_bytes_archived_as": "actual/file-api/main/target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "role": "ORIGINAL_MAIN_COMPILE_METADATA",
+      "purpose": "Original a40 generated target metadata preserved as original compilation provenance."
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+        "bytes": 7996,
+        "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be"
+      },
+      "same_exact_bytes_archived_as": "actual/file-api/main/target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "role": "ORIGINAL_MAIN_COMPILE_METADATA",
+      "purpose": "Original a40 generated target metadata preserved as original compilation provenance."
+    }
+  ],
+  "pin_only_originals": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\qualification-phases\\01-public-main-production-build\\stdout.txt",
+        "bytes": 101694,
+        "sha256": "20251ab90d162c3ce172543495a0a11552ed269c67915ee7ad9236413d67d28e"
+      },
+      "reason": "Original larger build/log/object provenance remains at original source; do not duplicate it in this small archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\producer-evidence-a01\\msvc-build.log",
+        "bytes": 85918,
+        "sha256": "df63204cd5f307d29a6418bbc6fecf35d1505336281ae973d71da059d8331e3e"
+      },
+      "reason": "Original larger build/log/object provenance remains at original source; do not duplicate it in this small archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\compile_commands.json",
+        "bytes": 4545719,
+        "sha256": "df7f1dbe3a895ac447a6dd135cb0d720b1deabcd7a88b3fa7699c319d1d29721"
+      },
+      "reason": "Original larger build/log/object provenance remains at original source; do not duplicate it in this small archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "target": "xar_ck3_bridge",
+        "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+        "bytes": 14397440,
+        "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+      },
+      "reason": "Binary remains an active original/runtime input; no binary copied or rehashed for this metadata archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "target": "xar_ck3_bridge_injector",
+        "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+      },
+      "reason": "Binary remains an active original/runtime input; no binary copied or rehashed for this metadata archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "target": "xar_ck3_bridge_host",
+        "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+      },
+      "reason": "Binary remains an active original/runtime input; no binary copied or rehashed for this metadata archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "target": "refill_add_hwprobe_12004",
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+        "bytes": 140288,
+        "sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5"
+      },
+      "reason": "Binary remains an active original/runtime input; no binary copied or rehashed for this metadata archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "target": "refill_v5_cold_target_12004",
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+        "bytes": 66048,
+        "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521"
+      },
+      "reason": "Binary remains an active original/runtime input; no binary copied or rehashed for this metadata archive.",
+      "not_rehashed_or_copied_here": true
+    },
+    {
+      "source": {
+        "target": "refill_v5_cold_observer_12004",
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+        "bytes": 156672,
+        "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d"
+      },
+      "reason": "Binary remains an active original/runtime input; no binary copied or rehashed for this metadata archive.",
+      "not_rehashed_or_copied_here": true
+    }
+  ],
+  "actual_exact_SYSTEM_six_paths": [
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5",
+      "target": "xar_ck3_bridge_host",
+      "group": "main"
+    },
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630",
+      "target": "xar_ck3_bridge_injector",
+      "group": "main"
+    },
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "bytes": 658944,
+      "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332",
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "group": "main"
+    },
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+      "bytes": 140288,
+      "sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5",
+      "target": "refill_add_hwprobe_12004",
+      "group": "worker-live"
+    },
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+      "bytes": 66048,
+      "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521",
+      "target": "refill_v5_cold_target_12004",
+      "group": "worker-V5"
+    },
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+      "bytes": 156672,
+      "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d",
+      "target": "refill_v5_cold_observer_12004",
+      "group": "worker-V5"
+    }
+  ],
+  "actual_direct_wait_count": 9,
+  "actual_direct_wait0_count": 8,
+  "actual_direct_wait1_pre_copy_count": 1,
+  "main_compile_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+  "main_native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "worker_snapshot_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+  "worker_clean_invocation_HEAD": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "README": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\README.md",
+    "bytes": 3547,
+    "sha256": "d30bebc648c995a71fdd3783376cf6d4140e1a6026b17a3d3335c832cba14c5c"
+  },
+  "original_source_contents_modified": false,
+  "settled_native_root_written": false,
+  "binary_or_large_log_body_read_for_archive": false,
+  "new_build_SYSTEM_cold_EXE_game_SDK_or_screen_execution": false,
+  "capacity_ledger_modified": false,
+  "integration_contract": "Copy these archived exact bytes via Root integration worktree, verify SHA, preserve original reports. Do not execute prepared helpers or rewrite source JSON. Archive publication is separate from native qualification."
+}

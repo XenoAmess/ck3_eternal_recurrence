@@ -1,0 +1,65 @@
+{
+  "schema": "xar.e04.a41-phase-intent.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:46:06.391800+00:00",
+  "phase": "main_UI_finite_cold",
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+    "--test-dir",
+    "C:\\w\\e04a41",
+    "--build-config",
+    "Release",
+    "--output-on-failure",
+    "-R",
+    "^xar_ck3_ingame_ui_navigation_v1_test$"
+  ],
+  "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+    "bytes": 13370,
+    "sha256": "9b2425d8db39fe97a367cf9ed7d6bd253e165e3cb4a952a71ee1486d76b0a426"
+  },
+  "fresh_capacity": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\capacity-fresh.actual.json",
+    "bytes": 4566,
+    "sha256": "bc2515822ed2ce2e1ba951a62b9a8c2276ccdeb4d8adf6d31b0c6d0e0511170e"
+  },
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a04.json",
+    "bytes": 58499,
+    "sha256": "e0497d35bbc2fb3baea252161c31d6917f940f67ff0534517a4e43f9578e54a2"
+  },
+  "executor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\execute_a41_resume_a03.py",
+    "bytes": 13822,
+    "sha256": "aef8c78ae2a0294c21411339c019d612e49d6f8b531470ece52e417a429c6d31"
+  },
+  "parent": {
+    "pid": 23420,
+    "creation_filetime": 134369595240928929
+  },
+  "actual_repository_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "actual_repository_status_porcelain": "",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "before_guard": {
+    "observed_at_utc": "2026-10-20T08:46:03.842824+00:00",
+    "native_root_bytes": 22999815,
+    "native_plus_full_protocol_charge": 56554247,
+    "budget": {
+      "C_known_future_bytes": 939524096,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26751460550,
+      "C_floor_margin_bytes": 54302337850,
+      "C_projected_whole_volume_upper_bound_bytes": 435356771526,
+      "C_quota_margin_bytes": 2729892666,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 63324160
+    },
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 268256,
+      "sha256": "f18493f7b80a58910229ffe3272879b74f1e6fbb0d4493e9919e5bb40c496743"
+    }
+  },
+  "Root_worker_release": null
+}

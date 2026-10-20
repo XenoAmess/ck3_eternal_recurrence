@@ -1,0 +1,68 @@
+{
+  "schema": "xar.e04.a41-phase-intent.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:34:31.275702+00:00",
+  "phase": "relocate_three_exact_EXEs",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\relocate_a40_declared_exes_a02.py",
+    "--phase",
+    "relocate",
+    "--capacity",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+    "--capacity-sha256",
+    "1f66dad3c016ab88e8bc52d3b399591041440302b27dbca7a988c27077d8cb54"
+  ],
+  "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 11097,
+    "sha256": "1f66dad3c016ab88e8bc52d3b399591041440302b27dbca7a988c27077d8cb54"
+  },
+  "fresh_capacity": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\capacity-fresh.actual.json",
+    "bytes": 4566,
+    "sha256": "5e1f50f4ef82f99229cc83154efe33810f94f5aeed35eb33f7276c1e74e1bc91"
+  },
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a02.json",
+    "bytes": 56568,
+    "sha256": "96bc09b43fd8f6daa40853e9d0760fbc338d13034f1c3978935d5d2bda307606"
+  },
+  "executor": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\execute_a41.py",
+    "bytes": 13117,
+    "sha256": "92ddf36b0d47cff64b9a2352d46379e777c08dc64e7af0ede67343cbe9149a7e"
+  },
+  "parent": {
+    "pid": 25936,
+    "creation_filetime": 134369588292970292
+  },
+  "actual_repository_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "actual_repository_status_porcelain": "",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "before_guard": {
+    "observed_at_utc": "2026-10-20T08:34:29.531317+00:00",
+    "native_root_bytes": 20888808,
+    "native_plus_full_protocol_charge": 54443240,
+    "budget": {
+      "C_known_future_bytes": 939524096,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26751460550,
+      "C_floor_margin_bytes": 54312733498,
+      "C_projected_whole_volume_upper_bound_bytes": 435346375878,
+      "C_quota_margin_bytes": 2740288314,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 73531392
+    },
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 267213,
+      "sha256": "ef0f4d2bc774f75c31195131711a59fa0b97bacdf667e72c5cc45da49f8e39d2"
+    }
+  },
+  "Root_worker_release": null
+}

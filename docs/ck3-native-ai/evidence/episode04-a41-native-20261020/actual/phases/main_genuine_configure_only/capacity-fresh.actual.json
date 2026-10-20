@@ -1,0 +1,131 @@
+{
+  "schema": "xar.e04.a41-native-stage-fresh-capacity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:33:51.061862+00:00",
+  "phase": "main_genuine_configure_only",
+  "admitted": true,
+  "budget_status": "GREEN",
+  "phase_capacity_admissible": true,
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a01.json",
+    "bytes": 11097,
+    "sha256": "1f66dad3c016ab88e8bc52d3b399591041440302b27dbca7a988c27077d8cb54"
+  },
+  "producer_plan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-RELOCATION-WORKER-PLAN.prepared-a02.json",
+    "bytes": 56568,
+    "sha256": "96bc09b43fd8f6daa40853e9d0760fbc338d13034f1c3978935d5d2bda307606"
+  },
+  "source_ledger": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 267213,
+    "sha256": "ef0f4d2bc774f75c31195131711a59fa0b97bacdf667e72c5cc45da49f8e39d2"
+  },
+  "active_balances": {
+    "known_future": {
+      "C:/": 939524096,
+      "D:/": 0
+    },
+    "legacy": {
+      "C:/": 42132678,
+      "D:/": 0
+    },
+    "claims": [
+      {
+        "task_id": "e04-capacity-resume-20261020-a01",
+        "known_future": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 42132678,
+          "D:/": 0
+        },
+        "carry_only": true
+      },
+      {
+        "task_id": "e04-capacity-r06-resume-20261020-a02",
+        "known_future": {
+          "C:/": 939524096,
+          "D:/": 0
+        },
+        "legacy": {
+          "C:/": 0,
+          "D:/": 0
+        },
+        "carry_only": false
+      }
+    ]
+  },
+  "current_source_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "native_tree": "fee86631356f556271445157523c62abfd62951e",
+  "whole_repository_clean": true,
+  "native_subtree_and_entry_dependencies_exact": true,
+  "worker_new_clean_HEAD": null,
+  "Root_worker_release_message_binding_required_in_phase_intent": false,
+  "native_root_logical_bytes": 0,
+  "native_root_files": 0,
+  "measured_native_write_roots": [
+    "C:\\w\\e04a41"
+  ],
+  "native_root_measurement_includes_declared_new_source_component_if_any": true,
+  "native_root_ceiling_bytes": 771751936,
+  "fixed_protocol_growth_actual_bytes": null,
+  "fixed_protocol_growth_conservative_charge_bytes": 33554432,
+  "native_root_plus_full_protocol_charge_bytes": 33554432,
+  "aggregate_ceiling_bytes": 805306368,
+  "unknown_protocol_actual_not_assumed_zero": true,
+  "external_protocol_growth_bound_owner": "/root/native_prepare using exact planned fixed protocol requests; unknown/over32MiB stops that scope",
+  "shared": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T08:33:51.059776+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 443517,
+    "files": 78,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "volume": "C:/",
+      "observed_at_utc": "2026-10-20T08:33:51.039932+00:00",
+      "total_bytes": 511133945856,
+      "free_bytes": 81080549376,
+      "available_to_caller_bytes": 81080549376,
+      "total_free_bytes": 81080549376,
+      "entire_volume_used_allocation_upper_bound_bytes": 430053396480,
+      "source": "Windows GetDiskFreeSpaceExW"
+    },
+    "D:/": {
+      "volume": "D:/",
+      "observed_at_utc": "2026-10-20T08:33:51.039932+00:00",
+      "total_bytes": 500090007552,
+      "free_bytes": 21682585600,
+      "available_to_caller_bytes": 21682585600,
+      "total_free_bytes": 21682585600,
+      "entire_volume_used_allocation_upper_bound_bytes": 478407421952,
+      "source": "Windows GetDiskFreeSpaceExW"
+    }
+  },
+  "budget": {
+    "C_known_future_bytes": 939524096,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 26751460550,
+    "C_floor_margin_bytes": 54329088826,
+    "C_projected_whole_volume_upper_bound_bytes": 435330020550,
+    "C_quota_margin_bytes": 2756643642,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 73531392
+  },
+  "quota_review_at_utc": "2026-10-20T10:30:00Z",
+  "fresh_helper": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\fresh_a41_stage.py",
+    "bytes": 5645,
+    "sha256": "745f50554a111b942e686d4fcc17041d5fc4bb94aa9e883b4eb51f90374fec3e"
+  },
+  "ledger_or_reservation_mutations": 0,
+  "EXE_SYSTEM_cold_SDK_game_screen_executions": 0,
+  "does_not_assert_phase_started_or_passed": true
+}

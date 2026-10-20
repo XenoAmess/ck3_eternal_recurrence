@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.a41-phase-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:48:17.462734+00:00",
+  "phase": "worker_V5_two_owned_cases",
+  "Popen": {
+    "pid": 496,
+    "creation_filetime": 134369596872157190
+  },
+  "original_wait_return_code": 0,
+  "guard_failure": null,
+  "stdout": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\stdout.txt",
+    "bytes": 115,
+    "sha256": "610f001a24ece60824aa8bd615c23d0edcaf88b6db059be001aa3711d97e8800"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "intent": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\intent.actual.json",
+    "bytes": 3153,
+    "sha256": "01947b721264a6661c297addfb2c54a3c505230919fb79fb5d3b2ebccb26de41"
+  },
+  "after_guard": {
+    "observed_at_utc": "2026-10-20T08:48:17.462418+00:00",
+    "native_root_bytes": 28447170,
+    "native_plus_full_protocol_charge": 62001602,
+    "budget": {
+      "C_known_future_bytes": 939524096,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26751460550,
+      "C_floor_margin_bytes": 54294043450,
+      "C_projected_whole_volume_upper_bound_bytes": 435365065926,
+      "C_quota_margin_bytes": 2721598266,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 63324160
+    },
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 268256,
+      "sha256": "f18493f7b80a58910229ffe3272879b74f1e6fbb0d4493e9919e5bb40c496743"
+    }
+  },
+  "guard_observations": 81,
+  "peak_root_bytes": 30569211,
+  "minimum_budget_margins": {
+    "C_floor_margin_bytes": 54289541946,
+    "C_quota_margin_bytes": 2717096762,
+    "D_floor_margin_bytes": 63324160
+  }
+}

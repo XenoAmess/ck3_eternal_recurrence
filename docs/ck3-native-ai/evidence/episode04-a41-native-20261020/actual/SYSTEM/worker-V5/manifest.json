@@ -1,0 +1,52 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+  "build_dir": "C:\\w\\e04a41\\refill-worker-cold-a01",
+  "configuration": "Release",
+  "requested_targets": [
+    "refill_v5_cold_observer_12004",
+    "refill_v5_cold_target_12004"
+  ],
+  "external_candidate": "refill-add-live-12004",
+  "cmake_index": {
+    "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\index-2026-10-20T08-47-24-0052.json",
+    "sha256": "18675a0cb88fe838c2848277fe6d8d8e26421b1a0c17dc52334f8634487e2342"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-29306aa381ed474c535b.json",
+    "sha256": "3b849002f20df1d387d2055debfff5d5d1a10b3ea27715a4ad8fda3f711615c1"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\target-refill_v5_cold_target_12004-Release-013a5ad82b565b34e89b.json",
+      "sha256": "48f3a2b0f2428079ad9b4685e48f2a3432e93fa27bc06b67493261e39f7d8d81",
+      "target": "refill_v5_cold_target_12004",
+      "target_id": "refill_v5_cold_target_12004::@6890427a1f51a3e7e1df",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004"
+    },
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\.cmake\\api\\v1\\reply\\target-refill_v5_cold_observer_12004-Release-5014d546f3c277f9a8f6.json",
+      "sha256": "cc7b4a52e60e2a6c0bf27afa1194195a31804a36dc8c559577e8fb1c63a64e5b",
+      "target": "refill_v5_cold_observer_12004",
+      "target_id": "refill_v5_cold_observer_12004::@6890427a1f51a3e7e1df",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+      "size": 66048,
+      "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521",
+      "target": "refill_v5_cold_target_12004",
+      "target_id": "refill_v5_cold_target_12004::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+      "size": 156672,
+      "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d",
+      "target": "refill_v5_cold_observer_12004",
+      "target_id": "refill_v5_cold_observer_12004::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

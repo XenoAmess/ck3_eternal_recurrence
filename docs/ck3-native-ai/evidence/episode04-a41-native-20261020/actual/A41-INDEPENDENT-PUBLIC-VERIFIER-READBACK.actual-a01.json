@@ -1,0 +1,95 @@
+{
+  "schema": "xar.e04.a41-public-receipt-verifier-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:50:02.088045+00:00",
+  "status": "PUBLIC_R06_VERIFY_PRODUCER_ACTUAL_RECEIPTS_PASS",
+  "qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "public_producer_arguments": {
+    "qualification": {
+      "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+      "bytes": 26157,
+      "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+    },
+    "build_result": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\native-msvc-result.json",
+      "bytes": 1661,
+      "sha256": "6212c4dcf1b5f8f51aa8309060ab69395112bdea8dad6a38a7fc2e056b13d9c8"
+    },
+    "SYSTEM_receipt": {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\receipt.json",
+      "bytes": 270898,
+      "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+    },
+    "cold_result": {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-evidence-a01\\FOCUSED-WORKER-COLD.actual.json",
+      "bytes": 12026,
+      "sha256": "ae0c1adf969e4a271edc52e1376d1eeb5d9252098fcd83bfa32247edf584f80d"
+    },
+    "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "observer_exe": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+    "observer_exe_sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5",
+    "native_build_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "carrier_module_path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+    "carrier_source_epoch": 20261018,
+    "cmake_defines": {
+      "XAR_ENABLE_REFILL_ADD_HWPROBE_12004": "ON",
+      "XAR_ENABLE_REFILL_STACK_Q_COLD_12004": "OFF",
+      "XAR_ENABLE_REFILL_V3_COLD_PROBE_12004": "OFF",
+      "XAR_ENABLE_REFILL_CARRIER_THREAD_DISCOVERY_12004": "ON",
+      "XAR_ENABLE_REFILL_V5_COLD_PROBE_12004": "OFF"
+    }
+  },
+  "verifier_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r06_refill_one_day.py",
+    "bytes": 43609,
+    "sha256": "cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf"
+  },
+  "outputs_rehashed": [
+    {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5"
+    }
+  ],
+  "worker_live_and_V5_EXEs_rehashed": [
+    {
+      "target": "refill_add_hwprobe_12004",
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+      "bytes": 140288,
+      "sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5"
+    },
+    {
+      "target": "refill_v5_cold_target_12004",
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+      "bytes": 66048,
+      "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521"
+    },
+    {
+      "target": "refill_v5_cold_observer_12004",
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+      "bytes": 156672,
+      "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d"
+    }
+  ],
+  "no_guard_modified": true,
+  "no_project_EXE_reexecuted": true,
+  "no_game_or_SDK_or_screen": true
+}

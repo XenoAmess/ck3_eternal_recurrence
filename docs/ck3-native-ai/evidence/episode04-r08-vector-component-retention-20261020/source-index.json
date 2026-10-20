@@ -1,0 +1,618 @@
+{
+  "schema": "xar.e04.r08.current-vector-component-retention-shared-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-20T09:04:57.118546+00:00",
+  "research_observed_at_utc": "2026-10-20T08:50:06.341494+00:00",
+  "source_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "intended_repository_document": "docs/ck3-native-ai/episode04-r08-current-vector-component-retention-12004.md",
+  "intended_repository_index": "docs/ck3-native-ai/evidence/episode04-r08-vector-component-retention-20261020/source-index.json",
+  "scope": "offline source and historical small-sample knowledge; no dynamic or R08 credit",
+  "source_game": {
+    "source_game_version": "1.20.0.4",
+    "source_steam_build_id": 25734779,
+    "source_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "installed_or_live_qualification_granted": false,
+  "existing_query": {
+    "name": "ck3_query_war_cash_current_resources_private_v1",
+    "ordinary_arguments": {
+      "expected_revision": "F.revision"
+    },
+    "required_public_host_capability": "war_cash_queries=true",
+    "ordinary_query_enables_payment_sampling": false,
+    "pointer_within_current_cash_DTO": "/military_expenses/current/resource_raw_native/9",
+    "vector_contract": "exactly10 strict signed64 integers; bool excluded; unavailable is not observed zero",
+    "known_aliases": {
+      "0": "gold_raw",
+      "6": "treasury_raw"
+    },
+    "slot9_business_name": null,
+    "current_and_all_raised_are_alternate_scenarios": true,
+    "returns_independent_callee_components": false
+  },
+  "repository_sources": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_war_cash_current_reader.hpp",
+      "bytes": 4780,
+      "sha256": "54046cc9c5e35509d7f12492955d75c999bc42ad5d6bd47339b61a3d82b14036",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_reader.cpp",
+      "bytes": 10061,
+      "sha256": "1126fb936eeb9b5beb67e5935452af17983121562011c2c90ddb9f4c9aaf921b",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_serializer.cpp",
+      "bytes": 14781,
+      "sha256": "e30adc88f6fbfbac766967550e2a17be8c978c9ecb250a7e68c4114378e640ad",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_private_transport_v1.py",
+      "bytes": 22800,
+      "sha256": "81ba0ca4c99b4f607f649712d996a63c0c044bff56a8e2fc4456f937c47f24c6",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_war_cash_claim_terms.cpp",
+      "bytes": 2421,
+      "sha256": "97e338be9d7e657f1cca4a7e2d9f2417d783b1dc15be91200a994ade404ef249",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_war_cash_claim_terms.hpp",
+      "bytes": 2207,
+      "sha256": "647da1cb955c36a152da96e2297d0f470a3259d8dadbd5fd027985aad2ceff9a",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_readonly_sufficiency_v1.py",
+      "bytes": 3747,
+      "sha256": "96e766657383b80075a0bf85ea4eb1a19e9fcb012f37fc4cec2e55ac61189c1a",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-readonly-sufficiency-12004/actual-projection.json",
+      "bytes": 11590,
+      "sha256": "d59784a66b82881b1e6f7e0396e5cbef68f5ec8a95d02371a82de7d186d87c7d",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r08-cash-getter-inventory/source-index.json",
+      "bytes": 10284,
+      "sha256": "2b02c0bdc5884d296242c05509134d50a9abe5423e13c2161c3509303a551bfb",
+      "read_from_repository_at_packaging": true
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-settlement-parent-order-12004.md",
+      "bytes": 6565,
+      "sha256": "80de73df38f65fdb1ffe61333200e8d3bd5affd0c3fe6a5f130b3570f0f11ae3"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-readonly-maintenance-sufficiency-12004.md",
+      "bytes": 8947,
+      "sha256": "5faed3f51adaedc79e6199a51cb2dd7a8dc2c492215d2a7e70f0be6ba930f89b"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-maintenance-callee-28c43a0-12004.md",
+      "bytes": 6456,
+      "sha256": "fec35d524cde3c62176bf94f6fc5c30915f49f594a29860b54e5646828e6ed6d"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-maintenance-callee-2c142b0-12004.md",
+      "bytes": 7350,
+      "sha256": "f571f96e536f38108d2b4d78ee2566a8e876b512cd56fb9dd9fb2fd228b403f2"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-rate-resource4-application-12004.md",
+      "bytes": 24391,
+      "sha256": "598c6d12bfd6d6225209b88a98d33a9cbbf229ffeb6b9fe4f01f51bcf7956311"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-selector-wallet-link-12004.md",
+      "bytes": 2983,
+      "sha256": "ce68675c71fbdd64b4c3a005707074837b1ba0caf0d80b0946730e0f671ea8e0"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-resource4-enum-locator-12004.md",
+      "bytes": 2414,
+      "sha256": "59f0fa98d97e7ea562996c3e2e074d8a493cbbe9b1f86898b0aa897f81923e32"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-b-next-20261020.md",
+      "bytes": 14907,
+      "sha256": "dc61625d0857764ee2e9c5c6215ee6eec787b2b337ab3367d08998bfba835ef7"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-maintenance-cache-source-12004.md",
+      "bytes": 22958,
+      "sha256": "d9e110eca26e78e09df7b81ce7d190e4d720a387db998c6ecd7dccc7b2e3c7db"
+    }
+  ],
+  "historical_sample": {
+    "source_projection": {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-readonly-sufficiency-12004/actual-projection.json",
+      "bytes": 11590,
+      "sha256": "d59784a66b82881b1e6f7e0396e5cbef68f5ec8a95d02371a82de7d186d87c7d"
+    },
+    "original_small_cash": {
+      "bytes": 5159,
+      "sha256": "31713c46e4a98cfb5addd38cdf6d8c778e45a18ab6b8b0d7ae91b6a03add76b3",
+      "original_origin_path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0208/r213-cash-readonly-a02/views/r213-cash-a02-cash.common-view.json",
+      "reread_in_this_research_or_packaging": false,
+      "pin_source": "docs/ck3-native-ai/evidence/episode04-r08-readonly-sufficiency-12004/actual-projection.json"
+    },
+    "source_observed_at_utc": "2026-10-18T22:42:31.611233+00:00",
+    "identity": {
+      "pid": 27056,
+      "generation": 1,
+      "actor": 33388,
+      "date_raw": 53148408,
+      "episode_run_id": null,
+      "local_player_id": 1
+    },
+    "comparison": {
+      "slot0": 386622,
+      "slot6": 0,
+      "slot9": 0,
+      "c": 310999,
+      "d": 0,
+      "c_plus_d": 310999,
+      "c_equals_slot9": false,
+      "c_plus_d_equals_slot9": false,
+      "fields_are_same_packet_ordered_reads_not_atomic": true,
+      "component_business_names_proven": false,
+      "historical_zero_is_available_zero": true,
+      "payment_opportunity_observed": false
+    },
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "machine_identity_source": "source projection machine_id; machine-specific sample only, no current-state inference",
+    "current_resource_raw_native": [
+      386622,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "sample_label": "R213 / original R0208 cash query, native revision136"
+  },
+  "retained_wrapper": {
+    "range_rva_half_open": [
+      "0x2C13F60",
+      "0x2C142AE"
+    ],
+    "bytes": 846,
+    "sha256": "20f7733ca5f0c06b12c85d7844fb2225cd95aeb9bc700b0b3d329bcd82ab555d",
+    "raw_hex": "48895c2408488974241048897c24185541564157488dac2490feffff4881ec70020000498bf84c8bf2488bd90f57c00f11010f1141100f1141200f1141300f1141404d85c00f8424020000498b304533ff488d057064bf014889442430c74424381a00000044887c243c33d241b8a8010000488d4dc0e8352f6101488d4dc0e8fc59c7fd904c897c2428488d45c048894424204533c94533c0488d542430488d4c2450e818262001904c397dc07423488d4dc0e8b85ac7fd488b4dd0488b01458d4708488b55c0ff50104c897dc044897dc84d8bc7488d542450488bcee8de7f81ff488bf0488d4c2450e80120c4fd8b4f084889742440894c2448c644244c00894c24204c8d4c24404533c0488d542470498bcee8c704cbff486347084c8b4cc470498bc148f7d848894678b205488bcee8ea7181ff418bcfb8020000004d85c90f44c80fb6868e00000024fd0ac8888e8e000000807c244c000f84c0000000c6470c01488d057d63bf014889442430c744243823000000c644243c0033d241b8a8010000488d4dc0e8222e6101488d4dc0e8e958c7fd904c897c2428488d45c048894424204533c94533c0488d542430488d4c2450e8052520019048837dc0007425488d4dc0e8a459c7fd488b4dd0488b0141b808000000488b55c0ff50104c897dc044897dc8488d4e18488d442450483bc8741c488d54245048837c246810480f435424504c8b442460e83f1cc4fd90488d4c2450e8d41ec4fd0f1f4000488b442470480103488b44247848014308488b458048014310488b458848014318488b459048014320488b459848014328488b45a048014330488b45a848014338488b45b048014340488b45b8eb5a488d542470498bcee8c401cbff488bd0488b0848010b488b480848014b08488b481048014b10488b481848014b18488b402048014320488b422848014328488b423048014330488b423848014338488b424048014340488b4248480143484c8bc7498bd6488d4c2470e873000000488bd0488b0848010b488b480848014b08488b481048014b10488b481848014b18488b482048014b20488b402848014328488b423048014330488b423848014338488b424048014340488b424848014348488bc34c8d9c2470020000498b5b20498b7328498b7b30498be3415f415e5dc3",
+    "instruction_boundary_rvas": [
+      "0x2C13F60",
+      "0x2C13F65",
+      "0x2C13F6A",
+      "0x2C13F6F",
+      "0x2C13F70",
+      "0x2C13F72",
+      "0x2C13F74",
+      "0x2C13F7C",
+      "0x2C13F83",
+      "0x2C13F86",
+      "0x2C13F89",
+      "0x2C13F8C",
+      "0x2C13F8F",
+      "0x2C13F92",
+      "0x2C13F96",
+      "0x2C13F9A",
+      "0x2C13F9E",
+      "0x2C13FA2",
+      "0x2C13FA5",
+      "0x2C13FAB",
+      "0x2C13FAE",
+      "0x2C13FB1",
+      "0x2C13FB8",
+      "0x2C13FBD",
+      "0x2C13FC5",
+      "0x2C13FCA",
+      "0x2C13FCC",
+      "0x2C13FD2",
+      "0x2C13FD6",
+      "0x2C13FDB",
+      "0x2C13FDF",
+      "0x2C13FE4",
+      "0x2C13FE5",
+      "0x2C13FEA",
+      "0x2C13FEE",
+      "0x2C13FF3",
+      "0x2C13FF6",
+      "0x2C13FF9",
+      "0x2C13FFE",
+      "0x2C14003",
+      "0x2C14008",
+      "0x2C14009",
+      "0x2C1400D",
+      "0x2C1400F",
+      "0x2C14013",
+      "0x2C14018",
+      "0x2C1401C",
+      "0x2C1401F",
+      "0x2C14023",
+      "0x2C14027",
+      "0x2C1402A",
+      "0x2C1402E",
+      "0x2C14032",
+      "0x2C14035",
+      "0x2C1403A",
+      "0x2C1403D",
+      "0x2C14042",
+      "0x2C14045",
+      "0x2C1404A",
+      "0x2C1404F",
+      "0x2C14052",
+      "0x2C14057",
+      "0x2C1405B",
+      "0x2C14060",
+      "0x2C14064",
+      "0x2C14069",
+      "0x2C1406C",
+      "0x2C14071",
+      "0x2C14074",
+      "0x2C14079",
+      "0x2C1407D",
+      "0x2C14082",
+      "0x2C14085",
+      "0x2C14088",
+      "0x2C1408C",
+      "0x2C1408E",
+      "0x2C14091",
+      "0x2C14096",
+      "0x2C14099",
+      "0x2C1409E",
+      "0x2C140A1",
+      "0x2C140A4",
+      "0x2C140AB",
+      "0x2C140AD",
+      "0x2C140AF",
+      "0x2C140B5",
+      "0x2C140BA",
+      "0x2C140C0",
+      "0x2C140C4",
+      "0x2C140CB",
+      "0x2C140D0",
+      "0x2C140D8",
+      "0x2C140DD",
+      "0x2C140DF",
+      "0x2C140E5",
+      "0x2C140E9",
+      "0x2C140EE",
+      "0x2C140F2",
+      "0x2C140F7",
+      "0x2C140F8",
+      "0x2C140FD",
+      "0x2C14101",
+      "0x2C14106",
+      "0x2C14109",
+      "0x2C1410C",
+      "0x2C14111",
+      "0x2C14116",
+      "0x2C1411B",
+      "0x2C1411C",
+      "0x2C14121",
+      "0x2C14123",
+      "0x2C14127",
+      "0x2C1412C",
+      "0x2C14130",
+      "0x2C14133",
+      "0x2C14139",
+      "0x2C1413D",
+      "0x2C14140",
+      "0x2C14144",
+      "0x2C14148",
+      "0x2C1414C",
+      "0x2C14151",
+      "0x2C14154",
+      "0x2C14156",
+      "0x2C1415B",
+      "0x2C14161",
+      "0x2C14167",
+      "0x2C1416C",
+      "0x2C14171",
+      "0x2C14172",
+      "0x2C14177",
+      "0x2C1417C",
+      "0x2C14180",
+      "0x2C14185",
+      "0x2C14188",
+      "0x2C1418D",
+      "0x2C14191",
+      "0x2C14195",
+      "0x2C14199",
+      "0x2C1419D",
+      "0x2C141A1",
+      "0x2C141A5",
+      "0x2C141A9",
+      "0x2C141AD",
+      "0x2C141B1",
+      "0x2C141B5",
+      "0x2C141B9",
+      "0x2C141BD",
+      "0x2C141C1",
+      "0x2C141C5",
+      "0x2C141C9",
+      "0x2C141CD",
+      "0x2C141CF",
+      "0x2C141D4",
+      "0x2C141D7",
+      "0x2C141DC",
+      "0x2C141DF",
+      "0x2C141E2",
+      "0x2C141E5",
+      "0x2C141E9",
+      "0x2C141ED",
+      "0x2C141F1",
+      "0x2C141F5",
+      "0x2C141F9",
+      "0x2C141FD",
+      "0x2C14201",
+      "0x2C14205",
+      "0x2C14209",
+      "0x2C1420D",
+      "0x2C14211",
+      "0x2C14215",
+      "0x2C14219",
+      "0x2C1421D",
+      "0x2C14221",
+      "0x2C14225",
+      "0x2C14229",
+      "0x2C1422D",
+      "0x2C14230",
+      "0x2C14233",
+      "0x2C14238",
+      "0x2C1423D",
+      "0x2C14240",
+      "0x2C14243",
+      "0x2C14246",
+      "0x2C1424A",
+      "0x2C1424E",
+      "0x2C14252",
+      "0x2C14256",
+      "0x2C1425A",
+      "0x2C1425E",
+      "0x2C14262",
+      "0x2C14266",
+      "0x2C1426A",
+      "0x2C1426E",
+      "0x2C14272",
+      "0x2C14276",
+      "0x2C1427A",
+      "0x2C1427E",
+      "0x2C14282",
+      "0x2C14286",
+      "0x2C1428A",
+      "0x2C1428E",
+      "0x2C14291",
+      "0x2C14299",
+      "0x2C1429D",
+      "0x2C142A1",
+      "0x2C142A5",
+      "0x2C142A8",
+      "0x2C142AA",
+      "0x2C142AC",
+      "0x2C142AD"
+    ],
+    "selected_instruction_checks": [
+      {
+        "rva": "0x2c13f89",
+        "bytes": "488bd9",
+        "mnemonic": "mov",
+        "operands": "rbx, rcx"
+      },
+      {
+        "rva": "0x2c13f8c",
+        "bytes": "0f57c0",
+        "mnemonic": "xorps",
+        "operands": "xmm0, xmm0"
+      },
+      {
+        "rva": "0x2c13fa5",
+        "bytes": "0f8424020000",
+        "mnemonic": "je",
+        "operands": "0x142c141cf"
+      },
+      {
+        "rva": "0x2c141cf",
+        "bytes": "488d542470",
+        "mnemonic": "lea",
+        "operands": "rdx, [rsp + 0x70]"
+      },
+      {
+        "rva": "0x2c141d7",
+        "bytes": "e8c401cbff",
+        "mnemonic": "call",
+        "operands": "0x1428c43a0"
+      },
+      {
+        "rva": "0x2c141dc",
+        "bytes": "488bd0",
+        "mnemonic": "mov",
+        "operands": "rdx, rax"
+      },
+      {
+        "rva": "0x2c14229",
+        "bytes": "48014348",
+        "mnemonic": "add",
+        "operands": "qword ptr [rbx + 0x48], rax"
+      },
+      {
+        "rva": "0x2c1422d",
+        "bytes": "4c8bc7",
+        "mnemonic": "mov",
+        "operands": "r8, rdi"
+      },
+      {
+        "rva": "0x2c14233",
+        "bytes": "488d4c2470",
+        "mnemonic": "lea",
+        "operands": "rcx, [rsp + 0x70]"
+      },
+      {
+        "rva": "0x2c14238",
+        "bytes": "e873000000",
+        "mnemonic": "call",
+        "operands": "0x142c142b0"
+      },
+      {
+        "rva": "0x2c1423d",
+        "bytes": "488bd0",
+        "mnemonic": "mov",
+        "operands": "rdx, rax"
+      },
+      {
+        "rva": "0x2c1428a",
+        "bytes": "48014348",
+        "mnemonic": "add",
+        "operands": "qword ptr [rbx + 0x48], rax"
+      },
+      {
+        "rva": "0x2c1428e",
+        "bytes": "488bc3",
+        "mnemonic": "mov",
+        "operands": "rax, rbx"
+      },
+      {
+        "rva": "0x2c14291",
+        "bytes": "4c8d9c2470020000",
+        "mnemonic": "lea",
+        "operands": "r11, [rsp + 0x270]"
+      },
+      {
+        "rva": "0x2c142a5",
+        "bytes": "498be3",
+        "mnemonic": "mov",
+        "operands": "rsp, r11"
+      }
+    ],
+    "first_and_second_merge_regions_contain_no_CALL": true,
+    "historical_asm_origin_only": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a02\\current_military.asm",
+      "bytes": 14306,
+      "sha256": "295567d6ead8e4c6aa05fc5d384d7994f9f14fa0be819a3baa95403cc40291ce",
+      "path_role": "historical provenance; not a required repository read; raw846B embedded above",
+      "reread_during_research": true,
+      "reread_during_packaging": false
+    },
+    "EXE_read_or_execution_during_research_or_packaging": false
+  },
+  "proposed_component_observation": {
+    "schema": "xar.e04.r08.current-components-query-recipe.v1",
+    "source_head": "31ff77a0f07fb21f528c88e56314cbb093972703",
+    "status": "NAMED_CONSTRUCTION_ENTRY_ONLY_NOT_IMPLEMENTED_NOT_BUILT_NOT_RUN",
+    "reuse_existing_query": "ck3_query_war_cash_current_resources_private_v1(expected_revision=F.revision)",
+    "existing_slot9": "current.military_expenses.current.resource_raw_native[9]",
+    "change_required_for_components_only": {
+      "wrapper": "ck3_12003_war_cash_current_reader.cpp::Current",
+      "binder": "ck3_12004_war_cash_claim_terms.cpp::BindWarCashCurrentImage",
+      "attach_optional_child_to_existing_current_cash_DTO": "current_components_raw_v1 (proposed, no public flag exists)",
+      "no_extra_getter_invocations": true,
+      "no_arbitrary_address_query": true,
+      "no_new_payment_sampling_or_world_actions": true
+    },
+    "future_native_scope": {
+      "expected_game_version": "1.20.0.4",
+      "expected_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "original_current_getter_rva": "0x2C13F60",
+      "entry_invocation_token_required": true,
+      "token_owner": "existing Current wrapper, scoped to its sole actual native call",
+      "fixed_in_function_observation_points": [
+        "0x2C1422D",
+        "0x2C1428E"
+      ],
+      "first_point_reads": [
+        "RDI==0",
+        "R14 original actor",
+        "RBX out80",
+        "RDX component-A80",
+        "RBX first cumulative80"
+      ],
+      "second_point_reads": [
+        "same invocation token/thread/frame/actor/out80",
+        "RDX component-B80",
+        "RBX total80"
+      ],
+      "read_budget_bytes": 640,
+      "maximum_retained_records_per_query": 1,
+      "mandatory_checks": [
+        "exact source bytes and unique function extent",
+        "existing owning paused mailbox and frame proof",
+        "exact original return pointers and nonoverlap of local buffers",
+        "fixed point order under one wrapper invocation token",
+        "double-read every selected80B buffer at its fixed point; retain only exact agreement",
+        "all signed64 values retained including zero and negative",
+        "componentA equals first cumulative read",
+        "for each i0..9 final equals wrap_i64(A[i]+B[i])",
+        "no truncation/overwrite/cross-query or cross-thread joining"
+      ]
+    },
+    "reject_or_preserve_unknown_when": [
+      "missing either fixed point",
+      "nonnul breakdown",
+      "changed actor/output/thread/invocation",
+      "memory read unavailable or unstable",
+      "composition mismatch",
+      "missing genuine source/native qualification"
+    ],
+    "not_implemented_interfaces": [
+      "no existing component-mode SDK argument",
+      "no existing fixed-four-field writer observer support for these PCs",
+      "no current A40/A41 qualification for this recipe"
+    ],
+    "semantic_outputs": {
+      "component_names": [
+        "source_callee_28C43A0_raw",
+        "source_callee_2C142B0_raw"
+      ],
+      "source_scope": "rate_component_and_merge_only",
+      "resource_enum_names": null,
+      "military_paid_raw": null,
+      "military_payer": null,
+      "cadence": null
+    },
+    "next_business_evidence_unchanged": "actual c/d writer with business source, same wallet application, account and calendar producer; rate split does not replace it"
+  },
+  "unknowns": {
+    "resource4_business_name": null,
+    "slot9_business_name": null,
+    "component_business_names": null,
+    "military_paid_raw": null,
+    "military_payer": null,
+    "cadence": null,
+    "c_d_producer_store_rva": null,
+    "rate_vs_payment_connection_proven": false,
+    "already_closed_source_not_counted_as_new_research_credit": true
+  },
+  "research_input_receipts_origin_only": [
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-research\\SLOT9-COMPONENT-FACTS.a02.actual.json",
+      "bytes": 14352,
+      "sha256": "cf88a783016a20e252cf7b57d00fb87788d8761338dfd7b47758d1f1dd040a91"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\r08-research\\MINIMAL-QUERY-CONSTRUCTION.a02.actual.json",
+      "bytes": 3552,
+      "sha256": "5362ef8fae0520cb3ce9156dabd8bfbe3c86ce0720435fa47a67ab3b856a5095"
+    }
+  ],
+  "packaging_checks": {
+    "all_repository_source_size_and_sha256_match": true,
+    "raw846B_sha256_match": true,
+    "selected_instruction_boundaries_and_bytes_match": true,
+    "both_direct_call_relative_targets_match": true,
+    "repository_sources_use_relative_paths": true,
+    "runtime_or_business_proof_added": false,
+    "new_R08_research_or_ABC_numerator_credit": false
+  }
+}

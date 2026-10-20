@@ -1,0 +1,33 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:48:07.222579+00:00",
+  "parent": {
+    "pid": 33864,
+    "creation_filetime": 134369595826186628
+  },
+  "child": {
+    "pid": 496,
+    "creation_filetime": 134369596872157190
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--source-root",
+    "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01",
+    "--build-dir",
+    "C:\\w\\e04a41\\refill-worker-cold-a01",
+    "--build-binding",
+    "C:\\w\\e04a41\\refill-worker-cold-a01\\BUILD-BINDING.actual-a01.json",
+    "--output-root",
+    "C:\\w\\e04a41\\refill-worker-cold-evidence-a01",
+    "--case",
+    "worker-positive",
+    "--case",
+    "worker-exit-before-add"
+  ]
+}

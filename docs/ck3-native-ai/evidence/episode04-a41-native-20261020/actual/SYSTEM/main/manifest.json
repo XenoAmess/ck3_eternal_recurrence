@@ -1,0 +1,67 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\w\\e04a41",
+  "configuration": "Release",
+  "requested_targets": [
+    "xar_ck3_bridge_injector",
+    "xar_ck3_bridge_host",
+    "xar_ck3_ingame_ui_navigation_v1_test"
+  ],
+  "external_candidate": null,
+  "cmake_index": {
+    "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\index-2026-10-20T08-34-28-0096.json",
+    "sha256": "47e811a6b8be3f1fc3950d8a9fedebf2792469cc54e381e437b8e1d53613b23d"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\codemodel-v2-dbdc07bac653ba1c4638.json",
+    "sha256": "cf41fce2f6c843b2641948acec1c9915c6dfaca654b8e4f17a41d886a239970b"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\target-xar_ck3_ingame_ui_navigation_v1_test-Release-dc201ee79d7fc299c88e.json",
+      "sha256": "3b34f34047034ca271ddaaa9871b82207f6db4354e2aa5ee49983e0ac53823be",
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "target_id": "xar_ck3_ingame_ui_navigation_v1_test::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-569cc0eb78c2c18faa61.json",
+      "sha256": "755902f434432afe83ca17327ae2fdbb66d69b08325818f6d03e2c08aec65abb",
+      "target": "xar_ck3_bridge_host",
+      "target_id": "xar_ck3_bridge_host::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    },
+    {
+      "path": "C:\\w\\e04a41\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-578610d66b4702371a18.json",
+      "sha256": "8a94452323365dd38fdfa647f7cfbb2df484242dddd44152043125a3fc00ed40",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df",
+      "source": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_host.exe",
+      "size": 71680,
+      "sha256": "2a8e46133a470dd53831848a98e7d126e287452ec367007482ccea22455797b5",
+      "target": "xar_ck3_bridge_host",
+      "target_id": "xar_ck3_bridge_host::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04a41\\xar_ck3_ingame_ui_navigation_v1_test.exe",
+      "size": 658944,
+      "sha256": "8a2b90f1ca177d3cf9e44313e6905ef4323fe16bcf0d8179ea19c0fe6ec04332",
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "target_id": "xar_ck3_ingame_ui_navigation_v1_test::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

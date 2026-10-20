@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.a41-phase-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:45:35.739550+00:00",
+  "phase": "freeze_real_new_CMake_EXE_manifest",
+  "Popen": {
+    "pid": 30540,
+    "creation_filetime": 134369595325243368
+  },
+  "original_wait_return_code": 0,
+  "guard_failure": null,
+  "stdout": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\stdout.txt",
+    "bytes": 161,
+    "sha256": "b590f460d35ecee3d640585e43967fad29a99a88574d2c8652f15fe2114065e6"
+  },
+  "stderr": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "intent": {
+    "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\intent.actual.json",
+    "bytes": 2735,
+    "sha256": "7abcf3f0ba36226460f7bd48cc009fa5094e242f59f24ed7f049ed40209eab69"
+  },
+  "after_guard": {
+    "observed_at_utc": "2026-10-20T08:45:35.739266+00:00",
+    "native_root_bytes": 21703224,
+    "native_plus_full_protocol_charge": 55257656,
+    "budget": {
+      "C_known_future_bytes": 939524096,
+      "C_legacy_carry_bytes": 42132678,
+      "C_required_free_bytes": 26751460550,
+      "C_floor_margin_bytes": 54306548538,
+      "C_projected_whole_volume_upper_bound_bytes": 435352560838,
+      "C_quota_margin_bytes": 2734103354,
+      "D_required_free_bytes": 21609054208,
+      "D_floor_margin_bytes": 63328256
+    },
+    "ledger": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 268256,
+      "sha256": "f18493f7b80a58910229ffe3272879b74f1e6fbb0d4493e9919e5bb40c496743"
+    }
+  },
+  "guard_observations": 8,
+  "peak_root_bytes": 21703224,
+  "minimum_budget_margins": {
+    "C_floor_margin_bytes": 54306548538,
+    "C_quota_margin_bytes": 2734103354,
+    "D_floor_margin_bytes": 63328256
+  }
+}

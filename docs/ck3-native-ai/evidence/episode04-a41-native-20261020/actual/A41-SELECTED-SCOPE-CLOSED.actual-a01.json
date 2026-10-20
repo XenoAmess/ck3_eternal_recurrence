@@ -1,0 +1,289 @@
+{
+  "schema": "xar.e04.a41-owned-writers-and-selected-scope-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:52:27.344781+00:00",
+  "status": "ALL_SELECTED_NATIVE_SCOPE_ACTUAL_PASS_OWNED_WRITERS_ZERO",
+  "qualification": {
+    "path": "C:\\w\\e04a41\\ROOT-A41-COHERENT-QUALIFICATION.actual-a01.json",
+    "bytes": 26157,
+    "sha256": "5cd13e6551c5646bdc57328c3a3bb34f7d069dcbb34da91d91f723e3c5f2e6b5"
+  },
+  "public_verifier_readback": {
+    "path": "C:\\w\\e04a41\\A41-INDEPENDENT-PUBLIC-VERIFIER-READBACK.actual-a01.json",
+    "bytes": 4192,
+    "sha256": "448d4dedc286aac5f8d9e339ea0556ff864bafe872230177bb1b2f1b7641e8b1"
+  },
+  "capacity_close_fresh": {
+    "path": "C:\\w\\e04a41\\CAPACITY-FRESH-CLOSE.actual-a01.json",
+    "bytes": 4609,
+    "sha256": "c5c7988ad9aaa9a64304b9dc710a991bfc8757035d49dc58b50428a1e5fc2916"
+  },
+  "selected_scope_terminal": {
+    "production_original_compile_targets": 3,
+    "relocated_EXEs": 3,
+    "new_live_worker_build_targets": 1,
+    "new_V5_build_targets": 2,
+    "new_exact_SYSTEM_EXEs": 6,
+    "UI_cold_cases": 1,
+    "V5_owned_cold_cases": 2
+  },
+  "remaining_heavy_write_bytes": 0,
+  "native_stages_scheduled_after_this_closure": [],
+  "owned_writer_snapshot": {
+    "matching_owned_active_processes": [],
+    "owned_writer_count_excluding_metadata_observer": 0,
+    "current_fixed_SYSTEM_task": {
+      "running_instances": 0,
+      "state": 3,
+      "last_task_result": 0
+    },
+    "unattributed_hidden_processes": [],
+    "global_process_absence_asserted": false,
+    "metadata_observer": {
+      "pid": 22900,
+      "creation_filetime": 134369599442420901,
+      "role": "This small metadata-only closure observer; terminates immediately after receipt"
+    }
+  },
+  "actual_direct_child_lifecycles": [
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest",
+      "child": {
+        "pid": 30540,
+        "creation_filetime": 134369595325243368
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "720082b4c3b55b1af522aa71a07b0a8d94f53c73b853799754434e63cb34f41f"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\freeze_real_new_CMake_EXE_manifest\\result.actual.json",
+        "bytes": 1964,
+        "sha256": "aa61e94ba1bcc53a767f9897bf5b05af54633560877c051460a55e3b175c36de"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only",
+      "child": {
+        "pid": 30144,
+        "creation_filetime": 134369588314374816
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\Popen.actual.json",
+        "bytes": 16921,
+        "sha256": "fe666d4756e38ea65d72d3f94661e25752c62e99315c3be71110c24fbd09234f"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_genuine_configure_only\\result.actual.json",
+        "bytes": 1940,
+        "sha256": "686ca6039b0de131123537b4aa4dd61f42fd42206309c550404829bdcc6ce146"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01",
+      "child": {
+        "pid": 24580,
+        "creation_filetime": 134369595667893471
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\Popen.actual.json",
+        "bytes": 580,
+        "sha256": "1a83511b43cc01f3a3ba27fb437763a12b43e31c5ff039e60eb024d2aa94544d"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\main_UI_finite_cold-resume-a01\\result.actual.json",
+        "bytes": 1938,
+        "sha256": "ce19e3cf03df063062aab1fea877fe9fe7118955283a4dd9e31fa4af0d888674"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs",
+      "child": {
+        "pid": 25440,
+        "creation_filetime": 134369595381179128
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\Popen.actual.json",
+        "bytes": 647,
+        "sha256": "7dfe2924b47e3452809ca026e22b6bbdb3abd1d0183c425f2537e5ab65f04405"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\ordinary_SYSTEM_register_three_EXEs\\result.actual.json",
+        "bytes": 1972,
+        "sha256": "8bffb9831ef0272cf1634136ea86e12c50435ebb67322746414548ffd5a9b89f"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs",
+      "child": {
+        "pid": 32024,
+        "creation_filetime": 134369588716189994
+      },
+      "original_wait_return_code": 1,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "6a0e33a33c5af510b86421bf9cff69f5c8d9098fded3c5e747f6bd24cfc5e2a0"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs\\result.actual.json",
+        "bytes": 1929,
+        "sha256": "d1561cbe10c7b139ed77cd0dcbb3cd5398cbcd69fd720eeaa2da55b1855513ed"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01",
+      "child": {
+        "pid": 29576,
+        "creation_filetime": 134369595269289639
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\Popen.actual.json",
+        "bytes": 752,
+        "sha256": "fed03e76ee2e5525697b98c1cf3ecb4e7b95457748350cc123291e8ee26bec4b"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\relocate_three_exact_EXEs-resume-a01\\result.actual.json",
+        "bytes": 1961,
+        "sha256": "8fe9fd979903764591942ad4d878b44d68b30909364127707a0e545ea0c8562e"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build",
+      "child": {
+        "pid": 11492,
+        "creation_filetime": 134369595854553498
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\Popen.actual.json",
+        "bytes": 1335,
+        "sha256": "542eda8e7be7cc0ea05a73d14fe1d62b5f42f99bd9a84bb2ef560c2f5b873449"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\result.actual.json",
+        "bytes": 1966,
+        "sha256": "1b8e856337bf3a796adc8b5363db8c2e042d898beaeeb6bdc0c6bbf9ce1ed63b"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build",
+      "child": {
+        "pid": 32,
+        "creation_filetime": 134369596361339460
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\Popen.actual.json",
+        "bytes": 1372,
+        "sha256": "c095d670089f6ac37e45fc7c5eb06077849eb72753e99baae9fd8e4e67ed0f3d"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\result.actual.json",
+        "bytes": 1955,
+        "sha256": "24743ff1a4b260b4c228c7aec4865c3dc67c666ead1442096734a11105f1bd68"
+      }
+    },
+    {
+      "phase_directory": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases",
+      "child": {
+        "pid": 496,
+        "creation_filetime": 134369596872157190
+      },
+      "original_wait_return_code": 0,
+      "Popen_receipt": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\Popen.actual.json",
+        "bytes": 1012,
+        "sha256": "10715553398a1c6eb0cff9a3ffb10cc96b19ca2d11d9724645f0f12a6d33529d"
+      },
+      "terminal_result": {
+        "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\result.actual.json",
+        "bytes": 1927,
+        "sha256": "902c44fe39e9fb3046bae06b918eb836f3a9a74f354d37033e1d33ff934f8d76"
+      }
+    }
+  ],
+  "actual_executor_parent_identities": [
+    {
+      "pid": 23420,
+      "creation_filetime": 134369595240928929
+    },
+    {
+      "pid": 25936,
+      "creation_filetime": 134369588292970292
+    },
+    {
+      "pid": 33864,
+      "creation_filetime": 134369595826186628
+    }
+  ],
+  "read_errors": [
+    "Public CMake/Ninja/compiler descendant historical PID/creation times are not individually exposed by their existing producer report. Their actual synchronous build completion and parent Popen wait are preserved, and current owned-path census is empty.",
+    "Fixed SYSTEM broker does not expose its process PID/creation FILETIME; each actual protected receipt proves SID18/admin and the fixed task now has running_instances=0. No SYSTEM PID is invented."
+  ],
+  "actual_installed_readback": {
+    "policy.json": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json",
+      "bytes": 1088,
+      "sha256": "a7ce254d966b8303e1eba186c9fcad47d3265f2d51dac52e88c53446271e0243"
+    },
+    "installation-manifest.json": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\installation-manifest.json",
+      "bytes": 1120,
+      "sha256": "2b24624cdc747b3c6fe82a58e28341102bd3bc979e066211e0cc93759912a673"
+    },
+    "runtime-seal.json": {
+      "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime-seal.json",
+      "bytes": 95324,
+      "sha256": "130d18a9d9bf8e4c9fc0038971f3214a3120616cc0843642825d56c6bd7ef0e2"
+    }
+  },
+  "installed_policy_manifest_runtime_seal_unchanged": true,
+  "native_root_logical_bytes_before_this_small_receipt": 28488624,
+  "fixed_protocol_growth_contract_derived_bytes": 1003300,
+  "aggregate_owned_logical_bytes_before_this_receipt": 29491924,
+  "fixed_protocol_actual_is_contract_derivation_not_private_enumeration": true,
+  "fixed_protocol_full_conservative_charge_bytes": 33554432,
+  "new_native_root_ceiling_bytes": 771751936,
+  "aggregate_ceiling_bytes": 805306368,
+  "current_runtime_inputs_readonly": {
+    "old_A40_carrier_DLL": {
+      "target": "xar_ck3_bridge",
+      "path": "C:\\ck3-e04-resume-20261020-a01\\next-r06-a01\\native-build-a40-a01\\xar_ck3_bridge.dll",
+      "bytes": 14397440,
+      "sha256": "0ec61e32d496a08bc0c4756829497b7cfcba1fb6cde4259476a7a25dfe0cc7d0"
+    },
+    "worker_original_snapshot_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 8115,
+      "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+    },
+    "source13_current_equivalence": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "bytes": 15980,
+      "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+    }
+  },
+  "retention": {
+    "policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "purpose_review_at_utc": "2026-10-20T10:30:00Z",
+    "protection_auto_renew": false,
+    "current_necessary_inputs_reason": "Actual new runtime and pending R06 scene consume qualified old DLL/new EXEs and exact original worker snapshot; original source-ACL before records remain unique restoration material. No active input deletion.",
+    "build_default_expires_at_utc": "2026-11-03T08:52:27.344781+00:00",
+    "small_record_default_expires_at_utc": "2027-04-18T08:52:27.344781+00:00",
+    "obsolete_unexecuted_preparations_review": "Derived prepared revisions are eligible for consolidation/reclamation under the common policy, not permanent protection because they were candidates. Preserve one small actual failure and its precise fixed diagnosis.",
+    "expired_is_candidate_not_delete_authorization": true
+  },
+  "ledger_mutation_or_free_credit": false,
+  "no_game_SDK_screen_live_observer_or_external_DR_executed": true
+}

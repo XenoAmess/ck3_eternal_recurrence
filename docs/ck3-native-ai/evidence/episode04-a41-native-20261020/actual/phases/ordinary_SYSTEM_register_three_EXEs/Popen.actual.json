@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:45:38.125421+00:00",
+  "parent": {
+    "pid": 23420,
+    "creation_filetime": 134369595240928929
+  },
+  "child": {
+    "pid": 25440,
+    "creation_filetime": 134369595381179128
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\register_project_exe_exclusions.py",
+    "--manifest",
+    "C:\\w\\e04a41\\relocation-registration-a01\\manifest.json",
+    "--receipt",
+    "C:\\w\\e04a41\\relocation-registration-a01\\receipt.json"
+  ]
+}

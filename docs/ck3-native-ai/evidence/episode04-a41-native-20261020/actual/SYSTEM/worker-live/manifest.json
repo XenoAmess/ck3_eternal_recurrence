@@ -1,0 +1,37 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+  "build_dir": "C:\\w\\e04a41\\refill-worker-live-a01",
+  "configuration": "Release",
+  "requested_targets": [
+    "refill_add_hwprobe_12004"
+  ],
+  "external_candidate": "refill-add-live-12004",
+  "cmake_index": {
+    "path": "C:\\w\\e04a41\\refill-worker-live-a01\\.cmake\\api\\v1\\reply\\index-2026-10-20T08-46-33-0344.json",
+    "sha256": "5b9e45fd6c768255dfc62006b315f2fe37a8263ec0427d6cccf222e4419d6e11"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\w\\e04a41\\refill-worker-live-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-dd2f9dc97fb8a3908019.json",
+    "sha256": "bfb4b7473d6d9186e2bb0d79ea9c4c283214e2f78ece231f9ecf0ac16678933e"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\.cmake\\api\\v1\\reply\\target-refill_add_hwprobe_12004-Release-00effec964dfdd07355a.json",
+      "sha256": "83e1df11eff4c9c8340f2880f567a436274879877bcd2d20ad3981535dabd76f",
+      "target": "refill_add_hwprobe_12004",
+      "target_id": "refill_add_hwprobe_12004::@6890427a1f51a3e7e1df",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-live-a01\\refill_add_hwprobe_12004.exe",
+      "size": 140288,
+      "sha256": "fe2f5693c3a3675880232a7394e4208cb6bd64b3e97d0fcd03c7e153061f30b5",
+      "target": "refill_add_hwprobe_12004",
+      "target_id": "refill_add_hwprobe_12004::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

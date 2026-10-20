@@ -22,6 +22,8 @@
 
 ## 可用性与运行时边界
 
+新增可直接复用的专题：[B 驻地库存被动证据合同](episode04-b-stock-passive-evidence-12004.md)说明如何只用原场次已采集的一日证据判断驻地，不追加游戏动作；[R08 十槽向量与分量保留](episode04-r08-current-vector-component-retention-12004.md)说明现有查询已经提供什么、哪些资源语义仍未知、拆分两个原生分量还缺什么。两页都绑定源码与原件 SHA，均不增加 B、R08 或 ABC 实机资格。A41 的构建、SYSTEM 精确路径与两项冷测原件见[资格证据](evidence/episode04-a41-native-20261020/README.md)；它们不能代替游戏内 ADD 观测。
+
 - **文档参考已具备**：本页由[原生 AI 主索引](README.md)和[智能体项目入口](../../ck3_autonomous_player/README.md)链接，来源均为仓库相对路径，不依赖影片、作者的工作盘或大原片。
 - **部分代码消费已具备**：军队查询的 Service 投影及 direct-v2、R211 等生产消费者可复用。direct-v2 的实际小输入和生产源码 pins 见[R0217投影](evidence/episode04-r0217-20261020/research/DIRECT-V2-PROJECTION.actual.json)、[已有重放入口](evidence/episode04-r0217-20261020/research/verify_portable.py)。本次针对用户问题的[当前源码消费复核](evidence/episode04-agent-knowledge-consumption-20261020.json)单独记录，不新增游戏或业务信用。
 - **不会自动变成策略**：普通规划器没有“读取所有 Markdown 并执行”的通路。新增决策行为仍须将专题结论显式实现为 planner/policy 输入与规则，并验证实际结果。不要把实验脚本、prepared 候选或已编译构建视为已部署的自动策略。

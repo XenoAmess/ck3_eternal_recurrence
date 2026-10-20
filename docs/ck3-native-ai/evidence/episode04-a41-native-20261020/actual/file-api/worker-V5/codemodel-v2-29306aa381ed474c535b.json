@@ -1,0 +1,106 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : [],
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Release-f040eec181a89de70dbe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.24"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "refill_add_live_12004",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "refill_add_hwprobe_12004::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-refill_add_hwprobe_12004-Release-3241a5bc0d0d026b1dd3.json",
+					"name" : "refill_add_hwprobe_12004",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "refill_add_thread_ownership_policy_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-refill_add_thread_ownership_policy_test-Release-2f9206d6a3d0830f1848.json",
+					"name" : "refill_add_thread_ownership_policy_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "refill_stack_q_cold_12004::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-refill_stack_q_cold_12004-Release-1453d4b30eca0b312e15.json",
+					"name" : "refill_stack_q_cold_12004",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "refill_v3_cold_observer_12004::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-refill_v3_cold_observer_12004-Release-19574e66d44d94e235ac.json",
+					"name" : "refill_v3_cold_observer_12004",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "refill_v5_cold_observer_12004::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-refill_v5_cold_observer_12004-Release-5014d546f3c277f9a8f6.json",
+					"name" : "refill_v5_cold_observer_12004",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "refill_v5_cold_target_12004::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-refill_v5_cold_target_12004-Release-013a5ad82b565b34e89b.json",
+					"name" : "refill_v5_cold_target_12004",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/w/e04a41/refill-worker-cold-a01",
+		"source" : "C:/ck3-war-episode04-research-20261004-a01/a37-refill-worker-source-a01/ck3_autonomous_player/native_bridge/research/refill_add_live_12004"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 10
+	}
+}

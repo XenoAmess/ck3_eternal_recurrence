@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:46:03.483126+00:00",
+  "SYSTEM_receipt": {
+    "path": "C:\\w\\e04a41\\relocation-registration-a01\\receipt.json",
+    "bytes": 382372,
+    "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+  },
+  "protocol_growth": [
+    {
+      "request_id": "08abb280-0b8d-4131-8565-7d2face2678f",
+      "actual_raw_request_bytes": 4459,
+      "actual_protected_result_bytes": 382372,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 391566,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\relocation-registration-a01\\broker-proof-4690512fff134577aace3629e8d22c31\\protected-worker-receipt.json",
+        "bytes": 382372,
+        "sha256": "1d9498ebab4b5dc31a0a1f324fc29aee7dba34c62debebf1099e8f67398b46cb"
+      }
+    }
+  ],
+  "project_EXE_executed_so_far": false
+}

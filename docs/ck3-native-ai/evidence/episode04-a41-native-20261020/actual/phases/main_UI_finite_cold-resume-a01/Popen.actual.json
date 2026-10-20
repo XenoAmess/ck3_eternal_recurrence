@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:46:06.793423+00:00",
+  "parent": {
+    "pid": 23420,
+    "creation_filetime": 134369595240928929
+  },
+  "child": {
+    "pid": 24580,
+    "creation_filetime": 134369595667893471
+  },
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+    "--test-dir",
+    "C:\\w\\e04a41",
+    "--build-config",
+    "Release",
+    "--output-on-failure",
+    "-R",
+    "^xar_ck3_ingame_ui_navigation_v1_test$"
+  ]
+}

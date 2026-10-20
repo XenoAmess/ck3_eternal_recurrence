@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:48:10.333678+00:00",
+  "status": "verified-before-first-project-EXE-execution",
+  "game_contacted": false,
+  "build_result": "C:\\w\\e04a41\\refill-worker-cold-a01\\native-msvc-result.json",
+  "build_result_sha256": "4e83b811b97adfd4caa17ef77ddbc27cc7623c02b5f8d11dbba190f7a5aa71de",
+  "receipt": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\receipt.json",
+  "receipt_sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d",
+  "manifest": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\manifest.json",
+  "manifest_sha256": "e92b30d5c84b5fe3675fbe1ace97abbff3d2d1bd7752f79aa88621db341c79c6",
+  "build_binding": "C:\\w\\e04a41\\refill-worker-cold-a01\\BUILD-BINDING.actual-a01.json",
+  "build_binding_sha256": "19f0a55d6b2e65b9d0671daea8143b249cba5adc45626c1b4f420cfe5f1221e6",
+  "source_manifest": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+  "source_manifest_sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a",
+  "source_binding_provider": "Root producer frozen-source manifest plus current CMake metadata",
+  "system_token_sid": "S-1-5-18",
+  "files": [
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_cold_target.exe",
+      "size": 66048,
+      "sha256": "1839bbd5ee1fbbe9d916f8968bc8c9fa854604b9d51815a00e0441d0d5ada521",
+      "target": "refill_v5_cold_target_12004",
+      "target_id": "refill_v5_cold_target_12004::@6890427a1f51a3e7e1df"
+    },
+    {
+      "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\refill_v5_cold_observer.exe",
+      "size": 156672,
+      "sha256": "10fdeddeb04398c87ce16331a7380c909e3a9f664faa6c4f3f864efec8bc0d5d",
+      "target": "refill_v5_cold_observer_12004",
+      "target_id": "refill_v5_cold_observer_12004::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

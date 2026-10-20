@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:45:32.530698+00:00",
+  "parent": {
+    "pid": 23420,
+    "creation_filetime": 134369595240928929
+  },
+  "child": {
+    "pid": 30540,
+    "creation_filetime": 134369595325243368
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\relocate_a40_declared_exes_a04.py",
+    "--phase",
+    "manifest",
+    "--capacity",
+    "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\capacity\\A41-C-NATIVE-SOURCE-BOUND.actual-a03.json",
+    "--capacity-sha256",
+    "9b2425d8db39fe97a367cf9ed7d6bd253e165e3cb4a952a71ee1486d76b0a426"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "xar.e04.a41-small-evidence-archive-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T09:03:08.715019+00:00",
+  "status": "EXACT_SMALL_ORIGINAL_METADATA_COPY_READBACK_PASS",
+  "copyplan": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01\\COPYPLAN.prepared-a01.json",
+    "bytes": 117145,
+    "sha256": "4eac3de60f4dc979880c133d3be7002984bbf88ebb913137d42817060e4b0dd0"
+  },
+  "archive_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-evidence-a01",
+  "original_file_count_copied": 104,
+  "byte_identical_alias_count": 8,
+  "original_payload_bytes_copied": 1926625,
+  "package_bytes_before_this_receipt": 2047317,
+  "maximum_package_bytes": 4194304,
+  "shared_before": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T09:03:07.480064+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 28340294,
+    "files": 294,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "shared_after_before_this_receipt": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-20T09:03:08.714995+00:00",
+    "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02",
+    "excludes": [],
+    "logical_bytes": 30387611,
+    "files": 400,
+    "ceiling_bytes": 134217728,
+    "payload_body_bytes_read": 0,
+    "metadata_scan_complete": true
+  },
+  "budget_before": {
+    "C_known_future_bytes": 2550136832,
+    "C_legacy_carry_bytes": 42132678,
+    "C_required_free_bytes": 28362073286,
+    "C_floor_margin_bytes": 52471905082,
+    "C_projected_whole_volume_upper_bound_bytes": 437187204294,
+    "C_quota_margin_bytes": 899459898,
+    "D_required_free_bytes": 21609054208,
+    "D_floor_margin_bytes": 63299584
+  },
+  "ledger_snapshot": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 271187,
+    "sha256": "f4cfa5f0ffcc6a4e7cb1c30c879526df71574a786dcaa2df1e82516e88043282"
+  },
+  "source_content_mutations": 0,
+  "settled_Cw_root_writes": 0,
+  "binaries_or_large_logs_copied_or_hashed": 0,
+  "build_SYSTEM_cold_game_SDK_screen_calls": 0,
+  "repository_edits": 0
+}

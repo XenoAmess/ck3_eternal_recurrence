@@ -1,0 +1,79 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:48:17.497200+00:00",
+  "phases": {
+    "worker_live_actual_configure_build": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\worker_live_actual_configure_build\\result.actual.json",
+      "bytes": 1966,
+      "sha256": "1b8e856337bf3a796adc8b5363db8c2e042d898beaeeb6bdc0c6bbf9ce1ed63b"
+    },
+    "worker_V5_actual_configure_build": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_actual_configure_build\\result.actual.json",
+      "bytes": 1955,
+      "sha256": "24743ff1a4b260b4c228c7aec4865c3dc67c666ead1442096734a11105f1bd68"
+    },
+    "worker_V5_two_owned_cases": {
+      "path": "C:\\w\\e04a41\\qualification-phases\\worker_V5_two_owned_cases\\result.actual.json",
+      "bytes": 1927,
+      "sha256": "902c44fe39e9fb3046bae06b918eb836f3a9a74f354d37033e1d33ff934f8d76"
+    }
+  },
+  "actual_clean_invocation_HEAD": "31ff77a0f07fb21f528c88e56314cbb093972703",
+  "Root_release_source": "Root-direct-message-full-cleanHEAD31ff-release-and-a04-execution-authorization",
+  "source_layers": {
+    "carrier_and_relocated_EXE_original_compile_source_head": "93b27601aed449515b69aabed62e1af7cc61c1fc",
+    "carrier_and_EXE_native_tree": "fee86631356f556271445157523c62abfd62951e",
+    "genuine_configure_preparation_observed_head": "1ec22203947d56397e30275f31dd4634cf87529a",
+    "worker_actual_compile_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "worker_actual_compile_source_rule": "Actual compiler reads unchanged original fd5 sparse snapshot. Record its original source head, actual source_dir and manifest; separately record Root new clean HEAD and exact 13-input/nativefee equivalence at invocation. Do not relabel snapshot or promote old results.",
+    "worker_actual_compiler_source_dir": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004",
+    "worker_original_snapshot_source_root": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01",
+    "worker_original_snapshot_source_head": "fd5c7ea5a8e48076aab35ad422af4e91f1ac1011",
+    "worker_original_snapshot_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\SOURCE-MANIFEST.actual.json",
+      "bytes": 8115,
+      "sha256": "c3b0be1a7a08ae3382695ed6700e992c5a64630836a09d51474632d7209bc58a"
+    },
+    "worker_current_thirteen_input_equivalence": {
+      "path": "C:\\ck3-e04-resume-20261020-a01\\r06-resume-a02\\native-plan\\A41-EXISTING-WORKER-FROZEN-INPUTS.actual-a01.json",
+      "bytes": 15980,
+      "sha256": "7323b0b083a804dd675f81c953924f4ee4ec2a037829d705581a93aee1e60a8b"
+    },
+    "worker_actual_clean_invocation_HEAD": null
+  },
+  "protocol_growth_by_actual_request": [
+    {
+      "request_id": "dc57c953-a27c-477c-bdff-0162a1d50cc8",
+      "actual_raw_request_bytes": 2819,
+      "actual_protected_result_bytes": 270898,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 276812,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\refill-worker-live-a01\\defender-exe-exclusions\\20261020T084639Z-5372aa63\\broker-proof-c5c5c8779c074a80acace92a7c17047b\\protected-worker-receipt.json",
+        "bytes": 270898,
+        "sha256": "e0eaf2f05666ac1508c7438d70de7755b3d76e8b8457d2a1e99bf27d95975841"
+      }
+    },
+    {
+      "request_id": "ac28ace4-e062-4ccc-bc1e-29b873838e13",
+      "actual_raw_request_bytes": 4051,
+      "actual_protected_result_bytes": 326544,
+      "two_private_marker_bytes": 276,
+      "derived_fixed_protocol_growth_bytes": 334922,
+      "formula": "inbox raw + frozen raw + 2 canonical markers + protected result; installed fixed writer contract, not a private-directory measurement",
+      "protected_result": {
+        "path": "C:\\w\\e04a41\\refill-worker-cold-a01\\defender-exe-exclusions\\20261020T084730Z-34c73e58\\broker-proof-38400fc589a7494eb61514ed7cee3561\\protected-worker-receipt.json",
+        "bytes": 326544,
+        "sha256": "b80de245480043bceae1221da89702d4e4cdec958affba0c37daba4c11506c3d"
+      }
+    }
+  ],
+  "root_peak_bytes_known": 30569211,
+  "minimum_budget_margins": {
+    "C_floor_margin_bytes": 54289541946,
+    "C_quota_margin_bytes": 2717096762,
+    "D_floor_margin_bytes": 63324160
+  },
+  "qualification_pending_independent_actual_readback": true
+}

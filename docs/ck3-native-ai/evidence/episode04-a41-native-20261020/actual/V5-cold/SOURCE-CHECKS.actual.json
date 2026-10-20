@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-20T08:48:09.437620+00:00",
+  "status": "SOURCE_CHECKS_PASS_ONLY",
+  "built": false,
+  "cold_executed": false,
+  "CK3_actual_ADD_observed": false,
+  "SDK_calls": 0,
+  "checks": [
+    "actual production include with V5 carrier seam",
+    "default OFF flags",
+    "fixed exported carrier ABI publication",
+    "worker-only original ASM call once",
+    "independent assembly counter",
+    "main/worker/auditor DR audit source",
+    "Python syntax"
+  ],
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_entry_12004.cpp",
+      "bytes": 5044,
+      "sha256": "63b026ffdbbddfb7de3f34e19e41dd4f6b3a3c8e731a54a06e56fe4d0c3a7214"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\refill_v5_cold_target_12004.cpp",
+      "bytes": 12234,
+      "sha256": "186c218ee3466c909600d548327a58dca087180ab4e8c7df8f4797426830f9ad"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\a37-refill-worker-source-a01\\ck3_autonomous_player\\native_bridge\\research\\refill_add_live_12004\\run_refill_v5_cold.py",
+      "bytes": 24553,
+      "sha256": "7ea5fbef48a41de7ee0e0027c5e3deefbbf98a6cb5ffa6920ac1738a859dd581"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\refill_core_carrier_12004.hpp",
+      "bytes": 5570,
+      "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\refill_add_cold_12004\\synthetic_add.asm",
+      "bytes": 883,
+      "sha256": "7fec28e0b4afa0d669a1ed399f914f49583b6d3d32604237e8a7682a0acef4f3"
+    }
+  ]
+}

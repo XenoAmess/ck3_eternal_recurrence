@@ -1,0 +1,20 @@
+{
+  "action": {
+    "arguments": "-I -S -B \"C:\\Program Files\\XAR CK3 Project EXE Broker\\broker_bootstrap.py\" --config \"C:\\Program Files\\XAR CK3 Project EXE Broker\\policy.json\"",
+    "path": "C:\\Program Files\\XAR CK3 Project EXE Broker\\runtime\\python.exe",
+    "working_directory": "C:\\Program Files\\XAR CK3 Project EXE Broker"
+  },
+  "action_type": 0,
+  "actions_count": 1,
+  "allow_demand_start": true,
+  "folder": "\\XAR CK3 Project EXE Broker",
+  "folder_acl_protected": true,
+  "name": "RegisterDeclaredProjectExecutables",
+  "principal": {
+    "logon_type": 5,
+    "run_level": 1,
+    "user_id": "S-1-5-18"
+  },
+  "task_acl_protected": true,
+  "triggers_count": 0
+}
