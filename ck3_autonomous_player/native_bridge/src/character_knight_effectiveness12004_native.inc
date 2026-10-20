@@ -1,5 +1,6 @@
 // Included once by the existing character_skill_effect12004_native.cpp TU.
 #include "xar_bridge/character_knight_effectiveness12004.hpp"
+#include "xar_bridge/knight_stat_context_source12004.hpp"
 #include "xar_bridge/character_knight_effectiveness12004_owned_string.hpp"
 namespace xar::bridge::character_skill_effect12004 {
 namespace knight_native {
@@ -7,11 +8,17 @@ namespace knight_native {
 // shifts. All four bodies are checked before and after each guarded callback.
 #include "character_knight_effectiveness12004_pins.inc"
 bool Source(NativeContext &c) noexcept {
-  return Current(c)&&NativeSourceStillBound(c)&&
-      Match(c.module_base,kNumericRva,kNumericCode)&&
-      Match(c.module_base,kFormatterRva,kFormatterCode)&&
-      Match(c.module_base,kContextRva,kContextCode)&&
-      Match(c.module_base,pins::string_destroy_rva,kDestroyCode);
+  if(!Current(c)||!NativeSourceStillBound(c)||
+      !Match(c.module_base,kNumericRva,kNumericCode)||
+      !Match(c.module_base,kFormatterRva,kFormatterCode))return false;
+#if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
+  static_assert(kContextRva==xar::ck3_12004::kKnightStatContextSourceRva12004);
+  if(!xar::ck3_12004::KnightStatContextSourceStillBound12004(c.module_base,kContextCode,c.failure))return false;
+#else
+  // Preserve the original disabled-build source route and standalone OFF link.
+  if(!Match(c.module_base,kContextRva,kContextCode))return false;
+#endif
+  return Match(c.module_base,pins::string_destroy_rva,kDestroyCode);
 }
 bool Backing(NativeContext &c,std::uintptr_t &actor,std::uintptr_t &values,
              std::uintptr_t &block) noexcept {
@@ -56,8 +63,12 @@ KnightEnvironment BindKnightNative(NativeContext &c) noexcept {
   KnightEnvironment out{};
 #if defined(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1)
   out.actor=BindNative(c);
-  if(!out.actor.enabled||!knight_native::Source(c)){
+  if(!out.actor.enabled){
     c.failure="exact4_knight_native_pins_or_owner_unavailable";return {};
+  }
+  if(!knight_native::Source(c)){
+    if(c.failure==nullptr||*c.failure=='\0')c.failure="exact4_knight_native_pins_or_owner_unavailable";
+    return {};
   }
   out.read_knight=&knight_native::Read;c.failure="";
 #else

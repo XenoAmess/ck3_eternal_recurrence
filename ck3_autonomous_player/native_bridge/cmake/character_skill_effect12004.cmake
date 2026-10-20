@@ -49,6 +49,7 @@ if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1 AND BUILD_TESTIN
   add_executable(xar_ck3_character_knight_effectiveness12004_factory_fixture EXCLUDE_FROM_ALL
     tests/character_knight_effectiveness12004_factory_fixture.cpp
     src/character_skill_effect12004_native.cpp)
+  target_link_libraries(xar_ck3_character_knight_effectiveness12004_factory_fixture PRIVATE xar_ck3_12002_runtime)
   target_compile_definitions(xar_ck3_character_knight_effectiveness12004_factory_fixture PRIVATE
     XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1=1)
   foreach(_knight_target IN ITEMS xar_ck3_character_knight_effectiveness12004_owned_fixture
@@ -60,4 +61,16 @@ if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1 AND BUILD_TESTIN
       target_compile_options(${_knight_target} PRIVATE /UNDEBUG /Od /GL- /W4 /permissive- /EHsc /utf-8)
     endif()
   endforeach()
+endif()
+
+if(XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1 AND BUILD_TESTING)
+  add_executable(xar_ck3_12004_knight_installed_context_source_fixture EXCLUDE_FROM_ALL tests/knight_installed_context_source12004_fixture.cpp)
+  target_link_libraries(xar_ck3_12004_knight_installed_context_source_fixture PRIVATE xar_ck3_12002_runtime)
+  target_compile_features(xar_ck3_12004_knight_installed_context_source_fixture PRIVATE cxx_std_20)
+  target_include_directories(xar_ck3_12004_knight_installed_context_source_fixture PRIVATE include src research)
+  target_compile_definitions(xar_ck3_12004_knight_installed_context_source_fixture PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  set_property(TARGET xar_ck3_12004_knight_installed_context_source_fixture PROPERTY INTERPROCEDURAL_OPTIMIZATION FALSE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_knight_installed_context_source_fixture PRIVATE /UNDEBUG /Od /Ob0 /GL- /W4 /permissive- /EHsc /utf-8)
+  endif()
 endif()
