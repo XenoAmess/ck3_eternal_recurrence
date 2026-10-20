@@ -1,0 +1,102 @@
+{
+  "schema": "xar.ck3.decision-panel-richness-research.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_window_utc": [
+    "2026-10-20T14:50:00Z",
+    "2026-10-20T14:56:22Z"
+  ],
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; actual output at 2026-10-20 14:50:08 UTC",
+  "scope": {
+    "code_writes": 0,
+    "runtime_writes": 0,
+    "game_calls": 0,
+    "obs_calls": 0,
+    "screenshots": 0,
+    "a12_frozen_inputs_changed": false
+  },
+  "sources": {
+    "original_plan": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a11/p37-responses/10534-0-plan.json",
+      "bytes": 1006,
+      "sha256": "737b15028da3f3cc5755d8891bc1ce501895619f0f8fd1ffaaa438a48f9a0745"
+    },
+    "renderer": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a11/presentation-c23/g2_saved_campaign/decision_text_view.py",
+      "bytes": 7643,
+      "sha256": "f21be0a985954f71b0ca7a4b3e4a11c0a4d568c80bee0b9874ad59dcfea79571"
+    },
+    "final_text": {
+      "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a11/live-decision-c23.txt",
+      "bytes": 319,
+      "sha256": "5fed534956343b39eb7008074788eb19941bffa371e9f67463ac8227c3524d6c"
+    }
+  },
+  "replay": {
+    "observed_at_utc": "2026-10-20T14:52:14.137170+00:00",
+    "evidence_source": "conversation functions.exec output; nested exec_command chunk_id 76b3fb; no separate on-disk replay receipt",
+    "command_kind": "python -B; runpy.run_path exact frozen renderer; one actual plan consumed in RAM",
+    "reason_characters": 167,
+    "retained_reason_characters": 0,
+    "action_fell_back_to_generic": true,
+    "reason_fell_back_to_generic": true,
+    "new_feature_qualified": false
+  },
+  "source_inspection": [
+    {
+      "relative_to_runtime": "root_p37c23_compact_decision_feed.py",
+      "finding": "pre-submit compact allowlist omits war_decision_presentation_v1"
+    },
+    {
+      "relative_to_runtime": "root_p37c23_sdk_queue.py",
+      "lines": [
+        213,
+        239
+      ],
+      "finding": "result compact has a separate allowlist; war presentation omitted"
+    },
+    {
+      "repo_path": "tools/g2_saved_campaign/decision_observation_feed.py",
+      "finding": "shared compact_plan projects matching war_decision_presentation_v1"
+    },
+    {
+      "source": "renderer",
+      "finding": "Chinese-only reason filter; 120-character cap; duplicate plan/result history; failed can be described as not executed"
+    }
+  ],
+  "historical_scene": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01/runtime-a11/recordings/e13a6237-fc56-4fad-9f48-04d90b5e49f0/ROOT-first-saved-map-scene-a11.png",
+    "bytes": 482009,
+    "sha256": "e47a5f8ba765fcc39fe874e07b8cf63bebd8ffa7031475c29874663342bf2221",
+    "reference_source": "display_a05 existing A11 receipt; image viewed read-only during research window; no new capture",
+    "preview_pixels": [
+      1280,
+      720
+    ],
+    "configured_canvas_pixels": [
+      2560,
+      1440
+    ],
+    "configured_text_extents": [
+      760,
+      1300
+    ],
+    "configured_font_pixels": 24,
+    "fresh_current_desktop_state_claimed": false
+  },
+  "layout": {
+    "candidate_font_pixels": [
+      28,
+      30
+    ],
+    "real_line_height_measured": false,
+    "new_layout_height_measured": false,
+    "claimed_line_capacity": null,
+    "overflow_action": "reduce secondary alternatives and history; retain current action, risk and verification state"
+  },
+  "implementation_status": "RAM proposal only; new feature and tests not implemented",
+  "report": {
+    "path": "docs/ck3-native-ai/decision-panel-richness-2026-10-20.md",
+    "bytes": 7267,
+    "sha256": "33d024f109c72443022bef874a0a84b392b2f428c0ed57de92c4167670cbe770"
+  }
+}

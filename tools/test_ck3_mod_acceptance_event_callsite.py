@@ -3,33 +3,74 @@ from pathlib import Path
 import ast
 import copy
 import unittest
+from types import FunctionType
+from typing import Literal, TypedDict
+import sys
 
-from ck3_mod_acceptance_client import CaseClient
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools import ck3_mod_acceptance_native_day as native_day
+
+Object = dict[str, object]
+
+
+class DayCharacter(TypedDict):
+    character_id: int
+    alive: bool
+
+
+class DayFrame(TypedDict):
+    date_raw: int
+    active_event: dict[str, int] | None
+    played_character: DayCharacter
+
+
+class DayValue(TypedDict):
+    requested_days: int
+    requested_interval_complete: bool
+    before: DayFrame
+    after: DayFrame
+    event_boundary: DayFrame | None
+    elapsed_hours: int
+
+
+class DayRow(TypedDict):
+    id: str
+    result: DayValue
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def public_function(relative, name, namespace):
+def public_function(relative: str, name: str, namespace: dict[str, object]) -> FunctionType:
     path = ROOT / relative
     tree = ast.parse(path.read_text(encoding='utf-8-sig'))
     matches = [node for node in ast.walk(tree)
                if isinstance(node, ast.FunctionDef) and node.name == name]
     if len(matches) != 1:
         raise AssertionError('Exactly one real public function required: ' + name)
-    projected = ast.Module(body=matches, type_ignores=[])
+    projected = ast.Module(body=[*matches], type_ignores=[])
     ast.fix_missing_locations(projected)
     exec(compile(projected, str(path), 'exec'), namespace)
-    return namespace[name]
+    function = namespace[name]
+    if not isinstance(function, FunctionType):
+        raise AssertionError("Extracted public method must be a function")
+    return function
 
 
-REQUIRE_NS = {}
+REQUIRE_NS: dict[str, object] = {}
 require = public_function('tools/ck3_mod_acceptance_cases/_business.py', 'require', REQUIRE_NS)
-advance_day = CaseClient.advance_day
+# Use the actual dependency contract. The AST seam avoids importing the live client.
+advance_day = public_function('tools/ck3_mod_acceptance_client.py', 'advance_day', {
+    'NATIVE_DAY_STEP': native_day.STEP, 'need': native_day.need,
+    'obj': native_day.obj, 'integer': native_day.integer,
+    'native_day_advertised': native_day.native_day_advertised,
+    'latest_frame': native_day.latest_frame, 'frame_owner': native_day.frame_owner,
+    'project_native_day': native_day.project_native_day,
+})
 
 
-def day_row(event=False):
-    before = {'date_raw': 1000, 'active_event': None, 'played_character': {'character_id': 101, 'alive': True}}
-    after = {'date_raw': 1008 if event else 1024,
+def day_row(event: bool = False) -> DayRow:
+    before: DayFrame = {'date_raw': 1000, 'active_event': None, 'played_character': {'character_id': 101, 'alive': True}}
+    after: DayFrame = {'date_raw': 1008 if event else 1024,
              'active_event': {'instance_id': 333} if event else None,
              'played_character': {'character_id': 101, 'alive': True}}
     return {'id': 'synthetic-host-actual-row', 'result': {
@@ -41,32 +82,36 @@ def day_row(event=False):
 
 
 class DayClient:
-    def __init__(self, row):
+    def __init__(self, row: DayRow) -> None:
         self._seq = 0
         self.row = row
-        self.submissions = []
-        self.validations = []
-        self.guard_reserves = []
-        self.execution_reserves = []
+        self.submissions: list[tuple[list[Object], str, float | None]] = []
+        self.validations: list[tuple[Object, bool, bool]] = []
+        self.guard_reserves: list[int] = []
+        self.execution_reserves: list[int] = []
 
-    def guard(self, reserve=90):
-        if reserve != 90:
-            raise AssertionError('Original normal-close reserve changed')
+    def guard(self, reserve: Literal[90] = 90) -> Object:
+        if type(reserve) is not int or reserve != 90:
+            raise AssertionError('Actual day guard must retain its 90-second reserve')
         self.guard_reserves.append(reserve)
+        # Explicit legacy host: this report does not advertise native exact-day support.
         return {'capabilities': {'action_steps': [], 'bridge_capabilities': []}}
 
-    def execute_plan(self, steps, name, timeout=None, reserve=90):
-        if reserve != 90:
-            raise AssertionError('Original execution reserve changed')
+    def execute_plan(self, steps: list[Object], name: str,
+                     timeout: float | None = None, reserve: Literal[90] = 90) -> list[object]:
+        if type(reserve) is not int or reserve != 90:
+            raise AssertionError('Actual day execution must retain its 90-second reserve')
         self.execution_reserves.append(reserve)
         self.submissions.append((copy.deepcopy(steps), name, timeout))
         return [self.row]
 
-    def validate_frame(self, frame, allow_actor_change=False, require_event_free=True):
-        self.validations.append((frame, allow_actor_change, require_event_free))
-        if require_event_free and frame.get('active_event') is not None:
+    def validate_frame(self, frame: object, allow_actor_change: bool = False,
+                       require_event_free: bool = True) -> Object:
+        actual = native_day.obj(frame, 'synthetic actual frame')
+        self.validations.append((actual, allow_actor_change, require_event_free))
+        if require_event_free and actual.get('active_event') is not None:
             raise ValueError('Synthetic actual frame still has an event')
-        return frame
+        return actual
 
 
 class EventClient:
@@ -98,17 +143,21 @@ def observe_function():
 
 
 class CommonEventBoundaryTests(unittest.TestCase):
-    def test_normal_day_default_is_unchanged_and_does_not_send_optins(self):
+    def test_normal_day_default_is_unchanged_and_does_not_send_optins(self) -> None:
         actual = day_row()
         client = DayClient(actual)
-        self.assertEqual(advance_day(client), actual)
-        step = client.submissions[0][0][0]
-        self.assertEqual(step, {'id': 'case-natural-day-0001', 'kind': 'advance_day', 'days': 1, 'timeout': 300})
+        original = copy.deepcopy(actual)
+        projected = advance_day(client)
+        self.assertEqual(projected, actual)
+        self.assertIsNot(projected, actual)
+        self.assertEqual(actual, original)
         self.assertEqual(client.guard_reserves, [90])
         self.assertEqual(client.execution_reserves, [90])
+        step = client.submissions[0][0][0]
+        self.assertEqual(step, {'id': 'case-natural-day-0001', 'kind': 'advance_day', 'days': 1, 'timeout': 300})
         self.assertEqual(len(client.submissions), 1)
 
-    def test_invalid_day_controls_fail_before_report_or_submission(self):
+    def test_invalid_day_controls_fail_before_report_or_submission(self) -> None:
         for kwargs in ({'days': True}, {'days': 2}, {'timeout': True}, {'timeout': 0},
                        {'allow_event_boundary': 1}, {'allow_actor_change': 1}):
             with self.subTest(kwargs=kwargs):
@@ -118,16 +167,23 @@ class CommonEventBoundaryTests(unittest.TestCase):
                 self.assertEqual(client.guard_reserves, [])
                 self.assertEqual(client.submissions, [])
 
+
     def test_normal_day_still_rejects_early_event_without_full_day_credit(self):
         client = DayClient(day_row(event=True))
         with self.assertRaises(ValueError):
             advance_day(client)
         self.assertNotIn('allow_event_boundary', client.submissions[0][0][0])
 
-    def test_optin_is_sent_and_partial_event_row_is_preserved_without_credit(self):
+    def test_optin_is_sent_and_partial_event_row_is_preserved_without_credit(self) -> None:
         actual = day_row(event=True)
         client = DayClient(actual)
-        self.assertEqual(advance_day(client, allow_event_boundary=True), actual)
+        original = copy.deepcopy(actual)
+        projected = advance_day(client, allow_event_boundary=True)
+        self.assertEqual(projected, actual)
+        self.assertIsNot(projected, actual)
+        self.assertEqual(actual, original)
+        self.assertEqual(client.guard_reserves, [90])
+        self.assertEqual(client.execution_reserves, [90])
         self.assertIs(client.submissions[0][0][0]['allow_event_boundary'], True)
         self.assertNotIn('allow_actor_change', client.submissions[0][0][0])
         self.assertFalse(actual['result']['requested_interval_complete'])

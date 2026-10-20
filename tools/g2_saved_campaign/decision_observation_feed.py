@@ -1,17 +1,19 @@
-"""Publish actual SDK plans/results to a shared overlay feed across queue prefixes.
+"""Publish bounded display projections; import performs no I/O."""
+from __future__ import annotations
 
-All paths come from the caller's admitted session. Import performs no I/O.
-"""
+from collections.abc import Callable
 from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import uuid
 
+from decision_display_contract_v1 import Record, exact_int, maybe_record, project_plan, record
+
 MAX_OBSERVATION_BYTES = 16384
 
 
-def _publish_new(path, value):
+def _publish_new(path: Path, value: Record) -> Path:
     payload = json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     if len(payload) > MAX_OBSERVATION_BYTES:
         raise ValueError("compact observation exceeds16KiB; original retained")
@@ -19,86 +21,78 @@ def _publish_new(path, value):
     try:
         with temporary.open("xb") as stream:
             stream.write(payload)
-        # No occupied-name overwrite on either Windows or POSIX.
         os.link(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
     return path
 
 
-def relay_compact(source, compact, *, feed_root):
-    """Namespace an already-written actual observation by its source directory."""
+def relay_compact(source: str | Path, compact: object, *, feed_root: str | Path) -> Path:
+    """Namespace an actual, already-written plan/result using its source directory."""
     source = Path(source).resolve()
-    feed_root = Path(feed_root).resolve()
-    if not source.is_file() or not isinstance(compact, dict):
-        raise ValueError("relay requires the actual already-written source and compact object")
+    target = Path(feed_root).resolve()
+    actual = record(compact)
+    if not source.is_file():
+        raise ValueError("relay requires the actual already-written source")
     if not (source.name.endswith("-0-plan.json") or source.name.endswith("-1-result.json")):
         raise ValueError("relay accepts actual plan/tool result observations only")
-    if source.parent == feed_root:
+    if source.parent == target:
         return source
     namespace = source.parent.name
-    row = {**compact, "source_ref": str(source), "source_namespace": namespace}
-    return _publish_new(feed_root / f"{namespace}-{source.name}", row)
+    row = {**actual, "source_ref": str(source), "source_namespace": namespace}
+    return _publish_new(target / f"{namespace}-{source.name}", row)
 
 
-def compact_plan(actual):
-    """Small display projection; the full actual plan remains in its original receipt."""
-    plan = {key: actual[key] for key in ("policy", "phase", "selected_step", "reason",
-            "decision", "declaration", "prewar_force_admission") if key in actual}
-    for key in ("reason", "selected_step", "policy", "phase"):
-        if isinstance(plan.get(key), str):
-            plan[key] = plan[key][:1200]
-    admission = plan.get("prewar_force_admission")
-    if isinstance(admission, dict):
-        plan["prewar_force_admission"] = {key: admission[key] for key in (
-            "status", "reason", "declare_admitted", "force_risk_qualified", "force_risk") if key in admission}
-    presentation = actual.get("war_decision_presentation_v1")
-    if (isinstance(presentation, dict) and isinstance(presentation.get("reason"), str)
-            and presentation.get("phase") == actual.get("phase")
-            and presentation.get("selected_step") == actual.get("selected_step")):
-        plan["war_decision_presentation_v1"] = {
-            "phase": actual.get("phase"), "selected_step": actual.get("selected_step"),
-            "reason": presentation["reason"][:1200],
-        }
-    return plan
+def compact_plan(actual: object) -> Record:
+    """One contract for shared and generated private pre-submit/result paths."""
+    return project_plan(actual)
 
 
-def publish_before_submit(observation, *, current_request_path, game_launch_receipt,
-                          response_root, feed_root, project_plan=compact_plan):
-    """Publish one real Service callback using this queue's explicit context/output.
-
-    Callers with an existing richer display projection can pass it as project_plan.
-    Publication is a plan observation and never an execution or business outcome.
-    """
-    context = json.loads(Path(current_request_path).read_text(encoding="utf-8-sig"))
-    launch = json.loads(Path(game_launch_receipt).read_text(encoding="utf-8-sig"))
-    sequence = context.get("sequence")
-    if type(sequence) is not int or sequence < 1 or context.get("tool") != "ck3_auto_turn":
+def publish_before_submit(
+    observation: object, *, current_request_path: str | Path, game_launch_receipt: str | Path,
+    response_root: str | Path, feed_root: str | Path,
+    project_plan: Callable[[object], Record] = compact_plan,
+) -> None:
+    actual_observation = record(observation)
+    context = record(json.loads(Path(current_request_path).read_text(encoding="utf-8-sig")))
+    launch = record(json.loads(Path(game_launch_receipt).read_text(encoding="utf-8-sig")))
+    sequence = exact_int(context.get("sequence"), "sequence", minimum=1)
+    if context.get("tool") != "ck3_auto_turn":
         raise ValueError("pre-submit publication lacks this queue's held auto-turn request")
-    actual = observation.get("plan")
-    if not isinstance(actual, dict) or actual.get("selected_step") != observation.get("selected_step"):
+    actual = record(actual_observation.get("plan"))
+    if actual.get("selected_step") != actual_observation.get("selected_step"):
         raise ValueError("actual selected plan is missing")
-    plan = project_plan(actual)
-    if not isinstance(plan, dict) or plan.get("selected_step") != actual.get("selected_step"):
+    plan = record(project_plan(actual))
+    if plan.get("selected_step") != actual.get("selected_step"):
         raise ValueError("display projection differs from the actual selected step")
-    body = {"status": "planned", "plan": plan, "selected_step": observation["selected_step"],
-            "snapshot_id": observation.get("snapshot_id"), "revision": observation.get("revision")}
-    row = {"ended_at_utc": datetime.now(timezone.utc).isoformat(),
-           "source": "actual GameplayBridgeService.before_submit callback",
-           "game_pid": launch["pid"], "game_creation_date": launch["creation_date"],
-           "request": {"tool": "root_before_auto_turn_submit", "parent_sequence": sequence},
-           "result": {"is_error": False, "structured_content": body}}
+    pid = exact_int(launch.get("pid"), "game pid", minimum=1)
+    birth = launch.get("creation_date")
+    if not isinstance(birth, str) or not birth:
+        raise ValueError("game creation date missing")
+    body = {"status": "planned", "plan": plan, "selected_step": actual_observation["selected_step"],
+            "snapshot_id": actual_observation.get("snapshot_id"), "revision": actual_observation.get("revision")}
+    row: Record = {"ended_at_utc": datetime.now(timezone.utc).isoformat(),
+                   "source": "actual GameplayBridgeService.before_submit callback",
+                   "game_pid": pid, "game_creation_date": birth,
+                   "source_namespace": Path(response_root).resolve().name,
+                   "request": {"tool": "root_before_auto_turn_submit", "parent_sequence": sequence},
+                   "result": {"is_error": False, "structured_content": body}}
     output = _publish_new(Path(response_root).resolve() / f"{sequence:04d}-0-plan.json", row)
     relay_compact(output, row, feed_root=feed_root)
 
 
-def error_projection(row):
-    result = row.get("result")
-    result = result if isinstance(result, dict) else {}
-    messages = [str(row["client_error"])[:2048]] if row.get("client_error") else []
-    messages += [block["text"][:2048] for block in result.get("content", [])[:3]
-                 if isinstance(block, dict) and block.get("type") == "text" and isinstance(block.get("text"), str)]
-    return {"request": row.get("request"), "ended_at_utc": row.get("ended_at_utc"),
+def error_projection(row: object) -> Record:
+    actual = record(row)
+    result = maybe_record(actual.get("result"))
+    messages = [str(actual["client_error"])[:2048]] if actual.get("client_error") else []
+    blocks = result.get("content")
+    if isinstance(blocks, list):
+        for value in blocks[:3]:
+            block = maybe_record(value)
+            message = block.get("text")
+            if block.get("type") == "text" and isinstance(message, str):
+                messages.append(message[:2048])
+    return {"request": actual.get("request"), "ended_at_utc": actual.get("ended_at_utc"),
             "source": "compact actual SDK error; original response retained",
             "result": {"is_error": True, "structured_content": {
                 "status": "error", "message": "\n".join(messages)[:6144],

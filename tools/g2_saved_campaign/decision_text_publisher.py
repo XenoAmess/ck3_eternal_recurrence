@@ -134,8 +134,9 @@ def process_identity(pid):
 
 def source_pin(): return pin(Path(__file__), 128 * 1024)
 
-def source_pins():
-    return {'publisher': source_pin(), 'view': pin(Path(__file__).with_name('decision_text_view.py'))}
+def source_pins() -> dict[str, object]:
+    return {'publisher': source_pin(), 'view': pin(Path(__file__).with_name('decision_text_view.py')),
+            'display_contract': pin(Path(__file__).with_name('decision_display_contract_v1.py'))}
 
 def validate_config(config):
     if config.get('schema') != SCHEMA or not isinstance(config.get('machine_id'), str): raise ValueError('Explicit publisher configuration required')

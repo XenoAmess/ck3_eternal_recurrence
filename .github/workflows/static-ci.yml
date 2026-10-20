@@ -191,6 +191,12 @@ jobs:
         run: |
           python -B -m mypy --config-file ck3_autonomous_player/pyproject.toml --no-incremental --cache-dir "%RUNNER_TEMP%\mypy-cold-owner"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/file_stat_identity_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_file_stat_identity_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -c "import pathlib, sys; from mypy import api; source = pathlib.Path('tools/g2_saved_campaign/file_stat_identity_v1.py').read_text(encoding='utf-8'); bad = source + '\ndef mismatch(value: os.stat_result, expected: FileStatIdentityV1) -> bool:\n    return value.st_mtime_ns == expected.mtime_ns\ndef overwrite(expected: FileStatIdentityV1) -> None:\n    expected.mtime_ns = str()\nnormalize_file_stat_identity_v1(str())\n'; out, err, status = api.run(['--strict', '--strict-equality', '--follow-imports=skip', '--no-incremental', '--cache-dir', 'nul', '-c', bad]); ok = status == 1 and not err and out.count('error:') == 3 and '[comparison-overlap]' in out and 'read-only' in out and '[arg-type]' in out; print('Expected type errors: comparison-overlap, misc (read-only), arg-type' if ok else out + err); sys.exit(0 if ok else 1)"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_cold_checkpoint_type_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_driver_resume_type_contract.py
