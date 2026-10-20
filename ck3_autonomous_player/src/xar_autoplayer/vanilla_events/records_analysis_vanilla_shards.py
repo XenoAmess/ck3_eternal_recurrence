@@ -1,4 +1,4 @@
-﻿"""Reusable analysis metadata for the migrated vanilla-event shards.
+"""Reusable analysis metadata for the migrated vanilla-event shards.
 
 This module promotes conclusions encoded in the legacy contracts, their
 source-review comments, focused tests, and exact-build definitions whose
@@ -524,3 +524,27 @@ VANILLA_SHARD_OBSERVATIONS: Final[dict[str, dict[str, object]]] = {
 
 
 __all__ = ["VANILLA_SHARD_ANALYSIS", "VANILLA_SHARD_OBSERVATIONS"]
+
+
+# The existing .c policy is retained. This is current source metadata, not a
+# claim that .c was executed in R0013 (that run actually selected .a).
+VANILLA_HISTORICAL_CHARACTER_12004_ANALYSIS: Final[dict[str, object]] = {
+    'exact_build': {'game_version': '1.20.0.4',
+        'ck3_executable_sha256': '98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518'},
+    'source_sha256': {
+        'events/historical_character_events.txt':
+            '1E40FDB1EA99393B45743514180700D623BEFEB09F88B71F811BA09D56B43567',
+        'common/scripted_effects/00_historical_characters_scripted_effects.txt':
+            'BB95C92120B74D80AC6C28F455ECE4E8FCD9D9D6E620EE408989B05B291840FD'},
+    'definition_lines': '4-408', 'option_lines': '279-403',
+    'review_summary': 'Reuse the existing C choice for a human player with no explorer scope. '
+        'A is DLC-gated and explicitly sets the player to historical_character; B recruits '
+        'the figure and grants obligation hooks; C grants minor prestige without a player switch. '
+        'R0013 has exactly nine saved scopes, including inspiration_owner/new_inspiration; '
+        'the inspiration identity remains opaque and is irrelevant to the chosen C effects.',
+    'readiness': 'static-ready',
+    'new_live_evidence': True,
+    'live_evidence_boundary': 'R0013 actually chose A and switched 15893 to 41436. '
+        'C is a source-reviewed recommendation, not a newly observed C execution. '
+        'Old R372 observations remain under their original 1.19.0.6 record.',
+}

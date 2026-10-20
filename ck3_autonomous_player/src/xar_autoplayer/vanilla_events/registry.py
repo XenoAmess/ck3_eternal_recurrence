@@ -1,4 +1,4 @@
-﻿"""Generic registry for exact-build vanilla-event timeline contracts.
+"""Generic registry for exact-build vanilla-event timeline contracts.
 
 The registry owns defensive structural copies of migrated contracts.  It
 deliberately does not import any particular event group; production composition
@@ -343,11 +343,23 @@ def query_vanilla_event_knowledge_v1(
             EVENT_KEY as FP3_INTRO_EVENT_KEY, FP3_STRUGGLE_INTRO_12004_RECORD,
         )
 
+        from .records_vanilla_shards import VANILLA_HISTORICAL_CHARACTER_12004_CONTRACT
+        from .records_analysis_vanilla_shards import VANILLA_HISTORICAL_CHARACTER_12004_ANALYSIS
+
         current_records = {
             EVENT_KEY: FAITH_CREATION1021_12004_RECORD,
             HOF_EVENT_KEY: HEAD_OF_FAITH0100_12004_RECORD,
             PAM_EVENT_KEY: PAM_BULL0004_12004_RECORD,
             FP3_INTRO_EVENT_KEY: FP3_STRUGGLE_INTRO_12004_RECORD,
+            'historical_char_creation_events.1': {
+                'contract': VANILLA_HISTORICAL_CHARACTER_12004_CONTRACT,
+                'analysis': VANILLA_HISTORICAL_CHARACTER_12004_ANALYSIS,
+                'observations': {'new_live_choice_was': 'A', 'recommended_C_executed_live': False,
+                    'machine_id': '4-8e1c2f1861',
+                    'run': '4-8e1c2f1861--faith-engine--R0013',
+                    'native_definition_observed': True, 'historical_character_id': 41436,
+                    'original_actor_character_id': 15893, 'event_instance_id': 3,
+                    'date_raw': 51394944, 'bridge_pid': 17208, 'connection_generation': 1}},
         }
         if event_definition_key in current_records:
             record = current_records[event_definition_key]

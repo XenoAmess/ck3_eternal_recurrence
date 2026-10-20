@@ -39,6 +39,8 @@
 
 ## 新事件来源知识
 
+`2026-10-20T15:49Z`补充，来源机器`4-8e1c2f1861`：[historical_char_creation_events.1源码分析](../../promo/ck3_faith_and_power/episode02/docs/knowledge/historical-char-creation-1-source-analysis.json)与[R0013实际实例](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0013-historical-character-1-observation.json)已持久化。第一显示项会切换玩家，本场15893→41436已经独立证实，不能继续沿用旧人物钱包／收益。该定义原有已分析策略；新1.20.0.4九scope变体已补入共享registry，精确匹配当前作用域、显示次序、enabled及来源SHA后复用第三项保持原人物策略。七项便携消费者通过，不代表第三项已实机执行，也不改变其他未知事件的采集后第一显示项规则。
+
 持久研究：[pilgrimage.5001](../../promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-5001-source-analysis.json)、[travel_start_event.1060](../../promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json)。1060 的标题“第一次启程”复用了 1000 的本地化 key，不能据标题推断为 definition 1000；其确认选项不是 Start、抵达或主要奖励。
 
 新增持久资料：[travel_events_cities.1020 来源与实际显示变体](../../promo/ck3_faith_and_power/episode02/docs/knowledge/travel-cities-1020-source-analysis.json)、[1060 的 R0012 原生实例观察](../../promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-r0012-occurrence.json)、[婚约通知的既有拒绝知识复用](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0012-arrange-marriage-source-occurrence.json)、[事件与通知独立后态](../../promo/ck3_faith_and_power/episode02/docs/knowledge/r0012-event2-interaction35-post.json)。这些是 `machine_id: 4-8e1c2f1861` 的历史 R0012 观察，1060 原生定义已读为 `travel_start_event.1060`，原窗口独立消失；旧 B17 截止资料原样保留，不追认其当时已查询原生定义。旧 5001 来源分析的截止资料保留原样；新的 R0012 原生实例与独立后态另链，不追认旧资料当时已有实机定义。

@@ -1,4 +1,4 @@
-﻿"""Canonical records for source-reviewed vanilla event-contract shards."""
+"""Canonical records for source-reviewed vanilla event-contract shards."""
 
 from __future__ import annotations
 
@@ -1463,3 +1463,27 @@ __all__ = [
     "VANILLA_SHARD_LEGACY_LIVE_OBSERVATIONS_B",
     "VANILLA_SHARD_TIMELINE_CONTRACTS",
 ]
+
+
+# Current .4 override only. The inherited R372 contract above remains unchanged.
+# Reuse option C; exact names/types select either the historical eight-scope
+# projection or this observed nine-scope inspiration-context projection.
+VANILLA_HISTORICAL_CHARACTER_12004_CONTRACT: Final[dict[str, object]] = {
+    **VANILLA_HISTORICAL_CHARACTER_TIMELINE_CONTRACTS['historical_char_creation_events.1'],
+    'scope_variants': ({
+        'saved_scope_count': 9,
+        'saved_scope_names': ('birth_location', 'historical_character', 'county_scope',
+            'inspiration_owner', 'new_inspiration', 'background_terrain_scope',
+            'background_market_scope', 'background_university_scope', 'holy_site_scope'),
+        'scope_types': {'birth_location': 'landed_title', 'historical_character': 'character',
+            'county_scope': 'landed_title', 'inspiration_owner': 'character',
+            'new_inspiration': 'inspiration', 'background_terrain_scope': 'landed_title',
+            'background_market_scope': 'province', 'background_university_scope': 'province',
+            'holy_site_scope': 'province'},
+        'character_scopes': {},
+        'unique_character_scope_excludes': {'historical_character': (PLAYER_SENTINEL,),
+            'inspiration_owner': (PLAYER_SENTINEL,)},
+        'character_scope_differs_from': {'historical_character': ('inspiration_owner',),
+            'inspiration_owner': ('historical_character',)},
+    },),
+}

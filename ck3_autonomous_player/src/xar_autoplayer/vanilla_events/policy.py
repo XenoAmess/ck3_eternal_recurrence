@@ -1054,6 +1054,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
         "health.3103",
         "health.3104",
         "hostile_scheme_discovery.2001",
+        "historical_char_creation_events.1",
         "physician_epidemic_events.1000",
         "prison_notification.0001",
         "prison_notification.2001",
@@ -1064,7 +1065,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     }
 )
 _DIRECT_SCOPE_VARIANT_EVENT_KEYS: Final = frozenset(
-    {"feast.2001", "health.1101", "health.3001", "health.3101", "health.3103", "rite_growth.0010"}
+    {"feast.2001", "health.1101", "health.3001", "health.3101", "health.3103", "rite_growth.0010", "historical_char_creation_events.1"}
 )
 _SCOPE_VARIANT_FIELDS: Final = frozenset(
     {
@@ -1353,6 +1354,33 @@ def recommend_registered_vanilla_event_option_v1(
         contract = _with_relational_character_scope_types(contract)
     allowed_extended_fields: set[str] = set()
     witch_boolean_scope_names_match: bool | None = None
+    if build == "1.20.0.4" and event_key == "historical_char_creation_events.1":
+        # The existing C policy gains one finite scope shape, never an
+        # arbitrary-scope fallback. Bind current analysis to the source index.
+        expected_sources = {
+            "events/historical_character_events.txt":
+                "1E40FDB1EA99393B45743514180700D623BEFEB09F88B71F811BA09D56B43567",
+            "common/scripted_effects/00_historical_characters_scripted_effects.txt":
+                "BB95C92120B74D80AC6C28F455ECE4E8FCD9D9D6E620EE408989B05B291840FD",
+        }
+        source = query_vanilla_event_source_v1(event_key, build=build)
+        indexed = source.get("source")
+        definition = indexed.get("definition") if isinstance(indexed, Mapping) else None
+        callers = indexed.get("caller_candidates") if isinstance(indexed, Mapping) else None
+        exact_source = bool(
+            isinstance(analysis, Mapping) and analysis.get("source_sha256") == expected_sources
+            and source.get("status") == "available" and isinstance(definition, Mapping)
+            and definition.get("relative_path") == "events/historical_character_events.txt"
+            and definition.get("file_sha256") == expected_sources["events/historical_character_events.txt"]
+            and isinstance(callers, list) and len(callers) == 4
+            and all(isinstance(row, Mapping)
+                and row.get("relative_path") == "common/scripted_effects/00_historical_characters_scripted_effects.txt"
+                and row.get("file_sha256") == expected_sources["common/scripted_effects/00_historical_characters_scripted_effects.txt"]
+                for row in callers))
+        if not exact_source:
+            return respond(status="blocked", event_key=event_key,
+                reason="historical_character_exact_source_or_index_drift",
+                checks={"historical_character_exact_source": False})
     if event_key == "trait_specific.4001":
         witch_projection = _source_bound_witch_scope_projection(
             event_context, contract, analysis, character_id

@@ -334,7 +334,7 @@ class ScreenCaptureService:
             self.scene_peak = reservation["this_write_peak_bytes"]
             self.raw_peak = reservation["raw_subcap_bytes"]
             if (not self.capture_root.is_relative_to(self.scene_root) or self.capture_root == self.scene_root
-                    or type(self.scene_peak) is not int or not 0 < self.scene_peak <= 896 * 1024**2
+                    or type(self.scene_peak) is not int or not 0 < self.scene_peak <= 2048 * 1024**2
                     or type(self.raw_peak) is not int or not 0 < self.raw_peak <= 512 * 1024**2
                     or self.config["total_raw_bytes"] > self.raw_peak):
                 raise ValueError("Segmented recorder requires the existing scene and raw ceilings")

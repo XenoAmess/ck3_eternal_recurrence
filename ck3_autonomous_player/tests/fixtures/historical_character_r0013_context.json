@@ -1,0 +1,296 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "captured_at_utc": "2026-10-20T15:31:13.043960+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0013",
+  "origin": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b22-a01\\live\\4-8e1c2f1861--faith-engine--R0013\\native-report.json",
+    "row_id": "b22-event3-query-a01",
+    "row_finished_at": "2026-10-20T14:53:48.921412+00:00",
+    "row_canonical_sha256": "a1e4c29c77509cc09c139c1572725276a45e9deb6d6efdf6653680d3a3baed91",
+    "container_finished_at": "2026-10-20T15:30:00.876972+00:00",
+    "container_is_not_claimed_final": true
+  },
+  "event_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 9,
+    "date_raw": 51394944,
+    "current_event_instance_id": 3,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "historical_char_creation_events.1",
+    "calculated_event_id": 2160001,
+    "runtime_stats_ordinal": 2509,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 15893
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "birth_location",
+        "name_identifier": 16742,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 5,
+          "type_key": "landed_title",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "landed_title",
+            "title_id": 6687
+          }
+        }
+      },
+      {
+        "name": "historical_character",
+        "name_identifier": 16325,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 41436
+          }
+        }
+      },
+      {
+        "name": "county_scope",
+        "name_identifier": 22681,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 5,
+          "type_key": "landed_title",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "landed_title",
+            "title_id": 6686
+          }
+        }
+      },
+      {
+        "name": "inspiration_owner",
+        "name_identifier": 184,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 41435
+          }
+        }
+      },
+      {
+        "name": "new_inspiration",
+        "name_identifier": 182,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 32,
+          "type_key": "inspiration",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "background_terrain_scope",
+        "name_identifier": 11207,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 5,
+          "type_key": "landed_title",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "landed_title",
+            "title_id": 6687
+          }
+        }
+      },
+      {
+        "name": "background_market_scope",
+        "name_identifier": 11287,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "background_university_scope",
+        "name_identifier": 11484,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "holy_site_scope",
+        "name_identifier": 11424,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 8,
+          "type_key": "province",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我很好奇他的命运将会如何……",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "这样的男人对我有大用！",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "穆尼斯？谁在乎！",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "frame": {
+    "date_raw": 51394944,
+    "revision": 10,
+    "native_revision": 9,
+    "paused": true,
+    "played_character": {
+      "character_id": 15893,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 9,
+        "date_raw": 51394944,
+        "played_character_id": 15893,
+        "traits": {
+          "lifestyle_poet": true,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 14921,
+      "spouse_ids": [
+        14921
+      ]
+    }
+  }
+}

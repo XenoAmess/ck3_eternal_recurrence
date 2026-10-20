@@ -1,5 +1,6 @@
 # CK3:信仰引擎 第二期
 
+- [麦加实际结果与88段制作输入](docs/production-b22-and-final-authoring-20261020.md)：即时骑士差分为零、真实1000虔诚支出；历史人物事件已离线补齐，A1三句实测并绑定，完整朝圣等核心结果仍待补。
 - [游玩智能体研究入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)：机制、所需当前观测、来源和反例；既有知识 MCP 已返回二期摘要，普通 auto 自动调用与事件完整 registry 合同仍未接通。
 - [24分33.600秒完整制作预览](C:/workspace/ck3-faith-and-power-20261017/episode02/review-static-70cue-a01/episode02-production-preview.mp4)：70 cue 静帧讲解预览，持续标注23项实拍结果待补；不是正式拍摄完成版。
 - [新增三句后的73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)：实测时间轴24:59.733，尚未重新渲染；按配方先执行来源投影，不能直接套旧装配器。

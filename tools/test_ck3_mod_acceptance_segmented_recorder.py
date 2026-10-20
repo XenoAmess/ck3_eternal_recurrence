@@ -345,6 +345,39 @@ class SegmentedRecorderPublicService(unittest.TestCase):
             self.service()
         self.assertEqual(self.spawned, [])
 
+    def test_explicit_two_gib_scene_accepts_and_enforces_actual_whole_boundary(self) -> None:
+        self.storage_document["this_write_peak_bytes"] = 2048 * MiB
+        self.storage.write_text(json.dumps(self.storage_document), encoding="utf-8")
+        service = self.service()
+        self.assertEqual(service.scene_peak, 2048 * MiB)
+        self.assertEqual(service.raw_peak, 512 * MiB)
+        self.assertEqual(service.config["max_takes"], 4)
+        self.assertEqual(service.config["total_seconds"], 300)
+        self.assertIsNone(service.thread)
+        self.assertIsNone(service.recorder)
+        # Real public service comparison, synthetic numerical filesystem leaves.
+        # No video, process or multi-GiB file is created.
+        def at_boundary(path: Path) -> int:
+            return 1920 * MiB if Path(path).resolve() == self.work.resolve() else 0
+        with patch.object(RECORDER, "_tree_bytes", side_effect=at_boundary):
+            observed = service._segment_limits(reserve=128 * MiB)
+        self.assertEqual(observed["scene_tree_logical_bytes"], 1920 * MiB)
+        def beyond_boundary(path: Path) -> int:
+            return 1920 * MiB + 1 if Path(path).resolve() == self.work.resolve() else 0
+        with patch.object(RECORDER, "_tree_bytes", side_effect=beyond_boundary):
+            with self.assertRaisesRegex(ValueError, "aggregate scene ceiling"):
+                service._segment_limits(reserve=128 * MiB)
+        self.assertEqual(self.spawned, [])
+        self.assertEqual(service.report()["capture_names_consumed"], [])
+
+    def test_scene_parent_above_two_gib_is_rejected_before_any_process(self) -> None:
+        self.storage_document["this_write_peak_bytes"] = 2048 * MiB + 1
+        self.storage.write_text(json.dumps(self.storage_document), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "scene and raw ceilings"):
+            self.service()
+        self.assertEqual(self.spawned, [])
+        self.assertFalse(self.capture_root.exists())
+
     def test_scene_usage_plus_next_reservation_cannot_exceed_896_mib(self):
         service = self.service()
         # Numerical filesystem observation only; no large file is created.

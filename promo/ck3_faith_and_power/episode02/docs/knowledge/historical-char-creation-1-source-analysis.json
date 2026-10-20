@@ -1,0 +1,208 @@
+{
+  "schema": "faith-e02-stock-event-source-analysis-v1",
+  "event_definition_key": "historical_char_creation_events.1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-20T15:39:11.212390+00:00",
+  "ck3_build": "1.20.0.4",
+  "ck3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "analysis_status": "source_closed_actual_new_scope_variant_observed",
+  "source_pins": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\historical_character_events.txt",
+      "bytes": 8875,
+      "sha256": "1e40fdb1ea99393b45743514180700d623befeb09f88b71f811ba09d56b43567"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_historical_characters_scripted_effects.txt",
+      "bytes": 319328,
+      "sha256": "bb95c92120b74d80ac6c28f455ece4e8fcd9d9d6e620ee408989b05b291840fd"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\yearly_on_actions.txt",
+      "bytes": 147319,
+      "sha256": "14c97f3845138d74a2c2552c5dd3c95de1da035014a5cdf31c92540aae3390fe"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\historical_characters_l_simp_chinese.yml",
+      "bytes": 81403,
+      "sha256": "e513205e37873c0a6e32f25cb3db297ad3c6b592c82ff69f67843d006b18b239"
+    }
+  ],
+  "event_definition_lines": [
+    4,
+    408
+  ],
+  "type": "character_event",
+  "title_key": "historical_char_creation_events.t",
+  "description_keys": [
+    "historical_char_creation_events_alternative.desc",
+    "historical_char_creation_events.desc"
+  ],
+  "description_condition": "Use the alternative description only when historical_character has alternative_origin_courtier; otherwise the ordinary description.",
+  "immediate_lines": [
+    270,
+    277
+  ],
+  "immediate_effects": [
+    "Capture birth-location background terrain/market/university scopes.",
+    "Save historical_character.location as holy_site_scope."
+  ],
+  "caller_chain": {
+    "yearly_source_lines": [
+      1,
+      15
+    ],
+    "condition": "Jan-1 yearly_global_pulse AND NOT game rule no_historical_characters.",
+    "effect": "spawn_historical_characters_effect",
+    "Munis_source_lines": [
+      7762,
+      7804
+    ],
+    "Munis_condition": "867 <= current_year <= 873 AND global hchar_munis_al_muzaffar does not exist.",
+    "Munis_effect": "Set one-time global marker; create age-22 Munis at Baghdad with authored traits; save historical_character; finalize and invoke boilerplate.",
+    "boilerplate_lines": [
+      8896,
+      8936
+    ],
+    "branches": [
+      "If origin county holder is human: send the event there.",
+      "Else if (major exists OR all_historical_characters rule) AND a human liege exists: send to a qualifying human liege.",
+      "Else if origin duchy holder exists: send there; otherwise send to top liege."
+    ],
+    "actual_caller_stack_observed": false,
+    "boundary": "Native definition/root/saved historical_character and resolved Munis label were observed; the dispatcher call stack and character biography variables were not separately queried."
+  },
+  "source_options": [
+    {
+      "source_option_ordinal": 1,
+      "name_key": "historical_char_creation_events.1.a",
+      "source_lines": [
+        279,
+        326
+      ],
+      "localization_line": 8,
+      "shown_if": "has_ep3_dlc_trigger = yes",
+      "danger_warning": "dangerous flag; danger_dynasty_abandon_tt at localization line3 explicitly warns of abandoning the dynasty.",
+      "effects": [
+        "Human root records finished_historically_inaccurate achievement variable.",
+        "Create a landless-adventurer title for historical_character (voluntary).",
+        "set_player_character = scope:historical_character at line302.",
+        "Hidden: only if the new historical character is landless-adventurer government, populate three contracts; if historical_character_2 exists, add that courtier."
+      ],
+      "switches_player_by_source": true,
+      "native_ai_chance_base": 0
+    },
+    {
+      "source_option_ordinal": 2,
+      "name_key": "historical_char_creation_events.1.b",
+      "source_lines": [
+        328,
+        352
+      ],
+      "localization_line": 9,
+      "effects": [
+        "Recruit historical_character to root court and create obligation hook.",
+        "If historical_character_2 exists, recruit that figure and grant a corresponding obligation hook too."
+      ],
+      "switches_player_by_source": false,
+      "native_ai_chance_base": 100
+    },
+    {
+      "source_option_ordinal": 3,
+      "name_key": "historical_char_creation_events.1.c",
+      "source_lines": [
+        354,
+        403
+      ],
+      "localization_line": 10,
+      "effects": [
+        "Add minor_prestige_gain to root.",
+        "If EP3 AND explorer scope exists: create a landless-adventurer title for historical_character.",
+        "Else if EP3 AND root is AI: a 15-percent branch creates that historical-character title.",
+        "For the observed human root with no explorer scope, neither adventurer-title branch is reachable."
+      ],
+      "switches_player_by_source": false,
+      "fixed_numeric_prestige_claimed": false,
+      "native_ai_chance_base": 100,
+      "native_ai_modifiers": [
+        "+150 when historical_character culture much_more_likely_to_be_laamps",
+        "+50 when more_likely_to_be_laamps"
+      ]
+    }
+  ],
+  "after_lines": [
+    405,
+    407
+  ],
+  "after_effects": [
+    "Remove need_military_outfit character flag."
+  ],
+  "actual_observation": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\capture-b22-a01\\event-knowledge-a01\\r0013-historical-character-1-observation.json",
+    "bytes": 17128,
+    "sha256": "1a13a1fc9f59a876214292fa15ec6299e34820d2a6b31c0f30114be656b4b574"
+  },
+  "actual_shown_mapping": [
+    {
+      "rendered_index": 0,
+      "native_option_index": 0,
+      "resolved_name": "我很好奇他的命运将会如何……",
+      "shown": true,
+      "enabled": true
+    },
+    {
+      "rendered_index": 1,
+      "native_option_index": 1,
+      "resolved_name": "这样的男人对我有大用！",
+      "shown": true,
+      "enabled": true
+    },
+    {
+      "rendered_index": 2,
+      "native_option_index": 2,
+      "resolved_name": "穆尼斯？谁在乎！",
+      "shown": true,
+      "enabled": true
+    }
+  ],
+  "interpretation": "Actual first shown A caused an explicit player switch. It is not a Demote outcome. An empty/incomplete effect-indicator list does not establish an effectless option.",
+  "existing_registry_reuse": {
+    "status": "already_source_analyzed_old_variant_new_variant_candidate_prepared",
+    "contract": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_vanilla_shards.py:359-408",
+    "analysis": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_analysis_vanilla_shards.py:156-175",
+    "old_run": "R372",
+    "old_build": "1.19.0.6",
+    "old_saved_scope_count": 8,
+    "old_recommended_native_option_index": 2,
+    "new_saved_scope_count": 9,
+    "new_names": [
+      "birth_location",
+      "historical_character",
+      "county_scope",
+      "inspiration_owner",
+      "new_inspiration",
+      "background_terrain_scope",
+      "background_market_scope",
+      "background_university_scope",
+      "holy_site_scope"
+    ],
+    "new_variant_candidate": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\production-b21-a01\\historical-event-variant-forward-a01\\candidate.with-tests.patch",
+    "new_variant_registered_in_root_at_analysis": false
+  },
+  "next_agent_strategy": {
+    "preferred": "Reuse existing dedicated C recommendation for a human, exact source-bound reviewed shape without explorer. Match fresh typed definition/root/actual shown enabled native mapping; do not hardcode a public button number.",
+    "alternative": "B preserves the player and recruits the historical figure with an obligation hook when that is the intended campaign choice.",
+    "known_danger": "A deliberately changes the player. Do not classify it as harmless acknowledgement.",
+    "after_submission": "Observe ACK and an independent snapshot: old event advanced AND original actor remains. If actor changes or response is unknown, do not repeat the choice or silently rebind the campaign actor.",
+    "C_executed_in_this_run": false,
+    "generic_unknown_first_display_policy_changed": false,
+    "full_registry_qualification_claimed": false,
+    "ordinary_auto_new_variant_enabled_before_patch_applied": false
+  },
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-18T15:39:11.212390+00:00",
+    "temporary_candidate_protected_until_utc": "2026-10-21T15:39:11.212390+00:00",
+    "reason": "Merge the new source-bound variant and occurrence into shared knowledge; after verified merge the external derived package is reclaimable under the common policy."
+  }
+}
