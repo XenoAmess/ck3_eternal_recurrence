@@ -386,5 +386,37 @@ class A17Contracts(unittest.TestCase):
             self.validate_metadata(parts)
 
 
+    def test_actual_cold_owner_projection_reads_only_a15_freeze(self) -> None:
+        originals: list[tuple[str, ast.FunctionDef]] = []
+        for filename in ("prepare_c23_a08_union_v1.py", "prepare_c23_a05_union_v1.py"):
+            raw = (HERE / filename).read_text(encoding="utf-8")
+            nodes = [n for n in ast.parse(raw).body
+                     if isinstance(n, ast.FunctionDef) and n.name == "cold_owner"]
+            self.assertEqual(len(nodes), 1)
+            originals.append((raw, nodes[0]))
+        outer = ast.get_source_segment(*originals[0])
+        inner = ast.get_source_segment(*originals[1])
+        if outer is None or inner is None:
+            raise AssertionError("actual cold owner source required")
+        outer = outer.replace("A08", "A17").replace("a08", "a17")
+        patched = producer.patch_cold_owner_freeze_lookup_v1(outer)
+        owner = ast.parse(patched).body[0]
+        if not isinstance(owner, ast.FunctionDef):
+            raise AssertionError("actual outer function required")
+        assignments = [n for n in owner.body if isinstance(n, ast.Assign)
+                       and any(isinstance(t, ast.Name) and t.id == "source" for t in n.targets)]
+        scope: Doc = {"ast": ast, "text": originals[1][0], "node": originals[1][1]}
+        exec(compile(ast.Module(body=list[ast.stmt](assignments[:2]), type_ignores=[]),
+                     "<actual two cold-owner projections>", "exec"), scope)
+        expected = inner.replace("A05", "A17").replace("a05", "a17")
+        old = "ROOT-FINAL-SDK-FREEZE-P37C23-A17.json"
+        new = "ROOT-FINAL-SDK-FREEZE-P37C23-A15.json"
+        self.assertEqual(expected.count(old), 1)
+        self.assertEqual(scope["source"], expected.replace(old, new))
+        for invalid in (patched, outer.replace("seam=", "foreign_seam=")):
+            with self.subTest(source=invalid[:40]), self.assertRaises(ValueError):
+                producer.patch_cold_owner_freeze_lookup_v1(invalid)
+
+
 if __name__ == "__main__":
     unittest.main()

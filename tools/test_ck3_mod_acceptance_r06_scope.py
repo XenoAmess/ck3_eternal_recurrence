@@ -27,6 +27,17 @@ import ck3_mod_acceptance_allocate as allocator
 from ck3_mod_acceptance_cases import r10_prepare_adapter as adapter
 from ck3_mod_acceptance_cases import r06_refill_one_day as r06
 from ck3_mod_acceptance_cases import r04_county_entry as r04
+from steam_offline_state_contract import ProbeResult, ProbeWire, parse_result
+
+
+def unavailable_steam_receipt_fixture(machine_id: str) -> ProbeWire:
+    """A typed path-forwarding fixture, never evidence of actual offline mode."""
+    receipt = ProbeResult(machine_id, '2026-10-20T00:00:00Z', '0' * 32,
+        'unavailable', 'source_not_qualified', None, None, None,
+        ('scope_fixture_no_Steam_read',)).to_wire()
+    if parse_result(receipt).to_wire() != receipt:
+        raise AssertionError('shared Steam receipt roundtrip differs')
+    return receipt
 
 
 class PublicR06ScopeTests(unittest.TestCase):
@@ -98,7 +109,7 @@ class PublicR06ScopeTests(unittest.TestCase):
         self.addCleanup(loader.stop)
         loader.start()
 
-    def write(self, path, value):
+    def write(self, path: Path, value: object) -> None:
         path.write_text(json.dumps(value, indent=2) + '\n', encoding='utf-8')
 
     def args(self, mode, context=None):
@@ -168,7 +179,7 @@ class PublicR06ScopeTests(unittest.TestCase):
         return {p: p.read_bytes() for p in (self.prepared_path,
             self.live / 'allocated-context.json', self.live / 'frozen-argv.json')}
 
-    def scope(self):
+    def scope(self) -> None:
         cap = {'machine_id': self.machine, 'run_id': self.live.name, 'admitted': True,
             'budget_status': 'GREEN', 'scene_root': str(self.root),
             'component_roots': {'profile': str(self.state), 'driver': str(self.live)},
@@ -184,8 +195,10 @@ class PublicR06ScopeTests(unittest.TestCase):
         self.scope_path = self.root / 'scope.json'
         self.write(self.scope_path, value)
         self.reviewed = copy.deepcopy(self.ready)
+        self.steam_receipt_path = self.root / 'steam-unavailable-fixture.json'
+        self.write(self.steam_receipt_path, unavailable_steam_receipt_fixture(self.machine))
         self.reviewed.update(r06_post_allocate_scope=entry.pin(self.scope_path),
-            proof='test-proof.json', challenge='test-challenge.json', observed_nonce='test', reviewer='test')
+            steam_offline_receipt=str(self.steam_receipt_path))
         self.reviewed_path = self.root / 'reviewed-context.json'
         self.write(self.reviewed_path, self.reviewed)
 
@@ -193,7 +206,7 @@ class PublicR06ScopeTests(unittest.TestCase):
         return entry.Selection(self.runtime_path, self.products_path, 'war-episode04-r10',
             'r10-common-preparation', context or self.reviewed_path, self.prepared_path)
 
-    def test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client(self):
+    def test_public_prepare_real_isolated_allocate_scope_preflight_run_same_client(self) -> None:
         prepared = self.prepare()
         originals = self.allocate()
         self.assertEqual(originals[self.prepared_path], prepared)
@@ -225,11 +238,32 @@ class PublicR06ScopeTests(unittest.TestCase):
         self.assertIs(actor.call_args.args[1], client)
         self.assertEqual(actor.call_args.args[0]['case_inputs'], derived['case_inputs'])
         launcher.assert_called_once()
+        argv = launcher.call_args.args[0]
+        self.assertEqual(argv[-2:], ['--steam-offline-receipt', str(self.steam_receipt_path)])
+        self.assertNotIn('--proof', argv)
+        self.assertNotIn('--challenge', argv)
+        receipt = parse_result(entry.read_json(self.steam_receipt_path))
+        self.assertEqual(receipt.status, 'unavailable')
+        self.assertNotIn('offline_mode', receipt.to_wire())
         client.normal_close.assert_called_once()
         client.close_handle.assert_called_once()
         for path, original in originals.items():
             self.assertEqual(path.read_bytes(), original, str(path))
         self.assertEqual(entry.read_json(self.reviewed_path)['case_inputs'], selected.prepared['case_inputs'])
+
+    def test_run_requires_background_receipt_before_launcher(self) -> None:
+        self.prepare(); self.allocate(); self.scope()
+        for mode in ('missing', 'null', 'empty'):
+            reviewed = copy.deepcopy(self.reviewed)
+            if mode == 'missing':
+                del reviewed['steam_offline_receipt']
+            else:
+                reviewed['steam_offline_receipt'] = None if mode == 'null' else ''
+            self.write(self.reviewed_path, reviewed)
+            with self.subTest(mode=mode), patch.object(entry.subprocess, 'run') as launch:
+                with self.assertRaisesRegex(ValueError, 'steam_offline_receipt'):
+                    entry.native_dispatch(self.args('run', self.reviewed_path))
+                launch.assert_not_called()
 
     def test_prepare_refuses_prefilled_capacity_without_allocating(self):
         self.inputs['r06_refill_one_day']['capacity_admission'] = {'run_id': 'guessed'}

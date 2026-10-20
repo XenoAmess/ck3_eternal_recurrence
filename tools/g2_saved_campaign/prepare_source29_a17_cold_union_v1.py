@@ -559,6 +559,10 @@ def metadata_scope(plan_value:object,namespace:Doc,runtime:Path)->None:
  dynamic(base,"metadata_scope")(p,namespace,runtime)
  namespace.update(A17_SOURCE29_ANCHOR=p["canonical_anchor_ref"],A17_SOURCE29_BASE=p["sdk_base_ref"])
 
+def patch_cold_owner_freeze_lookup_v1(source:str)->str:
+ before="source=ast.get_source_segment(text,node).replace('A05','A17').replace('a05','a17')"
+ return one(source,before+"\n    seam=",before+"\n    source=source.replace('ROOT-FINAL-SDK-FREEZE-P37C23-A17.json','ROOT-FINAL-SDK-FREEZE-P37C23-A15.json')\n    seam=")
+
 def cold_owner(inputs_value:object)->tuple[Outputs,Doc]:
  inputs=record(inputs_value)
  need(inputs.get("schema")=="xar.C23-A17-cold-owner-metadata-input/v1" and inputs.get("machine_id")==MACHINE,"A17 cold owner")
@@ -570,6 +574,7 @@ def cold_owner(inputs_value:object)->tuple[Outputs,Doc]:
  setattr(base,"parse_plan",lambda unused:{**p,"schema":"xar.Source28-A15-complete-cold-input/v1"})
  a08=importlib.import_module("prepare_c23_a08_union_v1")
  source=text(dynamic(base,"function")(a08,"cold_owner")).replace("A08","A17").replace("a08","a17")
+ source=patch_cold_owner_freeze_lookup_v1(source)
  def scope(value:object,runtime:object)->None:
   need(isinstance(value,dict) and runtime==TARGET,"metadata scope")
   metadata_scope(p,cast(Doc,value),cast(Path,runtime))

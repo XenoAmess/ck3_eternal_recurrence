@@ -43,3 +43,19 @@ Root另用真实SEM10541直接验证新来源合同，并对源码派生拒绝�
 本机22:25:15.348574Z后台重新确认Steam `status=offline`、`offline_mode=true`。PID165096／出生FILETIME `"134362593935766296"`／版本10.96.30.42，来源绑定SteamUI.dll；native当前用户字节两次为1，并核托盘状态4。回执 `B/STEAM-BACKGROUND-SOURCE29-PREP01.json`：2480B／SHA256 `b6e73f0d575f8c41f3acad99bc873e178016de6407b7640c74362cb4d47aff5b`。全程未截图、移动或激活窗口、抢焦点或切换模式。启动时仍需600秒内新鲜回执，准备阶段回执不无限续期。
 
 公开master `ad11f3ef0792ca04c1a38a60542d6ee96992f301` 的[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39504429916/job/118909684555)于22:23:19Z成功，39／55／94均绿；[Linear CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39504429996/job/118909685923)于21:57:57Z成功。CI执行机器`machine_id: unknown`；这些结果不提供本机游戏信用。
+
+## 23:33Z 追加：Source29 已部署，A17 已启动
+
+观察机器仍为 `xenoamess-full-tower-eb9d2c1186`。Source29 固定业务提交为 `d02d9907fa7a26ab60a6a75456fa276be78387c4`；双导出、BASE 及实际包的26项测试已通过，455个模块来源锁定实际src29。资格原件为 `O/source29-sdk-prep01/SOURCE29-ACTUAL-PACKAGE-QUALIFICATION01.json`，7643B／SHA256 `0a15e0f63a943e85ba7cb02e206cc5e75bbc50b49e4ccffd40c87d49f261b937`。本节追加当时准备状态的后续事实，不改写上文历史。
+
+A17 的144文件已逐字节读回。首次落盘最后的 OuterBinding 检查因 Root 使用虚拟环境解释器而拒绝；没有覆盖144文件。随后独立基础 Python `-B -S` 重验全部原后验、47个入口、8个规范入口及实际 saved_basis，最后才创建 `O/A17-PREPARED01.json`，39396B／SHA256 `4bea2c7969dab35dcf2460577c65180503d17d440d24c383e6aeb280675b22ab`。完整原 main 在首次 ADMITTED 写入前的真实前缀另已通过，实际SDK路径指向src29。
+
+本轮运行身份为 `xenoamess-full-tower-eb9d2c1186--vanilla--R0015`。Game PID83948，出生FILETIME为十进制字符串 `"134370118417378359"`，23:17:21Z实际创建；screen116由实际总线租约维持。启动消费23:11:12Z后台Steam离线正例，全程没有Steam截图、激活、移动或焦点操作。Game实际窗口及客户区2560×1440，用户桌面和前台窗口均未改变；OBS源与输出也是2560×1440、1:1、30fps。
+
+Root亲审了冻结地图与录制合成帧：日期1081-07-31、暂停、右侧灰栏可见、无退役蓝窗和影片标题。首帧位于 `runtime-a17/recordings/dc26d8b0-e372-4e36-98bc-90b994371e94/FIRST-FRAME-ADMITTED.json`，2282B／SHA256 `7d447c85b6ca2d3758cea800b26fd95e802cb145a4802085f39f0a39ad7fa9d4`；原 `verify_segment` 实际通过。灰栏当前是等待文本，尚不授予丰富业务决策上屏验收。
+
+真实 cold_owner 输入又揭示了外层 A08→A17 投影遗漏的冻结文件名。修复只把该唯一查找改回已部署的 A15 basename，不建立别名、不修改运行中的144文件。实际四输出双演一致；永久回归13项／90个子例和两个完整模块严格类型检查通过。最终生成器44761B／SHA256 `e9bbb74abfd0481a9c4da145e76cb7db0135b6dcb9ba2591c4715cc7e3ce9d13`，与原冻结图生成器4493历史身份分别记录。准入四文件按原顺序发布，gate最后；实际SDK已启动。SEM10552已提交一次，后继CAP10553与完整规划仍待实际结果。
+
+保存成绩仍是5429／10950天、4753个已保存循环；新进程、ACK、首帧及静态测试均不增加成绩。G2仍为6／8，1秒／日和30年目标均未完成。原全墙钟起点继续保留。
+
+工具包已普通推送为 `63af2d71ac5aaf88d7153a2f20885d1bc3e67191`，父提交c710，未强推。[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39514460759/job/118943162943)的旧R06测试夹具遗漏新 `steam_offline_receipt`，step19失败，后续39／55／94跳过；[Linear CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39514460777/job/118943162907)通过。该夹具已迁移到真实共享ProbeWire的明确unavailable回执，当前生产5项测试通过；与共享准入core的9项组合14项通过。生产离线守卫未放宽，修复及新接线尚待后继提交的远端CI。
