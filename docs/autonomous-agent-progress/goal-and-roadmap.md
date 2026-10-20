@@ -1,5 +1,7 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+2026-10-20T12:38Z更新：`machine_id: xenoamess-full-tower-eb9d2c1186`。Source27双导出与99项/153子场景通过，A11冷SEM/CAP实过；FULL10523在5个零日查询周期后因10534暂停地图超时失败，原SAVE仍5429/10950日。新源自然正H只补适配，G2仍6/8。强类型前两批入库，显式null后继47项通过；1秒/日未达、原墙钟不重置。[证据、闭场与后继](../ck3-native-ai/robert-source27-a11-type-audit-and-resume-2026-10-20.md)。
+
 2026-10-20T09:22Z更新：`machine_id: xenoamess-full-tower-eb9d2c1186`。A09冷恢复已实过，首FULL因未知resume-map超时失败并真实闭场，保存基线仍5429/10950日；晚到1082-03-20画面不授推进。WAL tuple/list持久化假失配窄修25测试通过，强类型批检及Source27冷部署准备并行；G2仍6/8，原墙钟不重置，1秒/日未达。[本轮闭场与类型修复](daily/2026-10-20.md)。
 
 2026-10-20T08:24Z更新：`machine_id: xenoamess-full-tower-eb9d2c1186`。原局已保存5429/10950日；A08曾结算5430日后clock错误，A09从SAVE10480恢复，明记回退7周期／1日，全部原墙钟计入。M7新增自然H5274实证，原广度仍未完成；G2仍6/8，M6无新终态。已准入2～3日窗口策略28测试通过，冻结实机仍Source26，1秒/日未达。[当前证据及恢复边界](../ck3-native-ai/robert-source26-a05-resume-2026-10-20.md)。下列旧指针保留为历史。
