@@ -2175,6 +2175,32 @@ def create_server(
             return service.query_player_inventory_window_open_post_v1(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
         _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_inventory_window_open_post_v1")
 
+    if getattr(driver, "allow_private_player_inventory_window_close", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_inventory_window_close_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Read current typed inventory state and only the native Close intent; query never resolves it."""
+            return service.query_player_inventory_window_close_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_inventory_window_close_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_close_player_inventory_window_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Close the actual current-player inventory once; ACK is pending until independent hidden-state post."""
+            return service.close_player_inventory_window_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_close_player_inventory_window_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_inventory_window_close_post_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            expected_intent_sequence: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+        ) -> dict[str, object]:
+            """Read the exact original Close intent independently; only fresh native hidden-state proof resolves it."""
+            return service.query_player_inventory_window_close_post_v1(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_inventory_window_close_post_v1")
+
     if getattr(driver, "allow_private_character_skill_effects_query", False) is True:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
         def ck3_query_character_skill_effects_v1(
@@ -5492,6 +5518,7 @@ def parser() -> argparse.ArgumentParser:
                         help="enable exact4 owned personal-item read only; no equip action")
     result.add_argument("--private-character-skill-effects-query", action="store_true", help="enable finite exact4 native actor skills read only; no site attribution")
     result.add_argument("--private-player-inventory-window-open", action="store_true", help="enable source-bound normal HUD inventory open and exact independent post, default off")
+    result.add_argument("--private-player-inventory-window-close", action="store_true", help="enable typed current-player inventory Close query/once/post independently, default off")
     result.add_argument("--private-player-ghw-permissions-query", action="store_true",
                         help="enable exact4 fixed GHW variables/object links read only; no launch action")
     result.add_argument(
@@ -5871,6 +5898,7 @@ def main(argv: list[str] | None = None) -> int:
     driver.allow_private_player_ghw_permissions_query = args.private_player_ghw_permissions_query
     driver.allow_private_character_skill_effects_query = args.private_character_skill_effects_query
     driver.allow_private_player_inventory_window_open = args.private_player_inventory_window_open
+    driver.allow_private_player_inventory_window_close = args.private_player_inventory_window_close
     driver.allow_private_player_artifact_personal_use_actions = args.private_player_artifact_personal_use_actions
     if args.private_player_holy_site_relic_permissions_query:
         driver.allow_private_player_holy_site_relic_permissions_query = True

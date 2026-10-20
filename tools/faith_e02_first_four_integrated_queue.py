@@ -8,6 +8,9 @@ EQUIP = 'ck3_submit_player_artifact_personal_use_v1'
 EQUIP_POST = 'ck3_query_player_artifact_personal_use_action_post_v1'
 OPEN_INVENTORY = 'ck3_open_player_inventory_window_v1'
 INVENTORY_POST = 'ck3_query_player_inventory_window_open_post_v1'
+INVENTORY_CLOSE_QUERY = 'ck3_query_player_inventory_window_close_v1'
+CLOSE_INVENTORY = 'ck3_close_player_inventory_window_v1'
+INVENTORY_CLOSE_POST = 'ck3_query_player_inventory_window_close_post_v1'
 ENSHRINE = 'ck3_enshrine_holy_site_relic_v1'
 ACTION_CONTEXT = 'ck3_query_player_holy_site_relic_action_context_v1'
 RELIC_CONTEXT = 'ck3_query_player_holy_site_relic_context_v1'
@@ -18,6 +21,7 @@ PRESENT = frozenset({'ck3_open_holy_site_creation_window_v1', 'ck3_select_holy_s
     'ck3_select_holy_site_creation_barony_v1', 'ck3_set_holy_site_creation_artifact_selection_v1',
     'ck3_open_holy_site_window_v1', 'ck3_select_holy_site_relic_artifact_v1'})
 TOOLS = READONLY | PRESENT | {EQUIP, EQUIP_POST, OPEN_INVENTORY, INVENTORY_POST, ENSHRINE,
+    INVENTORY_CLOSE_QUERY,CLOSE_INVENTORY,INVENTORY_CLOSE_POST,
     'ck3_get_capabilities', 'ck3_take_snapshot', 'ck3_query_ingame_ui_window_v1'}
 TYPES = frozenset({'site_of_wisdom', 'site_of_martyrs', 'site_of_miracles'})
 
@@ -53,8 +57,8 @@ def validate(plan):
             require(type(args.get('expected_slot_index')) is int and 0 <= args['expected_slot_index'] <= 63, 'Actual personal slot required')
             require(args.get('expected_replacing_artifact_id') is None, 'This minimal case never displaces another equipped item')
         elif tool == EQUIP_POST: needed = {'artifact_id','expected_intent_sequence'}
-        elif tool == INVENTORY_POST: needed = {'expected_intent_sequence'}
-        elif tool == OPEN_INVENTORY: pass
+        elif tool in {INVENTORY_POST,INVENTORY_CLOSE_POST}: needed = {'expected_intent_sequence'}
+        elif tool in {OPEN_INVENTORY,INVENTORY_CLOSE_QUERY,CLOSE_INVENTORY}: pass
         elif tool == ENSHRINE:
             needed = {'holy_site_id','artifact_id','expected_effective_slot_index','expected_replacing_empty','expected_preview_sha256'}
             require(type(args.get('expected_effective_slot_index')) is int and 0 <= args['expected_effective_slot_index'] < 4096,
@@ -80,7 +84,7 @@ def validate(plan):
         if 'expected_revision' in args: require(type(args['expected_revision']) is int and args['expected_revision'] > 0, 'Fresh public revision required')
         if 'expected_intent_sequence' in args: require(type(args['expected_intent_sequence']) is int and args['expected_intent_sequence'] > 0, 'Actual original native sequence required')
         require(args.get('include_native_command_history',False) is False, 'No command history export')
-        if tool in {EQUIP,ENSHRINE,OPEN_INVENTORY}: mutations += 1
+        if tool in {EQUIP,ENSHRINE,OPEN_INVENTORY,CLOSE_INVENTORY}: mutations += 1
         if tool in PRESENT:
             require(position+1 < len(plan['steps']), 'Original presentation requires immediate independent readback')
             following = plan['steps'][position+1]

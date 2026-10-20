@@ -1,4 +1,4 @@
-﻿"""Build a shared acceptance runtime from exact committed source and a qualified native production build."""
+"""Build a shared acceptance runtime from exact committed source and a qualified native production build."""
 from __future__ import annotations
 import argparse
 import ast
@@ -26,6 +26,11 @@ CRITICAL_TRANSPORTS = frozenset({
     "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py",
 })
 EXTRA_CAPABILITIES = {
+    "ck3_open_character_window_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
+    "ck3_open_holy_site_decision_v1": [],
+    "ck3_confirm_holy_site_decision_v1": [],
+    "ck3_query_player_holy_site_decision_detail_v1": [],
+    "ck3_query_player_holy_site_decision_cooldown_v1": [],
     "ck3_inspect_gui_window_tree_v1": [],
     "ck3_open_ingame_decisions_v1": ["XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1"],
     "ck3_query_ingame_decision_item_v1": [],
@@ -40,6 +45,9 @@ EXTRA_CAPABILITIES = {
     "ck3_query_character_skill_effects_v1": ["XAR_CK3_ENABLE_CHARACTER_SKILL_EFFECTS12004_PRIVATE_QUERY_V1"],
     "ck3_open_player_inventory_window_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
     "ck3_query_player_inventory_window_open_post_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
+    "ck3_query_player_inventory_window_close_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
+    "ck3_close_player_inventory_window_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
+    "ck3_query_player_inventory_window_close_post_v1": ["XAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1"],
     "ck3_query_ingame_ui_window_v1": [],
     "ck3_open_holy_site_window_v1": [],
     "ck3_query_player_holy_site_creation_context_v1": ["XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1"],
@@ -72,6 +80,7 @@ REGISTRATION_ACTION_FLAGS = {
     "opt_in_holy_site_relic_actions": "allow_private_holy_site_relic_actions",
     "opt_in_player_artifact_personal_use_actions": "allow_private_player_artifact_personal_use_actions",
     "opt_in_player_inventory_window_open": "allow_private_player_inventory_window_open",
+    "opt_in_player_inventory_window_close": "allow_private_player_inventory_window_close",
     "opt_in_player_rite_creation_actions": "allow_private_player_rite_creation_actions",
 }
 
@@ -88,6 +97,11 @@ def registration_driver(case):
             raise RuntimeError("registration-only validation must never take a game snapshot")
 
     driver = RegistrationOnlyDriver()
+    driver.allow_private_holy_site_adoption_detail_query = bool({
+        "ck3_query_player_holy_site_adoption_detail_v1",
+        "ck3_query_player_holy_site_decision_detail_v1",
+        "ck3_query_player_holy_site_decision_cooldown_v1",
+    } & driver.case_declared_read_only_mcp_tools)
     for tool, name in REGISTRATION_READ_ONLY_FLAGS.items():
         setattr(driver, name, tool in driver.case_declared_read_only_mcp_tools)
     for key, name in REGISTRATION_ACTION_FLAGS.items():
@@ -369,9 +383,24 @@ def qualified_execution_packets(ref, fixtures, snapshot_root, machine):
     return {"ref": ref, "folder": str(folder)}
 
 
+def select_profile_expansion_contract(registry, contract_id=None):
+    """Keep the original single-contract format and select explicit later versions."""
+    if contract_id is None:
+        contract_id = "ck3-12004-five-gate-native-profile-v1"
+    if registry.get("contract_id") == contract_id:
+        contract = {key: value for key, value in registry.items() if key != "additional_contracts"}
+    else:
+        contract = registry.get("additional_contracts", {}).get(contract_id)
+    require(isinstance(contract, dict)
+            and contract.get("schema") == "ck3-native-profile-expansion-contract-v1"
+            and contract.get("contract_id") == contract_id,
+            "Unknown reviewed profile expansion contract: " + str(contract_id))
+    return contract
+
+
 def profile_expansion_contract(value, refs, root, commit, machine, old_profile, profile):
     """A flag change needs a source-reviewed contract plus exact actual receipts."""
-    if profile.get("flags") == old_profile.get("flags"):
+    if profile.get("flags") == old_profile.get("flags") and not value.get("profile_expansion"):
         return None
     require(value.get("profile_expansion"),
             "This public native refresh preserves the prior reviewed full feature profile; profile expansion needs separate review")
@@ -381,7 +410,7 @@ def profile_expansion_contract(value, refs, root, commit, machine, old_profile, 
             and actual.get("machine_id") == machine and actual.get("source_commit") == value["source_commit"]
             and actual.get("actual_live_business_qualified") is False,
             "Profile expansion must bind the actual final native compile commit and machine")
-    contract_ref = checked(actual["contract"])
+    contract_ref = actual["contract"]
     contract_path = (root / PROFILE_EXPANSION_RELATIVE).resolve()
     require(Path(contract_ref["path"]).resolve() == contract_path,
             "Profile expansion contract must be the common committed source contract")
@@ -389,17 +418,18 @@ def profile_expansion_contract(value, refs, root, commit, machine, old_profile, 
                                cwd=root, capture_output=True, check=True).stdout
     require(sig(committed) == {k: contract_ref[k] for k in ("bytes", "sha256")},
             "Profile expansion contract differs from the actual native compile commit")
-    contract = read(contract_path)
-    require(contract.get("schema") == "ck3-native-profile-expansion-contract-v1"
-            and actual.get("contract_id") == contract.get("contract_id"), "Reviewed profile expansion contract identity differs")
+    # A later registry append must not invalidate the original compile commit's pin.
+    contract = select_profile_expansion_contract(json.loads(committed.decode("utf-8-sig")), actual.get("contract_id"))
     checked(actual["previous_profile"])
-    require(read(actual["previous_profile"]["path"]) == old_profile
-            and old_profile.get("flags") == contract.get("before_flags"), "Profile expansion prior profile differs")
+    reviewed_before = read(actual["previous_profile"]["path"])
+    require(reviewed_before.get("flags") == contract.get("before_flags")
+            and (reviewed_before == old_profile or old_profile.get("flags") == profile.get("flags")),
+            "Profile expansion prior profile differs")
     for name in ("profile", "snapshot", "configured_scope", "production_freeze"):
         require(actual.get(name) == refs[name], "Profile expansion actual pin differs: " + name)
     require(actual.get("fixture_results") == value.get("fixture_results"),
             "Profile expansion finite execution pins differ")
-    expected = dict(old_profile["flags"])
+    expected = dict(reviewed_before["flags"])
     changes = contract.get("flag_changes", {})
     require(changes, "Empty profile expansion cannot authorize changed flags")
     for name, change in changes.items():

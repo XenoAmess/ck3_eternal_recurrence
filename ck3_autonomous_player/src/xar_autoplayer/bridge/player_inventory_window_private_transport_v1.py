@@ -215,6 +215,8 @@ def open_player_inventory_window_private_v1(driver,*,expected_revision):
     before,binding,key,digest=_frame(driver,expected_revision)
     pending=_pending(driver);intent={'intent_sequence':None}
     with _LOCK:
+        if key in getattr(driver,'_player_inventory_window_close_client_pending_v1',{}):
+            raise BridgeUnavailableError('Prior inventory closing remains unknown; resolve its exact Close intent before opening')
         if key in pending:raise BridgeUnavailableError('Prior inventory opening remains unknown; use actual original-intent post, never replay')
         pending[key]=intent
     value=_exchange(driver,before,binding,digest,operation='open')

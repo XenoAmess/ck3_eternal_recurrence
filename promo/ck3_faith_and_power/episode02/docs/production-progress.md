@@ -1,5 +1,19 @@
 # 第二期执行进度
 
+## 10月20日11:45：供奉遮挡修复已审计，B13进入新版构建准备
+
+`machine_id: 4-8e1c2f1861`，实际观察截至`2026-10-20T03:44:45Z`。B12证明物品栏会遮挡圣地报价，因此新增原生 Inventory Close、独立意图账本及查询／关闭／隐藏后验三个MCP通道；动作回执与实际隐藏分开判断。源码独审通过，SDK新增20项、正式first-four消费者28项分别实际通过；尚未编译或取得实机关窗资格。A1、R19的公共host `after_snapshot`兼容修复同时纳入下一冻结来源。profile v1保留，v2精确增加两个Close有限目标至17项／41个直接编译单元，7项窄消费者通过，未将旧DLL追认为新能力。
+
+B12已精确回收3,761份可重建profile文件，分配路径和206,889,776 B，母档与原片保留，所删原件不可读取。新[B13准入](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b13-a01/ADMISSION.json)预留768MiB、软停止704MiB，期限至`05:44:45Z`；重型执行须先绑定最终clean源码、生产器和输入，准入本身不证明已经构建。原生构建、真实wire消费者准备、已证装备／卸装结果句及素材路由并行；下一场由单一拍摄代理负责全部停点和正常Quit。B12供奉未执行、正常闭场未合格的结论保持，完整片目标仍约27–30分钟。
+
+## 10月20日11:05：B12装备／卸装已有独立后态，供奉未执行、正常闭场未合格
+
+`machine_id: 4-8e1c2f1861`，依据截至`2026-10-20T03:05:27.175574Z`的原件。B11新DLL15,521,792 B、15个原生有限目标、SDK朝圣38项、库存body5项／15组合及公共native consumer分别实际通过；原编译源6665与公共源befd分开绑定，不作游戏业务总计。B12 R0006／PID7496／gen1、玩家15893、date_raw51394920：原first-four因before形状假设PARTIAL，hot修只读after后继续；库存Open39独立posttrue，错选court237被guard拒绝。只读核五物品后选267，equip52与unequip57各一次，分别独立posttrue，独立item读取equipped=true／slot1再false。267是“卓越级礼器”，不能混旧237、称穿戴或声称净属性收益。详见[B11资格与B12实际专题](filming-b10-and-b11-plan-20261020.md)。
+
+供奉未执行：02:42公共队列因原hold已结束而拒绝，意图稿不算submit。原hold02:39:53自动清理，公共run原wait2、host原wait0、allocator原wait0；normal-close-qualified=false，没有CK3正常Quit／保留handle OS0资格。fresh Steam原图离线、桌面1024×768恢复，screen CAS12550已释放。唯一原片119.966秒／85,394,970 B，strict decode0；原PTS[26,32)122帧只签装备转场source，卸装和供奉准备在take后仅PNG／native，不能连成连续实录。当前正式51／65视觉绑定未增，24required尚未全闭。
+
+B10 profile3,765项／226,186,032 B、B11非S14中间物867项／435,147,408 B已精确回收，日志／原片／DLL／14份S14保留。B12闭场分配上界560,955,392 B，各子目录已含在内。Python first-four21项、A1 after-only15项实际通过，五capability规则10项和R19事件6项按同源有限回执复用，不混成新跑总数，未重建native。runtime／来源研究和镜头审阅继续并行；B13补供奉、A1、H2、P3须新grant与冻结来源，拟全程委派filmingprep单机独占现场并完成正常Quit，不能沿旧hold续写。已定声轨23:32.267、9:25.888样片、约27–30分钟完整片预测保持；案例配音及全片合成尚待实证。
+
 ## 10月20日08:15：B10已确认类型并选入目的地，完整报价仍缺
 
 `machine_id: 4-8e1c2f1861`，截至`2026-10-20T00:15:35Z`。R0005已原生独立确认selected_pious=true，经Root当次原图审阅，一次类型Confirm进入stage2；Rome2577可选、实际选择并独立读回stage5。quote0011与后继refresh都保持`typed_full10_quote_unavailable`，Start意图和调用false，钱包243金币未变、无journey；GUI70不能当全程费用。本场114.800秒原片含三段规划候选，类型确认后的画面须标“尚未出发”，不能沿用B8“尚未确认”，马切拉塔tooltip不是罗马拒绝。详见[B10原场、媒体限制与B11计划](filming-b10-and-b11-plan-20261020.md)。

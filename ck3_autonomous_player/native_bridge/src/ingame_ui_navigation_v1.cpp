@@ -715,6 +715,7 @@ bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
 #include "faith_power_presentation_detail_pins12004.inc"
 #include "faith_power_presentation_receiver_pins12004.inc"
 #include "faith_power_presentation_ui12004.inc"
+#include "player_inventory_close12004.inc"
 #include "faith_power_tooltip_position_lease12004.inc"
 } // namespace
 
@@ -931,7 +932,7 @@ inventory_open12004::Inputs InventoryWindowInputs12004(
   adapter.inputs=&in;inventory_open12004::Inputs out{};
   out.context=&adapter;out.read_admission=&ReadInventoryWindowAdmission12004;
   out.claim_once=&ClaimInventoryWindowIntent12004;out.owner_mailbox_sequence=in.owner_mailbox_sequence;
-  out.enabled=in.open_enabled;out.loaded_gui_sources_bound=in.loaded_gui_sources_verified;
+  out.enabled=in.open_enabled||in.close_enabled;out.loaded_gui_sources_bound=in.loaded_gui_sources_verified;
   // These canonical hashes are supplied only after the worker's real fixed
   // managed-profile verifier plus the extra actual stock inventory file check.
   if(in.loaded_gui_sources_verified) {
@@ -952,6 +953,9 @@ bool ReadPlayerInventoryWindowNative12004(const ZhongguoScoreboardNativeEnvironm
     if(!ReadInventoryWindowAdmission12004(&adapter,admission)){reason="inventory_owner_admission_unavailable";return false;}
     code_pins=inventory_open12004::Source(env);
     const bool ok=inventory_open12004::Read(env,inputs,admission,state,reason);
+    if(in.close_enabled&&(!ok||!inventory_close12004::LoadedCloseSlots(env,state.view))){
+      code_pins=false;reason="inventory_close_loaded_method_or_slots_unverified";return false;
+    }
     out=inventory_open12004::Project(state);return ok;
   }catch(...){reason="inventory_native_read_exception";return false;}
 }
@@ -968,6 +972,20 @@ PlayerInventoryWindowNativeResult12004 OpenPlayerInventoryWindowNative12004(
     out.invoked=result.invoked;out.call_returned=result.call_returned;out.needs_recovery=result.needs_recovery;out.status=result.status;
     return out;
   }catch(...){out.status="inventory_native_open_adapter_exception";return out;}
+}
+PlayerInventoryWindowNativeResult12004 ClosePlayerInventoryWindowNative12004(
+    const ZhongguoScoreboardNativeEnvironmentV1& env,const PlayerInventoryWindowNativeInputs12004& in) noexcept {
+  PlayerInventoryWindowNativeResult12004 out{};out.status="inventory_close_private_disabled";
+  try {
+    InventoryWindowCallbackAdapter12004 adapter{};const auto owner=InventoryWindowInputs12004(adapter,in);
+    inventory_close12004::Inputs inputs{};inputs.owner=owner;inputs.explicit_close_enabled=in.close_enabled;
+    inputs.ledger_context=&adapter;inputs.claim_close_once=&ClaimInventoryWindowIntent12004;
+    const auto result=inventory_close12004::Close(env,inputs);
+    out.before=inventory_open12004::Project(result.before);
+    out.code_pins_verified=result.before.view&&inventory_close12004::LoadedCloseSlots(env,result.before.view);
+    out.once_consumed=result.once_consumed;out.invoked=result.invoked;out.call_returned=result.call_returned;
+    out.needs_recovery=result.needs_recovery;out.status=result.status;return out;
+  }catch(...){out.status="inventory_native_close_adapter_exception";return out;}
 }
 #endif
 

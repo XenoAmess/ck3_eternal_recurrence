@@ -41,6 +41,10 @@ CASE_RITE_CREATION_ACTION_MCP_TOOLS = frozenset({
 CASE_PLAYER_INVENTORY_WINDOW_OPEN_MCP_TOOLS = frozenset({
     "ck3_open_player_inventory_window_v1", "ck3_query_player_inventory_window_open_post_v1",
 })
+CASE_PLAYER_INVENTORY_WINDOW_CLOSE_MCP_TOOLS = frozenset({
+    "ck3_query_player_inventory_window_close_v1", "ck3_close_player_inventory_window_v1",
+    "ck3_query_player_inventory_window_close_post_v1",
+})
 CASE_PLAYER_ARTIFACT_PERSONAL_USE_ACTION_MCP_TOOLS = frozenset({
     "ck3_submit_player_artifact_personal_use_v1", "ck3_query_player_artifact_personal_use_action_post_v1",
 })
@@ -192,6 +196,13 @@ class Selection:
             raise ValueError("Inventory opening opt-in requires open and exact original-intent post tools")
         if not self.opt_in_player_inventory_window_open and CASE_PLAYER_INVENTORY_WINDOW_OPEN_MCP_TOOLS & set(self.case.get("required_mcp_tools", [])):
             raise ValueError("Inventory opening tools require their separate explicit case opt-in")
+        self.opt_in_player_inventory_window_close = self.case.get("opt_in_player_inventory_window_close", False)
+        if type(self.opt_in_player_inventory_window_close) is not bool:
+            raise ValueError("opt_in_player_inventory_window_close must be an explicit Boolean")
+        if self.opt_in_player_inventory_window_close and not CASE_PLAYER_INVENTORY_WINDOW_CLOSE_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Inventory closing opt-in requires query, close and exact Close-intent post tools")
+        if not self.opt_in_player_inventory_window_close and CASE_PLAYER_INVENTORY_WINDOW_CLOSE_MCP_TOOLS & set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Inventory closing tools require their separate explicit case opt-in")
         self.opt_in_player_artifact_personal_use_actions = self.case.get("opt_in_player_artifact_personal_use_actions", False)
         if type(self.opt_in_player_artifact_personal_use_actions) is not bool:
             raise ValueError("opt_in_player_artifact_personal_use_actions must be an explicit Boolean")
@@ -433,6 +444,8 @@ class Selection:
             raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
         if self.opt_in_player_inventory_window_open:
             argv.append("--allow-private-player-inventory-window-open")
+        if self.opt_in_player_inventory_window_close:
+            argv.append("--allow-private-player-inventory-window-close")
         if self.opt_in_player_artifact_personal_use_actions:
             argv.append("--allow-private-player-artifact-personal-use-actions")
         if self.opt_in_player_pilgrimage_execution:
@@ -458,6 +471,7 @@ class Selection:
                 "opt_in_holy_site_relic_actions": self.opt_in_holy_site_relic_actions,
                 "opt_in_player_rite_creation_actions": self.opt_in_player_rite_creation_actions,
                 "opt_in_player_inventory_window_open": self.opt_in_player_inventory_window_open,
+                "opt_in_player_inventory_window_close": self.opt_in_player_inventory_window_close,
                 "opt_in_player_artifact_personal_use_actions": self.opt_in_player_artifact_personal_use_actions,
                 "opt_in_player_pilgrimage_execution": self.opt_in_player_pilgrimage_execution,
                 "rite_confirmation_expected_state_writes": ["native-session/rite-creation-actions/*.claim.json",
@@ -651,6 +665,7 @@ class Selection:
             'runtime_manifest':pin(self.manifest_path),'readiness_policy':self.readiness_policy,
             'opt_in_holy_site_creation_ui':self.opt_in_holy_site_creation_ui,
             'opt_in_player_inventory_window_open':self.opt_in_player_inventory_window_open,
+            'opt_in_player_inventory_window_close':self.opt_in_player_inventory_window_close,
             'opt_in_player_artifact_personal_use_actions':self.opt_in_player_artifact_personal_use_actions,
             'opt_in_player_pilgrimage_execution':self.opt_in_player_pilgrimage_execution}
 

@@ -232,14 +232,24 @@ class Controlled:
     def snapshot(self):
         self.guard();self.calls+=1;value=self.client.snapshot(require_event_free=False);self.scene(value);return value
     def batch(self,steps):
-        self.guard(len(steps));Q.validate({'steps':steps});self.sequence+=1;self.calls+=len(steps)
+        Q.validate({'steps':steps})
+        readonly=Q.READONLY|{'ck3_get_capabilities','ck3_take_snapshot','ck3_query_ingame_ui_window_v1'}
+        needs_before=any(step['tool'] not in readonly for step in steps)
+        self.guard(len(steps)+int(needs_before))
+        # The common host publishes actual after_snapshot for actions as well
+        # as reads. Acquire our own fresh pre-plan frame; never invent row.before.
+        before=self.snapshot() if needs_before else None
+        self.guard(len(steps));self.sequence+=1;self.calls+=len(steps)
         name='a1-control-'+str(self.sequence).zfill(4)
         rows=self.client.execute_plan(steps,name,timeout=20*len(steps))
         require(type(rows) is list and len(rows)==len(steps),'Actual public result rows missing')
         for step,row in zip(steps,rows):
-            self.rows.append({'step':step,'row':row})
-            for key in ('before_snapshot','after_snapshot'):
-                require(type(row.get(key)) is dict,'Independent public frame missing');self.scene(row[key])
+            record={'step':step,'row':row}
+            if before is not None:record['independent_before_snapshot']=before
+            self.rows.append(record)
+            if 'before_snapshot' in row:
+                require(type(row['before_snapshot']) is dict,'Independent public frame missing');self.scene(row['before_snapshot'])
+            require(type(row.get('after_snapshot')) is dict,'Independent public frame missing');self.scene(row['after_snapshot'])
         return rows
     def call(self,tool,args=None):
         name='a1-step-'+str(self.sequence+1).zfill(4)
@@ -260,7 +270,7 @@ class Controlled:
         return {str(i):actor(self.call(Q.ACTOR,{'character_id':i,'skill':'diplomacy'}),i,self.binding['played_character_id'],self.binding['date_raw'])for i in ids}
     def once(self,observation,review):
         require(not self.attempted and not self.unknown and not self.confounded,'Original action already consumed or comparison confounded')
-        self.guard(7) # reserve seven call slots; later enqueues are guarded again
+        self.guard(8) # include explicit world-before read; later enqueues are guarded again
         require_root_visual_review(review,observation,'demote27_once_authorized')
         c=self.context['case_contract'];root=Path(c['intent_ledger_root']);root.mkdir(parents=True,exist_ok=True)
         require(not root.is_symlink(),'Intent ledger must not be a symlink')

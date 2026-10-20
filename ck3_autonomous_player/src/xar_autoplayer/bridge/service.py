@@ -1248,6 +1248,24 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend cannot independently observe this original inventory-open intent")
         return query(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
 
+    def query_player_inventory_window_close_v1(self, *, expected_revision: int) -> dict[str, object]:
+        operation = getattr(self.driver, "query_player_inventory_window_close_private_v1", None)
+        if not callable(operation):
+            raise UnsupportedStepError("selected backend cannot perform this typed inventory-close operation")
+        return operation(expected_revision=expected_revision)
+
+    def close_player_inventory_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        operation = getattr(self.driver, "close_player_inventory_window_private_v1", None)
+        if not callable(operation):
+            raise UnsupportedStepError("selected backend cannot perform this typed inventory-close operation")
+        return operation(expected_revision=expected_revision)
+
+    def query_player_inventory_window_close_post_v1(self, *, expected_revision: int, expected_intent_sequence: int) -> dict[str, object]:
+        operation = getattr(self.driver, "query_player_inventory_window_close_post_private_v1", None)
+        if not callable(operation):
+            raise UnsupportedStepError("selected backend cannot perform this typed inventory-close operation")
+        return operation(expected_revision=expected_revision, expected_intent_sequence=expected_intent_sequence)
+
     def query_character_skill_effects_v1(self, *, expected_revision: int, character_id: int, skill: str = "diplomacy") -> dict[str, object]:
         query = getattr(self.driver, "query_character_skill_effects_private_v1", None)
         if not callable(query):

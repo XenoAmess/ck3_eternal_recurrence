@@ -14,6 +14,8 @@ struct PlayerInventoryWindowNativeInputs12004 {
                     const ck3_12004::PlayerInventoryOpenPost12004&) noexcept=nullptr;
   std::uint64_t owner_mailbox_sequence=0;
   bool open_enabled=false,loaded_gui_sources_verified=false;
+  // Provider-owned fixed close/close-post mode; never a caller RVA or callback.
+  bool close_enabled=false;
 };
 struct PlayerInventoryWindowNativeResult12004 {
   ck3_12004::PlayerInventoryOpenPost12004 before{};
@@ -26,6 +28,9 @@ bool ReadPlayerInventoryWindowNative12004(const ZhongguoScoreboardNativeEnvironm
     ck3_12004::PlayerInventoryOpenPost12004& out,bool& code_pins_verified,
     std::string& reason) noexcept;
 PlayerInventoryWindowNativeResult12004 OpenPlayerInventoryWindowNative12004(
+    const ZhongguoScoreboardNativeEnvironmentV1&,
+    const PlayerInventoryWindowNativeInputs12004&) noexcept;
+PlayerInventoryWindowNativeResult12004 ClosePlayerInventoryWindowNative12004(
     const ZhongguoScoreboardNativeEnvironmentV1&,
     const PlayerInventoryWindowNativeInputs12004&) noexcept;
 }

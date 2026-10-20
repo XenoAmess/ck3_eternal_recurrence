@@ -26,10 +26,12 @@ class AuthoredPublicClient(CaseClient):
  operator_reviewer='AUTHORED-A1-reviewer'
  def __init__(self,image):
   self.image=image;self._binding=None;self.manifest={'game':{'version':'1.20.0.4','exe_sha256':EXE},'native':{'dll':{'sha256':'a'*64}}}
-  self.calls=[];self.checkpoints={};self.demoted=False;self.denied=False;self.allowed=True;self.lost_ack=False
+  self.calls=[];self.snapshot_calls=0;self.checkpoints={};self.demoted=False;self.denied=False;self.allowed=True;self.lost_ack=False
   self.level_drift=False;self.other_grade_drift=False;self.text_drift=False;self.wrong_rite=False;self.claim_source=False;self.stale_skill=False
   self.quote_drift=False;self.reviews=0;self.wallet_error=False
- def snapshot(self,**kwargs):return self.validate_frame(frame(325000000 if self.demoted and not self.wallet_error else 425000000))
+ def snapshot(self,**kwargs):
+  self.snapshot_calls+=1
+  return self.validate_frame(frame(325000000 if self.demoted and not self.wallet_error else 425000000))
  def remaining(self):return 1800
  def guard(self,reserve=90,**kwargs):
   if reserve<120:raise AssertionError('A1 discarded Quit reserve')
@@ -47,13 +49,13 @@ class AuthoredPublicClient(CaseClient):
  def execute_plan(self,steps,name,timeout=None):
   Q.validate({'steps':steps});result=[]
   for s in steps:
-   self.calls.append(copy.deepcopy(s));before=frame(325000000 if self.demoted else 425000000)
+   self.calls.append(copy.deepcopy(s))
    if s['tool']==Q.CONFIRM:
     self.demoted=True
     if self.lost_ack:
-     result.append({'ok':False,'error':'AUTHORED lost callback ACK','before_snapshot':before,'after_snapshot':frame(325000000)});continue
+     result.append({'ok':False,'error':'AUTHORED lost callback ACK','after_snapshot':frame(325000000)});continue
    result.append({'ok':True,'result':self.response(s['tool'],s['args']),
-    'before_snapshot':before,'after_snapshot':frame(325000000 if self.demoted else 425000000)})
+    'after_snapshot':frame(325000000 if self.demoted else 425000000)})
   return result
  def response(self,tool,args):
   common={'available':True,'read_only':True,'played_character_id':15893,'date_raw':51394920}
@@ -131,6 +133,14 @@ class A1Consumers(unittest.TestCase):
   self.assertEqual(r['major_site_ids_before'],[0,27]);self.assertEqual(r['post_observation']['major_site_ids_after'],[0])
   self.assertFalse(r['required_slots']['E2-A1']['closed']);self.assertFalse(r['site_attribution_observed']);self.assertIsNone(r['selected_site_contribution_raw'])
   self.assertLessEqual(r['public_calls_used'],48)
+ def test_after_only_host_rows_use_independent_counted_action_preframes(self):
+  c=AuthoredPublicClient(self.image);r=self.run_one(c)
+  self.assertEqual(self.count(c,Q.CONFIRM),1)
+  self.assertEqual(r['public_calls_used'],len(c.calls)+c.snapshot_calls)
+  self.assertTrue(all('before_snapshot'not in row['row']for row in r['submitted_rows']))
+  action_rows=[row for row in r['submitted_rows']if row['step']['tool']in Q.PRESENT|{Q.CONFIRM}]
+  self.assertTrue(action_rows)
+  self.assertTrue(all(isinstance(row.get('independent_before_snapshot'),dict)for row in action_rows))
  def test_denied_ordinary_legality_never_confirms(self):
   c=AuthoredPublicClient(self.image);c.allowed=False;r=self.run_one(c);self.assertEqual(self.count(c,Q.CONFIRM),0)
  def test_Root_PNG_denial_never_confirms(self):

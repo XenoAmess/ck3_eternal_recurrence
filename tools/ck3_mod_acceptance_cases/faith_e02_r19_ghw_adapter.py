@@ -169,9 +169,17 @@ def drain_current_events(context, client, frame, binding, reader, *, phase="hof-
             require(type(instance) is int and instance > 0, "Actual native event instance absent")
             row = _call(client, prefix + "-context", queue.EVENT_CONTEXT,
                         {"event_instance_id": instance})
+            # Public host rows publish actual after_snapshot, not before_snapshot.
+            # Bind the read-only context to that real frame; never reuse an older
+            # caller revision or synthesize a missing public before frame.
+            context_after = row.get("after_snapshot")
+            require(isinstance(context_after, dict), "Actual event query after_snapshot absent")
+            same_scene(context_after, binding, reader, allow_event=True)
+            require((context_after.get("active_event") or {}).get("instance_id") == instance,
+                "Actual event changed during its context query")
             capture = {"schema": "faith-e02-R19-first-event-claim-v1",
                 "machine_id": context["case_contract"]["machine_id"], "run_id": context["run_id"],
-                "frame": row.get("before_snapshot", frame),
+                "frame": context_after,
                 "query_receipt": queue.pin(output / (prefix + "-context.actual-results.json")),
                 "offline_analysis_required_after_batch": True}
             path = output / (prefix + "-offline-analysis-and-once-claim.json")

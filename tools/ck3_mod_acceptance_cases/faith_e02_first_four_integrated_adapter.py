@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import importlib.util
 import json
+import copy
+import re
 from pathlib import Path
 import sys
 import faith_e02_first_four_integrated_queue as Q
@@ -22,6 +24,11 @@ finally:
     sys.path.remove(str(ORIGIN))
 require = Q.require
 MAX_CALLS = 96
+# Original chain33 + independent Close query/submit2/post3/hidden-query1=40.
+# Keep one spare; the global96 cap and normal-exit time reserve are unchanged.
+CHAIN_CALL_RESERVE = 41
+MAX_OWNED_REFS = 64
+MAX_SITE_PROBES = 3
 LIFECYCLE = S.LIFECYCLE | {'ck3_query_pending_character_interaction_context_v1',
     'ck3_reply_pending_character_interaction','ck3_select_event_option'}
 # Public Selection requires the full original relic action bundle. The product
@@ -29,11 +36,20 @@ LIFECYCLE = S.LIFECYCLE | {'ck3_query_pending_character_interaction_context_v1',
 RELIC_BUNDLE = {'ck3_set_holy_site_relic_slot_selection_v1','ck3_select_holy_site_relic_artifact_v1',
     'ck3_remove_holy_site_relic_v1',Q.ENSHRINE}
 REQUIRED = Q.TOOLS | LIFECYCLE | RELIC_BUNDLE
-SCOPE = {'equip_once':True,'unequip_once':True,'enshrine_once':True,'replace_allowed':False,
+SCOPE = {'equip_once':True,'unequip_once':True,'enshrine_once':True,'inventory_close_once':True,'replace_allowed':False,
     'create_allowed':False,'promote_allowed':False,'day_advance_allowed':False,
     'new_save_allowed':False,'ordinary_campaign_credit':False,'site_attribution_inferred':False}
 
 def read(path): return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+
+READONLY_FRAMES = Q.READONLY | {'ck3_get_capabilities','ck3_take_snapshot',
+    'ck3_query_ingame_ui_window_v1',Q.EQUIP_POST,Q.INVENTORY_POST,Q.INVENTORY_CLOSE_QUERY,Q.INVENTORY_CLOSE_POST}
+
+def control_name(context,name):
+    prefix = context.get('control_prefix','')
+    require(type(prefix) is str and (not prefix or re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,47}-',prefix)),
+        'Explicit portable unique control prefix required')
+    return prefix+name if prefix and not name.startswith(prefix) else name
 
 def validate_contract(context):
     c = context['case_contract']; spec = context['case_spec']
@@ -46,7 +62,8 @@ def validate_contract(context):
         and c.get('max_public_calls') == MAX_CALLS,'Narrow vanilla scope differs')
     require(c.get('machine_id') == '4-8e1c2f1861','Explicit target machine required')
     for flag in ('opt_in_holy_site_creation_ui','opt_in_holy_site_relic_actions',
-                 'opt_in_player_artifact_personal_use_actions','opt_in_player_inventory_window_open'):
+                 'opt_in_player_artifact_personal_use_actions','opt_in_player_inventory_window_open',
+                 'opt_in_player_inventory_window_close'):
         require(spec.get(flag) is True,'Independent public flag missing: '+flag)
     for flag in ('opt_in_holy_site_creation_create_once','opt_in_player_rite_creation_actions','opt_in_player_pilgrimage_execution'):
         require(spec.get(flag) is False,'Unrelated world operation must stay closed')
@@ -84,8 +101,14 @@ def prepare_case(context):
 class Integrated(S.Scout):
     def __init__(self,context,client,binding,reader):
         super().__init__(context,client,binding,reader)
-        self.world = {'equip':0,'unequip':0,'enshrine':0,'inventory_open':0}
+        self.world = {'equip':0,'unequip':0,'enshrine':0,'inventory_open':0,'inventory_close':0}
         self.unknown = False
+        self._artifact_intents = {}
+        self._inventory_close_intent = None
+        control_name(context,'validate-prefix')
+        prior = context.get('prior_public_calls_used',0)
+        require(type(prior) is int and 0 <= prior < MAX_CALLS,'Original public-call carry-in malformed')
+        self.calls += prior
     def guard(self,n=1):
         require(self.calls+n <= MAX_CALLS,'Finite integrated public-control budget exhausted')
         self.client.guard(120+30*n+10)
@@ -99,7 +122,7 @@ class Integrated(S.Scout):
                 'policy':'Known dedicated policy first; unknown event saves actual IDs/options and selects first displayed native option; interaction uses original left semantics. No OCR/mouse. Offline analysis runs concurrently.',
                 'remaining_public_controls':MAX_CALLS-self.calls}
             self.sequence += 1
-            response = S._review(self.context,self.client,'firstfour-integrated-interruption-'+str(self.sequence),request,160)
+            response = S._review(self.context,self.client,control_name(self.context,'firstfour-integrated-interruption-'+str(self.sequence)),request,160)
             require(response.get('native_selection_only') is True and response.get('ack_and_disappearance_separate') is True
                 and response.get('offline_analysis_input_written') is True,'Root must preserve actual interruption inputs and independent outcome')
             require(type(response.get('evidence')) is list and bool(response['evidence']),
@@ -114,15 +137,120 @@ class Integrated(S.Scout):
         require(frame.get('pending_character_interaction') is None,'Original interaction remains visible')
         return frame
     def submit(self,steps,name):
-        self.guard(len(steps));Q.validate({'steps':steps});self.calls += len(steps)
+        steps = [dict(step,id=control_name(self.context,step['id'])) for step in steps]
+        name = control_name(self.context,name)
+        Q.validate({'steps':steps})
+        changing = [i for i,step in enumerate(steps) if step['tool'] not in READONLY_FRAMES]
+        require(not changing or changing == [0],'One current-frame-changing first step per public plan')
+        self.guard(len(steps)+bool(changing))
+        fresh_before = None
+        if changing:
+            self.calls += 1
+            fresh_before = self.client.snapshot(require_event_free=False)
+            require(type(fresh_before) is dict,'Independent fresh public pre-read missing')
+            fresh_before = self.scene(fresh_before)
+        self.calls += len(steps)
         rows = self.client.execute_plan(steps,name,timeout=30*len(steps))
         require(type(rows) is list and len(rows) == len(steps),'Original public result rows missing')
-        for step,row in zip(steps,rows):
-            self.rows.append({'step':step,'row':row})
-            for key in ('before_snapshot','after_snapshot'):
-                require(type(row.get(key)) is dict,'Independent original public frame missing')
-                self.scene(row[key])
+        for index,(step,row) in enumerate(zip(steps,rows)):
+            record = {'step':step,'row':row}
+            self.rows.append(record)
+            # The public executor publishes only after_snapshot. Never invent
+            # an original before_snapshot from this independently acquired read.
+            if index in changing:
+                require(type(fresh_before) is dict,'World/UI action lacks its fresh pre-read')
+                record['independent_before_snapshot'] = fresh_before
+                record['before_frame_source'] = 'CaseClient.snapshot before execute_plan'
+            if 'before_snapshot' in row:
+                require(type(row['before_snapshot']) is dict,'Malformed supplied public before frame')
+                self.scene(row['before_snapshot'])
+            require(type(row.get('after_snapshot')) is dict,'Independent original public after frame missing')
+            self.scene(row['after_snapshot'])
         return rows
+    def value(self,row):
+        if row.get('ok') is not True or row.get('error') or type(row.get('result')) is not dict:
+            return None
+        tool = (row.get('plan') or {}).get('tool')
+        if tool in {Q.INVENTORY_CLOSE_QUERY,Q.CLOSE_INVENTORY,Q.INVENTORY_CLOSE_POST}:
+            return self.inventory_close_value(row,tool)
+        if tool not in {Q.EQUIP,Q.EQUIP_POST}:
+            return super().value(row)
+        from xar_autoplayer.bridge.artifact_personal_use_action_private_transport_v1 import (
+            normalize_artifact_personal_use_action_v1)
+        value = row['result'];args = (row.get('plan') or {}).get('args') or {}
+        artifact = args.get('artifact_id');post = tool == Q.EQUIP_POST
+        require(Q.ref(artifact),'Action full artifact request missing')
+        # Preserve the original public body. Project only its exact native
+        # fields into the existing strict shared SDK normalizer; never invent
+        # top-level date_raw from a nested observation.
+        keys = """schema game_version executable_sha256 read_only available unavailable_reason
+            played_character_id artifact_id desired_equipped expected_slot_index expected_replacing_artifact_id
+            intent_sequence intent_found invoked once_intent_consumed dispatch_call_returned needs_recovery
+            desired_inventory_state_observed status before_native_revision before_connection_generation before_game_pid
+            after_native_revision after_connection_generation after_game_pid before after business_outcome_observed
+            actor_aggregate_observed personal_net_effect_attributed total_payment_observed automatic_retry""".split()
+        native = {key:value[key] for key in keys if key in value}
+        if post:
+            snapshot = row.get('after_snapshot')
+            expected = args.get('expected_intent_sequence')
+            require(type(expected) is int and expected > 0,'Post lacks exact original native intent')
+            origin = self._artifact_intents.get((artifact,expected))
+            require(origin is not None,'Post has no retained actual original submit evidence')
+        else:
+            record = next((entry for entry in reversed(self.rows)
+                if entry.get('row') is row),None)
+            snapshot = (record or {}).get('independent_before_snapshot',row.get('before_snapshot'))
+            require(type(snapshot) is dict,'Action submit lacks its independent pre-read record')
+        require(type(snapshot) is dict,'Action/post actual independent frame missing')
+        S.same_scene(snapshot,self.binding,self.reader)
+        normalize_artifact_personal_use_action_v1(native,snapshot=snapshot,
+            artifact_id=artifact,post=post,
+            expected_intent_sequence=expected if post else None,
+            submitted=None if post else args)
+        if post:
+            for key in ('before','before_native_revision','before_connection_generation','before_game_pid',
+                        'desired_equipped','expected_slot_index','expected_replacing_artifact_id'):
+                require(native[key] == origin[key] and type(native[key]) is type(origin[key]),
+                    'Post crossed retained original intent: '+key)
+            require(native['artifact_id'] == origin['artifact_id']
+                and origin['original_tool'] == Q.EQUIP,'Post crossed original artifact/tool')
+            # Only this exact independent current post can release the lock.
+            self.unknown = native['desired_inventory_state_observed'] is not True
+        elif native['intent_found']:
+            self._artifact_intents[(artifact,native['intent_sequence'])] = {
+                **copy.deepcopy(native),'original_tool':tool}
+            if native['invoked'] or native['once_intent_consumed']:
+                self.unknown = True
+        return value
+
+    def inventory_close_value(self,row,tool):
+        from xar_autoplayer.bridge.player_inventory_window_close_private_transport_v1 import (
+            BODY_FIELDS,normalize_player_inventory_window_close_v1)
+        operation = {Q.INVENTORY_CLOSE_QUERY:'query',Q.CLOSE_INVENTORY:'close',Q.INVENTORY_CLOSE_POST:'post'}[tool]
+        value = row['result'];native = {key:value[key] for key in BODY_FIELDS if key in value}
+        expected = (row.get('plan') or {}).get('args',{}).get('expected_intent_sequence')
+        if operation == 'close':
+            record = next((entry for entry in reversed(self.rows) if entry.get('row') is row),None)
+            snapshot = (record or {}).get('independent_before_snapshot')
+        else:
+            snapshot = row.get('after_snapshot')
+        require(type(snapshot) is dict,'Inventory Close lacks an actual independent public frame')
+        S.same_scene(snapshot,self.binding,self.reader)
+        normalize_player_inventory_window_close_v1(native,snapshot=snapshot,operation=operation,
+            expected_intent_sequence=expected)
+        if operation == 'close' and native['intent_found']:
+            self._inventory_close_intent = {**copy.deepcopy(native),'original_tool':tool}
+            self.unknown = True
+        elif operation == 'post':
+            origin = self._inventory_close_intent
+            require(origin is not None and origin['original_tool'] == Q.CLOSE_INVENTORY
+                and type(expected) is int and expected == origin['intent_sequence'] == native['intent_sequence'],
+                'Inventory Close post crossed the retained actual Close intent/tool')
+            require(native['before'] == origin['before'],'Inventory Close post changed its original before VIEW')
+            self.unknown = native['desired_window_observed'] is not True
+        # An ordinary hidden query is current evidence, never intent resolution.
+        return value
+
     def domain(self,tool,args=None):
         value = self.value(self.call(tool,args))
         if value is not None and tool in Q.READONLY:
@@ -135,23 +263,28 @@ class Integrated(S.Scout):
             'native_observation':observation,'native_observation_sha256':visual_observation_sha256(observation),
             'approval_key':approval,'prepare_original_image':True,'scope':SCOPE,
             'note':'Review actual full IDs, legality, current native slot/quote and original pixels; no total-to-site attribution.'}
-        answer = S._review(self.context,self.client,'firstfour-integrated-review-'+name,request,160)
+        answer = S._review(self.context,self.client,control_name(self.context,'firstfour-integrated-review-'+name),request,160)
         require_root_visual_review(answer,observation,approval)
         return answer
     def once(self,key,tool,args):
         require(not self.unknown and self.world[key] == 0,'Unknown/consumed original mutation cannot be replayed')
         self.world[key] += 1
-        self.client.checkpoint('firstfour-integrated-'+key+'-once-intent',{'run_id':self.context['run_id'],
+        self.client.checkpoint(control_name(self.context,'firstfour-integrated-'+key+'-once-intent'),{'run_id':self.context['run_id'],
             'machine_id':self.context['case_contract']['machine_id'],'tool':tool,'args':args,'automatic_retry':False})
+        # Consume the local uncertainty before transport. Parsing failures
+        # after an actual invocation cannot leave an apparently clear ledger.
+        self.unknown = True
         try:
             row = self.call(tool,args)
+            value = self.value(row)
+            known_no_intent = bool(value and value.get('once_intent_consumed') is False
+                and value.get('invoked') is False and value.get('needs_recovery') is False)
+            if known_no_intent:
+                self.unknown = False
+            return value
         except Exception:
             self.unknown = True
             raise
-        value = self.value(row)
-        if value is None or ((value.get('once_intent_consumed') is True or value.get('invoked') is True)
-                and value.get('needs_recovery') is not False): self.unknown = True
-        return value
 
 def recipient_ids(evidence,player):
     ids = [player]
@@ -161,6 +294,117 @@ def recipient_ids(evidence,player):
         if context.get('available') is True and Q.ref(target) and target not in ids: ids.append(target)
         if len(ids) == 2: break
     return ids
+
+def collect_chain_inputs(case,evidence):
+    """Collect current required inputs once; do not rerun the broad scout."""
+    evidence.update(site_ids=[],site_observations=[],artifact_samples=[],creation_samples=[],
+        native_refusals=[],unknowns=[],personal_probes=[],selection_complete=False)
+    evidence['capabilities'] = case.domain('ck3_get_capabilities')
+    religion = case.domain('ck3_query_player_religion_context_v1')
+    evidence.update(religion=religion,religion_observed=bool(religion and religion.get('available') is True))
+    sites = case.domain('ck3_query_player_holy_site_v1');evidence['site_query'] = sites
+    require(sites and sites.get('available') is True,'Current native Faith site list unavailable')
+    rows = sites.get('current_faith_sites')
+    require(type(rows) is list and len(rows) <= 64 and all(type(row) is dict
+        and Q.ref(row.get('holy_site_id')) for row in rows),'Actual bounded Faith site list malformed')
+    full_sites = [row['holy_site_id'] for row in rows]
+    require(len(full_sites) == len(set(full_sites)),'Duplicate current Faith site references')
+    evidence.update(site_count_observed=len(rows),site_sample_complete=False)
+
+    # Keep all three original creation type/refusal obligations. Each public
+    # presentation already returns its independent current model; reuse it
+    # instead of querying the same model again before every type preview.
+    current = case.presentation('ck3_open_holy_site_creation_window_v1',{})
+    evidence['creation_initial'] = current
+    evidence['native_refusals'] += S._creation_refusals(current,'initial')
+    if current and current.get('available') is True and current.get('models_complete') is True:
+        types = [row.get('type_key') for row in current.get('available_holy_site_types',[])
+            if row.get('type_key') in Q.TYPES]
+        require(len(types) == len(set(types)) and len(types) <= 3,'Creation type model malformed')
+        for key in types:
+            row = next((row for row in current.get('available_holy_site_types',[])
+                if row.get('type_key') == key),None)
+            if not row or row.get('native_can_pick_observed') is not True or row.get('native_can_pick') is not True:
+                continue
+            if current.get('selected_type_key') != key:
+                current = case.presentation('ck3_select_holy_site_creation_type_v1',{'type_key':key})
+            if not current or current.get('available') is not True or current.get('selected_type_key') != key:
+                evidence['unknowns'].append({'type_key':key,'reason':'selected_creation_model_unavailable'})
+                break
+            baronies = current.get('potential_barony_title_ids')
+            if type(baronies) is list and baronies:
+                barony = baronies[0];require(Q.ref(barony),'Native creation barony reference malformed')
+                if current.get('selected_barony_title_id') != barony:
+                    current = case.presentation('ck3_select_holy_site_creation_barony_v1',{'barony_title_id':barony})
+                if not current or current.get('selected_barony_title_id') != barony:
+                    evidence['unknowns'].append({'type_key':key,'reason':'selected_barony_not_observed'})
+                    break
+            evidence['creation_samples'].append(current)
+            evidence['native_refusals'] += S._creation_refusals(current,'selected-'+key)
+
+    # A single usable current site supplies the complete owned-reference list
+    # and the recipient. Additional sites are only bounded fallback probes.
+    for row in [row for row in rows if row.get('available') is True][:MAX_SITE_PROBES]:
+        site = row['holy_site_id'];evidence['site_ids'].append(site)
+        ui = case.presentation('ck3_open_holy_site_window_v1',{'holy_site_id':site},
+            'ck3_query_ingame_ui_window_v1',{'window_kind':'holy_site'})
+        visible = bool(ui and ui.get('available') is True and ui.get('effective_visible') is True
+            and ui.get('subject_id_available') is True and ui.get('current_subject_id') == site)
+        if not visible:
+            evidence['unknowns'].append({'site_id':site,'reason':'original_site_window_not_independently_visible'})
+            continue
+        permissions = case.domain('ck3_query_player_holy_site_relic_permissions_v1',{'holy_site_id':site})
+        relic = case.domain(Q.RELIC_CONTEXT,{'holy_site_id':site})
+        evidence['site_observations'].append({'site_id':site,'permissions':permissions,'relic':relic,'window':ui})
+        inventory = (permissions or {}).get('player_inventory',{})
+        if inventory.get('available') is not True or inventory.get('owner_matches_player') is not True:
+            continue
+        owned = inventory.get('artifact_ids')
+        require(type(owned) is list and len(owned) <= MAX_OWNED_REFS and all(Q.ref(item) for item in owned)
+            and len(owned) == len(set(owned)),'Complete bounded owned references malformed; never truncate')
+        evidence.update(inventory_refs=list(owned),inventory_count=len(owned),inventory_site_id=site,
+            site_sample_complete=len(evidence['site_ids']) == len(rows))
+        return evidence
+    raise ValueError('No bounded current site supplied an actual complete owned inventory')
+
+def personal_empty_slot(value):
+    slot = value.get('effective_slot_index')
+    slots = value.get('slots')
+    return bool(value.get('available') is True and value.get('personally_owned') is True
+        and value.get('inventory_artifact') is True and value.get('equipped') is False
+        and value.get('inventory_view_visible') is True and value.get('native_equipped_observed') is True
+        and value.get('can_equip_in_effective_slot') is True and value.get('replacing_artifact_id') is None
+        and type(slot) is int and 0 <= slot < 64 and type(slots) is list
+        and any(row.get('index') == slot and row.get('personal') is True and row.get('artifact_id') is None
+            for row in slots))
+
+def select_chain_artifact(case,evidence):
+    owned = evidence['inventory_refs'];site = evidence['inventory_site_id']
+    for artifact in owned:
+        # Reserve the complete worst-case chain before either read. No class
+        # inference from relic slots, item IDs, names or list ordering.
+        require(case.calls+2+CHAIN_CALL_RESERVE <= MAX_CALLS,
+            'Owned-item selection incomplete: retain the full chain public-call reserve')
+        value = item_query(case,artifact)
+        evidence['personal_probes'].append({'artifact_id':artifact,'observation':value})
+        if value.get('available') is True:
+            require(type(value.get('owned_ids')) is list and len(value['owned_ids']) == len(owned)
+                and set(value['owned_ids']) == set(owned),'Owned inventory changed during candidate selection')
+        if not personal_empty_slot(value):
+            evidence['artifact_samples'].append({'artifact_id':artifact,'site_id':site,
+                'personal_legal_empty_slot':False,'can_enshrine':None})
+            continue
+        action = case.domain(Q.ACTION_CONTEXT,{'holy_site_id':site,'artifact_id':artifact})
+        sample = S.action_startpoint(action,case.binding['played_character_id'],case.binding['date_raw'],site,artifact) if action else {
+            'artifact_id':artifact,'site_id':site,'available':False}
+        sample['personal_legal_empty_slot'] = True;evidence['artifact_samples'].append(sample)
+        if sample.get('owned_by_player') is True and sample.get('can_enshrine') is True and sample.get('equipped') is False:
+            evidence.update(selection_complete=True,artifact_sample_complete=len(evidence['personal_probes']) == len(owned),
+                selected_personal_observation=value,selected_action_context=action,
+                calls_at_selection=case.calls,remaining_chain_reserve=CHAIN_CALL_RESERVE)
+            return sample
+    evidence.update(selection_complete=True,artifact_sample_complete=True)
+    raise ValueError('Complete owned inventory has no observed personal legal-empty-slot and enshrinable intersection')
 
 def actor_read(case,ids):
     result = {}
@@ -226,6 +470,48 @@ def ensure_inventory(case):
     case.unknown = True
     raise ValueError('Original inventory opening lacks a current independent post; never retry')
 
+def inventory_hidden(value):
+    current = (value or {}).get('current',{})
+    return bool(value and value.get('available') is True and current.get('available') is True
+        and current.get('window_present') is True and current.get('current_player_selected') is True
+        and current.get('native_visible') is False and current.get('effective_visible') is False)
+
+def ensure_inventory_hidden(case):
+    require(case.unknown is False,'Unresolved original item/Open intent must precede inventory Close')
+    original = case.domain(Q.INVENTORY_CLOSE_QUERY)
+    if original and original.get('client_replay_blocked') is True:
+        case.unknown = True
+        raise ValueError('Existing inventory Close intent requires its original post; never resubmit')
+    require(original and original.get('available') is True,'Actual inventory Close owner/source unavailable')
+    if inventory_hidden(original):
+        return {'already_hidden':True,'current':original,'new_close_observed':False}
+    answer = case.once('inventory_close',Q.CLOSE_INVENTORY,{})
+    sequence = (answer or {}).get('intent_sequence')
+    no_claim = bool(answer and type(sequence) is int and sequence == 0 and all(
+        answer.get(key) is False for key in ('once_intent_consumed','invoked','needs_recovery')))
+    try:
+        if no_claim:
+            current = case.domain(Q.INVENTORY_CLOSE_QUERY)
+            require(current and current.get('client_replay_blocked') is not True and inventory_hidden(current),
+                'No-call inventory Close requires an independent current hidden VIEW')
+            return {'already_hidden':True,'submit':answer,'current':current,'new_close_observed':False}
+        require(type(sequence) is int and sequence > 0,
+            'Unknown inventory Close has no call-bound native sequence; never retry or borrow Open/history')
+        post = None
+        for _ in range(3):
+            candidate = case.value(case.call(Q.INVENTORY_CLOSE_POST,{'expected_intent_sequence':sequence}))
+            if candidate and candidate.get('desired_window_observed') is True and inventory_hidden(candidate):
+                post = candidate;break
+        require(post is not None,'Original inventory Close has no exact independent hidden post; never retry')
+        current = case.domain(Q.INVENTORY_CLOSE_QUERY)
+        require(current and current.get('client_replay_blocked') is not True and inventory_hidden(current),
+            'Inventory became visible/unknown before the holy-site quote image')
+        case.unknown = False
+        return {'already_hidden':False,'submit':answer,'post':post,'current':current,'new_close_observed':True}
+    except Exception:
+        case.unknown = True
+        raise
+
 def item_query(case,artifact):
     value = case.domain(Q.ARTIFACT,{'artifact_id':artifact})
     require(value and value.get('requested_artifact_id') == artifact and value.get('played_character_id') == case.binding['played_character_id'],
@@ -241,8 +527,8 @@ def equip_unequip(case,artifact,result):
         and before.get('can_equip_in_effective_slot') is True and before.get('replacing_artifact_id') is None
         and type(before.get('effective_slot_index')) is int,'A real unequipped owned artifact and empty legal personal slot are required')
     result['personal_before'] = before
+    current = before
     for key,desired in (('equip',True),('unequip',False)):
-        current = item_query(case,artifact)
         slot = current.get('effective_slot_index') if desired else current.get('equipped_slot_index')
         legal = (current.get('available') is True and current.get('equipped') is not desired
             and (current.get('can_equip_in_effective_slot') is True if desired else current.get('can_unequip') is True)
@@ -277,6 +563,7 @@ def equip_unequip(case,artifact,result):
         require(independent.get('available') is True and independent.get('equipped') is desired
             and independent.get('personally_owned') is True,'Separate personal inventory read disagrees with native post')
         result[key+'_post'] = post;result[key+'_independent_item'] = independent
+        current = independent
 
 def enshrine_terms(value,site,artifact):
     require(value and value.get('available') is True and value.get('requested_holy_site_id') == site
@@ -301,9 +588,8 @@ def enshrine_terms(value,site,artifact):
 def enshrine(case,site,artifact,result):
     case.presentation('ck3_open_holy_site_window_v1',{'holy_site_id':site},
         'ck3_query_ingame_ui_window_v1',{'window_kind':'holy_site'})
-    case.presentation('ck3_select_holy_site_relic_artifact_v1',{'holy_site_id':site,'artifact_id':artifact},
+    before = case.presentation('ck3_select_holy_site_relic_artifact_v1',{'holy_site_id':site,'artifact_id':artifact},
         Q.ACTION_CONTEXT,{'holy_site_id':site,'artifact_id':artifact})
-    before = case.domain(Q.ACTION_CONTEXT,{'holy_site_id':site,'artifact_id':artifact})
     args = enshrine_terms(before,site,artifact)
     case.guard();wallet_before = case.client.snapshot();case.calls += 1;S.same_scene(wallet_before,case.binding,case.reader)
     result['enshrine_quote'] = before
@@ -344,19 +630,18 @@ def run_case(context,client):
         'selected_site_contribution_raw':None,'automatic_retry':False,'payment_total_proven':False}
     evidence = {};before = {};ids = [binding['played_character_id']]
     try:
-        S._review(context,client,'firstfour-integrated-before-scout',{'machine_id':c['machine_id'],
+        S._review(context,client,control_name(context,'firstfour-integrated-before-scout'),{'machine_id':c['machine_id'],
             'run_id':context['run_id'],'scope':SCOPE,'binding':binding,'max_public_calls':MAX_CALLS},180)
-        S.collect_scout(case,evidence)
+        collect_chain_inputs(case,evidence)
+        result['inventory_open'] = ensure_inventory(case)
+        selected = select_chain_artifact(case,evidence)
+        site,artifact = selected['site_id'],selected['artifact_id']
+        result.update(selected_site_id=site,selected_artifact_id=artifact)
         ids = recipient_ids(evidence,binding['played_character_id'])
         result['actual_recipient_ids'] = ids
         before = actor_read(case,ids);result['actors_before'] = before
-        candidates = [x for x in evidence.get('artifact_samples',[]) if x.get('owned_by_player') is True
-            and x.get('can_enshrine') is True and x.get('equipped') is False]
-        require(candidates,'No actually sampled personally owned unequipped enshrinable artifact')
-        selected = candidates[0];site,artifact = selected['site_id'],selected['artifact_id']
-        result.update(selected_site_id=site,selected_artifact_id=artifact)
-        result['inventory_open'] = ensure_inventory(case)
         equip_unequip(case,artifact,result)
+        result['inventory_close'] = ensure_inventory_hidden(case)
         enshrine(case,site,artifact,result)
         result['status'] = 'MINIMAL_ITEM_CHAIN_OBSERVED_ATTRIBUTION_PENDING' if result.get('enshrine_owner_slot_inventory_observed') else 'PARTIAL_ENSHRINE_POST_UNKNOWN'
     except Exception as error:
