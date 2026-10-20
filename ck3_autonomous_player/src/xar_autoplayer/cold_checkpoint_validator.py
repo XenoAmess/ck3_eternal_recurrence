@@ -113,7 +113,7 @@ def validate_cold_start_checkpoint_payload_for_pipe(
     saved_lifecycle = saved.get("succession_lifecycle")
     normalized_lifecycle: dict[str, object] | None = None
     lifecycle_values = (persisted_lifecycle, checkpoint_lifecycle, saved_lifecycle)
-    if any(
+    if "succession_lifecycle" in document or any(
         value is not None
         for value in lifecycle_values
     ):

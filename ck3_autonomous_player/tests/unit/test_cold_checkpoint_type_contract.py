@@ -88,6 +88,22 @@ class ColdCheckpointTypeContractTests(unittest.TestCase):
                          native_session.validate_cold_start_checkpoint_for_pipe):
             self.assertIs(get_type_hints(function)["return"], ColdCheckpointAnchorV1)
 
+    def test_missing_lifecycle_migrates_but_explicit_top_level_null_is_rejected(self) -> None:
+        for mask in range(8):
+            with self.subTest(null_slots=mask):
+                value = payload()
+                slots = [value, value["last_checkpoint"],
+                         value["command_history"][0]["result"]["checkpoint"]]
+                for index, slot in enumerate(slots):
+                    if mask & (1 << index):
+                        slot["succession_lifecycle"] = None
+                before = deepcopy(value)
+                if mask & 1:
+                    self.rejected_before_save_io(value)
+                else:
+                    self.assertIsNone(self.validate(value)["succession_lifecycle"])
+                self.assertEqual(value, before)
+
     def test_numeric_lookalikes_do_not_bind_integer_anchors(self) -> None:
         cases = [
             ("format_version", 2.0), ("actor", True), ("actor", 1.0),

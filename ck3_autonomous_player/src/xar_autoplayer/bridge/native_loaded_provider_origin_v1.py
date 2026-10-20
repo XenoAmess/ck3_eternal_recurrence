@@ -4,6 +4,7 @@ Default OFF. The source remains the original controller holder, never a JSON
 qualification. Received holders keep source_verified=False. Only the existing
 loaded-provider issuer can mint its existing DTO after a live origin readback.
 """
+from __future__ import annotations
 from dataclasses import dataclass
 import secrets
 import threading
@@ -172,7 +173,8 @@ class _CanonicalOriginV1:
             if errors:raise ValueError("canonical root revocation/release unverified") from errors[0]
 
 
-def prepare_canonical_origin_v1(*,custody,enabled=False,startup_timeout=10.0):
+def prepare_canonical_origin_v1(*, custody: contract._PreloadCustodyV1,
+                                enabled: bool = False, startup_timeout: float = 10.0) -> _CanonicalOriginV1 | None:
     if enabled is not True:return None
     io=OriginKernelIOV1(custody.facade,enabled=True,startup_timeout=startup_timeout)
     return _CanonicalOriginV1(custody,io)
@@ -213,7 +215,8 @@ class _OriginSessionV1:
                 and self.io.api.private_parent_pid(self.handle)==self.origin.pid,"origin revoked during readback")
 
 
-def attach_received_origin_v1(result,*,origin_handle,origin_pipe,enabled=False,startup_timeout=10.0):
+def attach_received_origin_v1(result: object, *, origin_handle: int, origin_pipe: str,
+                              enabled: bool = False, startup_timeout: float = 10.0) -> _OriginSessionV1 | None:
     """Private bootstrap only; locations never assert qualification."""
     if enabled is not True:return None
     from .native_loaded_provider_receiver_v1 import ReceiverResultV1

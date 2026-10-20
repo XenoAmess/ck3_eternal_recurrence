@@ -1,0 +1,18 @@
+{
+  "actor_character_id": 40526,
+  "last_target_character_id": 34973,
+  "no_operation_count": 0,
+  "last_check_date_raw": 53274240,
+  "next_check_date_raw": 53274960,
+  "frontier_membership": [
+    33946,
+    34232,
+    34973,
+    35899,
+    36663,
+    57648
+  ],
+  "last_observation_attempt_action_id": "sway-356d365fc2d947cc9dd0944aa2267095",
+  "last_terminal_action_id": null,
+  "last_job_kind": "observe_applied"
+}

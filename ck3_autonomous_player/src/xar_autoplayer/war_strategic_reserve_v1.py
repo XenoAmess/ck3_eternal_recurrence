@@ -34,7 +34,10 @@ def _recoverable_wars(priority):
     return sorted(rows, key=lambda row: order.index(row["war_id"]) if row["war_id"] in order else len(order))
 
 
-def observe_procurement_package_budget_v1(snapshot, ledger, *, purpose_war_ids):
+def observe_procurement_package_budget_v1(
+    snapshot: Mapping[str, object], ledger: Mapping[str, object], *,
+    purpose_war_ids: list[int],
+) -> dict[str, object]:
     """Do not reset a procurement package's treasury-share cap after each hire.
 
     Count independently observed employment contracts as committed quote cost,

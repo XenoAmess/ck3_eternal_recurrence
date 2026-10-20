@@ -3,6 +3,10 @@
 The optional value is produced by the original NativeDriver query. Accepting its
 shape does not authenticate a provider, create a token, or change its score.
 """
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import NoReturn, TypeGuard
 from dataclasses import fields
 
 from xar_autoplayer.player_heir_fixed_dynasty_projection_v1 import (
@@ -21,32 +25,45 @@ _BOUND = {
 }
 
 
-def _require(value, reason):
+def _require(value: object, reason: str) -> None:
     if not value:
         raise BridgeUnavailableError("campaign-root player-heir projection malformed: " + reason)
 
 
-def _integer(value, low, high):
+def _integer(value: object, low: int, high: int) -> TypeGuard[int]:
     return type(value) is int and low <= value <= high
 
 
-def _text(value, limit):
+def _text(value: object, limit: int) -> TypeGuard[str]:
     return isinstance(value, str) and 0 < len(value) <= limit
 
 
-def _sha(value):
+def _sha(value: object) -> TypeGuard[str]:
     return (isinstance(value, str) and len(value) == 64
             and all(character in "0123456789abcdef" for character in value))
 
 
-def validate_player_heir_projection_service_v1(value, *, root, result):
+def _mapping(value: object, reason: str) -> dict[str, object]:
+    if not isinstance(value, dict) or any(type(key) is not str for key in value):
+        _fail(reason)
+    return {key: item for key, item in value.items()}
+
+
+def _fail(reason: str) -> NoReturn:
+    raise BridgeUnavailableError("campaign-root player-heir projection malformed: " + reason)
+
+
+def validate_player_heir_projection_service_v1(
+    value: object, *, root: Mapping[str, object], result: Mapping[str, object],
+) -> None:
     """Check one original optional result without importing/reading OS custody.
 
     Unknown DTOs may lack the provider binding, as the original SDK deliberately
     returns unknown before it has one. A positive witness must carry the entire
     original binding and agree with its already validated native component.
     """
-    _require(isinstance(value, dict) and set(value) in (_BASE, _BASE | _BOUND), "keys")
+    value = _mapping(value, "keys")
+    _require(set(value) in (_BASE, _BASE | _BOUND), "keys")
     _require(isinstance(root, dict) and COMPONENT in root, "component absent")
     _require(value["status"] in ("unknown", "positive_witness"), "status")
     _require(_text(value["reason"], 1024), "reason")
@@ -62,7 +79,9 @@ def validate_player_heir_projection_service_v1(value, *, root, result):
     _require(value["b"] is None and value["complete_backup_domain"] is False
              and value["scope"] == "pure_current_candidate_projection", "scope or backups")
     interval = value["H_interval"]
-    _require(type(interval) in (tuple, list) and len(interval) == 2
+    if not isinstance(interval, (tuple, list)) or type(interval) not in (tuple, list):
+        _fail("interval type")
+    _require(len(interval) == 2
              and all(type(number) is int for number in interval), "interval type")
     positive = value["status"] == "positive_witness"
     if positive:
@@ -80,12 +99,12 @@ def validate_player_heir_projection_service_v1(value, *, root, result):
                  and _sha(value["native_provider_sha256"])
                  and value["native_provider_sha256"] != GETTER_SOURCE_CLOSURE_SHA256
                  and _sha(value["owner_source_epoch"]), "provider binding types")
-        game = value["game_identity"]
+        game = _mapping(value["game_identity"], "exact game identity types")
         _require(isinstance(game, dict) and set(game) == {"pid", "creation_date", "executable"}
                  and _integer(game["pid"], 1, 2**31 - 1)
                  and _text(game["creation_date"], 128) and _text(game["executable"], 4096),
                  "exact game identity types")
-        _require(_integer(value["native_query_sequence"], 1, 2**64 - 1)
+        _require(_integer(value["native_query_sequence"], 1, 2**53 - 1)
                  and value["native_query_sequence"] == result["query_sequence"]
                  and value["capture_epoch_basis"] == "original_root_query_sequence",
                  "query sequence")

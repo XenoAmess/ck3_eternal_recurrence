@@ -2902,6 +2902,12 @@ def create_server(
             diagnostic = exact_clock_failure_diagnostic_v1(error)
             diagnostic_key = "exact_day_clock_failure_v1"
             if diagnostic is None:
+                from .tactical_clock_diagnostics_v1 import tactical_clock_failure_v1
+
+                tactical_diagnostic = tactical_clock_failure_v1(error)
+                diagnostic = dict(tactical_diagnostic) if tactical_diagnostic is not None else None
+                diagnostic_key = "tactical_clock_failure_v1"
+            if diagnostic is None:
                 diagnostic = construction_transport_diagnostic(error)
                 diagnostic_key = "construction_transport_v1"
             if diagnostic is None:

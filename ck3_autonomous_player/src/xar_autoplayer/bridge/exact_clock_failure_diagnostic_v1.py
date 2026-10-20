@@ -110,19 +110,19 @@ def build_exact_clock_failure_v1(*, original_error, starting_date_raw, target_da
     return diagnostic
 
 
-def _encode(value):
+def _encode(value: object) -> bytes:
     return json.dumps(value, ensure_ascii=True, allow_nan=False,
                       separators=(",", ":")).encode("utf-8")
 
 
-def exact_clock_failure_diagnostic_v1(error):
+def exact_clock_failure_diagnostic_v1(error: object) -> dict[str, object] | None:
     """Validate and isolate this typed exception for the existing MCP error path."""
     from .driver import StepPostconditionError
 
     if (not isinstance(error, StepPostconditionError)
-            or error.selected_step != "life-advance-one-day"):
+            or error.primitive_step != "life-advance-one-day"):
         return None
-    value = getattr(error, "step_result", None)
+    value: object = getattr(error, "step_result", None)
     if (type(value) is not dict or set(value) != set(_DIAGNOSTIC)
             or value.get("schema") != SCHEMA
             or value.get("is_error") is not True or value.get("never_replay") is not True
@@ -134,11 +134,19 @@ def exact_clock_failure_diagnostic_v1(error):
             or value.get("original_error") != MESSAGE or str(error) != MESSAGE):
         return None
     try:
-        result = {key: value[key] for key in _DIAGNOSTIC}
+        result: dict[str, object] = {key: value[key] for key in _DIAGNOSTIC}
         result["wait_progress"] = project_wait_progress_v1(value["wait_progress"])
         encoded = _encode(result)
         if len(encoded) > MAX_BYTES:
             return None
-        return json.loads(encoded)
+        isolated: object = json.loads(encoded)
+        if not isinstance(isolated, dict):
+            return None
+        projected: dict[str, object] = {}
+        for key, item in isolated.items():
+            if not isinstance(key, str):
+                return None
+            projected[key] = item
+        return projected
     except (TypeError, ValueError, RecursionError):
         return None

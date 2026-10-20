@@ -91,6 +91,7 @@ from .driver import (
     StepPostconditionError,
     UnsupportedStepError,
 )
+from .tactical_clock_diagnostics_v1 import TacticalClockObservationV1
 from .application_main_pump_readiness import (
     PumpReadinessError,
     exact_build_pump_gate_required,
@@ -2195,6 +2196,8 @@ class NativeHeadlessGameplayDriver:
         ] = {}
         self._arrange_marriage_choices: list[dict[str, object]] = []
         self._arrange_marriage_query_sequence: int | None = None
+        self._exact_clock_observation_v1: ClockObservationV1 | None = None
+        self._exact_clock_wait_progress_v1: WaitProgressV1 | None = None
         self.state = NativeProtocolState(self.pipe_name)
         self.endpoint = endpoint or NativeNamedPipeServer(self.pipe_name)
         self._request_sequence = 0
@@ -24848,6 +24851,7 @@ class NativeHeadlessGameplayDriver:
         boundary_pause_diagnostics: dict[str, object] | None = None
         cleanup_error: str | None = None
         camera_pre_advance: dict[str, object] = {"step": step}
+        clock_diagnostics = TacticalClockObservationV1()
         try:
             speed_step = f"set-speed-{speed}"
             speed_result = self._execute_composite_primitive(
@@ -24891,48 +24895,53 @@ class NativeHeadlessGameplayDriver:
             camera_pre_advance["tracking_scope"] = {
                 **arm_status, "watch_army_ids": list(watch_army_ids)}
 
-            resume_result = self._execute_primitive_step(
-                "resume-map",
-                expected_revision=None,
-                internal_semantic_snapshot=True,
-                _tactical_camera_before_resume_v1=camera_pre_advance,
-            )
-            actions.append({"step": "resume-map", "result": resume_result})
+            if route_window_proof is not None:
+                clock_diagnostics.start(self, current, arm_status["generation"])
+            try:
+                resume_result = self._execute_primitive_step(
+                    "resume-map",
+                    expected_revision=None,
+                    internal_semantic_snapshot=True,
+                    _tactical_camera_before_resume_v1=camera_pre_advance,
+                )
+                actions.append({"step": "resume-map", "result": resume_result})
 
-            def running_or_native_stop(
-                snapshot: dict[str, object],
-            ) -> bool:
-                date_raw = snapshot.get("date_raw")
-                return bool(
-                    snapshot.get("paused") is False
-                    or (
-                        snapshot.get("paused") is True
-                        and isinstance(date_raw, int)
-                        and not isinstance(date_raw, bool)
-                        and date_raw > starting_date_raw
+                def running_or_native_stop(
+                    snapshot: dict[str, object],
+                ) -> bool:
+                    date_raw = snapshot.get("date_raw")
+                    return bool(
+                        snapshot.get("paused") is False
+                        or (
+                            snapshot.get("paused") is True
+                            and isinstance(date_raw, int)
+                            and not isinstance(date_raw, bool)
+                            and date_raw > starting_date_raw
+                        )
                     )
-                )
 
-            current = self._wait_for_life_advance_snapshot(
-                self.take_internal_semantic_snapshot(),
-                running_or_native_stop,
-                timeout_seconds=self.command_timeout_seconds,
-            )
-            if not running_or_native_stop(current):
-                raise BridgeUnavailableError(
-                    f"native {step} single resume reached neither a running "
-                    "frame nor a native sentinel stop"
-                )
-            if current.get("paused") is not True:
                 current = self._wait_for_life_advance_snapshot(
-                    current,
-                    lambda snapshot: bool(
-                        snapshot.get("paused") is True
-                        or _battle_sentinel_player_decision_boundary(snapshot)
-                        is not None
-                    ),
-                    timeout_seconds=self.life_advance_timeout_seconds,
+                    self.take_internal_semantic_snapshot(),
+                    running_or_native_stop,
+                    timeout_seconds=self.command_timeout_seconds,
                 )
+                if not running_or_native_stop(current):
+                    raise BridgeUnavailableError(
+                        f"native {step} single resume reached neither a running "
+                        "frame nor a native sentinel stop"
+                    )
+                if current.get("paused") is not True:
+                    current = self._wait_for_life_advance_snapshot(
+                        current,
+                        lambda snapshot: bool(
+                            snapshot.get("paused") is True
+                            or _battle_sentinel_player_decision_boundary(snapshot)
+                            is not None
+                        ),
+                        timeout_seconds=self.life_advance_timeout_seconds,
+                    )
+            finally:
+                clock_diagnostics.finish(self, current)
             observed_boundary = (
                 _battle_sentinel_player_decision_boundary(current)
                 or _battle_sentinel_active_war_set_boundary(
@@ -24963,29 +24972,32 @@ class NativeHeadlessGameplayDriver:
             if current.get("paused") is not True:
                 before_pause_inspection = current
                 boundary_pause_actions: list[dict[str, object]] = []
-                paused_inspection = self._pause_life_advance(
-                    current, boundary_pause_actions
-                )
-                inspected_boundary = (
-                    _battle_sentinel_player_decision_boundary(
-                        paused_inspection
+                purpose = "managed_failure_cleanup"
+                try:
+                    paused_inspection = self._pause_life_advance(
+                        current, boundary_pause_actions
                     )
-                )
-                boundary_confirmed = _verified_battle_sentinel_paused_decision_boundary(
-                    starting=starting,
-                    before_pause=before_pause_inspection,
-                    after_pause=paused_inspection,
-                    pause_actions=boundary_pause_actions,
-                    inspected_boundary=inspected_boundary,
-                    expected_boundary=running_boundary,
-                )
-                purpose = (
-                    "player_decision_boundary_stabilization"
-                    if boundary_confirmed
-                    else "managed_failure_cleanup"
-                )
-                for action in boundary_pause_actions:
-                    actions.append({**action, "purpose": purpose})
+                    inspected_boundary = (
+                        _battle_sentinel_player_decision_boundary(
+                            paused_inspection
+                        )
+                    )
+                    boundary_confirmed = _verified_battle_sentinel_paused_decision_boundary(
+                        starting=starting,
+                        before_pause=before_pause_inspection,
+                        after_pause=paused_inspection,
+                        pause_actions=boundary_pause_actions,
+                        inspected_boundary=inspected_boundary,
+                        expected_boundary=running_boundary,
+                    )
+                    purpose = (
+                        "player_decision_boundary_stabilization"
+                        if boundary_confirmed
+                        else "managed_failure_cleanup"
+                    )
+                finally:
+                    for action in boundary_pause_actions:
+                        actions.append({**action, "purpose": purpose})
                 current = paused_inspection
                 if boundary_confirmed:
                     player_decision_boundary = inspected_boundary
@@ -25194,6 +25206,8 @@ class NativeHeadlessGameplayDriver:
                     watch_army_ids=watch_army_ids,
                 )
             result["progress_status"] = "postcondition"
+            if clock_diagnostics.summary is not None:
+                result["tactical_clock_wait_progress_v1"] = clock_diagnostics.summary
             if campaign_deadline is not None:
                 result["campaign_deadline_v1"] = campaign_deadline
             if camera_pre_advance.get("receipt") is not None:
@@ -25204,13 +25218,15 @@ class NativeHeadlessGameplayDriver:
                 current = self.take_internal_semantic_snapshot()
                 if current.get("paused") is not True:
                     cleanup_actions: list[dict[str, object]] = []
-                    current = self._pause_life_advance(
-                        current, cleanup_actions
-                    )
-                    for action in cleanup_actions:
-                        actions.append(
-                            {**action, "purpose": "managed_failure_cleanup"}
+                    try:
+                        current = self._pause_life_advance(
+                            current, cleanup_actions
                         )
+                    finally:
+                        for action in cleanup_actions:
+                            actions.append(
+                                {**action, "purpose": "managed_failure_cleanup"}
+                            )
             except Exception as cleanup:
                 cleanup_error = f"{type(cleanup).__name__}: {cleanup}"
             result = _battle_sentinel_step_result(
@@ -25235,6 +25251,8 @@ class NativeHeadlessGameplayDriver:
                     player_decision_boundary_cancel
                 ),
             )
+            if clock_diagnostics.summary is not None:
+                result["tactical_clock_wait_progress_v1"] = clock_diagnostics.summary
             if boundary_pause_diagnostics is not None:
                 result["player_decision_pause_diagnostics_v1"] = boundary_pause_diagnostics
             message = f"native {step} postcondition failed: {error}"

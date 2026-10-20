@@ -1,7 +1,7 @@
 """Bounded local receipt evidence; no I/O, new snapshots, polls or decisions.
 
 Buckets locate when Python SAW changes, not when native events happened.
-Only the original exact-day wait installs this collector. Cleanup cannot reuse it.
+Only an original armed clock wait installs this collector. Cleanup cannot reuse it.
 """
 from __future__ import annotations
 import json
@@ -193,7 +193,8 @@ def project_wait_progress_v1(value):
         if set(value) == {"schema", "limit_exceeded", "native_event_time_verified"}:
             return dict(value) if value["limit_exceeded"] is True and value["native_event_time_verified"] is False else None
         if (set(value) != set(FIELDS) or value["columns"] != list(COLUMNS)
-                or value["bucket_columns"] != list(BUCKET_COLUMNS) or value["bucket_ms"] != 5000
+                or value["bucket_columns"] != list(BUCKET_COLUMNS)
+                or type(value["bucket_ms"]) is not int or value["bucket_ms"] != 5000
                 or value["seed_from_cached_snapshot"] is not True
                 or value["empty_bucket_means_unobserved"] is not True
                 or value["native_event_time_verified"] is not False
@@ -207,6 +208,8 @@ def project_wait_progress_v1(value):
         for key in ("arm_generation", "flags", "heartbeats", "candidates", "max_heartbeat_gap_ms", "overflow"):
             if _int(value[key]) is None:
                 return None
+        if value["arm_generation"] <= 0:
+            return None
         if value["elapsed_ms"] is not None and _int(value["elapsed_ms"]) is None:
             return None
         if (type(value["source_heartbeat_ms"]) is not list or len(value["source_heartbeat_ms"]) != 2
@@ -214,7 +217,8 @@ def project_wait_progress_v1(value):
             return None
         identity = value["identity"]
         if identity is not None and (type(identity) is not list or len(identity) != 4
-                or any(_int(v) is None for v in identity[:3]) or type(identity[3]) is not str or len(identity[3]) > 128):
+                or any(_int(v) is None or v <= 0 for v in identity[:3])
+                or type(identity[3]) is not str or not 0 < len(identity[3]) <= 128):
             return None
         for key in ("candidate_first", "candidate_last"):
             row = value[key]

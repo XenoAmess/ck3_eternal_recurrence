@@ -41,9 +41,15 @@ class StepPostconditionError(BridgeUnavailableError):
         selected_step: str,
     ) -> None:
         super().__init__(message)
-        self.step_result = step_result
-        self.selected_step = selected_step
+        self.step_result: dict[str, object] = step_result
+        self._primitive_step: str = selected_step
+        self.selected_step: str = selected_step
         self.plan: dict[str, object] | None = None
+
+    @property
+    def primitive_step(self) -> str:
+        """The backend step that originally raised this exception."""
+        return self._primitive_step
 
 
 class UnsupportedStepError(RuntimeError):
